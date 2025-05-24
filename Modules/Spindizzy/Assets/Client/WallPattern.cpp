@@ -18,40 +18,47 @@
  */
 #include "WallPattern.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPattern::WallPattern(Spindizzy* spindizzy) :
-            cSpindizzy(spindizzy),
-            cWallPattern(cSpindizzy->createLiteralWallPattern(this)) {
+  WallPattern::WallPattern(Spindizzy& spindizzy, std::function<void()> listener) :
+            Asset<IWallPattern, Spindizzy>(spindizzy, spindizzy.createLiteralWallPattern(this)),
+            cListener(listener) {
   }
 
-  void WallPattern::init(JSONObject object) {
-    cSpindizzy->getProject()->init([this, object](IAssets* assets) {
-      set(object);
-    });
+  IWallPattern* WallPattern::createLiteralAsset(Spindizzy& spindizzy) {
+    return spindizzy.createLiteralWallPattern(this);
+  }
+  
+  IWallPattern* WallPattern::getAsset(Spindizzy& spindizzy, JSONObject object) {
+    return spindizzy.getWallPattern(this, object, this);
+  }
+  
+  IWallPattern* WallPattern::getAsset(Spindizzy& spindizzy, const std::string& id) {
+    return spindizzy.getWallPattern(this, id, this);
+  }
+  
+  std::vector<std::string> WallPattern::getAvailableProviders() const {
+    return cManager.getAllWallPatterns();
+  }  
+
+  bool WallPattern::renderOtherProviderIcon(const std::string& id) const {
+    return id == getID() ? renderAssetIcon() : cManager.renderWallPatternIcon(id);
   }
 
-  void WallPattern::set(JSONObject object) {
-    cSpindizzy->release(this, cWallPattern);
-    cWallPattern = cSpindizzy->getWallPattern(this, object);
+  bool WallPattern::hasConfiguration() const {
+    return cManager.isWallPatternConfigurable(getID());
   }
 
-  void WallPattern::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cSpindizzy->save(mAssetObject, cWallPattern);
+  bool WallPattern::isDefaultConfiguration() const {
+    return true;
   }
 
-  void WallPattern::relinquish(IWallPattern* asset) {
-    if (cWallPattern == asset) {
-      cWallPattern = cSpindizzy->createLiteralWallPattern(this);
-    }
-  }
-
-  WallPattern::~WallPattern() {
-    if (cWallPattern != nullptr) {
-      cSpindizzy->release(this, cWallPattern);
+  void WallPattern::stateChanged(IWallPattern* asset) {
+    if (asset == cAsset) {
+      cListener();
     }
   }
 }
-

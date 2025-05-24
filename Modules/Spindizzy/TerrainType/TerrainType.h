@@ -22,6 +22,7 @@
 
 #include <GL/glew.h>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Collision/CollisionUtils.h"
 #include "IsoRealms/Condition/ConditionElement.h"
 #include "IsoRealms/ResourceDefinition.h"
@@ -43,14 +44,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource interface *
     \**********************/
-    TerrainType(IProject* project, Spindizzy* spindizzy);
-    TerrainType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
     
     ~TerrainType();
     
@@ -70,7 +71,7 @@ namespace IsoRealms::Spindizzy {
     IWallPattern* getSouthWallPattern() const;
     IWallPattern* getNorthWallPattern() const;
     
-    Spindizzy* getSpindizzy() const;
+    Spindizzy& getSpindizzy() const;
     void executeContactScript();
     void executeImpactScript();
     float getSurfaceFriction() const;
@@ -86,9 +87,11 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
@@ -110,7 +113,7 @@ namespace IsoRealms::Spindizzy {
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:
-      Pen(TerrainType& parent, WorldEditor* editor);
+      Pen(TerrainType& parent, WorldEditor& editor);
       
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -127,7 +130,7 @@ namespace IsoRealms::Spindizzy {
       
       private:
       TerrainType& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
       Zone* cPinnedZone;
       WorldEditorCursorCell cPinnedLocation;
       bool cDrawingNegation;
@@ -142,7 +145,7 @@ namespace IsoRealms::Spindizzy {
     // Defaults.
     static const float DEFAULT_WALL_BOUNCE;
 
-    Spindizzy* cSpindizzy;
+    Spindizzy& cSpindizzy;
       
     // Properties
     float cDefSurfaceFriction;

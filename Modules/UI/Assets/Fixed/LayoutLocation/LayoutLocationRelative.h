@@ -1,0 +1,66 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/IProject.h"
+
+#include "Modules/UI/Assets/Type/ILayoutLocation.h"
+
+namespace IsoRealms::UI {
+  class LayoutComponent;
+  class LayoutComponentEdge;
+
+  /**
+   * A layout location related to an existing component.
+   */
+  class LayoutLocationRelative : public ILayoutLocation {
+    public:
+    LayoutLocationRelative(IProject& project, LayoutComponentEdge& owner);
+    LayoutLocationRelative(IProject& project, LayoutComponentEdge& owner, JSONObject object);
+    
+    /******************************\
+     * Implements ILayoutLocation *
+    \******************************/
+    float getLocation(float aspectRatio) const override;
+    void setAbsolute(float aspectRatio, float value) override;
+    void renderRelation(float aspectRatio) const override;
+
+    /*****************************************\
+     * Implements IAsset via ILayoutLocation *
+    \*****************************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
+
+    private:
+
+    // JSON members.    
+    static const std::string JSON_RELATIVE;
+    static const std::string JSON_VALUE;
+
+    // External interfaces.
+    LayoutComponentEdge& cParent;
+    
+    // Definition data.
+    LayoutComponent* cDefRelative; /// Component to which this location is related.
+    float cDefValue;               /// Relative position to the related component, from -1.0f to +1.0f.
+  };
+}

@@ -19,15 +19,16 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 namespace IsoRealms {
   class JSONObject;
-  class IAssetLiterals;
   class IAssetRegistry;
   class IAssetRemover;
   class IAssets;
   class IModule;
   class IProject;
+  class IProperty;
   class IAssetIdentifier;
   class IResourceTypeRegistry;
   class LuaState;
@@ -38,20 +39,21 @@ namespace IsoRealms {
     /**
     * Save the configuration and resources of the module.
     */
-    virtual void load(IProject* project, JSONObject object) = 0;
-    virtual void save(JSONObject object, IAssetIdentifier* identifier) = 0;
-    virtual void registerAssets(IAssetRegistry* assets) = 0;
-    virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
+    virtual void load(IProject& project, JSONObject object) = 0;
+    virtual void save(JSONObject object, IAssetIdentifier& identifier) = 0;
+    virtual void registerAssets(IAssetRegistry& assets) = 0;
+    virtual void unregisterAssets(IAssetRemover& assets, IAssets& releaser) = 0;
+    virtual std::vector<std::unique_ptr<IProperty>> getProperties() = 0;
 
     virtual ~IModuleHandle() {}
   };
 
 #if __linux__
-  typedef IModuleHandle* createModule(IProject* project, IResourceTypeRegistry* resourceTypeRegistry, IAssetLiterals* resources);
+  typedef IModuleHandle* createModule(IProject* project, IResourceTypeRegistry* resourceTypeRegistry);
   typedef void destroyModule(IModuleHandle* module);
   typedef void initLuaInterfaces(LuaState* luaState);
 #elif _WIN32
-  typedef IModuleHandle* (__stdcall* createModule)(IProject* project, IResourceTypeRegistry* resourceTypeRegistry, IAssetLiterals* resources);
+  typedef IModuleHandle* (__stdcall* createModule)(IProject* project, IResourceTypeRegistry* resourceTypeRegistry);
   typedef void (__stdcall* destroyModule)(IModuleHandle* module);
   typedef void (__stdcall* initLuaInterfaces)(LuaState* luaState);
 #endif

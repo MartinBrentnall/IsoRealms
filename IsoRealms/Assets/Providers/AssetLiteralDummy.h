@@ -29,16 +29,25 @@ namespace IsoRealms {
     /*********************************\
      * Implements AssetLiteral<TYPE> *
     \*********************************/
-    std::string normalizeLiteral(const std::string& expression) const override {
-      return expression;
+    bool hasConfiguration() const override {
+      return false;
     }
 
-    std::unique_ptr<BASE> createLiteralAsset(const std::string& expression) const override {
-      return expression == "" ? std::make_unique<TYPE>() : nullptr;
+    std::unique_ptr<BASE> createLiteralAsset(OWNER& owner) const override {
+      return std::make_unique<TYPE>(owner);
     }
 
-    std::unique_ptr<BASE> createLiteralAsset(JSONObject object) const override {
-      return std::make_unique<TYPE>();
+    std::unique_ptr<BASE> createLiteralAsset(OWNER& owner, const std::string& expression) const override {
+      return expression == "" ? std::make_unique<TYPE>(owner) : nullptr;
+    }
+
+    std::unique_ptr<BASE> createLiteralAsset(OWNER& owner, JSONObject object) const override {
+      return std::make_unique<TYPE>(owner);
+    }
+
+    bool renderAssetProviderIcon() const override {
+      Utils::renderIconNone();
+      return true;
     }
   };
 }

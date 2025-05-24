@@ -73,6 +73,17 @@ namespace IsoRealms {
       }
     }
   }
+  
+  void System::renameUserDataDirectory(const std::string& oldPath, const std::string& newPath) {
+    std::string mFullOldPath = USER_DATA_DIRECTORY + "/" + oldPath;
+    std::string mFullNewPath = USER_DATA_DIRECTORY + "/" + newPath;
+    if (std::filesystem::exists(mFullOldPath) && !std::filesystem::exists(mFullNewPath)) {
+      std::filesystem::rename(mFullOldPath, mFullNewPath);
+      std::cout << "Rename from \"" << mFullOldPath << "\" to \"" << mFullNewPath << "\" succeeded!" << std::endl;
+    } else {
+      std::cout << "Rename from \"" << mFullOldPath << "\" to \"" << mFullNewPath << "\" could not be done!" << std::endl;
+    }
+  }  
 
   std::ofstream System::openOutputStream(const std::string& path) {
     std::ofstream mOutput;

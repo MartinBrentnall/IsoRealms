@@ -18,38 +18,39 @@
  */
 #include "Assets.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Assets::Assets(IProject* project) :
-            cProject(project),
-            cAssets(cProject->createLiteralAssets(this)) {
+  Assets::Assets(IProject& project) : 
+            Asset<IAssets, IProject>(project, project.createLiteralAssets(this)) {
   }
 
-  void Assets::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IAssets* Assets::createLiteralAsset(IProject& project) {
+    return project.createLiteralAssets(this);
+  }
+  
+  IAssets* Assets::getAsset(IProject& project, JSONObject object) {
+    return project.getAssets(this, object);
+  }
+  
+  IAssets* Assets::getAsset(IProject& project, const std::string& id) {
+    return project.getAssets(this, id);
+  }
+  
+  std::vector<std::string> Assets::getAvailableProviders() const {
+    return std::vector<std::string>();
+    // TODO return cManager.getAllAssetss();
+  }  
+
+  bool Assets::renderOtherProviderIcon(const std::string& id) const {
+    return false; // TODO
   }
 
-  void Assets::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cAssets);
-    cAssets = cProject->getAssets(this, mAssetObject);
+  bool Assets::hasConfiguration() const {
+    return false; // TODO cManager.isAssetsConfigurable(getID());
   }
 
-  void Assets::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cAssets);
-  }
-
-  void Assets::relinquish(IAssets* asset) {
-    if (cAssets == asset) {
-      cAssets = cProject->createLiteralAssets(this);
-    }
-  }
-
-  Assets::~Assets() {
-    if (cAssets != nullptr) {
-      cProject->release(this, cAssets);
-    }
+  bool Assets::isDefaultConfiguration() const {
+    return true;
   }
 }

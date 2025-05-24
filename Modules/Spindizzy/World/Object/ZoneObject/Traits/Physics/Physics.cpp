@@ -28,8 +28,8 @@ namespace IsoRealms::Spindizzy {
   Physics::Physics(ZoneObject& object, ZoneObjectTypeTraitPhysics& type) :
             cDefType(type),
             cDefObject(object),
-            cRuntimePhysicsObject(*cDefObject.getZone()->getWorld()->getSpindizzy(), this) { //, &cDefMovable) {
-    cDefObject.getZone()->getWorld()->getSpindizzy()->getProject()->init([this](IAssets* assets) {
+            cRuntimePhysicsObject(cDefObject.getZone().getWorld().getSpindizzy(), this) { //, &cDefMovable) {
+    cDefObject.getZone().getWorld().getSpindizzy().getProject().init([this](IAssets& assets) {
       std::string mMovableID = cDefType.getMovableID();
       cDefMovable = cDefObject.getMovable(mMovableID);
     });
@@ -75,7 +75,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Physics::update(unsigned int milliseconds) {
-    cDefObject.getZone()->getWorld()->move(&cRuntimePhysicsObject, milliseconds);
+    cDefObject.getZone().getWorld().move(&cRuntimePhysicsObject, milliseconds);
   }
   
   float Physics::getXThrust() const {

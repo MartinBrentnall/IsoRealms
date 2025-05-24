@@ -22,6 +22,7 @@
 #include <GL/glew.h>
 #include <optional>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
 
@@ -44,14 +45,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    LiftType(IProject* project, Spindizzy* spindizzy);
-    LiftType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Destructor.    
     virtual ~LiftType();
@@ -67,9 +68,11 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:  
 
@@ -81,7 +84,7 @@ namespace IsoRealms::Spindizzy {
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:
-      Pen(LiftType& parent, WorldEditor* editor);
+      Pen(LiftType& parent, WorldEditor& editor);
       
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -98,7 +101,7 @@ namespace IsoRealms::Spindizzy {
       
       private:
       LiftType& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
       Zone* cPinnedZone;                     /// Zone in which drawing a lift of this type is currently taking place.
       WorldEditorCursorCell cPinnedLocation; /// Pinned initial location for a lift being drawn.
       std::optional<int> cPinnedRange;       /// Pinned movement range for a lift being drawn.
@@ -109,8 +112,10 @@ namespace IsoRealms::Spindizzy {
       bool cancel();
     };
 
+    // External interfaces.
+    Spindizzy& cSpindizzy; /// Spindizzy module reference.
+    
     // Definition data.
-    Spindizzy& cDefSpindizzy; /// Spindizzy module reference.
     Model cDefModel;          /// Visual representation of this lift type.
     Boolean cDefActive;       /// Lifts of this type are active when true.
     Action cDefTickAction;    /// Action to execute at each whole unit of movement of a lift of this type.

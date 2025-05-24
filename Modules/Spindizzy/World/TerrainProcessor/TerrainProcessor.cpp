@@ -405,8 +405,8 @@ namespace IsoRealms::Spindizzy {
     }
     facing = getOppositeOf(facing);
     if (!cPhysical) {
-      Zone* mZone = terrain->getZone();
-      if (!mZone->aligned(x, y)) {
+      Zone& mZone = terrain->getZone();
+      if (!mZone.aligned(x, y)) {
         return mWallColumns;
       }
     }

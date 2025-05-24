@@ -23,9 +23,9 @@
 
 #include "Assets/Registry/IAssetUser.h"
 #include "Assets/Type/IScreenListener.h"
+#include "Editing/Property/IProperty.h"
 #include "Exception/ResourceInitException.h"
 #include "IAssetIdentifier.h"
-#include "IAssetLiterals.h"
 #include "IAssetRegistry.h"
 #include "IAssetRemover.h"
 #include "IAssets.h"
@@ -33,6 +33,3 @@
 #include "IProject.h"
 #include "IResourceData.h"
 #include "Options/IOptions.h"
-#include "Property/IProperty.h"
-#include "Property/IPropertyAppearance.h"
-#include "Property/IPropertyListener.h"

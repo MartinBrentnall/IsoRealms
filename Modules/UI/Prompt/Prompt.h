@@ -43,14 +43,14 @@ namespace IsoRealms::UI {
     /**********************\
      * Resource Interface *
     \**********************/    
-    Prompt(IProject* project, UI* ui);
-    Prompt(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Prompt(IProject& project, UI& ui, IResourceData& data);
+    Prompt(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /***********************\
      * Scripting Interface *
@@ -73,6 +73,8 @@ namespace IsoRealms::UI {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     

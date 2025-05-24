@@ -25,12 +25,12 @@
 namespace IsoRealms::Spindizzy {
   const unsigned int CameraTransitional::DEFAULT_DURATION = 500U;
 
-  CameraTransitional::CameraTransitional(IProject* project, WorldView* view) :
+  CameraTransitional::CameraTransitional(IProject& project, WorldView& view) :
             cYaw(*this),
             cPitch(*this),
             cParent(view),
-            cDefStart(cParent->getSpindizzy()),
-            cDefEnd(cParent->getSpindizzy()),
+            cDefStart(cParent.getSpindizzy(), view),
+            cDefEnd(cParent.getSpindizzy(), view),
             cDefDuration(DEFAULT_DURATION),
             cDefStartDepartureAction(project),
             cDefStartArrivalAction(project),
@@ -38,7 +38,7 @@ namespace IsoRealms::Spindizzy {
             cDefEndArrivalAction(project),
             cRuntimeYawStateNotifier(nullptr),
             cLuaBinding(project, this) {
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       if (cRuntimeEnd) {
         if (cRuntimeAnimation < cDefDuration) {
           if (cRuntimeAnimation == 0U) {
@@ -64,16 +64,16 @@ namespace IsoRealms::Spindizzy {
       }
     });
 
-    project->reset([this, view]() {
+    project.reset([this]() {
       cRuntimeEnd = false;
       cRuntimeAnimation = 0U;
     });
   }
   
-  CameraTransitional::CameraTransitional(IProject* project, WorldView* view, JSONObject object) :
+  CameraTransitional::CameraTransitional(IProject& project, WorldView& view, JSONObject object) :
             CameraTransitional(project, view) {
-    cDefStart.set(object.getObject(JSON_START), cParent);
-    cDefEnd.set(object.getObject(JSON_END), cParent);
+    cDefStart.set(object, JSON_START);
+    cDefEnd.set(object, JSON_END);
     cDefStartDepartureAction.init(object, JSON_ON_START_DEPARTURE);
     cDefStartArrivalAction.init(object, JSON_ON_START_ARRIVAL);
     cDefEndDepartureAction.init(object, JSON_ON_END_DEPARTURE);
@@ -89,26 +89,26 @@ namespace IsoRealms::Spindizzy {
     cRuntimeEnd = true;
   }
     
-  void CameraTransitional::registerAssets(IAssetRegistry* assets) {
-    cRuntimeYawStateNotifier = assets->add(&cYaw, "Yaw", "Cameras");
-    assets->add(&cPitch, "Pitch", "Cameras");
-    assets->add(&cLuaBinding, "", "Cameras");
+  void CameraTransitional::registerAssets(IAssetRegistry& assets) {
+    cRuntimeYawStateNotifier = assets.add(&cYaw, "Yaw", "Cameras");
+    assets.add(&cPitch, "Pitch", "Cameras");
+    assets.add(&cLuaBinding, "", "Cameras");
     LocalAssetRegistry mStartRegistry(assets, "Start");
-    cDefStart->registerAssets(&mStartRegistry);
+    cDefStart->registerAssets(mStartRegistry);
     LocalAssetRegistry mEndRegistry(assets, "End");
-    cDefEnd->registerAssets(&mEndRegistry);
+    cDefEnd->registerAssets(mEndRegistry);
     cDefStart->addListener(this);
     cDefEnd->addListener(this);
   }
     
-  void CameraTransitional::unregisterAssets(IAssetRemover* assets) {
-    assets->remove(&cYaw);
-    assets->remove(&cPitch);
-    assets->remove(&cLuaBinding);
+  void CameraTransitional::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(&cYaw,        relinquish);
+    assets.remove(&cPitch,      relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     cDefStart->removeListener(this);
     cDefEnd->removeListener(this);
-    cDefStart->unregisterAssets(assets);
-    cDefEnd->unregisterAssets(assets);
+    cDefStart->unregisterAssets(assets, relinquish);
+    cDefEnd->unregisterAssets(  assets, relinquish);
   }
   
   const IFloat* CameraTransitional::getYaw() const {
@@ -170,6 +170,22 @@ namespace IsoRealms::Spindizzy {
     cDefEndArrivalAction.save(object, JSON_ON_END_ARRIVAL);
   }
 
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        "Start",                   cDefStart));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        "End",                     cDefEnd));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Duration",                [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Departure from Start", cDefStartDepartureAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Arrival at End",       cDefEndArrivalAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Departure from End",   cDefEndDepartureAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Arrival at Start",     cDefStartArrivalAction));
+    return mProperties;
+  }
+
+  bool CameraTransitional::isDefaultConfiguration() const {
+    return false; // TODO: Implement
+  }
+
   void CameraTransitional::yawChanged(ICamera* camera) {
     cRuntimeYawStateNotifier->stateChanged(&cYaw);
   }
@@ -195,6 +211,14 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Yaw::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool CameraTransitional::Yaw::isDefaultConfiguration() const {
+    return true; // TODO?
+  }
+
   CameraTransitional::Pitch::Pitch(CameraTransitional& parent) :
             cParent(parent) {
   }
@@ -210,6 +234,14 @@ namespace IsoRealms::Spindizzy {
 
   void CameraTransitional::Pitch::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Pitch::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool CameraTransitional::Pitch::isDefaultConfiguration() const {
+    return true; // TODO?
   }
 
   const std::string CameraTransitional::JSON_DURATION           = "duration";

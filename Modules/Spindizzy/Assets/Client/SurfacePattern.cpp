@@ -18,40 +18,47 @@
  */
 #include "SurfacePattern.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePattern::SurfacePattern(Spindizzy* spindizzy) :
-            cSpindizzy(spindizzy),
-            cSurfacePattern(cSpindizzy->createLiteralSurfacePattern(this)) {
+  SurfacePattern::SurfacePattern(Spindizzy& spindizzy, std::function<void()> listener) :
+            Asset<ISurfacePattern, Spindizzy>(spindizzy, spindizzy.createLiteralSurfacePattern(this)),
+            cListener(listener) {
   }
 
-  void SurfacePattern::init(JSONObject object) {
-    cSpindizzy->getProject()->init([this, object](IAssets* assets) {
-      set(object);
-    });
+  ISurfacePattern* SurfacePattern::createLiteralAsset(Spindizzy& spindizzy) {
+    return spindizzy.createLiteralSurfacePattern(this);
+  }
+  
+  ISurfacePattern* SurfacePattern::getAsset(Spindizzy& spindizzy, JSONObject object) {
+    return spindizzy.getSurfacePattern(this, object, this);
+  }
+  
+  ISurfacePattern* SurfacePattern::getAsset(Spindizzy& spindizzy, const std::string& id) {
+    return spindizzy.getSurfacePattern(this, id, this);
+  }
+  
+  std::vector<std::string> SurfacePattern::getAvailableProviders() const {
+    return cManager.getAllSurfacePatterns();
+  }  
+
+  bool SurfacePattern::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderSurfacePatternIcon(id);
   }
 
-  void SurfacePattern::set(JSONObject object) {
-    cSpindizzy->release(this, cSurfacePattern);
-    cSurfacePattern = cSpindizzy->getSurfacePattern(this, object);
+  bool SurfacePattern::hasConfiguration() const {
+    return cManager.isSurfacePatternConfigurable(getID());
   }
 
-  void SurfacePattern::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cSpindizzy->save(mAssetObject, cSurfacePattern);
+  bool SurfacePattern::isDefaultConfiguration() const {
+    return true;
   }
 
-  void SurfacePattern::relinquish(ISurfacePattern* asset) {
-    if (cSurfacePattern == asset) {
-      cSurfacePattern = cSpindizzy->createLiteralSurfacePattern(this);
-    }
-  }
-
-  SurfacePattern::~SurfacePattern() {
-    if (cSurfacePattern != nullptr) {
-      cSpindizzy->release(this, cSurfacePattern);
+  void SurfacePattern::stateChanged(ISurfacePattern* asset) {
+    if (asset == cAsset) {
+      cListener();
     }
   }
 }
-

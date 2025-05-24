@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Fixed/LiteralVertex.h"
+#include "IsoRealms/Assets/Literal/LiteralVertex.h"
 
 #include "Modules/Spindizzy/ISurface.h"
 

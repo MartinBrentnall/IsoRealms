@@ -24,12 +24,11 @@ namespace IsoRealms {
   
   // Forward declaration of asset type classes.
   class JSONObject;
-  class I3DModel;
-  class I3DModelType;
   class IAction;
   class IActionType;
   class IAssets;
   class IBinding;
+  class IBindingType;
   class IBoolean;
   class IColour;
   class IEditable;
@@ -37,6 +36,8 @@ namespace IsoRealms {
   class IFont;
   class IInputHandler;
   class IInteger;
+  class IModelInstance;
+  class IModel;
   class IScreen;
   class IProjectOptions;
   class IString;
@@ -48,10 +49,28 @@ namespace IsoRealms {
    */
   class IAssetIdentifier {
     public:
+    virtual std::string getID(const IActionType*     asset) const = 0;
+    virtual std::string getID(const IAssets*         asset) const = 0;
+    virtual std::string getID(const IBinding*        asset) const = 0;
+    virtual std::string getID(const IBindingType*    asset) const = 0;
+    virtual std::string getID(const IBoolean*        asset) const = 0;
+    virtual std::string getID(const IColour*         asset) const = 0;
+    virtual std::string getID(const IEditable*       asset) const = 0;
+    virtual std::string getID(const IFloat*          asset) const = 0;
+    virtual std::string getID(const IFont*           asset) const = 0;
+    virtual std::string getID(const IInputHandler*   asset) const = 0;
+    virtual std::string getID(const IInteger*        asset) const = 0;
+    virtual std::string getID(const IModel*          asset) const = 0;
+    virtual std::string getID(const IScreen*         asset) const = 0;
+    virtual std::string getID(const IProjectOptions* asset) const = 0;
+    virtual std::string getID(const IString*         asset) const = 0;
+    virtual std::string getID(const ITexture*        asset) const = 0;
+    virtual std::string getID(const IVertex*         asset) const = 0;
+
     virtual void save(JSONObject object, const IActionType*     asset) const = 0;
     virtual void save(JSONObject object, const IAssets*         asset) const = 0;
-    virtual void save(JSONObject object, const I3DModelType*    asset) const = 0;
     virtual void save(JSONObject object, const IBinding*        asset) const = 0;
+    virtual void save(JSONObject object, const IBindingType*    asset) const = 0;
     virtual void save(JSONObject object, const IBoolean*        asset) const = 0;
     virtual void save(JSONObject object, const IColour*         asset) const = 0;
     virtual void save(JSONObject object, const IEditable*       asset) const = 0;
@@ -59,6 +78,7 @@ namespace IsoRealms {
     virtual void save(JSONObject object, const IFont*           asset) const = 0;
     virtual void save(JSONObject object, const IInputHandler*   asset) const = 0;
     virtual void save(JSONObject object, const IInteger*        asset) const = 0;
+    virtual void save(JSONObject object, const IModel*          asset) const = 0;
     virtual void save(JSONObject object, const IScreen*         asset) const = 0;
     virtual void save(JSONObject object, const IProjectOptions* asset) const = 0;
     virtual void save(JSONObject object, const IString*         asset) const = 0;

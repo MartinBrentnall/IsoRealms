@@ -29,11 +29,20 @@ namespace IsoRealms::UI {
 
   class MenuItem : public IAssetUser<IMenuItem> {
     public:
-    MenuItem(UI* ui);
+    MenuItem(UI& ui, Menu& menu);
 
-    void init(JSONObject object, const std::string& member, Menu* owner);
-    void set(JSONObject object, const std::string& member, Menu* owner);
+    void init(JSONObject object, const std::string& member, Menu& owner);
+    void set(JSONObject object, const std::string& member, Menu& owner);
+    void setID(const std::string& id);
     void save(JSONObject object, const std::string& name) const;
+    std::string getID() const;
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfigured() const;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties();
+    bool renderAssetIcon() const;
+    IApplication& getApplication();
 
     IMenuItem* operator->() const {
       return cMenuItem;
@@ -51,7 +60,8 @@ namespace IsoRealms::UI {
     virtual ~MenuItem();
 
     private:
-    UI* cUI;
+    UI& cUI;
+    Menu& cOwner;
     IMenuItem* cMenuItem;
 
     MenuItem(MenuItem const& MenuItem) = delete;

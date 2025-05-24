@@ -16,15 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 
 #include "WallPatternCap.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPatternCap::WallPatternCap(IProject* project, Spindizzy* spindizzy, JSONObject object) :
-            cDefTextureBottom(project),
-            cDefTextureMiddle(project),
-            cDefTextureTop(project) {
+  WallPatternCap::WallPatternCap(IProject& project, Spindizzy& spindizzy) :
+            cDefTextureBottom(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefTextureMiddle(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefTextureTop(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  }
+
+  WallPatternCap::WallPatternCap(IProject& project, Spindizzy& spindizzy, JSONObject object) :
+            WallPatternCap(project, spindizzy) {
     cDefTextureBottom.set(object, JSON_BOTTOM);
     cDefTextureMiddle.set(object, JSON_MIDDLE);
     cDefTextureTop.set(object, JSON_TOP);
@@ -32,9 +37,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IVisualElement>> WallPatternCap::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
-    mVisuals.emplace_back(std::make_unique<SectionBottom>(this, wall));
-    mVisuals.emplace_back(std::make_unique<SectionMiddle>(this, wall));
-    mVisuals.emplace_back(std::make_unique<SectionTop>(   this, wall));
+    mVisuals.emplace_back(std::make_unique<SectionBottom>(*this, wall));
+    mVisuals.emplace_back(std::make_unique<SectionMiddle>(*this, wall));
+    mVisuals.emplace_back(std::make_unique<SectionTop>(   *this, wall));
     return mVisuals;
   }
 
@@ -144,9 +149,32 @@ namespace IsoRealms::Spindizzy {
     cDefTextureMiddle->hintTextureInUse(inUse);
     cDefTextureTop->hintTextureInUse(inUse);
   }
-  
+
   bool WallPatternCap::renderAssetIcon() const {
-    return false;
+    cDefTextureTop->set();
+    glBegin(GL_QUADS);
+    cDefTextureBottom->coord(0.0f, 1.0f); glVertex2f(-1.0f,  0.5f);
+    cDefTextureBottom->coord(1.0f, 1.0f); glVertex2f( 1.0f,  0.5f);
+    cDefTextureBottom->coord(1.0f, 0.0f); glVertex2f( 1.0f,  1.0f);
+    cDefTextureBottom->coord(0.0f, 0.0f); glVertex2f(-1.0f,  1.0f);
+    glEnd();
+
+    cDefTextureMiddle->set();
+    glBegin(GL_QUADS);
+    cDefTextureBottom->coord(0.0f, 1.0f); glVertex2f(-1.0f, -0.5f);
+    cDefTextureBottom->coord(1.0f, 1.0f); glVertex2f( 1.0f, -0.5f);
+    cDefTextureBottom->coord(1.0f, 0.0f); glVertex2f( 1.0f,  0.5f);
+    cDefTextureBottom->coord(0.0f, 0.0f); glVertex2f(-1.0f,  0.5f);
+    glEnd();
+
+    cDefTextureBottom->set();
+    glBegin(GL_QUADS);
+    cDefTextureBottom->coord(1.0f, 0.0f); glVertex2f(-1.0f, -1.0f); // TODO: Why do we need to reverse the coords for the bottom even though the texture should be configured upside down?  Is it really configured upside down or did we just hard code that?
+    cDefTextureBottom->coord(0.0f, 0.0f); glVertex2f( 1.0f, -1.0f);
+    cDefTextureBottom->coord(0.0f, 1.0f); glVertex2f( 1.0f, -0.5f);
+    cDefTextureBottom->coord(1.0f, 1.0f); glVertex2f(-1.0f, -0.5f);
+    glEnd();
+    return true;
   }
 
   void WallPatternCap::saveAsset(JSONObject object) const {
@@ -155,30 +183,42 @@ namespace IsoRealms::Spindizzy {
     cDefTextureTop.save(object, JSON_TOP);
   }
 
-  WallPatternCap::SectionBottom::SectionBottom(const WallPatternCap* parent, Wall* wall) :
+  std::vector<std::unique_ptr<IProperty>> WallPatternCap::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Top", cDefTextureTop));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Middle", cDefTextureMiddle));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Bottom", cDefTextureBottom));
+    return mProperties;
+  }
+
+  bool WallPatternCap::isDefaultConfiguration() const {
+    return false; // TODO: Implement
+  }
+
+  WallPatternCap::SectionBottom::SectionBottom(const WallPatternCap& parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {
   }
 
   void WallPatternCap::SectionBottom::render() {
-    int mX                              = cDefWall->getX();
-    int mY                              = cDefWall->getY();
-    int mZ                              = cDefWall->getZ();
-    int mLength                         = cDefWall->getLength();
-    int mBottomSlope                    = cDefWall->getBottomSlope();
+    int mX                         = cDefWall->getX();
+    int mY                         = cDefWall->getY();
+    int mZ                         = cDefWall->getZ();
+    int mLength                    = cDefWall->getLength();
+    int mBottomSlope               = cDefWall->getBottomSlope();
     Wall::Direction mFaceDirection = cDefWall->getFaceDirection();
-    cDefParent->renderBottom(mX, mY, mZ, mLength, mBottomSlope, mFaceDirection);
+    cDefParent.renderBottom(mX, mY, mZ, mLength, mBottomSlope, mFaceDirection);
   }
 
   ITexture* WallPatternCap::SectionBottom::getTexture() {
-    return cDefParent->cDefTextureBottom->getTexture();
+    return cDefParent.cDefTextureBottom->getTexture();
   }
 
   void WallPatternCap::SectionBottom::prepareVisual() {
     // Nothing to do
   }
 
-  WallPatternCap::SectionMiddle::SectionMiddle(const WallPatternCap* parent, Wall* wall) :
+  WallPatternCap::SectionMiddle::SectionMiddle(const WallPatternCap& parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {
   }
@@ -192,18 +232,18 @@ namespace IsoRealms::Spindizzy {
     int mTopSlope                       = cDefWall->getTopSlope();
     int mBottomSlope                    = cDefWall->getBottomSlope();
     Wall::Direction mFaceDirection = cDefWall->getFaceDirection();
-    cDefParent->renderMiddle(mX, mY, mZ, mLength, mHeight, mTopSlope, mBottomSlope, mFaceDirection);
+    cDefParent.renderMiddle(mX, mY, mZ, mLength, mHeight, mTopSlope, mBottomSlope, mFaceDirection);
   }
 
   ITexture* WallPatternCap::SectionMiddle::getTexture() {
-    return cDefParent->cDefTextureMiddle->getTexture();
+    return cDefParent.cDefTextureMiddle->getTexture();
   }
 
   void WallPatternCap::SectionMiddle::prepareVisual() {
     // Nothing to do
   }
 
-  WallPatternCap::SectionTop::SectionTop(const WallPatternCap* parent, Wall* wall) :
+  WallPatternCap::SectionTop::SectionTop(const WallPatternCap& parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {
   }
@@ -216,11 +256,11 @@ namespace IsoRealms::Spindizzy {
     int mHeight                         = cDefWall->getHeight();
     int mTopSlope                       = cDefWall->getTopSlope();
     Wall::Direction mFaceDirection = cDefWall->getFaceDirection();
-    cDefParent->renderTop(mX, mY, mZ, mLength, mHeight, mTopSlope, mFaceDirection);
+    cDefParent.renderTop(mX, mY, mZ, mLength, mHeight, mTopSlope, mFaceDirection);
   }
 
   ITexture* WallPatternCap::SectionTop::getTexture() {
-    return cDefParent->cDefTextureTop->getTexture();
+    return cDefParent.cDefTextureTop->getTexture();
   }
 
   void WallPatternCap::SectionTop::prepareVisual() {

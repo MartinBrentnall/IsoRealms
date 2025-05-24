@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2022 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,44 +18,62 @@
  */
 #pragma once
 
-#include "IsoRealms/AnimatedFloat.h"
-#include "IsoRealms/Property/IProperty.h"
-#include "IsoRealms/Property/IPropertyAppearance.h"
-#include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/IResourceType.h"
+#include "IsoRealms/IResource.h"
 
-#include "AbstractMenu.h"
+#include "Menu.h"
+#include "MenuItemProperty.h"
+#include "Property/IPropertyManager.h"
 
 namespace IsoRealms {
-  class PropertiesMenu final : public AbstractMenu {
+  class PropertiesMenu : public Menu<MenuItemProperty>,
+                         public IPropertyManager {
     public:
-    PropertiesMenu(Configurator* parent, IPropertyAppearance* appearance);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue);
 
-    void addItem(IProperty* property);
-    void clear();
-
-    // Input functions.
-    void edit(unsigned int item);
-
-    /***************************\
-     * Implements AbstractMenu *
-    \***************************/
-    float getLeftSelectionBoundary(float aspectRatio, unsigned int item) override;
-    float getRightSelectionBoundary(float aspectRatio, unsigned int item) override;
-    float getLeftSelectionHighlight(float aspectRatio, unsigned int item) override;
-    float getRightSelectionHighlight(float aspectRatio, unsigned int item) override;
-    unsigned int getItemCount() override;
-    void renderOverlay() override;
-    void renderItem(float aspectRatio, unsigned int item, float x) override;
-    void updateItems(unsigned int milliseconds) override;
-    bool isMenuInputLocked() override;
-    bool input(unsigned int item, ConfiguratorSignalID id) override;
+    /*************************************\
+     * Implements Menu<MenuItemProperty> *
+    \*************************************/
+    float getWidth(MenuItemProperty& item, IUIStyle& style) const override;
+    void renderMenuItem(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const override;
+    void renderOverlay(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const override;
+    void updateOverlay(unsigned int milliseconds) override;
+    float getSelectionHighlightLeft(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const override;
+    float getSelectionHighlightRight(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const override;
+    bool input(MenuItemProperty& item, UISignalID id, float y) override;
+    bool input(MenuItemProperty& item, sf::Event& event) override;
+    void selectedItemChanged() override;
     void refresh() override;
 
-    private:
-    std::vector<IProperty*> cProperties;
-    std::vector<IProperty*> cClosingProperties;
-    IProperty* cEditing;
+    /*******************************\
+     * Implements IPropertyManager *
+    \*******************************/
+    void addProperty(std::unique_ptr<IProperty> property) override;
+    void openProperties(const std::string& name, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher) override;
+    void edit(std::unique_ptr<IPropertyEditor> editor) override;
+    void edit(IEditable* editor) override;
+    void refreshProperties() override;
+    IUIStyle& getPropertyStyle() override;
 
-    float getMaxLabelWidth() const;
+    private:
+    enum class Action {
+      SELECT,
+      CONFIGURE,
+      REMOVE
+    };
+
+    std::function<std::vector<std::unique_ptr<IProperty>>()> cPropertyFetcher;
+    
+    std::unique_ptr<IPropertyEditor> cEditingProperty;
+    std::unique_ptr<IPropertyEditor> cClosingProperty;
+    AnimatedFloat cColumnWidthLabel;
+    AnimatedFloat cColumnWidthValue;
+    bool cHasConfigureColumn;
+    bool cHasRemoveColumn;
+    
+    Action cAction;
+    
+    void openSubProperties(MenuItemProperty& item);
+    void recalculateColumnWidths();
   };
 }

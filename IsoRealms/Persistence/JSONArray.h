@@ -32,7 +32,7 @@ namespace IsoRealms {
 
   class JSONArray {
     public:
-        class Iterator {
+    class Iterator {
       private:
       JSONArray& cParent;
       unsigned int cIndex;

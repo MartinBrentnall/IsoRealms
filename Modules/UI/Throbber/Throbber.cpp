@@ -36,11 +36,18 @@ namespace IsoRealms::UI {
   const unsigned int Throbber::DEFAULT_SPOT_SIDES    = 32U;
   const unsigned int Throbber::DEFAULT_SPOTS         = 8U;
 
-  Throbber::Throbber(IProject* project, UI* ui) :
+  Throbber::Throbber(IProject& project, UI& ui, IResourceData& data) :
+            cDefDuration(DEFAULT_DURATION),
+            cDefRepetitions(DEFAULT_REPETITIONS),
+            cDefSpots(DEFAULT_SPOTS),
+            cDefSpotSides(DEFAULT_SPOT_SIDES),
+            cDefSpotRadius(DEFAULT_SPOT_RADIUS),
+            cDefRingRadius(DEFAULT_RING_RADIUS),
+            cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cDefColour(project, 1.0f, 0.0f, 1.0f) {
     cRuntimeAnimation = 0U;
 
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       cRuntimeAnimation += milliseconds;
       while (cRuntimeAnimation >= cDefDuration) {
         cRuntimeAnimation -= cDefDuration;
@@ -48,8 +55,8 @@ namespace IsoRealms::UI {
     });
   }
 
-  Throbber::Throbber(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
-            Throbber(project, ui) {
+  Throbber::Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+            Throbber(project, ui, data) {
     cDefDuration     = object.getInteger(JSON_DURATION,    DEFAULT_DURATION);
     cDefRepetitions  = object.getInteger(JSON_REPETITIONS, DEFAULT_REPETITIONS);
     cDefSpots        = object.getInteger(JSON_SPOTS,       DEFAULT_SPOTS);
@@ -60,15 +67,15 @@ namespace IsoRealms::UI {
     cDefColour.init(object, JSON_COLOUR);
   }
 
-  void Throbber::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Throbbers");
+  void Throbber::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Throbbers");
   }
 
-  void Throbber::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void Throbber::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
-  void Throbber::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Throbber::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addInteger(JSON_DURATION,      cDefDuration,     DEFAULT_DURATION);
     object.addInteger(JSON_REPETITIONS,   cDefRepetitions,  DEFAULT_REPETITIONS);
     object.addInteger(JSON_SPOTS,         cDefSpots,        DEFAULT_SPOTS);
@@ -87,9 +94,17 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<IProperty*> Throbber::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Animation Duration (ms)",    [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spots",                      [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spot Sides",                 [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Spot Size",                  [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Spot Shadow Offset",         [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(        "Spot Colour",                cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Ring Size",                  [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spot Animation Repetitions", [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;}));
+    return mProperties;
   }
 
   void Throbber::renderScreen(float scale, float aspectRatio) const {
@@ -98,7 +113,7 @@ namespace IsoRealms::UI {
       glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
       render(cDefShadowOffset, -cDefShadowOffset);
     }
-    cDefColour.set();
+    cDefColour->set();
     render(0.0f, 0.0f);
   }
 
@@ -108,6 +123,14 @@ namespace IsoRealms::UI {
 
   void Throbber::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Throbber::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Throbber::isDefaultConfiguration() const {
+    return true;
   }
 
   void Throbber::render(float xOffset, float yOffset) const {

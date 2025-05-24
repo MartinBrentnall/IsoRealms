@@ -36,8 +36,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    CameraTransitional(IProject* project, WorldView* view);
-    CameraTransitional(IProject* project, WorldView* view, JSONObject object);
+    CameraTransitional(IProject& project, WorldView& view);
+    CameraTransitional(IProject& project, WorldView& view, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -48,8 +48,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Implements ICamera *
     \**********************/
-    void registerAssets(IAssetRegistry* assets) override; 
-    void unregisterAssets(IAssetRemover* assets) override;
+    void registerAssets(IAssetRegistry& assets) override; 
+    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -66,6 +66,8 @@ namespace IsoRealms::Spindizzy {
     \*********************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /******************************\
      * Implements ICameraListener *
@@ -97,6 +99,8 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
 
       private:
       CameraTransitional& cParent;
@@ -112,13 +116,15 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
 
       private:
       CameraTransitional& cParent;
     } cPitch;
     
     // External interfaces.
-    WorldView* cParent; /// Parent view.
+    WorldView& cParent; /// Parent view.
     
     // Definition data.
     Camera cDefStart;              /// Camera to start transition at.

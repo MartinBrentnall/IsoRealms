@@ -18,6 +18,8 @@
  */
 #include "ThemeSet.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
+
 namespace IsoRealms::Spindizzy {
   const unsigned int ThemeSet::ICON_TRANSITION_TIME = 500;
   const unsigned int ThemeSet::ICON_PAUSE_TIME      = 1000;
@@ -25,15 +27,16 @@ namespace IsoRealms::Spindizzy {
   const std::string ThemeSet::JSON_ID     = "id";
   const std::string ThemeSet::JSON_THEMES = "themes";
 
-  ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy) :
+  ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
+            cDefaultTheme(nullptr),
+            cAnimation(0),
+            cPause(0),
+            cThemeIcon(0),
             cLuaBinding(project, this) {
-    cAnimation = 0;
-    cPause     = 0;
-    cThemeIcon = 0;
-    cDefaultTheme = nullptr;
     
     // TODO: Only for editor!
-    project->updateEditing([this](unsigned int milliseconds) {
+    project.updateEditing([this](unsigned int milliseconds) {
       if (cPause > 0) {
         cPause -= milliseconds;
         if (cPause <= 0) {
@@ -54,27 +57,73 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            ThemeSet(project, spindizzy) {
+  ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            ThemeSet(project, spindizzy, data) {
     for (JSONObject mThemeObject : object.getArray(JSON_THEMES)) {
-      cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(project, spindizzy, this, mThemeObject);
+      cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(project, *this, mThemeObject);
     }
 
-    project->init([this](IAssets* assets) {
+    project.init([this](IAssets& assets) {
       setNextTheme();
     });
   }
 
-  std::vector<IProperty*> ThemeSet::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> ThemeSet::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    
+    // Texture elements of each theme in this set.
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Texture Elements", "Edit...", [this]() {
+      std::vector<std::unique_ptr<IProperty>> mProperties;
+      for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
+        mProperties.emplace_back(createTextureElementProperty(mTexture.second.get()));
+      }
+      
+      mProperties.emplace_back(std::make_unique<PropertyAdd>("Element", "Add...",  [this]() {
+        return createTextureElementProperty(createTexture(Utils::getAvailableKey(cTextures, "New Texture")));
+      }));
+      return mProperties;
+    }));
+    
+    // Colour elements of each theme in this set.
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Colour Elements", "Edit...", [this]() {
+      std::vector<std::unique_ptr<IProperty>> mProperties;
+      for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
+        mProperties.emplace_back(createColourElementProperty(mColour.second.get()));
+      }
+      
+      mProperties.emplace_back(std::make_unique<PropertyAdd>("Element", "Add...",  [this]() {
+        return createColourElementProperty(createColour(cSpindizzy.getProject(), Utils::getAvailableKey(cColours, "New Colour")));
+      }));
+      return mProperties;
+    }));
+    
+    // Actual themes in this set.
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Themes", "Edit...", [this]() {
+      std::vector<std::unique_ptr<IProperty>> mProperties;
+      for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+        Theme* mExistingTheme = mTheme.second.get();
+        mProperties.emplace_back(std::make_unique<PropertyStruct>(mTheme.first, "Edit...", [this, mExistingTheme]() {
+          return mExistingTheme->getProperties();
+        }));
+      }
+
+      mProperties.emplace_back(std::make_unique<PropertyAdd>("Theme", "Add...",  [this]() {
+        std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
+        Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(cSpindizzy.getProject(), *this)).first->second.get();
+        return std::make_unique<PropertyStruct>(mNewThemeName, "Edit...", [this, mNewTheme]() {
+          return mNewTheme->getProperties();
+        });
+      }));
+      return mProperties;
+    }));
+    return mProperties;
   }
 
   bool ThemeSet::renderIcon() {
     return false;
   }
   
-  void ThemeSet::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void ThemeSet::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mThemesArray = object.addArray(JSON_THEMES);
     for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
       JSONObject mThemeObject = mThemesArray.addObject();
@@ -83,8 +132,8 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void ThemeSet::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, "", "Spindizzy Theme Sets");
+  void ThemeSet::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, "", "Spindizzy Theme Sets");
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
       mPair.second->registerAssets(assets, mPair.first);
     }
@@ -93,13 +142,13 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void ThemeSet::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void ThemeSet::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
-      mPair.second->unregisterAssets(assets, releaser);
+      mPair.second->unregisterAssets(assets, releaser, relinquish);
     }
     for (const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mPair : cColours) {
-      mPair.second->unregisterAssets(assets, releaser);
+      mPair.second->unregisterAssets(assets, releaser, relinquish);
     }
     for (const std::pair<const std::string, std::unique_ptr<Theme>>& mPair : cThemes) {
       mPair.second->releaseAssets(releaser);
@@ -109,19 +158,43 @@ namespace IsoRealms::Spindizzy {
   ThemeTexture* ThemeSet::createTexture(const std::string& type) {
     std::map<std::string, std::unique_ptr<ThemeTexture>>::iterator i = cTextures.find(type);
     if (i == cTextures.end()) {
-      return cTextures.emplace(type, std::make_unique<ThemeTexture>(this)).first->second.get();
+      ThemeTexture* mNewTexture = cTextures.emplace(type, std::make_unique<ThemeTexture>(this)).first->second.get();
+      for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+        mTheme.second->themeTextureAdded(mNewTexture);
+      }
+      return mNewTexture;
     }
     return i->second.get();
   }
 
-  ThemeColour* ThemeSet::createColour(IProject* project, const std::string& type) {
+  ThemeColour* ThemeSet::createColour(IProject& project, const std::string& type) {
     std::map<std::string, std::unique_ptr<ThemeColour>>::iterator i = cColours.find(type);
     if (i == cColours.end()) {
-      return cColours.emplace(type, std::make_unique<ThemeColour>(project, this)).first->second.get();
+      ThemeColour* mNewColour = cColours.emplace(type, std::make_unique<ThemeColour>(project, this)).first->second.get();
+      for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+        mTheme.second->themeColourAdded(mNewColour);
+      }
+      return mNewColour;
     }
     return i->second.get();
   }
 
+  std::vector<ThemeTexture*> ThemeSet::getThemeTextures() const {
+    std::vector<ThemeTexture*> mTextures;
+    for (const std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
+      mTextures.emplace_back(mTexture.second.get());
+    }
+    return mTextures;
+  }
+  
+  std::vector<ThemeColour*> ThemeSet::getThemeColours() const {
+    std::vector<ThemeColour*> mColours;
+    for (const std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
+      mColours.emplace_back(mColour.second.get());
+    }
+    return mColours;
+  }
+  
   std::string ThemeSet::getElement(ThemeTexture* themeTexture) {
     for (std::map<std::string, std::unique_ptr<ThemeTexture>>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
       if (i->second.get() == themeTexture) {
@@ -147,7 +220,19 @@ namespace IsoRealms::Spindizzy {
       }
     }
     return "";
-  }  
+  }
+
+  bool ThemeSet::setName(Theme& theme, const std::string& name) {
+    std::map<std::string, std::unique_ptr<Theme>>::iterator i = cThemes.find(name);
+    if (i != cThemes.end()) {
+      return i->second.get() == &theme;
+    }
+
+    std::string mOldName = getName(&theme);
+    cThemes.emplace(name, std::move(cThemes[mOldName]));
+    cThemes.erase(mOldName);
+    return true;
+  }
   
   ThemeTexture* ThemeSet::getTexture(const std::string& type) {
     return cTextures[type].get();
@@ -254,6 +339,10 @@ namespace IsoRealms::Spindizzy {
   Theme* ThemeSet::getDefaultTheme() {
     return cDefaultTheme;
   }
+  
+  Spindizzy& ThemeSet::getSpindizzy() {
+    return cSpindizzy;
+  }
 
   void ThemeSet::setNextTheme() {
     std::vector<Theme*> mThemes = getThemes();
@@ -277,5 +366,49 @@ namespace IsoRealms::Spindizzy {
         return;
       }
     }
+  }
+  
+  std::unique_ptr<IProperty> ThemeSet::createTextureElementProperty(ThemeTexture* element) {
+    return std::make_unique<PropertyNativeString>("Element", [this, element]() {
+      return getElement(element);
+    }, [this, element](const std::string& value) {
+      
+      // Check the element name is not already in use.
+      for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
+        if (mTexture.first == value) {
+          return mTexture.second.get() == element;
+        }
+      }          
+      
+      // Find existing element and move it.
+      std::string mOldName = getElement(element);
+      cTextures.emplace(value, std::move(cTextures[mOldName]));
+      cTextures.erase(mOldName);
+      return true;
+    }, [this, element](){
+      cTextures.erase(getElement(element));
+    });
+  }
+  
+  std::unique_ptr<IProperty> ThemeSet::createColourElementProperty(ThemeColour* element) {
+    return std::make_unique<PropertyNativeString>("Element", [this, element]() {
+      return getElement(element);
+    }, [this, element](const std::string& value) {
+      
+      // Check the element name is not already in use.
+      for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
+        if (mColour.first == value) {
+          return mColour.second.get() == element;
+        }
+      }          
+      
+      // Find existing element and move it.
+      std::string mOldName = getElement(element);
+      cColours.emplace(value, std::move(cColours[mOldName]));
+      cColours.erase(mOldName);
+      return true;
+    }, [this, element](){
+      cColours.erase(getElement(element));
+    });
   }
 }

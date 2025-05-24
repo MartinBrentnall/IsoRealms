@@ -32,7 +32,8 @@ namespace IsoRealms::Basics {
   const std::string SimpleColour::PROPERTY_SATURATION = "Saturation";
   const std::string SimpleColour::PROPERTY_LIGHTNESS  = "Lightness";
   
-  SimpleColour::SimpleColour(IProject* project, Basics* basics) :
+  SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data) :
+            cDebug(false),
             cDefRed(0.0f),
             cDefGreen(0.0f),
             cDefBlue(0.0f),
@@ -46,16 +47,13 @@ namespace IsoRealms::Basics {
             cEditingLastKnownLightness(Utils::getLightness(cDefRed, cDefGreen, cDefBlue)),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    project->reset([this]() {
-      cRuntimeRed   = cDefRed;
-      cRuntimeGreen = cDefGreen;
-      cRuntimeBlue  = cDefBlue;
-      cRuntimeAlpha = cDefAlpha;
+    project.reset([this]() {
+      reset();
     });
   }
   
-  SimpleColour::SimpleColour(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            SimpleColour(project, basics) {
+  SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            SimpleColour(project, basics, data) {
     cRuntimeRed   = cDefRed   = object.getFloat(JSON_RED);
     cRuntimeGreen = cDefGreen = object.getFloat(JSON_GREEN);
     cRuntimeBlue  = cDefBlue  = object.getFloat(JSON_BLUE);
@@ -65,23 +63,23 @@ namespace IsoRealms::Basics {
     cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
     cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
 
-    project->init([this](IAssets* resources) {
+    project.init([this](IAssets& resources) {
       cStateNotifier->stateChanged(this);
     });
   }
 
-  void SimpleColour::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(this, "", "Simple Colours");
-    assets->add(&cLuaBinding,  "", "Simple Colours");
+  void SimpleColour::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, "", "Simple Colours");
+    assets.add(&cLuaBinding,  "", "Simple Colours");
   }
 
-  void SimpleColour::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void SimpleColour::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     cStateNotifier = nullptr;
   }
 
-  void SimpleColour::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void SimpleColour::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_RED,   cDefRed);
     object.addFloat(JSON_GREEN, cDefGreen);
     object.addFloat(JSON_BLUE,  cDefBlue);
@@ -96,42 +94,50 @@ namespace IsoRealms::Basics {
     return renderAssetIcon();
   }
 
-  std::vector<IProperty*> SimpleColour::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    std::vector<std::unique_ptr<IProperty>> cProperties;
-//     cProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_RED, [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
-//       cDefRed = value;
-//       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
-//       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
-//       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
-//     }));
-//     cProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_GREEN, [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
-//       cDefGreen = value;
-//       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
-//       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
-//       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
-//     }));
-//     cProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_BLUE, [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
-//       cDefBlue = value;
-//       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
-//       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
-//       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
-//     }));
-//     cProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_ALPHA, [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
-//       cDefAlpha = value;
-//     }));
-//     cProperties.emplace_back(std::make_unique<PropertyColourHue>(PROPERTY_HUE, [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
-//       cEditingLastKnownHue = value;
-//       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
-//     }));
-//     cProperties.emplace_back(std::make_unique<PropertyColourSaturation>(PROPERTY_SATURATION, [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
-//       cEditingLastKnownSaturation = value;
-//       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
-//     }));
-//     cProperties.emplace_back(std::make_unique<PropertyColourLightness>(PROPERTY_LIGHTNESS, [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cDefAlpha, [this](const float value) {
-//       cEditingLastKnownLightness = value;
-//       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
-//     }));
-    return std::vector<IProperty*>();
+  std::vector<std::unique_ptr<IProperty>> SimpleColour::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    cDebug = true;
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_RED, [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
+      cDefRed = value;
+      cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
+      cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
+      cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
+      reset();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_GREEN, [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
+      cDefGreen = value;
+      cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
+      cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
+      cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
+      reset();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_BLUE, [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
+      cDefBlue = value;
+      cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
+      cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
+      cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
+      reset();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PROPERTY_ALPHA, [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
+      cDefAlpha = value;
+      reset();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyColourHue>(PROPERTY_HUE, [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
+      cEditingLastKnownHue = value;
+      Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
+      reset();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyColourSaturation>(PROPERTY_SATURATION, [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
+      cEditingLastKnownSaturation = value;
+      Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
+      reset();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyColourLightness>(PROPERTY_LIGHTNESS, [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cDefAlpha, [this](const float value) {
+      cEditingLastKnownLightness = value;
+      Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
+      reset();
+    }));
+    return mProperties;
   }
 
   void SimpleColour::set() const {
@@ -158,6 +164,14 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> SimpleColour::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool SimpleColour::isDefaultConfiguration() const {
+    return true;
+  }
+
   void SimpleColour::setRed(float value) {
     cRuntimeRed = value;
     cStateNotifier->stateChanged(this);
@@ -175,6 +189,14 @@ namespace IsoRealms::Basics {
 
   void SimpleColour::setAlpha(float value) {
     cRuntimeAlpha = value;
+    cStateNotifier->stateChanged(this);
+  }
+
+  void SimpleColour::reset() {
+    cRuntimeRed   = cDefRed;
+    cRuntimeGreen = cDefGreen;
+    cRuntimeBlue  = cDefBlue;
+    cRuntimeAlpha = cDefAlpha;
     cStateNotifier->stateChanged(this);
   }
 }

@@ -18,13 +18,16 @@
  */
 #pragma once
 
+#include <memory>
 #include <string>
+#include <vector>
 
 #include <SFML/Window/Event.hpp>
 
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
+  class IProperty;
   
   /**
    * Interface to a digital input mapping on which input events can be tested
@@ -61,6 +64,8 @@ namespace IsoRealms {
      * @param node The node to save this digital input mapping to.
      */
     virtual void save(JSONObject object) const = 0;
+
+    virtual std::vector<std::unique_ptr<IProperty>> getProperties() = 0;
 
     /**
      * Return a short name of this digital input mapping.  The short name is

@@ -20,6 +20,7 @@
 
 #include <GL/glew.h>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Types.h"
 
@@ -32,7 +33,8 @@ namespace IsoRealms::Spindizzy {
 
   class SurfacePatternTile : public ISurfacePattern {
     public:
-    SurfacePatternTile(IProject* project, Spindizzy* spindizzy, JSONObject object);
+    SurfacePatternTile(IProject& project, Spindizzy& spindizzy);
+    SurfacePatternTile(IProject& project, Spindizzy& spindizzy, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *
@@ -43,12 +45,14 @@ namespace IsoRealms::Spindizzy {
     void render(float startX, float endX, float startY, float endY, float z, float xSlope, float ySlope, ISurface::Direction facing) const override;
     void render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heighNE, bool alternativeSplit) const override;
     void hintInUse(bool inUse) override;
-    
+
     /*****************************************\
      * Implements IAsset via ISurfacePattern *
     \*****************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 

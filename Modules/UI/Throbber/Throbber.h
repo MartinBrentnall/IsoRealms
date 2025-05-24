@@ -24,6 +24,7 @@
 #include <sstream>
 #include <vector>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IApplication.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
@@ -43,14 +44,14 @@ namespace IsoRealms::UI {
     /**********************\
      * Resource Interface *
     \**********************/
-    Throbber(IProject* project, UI* ui);
-    Throbber(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Throbber(IProject& project, UI& ui, IResourceData& data);
+    Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**********************\
      * Implements IScreen *
@@ -58,6 +59,8 @@ namespace IsoRealms::UI {
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 

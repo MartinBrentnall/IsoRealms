@@ -35,6 +35,7 @@
 
 #include <stdexcept>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
@@ -52,14 +53,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    FileFont(IProject* project, Basics* basics);
-    FileFont(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    FileFont(IProject& project, Basics& basics, IResourceData& data);
+    FileFont(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     ~FileFont();
 
@@ -72,6 +73,8 @@ namespace IsoRealms::Basics {
     unsigned int getChar(float, float, const std::string& text) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     
@@ -88,7 +91,7 @@ namespace IsoRealms::Basics {
     static const float DEFAULT_SCALE;
 
     // Definition data.
-    std::string cDefFilename; /// Filename of the font to use.
+    File cDefFilename;        /// Filename of the font to use.
     int cDefDetail;           /// Determines resolution of the font.
     float cDefLineSpacing;    /// Spacing between lines.
     float cDefScale;          /// Scaling of this font.

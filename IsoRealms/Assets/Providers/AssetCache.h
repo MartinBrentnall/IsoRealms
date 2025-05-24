@@ -23,65 +23,34 @@
 #include "IsoRealms/Assets/Registry/IAssetProvider.h"
 
 namespace IsoRealms {
-  template<class TYPE> class AssetCache {
+  
+  // TODO: This used to cache literals of the same value, but since literals
+  // became editable/mutable, it can no longer serve this purpose.  Thus for
+  // now it just cache multiple instances of literals with the same value.
+  // Maybe I can find a way to improve this later.
+  template<class OWNER, class TYPE> class AssetCache {
     public:
-    TYPE* getCachedAsset(const std::string& value) const {
-      std::string mExpression = normalize(value);
-      typename std::map<std::string, std::pair<std::unique_ptr<TYPE>, unsigned int>>::iterator mIterator = cCache.find(mExpression);
-      if (mIterator != cCache.end()) {
-        mIterator->second.second++;
-        return mIterator->second.first.get();
-      }
-      std::unique_ptr<TYPE> mAsset = this->getUncachedAsset(value);
-      return cCache.emplace(mExpression, std::make_pair(std::move(mAsset), 1)).first->second.first.get();
+    TYPE* getCachedAsset(OWNER& owner, const std::string& value) const {
+      return cCache.emplace_back(this->getUncachedAsset(owner, value)).get();
     }
 
-    TYPE* getCachedAsset(JSONObject object) const {
-//       typename std::map<const JSONObject, std::pair<std::unique_ptr<TYPE>, unsigned int>>::iterator mIterator = cJSONCache.find(object);
-//       if (mIterator != cJSONCache.end()) {
-//         mIterator->second.second++;
-//         return mIterator->second.first.get();
-//       }
-      std::unique_ptr<TYPE> mAsset = this->getUncachedAsset(object);
-      return cJSONCache.emplace(object, std::make_pair(std::move(mAsset), 1)).first->second.first.get();
+    TYPE* getCachedAsset(OWNER& owner, JSONObject object) const {
+      return cCache.emplace_back(this->getUncachedAsset(owner, object)).get();
     }
     
-    void releaseCachedAsset(const TYPE* asset) {
-      for (std::pair<const std::string, std::pair<std::unique_ptr<TYPE>, unsigned int>>& mPair : cCache) {
-        if (mPair.second.first.get() == asset) {
-          mPair.second.second--;
-          if (mPair.second.second == 0) {
-            cCache.erase(mPair.first);
-          }
-          break;
-        }
-      }
-
-      for (std::pair<const JSONObject, std::pair<std::unique_ptr<TYPE>, unsigned int>>& mPair : cJSONCache) {
-        if (mPair.second.first.get() == asset) {
-          mPair.second.second--;
-          if (mPair.second.second == 0) {
-            cJSONCache.erase(mPair.first);
-          }
-          break;
-        }
-      }
+    TYPE* getCachedAsset(OWNER& owner) const {
+      return cCache.emplace_back(this->getUncachedAsset(owner)).get();
     }
 
-    void cacheInfo() const {
-      std::cout << "Asset cache with " << cCache.size() << " cached assets:" << std::endl;
-      for (std::pair<const std::string, std::pair<std::unique_ptr<TYPE>, unsigned int>>& mPair : cCache) {
-        std::cout << "    - Cached asset: \"" << mPair.first << "\" (clients: " << mPair.second.second << ")" << std::endl;
-      }
+    void releaseCachedAsset(const TYPE* asset) {
+      Utils::removeElementUnique(cCache, asset);
     }
 
     private:
-    mutable std::map<std::string, std::pair<std::unique_ptr<TYPE>, unsigned int>> cCache;
-    mutable std::map<JSONObject, std::pair<std::unique_ptr<TYPE>, unsigned int>> cJSONCache;
+    mutable std::vector<std::unique_ptr<TYPE>> cCache;
 
-    virtual std::unique_ptr<TYPE> getUncachedAsset(const std::string& value) const = 0;
-    virtual std::unique_ptr<TYPE> getUncachedAsset(JSONObject object) const = 0;
-
-    virtual std::string normalize(const std::string& expression) const = 0;
+    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, const std::string& value) const = 0;
+    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, JSONObject object) const = 0;
+    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner) const = 0;
   };
 }

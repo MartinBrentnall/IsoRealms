@@ -20,16 +20,39 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Type/I3DModelType.h"
+#include "IsoRealms/Assets/Type/IModel.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
-#include "IsoRealms/Utils.h"
 
+#include "Asset.h"
 #include "ModelInstance.h"
 
 namespace IsoRealms {
-  class Model : public IAssetUser<I3DModelType> {
+  class Model : public Asset<IModel, IProject> {
+    public:
+    Model(IProject& project);
+
+    std::unique_ptr<ModelInstance> createInstance();
+    bool renderIcon() const;
+    bool renderPreview() const;
+    void notifyDestruction(ModelInstance* instance);
+    void applyTransformation() const;
+
+    /****************************************\
+     * Implements Asset<IInteger, IProject> *
+    \****************************************/
+    IModel* createLiteralAsset(IProject& project) override;
+    IModel* getAsset(IProject& project, JSONObject object) override;
+    IModel* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
+    void loadClientConfiguration(JSONObject object) override;
+    void saveClientConfiguration(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getClientProperties() override;
+
     private:
     static const std::string JSON_OFFSET_X;
     static const std::string JSON_OFFSET_Y;
@@ -40,8 +63,6 @@ namespace IsoRealms {
     static const std::string JSON_SCALE_Z;
     static const std::string JSON_YAW;
 
-    IProject* cProject;
-    I3DModelType* cModel;
     float cDefOffsetX;
     float cDefOffsetY;
     float cDefOffsetZ;
@@ -51,29 +72,5 @@ namespace IsoRealms {
     float cDefScaleY;
     float cDefScaleZ;
     std::vector<ModelInstance*> cInstances;
-
-    Model(Model const& model) = delete;
-    Model& operator=(Model const& model) = delete;
-    
-    public:
-    Model(IProject* project);
-
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    std::unique_ptr<ModelInstance> createInstance();
-    bool renderIcon() const;
-    bool renderPreview() const;
-    void applyTransformation() const;
-
-    /***************************************\
-     * Implements IAssetUser<I3DModelType> *
-    \***************************************/
-    void relinquish(I3DModelType* asset) override;
-
-    void notifyDestruction(ModelInstance* instance);
-
-    virtual ~Model();
   };
 }

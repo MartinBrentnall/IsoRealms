@@ -24,15 +24,15 @@ namespace IsoRealms::Basics {
   const std::string Timer::JSON_ON_EXPIRATION = "onExpiration";
   const std::string Timer::JSON_VALUE         = "value";
 
-  Timer::Timer(IProject* project, Basics* basics) :
+  Timer::Timer(IProject& project, Basics& basics, IResourceData& data) :
             cDefMilliseconds(0),
             cDefExpirationAction(project),
             cRuntimeMilliseconds(0),
             cRuntimePaused(false),
             cRuntimeSpeed(1.0f),
             cLuaBinding(project, this),
-            cStringInterface(this) {
-    project->updateRuntime([this](unsigned int milliseconds) {
+            cStringInterface(*this) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       if (!cRuntimePaused) {
         if (cRuntimeMilliseconds > 0) {
           cRuntimeMilliseconds -= static_cast<int>(milliseconds * cRuntimeSpeed);
@@ -46,32 +46,32 @@ namespace IsoRealms::Basics {
       }
     });
 
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeMilliseconds = cDefMilliseconds;
       cRuntimePaused = false;
       cRuntimeSpeed = 1.0f;
     });
   }
   
-  Timer::Timer(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            Timer(project, basics) {
+  Timer::Timer(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            Timer(project, basics, data) {
     cRuntimeMilliseconds = cDefMilliseconds = object.getInteger(JSON_VALUE);
     cDefExpirationAction.init(object, JSON_ON_EXPIRATION);
   }
 
-  void Timer::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cStringInterface, "", "Timers");
-    assets->add(&cLuaBinding, "", "Timers");
-    assets->add(this, "", "Timers");
+  void Timer::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cStringInterface, "", "Timers");
+    assets.add(&cLuaBinding, "", "Timers");
+    assets.add(this, "", "Timers");
   }
 
-  void Timer::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cStringInterface);
-    assets->remove(&cLuaBinding);
-    assets->remove(this);
+  void Timer::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cStringInterface, relinquish);
+    assets.remove(&cLuaBinding,      relinquish);
+    assets.remove(this,              relinquish);
   }
 
-  void Timer::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Timer::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addInteger(JSON_VALUE, cDefMilliseconds);
     cDefExpirationAction.save(object, JSON_ON_EXPIRATION);
   }
@@ -84,9 +84,11 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> Timer::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Timer::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Initial Value (MS)", [this]() {return cDefMilliseconds;}, [this](int value) {cDefMilliseconds = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Expiration Action",  cDefExpirationAction));
+    return mProperties;
   }
 
   int Timer::getValue() const {
@@ -99,6 +101,14 @@ namespace IsoRealms::Basics {
 
   void Timer::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Timer::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Timer::isDefaultConfiguration() const {
+    return true;
   }
 
   void Timer::start(unsigned int milliseconds) {
@@ -125,13 +135,13 @@ namespace IsoRealms::Basics {
     cRuntimeSpeed = speed;
   }
 
-  Timer::StringTimer::StringTimer(Timer* parent) {
-    cParent = parent;
+  Timer::StringTimer::StringTimer(Timer& parent) :
+            cParent(parent) {
   }
 
   std::string Timer::StringTimer::getValue() const {
-    int mMilliseconds = cParent->cRuntimeMilliseconds % 1000;
-    int mSeconds = cParent->cRuntimeMilliseconds / 1000;
+    int mMilliseconds = cParent.cRuntimeMilliseconds % 1000;
+    int mSeconds = cParent.cRuntimeMilliseconds / 1000;
     int mMinutes = mSeconds / 60;
     mSeconds = mSeconds % 60;
     std::stringstream mStringStream;
@@ -140,10 +150,18 @@ namespace IsoRealms::Basics {
   }
 
   bool Timer::StringTimer::renderAssetIcon() const {
-    return cParent->renderIcon();
+    return cParent.renderIcon();
   }
 
   void Timer::StringTimer::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Timer::StringTimer::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Timer::StringTimer::isDefaultConfiguration() const {
+    return true;
   }
 }

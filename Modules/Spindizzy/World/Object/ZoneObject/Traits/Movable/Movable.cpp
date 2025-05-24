@@ -27,7 +27,7 @@
 namespace IsoRealms::Spindizzy {
   Movable::Movable(ZoneObject& object, ZoneObjectTypeTraitMovable& type) :
             cDefType(type) {
-    object.getZone()->getWorld()->getSpindizzy()->getProject()->init([this, &object](IAssets* assets) {
+    object.getZone().getWorld().getSpindizzy().getProject().init([this, &object](IAssets& assets) {
       std::string mLocationID = cDefType.getInitialLocationID();
       cDefStartLocation = object.getLocation(mLocationID);
     });

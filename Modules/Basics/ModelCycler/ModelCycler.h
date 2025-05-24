@@ -36,14 +36,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    ModelCycler(IProject* project, Basics* basics);
-    ModelCycler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    ModelCycler(IProject& project, Basics& basics, IResourceData& data);
+    ModelCycler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /***********************\
      * Scripting Interface *
@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
      * An output "Offset" model is created for each input model configured
      * within this model cycler.
      */
-    class Offset : public I3DModelType {
+    class Offset : public IModel {
       public:
 
       /**
@@ -69,7 +69,7 @@ namespace IsoRealms::Basics {
        * @param parent Parent model cycler containing the actual models of the cycle.
        * @param offset Index value of this offset.
        */
-      Offset(ModelCycler* parent, unsigned int offset);
+      Offset(ModelCycler& parent, unsigned int offset);
 
       /**
        * Get the current cycle index of this offset, accounting for both the
@@ -77,22 +77,24 @@ namespace IsoRealms::Basics {
        */
       unsigned int getCycleIndex() const;
 
-      /***************************\
-       * Implements I3DModelType *
-      \***************************/
-      I3DModel* createModel() override;
+      /*********************\
+       * Implements IModel *
+      \*********************/
+      IModelInstance* createModel() override;
       bool renderPreview() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
 
       private:
-      ModelCycler* cParent; /// Parent model cycler.
+      ModelCycler& cParent; /// Parent model cycler.
 
       /**
        * Each instance from this offset keeps an instance of each model
        * through which it may cycle.
        */
-      class Instance : public I3DModel {
+      class Instance : public IModelInstance {
         public:
 
         /**
@@ -102,16 +104,16 @@ namespace IsoRealms::Basics {
          *
          * @param parent Parent model offset.
          */
-        Instance(Offset* parent);
+        Instance(Offset& parent);
 
         /***********************\
-        * Implements I3DModel *
+        * Implements IModelInstance *
         \***********************/
         void update(unsigned int milliseconds) override;
         void render() const override;
 
         private:
-        Offset* cParent;                                     /// Parent model offest.
+        Offset& cParent;                                     /// Parent model offest.
         std::vector<std::unique_ptr<ModelInstance>> cModels; /// Model instances through which this instance may cycle.
       };
 
@@ -123,7 +125,7 @@ namespace IsoRealms::Basics {
     };
 
     // Definition data.
-    std::vector<std::unique_ptr<Model>> cDefModelTypes;
+    std::vector<std::unique_ptr<Model>> cDefModels;
     std::vector<std::unique_ptr<Offset>> cOffsetModels;
 
     // Runtime data.

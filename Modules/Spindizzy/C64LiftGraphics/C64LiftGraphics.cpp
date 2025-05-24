@@ -55,72 +55,77 @@ namespace IsoRealms::Spindizzy {
   const std::string C64LiftGraphics::JSON_PRIMARY   = "primary";
   const std::string C64LiftGraphics::JSON_SECONDARY = "secondary";
 
-  C64LiftGraphics::C64LiftGraphics(IProject* project, Spindizzy* spindizzy) :
+  C64LiftGraphics::C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
             cDefPrimary(project, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefSecondary(project, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cNeedsRedrawing(false) {
-    cDefTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(project);
-    cDefTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(project);
-    cDefTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(project);
-    cDefTextures[SQUARE_NONE]  = std::make_unique<LiteralTexture>(project);
-    cDefTextures[SQUARE_HALF]  = std::make_unique<LiteralTexture>(project);
-    cDefTextures[SQUARE_BOTH]  = std::make_unique<LiteralTexture>(project);
-    cDefTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(project);
-    cDefTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(project);
-    cDefTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(project);
+    cTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(project);
+    cTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(project);
+    cTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(project);
+    cTextures[SQUARE_NONE]  = std::make_unique<LiteralTexture>(project);
+    cTextures[SQUARE_HALF]  = std::make_unique<LiteralTexture>(project);
+    cTextures[SQUARE_BOTH]  = std::make_unique<LiteralTexture>(project);
+    cTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(project);
+    cTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(project);
+    cTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(project);
     setNeedsRedrawing();
   }
   
-  C64LiftGraphics::C64LiftGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            C64LiftGraphics(project, spindizzy) {
+  C64LiftGraphics::C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            C64LiftGraphics(project, spindizzy, data) {
     cDefOutline.init(object, JSON_OUTLINE);
     cDefPrimary.init(object, JSON_PRIMARY);
     cDefSecondary.init(object, JSON_SECONDARY);
   }
 
-  void C64LiftGraphics::registerAssets(IAssetRegistry* assets) {
-    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mPair : cDefTextures) {
-      assets->add(mPair.second.get(), mPair.first, "Spindizzy Lift Textures");
+  void C64LiftGraphics::registerAssets(IAssetRegistry& assets) {
+    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mPair : cTextures) {
+      assets.add(mPair.second.get(), mPair.first, "Spindizzy Lift Textures");
     }
   }
   
-  void C64LiftGraphics::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mPair : cDefTextures) {
-      assets->remove(mPair.second.get());
+  void C64LiftGraphics::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mPair : cTextures) {
+      assets.remove(mPair.second.get(), relinquish);
     }
   }
   
-  void C64LiftGraphics::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void C64LiftGraphics::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefOutline.save(object, JSON_OUTLINE);
     cDefPrimary.save(object, JSON_PRIMARY);
     cDefSecondary.save(object, JSON_SECONDARY);
   }
 
   void C64LiftGraphics::hintInUse(bool inUse) {
-    for (const std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cDefTextures) {
+    for (const std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
       mTexture.second->hintTextureInUse(inUse);
     }
   }
   
   bool C64LiftGraphics::renderIcon() {
-    glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
-    glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW,   0.0f, 0.0f, 1.0f);
-    glScalef(1.4f, 1.4f, 1.4f);
-    cDefTextures[DIAMOND_HALF]->set();
+    glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH,       1.0f, 0.0f, 0.0f);
+    glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW - 90.0f, 0.0f, 0.0f, 1.0f);
+    glScalef(1.3f, 1.3f, 1.3f);
+    cTextures[DIAMOND_HALF]->set();
+    glEnable(GL_ALPHA_TEST);
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex2f(-1.0f,  1.0f);
     glTexCoord2f(1.0f, 1.0f); glVertex2f(-1.0f, -1.0f);
     glTexCoord2f(0.0f, 1.0f); glVertex2f( 1.0f, -1.0f);
     glTexCoord2f(0.0f, 0.0f); glVertex2f( 1.0f,  1.0f);
     glEnd();
+    glDisable(GL_ALPHA_TEST);
     return true;
   }
 
-  std::vector<IProperty*> C64LiftGraphics::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> C64LiftGraphics::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Primary Colour", cDefPrimary));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Secondary Colour", cDefSecondary));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefOutline));
+    return mProperties;
   }
   
   void C64LiftGraphics::generateTextures() {
@@ -130,23 +135,23 @@ namespace IsoRealms::Spindizzy {
     glLoadIdentity();
     glPopAttrib();
 
-    cDefTextures[CIRCLE_HALF]->setRenderTarget();  renderLiftCircleHalf();
-    cDefTextures[CIRCLE_NONE]->setRenderTarget();  renderLiftCircle();
-    cDefTextures[CIRCLE_BOTH]->setRenderTarget();  renderLiftCircleBoth();
-    cDefTextures[SQUARE_HALF]->setRenderTarget();  renderLiftSquareHalf();
-    cDefTextures[SQUARE_NONE]->setRenderTarget();  renderLiftSquare();
-    cDefTextures[SQUARE_BOTH]->setRenderTarget();  renderLiftSquareBoth();
-    cDefTextures[DIAMOND_HALF]->setRenderTarget(); renderLiftDiamondHalf();
-    cDefTextures[DIAMOND_NONE]->setRenderTarget(); renderLiftDiamond();
-    cDefTextures[DIAMOND_BOTH]->setRenderTarget(); renderLiftDiamondBoth();
+    cTextures[CIRCLE_HALF]->setRenderTarget();  renderLiftCircleHalf();
+    cTextures[CIRCLE_NONE]->setRenderTarget();  renderLiftCircle();
+    cTextures[CIRCLE_BOTH]->setRenderTarget();  renderLiftCircleBoth();
+    cTextures[SQUARE_HALF]->setRenderTarget();  renderLiftSquareHalf();
+    cTextures[SQUARE_NONE]->setRenderTarget();  renderLiftSquare();
+    cTextures[SQUARE_BOTH]->setRenderTarget();  renderLiftSquareBoth();
+    cTextures[DIAMOND_HALF]->setRenderTarget(); renderLiftDiamondHalf();
+    cTextures[DIAMOND_NONE]->setRenderTarget(); renderLiftDiamond();
+    cTextures[DIAMOND_BOTH]->setRenderTarget(); renderLiftDiamondBoth();
 
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glPopAttrib();
 
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->setViewPort();
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.setViewPort();
   }
 
   void C64LiftGraphics::clear() {
@@ -156,7 +161,7 @@ namespace IsoRealms::Spindizzy {
 
   void C64LiftGraphics::renderCircle(float radius, Colour& colour) {
     glBegin(GL_TRIANGLE_FAN);
-    colour.set();
+    colour->set();
     glVertex2f(0.0f, 0.0f);
     float mStartAngle = 0.0f * (M_PI / 180.0f);
     float mEndAngle = 360.0f * (M_PI / 180.0f);
@@ -168,7 +173,7 @@ namespace IsoRealms::Spindizzy {
 
   void C64LiftGraphics::renderCircularRing(float outer, float inner, Colour& colour) {
     glBegin(GL_TRIANGLE_STRIP);
-    colour.set();
+    colour->set();
     float mStartAngle = 0.0f * (M_PI / 180.0f);
     float mEndAngle = 360.0f * (M_PI / 180.0f);
     for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
@@ -179,7 +184,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64LiftGraphics::renderSquareRing(float outer, float inner, Colour& colour) {
-    colour.set();
+    colour->set();
     glBegin(GL_TRIANGLE_STRIP);
     glVertex2f(-outer, -outer);
     glVertex2f(-inner, -inner);
@@ -195,7 +200,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64LiftGraphics::renderSquareRingHalf(float outer, float inner, Colour& colour) {
-    colour.set();
+    colour->set();
     glBegin(GL_TRIANGLE_STRIP);
     glVertex2f(-outer, -outer);
     glVertex2f(-inner, -inner);
@@ -207,7 +212,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64LiftGraphics::renderDiamondRing(float outer, float inner, Colour& colour) {
-    colour.set();
+    colour->set();
     glBegin(GL_TRIANGLE_STRIP);
     glVertex2f(-inner,  0.0f);
     glVertex2f(-outer,  0.0f);
@@ -223,7 +228,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64LiftGraphics::renderDiamondRingHalf(float outer, float inner, Colour& colour) {
-    colour.set();
+    colour->set();
     glBegin(GL_TRIANGLE_STRIP);
     glVertex2f(-inner,  0.0f);
     glVertex2f(-outer,  0.0f);
@@ -237,7 +242,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64LiftGraphics::renderDiamondRingEdges(float outer, float edge, Colour& colour) {
-    colour.set();
+    colour->set();
     glBegin(GL_TRIANGLES);
     glVertex2f(-outer,         0.0f);
     glVertex2f(-edge,         -outer + edge);
@@ -263,7 +268,7 @@ namespace IsoRealms::Spindizzy {
   void C64LiftGraphics::renderLiftCircleHalf() {
     renderLiftCircle();
     glBegin(GL_TRIANGLE_FAN);
-    cDefSecondary.set();
+    cDefSecondary->set();
     glVertex2f(0.0f, 0.0f);
     float mStartAngle = 45.0f * (M_PI / 180.0f);
     float mEndAngle = 225.0f * (M_PI / 180.0f);
@@ -289,11 +294,11 @@ namespace IsoRealms::Spindizzy {
   void C64LiftGraphics::renderLiftSquareHalf() {
     renderLiftSquare();
     glBegin(GL_TRIANGLES);
-    cDefOutline.set();
+    cDefOutline->set();
     glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_COLOUR_INNER);
     glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_TRIANGLE_INNER);
     glVertex2f(-SQUARE_TRIANGLE_INNER,  SQUARE_COLOUR_INNER);
-    cDefPrimary.set();
+    cDefPrimary->set();
     glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_COLOUR_INNER);
     glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_TRIANGLE_OUTER);
     glVertex2f(-SQUARE_TRIANGLE_OUTER,  SQUARE_COLOUR_INNER);
@@ -303,11 +308,11 @@ namespace IsoRealms::Spindizzy {
   void C64LiftGraphics::renderLiftSquareBoth() {
     renderLiftSquareHalf();
     glBegin(GL_TRIANGLES);
-    cDefOutline.set();
+    cDefOutline->set();
     glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_COLOUR_INNER);
     glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_TRIANGLE_INNER);
     glVertex2f(SQUARE_TRIANGLE_INNER, -SQUARE_COLOUR_INNER);
-    cDefPrimary.set();
+    cDefPrimary->set();
     glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_COLOUR_INNER);
     glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_TRIANGLE_OUTER);
     glVertex2f(SQUARE_TRIANGLE_OUTER, -SQUARE_COLOUR_INNER);
@@ -340,7 +345,7 @@ namespace IsoRealms::Spindizzy {
 
   void C64LiftGraphics::setNeedsRedrawing() {
     if (!cNeedsRedrawing) {
-      cProject->updateLater([this]() {
+      cProject.updateLater([this]() {
         generateTextures();
         cNeedsRedrawing = false;
       });

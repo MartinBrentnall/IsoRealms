@@ -20,42 +20,38 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Binding : public IAssetUser<IBinding> {
+  class Binding : public Asset<IBinding, IProject> {
     public:
-    Binding(IProject* project, IBindingRegistry* registry);
+    Binding(IProject& project, IBindingRegistry* registry);
+    Binding(IProject& project, IBindingRegistry* registry, const std::string& type);
+    std::string getType() const;
 
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& attribute) const;
+    std::string getID() const override;
+    void setID(const std::string& id) override;
+    bool renderAssetIcon() const override;
 
-    IBinding* operator->() const {
-      return cDefBinding;
-    }
-
-    IBinding* operator*() const {
-      return cDefBinding;
-    }
-
-    /***********************************\
-     * Implements IAssetUser<IBinding> *
-    \***********************************/
-    void relinquish(IBinding* asset) override;
-
-    virtual ~Binding();
+    /****************************************\
+     * Implements Asset<IBinding, IProject> *
+    \****************************************/
+    IBinding* createLiteralAsset(IProject& project) override;
+    IBinding* getAsset(IProject& project, JSONObject object) override;
+    IBinding* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
+    std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(IBinding* asset) override;
 
     private:
-    IProject* cProject;
+    std::string cDefType;
     IBindingRegistry* cDefRegistry;
-    IBinding* cDefBinding;
-
-    Binding(Binding const& asset) = delete;
-    Binding& operator=(Binding const& asset) = delete;
   };
 }

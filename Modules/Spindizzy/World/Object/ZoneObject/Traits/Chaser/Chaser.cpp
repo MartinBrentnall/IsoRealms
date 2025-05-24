@@ -26,7 +26,7 @@
 namespace IsoRealms::Spindizzy {
   Chaser::Chaser(ZoneObject& object, ZoneObjectTypeTraitChaser& type) :
             cDefType(type) {
-    object.getZone()->getWorld()->getSpindizzy()->getProject()->init([this, &object](IAssets* assets) {
+    object.getZone().getWorld().getSpindizzy().getProject().init([this, &object](IAssets& assets) {
       std::string mObjectID = cDefType.getObjectID();
       cDefPhysicalObject = object.getPhysics(mObjectID);
     });

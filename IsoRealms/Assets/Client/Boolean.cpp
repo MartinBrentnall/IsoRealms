@@ -18,47 +18,46 @@
  */
 #include "Boolean.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Boolean::Boolean(IProject* project, bool defaultValue, std::function<void(bool)> listener) :
-            cProject(project),
+  Boolean::Boolean(IProject& project, bool defaultValue, std::function<void(bool)> listener) :
+            Asset<IBoolean, IProject>(project, project.createLiteralBoolean(this, defaultValue)),
             cDefaultValue(defaultValue),
-            cBoolean(cProject->createLiteralBoolean(this, cDefaultValue)),
             cListener(listener) {
   }
 
-  void Boolean::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IBoolean* Boolean::createLiteralAsset(IProject& project) {
+    return project.createLiteralBoolean(this, false);
+  }
+  
+  IBoolean* Boolean::getAsset(IProject& project, JSONObject object) {
+    return project.getBoolean(this, object, cListener != nullptr ? this : nullptr);
+  }
+  
+  IBoolean* Boolean::getAsset(IProject& project, const std::string& id) {
+    return project.getBoolean(this, id, cListener != nullptr ? this : nullptr);
+  }
+  
+  std::vector<std::string> Boolean::getAvailableProviders() const {
+    return cManager.getAllBooleans();
   }
 
-  void Boolean::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cBoolean);
-    cBoolean = cProject->getBoolean(this, mAssetObject, cListener != nullptr ? this : nullptr);
+  bool Boolean::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderBooleanIcon(id);
   }
 
-  void Boolean::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cBoolean);
+  bool Boolean::hasConfiguration() const {
+    return cManager.isBooleanConfigurable(getID());
   }
 
-  void Boolean::relinquish(IBoolean* asset) {
-    if (cBoolean == asset) {
-      cBoolean = cProject->createLiteralBoolean(this, cDefaultValue);
-    }
+  bool Boolean::isDefaultConfiguration() const {
+    return true;
   }
 
-  void Boolean::stateChanged(IBoolean* boolean) {
-    if (boolean == cBoolean) {
-      cListener(cBoolean->getValue());
-    }
-  }
-
-  Boolean::~Boolean() {
-    if (cBoolean != nullptr) {
-      cProject->release(this, cBoolean);
+  void Boolean::stateChanged(IBoolean* value) {
+    if (value == cAsset) {
+      cListener(cAsset->getValue());
     }
   }
 }
-

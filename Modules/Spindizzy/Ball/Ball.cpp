@@ -27,56 +27,60 @@ namespace IsoRealms::Spindizzy {
 
   const float Ball::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
-  Ball::Ball(IProject* project, Spindizzy* spindizzy) :
+  Ball::Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
-            cDefTexture(project),
             cDefFill(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefShine(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cTexture(project),
             cNeedsRedrawing(false) {
     setNeedsRedrawing();
   }
   
-  Ball::Ball(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            Ball(project, spindizzy) {
+  Ball::Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            Ball(project, spindizzy, data) {
     cDefFill.init(object, JSON_FILL);
     cDefOutline.init(object, JSON_OUTLINE);
     cDefShine.init(object, JSON_SHINE);
   }
 
-  void Ball::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Spindizzy Ball Craft Textures");
+  void Ball::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Spindizzy Ball Craft Textures");
   }
   
-  void Ball::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void Ball::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
   
-  void Ball::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Ball::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefFill.save(object, JSON_FILL);
     cDefOutline.save(object, JSON_OUTLINE);
     cDefShine.save(object, JSON_SHINE);
   }
 
   void Ball::hintInUse(bool inUse) {
-    cDefTexture.hintTextureInUse(inUse);
+    cTexture.hintTextureInUse(inUse);
   }
 
   bool Ball::renderIcon() const {
-    return false;
+    glEnable(GL_ALPHA_TEST);
+    return cTexture.renderAssetIcon();
   }
 
-  std::vector<IProperty*> Ball::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Fill Colour", cDefFill));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Shine Colour", cDefShine));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefOutline));
+    return mProperties;
   }
 
   void Ball::set() const {
-    cDefTexture.set();
+    cTexture.set();
   }
 
   void Ball::hintTextureInUse(bool inUse) {
-    cDefTexture.hintTextureInUse(inUse);
+    cTexture.hintTextureInUse(inUse);
   }
 
   ITexture* Ball::getTexture() {
@@ -91,6 +95,14 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Ball::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Ball::isDefaultConfiguration() const {
+    return true;
+  }
+
   void Ball::updateTexture() {
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -98,7 +110,7 @@ namespace IsoRealms::Spindizzy {
     glLoadIdentity();
     glPopAttrib();
 
-    cDefTexture.setRenderTarget();
+    cTexture.setRenderTarget();
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     renderCircle(1.0f,  cDefOutline);
@@ -114,13 +126,13 @@ namespace IsoRealms::Spindizzy {
     glPopMatrix();
     glPopAttrib();
 
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->setViewPort();
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.setViewPort();
   }
 
   void Ball::renderCircle(float radius, Colour& colour) {
     glBegin(GL_TRIANGLE_FAN);
-    colour.set();
+    colour->set();
     glVertex2f(0.0f, 0.0f);
     float mStartAngle = 0.0f * (M_PI / 180.0f);
     float mEndAngle = 360.0f * (M_PI / 180.0f);
@@ -132,7 +144,7 @@ namespace IsoRealms::Spindizzy {
 
   void Ball::setNeedsRedrawing() {
     if (!cNeedsRedrawing) {
-      cProject->updateLater([this]() {
+      cProject.updateLater([this]() {
         updateTexture();
         cNeedsRedrawing = false;
       });

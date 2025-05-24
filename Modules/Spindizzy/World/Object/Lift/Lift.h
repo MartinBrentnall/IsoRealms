@@ -26,7 +26,6 @@
 #include "IsoRealms/Collision/CollisionUtils.h"
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/IAssetBrowser.h"
-#include "IsoRealms/Properties.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/ISurface.h"
@@ -45,7 +44,7 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    Lift(Zone& zone, LiftType* type, int x, int y, int z, int bottom, int top);
+    Lift(Zone& zone, LiftType& type, int x, int y, int z, int bottom, int top);
     Lift(Zone& zone, Lift& lift, int x, int y, int z);
     Lift(Zone& zone, JSONObject object);
 
@@ -65,7 +64,7 @@ namespace IsoRealms::Spindizzy {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyAppearance* appearance) override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 
@@ -94,8 +93,10 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_Y;
     static const std::string JSON_Z;
 
+    // External interfaces.
+    Zone& cZone; /// Zone to which this lift belongs.
+    
     // Definition values
-    Zone& cDefZone;                           /// Zone to which this lift belongs.
     LiftType* cDefType;                       /// Type of this lift.
     std::unique_ptr<ModelInstance> cDefModel; /// Visual representation of this lift.
     int cDefX;                                /// X position of this lift.
@@ -117,12 +118,12 @@ namespace IsoRealms::Spindizzy {
     // TODO: Is this necessary?
     class LiftSurfaceEvent {
       public:
-      Lift* cParent;
+      Lift& cParent;
       LiftValues cState;
       double cTime;
       
       public:
-      LiftSurfaceEvent(Lift* parent, LiftValues state, double time);
+      LiftSurfaceEvent(Lift& parent, LiftValues state, double time);
     };
     
     class Surface : public ISurface {
@@ -147,7 +148,7 @@ namespace IsoRealms::Spindizzy {
       bool isRespawnPossible() override;
       void getRestingLocation(LiteralVertex&) override;
       void saveCache(std::ostream& cache, bool physical) override;
-      Zone* getZone() override;
+      Zone& getZone() override;
       bool isSolid() override;
       void adjustPosition(LiteralVertex& location, double milliseconds) override;
       int getXStart() const override;

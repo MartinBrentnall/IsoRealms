@@ -24,23 +24,23 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  CameraLinked::CameraLinked(IProject* project, WorldView* view) :
+  CameraLinked::CameraLinked(IProject& project, WorldView& view) :
             cParent(view),
             cDefLinkedView(nullptr) {
   }
   
-  CameraLinked::CameraLinked(IProject* project, WorldView* view, JSONObject object) :
+  CameraLinked::CameraLinked(IProject& project, WorldView& view, JSONObject object) :
             CameraLinked(project, view) {
-    project->init([this, object](IAssets* assets) {
-      cDefLinkedView = cParent->getSpindizzy()->getWorldView(object.getString(JSON_VIEW));
+    project.init([this, object](IAssets& assets) {
+      cDefLinkedView = cParent.getSpindizzy().getWorldView(object.getString(JSON_VIEW));
     });
   }
 
-  void CameraLinked::registerAssets(IAssetRegistry* assets) {
+  void CameraLinked::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
     
-  void CameraLinked::unregisterAssets(IAssetRemover* assets) {
+  void CameraLinked::unregisterAssets(IAssetRemover& assets, bool relinquish) {
     // Nothing to do.
   }
   
@@ -89,7 +89,17 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraLinked::saveAsset(JSONObject object) const {
-    object.addString(JSON_VIEW, cParent->getWorld()->getSpindizzy()->getID(cDefLinkedView));
+    object.addString(JSON_VIEW, cParent.getWorld()->getSpindizzy().getID(cDefLinkedView));
+  }
+
+  std::vector<std::unique_ptr<IProperty>> CameraLinked::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+// TODO    mProperties.emplace_back(std::make_unique<PropertyAsset<WorldView>>("Linked View", cDefLinkedView));
+    return mProperties;
+  }
+
+  bool CameraLinked::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 
   const std::string CameraLinked::JSON_VIEW = "view";

@@ -29,7 +29,7 @@ namespace IsoRealms::Replay {
   const std::string Recorder::TYPE_ANALOGUE = "Analogue";
   const std::string Recorder::TYPE_DIGITAL  = "Digital";
 
-  Recorder::Recorder(IProject* project, Replay* replay) :
+  Recorder::Recorder(IProject& project, Replay& replay, IResourceData& data) :
             cParentProject(project),
             cFilenameString(""),
             cQuitAction(project),
@@ -37,22 +37,18 @@ namespace IsoRealms::Replay {
     cElapsedTime = 0;
   }
 
-  Recorder::Recorder(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data) :
-            Recorder(project, replay) {
-    if (options == nullptr) {
-      throw ArgumentException("ERROR: Recorder::Recorder: Options are required for this resource.");
-    }
-
+  Recorder::Recorder(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options) :
+            Recorder(project, replay, data) {
     LocalOptions mLocalOptions("Project", options);
-    cProject = std::make_unique<Project>(cParentProject->getApplication(), &mLocalOptions, [this](bool forceQuit) {
+    cProject = std::make_unique<Project>(cParentProject.getApplication(), mLocalOptions, [this](bool forceQuit) {
       cOutput.close();
       cQuitAction.execute();
       if (forceQuit) {
-        cParentProject->finish(true);
+        cParentProject.finish(true);
       }
     }); // TODO: 'user' flag shouldn't always be false
 
-    cInputConfiguration = options->getOption("InputConfiguration");
+    cInputConfiguration = options.getOption("InputConfiguration");
 
     // Read the inputs to listen to and add digital listeners to those inputs.
     JSONDocument mInputConfigurationDocument(cInputConfiguration, false);
@@ -61,16 +57,16 @@ namespace IsoRealms::Replay {
     for (JSONObject mInputObject : mInputConfigurationObject.getArray(JSON_INPUTS)) {
       std::string mInputType = mInputObject.getString(JSON_TYPE);
       if (mInputType == TYPE_DIGITAL) {
-        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->set(mInputObject, JSON_INPUT);
+        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(*cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->set(mInputObject, JSON_INPUT);
       } else if (mInputType == TYPE_ANALOGUE) {
-        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->set(mInputObject, JSON_INPUT);
+        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(*cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->set(mInputObject, JSON_INPUT);
       } else {
         // TODO: Throw.
       }
       mInputID++;
     }
 
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       if (cElapsedTime == 0) {
 
         // Construct date and time string for filename
@@ -102,7 +98,7 @@ namespace IsoRealms::Replay {
       cProject->updateRuntimeComplete();
     });
 
-    project->reset([this]() {
+    project.reset([this]() {
       cProject->reset();
       cElapsedTime = 0;
 
@@ -112,7 +108,7 @@ namespace IsoRealms::Replay {
     });
 
     // Do main thread init stuff
-    project->mainThreadInit([this]() {
+    project.mainThreadInit([this]() {
       cProject->initMainThread();
     });
     cQuitAction.init(object, JSON_ON_FINISH);
@@ -130,29 +126,36 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Recorder::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Recorder::isDefaultConfiguration() const {
+    return true;
+  }
+
   void Recorder::hintInUse(bool inUse) {
     // Nothing to do.
   }
   
-  void Recorder::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, "", "Gameplay Recorders");
-    assets->add(static_cast<IScreen*>(this), "", "Gameplay Recorders");
-    assets->add(static_cast<IInputHandler*>(this), "", "Gameplay Recorders");
-    assets->add(&cFilenameString, "Filename", "Gameplay Recorders");
-    assets->add(cProject.get(), "Project", "Gameplay Recorders");
+  void Recorder::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, "", "Gameplay Recorders");
+    assets.add(static_cast<IScreen*>(this), "", "Gameplay Recorders");
+    assets.add(static_cast<IInputHandler*>(this), "", "Gameplay Recorders");
+    assets.add(&cFilenameString, "Filename", "Gameplay Recorders");
+    assets.add(cProject.get(), "Project", "Gameplay Recorders");
   }
   
-  void Recorder::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(&cFilenameString);
-    assets->remove(cProject.get());
+  void Recorder::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding,                      relinquish);
+    assets.remove(static_cast<IScreen*>(this),       relinquish);
+    assets.remove(static_cast<IInputHandler*>(this), relinquish);
+    assets.remove(&cFilenameString,                  relinquish);
+    assets.remove(cProject.get(),                    relinquish);
   }
   
-  std::vector<IProperty*> Recorder::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   void Recorder::writeInput(unsigned int id, bool state) {
@@ -181,7 +184,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  void Recorder::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Recorder::save(JSONObject object, IAssetIdentifier& identifier) const {
     cQuitAction.save(object, JSON_ON_FINISH);
   }
 }

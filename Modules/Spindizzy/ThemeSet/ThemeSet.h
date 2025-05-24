@@ -29,20 +29,23 @@ namespace IsoRealms::Spindizzy {
 
   class ThemeSet : public IIconAnimator {
     public:
-    ThemeSet(IProject* project, Spindizzy* spindizzy);
-    ThemeSet(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
     bool renderIcon();
     void hintInUse(bool inUse);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     
     ThemeTexture* createTexture(const std::string& type);
-    ThemeColour* createColour(IProject* project, const std::string& type);
+    ThemeColour* createColour(IProject& project, const std::string& type);
+    std::vector<ThemeTexture*> getThemeTextures() const;
+    std::vector<ThemeColour*> getThemeColours() const;
     std::string getElement(ThemeTexture* themeTexture);
     std::string getElement(ThemeColour* themeColour);
     std::string getName(Theme* theme);
+    bool setName(Theme& theme, const std::string& name);
     ThemeTexture* getTexture(const std::string& type);
     ThemeColour* getColour(const std::string& type);
     Theme* getTheme(const std::string& name);
@@ -50,6 +53,7 @@ namespace IsoRealms::Spindizzy {
     void setDefaultTheme(Theme* theme);
     void applyDefaultTheme();
     Theme* getDefaultTheme();
+    Spindizzy& getSpindizzy();
 
     void setNextTheme();
     void setPreviousTheme();
@@ -71,16 +75,23 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_ID;
     static const std::string JSON_THEMES;
 
+    // External interfaces.
+    Spindizzy& cSpindizzy;
+
+    // Definition data.
     std::map<std::string, std::unique_ptr<Theme>> cThemes;
     std::map<std::string, std::unique_ptr<ThemeTexture>> cTextures;
     std::map<std::string, std::unique_ptr<ThemeColour>> cColours;
     Theme* cDefaultTheme;
 
-    // Icon animation
+    // Editor icon animation
     int cAnimation;
     int cPause;
     unsigned int cThemeIcon;
 
     LuaBinding<ThemeSet> cLuaBinding;
+    
+    std::unique_ptr<IProperty> createTextureElementProperty(ThemeTexture* element);
+    std::unique_ptr<IProperty> createColourElementProperty(ThemeColour* element);
   };
 }

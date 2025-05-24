@@ -23,37 +23,37 @@ namespace IsoRealms::Basics {
 
   const std::string SimpleInteger::PROPERTY_VALUE = "Initial Value";
 
-  SimpleInteger::SimpleInteger(IProject* project, Basics* basics) :
+  SimpleInteger::SimpleInteger(IProject& project, Basics& basics, IResourceData& data) :
             cDefValue(0),
             cRuntimeValue(0),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeValue = cDefValue;
     });
   }
   
-  SimpleInteger::SimpleInteger(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            SimpleInteger(project, basics) {
+  SimpleInteger::SimpleInteger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            SimpleInteger(project, basics, data) {
     cRuntimeValue = cDefValue = object.getInteger(JSON_VALUE);
 
-    project->init([this](IAssets* resources) {
+    project.init([this](IAssets& resources) {
       cStateNotifier->stateChanged(this);
     });
   }
 
-  void SimpleInteger::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(this, "", "Simple Integers");
-    assets->add(&cLuaBinding, "", "Simple Integers");
+  void SimpleInteger::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, "", "Simple Integers");
+    assets.add(&cLuaBinding, "", "Simple Integers");
   }
   
-  void SimpleInteger::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void SimpleInteger::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     cStateNotifier = nullptr;
   }
   
-  void SimpleInteger::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void SimpleInteger::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addInteger(JSON_VALUE, cDefValue);
   }
 
@@ -65,9 +65,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> SimpleInteger::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> SimpleInteger::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;}));
+    return mProperties;
   }
 
   int SimpleInteger::getValue() const {
@@ -80,6 +81,14 @@ namespace IsoRealms::Basics {
 
   void SimpleInteger::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SimpleInteger::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool SimpleInteger::isDefaultConfiguration() const {
+    return true;
   }
 
   void SimpleInteger::setValue(int value) {

@@ -22,6 +22,10 @@
 #include "WallPatternDummy.h"
 
 namespace IsoRealms::Spindizzy {
+  WallPatternDummy::WallPatternDummy(Spindizzy& spindizzy) {
+    // Nothing to do.
+  }
+
   std::vector<std::unique_ptr<IVisualElement>> WallPatternDummy::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     return mVisuals;
@@ -40,10 +44,20 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WallPatternDummy::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
   
   void WallPatternDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> WallPatternDummy::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    return mProperties;
+  }
+
+  bool WallPatternDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

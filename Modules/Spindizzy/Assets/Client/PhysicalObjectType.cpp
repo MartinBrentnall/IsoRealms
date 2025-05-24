@@ -18,48 +18,48 @@
  */
 #include "PhysicalObjectType.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  PhysicalObjectType::PhysicalObjectType(Spindizzy& spindizzy) :
-            cSpindizzy(spindizzy),
-            cPhysicalObjectType(cSpindizzy.createLiteralPhysicalObjectType(this)) {
-  }
-
-  void PhysicalObjectType::init(JSONObject object) {
-    cSpindizzy.getProject()->init([this, object](IAssets* assets) {
-      set(object);
-    });
-  }
-
-  void PhysicalObjectType::set(JSONObject object) {
-    cSpindizzy.release(this, cPhysicalObjectType);
-    cPhysicalObjectType = cSpindizzy.getPhysicalObjectType(this, object);
-  }
-
-  void PhysicalObjectType::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cSpindizzy.save(mAssetObject, cPhysicalObjectType);
+  PhysicalObjectType::PhysicalObjectType(Spindizzy& spindizzy) : 
+            Asset<IPhysicalObjectType, Spindizzy>(spindizzy, spindizzy.createLiteralPhysicalObjectType(this)) {
   }
 
   IBinding* PhysicalObjectType::getBinding(const std::string& id) const {
-    return cPhysicalObjectType->getBinding(id);
+    return cAsset->getBinding(id);
   }
 
   std::string PhysicalObjectType::getBindingID(const IBinding* binding) const {
-    return cPhysicalObjectType->getBindingID(binding);
+    return cAsset->getBindingID(binding);
   }
 
-  void PhysicalObjectType::relinquish(IPhysicalObjectType* asset) {
-    if (cPhysicalObjectType == asset) {
-      cPhysicalObjectType = cSpindizzy.createLiteralPhysicalObjectType(this);
-    }
+  IPhysicalObjectType* PhysicalObjectType::createLiteralAsset(Spindizzy& spindizzy) {
+    return spindizzy.createLiteralPhysicalObjectType(this);
+  }
+  
+  IPhysicalObjectType* PhysicalObjectType::getAsset(Spindizzy& spindizzy, JSONObject object) {
+    return spindizzy.getPhysicalObjectType(this, object);
+  }
+  
+  IPhysicalObjectType* PhysicalObjectType::getAsset(Spindizzy& spindizzy, const std::string& id) {
+    return spindizzy.getPhysicalObjectType(this, id);
+  }
+  
+  std::vector<std::string> PhysicalObjectType::getAvailableProviders() const {
+    return cManager.getAllPhysicalObjectTypes();
   }
 
-  PhysicalObjectType::~PhysicalObjectType() {
-    if (cPhysicalObjectType != nullptr) {
-      cSpindizzy.release(this, cPhysicalObjectType);
-    }
+  bool PhysicalObjectType::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderPhysicalObjectTypeIcon(id);
+  }
+
+  bool PhysicalObjectType::hasConfiguration() const {
+    return cManager.isPhysicalObjectTypeConfigurable(getID());
+  }  
+
+  bool PhysicalObjectType::isDefaultConfiguration() const {
+    return true;
   }
 }
-

@@ -26,13 +26,23 @@ namespace IsoRealms::UI {
   const std::string MenuItemAction::JSON_ON_SELECTION = "onSelection";
   const std::string MenuItemAction::BINDING_TYPE = "Action";
     
-  MenuItemAction::MenuItemAction(IProject* project, Menu* menu, JSONObject object) :
+  MenuItemAction::MenuItemAction(IProject& project, Menu& menu) :
+            cDefID(""),
+            cDefLabel(""),
+            cDefAction(project),
+            cLuaBinding(project, this) {
+    project.reset([this]() {
+// TODO      cRuntimeValue = "";
+    });
+  }
+
+  MenuItemAction::MenuItemAction(IProject& project, Menu& menu, JSONObject object) :
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefAction(project),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
-    project->reset([this]() {
+    project.reset([this]() {
 // TODO      cRuntimeValue = "";
     });
   }
@@ -41,15 +51,15 @@ namespace IsoRealms::UI {
     cRuntimeValue = value;
   }
 
-  void MenuItemAction::registerAssets(IAssetRegistry* assets) {
+  void MenuItemAction::registerAssets(IAssetRegistry& assets) {
     if (!cDefID.empty()) {
-      assets->add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+      assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
     }
   }
   
-  void MenuItemAction::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void MenuItemAction::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     if (!cDefID.empty()) {
-      assets->remove(&cLuaBinding);
+      assets.remove(&cLuaBinding, relinquish);
     }
   }
   
@@ -86,7 +96,9 @@ namespace IsoRealms::UI {
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
-    const IColour& mColour = selected ? static_cast<const IColour&>(menu.getSelectionColour())
+
+
+    const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     if (cRuntimeValue.empty()) {
       Utils::shadowPrint(0.0f, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::CENTER, cDefLabel);
@@ -112,5 +124,17 @@ namespace IsoRealms::UI {
     object.addString(JSON_ID, cDefID);
     object.addString(JSON_LABEL, cDefLabel);
     cDefAction.save(object, JSON_ON_SELECTION);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> MenuItemAction::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "ID",        [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Label",     [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Select", cDefAction));
+    return mProperties;
+  }
+
+  bool MenuItemAction::isDefaultConfiguration() const {
+    return false; // TODO: Implement this.
   }
 }

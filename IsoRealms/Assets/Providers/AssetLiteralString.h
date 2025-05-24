@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Assets/Fixed/LiteralString.h"
+#include "IsoRealms/Assets/Literal/LiteralString.h"
 
 #include "AssetLiteral.h"
 
@@ -31,16 +31,24 @@ namespace IsoRealms {
     /************************************\
      * Implements AssetLiteral<IString> *
     \************************************/
-    std::string normalizeLiteral(const std::string& expression) const override {
-      return expression;
+    bool hasConfiguration() const override {
+      return true;
     }
 
-    std::unique_ptr<IString> createLiteralAsset(const std::string& expression) const override {
+    std::unique_ptr<IString> createLiteralAsset(Project& project) const override {
+      return std::make_unique<LiteralString>("");
+    }
+
+    std::unique_ptr<IString> createLiteralAsset(Project& project, const std::string& expression) const override {
       return std::make_unique<LiteralString>(expression);
     }
 
-    std::unique_ptr<IString> createLiteralAsset(JSONObject object) const override {
+    std::unique_ptr<IString> createLiteralAsset(Project& project, JSONObject object) const override {
       return std::make_unique<LiteralString>(object.getString(JSON_VALUE));
+    }
+
+    bool renderAssetProviderIcon() const override {
+      return false;
     }
 
     private:

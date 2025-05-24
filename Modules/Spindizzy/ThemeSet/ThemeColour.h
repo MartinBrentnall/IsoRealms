@@ -31,9 +31,9 @@
 namespace IsoRealms::Spindizzy {
   class ThemeColour : public IColour {
     public:
-    ThemeColour(IProject* project, IIconAnimator* animator);
-    void registerAssets(IAssetRegistry* assets, const std::string& idd);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+    ThemeColour(IProject& project, IIconAnimator* animator);
+    void registerAssets(IAssetRegistry& assets, const std::string& idd);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
       
     void set(IColour* colour);
 
@@ -46,6 +46,8 @@ namespace IsoRealms::Spindizzy {
     float getBlue() const override;
     float getAlpha() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     IColour* cColour;

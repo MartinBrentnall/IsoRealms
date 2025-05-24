@@ -24,12 +24,12 @@ namespace IsoRealms::Spindizzy {
     cTexture  = nullptr;
   }
 
-  void ThemeTexture::registerAssets(IAssetRegistry* assets, const std::string& id) {
-    cStateNotifier = assets->add(this, id, "Spindizzy Themes");
+  void ThemeTexture::registerAssets(IAssetRegistry& assets, const std::string& id) {
+    cStateNotifier = assets.add(this, id, "Spindizzy Themes");
   }
   
-  void ThemeTexture::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void ThemeTexture::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
   
   void ThemeTexture::notifyChange() {
@@ -62,5 +62,13 @@ namespace IsoRealms::Spindizzy {
 
   void ThemeTexture::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ThemeTexture::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ThemeTexture::isDefaultConfiguration() const {
+    return true;
   }
 }

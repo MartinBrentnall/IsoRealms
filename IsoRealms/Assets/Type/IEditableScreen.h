@@ -18,13 +18,13 @@
  */
 #pragma once
 
-#include "IAction.h"
 #include "IBoolean.h"
 #include "IFont.h"
 #include "IInputHandler.h"
 #include "IScreen.h"
 
 namespace IsoRealms {
+  class ActionExecutor;
   class IAssetRemover;
 
   class IEditableScreen : public IScreen,
@@ -39,9 +39,9 @@ namespace IsoRealms {
     virtual std::vector<std::string> getAnalogueInputs() const = 0;
     virtual void setDigitalInput(const std::string& name, IBoolean* input) = 0;
     virtual void setAnalogueInput(const std::string& name, IFloat* input) = 0;
-    virtual void setExitAction(IAction* action) = 0;
+    virtual void setExitAction(ActionExecutor* action) = 0;
 
-    virtual void unregisterAssets(IAssetRemover* assets) = 0;
+    virtual void unregisterAssets(IAssetRemover& assets, bool relinquish) = 0;
     virtual void setAppearance(IFont* font, float scale) = 0;
     virtual IScreen* screen() = 0;
 

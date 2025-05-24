@@ -20,43 +20,30 @@
 
 #include <functional>
 
-#include "IsoRealms/IAssets.h"
+#include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
-
-  class PhysicalObjectType : public IAssetUser<IPhysicalObjectType> {
+  
+  class PhysicalObjectType : public Asset<IPhysicalObjectType, Spindizzy> {
     public:
-    
     PhysicalObjectType(Spindizzy& spindizzy);
-
-    void init(JSONObject object);
-    void set(JSONObject object);
-    void save(JSONObject object, const std::string& name) const;
-
-    IPhysicalObjectType* operator->() const {
-      return cPhysicalObjectType;
-    }
-
-    IPhysicalObjectType* operator*() const {
-      return cPhysicalObjectType;
-    }
 
     IBinding* getBinding(const std::string& id) const;
     std::string getBindingID(const IBinding* binding) const;
 
-    /**********************************************\
-     * Implements IAssetUser<IPhysicalObjectType> *
-    \**********************************************/
-    void relinquish(IPhysicalObjectType* asset) override;
-
-    virtual ~PhysicalObjectType();
-
-    private:
-    Spindizzy& cSpindizzy;
-    IPhysicalObjectType* cPhysicalObjectType;
+    /****************************************************\
+     * Implements Asset<IPhysicalObjectType, Spindizzy> *
+    \****************************************************/
+    IPhysicalObjectType* createLiteralAsset(Spindizzy& spindizzy) override;
+    IPhysicalObjectType* getAsset(Spindizzy& spindizzy, JSONObject object) override;
+    IPhysicalObjectType* getAsset(Spindizzy& spindizzy, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
   };
 }

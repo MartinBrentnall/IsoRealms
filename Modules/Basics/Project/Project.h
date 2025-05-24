@@ -39,14 +39,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    Project(IProject* project, Basics* basics);
-    Project(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Project(IProject& project, Basics& basics, IResourceData& data);
+    Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
     
     /***********************\
      * Scripting Interface *
@@ -82,6 +82,8 @@ namespace IsoRealms::Basics {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
@@ -92,7 +94,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_OPTIONS;
     static const std::string JSON_RUNNING;
 
-    IProject* cProject;
+    IProject& cProject;
       
     // Definition data
     std::string cDefProjectPath;

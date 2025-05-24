@@ -20,31 +20,44 @@
 
 #include <string>
 
-#include "IsoRealms/Assets/Fixed/LiteralBoolean.h"
+#include "IsoRealms/Assets/Literal/LiteralBoolean.h"
 
 #include "AssetLiteral.h"
 
 namespace IsoRealms {
+  class Project;
+
   class AssetLiteralBoolean : public AssetLiteral<Project, IBoolean> {
     public:
-    
+    AssetLiteralBoolean(Project& project) :
+              cProject(project) {
+    }
+
     /*************************************\
      * Implements AssetLiteral<IBoolean> *
     \*************************************/
-    std::string normalizeLiteral(const std::string& expression) const override {
-      return expression;
+    bool hasConfiguration() const override {
+      return true;
     }
 
-    std::unique_ptr<IBoolean> createLiteralAsset(const std::string& expression) const override {
-      return expression == VALUE_TRUE  ? std::make_unique<LiteralBoolean>(true)
-           : expression == VALUE_FALSE ? std::make_unique<LiteralBoolean>(false)
+    std::unique_ptr<IBoolean> createLiteralAsset(Project& project) const override {
+      return std::make_unique<LiteralBoolean>(cProject, false);
+    }
+
+    std::unique_ptr<IBoolean> createLiteralAsset(Project& project, const std::string& expression) const override {
+      return expression == VALUE_TRUE  ? std::make_unique<LiteralBoolean>(cProject, true)
+           : expression == VALUE_FALSE ? std::make_unique<LiteralBoolean>(cProject, false)
            :                             nullptr;
+    }
+
+    bool renderAssetProviderIcon() const override {
+      return false;
     }
 
     private:
 
-    std::unique_ptr<IBoolean> createLiteralAsset(JSONObject object) const override {
-      return object.getBoolean(JSON_VALUE) ? std::make_unique<LiteralBoolean>(true) : std::make_unique<LiteralBoolean>(false);
+    std::unique_ptr<IBoolean> createLiteralAsset(Project& project, JSONObject object) const override {
+      return object.getBoolean(JSON_VALUE) ? std::make_unique<LiteralBoolean>(cProject, true) : std::make_unique<LiteralBoolean>(cProject, false);
     }
 
     private:
@@ -53,5 +66,7 @@ namespace IsoRealms {
     // Recognized values.
     inline static const std::string VALUE_FALSE = "false"; /// String value for literal false
     inline static const std::string VALUE_TRUE  = "true";  /// String value for literal true
+
+    Project& cProject;
   };
 }

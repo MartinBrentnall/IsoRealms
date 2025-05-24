@@ -23,25 +23,25 @@ namespace IsoRealms::Basics {
   const std::string ProjectOptions::JSON_OPTIONS = "options";
   const std::string ProjectOptions::JSON_VALUE   = "value";
 
-  ProjectOptions::ProjectOptions(IProject* project, Basics* basics) {
+  ProjectOptions::ProjectOptions(IProject& project, Basics& basics, IResourceData& data) {
   }
   
-  ProjectOptions::ProjectOptions(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            ProjectOptions(project, basics) {
+  ProjectOptions::ProjectOptions(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            ProjectOptions(project, basics, data) {
     for (JSONObject mOptionsObject : object.getArray(JSON_OPTIONS)) {
       cDefOptions.emplace(std::piecewise_construct, std::forward_as_tuple(mOptionsObject.getString(JSON_ID)), std::forward_as_tuple(project)).first->second.init(mOptionsObject, JSON_VALUE);
     }
   }
 
-  void ProjectOptions::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Project Options");
+  void ProjectOptions::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Project Options");
   }
   
-  void ProjectOptions::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void ProjectOptions::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
   
-  void ProjectOptions::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void ProjectOptions::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mOptionsArray = object.addArray(JSON_OPTIONS);
     for (const std::pair<const std::string, String>& mOption : cDefOptions) {
       JSONObject mOptionObject = mOptionsArray.addObject();
@@ -58,9 +58,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> ProjectOptions::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   Options ProjectOptions::getFixedOptions() {
@@ -77,5 +76,13 @@ namespace IsoRealms::Basics {
 
   void ProjectOptions::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ProjectOptions::isDefaultConfiguration() const {
+    return true;
   }
 }

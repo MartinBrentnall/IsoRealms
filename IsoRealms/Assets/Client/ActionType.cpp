@@ -19,45 +19,51 @@
 #include "ActionType.h"
 
 namespace IsoRealms {
-  ActionType::ActionType(IProject* project, std::function<void()> relinquishInstances) :
+  ActionType::ActionType(IProject& project, std::function<void()> relinquishInstances) :
             cProject(project),
-            cActionType(cProject->createLiteralActionType(this)),
+            cActionType(cProject.createLiteralActionType(this)),
             cRelinquishInstances(relinquishInstances) {
   }
 
-  ActionType::ActionType(IProject* project, std::function<void()> relinquishInstances, JSONObject object) :
+  ActionType::ActionType(IProject& project, std::function<void()> relinquishInstances, const std::string& id) :
             cProject(project),
-            cActionType(cProject->getActionType(this, object)),
+            cActionType(cProject.getActionType(this, id)),
+            cRelinquishInstances(relinquishInstances) {
+  }
+
+  ActionType::ActionType(IProject& project, std::function<void()> relinquishInstances, JSONObject object) :
+            cProject(project),
+            cActionType(cProject.getActionType(this, object)),
             cRelinquishInstances(relinquishInstances) {
   }
 
   void ActionType::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
+    cProject.init([this, object, member](IAssets& assets) {
       set(object, member);
     });
   }
 
   void ActionType::set(JSONObject object, const std::string& member) {
     JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cActionType);
-    cActionType= cProject->getActionType(this, mAssetObject);
+    cProject.release(this, cActionType);
+    cActionType= cProject.getActionType(this, mAssetObject);
   }
 
   void ActionType::save(JSONObject object, const std::string& name) const {
     JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cActionType);
+    cProject.save(mAssetObject, cActionType);
   }
 
   void ActionType::relinquish(IActionType* asset) {
     if (cActionType == asset) {
-      cActionType = cProject->createLiteralActionType(this);
+      cActionType = cProject.createLiteralActionType(this);
       cRelinquishInstances();
     }
   }
 
   ActionType::~ActionType() {
     if (cActionType != nullptr) {
-      cProject->release(this, cActionType);
+      cProject.release(this, cActionType);
     }
   }
 }

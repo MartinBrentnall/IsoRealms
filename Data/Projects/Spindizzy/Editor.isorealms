@@ -12,7 +12,7 @@
       "key": "Basics/InputSwitch/Main"
     },
     "editor": {
-      "key": "Literal"
+      "key": "None"
     },
     "initialisation": {
       "key": "Basics/Script",
@@ -196,7 +196,7 @@
                   "bindings": []
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -257,7 +257,7 @@
                   "code": "currentEditor:notifyVisible()\nscreen:setScreen(editorScreen)\ninput:setInputHandler(editorInput)\nproject:reset()\nproject:setEditing(true)\nproject:setRunning(false)\nplayTesting = nil\nunpause:execute()"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               }
             ]
@@ -297,19 +297,6 @@
               {"id": "EditorMenu",         "mappings": [{"type": "KeyDown", "key": "Escape"},      {"type": "ButtonDown","button": 9}]},
               {"id": "RotateView",         "mappings": [{"type": "MouseButtonDown", "button": "Left"}]},
               {"id": "MoveView",           "mappings": [{"type": "MouseButtonDown", "button": "Right"}]}
-            ]
-          },
-          {
-            "type": "Font",
-            "instances": [
-              {
-                "id": "Layout",
-                "filename": "Fonts/BubblegumSans-Regular.ttf"
-              },
-              {
-                "id": "PropertiesFont",
-                "filename": "Fonts/ProtestStrike-Regular.ttf"
-              }
             ]
           },
           {
@@ -651,14 +638,14 @@
                 "arguments": [
                   {
                     "name": "screenSwitch",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   },
                   {
                     "name": "screen",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   }
                 ],
@@ -719,14 +706,14 @@
                 "arguments": [
                   {
                     "name": "mission",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   },
                   {
                     "name": "user",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   }
                 ],
@@ -890,7 +877,7 @@
                       "to": {
                         "key": ":Screen",
                         "asset": {
-                          "key": "Literal"
+                          "key": "None"
                         }
                       }
                     },
@@ -899,7 +886,7 @@
                       "to": {
                         "key": ":Font",
                         "asset": {
-                          "key": "Basics/Font/PropertiesFont"
+                          "key": "Basics/Font/Menu"
                         }
                       }
                     },
@@ -945,7 +932,7 @@
                   "code": "print(\"Get Editor...\")\neditable = project:getDefaultEditor()\ncurrentEditor = editable:createEditableScreen(project:getProject())\ncurrentEditor:setAppearance(font, 0.02)\ncurrentEditor:notifyVisible()\neditor:setScreen(currentEditor:screen())\nmainInput:setInputHandler(editorInput)\nscreen:setScreen(noScreen)\nhasFocus = true\n\nprint(\"Set Digital Inputs...\")\ncurrentEditor:setDigitalInput(\"Cancel\",             digitalInputCancel)\ncurrentEditor:setDigitalInput(\"ConfigureTool\",      digitalInputConfigureTool)\ncurrentEditor:setDigitalInput(\"MoveCursorBackward\", digitalInputMoveCursorBackward)\ncurrentEditor:setDigitalInput(\"MoveCursorDown\",     digitalInputMoveCursorDown)\ncurrentEditor:setDigitalInput(\"MoveCursorFaster\",   digitalInputMoveCursorFaster)\ncurrentEditor:setDigitalInput(\"MoveCursorForward\",  digitalInputMoveCursorForward)\ncurrentEditor:setDigitalInput(\"MoveCursorLeft\",     digitalInputMoveCursorLeft)\ncurrentEditor:setDigitalInput(\"MoveCursorRight\",    digitalInputMoveCursorRight)\ncurrentEditor:setDigitalInput(\"MoveCursorSlower\",   digitalInputMoveCursorSlower)\ncurrentEditor:setDigitalInput(\"MoveCursorUp\",       digitalInputMoveCursorUp)\ncurrentEditor:setDigitalInput(\"MoveView\",           digitalInputMoveView)\ncurrentEditor:setDigitalInput(\"NextTheme\",          digitalInputNextTheme)\ncurrentEditor:setDigitalInput(\"NextTool\",           digitalInputNextTool)\ncurrentEditor:setDigitalInput(\"PreviousTheme\",      digitalInputPreviousTheme)\ncurrentEditor:setDigitalInput(\"PreviousTool\",       digitalInputPreviousTool)\ncurrentEditor:setDigitalInput(\"RotateView\",         digitalInputRotateView)\ncurrentEditor:setDigitalInput(\"ToolMode\",           digitalInputToolMode)\ncurrentEditor:setDigitalInput(\"UseTool\",            digitalInputUseTool)\ncurrentEditor:setDigitalInput(\"Exit\",               digitalInputEditorMenu)\n\nprint(\"Set Analogue Inputs...\")\ncurrentEditor:setAnalogueInput(\"MoveCursorX\",     analogueInputMoveCursorX)\ncurrentEditor:setAnalogueInput(\"MoveCursorY\",     analogueInputMoveCursorY)\ncurrentEditor:setAnalogueInput(\"MoveViewIn\",      analogueInputMoveViewIn)\ncurrentEditor:setAnalogueInput(\"MoveViewOut\",     analogueInputMoveViewOut)\ncurrentEditor:setAnalogueInput(\"RotateViewPitch\", analogueInputRotateViewPitch)\ncurrentEditor:setAnalogueInput(\"RotateViewYaw\",   analogueInputRotateViewYaw)\n\nprint(\"Set Exit Action...\")\ncurrentEditor:setExitAction(exitAction)\nprint(\"Done!!!\")"
                 },
                 "options": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               }
             ]
@@ -1002,29 +989,6 @@
               }
             ]
           },
-          {
-            "type": "StringScreen",
-            "instances": [
-              {
-                "id": "SaveAsLabel",
-                "alignment": "Center",
-                "value": {
-                  "key": "Literal",
-                  "value": "Enter a name for this project"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              }
-            ]
-          }
         ]
       },
       {
@@ -1044,34 +1008,34 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
@@ -1082,34 +1046,34 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -1121,78 +1085,78 @@
                   {
                     "id": "Editor",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "Menu",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.75
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.75
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -1204,40 +1168,55 @@
                   {
                     "id": "SaveAsLabel",
                     "screen": {
-                      "key": "Basics/StringScreen/SaveAsLabel"
+                      "key": "UI/Text",
+                      "alignment": "Center",
+                      "value": {
+                        "key": "Literal",
+                        "value": "Enter a name for this project"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.699999988079071
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.6000000238418579
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
@@ -1248,34 +1227,34 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -1317,7 +1296,7 @@
                             "to": {
                               "key": ":Screen",
                               "asset": {
-                                "key": "Literal"
+                                "key": "None"
                               }
                             }
                           },
@@ -2525,7 +2504,7 @@
                   "key": "Basics/ColourCycler/Menu Selection Highlight/0"
                 },
                 "font": {
-                  "key": "Basics/Font/Layout"
+                  "key": "Basics/Font/Menu"
                 },
                 "onConfirm": {
                   "key": "Basics/Script",

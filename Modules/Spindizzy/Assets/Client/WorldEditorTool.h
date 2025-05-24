@@ -18,6 +18,9 @@
  */
 #pragma once
 
+#include <functional>
+
+#include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
@@ -25,34 +28,19 @@
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
   
-  class WorldEditorTool : public IAssetUser<IWorldEditorTool> {
+  class WorldEditorTool : public Asset<IWorldEditorTool, Spindizzy> {
     public:
-    WorldEditorTool(Spindizzy* spindizzy);
+    WorldEditorTool(Spindizzy& spindizzy);
 
-    void init(JSONObject object);
-    void set(JSONObject object);
-    void save(JSONObject object, const std::string& name) const;
-
-    IWorldEditorTool* operator->() const {
-      return cWorldEditorTool;
-    }
-
-    IWorldEditorTool* operator*() const {
-      return cWorldEditorTool;
-    }
-
-    /*******************************************\
-     * Implements IAssetUser<IWorldEditorTool> *
-    \*******************************************/
-    void relinquish(IWorldEditorTool* asset) override;
-
-    virtual ~WorldEditorTool();
-
-    private:
-    Spindizzy* cSpindizzy;
-    IWorldEditorTool* cWorldEditorTool;
-
-    WorldEditorTool(WorldEditorTool const& WorldEditorTool) = delete;
-    WorldEditorTool& operator=(WorldEditorTool const& WorldEditorTool) = delete;
+    /*************************************************\
+     * Implements Asset<IWorldEditorTool, Spindizzy> *
+    \*************************************************/
+    IWorldEditorTool* createLiteralAsset(Spindizzy& spindizzy) override;
+    IWorldEditorTool* getAsset(Spindizzy& spindizzy, JSONObject object) override;
+    IWorldEditorTool* getAsset(Spindizzy& spindizzy, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
   };
 }

@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
 
@@ -34,14 +35,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    BooleanTrigger(IProject* project, Basics* basics);
-    BooleanTrigger(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    BooleanTrigger(IProject& project, Basics& basics, IResourceData& data);
+    BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
     
     private:
 

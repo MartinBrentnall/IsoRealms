@@ -33,17 +33,17 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectType::BIND_TO_TRAIT = "Trait";
   const std::string ZoneObjectType::BIND_TO_ZONE  = "Zone";
 
-  ZoneObjectType::ZoneObjectType(IProject* project, Spindizzy* spindizzy) :
-            cDefSpindizzy(*spindizzy) {
+  ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy) {
   }
   
-  ZoneObjectType::ZoneObjectType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            ZoneObjectType(project, spindizzy) {
+  ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            ZoneObjectType(project, spindizzy, data) {
 //     for (OMNode& mNode : node) {
 //       std::string mTag = mNode.getName();
 //       if (mTag == AG_TRAIT) {
 //         std::string mTraitID = mNode.getAttribute(JSON_ID);
-//         IZoneObjectTypeTrait* mTrait = cDefSpindizzy.createZoneObjectTypeTrait(mNode, this);
+//         IZoneObjectTypeTrait* mTrait = cSpindizzy.createZoneObjectTypeTrait(mNode, this);
 //         cDefTypeTraits.emplace(mTraitID, mTrait);
 //       } else {
 //         throw ResourceInitException("ERROR: ZoneObjectType::ZoneObjectType: Unknown tag \"" + mTag + "\"");
@@ -55,20 +55,20 @@ namespace IsoRealms::Spindizzy {
     cDefEditingProcessorID = object.getString(JSON_EDITING_PROCESSOR);
   }
 
-  void ZoneObjectType::registerAssets(IAssetRegistry* assets) {
+  void ZoneObjectType::registerAssets(IAssetRegistry& assets) {
     // TODO
   }
     
-  void ZoneObjectType::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void ZoneObjectType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // TODO
   }
   
-  void ZoneObjectType::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void ZoneObjectType::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {
       JSONObject mTraitObject = mTraitsArray.addObject();
       mTraitObject.addString(JSON_ID, mPair.first);
-//      mTraitObject.addString(JSON_TYPE, cDefSpindizzy.getID(mPair.second));
+//      mTraitObject.addString(JSON_TYPE, cSpindizzy.getID(mPair.second));
       mPair.second->save(mTraitObject);
     }
   }
@@ -81,13 +81,12 @@ namespace IsoRealms::Spindizzy {
     return false; // TODO
   }
 
-  std::vector<IProperty*> ZoneObjectType::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   ZoneObjectType::~ZoneObjectType() {
-    cDefSpindizzy.removeAll(this);
+    cSpindizzy.removeAll(this);
   }
   
   void ZoneObjectType::registerAssets(ISpindizzyRegistry* registry) {
@@ -99,7 +98,7 @@ namespace IsoRealms::Spindizzy {
   }  
   
   Spindizzy& ZoneObjectType::getSpindizzy() {
-    return cDefSpindizzy;
+    return cSpindizzy;
   }
   
   void ZoneObjectType::registerEditor(IZoneObjectTraitEditor* editor) {
@@ -153,7 +152,7 @@ namespace IsoRealms::Spindizzy {
     return cDefEditingProcessorID;
   }
 
-  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -165,7 +164,15 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  ZoneObjectType::Pen::Pen(ZoneObjectType& parent, WorldEditor* editor) :
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectType::isDefaultConfiguration() const {
+    return true;
+  }
+
+  ZoneObjectType::Pen::Pen(ZoneObjectType& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor) {
   }
@@ -195,7 +202,7 @@ namespace IsoRealms::Spindizzy {
 //     switch (cRuntimeEditors[cEditingTrait]->inputEdit(event)) {
 //       case IZoneObjectTraitEditor::InputEditResult::COMPLETED: {
 //         if (cEditingTrait == 0) {
-//           cPinnedZone = cEditor->getWorld()->getOrDrawZone(cEditor->getCursorCell(), cEditor);
+//           cPinnedZone = cEditor.getWorld().getOrDrawZone(cEditor.getCursorCell(), cEditor);
 //         }
 //
 //         cEditingTrait++;
@@ -214,7 +221,7 @@ namespace IsoRealms::Spindizzy {
 //           cEditingTrait--;
 //           if (cEditingTrait == 0) {
 //             if (cPinnedZone.empty()) {
-//               cEditor->getWorld()->remove(cPinnedZone);
+//               cEditor.getWorld().remove(cPinnedZone);
 //             }
 //             cPinnedZone = nullptr;
 //           }

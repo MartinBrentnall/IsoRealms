@@ -306,7 +306,9 @@
             "instances": [
               {
                 "id": "Menu",
-                "filename": "Fonts/BubblegumSans-Regular.ttf",
+                "filename": {
+                  "path": "Fonts/Bubblegum_Sans/BubblegumSans-Regular.ttf"
+                },
                 "scale": 0.699999988079071,
                 "offsetY": 0.20000000298023224
               }
@@ -357,7 +359,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "project:setDisplayResolution(previousMode, previousFullScreen)\noptionResolution:setValue(previousMode)\noptionFullScreen:setValue(previousFullScreen)\ntable.remove(menuStack)\ntable.remove(inputStack)\ninput:setInputHandler(inputStack[#inputStack])\nscreen:setScreen(menuStack[#menuStack])\nscreenTestTimer:pause()"
+                "code": "project:setDisplayResolution(previousMode, previousFullScreen)\noptionResolution:setValue(previousMode)\noptionFullScreen:setValue(previousFullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])\nscreenTestTimer:pause()"
               },
               {
                 "id": "PushScreen",
@@ -379,24 +381,24 @@
                 "arguments": [
                   {
                     "name": "menuScreen",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   },
                   {
                     "name": "menu",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   },
                   {
                     "name": "menuInput",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   }
                 ],
-                "code": "table.insert(menuStack, menuScreen)\ntable.insert(inputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)"
+                "code": "table.insert(gMenuScreenStack, menuScreen)\ntable.insert(gMenuInputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)"
               },
               {
                 "id": "PopScreen",
@@ -422,7 +424,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "table.remove(menuStack)\ntable.remove(inputStack)\ninput:setInputHandler(inputStack[#inputStack])\nscreen:setScreen(menuStack[#menuStack])\ninputName:setValue(\"\")"
+                "code": "table.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])\ninputName:setValue(\"\")"
               },
               {
                 "id": "ConfigureInput",
@@ -480,18 +482,18 @@
                 "arguments": [
                   {
                     "name": "name",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   },
                   {
                     "name": "digitalInput",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   }
                 ],
-                "code": "table.insert(menuStack, menuScreen)\ntable.insert(inputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)\ninputName:setValue(name:getValue())\ncurrentInputList = inputList\ncurrentDigitalInput = digitalInput\ninputList:clear()\nfor i = 0, digitalInput:getMappingCount() - 1 do\n  inputList:addMapping(digitalInput:getMapping(i))\nend"
+                "code": "table.insert(gMenuScreenStack, menuScreen)\ntable.insert(gMenuInputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)\ninputName:setValue(name:getValue())\ncurrentInputList = inputList\ncurrentDigitalInput = digitalInput\ninputList:clear()\nfor i = 0, digitalInput:getMappingCount() - 1 do\n  inputList:addMapping(digitalInput:getMapping(i))\nend"
               },
               {
                 "id": "ReloadConfiguration",
@@ -701,7 +703,7 @@
               {
                 "id": "Options Screen",
                 "value": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               }
             ]
@@ -711,28 +713,6 @@
             "instances": [
               {
                 "id": "InputName"
-              }
-            ]
-          },
-          {
-            "type": "StringScreen",
-            "instances": [
-              {
-                "id": "TextInput",
-                "alignment": "Center",
-                "value": {
-                  "key": "Basics/String/InputName"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
               }
             ]
           },
@@ -762,40 +742,54 @@
                   {
                     "id": "TextInput",
                     "screen": {
-                      "key": "Basics/StringScreen/TextInput"
+                      "key": "UI/Text",
+                      "alignment": "Center",
+                      "value": {
+                        "key": "Basics/String/InputName"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.30000001192092896
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.20000000298023224
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -968,7 +962,7 @@
                       }
                     }
                   ],
-                  "code": "displayResolution = project:getDisplayResolution()\nfullScreen = project:isFullScreen()\noptionResolution:setValue(displayResolution)\noptionFullScreen:setValue(fullScreen)\ntable.remove(menuStack)\ntable.remove(inputStack)\ninput:setInputHandler(inputStack[#inputStack])\nscreen:setScreen(menuStack[#menuStack])"
+                  "code": "displayResolution = project:getDisplayResolution()\nfullScreen = project:isFullScreen()\noptionResolution:setValue(displayResolution)\noptionFullScreen:setValue(fullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])"
                 },
                 "options": [
                   {
@@ -1630,7 +1624,7 @@
                       }
                     }
                   ],
-                  "code": "screenTestTimer:pause()\ntable.remove(menuStack)\ntable.remove(inputStack)\ninput:setInputHandler(inputStack[#inputStack])\nscreen:setScreen(menuStack[#menuStack])"
+                  "code": "screenTestTimer:pause()\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])"
                 },
                 "onCancel": {
                   "key": "Basics/Function/RestorePrevious",

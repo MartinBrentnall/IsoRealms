@@ -31,7 +31,7 @@ namespace IsoRealms {
     SpatialContainer1D<SpatialContainer1D<std::vector<T>>> cContainer;
 
     public:
-    SpatialContainer2D<T>() {
+    SpatialContainer2D() {
       cContainer.setUnit(8);
     }
       

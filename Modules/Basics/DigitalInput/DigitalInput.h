@@ -52,14 +52,17 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    DigitalInput(IProject* project, Basics* basics);
-    DigitalInput(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    DigitalInput(IProject& project, Basics& basics);
+    DigitalInput(IProject& project, Basics& basics, IResourceData& data);
+    DigitalInput(IProject& project, Basics& basics, JSONObject object);
+    DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /***********************\
      * Implements IBoolean *
@@ -77,6 +80,8 @@ namespace IsoRealms::Basics {
     \***********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -161,13 +166,14 @@ namespace IsoRealms::Basics {
       std::string getShortName() const;
       std::shared_ptr<IDigitalInputMapping> getInput() const;
       void save(JSONObject object) const;
+      std::vector<std::unique_ptr<IProperty>> getProperties();
 
       private:
       std::shared_ptr<IDigitalInputMapping> cPhysicalInput;
       bool cState;
     };
     std::vector<std::unique_ptr<PhysicalInputMapping>> cDefMapping; /// Default input mapping.
-    IProject* cProject;
+    IProject& cProject;
 
     // Runtime data.
     std::vector<std::unique_ptr<PhysicalInputMapping>> cRuntimeMapping; /// User input mapping.

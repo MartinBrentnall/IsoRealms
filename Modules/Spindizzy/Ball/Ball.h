@@ -20,6 +20,7 @@
 
 #include <cmath>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
@@ -37,14 +38,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    Ball(IProject* project, Spindizzy* spindizzy);
-    Ball(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /***********************\
      * Implements ITexture *
@@ -54,6 +55,8 @@ namespace IsoRealms::Spindizzy {
     ITexture* getTexture() override;
     void coord(float x, float y) const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
@@ -65,15 +68,15 @@ namespace IsoRealms::Spindizzy {
     // Resource definition constants.
     static const float CIRCLE_RESOLUTION;
 
-    IProject* cProject;
+    IProject& cProject;
 
     // Definition data.
-    LiteralTexture cDefTexture; /// The actual texture.
     Colour cDefFill;            /// Colour used for the fill of the ball.
     Colour cDefOutline;         /// Colour used for the outline of the ball.
     Colour cDefShine;           /// Colour used for the shine of the ball.
 
     // Runtime data.
+    LiteralTexture cTexture; /// The actual texture.
     bool cNeedsRedrawing;
 
     // Internal Functions.

@@ -32,24 +32,24 @@ namespace IsoRealms::Spindizzy {
   const float Gyroscope::WIDTH             = 0.33f;
   const float Gyroscope::HEIGHT            = 0.9f;
 
-  Gyroscope::Gyroscope(IProject* project, Spindizzy* spindizzy) :
+  Gyroscope::Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
             cDefQuadrant{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(project, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
             cDefOutline(project, 1.0f, 0.0f, 1.0f),
-            cDefTexture(project),
+            cTexture(project),
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
-    project->updateEditing([this](unsigned int milliseconds) {
+    project.updateEditing([this](unsigned int milliseconds) {
       cEditingIconRotation -= 0.5f * milliseconds;
     });
     setNeedsRedrawing();
   }
 
-  Gyroscope::Gyroscope(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            Gyroscope(project, spindizzy) {
+  Gyroscope::Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            Gyroscope(project, spindizzy, data) {
     cDefQuadrant[0].init(object, JSON_COLOUR_1);
     cDefQuadrant[1].init(object, JSON_COLOUR_2);
     cDefQuadrant[2].init(object, JSON_COLOUR_3);
@@ -57,15 +57,15 @@ namespace IsoRealms::Spindizzy {
     cDefOutline.init(object, JSON_OUTLINE);
   }
 
-  void Gyroscope::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Spindizzy Gyroscope Models");
+  void Gyroscope::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Spindizzy Gyroscope Models");
   }
     
-  void Gyroscope::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void Gyroscope::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
-  void Gyroscope::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Gyroscope::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefQuadrant[0].save(object, JSON_COLOUR_1);
     cDefQuadrant[1].save(object, JSON_COLOUR_2);
     cDefQuadrant[2].save(object, JSON_COLOUR_3);
@@ -74,7 +74,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Gyroscope::hintInUse(bool inUse) {
-    cDefTexture.hintTextureInUse(inUse);
+    cTexture.hintTextureInUse(inUse);
   }
 
   bool Gyroscope::renderIcon() const {
@@ -85,12 +85,17 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<IProperty*> Gyroscope::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 1 Colour", cDefQuadrant[0]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 2 Colour", cDefQuadrant[1]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 3 Colour", cDefQuadrant[2]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 4 Colour", cDefQuadrant[3]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefOutline));
+    return mProperties;
   }
 
-  I3DModel* Gyroscope::createModel() {
+  IModelInstance* Gyroscope::createModel() {
     return this;
   }
 
@@ -107,12 +112,20 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Gyroscope::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Gyroscope::isDefaultConfiguration() const {
+    return true;
+  }
+
   void Gyroscope::update(unsigned int milliseconds) {
     // Nothing to do
   }
 
   void Gyroscope::render() const {
-    cDefTexture.set();
+    cTexture.set();
     glDisable(GL_CULL_FACE);
     glBegin(GL_TRIANGLES);
     glTexCoord2f(1.0f, 0.5f);
@@ -152,7 +165,7 @@ namespace IsoRealms::Spindizzy {
     glLoadIdentity();
     glPopAttrib();
 
-    cDefTexture.setRenderTarget();
+    cTexture.setRenderTarget();
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -167,13 +180,13 @@ namespace IsoRealms::Spindizzy {
     glPopMatrix();
     glPopAttrib();
 
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->setViewPort();
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.setViewPort();
   }
     
   void Gyroscope::renderCircle(float radius, float startAngle, float endAngle, Colour& colour) {
     glBegin(GL_TRIANGLE_FAN);
-    colour.set();
+    colour->set();
     glVertex2f(0.0f, 0.0f);
     float mStartAngle = startAngle * (M_PI / 180.0f);
     float mEndAngle   = endAngle   * (M_PI / 180.0f);
@@ -186,7 +199,7 @@ namespace IsoRealms::Spindizzy {
   void Gyroscope::renderCircle(float outerRadius, float innerRadius, Colour& colour) {
     glBegin(GL_TRIANGLE_STRIP);
     glEnable(GL_BLEND);
-    colour.set();
+    colour->set();
     float mStartAngle =   0.0f * (M_PI / 180.0f);
     float mEndAngle   = 360.0f * (M_PI / 180.0f);
     for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
@@ -198,7 +211,7 @@ namespace IsoRealms::Spindizzy {
 
   void Gyroscope::setNeedsRedrawing() {
     if (!cNeedsRedrawing) {
-      cProject->updateLater([this]() {
+      cProject.updateLater([this]() {
         updateTexture();
         cNeedsRedrawing = false;
       });

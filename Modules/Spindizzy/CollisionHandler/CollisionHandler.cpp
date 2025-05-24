@@ -27,33 +27,34 @@ namespace IsoRealms::Spindizzy {
   const std::string CollisionHandler::JSON_ON_COLLISION = "onCollision";
   const std::string CollisionHandler::JSON_ON_PARTING   = "onParting";
 
-  CollisionHandler::CollisionHandler(IProject* project, Spindizzy* spindizzy) :
-            cDefPhysicalObjectTypeA(*spindizzy),
-            cDefPhysicalObjectTypeB(*spindizzy),
+  CollisionHandler::CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
+            cDefPhysicalObjectTypeA(spindizzy),
+            cDefPhysicalObjectTypeB(spindizzy),
             cDefEnteredAction(project),
             cDefExitedAction(project) {
   }
 
-  CollisionHandler::CollisionHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            CollisionHandler(project, spindizzy) {
-    cDefPhysicalObjectTypeA.init(object.getObject(JSON_OBJECT_A));
-    cDefPhysicalObjectTypeB.init(object.getObject(JSON_OBJECT_B));
+  CollisionHandler::CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            CollisionHandler(project, spindizzy, data) {
+    cDefPhysicalObjectTypeA.init(object, JSON_OBJECT_A);
+    cDefPhysicalObjectTypeB.init(object, JSON_OBJECT_B);
     cDefEnteredAction.init(object, JSON_ON_COLLISION);
     cDefExitedAction.init(object, JSON_ON_PARTING);
-    spindizzy->getProject()->init([this, spindizzy](IAssets* assets) {
-      spindizzy->added(this);
+    spindizzy.getProject().init([this, &spindizzy](IAssets& assets) {
+      spindizzy.added(this);
     });
   }
 
-  void CollisionHandler::registerAssets(IAssetRegistry* assets) {
+  void CollisionHandler::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
 
-  void CollisionHandler::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void CollisionHandler::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
 
-  void CollisionHandler::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void CollisionHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefPhysicalObjectTypeA.save(object, JSON_OBJECT_A);
     cDefPhysicalObjectTypeB.save(object, JSON_OBJECT_B);
     cDefEnteredAction.save(object, JSON_ON_COLLISION);
@@ -68,9 +69,13 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<IProperty*> CollisionHandler::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type A", cDefPhysicalObjectTypeA));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type B", cDefPhysicalObjectTypeB));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Contact", cDefEnteredAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Departure", cDefExitedAction));
+    return mProperties;
   }
 
   const PhysicalObjectType* CollisionHandler::getPhysicalObjectTypeA() const {

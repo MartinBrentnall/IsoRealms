@@ -25,8 +25,10 @@
 
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/Collision/CollisionUtils.h"
+#include "IsoRealms/Editing/EditorToolbar.h"
+#include "IsoRealms/Input/EditorAnalogueInput.h"
+#include "IsoRealms/Input/EditorDigitalInput.h"
 #include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/Property/PropertyAppearance.h"
 #include "IsoRealms/Struct/SpatialContainer2D.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
@@ -42,9 +44,9 @@
 namespace IsoRealms::Spindizzy {
   class WorldEditor : public IEditableScreen {
     public:
-    WorldEditor(IAssetRegistry* assets, World* world);
+    WorldEditor(IAssetRegistry& assets, World& world);
     void updateScreen(unsigned int milliseconds);
-    World* getWorld() const;
+    World& getWorld() const;
     TerrainBrush& getTerrainBrush();
     const TerrainBrush& getTerrainBrush() const;
     WorldEditorCursorCell getCursorCell();
@@ -52,7 +54,9 @@ namespace IsoRealms::Spindizzy {
     float getCursorX() const;
     float getCursorY() const;
     float getCursorZ() const;
-    IPropertyAppearance* getPropertyAppearance();
+    void removeTool(IWorldEditorTool* tool);
+    IFont* getFont() const;
+    float getFontSize() const;
 
     /******************************\
      * Implements IEditableScreen *
@@ -62,6 +66,8 @@ namespace IsoRealms::Spindizzy {
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
     void notifyVisible() override;
     void notifyHidden() override;
     void notifyLostFocus() override;
@@ -70,11 +76,11 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::string> getAnalogueInputs() const override;
     void setDigitalInput(const std::string& name, IBoolean* input) override;
     void setAnalogueInput(const std::string& name, IFloat* input) override;
-    void setExitAction(IAction* action) override;
+    void setExitAction(ActionExecutor* action) override;
     bool signal(SignalInputID id);
 
     void setAppearance(IFont* font, float scale) override;
-    void unregisterAssets(IAssetRemover* assets) override;
+    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     IScreen* screen() override;
@@ -93,64 +99,12 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
     };
 
-    class AnalogueInput {
-      public:
-      AnalogueInput() :
-                cInput(nullptr) {
-      }
-
-      void set(IFloat* input) {
-        cInput = input;
-      }
-
-      float get() {
-        return cInput != nullptr ? cInput->getValue() : 0.0f;
-      }
-
-      private:
-      IFloat* cInput;
-    };
-
-    class DigitalInput {
-      public:
-      DigitalInput(WorldEditor& parent, SignalInputID signal) :
-                cParent(parent),
-                cInput(nullptr),
-                cPreviousValue(false),
-                cSignal(signal) {
-      }
-
-      void set(IBoolean* input) {
-        cInput = input;
-      }
-
-      bool get() {
-        return cInput != nullptr ? cInput->getValue() : false;
-      }
-
-      bool triggerOnChange() {
-        bool mCurrentValue = get();
-        bool mSignalled = false;
-        if (mCurrentValue && !cPreviousValue) {
-          if (cParent.signal(cSignal)) {
-            mSignalled = true;
-          }
-        }
-        cPreviousValue = mCurrentValue;
-        return mSignalled;
-      }
-
-      private:
-      WorldEditor& cParent;
-      IBoolean* cInput;
-      bool cPreviousValue;
-      SignalInputID cSignal;
-    };
-
-    const std::map<std::string, AnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
-    const std::map<std::string, DigitalInput*> cDigitalInputsByName; /// Mapping of digital inputs by name.
+    const std::map<std::string, EditorAnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
+    const std::map<std::string, EditorDigitalInput<WorldEditor, SignalInputID>*> cDigitalInputsByName; /// Mapping of digital inputs by name.
 
     static const float SPEED_FAST;
     static const float SPEED_NORMAL;
@@ -170,38 +124,38 @@ namespace IsoRealms::Spindizzy {
     int cYDirection;
     int cZDirection;
 
-    AnalogueInput cPitchSpeed;
-    AnalogueInput cYawSpeed;
-    AnalogueInput cXSpeed;
-    AnalogueInput cYSpeed;
-    AnalogueInput cZSpeed;
-    AnalogueInput cDistanceInSpeed;
-    AnalogueInput cDistanceOutSpeed;
+    EditorAnalogueInput cPitchSpeed;
+    EditorAnalogueInput cYawSpeed;
+    EditorAnalogueInput cXSpeed;
+    EditorAnalogueInput cYSpeed;
+    EditorAnalogueInput cZSpeed;
+    EditorAnalogueInput cDistanceInSpeed;
+    EditorAnalogueInput cDistanceOutSpeed;
 
-    DigitalInput cActiveLeft;
-    DigitalInput cActiveRight;
-    DigitalInput cActiveUp;
-    DigitalInput cActiveDown;
-    DigitalInput cActiveHigher;
-    DigitalInput cActiveLower;
-    DigitalInput cActiveSlow;
-    DigitalInput cActiveFast;
-    DigitalInput cRotatingView;
-    DigitalInput cZoomingView;
-    DigitalInput cCancel;
-    DigitalInput cConfigureTool;
-    DigitalInput cNextTheme;
-    DigitalInput cNextTool;
-    DigitalInput cPreviousTheme;
-    DigitalInput cPreviousTool;
-    DigitalInput cToolMode;
-    DigitalInput cUseTool;
-    DigitalInput cExit;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveLeft;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveRight;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveUp;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveDown;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveHigher;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveLower;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveSlow;
+    EditorDigitalInput<WorldEditor, SignalInputID> cActiveFast;
+    EditorDigitalInput<WorldEditor, SignalInputID> cRotatingView;
+    EditorDigitalInput<WorldEditor, SignalInputID> cZoomingView;
+    EditorDigitalInput<WorldEditor, SignalInputID> cCancel;
+    EditorDigitalInput<WorldEditor, SignalInputID> cConfigureTool;
+    EditorDigitalInput<WorldEditor, SignalInputID> cNextTheme;
+    EditorDigitalInput<WorldEditor, SignalInputID> cNextTool;
+    EditorDigitalInput<WorldEditor, SignalInputID> cPreviousTheme;
+    EditorDigitalInput<WorldEditor, SignalInputID> cPreviousTool;
+    EditorDigitalInput<WorldEditor, SignalInputID> cToolMode;
+    EditorDigitalInput<WorldEditor, SignalInputID> cUseTool;
+    EditorDigitalInput<WorldEditor, SignalInputID> cExit;
 
     bool cSignalConsumed;
     bool cHasFocus;
 
-    IAction* cExitAction;
+    ActionExecutor* cExitAction;
 
     double cDistance;
     double cRotation;
@@ -222,13 +176,14 @@ namespace IsoRealms::Spindizzy {
     int cPreviousX;
     int cPreviousY;
 
-    std::vector<IWorldEditorToolInstance*> cTools;
-    World* cWorld;
+    EditorToolbar<IWorldEditorTool*, IWorldEditorToolInstance*> cToolbar;
+    World& cWorld;
     std::set<IVisualElement*> cEditingVisuals;
 
-    PropertyAppearance cPropertyAppearance;
-
     IScreen* cProxyScreen;
+
+    IFont* cFont;
+    float cFontSize;
 
     bool isMovingWest();
     bool isMovingEast();

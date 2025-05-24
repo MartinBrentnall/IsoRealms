@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
     public:
     ProjectLoader(Options options, std::function<void(bool)> endFunction);
     
-    void loadProject(IApplication* application);
+    void loadProject(IApplication& application);
     bool isDestructReady();
     void setDestructing();
     void destruct();

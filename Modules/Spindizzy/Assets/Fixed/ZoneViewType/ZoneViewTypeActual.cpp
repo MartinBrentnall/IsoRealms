@@ -21,7 +21,12 @@
 #include "ZoneViewActual.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewTypeActual::ZoneViewTypeActual(IProject* project, WorldView* worldView, JSONObject object) {
+  ZoneViewTypeActual::ZoneViewTypeActual(IProject& project, WorldView& worldView) {
+    // Nothing to do.
+  }
+
+  ZoneViewTypeActual::ZoneViewTypeActual(IProject& project, WorldView& worldView, JSONObject object) :
+            ZoneViewTypeActual(project, worldView) {
     // Nothing to do.
   }
 
@@ -39,5 +44,13 @@ namespace IsoRealms::Spindizzy {
 
   void ZoneViewTypeActual::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneViewTypeActual::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneViewTypeActual::isDefaultConfiguration() const {
+    return true;
   }
 }

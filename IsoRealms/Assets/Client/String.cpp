@@ -18,39 +18,38 @@
  */
 #include "String.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  String::String(IProject* project) :
-            cProject(project),
-            cString(cProject->createLiteralString(this)) {
+  String::String(IProject& project) : 
+            Asset<IString, IProject>(project, project.createLiteralString(this)) {
   }
 
-  void String::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IString* String::createLiteralAsset(IProject& project) {
+    return project.createLiteralString(this);
+  }
+  
+  IString* String::getAsset(IProject& project, JSONObject object) {
+    return project.getString(this, object);
+  }
+  
+  IString* String::getAsset(IProject& project, const std::string& id) {
+    return project.getString(this, id);
+  }
+  
+  std::vector<std::string> String::getAvailableProviders() const {
+    return cManager.getAllStrings();
+  }  
+
+  bool String::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderStringIcon(id);
   }
 
-  void String::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cString);
-    cString = cProject->getString(this, mAssetObject);
+  bool String::hasConfiguration() const {
+    return cManager.isStringConfigurable(getID());
   }
 
-  void String::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cString);
-  }
-
-  void String::relinquish(IString* asset) {
-    if (cString == asset) {
-      cString = cProject->createLiteralString(this);
-    }
-  }
-
-  String::~String() {
-    if (cString != nullptr) {
-      cProject->release(this, cString);
-    }
+  bool String::isDefaultConfiguration() const {
+    return true;
   }
 }
-

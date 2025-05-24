@@ -19,29 +19,36 @@
 #include "LocalAssetRegistry.h"
 
 namespace IsoRealms {
-  LocalAssetRegistry::LocalAssetRegistry(IAssetRegistry* assetRegistry, const std::string& localPath) :
+  LocalAssetRegistry::LocalAssetRegistry(IAssetRegistry& assetRegistry, const std::string& localPath) :
             cAssetRegistry(assetRegistry),
             cLocalPath(localPath) {
   }
     
+  void LocalAssetRegistry::setLocalPath(const std::string& path) {
+    cLocalPath = path;
+  }
+
   std::string LocalAssetRegistry::getModule() {
     return cLocalPath;
   }
 
-  void                      LocalAssetRegistry::add(I3DModelType*    asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void                      LocalAssetRegistry::add(IActionType*     asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void                      LocalAssetRegistry::add(IBinding*        asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IStateNotifier<IBoolean>* LocalAssetRegistry::add(IBoolean*        asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IStateNotifier<IColour>*  LocalAssetRegistry::add(IColour*         asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void                      LocalAssetRegistry::add(IEditable*       asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IStateNotifier<IFloat>*   LocalAssetRegistry::add(IFloat*          asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void                      LocalAssetRegistry::add(IFont*           asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void                      LocalAssetRegistry::add(IInputHandler*   asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IStateNotifier<IInteger>* LocalAssetRegistry::add(IInteger*        asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IScreen*                  LocalAssetRegistry::add(IScreen*         asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void                      LocalAssetRegistry::add(IProjectOptions* asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void                      LocalAssetRegistry::add(IAssets*         asset, const std::string& id, const std::string& category) {       cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IStateNotifier<IString>*  LocalAssetRegistry::add(IString*         asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IStateNotifier<ITexture>* LocalAssetRegistry::add(ITexture*        asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  IStateNotifier<IVertex>*  LocalAssetRegistry::add(IVertex*         asset, const std::string& id, const std::string& category) {return cAssetRegistry->add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void LocalAssetRegistry::add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) {cAssetRegistry.add(provider, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+
+  void                      LocalAssetRegistry::add(IActionType*     asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IAssets*         asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IBinding*        asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IBindingType*    asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IStateNotifier<IBoolean>* LocalAssetRegistry::add(IBoolean*        asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IStateNotifier<IColour>*  LocalAssetRegistry::add(IColour*         asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IEditable*       asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IStateNotifier<IFloat>*   LocalAssetRegistry::add(IFloat*          asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IFont*           asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IInputHandler*   asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IStateNotifier<IInteger>* LocalAssetRegistry::add(IInteger*        asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IModel*          asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void                      LocalAssetRegistry::add(IProjectOptions* asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IScreen*                  LocalAssetRegistry::add(IScreen*         asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IStateNotifier<IString>*  LocalAssetRegistry::add(IString*         asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IStateNotifier<ITexture>* LocalAssetRegistry::add(ITexture*        asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  IStateNotifier<IVertex>*  LocalAssetRegistry::add(IVertex*         asset, const std::string& id, const std::string& category) {return cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
 }

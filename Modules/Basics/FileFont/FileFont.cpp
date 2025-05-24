@@ -30,8 +30,8 @@ namespace IsoRealms::Basics {
   const float FileFont::DEFAULT_LINE_SPACING = 2.5f;
   const float FileFont::DEFAULT_SCALE        = 1.0f;
 
-  FileFont::FileFont(IProject* project, Basics* basics) :
-            cDefFilename(),
+  FileFont::FileFont(IProject& project, Basics& basics, IResourceData& data) :
+            cDefFilename(project),
             cDefDetail(DEFAULT_DETAIL),
             cDefLineSpacing(DEFAULT_LINE_SPACING),
             cDefScale(DEFAULT_SCALE),
@@ -40,23 +40,23 @@ namespace IsoRealms::Basics {
             cProcessedGLListBase(0) {
   }
   
-  FileFont::FileFont(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            FileFont(project, basics) {
-    cDefFilename = object.getString(JSON_FILENAME);
+  FileFont::FileFont(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            FileFont(project, basics, data) {
+    cDefFilename.load(JSON_FILENAME, object);
     cDefDetail = object.getInteger(JSON_DETAIL, DEFAULT_DETAIL);
     cDefLineSpacing = object.getFloat(JSON_LINE_SPACING, DEFAULT_LINE_SPACING);
     cDefScale = object.getFloat(JSON_SCALE, DEFAULT_SCALE);
     cDefOffsetX = object.getFloat(JSON_OFFSET_X);
     cDefOffsetY = object.getFloat(JSON_OFFSET_Y);
 
-    project->mainThreadInit([this]() {
+    project.mainThreadInit([this]() {
       FT_Library mFTLibrary;
       if (FT_Init_FreeType(&mFTLibrary)) {
         throw std::runtime_error("FT_Init_FreeType failed");
       }
 
       FT_Face mFTFace;
-      std::string mFontLocation = System::getPath(cDefFilename, false);
+      std::string mFontLocation = cDefFilename.getPath();
       if (FT_New_Face(mFTLibrary, mFontLocation.c_str(), 0, &mFTFace)) {
         throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
       }
@@ -140,16 +140,16 @@ namespace IsoRealms::Basics {
     });
   }
 
-  void FileFont::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Fonts");
+  void FileFont::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Fonts");
   }
   
-  void FileFont::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void FileFont::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
   
-  void FileFont::save(JSONObject object, IAssetIdentifier* identifier) const {
-    object.addString(JSON_FILENAME, cDefFilename);
+  void FileFont::save(JSONObject object, IAssetIdentifier& identifier) const {
+    cDefFilename.save(JSON_FILENAME, object);
     object.addInteger(JSON_DETAIL, cDefDetail, DEFAULT_DETAIL);
     object.addFloat(JSON_LINE_SPACING, cDefLineSpacing, DEFAULT_LINE_SPACING);
     object.addFloat(JSON_SCALE, cDefScale, DEFAULT_SCALE);
@@ -165,9 +165,15 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> FileFont::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  "File",         cDefFilename));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Detail",       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Scale",        [this]() {return cDefScale;},       [this](float value) {cDefScale       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "X Offset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Y Offset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Line Spacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value; return true;}));
+    return mProperties;
   }
   
   FileFont::~FileFont() {
@@ -255,7 +261,7 @@ namespace IsoRealms::Basics {
       }
       mClosestDistance = mDistance;
     }
-    return static_cast<unsigned int>(text.length()) - 1;
+    return static_cast<unsigned int>(text.length());
   }
 
   bool FileFont::renderAssetIcon() const {
@@ -264,5 +270,13 @@ namespace IsoRealms::Basics {
 
   void FileFont::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> FileFont::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool FileFont::isDefaultConfiguration() const {
+    return true;
   }
 }

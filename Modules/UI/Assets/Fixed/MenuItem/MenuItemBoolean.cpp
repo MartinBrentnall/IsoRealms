@@ -29,14 +29,26 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemBoolean::BINDING_TYPE = "Boolean";
 
-  MenuItemBoolean::MenuItemBoolean(IProject* project, Menu* menu, JSONObject object) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  MenuItemBoolean::MenuItemBoolean(IProject& project, Menu& menu) :
+            cHatHandler(project.getApplication().getHatHandler()),
+            cDefID(""),
+            cDefLabel(""),
+            cDefLabelFalse(""),
+            cDefLabelTrue(""),
+            cLuaBinding(project, this) {
+    project.reset([this]() {
+      cRuntimeValue = false;
+    });
+  }
+
+  MenuItemBoolean::MenuItemBoolean(IProject& project, Menu& menu, JSONObject object) :
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefLabelFalse(object.getString(JSON_FALSE_LABEL)),
             cDefLabelTrue(object.getString(JSON_TRUE_LABEL)),
             cLuaBinding(project, this) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeValue = false;
     });
   }
@@ -49,12 +61,12 @@ namespace IsoRealms::UI {
     return cRuntimeValue;
   }
 
-  void MenuItemBoolean::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  void MenuItemBoolean::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemBoolean::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void MenuItemBoolean::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   bool MenuItemBoolean::input(sf::Event& event) {
@@ -91,7 +103,7 @@ namespace IsoRealms::UI {
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
-    const IColour& mColour = selected ? static_cast<const IColour&>(menu.getSelectionColour())
+    const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     Utils::shadowPrint(-aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::LEFT,  cDefLabel);
     Utils::shadowPrint( aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::RIGHT, cRuntimeValue ? cDefLabelTrue : cDefLabelFalse);
@@ -114,5 +126,18 @@ namespace IsoRealms::UI {
     object.addString(JSON_LABEL,       cDefLabel);
     object.addString(JSON_TRUE_LABEL,  cDefLabelTrue);
     object.addString(JSON_FALSE_LABEL, cDefLabelFalse);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> MenuItemBoolean::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("ID",          [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Label",       [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("True Label",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("False Label", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value; return true;}));
+    return mProperties;
+  }
+
+  bool MenuItemBoolean::isDefaultConfiguration() const {
+    return false; // TODO: Implement this.
   }
 }

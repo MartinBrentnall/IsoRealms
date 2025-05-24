@@ -20,35 +20,51 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Type/IAction.h"
+#include "IsoRealms/ActionExecutor.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
-  class Action final : public IAssetUser<IAction> {
+  class Action final : public IAssetUser<ActionExecutor> {
     public:
-    Action(IProject* project);
+    Action(IProject& project);
 
-    void init(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
-    void set(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
+    void init(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr);
+    void set(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr);
+    void setID(const std::string& id);
     void execute();
+    std::string getID() const;
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfigured() const;
+    bool renderAssetIcon() const;
     void save(JSONObject object, const std::string& name) const;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties();
 
-    IAction* operator*() const {
+    ActionExecutor* operator*() const {
       return cAction;
     }
 
-    /**********************************\
-     * Implements IAssetUser<IAction> *
-    \**********************************/
-    void relinquish(IAction* asset) override;
+    ActionExecutor* operator->() const {
+      return cAction;
+    }
+
+    IApplication& getApplication() {
+      return cProject.getApplication();
+    }
+
+    /*****************************************\
+     * Implements IAssetUser<ActionExecutor> *
+    \*****************************************/
+    void relinquish(ActionExecutor* asset) override;
 
     virtual ~Action();
 
     private:
-    IProject* cProject;
-    IAction* cAction;
+    IProject& cProject;
+    ActionExecutor* cAction;
 
     Action(Action const& action) = delete;
     Action& operator=(Action const& action) = delete;

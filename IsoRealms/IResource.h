@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "Property/IProperty.h"
+#include "Editing/Property/IProperty.h"
 
 namespace IsoRealms {
   class JSONObject;
@@ -28,23 +28,21 @@ namespace IsoRealms {
   class IAssetBrowser;
   class IAssetIdentifier;
   class IAssetRemover;
+  class IAssets;
   class IFont;
-  class IPropertyAppearance;
-  class IPropertyListener;
 
   class IResource {
     private:
     std::string cResourceDataPath;
     
     public:
-    virtual std::vector<IProperty*> getProperties(IAssetBrowser* browser, IPropertyListener* listener) = 0;
-    virtual void finishEditing() = 0;
+    virtual std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser) = 0;
     virtual std::string getName() = 0;
     virtual bool renderIcon() = 0;
     virtual void hintInUse(bool inUse) = 0;
-    virtual void save(JSONObject object, IAssetIdentifier* identifier) = 0;
+    virtual void save(JSONObject object, IAssetIdentifier& identifier) = 0;
     virtual void registerAssets() = 0;
-    virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
+    virtual void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) = 0;
 
     std::string getResourceDataPath() const {
       return cResourceDataPath;

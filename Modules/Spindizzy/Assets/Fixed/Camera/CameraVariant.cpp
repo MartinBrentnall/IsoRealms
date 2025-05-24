@@ -23,38 +23,38 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Spindizzy {
-  CameraVariant::CameraVariant(IProject* project, WorldView* view) :
+  CameraVariant::CameraVariant(IProject& project, WorldView& view) :
             cParent(view),
-            cDefYaw(cParent->getSpindizzy()),
-            cDefPitch(cParent->getSpindizzy()),
-            cDefLocation(cParent->getSpindizzy()),
-            cDefZoom(cParent->getSpindizzy()) {
+            cDefYaw(cParent.getSpindizzy(), view),
+            cDefPitch(cParent.getSpindizzy(), view),
+            cDefLocation(cParent.getSpindizzy(), view),
+            cDefZoom(cParent.getSpindizzy(), view) {
   }
   
-  CameraVariant::CameraVariant(IProject* project, WorldView* view, JSONObject object) :
+  CameraVariant::CameraVariant(IProject& project, WorldView& view, JSONObject object) :
             CameraVariant(project, view) {
-    cDefYaw.set(object.getObject(JSON_YAW), cParent);
-    cDefPitch.set(object.getObject(JSON_PITCH), cParent);
-    cDefLocation.set(object.getObject(JSON_LOCATION), cParent);
-    cDefZoom.set(object.getObject(JSON_ZOOM), cParent);
+    cDefYaw.set(object, JSON_YAW);
+    cDefPitch.set(object, JSON_PITCH);
+    cDefLocation.set(object, JSON_LOCATION);
+    cDefZoom.set(object, JSON_ZOOM);
   }
 
-  void CameraVariant::registerAssets(IAssetRegistry* assets) {
+  void CameraVariant::registerAssets(IAssetRegistry& assets) {
     LocalAssetRegistry mYawRegistry(     assets, "Yaw");
     LocalAssetRegistry mPitchRegistry(   assets, "Pitch");
     LocalAssetRegistry mLocationRegistry(assets, "Location");
     LocalAssetRegistry mZoomRegistry(    assets, "Zoom");
-    cDefYaw->registerAssets(     &mYawRegistry);
-    cDefPitch->registerAssets(   &mPitchRegistry);
-    cDefLocation->registerAssets(&mLocationRegistry);
-    cDefZoom->registerAssets(    &mZoomRegistry);
+    cDefYaw->registerAssets(     mYawRegistry);
+    cDefPitch->registerAssets(   mPitchRegistry);
+    cDefLocation->registerAssets(mLocationRegistry);
+    cDefZoom->registerAssets(    mZoomRegistry);
   }
     
-  void CameraVariant::unregisterAssets(IAssetRemover* assets) {
-    cDefYaw->unregisterAssets(assets);
-    cDefPitch->unregisterAssets(assets);
-    cDefLocation->unregisterAssets(assets);
-    cDefZoom->unregisterAssets(assets);
+  void CameraVariant::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    cDefYaw->unregisterAssets(     assets, relinquish);
+    cDefPitch->unregisterAssets(   assets, relinquish);
+    cDefLocation->unregisterAssets(assets, relinquish);
+    cDefZoom->unregisterAssets(    assets, relinquish);
   }
   
   const IFloat* CameraVariant::getYaw() const {
@@ -109,6 +109,19 @@ namespace IsoRealms::Spindizzy {
     cDefPitch.save(object, JSON_PITCH);
     cDefLocation.save(object, JSON_LOCATION);
     cDefZoom.save(object, JSON_ZOOM);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> CameraVariant::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Location", cDefLocation));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Angle",    cDefYaw));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Tilt",     cDefPitch));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Zoom",     cDefZoom));
+    return mProperties;
+  }
+
+  bool CameraVariant::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 
   const std::string CameraVariant::JSON_LOCATION = "location";

@@ -21,8 +21,11 @@
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 
 namespace IsoRealms::Spindizzy {
+  class Spindizzy;
+
   class PhysicalObjectTypeDummy : public IPhysicalObjectType {
     public:
+    PhysicalObjectTypeDummy(Spindizzy& spindizzy);
     
     /**********************************\
      * Implements IPhysicalObjectType *
@@ -32,5 +35,7 @@ namespace IsoRealms::Spindizzy {
     std::string getBindingID(const IBinding* binding) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }

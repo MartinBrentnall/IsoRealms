@@ -31,6 +31,12 @@
 #include "IsoRealms/ResourceTypeDefinition.h"
 #include "IsoRealms/System.h"
 
+#include "Assets/Fixed/LayoutLocation/LayoutLocationAbsolute.h"
+#include "Assets/Fixed/LayoutLocation/LayoutLocationDummy.h"
+#include "Assets/Fixed/LayoutLocation/LayoutLocationRelative.h"
+#include "Assets/Fixed/LayoutOffset/LayoutOffsetAbsolute.h"
+#include "Assets/Fixed/LayoutOffset/LayoutOffsetDummy.h"
+#include "Assets/Fixed/LayoutOffset/LayoutOffsetLinked.h"
 #include "Assets/Fixed/MenuItem/MenuItemAction.h"
 #include "Assets/Fixed/MenuItem/MenuItemBoolean.h"
 #include "Assets/Fixed/MenuItem/MenuItemDigitalInput.h"
@@ -38,51 +44,77 @@
 #include "Assets/Fixed/MenuItem/MenuItemDummy.h"
 #include "Assets/Fixed/MenuItem/MenuItemFileList.h"
 #include "Assets/Fixed/MenuItem/MenuItemSlider.h"
+#include "Assets/Fixed/Screen/ScreenGradient.h"
+#include "Assets/Fixed/Screen/ScreenModel.h"
+#include "Assets/Fixed/Screen/ScreenPanel.h"
+#include "Assets/Fixed/Screen/ScreenText.h"
+#include "IUI.h"
 #include "Layout/Layout.h"
 #include "Menu/Menu.h"
-#include "Panel/Panel.h"
 #include "Prompt/Prompt.h"
 #include "Throbber/Throbber.h"
 #include "VirtualKeyboard/VirtualKeyboard.h"
 
 namespace IsoRealms::UI {
-  class UI : public IModuleHandle {
+  class UI : public IModuleHandle,
+             public IUI {
     public:
-    UI(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals);
+    UI(IProject& project, IResourceTypeRegistry* registry);
 
     // Interface access (used by all).
-    IProject* getProject() const;
-
+    IProject& getProject() const override;
+    
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject* project, JSONObject object) override;
-    void save(JSONObject object, IAssetIdentifier* identifier) override;
-    void registerAssets(IAssetRegistry* assets) override;
-    void unregisterAssets(IAssetRemover* remover, IAssets* releaser) override;
+    void load(IProject& project, JSONObject object) override;
+    void save(JSONObject object, IAssetIdentifier& identifier) override;
+    void registerAssets(IAssetRegistry& assets) override;
+    void unregisterAssets(IAssetRemover& remover, IAssets& releaser) override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
     
-    IMenuItem* createLiteralMenuItem(IAssetUser<IMenuItem>* user);
+    std::vector<std::string> getAllLayoutLocations() override;
+    std::vector<std::string> getAllLayoutOffsets() override;
+    std::vector<std::string> getAllMenuItems() override;
 
-    IMenuItem* getMenuItem(IAssetUser<IMenuItem>* user, JSONObject object, Menu* owner);
+    std::string getID(const ILayoutLocation* asset) const override;
+    std::string getID(const ILayoutOffset*   asset) const override;
+    std::string getID(const IMenuItem*       asset) const override;
 
-    void release(IAssetUser<IMenuItem>* user, IMenuItem* asset);
+    bool renderLayoutLocationIcon(const std::string& id) const override;
+    bool renderLayoutOffsetIcon(  const std::string& id) const override;
+    bool renderMenuItemIcon(      const std::string& id) const override;
 
-    void save(JSONObject object, IMenuItem* asset) const;
+    bool isLayoutLocationConfigurable(const std::string& id) const override;
+    bool isLayoutOffsetConfigurable(  const std::string& id) const override;
+    bool isMenuItemConfigurable(      const std::string& id) const override;
+
+    ILayoutLocation* createLiteralLayoutLocation(IAssetUser<ILayoutLocation>* user, LayoutComponentEdge& owner) override;
+    ILayoutOffset*   createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner) override;
+    IMenuItem*       createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner) override;
+
+    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, JSONObject object, LayoutComponentEdge& owner) override;
+    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, JSONObject object, LayoutComponentEdge& owner) override;
+    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, JSONObject object, Menu&                owner) override;
+
+    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, const std::string& id, LayoutComponentEdge& owner) override;
+    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, const std::string& id, LayoutComponentEdge& owner) override;
+    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, const std::string& id, Menu&                owner) override;
+
+    void release(IAssetUser<ILayoutLocation>* user, ILayoutLocation* asset) override;
+    void release(IAssetUser<ILayoutOffset>*   user, ILayoutOffset*   asset) override;
+    void release(IAssetUser<IMenuItem>*       user, IMenuItem*       asset) override;
+
+    void save(JSONObject object, ILayoutLocation* asset) const override;
+    void save(JSONObject object, ILayoutOffset*   asset) const override;
+    void save(JSONObject object, IMenuItem*       asset) const override;
 
     private:
     static const std::string ID_RESOURCE_LAYOUT;
     static const std::string ID_RESOURCE_MENU;
-    static const std::string ID_RESOURCE_PANEL;
     static const std::string ID_RESOURCE_PROMPT;
     static const std::string ID_RESOURCE_THROBBER;
     static const std::string ID_RESOURCE_VIRTUAL_KEYBOARD;
-
-    static const std::string NAME_RESOURCE_LAYOUT;
-    static const std::string NAME_RESOURCE_MENU;
-    static const std::string NAME_RESOURCE_PANEL;
-    static const std::string NAME_RESOURCE_PROMPT;
-    static const std::string NAME_RESOURCE_THROBBER;
-    static const std::string NAME_RESOURCE_VIRTUAL_KEYBOARD;
 
     static const std::string MENU_ITEM_ACTION;
     static const std::string MENU_ITEM_BOOLEAN;
@@ -91,14 +123,37 @@ namespace IsoRealms::UI {
     static const std::string MENU_ITEM_FILE_LIST;
     static const std::string MENU_ITEM_SLIDER;
 
-    IProject* cProject;
+    static const std::string LAYOUT_LOCATION_ABSOLUTE;
+    static const std::string LAYOUT_LOCATION_RELATIVE;
+    
+    static const std::string LAYOUT_OFFSET_ABSOLUTE;
+    static const std::string LAYOUT_OFFSET_LINKED;
 
-    AssetClientManager<Menu, IMenuItem> cMenuItems;
+    static const std::string SCREEN_GRADIENT;
+    static const std::string SCREEN_MODEL;
+    static const std::string SCREEN_PANEL;
+    static const std::string SCREEN_TEXT;
+
+    // External interfaces.
+    IProject& cProject;
+    
+    // Asset registries
+    AssetClientManager<LayoutComponentEdge, ILayoutLocation> cLayoutLocations;
+    AssetClientManager<LayoutComponentEdge, ILayoutOffset>   cLayoutOffsets;
+    AssetClientManager<Menu,                IMenuItem>       cMenuItems;
 
     // Dummy asset providers.
-    AssetLiteralDummy<Menu, IMenuItem, MenuItemDummy> cDummyProviderMenuItem;
+    AssetLiteralDummy<LayoutComponentEdge, ILayoutLocation, LayoutLocationDummy> cDummyProviderLayoutLocation;
+    AssetLiteralDummy<LayoutComponentEdge, ILayoutOffset,   LayoutOffsetDummy>   cDummyProviderLayoutOffset;
+    AssetLiteralDummy<Menu,                IMenuItem,       MenuItemDummy>       cDummyProviderMenuItem;
 
-    // Built-in providers for Spindizzy asset types.
+    // Built-in providers for UI asset types.
+    AssetInstanced<LayoutComponentEdge, ILayoutLocation, LayoutLocationAbsolute> cProviderLayoutLocationAbsolute;
+    AssetInstanced<LayoutComponentEdge, ILayoutLocation, LayoutLocationRelative> cProviderLayoutLocationRelative;
+
+    AssetInstanced<LayoutComponentEdge, ILayoutOffset, LayoutOffsetAbsolute> cProviderLayoutOffsetAbsolute;
+    AssetInstanced<LayoutComponentEdge, ILayoutOffset, LayoutOffsetLinked>   cProviderLayoutOffsetLinked;
+
     AssetInstanced<Menu, IMenuItem, MenuItemAction>            cProviderMenuItemAction;
     AssetInstanced<Menu, IMenuItem, MenuItemBoolean>           cProviderMenuItemBoolean;
     AssetInstanced<Menu, IMenuItem, MenuItemDigitalInput>      cProviderMenuItemDigitalInput;
@@ -106,9 +161,14 @@ namespace IsoRealms::UI {
     AssetInstanced<Menu, IMenuItem, MenuItemFileList>          cProviderMenuItemFileList;
     AssetInstanced<Menu, IMenuItem, MenuItemSlider>            cProviderMenuItemSlider;
 
+    // Built-in providers for ad-hoc screens.
+    AssetInstanced<Project, IScreen, ScreenGradient> cProviderScreenGradient;
+    AssetInstanced<Project, IScreen, ScreenModel>    cProviderScreenModel;
+    AssetInstanced<Project, IScreen, ScreenPanel>    cProviderScreenPanel;
+    AssetInstanced<Project, IScreen, ScreenText>     cProviderScreenText;
+
     ResourceTypeDefinition<UI, Layout>          cResourceTypeLayout;
     ResourceTypeDefinition<UI, Menu>            cResourceTypeMenu;
-    ResourceTypeDefinition<UI, Panel>           cResourceTypePanel;
     ResourceTypeDefinition<UI, Prompt>          cResourceTypePrompt;
     ResourceTypeDefinition<UI, Throbber>        cResourceTypeThrobber;
     ResourceTypeDefinition<UI, VirtualKeyboard> cResourceTypeVirtualKeyboard;

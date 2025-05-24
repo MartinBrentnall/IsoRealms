@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
+
 #include "Modules/Spindizzy/Assets/Type/IZoneObjectTypeTrait.h"
 
 namespace IsoRealms::Spindizzy {
@@ -25,7 +27,8 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitPhysics : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitPhysics(IProject* project, ZoneObjectType* type, JSONObject object);
+    ZoneObjectTypeTraitPhysics(IProject& project, ZoneObjectType& type);
+    ZoneObjectTypeTraitPhysics(IProject& project, ZoneObjectType& type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getMovableID() const;
@@ -45,6 +48,8 @@ namespace IsoRealms::Spindizzy {
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     

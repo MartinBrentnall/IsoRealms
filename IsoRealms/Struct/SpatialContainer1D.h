@@ -32,7 +32,7 @@ namespace IsoRealms {
     std::unique_ptr<SpatialContainer1D<T>> cBiggerSpace;
   
     public:
-    SpatialContainer1D<T>() {
+    SpatialContainer1D() {
       cUnit = 8;
       cStepOffset = 0;
       cBiggerSpace = nullptr;

@@ -26,12 +26,18 @@ namespace IsoRealms {
 
   template <class OWNER, class BASE, class TYPE> class AssetInstanced : public IAssetProvider<OWNER, BASE> {
     public:
-    AssetInstanced(IProject* project) :
+    AssetInstanced(IProject& project) :
               cProject(project) {
     }
     
     BASE* getAsset(OWNER& owner, JSONObject object) const override {
-      std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, &owner, object);
+      std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, owner, object);
+      cInstances.emplace_back(std::move(mObject));
+      return cInstances.back().get();
+    }
+
+    BASE* getAsset(OWNER& owner) const override {
+      std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, owner);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
@@ -40,12 +46,16 @@ namespace IsoRealms {
       Utils::removeElementUnique(cInstances, asset);
     }
     
-    void info() const override {
-      std::cout << "WARNING: AssetInstanced::info: TODO: Implement this." << std::endl;
+    bool hasConfiguration() const override {
+      return true; // TODO! Some sequence tracks don't have configuration because events are configured separately.
     }
     
+    bool renderAssetProviderIcon() const override {
+      return false;
+    }
+
     private:
-    IProject* cProject;
+    IProject& cProject;
     mutable std::vector<std::unique_ptr<BASE>> cInstances;
   };
 }

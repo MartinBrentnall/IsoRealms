@@ -38,14 +38,14 @@ namespace IsoRealms::Spindizzy {
   const int CameraGameplay::VALUE_SOUTH_WEST = -135;
   const int CameraGameplay::VALUE_INVALID    =    0;
   
-  CameraGameplay::CameraGameplay(IProject* project, WorldView* view) :
+  CameraGameplay::CameraGameplay(IProject& project, WorldView& view) :
             cPitch(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH),
             cParent(view),
             cDefAngle(VALUE_NORTH_WEST),
             cDefRollDuration(DEFAULT_DURATION),
             cListener(nullptr),
             cLuaBinding(project, this) {
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       if (cRuntimeRollTimeRemaining > 0) {
         cStateNotifier->stateChanged(this);
         if (cListener != nullptr) {
@@ -59,13 +59,13 @@ namespace IsoRealms::Spindizzy {
       }
     });    
     
-    project->reset([this, view]() {
+    project.reset([this]() {
       cRuntimeCurrentValue = cDefAngle;
       cRuntimePreviousValue = cDefAngle;
       cRuntimeRollTimeRemaining = 0U;
 
       // Sensible defaults.
-      World* mWorld = view->getWorld();
+      World* mWorld = cParent.getWorld();
       float mXSize = mWorld->getEndX() - mWorld->getStartX() + 1;
       float mYSize = mWorld->getEndY() - mWorld->getStartY() + 1;
       float mZSize = (mWorld->getEndZ() - mWorld->getStartZ() + 3) / 2.0f;
@@ -77,14 +77,9 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  CameraGameplay::CameraGameplay(IProject* project, WorldView* view, JSONObject object) :
+  CameraGameplay::CameraGameplay(IProject& project, WorldView& view, JSONObject object) :
             CameraGameplay(project, view) {
-    std::string mDirectionName = object.getString(JSON_DIRECTION);
-    cDefAngle = mDirectionName == DIRECTION_NORTH_EAST ? VALUE_NORTH_EAST
-              : mDirectionName == DIRECTION_NORTH_WEST ? VALUE_NORTH_WEST
-              : mDirectionName == DIRECTION_SOUTH_EAST ? VALUE_SOUTH_EAST
-              : mDirectionName == DIRECTION_SOUTH_WEST ? VALUE_SOUTH_WEST
-              :                                          VALUE_INVALID;
+    cDefAngle = getDirectionValue(object.getString(JSON_DIRECTION));
     cDefRollDuration = object.getInteger(JSON_ROTATE_DURATION, DEFAULT_DURATION);
     if (cDefAngle == VALUE_INVALID) {
 // TODO      std::cout << "WARNING: CameraGameplay::CameraGameplay(): Unexpected direction name: \"" << mDirectionName << "\" (using default value VALUE_NORTH_WEST)" << std::endl;
@@ -138,16 +133,16 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void CameraGameplay::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(this, "ViewYaw", "Gameplay Cameras");
-    assets->add(&cPitch, "ViewPitch", "Gameplay Cameras");
-    assets->add(&cLuaBinding, "", "Gameplay Cameras");
+  void CameraGameplay::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, "ViewYaw", "Gameplay Cameras");
+    assets.add(&cPitch, "ViewPitch", "Gameplay Cameras");
+    assets.add(&cLuaBinding, "", "Gameplay Cameras");
   }
     
-  void CameraGameplay::unregisterAssets(IAssetRemover* assets) {
-    assets->remove(this);
-    assets->remove(&cPitch);
-    assets->remove(&cLuaBinding);
+  void CameraGameplay::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cPitch,      relinquish);
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   const IFloat* CameraGameplay::getYaw() const {
@@ -208,12 +203,23 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraGameplay::saveAsset(JSONObject object) const {
-    object.addString(JSON_DIRECTION, cDefAngle == VALUE_NORTH_EAST ? DIRECTION_NORTH_EAST
-                                   : cDefAngle == VALUE_NORTH_WEST ? DIRECTION_NORTH_WEST
-                                   : cDefAngle == VALUE_SOUTH_EAST ? DIRECTION_SOUTH_EAST
-                                   : cDefAngle == VALUE_SOUTH_WEST ? DIRECTION_SOUTH_WEST
-                                   :                                 DIRECTION_INVALID);
+    object.addString(JSON_DIRECTION, getDirectionString());
     object.addInteger(JSON_ROTATE_DURATION, cDefRollDuration);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> CameraGameplay::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyList>(cParent.getWorld()->getSpindizzy().getProject(),
+                             "Initial Angle", 
+                             std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
+                             [this]() {return getDirectionString();},
+                             [this](const std::string& value) {cDefAngle = getDirectionValue(value);}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Rotate Duration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value; return true;}));
+    return mProperties;
+  }
+
+  bool CameraGameplay::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 
   void CameraGameplay::rollTo(float value) {
@@ -227,6 +233,22 @@ namespace IsoRealms::Spindizzy {
     } else if (mChangeAmount > VALUE_MAX) {
       cRuntimePreviousValue -= VALUE_MAX - VALUE_MIN;
     }
+  }
+
+  std::string CameraGameplay::getDirectionString() const {
+    return cDefAngle == VALUE_NORTH_EAST ? DIRECTION_NORTH_EAST
+         : cDefAngle == VALUE_NORTH_WEST ? DIRECTION_NORTH_WEST
+         : cDefAngle == VALUE_SOUTH_EAST ? DIRECTION_SOUTH_EAST
+         : cDefAngle == VALUE_SOUTH_WEST ? DIRECTION_SOUTH_WEST
+         :                                 DIRECTION_INVALID;
+  }
+  
+  int CameraGameplay::getDirectionValue(const std::string& value) {
+    return value == DIRECTION_NORTH_EAST ? VALUE_NORTH_EAST
+         : value == DIRECTION_NORTH_WEST ? VALUE_NORTH_WEST
+         : value == DIRECTION_SOUTH_EAST ? VALUE_SOUTH_EAST
+         : value == DIRECTION_SOUTH_WEST ? VALUE_SOUTH_WEST
+         :                                 VALUE_INVALID;
   }
 
   const std::string CameraGameplay::JSON_DIRECTION       = "direction";

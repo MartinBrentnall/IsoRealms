@@ -26,25 +26,33 @@ namespace IsoRealms {
 
   class AssetConvertedProjectToInteger : public IAssetProvider<Project, IInteger> {
     public:
-    AssetConvertedProjectToInteger(IProject* project) :
+    AssetConvertedProjectToInteger(IProject& project) :
               cProject(project) {
     }
 
     protected:
 
     IInteger* getAsset(Project& project, JSONObject object) const override {
-      IAssets* mAssets = cProject->getAssets(&cDummyUser, object.getObject(JSON_PROJECT));
+      IAssets* mAssets = cProject.getAssets(&cDummyUser, object.getObject(JSON_PROJECT));
       return mAssets->getInteger(&cDummyUser, object.getObject(JSON_VALUE));
 
 //      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(JSON_VALUE), nullptr);})).first->get();
+    }
+
+    IInteger* getAsset(Project& project) const override {
+      return nullptr; // TODO: Implement this.
     }
 
     void releaseAsset(const IInteger* asset) override {
       // TODO: Implement this.
     }
 
-    void info() const override {
-      std::cout << "Extracted integer from sub-project" << std::endl;
+    bool hasConfiguration() const override {
+      return true;
+    }
+
+    bool renderAssetProviderIcon() const override {
+      return false;
     }
 
     private:
@@ -62,7 +70,7 @@ namespace IsoRealms {
       }
     };
 
-    IProject* cProject;
+    IProject& cProject;
     mutable DummyUser cDummyUser;
     mutable std::set<std::unique_ptr<IString>> cConvertedAssets;
   };

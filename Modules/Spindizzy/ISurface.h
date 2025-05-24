@@ -183,7 +183,7 @@ namespace IsoRealms::Spindizzy {
     virtual int getYEnd() const = 0;
     
     virtual IWorldObject* getOwner() = 0;
-    virtual Zone* getZone() = 0;
+    virtual Zone& getZone() = 0;
     
     virtual bool isSolid() = 0;
     

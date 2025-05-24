@@ -64,8 +64,8 @@ namespace IsoRealms::Basics {
     /***************\
      * Constructor *
     \***************/
-    AssetSwitchWithTransition(IProject* project, std::function<TYPE*()> getValue) {
-      project->updateRuntime([this](unsigned int milliseconds) {
+    AssetSwitchWithTransition(IProject& project, std::function<TYPE*()> getValue) {
+      project.updateRuntime([this](unsigned int milliseconds) {
         unsigned int mBaseIndex = 0;
         for (unsigned int i = 1; i < cRuntimeValues.size(); i++) {
           if (cRuntimeValues[i].update(milliseconds)) {
@@ -78,7 +78,7 @@ namespace IsoRealms::Basics {
         }
       });
 
-      project->reset([this, getValue]() {
+      project.reset([this, getValue]() {
         cRuntimeValues.clear();
         cRuntimeValues.emplace_back(getValue(), 0);
       });
@@ -91,15 +91,6 @@ namespace IsoRealms::Basics {
     \**********************/
     void hintInUse(bool inUse) {
       // Nothing to do.
-    }
-
-    bool renderIcon() const {
-      return false;
-    }
-
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-      return std::vector<IProperty*>({
-      });
     }
 
     /***********************\

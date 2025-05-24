@@ -25,6 +25,7 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Types.h"
 #include "IsoRealms/ResourceDefinition.h"
 
@@ -41,14 +42,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    ColourCycler(IProject* project, Basics* basics);
-    ColourCycler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    ColourCycler(IProject& project, Basics& basics, IResourceData& data);
+    ColourCycler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     private:
 
@@ -63,12 +64,13 @@ namespace IsoRealms::Basics {
     // Definition data.
     class ColourCycle : public IColour {
       public:
-      ColourCycle(ColourCycler* parent, float startPosition, float speedMultiplier);
-      void registerAssets(IAssetRegistry* assets, const std::string& name);
-      void unregisterAssets(IAssetRemover* assets);
+      ColourCycle(ColourCycler& parent, float startPosition, float speedMultiplier);
+      void registerAssets(IAssetRegistry& assets, const std::string& name);
+      void unregisterAssets(IAssetRemover& assets, bool relinquish);
       void save(JSONObject object) const;
       void update(unsigned int milliseconds);
       void reset();
+      std::vector<std::unique_ptr<IProperty>> getProperties();
 
       /**********************\
        * Implements IColour *
@@ -79,12 +81,14 @@ namespace IsoRealms::Basics {
       float getBlue() const override;
       float getAlpha() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
 
       private:
-      ColourCycler* cParent;     /// Parent.
+      ColourCycler& cParent;     /// Parent.
 
       // Definition data.
-      float cDeffStartPosition;  /// Offset of the parent set cycle position.
+      float cDefStartPosition;   /// Offset of the parent set cycle position.
       float cDefSpeedMultiplier; /// Speed to multiply by.
 
       // Runtime data.
@@ -100,6 +104,8 @@ namespace IsoRealms::Basics {
       /// Internal Functions.
       void calculateColour();
     };
+
+    IProject& cProject;
     std::vector<std::unique_ptr<Colour>> cDefInputColours;       /// List of input colours to cycle through.
     std::vector<std::unique_ptr<ColourCycle>> cDefOutputColours; /// List of output colours with different cycle offsets.
     Float cDefCycleSpeed;                                        /// Cycle speed.

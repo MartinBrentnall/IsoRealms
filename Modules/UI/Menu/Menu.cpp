@@ -31,8 +31,8 @@ namespace IsoRealms::UI {
   const float Menu::DEFAULT_FONT_SIZE     = 0.05f;
   const float Menu::DEFAULT_SHADOW_OFFSET = 0.008f;
 
-  Menu::Menu(IProject* project, UI* ui) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  Menu::Menu(IProject& project, UI& ui, IResourceData& data) :
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefExitAction(project),
             cDefFont(project),
             cDefColour(project, 1.0f, 1.0f, 1.0f),
@@ -40,7 +40,7 @@ namespace IsoRealms::UI {
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cRuntimeSelectedItem(996),
             cLuaBinding(project, this) {
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       float mPositionY = 0.0f;
       for (unsigned int i = 0; i < cRuntimeSelectedItem; i++) {
         mPositionY -= (*cDefItems[i].get())->getHeight(*this);
@@ -53,16 +53,16 @@ namespace IsoRealms::UI {
       }
     });
     
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeSelectedItem = 0;
       cRuntimeScroll = 0.0f;
     });
   }
   
-  Menu::Menu(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
-            Menu(project, ui) {
+  Menu::Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+            Menu(project, ui, data) {
     for (JSONObject mOptionObject : object.getArray(JSON_OPTIONS)) {
-      cDefItems.emplace_back(std::make_unique<MenuItem>(ui)).get()->set(mOptionObject, JSON_ITEM, this);
+      cDefItems.emplace_back(std::make_unique<MenuItem>(ui, *this)).get()->set(mOptionObject, JSON_ITEM, *this);
     }
     cDefColour.init(object, JSON_COLOUR);
     cDefFont.init(object, JSON_FONT);
@@ -71,25 +71,25 @@ namespace IsoRealms::UI {
     cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
   }
 
-  void Menu::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IScreen*>(this), "", "Menus");
-    assets->add(static_cast<IInputHandler*>(this), "", "Menus");
-    assets->add(&cLuaBinding, "", "System");
+  void Menu::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IScreen*>(this), "", "Menus");
+    assets.add(static_cast<IInputHandler*>(this), "", "Menus");
+    assets.add(&cLuaBinding, "", "System");
     for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
       (*mMenuItem)->registerAssets(assets);
     }
   }
   
-  void Menu::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(&cLuaBinding);
+  void Menu::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IInputHandler*>(this), relinquish);
+    assets.remove(static_cast<IScreen*>(this),       relinquish);
+    assets.remove(&cLuaBinding,                      relinquish);
     for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
-      (*mMenuItem)->unregisterAssets(assets, releaser);
+      (*mMenuItem)->unregisterAssets(assets, releaser, relinquish);
     }
   }
   
-  void Menu::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Menu::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefColour.save(object, JSON_COLOUR);
     cDefFont.save(object, JSON_FONT);
     cDefExitAction.save(object, JSON_ON_EXIT);
@@ -110,9 +110,19 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<IProperty*> Menu::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>("Font", cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Font Size",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Shadow Offset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Exit", cDefExitAction));
+    unsigned int mItemCount = 1;
+    for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<MenuItem>>("Menu Item " + Utils::toString(mItemCount), *mItem.get()));
+      mItemCount++;
+    }
+    return mProperties;
   }
   
   const Font& Menu::getFont() const {
@@ -188,6 +198,14 @@ namespace IsoRealms::UI {
 
   void Menu::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Menu::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Menu::isDefaultConfiguration() const {
+    return true;
   }
 
   void Menu::up() {

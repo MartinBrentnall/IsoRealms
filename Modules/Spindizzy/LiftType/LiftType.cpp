@@ -25,29 +25,29 @@ namespace IsoRealms::Spindizzy {
   const std::string LiftType::JSON_ON_TICK    = "onTick";
   const std::string LiftType::JSON_STATE      = "state";
 
-  LiftType::LiftType(IProject* project, Spindizzy* spindizzy) :
-            cDefSpindizzy(*spindizzy),
+  LiftType::LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
             cDefModel(project),
             cDefActive(project, true),
             cDefTickAction(project) {
   }
   
-  LiftType::LiftType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            LiftType(project, spindizzy) {
+  LiftType::LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            LiftType(project, spindizzy, data) {
     cDefModel.init(object, JSON_APPEARANCE);
     cDefActive.init(object, JSON_STATE);
     cDefTickAction.init(object, JSON_ON_TICK);
   }
 
-  void LiftType::registerAssets(IAssetRegistry* assets) {
+  void LiftType::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
     
-  void LiftType::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void LiftType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
   
-  void LiftType::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void LiftType::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefModel.save(object, JSON_APPEARANCE);
     cDefActive.save(object, JSON_STATE);
     cDefTickAction.save(object, JSON_ON_TICK);
@@ -66,13 +66,16 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<IProperty*> LiftType::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> LiftType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance", cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("State", cDefActive));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Tick Action", cDefTickAction));
+    return mProperties;
   }
 
   LiftType::~LiftType() {
-    cDefSpindizzy.removeAll(this);
+    cSpindizzy.removeAll(this);
   }
   
   void LiftType::registerAssets(ISpindizzyRegistry* registry) {
@@ -91,19 +94,27 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.createInstance();
   }
 
-  IWorldEditorToolInstance* LiftType::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* LiftType::createToolInstance(WorldEditor& editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
   bool LiftType::renderAssetIcon() const {
-    return false;
+    return renderIcon();
   }
 
   void LiftType::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  LiftType::Pen::Pen(LiftType& parent, WorldEditor* editor) :
+  std::vector<std::unique_ptr<IProperty>> LiftType::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool LiftType::isDefaultConfiguration() const {
+    return true;
+  }
+
+  LiftType::Pen::Pen(LiftType& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor),
             cPinnedZone(nullptr) {
@@ -120,7 +131,7 @@ namespace IsoRealms::Spindizzy {
   void LiftType::Pen::renderEditingPreview() const {
     if (cPinnedZone != nullptr) {
       glPushMatrix();
-  //    glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ());
+  //    glTranslatef(cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ());
       if (!cPinnedRange.has_value()) {
         glColor3f(1.0f, 0.5f, 0.5f);
       } else {
@@ -128,9 +139,9 @@ namespace IsoRealms::Spindizzy {
       }
       glLineWidth(3.0);
       glBegin(GL_LINES);
-      Utils::renderVolumeLines(cEditor->getCursorX() - 0.5f, cEditor->getCursorX() + 0.5f,
-                               cEditor->getCursorY() - 0.5f, cEditor->getCursorY() + 0.5f,
-                               cEditor->getCursorZ() * 0.5f, cEditor->getCursorZ() * 0.5f);
+      Utils::renderVolumeLines(cEditor.getCursorX() - 0.5f, cEditor.getCursorX() + 0.5f,
+                               cEditor.getCursorY() - 0.5f, cEditor.getCursorY() + 0.5f,
+                               cEditor.getCursorZ() * 0.5f, cEditor.getCursorZ() * 0.5f);
       glEnd();
       glColor3f(1.0f, 1.0f, 1.0f);
       glTranslatef(cPinnedLocation.cDefX, cPinnedLocation.cDefY, cPinnedLocation.cDefZ * 0.5f + (0.5f * 0.05));
@@ -142,8 +153,8 @@ namespace IsoRealms::Spindizzy {
       glColor3f(1.0, 1.0, 0.0);
       glLineStipple(1, 255);
       glEnable(GL_LINE_STIPPLE);
-      float mRangeA = cEditor->getCursorZ() * 0.5f;
-      float mRangeB = (cPinnedRange.has_value() ? cPinnedRange.value() : cEditor->getCursorZ()) * 0.5f;
+      float mRangeA = cEditor.getCursorZ() * 0.5f;
+      float mRangeB = (cPinnedRange.has_value() ? cPinnedRange.value() : cEditor.getCursorZ()) * 0.5f;
       renderArrowLines(mRangeA, mRangeB);
       glColor3f(1.0, 0.0, 0.0);
       glDisable(GL_LINE_STIPPLE);
@@ -154,7 +165,7 @@ namespace IsoRealms::Spindizzy {
       glPopMatrix();
     } else {
       glPushMatrix();
-      glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f + (0.5f * 0.05));
+      glTranslatef(cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ() * 0.5f + (0.5f * 0.05));
       glColor3f(1.0f, 1.0f, 1.0f);
       cParent.cDefModel.renderPreview();
       glPopMatrix();
@@ -219,9 +230,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void LiftType::Pen::draw() {
-    WorldEditorCursorCell mCursorCell = cEditor->getCursorCell();
+    WorldEditorCursorCell mCursorCell = cEditor.getCursorCell();
     if (cPinnedZone == nullptr) {
-      cPinnedZone = cEditor->getWorld()->getOrDrawZone(mCursorCell, cEditor, nullptr);
+      cPinnedZone = cEditor.getWorld().getOrDrawZone(mCursorCell, cEditor, nullptr);
       cPinnedLocation = mCursorCell;
     } else if (!cPinnedRange.has_value()) {
       cPinnedRange = mCursorCell.cDefZ;
@@ -229,7 +240,7 @@ namespace IsoRealms::Spindizzy {
       int mSecondRange = mCursorCell.cDefZ;
       int mTopRange    = *cPinnedRange > mSecondRange ? *cPinnedRange : mSecondRange;
       int mBottomRange = *cPinnedRange > mSecondRange ? mSecondRange : *cPinnedRange;
-      Lift* mLift = cEditor->getWorld()->draw(&cParent, cPinnedLocation, mBottomRange, mTopRange, cEditor);
+      Lift* mLift = cEditor.getWorld().draw(cParent, cPinnedLocation, mBottomRange, mTopRange, cEditor);
       if (mLift != nullptr) {
         mLift->initialise();
         cPinnedZone = nullptr;
@@ -241,7 +252,7 @@ namespace IsoRealms::Spindizzy {
   bool LiftType::Pen::cancel() {
     if (cPinnedZone != nullptr) {
       if (cPinnedZone->empty()) {
-        cEditor->getWorld()->remove(cPinnedZone);
+        cEditor.getWorld().remove(cPinnedZone);
       }
       cPinnedZone = nullptr;
       cPinnedRange.reset();

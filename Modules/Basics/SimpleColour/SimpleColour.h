@@ -22,6 +22,7 @@
 #include <GL/glew.h>
 #include <iostream>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
@@ -39,14 +40,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    SimpleColour(IProject* project, Basics* basics);
-    SimpleColour(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    SimpleColour(IProject& project, Basics& basics, IResourceData& data);
+    SimpleColour(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**********************\
      * Implements IColour *
@@ -57,6 +58,8 @@ namespace IsoRealms::Basics {
     float getBlue() const override;
     float getAlpha() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -83,6 +86,9 @@ namespace IsoRealms::Basics {
     static const std::string PROPERTY_SATURATION;
     static const std::string PROPERTY_LIGHTNESS;
 
+    // Debug
+    bool cDebug;
+
     // Definition data.
     float cDefRed;   /// Initial red intensity.
     float cDefGreen; /// Initial green intensity.
@@ -105,5 +111,8 @@ namespace IsoRealms::Basics {
 
     // Misc.
     IStateNotifier<IColour>* cStateNotifier;
+
+    // Private functions.
+    void reset();
   };
 }

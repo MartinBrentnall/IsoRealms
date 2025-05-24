@@ -60,6 +60,11 @@ namespace IsoRealms {
     object.addInteger(JSON_BUTTON, cButton);
   }
 
+  std::vector<std::unique_ptr<IProperty>> ButtonMapping::getProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    return mProperties;
+  }
+
   std::string ButtonMapping::getShortName() const {
     return "B" + Utils::toString(cButton);
   }

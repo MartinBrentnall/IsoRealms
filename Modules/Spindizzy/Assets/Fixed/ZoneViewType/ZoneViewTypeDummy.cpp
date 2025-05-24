@@ -21,6 +21,10 @@
 #include "ZoneViewDummy.h"
 
 namespace IsoRealms::Spindizzy {
+  ZoneViewTypeDummy::ZoneViewTypeDummy(WorldView& owner) {
+    // Nothing to do.
+  }
+
   std::unique_ptr<IZoneView> ZoneViewTypeDummy::createZoneView(Zone* zone) {
     return std::make_unique<ZoneViewDummy>();
   }
@@ -30,10 +34,19 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool ZoneViewTypeDummy::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void ZoneViewTypeDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneViewTypeDummy::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneViewTypeDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

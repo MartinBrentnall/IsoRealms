@@ -39,14 +39,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    ZoneObjectType(IProject* project, Spindizzy* spindizzy);
-    ZoneObjectType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     ~ZoneObjectType();
     
@@ -70,9 +70,11 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
@@ -91,7 +93,7 @@ namespace IsoRealms::Spindizzy {
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:
-      Pen(ZoneObjectType& parent, WorldEditor* editor);
+      Pen(ZoneObjectType& parent, WorldEditor& editor);
       
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -108,13 +110,13 @@ namespace IsoRealms::Spindizzy {
       
       private:
       ZoneObjectType& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
       int cEditingTrait;
       Zone* cPinnedZone;
     };
 
     // External interfaces.
-    Spindizzy& cDefSpindizzy; /// Spindizzy module reference.
+    Spindizzy& cSpindizzy; /// Spindizzy module reference.
     
     // Definition data.
     std::map<std::string, IZoneObjectTypeTrait*> cDefTypeTraits; /// Traits of this object type.

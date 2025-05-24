@@ -23,11 +23,12 @@
 
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/Types.h"
 #include "IsoRealms/Utils.h"
 
-#include "ActionTrack.h"
-#include "ColourTrack.h"
-#include "ISequenceTrack.h"
+#include "Modules/Basics/Assets/Client/SequenceTrack.h"
+
+#include "Editor/SequenceEditor.h"
 
 namespace IsoRealms::Basics {
   class Basics;
@@ -36,16 +37,25 @@ namespace IsoRealms::Basics {
    * Resource definition for a sequence.  The Sequence supports various types
    * of track that play in tandem, each of which may do something different.
    */
-  class Sequence final {
+  class Sequence final : public IEditable {
     public:
-    Sequence(IProject* project, Basics* basics);
-    Sequence(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Sequence(IProject& project, Basics& basics, IResourceData& data);
+    Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
-    bool renderIcon();
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    bool renderIcon() const;
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+
+    /************************\
+     * Implements IEditable *
+    \************************/
+    IEditableScreen* createEditableScreen(IsoRealms::Project* project) override;
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -53,30 +63,82 @@ namespace IsoRealms::Basics {
     void play();
     void pause();
     void reset();
+    void stopPreview();
+    void setPreviewPosition(long position);
+    void preview(unsigned int milliseconds);
     void skip(unsigned int milliseconds);
 
     /*********************\
      * Editing Interface *
     \*********************/
+    IProject& getProject() const;
     unsigned int getTrackCount() const;
-    ISequenceTrack* getTrack(unsigned int index) const;
+    SequenceTrack& getTrack(unsigned int track) const;
     unsigned int getDuration() const;
+    void addTrack();
     
     private:
+
+    class Length : public IString {
+      public:
+      Length(Sequence& parent);
+
+      /**********************\
+       * Implements IString *
+      \**********************/
+      std::string getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+      Sequence& cParent;
+    };
+
+    class Position : public IString {
+      public:
+      Position(Sequence& parent);
+
+      /**********************\
+       * Implements IString *
+      \**********************/
+      std::string getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+      Sequence& cParent;
+    };
 
     // JSON members.
     static const std::string JSON_LOOP;
     static const std::string JSON_PLAYING;
     static const std::string JSON_TRACKS;
+    static const std::string JSON_TRACK;
     static const std::string JSON_TYPE;
 
+    // External interfaces.
+    Basics& cBasics;
+
     // Definition data.
-    std::vector<std::unique_ptr<ISequenceTrack>> cDefTracks; /// Tracks in this sequence.
-    bool cDefPlaying;                                        /// Initial state of this sequence.
-    bool cDefLoop;                                           /// Sequence should loop upon reaching the end.
+    std::vector<std::unique_ptr<SequenceTrack>> cDefTracks; /// Tracks in this sequence.
+    bool cDefPlaying;                                       /// Initial state of this sequence.
+    bool cDefLoop;                                          /// Sequence should loop upon reaching the end.
 
     // Runtime data.
     bool cRuntimePlaying; /// Current state of this sequence.
+    int cRuntimePosition; /// Current position of this sequence.
+
+    // Editing data.
+    bool cEditorPlaying; /// Current editor state of this sequence.
+    std::map<IEditableScreen*, std::unique_ptr<SequenceEditor>> cEditors;
+
+    // Exposed data.
+    Length cExposedLength;
+    Position cExposedPosition;
 
     // Scripting interface.
     LuaBinding<Sequence> cLuaBinding;

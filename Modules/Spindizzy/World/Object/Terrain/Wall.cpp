@@ -24,7 +24,9 @@
 #include "Terrain.h"
 
 namespace IsoRealms::Spindizzy {
-  Wall::Wall(int x, int y, int z, int length, int height, int topSlope, int bottomSlope, Direction facing, std::optional<Condition>& condition, TerrainType* type, IWorldObject& owner) :
+  Wall::Wall(int x, int y, int z, int length, int height, int topSlope, int bottomSlope, Direction facing, std::optional<Condition>& condition, TerrainType& type, IWorldObject& owner) :
+            cOwner(owner),
+            cType(type),
             cDefX(x),
             cDefY(y),
             cDefZ(z),
@@ -33,9 +35,7 @@ namespace IsoRealms::Spindizzy {
             cDefTopSlope(topSlope),
             cDefBottomSlope(bottomSlope),
             cDefFacing(facing),
-            cDefCondition(condition),
-            cDefType(type),
-            cDefOwner(owner) {
+            cDefCondition(condition) {
   }
 
   const std::optional<Condition>& Wall::getCondition() {
@@ -102,10 +102,10 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IVisualElement>> Wall::getStaticVisuals() {
     switch (cDefFacing) {
-      case Direction::NORTH: return cDefType->getNorthWallPattern()->getStaticVisuals(this);
-      case Direction::SOUTH: return cDefType->getSouthWallPattern()->getStaticVisuals(this);
-      case Direction::EAST:  return cDefType->getEastWallPattern()->getStaticVisuals(this);
-      case Direction::WEST:  return cDefType->getWestWallPattern()->getStaticVisuals(this);
+      case Direction::NORTH: return cType.getNorthWallPattern()->getStaticVisuals(this);
+      case Direction::SOUTH: return cType.getSouthWallPattern()->getStaticVisuals(this);
+      case Direction::EAST:  return cType.getEastWallPattern()->getStaticVisuals(this);
+      case Direction::WEST:  return cType.getWestWallPattern()->getStaticVisuals(this);
     }
     throw IllegalStateException("WARNING: Wall::getStaticVisuals: cDefFacing has illegal value");
   }
@@ -113,10 +113,10 @@ namespace IsoRealms::Spindizzy {
   void Wall::render() {
     if (!cDefCondition.has_value() || cDefCondition->isTrue()) {
       switch (cDefFacing) {
-        case Direction::NORTH: cDefType->getNorthWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing);  break;
-        case Direction::SOUTH: cDefType->getSouthWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing); break;
-        case Direction::EAST:  cDefType->getEastWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing);  break;
-        case Direction::WEST:  cDefType->getWestWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing);  break;
+        case Direction::NORTH: cType.getNorthWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing);  break;
+        case Direction::SOUTH: cType.getSouthWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing); break;
+        case Direction::EAST:  cType.getEastWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing);  break;
+        case Direction::WEST:  cType.getWestWallPattern()->render(cDefX, cDefY, cDefZ, cDefLength, cDefHeight, cDefTopSlope, cDefBottomSlope, cDefFacing);  break;
       }
     }
     glEnd();
@@ -200,10 +200,10 @@ namespace IsoRealms::Spindizzy {
 
   bool Wall::isAtZoneEdge() {
     switch (cDefFacing) {
-      case Direction::NORTH: return cDefY == cDefOwner.getObjectZone().getEndY();
-      case Direction::SOUTH: return cDefY == cDefOwner.getObjectZone().getStartY();
-      case Direction::EAST:  return cDefX == cDefOwner.getObjectZone().getEndX();
-      case Direction::WEST:  return cDefX == cDefOwner.getObjectZone().getStartX();
+      case Direction::NORTH: return cDefY == cOwner.getObjectZone().getEndY();
+      case Direction::SOUTH: return cDefY == cOwner.getObjectZone().getStartY();
+      case Direction::EAST:  return cDefX == cOwner.getObjectZone().getEndX();
+      case Direction::WEST:  return cDefX == cOwner.getObjectZone().getStartX();
     }
     throw IllegalStateException("WARNING: Wall::isAtZoneEdge(): cDefFacing has illegal value");
   }
@@ -478,7 +478,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   float Wall::getBounce() {
-    return cDefType->getWallBounce();
+    return cType.getWallBounce();
   }
 
   std::unique_ptr<CollisionData> Wall::getSlidingEvent(LiteralVertex& start, LiteralVertex& end, IPhysicalObject* object) {
@@ -536,18 +536,18 @@ namespace IsoRealms::Spindizzy {
   }
 
   IWorldObject* Wall::getOwner() {
-    return &cDefOwner;
+    return &cOwner;
   }
 
-  Zone* Wall::getZone() {
-    return &cDefOwner.getObjectZone();
+  Zone& Wall::getZone() {
+    return cOwner.getObjectZone();
   }
 
   void Wall::bindValues() {
-    cDefOwner.getObjectZone().bindValues2(this);
+    cOwner.getObjectZone().bindValues2(this);
   }
 
   void Wall::unbindValues() {
-    cDefOwner.getObjectZone().unbindValues2();
+    cOwner.getObjectZone().unbindValues2();
   }
 }

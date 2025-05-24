@@ -23,31 +23,31 @@ namespace IsoRealms::Basics {
   const std::string Sprite::JSON_BILLBOARD_YAW   = "billboardYaw";
   const std::string Sprite::JSON_TEXTURE         = "texture";
 
-  Sprite::Sprite(IProject* project, Basics* basics) :
+  Sprite::Sprite(IProject& project, Basics& basics, IResourceData& data) :
             cDefProject(project),
             cDefTexture(project),
             cDefBillboardYaw(false),
             cDefBillboardPitch(false),
             cRuntimeScreen(nullptr) {
-    cDefProject->addScreenListener(this);
+    cDefProject.addScreenListener(this);
   }
   
-  Sprite::Sprite(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            Sprite(project, basics) {
+  Sprite::Sprite(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            Sprite(project, basics, data) {
     cDefTexture.init(object, JSON_TEXTURE);
     cDefBillboardYaw   = object.getBoolean(JSON_BILLBOARD_YAW);
     cDefBillboardPitch = object.getBoolean(JSON_BILLBOARD_PITCH);
   }
 
-  void Sprite::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Sprite Models");
+  void Sprite::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Sprite Models");
   }
 
-  void Sprite::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void Sprite::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
-  void Sprite::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Sprite::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefTexture.save(object, JSON_TEXTURE);
     object.addBoolean(JSON_BILLBOARD_YAW, cDefBillboardYaw);
     object.addBoolean(JSON_BILLBOARD_PITCH, cDefBillboardPitch);
@@ -80,12 +80,15 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  std::vector<IProperty*> Sprite::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Appearance",      cDefTexture));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Yaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Pitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}, browser.getProject()));
+    return mProperties;
   }
 
-  I3DModel* Sprite::createModel() {
+  IModelInstance* Sprite::createModel() {
     return this;
   }
 
@@ -105,6 +108,14 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Sprite::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Sprite::isDefaultConfiguration() const {
+    return true;
+  }
+
   void Sprite::update(unsigned int milliseconds) {
     // Nothing to do.
   }
@@ -115,7 +126,7 @@ namespace IsoRealms::Basics {
     render(0.5f);
   }
 
-  void Sprite::screenAdded(IProject* project, const IScreen* screen) {
+  void Sprite::screenAdded(IProject& project, const IScreen* screen) {
     // Nothing to do.
   }
 
@@ -148,6 +159,6 @@ namespace IsoRealms::Basics {
   }
 
   Sprite::~Sprite() {
-    cDefProject->removeScreenListener(this);
+    cDefProject.removeScreenListener(this);
   }
 }

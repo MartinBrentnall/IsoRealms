@@ -23,6 +23,7 @@
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
+#include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 
 namespace IsoRealms {
@@ -33,8 +34,8 @@ namespace IsoRealms {
    */
   template <class T> class LocalLuaBinding : public IBinding {
     public:
-    LocalLuaBinding(IProject* project, T* value, IBindingRegistry* localBindingRegistry) :
-              cDefLuaState(project->getLuaState()->getState()),
+    LocalLuaBinding(IProject& project, T* value, IBindingRegistry* localBindingRegistry) :
+              cDefLuaState(project.getLuaState()->getState()),
               cDefValue(value),
               cDefLocalBindingRegistry(localBindingRegistry) {
     }
@@ -58,10 +59,46 @@ namespace IsoRealms {
       cDefLocalBindingRegistry->saveBinding(object, this);
     }
 
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
+      return std::vector<std::unique_ptr<IProperty>>();
+    }
+
+    bool isDefaultConfiguration() const override {
+      return true; // TODO?
+    }
+
     void bind(const std::string& bindFunction) const override {
       (*cDefLuaState)[bindFunction](cDefValue);
     }
     
+    std::vector<std::string> getAvailableProviders() const override {
+      return std::vector<std::string>();
+    }
+
+    bool renderProviderIcon(const std::string& id) const override {
+      return false;
+    }
+
+    bool renderWrappedIcon() const override {
+      return false;
+    }
+
+    bool isConfigurable() const override {
+      return false;
+    }
+
+    std::string getID() const override {
+      return "";
+    }
+
+    void set(const std::string& id) override {
+      // Nothing to do.
+    }
+
+    std::vector<std::unique_ptr<IProperty>> getWrappedProperties() override {
+      return std::vector<std::unique_ptr<IProperty>>();
+    }
+
     private:
     sol::state* cDefLuaState;
     T* cDefValue;

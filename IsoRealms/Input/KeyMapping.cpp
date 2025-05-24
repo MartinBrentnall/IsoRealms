@@ -18,6 +18,7 @@
  */
 #include "KeyMapping.h"
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -201,6 +202,12 @@ namespace IsoRealms {
   void KeyMapping::save(JSONObject object) const {
     object.addString(JSON_TYPE, TYPE_KEY_DOWN);
     object.addString(JSON_KEY, getShortName());
+  }
+
+  std::vector<std::unique_ptr<IProperty>> KeyMapping::getProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyKey>("Key", [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;}));
+    return mProperties;
   }
 
   std::string KeyMapping::getShortName() const {

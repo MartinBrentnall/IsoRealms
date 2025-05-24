@@ -24,8 +24,10 @@ namespace IsoRealms {
   template <class OWNER, class TYPE> class IAssetProvider {
     public:
     virtual TYPE* getAsset(OWNER& owner, JSONObject object) const = 0;
+    virtual TYPE* getAsset(OWNER& owner) const = 0;
     virtual void releaseAsset(const TYPE* asset) = 0;
-    virtual void info() const = 0;
+    virtual bool hasConfiguration() const = 0;
+    virtual bool renderAssetProviderIcon() const = 0;
   };
 }
 

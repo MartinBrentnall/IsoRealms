@@ -18,18 +18,23 @@
  */
 #include "Layout.h"
 
-#include "Editor/LayoutEditor.h"
+#include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
   const std::string Layout::JSON_COMPONENTS = "components";
   const std::string Layout::JSON_ID         = "id";
 
-  Layout::Layout(IProject* project, UI* ui) {
-    // Nothing to do.
+  Layout::Layout(IProject& project, UI& ui, IResourceData& data) :
+            cUI(ui) {
+    project.updateEditing([this](unsigned int milliseconds) {
+      for (const std::pair<IEditableScreen* const, std::unique_ptr<LayoutEditor>>& mEditor : cEditors) {
+        mEditor.second->updateScreen(milliseconds);
+      }
+    });
   }
   
-  Layout::Layout(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
-            Layout(project, ui) {
+  Layout::Layout(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+            Layout(project, ui, data) {
     for (JSONObject mComponentObject : object.getArray(JSON_COMPONENTS)) {
       std::string mComponentName = mComponentObject.getString(JSON_ID);
       if (cComponentsByName.find(mComponentName) != cComponentsByName.end()) {
@@ -41,23 +46,23 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IEditable*>(this), "", "Screen Layouts");
-    assets->add(static_cast<IScreen*>(this), "", "Screen Layouts");
+  void Layout::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IEditable*>(this), "", "Screen Layouts");
+    assets.add(static_cast<IScreen*>(this), "", "Screen Layouts");
     for (std::pair<const std::string, LayoutComponent>& mComponent : cComponentsByName) {
       mComponent.second.registerAssets(assets, mComponent.first);
     }
   }
 
-  void Layout::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IEditable*>(this));
-    assets->remove(static_cast<IScreen*>(this));
+  void Layout::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IEditable*>(this), relinquish);
+    assets.remove(static_cast<IScreen*>(this),   relinquish);
     for (LayoutComponent* mComponent : cComponentsByOrder) {
-      mComponent->unregisterAssets(assets);
+      mComponent->unregisterAssets(assets, relinquish);
     }
   }
 
-  void Layout::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Layout::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
     for (LayoutComponent* mComponent : cComponentsByOrder) {
       JSONObject mComponentObject = mComponentsArray.addObject();
@@ -75,9 +80,10 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<IProperty*> Layout::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", this));
+    return mProperties;
   }
 
   void Layout::renderScreen(float scale, float aspectRatio) const {
@@ -94,20 +100,29 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Layout::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Layout::isDefaultConfiguration() const {
+    return true;
+  }
+
   IEditableScreen* Layout::createEditableScreen(IsoRealms::Project* project) {
-//     std::unique_ptr<LayoutEditor> mScreen = std::make_unique<LayoutEditor>(this);
-//     IEditableScreen* mReturnValue = mScreen.get();
-//     cEditors[mReturnValue] = std::move(mScreen);
-//     return mReturnValue;
-    return nullptr;
+    std::unique_ptr<LayoutEditor> mScreen = std::make_unique<LayoutEditor>(*this);
+    IEditableScreen* mReturnValue = mScreen.get();
+    cEditors[mReturnValue] = std::move(mScreen);
+    return mReturnValue;
   }
 
   void Layout::renderEditing(float aspectRatio) const {
-    renderScreen(1.0f, aspectRatio);
+    for (LayoutComponent* mComponent : cComponentsByOrder) {
+      mComponent->renderEditor(1.0f, aspectRatio);
+    }
   }
 
   LayoutComponent* Layout::pickComponent(float x, float y, float aspectRatio) const {
-    for (LayoutComponent* mComponent : cComponentsByOrder) {
+    for (LayoutComponent* mComponent : std::ranges::views::reverse(cComponentsByOrder)) {
       if (mComponent->contains(x, y, aspectRatio)) {
         return mComponent;
       }
@@ -115,6 +130,94 @@ namespace IsoRealms::UI {
     return nullptr;
   }
 
+  LayoutComponent* Layout::pickPreviousComponent(float x, float y, float aspectRatio, LayoutComponent* current) const {
+    if (current == nullptr) {
+      return pickComponent(x, y, aspectRatio);
+    }
+    LayoutComponent* mFirstComponent = nullptr;
+    bool mMatchedCurrent = false;
+    for (LayoutComponent* mComponent : cComponentsByOrder) {
+      if (mComponent->contains(x, y, aspectRatio)) {
+        if (mMatchedCurrent) {
+          return mComponent;
+        }
+        if (mComponent == current) {
+          mMatchedCurrent = true;
+        }
+        if (mFirstComponent == nullptr) {
+          mFirstComponent = mComponent;
+        }
+      }
+    }
+    return mFirstComponent;
+  }
+
+  LayoutComponent* Layout::pickNextComponent(float x, float y, float aspectRatio, LayoutComponent* current) const {
+    LayoutComponent* mFirstComponent = nullptr;
+    bool mMatchedCurrent = false;
+    for (LayoutComponent* mComponent : std::ranges::views::reverse(cComponentsByOrder)) {
+      if (mComponent->contains(x, y, aspectRatio)) {
+        if (mMatchedCurrent) {
+          return mComponent;
+        }
+        if (mComponent == current) {
+          mMatchedCurrent = true;
+        }
+        if (mFirstComponent == nullptr) {
+          mFirstComponent = mComponent;
+        }
+      }
+    }
+    return mFirstComponent;
+  }
+
+  IUI& Layout::getUI() const {
+    return cUI;
+  }
+
+  LayoutComponent* Layout::createComponent(float x1, float y1, float x2, float y2, float aspectRatio) {
+    std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
+    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(cUI.getProject(), *this, x1, y1, x2, y2, aspectRatio));
+    return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
+  }
+  
+  LayoutComponent* Layout::createComponent(LayoutComponent* component) {
+    std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
+    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*component));
+    return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
+  }
+
+  void Layout::deleteComponent(LayoutComponent* component) {
+    Utils::removeElement(cComponentsByOrder, component);
+    cComponentsByName.erase(getName(component));
+  }
+  
+  void Layout::moveComponentBackward(LayoutComponent* component) {
+    int mOldIndex = getIndex(component);
+    if (mOldIndex > 0) {
+      cComponentsByOrder.erase(cComponentsByOrder.begin() + mOldIndex);
+      cComponentsByOrder.insert(cComponentsByOrder.begin() + (mOldIndex - 1), component);
+    }
+  }
+  
+  void Layout::moveComponentForward(LayoutComponent* component) {
+    int mOldIndex = getIndex(component);
+    if (mOldIndex < static_cast<int>(cComponentsByOrder.size()) - 1) {
+      cComponentsByOrder.erase(cComponentsByOrder.begin() + mOldIndex);
+      cComponentsByOrder.insert(cComponentsByOrder.begin() + mOldIndex + 1, component);
+    }
+  }
+  
+  void Layout::moveComponentToBack(LayoutComponent* component) {
+    Utils::removeElement(cComponentsByOrder, component);
+    cComponentsByOrder.insert(cComponentsByOrder.begin(), component);
+  }
+  
+  void Layout::moveComponentToFront(LayoutComponent* component) {
+    Utils::removeElement(cComponentsByOrder, component);
+    cComponentsByOrder.emplace_back(component);
+  }
+  
   LayoutComponent* Layout::getComponent(const std::string& name) {
     std::map<std::string, LayoutComponent>::iterator mNamedComponent = cComponentsByName.find(name);
     if (mNamedComponent == cComponentsByName.end()) {
@@ -123,7 +226,7 @@ namespace IsoRealms::UI {
     return &mNamedComponent->second;
   }
 
-  std::string Layout::getName(LayoutComponent* component) const {
+  std::string Layout::getName(const LayoutComponent* component) const {
     for (const std::pair<const std::string, LayoutComponent>& mComponent : cComponentsByName) {
       if (&mComponent.second == component) {
         return mComponent.first;
@@ -159,5 +262,14 @@ namespace IsoRealms::UI {
       }
     }
     return mRelatableElementNames;
+  }
+  
+  int Layout::getIndex(LayoutComponent* component) const {
+    for (unsigned int i = 0; i < cComponentsByOrder.size(); i++) {
+      if (cComponentsByOrder[i] == component) {
+        return i;
+      }
+    }
+    return -1; // TODO: Throw.
   }
 }

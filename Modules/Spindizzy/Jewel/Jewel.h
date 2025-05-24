@@ -31,42 +31,46 @@ namespace IsoRealms::Spindizzy {
   * frame, with colour cycling panels.  The frame and the panel cycle colours are
   * user configurable.
   */
-  class Jewel final : public I3DModelType {
+  class Jewel final : public IModel {
     public:
       
     /**********************\
      * Resource interface *
     \**********************/
-    Jewel(IProject* project, Spindizzy* spindizzy);
-    Jewel(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
-    /***************************\
-     * Implements I3DModelType *
-    \***************************/
-    I3DModel* createModel() override;
+    /*********************\
+     * Implements IModel *
+    \*********************/
+    IModelInstance* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     class CycleColour {
       public:
-      CycleColour(Jewel* parent, IProject* project, JSONObject object);
+      CycleColour(Jewel& parent, IProject& project);
+      CycleColour(Jewel& parent, IProject& project, JSONObject object);
 
-      void save(JSONObject object, IAssetIdentifier* identifier) const;
-      const IColour* getColour() const;
+      void save(JSONObject object, IAssetIdentifier& identifier) const;
+      const Colour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
+      void getProperties(IAssetBrowser& browser, const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties);
       
       private:
       
       // External interfaces.
-      Jewel* cParent;
+      Jewel& cParent;
       
       // Definition data.
       Colour cDefColour;
@@ -77,15 +81,15 @@ namespace IsoRealms::Spindizzy {
      * coloured frame, with colour cycling panels.  The frame and the panel cycle
      * colours are user configurable.
      */
-    class Instance : public I3DModel {
+    class Instance : public IModelInstance {
       public:
-      Instance(Jewel* parent, IProject* engine);
+      Instance(Jewel& parent, IProject& engine);
       void randomize();
       ~Instance();
       
-      /***********************\
-       * Implements I3DModel *
-      \***********************/
+      /*****************************\
+       * Implements IModelInstance *
+      \*****************************/
       void update(unsigned int) override;
       void render() const override;
       
@@ -97,7 +101,7 @@ namespace IsoRealms::Spindizzy {
       static GLuint cFrameDisplayList;          /// Display list for rendering the jewel frame.
       
       // External interfaces.
-      Jewel* cDefParent;
+      Jewel& cDefParent;
       
       // Runtime data.
       float cProgress; /// Value from 0.0 to < cColoursCycle.size() to determine the actual current panel colour of this model instance.
@@ -110,7 +114,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_FRAME;
 
     // External interfaces.
-    IProject* cEngine; // Required for pre-rendering.
+    IProject& cProject; // Required for pre-rendering.
       
     // Definition data.
     std::vector<std::unique_ptr<Instance>> cInstances;       /// Model instances.  Each instance has a different position.

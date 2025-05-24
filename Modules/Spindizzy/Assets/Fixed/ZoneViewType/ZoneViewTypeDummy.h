@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IProject.h"
 
 #include "Modules/Spindizzy/Assets/Type/IZoneViewType.h"
@@ -27,6 +28,7 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneViewTypeDummy final : public IZoneViewType {
     public:
+    ZoneViewTypeDummy(WorldView& owner);
     
     /****************************\
      * Implements IZoneViewType *
@@ -39,5 +41,7 @@ namespace IsoRealms::Spindizzy {
     \***************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }

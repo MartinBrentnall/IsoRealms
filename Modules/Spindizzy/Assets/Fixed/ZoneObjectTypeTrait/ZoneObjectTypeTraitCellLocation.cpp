@@ -25,9 +25,13 @@
 #include "ZoneObjectTypeTraitCellLocation.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(IProject* project, ZoneObjectType* type, JSONObject object) :
-            cDefType(*type) {
+  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type) :
+            cDefType(type) {
     cDefType.registerEditor(this);
+  }
+
+  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitCellLocation(project, type) {
   }
 
   void ZoneObjectTypeTraitCellLocation::save(JSONObject object) const {
@@ -50,14 +54,22 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  IZoneObjectTraitEditor::InputEditResult ZoneObjectTypeTraitCellLocation::inputEdit(sf::Event& event, WorldEditor* editor) {
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitCellLocation::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectTypeTraitCellLocation::isDefaultConfiguration() const {
+    return true;
+  }
+
+  IZoneObjectTraitEditor::InputEditResult ZoneObjectTypeTraitCellLocation::inputEdit(sf::Event& event, WorldEditor& editor) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
         switch (event.key.code) {
           case sf::Keyboard::Space: {
-            cEditingPinnedX = editor->getCursorCell().cDefX;
-            cEditingPinnedY = editor->getCursorCell().cDefY;
-            cEditingPinnedZ = editor->getCursorCell().cDefZ;
+            cEditingPinnedX = editor.getCursorCell().cDefX;
+            cEditingPinnedY = editor.getCursorCell().cDefY;
+            cEditingPinnedZ = editor.getCursorCell().cDefZ;
             return InputEditResult::COMPLETED;
           }
           
@@ -76,9 +88,9 @@ namespace IsoRealms::Spindizzy {
       case sf::Event::JoystickButtonPressed: {
         switch (event.joystickButton.button) {
           case 0: {
-            cEditingPinnedX = editor->getCursorCell().cDefX;
-            cEditingPinnedY = editor->getCursorCell().cDefY;
-            cEditingPinnedZ = editor->getCursorCell().cDefZ;
+            cEditingPinnedX = editor.getCursorCell().cDefX;
+            cEditingPinnedY = editor.getCursorCell().cDefY;
+            cEditingPinnedZ = editor.getCursorCell().cDefZ;
             return InputEditResult::COMPLETED;
           }
 

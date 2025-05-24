@@ -39,7 +39,8 @@ namespace IsoRealms::UI {
    */
   class MenuItemSlider final : public IMenuItem {
     public:
-    MenuItemSlider(IProject* project, Menu* menu, JSONObject object);
+    MenuItemSlider(IProject& project, Menu& menu);
+    MenuItemSlider(IProject& project, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -50,8 +51,8 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
-    void registerAssets(IAssetRegistry* assets) override;
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
+    void registerAssets(IAssetRegistry& assets) override;
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -64,6 +65,8 @@ namespace IsoRealms::UI {
     \***********************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     
@@ -83,8 +86,9 @@ namespace IsoRealms::UI {
     static const float DEFAULT_MINIMUM;
     static const int DEFAULT_STEPS;
 
-    // Definition data.
     HatHandler& cHatHandler;
+
+    // Definition data.
     std::string cDefID;            /// ID of this menu item for binding.
     std::string cDefLabel;         /// Label to show for this menu item.
     float cDefMinimum;             /// Minimum allowed value of this slider.

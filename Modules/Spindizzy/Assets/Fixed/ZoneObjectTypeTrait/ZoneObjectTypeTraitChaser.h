@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Types.h"
 
@@ -28,7 +29,8 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitChaser : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitChaser(IProject* project, ZoneObjectType* type, JSONObject object);
+    ZoneObjectTypeTraitChaser(IProject& project, ZoneObjectType& type);
+    ZoneObjectTypeTraitChaser(IProject& project, ZoneObjectType& type, JSONObject object);
     
     // Interface to be used by instances.
     const Vertex& getTarget() const;
@@ -42,6 +44,8 @@ namespace IsoRealms::Spindizzy {
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     

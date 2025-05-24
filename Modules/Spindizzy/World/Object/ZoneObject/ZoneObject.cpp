@@ -29,18 +29,18 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObject::JSON_TYPE   = "type";
 
   ZoneObject::ZoneObject(Zone& zone, ZoneObjectType* type) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(type),
             cDefTraits(cDefType->createTraits(*this)) {
     reset();
   }
 
   ZoneObject::ZoneObject(Zone& zone, JSONObject object) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(nullptr) {
     std::cout << "TODO: ZoneObject::ZoneObject" << std::endl;
-//     cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, &node](IAssets* assets) {
-//       cDefType = cDefZone.getWorld()->getSpindizzy()->getZoneObjectType(node.getAttribute(JSON_TYPE));
+//     cZone.getWorld().getSpindizzy()->getProject()->init([this, &node](IAssets& assets) {
+//       cDefType = cZone.getWorld().getSpindizzy()->getZoneObjectType(node.getAttribute(JSON_TYPE));
 //       cDefTraits = cDefType->createTraits(*this);
 //       registerAssets();
 //
@@ -85,7 +85,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void ZoneObject::save(JSONObject object) const {
-    object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
     JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       if (mPair.second->hasConfiguration()) {
@@ -223,8 +223,8 @@ namespace IsoRealms::Spindizzy {
     return mIterator->second;
   }
 
-  Zone* ZoneObject::getZone() {
-    return &cDefZone;
+  Zone& ZoneObject::getZone() {
+    return cZone;
   }
   
   bool ZoneObject::contains(const LiteralVertex& location) const {
@@ -243,10 +243,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void ZoneObject::remove() {
-    cDefZone.remove(this);
+    cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObject::getProperties(IPropertyAppearance* appearance) {
+  std::vector<std::unique_ptr<IProperty>> ZoneObject::getProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -255,7 +255,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   Zone& ZoneObject::getObjectZone() {
-    return cDefZone;
+    return cZone;
   }
 
   ZoneObject::TraitRegistry::TraitRegistry(ZoneObject& parent, const std::string& id) :

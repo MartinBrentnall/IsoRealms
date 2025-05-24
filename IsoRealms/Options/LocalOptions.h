@@ -28,7 +28,7 @@ namespace IsoRealms {
    */
   class LocalOptions : public IOptions {
     public:
-    LocalOptions(const std::string& branch, IOptions* options);
+    LocalOptions(const std::string& branch, IOptions& options);
 
     /***********************\
      * Implements IOptions *
@@ -37,7 +37,7 @@ namespace IsoRealms {
     Options getFixedOptions() override;
     
     private:
-    IOptions* cOptions;
+    IOptions& cOptions;
     std::string cBranch;
   };
 }

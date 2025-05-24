@@ -23,7 +23,7 @@
 
 namespace IsoRealms::Spindizzy {
   PhysicsObject::PhysicsObject(Spindizzy& spindizzy, IPhysicalObject* object) : //, IMovableObject* movable) :
-            cDefSpindizzy(spindizzy),
+            cSpindizzy(spindizzy),
             cObject(object),
             cPresent(true),
 //            cMovable(movable),
@@ -70,9 +70,9 @@ namespace IsoRealms::Spindizzy {
     cSurface = surface;
     setPhysicalState(state);
     LiteralFloat mFallDistance(fallHeight);
-    cDefSpindizzy.bindFallDistance(&mFallDistance);
-    cDefSpindizzy.bindLaunchLocation(&cLaunchLocation);
-    cDefSpindizzy.bindLaunchMomentum(&cLaunchMomentum);
+    cSpindizzy.bindFallDistance(&mFallDistance);
+    cSpindizzy.bindLaunchLocation(&cLaunchLocation);
+    cSpindizzy.bindLaunchMomentum(&cLaunchMomentum);
     cObject->impactSurface();
 
     // Object may have been destroyed by surface impact.
@@ -88,7 +88,7 @@ namespace IsoRealms::Spindizzy {
     cSurface = surface;
     cSurface->notifyImpact();
     LiteralFloat mFallDistance(fallHeight);
-    cDefSpindizzy.bindFallDistance(&mFallDistance);
+    cSpindizzy.bindFallDistance(&mFallDistance);
     cObject->bounceSurface();
     setPhysicalState(state);
   }

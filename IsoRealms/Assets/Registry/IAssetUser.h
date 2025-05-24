@@ -21,7 +21,6 @@
 #include <string>
 
 namespace IsoRealms {
-  class IAssetLiterals;
   
   /**
    * Interface to be implemented by resources that use assets, to be notified

@@ -23,6 +23,7 @@
 
 #include <SFML/Audio.hpp>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
@@ -41,14 +42,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    FileSound(IProject* project, Basics* basics);
-    FileSound(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const override;
+    FileSound(IProject& project, Basics& basics, IResourceData& data);
+    FileSound(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const override;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Interface called by module when adjusting global sound volume.
     void setVolume(float volume);
@@ -56,27 +57,30 @@ namespace IsoRealms::Basics {
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) override;
-    IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
-    void destroyAction(IAction* action, IAssets* assets) override;
+    IAction* createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) override;
+    IAction* createAction(IProject& project, IBindingRegistry* localArgs) override;
+    void destroyAction(IAction* action, IAssets& assets) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    bool hasConfiguration() const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /**********************\
-      * Implements IAction *
+     * Implements IAction *
     \**********************/
     void execute() override;
-    const IActionType* getActionType() const override;
-    bool hasConfiguration() const override;
 
     private:
 
     // JSON members.
     static const std::string JSON_FILENAME;
 
+    // External interfaces.
+    Basics& cDefBasics; /// Module holding the global sound volume.
+    
     // Definition data.
-    Basics* cDefBasics;   /// Module holding the global sound volume.
-    std::string cDefFile; /// Filename containing the sound to play.
+    File cDefFile;      /// Filename containing the sound to play.
 
     // Runtime data.
     static std::mutex cRuntimeLoadMutex;  /// Make sure only one sound is loaded at a time.

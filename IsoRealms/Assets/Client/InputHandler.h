@@ -25,35 +25,22 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class InputHandler : public IAssetUser<IInputHandler> {
-    private:
-    IProject* cProject;
-    IInputHandler* cInputHandler;
-
-    InputHandler(InputHandler const& inputHandler) = delete;
-    InputHandler& operator=(InputHandler const& inputHandler) = delete;
-    
+  class InputHandler : public Asset<IInputHandler, IProject> {
     public:
-    InputHandler(IProject* project);
+    InputHandler(IProject& project);
 
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    IInputHandler* operator->() const {
-      return cInputHandler;
-    }
-
-    IInputHandler* operator*() const {
-      return cInputHandler;
-    }
-
-    /****************************************\
-     * Implements IAssetUser<IInputHandler> *
-    \****************************************/
-    void relinquish(IInputHandler* asset) override;
-
-    virtual ~InputHandler();
+    /*********************************************\
+     * Implements Asset<IInputHandler, IProject> *
+    \*********************************************/
+    IInputHandler* createLiteralAsset(IProject& project) override;
+    IInputHandler* getAsset(IProject& project, JSONObject object) override;
+    IInputHandler* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
   };
 }

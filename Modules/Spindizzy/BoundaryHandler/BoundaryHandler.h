@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
@@ -44,14 +45,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    BoundaryHandler(IProject* project, Spindizzy* spindizzy);
-    BoundaryHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Boundary handler interface.
     const BoundaryType* getBoundaryType() const;
@@ -82,8 +83,10 @@ namespace IsoRealms::Spindizzy {
     static const std::string BIND_TO_BOUNDARY;
     static const std::string BIND_TO_OBJECT;
 
+    // External interfaces.
+    Spindizzy& cSpindizzy;
+
     // Definition data.
-    Spindizzy& cDefSpindizzy;
     BoundaryType cDefBoundaryType;     /// Boundary type to handle.
     PhysicalObjectType cDefObjectType; /// Object type to handle.
     Action cDefEnteredAction;          /// Action to execute upon object entering a boundary.

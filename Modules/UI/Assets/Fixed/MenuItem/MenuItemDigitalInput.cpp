@@ -26,11 +26,22 @@ namespace IsoRealms::UI {
   
   const std::string MenuItemDigitalInput::BINDING_TYPE = "DigitalInput";
   
-  MenuItemDigitalInput::MenuItemDigitalInput(IProject* project, Menu* menu, JSONObject object) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu) :
+            cHatHandler(project.getApplication().getHatHandler()),
+            cDefID(""),
+            cLuaBinding(project, this) {
+    project.reset([this]() {
+      cRuntimeSelectedMapping = 0;
+      cRuntimeAddingMapping = false;
+      clear();
+    });
+  }
+
+  MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu, JSONObject object) :
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cLuaBinding(project, this) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeSelectedMapping = 0;
       cRuntimeAddingMapping = false;
       clear();
@@ -53,12 +64,12 @@ namespace IsoRealms::UI {
     return cRuntimeMappings[index];
   }
   
-  void MenuItemDigitalInput::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  void MenuItemDigitalInput::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemDigitalInput::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void MenuItemDigitalInput::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   bool MenuItemDigitalInput::input(sf::Event& event) {
@@ -125,7 +136,7 @@ namespace IsoRealms::UI {
     const Font& mFont = menu.getFont();
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
-    const IColour& mSelectionColour = menu.getSelectionColour();
+    const IColour& mSelectionColour = **menu.getSelectionColour();
     const IColour& mRegularColour = LiteralColour(1.0f, 1.0f, 1.0f);
     for (unsigned int i = 0; i < cRuntimeMappings.size(); i++) {
       float mY = y - i * mFontSize * 2.0f;
@@ -149,6 +160,16 @@ namespace IsoRealms::UI {
 
   void MenuItemDigitalInput::saveAsset(JSONObject object) const {
     object.addString(JSON_ID, cDefID);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> MenuItemDigitalInput::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("ID", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value; return true;}));
+    return mProperties;
+  }
+
+  bool MenuItemDigitalInput::isDefaultConfiguration() const {
+    return false; // TODO: Implement this.
   }
 
   bool MenuItemDigitalInput::up() {

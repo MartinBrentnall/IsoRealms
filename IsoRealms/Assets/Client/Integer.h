@@ -25,35 +25,22 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Integer : public IAssetUser<IInteger> {
-    private:
-    IProject* cProject;
-    IInteger* cInteger;
-
-    Integer(Integer const& integer) = delete;
-    Integer& operator=(Integer const& integer) = delete;
-    
+  class Integer : public Asset<IInteger, IProject> {
     public:
-    Integer(IProject* project);
+    Integer(IProject& project);
 
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    IInteger* operator->() const {
-      return cInteger;
-    }
-
-    IInteger* operator*() const {
-      return cInteger;
-    }
-
-    /***********************************\
-     * Implements IAssetUser<IInteger> *
-    \***********************************/
-    void relinquish(IInteger* asset) override;
-
-    virtual ~Integer();
+    /****************************************\
+     * Implements Asset<IInteger, IProject> *
+    \****************************************/
+    IInteger* createLiteralAsset(IProject& project) override;
+    IInteger* getAsset(IProject& project, JSONObject object) override;
+    IInteger* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
   };
 }

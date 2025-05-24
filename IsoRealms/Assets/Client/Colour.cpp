@@ -18,53 +18,49 @@
  */
 #include "Colour.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Colour::Colour(IProject* project, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
-            cProject(project),
+  Colour::Colour(IProject& project, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
+            Asset<IColour, IProject>(project, project.createLiteralColour(this, defaultRed, defaultGreen, defaultBlue, defaultAlpha)),
             cDefaultRed(defaultRed),
             cDefaultGreen(defaultGreen),
             cDefaultBlue(defaultBlue),
             cDefaultAlpha(defaultAlpha),
-            cColour(cProject->createLiteralColour(this, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha)),
             cListener(listener) {
   }
 
-  void Colour::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IColour* Colour::createLiteralAsset(IProject& project) {
+    return project.createLiteralColour(this, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
+  }
+  
+  IColour* Colour::getAsset(IProject& project, JSONObject object) {
+    return project.getColour(this, object, cListener != nullptr ? this : nullptr);
+  }
+  
+  IColour* Colour::getAsset(IProject& project, const std::string& id) {
+    return project.getColour(this, id, cListener != nullptr ? this : nullptr);
+  }
+  
+  std::vector<std::string> Colour::getAvailableProviders() const {
+    return cManager.getAllColours();
+  }  
+
+  bool Colour::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderColourIcon(id);
   }
 
-  void Colour::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cColour);
-    cColour = cProject->getColour(this, mAssetObject, cListener != nullptr ? this : nullptr);
+  bool Colour::hasConfiguration() const {
+    return cManager.isColourConfigurable(getID());
   }
 
-  void Colour::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cColour);
+  bool Colour::isDefaultConfiguration() const {
+    return true;
   }
 
-  void Colour::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Colour::relinquish(IColour* asset) {
-    if (cColour == asset) {
-      cColour = cProject->createLiteralColour(this, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
-    }
-  }
-
-  void Colour::stateChanged(IColour* colour) {
-    if (colour == cColour) {
+  void Colour::stateChanged(IColour* value) {
+    if (value == cAsset && cListener != nullptr) {
       cListener();
-    }
-  }
-
-  Colour::~Colour() {
-    if (cColour != nullptr) {
-      cProject->release(this, cColour);
     }
   }
 }

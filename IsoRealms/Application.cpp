@@ -193,10 +193,10 @@ namespace IsoRealms {
     return (float) cAvailableResolutions[cSelectedResolution].getHeight() / (float) cAvailableResolutions[cSelectedResolution].getWidth();
   }
 
-  ScreenLocation Application::normalise(const int x, const int y) const {
+  Point2D Application::normalise(const int x, const int y) const {
     float mHalfScreenWidth  = cAvailableResolutions[cSelectedResolution].getWidth()  / 2.0f;
     float mHalfScreenHeight = cAvailableResolutions[cSelectedResolution].getHeight() / 2.0f;
-    return ScreenLocation((x - mHalfScreenWidth) / mHalfScreenWidth, -(y - mHalfScreenHeight) / mHalfScreenHeight);
+    return Point2D((x - mHalfScreenWidth) / mHalfScreenWidth / getScreenAspectRatio(), -(y - mHalfScreenHeight) / mHalfScreenHeight);
   }
 
   float Application::normalise(int pixels) const {
@@ -206,13 +206,14 @@ namespace IsoRealms {
   ScreenArea Application::crop(const ScreenArea& area) const {
     float mHalfScreenWidth  = cAvailableResolutions[cSelectedResolution].getWidth()  / 2.0f;
     float mHalfScreenHeight = cAvailableResolutions[cSelectedResolution].getHeight() / 2.0f;
-    
-    int mLeft   = static_cast<int>(area.getLeft()   * mHalfScreenWidth  + mHalfScreenWidth);
-    int mRight  = static_cast<int>(area.getRight()  * mHalfScreenWidth  + mHalfScreenWidth);
-    int mBottom = static_cast<int>(area.getBottom() * mHalfScreenHeight + mHalfScreenHeight);
-    int mTop    = static_cast<int>(area.getTop()    * mHalfScreenHeight + mHalfScreenHeight);
+    float mAspectRatio = 1.0f / getScreenAspectRatio();
+    int mLeft   = static_cast<int>(area.getLeft()  / mAspectRatio * mHalfScreenWidth  + mHalfScreenWidth);
+    int mRight  = static_cast<int>(area.getRight() / mAspectRatio * mHalfScreenWidth  + mHalfScreenWidth);
+    int mBottom = static_cast<int>(area.getBottom()               * mHalfScreenHeight + mHalfScreenHeight);
+    int mTop    = static_cast<int>(area.getTop()                  * mHalfScreenHeight + mHalfScreenHeight);
     int mOldScissorBoxValues[4];
     glGetIntegerv(GL_SCISSOR_BOX, mOldScissorBoxValues);
+
     if (mLeft > 0 && mTop > 0 && mRight < static_cast<int>(cAvailableResolutions[cSelectedResolution].getWidth()) && mBottom < static_cast<int>(cAvailableResolutions[cSelectedResolution].getHeight())) {
       glEnable(GL_SCISSOR_TEST);
       glScissor(mLeft + 1, mBottom + 1, (mRight - mLeft) - 1, (mTop - mBottom) - 1);
@@ -273,7 +274,7 @@ namespace IsoRealms {
   
   void Application::resizeScreen() {
     cWindow.create(sf::VideoMode(cAvailableResolutions[cSelectedResolution].getWidth(), cAvailableResolutions[cSelectedResolution].getHeight()),
-                   "IsoRealms Spindizzy",
+                   "IsoRealms TripPlayer",
                    sf::Style::Titlebar | sf::Style::Close | (cFullScreen ? sf::Style::Fullscreen : 0),
                    sf::ContextSettings(24, 0, 4, 4, 6));
 

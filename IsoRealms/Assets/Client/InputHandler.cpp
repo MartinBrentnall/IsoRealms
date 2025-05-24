@@ -18,39 +18,38 @@
  */
 #include "InputHandler.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  InputHandler::InputHandler(IProject* project) :
-            cProject(project),
-            cInputHandler(cProject->createLiteralInputHandler(this)) {
+  InputHandler::InputHandler(IProject& project) : 
+            Asset<IInputHandler, IProject>(project, project.createLiteralInputHandler(this)) {
   }
 
-  void InputHandler::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IInputHandler* InputHandler::createLiteralAsset(IProject& project) {
+    return project.createLiteralInputHandler(this);
+  }
+  
+  IInputHandler* InputHandler::getAsset(IProject& project, JSONObject object) {
+    return project.getInputHandler(this, object);
+  }
+  
+  IInputHandler* InputHandler::getAsset(IProject& project, const std::string& id) {
+    return project.getInputHandler(this, id);
+  }
+  
+  std::vector<std::string> InputHandler::getAvailableProviders() const {
+    return cManager.getAllInputHandlers();
+  }  
+
+  bool InputHandler::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderInputHandlerIcon(id);
   }
 
-  void InputHandler::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cInputHandler);
-    cInputHandler = cProject->getInputHandler(this, mAssetObject);
-  }
+  bool InputHandler::hasConfiguration() const {
+    return cManager.isInputHandlerConfigurable(getID());
+  }  
 
-  void InputHandler::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cInputHandler);
-  }
-
-  void InputHandler::relinquish(IInputHandler* asset) {
-    if (cInputHandler == asset) {
-      cInputHandler = cProject->createLiteralInputHandler(this);
-    }
-  }
-
-  InputHandler::~InputHandler() {
-    if (cInputHandler != nullptr) {
-      cProject->release(this, cInputHandler);
-    }
+  bool InputHandler::isDefaultConfiguration() const {
+    return true;
   }
 }
-

@@ -34,9 +34,9 @@ namespace IsoRealms::Spindizzy {
   const std::string Lift::JSON_Y            = "y";
   const std::string Lift::JSON_Z            = "z";
 
-  Lift::Lift(Zone& zone, LiftType* type, int x, int y, int z, int bottom, int top) :
-            cDefZone(zone),
-            cDefType(type),
+  Lift::Lift(Zone& zone, LiftType& type, int x, int y, int z, int bottom, int top) :
+            cZone(zone),
+            cDefType(&type),
             cDefModel(cDefType->createModel()),
             cDefX(x),
             cDefY(y),
@@ -52,7 +52,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   Lift::Lift(Zone& zone, Lift& lift, int x, int y, int z) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(lift.cDefType),
             cDefModel(cDefType->createModel()),
             cDefX(lift.cDefX + x),
@@ -69,28 +69,28 @@ namespace IsoRealms::Spindizzy {
   }
 
   Lift::Lift(Zone& zone, JSONObject object) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(nullptr),
             cDefModel(nullptr),
-            cDefX(object.getInteger(JSON_X) + cDefZone.getStartX()),
-            cDefY(object.getInteger(JSON_Y) + cDefZone.getStartY()),
-            cDefZ(object.getInteger(JSON_Z) + cDefZone.getStartZ()),
-            cDefTop(object.getInteger(JSON_TOP) + cDefZone.getStartZ()),
-            cDefBottom(object.getInteger(JSON_BOTTOM) + cDefZone.getStartZ()),
+            cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
+            cDefY(object.getInteger(JSON_Y) + cZone.getStartY()),
+            cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
+            cDefTop(object.getInteger(JSON_TOP) + cZone.getStartZ()),
+            cDefBottom(object.getInteger(JSON_BOTTOM) + cZone.getStartZ()),
             cDefTopPause(object.getInteger(JSON_TOP_PAUSE)),
             cDefBottomPause(object.getInteger(JSON_BOTTOM_PAUSE)),
             cDefSpeedUp(object.getInteger(JSON_UP_SPEED)),
             cDefSpeedDown(object.getInteger(JSON_DOWN_SPEED)),
             cSurface(*this) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getLiftType(object.getString(JSON_TYPE));
+    cZone.getWorld().getSpindizzy().getProject().init([this, object](IAssets& assets) {
+      cDefType = cZone.getWorld().getSpindizzy().getLiftType(object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();
     });
   }
 
   void Lift::initialise() {
-    cDefZone.getWorld()->attachPhysicalSurface(&cSurface, true);
+    cZone.getWorld().attachPhysicalSurface(&cSurface, true);
   }
 
   void Lift::reset() {
@@ -99,7 +99,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Lift::save(JSONObject object, int x, int y, int z) {
-    object.addString(JSON_TYPE,          cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    object.addString(JSON_TYPE,          cZone.getWorld().getSpindizzy().getID(cDefType));
     object.addInteger(JSON_X,            cDefX - x);
     object.addInteger(JSON_Y,            cDefY - y);
     object.addInteger(JSON_Z,            cDefZ - z);
@@ -117,7 +117,7 @@ namespace IsoRealms::Spindizzy {
 
   void Lift::updateRuntime(unsigned int milliseconds) {
     cDefModel->update(milliseconds);
-    if (cDefType->isActive() && !cDefZone.getWorld()->getSpindizzy()->isPaused()) {
+    if (cDefType->isActive() && !cZone.getWorld().getSpindizzy().isPaused()) {
       int mOldHeight = static_cast<int>(getHeight(cRuntimeState));
       State mOldState = cRuntimeState.cState;
       cRuntimeState = getZLocationAfter(milliseconds);
@@ -260,8 +260,8 @@ namespace IsoRealms::Spindizzy {
     return cDefZ;
   }
   
-  Zone* Lift::Surface::getZone() {
-    return &cParent.cDefZone;
+  Zone& Lift::Surface::getZone() {
+    return cParent.cZone;
   }
 
   bool Lift::Surface::isSolid() {
@@ -269,7 +269,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::unique_ptr<Lift::LiftSurfaceEvent> Lift::getEvent(double startTime, double endTime) {
-    if (cDefType->isActive() && !cDefZone.getWorld()->getSpindizzy()->isPaused()) {
+    if (cDefType->isActive() && !cZone.getWorld().getSpindizzy().isPaused()) {
       double mMillisecondsProcessed = 0.0;
       LiftValues mState = cRuntimeState;
       if (cDefTop != cDefBottom || cDefTopPause != 0 || cDefBottomPause != 0) {      
@@ -286,7 +286,7 @@ namespace IsoRealms::Spindizzy {
               case State::MOVING_DOWN:    {mState.cState = State::PAUSED_BOTTOM;      mState.cDelay = cDefBottomPause;                    break;}
             }
             if (mMillisecondsProcessed > startTime) {
-              return std::make_unique<LiftSurfaceEvent>(this, mState, mMillisecondsProcessed - startTime);
+              return std::make_unique<LiftSurfaceEvent>(*this, mState, mMillisecondsProcessed - startTime);
             }
           } else {
             mMillisecondsProcessed = endTime;
@@ -564,8 +564,8 @@ namespace IsoRealms::Spindizzy {
     };
   }
 
-  Lift::LiftSurfaceEvent::LiftSurfaceEvent(Lift* parent, LiftValues state, double time) {
-    cParent = parent;
+  Lift::LiftSurfaceEvent::LiftSurfaceEvent(Lift& parent, LiftValues state, double time) :
+            cParent(parent) {
     cState  = state;
     cTime   = time;
   }
@@ -580,16 +580,22 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Lift::remove() {
-    cDefZone.remove(this);
+    cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Lift::getProperties(IPropertyAppearance* appearance) {
+  std::vector<std::unique_ptr<IProperty>> Lift::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(appearance, "Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
-      cDefTopPause = value ? 1500 : 0;
-      cDefBottomPause = value ? 1500 : 0;
-      std::cout << "SETTING LIFT PAUSE: " << cDefTopPause << std::endl;
-    }));
+    if (cZone.getWorld().isBasicProperties()) {
+      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
+        cDefTopPause = value ? 1500 : 0;
+        cDefBottomPause = value ? 1500 : 0;
+      }, cZone.getWorld().getSpindizzy().getProject()));
+    } else {
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Bottom Pause", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value; return true;}));
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Top Pause",    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value; return true;}));
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Up Speed",     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value; return true;}));
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Down Speed",   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value; return true;}));
+    }
     return mProperties;
   }
 
@@ -598,6 +604,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   Zone& Lift::getObjectZone() {
-    return cDefZone;
+    return cZone;
   }
 }

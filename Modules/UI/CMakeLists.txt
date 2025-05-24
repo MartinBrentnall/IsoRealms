@@ -24,7 +24,15 @@ else(LUA_FOUND)
 endif(LUA_FOUND)
 
 add_library(UI MODULE
+  Assets/Client/LayoutLocation.cpp
+  Assets/Client/LayoutOffset.cpp
   Assets/Client/MenuItem.cpp
+  Assets/Fixed/LayoutOffset/LayoutOffsetAbsolute.cpp
+  Assets/Fixed/LayoutOffset/LayoutOffsetDummy.cpp
+  Assets/Fixed/LayoutOffset/LayoutOffsetLinked.cpp
+  Assets/Fixed/LayoutLocation/LayoutLocationAbsolute.cpp
+  Assets/Fixed/LayoutLocation/LayoutLocationDummy.cpp
+  Assets/Fixed/LayoutLocation/LayoutLocationRelative.cpp
   Assets/Fixed/MenuItem/MenuItemAction.cpp
   Assets/Fixed/MenuItem/MenuItemBoolean.cpp
   Assets/Fixed/MenuItem/MenuItemDigitalInput.cpp
@@ -32,15 +40,15 @@ add_library(UI MODULE
   Assets/Fixed/MenuItem/MenuItemDummy.cpp
   Assets/Fixed/MenuItem/MenuItemFileList.cpp
   Assets/Fixed/MenuItem/MenuItemSlider.cpp
+  Assets/Fixed/Screen/ScreenGradient.cpp
+  Assets/Fixed/Screen/ScreenModel.cpp
+  Assets/Fixed/Screen/ScreenPanel.cpp
+  Assets/Fixed/Screen/ScreenText.cpp
   Layout/Editor/LayoutEditor.cpp
   Layout/Layout.cpp
   Layout/LayoutComponent.cpp
-  Layout/Offset/AbsoluteOffset.cpp
-  Layout/Offset/LinkedOffset.cpp
-  Layout/Location/AbsoluteLocation.cpp
-  Layout/Location/RelativeLocation.cpp
+  Layout/LayoutComponentEdge.cpp
   Menu/Menu.cpp
-  Panel/Panel.cpp
   Prompt/Prompt.cpp
   Throbber/Throbber.cpp
   VirtualKeyboard/VirtualKeyboard.cpp

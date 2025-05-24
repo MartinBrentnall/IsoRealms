@@ -8,7 +8,7 @@
       "key": "Basics/InputGroup/Score"
     },
     "editor": {
-      "key": "Literal"
+      "key": "None"
     },
     "quit": {
       "key": "Quit"
@@ -127,7 +127,9 @@
             "instances": [
               {
                 "id": "LayoutFont",
-                "filename": "Fonts/BubblegumSans-Regular.ttf",
+                "filename": {
+                  "path": "Fonts/Bubblegum_Sans/BubblegumSans-Regular.ttf"
+                },
                 "scale": 0.699999988079071,
                 "offsetY": 0.20000000298023224
               }
@@ -198,7 +200,7 @@
               {
                 "id": "NameEntry",
                 "value": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               }
             ]
@@ -215,47 +217,6 @@
               }
             ]
           },
-          {
-            "type": "StringScreen",
-            "instances": [
-              {
-                "id": "AnyKey",
-                "alignment": "Center",
-                "value": {
-                  "key": "Literal",
-                  "value": "Press Any Key to Continue"
-                },
-                "font": {
-                  "key": "Basics/Font/LayoutFont"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "Congratulations",
-                "alignment": "Center",
-                "value": {
-                  "key": "Literal",
-                  "value": "You achieved a high score!  Please enter your name:"
-                },
-                "font": {
-                  "key": "Basics/Font/LayoutFont"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              }
-            ]
-          }
         ]
       },
       {
@@ -275,72 +236,72 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "Game",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -352,42 +313,57 @@
                   {
                     "id": "AnyKey",
                     "screen": {
-                      "key": "Basics/StringScreen/AnyKey"
+                      "key": "UI/Text",
+                      "alignment": "Center",
+                      "value": {
+                        "key": "Literal",
+                        "value": "Press Any Key to Continue"
+                      },
+                      "font": {
+                        "key": "Basics/Font/LayoutFont"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.10000000149011612
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -403,76 +379,91 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "Congratulations",
                     "screen": {
-                      "key": "Basics/StringScreen/Congratulations"
+                      "key": "UI/Text",
+                      "alignment": "Center",
+                      "value": {
+                        "key": "Literal",
+                        "value": "You achieved a high score!  Please enter your name:"
+                      },
+                      "font": {
+                        "key": "Basics/Font/LayoutFont"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.10000000149011612
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }

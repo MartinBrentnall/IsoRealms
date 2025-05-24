@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Assets/Fixed/LiteralFloat.h"
+#include "IsoRealms/Assets/Literal/LiteralFloat.h"
 
 #include "AssetLiteral.h"
 
@@ -31,16 +31,24 @@ namespace IsoRealms {
     /***********************************\
      * Implements AssetLiteral<IFloat> *
     \***********************************/
-    std::string normalizeLiteral(const std::string& expression) const override {
-      return Utils::toString(std::atof(expression.c_str()));
+    bool hasConfiguration() const override {
+      return true;
     }
 
-    std::unique_ptr<IFloat> createLiteralAsset(const std::string& expression) const override {
+    std::unique_ptr<IFloat> createLiteralAsset(Project& project) const override {
+      return std::make_unique<LiteralFloat>(0.0f);
+    }
+
+    std::unique_ptr<IFloat> createLiteralAsset(Project& project, const std::string& expression) const override {
       return std::make_unique<LiteralFloat>(static_cast<float>(atof(expression.c_str())));
     }
 
-    std::unique_ptr<IFloat> createLiteralAsset(JSONObject object) const override {
+    std::unique_ptr<IFloat> createLiteralAsset(Project& project, JSONObject object) const override {
       return std::make_unique<LiteralFloat>(object.getFloat(JSON_VALUE));
+    }
+
+    bool renderAssetProviderIcon() const override {
+      return false;
     }
 
     private:

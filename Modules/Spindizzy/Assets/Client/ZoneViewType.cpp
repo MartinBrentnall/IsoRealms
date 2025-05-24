@@ -18,40 +18,43 @@
  */
 #include "ZoneViewType.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewType::ZoneViewType(Spindizzy* spindizzy) :
+  ZoneViewType::ZoneViewType(Spindizzy& spindizzy, WorldView& owner) :
+            Asset<IZoneViewType, Spindizzy>(spindizzy, spindizzy.createLiteralZoneViewType(this, owner)),
             cSpindizzy(spindizzy),
-            cZoneViewType(cSpindizzy->createLiteralZoneViewType(this)) {
+            cOwner(owner) {
   }
 
-  void ZoneViewType::init(JSONObject object, WorldView* owner) {
-    cSpindizzy->getProject()->init([this, &object, owner](IAssets* assets) {
-      set(object, owner);
-    });
+  IZoneViewType* ZoneViewType::createLiteralAsset(Spindizzy& spindizzy) {
+    return cSpindizzy.createLiteralZoneViewType(this, cOwner);
   }
 
-  void ZoneViewType::set(JSONObject object, WorldView* owner) {
-    cSpindizzy->release(this, cZoneViewType);
-    cZoneViewType = cSpindizzy->getZoneViewType(this, object, owner);
+  IZoneViewType* ZoneViewType::getAsset(Spindizzy& spindizzy, JSONObject object) {
+    return cSpindizzy.getZoneViewType(this, object, cOwner);
   }
 
-  void ZoneViewType::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cSpindizzy->save(mAssetObject, cZoneViewType);
+  IZoneViewType* ZoneViewType::getAsset(Spindizzy& spindizzy, const std::string& id) {
+    return cSpindizzy.getZoneViewType(this, id, cOwner);
   }
 
-  void ZoneViewType::relinquish(IZoneViewType* asset) {
-    if (cZoneViewType == asset) {
-      cZoneViewType = cSpindizzy->createLiteralZoneViewType(this);
-    }
+  std::vector<std::string> ZoneViewType::getAvailableProviders() const {
+    return cManager.getAllZoneViewTypes();
   }
 
-  ZoneViewType::~ZoneViewType() {
-    if (cZoneViewType != nullptr) {
-      cSpindizzy->release(this, cZoneViewType);
-    }
+  bool ZoneViewType::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderZoneViewTypeIcon(id);
+  }
+
+  bool ZoneViewType::hasConfiguration() const {
+    return cManager.isZoneViewTypeConfigurable(getID());
+  }
+
+  bool ZoneViewType::isDefaultConfiguration() const {
+    return true;
   }
 }
-

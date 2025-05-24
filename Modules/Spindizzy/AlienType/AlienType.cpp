@@ -38,8 +38,8 @@ namespace IsoRealms::Spindizzy {
   const float AlienType::DEFAULT_RADIUS       = 0.4f;
   const float AlienType::DEFAULT_SPIN_SPEED   = 0.0f;
 
-  AlienType::AlienType(IProject* project, Spindizzy* spindizzy) :
-            cDefSpindizzy(*spindizzy),
+  AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
             cDefModel(project),
             cDefTarget(project),
             cDefAcceleration(DEFAULT_ACCELERATION),
@@ -48,16 +48,16 @@ namespace IsoRealms::Spindizzy {
             cDefHeight(DEFAULT_HEIGHT),
             cDefRadius(DEFAULT_RADIUS),
             cDefHugMomentum(DEFAULT_HUG_MOMENTUM),
-            cLuaBinding(project, this) {
-    cDefSpindizzy.added(this);
+            cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
+    cSpindizzy.added(this);
 
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeSpinSpeed = cDefSpinSpeed;
     });
   }
   
-  AlienType::AlienType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            AlienType(project, spindizzy) {
+  AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            AlienType(project, spindizzy, data) {
     cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
     cDefFriction = object.getFloat(JSON_FRICTION, DEFAULT_FRICTION);
     cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
@@ -68,15 +68,15 @@ namespace IsoRealms::Spindizzy {
     cDefModel.init(object, JSON_APPEARANCE);
   }
 
-  void AlienType::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, "", "Spindizzy Aliens");
+  void AlienType::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, "", "Spindizzy Aliens");
   }
     
-  void AlienType::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void AlienType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
   
-  void AlienType::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void AlienType::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefModel.save(object, JSON_APPEARANCE);
     cDefTarget.save(object, JSON_TARGET);
     object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
@@ -96,14 +96,22 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<IProperty*> AlienType::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance",            cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>("Target",               cDefTarget));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Acceleration",           [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Friction",               [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Spin Speed",             [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Height",                 [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Radius",                 [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Hug Momentum Threshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
+    return mProperties;
   }
 
   AlienType::~AlienType() {
-    cDefSpindizzy.removed(this);
-    cDefSpindizzy.removeAll(this);
+    cSpindizzy.removed(this);
+    cSpindizzy.removeAll(this);
   }
   
   void AlienType::registerAssets(ISpindizzyRegistry* registry) {
@@ -152,7 +160,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string AlienType::getPhysicalObjectTypeID() const {
-    return cDefSpindizzy.getID(this);
+    return cSpindizzy.getID(this);
   }
 
   IBinding* AlienType::getBinding(const std::string& id) const {
@@ -163,19 +171,27 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
   bool AlienType::renderAssetIcon() const {
-    return false;
+    return cDefModel.renderIcon();
   }
 
   void AlienType::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  AlienType::Pen::Pen(AlienType& parent, WorldEditor* editor) :
+  std::vector<std::unique_ptr<IProperty>> AlienType::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool AlienType::isDefaultConfiguration() const {
+    return true;
+  }
+
+  AlienType::Pen::Pen(AlienType& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor) {
   }
@@ -189,8 +205,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   void AlienType::Pen::renderEditingPreview() const {
-    glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
-    glRotatef((cEditor->getCursorX() + cEditor->getCursorY() + 0.25) * cParent.cDefSpinSpeed, 0.0f, 0.0f, 1.0f);
+    glTranslatef(cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ() * 0.5f);
+    glRotatef((cEditor.getCursorX() + cEditor.getCursorY() + 0.25) * cParent.cDefSpinSpeed, 0.0f, 0.0f, 1.0f);
     cParent.cDefModel.renderPreview();
   }
 
@@ -204,7 +220,7 @@ namespace IsoRealms::Spindizzy {
 
   bool AlienType::Pen::inputTool(SignalInputID id, double yaw) {
     if (id == SignalInputID::USE_TOOL) {
-      cEditor->getWorld()->draw(&cParent, cEditor->getCursorCell(), cEditor);
+      cEditor.getWorld().draw(cParent, cEditor.getCursorCell(), cEditor);
       return true;
     }
     return false;

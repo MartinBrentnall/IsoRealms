@@ -25,12 +25,16 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewTypeOverview::ZoneViewTypeOverview(IProject* project, WorldView* worldView, JSONObject object) :
+  ZoneViewTypeOverview::ZoneViewTypeOverview(IProject& project, WorldView& worldView) :
             cProject(project),
             cWorldView(worldView),
             cDefColour(project, 1.0f, 0.0f, 0.0f, 0.0f),
-            cRuntimeParameterView1(project, nullptr, worldView->getSpindizzy()),
-            cRuntimeParameterView2(project, nullptr, worldView->getSpindizzy()) {
+            cRuntimeParameterView1(project, nullptr, &worldView.getSpindizzy()),
+            cRuntimeParameterView2(project, nullptr, &worldView.getSpindizzy()) {
+  }
+
+  ZoneViewTypeOverview::ZoneViewTypeOverview(IProject& project, WorldView& worldView, JSONObject object) :
+            ZoneViewTypeOverview(project, worldView) {
     cDefColour.init(object, JSON_COLOUR);
   }
 
@@ -43,7 +47,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   const IColour* ZoneViewTypeOverview::getInitialColour() const {
-    return &cDefColour;
+    return *cDefColour;
   }
   
   std::unique_ptr<IZoneView> ZoneViewTypeOverview::createZoneView(Zone* zone) {
@@ -60,6 +64,14 @@ namespace IsoRealms::Spindizzy {
 
   void ZoneViewTypeOverview::saveAsset(JSONObject object) const {
     cDefColour.save(object, JSON_COLOUR);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneViewTypeOverview::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneViewTypeOverview::isDefaultConfiguration() const {
+    return true;
   }
 
   const std::string ZoneViewTypeOverview::JSON_COLOUR = "colour";

@@ -24,26 +24,26 @@
 namespace IsoRealms::Spindizzy {
   const std::string PickUpType::JSON_APPEARANCE = "appearance";
 
-  PickUpType::PickUpType(IProject* project, Spindizzy* spindizzy) :
-            cDefSpindizzy(*spindizzy),
+  PickUpType::PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
             cDefModel(project) {
-    cDefSpindizzy.added(this);
+    cSpindizzy.added(this);
   }
   
-  PickUpType::PickUpType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            PickUpType(project, spindizzy) {
+  PickUpType::PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            PickUpType(project, spindizzy, data) {
     cDefModel.init(object, JSON_APPEARANCE);
   }
 
-  void PickUpType::registerAssets(IAssetRegistry* assets) {
+  void PickUpType::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
 
-  void PickUpType::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void PickUpType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
 
-  void PickUpType::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void PickUpType::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefModel.save(object, JSON_APPEARANCE);
   }
 
@@ -55,14 +55,16 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<IProperty*> PickUpType::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> PickUpType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance", cDefModel));
+    return mProperties;
   }
 
   PickUpType::~PickUpType() {
-    cDefSpindizzy.removed(this);
-    cDefSpindizzy.removeAll(this);
+    cSpindizzy.remove(this);
+    cSpindizzy.removed(this);
+    cSpindizzy.removeAll(this);
   }
 
   void PickUpType::registerAssets(ISpindizzyRegistry* registry) {
@@ -75,7 +77,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string PickUpType::getBoundaryTypeID() const {
-    return "PickUp/" + cDefSpindizzy.getID(this);
+    return "PickUp/" + cSpindizzy.getID(this);
   }
   
   IBinding* PickUpType::getBinding(const std::string& id) const {
@@ -86,19 +88,27 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor& editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
   bool PickUpType::renderAssetIcon() const {
-    return false;
+    return cDefModel.renderIcon();
   }
 
   void PickUpType::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  PickUpType::Pen::Pen(PickUpType& parent, WorldEditor* editor) :
+  std::vector<std::unique_ptr<IProperty>> PickUpType::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool PickUpType::isDefaultConfiguration() const {
+    return true;
+  }
+
+  PickUpType::Pen::Pen(PickUpType& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor) {
   }
@@ -112,7 +122,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PickUpType::Pen::renderEditingPreview() const {
-    glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
+    glTranslatef(cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ() * 0.5f);
     cParent.cDefModel.renderPreview();
   }
 
@@ -126,7 +136,7 @@ namespace IsoRealms::Spindizzy {
 
   bool PickUpType::Pen::inputTool(SignalInputID id, double yaw) {
     if (id == SignalInputID::USE_TOOL) {
-      cEditor->getWorld()->draw(&cParent, cEditor->getCursorCell(), cEditor);
+      cEditor.getWorld().draw(cParent, cEditor.getCursorCell(), cEditor);
       return true;
     }
     return false;

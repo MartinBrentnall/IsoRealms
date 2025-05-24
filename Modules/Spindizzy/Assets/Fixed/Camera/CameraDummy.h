@@ -28,12 +28,13 @@ namespace IsoRealms::Spindizzy {
   class CameraDummy final : public ICamera,
                             public IFloat {
     public:
+    CameraDummy(WorldView& owner);
     
     /**********************\
      * Implements ICamera *
     \**********************/
-    void registerAssets(IAssetRegistry* assets) override; 
-    void unregisterAssets(IAssetRemover* assets) override;
+    void registerAssets(IAssetRegistry& assets) override; 
+    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -55,5 +56,7 @@ namespace IsoRealms::Spindizzy {
     \****************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }

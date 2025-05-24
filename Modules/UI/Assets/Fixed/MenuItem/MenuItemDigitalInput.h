@@ -44,7 +44,8 @@ namespace IsoRealms::UI {
    */
   class MenuItemDigitalInput final : public IMenuItem {
     public:
-    MenuItemDigitalInput(IProject* project, Menu* menu, JSONObject object);
+    MenuItemDigitalInput(IProject& project, Menu& menu);
+    MenuItemDigitalInput(IProject& project, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -57,8 +58,8 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
-    void registerAssets(IAssetRegistry* assets) override;
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
+    void registerAssets(IAssetRegistry& assets) override;
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -71,6 +72,8 @@ namespace IsoRealms::UI {
     \***********************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     

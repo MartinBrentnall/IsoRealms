@@ -23,8 +23,8 @@ namespace IsoRealms::Basics {
     // Nothing to do
   }
 
-  void Script::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
-    remover->remove(this);
+  void Script::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
+    remover.remove(this, true);
     for (const std::pair<IAction* const, std::unique_ptr<ScriptAction>>& mScript : cDefScriptActions) {
       mScript.second->unregisterAssets(releaser);
     }
@@ -45,21 +45,21 @@ namespace IsoRealms::Basics {
     return mAvailableIndex;
   }
 
-  IAction* Script::createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, object, project, getNextAvailableIndex(), localArgs);
+  IAction* Script::createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) {
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, object, project, getNextAvailableIndex(), localArgs);
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
 
-  IAction* Script::createAction(IProject* project, IBindingRegistry* localArgs) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, project, getNextAvailableIndex());
+  IAction* Script::createAction(IProject& project, IBindingRegistry* localArgs) {
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, project, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
   
-  void Script::destroyAction(IAction* action, IAssets* assets) {
+  void Script::destroyAction(IAction* action, IAssets& assets) {
     std::map<IAction*, std::unique_ptr<ScriptAction>>::iterator mScriptAction = cDefScriptActions.find(action);
     if (mScriptAction == cDefScriptActions.end()) {
       throw ArgumentException("ERROR: Script::destroyAction: Script of specified action not found.");
@@ -69,32 +69,37 @@ namespace IsoRealms::Basics {
   }
 
   bool Script::renderAssetIcon() const {
-    return false;
+    Utils::renderIconTerminal();
+    return true;
   }
 
   void Script::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  Script::ScriptAction::ScriptAction(Script* parent, JSONObject object, IProject* project, unsigned int index, IBindingRegistry* localArgs) :
+  std::vector<std::unique_ptr<IProperty>> Script::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Script::isDefaultConfiguration() const {
+    return true;
+  }
+
+  Script::ScriptAction::ScriptAction(Script& parent, JSONObject object, IProject& project, unsigned int index, IBindingRegistry* localArgs) :
             cDefParent(parent),
             cDefFunction(project, "_t" + Utils::toString(index), object, localArgs, false),
             cDefAction(cDefFunction.createAction(object, project, nullptr)),
             cDefIndex(index) {
   }
 
-  Script::ScriptAction::ScriptAction(Script* parent, IProject* project, unsigned int index) :
+  Script::ScriptAction::ScriptAction(Script& parent, IProject& project, unsigned int index) :
             cDefParent(parent),
             cDefFunction(project, "_t" + Utils::toString(index)),
             cDefAction(cDefFunction.createAction(project, nullptr)),
             cDefIndex(index) {
   }
 
-  const IActionType* Script::ScriptAction::getInternalActionType() {
-    return cDefAction->getActionType();
-  }
-
-  void Script::ScriptAction::destroyInternalAction(IAssets* assets) {
+  void Script::ScriptAction::destroyInternalAction(IAssets& assets) {
     cDefFunction.destroyAction(cDefAction, assets);
   }
 
@@ -102,23 +107,27 @@ namespace IsoRealms::Basics {
     return cDefIndex;
   }
 
-  void Script::ScriptAction::unregisterAssets(IAssets* releaser) {
-    cDefFunction.unregisterAssets(nullptr, releaser);
+  void Script::ScriptAction::unregisterAssets(IAssets& releaser) {
+    cDefFunction.unregisterAssets(releaser);
   }
 
   void Script::ScriptAction::execute() {
     cDefAction->execute();
   }
   
-  IActionType* Script::ScriptAction::getActionType() const {
-    return cDefParent;
-  }
-  
-  void Script::ScriptAction::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Script::ScriptAction::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefFunction.save(object, identifier, true);
   }
-
+  
   bool Script::ScriptAction::hasConfiguration() const {
+    return true;
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Script::ScriptAction::getAssetProperties() {
+    return cDefFunction.getScriptProperties();
+  }  
+
+  bool Script::ScriptAction::isDefaultConfiguration() const {
     return true;
   }
 }

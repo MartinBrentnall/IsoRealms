@@ -40,6 +40,7 @@ namespace IsoRealms {
     
     // Bind IsoRealms library API's.
     cLua.new_usertype<IAction>("Action",                 "execute",              &IAction::execute);
+    cLua.new_usertype<ActionExecutor>("ActionExecutor" , "execute",              &ActionExecutor::execute);
     cLua.new_usertype<IAssets>("Assets",                 "setProperty",          &IAssets::setProperty);
     cLua.new_usertype<IBoolean>("Boolean",               "getValue",             &IBoolean::getValue);
     cLua.new_usertype<IColour>("Colour");

@@ -18,74 +18,55 @@
  */
 #pragma once
 
-#include <iostream>
-#include <string>
+#include <sol.hpp>
 
-#include "IsoRealms/Assets/Registry/IAssetUser.h"
-#include "IsoRealms/IAssetLiterals.h"
+#include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/Editing/Property/PropertyAsset.h"
+#include "IsoRealms/Lua/LuaState.h"
+#include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Types.h"
-#include "IsoRealms/Utils.h"
-
-#include "ITypeConvertedAsset.h"
 
 namespace IsoRealms {
-  
-  /**
-   * String asset interface wrapper around an primitive asset. // TODO: Explain better
-   */
-  template <class TYPE> class PrimitiveToString : public IString,
-                                                  public IAssetUser<TYPE>, // TODO: Should be managed via Client asset classes
-                                                  public ITypeConvertedAsset {
+  template <class T> class PrimitiveToString : public IString {
     public:
+    PrimitiveToString(IProject& project) :
+              cDefValue(project) {
+    }
 
-    /**
-     * Construct a String asset wrapper around the specified primitive.
-     *
-     * @param asset The primitive asset to wrap.
-     */
-    PrimitiveToString(IProject* project, IAssetRemover* assets, std::function<TYPE*(IAssetUser<TYPE>*)> assetAccessorFunction) :
-              cProject(project),
-              cAssets(assets),
-              cValue(assetAccessorFunction(this)) {
+    PrimitiveToString(IProject& project, JSONObject object) :
+              PrimitiveToString(project) {
+      cDefValue.set(object, JSON_ASSET);
     }
 
     /**********************\
      * Implements IString *
     \**********************/
     std::string getValue() const override {
-      return Utils::toString(cValue->getValue());
+      return Utils::toString(cDefValue->getValue());
     }
-
+        
     bool renderAssetIcon() const override {
       return false;
     }
 
     void saveAsset(JSONObject object) const override {
-      JSONObject mAssetObject = object.addObject(JSON_ASSET);
-      cProject->save(mAssetObject, cValue);
+      cDefValue.save(object, JSON_ASSET);
     }
 
-    /*******************************\
-     * Implements IAssetUser<TYPE> *
-    \*******************************/
-    void relinquish(TYPE* asset) override {
-      cAssets->remove(this);
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
+      std::vector<std::unique_ptr<IProperty>> mProperties;
+      mProperties.emplace_back(std::make_unique<PropertyAsset<T>>("Asset", cDefValue));
+      return mProperties;
     }
 
-    /**********************************\
-     * Implements ITypeConvertedAsset *
-    \**********************************/
-    void release(IAssets* releaser) override {
-      releaser->release(this, cValue);
+    bool isDefaultConfiguration() const override {
+      return true; // TODO?
     }
 
     private:
     inline static const std::string JSON_ASSET = "asset";
-
-    IProject* cProject;
-    IAssetRemover* cAssets; /// To manage removal of ourself in case the wrapped primitive is removed.
-    TYPE* cValue;           /// Wrapped primitive.
+    
+    T cDefValue;
   };
 }

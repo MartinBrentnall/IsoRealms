@@ -18,10 +18,11 @@
  */
 #pragma once
 
-#include "Assets/Fixed/LiteralBoolean.h"
-#include "Assets/Fixed/LiteralColour.h"
-#include "Assets/Fixed/LiteralFloat.h"
-#include "Assets/Fixed/LiteralInteger.h"
-#include "Assets/Fixed/LiteralString.h"
-#include "Assets/Fixed/LiteralTexture.h"
-#include "Assets/Fixed/LiteralVertex.h"
+#include "Assets/Literal/LiteralBindingType.h"
+#include "Assets/Literal/LiteralBoolean.h"
+#include "Assets/Literal/LiteralColour.h"
+#include "Assets/Literal/LiteralFloat.h"
+#include "Assets/Literal/LiteralInteger.h"
+#include "Assets/Literal/LiteralString.h"
+#include "Assets/Literal/LiteralTexture.h"
+#include "Assets/Literal/LiteralVertex.h"

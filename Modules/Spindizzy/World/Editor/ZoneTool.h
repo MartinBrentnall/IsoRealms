@@ -37,16 +37,18 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
     // Internal classes.
     class Instance : public IWorldEditorToolInstance {
       public:
-      Instance(ZoneTool& parent, WorldEditor* editor);
+      Instance(ZoneTool& parent, WorldEditor& editor);
 
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -63,7 +65,7 @@ namespace IsoRealms::Spindizzy {
 
       private:
       ZoneTool& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
       Zone* cHoverZone;
       Zone* cSelectedZone;
     };
@@ -73,5 +75,7 @@ namespace IsoRealms::Spindizzy {
 
     // Editing data.
     std::vector<std::unique_ptr<Instance>> cInstances; /// Active instances.
+
+    static bool renderEditingIcon(Type type);
   };
 }

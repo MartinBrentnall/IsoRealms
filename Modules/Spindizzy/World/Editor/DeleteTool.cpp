@@ -24,19 +24,28 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  IWorldEditorToolInstance* DeleteTool::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* DeleteTool::createToolInstance(WorldEditor& editor) {
     return cEditingErasers.emplace_back(std::make_unique<Eraser>(*this, editor)).get();
   }
 
   bool DeleteTool::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void DeleteTool::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  DeleteTool::Eraser::Eraser(DeleteTool& parent, WorldEditor* editor) :
+  std::vector<std::unique_ptr<IProperty>> DeleteTool::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool DeleteTool::isDefaultConfiguration() const {
+    return true;
+  }
+
+  DeleteTool::Eraser::Eraser(DeleteTool& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor),
             cSelectedObject(0) {
@@ -67,7 +76,7 @@ namespace IsoRealms::Spindizzy {
 
   void DeleteTool::Eraser::processCursorMovement(LiteralVertex* start, LiteralVertex* end) {
     if (end != nullptr) {
-      cEditor->getWorld()->selectObjects(start, *end, [this](IWorldObject* object) {
+      cEditor.getWorld().selectObjects(start, *end, [this](IWorldObject* object) {
         return true;
       }, [this](IWorldObject* object) {
         cHoverObjects.push_back(object);
@@ -103,7 +112,7 @@ namespace IsoRealms::Spindizzy {
       cHoverObjects[cSelectedObject]->renderSelectionHighlight();
     }
 
-    glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
+    glTranslatef(cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ() * 0.5f);
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
     Utils::renderVolumeLines(-0.5f, 0.5f, -0.5f, 0.5f, -0.5f, 0.0f);
@@ -115,8 +124,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool DeleteTool::Eraser::renderIcon(float yaw) const {
-    Utils::renderIconNone();
-    return true;
+    return cParent.renderAssetIcon();
   }
 
   void DeleteTool::Eraser::updateUI(unsigned int milliseconds) {

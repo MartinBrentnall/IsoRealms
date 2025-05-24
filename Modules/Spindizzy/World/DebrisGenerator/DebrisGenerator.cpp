@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
   const float        DebrisGenerator::DEFAULT_RADIUS     = 0.3f;
   const float        DebrisGenerator::DEFAULT_STEP_REACH = 0.2f;
 
-  DebrisGenerator::DebrisGenerator(JSONObject object, IProject* project) :
+  DebrisGenerator::DebrisGenerator(JSONObject object, IProject& project) :
             cDefID(object.getString(JSON_ID)),
             cDefModel(project),
             cDefLifeTime(object.getInteger(JSON_LIFE, DEFAULT_LIFE)),
@@ -42,12 +42,12 @@ namespace IsoRealms::Spindizzy {
     cDefModel.init(object, JSON_APPEARANCE);
   }
 
-  void DebrisGenerator::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, cDefID, "Debris Generators");
+  void DebrisGenerator::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, cDefID, "Debris Generators");
   }
   
-  void DebrisGenerator::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void DebrisGenerator::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   void DebrisGenerator::updateRuntime(unsigned int milliseconds) {
@@ -65,7 +65,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void DebrisGenerator::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void DebrisGenerator::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addString(JSON_ID, cDefID);
     object.addInteger(JSON_LIFE, cDefLifeTime, DEFAULT_LIFE);
     object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
@@ -92,7 +92,7 @@ namespace IsoRealms::Spindizzy {
     return cDefRadius;
   }
 
-  void DebrisGenerator::generateDebris(IVertex* location, double xMomentum, double yMomentum, double zMomentum, Zone* zone) {
+  void DebrisGenerator::generateDebris(IVertex* location, double xMomentum, double yMomentum, double zMomentum, Zone& zone) {
     cRuntimeDebris.emplace_back(std::make_unique<Debris>(*this, location, xMomentum, yMomentum, zMomentum, cDefModel, cDefLifeTime, zone));
   }
 

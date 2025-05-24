@@ -32,9 +32,9 @@ namespace IsoRealms::Basics {
     cDestructed  = false;
   }
 
-  void ProjectLoader::loadProject(IApplication* application) {
+  void ProjectLoader::loadProject(IApplication& application) {
     try {
-      std::unique_ptr<Project> mProject = std::make_unique<Project>(application, &cOptions, cEndFunction);
+      std::unique_ptr<Project> mProject = std::make_unique<Project>(application, cOptions, cEndFunction);
       cMutex.lock();
       cProject = std::move(mProject);
       cMutex.unlock();

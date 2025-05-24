@@ -21,17 +21,17 @@
 #include "Options.h"
 
 namespace IsoRealms {
-  LocalOptions::LocalOptions(const std::string& branch, IOptions* options) :
+  LocalOptions::LocalOptions(const std::string& branch, IOptions& options) :
             cOptions(options),
             cBranch(branch) {
   }
 
   std::string LocalOptions::getOption(const std::string& key) const {
-    return cOptions->getOption(cBranch + "/" + key);
+    return cOptions.getOption(cBranch + "/" + key);
   }
 
   Options LocalOptions::getFixedOptions() {
-    Options mOptions = cOptions->getFixedOptions();
+    Options mOptions = cOptions.getFixedOptions();
     std::map<std::string, std::string> mAllOptions = mOptions.getAllOptions();
     Options mFixedOptions;
     for (std::pair<std::string, std::string> mOption : mAllOptions) {

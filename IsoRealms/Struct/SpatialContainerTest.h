@@ -299,7 +299,7 @@ namespace IsoRealms {
       }
     };
 
-    SpatialContainerTest<TYPE>() :
+    SpatialContainerTest() :
             cDefCellSize(8),
             cDefRowsOffset(0) {
     }

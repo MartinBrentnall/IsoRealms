@@ -22,17 +22,9 @@
 namespace IsoRealms::UI {
   const std::string UI::ID_RESOURCE_LAYOUT           = "Layout";
   const std::string UI::ID_RESOURCE_MENU             = "Menu";
-  const std::string UI::ID_RESOURCE_PANEL            = "Panel";
   const std::string UI::ID_RESOURCE_PROMPT           = "Prompt";
   const std::string UI::ID_RESOURCE_THROBBER         = "Throbber";
   const std::string UI::ID_RESOURCE_VIRTUAL_KEYBOARD = "VirtualKeyboard";
-
-  const std::string UI::NAME_RESOURCE_LAYOUT           = "Layouts";
-  const std::string UI::NAME_RESOURCE_MENU             = "Menus";
-  const std::string UI::NAME_RESOURCE_PANEL            = "Panels";
-  const std::string UI::NAME_RESOURCE_PROMPT           = "Prompts";
-  const std::string UI::NAME_RESOURCE_THROBBER         = "Throbbers";
-  const std::string UI::NAME_RESOURCE_VIRTUAL_KEYBOARD = "Virtual Keyboards";
 
   const std::string UI::MENU_ITEM_ACTION             = "Action";
   const std::string UI::MENU_ITEM_BOOLEAN            = "Boolean";
@@ -41,29 +33,54 @@ namespace IsoRealms::UI {
   const std::string UI::MENU_ITEM_FILE_LIST          = "FileList";
   const std::string UI::MENU_ITEM_SLIDER             = "Slider";
 
-  UI::UI(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals):
+  const std::string UI::LAYOUT_LOCATION_ABSOLUTE = "Absolute";
+  const std::string UI::LAYOUT_LOCATION_RELATIVE = "Relative";
+  
+  const std::string UI::LAYOUT_OFFSET_ABSOLUTE = "Absolute";
+  const std::string UI::LAYOUT_OFFSET_LINKED   = "Linked";
+
+  const std::string UI::SCREEN_GRADIENT = "Gradient";
+  const std::string UI::SCREEN_MODEL    = "Model";
+  const std::string UI::SCREEN_PANEL    = "Panel";
+  const std::string UI::SCREEN_TEXT     = "Text";
+
+  UI::UI(IProject& project, IResourceTypeRegistry* registry):
                     cProject(project),
+                    cLayoutLocations(&cDummyProviderLayoutLocation),
+                    cLayoutOffsets(&cDummyProviderLayoutOffset),
                     cMenuItems(&cDummyProviderMenuItem),
+                    cProviderLayoutLocationAbsolute(project),
+                    cProviderLayoutLocationRelative(project),
+                    cProviderLayoutOffsetAbsolute(project),
+                    cProviderLayoutOffsetLinked(project),
                     cProviderMenuItemAction(project),
                     cProviderMenuItemBoolean(project),
                     cProviderMenuItemDigitalInput(project),
                     cProviderMenuItemDisplayResolution(project),
                     cProviderMenuItemFileList(project),
                     cProviderMenuItemSlider(project),
-                    cResourceTypeLayout(this),
-                    cResourceTypeMenu(this),
-                    cResourceTypePanel(this),
-                    cResourceTypePrompt(this),
-                    cResourceTypeThrobber(this),
-                    cResourceTypeVirtualKeyboard(this) {
-    registry->add(&cResourceTypeLayout,          ID_RESOURCE_LAYOUT,           NAME_RESOURCE_LAYOUT,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeMenu,            ID_RESOURCE_MENU,             NAME_RESOURCE_MENU,             IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypePanel,           ID_RESOURCE_PANEL,            NAME_RESOURCE_PANEL,            IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypePrompt,          ID_RESOURCE_PROMPT,           NAME_RESOURCE_PROMPT,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeThrobber,        ID_RESOURCE_THROBBER,         NAME_RESOURCE_THROBBER,         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeVirtualKeyboard, ID_RESOURCE_VIRTUAL_KEYBOARD, NAME_RESOURCE_VIRTUAL_KEYBOARD, IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+                    cProviderScreenGradient(project),
+                    cProviderScreenModel(project),
+                    cProviderScreenPanel(project),
+                    cProviderScreenText(project),
+                    cResourceTypeLayout(*this),
+                    cResourceTypeMenu(*this),
+                    cResourceTypePrompt(*this),
+                    cResourceTypeThrobber(*this),
+                    cResourceTypeVirtualKeyboard(*this) {
+    registry->add(&cResourceTypeLayout,          ID_RESOURCE_LAYOUT,           "Layout",           "Layouts",           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeMenu,            ID_RESOURCE_MENU,             "Menu",             "Menus",             IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypePrompt,          ID_RESOURCE_PROMPT,           "Prompt",           "Prompts",           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeThrobber,        ID_RESOURCE_THROBBER,         "Throbber",         "Throbbers",         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeVirtualKeyboard, ID_RESOURCE_VIRTUAL_KEYBOARD, "Virtual Keyboard", "Virtual Keyboards", IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
 
-    // Register Spindizzy built-in asset providers.
+    // Register UI built-in asset providers.
+    cLayoutLocations.add(&cProviderLayoutLocationAbsolute, LAYOUT_LOCATION_ABSOLUTE, "UI");
+    cLayoutLocations.add(&cProviderLayoutLocationRelative, LAYOUT_LOCATION_RELATIVE, "UI");
+
+    cLayoutOffsets.add(&cProviderLayoutOffsetAbsolute, LAYOUT_OFFSET_ABSOLUTE, "UI");
+    cLayoutOffsets.add(&cProviderLayoutOffsetLinked,   LAYOUT_OFFSET_LINKED,   "UI");
+    
     cMenuItems.add(&cProviderMenuItemAction,            MENU_ITEM_ACTION,             "UI");
     cMenuItems.add(&cProviderMenuItemBoolean,           MENU_ITEM_BOOLEAN,            "UI");
     cMenuItems.add(&cProviderMenuItemDigitalInput,      MENU_ITEM_DIGITAL_INPUT,      "UI");
@@ -72,44 +89,82 @@ namespace IsoRealms::UI {
     cMenuItems.add(&cProviderMenuItemSlider,            MENU_ITEM_SLIDER,             "UI");
   }
 
-  IProject* UI::getProject() const {
+  IProject& UI::getProject() const {
     return cProject;
   }
 
-  void UI::load(IProject* project, JSONObject object) {
+  std::vector<std::string> UI::getAllLayoutLocations() {return cLayoutLocations.getAll();}
+  std::vector<std::string> UI::getAllLayoutOffsets()   {return cLayoutOffsets.getAll();}
+  std::vector<std::string> UI::getAllMenuItems()       {return cMenuItems.getAll();}
+
+  std::string UI::getID(const ILayoutLocation* asset) const {return cLayoutLocations.getID(asset);}
+  std::string UI::getID(const ILayoutOffset*   asset) const {return cLayoutOffsets.getID  (asset);}
+  std::string UI::getID(const IMenuItem*       asset) const {return cMenuItems.getID(      asset);}
+
+  bool UI::renderLayoutLocationIcon(const std::string& id) const {return cLayoutLocations.renderIcon(id);}
+  bool UI::renderLayoutOffsetIcon(  const std::string& id) const {return cLayoutOffsets.renderIcon(  id);}
+  bool UI::renderMenuItemIcon(      const std::string& id) const {return cMenuItems.renderIcon(      id);}
+
+  bool UI::isLayoutLocationConfigurable(const std::string& id) const {return cLayoutLocations.hasConfiguration(id);}
+  bool UI::isLayoutOffsetConfigurable(  const std::string& id) const {return cLayoutOffsets.hasConfiguration(  id);}
+  bool UI::isMenuItemConfigurable(      const std::string& id) const {return cMenuItems.hasConfiguration(      id);}
+
+  void UI::load(IProject& project, JSONObject object) {
     // Nothing to do.
   }
 
-  void UI::save(JSONObject object, IAssetIdentifier* identifier) {
+  void UI::save(JSONObject object, IAssetIdentifier& identifier) {
     // Nothing to do.
   }
 
-  void UI::registerAssets(IAssetRegistry* assets) {
-    // Nothing to do.
+  void UI::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cProviderScreenGradient, SCREEN_GRADIENT, "");
+    assets.add(&cProviderScreenModel,    SCREEN_MODEL,    "");
+    assets.add(&cProviderScreenPanel,    SCREEN_PANEL,    "");
+    assets.add(&cProviderScreenText,     SCREEN_TEXT,     "");
   }
   
-  void UI::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
-    // Nothing to do.
+  void UI::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
+    remover.remove(&cProviderScreenGradient, true);
+    remover.remove(&cProviderScreenModel,    true);
+    remover.remove(&cProviderScreenPanel,    true);
+    remover.remove(&cProviderScreenText,     true);
   }
+  
+  std::vector<std::unique_ptr<IProperty>> UI::getProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }  
 
-  IMenuItem* UI::createLiteralMenuItem(IAssetUser<IMenuItem>* user) {return cMenuItems.literal(user, "");}
+  ILayoutLocation* UI::createLiteralLayoutLocation(IAssetUser<ILayoutLocation>* user, LayoutComponentEdge& owner) {return cLayoutLocations.literal(user, owner, "");}
+  ILayoutOffset*   UI::createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner) {return cLayoutOffsets.literal(  user, owner, "");}
+  IMenuItem*       UI::createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner) {return cMenuItems.literal(      user, owner, "");}
 
-  IMenuItem* UI::getMenuItem(IAssetUser<IMenuItem>* user, JSONObject object, Menu* owner) {return cMenuItems.get(user, *owner, object, nullptr, true, [this](JSONObject object, IStateListener<IMenuItem*>* listener) -> IMenuItem* {return nullptr;});}
+  ILayoutLocation* UI::getLayoutLocation(IAssetUser<ILayoutLocation>* user, JSONObject object, LayoutComponentEdge& owner) {return cLayoutLocations.get(user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ILayoutLocation*>* listener) -> ILayoutLocation* {return nullptr;});}
+  ILayoutOffset*   UI::getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, JSONObject object, LayoutComponentEdge& owner) {return cLayoutOffsets.get(  user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ILayoutOffset*>*   listener) -> ILayoutOffset*   {return nullptr;});}
+  IMenuItem*       UI::getMenuItem(      IAssetUser<IMenuItem>*       user, JSONObject object, Menu&                owner) {return cMenuItems.get(      user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<IMenuItem*>*       listener) -> IMenuItem*       {return nullptr;});}
 
-  void UI::release(IAssetUser<IMenuItem>* user, IMenuItem* asset) {cMenuItems.release(user, asset);}
+  ILayoutLocation* UI::getLayoutLocation(IAssetUser<ILayoutLocation>* user, const std::string& id, LayoutComponentEdge& owner) {return cLayoutLocations.get(user, owner, id, nullptr);}
+  ILayoutOffset*   UI::getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, const std::string& id, LayoutComponentEdge& owner) {return cLayoutOffsets.get(  user, owner, id, nullptr);}
+  IMenuItem*       UI::getMenuItem(      IAssetUser<IMenuItem>*       user, const std::string& id, Menu&                owner) {return cMenuItems.get(      user, owner, id, nullptr);}
 
-  void UI::save(JSONObject object, IMenuItem* asset) const {cMenuItems.save(object, asset);}
+  void UI::release(IAssetUser<ILayoutLocation>* user, ILayoutLocation* asset) {cLayoutLocations.release(user, asset);}
+  void UI::release(IAssetUser<ILayoutOffset>*   user, ILayoutOffset*   asset) {cLayoutOffsets.release(  user, asset);}
+  void UI::release(IAssetUser<IMenuItem>*       user, IMenuItem*       asset) {cMenuItems.release(      user, asset);}
+
+  void UI::save(JSONObject object, ILayoutLocation* asset) const {cLayoutLocations.save(object, asset);}
+  void UI::save(JSONObject object, ILayoutOffset*   asset) const {cLayoutOffsets.save(  object, asset);}
+  void UI::save(JSONObject object, IMenuItem*       asset) const {cMenuItems.save(      object, asset);}
 
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<UI>> ModuleInstances;
 }
  
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry, IsoRealms::IAssetLiterals* literals) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
-  std::unique_ptr<IsoRealms::UI::UI> mModule = std::make_unique<IsoRealms::UI::UI>(project, registry, literals);
+  std::unique_ptr<IsoRealms::UI::UI> mModule = std::make_unique<IsoRealms::UI::UI>(*project, registry);
   {
     std::lock_guard<std::mutex> mLockGuard(IsoRealms::UI::cModuleInstantiationMutex);
     return IsoRealms::UI::ModuleInstances.emplace_back(std::move(mModule)).get();

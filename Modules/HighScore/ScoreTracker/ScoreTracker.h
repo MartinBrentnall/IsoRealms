@@ -38,12 +38,12 @@ namespace IsoRealms::HighScore {
     /**********************\
      * Resource interface *
     \**********************/
-    ScoreTracker(IProject* project, HighScore* highScore);
-    ScoreTracker(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data);
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data);
+    ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
       
@@ -69,6 +69,8 @@ namespace IsoRealms::HighScore {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
@@ -89,7 +91,7 @@ namespace IsoRealms::HighScore {
     static const std::string TYPE_INTEGER;
     static const std::string TYPE_STRING;
 
-    IProject* cParentProject;
+    IProject& cParentProject;
     std::unique_ptr<Project> cProject;
     Action cScriptQuit;
     Action cScriptOnHighScoreAchieved;

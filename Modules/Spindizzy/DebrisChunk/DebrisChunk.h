@@ -20,6 +20,7 @@
 
 #include <cmath>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
@@ -29,38 +30,40 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
   /**
-   * Resource definition for a 3D model that can be used to represent a chunk
+   * Resource definition for a model that can be used to represent a chunk
    * of debris from a broken craft or other object.  Specifically, it is a
    * tetrahedron with configurable colours for the outline and for each of its
    * four faces.
    */
-  class DebrisChunk final : public I3DModelType,
-                            public I3DModel {
+  class DebrisChunk final : public IModel,
+                            public IModelInstance {
     public:
 
     /**********************\
      * Resource Interface *
     \**********************/
-    DebrisChunk(IProject* project, Spindizzy* spindizzy);
-    DebrisChunk(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
-    /***************************\
-     * Implements I3DModelType *
-    \***************************/
-    I3DModel* createModel() override;
+    /*********************\
+     * Implements IModel *
+    \*********************/
+    IModelInstance* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
-    /***********************\
-     * Implements I3DModel *
-    \***********************/
+    /*****************************\
+     * Implements IModelInstance *
+    \*****************************/
     void update(unsigned int milliseconds) override;
     void render() const override;
 
@@ -77,15 +80,15 @@ namespace IsoRealms::Spindizzy {
     // Default constants.
     static const float DEFAULT_OUTLINE_WIDTH;
 
-    IProject* cProject;
+    IProject& cProject;
 
     // Definition data.
     Colour cDefSide[4];               /// Colours used for each side of this debris chunk.
     Colour cDefOutline;               /// Colour used for the outline of this debris chunk.
     float cDefOutlineWidth;           /// Width of the outline drawn on each side of this debris chunk.
-    LiteralTexture cDefTextures[4];   /// Textures applied to each side of this debris chunk.
 
     // Runtime data.
+    LiteralTexture cTextures[4];          /// Textures applied to each side of this debris chunk.
     bool cNeedsRedrawing;
 
     // Editing data.

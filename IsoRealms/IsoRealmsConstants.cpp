@@ -19,10 +19,9 @@
 #include "IsoRealmsConstants.h"
 
 namespace IsoRealms {
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES  = "Simple Variables";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES  = "Basics";
   const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS   = "Simple Graphics";
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_DYNAMIC_VARIABLES = "Dynamic Variables";
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT   = "Logic and Input";
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION      = "Presentation";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT   = "Dynamics";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION      = "User Interface";
   const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM            = "System";
 }

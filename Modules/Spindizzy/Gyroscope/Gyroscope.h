@@ -20,10 +20,13 @@
 
 #include <cmath>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
+
+#include "IsoRealms/IApplication.h"
 
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
@@ -32,33 +35,35 @@ namespace IsoRealms::Spindizzy {
    * Resource definition for a gyroscope craft model, where the colour of each
    * quadrant and the outline is configurable.
    */
-  class Gyroscope final : public I3DModelType,
-                          public I3DModel {
+  class Gyroscope final : public IModel,
+                          public IModelInstance {
     public:
 
     /**********************\
      * Resource Interface *
     \**********************/
-    Gyroscope(IProject* project, Spindizzy* spindizzy);
-    Gyroscope(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
-    /***************************\
-     * Implements I3DModelType *
-    \***************************/
-    I3DModel* createModel() override;
+    /*********************\
+     * Implements IModel *
+    \*********************/
+    IModelInstance* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
-    /***********************\
-     * Implements I3DModel *
-    \***********************/
+    /*****************************\
+     * Implements IModelInstance *
+    \*****************************/
     void update(unsigned int milliseconds) override;
     void render() const override;
 
@@ -77,14 +82,14 @@ namespace IsoRealms::Spindizzy {
     static const float WIDTH;
     static const float HEIGHT;
 
-    IProject* cProject;
+    IProject& cProject;
 
     // Definition data.
     Colour cDefQuadrant[4];     /// Colours of the four quadrants.
     Colour cDefOutline;         /// Colour of the outline and the spindle.
-    LiteralTexture cDefTexture; /// Actual texture for the circle section.
 
     // Runtime data.
+    LiteralTexture cTexture;        /// Actual texture for the circle section.
     bool cNeedsRedrawing;
 
     // Editing data.

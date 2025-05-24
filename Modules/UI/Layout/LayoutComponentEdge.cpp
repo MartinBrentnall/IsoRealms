@@ -1,0 +1,93 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "LayoutComponentEdge.h"
+
+#include "LayoutComponent.h"
+#include "Layout.h"
+
+namespace IsoRealms::UI {
+  const std::string LayoutComponentEdge::JSON_LOCATION = "location";
+  const std::string LayoutComponentEdge::JSON_OFFSET   = "offset";
+
+  LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, float aspectRatio, float value) :
+            cDefParent(parent),
+            cDefLocation(parent.getLayout().getUI(), *this),
+            cDefOffset(parent.getLayout().getUI(), *this) {
+    setLocation(aspectRatio, value);
+  }
+  
+  LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag) :
+            LayoutComponentEdge(parent, 1.0f, 0.0f) {
+    JSONObject mEdgeObject = object.getObject(tag);
+    if (mEdgeObject.hasMember(JSON_LOCATION)) {
+      cDefLocation.init(mEdgeObject, JSON_LOCATION);
+    }
+    if (mEdgeObject.hasMember(JSON_OFFSET)) {
+      cDefOffset.init(mEdgeObject, JSON_OFFSET);
+    }
+  }
+
+  LayoutComponentEdge::LayoutComponentEdge(const LayoutComponentEdge& edge) :
+            cDefParent(edge.cDefParent),
+            cDefLocation(edge.cDefLocation),
+            cDefOffset(edge.cDefOffset) {
+  }
+
+  void LayoutComponentEdge::setLocation(float aspectRatio, float value) {
+    cDefLocation->setAbsolute(aspectRatio, value - cDefOffset->getOffset(aspectRatio));
+  }
+
+  void LayoutComponentEdge::setOffset(float aspectRatio, float value) {
+    cDefOffset->setAbsolute(aspectRatio, value - cDefOffset->getOffset(aspectRatio));
+  }
+
+  LayoutComponent& LayoutComponentEdge::getComponent() {
+    return cDefParent;
+  }
+
+  bool LayoutComponentEdge::isHorizontalEdge() const {
+    return cDefParent.isHorizontalEdge(*this);
+  }
+  
+  bool LayoutComponentEdge::isPositiveEdge() const {
+    return cDefParent.isPositiveEdge(*this);
+  }
+
+  float LayoutComponentEdge::getLocation(float aspectRatio) const {
+    return cDefLocation->getLocation(aspectRatio) + cDefOffset->getOffset(aspectRatio);
+  }
+  
+  void LayoutComponentEdge::save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const {
+    JSONObject mEdgeObject = object.addObject(tag);
+    cDefLocation.save(mEdgeObject, JSON_LOCATION);
+    cDefOffset.save(mEdgeObject, JSON_OFFSET);
+  }
+  
+  std::vector<std::unique_ptr<IProperty>> LayoutComponentEdge::getProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutLocation>>("Location", cDefLocation));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutOffset>>(  "Offset",   cDefOffset));
+    return mProperties;
+  }
+
+  void LayoutComponentEdge::renderRelation(float aspectRatio) const {
+    cDefLocation->renderRelation(aspectRatio);
+    cDefOffset->renderRelation(aspectRatio);
+  }
+}

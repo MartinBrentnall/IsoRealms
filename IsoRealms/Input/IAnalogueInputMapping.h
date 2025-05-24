@@ -75,8 +75,8 @@ namespace IsoRealms {
      */
     virtual std::string getLongName() const = 0;
 
-    virtual void registerAssets(IAssetRegistry* assets) = 0;
-    virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
+    virtual void registerAssets(IAssetRegistry& assets) = 0;
+    virtual void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) = 0;
 
     virtual ~IAnalogueInputMapping() {}
   };

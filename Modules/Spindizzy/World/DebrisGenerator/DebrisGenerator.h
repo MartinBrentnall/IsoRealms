@@ -35,12 +35,12 @@
 namespace IsoRealms::Spindizzy {
   class DebrisGenerator final {
     public:
-    DebrisGenerator(JSONObject object, IProject* project);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+    DebrisGenerator(JSONObject object, IProject& project);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     void updateRuntime(unsigned int milliseconds);
     void renderRuntime();
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void reset();
     
     float getStepReach() const;
@@ -50,7 +50,7 @@ namespace IsoRealms::Spindizzy {
     /*********************\
      * Scripting Support *
     \*********************/
-    void generateDebris(IVertex* location, double xMomentum, double yMomentum, double zMomentum, Zone* zone);
+    void generateDebris(IVertex* location, double xMomentum, double yMomentum, double zMomentum, Zone& zone);
     void clear();
     
     private:

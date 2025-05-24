@@ -19,6 +19,12 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(Basics MODULE
   AnalogueInput/AnalogueInput.cpp
   AnalogueInput/DigitalToAnalogueMapping.cpp
+  Assets/Client/SequenceTrack.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackAction.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackAudio.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackColour.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackFloat.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackDummy.cpp
   BooleanTrigger/BooleanTrigger.cpp
   ColourCycler/ColourCycler.cpp
   ColourSwitch/ColourSwitch.cpp
@@ -27,21 +33,19 @@ add_library(Basics MODULE
   FileSound/FileSound.cpp
   FileTexture/FileTexture.cpp
   FloatSwitch/FloatSwitch.cpp
+  Function/ArgumentDefinition.cpp
   Function/Binding.cpp
   Function/Function.cpp
   InputGroup/InputGroup.cpp
   InputSwitch/InputSwitch.cpp
   InterruptHandler/InterruptHandler.cpp
   ModelCycler/ModelCycler.cpp
-  ModelScreen/ModelScreen.cpp
   Project/Project.cpp
   Project/ProjectLoader.cpp
+  ProjectConfigurer/ProjectConfigurer.cpp
   ProjectOptions/ProjectOptions.cpp
-  Sequence/ActionTrack.cpp
-  Sequence/ColourTrack.cpp
-  Sequence/ColourTrackEventFade.cpp
-  Sequence/ColourTrackEventPause.cpp
   Sequence/Sequence.cpp
+  Sequence/Editor/SequenceEditor.cpp
   SimpleBoolean/SimpleBoolean.cpp
   SimpleColour/SimpleColour.cpp
   SimpleFloat/SimpleFloat.cpp
@@ -49,7 +53,6 @@ add_library(Basics MODULE
   SimpleString/SimpleString.cpp
   SimpleVertex/SimpleVertex.cpp
   Sprite/Sprite.cpp
-  StringScreen/StringScreen.cpp
   Timer/Timer.cpp
   Basics.cpp
   BasicsLuaSupport.cpp

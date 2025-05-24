@@ -40,14 +40,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    CollisionHandler(IProject* project, Spindizzy* spindizzy);
-    CollisionHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Collision handler interface.
     const PhysicalObjectType* getPhysicalObjectTypeA() const;
@@ -62,6 +62,9 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_OBJECT_B;
     static const std::string JSON_ON_COLLISION;
     static const std::string JSON_ON_PARTING;
+
+    // External interfaces.
+    Spindizzy& cSpindizzy;
 
     // Definition data.
     PhysicalObjectType cDefPhysicalObjectTypeA; /// First object type to handle.

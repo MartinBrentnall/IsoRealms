@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
 
@@ -25,45 +26,47 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a 3D model composed of a quad with a specified
+   * Resource definition for a model composed of a quad with a specified
    * texture applied to it.  The model can be configured to behave in various
    * ways according to the view within a 3D environment.
    */
-  class Sprite final : public I3DModelType,
-                       public I3DModel,
+  class Sprite final : public IModel,
+                       public IModelInstance,
                        public IScreenListener {
     public:
 
     /**********************\
      * Resource Interface *
     \**********************/
-    Sprite(IProject* project, Basics* basics);
-    Sprite(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Sprite(IProject& project, Basics& basics, IResourceData& data);
+    Sprite(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
-    /***************************\
-     * Implements I3DModelType *
-    \***************************/
-    I3DModel* createModel() override;
+    /*********************\
+     * Implements IModel *
+    \*********************/
+    IModelInstance* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
-    /***********************\
-     * Implements I3DModel *
-    \***********************/
+    /*****************************\
+     * Implements IModelInstance *
+    \*****************************/
     void update(unsigned int milliseconds) override;
     void render() const override;
 
     /******************************\
      * Implements IScreenListener *
     \******************************/
-    void screenAdded(IProject* project, const IScreen* screen) override;
+    void screenAdded(IProject& project, const IScreen* screen) override;
     void screenRemoved(const IScreen* screen) override;
     void screenPreRender(const IScreen* screen) override;
     void screenPostRender(const IScreen* screen) override;
@@ -78,7 +81,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_TEXTURE;
 
     // System.
-    IProject* cDefProject;   /// Hosting project.
+    IProject& cDefProject;   /// Hosting project.
 
     // Definition data.
     Texture cDefTexture;     /// Texture applied to this sprite.

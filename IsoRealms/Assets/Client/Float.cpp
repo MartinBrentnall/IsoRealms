@@ -18,47 +18,46 @@
  */
 #include "Float.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Float::Float(IProject* project, float defaultValue, std::function<void(float)> listener) :
-            cProject(project),
+  Float::Float(IProject& project, float defaultValue, std::function<void(float)> listener) :
+            Asset<IFloat, IProject>(project, project.createLiteralFloat(this, defaultValue)),
             cDefaultValue(defaultValue),
-            cFloat(cProject->createLiteralFloat(this, cDefaultValue)),
             cListener(listener) {
   }
 
-  void Float::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IFloat* Float::createLiteralAsset(IProject& project) {
+    return project.createLiteralFloat(this, cDefaultValue);
+  }
+  
+  IFloat* Float::getAsset(IProject& project, JSONObject object) {
+    return project.getFloat(this, object, cListener != nullptr ? this : nullptr);
+  }
+  
+  IFloat* Float::getAsset(IProject& project, const std::string& id) {
+    return project.getFloat(this, id, cListener != nullptr ? this : nullptr);
+  }
+  
+  std::vector<std::string> Float::getAvailableProviders() const {
+    return cManager.getAllFloats();
+  }  
+
+  bool Float::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderFloatIcon(id);
   }
 
-  void Float::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cFloat);
-    cFloat = cProject->getFloat(this, mAssetObject, cListener != nullptr ? this : nullptr);
-  }
-
-  void Float::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cFloat);
-  }
-
-  void Float::relinquish(IFloat* asset) {
-    if (cFloat == asset) {
-      cFloat = cProject->createLiteralFloat(this, cDefaultValue);
-    }
+  bool Float::hasConfiguration() const {
+    return cManager.isFloatConfigurable(getID());
   }
 
   void Float::stateChanged(IFloat* value) {
-    if (value == cFloat) {
-      cListener(cFloat->getValue());
+    if (value == cAsset && cListener != nullptr) {
+      cListener(cAsset->getValue());
     }
   }
 
-  Float::~Float() {
-    if (cFloat != nullptr) {
-      cProject->release(this, cFloat);
-    }
+  bool Float::isDefaultConfiguration() const {
+    return true;
   }
 }
-

@@ -20,6 +20,10 @@
 #include "SurfacePatternDummy.h"
 
 namespace IsoRealms::Spindizzy {
+  SurfacePatternDummy::SurfacePatternDummy(Spindizzy& spindizzy) {
+    // Nothing to do.
+  }
+
   bool SurfacePatternDummy::contains(ITexture* texture) {
     return false;
   }
@@ -47,10 +51,20 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool SurfacePatternDummy::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void SurfacePatternDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SurfacePatternDummy::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    return mProperties;
+  }
+
+  bool SurfacePatternDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

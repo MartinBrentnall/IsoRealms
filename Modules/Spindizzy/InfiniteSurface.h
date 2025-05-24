@@ -35,7 +35,7 @@
 namespace IsoRealms::Spindizzy {
   class InfiniteSurface : public ISurface {
     public:
-    InfiniteSurface(Zone* zone, float height);
+    InfiniteSurface(Zone& zone, float height);
 
     /***********************\
      * Implements ISurface *
@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     bool isSolid() override;
     void adjustPosition(LiteralVertex& location, double milliseconds) override;
     IWorldObject* getOwner() override;
-    Zone* getZone() override;
+    Zone& getZone() override;
     
     void render() const override;
     void renderOutline() const override;
@@ -73,7 +73,11 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals() override;    
     
     private:
-    Zone* cDefZone;
+    
+    // External interfaces.
+    Zone& cZone;
+    
+    // TODO: Is this definition data????
     const float cDefHeight;
 
     std::unique_ptr<LiteralVertex> getBoundaryCrossingPoint(LiteralVertex& start, LiteralVertex& end, double* lowestGradient, double infinity);

@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
   const float Top::WIDTH          = 0.3f;
   const float Top::HEIGHT         = 0.75f;
 
-  Top::Top(IProject* project, Spindizzy* spindizzy) :
+  Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
             cDefColourTop(    project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourSide(   project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -40,28 +40,28 @@ namespace IsoRealms::Spindizzy {
             cRuntimeTextureSide(project),
             cNeedsRedrawing(false),
             cEditingIconAngle(0.0f) {
-    project->updateEditing([this](unsigned int milliseconds) {
+    project.updateEditing([this](unsigned int milliseconds) {
       cEditingIconAngle -= 0.25f * milliseconds;
     });
     setNeedsRedrawing();
   }
             
-  Top::Top(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            Top(project, spindizzy) {
+  Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            Top(project, spindizzy, data) {
     cDefColourTop.init(object, JSON_TOP);
     cDefColourSide.init(object, JSON_SIDES);
     cDefColourOutline.init(object, JSON_OUTLINE);
   }
 
-  void Top::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Spindizzy Top Models");
+  void Top::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Spindizzy Top Models");
   }
     
-  void Top::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void Top::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
   
-  void Top::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Top::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefColourTop.save(object, JSON_TOP);
     cDefColourSide.save(object, JSON_SIDES);
     cDefColourOutline.save(object, JSON_OUTLINE);
@@ -80,12 +80,15 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<IProperty*> Top::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Top Colour", cDefColourTop));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side Colour", cDefColourSide));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefColourOutline));
+    return mProperties;
   }
 
-  I3DModel* Top::createModel() {
+  IModelInstance* Top::createModel() {
     return this;
   }
 
@@ -100,6 +103,14 @@ namespace IsoRealms::Spindizzy {
 
   void Top::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Top::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Top::isDefaultConfiguration() const {
+    return true;
   }
 
   void Top::update(unsigned int milliseconds) {
@@ -162,15 +173,15 @@ namespace IsoRealms::Spindizzy {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glPopAttrib();
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->setViewPort();
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.setViewPort();
   }
 
   void Top::generateTextureTop() {
-    glClearColor(cDefColourOutline.getRed(), cDefColourOutline.getGreen(), cDefColourOutline.getBlue(), 0.0f);
+    glClearColor(cDefColourOutline->getRed(), cDefColourOutline->getGreen(), cDefColourOutline->getBlue(), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_QUADS);
-    cDefColourTop.set();
+    cDefColourTop->set();
     glVertex2f(-OUTLINE, -OUTLINE);
     glVertex2f( OUTLINE, -OUTLINE);
     glVertex2f( OUTLINE,  OUTLINE);
@@ -179,10 +190,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Top::generateTextureSide() {
-    glClearColor(cDefColourOutline.getRed(), cDefColourOutline.getGreen(), cDefColourOutline.getBlue(), 0.0f);
+    glClearColor(cDefColourOutline->getRed(), cDefColourOutline->getGreen(), cDefColourOutline->getBlue(), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_TRIANGLES);
-    cDefColourSide.set();
+    cDefColourSide->set();
     glVertex2f(-0.74, -OUTLINE);
     glVertex2f( 0.74, -OUTLINE);
     glVertex2f( 0.0f,  0.62f);
@@ -191,7 +202,7 @@ namespace IsoRealms::Spindizzy {
 
   void Top::setNeedsRedrawing() {
     if (!cNeedsRedrawing) {
-      cProject->updateLater([this]() {
+      cProject.updateLater([this]() {
         updateTextures();
         cNeedsRedrawing = false;
       });

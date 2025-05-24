@@ -29,45 +29,45 @@ namespace IsoRealms::Spindizzy {
   const std::string Alien::JSON_Y    = "y";
   const std::string Alien::JSON_Z    = "z";
 
-  Alien::Alien(Zone& zone, AlienType* type, int x, int y, int z) :
-            cDefZone(zone),
-            cDefType(type),
-            cDefMovementHandler(cDefZone.getWorld()->getMovementHandler(cDefType)),
+  Alien::Alien(Zone& zone, AlienType& type, int x, int y, int z) :
+            cZone(zone),
+            cDefType(&type),
+            cDefMovementHandler(cZone.getWorld().getMovementHandler(cDefType)),
             cDefModel(cDefType->createModel()),
             cDefX(x),
             cDefY(y),
             cDefZ(z),
-            cDefSurfaceOutsideHomeZone(&cDefZone, cDefZ),
-            cRuntimePhysicsObject(*zone.getWorld()->getSpindizzy(), this) {
+            cDefSurfaceOutsideHomeZone(cZone, cDefZ),
+            cRuntimePhysicsObject(zone.getWorld().getSpindizzy(), this) {
     reset();
   }
 
   Alien::Alien(Zone& zone, Alien& alien, int x, int y, int z) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(alien.cDefType),
-            cDefMovementHandler(cDefZone.getWorld()->getMovementHandler(cDefType)),
+            cDefMovementHandler(cZone.getWorld().getMovementHandler(cDefType)),
             cDefModel(cDefType->createModel()),
             cDefX(alien.cDefX + x),
             cDefY(alien.cDefY + y),
             cDefZ(alien.cDefZ + z),
-            cDefSurfaceOutsideHomeZone(&cDefZone, cDefZ),
-            cRuntimePhysicsObject(*zone.getWorld()->getSpindizzy(), this) {
+            cDefSurfaceOutsideHomeZone(cZone, cDefZ),
+            cRuntimePhysicsObject(zone.getWorld().getSpindizzy(), this) {
     reset();
   }
 
   Alien::Alien(Zone& zone, JSONObject object) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(nullptr),
             cDefMovementHandler(nullptr),
             cDefModel(nullptr),
-            cDefX(object.getInteger(JSON_X) + cDefZone.getStartX()),
-            cDefY(object.getInteger(JSON_Y) + cDefZone.getStartY()),
-            cDefZ(object.getInteger(JSON_Z) + cDefZone.getStartZ()),
-            cDefSurfaceOutsideHomeZone(&cDefZone, cDefZ), // TODO: Is this OK?
-            cRuntimePhysicsObject(*cDefZone.getWorld()->getSpindizzy(), this) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getAlienType(object.getString(JSON_TYPE));
-      cDefMovementHandler = cDefZone.getWorld()->getMovementHandler(cDefType);
+            cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
+            cDefY(object.getInteger(JSON_Y) + cZone.getStartY()),
+            cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
+            cDefSurfaceOutsideHomeZone(cZone, cDefZ), // TODO: Is this OK?
+            cRuntimePhysicsObject(cZone.getWorld().getSpindizzy(), this) {
+    cZone.getWorld().getSpindizzy().getProject().init([this, object](IAssets& assets) {
+      cDefType = cZone.getWorld().getSpindizzy().getAlienType(object.getString(JSON_TYPE));
+      cDefMovementHandler = cZone.getWorld().getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();
       reset();
     });
@@ -82,7 +82,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Alien::save(JSONObject object, int x, int y, int z) const {
-    object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
     object.addInteger(JSON_X,    cDefX - x);
     object.addInteger(JSON_Y,    cDefY - y);
     object.addInteger(JSON_Z,    cDefZ - z);
@@ -93,9 +93,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Alien::updateRuntime(unsigned int milliseconds) {
-    if (!cDefZone.getWorld()->getSpindizzy()->isPaused()) {
+    if (!cZone.getWorld().getSpindizzy().isPaused()) {
       LiteralVertex mPreviousLocation = cRuntimePhysicsObject.cLocation;
-      cDefZone.getWorld()->move(&cRuntimePhysicsObject, milliseconds);
+      cZone.getWorld().move(&cRuntimePhysicsObject, milliseconds);
 
       // Don't let alien become airborne
       if (cRuntimePhysicsObject.cSurface == nullptr && cRuntimeLastSurface != nullptr && cRuntimeLastSurface != &cDefSurfaceOutsideHomeZone) {
@@ -137,8 +137,8 @@ namespace IsoRealms::Spindizzy {
     glPopMatrix();
   }
 
-  Zone* Alien::getZone() {
-    return &cDefZone;
+  Zone& Alien::getZone() {
+    return cZone;
   }
   
   float Alien::getXThrust() const {
@@ -176,7 +176,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   bool Alien::allowTraversal(ISurface* surface) const {
-    return surface == &cDefSurfaceOutsideHomeZone || (surface->getSurfaceCellElevation(0, 0) == 0 && surface->getZone() == &cDefZone);
+    return surface == &cDefSurfaceOutsideHomeZone || (surface->getSurfaceCellElevation(0, 0) == 0 && &surface->getZone() == &cZone);
   }
 
   bool Alien::isHuggable(Wall* wall) const {
@@ -188,7 +188,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   Zone* Alien::getHome() const {
-    return &cDefZone;
+    return &cZone;
   }
 
   void Alien::physicalStateChanged() {
@@ -231,10 +231,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Alien::remove() {
-    cDefZone.remove(this);
+    cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Alien::getProperties(IPropertyAppearance* appearance) {
+  std::vector<std::unique_ptr<IProperty>> Alien::getProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -243,6 +243,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   Zone& Alien::getObjectZone() {
-    return cDefZone;
+    return cZone;
   }
 }

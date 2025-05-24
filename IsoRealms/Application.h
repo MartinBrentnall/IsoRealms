@@ -203,7 +203,7 @@ namespace IsoRealms {
     bool isFullScreen() const override;
     void setDisplayResolution(DisplayResolution resolution, bool fullscreen) override;
     float getScreenAspectRatio() const override;
-    ScreenLocation normalise(const int x, const int y) const override;
+    Point2D normalise(const int x, const int y) const override;
     float normalise(const int pixels) const override;
     ScreenArea crop(const ScreenArea& area) const override;
     bool isCropped(const ScreenArea& area) const override;

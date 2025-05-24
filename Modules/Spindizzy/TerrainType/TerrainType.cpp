@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
 
   const float TerrainType::DEFAULT_WALL_BOUNCE = 0.6f;
 
-  TerrainType::TerrainType(IProject* project, Spindizzy* spindizzy) :
+  TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cDefSurfaceFriction(0.0f),
             cDefSurfaceGrip(0.0f),
@@ -47,17 +47,17 @@ namespace IsoRealms::Spindizzy {
             cDefWallBounce(DEFAULT_WALL_BOUNCE),
             cDefRespawnAllowed(true),
             cDefSolid(false),
-            cDefSurfacePattern(spindizzy),
-            cDefWestWallPattern(spindizzy),
-            cDefEastWallPattern(spindizzy),
-            cDefSouthWallPattern(spindizzy),
-            cDefNorthWallPattern(spindizzy),
+            cDefSurfacePattern(  spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefWestWallPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefEastWallPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefSouthWallPattern(spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefNorthWallPattern(spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
             cDefContactAction(project),
             cDefImpactAction(project) {
   }
   
-  TerrainType::TerrainType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            TerrainType(project, spindizzy) {
+  TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            TerrainType(project, spindizzy, data) {
     cDefSolid = object.getBoolean(JSON_SOLID);
     cDefSurfaceBounce = object.getFloat(JSON_FLOOR_BOUNCE);
     cDefWallBounce = object.getFloat(JSON_WALL_BOUNCE, DEFAULT_WALL_BOUNCE);
@@ -66,18 +66,18 @@ namespace IsoRealms::Spindizzy {
     cDefSurfaceFriction = object.getFloat(JSON_FRICTION);
     cDefContactAction.init(object, JSON_ON_TOUCH);
     cDefImpactAction.init(object, JSON_ON_IMPACT);
-    cDefWestWallPattern.init(object.getObject(JSON_WEST_WALL));
-    cDefEastWallPattern.init(object.getObject(JSON_EAST_WALL));
-    cDefSouthWallPattern.init(object.getObject(JSON_SOUTH_WALL));
-    cDefNorthWallPattern.init(object.getObject(JSON_NORTH_WALL));
-    cDefSurfacePattern.init(object.getObject(JSON_SURFACE));
+    cDefWestWallPattern.init(object, JSON_WEST_WALL);
+    cDefEastWallPattern.init(object, JSON_EAST_WALL);
+    cDefSouthWallPattern.init(object, JSON_SOUTH_WALL);
+    cDefNorthWallPattern.init(object, JSON_NORTH_WALL);
+    cDefSurfacePattern.init(object, JSON_SURFACE);
   }
 
-  void TerrainType::registerAssets(IAssetRegistry* assets) {
+  void TerrainType::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
 
-  void TerrainType::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void TerrainType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
 
@@ -134,9 +134,22 @@ namespace IsoRealms::Spindizzy {
   
   
   
-  std::vector<IProperty*> TerrainType::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Friction",      [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Grip",          [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Bounce",        [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Wall Bounce",           [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Allow Respawn",         [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Solid",                 [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Touch",       cDefContactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Impact",      cDefImpactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Surface Appearance",    cDefSurfacePattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "North Wall Appearance", cDefNorthWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "South Wall Appearance", cDefSouthWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "West Wall Appearance",  cDefWestWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "East Wall Appearance",  cDefEastWallPattern));
+    return mProperties;
   }
   
   ISurfacePattern* TerrainType::getSurfacePattern() const {
@@ -159,7 +172,7 @@ namespace IsoRealms::Spindizzy {
     return *cDefNorthWallPattern;
   }
 
-  Spindizzy* TerrainType::getSpindizzy() const {
+  Spindizzy& TerrainType::getSpindizzy() const {
     return cSpindizzy;
   }
 
@@ -195,7 +208,7 @@ namespace IsoRealms::Spindizzy {
     return cDefSolid;
   }
 
-  void TerrainType::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void TerrainType::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_SOLID, cDefSolid);
     object.addFloat(JSON_FRICTION, cDefSurfaceFriction);
     object.addFloat(JSON_GRIP, cDefSurfaceGrip);
@@ -212,7 +225,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::vector<ConditionElement*> TerrainType::getTerrainStateConditionElements() {
-    return cSpindizzy->getTerrainStateConditionElements();
+    return cSpindizzy.getTerrainStateConditionElements();
   }
 
 
@@ -222,19 +235,27 @@ namespace IsoRealms::Spindizzy {
 
 
 
-  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
   bool TerrainType::renderAssetIcon() const {
-    return false;
+    return renderIcon();
   }
 
   void TerrainType::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  TerrainType::Pen::Pen(TerrainType& parent, WorldEditor* editor) :
+  std::vector<std::unique_ptr<IProperty>> TerrainType::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool TerrainType::isDefaultConfiguration() const {
+    return true;
+  }
+
+  TerrainType::Pen::Pen(TerrainType& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor),
             cPinnedZone(nullptr),
@@ -242,29 +263,29 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainType::Pen::draw() {
-    if (!cEditor->getTerrainBrush().isEditing()) {
+    if (!cEditor.getTerrainBrush().isEditing()) {
       if (cPinnedZone == nullptr) {
-        cPinnedZone = cEditor->getWorld()->getOrDrawZone(cEditor->getCursorCell(), cEditor, nullptr);
-        cPinnedLocation = cEditor->getCursorCell();
+        cPinnedZone = cEditor.getWorld().getOrDrawZone(cEditor.getCursorCell(), cEditor, nullptr);
+        cPinnedLocation = cEditor.getCursorCell();
       } else {
-        TerrainBrush& mTerrainBrush = cEditor->getTerrainBrush();
-        if (cEditor->getWorld()->draw(&cParent, cPinnedLocation, cEditor->getCursorCell(), mTerrainBrush.getSouthWestHeight(), mTerrainBrush.getSouthEastHeight(), mTerrainBrush.getNorthWestHeight(), mTerrainBrush.getNorthEastHeight(), mTerrainBrush.isAlternativeSplit(), cDrawingSteppedBase, cDrawingNegation, cEditor) != nullptr) {
+        TerrainBrush& mTerrainBrush = cEditor.getTerrainBrush();
+        if (cEditor.getWorld().draw(cParent, cPinnedLocation, cEditor.getCursorCell(), mTerrainBrush.getSouthWestHeight(), mTerrainBrush.getSouthEastHeight(), mTerrainBrush.getNorthWestHeight(), mTerrainBrush.getNorthEastHeight(), mTerrainBrush.isAlternativeSplit(), cDrawingSteppedBase, cDrawingNegation, cEditor) != nullptr) {
           cPinnedZone = nullptr;
           cDrawingSteppedBase = false;
         }
       }
     } else {
-      cEditor->getTerrainBrush().toggleEditing();
+      cEditor.getTerrainBrush().toggleEditing();
     }
   }
 
   bool TerrainType::Pen::cancel() {
-    if (cEditor->getTerrainBrush().isEditing()) {
-      cEditor->getTerrainBrush().toggleEditing();
+    if (cEditor.getTerrainBrush().isEditing()) {
+      cEditor.getTerrainBrush().toggleEditing();
       return true;
     } else if (cPinnedZone != nullptr) {
       if (cPinnedZone->empty()) {
-        cEditor->getWorld()->remove(cPinnedZone);
+        cEditor.getWorld().remove(cPinnedZone);
       }
       cPinnedZone = nullptr;
       return true;
@@ -276,7 +297,7 @@ namespace IsoRealms::Spindizzy {
     if (cPinnedZone == nullptr) {
       cDrawingNegation = !cDrawingNegation;
       if (cDrawingNegation) {
-        cEditor->getTerrainBrush().reset();
+        cEditor.getTerrainBrush().reset();
       }
     }
   }
@@ -286,13 +307,13 @@ namespace IsoRealms::Spindizzy {
       if (cPinnedZone != nullptr) {
         cDrawingSteppedBase = !cDrawingSteppedBase;
       } else {
-        cEditor->getTerrainBrush().toggleEditing();
+        cEditor.getTerrainBrush().toggleEditing();
       }
     }
   }
 
   bool TerrainType::Pen::inputTool(SignalInputID id, double yaw) {
-    if (cEditor->getTerrainBrush().input(id, yaw)) {
+    if (cEditor.getTerrainBrush().input(id, yaw)) {
       return true;
     }
 
@@ -307,7 +328,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool TerrainType::Pen::isCursorLocked() const {
-    return cEditor->getTerrainBrush().isCursorLocked();
+    return cEditor.getTerrainBrush().isCursorLocked();
   }
 
   void TerrainType::Pen::processCursorMovement(LiteralVertex* start, LiteralVertex* end) {
@@ -315,7 +336,7 @@ namespace IsoRealms::Spindizzy {
       cancel();
     } else if (cPinnedZone != nullptr) {
       cPinnedZone->processCursorMovement(*end);
-      if (cEditor->getTerrainBrush().isSplit()) {
+      if (cEditor.getTerrainBrush().isSplit()) {
         end->x = cPinnedLocation.cDefX;
         end->y = cPinnedLocation.cDefY;
       }
@@ -331,8 +352,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainType::Pen::renderEditingPreview() const {
-    const TerrainBrush& mTerrainBrush = cEditor->getTerrainBrush();
-    if (cPinnedZone == nullptr || cPinnedZone->isValidTerrainPlacement(cPinnedLocation, WorldEditorCursorCell(std::round(cEditor->getCursorX()), std::round(cEditor->getCursorY()), std::round(cEditor->getCursorZ())), mTerrainBrush.getSouthWestHeight(), mTerrainBrush.getSouthEastHeight(), mTerrainBrush.getNorthWestHeight(), mTerrainBrush.getNorthEastHeight())) {
+    const TerrainBrush& mTerrainBrush = cEditor.getTerrainBrush();
+    if (cPinnedZone == nullptr || cPinnedZone->isValidTerrainPlacement(cPinnedLocation, WorldEditorCursorCell(std::round(cEditor.getCursorX()), std::round(cEditor.getCursorY()), std::round(cEditor.getCursorZ())), mTerrainBrush.getSouthWestHeight(), mTerrainBrush.getSouthEastHeight(), mTerrainBrush.getNorthWestHeight(), mTerrainBrush.getNorthEastHeight())) {
       if (cDrawingNegation) {
         glColor4f(0.0f, 0.0f, 1.0f, 0.5f);
       } else {
@@ -341,10 +362,10 @@ namespace IsoRealms::Spindizzy {
     } else {
       glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
     }
-    float mPinnedX = cPinnedZone != nullptr ? cPinnedLocation.cDefX : cEditor->getCursorX();
-    float mPinnedY = cPinnedZone != nullptr ? cPinnedLocation.cDefY : cEditor->getCursorY();
-    float mPinnedZ = cPinnedZone != nullptr ? cPinnedLocation.cDefZ : cEditor->getCursorZ();
-    mTerrainBrush.renderEditing(&cParent, mPinnedX, mPinnedY, mPinnedZ, cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ(), cDrawingSteppedBase);
+    float mPinnedX = cPinnedZone != nullptr ? cPinnedLocation.cDefX : cEditor.getCursorX();
+    float mPinnedY = cPinnedZone != nullptr ? cPinnedLocation.cDefY : cEditor.getCursorY();
+    float mPinnedZ = cPinnedZone != nullptr ? cPinnedLocation.cDefZ : cEditor.getCursorZ();
+    mTerrainBrush.renderEditing(&cParent, mPinnedX, mPinnedY, mPinnedZ, cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ(), cDrawingSteppedBase);
   }
 
   void TerrainType::Pen::renderUI(float aspectRatio) const {
@@ -396,7 +417,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   TerrainType::~TerrainType() {
-    cSpindizzy->removeAll(this);
+    cSpindizzy.removeAll(this);
   }
   
   void TerrainType::registerAssets(ISpindizzyRegistry* registry) {

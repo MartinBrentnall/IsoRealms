@@ -21,21 +21,39 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Types.h"
 
+#include "Function.h"
+
 namespace IsoRealms::Basics {
-  Binding::Binding(JSONObject object, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init) :
-            cDefValue(project, localArgs) {
-    cDefName = object.getString(nameAttribute);
-    if (object.hasMember(valueTag)) {
+  const std::string Binding::JSON_TO       = "to";
+  const std::string Binding::JSON_VARIABLE = "variable";
+
+  Binding::Binding(Function& parent, IBindingRegistry* localArgs, const std::string& name) :
+            cParent(parent),
+            cDefName(name),
+            cDefValue(parent.getProject(), localArgs) {
+  }
+
+  Binding::Binding(Function& parent, IBindingRegistry* localArgs, bool init, JSONObject object) :
+            Binding(parent, localArgs, object.getString(JSON_VARIABLE)) {
+    if (object.hasMember(JSON_TO)) {
       if (init) {
-        cDefValue.init(object, valueTag);
+        cDefValue.init(object, JSON_TO);
       } else {
-        cDefValue.set(object, valueTag);
+        cDefValue.set(object, JSON_TO);
       }
     }
   }
 
+  void Binding::setName(const std::string& name) {
+    cDefName = name;
+  }
+
   std::string Binding::getName() const {
     return cDefName;
+  }
+
+  std::string Binding::getType() const {
+    return cDefValue.getType();
   }
 
   std::string Binding::getInitCode() const {
@@ -57,7 +75,7 @@ namespace IsoRealms::Basics {
     return mFunction;
   }
 
-  void Binding::save(JSONObject object, const std::string& attributeName, IAssetIdentifier* identifier, const std::string& attributeValueName) const {
+  void Binding::save(JSONObject object, const std::string& attributeName, IAssetIdentifier& identifier, const std::string& attributeValueName) const {
     object.addString(attributeName, cDefName);
     cDefValue.save(object, attributeValueName);
   }
@@ -70,10 +88,17 @@ namespace IsoRealms::Basics {
     return *cDefValue;
   }
 
-  void Binding::release(IAssets* releaser) {
+  void Binding::release(IAssets& releaser) {
     // TODO: Is this necessary?
 //     if (cDefValue != nullptr) {
 //       releaser->release(this, cDefValue);
 //     }
+  }
+  
+  std::vector<std::unique_ptr<IProperty>> Binding::getProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name",  [this]() {return cDefName;}, [this](const std::string& value) {return cParent.setBindingName(*this, value);}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<IsoRealms::Binding>>("Value", cDefValue));
+    return mProperties;
   }
 }

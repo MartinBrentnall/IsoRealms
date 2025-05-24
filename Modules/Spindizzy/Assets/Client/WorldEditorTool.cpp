@@ -18,40 +18,40 @@
  */
 #include "WorldEditorTool.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  WorldEditorTool::WorldEditorTool(Spindizzy* spindizzy) :
-            cSpindizzy(spindizzy),
-            cWorldEditorTool(cSpindizzy->createLiteralWorldEditorTool(this)) {
+  WorldEditorTool::WorldEditorTool(Spindizzy& spindizzy) : 
+            Asset<IWorldEditorTool, Spindizzy>(spindizzy, spindizzy.createLiteralWorldEditorTool(this)) {
   }
 
-  void WorldEditorTool::init(JSONObject object) {
-    cSpindizzy->getProject()->init([this, object](IAssets* assets) {
-      set(object);
-    });
+  IWorldEditorTool* WorldEditorTool::createLiteralAsset(Spindizzy& spindizzy) {
+    return spindizzy.createLiteralWorldEditorTool(this);
+  }
+  
+  IWorldEditorTool* WorldEditorTool::getAsset(Spindizzy& spindizzy, JSONObject object) {
+    return spindizzy.getWorldEditorTool(this, object);
+  }
+  
+  IWorldEditorTool* WorldEditorTool::getAsset(Spindizzy& spindizzy, const std::string& id) {
+    return spindizzy.getWorldEditorTool(this, id);
+  }
+  
+  std::vector<std::string> WorldEditorTool::getAvailableProviders() const {
+    return cManager.getAllWorldEditorTools();
+  }  
+
+  bool WorldEditorTool::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderWorldEditorToolIcon(id);
   }
 
-  void WorldEditorTool::set(JSONObject object) {
-    cSpindizzy->release(this, cWorldEditorTool);
-    cWorldEditorTool = cSpindizzy->getWorldEditorTool(this, object);
-  }
+  bool WorldEditorTool::hasConfiguration() const {
+    return cManager.isWorldEditorToolConfigurable(getID());
+  }  
 
-  void WorldEditorTool::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cSpindizzy->save(mAssetObject, cWorldEditorTool);
-  }
-
-  void WorldEditorTool::relinquish(IWorldEditorTool* asset) {
-    if (cWorldEditorTool == asset) {
-      cWorldEditorTool = cSpindizzy->createLiteralWorldEditorTool(this);
-    }
-  }
-
-  WorldEditorTool::~WorldEditorTool() {
-    if (cWorldEditorTool != nullptr) {
-      cSpindizzy->release(this, cWorldEditorTool);
-    }
+  bool WorldEditorTool::isDefaultConfiguration() const {
+    return true;
   }
 }
-

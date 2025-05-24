@@ -22,26 +22,26 @@ namespace IsoRealms::Spindizzy {
   const std::string DamageIndicator::JSON_COLOUR = "colour";
   const std::string DamageIndicator::JSON_SIZE   = "size";
 
-  DamageIndicator::DamageIndicator(IProject* project, Spindizzy* spindizzy) :
+  DamageIndicator::DamageIndicator(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cDefColour(project, 0.0f, 0.0f, 1.0f),
             cDefSize(project, 0.5f) {
   }
 
-  DamageIndicator::DamageIndicator(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            DamageIndicator(project, spindizzy) {
+  DamageIndicator::DamageIndicator(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            DamageIndicator(project, spindizzy, data) {
     cDefColour.init(object, JSON_COLOUR);
     cDefSize.init(object, JSON_SIZE);
   }
 
-  void DamageIndicator::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Coloured Screens");
+  void DamageIndicator::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Coloured Screens");
   }
 
-  void DamageIndicator::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void DamageIndicator::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
-  void DamageIndicator::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void DamageIndicator::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefColour.save(object, JSON_COLOUR);
     cDefSize.save(object, JSON_SIZE);
   }
@@ -54,36 +54,38 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<IProperty*> DamageIndicator::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> DamageIndicator::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Size", cDefSize));
+    return mProperties;
   }
 
   void DamageIndicator::renderScreen(float scale, float aspectRatio) const {
     glEnable(GL_BLEND);
     glBegin(GL_QUADS);
-    glColor4f(cDefColour.getRed(), cDefColour.getGreen(), cDefColour.getBlue(), 0.0f);
+    glColor4f(cDefColour->getRed(), cDefColour->getGreen(), cDefColour->getBlue(), 0.0f);
     glVertex3f(-aspectRatio,                         1.0f - cDefSize->getValue(), 0.0f);
     glVertex3f( aspectRatio,                         1.0f - cDefSize->getValue(), 0.0f);
-    cDefColour.set();
+    cDefColour->set();
     glVertex3f( aspectRatio,                         1.0f,                        0.0f);
     glVertex3f(-aspectRatio,                         1.0f,                        0.0f);
 
     glVertex3f(-aspectRatio,                        -1.0f,                        0.0f);
     glVertex3f( aspectRatio,                        -1.0f,                        0.0f);
-    glColor4f(cDefColour.getRed(), cDefColour.getGreen(), cDefColour.getBlue(), 0.0f);
+    glColor4f(cDefColour->getRed(), cDefColour->getGreen(), cDefColour->getBlue(), 0.0f);
     glVertex3f( aspectRatio,                        -1.0f + cDefSize->getValue(), 0.0f);
     glVertex3f(-aspectRatio,                        -1.0f + cDefSize->getValue(), 0.0f);
 
     glVertex3f(-aspectRatio + cDefSize->getValue(), -1.0f,                        0.0f);
     glVertex3f(-aspectRatio + cDefSize->getValue(),  1.0f,                        0.0f);
-    cDefColour.set();
+    cDefColour->set();
     glVertex3f(-aspectRatio,                         1.0f,                        0.0f);
     glVertex3f(-aspectRatio,                        -1.0f,                        0.0f);
 
     glVertex3f( aspectRatio,                        -1.0f,                        0.0f);
     glVertex3f( aspectRatio,                         1.0f,                        0.0f);
-    glColor4f(cDefColour.getRed(), cDefColour.getGreen(), cDefColour.getBlue(), 0.0f);
+    glColor4f(cDefColour->getRed(), cDefColour->getGreen(), cDefColour->getBlue(), 0.0f);
     glVertex3f( aspectRatio - cDefSize->getValue(),  1.0f,                        0.0f);
     glVertex3f( aspectRatio - cDefSize->getValue(), -1.0f,                        0.0f);
     glEnd();
@@ -95,6 +97,14 @@ namespace IsoRealms::Spindizzy {
 
   void DamageIndicator::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> DamageIndicator::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool DamageIndicator::isDefaultConfiguration() const {
+    return true;
   }
 }
 

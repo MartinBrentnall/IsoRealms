@@ -18,9 +18,13 @@
  */
 #pragma once
 
+#include <memory>
+
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
+  class IAssetBrowser;
+  class IProperty;
 
   /**
    * Base interface for assets.
@@ -29,6 +33,8 @@ namespace IsoRealms {
     public:
     virtual bool renderAssetIcon() const = 0;
     virtual void saveAsset(JSONObject object) const = 0;
+    virtual std::vector<std::unique_ptr<IProperty>> getAssetProperties() = 0;
+    virtual bool isDefaultConfiguration() const = 0;
 
     virtual ~IAsset() {}
   };

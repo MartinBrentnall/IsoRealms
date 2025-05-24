@@ -26,11 +26,13 @@
 #include "Modules/Spindizzy/Assets/Type/ISurfacePattern.h"
 
 namespace IsoRealms::Spindizzy {
+  class Spindizzy;
   class SplitSurface;
   class Surface;
 
   class SurfacePatternDummy : public ISurfacePattern {
     public:
+    SurfacePatternDummy(Spindizzy& spindizzy);
   
     /******************************\
      * Implements ISurfacePattern *
@@ -41,12 +43,14 @@ namespace IsoRealms::Spindizzy {
     void render(float startX, float endX, float startY, float endY, float z, float xSlope, float ySlope, ISurface::Direction facing) const override;
     void render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heighNE, bool alternativeSplit) const override;
     void hintInUse(bool inUse) override;
-    
+
     /*****************************************\
      * Implements IAsset via ISurfacePattern *
     \*****************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }
 

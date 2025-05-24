@@ -30,7 +30,8 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternOutline : public IWallPattern {
     public:
-    WallPatternOutline(IProject* project, Spindizzy* spindizzy, JSONObject object);
+    WallPatternOutline(IProject& project, Spindizzy& spindizzy);
+    WallPatternOutline(IProject& project, Spindizzy& spindizzy, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *
@@ -39,19 +40,21 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;
     void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const override;
     void hintInUse(bool inUse) override;
-    
+
     /**************************************\
      * Implements IAsset via IWallPattern *
     \**************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
     // Internal classes.
     class WallPatternOutlineSurface : public IVisualElement {
       public:
-      WallPatternOutlineSurface(const WallPatternOutline* parent, Wall* wall);
+      WallPatternOutlineSurface(const WallPatternOutline& parent, Wall* wall);
 
       /*****************************\
        * Implemetns IVisualElement *
@@ -61,7 +64,7 @@ namespace IsoRealms::Spindizzy {
       void prepareVisual() override;
 
       private:
-      const WallPatternOutline* cDefParent;
+      const WallPatternOutline& cDefParent;
       Wall* cDefWall;
     };
   };

@@ -64,6 +64,10 @@ namespace IsoRealms::Basics {
                                                          "requestQuit",                &Project::requestQuit,
                                                          "isQuitRequestGranted",       &Project::isQuitRequestGranted,
                                                          "setProperty",                &Project::setProperty);
+    mLua->new_usertype<ProjectConfigurer>("ProjectConfigurer", "setProject",           &ProjectConfigurer::setProject,
+                                                         "hide",                       &ProjectConfigurer::hide,
+                                                         "show",                       &ProjectConfigurer::show,
+                                                         "isHidden",                   &ProjectConfigurer::isHidden);
     mLua->new_usertype<Sequence>("Sequence",             "play",                       &Sequence::play,
                                                          "pause",                      &Sequence::pause,
                                                          "reset",                      &Sequence::reset,

@@ -28,7 +28,8 @@ namespace IsoRealms::Spindizzy {
   class ZoneObjectTypeTraitCellLocation : public IZoneObjectTypeTrait,
                                           public IZoneObjectTraitEditor {
     public:
-    ZoneObjectTypeTraitCellLocation(IProject* project, ZoneObjectType* type, JSONObject object);
+    ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type);
+    ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type, JSONObject object);
     
     /************************************\
      * Implements  IZoneObjectTypeTrait *
@@ -38,11 +39,13 @@ namespace IsoRealms::Spindizzy {
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /*************************************\
      * Implements IZoneObjectTraitEditor *
     \*************************************/
-    InputEditResult inputEdit(sf::Event& event, WorldEditor* editor) override;
+    InputEditResult inputEdit(sf::Event& event, WorldEditor& editor) override;
     void processCursorMovement(LiteralVertex& cursor) override;
     double getSnapInterval() const override;    
     

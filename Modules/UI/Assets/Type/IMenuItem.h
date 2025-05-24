@@ -30,8 +30,8 @@ namespace IsoRealms {
 
     class IMenuItem : public IAsset {
       public:
-      virtual void registerAssets(IAssetRegistry* assets) = 0;
-      virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
+      virtual void registerAssets(IAssetRegistry& assets) = 0;
+      virtual void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) = 0;
       virtual bool input(sf::Event& event) = 0;
       virtual void selectTop() = 0;
       virtual void selectBottom() = 0;

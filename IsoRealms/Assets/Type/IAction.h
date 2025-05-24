@@ -18,18 +18,22 @@
  */
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include "IsoRealms/IAssetIdentifier.h"
 
 namespace IsoRealms {
-  class IActionType;
-  
+  class IProperty;
+
   class IAction {
     public:
     virtual void execute() = 0;
-    virtual const IActionType* getActionType() const = 0; // TODO: I don't thin this needs to be here.  Can be tracked by the Project::ActionExecutor instead.
-    virtual void save(JSONObject object, IAssetIdentifier* identifier) const = 0;
+    virtual void save(JSONObject object, IAssetIdentifier& identifier) const = 0;
     virtual bool hasConfiguration() const = 0;
-    
+    virtual std::vector<std::unique_ptr<IProperty>> getAssetProperties() = 0;
+    virtual bool isDefaultConfiguration() const = 0;
+
     virtual ~IAction() {}
   };
 }

@@ -37,14 +37,14 @@ namespace IsoRealms::HighScore {
     /**********************\
      * Resource interface *
     \**********************/
-    ScoreTable(IProject* project, HighScore* highScore);
-    ScoreTable(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    ScoreTable(IProject& project, HighScore& highScore, IResourceData& data);
+    ScoreTable(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
     
     /***********************\
      * Scripting Interface *

@@ -30,49 +30,49 @@ namespace IsoRealms::Spindizzy {
 
   const std::string PickUp::BIND_TO_ZONE = "Zone";
 
-  PickUp::PickUp(Zone& zone, PickUpType* type, int x, int y, int z) :
-            cDefZone(zone),
-            cDefType(type),
+  PickUp::PickUp(Zone& zone, PickUpType& type, int x, int y, int z) :
+            cZone(zone),
+            cDefType(&type),
             cDefModel(cDefType->createModel()),
             cDefX(x),
             cDefY(y),
             cDefZ(z),
-            cLuaBinding(zone.getWorld()->getSpindizzy()->getProject(), this) {
+            cLuaBinding(zone.getWorld().getSpindizzy().getProject(), this) {
     reset();
   }
 
   PickUp::PickUp(Zone& zone, PickUp& pickUp, int x, int y, int z) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(pickUp.cDefType),
             cDefModel(cDefType->createModel()),
             cDefX(pickUp.cDefX + x),
             cDefY(pickUp.cDefY + y),
             cDefZ(pickUp.cDefZ + z),
-            cLuaBinding(zone.getWorld()->getSpindizzy()->getProject(), this) {
+            cLuaBinding(zone.getWorld().getSpindizzy().getProject(), this) {
     reset();
   }
 
   PickUp::PickUp(Zone& zone, JSONObject object) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(nullptr),
             cDefModel(nullptr),
-            cDefX(object.getInteger(JSON_X) + cDefZone.getStartX()),
-            cDefY(object.getInteger(JSON_Y) + cDefZone.getStartY()),
-            cDefZ(object.getInteger(JSON_Z) + cDefZone.getStartZ()),
-            cLuaBinding(zone.getWorld()->getSpindizzy()->getProject(), this) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getPickUpType(object.getString(JSON_TYPE));
+            cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
+            cDefY(object.getInteger(JSON_Y) + cZone.getStartY()),
+            cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
+            cLuaBinding(zone.getWorld().getSpindizzy().getProject(), this) {
+    cZone.getWorld().getSpindizzy().getProject().init([this, object](IAssets& assets) {
+      cDefType = cZone.getWorld().getSpindizzy().getPickUpType(object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();
     });
   }
 
   PickUp::~PickUp() {
-    cDefZone.getWorld()->unregisterBoundary(cDefType, this);
+    cZone.getWorld().unregisterBoundary(cDefType, this);
   }
 
   void PickUp::initialise() {
-    cDefZone.getWorld()->registerBoundary(cDefType, this, cDefX, cDefX, cDefY, cDefY);
+    cZone.getWorld().registerBoundary(cDefType, this, cDefX, cDefX, cDefY, cDefY);
   }
 
   void PickUp::reset() {
@@ -80,7 +80,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PickUp::save(JSONObject object, int x, int y, int z) const {
-    object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
     object.addInteger(JSON_X,    cDefX - x);
     object.addInteger(JSON_Y,    cDefY - y);
     object.addInteger(JSON_Z,    cDefZ - z);
@@ -155,17 +155,17 @@ namespace IsoRealms::Spindizzy {
 //     std::size_t mSplit = id.find('/');
 //     std::string mBindTo = mSplit == std::string::npos ? id : id.substr(0, mSplit);
 //     std::string mSubID = mSplit == std::string::npos ? "" : id.substr(mSplit + 1);
-//     return id == BIND_TO_ZONE ? cDefZone.getBinding(mSubID)
+//     return id == BIND_TO_ZONE ? cZone.getBinding(mSubID)
 //          :                      nullptr;
     return nullptr;
   }
   
   void PickUp::bindValues() {
-    cDefZone.bindValues();
+    cZone.bindValues();
   }
 
   void PickUp::unbindValues() {
-    cDefZone.unbindValues();
+    cZone.unbindValues();
   }
 
   bool PickUp::contains(const LiteralVertex& location) const {
@@ -178,10 +178,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PickUp::remove() {
-    cDefZone.remove(this);
+    cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> PickUp::getProperties(IPropertyAppearance* appearance) {
+  std::vector<std::unique_ptr<IProperty>> PickUp::getProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -190,6 +190,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   Zone& PickUp::getObjectZone() {
-    return cDefZone;
+    return cZone;
   }
 }

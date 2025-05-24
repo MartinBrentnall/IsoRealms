@@ -27,8 +27,12 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitSpinner::JSON_MODEL      = "model";
   const std::string ZoneObjectTypeTraitSpinner::JSON_SPIN_SPEED = "spinSpeed";
   
-  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject* project, ZoneObjectType* type, JSONObject object) :
+  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type) :
             cDefModel(project) {
+  }
+
+  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitSpinner(project, type) {
     cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED);
     cDefLocationID = object.getString(JSON_LOCATION);
     cDefModel.init(object, JSON_MODEL);
@@ -64,5 +68,13 @@ namespace IsoRealms::Spindizzy {
 
   void ZoneObjectTypeTraitSpinner::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitSpinner::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectTypeTraitSpinner::isDefaultConfiguration() const {
+    return true;
   }
 }

@@ -20,17 +20,23 @@
 
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Spindizzy {
+  class Spindizzy;
   class WorldEditor;
 
   class WorldEditorToolDummy : public IWorldEditorTool {
     public:
+    WorldEditorToolDummy(Spindizzy& owner);
 
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }

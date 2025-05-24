@@ -18,42 +18,34 @@
  */
 #pragma once
 
+#include <functional>
+
+#include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/ICamera.h"
 
 namespace IsoRealms::Spindizzy {
-  class Spindizzy;
   class WorldView;
-  
-  class Camera : public IAssetUser<ICamera> {
+  class Spindizzy;
+
+  class Camera : public Asset<ICamera, Spindizzy> {
     public:
-    Camera(Spindizzy* spindizzy);
+    Camera(Spindizzy& spindizzy, WorldView& owner);
 
-    void init(JSONObject object, WorldView* owner);
-    void set(JSONObject object, WorldView* owner);
-    void save(JSONObject object, const std::string& name) const;
-
-    ICamera* operator->() const {
-      return cCamera;
-    }
-
-    ICamera* operator*() const {
-      return cCamera;
-    }
-
-    /**********************************\
-     * Implements IAssetUser<ICamera> *
-    \**********************************/
-    void relinquish(ICamera* asset) override;
-
-    virtual ~Camera();
+    /****************************************\
+     * Implements Asset<ICamera, Spindizzy> *
+    \****************************************/
+    ICamera* createLiteralAsset(Spindizzy& spindizzy) override;
+    ICamera* getAsset(Spindizzy& spindizzy, JSONObject object) override;
+    ICamera* getAsset(Spindizzy& spindizzy, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
 
     private:
-    Spindizzy* cSpindizzy;
-    ICamera* cCamera;
-
-    Camera(Camera const& Camera) = delete;
-    Camera& operator=(Camera const& Camera) = delete;
+    Spindizzy& cSpindizzy;
+    WorldView& cOwner;
   };
 }

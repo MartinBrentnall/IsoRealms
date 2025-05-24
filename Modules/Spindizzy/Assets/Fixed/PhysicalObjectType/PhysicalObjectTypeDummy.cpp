@@ -18,7 +18,13 @@
  */
 #include "PhysicalObjectTypeDummy.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms::Spindizzy {
+  PhysicalObjectTypeDummy::PhysicalObjectTypeDummy(Spindizzy& spindizzy) {
+    // Nothing to do.
+  }
+
   std::string PhysicalObjectTypeDummy::getPhysicalObjectTypeID() const {
     return "";
   }
@@ -32,10 +38,19 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool PhysicalObjectTypeDummy::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void PhysicalObjectTypeDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> PhysicalObjectTypeDummy::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool PhysicalObjectTypeDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

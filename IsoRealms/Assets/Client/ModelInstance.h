@@ -12,7 +12,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ *=
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -20,23 +20,25 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Type/I3DModel.h"
+#include <GL/glew.h>
+
+#include "IsoRealms/Assets/Type/IModelInstance.h"
 
 namespace IsoRealms {
   class Model;
 
   class ModelInstance {
     private:
-    Model* cParent;
-    I3DModel* cInstance;
+    Model& cParent;
+    IModelInstance* cInstance;
 
     ModelInstance(ModelInstance const& modelInstance) = delete;
     ModelInstance& operator=(ModelInstance const& modelInstance) = delete;
 
     public:
-    ModelInstance(Model* parent, I3DModel* instance);
+    ModelInstance(Model& parent, IModelInstance* instance);
 
-    void set(I3DModel* instance);
+    void set(IModelInstance* instance);
     
     void update(unsigned int milliseconds);
     void render() const;

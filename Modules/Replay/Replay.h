@@ -35,21 +35,19 @@ namespace IsoRealms::Replay {
     static const std::string ID_RESOURCE_PLAYBACK;
     static const std::string ID_RESOURCE_RECORDER;
       
-    static const std::string NAME_RESOURCE_PLAYBACK;
-    static const std::string NAME_RESOURCE_RECORDER;
-
     ResourceTypeDefinition<Replay, Player>   cResourceTypePlayer;
     ResourceTypeDefinition<Replay, Recorder> cResourceTypeRecorder;
         
     public:
-    Replay(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals);
+    Replay(IProject& project, IResourceTypeRegistry* registry);
 
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject* project, JSONObject object) override;
-    void save(JSONObject object, IAssetIdentifier* identifier) override;
-    void registerAssets(IAssetRegistry* assets) override;
-    void unregisterAssets(IAssetRemover* remover, IAssets* releaser) override;
+    void load(IProject& project, JSONObject object) override;
+    void save(JSONObject object, IAssetIdentifier& identifier) override;
+    void registerAssets(IAssetRegistry& assets) override;
+    void unregisterAssets(IAssetRemover& remover, IAssets& releaser) override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
   };
 }

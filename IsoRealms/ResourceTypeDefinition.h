@@ -24,16 +24,9 @@
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceTypeDefinition.h"
 #include "IsoRealms/Resource.h"
-#include "IsoRealms/IAssetLiterals.h"
 
 namespace IsoRealms {
   template <class MODULE, class TYPE> class ResourceTypeDefinition : public IResourceTypeDefinition {
-    private:
-    inline static const std::string JSON_ID = "id";
-
-    MODULE* cModule;
-    std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>> cResources;
-    
     public:
     class Iterator {
       private:
@@ -65,15 +58,16 @@ namespace IsoRealms {
       }
     };
 
-    ResourceTypeDefinition(MODULE* module) {
-      cModule = module;
+    ResourceTypeDefinition(MODULE& module) :
+              cModule(module) {
     }
       
-    IResource* createResource(IResourceType* parent, IProject* project, IAssetRegistry* registry, const std::string& name) override {
-      return cResources.emplace(name, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, registry, name)).first->second.get();
+    IResource* createResource(IResourceType& parent, IProject& project, IAssetRegistry& registry, const std::string& name) override {
+      std::string mAvailableName = Utils::getAvailableKey(cResources, name);
+      return cResources.emplace(mAvailableName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, registry, mAvailableName)).first->second.get();
     }
     
-    IResource* loadResource(IResourceType* parent, IProject* project, IAssetRegistry* registry, JSONObject object, IOptions* options) override {
+    IResource* loadResource(IResourceType& parent, IProject& project, IAssetRegistry& registry, JSONObject object, IOptions& options) override {
       std::string mResourceName = object.getString(JSON_ID);
       IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, registry, object, options)).first->second.get();
       mResource->registerAssets();
@@ -118,12 +112,36 @@ namespace IsoRealms {
       return Iterator(this, cResources.end());
     }
     
-    void deleteResource(IAssetRemover* assets, IAssets* releaser, IResource* resource) override {
-      resource->unregisterAssets(assets, releaser);
+    void deleteResource(IAssetRemover& assets, IAssets& releaser, IResource* resource) override {
+      resource->unregisterAssets(assets, releaser, true);
+      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResourceType : cResources) {
+        if (mResourceType.second.get() == resource) {
+          cResources.erase(mResourceType.first);
+          return;
+        }
+      }
+    }
+
+    void renameResource(IResource* resource, const std::string& name) override {
+      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResourceType : cResources) {
+        if (mResourceType.second.get() == resource) {
+          if (mResourceType.first != name) {
+            cResources.emplace(name, std::move(cResources[mResourceType.first]));
+            cResources.erase(mResourceType.first);
+            return;
+          }
+        }
+      }
     }
 
     ~ResourceTypeDefinition() {
       cResources.clear();
     }
+
+    private:
+    inline static const std::string JSON_ID = "id";
+
+    MODULE& cModule;
+    std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>> cResources;
   };
 }

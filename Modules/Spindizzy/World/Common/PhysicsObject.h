@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
 
   class PhysicsObject {
     public:
-    Spindizzy& cDefSpindizzy;
+    Spindizzy& cSpindizzy;
     IPhysicalObject* cObject;
     bool cPresent;
     LiteralVertex cLocation;

@@ -25,7 +25,7 @@
 #include "IAssetRemover.h"
 
 namespace IsoRealms {
-  class I3DModelType;
+  class IModel;
   class IBoolean;
   class IColour;
   class IEditable;
@@ -42,43 +42,64 @@ namespace IsoRealms {
                         public IAssetRemover,
                         public IAssets {
     public:
-    virtual std::vector<std::pair<std::string, std::string>> getAllModelTypes()    = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllActionTypes()   = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllBooleans()      = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllColours()       = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllFloats()        = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllEditables()     = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllFonts()         = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllInputHandlers() = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllIntegers()      = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllScreens()       = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllStrings()       = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllTextures()      = 0;
-    virtual std::vector<std::pair<std::string, std::string>> getAllVertices()      = 0;
+    virtual std::vector<std::string> getAllActionTypes()   = 0;
+    virtual std::vector<std::string> getAllBindings()      = 0;
+    virtual std::vector<std::string> getAllBindingTypes()  = 0;
+    virtual std::vector<std::string> getAllBooleans()      = 0;
+    virtual std::vector<std::string> getAllColours()       = 0;
+    virtual std::vector<std::string> getAllFloats()        = 0;
+    virtual std::vector<std::string> getAllFonts()         = 0;
+    virtual std::vector<std::string> getAllEditables()     = 0;
+    virtual std::vector<std::string> getAllInputHandlers() = 0;
+    virtual std::vector<std::string> getAllIntegers()      = 0;
+    virtual std::vector<std::string> getAllModels()        = 0;
+    virtual std::vector<std::string> getAllScreens()       = 0;
+    virtual std::vector<std::string> getAllStrings()       = 0;
+    virtual std::vector<std::string> getAllTextures()      = 0;
+    virtual std::vector<std::string> getAllVertices()      = 0;
     
-    virtual void addListener(IAssetListener<Project, I3DModelType>*) = 0;
     virtual void addListener(IAssetListener<Project, IBoolean>*)     = 0;
     virtual void addListener(IAssetListener<Project, IColour>*)      = 0;
     virtual void addListener(IAssetListener<Project, IEditable>*)    = 0;
     virtual void addListener(IAssetListener<Project, IFloat>*)       = 0;
     virtual void addListener(IAssetListener<Project, IFont>*)        = 0;
     virtual void addListener(IAssetListener<Project, IInteger>*)     = 0;
+    virtual void addListener(IAssetListener<Project, IModel>*)       = 0;
     virtual void addListener(IAssetListener<Project, IScreen>*)      = 0;
     virtual void addListener(IAssetListener<Project, IString>*)      = 0;
     virtual void addListener(IAssetListener<Project, ITexture>*)     = 0;
     virtual void addListener(IAssetListener<Project, IVertex>*)      = 0;
     
     virtual bool renderActionIcon(      const std::string& id) const = 0;
+    virtual bool renderBindingIcon(     const std::string& id) const = 0;
+    virtual bool renderBindingTypeIcon( const std::string& id) const = 0;
     virtual bool renderBooleanIcon(     const std::string& id) const = 0;
     virtual bool renderColourIcon(      const std::string& id) const = 0;
     virtual bool renderFloatIcon(       const std::string& id) const = 0;
+    virtual bool renderFontIcon(        const std::string& id) const = 0;
     virtual bool renderInputHandlerIcon(const std::string& id) const = 0;
     virtual bool renderIntegerIcon(     const std::string& id) const = 0;
     virtual bool renderModelIcon(       const std::string& id) const = 0;
     virtual bool renderScreenIcon(      const std::string& id) const = 0;
+    virtual bool renderStringIcon(      const std::string& id) const = 0;
     virtual bool renderTextureIcon(     const std::string& id) const = 0;
     virtual bool renderVertexIcon(      const std::string& id) const = 0;
     
-    virtual IProject* getProject() = 0;
+    virtual bool isActionConfigurable(      const std::string& id) const = 0;
+    virtual bool isBindingConfigurable(     const std::string& id) const = 0;
+    virtual bool isBindingTypeConfigurable( const std::string& id) const = 0;
+    virtual bool isBooleanConfigurable(     const std::string& id) const = 0;
+    virtual bool isColourConfigurable(      const std::string& id) const = 0;
+    virtual bool isFloatConfigurable(       const std::string& id) const = 0;
+    virtual bool isFontConfigurable(        const std::string& id) const = 0;
+    virtual bool isInputHandlerConfigurable(const std::string& id) const = 0;
+    virtual bool isIntegerConfigurable(     const std::string& id) const = 0;
+    virtual bool isModelConfigurable(       const std::string& id) const = 0;
+    virtual bool isScreenConfigurable(      const std::string& id) const = 0;
+    virtual bool isStringConfigurable(      const std::string& id) const = 0;
+    virtual bool isTextureConfigurable(     const std::string& id) const = 0;
+    virtual bool isVertexConfigurable(      const std::string& id) const = 0;
+    
+    virtual IProject& getProject() = 0;
   };
 }

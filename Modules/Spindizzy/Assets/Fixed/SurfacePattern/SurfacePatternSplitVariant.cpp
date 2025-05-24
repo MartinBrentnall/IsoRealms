@@ -25,13 +25,17 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject* project, Spindizzy* spindizzy, JSONObject object) :
-            cDefRegularPattern(spindizzy),
-            cDefSplitAPattern(spindizzy),
-            cDefSplitBPattern(spindizzy) {
-    cDefRegularPattern.set(object.getObject(JSON_REGULAR));
-    cDefSplitAPattern.set(object.getObject(JSON_SPLIT_A));
-    cDefSplitBPattern.set(object.getObject(JSON_SPLIT_B));
+  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject& project, Spindizzy& spindizzy) :
+            cDefRegularPattern(spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefSplitAPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefSplitBPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  }
+
+  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject& project, Spindizzy& spindizzy, JSONObject object) :
+            SurfacePatternSplitVariant(project, spindizzy) {
+    cDefRegularPattern.set(object, JSON_REGULAR);
+    cDefSplitAPattern.set(object, JSON_SPLIT_A);
+    cDefSplitBPattern.set(object, JSON_SPLIT_B);
   }
 
   bool SurfacePatternSplitVariant::contains(ITexture* texture) {
@@ -63,13 +67,25 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool SurfacePatternSplitVariant::renderAssetIcon() const {
-    return false;
+    return cDefRegularPattern->renderAssetIcon();
   }
 
   void SurfacePatternSplitVariant::saveAsset(JSONObject object) const {
     cDefRegularPattern.save(object, JSON_REGULAR);
     cDefSplitAPattern.save(object, JSON_SPLIT_A);
     cDefSplitBPattern.save(object, JSON_SPLIT_B);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SurfacePatternSplitVariant::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Regular", cDefRegularPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Split A", cDefSplitAPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Split B", cDefSplitBPattern));
+    return mProperties;
+  }
+
+  bool SurfacePatternSplitVariant::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 
   const std::string SurfacePatternSplitVariant::JSON_REGULAR = "regular";

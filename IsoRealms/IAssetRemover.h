@@ -18,14 +18,14 @@
  */
 #pragma once
 
-#include "Assets/Registry/IAssetUser.h"
+#include "IsoRealms/Assets/Registry/IAssetProvider.h"
 
 namespace IsoRealms {
-  class I3DModelType;
   class IAction;
   class IActionType;
   class IAssets;
   class IBinding;
+  class IBindingType;
   class IBoolean;
   class IColour;
   class IEditable;
@@ -33,29 +33,34 @@ namespace IsoRealms {
   class IFont;
   class IInputHandler;
   class IInteger;
+  class IModel;
   class IProjectOptions;
   class IScreen;
   class IString;
   class ITexture;
   class IVertex;
+  class Project;
 
   class IAssetRemover {
     public:
-    virtual void remove(I3DModelType*    asset) = 0;
-    virtual void remove(IActionType*     asset) = 0;
-    virtual void remove(IBinding*        asset) = 0;
-    virtual void remove(IBoolean*        asset) = 0;
-    virtual void remove(IColour*         asset) = 0;
-    virtual void remove(IEditable*       asset) = 0;
-    virtual void remove(IFloat*          asset) = 0;
-    virtual void remove(IFont*           asset) = 0;
-    virtual void remove(IInputHandler*   asset) = 0;
-    virtual void remove(IInteger*        asset) = 0;
-    virtual void remove(IScreen*         asset) = 0;
-    virtual void remove(IProjectOptions* asset) = 0;
-    virtual void remove(IAssets*         asset) = 0;
-    virtual void remove(IString*         asset) = 0;
-    virtual void remove(ITexture*        asset) = 0;
-    virtual void remove(IVertex*         asset) = 0;
+    virtual void remove(IAssetProvider<Project, IScreen>* provider, bool relinquish) = 0;
+
+    virtual void remove(IActionType*     asset, bool relinquish) = 0;
+    virtual void remove(IBinding*        asset, bool relinquish) = 0;
+    virtual void remove(IBindingType*    asset, bool relinquish) = 0;
+    virtual void remove(IBoolean*        asset, bool relinquish) = 0;
+    virtual void remove(IColour*         asset, bool relinquish) = 0;
+    virtual void remove(IEditable*       asset, bool relinquish) = 0;
+    virtual void remove(IFloat*          asset, bool relinquish) = 0;
+    virtual void remove(IFont*           asset, bool relinquish) = 0;
+    virtual void remove(IInputHandler*   asset, bool relinquish) = 0;
+    virtual void remove(IInteger*        asset, bool relinquish) = 0;
+    virtual void remove(IModel*          asset, bool relinquish) = 0;
+    virtual void remove(IScreen*         asset, bool relinquish) = 0;
+    virtual void remove(IProjectOptions* asset, bool relinquish) = 0;
+    virtual void remove(IAssets*         asset, bool relinquish) = 0;
+    virtual void remove(IString*         asset, bool relinquish) = 0;
+    virtual void remove(ITexture*        asset, bool relinquish) = 0;
+    virtual void remove(IVertex*         asset, bool relinquish) = 0;
   };
 }

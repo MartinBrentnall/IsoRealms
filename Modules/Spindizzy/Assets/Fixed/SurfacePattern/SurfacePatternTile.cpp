@@ -19,12 +19,17 @@
 
 #include "SurfacePatternTile.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Terrain/SplitSurface.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternTile::SurfacePatternTile(IProject* project, Spindizzy* spindizzy, JSONObject object) :
-            cDefTexture(project) {
+  SurfacePatternTile::SurfacePatternTile(IProject& project, Spindizzy& spindizzy) :
+            cDefTexture(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  }
+
+  SurfacePatternTile::SurfacePatternTile(IProject& project, Spindizzy& spindizzy, JSONObject object) :
+            SurfacePatternTile(project, spindizzy) {
     cDefTexture.set(object, JSON_TEXTURE);
   }
 
@@ -125,11 +130,21 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool SurfacePatternTile::renderAssetIcon() const {
-    return false;
+    return cDefTexture->renderAssetIcon();
   }
 
   void SurfacePatternTile::saveAsset(JSONObject object) const {
     cDefTexture.save(object, JSON_TEXTURE);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SurfacePatternTile::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Texture", cDefTexture));
+    return mProperties;
+  }
+
+  bool SurfacePatternTile::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 
   SurfacePatternTile::SurfacePatternSurface::SurfacePatternSurface(SurfacePatternTile& parent, Surface* surface) :

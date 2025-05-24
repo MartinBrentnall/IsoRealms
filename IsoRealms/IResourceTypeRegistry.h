@@ -25,6 +25,6 @@ namespace IsoRealms {
 
   class IResourceTypeRegistry {
     public:
-    virtual void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& name, const std::string& category) = 0;
+    virtual void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category) = 0;
   };
 }

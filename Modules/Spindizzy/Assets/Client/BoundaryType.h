@@ -20,43 +20,30 @@
 
 #include <functional>
 
-#include "IsoRealms/IAssets.h"
+#include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IBoundaryType.h"
 
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
-
-  class BoundaryType : public IAssetUser<IBoundaryType> {
+  
+  class BoundaryType : public Asset<IBoundaryType, Spindizzy> {
     public:
-    
     BoundaryType(Spindizzy& spindizzy);
-
-    void init(JSONObject object);
-    void set(JSONObject object);
-    void save(JSONObject object, const std::string& name) const;
-
-    IBoundaryType* operator->() const {
-      return cBoundaryType;
-    }
-
-    IBoundaryType* operator*() const {
-      return cBoundaryType;
-    }
 
     IBinding* getBoundaryBinding(const std::string& id) const;
     std::string getBoundaryBindingID(const IBinding* binding) const;
 
-    /****************************************\
-     * Implements IAssetUser<IBoundaryType> *
-    \****************************************/
-    void relinquish(IBoundaryType* asset) override;
-
-    virtual ~BoundaryType();
-
-    private:
-    Spindizzy& cSpindizzy;
-    IBoundaryType* cBoundaryType;
+    /**********************************************\
+     * Implements Asset<IBoundaryType, Spindizzy> *
+    \**********************************************/
+    IBoundaryType* createLiteralAsset(Spindizzy& spindizzy) override;
+    IBoundaryType* getAsset(Spindizzy& spindizzy, JSONObject object) override;
+    IBoundaryType* getAsset(Spindizzy& spindizzy, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
   };
 }

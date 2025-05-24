@@ -27,14 +27,14 @@ namespace IsoRealms::UI {
   const unsigned int VirtualKeyboard::COLUMNS           = 10;
   const unsigned int VirtualKeyboard::CARET_BLINK_DELAY = 200;
 
-  VirtualKeyboard::VirtualKeyboard(IProject* project, UI* ui) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data) :
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefConfirmAction(project),
             cDefSelectionColour(project, 1.0f, 0.0f, 1.0f),
             cDefFont(project),
             cRuntimeControllerCaps(false),
             cLuaBinding(project, this) {
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       cRuntimeCaretBlinkDelay -= milliseconds;
       if (cRuntimeCaretBlinkDelay <= 0) {
         cRuntimeCaretBlinkDelay += CARET_BLINK_DELAY;
@@ -42,7 +42,7 @@ namespace IsoRealms::UI {
       }
     });
 
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeSelected = 0;
       cRuntimeValue = "";
       cRuntimeCaretVisible = true;
@@ -50,28 +50,28 @@ namespace IsoRealms::UI {
     });
   }
   
-  VirtualKeyboard::VirtualKeyboard(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
-                   VirtualKeyboard(project, ui) {
+  VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+                   VirtualKeyboard(project, ui, data) {
     cDefSelectionColour.init(object, JSON_SELECTION_COLOUR);
     cDefFont.init(object, JSON_FONT);
     cDefConfirmAction.init(object, JSON_ON_CONFIRM);
   }
 
-  void VirtualKeyboard::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IInputHandler*>(this), "", "Presentation");
-    assets->add(static_cast<IScreen*>(this), "", "Presentation");
-    assets->add(static_cast<IString*>(this), "", "Presentation");
-    assets->add(&cLuaBinding, "", "System");
+  void VirtualKeyboard::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IInputHandler*>(this), "", "Presentation");
+    assets.add(static_cast<IScreen*>(this), "", "Presentation");
+    assets.add(static_cast<IString*>(this), "", "Presentation");
+    assets.add(&cLuaBinding, "", "System");
   }
   
-  void VirtualKeyboard::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(static_cast<IString*>(this));
-    assets->remove(&cLuaBinding);
+  void VirtualKeyboard::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IInputHandler*>(this), relinquish);
+    assets.remove(static_cast<IScreen*>(this),       relinquish);
+    assets.remove(static_cast<IString*>(this),       relinquish);
+    assets.remove(&cLuaBinding,                      relinquish);
   }
   
-  void VirtualKeyboard::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void VirtualKeyboard::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefSelectionColour.save(object, JSON_SELECTION_COLOUR);
     cDefFont.save(object, JSON_FONT);
     cDefConfirmAction.save(object, JSON_ON_CONFIRM);
@@ -85,9 +85,8 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<IProperty*> VirtualKeyboard::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   void VirtualKeyboard::reset() {
@@ -179,7 +178,7 @@ namespace IsoRealms::UI {
       glColor3f(0.0f, 0.0f, 0.0f);
       cDefFont->print(mX + 0.008f, mY - 0.008f, i == 29 || i == 28 ? mFontSize * 0.5f : mFontSize, IFont::Alignment::CENTER, mLetter.c_str());
       if (cRuntimeSelected == i) {
-        cDefSelectionColour.set();
+        cDefSelectionColour->set();
       } else {
         glColor3f(1.0f, 1.0f, 1.0f);
       }
@@ -197,6 +196,14 @@ namespace IsoRealms::UI {
 
   void VirtualKeyboard::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool VirtualKeyboard::isDefaultConfiguration() const {
+    return true;
   }
 
   void VirtualKeyboard::left() {

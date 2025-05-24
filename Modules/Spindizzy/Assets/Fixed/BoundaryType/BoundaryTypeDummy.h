@@ -21,8 +21,11 @@
 #include "Modules/Spindizzy/Assets/Type/IBoundaryType.h"
 
 namespace IsoRealms::Spindizzy {
+  class Spindizzy;
+
   class BoundaryTypeDummy : public IBoundaryType {
     public:
+    BoundaryTypeDummy(Spindizzy& spindizzy);
 
     /****************************\
      * Implements IBoundaryType *
@@ -32,6 +35,8 @@ namespace IsoRealms::Spindizzy {
     std::string getBindingID(const IBinding* binding) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }
 

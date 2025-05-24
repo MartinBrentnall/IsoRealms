@@ -26,8 +26,8 @@ namespace IsoRealms::Basics {
 
   const std::string DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE = "DigitalToAnalogue";
 
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(IProject* project, JSONObject object) :
-            cDefInput(project, nullptr, object, nullptr, nullptr),
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(IProject& project, Basics& basics, JSONObject object) :
+            cDefInput(project, basics, object),
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
   }
 
@@ -57,7 +57,7 @@ namespace IsoRealms::Basics {
     object.addString(JSON_TYPE, TYPE_DIGITAL_TO_ANALOGUE);
     object.addString(JSON_NAME, name);
     object.addFloat(JSON_TO_VALUE, cDefOutputValue);
-    cDefInput.save(object, nullptr);
+    cDefInput.save(object);
   }
 
   std::string DigitalToAnalogueMapping::getShortName() const {
@@ -72,11 +72,11 @@ namespace IsoRealms::Basics {
     cDefInput.loadCustomMapping(object);
   }
 
-  void DigitalToAnalogueMapping::registerAssets(IAssetRegistry* assets) {
+  void DigitalToAnalogueMapping::registerAssets(IAssetRegistry& assets) {
     cDefInput.registerAssets(assets);
   }
   
-  void DigitalToAnalogueMapping::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    cDefInput.unregisterAssets(assets, releaser);
+  void DigitalToAnalogueMapping::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    cDefInput.unregisterAssets(assets, releaser, relinquish);
   }
 }

@@ -18,40 +18,43 @@
  */
 #include "Camera.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  Camera::Camera(Spindizzy* spindizzy) :
+  Camera::Camera(Spindizzy& spindizzy, WorldView& owner) :
+            Asset<ICamera, Spindizzy>(spindizzy, spindizzy.createLiteralCamera(this, owner)),
             cSpindizzy(spindizzy),
-            cCamera(cSpindizzy->createLiteralCamera(this)) {
+            cOwner(owner) {
   }
 
-  void Camera::init(JSONObject object, WorldView* owner) {
-    cSpindizzy->getProject()->init([this, object, owner](IAssets* assets) {
-      set(object, owner);
-    });
+  ICamera* Camera::createLiteralAsset(Spindizzy& spindizzy) {
+    return cSpindizzy.createLiteralCamera(this, cOwner);
   }
 
-  void Camera::set(JSONObject object, WorldView* owner) {
-    cSpindizzy->release(this, cCamera);
-    cCamera = cSpindizzy->getCamera(this, object, owner);
+  ICamera* Camera::getAsset(Spindizzy& spindizzy, JSONObject object) {
+    return cSpindizzy.getCamera(this, object, cOwner);
   }
 
-  void Camera::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cSpindizzy->save(mAssetObject, cCamera);
+  ICamera* Camera::getAsset(Spindizzy& spindizzy, const std::string& id) {
+    return cSpindizzy.getCamera(this, id, cOwner);
   }
 
-  void Camera::relinquish(ICamera* asset) {
-    if (cCamera == asset) {
-      cCamera = cSpindizzy->createLiteralCamera(this);
-    }
+  std::vector<std::string> Camera::getAvailableProviders() const {
+    return cManager.getAllCameras();
   }
 
-  Camera::~Camera() {
-    if (cCamera != nullptr) {
-      cSpindizzy->release(this, cCamera);
-    }
+  bool Camera::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderCameraIcon(id);
+  }
+
+  bool Camera::hasConfiguration() const {
+    return cManager.isCameraConfigurable(getID());
+  }
+
+  bool Camera::isDefaultConfiguration() const {
+    return true;
   }
 }
-

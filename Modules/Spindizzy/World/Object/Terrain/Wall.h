@@ -53,7 +53,7 @@ namespace IsoRealms::Spindizzy {
       int getEndHeight();
     };
 
-    Wall(int x, int y, int z, int length, int height, int topSlope, int bottomSlope, Direction direction, std::optional<Condition>& condition, TerrainType* type, IWorldObject& object);
+    Wall(int x, int y, int z, int length, int height, int topSlope, int bottomSlope, Direction direction, std::optional<Condition>& condition, TerrainType& type, IWorldObject& object);
     const std::optional<Condition>& getCondition();
 
     float getHeightAt(float);
@@ -92,13 +92,17 @@ namespace IsoRealms::Spindizzy {
     float getBounce();
     std::unique_ptr<CollisionData> getSlidingEvent(LiteralVertex& start, LiteralVertex& end, IPhysicalObject* object);
     IWorldObject* getOwner();
-    Zone* getZone();
+    Zone& getZone();
 
     void bindValues();
     void unbindValues();
     
     private:
 
+    // External interfaces.
+    IWorldObject& cOwner; /// Object to which this wall belongs.
+    TerrainType& cType;   /// Terrain type to which this wall belongs.
+    
     // Definition data.
     const int cDefX;                                  /// Starting X location of the wall surface.
     const int cDefY;                                  /// Starting Y location of the wall surface.
@@ -109,8 +113,6 @@ namespace IsoRealms::Spindizzy {
     const int cDefBottomSlope;                        /// Slopiness at the bottom.
     const Direction cDefFacing;                       /// The face direction of the wall surface.
     const std::optional<Condition> cDefCondition;     /// Condition under which the wall is present.
-    TerrainType* cDefType;                            /// Terrain type to which this wall belongs.
-    IWorldObject& cDefOwner;                          /// Object to which this wall belongs.
 
     float getSouthEdge(float);
     float getEastEdge(float);

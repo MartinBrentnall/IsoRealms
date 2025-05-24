@@ -18,38 +18,38 @@
  */
 #include "Font.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Font::Font(IProject* project) :
-            cProject(project),
-            cFont(cProject->createLiteralFont(this)) {
+  Font::Font(IProject& project) : 
+            Asset<IFont, IProject>(project, project.createLiteralFont(this)) {
   }
 
-  void Font::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IFont* Font::createLiteralAsset(IProject& project) {
+    return project.createLiteralFont(this);
+  }
+  
+  IFont* Font::getAsset(IProject& project, JSONObject object) {
+    return project.getFont(this, object);
+  }
+  
+  IFont* Font::getAsset(IProject& project, const std::string& id) {
+    return project.getFont(this, id);
+  }
+  
+  std::vector<std::string> Font::getAvailableProviders() const {
+    return cManager.getAllFonts();
+  }  
+
+  bool Font::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderFontIcon(id);
   }
 
-  void Font::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cFont);
-    cFont = cProject->getFont(this, mAssetObject);
-  }
+  bool Font::hasConfiguration() const {
+    return cManager.isFontConfigurable(getID());
+  }  
 
-  void Font::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cFont);
-  }
-
-  void Font::relinquish(IFont* asset) {
-    if (cFont == asset) {
-      cFont = cProject->createLiteralFont(this);
-    }
-  }
-
-  Font::~Font() {
-    if (cFont != nullptr) {
-      cProject->release(this, cFont);
-    }
+  bool Font::isDefaultConfiguration() const {
+    return true;
   }
 }

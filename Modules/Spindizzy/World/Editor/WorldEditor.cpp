@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
   const float WorldEditor::BOTTOM_BORDER = -1.0f + BORDER_SPACING;
   const float WorldEditor::ICON_SPACING = 0.02f;
   
-  WorldEditor::WorldEditor(IAssetRegistry* assets, World* world) :
+  WorldEditor::WorldEditor(IAssetRegistry& assets, World& world) :
             cAnalogueInputsByName({
               {"MoveViewIn",      &cDistanceInSpeed},
               {"MoveViewOut",     &cDistanceOutSpeed},
@@ -91,35 +91,37 @@ namespace IsoRealms::Spindizzy {
             cExitAction(nullptr),
             cScreenYaw(&cRotation),
             cScreenPitch(&cTilt),
-            cHatHandler(world->getSpindizzy()->getProject()->getApplication()->getHatHandler()),
+            cHatHandler(world.getSpindizzy().getProject().getApplication().getHatHandler()),
             cPreviousX(0),
             cPreviousY(0),
+            cToolbar(world.getSpindizzy().createToolSet(*this), [this](IWorldEditorToolInstance* tool) {
+              if (cSelectedTool != nullptr) {
+                cSelectedTool->processCursorMovement(&cLocation, nullptr);
+              }
+              cSelectedTool = tool;
+              cSelectedTool->processCursorMovement(nullptr, &cLocation);
+            }, [this](IWorldEditorToolInstance* tool) {
+              tool->renderIcon(cScreenYaw.getValue());
+            }),
+            cWorld(world),
             cProxyScreen(nullptr) {
-    cWorld = world;
     cDefAnalogueSensitivity = 10;
     cPaletteSelectionX.init(0.0f);
     resetEditingView();
     cLocation.x = -1.0f;
-    cTools = world->getSpindizzy()->createToolSet(this);
-    IWorldEditorTool* mDefaultTool = world->getSpindizzy()->getDefaultWorldEditorTool();
-    for (IWorldEditorToolInstance* mTool : cTools) {
-      if (mTool->isTool(mDefaultTool)) {
-        cSelectedTool = mTool;
-        break;
-      }
-    }
+    IWorldEditorTool* mDefaultTool = world.getSpindizzy().getDefaultWorldEditorTool();
+    cToolbar.selectInstance(mDefaultTool);
 
     // TODO: I think 'assets' is wrong... should be local assets, not the whole project.
-    cScreenYawNotifier   = assets->add(&cScreenYaw,   "EditorYaw",   "System");
-    cScreenPitchNotifier = assets->add(&cScreenPitch, "EditorPitch", "System");
-    cProxyScreen         = assets->add(static_cast<IScreen*>(this), "Editor", "External"); // TODO: Should have a unique name in case multple instances
-    selectToolRelative(0);
+    cScreenYawNotifier   = assets.add(&cScreenYaw,   "EditorYaw",   "System");
+    cScreenPitchNotifier = assets.add(&cScreenPitch, "EditorPitch", "System");
+    cProxyScreen         = assets.add(static_cast<IScreen*>(this), "Editor", "External"); // TODO: Should have a unique name in case multple instances
   }
 
-  void WorldEditor::unregisterAssets(IAssetRemover* assets) {
-    assets->remove(&cScreenYaw);
-    assets->remove(&cScreenPitch);
-    assets->remove(static_cast<IScreen*>(this));
+  void WorldEditor::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(&cScreenYaw,                 relinquish);
+    assets.remove(&cScreenPitch,               relinquish);
+    assets.remove(static_cast<IScreen*>(this), relinquish);
   }
 
   bool WorldEditor::isMovingNorth() {
@@ -198,53 +200,21 @@ namespace IsoRealms::Spindizzy {
     return mAngle;
   }
 
-  void WorldEditor::selectToolRelative(int amount) {
-    int mSelectedToolIndex = -1;
-    if (cSelectedTool == nullptr) {
-      mSelectedToolIndex = amount > 0 ? 0 : cTools.size() - 1;
-      cPaletteSelectionX.init(mSelectedToolIndex);
-    } else {
-      for (unsigned int i = 0; i < cTools.size(); i++) {
-        if (cTools[i] == cSelectedTool) {
-          mSelectedToolIndex = i + amount;
-          while (mSelectedToolIndex < 0) {
-            mSelectedToolIndex += cTools.size();
-          }
-          while (mSelectedToolIndex >= static_cast<int>(cTools.size())) {
-            mSelectedToolIndex -= cTools.size();
-          }
-          break;
-        }
-      }
-    }
-    cPaletteSelectionX = mSelectedToolIndex;
-
-    if (cSelectedTool != nullptr) {
-      cSelectedTool->processCursorMovement(&cLocation, nullptr);
-    }
-    cSelectedTool = cTools[mSelectedToolIndex];
-    cSelectedTool->processCursorMovement(nullptr, &cLocation);
-
-//    float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-//    float mPaletteScrollRange = std::max(0.0f, mPaletteWidth - PALETTE_SPACE);
-//    cPaletteScroll = std::clamp(LEFT_BORDER + mSelectedToolIndex * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f, 0.0f, mPaletteScrollRange);
-  }
-
   void WorldEditor::setNextTheme() {
-    Zone* mZone = cWorld->getZone(getCursorCell());
+    Zone* mZone = cWorld.getZone(getCursorCell());
     if (mZone != nullptr) {
       mZone->setNextTheme();
     } else {
-      cWorld->getSpindizzy()->setNextTheme();
+      cWorld.getSpindizzy().setNextTheme();
     }
   }
 
   void WorldEditor::setPreviousTheme() {
-    Zone* mZone = cWorld->getZone(getCursorCell());
+    Zone* mZone = cWorld.getZone(getCursorCell());
     if (mZone != nullptr) {
       mZone->setPreviousTheme();
     } else {
-      cWorld->getSpindizzy()->setPreviousTheme();
+      cWorld.getSpindizzy().setPreviousTheme();
     }
   }
 
@@ -276,115 +246,37 @@ namespace IsoRealms::Spindizzy {
     return cLocation.z;
   }
   
-  IPropertyAppearance* WorldEditor::getPropertyAppearance() {
-    return &cPropertyAppearance;
+  void WorldEditor::removeTool(IWorldEditorTool* tool) {
+    cToolbar.removeTool(tool);
+  }
+  
+  IFont* WorldEditor::getFont() const {
+    return cFont;
+  }
+
+  float WorldEditor::getFontSize() const {
+    return cFontSize;
   }
 
   bool WorldEditor::input(sf::Event& event) {
-    switch (event.type) {
-//       case sf::Event::JoystickButtonPressed: {
-//         switch (event.joystickButton.button) {
-//           case 4: cZSpeed = -32767 / 200000.0f; return true;
-//           case 5: cZSpeed =  32767 / 200000.0f; return true;
-//         }
-//         break;
-//       }
-//
-//       case sf::Event::JoystickButtonReleased: {
-//         switch (event.joystickButton.button) {
-//           case 4: cZSpeed = 0.0f; return true;
-//           case 5: cZSpeed = 0.0f; return true;
-//         }
-//         break;
-//       }
-//
-//       case sf::Event::JoystickMoved: {
-//         bool mDirectionPressed = false;
-//         if (cHatHandler.leftPressed())  {selectToolRelative(-1); mDirectionPressed = true;}
-//         if (cHatHandler.rightPressed()) {selectToolRelative(1);  mDirectionPressed = true;}
-//         if (cHatHandler.upPressed())    {setPreviousTheme();     mDirectionPressed = true;}
-//         if (cHatHandler.downPressed())  {setNextTheme();         mDirectionPressed = true;}
-//         if (mDirectionPressed)          {return true;}
-//         int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
-//         switch (event.joystickMove.axis) {
-//           case sf::Joystick::Axis::X: cXSpeed           =  mValue / 500.0f; return true;
-//           case sf::Joystick::Axis::Y: cYSpeed           = -mValue / 500.0f; return true;
-//           case sf::Joystick::Axis::Z: cDistanceOutSpeed =  mValue / 50.0f;  return true;
-//           case sf::Joystick::Axis::U: cYawSpeed         =  mValue / 9.0f;   return true;
-//           case sf::Joystick::Axis::V: cPitchSpeed       = -mValue / 9.0f;   return true;
-//           case sf::Joystick::Axis::R: cDistanceInSpeed  =  mValue / 50.0f;  return true;
-//           default:                                                          break;
-//         }
-//         break;
-//       }
-//
-//       case sf::Event::MouseButtonPressed: {
-//         switch (event.mouseButton.button) {
-//           case sf::Mouse::Left: {
-//             IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
-//             ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
-//             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-//             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
-//               for (unsigned int i = 0; i < cTools.size(); i++) {
-//                 float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
-//                                                                 : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING));
-//                 float mIconRight = mIconLeft + ICON_WIDTH;
-//                 if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
-//                   if (cSelectedTool == nullptr) {
-//                     cPaletteSelectionX.init(i);
-//                   } else {
-//                     cPaletteSelectionX = i;
-//                   }
-//                   if (cSelectedTool != nullptr) {
-//                     cSelectedTool->processCursorMovement(&cLocation, nullptr);
-//                   }
-//                   cSelectedTool = cTools[i];
-//                   cSelectedTool->processCursorMovement(nullptr, &cLocation);
-//                   break;
-//                 }
-//               }
-//             }
-//             return true;
-//           }
-//
-//           default: {
-//             break;
-//           }
-//         }
-//         break;
-//       }
-
-      case sf::Event::MouseWheelScrolled: {
-        switch (event.mouseWheelScroll.wheel) {
-          case sf::Mouse::VerticalWheel: {
-            if (event.mouseWheelScroll.delta > 0) {
-              selectToolRelative(-1);
-            } else {
-              selectToolRelative(1);
-            }
-            return true;
-          }
-
-          default: {
-            break;
-          }
-        }
-        break;
-      }
-
-      case sf::Event::MouseMoved: {
-        if (cRotatingView.get()) {
-          rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
-        } else if (cZoomingView.get()) {
-          move(cPreviousY - event.mouseMove.y);
-        }
-        cPreviousX = event.mouseMove.x;
-        cPreviousY = event.mouseMove.y;
+    if (cHasFocus) {
+      if (cToolbar.input(event)) {
         return true;
-      }
+      } else switch (event.type) {
+        case sf::Event::MouseMoved: {
+          if (cRotatingView.get()) {
+            rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
+          } else if (cZoomingView.get()) {
+            move(cPreviousY - event.mouseMove.y);
+          }
+          cPreviousX = event.mouseMove.x;
+          cPreviousY = event.mouseMove.y;
+          return true;
+        }
 
-      default: {
-        break;
+        default: {
+          break;
+        }
       }
     }
     return false;
@@ -395,7 +287,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldEditor::updateScreen(unsigned int milliseconds) {
-    for (std::pair<std::string, DigitalInput*> mPair : cDigitalInputsByName) {
+    for (std::pair<std::string, EditorDigitalInput<WorldEditor, SignalInputID>*> mPair : cDigitalInputsByName) {
       if (mPair.second->triggerOnChange()) {
         cSignalConsumed = true;
       }
@@ -437,18 +329,18 @@ namespace IsoRealms::Spindizzy {
       cSelectedTool->updateUI(milliseconds);
     }
 
-    Zone* mZone = cWorld->getZone(getCursorCell());
+    Zone* mZone = cWorld.getZone(getCursorCell());
     if (mZone != nullptr) {
       mZone->setDefaultTheme();
     }
 
     cPaletteSelectionX.update(milliseconds);
-    cWorld->updateEditing(milliseconds);
+    cWorld.updateEditing(milliseconds);
     cTerrainBrush.update(milliseconds, cScreenYaw.getValue(), cXSpeed.get(), cYSpeed.get());
   }
 
   void WorldEditor::renderScreen(float scale, float aspectRatio) const {
-    cWorld->getSpindizzy()->applyDefaultThemes();
+    cWorld.getSpindizzy().applyDefaultThemes();
     glPushMatrix();
     glEnable(GL_DEPTH_TEST);
 
@@ -495,7 +387,7 @@ namespace IsoRealms::Spindizzy {
     }
     glEnd();
     glColor3f(1.0f, 1.0f, 1.0f);
-    cWorld->renderEditing(this);
+    cWorld.renderEditing(this);
 
     glLineWidth(1.0);
     glPushMatrix();
@@ -526,55 +418,8 @@ namespace IsoRealms::Spindizzy {
     for (IVisualElement* mEditingVisual : cEditingVisuals) {
       mEditingVisual->render();
     }
-
-    // Render UI
-    glPushAttrib(GL_TRANSFORM_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glPopAttrib();
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glLoadIdentity();
-
-    // Render world selection highlight.
-    float mCursorXPosition = cPaletteSelectionX.animation() * (ICON_WIDTH + ICON_SPACING);
-    float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-    float mDifference = aspectRatio;
-    float mScrollAmount = std::min((mPaletteWidth - mDifference) - (ICON_WIDTH / 2.0f - BORDER_SPACING),  std::max(mDifference - (ICON_WIDTH / 2.0f + BORDER_SPACING), mCursorXPosition));
-    glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
-    glBegin(GL_QUADS);
-    Utils::renderRectangle(-1.0f, -1.0f, 1.0f, -1.0f + ICON_HEIGHT + BORDER_SPACING * 2.0f);
-    glEnd();
-    glScalef(1.0f / aspectRatio, 1.0f, 1.0f);
-    glTranslatef(-mScrollAmount, 0.0f, 0.0f);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    Utils::renderCurve(mCursorXPosition - ICON_WIDTH * 0.5f, BOTTOM_BORDER + ICON_HEIGHT, 0.01f, 0.0f,  0.25f);
-    Utils::renderCurve(mCursorXPosition - ICON_WIDTH * 0.5f, BOTTOM_BORDER,               0.01f, 0.25f, 0.5f);
-    Utils::renderCurve(mCursorXPosition + ICON_WIDTH * 0.5f, BOTTOM_BORDER + ICON_HEIGHT, 0.01f, 0.75f, 1.0f);
-    Utils::renderCurve(mCursorXPosition + ICON_WIDTH * 0.5f, BOTTOM_BORDER,               0.01f, 0.5f,  0.75f);
-    glBegin(GL_QUADS);
-    Utils::renderRectangle(mCursorXPosition -  ICON_WIDTH * 0.5f,          BOTTOM_BORDER - 0.01f,       mCursorXPosition +  ICON_WIDTH * 0.5f,                         BOTTOM_BORDER);
-    Utils::renderRectangle(mCursorXPosition -  ICON_WIDTH * 0.5f,          BOTTOM_BORDER + ICON_HEIGHT, mCursorXPosition +  ICON_WIDTH * 0.5f,                         BOTTOM_BORDER + ICON_HEIGHT + 0.01f);
-    Utils::renderRectangle(mCursorXPosition - (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER,               mCursorXPosition + (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER + ICON_HEIGHT);
-    glEnd();
-    glPopMatrix();
-
-    for (unsigned int i = 0; i < cTools.size(); i++) {
-      glPushMatrix();
-//       if (mPaletteWidth < PALETTE_SPACE) {
-//         glTranslatef(((-mPaletteWidth * 0.5f + ICON_WIDTH * 0.5f) + i * ICON_WIDTH) + i * ICON_SPACING, BOTTOM_BORDER + ICON_HEIGHT * 0.5f, 0.0f);
-//       } else {
-        glTranslatef(i * (ICON_WIDTH + ICON_SPACING) - mScrollAmount, BOTTOM_BORDER + ICON_HEIGHT * 0.5f, 0.0f);
-//       }
-      glScalef(ICON_WIDTH * 0.5f, ICON_HEIGHT * 0.5f, 0.0f);
-      cTools[i]->renderIcon(cScreenYaw.getValue());
-      glPopMatrix();
-    }
-    glDisable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
+    
+    cToolbar.render(aspectRatio);
 
     if (cSelectedTool != nullptr) {
       cSelectedTool->renderUI(aspectRatio);
@@ -598,12 +443,20 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> WorldEditor::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool WorldEditor::isDefaultConfiguration() const {
+    return true;
+  }
+
   void WorldEditor::notifyVisible() {
-    cWorld->getSpindizzy()->setAllThemesInUse(true);
+    cWorld.getSpindizzy().setAllThemesInUse(true);
   }
   
   void WorldEditor::notifyHidden() {
-    cWorld->getSpindizzy()->setAllThemesInUse(false);
+    cWorld.getSpindizzy().setAllThemesInUse(false);
   }
 
   void WorldEditor::notifyLostFocus() {
@@ -616,7 +469,7 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::string> WorldEditor::getDigitalInputs() const {
     std::vector<std::string> mDigitalInputNames;
-    for (std::pair<std::string, DigitalInput*> mPair : cDigitalInputsByName) {
+    for (std::pair<std::string, EditorDigitalInput<WorldEditor, SignalInputID>*> mPair : cDigitalInputsByName) {
       mDigitalInputNames.emplace_back(mPair.first);
     }
     return mDigitalInputNames;
@@ -624,7 +477,7 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::string> WorldEditor::getAnalogueInputs() const {
     std::vector<std::string> mAnalogueInputNames;
-    for (std::pair<std::string, AnalogueInput*> mPair : cAnalogueInputsByName) {
+    for (std::pair<std::string, EditorAnalogueInput*> mPair : cAnalogueInputsByName) {
       mAnalogueInputNames.emplace_back(mPair.first);
     }
     return mAnalogueInputNames;
@@ -638,32 +491,33 @@ namespace IsoRealms::Spindizzy {
     cAnalogueInputsByName.find(name)->second->set(input);
   }
 
-  void WorldEditor::setExitAction(IAction* action) {
+  void WorldEditor::setExitAction(ActionExecutor* action) {
     cExitAction = action;
   }
 
   bool WorldEditor::signal(SignalInputID id) {
-    if (!cSignalConsumed) {
-      if (cSelectedTool != nullptr) {
-        if (cSelectedTool->inputTool(id, getAngle())) {
-          return true;
+    if (cHasFocus) {
+      if (!cSignalConsumed) {
+        if (cSelectedTool != nullptr) {
+          if (cSelectedTool->inputTool(id, getAngle())) {
+            return true;
+          }
         }
-      }
 
-      switch (id) {
-        case SignalInputID::NEXT_THEME:     setNextTheme();         return true;
-        case SignalInputID::NEXT_TOOL:      selectToolRelative(1);  return true;
-        case SignalInputID::PREVIOUS_THEME: setPreviousTheme();     return true;
-        case SignalInputID::PREVIOUS_TOOL:  selectToolRelative(-1); return true;
-        case SignalInputID::EXIT:           if (cExitAction != nullptr) {cExitAction->execute();} return true;
-        default:                                                    break;
+        switch (id) {
+          case SignalInputID::NEXT_THEME:     setNextTheme();                                       return true;
+          case SignalInputID::PREVIOUS_THEME: setPreviousTheme();                                   return true;
+          case SignalInputID::EXIT:           if (cExitAction != nullptr) {cExitAction->execute();} return true;
+          default:                                                                                  break;
+        }
       }
     }
     return false;
   }
 
   void WorldEditor::setAppearance(IFont* font, float scale) {
-    cPropertyAppearance.set(font, scale);
+    cFont = font;
+    cFontSize = scale;
   }
 
   const IFloat* WorldEditor::getYaw() const {
@@ -710,9 +564,9 @@ namespace IsoRealms::Spindizzy {
 
   void WorldEditor::move(float x, float y, float z) {
     LiteralVertex mNewLocation;
-    mNewLocation.x = std::clamp(cLocation.x + x, static_cast<double>(cWorld->getSpindizzy()->getEditorMinX()), static_cast<double>(cWorld->getSpindizzy()->getEditorMaxX()));
-    mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld->getSpindizzy()->getEditorMinY()), static_cast<double>(cWorld->getSpindizzy()->getEditorMaxY()));
-    mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld->getSpindizzy()->getEditorMinZ()), static_cast<double>(cWorld->getSpindizzy()->getEditorMaxZ()));
+    mNewLocation.x = std::clamp(cLocation.x + x, static_cast<double>(cWorld.getSpindizzy().getEditorMinX()), static_cast<double>(cWorld.getSpindizzy().getEditorMaxX()));
+    mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld.getSpindizzy().getEditorMinY()), static_cast<double>(cWorld.getSpindizzy().getEditorMaxY()));
+    mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld.getSpindizzy().getEditorMinZ()), static_cast<double>(cWorld.getSpindizzy().getEditorMaxZ()));
     double mSnapInterval = cSelectedTool != nullptr ? cSelectedTool->getSnapInterval() : 1.0;
     if (isCursorLocked() || (std::abs(x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get())) {
       mNewLocation.x = Utils::round(mNewLocation.x, mSnapInterval, cXDirection);
@@ -726,7 +580,7 @@ namespace IsoRealms::Spindizzy {
     cLocation = mNewLocation;
   }
 
-  World* WorldEditor::getWorld() const {
+  World& WorldEditor::getWorld() const {
     return cWorld;
   }
 
@@ -744,6 +598,14 @@ namespace IsoRealms::Spindizzy {
 
   void WorldEditor::ScreenFloat::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> WorldEditor::ScreenFloat::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool WorldEditor::ScreenFloat::isDefaultConfiguration() const {
+    return true;
   }
 
   IScreen* WorldEditor::screen() {

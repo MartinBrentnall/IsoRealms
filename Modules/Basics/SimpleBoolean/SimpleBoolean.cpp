@@ -23,37 +23,37 @@ namespace IsoRealms::Basics {
 
   const std::string SimpleBoolean::PROPERTY_VALUE = "Initial Value";
   
-  SimpleBoolean::SimpleBoolean(IProject* project, Basics* basics) :
+  SimpleBoolean::SimpleBoolean(IProject& project, Basics& basics, IResourceData& data) :
             cDefValue(false),
             cRuntimeValue(false),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeValue = cDefValue;
     });
   }
   
-  SimpleBoolean::SimpleBoolean(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            SimpleBoolean(project, basics) {
+  SimpleBoolean::SimpleBoolean(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            SimpleBoolean(project, basics, data) {
     cRuntimeValue = cDefValue = object.getBoolean(JSON_VALUE);
 
-    project->init([this](IAssets* resources) {
+    project.init([this](IAssets& resources) {
       cStateNotifier->stateChanged(this);
     });
   }
 
-  void SimpleBoolean::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(this, "", "Simple Booleans");
-    assets->add(&cLuaBinding, "", "Simple Booleans");
+  void SimpleBoolean::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, "", "Simple Booleans");
+    assets.add(&cLuaBinding, "", "Simple Booleans");
   }
 
-  void SimpleBoolean::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void SimpleBoolean::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     cStateNotifier = nullptr;
   }
   
-  void SimpleBoolean::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void SimpleBoolean::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_VALUE, cDefValue);
   }
 
@@ -65,9 +65,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> SimpleBoolean::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
+    return mProperties;
   }
 
   bool SimpleBoolean::getValue() const {
@@ -80,6 +81,14 @@ namespace IsoRealms::Basics {
 
   void SimpleBoolean::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool SimpleBoolean::isDefaultConfiguration() const {
+    return true;
   }
 
   void SimpleBoolean::setValue(bool value) {

@@ -26,44 +26,43 @@
 #include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Utils.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Texture : public IAssetUser<ITexture> {
+  class Texture : public Asset<ITexture, IProject>,
+                  public IStateListener<ITexture*> {
+    public:
+    Texture(IProject& project, std::function<void()> listener = nullptr);
+
+    void coord(float x, float y) const;
+
+    /****************************************\
+     * Implements Asset<ITexture, IProject> *
+    \****************************************/
+    ITexture* createLiteralAsset(IProject& project) override;
+    ITexture* getAsset(IProject& project, JSONObject object) override;
+    ITexture* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
+    void loadClientConfiguration(JSONObject object) override;
+    void saveClientConfiguration(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getClientProperties() override;
+
+    /****************************************\
+     * Implements IStateListener<ITexture*> *
+    \****************************************/
+    void stateChanged(ITexture* asset) override;
+
     private:
     static const std::string JSON_ANGLE;
     static const std::string JSON_SCALE_X;
     static const std::string JSON_SCALE_Y;
-
-    IProject* cProject;
-    ITexture* cTexture;
+    
+    std::function<void()> cListener;
     float cDefScaleX;
     float cDefScaleY;
     float cDefAngle;
-
-    Texture(Texture const& texture) = delete;
-    Texture& operator=(Texture const& texture) = delete;
-
-    public:
-    Texture(IProject* project);
-
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    void coord(float x, float y) const;
-
-    ITexture* operator->() const {
-      return cTexture;
-    }
-
-    ITexture* operator*() const {
-      return cTexture;
-    }
-
-    /***********************************\
-     * Implements IAssetUser<ITexture> *
-    \***********************************/
-    void relinquish(ITexture* asset) override;
-
-    virtual ~Texture();
   };
 }

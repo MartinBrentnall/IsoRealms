@@ -39,7 +39,6 @@
 #include "LocalAssetRegistry.h"
 #include "Options/LocalOptions.h"
 #include "ResourceType.h"
-#include "IAssetLiterals.h"
 #include "System.h"
 
 namespace IsoRealms {
@@ -50,17 +49,18 @@ namespace IsoRealms {
                  public IModule,
                  public IModuleInternal {
     public:
-    Module(const std::string& name, Project* project, LuaState* luaState);
+    Module(const std::string& name, Project& project, LuaState* luaState);
     
-    void loadResources(JSONObject object, IOptions* options, const std::string& resourceDataPath);
+    void loadResources(JSONObject object, IOptions& options, const std::string& resourceDataPath);
     void registerAssets();
     bool needsSaving() const;
-    void save(JSONObject object, IAssetIdentifier* identifier, const std::string& resourcePath) const;
+    void save(JSONObject object, IAssetIdentifier& identifier, const std::string& resourcePath) const;
+    std::vector<std::unique_ptr<IProperty>> getProperties();
 
     /************************************\
      * Implements IResourceTypeRegistry *
     \************************************/
-    void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& name, const std::string& category) override;
+    void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category) override;
     
     /**********************\
      * Implements IModule *
@@ -71,15 +71,15 @@ namespace IsoRealms {
     /******************************\
      * Implements IModuleInternal *
     \******************************/
-    IProject* getProjectRuntime() override;
+    IProject& getProjectRuntime() override;
     std::string getName(ResourceType* resourceType) override;
-    IAssetLiterals* getAssetLiterals() override;
-    IAssetRemover* getAssetRemover() override;
-    IAssetRegistry* getAssetRegistry() override;
-    IAssets* getAssets() override;
+    IAssetRemover& getAssetRemover() override;
+    IAssetRegistry& getAssetRegistry() override;
+    IAssets& getAssets() override;
     std::string getPath() override;
     std::string getDataPath(bool user) override;
     void makeUserDataDirectory(const std::string& resourcePath) override;
+    void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) override;
     std::string getProjectPathPrefix(bool user) override;
 
     virtual ~Module();
@@ -94,7 +94,7 @@ namespace IsoRealms {
     std::string cName;
     IModuleHandle* cModule;
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
-    Project* cProject;
+    Project& cProject;
     LocalAssetRegistry cModuleAssetRegistry;
     std::string cResourceDataPath;
 #ifdef __linux__

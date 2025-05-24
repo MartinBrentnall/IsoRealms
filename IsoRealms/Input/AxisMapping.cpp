@@ -62,11 +62,11 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void AxisMapping::registerAssets(IAssetRegistry* assets) {
+  void AxisMapping::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
   
-  void AxisMapping::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void AxisMapping::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
 }

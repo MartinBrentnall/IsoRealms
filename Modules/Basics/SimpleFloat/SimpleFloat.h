@@ -36,14 +36,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    SimpleFloat(IProject* project, Basics* basics);
-    SimpleFloat(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void registerAssets(IAssetRegistry* assets);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    SimpleFloat(IProject& project, Basics& basics, IResourceData& data);
+    SimpleFloat(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void registerAssets(IAssetRegistry& assets);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /*********************\
      * Implements IFloat *
@@ -51,6 +51,8 @@ namespace IsoRealms::Basics {
     float getValue() const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *

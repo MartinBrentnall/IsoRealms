@@ -25,43 +25,32 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Boolean : public IAssetUser<IBoolean>,
+  class Boolean : public Asset<IBoolean, IProject>,
                   public IStateListener<IBoolean*> {
     public:
-    Boolean(IProject* project, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
+    Boolean(IProject& project, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
 
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    IBoolean* operator->() const {
-      return cBoolean;
-    }
-
-    IBoolean* operator*() const {
-      return cBoolean;
-    }
-
-    /***********************************\
-     * Implements IAssetUser<IBoolean> *
-    \***********************************/
-    void relinquish(IBoolean* asset) override;
+    /****************************************\
+     * Implements Asset<IBoolean, IProject> *
+    \****************************************/
+    IBoolean* createLiteralAsset(IProject& project) override;
+    IBoolean* getAsset(IProject& project, JSONObject object) override;
+    IBoolean* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
 
     /****************************************\
      * Implements IStateListener<IBoolean*> *
     \****************************************/
     void stateChanged(IBoolean* asset) override;
 
-    virtual ~Boolean();
-
     private:
-    IProject* cProject;
     bool cDefaultValue;
-    IBoolean* cBoolean;
     std::function<void(bool)> cListener;
-
-    Boolean(Boolean const& boolean) = delete;
-    Boolean& operator=(Boolean const& boolean) = delete;
   };
 }

@@ -25,40 +25,40 @@ namespace IsoRealms::Basics {
   const std::string AnalogueInput::JSON_NAME     = "name";
   const std::string AnalogueInput::JSON_TYPE     = "type";
 
-  AnalogueInput::AnalogueInput(IProject* project, Basics* basics) :
+  AnalogueInput::AnalogueInput(IProject& project, Basics& basics, IResourceData& data) :
              cRuntimeState(false),
              cLuaBinding(project, this) {
   }
 
-  AnalogueInput::AnalogueInput(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            AnalogueInput(project, basics) {
+  AnalogueInput::AnalogueInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            AnalogueInput(project, basics, data) {
     for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
       std::string mType = mMappingObject.getString(JSON_TYPE);
       if      (mType == AxisMapping::TYPE_AXIS)                             {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<AxisMapping>(mMappingObject), "TODO: Remove This"));}
-      else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(project, mMappingObject), mMappingObject.getString(JSON_NAME)));}
+      else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(project, basics, mMappingObject), mMappingObject.getString(JSON_NAME)));}
       else                                                                  {throw ParseException("Unknown tag for Basics/AnalogueInput: " + mType);}
     }
   }
 
-  void AnalogueInput::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(static_cast<IFloat*>(this), "", "Analogue Inputs");
-    assets->add(static_cast<IInputHandler*>(this), "", "Analogue Inputs");
-    assets->add(&cLuaBinding, "", "Analogue Inputs");
+  void AnalogueInput::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(static_cast<IFloat*>(this), "", "Analogue Inputs");
+    assets.add(static_cast<IInputHandler*>(this), "", "Analogue Inputs");
+    assets.add(&cLuaBinding, "", "Analogue Inputs");
     for (std::unique_ptr<InputMapping>& mInput : cDefMapping) {
       mInput->registerAssets(assets);
     }
   }
 
-  void AnalogueInput::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IFloat*>(this));
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(&cLuaBinding);
+  void AnalogueInput::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IFloat*>(this),        relinquish);
+    assets.remove(static_cast<IInputHandler*>(this), relinquish);
+    assets.remove(&cLuaBinding,                      relinquish);
     for (std::unique_ptr<InputMapping>& mInput : cDefMapping) {
-      mInput->unregisterAssets(assets, releaser);
+      mInput->unregisterAssets(assets, releaser, relinquish);
     }
   }
 
-  void AnalogueInput::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void AnalogueInput::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
       JSONObject mMappingObject = mMappingsArray.addObject();
@@ -74,9 +74,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> AnalogueInput::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   float AnalogueInput::getValue() const {
@@ -117,6 +116,14 @@ namespace IsoRealms::Basics {
 
   void AnalogueInput::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool AnalogueInput::isDefaultConfiguration() const {
+    return true;
   }
 
   std::string AnalogueInput::getInputsString() const {
@@ -206,13 +213,13 @@ namespace IsoRealms::Basics {
     cPhysicalInput->loadCustomMapping(object);
   }
 
-  void AnalogueInput::InputMapping::registerAssets(IAssetRegistry* assets) {
+  void AnalogueInput::InputMapping::registerAssets(IAssetRegistry& assets) {
     LocalAssetRegistry mLocalRegistry(assets, cName);
-    cPhysicalInput->registerAssets(&mLocalRegistry);
+    cPhysicalInput->registerAssets(mLocalRegistry);
   }
   
-  void AnalogueInput::InputMapping::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    cPhysicalInput->unregisterAssets(assets, releaser);
+  void AnalogueInput::InputMapping::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    cPhysicalInput->unregisterAssets(assets, releaser, relinquish);
   }
 
   std::string AnalogueInput::InputMapping::getShortName() const {

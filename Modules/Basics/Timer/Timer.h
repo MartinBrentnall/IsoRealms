@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <vector>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
@@ -49,14 +50,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    Timer(IProject* project, Basics* basics);
-    Timer(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Timer(IProject& project, Basics& basics, IResourceData& data);
+    Timer(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /***********************\
      * Implements IInteger *
@@ -64,6 +65,8 @@ namespace IsoRealms::Basics {
     int getValue() const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -97,7 +100,7 @@ namespace IsoRealms::Basics {
      */
     class StringTimer : public IString {
       public:
-      StringTimer(Timer* parent);
+      StringTimer(Timer& parent);
 
       /**********************\
        * Implements IString *
@@ -105,9 +108,11 @@ namespace IsoRealms::Basics {
       std::string getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
 
       private:
-      Timer* cParent;
+      Timer& cParent;
     } cStringInterface;
   };
 }

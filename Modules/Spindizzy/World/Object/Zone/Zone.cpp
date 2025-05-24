@@ -41,16 +41,16 @@ namespace IsoRealms::Spindizzy {
   const std::string Zone::JSON_Y         = "y";
   const std::string Zone::JSON_Z         = "z";
 
-  Zone::Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone) :
+  Zone::Zone(World& world, ZoneType& type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone) :
             cDefWorld(world),
-            cDefType(type),
+            cDefType(&type),
             cDefStartX(std::min(xStart, xEnd)),
             cDefEndX(  std::max(xStart, xEnd)),
             cDefStartY(std::min(yStart, yEnd)),
             cDefEndY(  std::max(yStart, yEnd)),
             cDefStartZ(std::min(zStart, zEnd)),
             cDefEndZ(  std::max(zStart, zEnd)),
-            cDefThemeSet(clone != nullptr ? clone->cDefThemeSet : cDefWorld.getSpindizzy()->getDefaultThemeSet()),
+            cDefThemeSet(clone != nullptr ? clone->cDefThemeSet : cDefWorld.getSpindizzy().getDefaultThemeSet()),
             cDefTheme(clone != nullptr ? clone->cDefTheme : cDefThemeSet->getDefaultTheme()),
             cDefVisited(clone != nullptr ? clone->cDefVisited : false) {
     if (clone != nullptr) {
@@ -113,11 +113,11 @@ namespace IsoRealms::Spindizzy {
         addTerrain(std::make_unique<Terrain>(*this, mTerrainObject));
       }
     }
-    cDefWorld.getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
-      cDefType = cDefWorld.getSpindizzy()->getZoneType(object.getString(JSON_TYPE));
+    cDefWorld.getSpindizzy().getProject().init([this, object](IAssets& assets) {
+      cDefType = cDefWorld.getSpindizzy().getZoneType(object.getString(JSON_TYPE));
       std::string mThemeSet = object.getString(JSON_THEME_SET);
       std::string mThemeName = object.getString(JSON_THEME);
-      cDefThemeSet = mThemeSet != "" ? cDefWorld.getSpindizzy()->getThemeSet(mThemeSet) : nullptr;
+      cDefThemeSet = mThemeSet != "" ? cDefWorld.getSpindizzy().getThemeSet(mThemeSet) : nullptr;
       cDefTheme = mThemeName != "" ? cDefThemeSet->getTheme(mThemeName) : nullptr;
       reset();
 
@@ -141,35 +141,35 @@ namespace IsoRealms::Spindizzy {
     }
   }  
 
-  Alien* Zone::draw(AlienType* type, const WorldEditorCursorCell& cell) {
+  Alien* Zone::draw(AlienType& type, const WorldEditorCursorCell& cell) {
     if (cell.cDefX >= cDefStartX && cell.cDefX <= cDefEndX && cell.cDefY >= cDefStartY && cell.cDefY <= cDefEndY && cell.cDefZ >= cDefStartZ && cell.cDefZ <= cDefEndZ) {
       return cDefAliens.emplace_back(std::make_unique<Alien>(*this, type, cell.cDefX, cell.cDefY, cell.cDefZ)).get();
     }
     return nullptr;
   }
   
-  Lift* Zone::draw(LiftType* type, const WorldEditorCursorCell& cell, int bottomRange, int topRange) {
+  Lift* Zone::draw(LiftType& type, const WorldEditorCursorCell& cell, int bottomRange, int topRange) {
     if (cell.cDefX >= cDefStartX && cell.cDefX <= cDefEndX && cell.cDefY >= cDefStartY && cell.cDefY <= cDefEndY && cell.cDefZ >= cDefStartZ && cell.cDefZ <= cDefEndZ && bottomRange >= cDefStartZ && bottomRange <= cDefEndZ && topRange >= cDefStartZ && topRange <= cDefEndZ) {
       return cDefLifts.emplace_back(std::make_unique<Lift>(*this, type, cell.cDefX, cell.cDefY, cell.cDefZ, bottomRange, topRange)).get();
     }
     return nullptr;
   }
   
-  PickUp* Zone::draw(PickUpType* type, const WorldEditorCursorCell& cell) {
+  PickUp* Zone::draw(PickUpType& type, const WorldEditorCursorCell& cell) {
     if (cell.cDefX >= cDefStartX && cell.cDefX <= cDefEndX && cell.cDefY >= cDefStartY && cell.cDefY <= cDefEndY && cell.cDefZ >= cDefStartZ && cell.cDefZ <= cDefEndZ) {
       return cDefPickUps.emplace_back(std::make_unique<PickUp>(*this, type, cell.cDefX, cell.cDefY, cell.cDefZ)).get();
     }
     return nullptr;
   }
   
-  Terrain* Zone::draw(TerrainType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation) {
+  Terrain* Zone::draw(TerrainType& type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation) {
     if (isValidTerrainPlacement(start, end, southWestHeight, southEastHeight, northWestHeight, northEastHeight)) {
       return addTerrain(std::make_unique<Terrain>(*this, type, start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ, southWestHeight, southEastHeight, northWestHeight, northEastHeight, alternativeSplit, steppedBase, !negation));
     }
     return nullptr;
   }
   
-  ZoneObject* Zone::draw(ZoneObjectType* type) {
+  ZoneObject* Zone::draw(ZoneObjectType& type) {
 // TODO     if (type->isValidPlacement()) {
 //       return cDefObjects.emplace_back(std::make_unique<ZoneObject>(*this, type));
 //     }
@@ -202,8 +202,8 @@ namespace IsoRealms::Spindizzy {
 
 
 
-  void Zone::registerView(IScreen* screen) {
-    cRuntimeDisplayLists[screen] = 0;
+  void Zone::registerView(IScreen& screen) {
+    cRuntimeDisplayLists[&screen] = 0;
   }
   
   unsigned int Zone::getHintCount() {
@@ -255,7 +255,7 @@ namespace IsoRealms::Spindizzy {
     if (mCondition.has_value()) {
       std::set<IBoolean*> mInputs = mCondition->getInputs();
       for (std::set<IBoolean*>::iterator i = mInputs.begin(); i != mInputs.end(); i++) {
-        TerrainState* mTerrainState = cDefWorld.getSpindizzy()->getTerrainState(*i);
+        TerrainState* mTerrainState = cDefWorld.getSpindizzy().getTerrainState(*i);
         bool mExists = false;
         for (unsigned int j = 0; j < cDefTerrainStates.size(); j++) {
           if (cDefTerrainStates[j] == mTerrainState) {
@@ -368,8 +368,8 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  World* Zone::getWorld() {
-    return &cDefWorld;
+  World& Zone::getWorld() {
+    return cDefWorld;
   }
     
   void Zone::updateBounds() {
@@ -459,7 +459,9 @@ namespace IsoRealms::Spindizzy {
     Utils::renderVolumeMarkers(x, xs, y, ys, z, zs, 0.5f);
     glColor3f(1.0f, 1.0f, 1.0f);
     glEnd();
-    cDefThemeSet->applyDefaultTheme();
+    if (cDefThemeSet != nullptr) {
+      cDefThemeSet->applyDefaultTheme();
+    }
   }
 
   void Zone::renderSelectionHighlight() const {
@@ -605,11 +607,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Zone::save(JSONObject object) {
-    Spindizzy* mSpindizzy = cDefWorld.getSpindizzy();
+    Spindizzy& mSpindizzy = cDefWorld.getSpindizzy();
 
-    object.addString(JSON_TYPE, mSpindizzy->getID(cDefType));
+    object.addString(JSON_TYPE, mSpindizzy.getID(cDefType));
     if (cDefThemeSet != nullptr) {
-      object.addString(JSON_THEME_SET, mSpindizzy->getID(cDefThemeSet));
+      object.addString(JSON_THEME_SET, mSpindizzy.getID(cDefThemeSet));
       object.addString(JSON_THEME,     cDefThemeSet->getName(cDefTheme));
     }
     object.addBoolean(JSON_VISITED, cDefVisited);
@@ -671,7 +673,9 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Zone::setDefaultTheme() {
-    cDefThemeSet->setDefaultTheme(cDefTheme);
+    if (cDefThemeSet != nullptr) {
+      cDefThemeSet->setDefaultTheme(cDefTheme);
+    }
   }
 
   void Zone::resetDynamics() {
@@ -794,30 +798,30 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Zone::bindValues() {
-    cDefWorld.getSpindizzy()->bind(this);
+    cDefWorld.getSpindizzy().bind(this);
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->bindProperty();
     }
   }
 
   void Zone::bindValues2(Wall* wall) {
-    cDefWorld.getSpindizzy()->bind(this);
-    cDefWorld.getSpindizzy()->bind(wall);
+    cDefWorld.getSpindizzy().bind(this);
+    cDefWorld.getSpindizzy().bind(wall);
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->bindProperty2();
     }
   }
 
   void Zone::unbindValues() {
-    cDefWorld.getSpindizzy()->bind(static_cast<Zone*>(nullptr));
-    cDefWorld.getSpindizzy()->bind(static_cast<Wall*>(nullptr));
+    cDefWorld.getSpindizzy().bind(static_cast<Zone*>(nullptr));
+    cDefWorld.getSpindizzy().bind(static_cast<Wall*>(nullptr));
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->unbindProperty();
     }
   }
 
   void Zone::unbindValues2() {
-    cDefWorld.getSpindizzy()->bind(static_cast<Zone*>(nullptr));
+    cDefWorld.getSpindizzy().bind(static_cast<Zone*>(nullptr));
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->unbindProperty2();
     }

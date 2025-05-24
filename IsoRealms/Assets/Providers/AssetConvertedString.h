@@ -18,57 +18,42 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Registry/AssetClientManager.h"
+#include <set>
+
 #include "IsoRealms/Assets/Registry/IAssetProvider.h"
 #include "IsoRealms/Assets/TypeConverted/PrimitiveToString.h"
 
 namespace IsoRealms {
   class Project;
 
-  class AssetConvertedString : public IAssetProvider<Project, IString> {
+  template <class FROM> class AssetConvertedString : public IAssetProvider<Project, IString> {
     public:
-    AssetConvertedString(IProject* project) :
+    AssetConvertedString(IProject& project) :
               cProject(project) {
     }
 
-    protected:
-    
     IString* getAsset(Project& project, JSONObject object) const override {
-      std::string mKey = object.getString(JSON_KEY);
-      if      (mKey == ":Float")   {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, cProject, [this, &object](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, object.getObject(JSON_ASSET), nullptr);})).first->get();}
-      else if (mKey == ":Integer") {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IInteger>>(cProject, cProject, [this, &object](IAssetUser<IInteger>* user) -> IInteger* {return cProject->getInteger(user, object.getObject(JSON_ASSET), nullptr);})).first->get();}
-      return nullptr;
+      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(cProject, object)).first->get();
     }
 
+    IString* getAsset(Project& project) const override {
+      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(cProject)).first->get();
+    }
+    
     void releaseAsset(const IString* asset) override {
       // TODO: Implement this.
     }
 
-    void info() const override {
-      std::cout << "Assets converted to Bindings" << std::endl;
+    bool hasConfiguration() const override {
+      return true;
+    }
+    
+    bool renderAssetProviderIcon() const override {
+      return false;
     }
 
     private:
-    inline static const std::string JSON_ASSET = "asset";
-    inline static const std::string JSON_KEY   = "key";
-
-    IProject* cProject;
+    IProject& cProject;
     mutable std::set<std::unique_ptr<IString>> cConvertedAssets;
-
-    // TODO: Would be nice to figure this out to avoid repetition; shouldn't be too hard.
-//     template <class TYPE> std::unique_ptr<IString> createConversion(std::function<TYPE*(IAssetUser<TYPE>*)> assetFunction) {
-//       return std::make_unique<PrimitiveToString<TYPE>>(cAssets, [assetFunction](IAssetUser<TYPE>* user) -> TYPE* {
-//         return assetFunction(user);
-//       });
-//      cTypeConvertedAssets[mConvertedAsset] = mConvertedAsset;
-//      return mConvertedAsset;
-//    }
-
-    /***********************************\
-     * Implements IAssetUser<IInteger> *
-    \***********************************/
-//     void relinquish(IInteger* asset) override {
-//       std::cout << "TODO: AssetConvertedString::relinquish: Implement this." << std::endl;
-//     }
   };
 }

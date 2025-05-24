@@ -24,25 +24,25 @@ namespace IsoRealms::Basics {
 
   const std::string InputGroup::PROPERTY_INPUT_HANDLER = "Input";
   
-  InputGroup::InputGroup(IProject* project, Basics* basics) {
+  InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data) {
   }
   
-  InputGroup::InputGroup(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            InputGroup(project, basics) {
+  InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            InputGroup(project, basics, data) {
     for (JSONObject mInputObject : object.getArray(JSON_INPUTS)) {
       cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(project)).get()->init(mInputObject, JSON_INPUT);
     }
   }
 
-  void InputGroup::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Input Groups");
+  void InputGroup::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Input Groups");
   }
 
-  void InputGroup::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void InputGroup::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
-  void InputGroup::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void InputGroup::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mInputsArray = object.addArray(JSON_INPUTS);
     for (const std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
       JSONObject mInputObject = mInputsArray.addObject();
@@ -58,9 +58,24 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> InputGroup::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    unsigned int i = 1;
+    for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Input Handler " + Utils::toString(i), *mInputHandler.get(), [this, &mInputHandler]() {
+        Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
+      }));
+      i++;
+    }
+
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Input Handler " + Utils::toString(i), "Add...", [this, &browser]() {
+      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(browser.getProject()));
+      std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
+      return std::make_unique<PropertyAsset<InputHandler>>("Input Handler", *mInputHandler, [this, &mInputHandler]() {
+        Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
+      });
+    }));
+    return mProperties;
   }
 
   bool InputGroup::input(sf::Event& event) {
@@ -84,5 +99,13 @@ namespace IsoRealms::Basics {
 
   void InputGroup::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> InputGroup::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool InputGroup::isDefaultConfiguration() const {
+    return true;
   }
 }

@@ -43,21 +43,21 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    WorldView(IProject* project, Spindizzy* spindizzy);
-    WorldView(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Interface to be used by Spindizzy.
     void registerAssets(ISpindizzyRegistry* registry);
     void addZoneView(Zone* zone);
     void removeZoneView(Zone* zone);
     World* getWorld() const;
-    Spindizzy* getSpindizzy();
+    Spindizzy& getSpindizzy();
     ICamera* getCamera();
 
     /***********************\
@@ -77,12 +77,14 @@ namespace IsoRealms::Spindizzy {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
     class Pitch : public IFloat {
       public:
-      Pitch(WorldView* parent);
+      Pitch(WorldView& parent);
 
       /*********************\
        * Implements IFloat *
@@ -90,6 +92,7 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
 
       private:
       WorldView& cDefParent;
@@ -109,9 +112,11 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_WORLD;
 
     static const std::string TYPE_ZONE_VIEW;
+    
+    // External interfaces.
+    Spindizzy& cSpindizzy;      /// Spindizzy module reference.
 
     // Definition data.
-    Spindizzy& cDefSpindizzy;      /// Spindizzy module reference.
     World* cDefWorld;              /// World being viewed.
     Camera cDefCamera;             /// Camera for this view.
     ZoneViewType cDefZoneViewType; /// The type of representation of zones within this view.

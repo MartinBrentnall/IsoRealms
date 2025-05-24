@@ -47,7 +47,7 @@ namespace IsoRealms::Spindizzy {
     public:
 
     // Constructors.
-    PickUp(Zone& zone, PickUpType* type, int x, int y, int z);
+    PickUp(Zone& zone, PickUpType& type, int x, int y, int z);
     PickUp(Zone& zone, PickUp& pickUp, int x, int y, int z);
     PickUp(Zone& zone, JSONObject object);
     ~PickUp();
@@ -85,7 +85,7 @@ namespace IsoRealms::Spindizzy {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyAppearance* appearance) override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 
@@ -99,8 +99,10 @@ namespace IsoRealms::Spindizzy {
 
     static const std::string BIND_TO_ZONE;
 
+    // External interfaces.
+    Zone& cZone; /// Zone to which this pick up belongs.
+    
     // Definition data.
-    Zone& cDefZone;                           /// Zone to which this pick up belongs.
     PickUpType* cDefType;                     /// Type of this pick up.
     std::unique_ptr<ModelInstance> cDefModel; /// Visual representation of this pick up.
     int cDefX;                                /// X axis location of this pick up.

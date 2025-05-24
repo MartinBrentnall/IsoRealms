@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
       CANCELLED
     };
     
-    virtual InputEditResult inputEdit(sf::Event& event, WorldEditor* editor) = 0;
+    virtual InputEditResult inputEdit(sf::Event& event, WorldEditor& editor) = 0;
     virtual void processCursorMovement(LiteralVertex& cursor) = 0;
     virtual double getSnapInterval() const = 0;
   };

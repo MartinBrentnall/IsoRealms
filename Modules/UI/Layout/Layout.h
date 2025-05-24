@@ -19,11 +19,14 @@
 #pragma once
 
 #include <map>
+#include <ranges>
 #include <string>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
 
+#include "Editor/LayoutEditor.h"
 #include "LayoutComponent.h"
 
 namespace IsoRealms::UI {
@@ -37,14 +40,14 @@ namespace IsoRealms::UI {
     /**********************\
      * Resource Interface *
     \**********************/
-    Layout(IProject* project, UI* ui);
-    Layout(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Layout(IProject& project, UI& ui, IResourceData& data);
+    Layout(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**********************\
      * Implements IScreen *
@@ -52,6 +55,8 @@ namespace IsoRealms::UI {
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /************************\
      * Implements IEditable *
@@ -61,12 +66,22 @@ namespace IsoRealms::UI {
     /*********************\
      * Editing Interface *
     \*********************/
+    IUI& getUI() const;
+    LayoutComponent* createComponent(float x1, float y1, float x2, float y2, float aspectRatio);
+    LayoutComponent* createComponent(LayoutComponent* component);
+    void deleteComponent(LayoutComponent* component);
+    void moveComponentBackward(LayoutComponent* component);
+    void moveComponentForward(LayoutComponent* component);
+    void moveComponentToBack(LayoutComponent* component);
+    void moveComponentToFront(LayoutComponent* component);
     LayoutComponent* getComponent(const std::string& name);
-    std::string getName(LayoutComponent* component) const;
+    std::string getName(const LayoutComponent* component) const;
     void setName(LayoutComponent* component, const std::string& name);
     std::vector<std::string> getAvailableRelativeNames(LayoutComponent* component);
     void renderEditing(float aspectRatio) const;
     LayoutComponent* pickComponent(float x, float y, float aspectRatio) const;
+    LayoutComponent* pickPreviousComponent(float x, float y, float aspectRatio, LayoutComponent* current) const;
+    LayoutComponent* pickNextComponent(float x, float y, float aspectRatio, LayoutComponent* current) const;
 
     private:
 
@@ -74,11 +89,16 @@ namespace IsoRealms::UI {
     static const std::string JSON_COMPONENTS;
     static const std::string JSON_ID;
 
+    // External interfaces.
+    IUI& cUI;
+
     // Definition data.
     std::vector<LayoutComponent*> cComponentsByOrder;         /// Components in order of rendering.
     std::map<std::string, LayoutComponent> cComponentsByName; /// Components mapped by name.
 
     // Editing data.
-// TODO    std::map<IEditableScreen*, std::unique_ptr<LayoutEditor>> cEditors;
+    std::map<IEditableScreen*, std::unique_ptr<LayoutEditor>> cEditors;
+    
+    int getIndex(LayoutComponent* component) const;
   };
 }

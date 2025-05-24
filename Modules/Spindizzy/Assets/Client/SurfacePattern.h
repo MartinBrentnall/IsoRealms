@@ -18,6 +18,9 @@
  */
 #pragma once
 
+#include <functional>
+
+#include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/ISurfacePattern.h"
@@ -25,34 +28,28 @@
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
   
-  class SurfacePattern : public IAssetUser<ISurfacePattern> {
+  class SurfacePattern : public Asset<ISurfacePattern, Spindizzy>,
+                         public IStateListener<ISurfacePattern*> {
     public:
-    SurfacePattern(Spindizzy* spindizzy);
+    SurfacePattern(Spindizzy& spindizzy, std::function<void()> listener);
 
-    void init(JSONObject object);
-    void set(JSONObject object);
-    void save(JSONObject object, const std::string& name) const;
+    /************************************************\
+     * Implements Asset<ISurfacePattern, Spindizzy> *
+    \************************************************/
+    ISurfacePattern* createLiteralAsset(Spindizzy& spindizzy) override;
+    ISurfacePattern* getAsset(Spindizzy& spindizzy, JSONObject object) override;
+    ISurfacePattern* getAsset(Spindizzy& spindizzy, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
 
-    ISurfacePattern* operator->() const {
-      return cSurfacePattern;
-    }
-
-    ISurfacePattern* operator*() const {
-      return cSurfacePattern;
-    }
-
-    /******************************************\
-     * Implements IAssetUser<ISurfacePattern> *
-    \******************************************/
-    void relinquish(ISurfacePattern* asset) override;
-
-    virtual ~SurfacePattern();
+    /***********************************************\
+     * Implements IStateListener<ISurfacePattern*> *
+    \***********************************************/
+    void stateChanged(ISurfacePattern* asset) override;
 
     private:
-    Spindizzy* cSpindizzy;
-    ISurfacePattern* cSurfacePattern;
-
-    SurfacePattern(SurfacePattern const& SurfacePattern) = delete;
-    SurfacePattern& operator=(SurfacePattern const& SurfacePattern) = delete;
+    std::function<void()> cListener;
   };
 }

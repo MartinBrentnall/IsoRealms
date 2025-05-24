@@ -23,7 +23,12 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternOutline::SurfacePatternOutline(IProject* project, Spindizzy* spindizzy, JSONObject object) {
+  SurfacePatternOutline::SurfacePatternOutline(IProject& project, Spindizzy& spindizzy) {
+    // Nothing to do.
+  }
+
+  SurfacePatternOutline::SurfacePatternOutline(IProject& project, Spindizzy& spindizzy, JSONObject object) :
+            SurfacePatternOutline(project, spindizzy) {
     // Nothing to do.
   }
 
@@ -131,6 +136,15 @@ namespace IsoRealms::Spindizzy {
 
   void SurfacePatternOutline::saveAsset(JSONObject object) const {
     // TODO: Implement this.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SurfacePatternOutline::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    return mProperties;
+  }
+
+  bool SurfacePatternOutline::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 
   SurfacePatternOutline::SurfacePatternSurface::SurfacePatternSurface(SurfacePatternOutline& parent, Surface* surface) :

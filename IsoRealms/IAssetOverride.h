@@ -24,10 +24,10 @@
 #include <string>
 
 namespace IsoRealms {
-  class I3DModelType;
   class IActionType;
   class IAssets;
   class IBinding;
+  class IBindingType;
   class IBoolean;
   class IColour;
   class IEditable;
@@ -35,8 +35,9 @@ namespace IsoRealms {
   class IFont;
   class IInputHandler;
   class IInteger;
-  class IScreen;
+  class IModel;
   class IProjectOptions;
+  class IScreen;
   class IString;
   class ITexture;
   class IVertex;
@@ -47,10 +48,10 @@ namespace IsoRealms {
    */
   class IAssetOverride {
     public:
-    virtual I3DModelType*    getModelType(     JSONObject object, IStateListener<I3DModelType*>*    listener) const = 0;
     virtual IActionType*     getActionType(    JSONObject object, IStateListener<IActionType*>*     listener) const = 0;
     virtual IAssets*         getAssets(        JSONObject object, IStateListener<IAssets*>*         listener) const = 0;
     virtual IBinding*        getBinding(       JSONObject object, IStateListener<IBinding*>*        listener) const = 0;
+    virtual IBindingType*    getBindingType(   JSONObject object, IStateListener<IBindingType*>*    listener) const = 0;
     virtual IBoolean*        getBoolean(       JSONObject object, IStateListener<IBoolean*>*        listener) const = 0;
     virtual IColour*         getColour(        JSONObject object, IStateListener<IColour*>*         listener) const = 0;
     virtual IEditable*       getEditable(      JSONObject object, IStateListener<IEditable*>*       listener) const = 0;
@@ -58,6 +59,7 @@ namespace IsoRealms {
     virtual IFont*           getFont(          JSONObject object, IStateListener<IFont*>*           listener) const = 0;
     virtual IInputHandler*   getInputHandler(  JSONObject object, IStateListener<IInputHandler*>*   listener) const = 0;
     virtual IInteger*        getInteger(       JSONObject object, IStateListener<IInteger*>*        listener) const = 0;
+    virtual IModel*          getModel(         JSONObject object, IStateListener<IModel*>*          listener) const = 0;
     virtual IProjectOptions* getProjectOptions(JSONObject object, IStateListener<IProjectOptions*>* listener) const = 0;
     virtual IScreen*         getScreen(        JSONObject object, IStateListener<IScreen*>*         listener) const = 0;
     virtual IString*         getString(        JSONObject object, IStateListener<IString*>*         listener) const = 0;

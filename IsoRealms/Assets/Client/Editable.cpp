@@ -18,38 +18,38 @@
  */
 #include "Editable.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Editable::Editable(IProject* project) :
-            cProject(project),
-            cEditable(cProject->createLiteralEditable(this)) {
+  Editable::Editable(IProject& project) : 
+            Asset<IEditable, IProject>(project, project.createLiteralEditable(this)) {
   }
 
-  void Editable::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IEditable* Editable::createLiteralAsset(IProject& project) {
+    return project.createLiteralEditable(this);
+  }
+  
+  IEditable* Editable::getAsset(IProject& project, JSONObject object) {
+    return project.getEditable(this, object);
+  }
+  
+  IEditable* Editable::getAsset(IProject& project, const std::string& id) {
+    return project.getEditable(this, id);
+  }
+  
+  std::vector<std::string> Editable::getAvailableProviders() const {
+    return cManager.getAllEditables();
+  }  
+
+  bool Editable::renderOtherProviderIcon(const std::string& id) const {
+    return false; // TODO
   }
 
-  void Editable::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cEditable);
-    cEditable = cProject->getEditable(this, mAssetObject);
-  }
+  bool Editable::hasConfiguration() const {
+    return false; // TODO cManager.isEditableConfigurable(getID());
+  }  
 
-  void Editable::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cEditable);
-  }
-
-  void Editable::relinquish(IEditable* asset) {
-    if (cEditable == asset) {
-      cEditable = cProject->createLiteralEditable(this);
-    }
-  }
-
-  Editable::~Editable() {
-    if (cEditable != nullptr) {
-      cProject->release(this, cEditable);
-    }
+  bool Editable::isDefaultConfiguration() const {
+    return true;
   }
 }

@@ -21,29 +21,38 @@
 namespace IsoRealms::Basics {
   const std::string ColourSwitch::JSON_COLOUR = "colour";
 
-  ColourSwitch::ColourSwitch(IProject* project, Basics* basics) :
-            AssetSwitchWithTransition(project, [this]() {return nullptr; /* *cDefColour*/;}),
+  ColourSwitch::ColourSwitch(IProject& project, Basics& basics, IResourceData& data) :
+            AssetSwitchWithTransition(project, [this]() {return *cDefColour;}),
             cDefColour(project, 0.0f, 0.0f, 0.0f, 0.0f),
             cLuaBinding(project, this) {
   }
 
-  ColourSwitch::ColourSwitch(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            ColourSwitch(project, basics) {
+  ColourSwitch::ColourSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            ColourSwitch(project, basics, data) {
     cDefColour.init(object, JSON_COLOUR);
   }
 
-  void ColourSwitch::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, "", "Colour Switches");
-    assets->add(this, "", "Colour Switches");
+  void ColourSwitch::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, "", "Scriptable Colours");
+    assets.add(this, "", "Scriptable Colours");
   }
 
-  void ColourSwitch::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
-    assets->remove(this);
+  void ColourSwitch::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
 
-  void ColourSwitch::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void ColourSwitch::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefColour.save(object, JSON_COLOUR);
+  }
+
+  bool ColourSwitch::renderIcon() {
+    return renderAssetIcon();
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ColourSwitch::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Initial Value", cDefColour));
+    return mProperties;
   }
 
   void ColourSwitch::set() const {
@@ -91,10 +100,18 @@ namespace IsoRealms::Basics {
   }
 
   bool ColourSwitch::renderAssetIcon() const {
-    return false;
+    return cDefColour.renderAssetIcon();
   }
 
   void ColourSwitch::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ColourSwitch::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ColourSwitch::isDefaultConfiguration() const {
+    return true;
   }
 }

@@ -22,30 +22,31 @@ namespace IsoRealms::HighScore {
   const std::string HighScore::ID_RESOURCE_SCORE_TRACKER  = "ScoreTracker";
   const std::string HighScore::ID_RESOURCE_SCORE_TABLE    = "ScoreTable";
       
-  const std::string HighScore::NAME_RESOURCE_SCORE_TRACKER = "Score Trackers";
-  const std::string HighScore::NAME_RESOURCE_SCORE_TABLE   = "Score Tables";
-
-  HighScore::HighScore(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals):
-                    cResourceTypeScoreTable(this),
-                    cResourceTypeScoreTracker(this) {
-    registry->add(&cResourceTypeScoreTable,   ID_RESOURCE_SCORE_TABLE,   NAME_RESOURCE_SCORE_TABLE,   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeScoreTracker, ID_RESOURCE_SCORE_TRACKER, NAME_RESOURCE_SCORE_TRACKER, IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+  HighScore::HighScore(IProject& project, IResourceTypeRegistry* registry):
+                    cResourceTypeScoreTable(*this),
+                    cResourceTypeScoreTracker(*this) {
+    registry->add(&cResourceTypeScoreTable,   ID_RESOURCE_SCORE_TABLE,   "Score Table",   "Score Tables",   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypeScoreTracker, ID_RESOURCE_SCORE_TRACKER, "Score Tracker", "Score Trackers", IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
   }
 
-  void HighScore::load(IProject* project, JSONObject object) {
+  void HighScore::load(IProject& project, JSONObject object) {
     // Nothing to do.
   }
 
-  void HighScore::save(JSONObject object, IAssetIdentifier* identifier) {
+  void HighScore::save(JSONObject object, IAssetIdentifier& identifier) {
     // Nothing to do.
   }
 
-  void HighScore::registerAssets(IAssetRegistry* assets) {
+  void HighScore::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
   
-  void HighScore::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
+  void HighScore::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> HighScore::getProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   std::mutex cModuleInstantiationMutex;
@@ -53,11 +54,11 @@ namespace IsoRealms::HighScore {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry, IsoRealms::IAssetLiterals* literals) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
-  std::unique_ptr<IsoRealms::HighScore::HighScore> mModule = std::make_unique<IsoRealms::HighScore::HighScore>(project, registry, literals);
+  std::unique_ptr<IsoRealms::HighScore::HighScore> mModule = std::make_unique<IsoRealms::HighScore::HighScore>(*project, registry);
   {
     std::lock_guard<std::mutex> mLockGuard(IsoRealms::HighScore::cModuleInstantiationMutex);
     return IsoRealms::HighScore::ModuleInstances.emplace_back(std::move(mModule)).get();

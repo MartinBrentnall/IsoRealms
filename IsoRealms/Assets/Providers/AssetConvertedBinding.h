@@ -28,7 +28,7 @@ namespace IsoRealms {
 
   template <class FROM> class AssetConvertedBinding : public IAssetProvider<Project, IBinding> {
     public:
-    AssetConvertedBinding(IProject* project) :
+    AssetConvertedBinding(IProject& project) :
               cProject(project) {
     }
 
@@ -36,17 +36,24 @@ namespace IsoRealms {
       return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject, object)).first->get();
     }
 
+    IBinding* getAsset(Project& project) const override {
+      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject)).first->get();
+    }
+    
     void releaseAsset(const IBinding* asset) override {
       // TODO: Implement this.
     }
 
-    void info() const override {
-      std::cout << "Assets converted to Bindings" << std::endl;
+    bool hasConfiguration() const override {
+      return true;
+    }
+
+    bool renderAssetProviderIcon() const override {
+      return false;
     }
 
     private:
-    IProject* cProject;
-
+    IProject& cProject;
     mutable std::set<std::unique_ptr<IBinding>> cBoundAssets;
   };
 }

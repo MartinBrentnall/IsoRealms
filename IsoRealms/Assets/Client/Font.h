@@ -25,35 +25,22 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Font : public IAssetUser<IFont> {
-    private:
-    IProject* cProject;
-    IFont* cFont;
-
-    Font(Font const& font) = delete;
-    Font& operator=(Font const& font) = delete;
-
+  class Font : public Asset<IFont, IProject> {
     public:
-    Font(IProject* project);
+    Font(IProject& project);
 
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    IFont* operator->() const {
-      return cFont;
-    }
-
-    IFont* operator*() const {
-      return cFont;
-    }
-
-    /********************************\
-     * Implements IAssetUser<IFont> *
-    \********************************/
-    void relinquish(IFont* asset) override;
-
-    virtual ~Font();
+    /*************************************\
+     * Implements Asset<IFont, IProject> *
+    \*************************************/
+    IFont* createLiteralAsset(IProject& project) override;
+    IFont* getAsset(IProject& project, JSONObject object) override;
+    IFont* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
   };
 }

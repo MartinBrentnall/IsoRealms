@@ -30,7 +30,8 @@ namespace IsoRealms::Spindizzy {
   class ZoneObjectTypeTraitBoundary : public IZoneObjectTypeTrait,
                                       public IBoundaryType {
     public:
-    ZoneObjectTypeTraitBoundary(IProject* project, ZoneObjectType* type, JSONObject object);
+    ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type);
+    ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getStartID() const;
@@ -52,6 +53,8 @@ namespace IsoRealms::Spindizzy {
     std::string getBindingID(const IBinding* binding) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     

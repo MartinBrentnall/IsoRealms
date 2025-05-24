@@ -25,7 +25,7 @@
 #include <vector>
 
 #include "Common/ScreenArea.h"
-#include "Common/ScreenLocation.h"
+#include "Common/Point2D.h"
 #include "DisplayResolution.h"
  
 namespace IsoRealms {
@@ -94,7 +94,7 @@ namespace IsoRealms {
      * @param y Pixel location down the screen.
      * @return Normalised screen location.
      */
-    virtual ScreenLocation normalise(const int x, const int y) const = 0;
+    virtual Point2D normalise(const int x, const int y) const = 0;
 
     /**
      * Return the vertical distance in GL coordinates for the specified number

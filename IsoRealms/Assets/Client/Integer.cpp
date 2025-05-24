@@ -18,38 +18,38 @@
  */
 #include "Integer.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Integer::Integer(IProject* project) :
-            cProject(project),
-            cInteger(cProject->createLiteralInteger(this)) {
+  Integer::Integer(IProject& project) : 
+            Asset<IInteger, IProject>(project, project.createLiteralInteger(this)) {
   }
 
-  void Integer::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IInteger* Integer::createLiteralAsset(IProject& project) {
+    return project.createLiteralInteger(this);
+  }
+  
+  IInteger* Integer::getAsset(IProject& project, JSONObject object) {
+    return project.getInteger(this, object);
+  }
+  
+  IInteger* Integer::getAsset(IProject& project, const std::string& id) {
+    return project.getInteger(this, id);
+  }
+  
+  std::vector<std::string> Integer::getAvailableProviders() const {
+    return cManager.getAllIntegers();
+  }  
+
+  bool Integer::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderIntegerIcon(id);
   }
 
-  void Integer::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cInteger);
-    cInteger = cProject->getInteger(this, mAssetObject);
+  bool Integer::hasConfiguration() const {
+    return cManager.isIntegerConfigurable(getID());
   }
 
-  void Integer::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cInteger);
-  }
-
-  void Integer::relinquish(IInteger* asset) {
-    if (cInteger == asset) {
-      cInteger = cProject->createLiteralInteger(this);
-    }
-  }
-
-  Integer::~Integer() {
-    if (cInteger != nullptr) {
-      cProject->release(this, cInteger);
-    }
+  bool Integer::isDefaultConfiguration() const {
+    return true;
   }
 }

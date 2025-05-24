@@ -27,12 +27,8 @@ namespace IsoRealms {
   class ConditionElement {
     public:
     class Clause {
-      private:
-      ConditionElement* cParent;
-      bool cNegated;
-
       public:
-      Clause(ConditionElement* parent, bool negated);
+      Clause(ConditionElement& parent, bool negated);
 
       bool isTrue() const;
       bool isTestTrue() const;
@@ -44,6 +40,10 @@ namespace IsoRealms {
       void save(JSONObject object) const;
       void saveCache(std::ostream& cache, unsigned char elementType) const;
       void debug() const;
+
+      private:
+      ConditionElement& cParent;
+      bool cNegated;
     };
 
     ConditionElement(const std::string& name, IScreen* icon, IBoolean* input);

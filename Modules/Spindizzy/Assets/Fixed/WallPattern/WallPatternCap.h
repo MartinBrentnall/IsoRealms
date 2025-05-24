@@ -20,6 +20,7 @@
 
 #include <GL/glew.h>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Types.h"
 
@@ -30,7 +31,8 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternCap : public IWallPattern {
     public:
-    WallPatternCap(IProject* project, Spindizzy* spindizzy, JSONObject object);
+    WallPatternCap(IProject& project, Spindizzy& spindizzy);
+    WallPatternCap(IProject& project, Spindizzy& spindizzy, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *
@@ -39,19 +41,21 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;
     void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const override;
     void hintInUse(bool inUse) override;
-    
+
     /**************************************\
      * Implements IAsset via IWallPattern *
     \**************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
     // Internal classes.
     class SectionTop : public IVisualElement {
       public:
-      SectionTop(const WallPatternCap* parent, Wall* wall);
+      SectionTop(const WallPatternCap& parent, Wall* wall);
 
       /*****************************\
        * Implemetns IVisualElement * 
@@ -61,13 +65,13 @@ namespace IsoRealms::Spindizzy {
       void prepareVisual() override;
       
       private:
-      const WallPatternCap* cDefParent;
+      const WallPatternCap& cDefParent;
       Wall* cDefWall;
     };
 
     class SectionMiddle : public IVisualElement {
       public:
-      SectionMiddle(const WallPatternCap* parent, Wall* wall);
+      SectionMiddle(const WallPatternCap& parent, Wall* wall);
 
       /*****************************\
        * Implemetns IVisualElement * 
@@ -77,13 +81,13 @@ namespace IsoRealms::Spindizzy {
       void prepareVisual() override;
       
       private:
-      const WallPatternCap* cDefParent;
+      const WallPatternCap& cDefParent;
       Wall* cDefWall;
     };
 
     class SectionBottom : public IVisualElement {
       public:
-      SectionBottom(const WallPatternCap* parent, Wall* wall);
+      SectionBottom(const WallPatternCap& parent, Wall* wall);
 
       /*****************************\
        * Implemetns IVisualElement * 
@@ -93,7 +97,7 @@ namespace IsoRealms::Spindizzy {
       void prepareVisual() override;
       
       private:
-      const WallPatternCap* cDefParent;
+      const WallPatternCap& cDefParent;
       Wall* cDefWall;
     };
 

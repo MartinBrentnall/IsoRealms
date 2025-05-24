@@ -24,14 +24,14 @@
 #include "DebrisGenerator.h"
 
 namespace IsoRealms::Spindizzy {
-  Debris::Debris(DebrisGenerator& parent, IVertex* location, double xMomentum, double yMomentum, double zMomentum, Model& model, unsigned int lifeTime, Zone* zone) :
+  Debris::Debris(DebrisGenerator& parent, IVertex* location, double xMomentum, double yMomentum, double zMomentum, Model& model, unsigned int lifeTime, Zone& zone) :
+            cZone(zone),
             cDefParent(parent),
             cDefYawSpeed((std::rand() % 100 - 50) / 100.0),
             cDefPitchSpeed((std::rand() % 100 - 50) / 100.0),
             cDefRollSpeed((std::rand() % 100 - 50) / 100.0),
-            cDefZone(zone),
             cDefModel(model.createInstance()),
-            cRuntimePhysicsObject(*zone->getWorld()->getSpindizzy(), this),
+            cRuntimePhysicsObject(zone.getWorld().getSpindizzy(), this),
             cRuntimeLifeRemaining(lifeTime),
             cRuntimeYawAngle(std::rand() % 360),
             cRuntimePitchAngle(std::rand() % 360),
@@ -54,7 +54,7 @@ namespace IsoRealms::Spindizzy {
     } else {
       cRuntimeLifeRemaining -= milliseconds;
     }
-    cDefZone->getWorld()->move(&cRuntimePhysicsObject, milliseconds);
+    cZone.getWorld().move(&cRuntimePhysicsObject, milliseconds);
   }
 
   void Debris::render() {
@@ -102,7 +102,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   Zone* Debris::getHome() const {
-    return cDefZone;
+    return &cZone;
   }
 
   bool Debris::isHuggable(Wall* wall) const {
@@ -110,7 +110,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool Debris::allowTraversal(ISurface* surface) const {
-    return surface->isSolid() && surface->getZone() == cDefZone;
+    return surface->isSolid() && &surface->getZone() == &cZone;
   }
 
   bool Debris::triggersContacts() const {

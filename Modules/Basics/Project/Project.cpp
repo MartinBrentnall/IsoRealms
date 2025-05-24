@@ -27,7 +27,7 @@ namespace IsoRealms::Basics {
   const std::string Project::JSON_OPTIONS   = "options";
   const std::string Project::JSON_RUNNING   = "running";
 
-  Project::Project(IProject* project, Basics* basics) :
+  Project::Project(IProject& project, Basics& basics, IResourceData& data) :
             cProject(project),
             cDefReadyAction(project),
             cDefEndAction(project),
@@ -36,7 +36,7 @@ namespace IsoRealms::Basics {
             cDefEditing(false),
             cRuntimeProject(nullptr),
             cLuaBinding(project, this) {
-    project->reset([this]() {
+    project.reset([this]() {
 
       // Wait to prevent a crash if a project is still under construction..
       if (cRuntimeProjectLoader != nullptr) {
@@ -62,7 +62,7 @@ namespace IsoRealms::Basics {
       }
     });
 
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       if (cRuntimeLoading) {
         IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
         if (mProject != nullptr) {
@@ -86,8 +86,8 @@ namespace IsoRealms::Basics {
         for (int i = static_cast<int>(cRuntimeOldProjects.size()) - 1; i >= 0; i--) {
           if (cRuntimeOldProjects[i]->isDestructReady()) {
             cRuntimeOldProjects[i]->setDestructing();
-            IApplication* mApplication = cProject->getApplication();
-            mApplication->executeAndReturn([this, i, mApplication]() {
+            IApplication& mApplication = cProject.getApplication();
+            mApplication.executeAndReturn([this, i, &mApplication]() {
               cRuntimeOldProjects[i]->destruct();
             });
           }
@@ -100,29 +100,29 @@ namespace IsoRealms::Basics {
     });
   }
   
-  Project::Project(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            Project(project, basics) {
+  Project::Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            Project(project, basics, data) {
     cDefRunning = object.getBoolean(JSON_RUNNING);
     cDefEditing = object.getBoolean(JSON_EDITING);
     cDefEndAction.init(object, JSON_ON_FINISH);
     cDefReadyAction.init(object, JSON_ON_READY);
     cDefProjectOptions.init(object, JSON_OPTIONS);
-    cDefProjectOptionsArg = options->getFixedOptions();
+    cDefProjectOptionsArg = options.getFixedOptions();
   }
 
-  void Project::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IScreen*>(this), "", "Projects");
-    assets->add(static_cast<IInputHandler*>(this), "", "Projects");
-    assets->add(&cLuaBinding, "", "Projects");
+  void Project::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IScreen*>(this), "", "Projects");
+    assets.add(static_cast<IInputHandler*>(this), "", "Projects");
+    assets.add(&cLuaBinding, "", "Projects");
   }
   
-  void Project::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(&cLuaBinding);
+  void Project::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IInputHandler*>(this), relinquish);
+    assets.remove(static_cast<IScreen*>(this),       relinquish);
+    assets.remove(&cLuaBinding,                      relinquish);
   }
   
-  void Project::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Project::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_RUNNING, cDefRunning);
     object.addBoolean(JSON_EDITING, cDefEditing);
     cDefEndAction.save(object, JSON_ON_FINISH);
@@ -139,9 +139,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> Project::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
   
   void Project::setRunning(bool running) {
@@ -233,6 +232,14 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Project::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Project::isDefaultConfiguration() const {
+    return true;
+  }
+
   void Project::prepareInternal(const Options* options, bool force) {
 
     // If it's the same as the current project, nothing to do.
@@ -269,8 +276,8 @@ namespace IsoRealms::Basics {
       cRuntimeProject->reset(); // TODO: Why do we reset here?
       cDefEndAction.execute();
     });
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->executeAndReturn([this, mApplication]() {
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.executeAndReturn([this, &mApplication]() {
       cRuntimeProjectLoader->loadProject(mApplication);
     });
     cRuntimeLoading = true;

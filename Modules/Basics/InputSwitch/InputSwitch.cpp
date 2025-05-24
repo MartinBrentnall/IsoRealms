@@ -21,34 +21,34 @@
 namespace IsoRealms::Basics {
   const std::string InputSwitch::JSON_VALUE = "value";
 
-  InputSwitch::InputSwitch(IProject* project, Basics* basics) :
+  InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data) :
             cDefInputHandler(project),
             cRuntimeInputHandler(*cDefInputHandler),
             cLuaBinding(project, this) {
-    project->reset([this] {
+    project.reset([this] {
       cRuntimeInputHandler = *cDefInputHandler;
     });
   }
   
-  InputSwitch::InputSwitch(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            InputSwitch(project, basics) {
+  InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            InputSwitch(project, basics, data) {
     cDefInputHandler.init(object, JSON_VALUE);
-    project->init([this](IAssets* assets) {
+    project.init([this](IAssets& assets) {
       cRuntimeInputHandler = *cDefInputHandler;
     });
   }
 
-  void InputSwitch::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Input Switches");
-    assets->add(&cLuaBinding, "", "Input Switches");
+  void InputSwitch::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Input Switches");
+    assets.add(&cLuaBinding, "", "Input Switches");
   }
   
-  void InputSwitch::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void InputSwitch::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
   }
   
-  void InputSwitch::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void InputSwitch::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefInputHandler.save(object, JSON_VALUE);
   }
 
@@ -60,9 +60,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> InputSwitch::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Initial Value", cDefInputHandler));
+    return mProperties;
   }
 
   bool InputSwitch::input(sf::Event& event) {
@@ -84,6 +85,14 @@ namespace IsoRealms::Basics {
 
   void InputSwitch::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> InputSwitch::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool InputSwitch::isDefaultConfiguration() const {
+    return true;
   }
 
   void InputSwitch::setInputHandler(IInputHandler* inputHandler) {

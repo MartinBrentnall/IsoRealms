@@ -54,8 +54,8 @@ namespace IsoRealms::Spindizzy {
   const std::string PlayerType::BIND_TO_PLAYER  = "Player";
   const std::string PlayerType::BIND_TO_TERRAIN = "Terrain";
 
-  PlayerType::PlayerType(IProject* project, Spindizzy* spindizzy) :
-            cDefSpindizzy(*spindizzy),
+  PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
             cDefBounceFactor(DEFAULT_BOUNCE_FACTOR),
@@ -73,15 +73,15 @@ namespace IsoRealms::Spindizzy {
             cDefFallImpactAction(project),
             cDefFallBounceAction(project),
             cDefWallBounceAction(project),
-            cLuaBinding(project, this) {
-    cDefSpindizzy.added(this);
-    project->reset([this]() {
+            cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
+    cSpindizzy.added(this);
+    project.reset([this]() {
       cRuntimeSpinSpeed = cDefSpinSpeed;
     });
   }
 
-  PlayerType::PlayerType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            PlayerType(project, spindizzy) {
+  PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            PlayerType(project, spindizzy, data) {
     cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
     cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_ACCELERATION);
     cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
@@ -95,21 +95,21 @@ namespace IsoRealms::Spindizzy {
     cDefInputX.init(object, JSON_X_INPUT);
     cDefInputY.init(object, JSON_Y_INPUT);
     cDefOrientation.init(object, JSON_ORIENTATION);
-    cDefFallImpactAction.init(object, JSON_ON_FALL_IMPACT, &cDefSpindizzy);
-    cDefFallBounceAction.init(object, JSON_ON_FALL_BOUNCE, &cDefSpindizzy);
+    cDefFallImpactAction.init(object, JSON_ON_FALL_IMPACT, &cSpindizzy);
+    cDefFallBounceAction.init(object, JSON_ON_FALL_BOUNCE, &cSpindizzy);
     cDefWallBounceAction.init(object, JSON_ON_WALL_BOUNCE, this);
-    cDefRespawnAction.init(object, JSON_ON_RESPAWN, &cDefSpindizzy);
+    cDefRespawnAction.init(object, JSON_ON_RESPAWN, &cSpindizzy);
   }
 
-  void PlayerType::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, "", "Spindizzy Players");
+  void PlayerType::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, "", "Spindizzy Players");
   }
 
-  void PlayerType::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void PlayerType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
 
-  void PlayerType::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void PlayerType::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
     object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
     object.addFloat(JSON_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
@@ -125,9 +125,9 @@ namespace IsoRealms::Spindizzy {
     cDefInputY.save(object, JSON_Y_INPUT);
     cDefFallImpactAction.save(object, JSON_ON_FALL_IMPACT);
     cDefFallBounceAction.save(object, JSON_ON_FALL_BOUNCE);
-    cDefSpindizzy.setBindingIdentifier(this);
+    cSpindizzy.setBindingIdentifier(this);
     cDefWallBounceAction.save(object, JSON_ON_WALL_BOUNCE);
-    cDefSpindizzy.setBindingIdentifier(nullptr);
+    cSpindizzy.setBindingIdentifier(nullptr);
     cDefOrientation.save(object, JSON_ORIENTATION);
   }
 
@@ -138,14 +138,43 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<IProperty*> PlayerType::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> PlayerType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+
+    // Dimensions
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Radius",                 [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Height",                 [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
+
+    // Physics
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Acceleration",           [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Wall Bounce",            [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Step Reach",             [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Hug Momentum Threshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
+
+    // appearance
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance",            cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Spin Speed",             [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
+
+    // Input
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Input X Movement",      cDefInputX));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Input Y Movement",      cDefInputY));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("Input Thrust",        cDefInputThrust));
+
+    // Actions
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Respawn",           cDefRespawnAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Impact",            cDefFallImpactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Bounce",            cDefFallBounceAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Wall Bounce",       cDefWallBounceAction));
+
+    // Misc
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Respawn Delay",        [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("View Orientation",      cDefOrientation));
+    return mProperties;
   }
 
   PlayerType::~PlayerType() {
-    cDefSpindizzy.removed(this);
-    cDefSpindizzy.removeAll(this);
+    cSpindizzy.removed(this);
+    cSpindizzy.removeAll(this);
   }
   
   void PlayerType::registerAssets(ISpindizzyRegistry* registry) {
@@ -158,13 +187,13 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PlayerType::impactSurface(Player* player) {
-    cDefSpindizzy.bind(player);
+    cSpindizzy.bind(player);
     cDefFallImpactAction.execute();
   }
 
   void PlayerType::bounceWall(Player* player, Zone* zone) {
-    cDefSpindizzy.bind(player);
-    cDefSpindizzy.bind(zone);
+    cSpindizzy.bind(player);
+    cSpindizzy.bind(zone);
     cDefWallBounceAction.execute();
   }
 
@@ -173,7 +202,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PlayerType::respawn(LiteralVertex& launchMomentum) {
-    cDefSpindizzy.bindLaunchMomentum(&launchMomentum);
+    cSpindizzy.bindLaunchMomentum(&launchMomentum);
     cDefRespawnAction.execute();
   }
 
@@ -234,7 +263,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string PlayerType::getPhysicalObjectTypeID() const {
-    return cDefSpindizzy.getID(this);
+    return cSpindizzy.getID(this);
   }
   
   IBinding* PlayerType::getBinding(const std::string& id) const {
@@ -246,31 +275,39 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string PlayerType::getBindingID(const IBinding* binding) const {
-    std::string mBindingID = cDefSpindizzy.getZoneBindingID2(binding);
+    std::string mBindingID = cSpindizzy.getZoneBindingID2(binding);
     if (mBindingID != "") {
       return BIND_TO_TERRAIN + "/" + mBindingID;
     }
-    return BIND_TO_PLAYER + "/" + cDefSpindizzy.getZoneBindingID1(binding);
+    return BIND_TO_PLAYER + "/" + cSpindizzy.getZoneBindingID1(binding);
   }
 
-  IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor& editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
   bool PlayerType::renderAssetIcon() const {
-    return false;
+    return renderIcon();
   }
 
   void PlayerType::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> PlayerType::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool PlayerType::isDefaultConfiguration() const {
+    return true;
+  }
+
   IBinding* PlayerType::getBinding(const std::string& id) {
     std::size_t mSplit = id.find('/');
     std::string mBindTo = id.substr(0, mSplit);
     std::string mBindPath = id.substr(mSplit + 1);
-    return mBindTo == BIND_TO_TERRAIN ? cDefSpindizzy.getZoneBinding2(mBindPath)
-         : mBindTo == BIND_TO_PLAYER  ? cDefSpindizzy.getZoneBinding(mBindPath)
+    return mBindTo == BIND_TO_TERRAIN ? cSpindizzy.getZoneBinding2(mBindPath)
+         : mBindTo == BIND_TO_PLAYER  ? cSpindizzy.getZoneBinding(mBindPath)
          :                              nullptr;
   }
 
@@ -278,7 +315,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  PlayerType::Pen::Pen(PlayerType& parent, WorldEditor* editor) :
+  PlayerType::Pen::Pen(PlayerType& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor) {
   }
@@ -292,8 +329,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PlayerType::Pen::renderEditingPreview() const {
-    glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
-    glRotatef((cEditor->getCursorX() + cEditor->getCursorY() + 0.25) * cParent.cDefSpinSpeed, 0.0f, 0.0f, 1.0f);
+    glTranslatef(cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ() * 0.5f);
+    glRotatef((cEditor.getCursorX() + cEditor.getCursorY() + 0.25) * cParent.cDefSpinSpeed, 0.0f, 0.0f, 1.0f);
     cParent.cDefModel.renderPreview();
   }
 
@@ -307,7 +344,7 @@ namespace IsoRealms::Spindizzy {
 
   bool PlayerType::Pen::inputTool(SignalInputID id, double yaw) {
     if (id == SignalInputID::USE_TOOL) {
-      cEditor->getWorld()->draw(&cParent, cEditor->getCursorLocation());
+      cEditor.getWorld().draw(cParent, cEditor.getCursorLocation());
       return true;
     }
     return false;

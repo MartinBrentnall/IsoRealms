@@ -19,53 +19,87 @@ include_directories(${PROJECT_SOURCE_DIR})
 #set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 add_library(IsoRealms
+  ActionExecutor.cpp
   AnimatedFloat.cpp
+  AnimatedInteger.cpp
   Application.cpp
   Assets/Client/Action.cpp
   Assets/Client/ActionType.cpp
   Assets/Client/Assets.cpp
   Assets/Client/Binding.cpp
+  Assets/Client/BindingType.cpp
   Assets/Client/Boolean.cpp
   Assets/Client/Colour.cpp
   Assets/Client/Editable.cpp
+  Assets/Client/File.cpp
   Assets/Client/Float.cpp
   Assets/Client/Font.cpp
   Assets/Client/InputHandler.cpp
   Assets/Client/Integer.cpp
   Assets/Client/Model.cpp
   Assets/Client/ModelInstance.cpp
+  Assets/Client/ModuleChooser.cpp
   Assets/Client/ProjectOptions.cpp
   Assets/Client/Screen.cpp
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
-  Assets/Fixed/LiteralActionType.cpp
-  Assets/Fixed/LiteralAssets.cpp
-  Assets/Fixed/LiteralBinding.cpp
-  Assets/Fixed/LiteralBoolean.cpp
-  Assets/Fixed/LiteralColour.cpp
-  Assets/Fixed/LiteralEditable.cpp
-  Assets/Fixed/LiteralFloat.cpp
-  Assets/Fixed/LiteralFont.cpp
-  Assets/Fixed/LiteralInteger.cpp
-  Assets/Fixed/LiteralInputHandler.cpp
-  Assets/Fixed/LiteralModel.cpp
-  Assets/Fixed/LiteralProjectOptions.cpp
-  Assets/Fixed/LiteralScreen.cpp
-  Assets/Fixed/LiteralString.cpp
-  Assets/Fixed/LiteralTexture.cpp
-  Assets/Fixed/LiteralVertex.cpp
+  Assets/Dummy/DummyActionType.cpp
+  Assets/Dummy/DummyAssets.cpp
+  Assets/Dummy/DummyBinding.cpp
+  Assets/Dummy/DummyBindingType.cpp
+  Assets/Dummy/DummyEditable.cpp
+  Assets/Dummy/DummyFont.cpp
+  Assets/Dummy/DummyInputHandler.cpp
+  Assets/Dummy/DummyModel.cpp
+  Assets/Dummy/DummyProjectOptions.cpp
+  Assets/Dummy/DummyScreen.cpp
+  Assets/Dummy/DummyTexture.cpp
+  Assets/Literal/LiteralBindingType.cpp
+  Assets/Literal/LiteralBoolean.cpp
+  Assets/Literal/LiteralColour.cpp
+  Assets/Literal/LiteralFloat.cpp
+  Assets/Literal/LiteralInteger.cpp
+  Assets/Literal/LiteralString.cpp
+  Assets/Literal/LiteralTexture.cpp
+  Assets/Literal/LiteralVertex.cpp
   Assets/Registry/AssetIDException.cpp
   Collision/CollisionData.cpp
   Collision/CollisionUtils.cpp
   Common/ScreenArea.cpp
-  Common/ScreenLocation.cpp
+  Common/Point2D.cpp
   Condition/Condition.cpp
   Condition/ConditionElement.cpp
   DisplayResolution.cpp
-  Editing/AbstractMenu.cpp
-  Editing/Configurator.cpp
+  Editing/ActionMenu.cpp
+  Editing/Choice.cpp
+  Editing/CategoryMenu.cpp
+  Editing/ProjectMenu.cpp
   Editing/PropertiesMenu.cpp
+  Editing/ResourceTypeMenu.cpp
+  Editing/MenuItemAction.cpp
+  Editing/MenuItemResource.cpp
+  Editing/MenuItemProperty.cpp
+  Editing/Property/Property.cpp
+  Editing/Property/PropertyAdd.cpp
+  Editing/Property/PropertyCode.cpp
+  Editing/Property/PropertyColourChannel.cpp
+  Editing/Property/PropertyColourHue.cpp
+  Editing/Property/PropertyColourLightness.cpp
+  Editing/Property/PropertyColourSaturation.cpp
+  Editing/Property/PropertyCondition.cpp
+  Editing/Property/PropertyEditor.cpp
+  Editing/Property/PropertyInputField.cpp
+  Editing/Property/PropertyNativeBoolean.cpp
+  Editing/Property/PropertyNativeFloat.cpp
+  Editing/Property/PropertyList.cpp
+  Editing/Property/PropertyKey.cpp
+  Editing/Property/PropertyNativeInteger.cpp
+  Editing/Property/PropertyNativeString.cpp
+  Editing/Property/PropertyNativeUnsignedInteger.cpp
+  Editing/Property/PropertySlider.cpp
+  Editing/Property/PropertyStruct.cpp
+  Editing/UIManager.cpp
   Exception/ActionException.cpp
   Exception/ApplicationException.cpp
   Exception/ArgumentException.cpp
@@ -90,11 +124,6 @@ add_library(IsoRealms
   Persistence/JSONObject.cpp
   Persistence/ParseException.cpp
   Project.cpp
-  Property/Property.cpp
-  Property/PropertyAppearance.cpp
-  Property/PropertyAsset.cpp
-  Property/PropertyCondition.cpp
-  Property/PropertyNativeBoolean.cpp
   ResourceType.cpp
   System.cpp
   Utils.cpp

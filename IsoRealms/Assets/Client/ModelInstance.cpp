@@ -21,12 +21,12 @@
 #include "Model.h"
 
 namespace IsoRealms {
-  ModelInstance::ModelInstance(Model* parent, I3DModel* instance) :
+  ModelInstance::ModelInstance(Model& parent, IModelInstance* instance) :
             cParent(parent),
             cInstance(instance) {
   }
 
-  void ModelInstance::set(I3DModel* instance) {
+  void ModelInstance::set(IModelInstance* instance) {
     cInstance = instance;
   }
 
@@ -36,13 +36,13 @@ namespace IsoRealms {
   
   void ModelInstance::render() const {
     glPushMatrix();
-    cParent->applyTransformation();
+    cParent.applyTransformation();
     cInstance->render();
     glPopMatrix();
   }
     
   ModelInstance::~ModelInstance() {
-    cParent->notifyDestruction(this);
+    cParent.notifyDestruction(this);
   }
 }
 

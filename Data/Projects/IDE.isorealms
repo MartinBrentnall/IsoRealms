@@ -1,0 +1,2034 @@
+{
+  "project": {
+    "include": [
+      {
+        "filename": "Projects/Spindizzy/Options.isorealms"
+      }
+    ],
+    "screen": {
+      "key": "UI/Layout/Runtime"
+    },
+    "input": {
+      "key": "Basics/InputSwitch/Main"
+    },
+    "editor": {
+      "key": "None"
+    },
+    "initialisation": {
+      "key": "Basics/Script",
+      "bindings": [
+        {
+          "variable": "optionsLoaderFunction",
+          "to": {
+            "key": ":Action",
+            "asset": {
+              "key": "Basics/Function/ReloadConfiguration",
+              "bindings": []
+            }
+          }
+        }
+      ],
+      "code": "optionsLoaderFunction:execute()"
+    },
+    "reset": {
+      "key": "Basics/Script",
+      "bindings": [
+        {
+          "variable": "closeAllMenusFunction",
+          "to": {
+            "key": ":Action",
+            "asset": {
+              "key": "Basics/Function/CloseAllMenus",
+              "bindings": []
+            }
+          }
+        }
+      ],
+      "code": "closeAllMenusFunction:execute()"
+    },
+    "quit": {
+      "key": "Basics/Script",
+      "bindings": [
+        {
+          "variable": "stopProjectExecutionFunction",
+          "to": {
+            "key": ":Action",
+            "asset": {
+              "key": "Basics/Function/StopProjectExecution",
+              "bindings": []
+            }
+          }
+        },
+        {
+          "variable": "projectConfigurer",
+          "to": {
+            "key": "Basics/ProjectConfigurer/ProjectConfigurer"
+          }
+        },
+        {
+          "variable": "interactiveInput",
+          "to": {
+            "key": "Basics/InputSwitch/Main"
+          }
+        },
+        {
+          "variable": "inputHandlerMenu",
+          "to": {
+            "key": ":InputHandler",
+            "asset": {
+              "key": "Basics/InputSwitch/Options Screen"
+            }
+          }
+        },
+        {
+          "variable": "confirmQuitFunction",
+          "to": {
+            "key": ":Action",
+            "asset": {
+              "key": "Basics/Function/PushScreen",
+              "bindings": [
+                {
+                  "argument": "menuScreen",
+                  "to": {
+                    "key": ":Screen",
+                    "asset": {
+                      "key": "UI/Prompt/Close"
+                    }
+                  }
+                },
+                {
+                  "argument": "menu",
+                  "to": {
+                    "key": "UI/Prompt/Close"
+                  }
+                },
+                {
+                  "argument": "menuInput",
+                  "to": {
+                    "key": ":InputHandler",
+                    "asset": {
+                      "key": "UI/Prompt/Close"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "code": "if gCloseIDERequested == nil then\n  if gActiveProjectConfigurer then\n    projectConfigurer:hide()\n  end\n  stopProjectExecutionFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerMenu)\n  confirmQuitFunction:execute()\n  gCloseIDERequested = true\nend"
+    },
+    "modules": [
+      {
+        "name": "Basics",
+        "configuration": {},
+        "resources": [
+          {
+            "type": "AnalogueInput",
+            "instances": [
+
+
+              {"id": "MoveCursorX", "mappings": [{"type": "Axis", "axis": 0, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveCursorY", "mappings": [{"type": "Axis", "axis": 1, "deadZone": 0.15259000658988953}]},
+              {"id": "RotateViewYaw", "mappings": [{"type": "Axis", "axis": 4, "deadZone": 0.15259000658988953}]},
+              {"id": "RotateViewPitch", "mappings": [{"type": "Axis", "axis": 5, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveViewIn", "mappings": [{"type": "Axis", "axis": 3, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveViewOut", "mappings": [{"type": "Axis", "axis": 2, "deadZone": 0.15259000658988953}]}
+
+
+            ]
+          },
+          {
+            "type": "BooleanTrigger",
+            "instances": [
+              {
+                "id": "Pause",
+                "value": {
+                  "key": "Basics/DigitalInput/Pause"
+                },
+                "onBecomingTrue": {
+                  "key": "Basics/Function/StartMenu",
+                  "bindings": []
+                },
+                "onBecomingFalse": {
+                  "key": "None"
+                }
+              },
+              {
+                "id": "EndTest",
+                "value": {
+                  "key": "Basics/DigitalInput/EndTest"
+                },
+                "onBecomingTrue": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "project",
+                      "to": {
+                        "key": "Basics/Project/Project"
+                      }
+                    },
+                    {
+                      "variable": "interactiveDisplay",
+                      "to": {
+                        "key": "UI/Layout/Runtime/Screen"
+                      }
+                    },
+                    {
+                      "variable": "interactiveInput",
+                      "to": {
+                        "key": "Basics/InputSwitch/Main"
+                      }
+                    },
+                    {
+                      "variable": "editorInput",
+                      "to": {
+                        "key": ":InputHandler",
+                        "asset": {
+                          "key": "Basics/InputGroup/EditorInput"
+                        }
+                      }
+                    },
+                    {
+                      "variable": "editorScreen",
+                      "to": {
+                        "key": ":Screen",
+                        "asset": {
+                          "key": "UI/Layout/Main"
+                        }
+                      }
+                    },
+                    {
+                      "variable": "resumeEditorFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/ResumeEditor",
+                          "bindings": []
+                        }
+                      }
+                    }
+                  ],
+                  "code": "gActiveEditor:notifyVisible()\ninteractiveDisplay:setScreen(editorScreen)\ninteractiveInput:setInputHandler(editorInput)\nproject:reset()\nproject:setEditing(true)\nproject:setRunning(false)\ngProjectExecuting = nil\nresumeEditorFunction:execute()"
+                },
+                "onBecomingFalse": {
+                  "key": "None"
+                }
+              }
+            ]
+          },
+          {
+            "type": "DigitalInput",
+            "instances": [
+              {
+                "id": "EndTest",
+                "mappings": [
+                  {
+                    "type": "KeyDown",
+                    "key": "C"
+                  },
+                  {
+                    "type": "ButtonDown",
+                    "button": 10
+                  }
+                ]
+              },
+              {"id": "MoveCursorBackward", "mappings": [{"type": "KeyDown", "key": "ArrowDown"},   {"type": "Hat", "direction": "Down"}]},
+              {"id": "MoveCursorForward",  "mappings": [{"type": "KeyDown", "key": "ArrowUp"},     {"type": "Hat", "direction": "Up"}]},
+              {"id": "MoveCursorLeft",     "mappings": [{"type": "KeyDown", "key": "ArrowLeft"},   {"type": "Hat", "direction": "Left"}]},
+              {"id": "MoveCursorRight",    "mappings": [{"type": "KeyDown", "key": "ArrowRight"},  {"type": "Hat", "direction": "Right"}]},
+              {"id": "MoveCursorDown",     "mappings": [{"type": "KeyDown", "key": "PageDown"},    {"type": "ButtonDown","button": 4}]},
+              {"id": "MoveCursorUp",       "mappings": [{"type": "KeyDown", "key": "PageUp"},      {"type": "ButtonDown","button": 5}]},
+              {"id": "MoveCursorFaster",   "mappings": [{"type": "KeyDown", "key": "LeftControl"}]},
+              {"id": "MoveCursorSlower",   "mappings": [{"type": "KeyDown", "key": "LeftShift"}]},
+              {"id": "PreviousTool",       "mappings": [{"type": "KeyDown", "key": "F1"},          {"type": "Hat","direction": "Left"}]},
+              {"id": "NextTool",           "mappings": [{"type": "KeyDown", "key": "F2"},          {"type": "Hat","direction": "Right"}]},
+              {"id": "UseTool",            "mappings": [{"type": "KeyDown", "key": "Space"},       {"type": "ButtonDown","button": 0}]},
+              {"id": "Cancel",             "mappings": [{"type": "KeyDown", "key": "Escape"},      {"type": "ButtonDown","button": 1}]},
+              {"id": "ConfigureTool",      "mappings": [{"type": "KeyDown", "key": "F3"},          {"type": "ButtonDown","button": 2}]},
+              {"id": "ToolMode",           "mappings": [{"type": "KeyDown", "key": "Tab"},         {"type": "ButtonDown","button": 3}]},
+              {"id": "PreviousTheme",      "mappings": [{"type": "KeyDown", "key": "Home"},        {"type": "Hat","direction": "Down"}]},
+              {"id": "NextTheme",          "mappings": [{"type": "KeyDown", "key": "End"},         {"type": "Hat","direction": "Up"}]},
+              {"id": "EditorMenu",         "mappings": [{"type": "KeyDown", "key": "Escape"},      {"type": "ButtonDown","button": 9}]},
+              {"id": "RotateView",         "mappings": [{"type": "MouseButtonDown", "button": "Left"}]},
+              {"id": "MoveView",           "mappings": [{"type": "MouseButtonDown", "button": "Right"}]}
+            ]
+          },
+          {
+            "type": "Font",
+            "instances": [
+              {
+                "id": "Code",
+                "filename": {
+                  "path": "Fonts/Inconsolata/static/Inconsolata-Regular.ttf"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Function",
+            "instances": [
+              {
+                "id": "StopProjectExecution",
+                "name": "StopProjectExecution",
+                "bindings": [
+                  {
+                    "variable": "interactiveDisplay",
+                    "to": {
+                      "key": "UI/Layout/Runtime/Screen"
+                    }
+                  },
+                  {
+                    "variable": "editorScreen",
+                    "to": {
+                      "key": ":Screen",
+                      "asset": {
+                        "key": "UI/Layout/Main"
+                      }
+                    }
+                  },
+                  {
+                    "variable": "interactiveInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  },
+                  {
+                    "variable": "editorInput",
+                    "to": {
+                      "key": ":InputHandler",
+                      "asset": {
+                        "key": "Basics/InputGroup/EditorInput"
+                      }
+                    }
+                  },
+                  {
+                    "variable": "project",
+                    "to": {
+                      "key": "Basics/Project/Project"
+                    }
+                  },
+                  {
+                    "variable": "resumeEditorFunction",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/ResumeEditor",
+                        "bindings": []
+                      }
+                    }
+                  }
+                ],
+                "arguments": [],
+                "code": "if gProjectExecuting ~= nil then\n  if gActiveEditor ~= nil then\n    gActiveEditor:notifyVisible()\n  end\n  interactiveDisplay:setScreen(editorScreen)\n  interactiveInput:setInputHandler(editorInput)\n  project:reset()\n  project:setEditing(true)\n  project:setRunning(false)\n  gProjectExecuting = nil\n  resumeEditorFunction:execute()\nend"
+              },
+              {
+                "id": "CloseAllMenus",
+                "name": "CloseAllMenus",
+                "bindings": [
+                  {
+                    "variable": "menuDisplay",
+                    "to": {
+                      "key": "UI/Layout/Main/Menu"
+                    }
+                  },
+                  {
+                    "variable": "interactiveInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  }
+                ],
+                "arguments": [],
+                "code": "gMenuScreenStack = {}\ngMenuInputStack = {}\nmenuDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(nil)"
+              },
+              {
+                "id": "StartMenu",
+                "name": "StartMenu",
+                "bindings": [
+                  {
+                    "variable": "closeAllMenusFunction",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/CloseAllMenus",
+                        "bindings": []
+                      }
+                    }
+                  },
+                  {
+                    "variable": "interactiveInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  },
+                  {
+                    "variable": "inputHandlerMenu",
+                    "to": {
+                      "key": ":InputHandler",
+                      "asset": {
+                        "key": "Basics/InputSwitch/Options Screen"
+                      }
+                    }
+                  },
+                  {
+                    "variable": "showMenuFunction",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Menu/Main"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/Menu/Main"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/Menu/Main"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ],
+                "arguments": [],
+                "code": "closeAllMenusFunction:execute()\ninteractiveInput:setInputHandler(inputHandlerMenu)\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyLostFocus()\nend\nshowMenuFunction:execute()"
+              },
+              {
+                "id": "ResumeEditor",
+                "name": "ResumeEditor",
+                "bindings": [
+                  {
+                    "variable": "closeAllMenusFunction",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/CloseAllMenus",
+                        "bindings": []
+                      }
+                    }
+                  },
+                  {
+                    "variable": "interactiveInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  },
+                  {
+                    "variable": "inputHandlerEditor",
+                    "to": {
+                      "key": ":InputHandler",
+                      "asset": {
+                        "key": "Basics/InputGroup/EditorInput"
+                      }
+                    }
+                  },
+                  {
+                    "variable": "startMenuFunction",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/StartMenu",
+                        "bindings": []
+                      }
+                    }
+                  }
+                ],
+                "arguments": [],
+                "code": "-- If there's an active editor, resume it, otherwise go to the main menu.\nif gActiveEditor ~= nil then\n  gActiveProjectConfigurer = nil\n  closeAllMenusFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerEditor)\n  gActiveEditor:notifyGainedFocus()\nelse\n  startMenuFunction:execute()\nend"
+              },
+              {
+                "id": "LoadWorld",
+                "name": "LoadWorld",
+                "bindings": [
+                  {
+                    "variable": "confirmLoadFunction",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Prompt/Load"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/Prompt/Load"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/Prompt/Load"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "variable": "missionToLoad",
+                    "to": {
+                      "key": "Basics/String/MissionToLoad"
+                    }
+                  },
+                  {
+                    "variable": "missionType",
+                    "to": {
+                      "key": "Basics/String/MissionType"
+                    }
+                  }
+                ],
+                "arguments": [
+                  {
+                    "name": "mission",
+                    "type": {
+                      "key": "Any"
+                    }
+                  },
+                  {
+                    "name": "user",
+                    "type": {
+                      "key": "Any"
+                    }
+                  }
+                ],
+                "code": "missionFileName = mission:getValue()\nmissionToLoad:setValue(missionFileName);\nmissionUser = user:getValue()\nif missionUser then\n  missionType:setValue(\"user\")\nelse\n  missionType:setValue(\"program\")\nend\nconfirmLoadFunction:execute()"
+              },
+              {
+                "id": "StartEditor",
+                "name": "StartEditor",
+                "bindings": [
+                  {
+                    "variable": "project",
+                    "to": {
+                      "key": "Basics/Project/Project"
+                    }
+                  },
+                  {
+                    "variable": "interactiveDisplay",
+                    "to": {
+                      "key": "UI/Layout/Main/Editor"
+                    }
+                  },
+                  {
+                    "variable": "interactiveInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  },
+                  {
+                    "variable": "directEditorInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/DirectEditorInput"
+                    }
+                  },
+                  {
+                    "variable": "editorInput",
+                    "to": {
+                      "key": ":InputHandler",
+                      "asset": {
+                        "key": "Basics/InputGroup/EditorInput"
+                      }
+                    }
+                  },
+                  {
+                    "variable": "menuDisplay",
+                    "to": {
+                      "key": "UI/Layout/Main/Menu"
+                    }
+                  },
+                  {
+                    "variable": "font",
+                    "to": {
+                      "key": ":Font",
+                      "asset": {
+                        "key": "Basics/Font/Menu"
+                      }
+                    }
+                  },
+                  {"variable": "digitalInputCancel", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/Cancel"}}},
+                  {"variable": "digitalInputConfigureTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/ConfigureTool"}}},
+                  {"variable": "digitalInputNextTheme", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/NextTheme"}}},
+                  {"variable": "digitalInputNextTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/NextTool"}}},
+                  {"variable": "digitalInputPreviousTheme", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/PreviousTheme"}}},
+                  {"variable": "digitalInputPreviousTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/PreviousTool"}}},
+                  {"variable": "digitalInputToolMode", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/ToolMode"}}},
+                  {"variable": "digitalInputUseTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/UseTool"}}},
+
+                  {"variable": "digitalInputMoveCursorBackward", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorBackward"}}},
+                  {"variable": "digitalInputMoveCursorDown", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorDown"}}},
+                  {"variable": "digitalInputMoveCursorFaster", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorFaster"}}},
+                  {"variable": "digitalInputMoveCursorForward", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorForward"}}},
+                  {"variable": "digitalInputMoveCursorLeft", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorLeft"}}},
+                  {"variable": "digitalInputMoveCursorRight", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorRight"}}},
+                  {"variable": "digitalInputMoveCursorSlower", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorSlower"}}},
+                  {"variable": "digitalInputMoveCursorUp", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorUp"}}},
+                  {"variable": "digitalInputMoveView", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveView"}}},
+                  {"variable": "digitalInputRotateView", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/RotateView"}}},
+
+                  {"variable": "digitalInputEditorMenu", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/EditorMenu"}}},
+
+                  {"variable": "analogueInputMoveCursorX", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveCursorX"}}},
+                  {"variable": "analogueInputMoveCursorY", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveCursorY"}}},
+                  {"variable": "analogueInputMoveViewIn", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveViewIn"}}},
+                  {"variable": "analogueInputMoveViewOut", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveViewOut"}}},
+                  {"variable": "analogueInputRotateViewYaw", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/RotateViewYaw"}}},
+                  {"variable": "analogueInputRotateViewPitch", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/RotateViewPitch"}}},
+
+                  { "variable": "startMenuFunction",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/StartMenu",
+                        "bindings": []
+                      }
+                    }
+                  }
+                ],
+                "arguments": [],
+                "code": "if gEditorToStart ~= gEditorRunning then\n  gEditorRunning = gEditorToStart\n  if gActiveEditor ~= nil then\n    gActiveEditor:notifyHidden()\n  end\n  gActiveEditor = gEditorToStart:createEditableScreen(project:getProject())\n  gActiveEditor:setAppearance(font, 0.03)\n\n  gActiveEditor:setDigitalInput(\"Cancel\",             digitalInputCancel)\n  gActiveEditor:setDigitalInput(\"ConfigureTool\",      digitalInputConfigureTool)\n  gActiveEditor:setDigitalInput(\"MoveCursorBackward\", digitalInputMoveCursorBackward)\n  gActiveEditor:setDigitalInput(\"MoveCursorDown\",     digitalInputMoveCursorDown)\n  gActiveEditor:setDigitalInput(\"MoveCursorFaster\",   digitalInputMoveCursorFaster)\n  gActiveEditor:setDigitalInput(\"MoveCursorForward\",  digitalInputMoveCursorForward)\n  gActiveEditor:setDigitalInput(\"MoveCursorLeft\",     digitalInputMoveCursorLeft)\n  gActiveEditor:setDigitalInput(\"MoveCursorRight\",    digitalInputMoveCursorRight)\n  gActiveEditor:setDigitalInput(\"MoveCursorSlower\",   digitalInputMoveCursorSlower)\n  gActiveEditor:setDigitalInput(\"MoveCursorUp\",       digitalInputMoveCursorUp)\n  gActiveEditor:setDigitalInput(\"MoveView\",           digitalInputMoveView)\n  gActiveEditor:setDigitalInput(\"NextTheme\",          digitalInputNextTheme)\n  gActiveEditor:setDigitalInput(\"NextTool\",           digitalInputNextTool)\n  gActiveEditor:setDigitalInput(\"PreviousTheme\",      digitalInputPreviousTheme)\n  gActiveEditor:setDigitalInput(\"PreviousTool\",       digitalInputPreviousTool)\n  gActiveEditor:setDigitalInput(\"RotateView\",         digitalInputRotateView)\n  gActiveEditor:setDigitalInput(\"ToolMode\",           digitalInputToolMode)\n  gActiveEditor:setDigitalInput(\"UseTool\",            digitalInputUseTool)\n  gActiveEditor:setDigitalInput(\"Exit\",               digitalInputEditorMenu)\n\n  gActiveEditor:setAnalogueInput(\"MoveCursorX\",     analogueInputMoveCursorX)\n  gActiveEditor:setAnalogueInput(\"MoveCursorY\",     analogueInputMoveCursorY)\n  gActiveEditor:setAnalogueInput(\"MoveViewIn\",      analogueInputMoveViewIn)\n  gActiveEditor:setAnalogueInput(\"MoveViewOut\",     analogueInputMoveViewOut)\n  gActiveEditor:setAnalogueInput(\"RotateViewPitch\", analogueInputRotateViewPitch)\n  gActiveEditor:setAnalogueInput(\"RotateViewYaw\",   analogueInputRotateViewYaw)\n\n  gActiveEditor:setExitAction(startMenuFunction)\n  \n  gActiveEditor:notifyVisible()\n  interactiveDisplay:setScreen(gActiveEditor:screen())\n  interactiveInput:setInputHandler(editorInput)\n  directEditorInput:setInputHandler(gActiveEditor:inputHandler())\n  menuDisplay:setScreen(nil)\nelse\n  gActiveEditor:notifyGainedFocus()\nend"
+              }
+            ]
+          },
+          {
+            "type": "InputGroup",
+            "instances": [
+              {
+                "id": "EditorInput",
+                "inputs": [
+                  {"input": {"key": "Basics/InputSwitch/DirectConfigurerInput"}},
+
+                  {"input": {"key": "Basics/InputSwitch/DirectEditorInput"}},
+
+                  {"input": {"key": "Basics/DigitalInput/Cancel"}},
+                  {"input": {"key": "Basics/DigitalInput/ConfigureTool"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorBackward"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorDown"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorFaster"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorForward"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorLeft"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorRight"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorSlower"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveCursorUp"}},
+                  {"input": {"key": "Basics/DigitalInput/NextTheme"}},
+                  {"input": {"key": "Basics/DigitalInput/NextTool"}},
+                  {"input": {"key": "Basics/DigitalInput/PreviousTheme"}},
+                  {"input": {"key": "Basics/DigitalInput/PreviousTool"}},
+                  {"input": {"key": "Basics/DigitalInput/ToolMode"}},
+                  {"input": {"key": "Basics/DigitalInput/UseTool"}},
+                  {"input": {"key": "Basics/DigitalInput/MoveView"}},
+                  {"input": {"key": "Basics/DigitalInput/RotateView"}},
+                  {"input": {"key": "Basics/DigitalInput/EditorMenu"}},
+
+                  {"input": {"key": "Basics/AnalogueInput/MoveCursorX"}},
+                  {"input": {"key": "Basics/AnalogueInput/MoveCursorY"}},
+                  {"input": {"key": "Basics/AnalogueInput/RotateViewYaw"}},
+                  {"input": {"key": "Basics/AnalogueInput/RotateViewPitch"}},
+                  {"input": {"key": "Basics/AnalogueInput/MoveViewIn"}},
+                  {"input": {"key": "Basics/AnalogueInput/MoveViewOut"}}
+                ]
+              },
+              {
+                "id": "Test",
+                "inputs": [
+                  {
+                    "input": {
+                      "key": "Basics/DigitalInput/EndTest"
+                    }
+                  },
+                  {
+                    "input": {
+                      "key": "Basics/Project/Project"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "InputSwitch",
+            "instances": [
+              {
+                "id": "Main",
+                "value": {
+                  "key": "Basics/InputGroup/EditorInput"
+                }
+              },
+              {
+                "id": "DirectEditorInput",
+                "value": {
+                  "key": "None"
+                }
+              },
+              {
+                "id": "DirectConfigurerInput",
+                "value": {
+                  "key": "None"
+                }
+              }
+            ]
+          },
+          {
+            "type": "Project",
+            "instances": [
+              {
+                "id": "Project",
+                "editing": true,
+                "onFinish": {
+                  "key": "Basics/Function/StopProjectExecution",
+                  "bindings": []
+                },
+                "onReady": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "project",
+                      "to": {
+                        "key": "Basics/Project/Project"
+                      }
+                    },
+                    {
+                      "variable": "startEditorFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/StartEditor",
+                          "bindings": []
+                        }
+                      }
+                    },
+                    {
+                      "variable": "startMenuFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/StartMenu",
+                          "bindings": []
+                        }
+                      }
+                    }
+                  ],
+                  "code": "gEditorToStart = project:getDefaultEditor()\nif gEditorToStart ~= nil then\n  startEditorFunction:execute()\nelse\n  startMenuFunction:execute()\nend"
+                },
+                "options": {
+                  "key": "None"
+                }
+              }
+            ]
+          },
+          {
+            "type": "ProjectConfigurer",
+            "instances": [
+              {
+                "id": "ProjectConfigurer",
+                "font": {"key": "Basics/Font/Menu"},
+                "fontSize": 0.03,
+                "codeFont": {"key": "Basics/Font/Code"},
+                "codeFontSize": 0.015,
+                "selectionColour": {"key": "Literal", "red": 1, "green": 0,  "blue": 0, "alpha": 1},
+                "lockedColour": {"key": "Literal", "red": 0, "green": 0, "blue": 1, "alpha": 1},
+                "inputs": [
+                  {"input": "AdjustLeft",   "mapping": {"key": "Basics/DigitalInput/MoveCursorLeft"}},
+                  {"input": "AdjustRight",  "mapping": {"key": "Basics/DigitalInput/MoveCursorRight"}},
+                  {"input": "Cancel",       "mapping": {"key": "Basics/DigitalInput/Cancel"}},
+                  {"input": "Confirm",      "mapping": {"key": "Basics/DigitalInput/UseTool"}},
+                  {"input": "PreviousItem", "mapping": {"key": "Basics/DigitalInput/MoveCursorForward"}},
+                  {"input": "NextItem",     "mapping": {"key": "Basics/DigitalInput/MoveCursorBackward"}}
+                ],
+                "onExit": {
+                  "key": "Basics/Function/ResumeEditor",
+                  "bindings": []
+                },
+                "onEditor": {"key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "projectConfigurer",
+                      "to": {
+                        "key": "Basics/ProjectConfigurer/ProjectConfigurer"
+                      }
+                    },
+                    {
+                      "variable": "editor",
+                      "to": {
+                        "key": "~",
+                        "local": "editor"
+                      }
+                    },
+                    {
+                      "variable": "startEditorFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/StartEditor",
+                          "bindings": []
+                        }
+                      }
+                    },
+                    {
+                      "variable": "directConfigurerInput",
+                      "to": {
+                        "key": "Basics/InputSwitch/DirectConfigurerInput"
+                      }
+                    }
+                  ],
+                  "code": "projectConfigurer:hide()\ngActiveProjectConfigurer = nil\ngEditorToStart = editor\nstartEditorFunction:execute()\ndirectConfigurerInput:setInputHandler(nil)"
+                }
+              }
+            ]
+          },
+          {
+            "type": "ProjectOptions",
+            "instances": [
+              {
+                "id": "LoadMission",
+                "options": [
+                  {
+                    "id": "file",
+                    "value": {
+                      "key": "Basics/String/MissionToLoad"
+                    }
+                  },
+                  {
+                    "id": "type",
+                    "value": {
+                      "key": "Basics/String/MissionType"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "Template",
+                "options": [
+                  {
+                    "id": "file",
+                    "value": {
+                      "key": "Literal",
+                      "value": "Projects/Spindizzy/Worlds/Template.isorealms"
+                    }
+                  },
+                  {
+                    "id": "type",
+                    "value": {
+                      "key": "Literal",
+                      "value": "program"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "String",
+            "instances": [
+              {
+                "id": "MissionToLoad"
+              },
+              {
+                "id": "MissionType"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "UI",
+        "configuration": {},
+        "resources": [
+          {
+            "type": "Layout",
+            "instances": [
+              {
+                "id": "Runtime",
+                "components": [
+                  {
+                    "id": "Project",
+                    "screen": {
+                      "key": "Basics/Project/Project"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Screen",
+                    "screen": {
+                      "key": "UI/Layout/Main"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Configurer",
+                    "screen": {
+                      "key": "Basics/ProjectConfigurer/ProjectConfigurer"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "EditorPlaceHolder",
+                "components": [
+                  {
+                    "id": "Background",
+                    "screen": {
+                      "key": "UI/Gradient",
+                      "colourA": {
+                        "key": "Literal",
+                        "red": 0.3,
+                        "green": 0,
+                        "blue": 0.6,
+                        "alpha": 1
+                      },
+                      "colourB": {
+                        "key": "Literal",
+                        "red": 0,
+                        "green": 0,
+                        "blue": 0,
+                        "alpha": 1
+                      }
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Menu",
+                    "screen": {
+                      "key": "None"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": -0.75
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 0.75
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "Main",
+                "components": [
+                  {
+                    "id": "Editor",
+                    "screen": {
+                      "key": "UI/Layout/EditorPlaceHolder"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Menu",
+                    "screen": {
+                      "key": "None"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": -0.75
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 0.75
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "SaveAs",
+                "components": [
+                  {
+                    "id": "SaveAsLabel",
+                    "screen": {
+                      "key": "UI/Text",
+                      "alignment": "Center",
+                      "value": {
+                        "key": "Literal",
+                        "value": "Enter a name for this project"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 0.699999988079071
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 0.6000000238418579
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Keyboard",
+                    "screen": {
+                      "key": "UI/VirtualKeyboard/SaveAsPrompt"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "Menu",
+            "instances": [
+              {
+                "id": "Main",
+                "colour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onExit": {
+                  "key": "Basics/Function/ResumeEditor",
+                  "bindings": []
+                },
+                "options": [
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Run App",
+                      "onSelection": {
+                        "key": "Basics/Script",
+                        "bindings": [
+                          {
+                            "variable": "interactiveDisplay",
+                            "to": {
+                              "key": "UI/Layout/Runtime/Screen"
+                            }
+                          },
+                          {
+                            "variable": "interactiveInput",
+                            "to": {
+                              "key": "Basics/InputSwitch/Main"
+                            }
+                          },
+                          {
+                            "variable": "testInputHandler",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "Basics/InputGroup/Test"
+                              }
+                            }
+                          },
+                          {
+                            "variable": "project",
+                            "to": {
+                              "key": "Basics/Project/Project"
+                            }
+                          }
+                        ],
+                        "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)"
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "App Configuration",
+                      "onSelection": {
+                        "key": "Basics/Script",
+                        "bindings": [
+                          {
+                            "variable": "closeAllMenusFunction",
+                            "to": {
+                              "key": ":Action",
+                              "asset": {
+                                "key": "Basics/Function/CloseAllMenus",
+                                "bindings": []
+                              }
+                            }
+                          },
+                          {
+                            "variable": "interactiveInput",
+                            "to": {
+                              "key": "Basics/InputSwitch/Main"
+                            }
+                          },
+                          {
+                            "variable": "inputHandlerEditor",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "Basics/InputGroup/EditorInput"
+                              }
+                            }
+                          },
+                          {
+                            "variable": "directConfigurerInput",
+                            "to": {
+                              "key": "Basics/InputSwitch/DirectConfigurerInput"
+                            }
+                          },
+                          {
+                            "variable": "configurerInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "Basics/ProjectConfigurer/ProjectConfigurer"
+                              }
+                            }
+                          },
+                          {
+                            "variable": "projectConfigurer",
+                            "to": {
+                              "key": "Basics/ProjectConfigurer/ProjectConfigurer"
+                            }
+                          },
+                          {
+                            "variable": "project",
+                            "to": {
+                              "key": "Basics/Project/Project"
+                            }
+                          }
+                        ],
+                        "code": "-- Get rid of the menus.\ncloseAllMenusFunction:execute()\n\n-- Enable project configurer navigation input (mapped from editing inputs... TODO: Maybe I'll change or remove this).\ninteractiveInput:setInputHandler(inputHandlerEditor)\n\n-- Enable project configurer direct input (for text fields etc.)\ndirectConfigurerInput:setInputHandler(configurerInput)\n\n-- Show the application configuration menu.\ngActiveProjectConfigurer = true\nif projectConfigurer:isHidden() then\n  projectConfigurer:show()\nelse\n  projectConfigurer:setProject(project:getProject())\nend\n\n-- Is this still needed?\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyLostFocus()\nend"
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Save App",
+                      "onSelection": {
+                        "key": "Basics/Script",
+                        "bindings": [
+                          {
+                            "variable": "project",
+                            "to": {
+                              "key": "Basics/Project/Project"
+                            }
+                          },
+                          {
+                            "variable": "resumeEditorFunction",
+                            "to": {
+                              "key": ":Action",
+                              "asset": {
+                                "key": "Basics/Function/ResumeEditor",
+                                "bindings": []
+                              }
+                            }
+                          },
+                          {
+                            "variable": "saveAsFunction",
+                            "to": {
+                              "key": ":Action",
+                              "asset": {
+                                "key": "Basics/Function/PushScreen",
+                                "bindings": [
+                                  {
+                                    "argument": "menuScreen",
+                                    "to": {
+                                      "key": ":Screen",
+                                      "asset": {
+                                        "key": "UI/Layout/SaveAs"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "argument": "menu",
+                                    "to": {
+                                      "key": "UI/VirtualKeyboard/SaveAsPrompt"
+                                    }
+                                  },
+                                  {
+                                    "argument": "menuInput",
+                                    "to": {
+                                      "key": ":InputHandler",
+                                      "asset": {
+                                        "key": "UI/VirtualKeyboard/SaveAsPrompt"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ],
+                        "code": "if project:canSave() then\n  project:save()\n  resumeEditorFunction:execute()\nelse\n  saveAsFunction:execute()\nend"
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Save App As...",
+                      "onSelection": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Layout/SaveAs"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/VirtualKeyboard/SaveAsPrompt"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/VirtualKeyboard/SaveAsPrompt"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Load App...",
+                      "onSelection": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Menu/UserMissions"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/Menu/UserMissions"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/Menu/UserMissions"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "New App",
+                      "onSelection": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Prompt/New"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/Prompt/New"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/Prompt/New"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Options",
+                      "onSelection": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Menu/Options"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/Menu/Options"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/Menu/Options"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Quit Editor",
+                      "onSelection": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Prompt/Quit"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/Prompt/Quit"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/Prompt/Quit"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "UserMissions",
+                "colour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onExit": {
+                  "key": "Basics/Function/PopScreen",
+                  "bindings": []
+                },
+                "options": [
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Hangworld",
+                      "onSelection": {
+                        "key": "Basics/Function/LoadWorld",
+                        "bindings": [
+                          {
+                            "argument": "mission",
+                            "to": {
+                              "key": ":String",
+                              "asset": {
+                                "key": "Literal",
+                                "value": "Projects/Spindizzy/Worlds/Hangworld.isorealms"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "user",
+                            "to": {
+                              "key": ":Boolean",
+                              "asset": {
+                                "key": "Literal"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "FileList",
+                      "id": "List",
+                      "folder": "Projects",
+                      "user": true,
+                      "onSelection": {
+                        "key": "Basics/Function/LoadWorld",
+                        "bindings": [
+                          {
+                            "argument": "mission",
+                            "to": {
+                              "key": ":String",
+                              "asset": {
+                                "key": "UI/Menu/UserMissions/List"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "user",
+                            "to": {
+                              "key": ":Boolean",
+                              "asset": {
+                                "key": "Literal",
+                                "value": true
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "Prompt",
+            "instances": [
+              {
+                "id": "New",
+                "message": "Create new map?  Changes won't be saved!",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "New Map",
+                "selectionColour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onConfirm": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "project",
+                      "to": {
+                        "key": "Basics/Project/Project"
+                      }
+                    },
+                    {
+                      "variable": "templateOptions",
+                      "to": {
+                        "key": ":ProjectOptions",
+                        "asset": {
+                          "key": "Basics/ProjectOptions/Template"
+                        }
+                      }
+                    },
+                    {
+                      "variable": "closeAllMenusFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/CloseAllMenus",
+                          "bindings": []
+                        }
+                      }
+                    },
+                    {
+                      "variable": "menuDisplay",
+                      "to": {
+                        "key": "UI/Layout/Main/Menu"
+                      }
+                    },
+                    {
+                      "variable": "throbber",
+                      "to": {
+                        "key": ":Screen",
+                        "asset": {
+                          "key": "UI/Throbber/LoadingScreen"
+                        }
+                      }
+                    }
+                  ],
+                  "code": "project:prepare(templateOptions, true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
+                },
+                "onCancel": {
+                  "key": "Basics/Function/PopScreen",
+                  "bindings": []
+                }
+              },
+              {
+                "id": "Close",
+                "message": "Close IsoRealms?  Changes won't be saved!",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Close",
+                "selectionColour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onConfirm": {
+                  "key": "Quit"
+                },
+                "onCancel": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "cancelCloseIDEFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/ResumeEditor",
+                          "bindings": []
+                        }
+                      }
+                    }
+                  ],
+                  "code": "gCloseIDERequested = nil\ncancelCloseIDEFunction:execute()"
+                }
+              },
+              {
+                "id": "Quit",
+                "message": "Quit Editor?  Changes won't be saved!",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Quit",
+                "selectionColour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onConfirm": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "project",
+                      "to": {
+                        "key": "Project"
+                      }
+                    }
+                  ],
+                  "code": "project:finish(false)"
+                },
+                "onCancel": {
+                  "key": "Basics/Function/PopScreen",
+                  "bindings": []
+                }
+              },
+              {
+                "id": "Load",
+                "message": "Load App?  Changes to the current App won't be saved!",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Load App",
+                "selectionColour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onConfirm": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "project",
+                      "to": {
+                        "key": "Basics/Project/Project"
+                      }
+                    },
+                    {
+                      "variable": "loadMissionOptions",
+                      "to": {
+                        "key": ":ProjectOptions",
+                        "asset": {
+                          "key": "Basics/ProjectOptions/LoadMission"
+                        }
+                      }
+                    },
+                    {
+                      "variable": "closeAllMenusFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/CloseAllMenus",
+                          "bindings": []
+                        }
+                      }
+                    },
+                    {
+                      "variable": "menuDisplay",
+                      "to": {
+                        "key": "UI/Layout/Main/Menu"
+                      }
+                    },
+                    {
+                      "variable": "throbber",
+                      "to": {
+                        "key": ":Screen",
+                        "asset": {
+                          "key": "UI/Throbber/LoadingScreen"
+                        }
+                      }
+                    }
+                  ],
+                  "code": "project:prepare(loadMissionOptions, true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
+                },
+                "onCancel": {
+                  "key": "Basics/Function/PopScreen",
+                  "bindings": []
+                }
+              },
+              {
+                "id": "Overwrite",
+                "message": "Overwrite existing project?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Overwrite",
+                "selectionColour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onConfirm": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "project",
+                      "to": {
+                        "key": "Basics/Project/Project"
+                      }
+                    },
+                    {
+                      "variable": "filename",
+                      "to": {
+                        "key": ":String",
+                        "asset": {
+                          "key": "UI/VirtualKeyboard/SaveAsPrompt"
+                        }
+                      }
+                    },
+                    {
+                      "variable": "resumeEditorFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/ResumeEditor",
+                          "bindings": []
+                        }
+                      }
+                    }
+                  ],
+                  "code": "project:saveAs(\"Projects/\" .. filename:getValue())\nresumeEditorFunction:execute()"
+                },
+                "onCancel": {
+                  "key": "Basics/Function/PopScreen",
+                  "bindings": []
+                }
+              }
+            ]
+          },
+          {
+            "type": "Throbber",
+            "instances": [
+              {
+                "id": "LoadingScreen",
+                "colour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                }
+              }
+            ]
+          },
+          {
+            "type": "VirtualKeyboard",
+            "instances": [
+              {
+                "id": "SaveAsPrompt",
+                "selectionColour": {
+                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onConfirm": {
+                  "key": "Basics/Script",
+                  "bindings": [
+                    {
+                      "variable": "project",
+                      "to": {
+                        "key": "Basics/Project/Project"
+                      }
+                    },
+                    {
+                      "variable": "filename",
+                      "to": {
+                        "key": ":String",
+                        "asset": {
+                          "key": "UI/VirtualKeyboard/SaveAsPrompt"
+                        }
+                      }
+                    },
+                    {
+                      "variable": "confirmOverwriteFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/PushScreen",
+                          "bindings": [
+                            {
+                              "argument": "menuScreen",
+                              "to": {
+                                "key": ":Screen",
+                                "asset": {
+                                  "key": "UI/Prompt/Overwrite"
+                                }
+                              }
+                            },
+                            {
+                              "argument": "menu",
+                              "to": {
+                                "key": "UI/Prompt/Overwrite"
+                              }
+                            },
+                            {
+                              "argument": "menuInput",
+                              "to": {
+                                "key": ":InputHandler",
+                                "asset": {
+                                  "key": "UI/Prompt/Overwrite"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "variable": "resumeEditorFunction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/ResumeEditor",
+                          "bindings": []
+                        }
+                      }
+                    }
+                  ],
+                  "code": "if project:exists(\"Projects/\" .. filename:getValue()) then\n  confirmOverwriteFunction:execute()\nelse\n  project:saveAs(\"Projects/\" .. filename:getValue())\n  resumeEditorFunction:execute()\nend"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

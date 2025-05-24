@@ -24,20 +24,20 @@
 
 namespace IsoRealms::Spindizzy {
   SplitSurface::SplitSurface(bool splitDirection, int x, int y, int z, int southWestCorner, int southEastCorner, int northWestCorner, int northEastCorner, const std::optional<Condition>& condition, TerrainType& terrainType, IWorldObject& owner) :
+            cType(terrainType),
+            cOwner(owner),
             cDefX(x),
             cDefY(y),
             cDefZ(z),
             cDefCornerHeights{{southWestCorner, northWestCorner},
                               {southEastCorner, northEastCorner}},
             cDefAlternativeSplit(splitDirection),
-            cDefType(terrainType),
-            cDefCondition(condition),
-            cDefOwner(owner) {
+            cDefCondition(condition) {
   }
 
   SplitSurface::SplitSurface(std::ifstream& cache, std::vector<ConditionElement*> elements, TerrainType& terrainType, IWorldObject& owner) :
-            cDefType(terrainType),
-            cDefOwner(owner) {
+            cType(terrainType),
+            cOwner(owner) {
     cache.read(reinterpret_cast<char*>(&cDefX),                sizeof(cDefX));
     cache.read(reinterpret_cast<char*>(&cDefY),                sizeof(cDefY));
     cache.read(reinterpret_cast<char*>(&cDefZ),                sizeof(cDefZ));
@@ -99,7 +99,7 @@ namespace IsoRealms::Spindizzy {
 
   void SplitSurface::render() const {
     if (!cDefCondition.has_value() || cDefCondition->isTrue()) {
-      cDefType.getSurfacePattern()->render(cDefX, cDefY, cDefZ, cDefCornerHeights[0][0], cDefCornerHeights[0][1], cDefCornerHeights[1][0], cDefCornerHeights[1][1], false);
+      cType.getSurfacePattern()->render(cDefX, cDefY, cDefZ, cDefCornerHeights[0][0], cDefCornerHeights[0][1], cDefCornerHeights[1][0], cDefCornerHeights[1][1], false);
     }
   }
 
@@ -172,7 +172,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::vector<std::unique_ptr<IVisualElement>> SplitSurface::getStaticVisuals() {
-    return cDefType.getSurfacePattern()->getStaticVisuals(this);
+    return cType.getSurfacePattern()->getStaticVisuals(this);
   }
 
   bool SplitSurface::alligned(int x, int y) const {
@@ -289,33 +289,33 @@ namespace IsoRealms::Spindizzy {
   }
 
   void SplitSurface::notifyContact() {
-    cDefType.executeContactScript();
+    cType.executeContactScript();
   }
 
   void SplitSurface::notifyImpact() {
-    cDefType.executeImpactScript();
+    cType.executeImpactScript();
   }
 
   float SplitSurface::getSurfaceFriction() {
-    return cDefType.getSurfaceFriction();
+    return cType.getSurfaceFriction();
   }
 
   float SplitSurface::getSurfaceGrip() {
-    return cDefType.getSurfaceGrip();
+    return cType.getSurfaceGrip();
   }
 
   float SplitSurface::getSurfaceBounce() {
-    return cDefType.getSurfaceBounce();
+    return cType.getSurfaceBounce();
   }
 
   SplitSurface::Respawn SplitSurface::isRespawnAllowed() {
-    return cDefType.isRespawnAllowed()
+    return cType.isRespawnAllowed()
         ? (cDefCondition.has_value() ? Respawn::CONDITIONAL : Respawn::YES)
         : Respawn::NO;
   }
 
   bool SplitSurface::isRespawnPossible() {
-    return cDefType.isRespawnAllowed() && (!cDefCondition.has_value() || cDefCondition->isTrue());
+    return cType.isRespawnAllowed() && (!cDefCondition.has_value() || cDefCondition->isTrue());
   }
 
   std::unique_ptr<LiteralVertex> SplitSurface::getBoundaryCrossingPoint(LiteralVertex& start, LiteralVertex& end, float* mLowestGradient, float infinity) {
@@ -504,8 +504,8 @@ namespace IsoRealms::Spindizzy {
     location.z = getHeightAt(location.x, location.y);
   }
 
-  Zone* SplitSurface::getZone() {
-    return &cDefOwner.getObjectZone();
+  Zone& SplitSurface::getZone() {
+    return cOwner.getObjectZone();
   }
 
   bool SplitSurface::isSolid() {
@@ -525,7 +525,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   IWorldObject* SplitSurface::getOwner() {
-    return &cDefOwner;
+    return &cOwner;
   }
 
   int SplitSurface::getXStart() const {

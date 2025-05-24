@@ -15,12 +15,86 @@
       "key": "Spindizzy/World/Hangworld"
     },
     "initialisation": {
-      "key": "Basics/Function/SpindizzyInit",
-      "bindings": []
+      "key": "Basics/Script",
+      "bindings": [
+        {
+          "variable": "zoneCount",
+          "to": {
+            "key": "Basics/Integer/RemainingZones"
+          }
+        },
+        {
+          "variable": "hangworld",
+          "to": {
+            "key": "Spindizzy/World/Hangworld"
+          }
+        },
+        {
+          "variable": "optionsLoader",
+          "to": {
+            "key": ":Action",
+            "asset": {
+              "key": "Basics/Function/ReloadConfiguration",
+              "bindings": []
+            }
+          }
+        }
+      ],
+      "code": "menuStack = {}\ninputStack = {}\nzoneCount:setValue(hangworld:getZoneCount())\nmapOverviewMode = 0\nspinType = 0\nhasFocus = true\nlocks = 0\nalienContactCount = 0\n\n-- print(\"EXECUTE RELOAD...\")\noptionsLoader:execute()"
     },
     "reset": {
-      "key": "Basics/Function/SpindizzyReset",
-      "bindings": []
+      "key": "Basics/Script",
+      "bindings": [
+        {
+          "variable": "zoneCount",
+          "to": {
+            "key": "Basics/Integer/RemainingZones"
+          }
+        },
+        {
+          "variable": "hangworld",
+          "to": {
+            "key": "Spindizzy/World/Hangworld"
+          }
+        },
+        {
+          "variable": "player",
+          "to": {
+            "key": "Spindizzy/World/Hangworld/Player"
+          }
+        },
+        {
+          "variable": "switchIconPrimary",
+          "to": {
+            "key": "UI/Layout/Layout/SwitchStatePrimary"
+          }
+        },
+        {
+          "variable": "switchIconSecondary",
+          "to": {
+            "key": "UI/Layout/Layout/SwitchStateSecondary"
+          }
+        },
+        {
+          "variable": "view",
+          "to": {
+            "key": "Spindizzy/WorldView/Hangworld"
+          }
+        },
+        {
+          "variable": "timeLimit",
+          "to": {
+            "key": "Basics/Timer/TimeLimit"
+          }
+        },
+        {
+          "variable": "spindizzy",
+          "to": {
+            "key": "Spindizzy"
+          }
+        }
+      ],
+      "code": "-- Reset Lua variables\nmapOverviewMode = 0\nspinType = 0\nhasFocus = true\nlocks = 0\nalienContactCount = 0\nfirstZoneEntered = 0\n\n-- Unpause the game\nspindizzy:setPause(false)\n\n-- Reset zone count\nzoneCount:setValue(hangworld:getZoneCount())\n\n-- Reset switches\nif activeSwitchA ~= nil then\n  nextSwitch = 0\n  activeSwitchA:setValue(false)\n  switchIconPrimary:setScreen(nil)\n  activeSwitchA = nil\n  if activeSwitchB ~= nil then\n    activeSwitchB:setValue(false)\n    switchIconSecondary:setScreen(nil)\n    activeSwitchB = nil\n  end\nend"
     },
     "quit": {
       "key": "Quit"
@@ -61,7 +135,22 @@
               "to": {
                 "key": ":Screen",
                 "asset": {
-                  "key": "Basics/StringScreen/NotApplicableTime"
+                  "key": "UI/Text",
+                  "alignment": "Left",
+                  "value": {
+                    "key": "Literal",
+                    "value": "N/A"
+                  },
+                  "font": {
+                    "key": "Basics/Font/Menu"
+                  },
+                  "colour": {
+                    "key": "Literal",
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1,
+                    "alpha": 1
+                  }
                 }
               }
             },
@@ -70,7 +159,22 @@
               "to": {
                 "key": ":Screen",
                 "asset": {
-                  "key": "Basics/StringScreen/NotApplicableScore"
+                  "key": "UI/Text",
+                  "alignment": "Right",
+                  "value": {
+                    "key": "Literal",
+                    "value": "N/A"
+                  },
+                  "font": {
+                    "key": "Basics/Font/Menu"
+                  },
+                  "colour": {
+                    "key": "Literal",
+                    "red": 1,
+                    "green": 1,
+                    "blue": 1,
+                    "alpha": 1
+                  }
                 }
               }
             }
@@ -129,7 +233,7 @@
                   "code": "if hasFocus then\n  playerCraftModels:next()\n  alienCraftModels:next()\n  if spinType == 0 then\n    player:setSpinSpeed(0.0)\n    alienTypeA:setSpinSpeed(-360.0)\n    alienTypeB:setSpinSpeed(-180.0)\n    spinType = 1\n  elseif spinType == 1 then\n    player:setSpinSpeed(-360.0)\n    alienTypeA:setSpinSpeed(-180.0)\n    alienTypeB:setSpinSpeed(0.0)\n    spinType = 2\n  else\n    player:setSpinSpeed(-180.0)\n    alienTypeA:setSpinSpeed(0.0)\n    alienTypeB:setSpinSpeed(-360.0)\n    spinType = 0\n  end\nend"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -156,7 +260,7 @@
                   "code": "if hasFocus then\n  player:stop()\n  if GlobalExplorer ~= 1 then\n    local newTime = time:getValue() - 500\n    if newTime < 0 then\n      newTime = 0\n    end\n    time:setValue(newTime)\n  end\nend"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -178,8 +282,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/ImpactHard",
-                          "filename": "Sounds/Impact Hard.ogg"
+                          "key": "Basics/Sound/ImpactHard"
                         }
                       }
                     },
@@ -205,7 +308,7 @@
                   "code": "if hasFocus and player:isAlive() then\n  location = player:getLocation()\n  momentum = player:getMomentum()\n  xMomentum = momentum:getX()\n  yMomentum = momentum:getY()\n  zMomentum = momentum:getZ()\n  player:destroy()\n  soundImpactHard:execute()\n  if spinType == 0 then\n    for i = 1, 5 do\n      xMomentumVary = xMomentum + (math.random() - 0.5) * 0.02\n      yMomentumVary = yMomentum + (math.random() - 0.5) * 0.02\n      zMomentumVary = (zMomentum - 0.1) * math.random()\n      topDebris:generateDebris(location, xMomentumVary, yMomentumVary, -zMomentumVary, currentZone)\n    end\n  elseif spinType == 1 then\n    for i = 1, 8 do\n      xMomentumVary = xMomentum + (math.random() - 0.5) * 0.02\n      yMomentumVary = yMomentum + (math.random() - 0.5) * 0.02\n      zMomentumVary = (zMomentum - 0.1) * math.random()\n      ballDebris:generateDebris(location, xMomentumVary, yMomentumVary, -zMomentumVary, currentZone)\n    end\n  elseif spinType == 2 then\n    for i = 1, 12 do\n      xMomentumVary = xMomentum + (math.random() - 0.5) * 0.02\n      yMomentumVary = yMomentum + (math.random() - 0.5) * 0.02\n      zMomentumVary = (zMomentum - 0.1) * math.random()\n      gyroscopeDebris:generateDebris(location, xMomentumVary, yMomentumVary, -zMomentumVary, currentZone)\n    end\n  end\nend"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -226,7 +329,7 @@
                   "code": "if hasFocus then\n  if mapOverviewMode == 1 then\n    view:transitionToStart()\n    mapOverviewMode = 0\n  else\n    view:transitionToEnd()\n    mapOverviewMode = 1\n  end\nend"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -239,7 +342,7 @@
                   "bindings": []
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -260,7 +363,7 @@
                   "code": "viewAngle:faceNorthWest();"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -281,7 +384,7 @@
                   "code": "viewAngle:flip();"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -302,7 +405,7 @@
                   "code": "viewAngle:rotateRight();"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -323,7 +426,7 @@
                   "code": "viewAngle:rotateLeft();"
                 },
                 "onBecomingFalse": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               }
             ]
@@ -737,16 +840,18 @@
                     "to": {
                       "key": "UI/Layout/Layout/Hint"
                     }
-                  }
-                ],
-                "arguments": [
+                  },
                   {
-                    "name": "sound",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "variable": "sound",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Sound/DiamondNone"
+                      }
                     }
                   }
                 ],
+                "arguments": [],
                 "code": "if activeSwitchA ~= nil then\n  sound:execute()\n  nextSwitch = 0\n  activeSwitchA:setValue(false)\n  switchIconPrimary:setScreen(nil)\n  activeSwitchA = nil\n  if activeSwitchB ~= nil then\n    activeSwitchB:setValue(false)\n    switchIconSecondary:setScreen(nil)\n    activeSwitchB = nil\n  end\n\n  -- Update the hint icon\n  if currentZone ~= nil and disableHud == nil then\n    local hintCount = currentZone:getHintCount()\n    if hintCount > 0 then\n      currentZone:giveHint(0)\n    else\n      hintIcon:setScreen(nil)\n    end\n  end\nend"
               },
               {
@@ -772,8 +877,7 @@
                     "to": {
                       "key": ":Action",
                       "asset": {
-                        "key": "Basics/Sound/LiftClick1",
-                        "filename": "Sounds/Lift Click 1.ogg"
+                        "key": "Basics/Sound/LiftClick1"
                       }
                     }
                   },
@@ -782,8 +886,7 @@
                     "to": {
                       "key": ":Action",
                       "asset": {
-                        "key": "Basics/Sound/LiftClick2",
-                        "filename": "Sounds/Lift Click 2.ogg"
+                        "key": "Basics/Sound/LiftClick2"
                       }
                     }
                   },
@@ -792,8 +895,7 @@
                     "to": {
                       "key": ":Action",
                       "asset": {
-                        "key": "Basics/Sound/LiftClick3",
-                        "filename": "Sounds/Lift Click 3.ogg"
+                        "key": "Basics/Sound/LiftClick3"
                       }
                     }
                   }
@@ -1040,8 +1142,8 @@
                 "arguments": [
                   {
                     "name": "hintIcon",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Screen"
                     }
                   }
                 ],
@@ -1073,20 +1175,20 @@
                 "arguments": [
                   {
                     "name": "switchState",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Spindizzy/Terrain State"
                     }
                   },
                   {
                     "name": "switchIcon",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Screen"
                     }
                   },
                   {
                     "name": "sound",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Action"
                     }
                   }
                 ],
@@ -1118,20 +1220,20 @@
                 "arguments": [
                   {
                     "name": "switchState",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Spindizzy/Terrain State"
                     }
                   },
                   {
                     "name": "switchIcon",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Screen"
                     }
                   },
                   {
                     "name": "sound",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Action"
                     }
                   }
                 ],
@@ -1144,104 +1246,18 @@
                 "arguments": [
                   {
                     "name": "screenSwitch",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Any"
                     }
                   },
                   {
                     "name": "screen",
-                    "defaultValue": {
-                      "key": "Literal"
+                    "type": {
+                      "key": "Screen"
                     }
                   }
                 ],
                 "code": "screenSwitch:setScreen(screen)"
-              },
-              {
-                "id": "SpindizzyInit",
-                "name": "SpindizzyInit",
-                "bindings": [
-                  {
-                    "variable": "zoneCount",
-                    "to": {
-                      "key": "Basics/Integer/RemainingZones"
-                    }
-                  },
-                  {
-                    "variable": "hangworld",
-                    "to": {
-                      "key": "Spindizzy/World/Hangworld"
-                    }
-                  },
-                  {
-                    "variable": "optionsLoader",
-                    "to": {
-                      "key": ":Action",
-                      "asset": {
-                        "key": "Basics/Function/ReloadConfiguration",
-                        "bindings": []
-                      }
-                    }
-                  }
-                ],
-                "arguments": [],
-                "code": "menuStack = {}\ninputStack = {}\nzoneCount:setValue(hangworld:getZoneCount())\nmapOverviewMode = 0\nspinType = 0\nhasFocus = true\nlocks = 0\nalienContactCount = 0\n\n-- print(\"EXECUTE RELOAD...\")\noptionsLoader:execute()"
-              },
-              {
-                "id": "SpindizzyReset",
-                "name": "SpindizzyReset",
-                "bindings": [
-                  {
-                    "variable": "zoneCount",
-                    "to": {
-                      "key": "Basics/Integer/RemainingZones"
-                    }
-                  },
-                  {
-                    "variable": "hangworld",
-                    "to": {
-                      "key": "Spindizzy/World/Hangworld"
-                    }
-                  },
-                  {
-                    "variable": "player",
-                    "to": {
-                      "key": "Spindizzy/World/Hangworld/Player"
-                    }
-                  },
-                  {
-                    "variable": "switchIconPrimary",
-                    "to": {
-                      "key": "UI/Layout/Layout/SwitchStatePrimary"
-                    }
-                  },
-                  {
-                    "variable": "switchIconSecondary",
-                    "to": {
-                      "key": "UI/Layout/Layout/SwitchStateSecondary"
-                    }
-                  },
-                  {
-                    "variable": "view",
-                    "to": {
-                      "key": "Spindizzy/WorldView/Hangworld"
-                    }
-                  },
-                  {
-                    "variable": "timeLimit",
-                    "to": {
-                      "key": "Basics/Timer/TimeLimit"
-                    }
-                  },
-                  {
-                    "variable": "spindizzy",
-                    "to": {
-                      "key": "Spindizzy"
-                    }
-                  }
-                ],
-                "arguments": [],
-                "code": "-- Reset Lua variables\nmapOverviewMode = 0\nspinType = 0\nhasFocus = true\nlocks = 0\nalienContactCount = 0\nfirstZoneEntered = 0\n\n-- Unpause the game\nspindizzy:setPause(false)\n\n-- Reset zone count\nzoneCount:setValue(hangworld:getZoneCount())\n\n-- Reset switches\nif activeSwitchA ~= nil then\n  nextSwitch = 0\n  activeSwitchA:setValue(false)\n  switchIconPrimary:setScreen(nil)\n  activeSwitchA = nil\n  if activeSwitchB ~= nil then\n    activeSwitchB:setValue(false)\n    switchIconSecondary:setScreen(nil)\n    activeSwitchB = nil\n  end\nend"
               },
               {
                 "id": "ZoneEntered",
@@ -1546,357 +1562,326 @@
             ]
           },
           {
-            "type": "ModelScreen",
-            "instances": [
-              {
-                "id": "TimeIcon",
-                "model": {
-                  "scaleX": 1.7999999523162842,
-                  "scaleY": 1.7999999523162842,
-                  "scaleZ": 1.7999999523162842,
-                  "key": "Basics/Sprite/LayoutIconTime"
-                }
-              },
-              {
-                "id": "MapIcon",
-                "model": {
-                  "scaleX": 1.7999999523162842,
-                  "scaleY": 1.7999999523162842,
-                  "scaleZ": 1.7999999523162842,
-                  "key": "Basics/Sprite/LayoutIconMap"
-                }
-              },
-              {
-                "id": "ScoreIcon",
-                "model": {
-                  "scaleX": 1.7999999523162842,
-                  "scaleY": 1.7999999523162842,
-                  "scaleZ": 1.7999999523162842,
-                  "key": "Basics/Sprite/LayoutIconScore"
-                }
-              },
-              {
-                "id": "JewelIcon",
-                "model": {
-                  "offsetZ": -0.75,
-                  "pitch": -54.73561096191406,
-                  "scaleX": 2.4000000953674316,
-                  "scaleY": 2.4000000953674316,
-                  "scaleZ": 2.4000000953674316,
-                  "yaw": -45,
-                  "key": "Spindizzy/Jewel/Jewel"
-                }
-              }
-            ]
-          },
-          {
             "type": "Sequence",
             "instances": [
               {
                 "id": "GameOver",
                 "tracks": [
                   {
-                    "type": "Colour",
-                    "outputs": "Red",
-                    "start": {
-                      "key": "Basics/Colour/Red"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedRed"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Red",
+                      "start": {
+                        "key": "Basics/Colour/Red"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedRed"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Cyan",
-                    "start": {
-                      "key": "Basics/Colour/Cyan"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedCyan"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Cyan",
+                      "start": {
+                        "key": "Basics/Colour/Cyan"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedCyan"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Purple",
-                    "start": {
-                      "key": "Basics/Colour/Purple"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedPurple"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Purple",
+                      "start": {
+                        "key": "Basics/Colour/Purple"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedPurple"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Green",
-                    "start": {
-                      "key": "Basics/Colour/Green"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedGreen"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Green",
+                      "start": {
+                        "key": "Basics/Colour/Green"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedGreen"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Blue",
-                    "start": {
-                      "key": "Basics/Colour/Blue"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedBlue"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Blue",
+                      "start": {
+                        "key": "Basics/Colour/Blue"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedBlue"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Yellow",
-                    "start": {
-                      "key": "Basics/Colour/Yellow"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedYellow"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Yellow",
+                      "start": {
+                        "key": "Basics/Colour/Yellow"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedYellow"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Orange",
-                    "start": {
-                      "key": "Basics/Colour/Orange"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedOrange"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Orange",
+                      "start": {
+                        "key": "Basics/Colour/Orange"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedOrange"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Brown",
-                    "start": {
-                      "key": "Basics/Colour/Brown"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedBrown"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Brown",
+                      "start": {
+                        "key": "Basics/Colour/Brown"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedBrown"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Pink",
-                    "start": {
-                      "key": "Basics/Colour/Pink"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedPink"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Pink",
+                      "start": {
+                        "key": "Basics/Colour/Pink"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedPink"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "LightGreen",
-                    "start": {
-                      "key": "Basics/Colour/LightGreen"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedLightGreen"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "LightGreen",
+                      "start": {
+                        "key": "Basics/Colour/LightGreen"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedLightGreen"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "LightBlue",
-                    "start": {
-                      "key": "Basics/Colour/LightBlue"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 1000,
-                        "target": {
-                          "key": "Basics/Colour/DesaturatedLightBlue"
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "LightBlue",
+                      "start": {
+                        "key": "Basics/Colour/LightBlue"
+                      },
+                      "events": [
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/DesaturatedLightBlue"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Action",
-                    "events": [
-                      {
-                        "delay": 1500,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/EndingMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/EndingMessage"
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 1500,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/EndingMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/EndingMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/MappedMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/MappedMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/MappedMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/MappedMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/JewelsMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/JewelsMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/JewelsMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/JewelsMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/CompleteMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/CompleteMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/CompleteMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/CompleteMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/ScoreMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/ScoreMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/ScoreMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/ScoreMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/Quit",
+                            "bindings": []
+                          }
                         }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/Quit",
-                          "bindings": []
-                        }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 ]
               },
@@ -1904,563 +1889,597 @@
                 "id": "Ending",
                 "tracks": [
                   {
-                    "type": "Colour",
-                    "outputs": "Black",
-                    "start": {
-                      "key": "Basics/Colour/Black"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/0"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Black",
+                      "start": {
+                        "key": "Basics/Colour/Black"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/0"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/0"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "White",
-                    "start": {
-                      "key": "Basics/Colour/White"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/1"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "White",
+                      "start": {
+                        "key": "Basics/Colour/White"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/1"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/1"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Red",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Red"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/2"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Red",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Red"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/2"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/2"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Cyan",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Cyan"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/3"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Cyan",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Cyan"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/3"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/3"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Purple",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Purple"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/4"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Purple",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Purple"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/4"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/4"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Green",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Green"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/5"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Green",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Green"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/5"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/5"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Blue",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Blue"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/6"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Blue",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Blue"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/6"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/6"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Yellow",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Yellow"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/7"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Yellow",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Yellow"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/7"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/7"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Orange",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Orange"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/8"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Orange",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Orange"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/8"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/8"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Brown",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Brown"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/9"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Brown",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Brown"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/9"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/9"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "Pink",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/Pink"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/10"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Pink",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/Pink"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/10"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/10"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "DarkGray",
-                    "start": {
-                      "key": "Basics/Colour/DarkGray"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/11"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "DarkGray",
+                      "start": {
+                        "key": "Basics/Colour/DarkGray"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/11"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/11"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "MediumGray",
-                    "start": {
-                      "key": "Basics/Colour/MediumGray"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/12"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "MediumGray",
+                      "start": {
+                        "key": "Basics/Colour/MediumGray"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/12"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/12"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "LightGreen",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/LightGreen"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/13"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "LightGreen",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/LightGreen"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/13"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/13"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "LightBlue",
-                    "start": {
-                      "key": "Basics/Sequence/GameOver/LightBlue"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/14"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "LightBlue",
+                      "start": {
+                        "key": "Basics/Sequence/GameOver/LightBlue"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/14"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/14"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Colour",
-                    "outputs": "LightGray",
-                    "start": {
-                      "key": "Basics/Colour/LightGray"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/ColourCycler/Ending Effect/15"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "LightGray",
+                      "start": {
+                        "key": "Basics/Colour/LightGray"
                       },
-                      {
-                        "type": "Pause",
-                        "duration": 3000
-                      },
-                      {
-                        "type": "Fade",
-                        "duration": 5000,
-                        "target": {
-                          "key": "Basics/Colour/Black"
+                      "events": [
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/15"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/ColourCycler/Ending Effect/15"
+                          }
+                        },
+                        {
+                          "duration": 5000,
+                          "target": {
+                            "key": "Basics/Colour/Black"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   },
                   {
-                    "type": "Action",
-                    "events": [
-                      {
-                        "delay": 13500,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/EndingMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/EndingMessage"
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 13500,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/EndingMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/EndingMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/MappedMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/MappedMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/MappedMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/MappedMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/JewelsMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/JewelsMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/JewelsMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/JewelsMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/CompleteMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/CompleteMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/CompleteMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/CompleteMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
-                        }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/ShowScreen",
-                          "bindings": [
-                            {
-                              "argument": "screenSwitch",
-                              "to": {
-                                "key": "UI/Layout/Main/ScoreMessage"
-                              }
-                            },
-                            {
-                              "argument": "screen",
-                              "to": {
-                                "key": ":Screen",
-                                "asset": {
-                                  "key": "UI/Layout/ScoreMessage"
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/ShowScreen",
+                            "bindings": [
+                              {
+                                "argument": "screenSwitch",
+                                "to": {
+                                  "key": "UI/Layout/Main/ScoreMessage"
+                                }
+                              },
+                              {
+                                "argument": "screen",
+                                "to": {
+                                  "key": ":Screen",
+                                  "asset": {
+                                    "key": "UI/Layout/ScoreMessage"
+                                  }
                                 }
                               }
-                            }
-                          ]
+                            ]
+                          }
+                        },
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Function/Quit",
+                            "bindings": []
+                          }
                         }
-                      },
-                      {
-                        "delay": 1000,
-                        "execute": {
-                          "key": "Basics/Function/Quit",
-                          "bindings": []
-                        }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 ]
               },
@@ -2469,16 +2488,17 @@
                 "loop": true,
                 "tracks": [
                   {
-                    "type": "Action",
-                    "events": [
-                      {
-                        "delay": 30,
-                        "execute": {
-                          "key": "Basics/Sound/AlienContact",
-                          "filename": "Sounds/Alien Contact.ogg"
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 30,
+                          "execute": {
+                            "key": "Basics/Sound/AlienContact"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 ]
               },
@@ -2488,27 +2508,27 @@
                 "loop": true,
                 "tracks": [
                   {
-                    "type": "Colour",
-                    "outputs": "Visual",
-                    "start": {
-                      "key": "Literal"
-                    },
-                    "events": [
-                      {
-                        "type": "Fade",
-                        "duration": 50,
-                        "target": {
-                          "key": "Basics/ColourCycler/DamageColours/0"
-                        }
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Visual",
+                      "start": {
+                        "key": "Literal"
                       },
-                      {
-                        "type": "Fade",
-                        "duration": 50,
-                        "target": {
-                          "key": "Literal"
+                      "events": [
+                        {
+                          "duration": 50,
+                          "target": {
+                            "key": "Basics/ColourCycler/DamageColours/0"
+                          }
+                        },
+                        {
+                          "duration": 50,
+                          "target": {
+                            "key": "Literal"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 ]
               }
@@ -2519,91 +2539,135 @@
             "instances": [
               {
                 "id": "Jewel",
-                "filename": "Sounds/Jewel.ogg"
+                "filename": {
+                  "path": "Sounds/Jewel.ogg"
+                }
               },
               {
                 "id": "AlienContact",
-                "filename": "Sounds/Alien Contact.ogg"
+                "filename": {
+                  "path": "Sounds/Alien Contact.ogg"
+                }
               },
               {
                 "id": "CircleLeft",
-                "filename": "Sounds/Circle Left.ogg"
+                "filename": {
+                  "path": "Sounds/Circle Left.ogg"
+                }
               },
               {
                 "id": "LiftClick1",
-                "filename": "Sounds/Lift Click 1.ogg"
+                "filename": {
+                  "path": "Sounds/Lift Click 1.ogg"
+                }
               },
               {
                 "id": "LiftClick3",
-                "filename": "Sounds/Lift Click 3.ogg"
+                "filename": {
+                  "path": "Sounds/Lift Click 3.ogg"
+                }
               },
               {
                 "id": "RespawnHard",
-                "filename": "Sounds/Respawn Hard.ogg"
+                "filename": {
+                  "path": "Sounds/Respawn Hard.ogg"
+                }
               },
               {
                 "id": "LiftClick2",
-                "filename": "Sounds/Lift Click 2.ogg"
+                "filename": {
+                  "path": "Sounds/Lift Click 2.ogg"
+                }
               },
               {
                 "id": "ImpactHard",
-                "filename": "Sounds/Impact Hard.ogg"
+                "filename": {
+                  "path": "Sounds/Impact Hard.ogg"
+                }
               },
               {
                 "id": "ImpactSoft",
-                "filename": "Sounds/Impact Soft.ogg"
+                "filename": {
+                  "path": "Sounds/Impact Soft.ogg"
+                }
               },
               {
                 "id": "DiamondRight",
-                "filename": "Sounds/Diamond Right.ogg"
+                "filename": {
+                  "path": "Sounds/Diamond Right.ogg"
+                }
               },
               {
                 "id": "SquareLeft",
-                "filename": "Sounds/Square Left.ogg"
+                "filename": {
+                  "path": "Sounds/Square Left.ogg"
+                }
               },
               {
                 "id": "SquareBoth",
-                "filename": "Sounds/Square Both.ogg"
+                "filename": {
+                  "path": "Sounds/Square Both.ogg"
+                }
               },
               {
                 "id": "SquareRight",
-                "filename": "Sounds/Square Right.ogg"
+                "filename": {
+                  "path": "Sounds/Square Right.ogg"
+                }
               },
               {
                 "id": "CircleNone",
-                "filename": "Sounds/Circle None.ogg"
+                "filename": {
+                  "path": "Sounds/Circle None.ogg"
+                }
               },
               {
                 "id": "DiamondBoth",
-                "filename": "Sounds/Diamond Both.ogg"
+                "filename": {
+                  "path": "Sounds/Diamond Both.ogg"
+                }
               },
               {
                 "id": "CircleBoth",
-                "filename": "Sounds/Circle Both.ogg"
+                "filename": {
+                  "path": "Sounds/Circle Both.ogg"
+                }
               },
               {
                 "id": "DiamondLeft",
-                "filename": "Sounds/Diamond Left.ogg"
+                "filename": {
+                  "path": "Sounds/Diamond Left.ogg"
+                }
               },
               {
                 "id": "DiamondNone",
-                "filename": "Sounds/Diamond None.ogg"
+                "filename": {
+                  "path": "Sounds/Diamond None.ogg"
+                }
               },
               {
                 "id": "Trampoline",
-                "filename": "Sounds/Trampoline.ogg"
+                "filename": {
+                  "path": "Sounds/Trampoline.ogg"
+                }
               },
               {
                 "id": "SquareNone",
-                "filename": "Sounds/Square None.ogg"
+                "filename": {
+                  "path": "Sounds/Square None.ogg"
+                }
               },
               {
                 "id": "CircleRight",
-                "filename": "Sounds/Circle Right.ogg"
+                "filename": {
+                  "path": "Sounds/Circle Right.ogg"
+                }
               },
               {
                 "id": "ImpactMedium",
-                "filename": "Sounds/Impact Medium.ogg"
+                "filename": {
+                  "path": "Sounds/Impact Medium.ogg"
+                }
               }
             ]
           },
@@ -2769,312 +2833,25 @@
             ]
           },
           {
-            "type": "StringScreen",
-            "instances": [
-              {
-                "id": "NotApplicableTime",
-                "alignment": "Left",
-                "value": {
-                  "key": "Literal",
-                  "value": "N/A"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "NotApplicableScore",
-                "alignment": "Right",
-                "value": {
-                  "key": "Literal",
-                  "value": "N/A"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "EndingMessage",
-                "alignment": "Center",
-                "value": {
-                  "key": "Basics/String/EndingMessage"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "MappedMessage",
-                "alignment": "Right",
-                "value": {
-                  "key": "Basics/String/MappedMessage"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "MappedLabel",
-                "alignment": "Left",
-                "value": {
-                  "key": "Literal",
-                  "value": "Map Explored"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "JewelsMessage",
-                "alignment": "Right",
-                "value": {
-                  "key": "Basics/String/JewelsMessage"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "JewelsLabel",
-                "alignment": "Left",
-                "value": {
-                  "key": "Literal",
-                  "value": "Jewels Collected"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "CompleteMessage",
-                "alignment": "Right",
-                "value": {
-                  "key": "Basics/String/CompleteMessage"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "TimeValue",
-                "alignment": "Left",
-                "value": {
-                  "key": "Basics/Timer/TimeLimit"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "CompleteLabel",
-                "alignment": "Left",
-                "value": {
-                  "key": "Literal",
-                  "value": "Completed"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "ScoreMessage",
-                "alignment": "Right",
-                "value": {
-                  "key": "Basics/String/ScoreMessage"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "ScoreLabel",
-                "alignment": "Left",
-                "value": {
-                  "key": "Literal",
-                  "value": "Final Score"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "MartinBrentnall",
-                "alignment": "Center",
-                "value": {
-                  "key": "Literal",
-                  "value": "Martin Brentnall"
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "ToMapValue",
-                "alignment": "Left",
-                "value": {
-                  "key": ":Integer",
-                  "asset": {
-                    "key": "Basics/Integer/RemainingZones"
-                  }
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "ScoreValue",
-                "alignment": "Right",
-                "value": {
-                  "key": ":Integer",
-                  "asset": {
-                    "key": "Basics/Integer/Score"
-                  }
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              },
-              {
-                "id": "JewelCountValue",
-                "alignment": "Right",
-                "value": {
-                  "key": ":Integer",
-                  "asset": {
-                    "key": "Basics/Integer/JewelCount"
-                  }
-                },
-                "font": {
-                  "key": "Basics/Font/Menu"
-                },
-                "colour": {
-                  "key": "Literal",
-                  "red": 1,
-                  "green": 1,
-                  "blue": 1,
-                  "alpha": 1
-                }
-              }
-            ]
-          },
-          {
             "type": "Texture",
             "instances": [
               {
                 "id": "Map",
-                "filename": "Images/Map.png"
+                "filename": {
+                  "path": "Images/Map.png"
+                }
               },
               {
                 "id": "Score",
-                "filename": "Images/Score.png"
+                "filename": {
+                  "path": "Images/Score.png"
+                }
               },
               {
                 "id": "Time",
-                "filename": "Images/Time.png"
+                "filename": {
+                  "path": "Images/Time.png"
+                }
               }
             ]
           },
@@ -3531,8 +3308,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/Jewel",
-                          "filename": "Sounds/Jewel.ogg"
+                          "key": "Basics/Sound/Jewel"
                         }
                       }
                     },
@@ -3589,7 +3365,7 @@
                   "code": "sound:execute()\njewelsCollected:setValue(jewelsCollected:getValue() + 1)\nlocal earned = 600\nlocal newTime = time:getValue() + 12000\nif newTime > 180000 then\n  local excess = newTime - 180000\n  local extraScore = excess / 10\n  earned = earned + extraScore\n  newTime = 180000\nend\ntime:setValue(newTime)\nscore:setValue(math.floor(score:getValue() + earned))\n\n-- Do we show the ending yet?\nif zoneCount:getValue() == 0 and hangworld:getPickUpCount() == jewelsCollected:getValue() then\n  ending:execute()\nend"
                 },
                 "onExit": {
-                  "key": "Literal"
+                  "key": "None"
                 }
               },
               {
@@ -4585,8 +4361,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/RespawnHard",
-                          "filename": "Sounds/Respawn Hard.ogg"
+                          "key": "Basics/Sound/RespawnHard"
                         }
                       }
                     },
@@ -4658,8 +4433,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/ImpactHard",
-                          "filename": "Sounds/Impact Hard.ogg"
+                          "key": "Basics/Sound/ImpactHard"
                         }
                       }
                     },
@@ -4668,8 +4442,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/ImpactMedium",
-                          "filename": "Sounds/Impact Medium.ogg"
+                          "key": "Basics/Sound/ImpactMedium"
                         }
                       }
                     },
@@ -4678,8 +4451,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/ImpactSoft",
-                          "filename": "Sounds/Impact Soft.ogg"
+                          "key": "Basics/Sound/ImpactSoft"
                         }
                       }
                     }
@@ -4790,10 +4562,10 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "SplitVariant",
@@ -4870,10 +4642,10 @@
                 "id": "Ice",
                 "solid": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "Tile",
@@ -4912,11 +4684,10 @@
                 "grip": 1,
                 "floorBounce": 1,
                 "onImpact": {
-                  "key": "Basics/Sound/Trampoline",
-                  "filename": "Sounds/Trampoline.ogg"
+                  "key": "Basics/Sound/Trampoline"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "Tile",
@@ -4980,10 +4751,10 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "Tile",
@@ -5048,10 +4819,10 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "Tile",
@@ -5116,10 +4887,10 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "Tile",
@@ -5183,10 +4954,10 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "Tile",
@@ -5251,22 +5022,11 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/ResetSwitch",
-                  "bindings": [
-                    {
-                      "argument": "sound",
-                      "to": {
-                        "key": ":Action",
-                        "asset": {
-                          "key": "Basics/Sound/DiamondNone",
-                          "filename": "Sounds/Diamond None.ogg"
-                        }
-                      }
-                    }
-                  ]
+                  "bindings": []
                 },
                 "surface": {
                   "key": "Tile",
@@ -5330,7 +5090,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetPrimarySwitch",
@@ -5355,8 +5115,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/DiamondLeft",
-                          "filename": "Sounds/Diamond Left.ogg"
+                          "key": "Basics/Sound/DiamondLeft"
                         }
                       }
                     }
@@ -5424,7 +5183,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetPrimarySwitch",
@@ -5449,8 +5208,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/DiamondRight",
-                          "filename": "Sounds/Diamond Right.ogg"
+                          "key": "Basics/Sound/DiamondRight"
                         }
                       }
                     }
@@ -5520,7 +5278,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetPrimarySwitch",
@@ -5545,8 +5303,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/DiamondBoth",
-                          "filename": "Sounds/Diamond Both.ogg"
+                          "key": "Basics/Sound/DiamondBoth"
                         }
                       }
                     }
@@ -5614,7 +5371,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetPrimarySwitch",
@@ -5639,8 +5396,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/SquareNone",
-                          "filename": "Sounds/Square None.ogg"
+                          "key": "Basics/Sound/SquareNone"
                         }
                       }
                     }
@@ -5708,7 +5464,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetPrimarySwitch",
@@ -5733,8 +5489,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/SquareLeft",
-                          "filename": "Sounds/Square Left.ogg"
+                          "key": "Basics/Sound/SquareLeft"
                         }
                       }
                     }
@@ -5804,7 +5559,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetPrimarySwitch",
@@ -5829,8 +5584,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/SquareRight",
-                          "filename": "Sounds/Square Right.ogg"
+                          "key": "Basics/Sound/SquareRight"
                         }
                       }
                     }
@@ -5898,7 +5652,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetPrimarySwitch",
@@ -5923,8 +5677,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/SquareBoth",
-                          "filename": "Sounds/Square Both.ogg"
+                          "key": "Basics/Sound/SquareBoth"
                         }
                       }
                     }
@@ -5992,7 +5745,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetSecondarySwitch",
@@ -6017,8 +5770,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/CircleNone",
-                          "filename": "Sounds/Circle None.ogg"
+                          "key": "Basics/Sound/CircleNone"
                         }
                       }
                     }
@@ -6086,7 +5838,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetSecondarySwitch",
@@ -6111,8 +5863,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/CircleLeft",
-                          "filename": "Sounds/Circle Left.ogg"
+                          "key": "Basics/Sound/CircleLeft"
                         }
                       }
                     }
@@ -6182,7 +5933,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetSecondarySwitch",
@@ -6207,8 +5958,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/CircleRight",
-                          "filename": "Sounds/Circle Right.ogg"
+                          "key": "Basics/Sound/CircleRight"
                         }
                       }
                     }
@@ -6276,7 +6026,7 @@
                 "grip": 1,
                 "allowRespawn": true,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
                   "key": "Basics/Function/SetSecondarySwitch",
@@ -6301,8 +6051,7 @@
                       "to": {
                         "key": ":Action",
                         "asset": {
-                          "key": "Basics/Sound/CircleBoth",
-                          "filename": "Sounds/Circle Both.ogg"
+                          "key": "Basics/Sound/CircleBoth"
                         }
                       }
                     }
@@ -6368,10 +6117,10 @@
                 "friction": 0.001500000013038516,
                 "grip": 1,
                 "onImpact": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "onTouch": {
-                  "key": "Literal"
+                  "key": "None"
                 },
                 "surface": {
                   "key": "Tile",
@@ -9216,7 +8965,10 @@
                         "to": {
                           "key": ":Screen",
                           "asset": {
-                            "key": "UI/Panel/BackgroundOverview"
+                            "key": "UI/Panel",
+                            "colour": {
+                              "key": "Basics/Colour/Black"
+                            }
                           }
                         }
                       },
@@ -9282,7 +9034,10 @@
                         "to": {
                           "key": ":Screen",
                           "asset": {
-                            "key": "UI/Panel/Background"
+                            "key": "UI/Panel",
+                            "colour": {
+                              "key": "Spindizzy/ThemeSet/C64/Background"
+                            }
                           }
                         }
                       },
@@ -9317,10 +9072,10 @@
                     "code": "locks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    timeLimit:resume()\n  end\n  background:setScreen(backgroundNormal)\n  world:setScreen(worldNormal)\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend"
                   },
                   "onEndDeparture": {
-                    "key": "Literal"
+                    "key": "None"
                   },
                   "onEndArrival": {
-                    "key": "Literal"
+                    "key": "None"
                   }
                 },
                 "type": {
@@ -9655,76 +9410,79 @@
                   {
                     "id": "Background",
                     "screen": {
-                      "key": "UI/Panel/Background"
+                      "key": "UI/Panel",
+                      "colour": {
+                        "key": "Spindizzy/ThemeSet/C64/Background"
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "Damage",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
@@ -9735,34 +9493,34 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
@@ -9773,264 +9531,264 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "Menu",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.75
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.75
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "EndingMessage",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "ScoreMessage",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "MappedMessage",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "JewelsMessage",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "CompleteMessage",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -10042,40 +9800,54 @@
                   {
                     "id": "EndingMessage",
                     "screen": {
-                      "key": "Basics/StringScreen/EndingMessage"
+                      "key": "UI/Text",
+                      "alignment": "Center",
+                      "value": {
+                        "key": "Basics/String/EndingMessage"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.699999988079071
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.6000000238418579
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -10087,84 +9859,113 @@
                   {
                     "id": "MappedMessage",
                     "screen": {
-                      "key": "Basics/StringScreen/MappedMessage"
+                      "key": "UI/Text",
+                      "alignment": "Right",
+                      "value": {
+                        "key": "Basics/String/MappedMessage"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.550000011920929
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.44999998807907104
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "MappedLabel",
                     "screen": {
-                      "key": "Basics/StringScreen/MappedLabel"
+                      "key": "UI/Text",
+                      "alignment": "Left",
+                      "value": {
+                        "key": "Literal",
+                        "value": "Map Explored"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.550000011920929
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.44999998807907104
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -10176,84 +9977,113 @@
                   {
                     "id": "JewelsMessage",
                     "screen": {
-                      "key": "Basics/StringScreen/JewelsMessage"
+                      "key": "UI/Text",
+                      "alignment": "Right",
+                      "value": {
+                        "key": "Basics/String/JewelsMessage"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.44999998807907104
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.3499999940395355
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "JewelsLabel",
                     "screen": {
-                      "key": "Basics/StringScreen/JewelsLabel"
+                      "key": "UI/Text",
+                      "alignment": "Left",
+                      "value": {
+                        "key": "Literal",
+                        "value": "Jewels Collected"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.44999998807907104
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.3499999940395355
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -10265,84 +10095,113 @@
                   {
                     "id": "CompleteMessage",
                     "screen": {
-                      "key": "Basics/StringScreen/CompleteMessage"
+                      "key": "UI/Text",
+                      "alignment": "Right",
+                      "value": {
+                        "key": "Basics/String/CompleteMessage"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.3499999940395355
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.25
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "CompleteLabel",
                     "screen": {
-                      "key": "Basics/StringScreen/CompleteLabel"
+                      "key": "UI/Text",
+                      "alignment": "Left",
+                      "value": {
+                        "key": "Literal",
+                        "value": "Completed"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.3499999940395355
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.25
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -10354,84 +10213,113 @@
                   {
                     "id": "ScoreMessage",
                     "screen": {
-                      "key": "Basics/StringScreen/ScoreMessage"
+                      "key": "UI/Text",
+                      "alignment": "Right",
+                      "value": {
+                        "key": "Basics/String/ScoreMessage"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.20000000298023224
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.10000000149011612
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "ScoreLabel",
                     "screen": {
-                      "key": "Basics/StringScreen/ScoreLabel"
+                      "key": "UI/Text",
+                      "alignment": "Left",
+                      "value": {
+                        "key": "Literal",
+                        "value": "Final Score"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.20000000298023224
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.10000000149011612
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.5
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -10443,43 +10331,51 @@
                   {
                     "id": "PanelLeft",
                     "screen": {
-                      "key": "UI/Panel/HUDPanel"
+                      "key": "UI/Panel",
+                      "colour": {
+                        "key": "Literal",
+                        "red": 0.20000000298023224,
+                        "green": 0.20000000298023224,
+                        "blue": 0.20000000298023224,
+                        "alpha": 0.5
+                      },
+                      "cornerSize": 0.03999999910593033
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.02500000037252903
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 1
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.22499999403953552
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.02500000037252903
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -1
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 1
                       }
                     }
@@ -10487,43 +10383,51 @@
                   {
                     "id": "PanelRight",
                     "screen": {
-                      "key": "UI/Panel/HUDPanel"
+                      "key": "UI/Panel",
+                      "colour": {
+                        "key": "Literal",
+                        "red": 0.20000000298023224,
+                        "green": 0.20000000298023224,
+                        "blue": 0.20000000298023224,
+                        "alpha": 0.5
+                      },
+                      "cornerSize": 0.03999999910593033
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.02500000037252903
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 1
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.22499999403953552
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 1
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -1
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.02500000037252903
                       }
                     }
@@ -10531,44 +10435,52 @@
                   {
                     "id": "PanelMiddle",
                     "screen": {
-                      "key": "UI/Panel/HUDPanel"
+                      "key": "UI/Panel",
+                      "colour": {
+                        "key": "Literal",
+                        "red": 0.20000000298023224,
+                        "green": 0.20000000298023224,
+                        "blue": 0.20000000298023224,
+                        "alpha": 0.5
+                      },
+                      "cornerSize": 0.03999999910593033
                     },
                     "top": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.02500000037252903
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 1
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.22499999403953552
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.4000000059604645
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.4000000059604645
                       }
                     }
@@ -10576,44 +10488,50 @@
                   {
                     "id": "IconTime",
                     "screen": {
-                      "key": "Basics/ModelScreen/TimeIcon"
+                      "key": "UI/Model",
+                      "model": {
+                        "scaleX": 1.7999999523162842,
+                        "scaleY": 1.7999999523162842,
+                        "scaleZ": 1.7999999523162842,
+                        "key": "Basics/Sprite/LayoutIconTime"
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -1,
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Linked",
+                        "key": "Linked",
                         "value": "Height",
                         "linked": "IconTime"
                       }
@@ -10622,44 +10540,50 @@
                   {
                     "id": "IconMap",
                     "screen": {
-                      "key": "Basics/ModelScreen/MapIcon"
+                      "key": "UI/Model",
+                      "model": {
+                        "scaleX": 1.7999999523162842,
+                        "scaleY": 1.7999999523162842,
+                        "scaleZ": 1.7999999523162842,
+                        "key": "Basics/Sprite/LayoutIconMap"
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -1,
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Linked",
+                        "key": "Linked",
                         "value": "Height",
                         "linked": "IconMap"
                       }
@@ -10668,226 +10592,289 @@
                   {
                     "id": "ValueTime",
                     "screen": {
-                      "key": "Basics/StringScreen/TimeValue"
+                      "key": "UI/Text",
+                      "alignment": "Left",
+                      "value": {
+                        "key": "Basics/Timer/TimeLimit"
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 1,
                         "relative": "IconTime"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.05000000074505806
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "ValueMap",
                     "screen": {
-                      "key": "Basics/StringScreen/ToMapValue"
+                      "key": "UI/Text",
+                      "alignment": "Left",
+                      "value": {
+                        "key": ":Integer",
+                        "asset": {
+                          "key": "Basics/Integer/RemainingZones"
+                        }
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 1,
                         "relative": "IconTime"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": 0.05000000074505806
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelLeft"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "IconScore",
                     "screen": {
-                      "key": "Basics/ModelScreen/ScoreIcon"
+                      "key": "UI/Model",
+                      "model": {
+                        "scaleX": 1.7999999523162842,
+                        "scaleY": 1.7999999523162842,
+                        "scaleZ": 1.7999999523162842,
+                        "key": "Basics/Sprite/LayoutIconScore"
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 1,
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Linked",
+                        "key": "Linked",
                         "value": "Height",
                         "linked": "IconScore"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "IconJewel",
                     "screen": {
-                      "key": "Basics/ModelScreen/JewelIcon"
+                      "key": "UI/Model",
+                      "model": {
+                        "offsetZ": -0.75,
+                        "pitch": -54.73561096191406,
+                        "scaleX": 2.4000000953674316,
+                        "scaleY": 2.4000000953674316,
+                        "scaleZ": 2.4000000953674316,
+                        "yaw": -45,
+                        "key": "Spindizzy/Jewel/Jewel"
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 1,
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Linked",
+                        "key": "Linked",
                         "value": "Height",
                         "linked": "IconJewel"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "ValueScore",
                     "screen": {
-                      "key": "Basics/StringScreen/ScoreValue"
+                      "key": "UI/Text",
+                      "alignment": "Right",
+                      "value": {
+                        "key": ":Integer",
+                        "asset": {
+                          "key": "Basics/Integer/Score"
+                        }
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -1,
                         "relative": "IconScore"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.05000000074505806
                       }
                     }
@@ -10895,44 +10882,61 @@
                   {
                     "id": "ValueJewel",
                     "screen": {
-                      "key": "Basics/StringScreen/JewelCountValue"
+                      "key": "UI/Text",
+                      "alignment": "Right",
+                      "value": {
+                        "key": ":Integer",
+                        "asset": {
+                          "key": "Basics/Integer/JewelCount"
+                        }
+                      },
+                      "font": {
+                        "key": "Basics/Font/Menu"
+                      },
+                      "colour": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 1,
+                        "blue": 1,
+                        "alpha": 1
+                      }
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelRight"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -1,
                         "relative": "IconScore"
                       },
                       "offset": {
-                        "type": "Absolute",
+                        "key": "Absolute",
                         "value": -0.05000000074505806
                       }
                     }
@@ -10940,137 +10944,137 @@
                   {
                     "id": "SwitchStatePrimary",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -0.5,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "SwitchStateSecondary",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0.5,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
                   {
                     "id": "Hint",
                     "screen": {
-                      "key": "Literal"
+                      "key": "None"
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -0.5,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
@@ -11081,41 +11085,41 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": 0.5,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   },
@@ -11126,36 +11130,36 @@
                     },
                     "top": {
                       "location": {
-                        "type": "Relative",
+                        "key": "Relative",
                         "value": -1,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "bottom": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "left": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     },
                     "right": {
                       "location": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       },
                       "offset": {
-                        "type": "Absolute"
+                        "key": "Absolute"
                       }
                     }
                   }
@@ -11260,34 +11264,6 @@
                     }
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "type": "Panel",
-            "instances": [
-              {
-                "id": "Background",
-                "colour": {
-                  "key": "Spindizzy/ThemeSet/C64/Background"
-                }
-              },
-              {
-                "id": "BackgroundOverview",
-                "colour": {
-                  "key": "Basics/Colour/Black"
-                }
-              },
-              {
-                "id": "HUDPanel",
-                "colour": {
-                  "key": "Literal",
-                  "red": 0.20000000298023224,
-                  "green": 0.20000000298023224,
-                  "blue": 0.20000000298023224,
-                  "alpha": 0.5
-                },
-                "cornerSize": 0.03999999910593033
               }
             ]
           },

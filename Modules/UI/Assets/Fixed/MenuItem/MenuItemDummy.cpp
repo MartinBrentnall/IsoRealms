@@ -21,11 +21,15 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  void MenuItemDummy::registerAssets(IAssetRegistry* assets) {
+  MenuItemDummy::MenuItemDummy(Menu& owner) {
+    // Nothing to do.
+  }
+  
+  void MenuItemDummy::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
 
-  void MenuItemDummy::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void MenuItemDummy::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
 
@@ -59,5 +63,13 @@ namespace IsoRealms::UI {
 
   void MenuItemDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> MenuItemDummy::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool MenuItemDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

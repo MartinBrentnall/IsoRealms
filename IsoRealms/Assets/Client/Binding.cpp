@@ -18,39 +18,117 @@
  */
 #include "Binding.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Binding::Binding(IProject* project, IBindingRegistry* registry) :
-            cProject(project),
-            cDefRegistry(registry),
-            cDefBinding(cProject->createLiteralBinding(this)) {
+  Binding::Binding(IProject& project, IBindingRegistry* registry) :
+            Binding(project, registry, "") {
   }
 
-  void Binding::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
-  }
-
-  void Binding::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cDefBinding);
-    cDefBinding = cProject->getBinding(this, mAssetObject, cDefRegistry);
-  }
-
-  void Binding::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cDefBinding);
-  }
-
-  void Binding::relinquish(IBinding* asset) {
-    if (cDefBinding == asset) {
-      cDefBinding = cProject->createLiteralBinding(this);
+  Binding::Binding(IProject& project, IBindingRegistry* registry, const std::string& type) :
+            Asset<IBinding, IProject>(project, project.createLiteralBinding(this)),
+            cDefType(type),
+            cDefRegistry(registry) {
+    std::vector<std::string> mProviders = getAvailableProviders();
+    for (std::string mProvider : mProviders) {
+      if (mProvider == cDefType) {
+        cManager.release(this, cAsset);
+        cAsset = cManager.getBinding(this, mProvider);
+        break;
+      }
     }
   }
 
-  Binding::~Binding() {
-    if (cDefBinding != nullptr) {
-      cProject->release(this, cDefBinding);
+  std::string Binding::getType() const {
+    return cDefType;
+  }
+
+  void Binding::setID(const std::string& id) {
+    std::string mRawID = Asset<IBinding, IProject>::getID();
+    if (cDefType == mRawID) {
+      cAsset->set(id);
+    } else {
+      Asset<IBinding, IProject>::setID(id);
     }
+  }
+
+  std::string Binding::getID() const {
+    std::string mRawID = Asset<IBinding, IProject>::getID();
+    if (cDefType == mRawID) {
+      return cAsset->getID();
+    }
+    std::cout << "Type: " << cDefType << "     ID: " << mRawID << std::endl;
+    return cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
+  }
+
+  bool Binding::renderAssetIcon() const {
+    std::string mRawID = Asset<IBinding, IProject>::getID();
+    return cDefType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
+  }
+
+  IBinding* Binding::createLiteralAsset(IProject& project) {
+    return project.createLiteralBinding(this);
+  }
+  
+  IBinding* Binding::getAsset(IProject& project, JSONObject object) {
+    return project.getBinding(this, object, cDefRegistry);
+  }
+  
+  IBinding* Binding::getAsset(IProject& project, const std::string& id) {
+    return project.getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id); // TODO: What happens if there's an option called "None"????
+  }
+  
+  std::vector<std::string> Binding::getAvailableProviders() const {
+
+    // Case where any type is allowed.
+    std::vector<std::string> mProviders = cManager.getAllBindings();
+    if (cDefType.empty()) {
+      return mProviders;
+    }
+
+    // Case where a conversion type is allowed.
+    std::string mRawID = Asset<IBinding, IProject>::getID();
+    if (cDefType == mRawID) {
+      return cAsset->getAvailableProviders();
+    }
+
+    // Case where only a specific type is allowed.
+    std::vector<std::string> mProvidersOfType;
+    for (std::string mProvider : mProviders) {
+      if (mProvider == cDefType) {
+        return std::vector<std::string>{mProvider};
+      } else if (mProvider.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
+        mProvidersOfType.emplace_back(mProvider.substr(cDefType.length() + 1));
+      }
+    }
+    mProvidersOfType.emplace_back("None"); // TODO: Kludge
+    return mProvidersOfType;
+  }  
+
+  bool Binding::renderOtherProviderIcon(const std::string& id) const {
+    std::string mRawID = Asset<IBinding, IProject>::getID();
+    if (cDefType == mRawID) {
+      return cAsset->renderProviderIcon(id);
+    }
+
+    return cManager.renderBindingIcon(cDefType.empty() || id == "None" ? id : cDefType + "/" + id);
+  }
+
+  bool Binding::hasConfiguration() const {
+    std::string mRawID = Asset<IBinding, IProject>::getID();
+    if (cDefType == mRawID) {
+      return cAsset->isConfigurable();
+    }
+
+    return cManager.isBindingConfigurable(Asset<IBinding, IProject>::getID());
+  }  
+
+  bool Binding::isDefaultConfiguration() const {
+    return true;
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset) {
+    std::string mRawID = Asset<IBinding, IProject>::getID();
+    return cDefType == mRawID ? asset->getWrappedProperties() : asset->getAssetProperties();
   }
 }

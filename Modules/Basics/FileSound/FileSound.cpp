@@ -25,26 +25,27 @@ namespace IsoRealms::Basics {
 
   std::mutex FileSound::cRuntimeLoadMutex;
 
-  FileSound::FileSound(IProject* project, Basics* basics) :
-            cDefBasics(basics) {
+  FileSound::FileSound(IProject& project, Basics& basics, IResourceData& data) :
+            cDefBasics(basics),
+            cDefFile(project) {
   }
   
-  FileSound::FileSound(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            FileSound(project, basics) {
-    cDefFile = object.getString(JSON_FILENAME);
+  FileSound::FileSound(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            FileSound(project, basics, data) {
+    cDefFile.load(JSON_FILENAME, object);
     reloadData();
   }
 
-  void FileSound::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Play Sound");
+  void FileSound::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Play Sound");
   }
   
-  void FileSound::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void FileSound::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
   
-  void FileSound::save(JSONObject object, IAssetIdentifier* identifier) const {
-    object.addString(JSON_FILENAME, cDefFile);
+  void FileSound::save(JSONObject object, IAssetIdentifier& identifier) const {
+    cDefFile.save(JSON_FILENAME, object);
   }
 
   void FileSound::hintInUse(bool inUse) {
@@ -55,9 +56,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> FileSound::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", cDefFile));
+    return mProperties;
   }
 
   void FileSound::setVolume(float volume) {
@@ -66,15 +68,15 @@ namespace IsoRealms::Basics {
     }
   }
 
-  IAction* FileSound::createAction(JSONObject object, IProject* project, IBindingRegistry* localObjects) {
+  IAction* FileSound::createAction(JSONObject object, IProject& project, IBindingRegistry* localObjects) {
     return this;
   }
 
-  IAction* FileSound::createAction(IProject* project, IBindingRegistry* localObjects) {
+  IAction* FileSound::createAction(IProject& project, IBindingRegistry* localObjects) {
     return this;
   }
   
-  void FileSound::destroyAction(IAction* action, IAssets* assets) {
+  void FileSound::destroyAction(IAction* action, IAssets& assets) {
     // Nothing to do.
   }
 
@@ -86,9 +88,21 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
+  bool FileSound::hasConfiguration() const {
+    return false;
+  }
+
+  std::vector<std::unique_ptr<IProperty>> FileSound::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool FileSound::isDefaultConfiguration() const {
+    return true;
+  }
+
   void FileSound::execute() {
     sf::Sound& mNewSound = cRuntimeSounds.emplace_back(cRuntimeSoundData);
-    mNewSound.setVolume(cDefBasics->getSoundVolume() * 100.0f);
+    mNewSound.setVolume(cDefBasics.getSoundVolume() * 100.0f);
     mNewSound.play();
 
     // Clean up any finished instances of this sound.
@@ -97,17 +111,9 @@ namespace IsoRealms::Basics {
     }
   }
 
-  const IActionType* FileSound::getActionType() const {
-    return this;
-  }
-
-  bool FileSound::hasConfiguration() const {
-    return false;
-  }
-
   void FileSound::reloadData() {
     std::lock_guard<std::mutex> mLockGuard(cRuntimeLoadMutex);
-    std::string mResource = System::getPath(cDefFile, false);
+    std::string mResource = cDefFile.getPath();
     if (!cRuntimeSoundData.loadFromFile(mResource)) {
       std::cout << "WARNING: FileSound::reloadData: Unable to sound data from file \"" << mResource << "\"" << std::endl;
     }

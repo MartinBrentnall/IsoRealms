@@ -50,7 +50,7 @@ namespace IsoRealms::Spindizzy {
   class Zone : public IBoundary,
                public IVisualElement {
     public:
-    Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone);
+    Zone(World& world, ZoneType& type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone);
     Zone(World& world, JSONObject object);
 
     void copy(Zone* zone);
@@ -59,17 +59,17 @@ namespace IsoRealms::Spindizzy {
     void unregisterAssets();
     
     //
-    void registerView(IScreen* screen);
+    void registerView(IScreen& screen);
     
     // Interface to be used by world, on behalf of editing functions.
-    Alien* draw(AlienType* type, const WorldEditorCursorCell& cell);
-    Lift* draw(LiftType* type, const WorldEditorCursorCell& cell, int topRange, int bottomRange);
-    PickUp* draw(PickUpType* type, const WorldEditorCursorCell& cell);
-    Terrain* draw(TerrainType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation);
-    ZoneObject* draw(ZoneObjectType* type);
+    Alien* draw(AlienType& type, const WorldEditorCursorCell& cell);
+    Lift* draw(LiftType& type, const WorldEditorCursorCell& cell, int topRange, int bottomRange);
+    PickUp* draw(PickUpType& type, const WorldEditorCursorCell& cell);
+    Terrain* draw(TerrainType& type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation);
+    ZoneObject* draw(ZoneObjectType& type);
 
     // Interface to be used by objects.
-    World* getWorld();
+    World& getWorld();
     
     
     

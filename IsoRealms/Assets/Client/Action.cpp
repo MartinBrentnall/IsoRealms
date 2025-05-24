@@ -18,27 +18,58 @@
  */
 #include "Action.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Action::Action(IProject* project) :
+  Action::Action(IProject& project) :
             cProject(project),
-            cAction(cProject->createLiteralAction(this)) {
+            cAction(cProject.createLiteralAction(this)) {
   }
 
-  void Action::init(JSONObject object, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
+  void Action::init(JSONObject object, const std::string& tag, IBindingRegistry* localArgs) {
     if (object.hasMember(tag)) {
-      cProject->init([this, object, tag, localArgs, id](IAssets* assets) {
-        set(object, tag, localArgs, id);
+      cProject.init([this, object, tag, localArgs](IAssets& assets) {
+        set(object, tag, localArgs);
       });
     }
   }
 
-  void Action::set(JSONObject object, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
-    cProject->release(this, cAction);
-    cAction = cProject->getAction(this, object, tag, localArgs, id);
+  void Action::set(JSONObject object, const std::string& tag, IBindingRegistry* localArgs) {
+    cProject.release(this, cAction);
+    cAction = cProject.getAction(this, object, tag, localArgs);
+  }
+
+  void Action::setID(const std::string& id) {
+    cProject.release(this, cAction);
+    cAction = cProject.getAction(this, id);
   }
 
   void Action::execute() {
     cAction->execute();
+  }
+
+  std::string Action::getID() const {
+    return cAction->getID(cProject);
+  }
+
+  std::vector<std::string> Action::getAvailableProviders() const {
+    return cProject.getAllActionTypes();
+  }  
+
+  bool Action::renderProviderIcon(const std::string& id) const {
+    return cProject.renderActionIcon(id);
+  }
+
+  bool Action::hasConfiguration() const {
+    return cAction->hasConfiguration();
+  }
+  
+  bool Action::isDefaultConfigured() const {
+    return cAction->isDefaultConfiguration();
+  }
+
+  bool Action::renderAssetIcon() const {
+    return cAction->renderAssetIcon();
   }
 
   void Action::save(JSONObject object, const std::string& name) const {
@@ -46,15 +77,19 @@ namespace IsoRealms {
     cAction->save(mAssetObject, cProject);
   }
 
-  void Action::relinquish(IAction* asset) {
+  std::vector<std::unique_ptr<IProperty>> Action::getAssetProperties() {
+    return cAction->getAssetProperties();
+  }
+
+  void Action::relinquish(ActionExecutor* asset) {
     if (cAction == asset) {
-      cAction = cProject->createLiteralAction(this);
+      cAction = cProject.createLiteralAction(this);
     }
   }
 
   Action::~Action() {
     if (cAction != nullptr) {
-      cProject->release(this, cAction);
+      cProject.release(this, cAction);
     }
   }
 }

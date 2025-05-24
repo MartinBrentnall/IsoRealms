@@ -66,7 +66,7 @@ namespace IsoRealms {
     std::string getShortName() const override;
     std::string getLongName() const override;
     void loadCustomMapping(JSONObject object) override;
-    void registerAssets(IAssetRegistry* assets) override;
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
+    void registerAssets(IAssetRegistry& assets) override;
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override;
   };
 }

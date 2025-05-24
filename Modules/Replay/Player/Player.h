@@ -74,6 +74,8 @@ namespace IsoRealms::Replay {
       bool getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
     };
 
     class AnalogueInput : public IFloat {
@@ -91,9 +93,11 @@ namespace IsoRealms::Replay {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
     };
 
-    IProject* cParentProject;
+    IProject& cParentProject;
     std::string cFilename; 
     Action cQuitAction;
     std::ifstream cRecording;
@@ -110,14 +114,14 @@ namespace IsoRealms::Replay {
     void finish();
     
     public:
-    Player(IProject* project, Replay* replay);
-    Player(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Player(IProject& project, Replay& replay, IResourceData& data);
+    Player(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
     
     /*********************\
     * Implements IScreen *
@@ -135,25 +139,28 @@ namespace IsoRealms::Replay {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /*****************************\
      * Implements IAssetOverride *
     \*****************************/
-    I3DModelType*    getModelType(     JSONObject object, IStateListener<I3DModelType*>* listener) const override;
-    IActionType*     getActionType(    JSONObject object, IStateListener<IActionType*>* listener) const override;
-    IAssets*         getAssets(        JSONObject object, IStateListener<IAssets*>* listener) const override;
-    IBinding*        getBinding(       JSONObject object, IStateListener<IBinding*>* listener) const override;
-    IBoolean*        getBoolean(       JSONObject object, IStateListener<IBoolean*>* listener) const override;
-    IColour*         getColour(        JSONObject object, IStateListener<IColour*>* listener) const override;
-    IEditable*       getEditable(      JSONObject object, IStateListener<IEditable*>* listener) const override;
-    IFloat*          getFloat(         JSONObject object, IStateListener<IFloat*>* listener) const override;
-    IFont*           getFont(          JSONObject object, IStateListener<IFont*>* listener) const override;
-    IInputHandler*   getInputHandler(  JSONObject object, IStateListener<IInputHandler*>* listener) const override;
-    IInteger*        getInteger(       JSONObject object, IStateListener<IInteger*>* listener) const override;
+    IActionType*     getActionType(    JSONObject object, IStateListener<IActionType*>*     listener) const override;
+    IAssets*         getAssets(        JSONObject object, IStateListener<IAssets*>*         listener) const override;
+    IBinding*        getBinding(       JSONObject object, IStateListener<IBinding*>*        listener) const override;
+    IBindingType*    getBindingType(   JSONObject object, IStateListener<IBindingType*>*    listener) const override;
+    IBoolean*        getBoolean(       JSONObject object, IStateListener<IBoolean*>*        listener) const override;
+    IColour*         getColour(        JSONObject object, IStateListener<IColour*>*         listener) const override;
+    IEditable*       getEditable(      JSONObject object, IStateListener<IEditable*>*       listener) const override;
+    IFloat*          getFloat(         JSONObject object, IStateListener<IFloat*>*          listener) const override;
+    IFont*           getFont(          JSONObject object, IStateListener<IFont*>*           listener) const override;
+    IInputHandler*   getInputHandler(  JSONObject object, IStateListener<IInputHandler*>*   listener) const override;
+    IInteger*        getInteger(       JSONObject object, IStateListener<IInteger*>*        listener) const override;
+    IModel*          getModel(         JSONObject object, IStateListener<IModel*>*          listener) const override;
     IProjectOptions* getProjectOptions(JSONObject object, IStateListener<IProjectOptions*>* listener) const override;
-    IScreen*         getScreen(        JSONObject object, IStateListener<IScreen*>* listener) const override;
-    IString*         getString(        JSONObject object, IStateListener<IString*>* listener) const override;
-    ITexture*        getTexture(       JSONObject object, IStateListener<ITexture*>* listener) const override;
-    IVertex*         getVertex(        JSONObject object, IStateListener<IVertex*>* listener) const override;
+    IScreen*         getScreen(        JSONObject object, IStateListener<IScreen*>*         listener) const override;
+    IString*         getString(        JSONObject object, IStateListener<IString*>*         listener) const override;
+    ITexture*        getTexture(       JSONObject object, IStateListener<ITexture*>*        listener) const override;
+    IVertex*         getVertex(        JSONObject object, IStateListener<IVertex*>*         listener) const override;
   };
 }

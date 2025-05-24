@@ -24,6 +24,8 @@
 
 namespace IsoRealms::Spindizzy {
   Surface::Surface(int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, Direction facing, const std::optional<Condition>& condition, TerrainType* terrainType, IWorldObject& owner) :
+            cOwner(owner),
+            cType(*terrainType),
             cDefStartX(west),
             cDefEndX(east),
             cDefStartY(south),
@@ -32,14 +34,12 @@ namespace IsoRealms::Spindizzy {
             cDefSlopeX(westEastSlope),
             cDefSlopeY(northSouthSlope),
             cDefFacing(facing),
-            cDefType(*terrainType),
-            cDefCondition(condition),
-            cDefOwner(owner) {
+            cDefCondition(condition) {
   }
 
   Surface::Surface(std::ifstream& cache, std::vector<ConditionElement*> elements, TerrainType& terrainType, IWorldObject& owner) :
-            cDefType(terrainType),
-            cDefOwner(owner) {
+            cOwner(owner),
+            cType(terrainType) {
     cache.read(reinterpret_cast<char*>(&cDefStartY), sizeof(cDefStartY));
     cache.read(reinterpret_cast<char*>(&cDefEndY),   sizeof(cDefEndY));
     cache.read(reinterpret_cast<char*>(&cDefStartX), sizeof(cDefStartX));
@@ -88,7 +88,7 @@ namespace IsoRealms::Spindizzy {
 
   void Surface::render() const {
     if (!cDefCondition.has_value() || cDefCondition->isTrue()) {
-      cDefType.getSurfacePattern()->render(cDefStartX - 0.5f, cDefEndX + 0.5f, cDefStartY - 0.5f, cDefEndY + 0.5f, cDefZ, cDefSlopeX, cDefSlopeY, cDefFacing);
+      cType.getSurfacePattern()->render(cDefStartX - 0.5f, cDefEndX + 0.5f, cDefStartY - 0.5f, cDefEndY + 0.5f, cDefZ, cDefSlopeX, cDefSlopeY, cDefFacing);
     }
   }
 
@@ -304,7 +304,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::vector<std::unique_ptr<IVisualElement>> Surface::getStaticVisuals() {
-    return cDefType.getSurfacePattern()->getStaticVisuals(this);
+    return cType.getSurfacePattern()->getStaticVisuals(this);
   }
 
   std::unique_ptr<CollisionData> Surface::getCollision(LiteralVertex& start, LiteralVertex& end, float stepHeight, double startTime, double endTime) {
@@ -367,33 +367,33 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Surface::notifyContact() {
-    cDefType.executeContactScript();
+    cType.executeContactScript();
   }
 
   void Surface::notifyImpact() {
-    cDefType.executeImpactScript();
+    cType.executeImpactScript();
   }
 
   float Surface::getSurfaceFriction() {
-    return cDefType.getSurfaceFriction();
+    return cType.getSurfaceFriction();
   }
 
   float Surface::getSurfaceGrip() {
-    return cDefType.getSurfaceGrip();
+    return cType.getSurfaceGrip();
   }
 
   float Surface::getSurfaceBounce() {
-    return cDefType.getSurfaceBounce();
+    return cType.getSurfaceBounce();
   }
 
   ISurface::Respawn Surface::isRespawnAllowed() {
-    return cDefType.isRespawnAllowed()
+    return cType.isRespawnAllowed()
         ? (cDefCondition.has_value() ? Respawn::CONDITIONAL : Respawn::YES)
         : Respawn::NO;
   }
 
   bool Surface::isRespawnPossible() {
-    return cDefType.isRespawnAllowed() && (!cDefCondition.has_value() || cDefCondition->isTrue());
+    return cType.isRespawnAllowed() && (!cDefCondition.has_value() || cDefCondition->isTrue());
   }
 
   void Surface::getRestingLocation(LiteralVertex& location) {
@@ -417,15 +417,15 @@ namespace IsoRealms::Spindizzy {
   }
 
   IWorldObject* Surface::getOwner() {
-    return &cDefOwner;
+    return &cOwner;
   }
 
-  Zone* Surface::getZone() {
-    return &cDefOwner.getObjectZone();
+  Zone& Surface::getZone() {
+    return cOwner.getObjectZone();
   }
 
   bool Surface::isSolid() {
-    return cDefType.isSolid();
+    return cType.isSolid();
   }
   
   void Surface::adjustPosition(LiteralVertex& location, double milliseconds) {

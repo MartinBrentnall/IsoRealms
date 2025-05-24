@@ -19,7 +19,6 @@
 #pragma once
 
 namespace IsoRealms {
-  class IAssetLiterals;
   class IAssetRemover;
   class IAssets;
   class IProject;
@@ -28,15 +27,16 @@ namespace IsoRealms {
 
   class IModuleInternal {
     public:
-    virtual IProject* getProjectRuntime() = 0;
+    virtual IProject& getProjectRuntime() = 0;
     virtual std::string getName(ResourceType* resourceType) = 0;
-    virtual IAssetLiterals* getAssetLiterals() = 0;
-    virtual IAssetRemover* getAssetRemover() = 0;
-    virtual IAssetRegistry* getAssetRegistry() = 0;
-    virtual IAssets* getAssets() = 0;
+    virtual IAssetRemover& getAssetRemover() = 0;
+    virtual IAssetRegistry& getAssetRegistry() = 0;
+    virtual IAssets& getAssets() = 0;
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
     virtual void makeUserDataDirectory(const std::string& resourcePath) = 0;
+    virtual void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) = 0;
+
     virtual std::string getProjectPathPrefix(bool user) = 0;
   };
 }

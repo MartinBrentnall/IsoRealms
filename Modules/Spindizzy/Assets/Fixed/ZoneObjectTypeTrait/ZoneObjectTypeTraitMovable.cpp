@@ -25,7 +25,12 @@
 namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitMovable::JSON_LOCATION = "location";
 
-  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(IProject* project, ZoneObjectType* type, JSONObject object) {
+  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(IProject& project, ZoneObjectType& type) {
+    // Nothing to do.
+  }
+
+  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(IProject& project, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitMovable(project, type) {
     cDefInitialLocationID = object.getString(JSON_LOCATION);
   }
 
@@ -51,5 +56,13 @@ namespace IsoRealms::Spindizzy {
 
   void ZoneObjectTypeTraitMovable::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitMovable::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectTypeTraitMovable::isDefaultConfiguration() const {
+    return true;
   }
 }

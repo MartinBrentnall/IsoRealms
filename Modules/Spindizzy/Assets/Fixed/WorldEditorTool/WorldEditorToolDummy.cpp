@@ -19,15 +19,28 @@
 #include "WorldEditorToolDummy.h"
 
 namespace IsoRealms::Spindizzy {
-  IWorldEditorToolInstance* WorldEditorToolDummy::createToolInstance(WorldEditor* editor) {
+  WorldEditorToolDummy::WorldEditorToolDummy(Spindizzy& owner) {
+    // Nothing to do.
+  }
+
+  IWorldEditorToolInstance* WorldEditorToolDummy::createToolInstance(WorldEditor& editor) {
     return nullptr;
   }
 
   bool WorldEditorToolDummy::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void WorldEditorToolDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> WorldEditorToolDummy::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool WorldEditorToolDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

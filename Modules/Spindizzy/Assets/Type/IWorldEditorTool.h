@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
    */
   class IWorldEditorTool : public IAsset {
     public:
-    virtual IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) = 0;
+    virtual IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) = 0;
     
     virtual ~IWorldEditorTool() {}
   };

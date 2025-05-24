@@ -18,7 +18,13 @@
  */
 #include "BoundaryTypeDummy.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms::Spindizzy {
+  BoundaryTypeDummy::BoundaryTypeDummy(Spindizzy& spindizzy) {
+    // Nothing to do.
+  }
+
   std::string BoundaryTypeDummy::getBoundaryTypeID() const {
     return "";
   }
@@ -32,10 +38,19 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool BoundaryTypeDummy::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void BoundaryTypeDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> BoundaryTypeDummy::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool BoundaryTypeDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

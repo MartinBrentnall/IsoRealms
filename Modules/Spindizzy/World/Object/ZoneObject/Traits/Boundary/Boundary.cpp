@@ -28,8 +28,8 @@ namespace IsoRealms::Spindizzy {
   Boundary::Boundary(ZoneObjectTypeTraitBoundary& type, ZoneObject& object) :
             cDefType(type),
             cDefObject(object),
-            cLuaBinding(cDefObject.getZone()->getWorld()->getSpindizzy()->getProject(), this) {
-    cDefObject.getZone()->getWorld()->getSpindizzy()->getProject()->init([this](IAssets* assets) {
+            cLuaBinding(cDefObject.getZone().getWorld().getSpindizzy().getProject(), this) {
+    cDefObject.getZone().getWorld().getSpindizzy().getProject().init([this](IAssets& assets) {
       std::string mStartID = cDefType.getStartID();
       std::string mEndID   = cDefType.getEndID();
       cDefStart = cDefObject.getLocation(mStartID);
@@ -40,7 +40,7 @@ namespace IsoRealms::Spindizzy {
       cRuntimeYEnd   = std::round(std::max(cDefStart->getY(), cDefEnd->getY()));
       cRuntimeZStart = std::round(std::min(cDefStart->getZ(), cDefEnd->getZ()));
       cRuntimeZEnd   = std::round(std::max(cDefStart->getZ(), cDefEnd->getZ()));
-      cDefObject.getZone()->getWorld()->registerBoundary(&cDefType, this, cRuntimeXStart, cRuntimeXEnd, cRuntimeYStart, cRuntimeYEnd);
+      cDefObject.getZone().getWorld().registerBoundary(&cDefType, this, cRuntimeXStart, cRuntimeXEnd, cRuntimeYStart, cRuntimeYEnd);
     });
   }
 

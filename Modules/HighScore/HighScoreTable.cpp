@@ -38,7 +38,7 @@ namespace IsoRealms::HighScore {
     
     // Read records
     for (JSONObject mRecordObject : object.getArray(JSON_RECORDS)) {
-      insertRecord(std::make_unique<HighScoreRecord>(mRecordObject, this));
+      insertRecord(std::make_unique<HighScoreRecord>(mRecordObject, *this));
     }
   }
 
@@ -65,7 +65,7 @@ namespace IsoRealms::HighScore {
   }
 
   void HighScoreTable::insertRecord(std::map<std::string, std::string> record) {
-    insertRecord(std::make_unique<HighScoreRecord>(record, this));
+    insertRecord(std::make_unique<HighScoreRecord>(record, *this));
   }
 
   bool HighScoreTable::qualifies(const std::string& value) {

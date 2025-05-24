@@ -22,25 +22,25 @@ namespace IsoRealms::Basics {
   const std::string InterruptHandler::JSON_CONSUME  = "consume";
   const std::string InterruptHandler::JSON_ON_INPUT = "onInput";
 
-  InterruptHandler::InterruptHandler(IProject* project, Basics* basics) :
+  InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data) :
             cDefAction(project) {
   }
   
-  InterruptHandler::InterruptHandler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            InterruptHandler(project, basics) {
+  InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            InterruptHandler(project, basics, data) {
     cDefAction.init(object, JSON_ON_INPUT);
     cDefConsume = object.getBoolean(JSON_CONSUME, true);
   }
 
-  void InterruptHandler::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Interrupt Handlers");
+  void InterruptHandler::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Interrupt Handlers");
   }
   
-  void InterruptHandler::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void InterruptHandler::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
   
-  void InterruptHandler::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void InterruptHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefAction.save(object, JSON_ON_INPUT);
     object.addBoolean(JSON_CONSUME, cDefConsume, true);
   }
@@ -53,9 +53,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> InterruptHandler::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   bool InterruptHandler::input(sf::Event& event) {
@@ -85,5 +84,13 @@ namespace IsoRealms::Basics {
 
   void InterruptHandler::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool InterruptHandler::isDefaultConfiguration() const {
+    return true;
   }
 }

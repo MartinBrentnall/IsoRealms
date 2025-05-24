@@ -31,7 +31,7 @@ namespace IsoRealms::Replay {
   const std::string Player::TYPE_ANALOGUE = "Analogue";
   const std::string Player::TYPE_DIGITAL  = "Digital";
 
-  Player::Player(IProject* project, Replay* replay) :
+  Player::Player(IProject& project, Replay& replay, IResourceData& data) :
             cParentProject(project),
             cFilename(""),
             cQuitAction(project) {
@@ -39,12 +39,12 @@ namespace IsoRealms::Replay {
     cFinished    = false;
   }
   
-  Player::Player(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data) :
-            Player(project, replay) {
+  Player::Player(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options) :
+            Player(project, replay, data) {
 
     // Read the recording file
-    bool mUserRecording = options->getOption("User") == "true";
-    cFilename  = options->getOption("Recording");
+    bool mUserRecording = options.getOption("User") == "true";
+    cFilename  = options.getOption("Recording");
     cFilename  = System::getPath(cFilename, mUserRecording);
     cRecording = std::ifstream(cFilename, std::ios::binary);
 
@@ -78,15 +78,15 @@ namespace IsoRealms::Replay {
 
     // Open project.
     LocalOptions mLocalOptions("Project", options);
-    WrappedOptions mWrappedOptions(&mLocalOptions);
+    WrappedOptions mWrappedOptions(mLocalOptions);
     mWrappedOptions.addOption("file", mProjectFile);
     mWrappedOptions.addOption("type", "program");
-    cProject = std::make_unique<Project>(cParentProject->getApplication(), &mWrappedOptions, [this](bool quitRequestGranted) {
+    cProject = std::make_unique<Project>(cParentProject.getApplication(), mWrappedOptions, [this](bool quitRequestGranted) {
       cRecording.close();
       cQuitAction.execute();
     }, this); // TODO: 'user' flag shouldn't always be false
 
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       while (!cFinished && cNextEvent.cTime == cElapsedTime) {
         if (cNextEvent.cID < cDigitalInputs.size()) {
           cDigitalInputs[cNextEvent.cID]->setValue(cNextEvent.cState.cDigital);
@@ -100,7 +100,7 @@ namespace IsoRealms::Replay {
       cProject->updateRuntimeComplete();
     });
 
-    project->reset([this]() {
+    project.reset([this]() {
       cProject->reset();
       cElapsedTime = 0;
       cRecording   = std::ifstream(cFilename, std::ios::binary);
@@ -131,7 +131,7 @@ namespace IsoRealms::Replay {
       readNextEvent();
     });
 
-    project->mainThreadInit([this]() {
+    project.mainThreadInit([this]() {
       cProject->initMainThread();
     });
 
@@ -146,6 +146,14 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Player::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Player::isDefaultConfiguration() const {
+    return true;
+  }
+
   bool Player::renderIcon() const {
     return false;
   }
@@ -154,21 +162,20 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
   
-  void Player::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IAssets*>(cProject.get()), "Project", "System");
-    assets->add(static_cast<IScreen*>(this), "", "System");
-    assets->add(static_cast<IInputHandler*>(this), "", "System");
+  void Player::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IAssets*>(cProject.get()), "Project", "System");
+    assets.add(static_cast<IScreen*>(this), "", "System");
+    assets.add(static_cast<IInputHandler*>(this), "", "System");
   }
   
-  void Player::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IAssets*>(cProject.get()));
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(static_cast<IInputHandler*>(this));
+  void Player::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IAssets*>(cProject.get()), relinquish);
+    assets.remove(static_cast<IScreen*>(this),           relinquish);
+    assets.remove(static_cast<IInputHandler*>(this),     relinquish);
   }
   
-  std::vector<IProperty*> Player::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Player::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   void Player::finish() {
@@ -215,7 +222,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  I3DModelType* Player::getModelType(JSONObject object, IStateListener<I3DModelType*>* listener) const {
+  IModel* Player::getModel(JSONObject object, IStateListener<IModel*>* listener) const {
     return nullptr;
   }
 
@@ -228,6 +235,10 @@ namespace IsoRealms::Replay {
   }
 
   IBinding* Player::getBinding(JSONObject object, IStateListener<IBinding*>* listener) const {
+    return nullptr;
+  }
+
+  IBindingType* Player::getBindingType(JSONObject object, IStateListener<IBindingType*>* listener) const {
     return nullptr;
   }
 
@@ -318,6 +329,14 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Player::DigitalInput::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Player::DigitalInput::isDefaultConfiguration() const {
+    return true;
+  }
+
   Player::AnalogueInput::AnalogueInput() {
     cState = false;
   }
@@ -338,7 +357,15 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  void Player::save(JSONObject object, IAssetIdentifier* identifier) const {
+  std::vector<std::unique_ptr<IProperty>> Player::AnalogueInput::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Player::AnalogueInput::isDefaultConfiguration() const {
+    return true;
+  }
+
+  void Player::save(JSONObject object, IAssetIdentifier& identifier) const {
     cQuitAction.save(object, JSON_ON_FINISH);
   }
 }

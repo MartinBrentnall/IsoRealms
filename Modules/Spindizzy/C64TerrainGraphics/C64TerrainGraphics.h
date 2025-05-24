@@ -22,6 +22,7 @@
 #include <map>
 
 #include "IsoRealms/IStateListener.h"
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
@@ -34,14 +35,14 @@ namespace IsoRealms::Spindizzy {
                              public IScreenListener,
                              public IStateListener<IFloat*> {
     public:
-    C64TerrainGraphics(IProject* project, Spindizzy* spindizzy);
-    C64TerrainGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     bool renderIcon();
     void hintInUse(bool inUse);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
 
     /**********************************\
      * Implements ITextureUseListener *
@@ -56,7 +57,7 @@ namespace IsoRealms::Spindizzy {
     /******************************\
      * Implements IScreenListener *
     \******************************/
-    void screenAdded(IProject* project, const IScreen* screen) override;
+    void screenAdded(IProject& project, const IScreen* screen) override;
     void screenRemoved(const IScreen* screen) override;
     void screenPreRender(const IScreen* screen) override;
     void screenPostRender(const IScreen* screen) override;
@@ -102,21 +103,16 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_WALL;
 
     class OrientedTexture : public ITexture {
-      private:
-      std::map<const IFloat*, std::unique_ptr<LiteralTexture>> cTextures;
-      std::set<ITextureUseListener*> cListeners;
-      LiteralTexture* cCurrentTexture;
-      
       public:
       OrientedTexture();
         
-      void addOrientation(const IFloat* angle, IProject* project, bool clamp);
+      void addOrientation(const IFloat* angle, IProject& project, bool clamp);
       
       void setRenderTarget(const IFloat* screen);
       void setScreen(const IFloat* screen);
             
       void addUseListener(ITextureUseListener* listener);
-      void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+      void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
 
       /***********************\
        * Implements ITexture *
@@ -126,22 +122,30 @@ namespace IsoRealms::Spindizzy {
       void hintTextureInUse(bool inUse) override;
       void coord(float x, float y) const override;
       void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+      std::map<const IFloat*, std::unique_ptr<LiteralTexture>> cTextures;
+      std::set<ITextureUseListener*> cListeners;
+      LiteralTexture* cCurrentTexture;
     };
 
-    IProject* cProject;
+    IProject& cProject;
 
     std::map<std::string, std::unique_ptr<LiteralTexture>> cTextures;
     std::map<std::string, std::unique_ptr<OrientedTexture>> cOrientedTextures;
     std::set<IFloat*> cChangedAngles;
     std::set<const IFloat*> cUniqueViews;
     Float cDefaultYaw;
-
     
-    // Resource definition.
+    // Definition data.
     Colour cDefFloor;
     Colour cDefWall;
     Colour cDefGrid;
     Colour cDefHighlight;
+    
+    // Runtime data.
     std::map<IFloat*, std::vector<const IScreen*>> cDefOrientatiions;
     
     int cTexturesInUseCount;

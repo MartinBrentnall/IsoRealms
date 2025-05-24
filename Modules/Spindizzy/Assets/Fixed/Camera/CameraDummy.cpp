@@ -25,11 +25,15 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  void CameraDummy::registerAssets(IAssetRegistry* assets) {
+  CameraDummy::CameraDummy(WorldView& owner) {
+    // Nothing to do.
+  }
+
+  void CameraDummy::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
     
-  void CameraDummy::unregisterAssets(IAssetRemover* assets) {
+  void CameraDummy::unregisterAssets(IAssetRemover& assets, bool relinquish) {
     // Nothing to do.
   }
   
@@ -83,5 +87,13 @@ namespace IsoRealms::Spindizzy {
 
   void CameraDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> CameraDummy::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool CameraDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

@@ -29,7 +29,7 @@ namespace IsoRealms {
   const std::string Module::JSON_RESOURCES     = "resources";
   const std::string Module::JSON_TYPE          = "type";
 
-  Module::Module(const std::string& name, Project* project, LuaState* luaState) :
+  Module::Module(const std::string& name, Project& project, LuaState* luaState) :
             cName(name),
             cProject(project),
             cModuleAssetRegistry(cProject, cName) {
@@ -67,10 +67,10 @@ namespace IsoRealms {
 #endif
       mInitLuaInterfacesFunction(luaState);
     }
-    cModule = mCreateFunction(project, this, cProject);
+    cModule = mCreateFunction(&project, this);
   }
 
-  void Module::loadResources(JSONObject object, IOptions* options, const std::string& resourceDataPath) {
+  void Module::loadResources(JSONObject object, IOptions& options, const std::string& resourceDataPath) {
     if (object.hasMember(JSON_CONFIGURATION) && cResourceDataPath.empty()) {
       cResourceDataPath = resourceDataPath;
       cModule->load(cProject, object.getObject(JSON_CONFIGURATION));
@@ -90,13 +90,13 @@ namespace IsoRealms {
       for (JSONObject mInstanceObject : mResourceObject.getArray(JSON_INSTANCES)) {
         LocalOptions mModuleOptions(mResourceTypeName, options);
         mInstanceObject.getString(JSON_NAME);
-        mResourceType->loadResource(mInstanceObject, cProject, &mModuleOptions, resourceDataPath + "/" + cName + "/" + mResourceTypeName);
+        mResourceType->loadResource(mInstanceObject, cProject, mModuleOptions, resourceDataPath + "/" + cName + "/" + mResourceTypeName);
       }
     }
   }
 
   void Module::registerAssets() {
-    cModule->registerAssets(&cModuleAssetRegistry);
+    cModule->registerAssets(cModuleAssetRegistry);
   }
 
   bool Module::needsSaving() const {
@@ -108,7 +108,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void Module::save(JSONObject object, IAssetIdentifier* identifier, const std::string& resourcePath) const {
+  void Module::save(JSONObject object, IAssetIdentifier& identifier, const std::string& resourcePath) const {
     object.addString(JSON_NAME, cName);
 
     // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
@@ -128,6 +128,10 @@ namespace IsoRealms {
     }
   }
 
+  std::vector<std::unique_ptr<IProperty>> Module::getProperties() {
+    return cModule->getProperties();
+  }
+  
   ResourceType* Module::getResourceType(const std::string& id) {
     std::map<std::string, std::unique_ptr<ResourceType>>::iterator mResourceType = cResourceTypes.find(id);
     if (mResourceType == cResourceTypes.end()) {
@@ -136,12 +140,12 @@ namespace IsoRealms {
     return mResourceType->second.get();
   }
 
-  void Module::add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& name, const std::string& category) {
+  void Module::add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category) {
     ResourceType* mResourceType = getResourceType(id);
     if (mResourceType != nullptr) {
       throw ArgumentException("ERROR: Module::add: Cannot add resource type definition because there is already a resource type definition of ID \"" + id + "\".");
     }
-    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, this, &cModuleAssetRegistry, id, name, category);
+    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, *this, cModuleAssetRegistry, id, singular, plural, category);
   }
 
   std::string Module::getName() {
@@ -156,7 +160,7 @@ namespace IsoRealms {
     return mResourceTypes;
   }
 
-  IProject* Module::getProjectRuntime() {
+  IProject& Module::getProjectRuntime() {
     return cProject;
   }
 
@@ -169,19 +173,15 @@ namespace IsoRealms {
     throw ArgumentException("ERROR: Module::getName: Specified resource type not found in this module.");
   }
 
-  IAssetLiterals* Module::getAssetLiterals() {
-    return cProject;
-  }
-  
-  IAssetRemover* Module::getAssetRemover() {
+  IAssetRemover& Module::getAssetRemover() {
     return cProject;
   }
 
-  IAssetRegistry* Module::getAssetRegistry() {
+  IAssetRegistry& Module::getAssetRegistry() {
     return cProject;
   }
   
-  IAssets* Module::getAssets() {
+  IAssets& Module::getAssets() {
     return cProject;
   }
 
@@ -190,15 +190,19 @@ namespace IsoRealms {
   }
   
   std::string Module::getDataPath(bool user) {
-    return cProject->getDataPath(user) + "/" + getName();
+    return cProject.getDataPath(user) + "/" + getName();
   }
   
   void Module::makeUserDataDirectory(const std::string& resourcePath) {
-    cProject->makeUserDataDirectory(getName() + "/" + resourcePath);
+    cProject.makeUserDataDirectory(getName() + "/" + resourcePath);
   }
 
+  void Module::renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) {
+    cProject.renameUserDataDirectory(getName() + "/" + path, oldName, newName);
+  }
+  
   std::string Module::getProjectPathPrefix(bool user) {
-    return cProject->getProjectPathPrefix(user);
+    return cProject.getProjectPathPrefix(user);
   }
 
   Module::~Module() {

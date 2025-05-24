@@ -18,7 +18,9 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Registry/IAssetUser.h"
+#include <functional>
+
+#include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IZoneViewType.h"
@@ -26,35 +28,24 @@
 namespace IsoRealms::Spindizzy {
   class WorldView;
   class Spindizzy;
-  
-  class ZoneViewType : public IAssetUser<IZoneViewType> {
+
+  class ZoneViewType : public Asset<IZoneViewType, Spindizzy> {
     public:
-    ZoneViewType(Spindizzy* spindizzy);
+    ZoneViewType(Spindizzy& spindizzy, WorldView& owner);
 
-    void init(JSONObject object, WorldView* owner);
-    void set(JSONObject object, WorldView* owner);
-    void save(JSONObject object, const std::string& name) const;
-
-    IZoneViewType* operator->() const {
-      return cZoneViewType;
-    }
-
-    IZoneViewType* operator*() const {
-      return cZoneViewType;
-    }
-
-    /****************************************\
-     * Implements IAssetUser<IZoneViewType> *
-    \****************************************/
-    void relinquish(IZoneViewType* asset) override;
-
-    virtual ~ZoneViewType();
+    /**********************************************\
+     * Implements Asset<IZoneViewType, Spindizzy> *
+    \**********************************************/
+    IZoneViewType* createLiteralAsset(Spindizzy& spindizzy) override;
+    IZoneViewType* getAsset(Spindizzy& spindizzy, JSONObject object) override;
+    IZoneViewType* getAsset(Spindizzy& spindizzy, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
 
     private:
-    Spindizzy* cSpindizzy;
-    IZoneViewType* cZoneViewType;
-
-    ZoneViewType(ZoneViewType const& ZoneViewType) = delete;
-    ZoneViewType& operator=(ZoneViewType const& ZoneViewType) = delete;
+    Spindizzy& cSpindizzy;
+    WorldView& cOwner;
   };
 }

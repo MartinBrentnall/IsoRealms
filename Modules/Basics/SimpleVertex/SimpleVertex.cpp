@@ -27,7 +27,7 @@ namespace IsoRealms::Basics {
   const std::string SimpleVertex::PROPERTY_Y = "Y";
   const std::string SimpleVertex::PROPERTY_Z = "Z";
 
-  SimpleVertex::SimpleVertex(IProject* project, Basics* basics) :
+  SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data) :
             cDefX(0.0),
             cDefY(0.0),
             cDefZ(0.0),
@@ -36,36 +36,36 @@ namespace IsoRealms::Basics {
             cRuntimeZ(0.0),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeX = cDefX;
       cRuntimeY = cDefY;
       cRuntimeZ = cDefZ;
     });
   }
 
-  SimpleVertex::SimpleVertex(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            SimpleVertex(project, basics) {
+  SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            SimpleVertex(project, basics, data) {
     cRuntimeX = cDefX = object.getFloat(JSON_X);
     cRuntimeY = cDefY = object.getFloat(JSON_Y);
     cRuntimeZ = cDefZ = object.getFloat(JSON_Z);
 
-    project->init([this](IAssets* resources) {
+    project.init([this](IAssets& resources) {
       cStateNotifier->stateChanged(this);
     });
   }
 
-  void SimpleVertex::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(this, "", "Simple Vertices");
-    assets->add(&cLuaBinding, "", "Simple Vertices");
+  void SimpleVertex::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, "", "Simple Vertices");
+    assets.add(&cLuaBinding, "", "Simple Vertices");
   }
 
-  void SimpleVertex::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void SimpleVertex::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     cStateNotifier = nullptr;
   }
 
-  void SimpleVertex::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void SimpleVertex::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_X, cDefX);
     object.addFloat(JSON_Y, cDefY);
     object.addFloat(JSON_Z, cDefZ);
@@ -79,9 +79,12 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> SimpleVertex::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("X", [this]() {return cDefX;}, [this](float value) {cDefX = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Y", [this]() {return cDefY;}, [this](float value) {cDefY = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value; return true;}));
+    return mProperties;
   }
 
   double SimpleVertex::getX() const {
@@ -102,6 +105,14 @@ namespace IsoRealms::Basics {
 
   void SimpleVertex::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool SimpleVertex::isDefaultConfiguration() const {
+    return true;
   }
 
   void SimpleVertex::setX(double x) {

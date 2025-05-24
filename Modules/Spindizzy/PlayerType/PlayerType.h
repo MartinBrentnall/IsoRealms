@@ -50,14 +50,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    PlayerType(IProject* project, Spindizzy* spindizzy);
-    PlayerType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     ~PlayerType();
 
@@ -97,9 +97,11 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /*******************************\
      * Implements IBindingRegistry *
@@ -143,7 +145,7 @@ namespace IsoRealms::Spindizzy {
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:
-      Pen(PlayerType& parent, WorldEditor* editor);
+      Pen(PlayerType& parent, WorldEditor& editor);
       
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -160,11 +162,11 @@ namespace IsoRealms::Spindizzy {
       
       private:
       PlayerType& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
     };
 
     // External interfaces.
-    Spindizzy& cDefSpindizzy;     /// Spindizzy module reference.
+    Spindizzy& cSpindizzy;     /// Spindizzy module reference.
     
     // Definition data.
     float   cDefAcceleration;     /// Initial speed of movement.

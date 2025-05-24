@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
 
   const float DebrisChunk::DEFAULT_OUTLINE_WIDTH = 0.18f;
 
-  DebrisChunk::DebrisChunk(IProject* project, Spindizzy* spindizzy) :
+  DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
             cDefSide{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                      Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -38,17 +38,17 @@ namespace IsoRealms::Spindizzy {
                      Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
             cDefOutline(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutlineWidth(DEFAULT_OUTLINE_WIDTH),
-            cDefTextures{project, project, project, project},
+            cTextures{project, project, project, project},
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
-    project->updateEditing([this](unsigned int milliseconds) {
+    project.updateEditing([this](unsigned int milliseconds) {
       cEditingIconRotation += 0.1f * milliseconds;
     });
     setNeedsRedrawing();
   }
 
-  DebrisChunk::DebrisChunk(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            DebrisChunk(project, spindizzy) {
+  DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            DebrisChunk(project, spindizzy, data) {
     cDefOutline.init(object, JSON_OUTLINE);
     cDefOutlineWidth = object.getFloat(JSON_OUTLINE_WIDTH, DEFAULT_OUTLINE_WIDTH);
     cDefSide[0].init(object, JSON_SIDE_1);
@@ -57,15 +57,15 @@ namespace IsoRealms::Spindizzy {
     cDefSide[3].init(object, JSON_SIDE_4);
   }
 
-  void DebrisChunk::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Spindizzy Debris Chunks");
+  void DebrisChunk::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Spindizzy Debris Chunks");
   }
 
-  void DebrisChunk::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void DebrisChunk::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
-  void DebrisChunk::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void DebrisChunk::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefOutline.save(object, JSON_OUTLINE);
     object.addFloat(JSON_OUTLINE_WIDTH, cDefOutlineWidth, DEFAULT_OUTLINE_WIDTH);
     cDefSide[0].save(object, JSON_SIDE_1);
@@ -75,7 +75,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void DebrisChunk::hintInUse(bool inUse) {
-    for (ITexture& mTexture : cDefTextures) {
+    for (ITexture& mTexture : cTextures) {
       mTexture.hintTextureInUse(inUse);
     }
   }
@@ -88,12 +88,17 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<IProperty*> DebrisChunk::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 1 Colour", cDefSide[0]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 2 Colour", cDefSide[1]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 3 Colour", cDefSide[2]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 4 Colour", cDefSide[3]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefOutline));
+    return mProperties;
   }
 
-  I3DModel* DebrisChunk::createModel() {
+  IModelInstance* DebrisChunk::createModel() {
     return this;
   }
 
@@ -107,6 +112,14 @@ namespace IsoRealms::Spindizzy {
 
   void DebrisChunk::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool DebrisChunk::isDefaultConfiguration() const {
+    return true;
   }
 
   void DebrisChunk::update(unsigned int milliseconds) {
@@ -123,28 +136,28 @@ namespace IsoRealms::Spindizzy {
     glDisable(GL_BLEND);
 
     glColor3f(1.0f, 1.0f, 1.0f);
-    cDefTextures[0].set();
+    cTextures[0].set();
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.0, 0.0); glVertex3f(mVerteA.x, mVerteA.y, mVerteA.z);
     glTexCoord2f(0.5, 1.0); glVertex3f(mVerteC.x, mVerteC.y, mVerteC.z);
     glTexCoord2f(1.0, 0.0); glVertex3f(mVerteB.x, mVerteB.y, mVerteB.z);
     glEnd();
 
-    cDefTextures[1].set();
+    cTextures[1].set();
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.0, 0.0); glVertex3f(mVerteA.x, mVerteA.y, mVerteA.z);
     glTexCoord2f(1.0, 0.0); glVertex3f(mVerteB.x, mVerteB.y, mVerteB.z);
     glTexCoord2f(0.5, 1.0); glVertex3f(mVerteD.x, mVerteD.y, mVerteD.z);
     glEnd();
 
-    cDefTextures[2].set();
+    cTextures[2].set();
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.0, 0.0); glVertex3f(mVerteB.x, mVerteB.y, mVerteB.z);
     glTexCoord2f(1.0, 0.0); glVertex3f(mVerteC.x, mVerteC.y, mVerteC.z);
     glTexCoord2f(0.5, 1.0); glVertex3f(mVerteD.x, mVerteD.y, mVerteD.z);
     glEnd();
 
-    cDefTextures[3].set();
+    cTextures[3].set();
     glBegin(GL_TRIANGLES);
     glTexCoord2f(0.0, 0.0); glVertex3f(mVerteC.x, mVerteC.y, mVerteC.z);
     glTexCoord2f(1.0, 0.0); glVertex3f(mVerteA.x, mVerteA.y, mVerteA.z);
@@ -161,25 +174,25 @@ namespace IsoRealms::Spindizzy {
     glLoadIdentity();
     glPopAttrib();
 
-    cDefTextures[0].setRenderTarget(); generateTexture(cDefSide[0]);
-    cDefTextures[1].setRenderTarget(); generateTexture(cDefSide[1]);
-    cDefTextures[2].setRenderTarget(); generateTexture(cDefSide[2]);
-    cDefTextures[3].setRenderTarget(); generateTexture(cDefSide[3]);
+    cTextures[0].setRenderTarget(); generateTexture(cDefSide[0]);
+    cTextures[1].setRenderTarget(); generateTexture(cDefSide[1]);
+    cTextures[2].setRenderTarget(); generateTexture(cDefSide[2]);
+    cTextures[3].setRenderTarget(); generateTexture(cDefSide[3]);
 
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glPopAttrib();
 
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->setViewPort();
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.setViewPort();
   }
 
   void DebrisChunk::generateTexture(Colour& colour) {
-    glClearColor(cDefOutline.getRed(), cDefOutline.getGreen(), cDefOutline.getBlue(), 0.0f);
+    glClearColor(cDefOutline->getRed(), cDefOutline->getGreen(), cDefOutline->getBlue(), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_TRIANGLES);
-    colour.set();
+    colour->set();
     LiteralVertex mInputA(-1.0f, -1.0f, 0.0f);
     LiteralVertex mInputB( 1.0f, -1.0f, 0.0f);
     LiteralVertex mInputC( 0.0f,  1.0f, 0.0f);
@@ -195,7 +208,7 @@ namespace IsoRealms::Spindizzy {
 
   void DebrisChunk::setNeedsRedrawing() {
     if (!cNeedsRedrawing) {
-      cProject->updateLater([this]() {
+      cProject.updateLater([this]() {
         regenerateTextures();
         cNeedsRedrawing = false;
       });

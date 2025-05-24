@@ -27,14 +27,14 @@ namespace IsoRealms::Spindizzy {
 
   const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
 
-  WorldView::WorldView(IProject* project, Spindizzy* spindizzy) :
-            cDefSpindizzy(*spindizzy),
+  WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
             cDefWorld(nullptr),
-            cDefCamera(spindizzy),
-            cDefZoneViewType(spindizzy),
+            cDefCamera(spindizzy, *this),
+            cDefZoneViewType(spindizzy, *this),
             cRuntimeZone(nullptr),
             cLuaBinding(project, this) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeZone = nullptr;
       for (std::unique_ptr<ZoneView>& mZoneView : cRuntimeZoneViews) {
         mZoneView->cView->reset();
@@ -42,13 +42,13 @@ namespace IsoRealms::Spindizzy {
     });
   }
     
-  WorldView::WorldView(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            WorldView(project, spindizzy) {
-    cDefCamera.set(object.getObject(JSON_CAMERA), this);
-    cDefZoneViewType.set(object.getObject(JSON_TYPE), this);
-    project->init([this, object](IAssets* resources) {
-      cDefWorld = cDefSpindizzy.getWorld(object.getString(JSON_WORLD));
-      cDefWorld->registerView(this);
+  WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            WorldView(project, spindizzy, data) {
+    cDefCamera.set(object, JSON_CAMERA);
+    cDefZoneViewType.set(object, JSON_TYPE);
+    project.init([this, object](IAssets& resources) {
+      cDefWorld = cSpindizzy.getWorld(object.getString(JSON_WORLD));
+      cDefWorld->registerView(*this);
       std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
       for (std::unique_ptr<Zone>& mZone : mZones) {
         addZoneView(mZone.get());
@@ -56,21 +56,21 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void WorldView::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IScreen*>(this), "", "Spindizzy World Views");
-    assets->add(&cLuaBinding, "", "Spindizzy World Views");
+  void WorldView::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IScreen*>(this), "", "Spindizzy World Views");
+    assets.add(&cLuaBinding, "", "Spindizzy World Views");
     LocalAssetRegistry mLocalRegistry(assets, "Camera");
-    cDefCamera->registerAssets(&mLocalRegistry);
+    cDefCamera->registerAssets(mLocalRegistry);
   }
 
-  void WorldView::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(&cLuaBinding);
-    cDefCamera->unregisterAssets(assets);
+  void WorldView::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IScreen*>(this), relinquish);
+    assets.remove(&cLuaBinding,                relinquish);
+    cDefCamera->unregisterAssets(assets, relinquish);
   }
   
-  void WorldView::save(JSONObject object, IAssetIdentifier* identifier) const {
-    object.addString(JSON_WORLD, cDefSpindizzy.getID(cDefWorld));
+  void WorldView::save(JSONObject object, IAssetIdentifier& identifier) const {
+    object.addString(JSON_WORLD, cSpindizzy.getID(cDefWorld));
     cDefCamera.save(object, JSON_CAMERA);
     cDefZoneViewType.save(object, JSON_TYPE);
   }
@@ -83,9 +83,12 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<IProperty*> WorldView::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> WorldView::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+//    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          cDefWorld)); // TODO:
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      "Camera",         cDefCamera));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneViewType>>("Zone View Type", cDefZoneViewType));
+    return mProperties;
   }
   
   void WorldView::registerAssets(ISpindizzyRegistry* registry) {
@@ -111,8 +114,8 @@ namespace IsoRealms::Spindizzy {
     return cDefWorld;
   }
 
-  Spindizzy* WorldView::getSpindizzy() {
-    return &cDefSpindizzy;
+  Spindizzy& WorldView::getSpindizzy() {
+    return cSpindizzy;
   }
 
   ICamera* WorldView::getCamera() {
@@ -163,6 +166,14 @@ namespace IsoRealms::Spindizzy {
 
   void WorldView::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> WorldView::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool WorldView::isDefaultConfiguration() const {
+    return true;
   }
 
   WorldView::ZoneView::ZoneView(Zone* zone, std::unique_ptr<IZoneView> view) :

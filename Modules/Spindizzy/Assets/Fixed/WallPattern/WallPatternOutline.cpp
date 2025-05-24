@@ -22,13 +22,18 @@
 #include "WallPatternOutline.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPatternOutline::WallPatternOutline(IProject* project, Spindizzy* spindizzy, JSONObject object) {
+  WallPatternOutline::WallPatternOutline(IProject& project, Spindizzy& spindizzy) {
+    // Nothing to do.
+  }
+
+  WallPatternOutline::WallPatternOutline(IProject& project, Spindizzy& spindizzy, JSONObject object) :
+            WallPatternOutline(project, spindizzy) {
     // Nothing to do.
   }
 
   std::vector<std::unique_ptr<IVisualElement>> WallPatternOutline::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
-    mVisuals.emplace_back(std::make_unique<WallPatternOutlineSurface>(this, wall));
+    mVisuals.emplace_back(std::make_unique<WallPatternOutlineSurface>(*this, wall));
     return mVisuals;
   }
 
@@ -65,7 +70,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  WallPatternOutline::WallPatternOutlineSurface::WallPatternOutlineSurface(const WallPatternOutline* parent, Wall* wall) :
+  WallPatternOutline::WallPatternOutlineSurface::WallPatternOutlineSurface(const WallPatternOutline& parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {
   }
@@ -79,7 +84,7 @@ namespace IsoRealms::Spindizzy {
     int mTopSlope                       = cDefWall->getTopSlope();
     int mBottomSlope                    = cDefWall->getBottomSlope();
     Wall::Direction mFaceDirection = cDefWall->getFaceDirection();
-    cDefParent->render(mX, mY, mZ, mLength, mHeight, mTopSlope, mBottomSlope, mFaceDirection);
+    cDefParent.render(mX, mY, mZ, mLength, mHeight, mTopSlope, mBottomSlope, mFaceDirection);
   }
 
   ITexture* WallPatternOutline::WallPatternOutlineSurface::getTexture() {
@@ -100,5 +105,15 @@ namespace IsoRealms::Spindizzy {
 
   void WallPatternOutline::saveAsset(JSONObject object) const {
     // TODO: Implement this.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> WallPatternOutline::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    // TODO: Implement this.
+    return mProperties;
+  }
+
+  bool WallPatternOutline::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 }

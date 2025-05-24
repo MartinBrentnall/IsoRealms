@@ -23,6 +23,6 @@ namespace IsoRealms {
 
   class ITypeConvertedAsset {
     public:
-    virtual void release(IAssets* releaser) = 0;
+    virtual void release(IAssets& releaser) = 0;
   };
 }

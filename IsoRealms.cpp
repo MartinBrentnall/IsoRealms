@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
     IsoRealms::Options mOptions(argc, argv);
     IsoRealms::Application mApplication;
     bool mProjectFinished = false;
-    IsoRealms::Project mProject(&mApplication, &mOptions, [&mProjectFinished](bool forceQuit) {
+    IsoRealms::Project mProject(mApplication, mOptions, [&mProjectFinished](bool forceQuit) {
       mProjectFinished = true;
     });
     mProject.reset();
@@ -44,6 +44,18 @@ int main(int argc, char** argv) {
     sf::Clock mClock;
     int mPreviousTime = mClock.getElapsedTime().asMilliseconds() - 10;
     float mAspectRatio = mApplication.getScreenAspectRatio();
+
+    // Disable antialiasing TODO: This was added to make sequence editing look nicer... Probably should be moved elsewhere for Spindizzy
+    glDisable(GL_DITHER);
+    glDisable(GL_POINT_SMOOTH);
+    glDisable(GL_LINE_SMOOTH);
+    glDisable(GL_POLYGON_SMOOTH);
+    glHint(GL_POINT_SMOOTH, GL_DONT_CARE);
+    glHint(GL_LINE_SMOOTH, GL_DONT_CARE);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
+    #define GL_MULTISAMPLE_ARB 0x809D
+    glDisable( GL_MULTISAMPLE_ARB);
+
     while (!mProjectFinished) {
       int mCurrentTime = mClock.getElapsedTime().asMilliseconds();
       mProject.setTime(mCurrentTime);

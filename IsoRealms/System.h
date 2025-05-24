@@ -104,6 +104,7 @@ namespace IsoRealms {
      * @param path The path relative to the user data directory to create.
      */
     static void makeUserDataDirectory(const std::string& path);
+    static void renameUserDataDirectory(const std::string& oldPath, const std::string& newPath);
     
     /**
      * Open an output stream to the specified path, relative to the user data

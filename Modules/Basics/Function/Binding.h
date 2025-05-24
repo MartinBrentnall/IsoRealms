@@ -18,25 +18,38 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Types.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Basics {
+  class Function;
+
   class Binding {
     public:
-    Binding(JSONObject object, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init);
+    Binding(Function& parent, IBindingRegistry* localArgs, const std::string& name);
+    Binding(Function& parent, IBindingRegistry* localArgs, bool init, JSONObject object);
+    void setName(const std::string& name);
     std::string getName() const;
+    std::string getType() const;
     std::string getInitCode() const;
     std::string getCode(const std::string& function, unsigned int arg) const;
     std::string getCleanup() const;
-    void save(JSONObject object, const std::string& attributeName, IAssetIdentifier* identifier, const std::string& attributeValueName) const;
+    void save(JSONObject object, const std::string& attributeName, IAssetIdentifier& identifier, const std::string& attributeValueName) const;
     void saveCall(JSONObject object, const std::string& attributeName) const;
     IBinding* getValue() const;
-    void release(IAssets* releaser);
+    void release(IAssets& releaser);
+    std::vector<std::unique_ptr<IProperty>> getProperties();
 
     private:
-    
+
+    static const std::string JSON_TO;
+    static const std::string JSON_VARIABLE;
+
+    // External interfaces.
+    Function& cParent;
+
     // Definition data.
     std::string cDefName;         /// Name of this binding.
     IsoRealms::Binding cDefValue; /// Value bound.

@@ -21,6 +21,7 @@
 #include <cmath>
 #include <map>
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/System.h"
@@ -41,14 +42,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource interface *
     \**********************/
-    C64LiftGraphics(IProject* project, Spindizzy* spindizzy);
-    C64LiftGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);  
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);  
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     bool renderIcon();
     void hintInUse(bool inUse);
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     private:
     
@@ -89,15 +90,15 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_PRIMARY;
     static const std::string JSON_SECONDARY;
 
-    IProject* cProject;
+    IProject& cProject;
 
     // Definition data.
     Colour cDefPrimary;                                                  /// Primary colour.
     Colour cDefSecondary;                                                /// Secondary colour.
     Colour cDefOutline;                                                  /// Outline colour.
-    std::map<std::string, std::unique_ptr<LiteralTexture>> cDefTextures; /// The actual texture assets.
 
     // Runtime data.
+    std::map<std::string, std::unique_ptr<LiteralTexture>> cTextures; /// The actual texture assets.
     bool cNeedsRedrawing;
     
     // Private functions.

@@ -30,40 +30,40 @@ namespace IsoRealms::Spindizzy {
   const std::string BoundaryHandler::BIND_TO_BOUNDARY = "Boundary";
   const std::string BoundaryHandler::BIND_TO_OBJECT   = "Object";
 
-  BoundaryHandler::BoundaryHandler(IProject* project, Spindizzy* spindizzy) :
-            cDefSpindizzy(*spindizzy),
-            cDefBoundaryType(*spindizzy),
-            cDefObjectType(*spindizzy),
+  BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
+            cDefBoundaryType(spindizzy),
+            cDefObjectType(spindizzy),
             cDefEnteredAction(project),
             cDefExitedAction(project) {
   }
 
-  BoundaryHandler::BoundaryHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            BoundaryHandler(project, spindizzy) {
-    cDefBoundaryType.init(object.getObject(JSON_BOUNDARY));
-    cDefObjectType.init(object.getObject(JSON_OBJECT));
+  BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            BoundaryHandler(project, spindizzy, data) {
+    cDefBoundaryType.init(object, JSON_BOUNDARY);
+    cDefObjectType.init(object, JSON_OBJECT);
     cDefEnteredAction.init(object, JSON_ON_ENTRY, this);
     cDefExitedAction.init(object, JSON_ON_EXIT, this);
-    spindizzy->getProject()->init([this, spindizzy](IAssets* assets) {
-      spindizzy->added(this);
+    spindizzy.getProject().init([this, &spindizzy](IAssets& assets) {
+      spindizzy.added(this);
     });
   }
 
-  void BoundaryHandler::registerAssets(IAssetRegistry* assets) {
+  void BoundaryHandler::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
 
-  void BoundaryHandler::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void BoundaryHandler::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
 
-  void BoundaryHandler::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void BoundaryHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefBoundaryType.save(object, JSON_BOUNDARY);
     cDefObjectType.save(object, JSON_OBJECT);
-    cDefSpindizzy.setBindingIdentifier(this);
+    cSpindizzy.setBindingIdentifier(this);
     cDefEnteredAction.save(object, JSON_ON_ENTRY);
     cDefExitedAction.save(object, JSON_ON_EXIT);
-    cDefSpindizzy.setBindingIdentifier(nullptr);
+    cSpindizzy.setBindingIdentifier(nullptr);
   }
 
   void BoundaryHandler::hintInUse(bool inUse) {
@@ -74,9 +74,13 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<IProperty*> BoundaryHandler::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> BoundaryHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<BoundaryType>>("Boundary Type", cDefBoundaryType));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type", cDefObjectType));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Entry", cDefEnteredAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Exit", cDefExitedAction));
+    return mProperties;
   }
 
   const BoundaryType* BoundaryHandler::getBoundaryType() const {

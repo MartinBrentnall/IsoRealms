@@ -21,37 +21,74 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  MenuItem::MenuItem(UI* ui) :
+  MenuItem::MenuItem(UI& ui, Menu& owner) :
             cUI(ui),
-            cMenuItem(cUI->createLiteralMenuItem(this)) {
+            cOwner(owner),
+            cMenuItem(cUI.createLiteralMenuItem(this, owner)) {
   }
 
-  void MenuItem::init(JSONObject object, const std::string& member, Menu* owner) {
-    cUI->getProject()->init([this, member, object, owner](IAssets* assets) {
+  void MenuItem::init(JSONObject object, const std::string& member, Menu& owner) {
+    cUI.getProject().init([this, member, object, &owner](IAssets& assets) {
       set(object, member, owner);
     });
   }
 
-  void MenuItem::set(JSONObject object, const std::string& member, Menu* owner) {
+  void MenuItem::set(JSONObject object, const std::string& member, Menu& owner) {
     JSONObject mAssetObject = object.getObject(member);
-    cUI->release(this, cMenuItem);
-    cMenuItem = cUI->getMenuItem(this, mAssetObject, owner);
+    cUI.release(this, cMenuItem);
+    cMenuItem = cUI.getMenuItem(this, mAssetObject, owner);
+  }
+
+  void MenuItem::setID(const std::string& id) {
+    // TODO: Implement this.
   }
 
   void MenuItem::save(JSONObject object, const std::string& name) const {
     JSONObject mAssetObject = object.addObject(name);
-    cUI->save(mAssetObject, cMenuItem);
+    cUI.save(mAssetObject, cMenuItem);
+  }
+
+  std::string MenuItem::getID() const {
+    return cUI.getID(cMenuItem);
+  }
+
+  std::vector<std::string> MenuItem::getAvailableProviders() const {
+    return cUI.getAllMenuItems();
+  }
+
+  bool MenuItem::renderProviderIcon(const std::string& id) const {
+    return false;
+  }
+
+  bool MenuItem::hasConfiguration() const {
+    return true;
+  }
+
+  bool MenuItem::isDefaultConfigured() const {
+    return true;
+  }
+
+  std::vector<std::unique_ptr<IProperty>> MenuItem::getAssetProperties() {
+    return cMenuItem->getAssetProperties();
+  }
+
+  bool MenuItem::renderAssetIcon() const {
+    return false;
+  }
+
+  IApplication& MenuItem::getApplication() {
+    return cUI.getProject().getApplication();
   }
 
   void MenuItem::relinquish(IMenuItem* asset) {
     if (cMenuItem == asset) {
-      cMenuItem = cUI->createLiteralMenuItem(this);
+      cMenuItem = cUI.createLiteralMenuItem(this, cOwner);
     }
   }
 
   MenuItem::~MenuItem() {
     if (cMenuItem != nullptr) {
-      cUI->release(this, cMenuItem);
+      cUI.release(this, cMenuItem);
     }
   }
 }

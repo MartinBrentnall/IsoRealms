@@ -18,9 +18,11 @@
  */
 #include "World.h"
 
+#include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
+  const std::string World::JSON_BASIC_PROPERTIES  = "basicProperties";
   const std::string World::JSON_BOUNCE_CONTROL    = "bounceControl";
   const std::string World::JSON_DEBRIS_GENERATORS = "debrisGenerators";
   const std::string World::JSON_GRAVITY           = "gravity";
@@ -30,13 +32,14 @@ namespace IsoRealms::Spindizzy {
 
   const unsigned int World::DEFAULT_BOUNCE_CONTROL = 10;
 
-  World::World(IProject* project, Spindizzy* spindizzy) :
+  World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cSpindizzy(spindizzy),
+            cResourceData(data),
             cDefPhysicalSurfaceProcessor(true),
             cDefVisualSurfaceProcessor(false),
+            cEditorBasicProperties(false),
             cLuaBinding(project, this) {
-    cDefSpindizzy      = spindizzy;
-
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       for (std::unique_ptr<Player>&                   mPlayer           : cDefPlayers)               {mPlayer->updateRuntime(milliseconds);}
       for (std::unique_ptr<DebrisGenerator>&          mDebrisGenerator  : cDefDebrisGenerators)      {mDebrisGenerator->updateRuntime(milliseconds);}
       for (std::unique_ptr<Zone>&                     mZone             : cDefZones)                 {mZone->updateRuntime(milliseconds);}
@@ -44,29 +47,29 @@ namespace IsoRealms::Spindizzy {
       for (std::unique_ptr<BoundaryHandlerInstance>&  mBoundaryHandler  : cRuntimeBoundaryHandlers)  {mBoundaryHandler->processCrossings();}
     });
 
-    project->updateEditing([this](unsigned int milliseconds) {
+    project.updateEditing([this](unsigned int milliseconds) {
       for (const std::pair<IEditableScreen* const, std::unique_ptr<WorldEditor>>& mEditor : cEditors) {
         mEditor.second->updateScreen(milliseconds);
       }
     });
 
     // Physical object types.
-    std::vector<IPhysicalObjectType*> mPhysicalObjectTypes = cDefSpindizzy->getAllPhysicalObjectTypes();
+    std::vector<IPhysicalObjectType*> mPhysicalObjectTypes = cSpindizzy.getAllPhysicalObjectTypeObjects();
     for (IPhysicalObjectType* mPhysicalObjectType : mPhysicalObjectTypes) {
       added(mPhysicalObjectType);
     }
     
     // Boundary types.
-    std::vector<IBoundaryType*> mBoundaryTypes = cDefSpindizzy->getAllBoundaryTypes();
+    std::vector<IBoundaryType*> mBoundaryTypes = cSpindizzy.getAllBoundaryTypeObjects();
     for (IBoundaryType* mBoundaryType : mBoundaryTypes) {
       added(mBoundaryType);
     }
 
-    project->reset([this]() {
+    project.reset([this]() {
       reset();
     });
 
-    project->mainThreadInit([this]() {
+    project.mainThreadInit([this]() {
       glColor3f(1.0f, 1.0f, 1.0f);
       for (std::unique_ptr<Zone>& mZone : cDefZones) {
         mZone->updateDisplayList();
@@ -74,10 +77,8 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  World::World(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            World(project, spindizzy) {
-    cDefResourceData = data;
-
+  World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            World(project, spindizzy, data) {
     for (JSONObject mDebrisGeneratorObject : object.getArray(JSON_DEBRIS_GENERATORS)) {
       cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorObject, project));
     }
@@ -93,11 +94,12 @@ namespace IsoRealms::Spindizzy {
     cDefSurfaceAccelerationFactor = object.getFloat(JSON_SLOPE_FORCE);
     cDefGravity                   = object.getFloat(JSON_GRAVITY);
     cDefBounceTime                = object.getInteger(JSON_BOUNCE_CONTROL, DEFAULT_BOUNCE_CONTROL);
+    cEditorBasicProperties        = object.getBoolean(JSON_BASIC_PROPERTIES);
 
-    project->init([this, project](IAssets* resources) {
+    project.init([this, &project](IAssets& resources) {
 
       // Try to open terrain cache
-      std::string mCachePath = cDefResourceData->getPath("Terrain.cache", project->isUserProject());
+      std::string mCachePath = cResourceData.getPath("Terrain.cache", project.isUserProject());
 //      std::cout << "Cache path: " << mCachePath << std::endl;
       std::ifstream mCache(mCachePath, std::ios::binary);
       bool mUsingCache = false;
@@ -128,8 +130,8 @@ namespace IsoRealms::Spindizzy {
           mZone->initialiseTerrain();
 //        });
         }
-//         IApplication* mApplication = project->getApplication();
-//         mApplication->executeAndWait(mTask);
+//         IApplication& mApplication = project->getApplication();
+//         mApplication.executeAndWait(mTask);
 //         std::cout << "INFO: World::World: Updating cache..." << std::endl;
         updateCache();
       }
@@ -137,40 +139,41 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void World::registerAssets(IAssetRegistry* assets) {
-    LocalSpindizzyRegistry mLocalSpindizzyRegistry(cDefSpindizzy, cDefSpindizzy->getID(this));
+  void World::registerAssets(IAssetRegistry& assets) {
+    LocalSpindizzyRegistry mLocalSpindizzyRegistry(&cSpindizzy, cSpindizzy.getID(this));
     
-    assets->add(this, "", "Spindizzy Worlds");
-    assets->add(&cLuaBinding, "", "Spindizzy Worlds");
+    assets.add(this, "", "Spindizzy Worlds");
+    assets.add(&cLuaBinding, "", "Spindizzy Worlds");
     for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
       LocalAssetRegistry mLocalRegistry(assets, "DebrisGenerator");
-      mDebrisGenerator->registerAssets(&mLocalRegistry);
+      mDebrisGenerator->registerAssets(mLocalRegistry);
     }
     for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
       LocalAssetRegistry mLocalRegistry(assets, "Player");
-      mPlayer->registerAssets(&mLocalRegistry);
+      mPlayer->registerAssets(mLocalRegistry);
     }
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->registerAssets();
     }
   }
 
-  void World::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void World::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
-      mDebrisGenerator->unregisterAssets(assets, releaser);
+      mDebrisGenerator->unregisterAssets(assets, releaser, relinquish);
     }
     for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
-      mPlayer->unregisterAssets(assets);
+      mPlayer->unregisterAssets(assets, relinquish);
     }
 // TODO: Need to do this on editor destruction.    mEditor->unregisterAssets(assets);
   }
 
-  void World::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void World::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_SLOPE_FORCE, cDefSurfaceAccelerationFactor);
     object.addFloat(JSON_GRAVITY, cDefGravity);
-    object.addInteger(JSON_BOUNCE_CONTROL, cDefBounceTime);
+    object.addInteger(JSON_BOUNCE_CONTROL, cDefBounceTime, DEFAULT_BOUNCE_CONTROL);
+    object.addBoolean(JSON_BASIC_PROPERTIES, cEditorBasicProperties);
 
     JSONArray mDebrisGeneratorsArray = object.addArray(JSON_DEBRIS_GENERATORS);
     JSONArray mPlayersArray = object.addArray(JSON_PLAYERS);
@@ -199,9 +202,14 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<IProperty*> World::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> World::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Gravity",             [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Slope Effect",        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Bounce Time",         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Advanced Properties", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;}, cSpindizzy.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyEditor>(       "World Layout",        this));
+    return mProperties;
   }
 
   void World::reset() {
@@ -222,8 +230,8 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  Spindizzy* World::getSpindizzy() const {
-    return cDefSpindizzy;
+  Spindizzy& World::getSpindizzy() const {
+    return cSpindizzy;
   }
 
   std::vector<std::unique_ptr<Zone>>& World::getZones() {
@@ -256,6 +264,12 @@ namespace IsoRealms::Spindizzy {
 
   int World::getEndZ() {
     return cRuntimeCacheEndZ;
+  }
+
+  void World::updateDisplayLists() {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->updateDisplayList();
+    }
   }
 
   void World::added(IBoundaryType* boundaryType) {
@@ -463,7 +477,7 @@ namespace IsoRealms::Spindizzy {
     cDefVisualSurfaceProcessor.flagForInitialisation(xStart, xEnd, yStart, yEnd);
   }
   
-  void World::registerView(IScreen* screen) {
+  void World::registerView(IScreen& screen) {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->registerView(screen);
     }
@@ -479,7 +493,7 @@ namespace IsoRealms::Spindizzy {
     return mLowest;
   }  
 
-  Alien* World::draw(AlienType* type, const WorldEditorCursorCell& cell, IScreen* screen) {
+  Alien* World::draw(AlienType& type, const WorldEditorCursorCell& cell, IScreen& screen) {
     Zone* mZone = getOrDrawZone(cell, screen, nullptr);
     if (mZone != nullptr) {
       Alien* mAlien = mZone->draw(type, cell);
@@ -491,7 +505,7 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
   
-  Lift* World::draw(LiftType* type, const WorldEditorCursorCell& cell, int bottomRange, int topRange, IScreen* screen) {
+  Lift* World::draw(LiftType& type, const WorldEditorCursorCell& cell, int bottomRange, int topRange, IScreen& screen) {
     Zone* mZone = getOrDrawZone(cell, screen, nullptr);
     if (mZone != nullptr) {
       Lift* mLift = mZone->draw(type, cell, bottomRange, topRange);
@@ -503,7 +517,7 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
   
-  PickUp* World::draw(PickUpType* type, const WorldEditorCursorCell& cell, IScreen* screen) {
+  PickUp* World::draw(PickUpType& type, const WorldEditorCursorCell& cell, IScreen& screen) {
     Zone* mZone = getOrDrawZone(cell, screen, nullptr);
     if (mZone != nullptr) {
       PickUp* mPickUp = mZone->draw(type, cell);
@@ -519,15 +533,15 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
   
-  Player* World::draw(PlayerType* type, const LiteralVertex& location) {
+  Player* World::draw(PlayerType& type, const LiteralVertex& location) {
     if (cDefPlayers.empty()) {
-      cDefPlayers.emplace_back(std::make_unique<Player>(cDefSpindizzy->getProject(), *this, type, location.x, location.y, location.z));
+      cDefPlayers.emplace_back(std::make_unique<Player>(cSpindizzy.getProject(), *this, type, location.x, location.y, location.z));
     }
     cDefPlayers[0]->reposition(location.x, location.y, location.z);
     return cDefPlayers[0].get();
   }
   
-  Terrain* World::draw(TerrainType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation, IScreen* screen) {
+  Terrain* World::draw(TerrainType& type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation, IScreen& screen) {
     Zone* mZone = getOrDrawZone(start, screen, nullptr);
     if (mZone != nullptr) {
       Terrain* mTerrain = mZone->draw(type, start, end, southWestHeight, southEastHeight, northWestHeight, northEastHeight, alternativeSplit, steppedBase, negation);
@@ -539,50 +553,59 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
   
-  Zone* World::draw(ZoneType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen* screen, Zone* clone) {
+  Zone* World::draw(ZoneType& type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen& screen, Zone* clone) {
     if (!intersectsZone(start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ)) {
       Zone* mNewZone = cDefZones.emplace_back(std::make_unique<Zone>(*this, type, start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ, clone)).get();
       mNewZone->registerView(screen);
       mNewZone->initialiseObjects();
       mNewZone->initialiseTerrain();
       updateBounds();
-      cDefSpindizzy->added(mNewZone);
+      cSpindizzy.added(mNewZone);
       return mNewZone;
     }
     return nullptr;
   }
 
-  ZoneObject* World::draw(ZoneObjectType* type) {
+  ZoneObject* World::draw(ZoneObjectType& type) {
     return nullptr; // TODO: Implement this.
   }
 
-  Zone* World::copy(Zone* zone, const WorldEditorCursorCell& cell, IScreen* screen) {
+  Zone* World::copy(Zone* zone, const WorldEditorCursorCell& cell, IScreen& screen) {
     return getOrDrawZone(cell, screen, zone);
   }
 
   void World::remove(Zone* zone) {
-    cDefSpindizzy->removed(zone);
+    cSpindizzy.removed(zone);
     Utils::removeElementUnique(cDefZones, zone);
     cRuntimeZonesToInitialise.erase(zone);
     updateBounds();
   }
 
+  void World::removeTool(IWorldEditorTool* tool) {
+    for (const std::pair<IEditableScreen* const, std::unique_ptr<WorldEditor>>& mEditor : cEditors) {
+      mEditor.second->removeTool(tool);
+    }
+  }
+  
   void World::removeAll(AlienType* type) {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->removeAll(type);
     }
+    removeTool(type);
   }
 
   void World::removeAll(LiftType* type) {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->removeAll(type);
     }
+    removeTool(type);
   }
 
   void World::removeAll(PickUpType* type) {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->removeAll(type);
     }
+    removeTool(type);
   }
 
   void World::removeAll(PlayerType* type) {
@@ -591,49 +614,57 @@ namespace IsoRealms::Spindizzy {
         cDefPlayers.erase(cDefPlayers.begin() + i);
       }
     }
+    removeTool(type);
   }
 
   void World::removeAll(TerrainType* type) {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->removeAll(type);
     }
+    removeTool(type);
   }
 
   void World::removeAll(ZoneType* type) {
     for (int i = cDefZones.size() - 1; i >= 0; i--) {
       if (cDefZones[i]->isType(type)) {
-        cDefSpindizzy->removed(cDefZones[i].get());
+        cSpindizzy.removed(cDefZones[i].get());
         cDefZones.erase(cDefZones.begin() + i);
       }
     }
+    removeTool(type);
   }
 
   void World::removeAll(ZoneObjectType* type) {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->removeAll(type);
     }
+    removeTool(type);
   }
 
-  Zone* World::getOrDrawZone(const WorldEditorCursorCell& cell, IScreen* screen, Zone* clone) {
+  Zone* World::getOrDrawZone(const WorldEditorCursorCell& cell, IScreen& screen, Zone* clone) {
     Zone* mZone = getZone(cell);
     if (mZone == nullptr) {
-      ZoneType* mZoneType = cDefSpindizzy->getAutomaticZoneManagementType();
+      ZoneType* mZoneType = cSpindizzy.getAutomaticZoneManagementType();
       if (mZoneType != nullptr) {
-        int mAutomaticXSize = cDefSpindizzy->getAutomaticZoneXSize();
-        int mAutomaticYSize = cDefSpindizzy->getAutomaticZoneYSize();
-        int mAutomaticZSize = cDefSpindizzy->getAutomaticZoneZSize();
+        int mAutomaticXSize = cSpindizzy.getAutomaticZoneXSize();
+        int mAutomaticYSize = cSpindizzy.getAutomaticZoneYSize();
+        int mAutomaticZSize = cSpindizzy.getAutomaticZoneZSize();
         int mXStart = (std::floor(cell.cDefX / static_cast<float>(mAutomaticXSize))) * mAutomaticXSize;
         int mXEnd   = mXStart + (mAutomaticXSize - 1);
         int mYStart = (std::floor(cell.cDefY / static_cast<float>(mAutomaticYSize))) * mAutomaticYSize;
         int mYEnd   = mYStart + (mAutomaticYSize - 1);
         int mZStart = (std::floor(cell.cDefZ / static_cast<float>(mAutomaticZSize))) * mAutomaticZSize;
         int mZEnd   = mZStart + (mAutomaticZSize - 1);
-        mZone = draw(mZoneType, WorldEditorCursorCell(mXStart, mYStart, mZStart), WorldEditorCursorCell(mXEnd, mYEnd, mZEnd), screen, clone);
+        mZone = draw(*mZoneType, WorldEditorCursorCell(mXStart, mYStart, mZStart), WorldEditorCursorCell(mXEnd, mYEnd, mZEnd), screen, clone);
       }
     }
     return mZone;
   }
 
+  bool World::isBasicProperties() const {
+    return cEditorBasicProperties;
+  }
+  
   void World::updateEditing(unsigned int milliseconds) {
     for (Zone* mZone : cRuntimeZonesToInitialise) {
       mZone->initialiseTerrain();
@@ -693,9 +724,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   IEditableScreen* World::createEditableScreen(Project* project) {
-    std::unique_ptr<WorldEditor> mScreen = std::make_unique<WorldEditor>(project, this);
+    std::unique_ptr<WorldEditor> mScreen = std::make_unique<WorldEditor>(*project, *this);
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
-      mZone->registerView(mScreen.get());
+      mZone->registerView(*mScreen.get());
     }
     IEditableScreen* mReturnValue = mScreen.get();
     cEditors[mReturnValue] = std::move(mScreen);
@@ -708,6 +739,14 @@ namespace IsoRealms::Spindizzy {
 
   void World::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> World::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool World::isDefaultConfiguration() const {
+    return true;
   }
 
   float World::getAbyssDepth() const {
@@ -733,9 +772,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::updateCache() const {
-    if (!cDefResourceData->isIncluded() && cDefSpindizzy->getProject()->isUserProject()) {
-      cDefResourceData->makeUserDataDirectory();
-      std::string mCachePath = cDefResourceData->getPath("Terrain.cache", true);
+    if (!cResourceData.isIncluded() && cSpindizzy.getProject().isUserProject()) {
+      cResourceData.makeUserDataDirectory();
+      std::string mCachePath = cResourceData.getPath("Terrain.cache", true);
 //      std::cout << "CACHE PATH: " << mCachePath << std::endl;
       std::ofstream mCacheOutput(mCachePath, std::ios::out | std::ios::binary);
       if (!mCacheOutput) {
@@ -888,7 +927,7 @@ namespace IsoRealms::Spindizzy {
     }
 
     for (Wall* mWall : cRuntimeWalls.search(mWest, mEast, mSouth, mNorth)) {
-      if (mHomeZone == nullptr || mWall->getZone() == mHomeZone) {
+      if (mHomeZone == nullptr || &mWall->getZone() == mHomeZone) {
         std::unique_ptr<CollisionData> mWallEvent = mWall->getCollision(startLocation, endLocation, object->cObject);
         if (mWallEvent != nullptr) {
           float mGradient = mWallEvent->getGradient();

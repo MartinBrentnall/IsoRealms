@@ -29,9 +29,13 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitBoundary::JSON_END     = "end";
   const std::string ZoneObjectTypeTraitBoundary::JSON_START   = "start";
 
-  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(IProject* project, ZoneObjectType* type, JSONObject object) :
-            cDefType(*type) {
+  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type) :
+            cDefType(type) {
     cDefType.getSpindizzy().added(this);
+  }
+
+  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitBoundary(project, type) {
     cDefInitiallyEnabled = object.getBoolean(JSON_ENABLED, true);
     cDefStartID = object.getString(JSON_START);
     cDefEndID = object.getString(JSON_END, cDefStartID);
@@ -81,5 +85,13 @@ namespace IsoRealms::Spindizzy {
 
   void ZoneObjectTypeTraitBoundary::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitBoundary::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectTypeTraitBoundary::isDefaultConfiguration() const {
+    return true;
   }
 }

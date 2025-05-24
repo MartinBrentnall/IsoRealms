@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
   const std::string C64TerrainGraphics::JSON_HIGHLIGHT = "highlight";
   const std::string C64TerrainGraphics::JSON_WALL      = "wall";
 
-  C64TerrainGraphics::C64TerrainGraphics(IProject* project, Spindizzy* spindizzy) :
+  C64TerrainGraphics::C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
             cDefaultYaw(project, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),
             cDefFloor(project, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsFullRedraw();}),
@@ -98,15 +98,16 @@ namespace IsoRealms::Spindizzy {
       bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
       mOrientedTexture.second->addOrientation(*cDefaultYaw, cProject, mClamp);
     }
+    cUniqueViews.insert(*cDefaultYaw);
     
     // This sets the default texture orientation
     screenPostRender(nullptr);
 
-    project->addScreenListener(this);
+    project.addScreenListener(this);
   }
   
-  C64TerrainGraphics::C64TerrainGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            C64TerrainGraphics(project, spindizzy) {
+  C64TerrainGraphics::C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            C64TerrainGraphics(project, spindizzy, data) {
     cDefFloor.init(object, JSON_FLOOR);
     cDefWall.init(object, JSON_WALL);
     cDefGrid.init(object, JSON_GRID);
@@ -122,9 +123,13 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  std::vector<IProperty*> C64TerrainGraphics::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*> {
-    };
+  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Floor Colour", cDefFloor));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Wall Colour", cDefWall));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Grid Colour", cDefGrid));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("highlight Colour", cDefHighlight));
+    return mProperties;
   }
   
   bool C64TerrainGraphics::renderIcon() {
@@ -173,21 +178,21 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void C64TerrainGraphics::registerAssets(IAssetRegistry* assets) {
+  void C64TerrainGraphics::registerAssets(IAssetRegistry& assets) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
-      assets->add(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
+      assets.add(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
     }
     for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      assets->add(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
+      assets.add(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
     }
   }
     
-  void C64TerrainGraphics::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void C64TerrainGraphics::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
-      assets->remove(mTexture.second.get());
+      assets.remove(mTexture.second.get(), relinquish);
     }
     for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      assets->remove(mOrientedTexture.second.get());
+      assets.remove(mOrientedTexture.second.get(), relinquish);
     }
   }
   
@@ -204,7 +209,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   float C64TerrainGraphics::getGridWallLuminanceAdjustment() {
-    return std::clamp(Utils::luminance(cDefWall) / Utils::luminance(cDefFloor), 1.0f - MAX_LUMINANCE_ADJUSTMENT, 1.0f + MAX_LUMINANCE_ADJUSTMENT) - 1.0f;
+    return std::clamp(Utils::luminance(**cDefWall) / Utils::luminance(**cDefFloor), 1.0f - MAX_LUMINANCE_ADJUSTMENT, 1.0f + MAX_LUMINANCE_ADJUSTMENT) - 1.0f;
   }
 
   void C64TerrainGraphics::clear(const IColour& colour) {
@@ -214,7 +219,7 @@ namespace IsoRealms::Spindizzy {
 
   void C64TerrainGraphics::renderSquare(float size, Colour& colour) {
     glBegin(GL_QUADS);
-    colour.set();
+    colour->set();
     glVertex2f(-size, -size);
     glVertex2f( size, -size);
     glVertex2f( size,  size);
@@ -224,7 +229,7 @@ namespace IsoRealms::Spindizzy {
 
   void C64TerrainGraphics::renderDiamond(float size, Colour& colour) {
     glBegin(GL_QUADS);
-    colour.set();
+    colour->set();
     glVertex2f(-size,  0.0f);
     glVertex2f( 0.0f, -size);
     glVertex2f( size,  0.0f);
@@ -234,7 +239,7 @@ namespace IsoRealms::Spindizzy {
 
   void C64TerrainGraphics::renderCircle(float radius, Colour& colour) {
     glBegin(GL_TRIANGLE_FAN);
-    colour.set();
+    colour->set();
     glVertex2f(0.0f, 0.0f);
     float mStartAngle = 0.0f * (M_PI / 180.0f);
     float mEndAngle = 360.0f * (M_PI / 180.0f);
@@ -255,12 +260,12 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::renderTile(Colour& colour) {
-    clear(cDefGrid);
+    clear(**cDefGrid);
     renderSquare(TILE_SIZE, colour);
   }
 
   void C64TerrainGraphics::renderIce() {
-    return clear(cDefGrid);
+    return clear(**cDefGrid);
   }
 
   void C64TerrainGraphics::renderPlain() {
@@ -268,7 +273,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::renderSplitPlain() {
-    clear(cDefGrid);
+    clear(**cDefGrid);
     glBegin(GL_TRIANGLES);
     float mInnerTileSize = TILE_SIZE - (1.0f - TILE_SIZE);
     glVertex2f(-TILE_SIZE,      -TILE_SIZE);
@@ -295,7 +300,7 @@ namespace IsoRealms::Spindizzy {
   void C64TerrainGraphics::renderSwitchSquareHalf(float angle) {
     renderSwitchSquare(angle);
     glBegin(GL_TRIANGLES);
-    cDefGrid.set();
+    cDefGrid->set();
     glVertex2f(SWITCH_SQUARE_INNER,          -SWITCH_SQUARE_INNER);
     glVertex2f(SWITCH_SQUARE_INNER,          -SWITCH_SQUARE_TRIANGLE_INNER);
     glVertex2f(SWITCH_SQUARE_TRIANGLE_INNER, -SWITCH_SQUARE_INNER);
@@ -307,7 +312,7 @@ namespace IsoRealms::Spindizzy {
     renderSwitchSquareHalf(angle);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     glBegin(GL_TRIANGLES);
-    cDefGrid.set();
+    cDefGrid->set();
     glVertex2f(-SWITCH_SQUARE_INNER,          SWITCH_SQUARE_INNER);
     glVertex2f(-SWITCH_SQUARE_INNER,          SWITCH_SQUARE_TRIANGLE_INNER);
     glVertex2f(-SWITCH_SQUARE_TRIANGLE_INNER, SWITCH_SQUARE_INNER);
@@ -326,15 +331,15 @@ namespace IsoRealms::Spindizzy {
 
   void C64TerrainGraphics::renderSwitchDiamondHalf(float angle) {
     renderSwitchDiamond(angle);
-    renderRectangle( SWITCH_DIAMOND_INNER, -SWITCH_DIAMOND_OUTER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, cDefWall);
-    renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER, cDefWall);
+    renderRectangle( SWITCH_DIAMOND_INNER, -SWITCH_DIAMOND_OUTER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, **cDefWall);
+    renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER, **cDefWall);
     glRotatef(-angle, 0.0f, 0.0f, 1.0f);
   }
 
   void C64TerrainGraphics::renderSwitchDiamondBoth() {
     renderSwitchDiamondHalf(0.0f);
-    renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER,  SWITCH_DIAMOND_OUTER, cDefWall);
-    renderRectangle(-SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_INNER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, cDefWall);
+    renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER,  SWITCH_DIAMOND_OUTER, **cDefWall);
+    renderRectangle(-SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_INNER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, **cDefWall);
   }
 
   void C64TerrainGraphics::renderSwitchCircle(float angle) {
@@ -353,7 +358,7 @@ namespace IsoRealms::Spindizzy {
   void C64TerrainGraphics::renderSwitchCircleHalf(float angle) {
     renderSwitchCircle(angle);
     glBegin(GL_TRIANGLE_FAN);
-    cDefWall.set();
+    cDefWall->set();
     glVertex2f(0.0f, 0.0f);
     float mStartAngle = 45.0f * (M_PI / 180.0f);
     float mEndAngle = 225.0f * (M_PI / 180.0f);
@@ -366,9 +371,9 @@ namespace IsoRealms::Spindizzy {
 
   void C64TerrainGraphics::renderArrow() {
     renderTile(cDefFloor);
-    renderRectangle(-ARROW_LINE_WIDTH, 0.0f, ARROW_LINE_WIDTH, ARROW_SIZE, cDefWall);
+    renderRectangle(-ARROW_LINE_WIDTH, 0.0f, ARROW_LINE_WIDTH, ARROW_SIZE, **cDefWall);
     glBegin(GL_TRIANGLES);
-    cDefWall.set();
+    cDefWall->set();
     glVertex2f( ARROW_SIZE,  0.0f);
     glVertex2f(-ARROW_SIZE,  0.0f);
     glVertex2f( 0.0f,       -ARROW_SIZE);
@@ -376,23 +381,23 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::renderWallMiddle(float interpolation) {
-    LiteralColour mGridColour(cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
-    LiteralColour mWallFloorMix(cDefWall, cDefFloor, interpolation * 0.5f);
+    LiteralColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+    LiteralColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
     clear(mGridColour);
     renderRectangle(-TILE_SIZE, -1.0f, TILE_SIZE, 1.0f, mWallFloorMix);
   }
 
   void C64TerrainGraphics::renderWallCap(float interpolation) {
-    LiteralColour mGridColour(cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
-    LiteralColour mWallFloorMix(cDefWall, cDefFloor, interpolation * 0.5f);
+    LiteralColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+    LiteralColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
     clear(mGridColour);
     renderRectangle(-TILE_SIZE, -TILE_SIZE / 2.0f, TILE_SIZE, 1.0f, mWallFloorMix);
   }
 
   void C64TerrainGraphics::renderIceWall() {
-    clear(cDefGrid);
+    clear(**cDefGrid);
     glBegin(GL_QUADS);
-    cDefHighlight.set();
+    cDefHighlight->set();
     glVertex2f( 1.0f,                  -1.0f);
     glVertex2f( 1.0f - ICE_EDGE_WIDTH, -1.0f + ICE_EDGE_WIDTH * 2.0f);
     glVertex2f(-1.0f + ICE_EDGE_WIDTH, -1.0f + ICE_EDGE_WIDTH * 2.0f);
@@ -447,13 +452,13 @@ namespace IsoRealms::Spindizzy {
     glPopMatrix();
     glPopAttrib();
 
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->setViewPort();
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.setViewPort();
   }
 
   // TODO: Redraw on Float relinquish
 
-  void C64TerrainGraphics::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void C64TerrainGraphics::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefFloor.save(object, JSON_FLOOR);
     cDefWall.save(object, JSON_WALL);
     cDefGrid.save(object, JSON_GRID);
@@ -472,8 +477,8 @@ namespace IsoRealms::Spindizzy {
     glPopMatrix();
     glPopAttrib();  
 
-    IApplication* mApplication = cProject->getApplication();
-    mApplication->setViewPort();
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.setViewPort();
   }
 
   void C64TerrainGraphics::hintTextureUsed(ITexture* texture, bool inUse) {
@@ -493,7 +498,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::updateLater() {
-    cProject->updateLater([this]() {
+    cProject.updateLater([this]() {
       if (cNeedsFullRedraw) {
         generateTextures();
       } else for (IFloat* mAngle : cChangedAngles) {
@@ -504,10 +509,10 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  void C64TerrainGraphics::screenAdded(IProject* project, const IScreen* screen) {
+  void C64TerrainGraphics::screenAdded(IProject& project, const IScreen* screen) {
     const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat asset!?
     if (mAngle != nullptr) {
-      project->addStateChangeListener(mAngle, this);
+      project.addStateChangeListener(mAngle, this);
       for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
         bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
         mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);
@@ -537,7 +542,7 @@ namespace IsoRealms::Spindizzy {
     cCurrentTexture = nullptr;
   }
     
-  void C64TerrainGraphics::OrientedTexture::addOrientation(const IFloat* angle, IProject* project, bool clamp) {
+  void C64TerrainGraphics::OrientedTexture::addOrientation(const IFloat* angle, IProject& project, bool clamp) {
     if (cTextures.find(angle) == cTextures.end()) {
       cTextures[angle] = std::make_unique<LiteralTexture>(project, false, clamp);
       if (angle == nullptr) {
@@ -582,5 +587,13 @@ namespace IsoRealms::Spindizzy {
 
   void C64TerrainGraphics::OrientedTexture::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::OrientedTexture::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool C64TerrainGraphics::OrientedTexture::isDefaultConfiguration() const {
+    return true;
   }
 }

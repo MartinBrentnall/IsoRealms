@@ -72,7 +72,7 @@ namespace IsoRealms::Spindizzy {
     IRenderer* getRenderer(const std::string& id) const;
     IProcessor* getProcessor(const std::string& id, bool required = true) const;
     
-    Zone* getZone();
+    Zone& getZone();
 
     /***************************\
      * Implements IWorldObject *
@@ -80,7 +80,7 @@ namespace IsoRealms::Spindizzy {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyAppearance* appearance) override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 
@@ -110,8 +110,10 @@ namespace IsoRealms::Spindizzy {
       std::string cID;
     };
 
+    // External interfaces.
+    Zone& cZone; /// Zone to which this object belongs.
+    
     // Definition data
-    Zone& cDefZone;                                                      /// Zone to which this object belongs.
     ZoneObjectType* cDefType;                                            /// Type of this object.
     std::map<std::string, std::unique_ptr<IZoneObjectTrait>> cDefTraits; /// Traits of this object.
     IRenderer* cDefRuntimeRenderer;                                      /// Visual representation of this object while playing.

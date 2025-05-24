@@ -19,20 +19,20 @@
 #include "ThemeColour.h" 
 
 namespace IsoRealms::Spindizzy {
-  ThemeColour::ThemeColour(IProject* project, IIconAnimator* animator) :
+  ThemeColour::ThemeColour(IProject& project, IIconAnimator* animator) :
             cLuaBinding(project, this) {
     cAnimator = animator;
     cColour = nullptr;
   }
 
-  void ThemeColour::registerAssets(IAssetRegistry* assets, const std::string& id) {
-    assets->add(this, id, "Spindizzy Themes");
-    assets->add(&cLuaBinding, "ThemeColour/" + id, "Spindizzy Themes");
+  void ThemeColour::registerAssets(IAssetRegistry& assets, const std::string& id) {
+    assets.add(this, id, "Spindizzy Themes");
+    assets.add(&cLuaBinding, "ThemeColour/" + id, "Spindizzy Themes");
   }
   
-  void ThemeColour::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void ThemeColour::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   void ThemeColour::set(IColour* colour) {
@@ -57,6 +57,14 @@ namespace IsoRealms::Spindizzy {
 
   void ThemeColour::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ThemeColour::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ThemeColour::isDefaultConfiguration() const {
+    return true;
   }
 
   void ThemeColour::set() const {

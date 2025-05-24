@@ -24,21 +24,26 @@
 namespace IsoRealms {
   class IAssetRegistry;
   class IAssetRemover;
+  class IAssets;
   class IResource;
   class LocalAssetRegistry;
 
   class IResourceType {
     public:
-    virtual std::string const getName() const = 0;
-    virtual std::set<IResource*> getResources() = 0;
+    virtual std::string const getSingular() const = 0;
+    virtual std::string const getPlural() const = 0;
+    virtual std::set<IResource*> getResources() = 0; // TODO: Make iterable
     virtual IResource* createResource() = 0;
+    virtual void renameResource(IResource* resource, const std::string& name) = 0;
     virtual void deleteResource(IResource* resource) = 0;
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
     virtual void makeUserDataDirectory(const std::string& resourceName) = 0;
+    virtual void renameUserDataDirectory(const std::string& oldName, const std::string& newName) = 0;
     virtual std::string getProjectPathPrefix(bool user) = 0;
     virtual std::string getCategory() = 0;
-    virtual IAssetRemover* getAssetRemover() = 0;
-    virtual IAssetRegistry* getAssetRegistry() = 0;
+    virtual IAssetRemover& getAssetRemover() = 0;
+    virtual IAssetRegistry& getAssetRegistry() = 0;
+    virtual IAssets& getAssets() = 0;
   };
 }

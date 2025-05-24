@@ -21,25 +21,26 @@
 namespace IsoRealms::Basics {
   const std::string FileTexture::JSON_FILENAME = "filename";
 
-  FileTexture::FileTexture(IProject* project, Basics* basics) {
+  FileTexture::FileTexture(IProject& project, Basics& basics, IResourceData& data) :
+            cDefFile(project) {
   }
 
-  FileTexture::FileTexture(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            FileTexture(project, basics) {
-    cDefFile = object.getString(JSON_FILENAME);
+  FileTexture::FileTexture(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            FileTexture(project, basics, data) {
+    cDefFile.load(JSON_FILENAME, object);
     reloadData(project);
   }
 
-  void FileTexture::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Stored Textures");
+  void FileTexture::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Stored Textures");
   }
   
-  void FileTexture::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void FileTexture::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
-  void FileTexture::save(JSONObject object, IAssetIdentifier* identifier) const {
-    object.addString(JSON_FILENAME, cDefFile);
+  void FileTexture::save(JSONObject object, IAssetIdentifier& identifier) const {
+    cDefFile.save(JSON_FILENAME, object);
   }
 
   void FileTexture::hintInUse(bool inUse) {
@@ -47,12 +48,21 @@ namespace IsoRealms::Basics {
   }
 
   bool FileTexture::renderIcon() const {
-    return false;
+    set();
+    glEnable(GL_ALPHA_TEST);
+    glBegin(GL_QUADS);
+    glTexCoord2f(1.0f, 0.0f); glVertex2f(-1.0f,  1.0f);
+    glTexCoord2f(1.0f, 1.0f); glVertex2f(-1.0f, -1.0f);
+    glTexCoord2f(0.0f, 1.0f); glVertex2f( 1.0f, -1.0f);
+    glTexCoord2f(0.0f, 0.0f); glVertex2f( 1.0f,  1.0f);
+    glEnd();
+    return true;
   }
 
-  std::vector<IProperty*> FileTexture::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> FileTexture::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", cDefFile));
+    return mProperties;
   }
 
   void FileTexture::set() const {
@@ -76,9 +86,17 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void FileTexture::reloadData(IProject* project) {
-    project->mainThreadInit([this]() {
-      std::string mFullPath = System::getPath(cDefFile, false);
+  std::vector<std::unique_ptr<IProperty>> FileTexture::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool FileTexture::isDefaultConfiguration() const {
+    return true;
+  }
+
+  void FileTexture::reloadData(IProject& project) {
+    project.mainThreadInit([this]() {
+      std::string mFullPath = cDefFile.getPath();
       cRuntimeTexture.loadFromFile(mFullPath);
     });
   }

@@ -25,69 +25,35 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Colour : public IAssetUser<IColour>,
-                 public IStateListener<IColour*>,
-                 public IColour {
+  class Colour : public Asset<IColour, IProject>,
+                 public IStateListener<IColour*> {
     public:
-    Colour(IProject* project, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 0.0f, std::function<void()> listener = nullptr);
+    Colour(IProject& project, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 1.0f, std::function<void()> listener = nullptr);
 
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    IColour* operator*() const {
-      return cColour;
-    }
-
-    /**********************\
-     * Implements IColour *
-    \**********************/
-    float getRed() const override {
-      return cColour->getRed();
-    }
-
-    float getGreen() const override {
-      return cColour->getGreen();
-    }
-
-    float getBlue() const override {
-      return cColour->getBlue();
-    }
-
-    float getAlpha() const override {
-      return cColour->getAlpha();
-    }
-
-    void set() const override {
-      cColour->set();
-    }
-
-    void saveAsset(JSONObject object) const override;
-
-    /**********************************\
-     * Implements IAssetUser<IColour> *
-    \**********************************/
-    void relinquish(IColour* asset) override;
+    /***************************************\
+     * Implements Asset<IColour, IProject> *
+    \***************************************/
+    IColour* createLiteralAsset(IProject& project) override;
+    IColour* getAsset(IProject& project, JSONObject object) override;
+    IColour* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
 
     /***************************************\
      * Implements IStateListener<IColour*> *
     \***************************************/
     void stateChanged(IColour* asset) override;
 
-    virtual ~Colour();
-
     private:
-    IProject* cProject;
     float cDefaultRed;
     float cDefaultGreen;
     float cDefaultBlue;
     float cDefaultAlpha;
-    IColour* cColour;
     std::function<void()> cListener;
-
-    Colour(Colour const& colour) = delete;
-    Colour& operator=(Colour const& colour) = delete;
   };
 }
-

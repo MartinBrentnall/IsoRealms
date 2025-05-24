@@ -21,7 +21,7 @@
 #include "Options.h"
 
 namespace IsoRealms {
-  WrappedOptions::WrappedOptions(IOptions* options) :
+  WrappedOptions::WrappedOptions(IOptions& options) :
             cWrappedOptions(options) {
   }
     
@@ -38,11 +38,11 @@ namespace IsoRealms {
     if (mOption != cOptions.end()) {
       return mOption->second;
     }
-    return cWrappedOptions->getOption(key);
+    return cWrappedOptions.getOption(key);
   }
 
   Options WrappedOptions::getFixedOptions() {
-    Options mOptions = cWrappedOptions->getFixedOptions();
+    Options mOptions = cWrappedOptions.getFixedOptions();
     for (std::pair<std::string, std::string> mOption : cOptions) {
       mOptions.addOption(mOption.first, mOption.second);
     }

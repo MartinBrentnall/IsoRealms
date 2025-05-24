@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IStateListener.h"
@@ -27,15 +28,10 @@
 
 namespace IsoRealms::Spindizzy {
   class ThemeTexture : public ITexture {
-    private:
-    ITexture* cTexture;
-    IIconAnimator* cAnimator;
-    IStateNotifier<ITexture>* cStateNotifier;
-
     public:
     ThemeTexture(IIconAnimator* animator);
-    void registerAssets(IAssetRegistry* assets, const std::string& id);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+    void registerAssets(IAssetRegistry& assets, const std::string& id);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
       
     void set(ITexture* texture);
 
@@ -49,5 +45,12 @@ namespace IsoRealms::Spindizzy {
     void hintTextureInUse(bool) override;
     void coord(float x, float y) const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
+
+    private:
+    ITexture* cTexture;
+    IIconAnimator* cAnimator;
+    IStateNotifier<ITexture>* cStateNotifier;
   };
 }

@@ -30,21 +30,21 @@ namespace IsoRealms::Spindizzy {
   const std::string Player::JSON_Y    = "y";
   const std::string Player::JSON_Z    = "z";
 
-  Player::Player(IProject* project, World& world, PlayerType* type, float x, float y, float z) :
+  Player::Player(IProject& project, World& world, PlayerType& type, float x, float y, float z) :
             cDefWorld(world),
-            cDefType(type),
+            cDefType(&type),
             cDefMovementHandler(cDefWorld.getMovementHandler(cDefType)),
             cDefModel(cDefType->createModel()),
             cDefID(""),
             cDefX(Utils::round(x, 0.5, 0.0)),
             cDefY(Utils::round(y, 0.5, 0.0)),
             cDefZ(Utils::round(z, 0.5, 0.0)),
-            cRuntimePhysicsObject(*cDefWorld.getSpindizzy(), this),
-            cLuaBinding(project, this) {
+            cRuntimePhysicsObject(cDefWorld.getSpindizzy(), this),
+            cLuaBinding(project, this, [this]() {return cDefType->renderAssetIcon();}) {
     reset();
   }
 
-  Player::Player(IProject* project, World& world, JSONObject object) :
+  Player::Player(IProject& project, World& world, JSONObject object) :
             cDefWorld(world),
             cDefType(nullptr),
             cDefMovementHandler(nullptr),
@@ -53,24 +53,24 @@ namespace IsoRealms::Spindizzy {
             cDefX(object.getFloat(JSON_X)),
             cDefY(object.getFloat(JSON_Y)),
             cDefZ(object.getFloat(JSON_Z)),
-            cRuntimePhysicsObject(*cDefWorld.getSpindizzy(), this),
-            cLuaBinding(project, this) {
-    cDefWorld.getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
-      cDefType = cDefWorld.getSpindizzy()->getPlayerType(object.getString(JSON_TYPE));
+            cRuntimePhysicsObject(cDefWorld.getSpindizzy(), this),
+            cLuaBinding(project, this, [this]() {return cDefType->renderAssetIcon();}) {
+    cDefWorld.getSpindizzy().getProject().init([this, object](IAssets& assets) {
+      cDefType = cDefWorld.getSpindizzy().getPlayerType(object.getString(JSON_TYPE));
       cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();
       reset();
     });
   }
 
-  void Player::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cRuntimePhysicsObject.cLocation, cDefID, "Spindizzy Players");
-    assets->add(&cLuaBinding, cDefID, "Spindizzy Players");
+  void Player::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cRuntimePhysicsObject.cLocation, cDefID, "Spindizzy Players");
+    assets.add(&cLuaBinding, cDefID, "Spindizzy Players");
   }
   
-  void Player::unregisterAssets(IAssetRemover* assets) {
-    assets->remove(&cRuntimePhysicsObject.cLocation);
-    assets->remove(&cLuaBinding);
+  void Player::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(&cRuntimePhysicsObject.cLocation, relinquish);
+    assets.remove(&cLuaBinding,                     relinquish);
   }
     
   void Player::reset() {
@@ -93,7 +93,7 @@ namespace IsoRealms::Spindizzy {
 
   void Player::save(JSONObject object) const {
     object.addString(JSON_ID, cDefID);
-    object.addString(JSON_TYPE, cDefWorld.getSpindizzy()->getID(cDefType));
+    object.addString(JSON_TYPE, cDefWorld.getSpindizzy().getID(cDefType));
     object.addFloat(JSON_X, cDefX);
     object.addFloat(JSON_Y, cDefY);
     object.addFloat(JSON_Z, cDefZ);
@@ -105,7 +105,7 @@ namespace IsoRealms::Spindizzy {
 
   void Player::updateRuntime(unsigned int milliseconds) {
     std::optional<LiteralVertex> mOldLocation = cRuntimePhysicsObject.cPresent ? std::optional(cRuntimePhysicsObject.cLocation) : std::nullopt;
-    if (!cDefWorld.getSpindizzy()->isPaused()) {
+    if (!cDefWorld.getSpindizzy().isPaused()) {
       if (cRuntimePhysicsObject.cPresent) {
         cDefWorld.move(&cRuntimePhysicsObject, milliseconds);
         if (cRuntimePhysicsObject.cLocation.z < cDefWorld.getAbyssDepth()) {
@@ -311,7 +311,7 @@ namespace IsoRealms::Spindizzy {
       cRuntimeZone->bindValues();
     }
     wall->bindValues();
-    cDefType->bounceWall(this, wall->getZone());
+    cDefType->bounceWall(this, &wall->getZone());
     wall->unbindValues();
     if (cRuntimeZone != nullptr) {
       cRuntimeZone->unbindValues();

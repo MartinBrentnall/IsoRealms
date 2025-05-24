@@ -23,37 +23,37 @@ namespace IsoRealms::Basics {
 
   const std::string SimpleString::PROPERTY_VALUE = "Initial Value";
 
-  SimpleString::SimpleString(IProject* project, Basics* basics) :
+  SimpleString::SimpleString(IProject& project, Basics& basics, IResourceData& data) :
             cDefValue(""),
             cRuntimeValue(""),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeValue = cDefValue;
     });
   }
   
-  SimpleString::SimpleString(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            SimpleString(project, basics) {
+  SimpleString::SimpleString(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            SimpleString(project, basics, data) {
     cRuntimeValue = cDefValue = object.getString(JSON_VALUE);
 
-    project->init([this](IAssets* resources) {
+    project.init([this](IAssets& resources) {
       cStateNotifier->stateChanged(this);
     });
   }
 
-  void SimpleString::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(this, "", "Simple Strings");
-    assets->add(&cLuaBinding, "", "Simple Strings");
+  void SimpleString::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, "", "Simple Strings");
+    assets.add(&cLuaBinding, "", "Simple Strings");
   }
   
-  void SimpleString::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void SimpleString::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     cStateNotifier = nullptr;
   }
   
-  void SimpleString::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void SimpleString::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addString(JSON_VALUE, cDefValue);
   }
 
@@ -65,9 +65,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> SimpleString::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> SimpleString::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Initial Value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value; return true;}));
+    return mProperties;
   }
 
   std::string SimpleString::getValue() const {
@@ -80,6 +81,14 @@ namespace IsoRealms::Basics {
 
   void SimpleString::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SimpleString::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool SimpleString::isDefaultConfiguration() const {
+    return true;
   }
 
   void SimpleString::setValue(const std::string& value) {

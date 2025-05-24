@@ -33,7 +33,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    ZoneViewTypeOverview(IProject* project, WorldView* worldView, JSONObject object);
+    ZoneViewTypeOverview(IProject& project, WorldView& worldView);
+    ZoneViewTypeOverview(IProject& project, WorldView& worldView, JSONObject object);
 
     void bind1(ZoneViewOverview* zoneViewOverview);
     void bind2(ZoneViewOverview* zoneViewOverview);
@@ -52,14 +53,16 @@ namespace IsoRealms::Spindizzy {
     \***************************************/     
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     
     // JSON members.
     static const std::string JSON_COLOUR;
     
-    IProject* cProject;
-    WorldView* cWorldView;
+    IProject& cProject;
+    WorldView& cWorldView;
 
     // Definition data.
     Colour cDefColour; /// Default colour to represent zones of this type.

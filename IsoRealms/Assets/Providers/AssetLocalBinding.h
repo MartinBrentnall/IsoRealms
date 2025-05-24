@@ -37,6 +37,10 @@ namespace IsoRealms {
     /************************************************\
      * Implements IAssetProvider<Project, IBinding> *
     \************************************************/
+    IBinding* getAsset(Project& project) const override {
+      return nullptr; // TODO: Implement this.
+    }
+    
     IBinding* getAsset(Project& project, JSONObject object) const override {
       std::string mLocalBindingID = object.getString(JSON_LOCAL);
       if (cRuntimeLocals == nullptr) {
@@ -54,8 +58,12 @@ namespace IsoRealms {
       // TODO: Implement this.
     }
 
-    void info() const override {
-      std::cout << "Local Bindings" << std::endl;
+    bool hasConfiguration() const override {
+      return true;
+    }
+
+    bool renderAssetProviderIcon() const override {
+      return false;
     }
 
     private:

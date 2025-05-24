@@ -33,39 +33,29 @@ namespace IsoRealms::Spindizzy {
   class ThemeSet;
   
   class Theme : public IStateListener<ITexture*> {
-    private:
-    static const std::string JSON_COLOUR;
-    static const std::string JSON_COLOURS;
-    static const std::string JSON_ELEMENT;
-    static const std::string JSON_TEXTURE;
-    static const std::string JSON_TEXTURES;
-
-    ThemeSet* cThemeSet;
-    std::map<ThemeTexture*, Texture> cTextures;
-    std::map<ThemeColour*, Colour> cColours;
-    Spindizzy* cSpindizzy;
-
     public:
-    Theme(IProject* project, Spindizzy* spindizzy, ThemeSet* themeSet, JSONObject object);
+    Theme(IProject& project, ThemeSet& themeSet);
+    Theme(IProject& project, ThemeSet& themeSet, JSONObject object);
 
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    std::vector<std::unique_ptr<IProperty>> getProperties();
+    void themeTextureAdded(ThemeTexture* texture);
+    void themeColourAdded(ThemeColour* colour);
 
-    ITexture* getTexture(ThemeTexture*);
-    void removeTexture(ThemeTexture*);
-    void removeColour(ThemeColour*);
-    
-    /*********************\
-     * Implements ITheme *
-    \*********************/
-    IColour* getColour(ThemeColour*);
+
+    ITexture* getTexture(ThemeTexture* texture);
+    void removeTexture(ThemeTexture* texture);
+    void removeColour(ThemeColour* colour);
+
+    IColour* getColour(ThemeColour* colour);
     void set();
     
     std::string getName();
-    std::string getElementName(ThemeTexture*);
-    std::string getElementName(ThemeColour*);
+    std::string getElementName(ThemeTexture* texture);
+    std::string getElementName(ThemeColour* colour);
     void hintInUse(bool);
 
-    void releaseAssets(IAssets* releaser);
+    void releaseAssets(IAssets& releaser);
     
     /****************************************\
      * Implements IStateListener<ITexture*> *
@@ -74,5 +64,19 @@ namespace IsoRealms::Spindizzy {
 
     virtual ~Theme() {
     }
+
+    private:
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_COLOURS;
+    static const std::string JSON_ELEMENT;
+    static const std::string JSON_TEXTURE;
+    static const std::string JSON_TEXTURES;
+
+    // External interfaces.
+    ThemeSet& cThemeSet;
+    
+    // Definition data.
+    std::map<ThemeTexture*, Texture> cTextures;
+    std::map<ThemeColour*, Colour> cColours;
   };
 }

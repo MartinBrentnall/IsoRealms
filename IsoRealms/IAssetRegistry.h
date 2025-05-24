@@ -21,13 +21,15 @@
 #include <functional>
 #include <string>
 
+#include "IsoRealms/Assets/Registry/IAssetProvider.h"
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
 
 namespace IsoRealms {
-  class I3DModel;
-  class I3DModelType;
+  class IModelInstance;
+  class IModel;
   class IActionType;
   class IBinding;
+  class IBindingType;
   class IBoolean;
   class IColour;
   class IDialogGenerator;
@@ -43,17 +45,20 @@ namespace IsoRealms {
   class IString;
   class ITexture;
   class IVertex;
+  class Project;
 
   class IAssetRegistry {
     public:
+    // TODO: Experimental. Add other types if successful.
+    virtual void add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) = 0;
       
     /**
-     * Add the specified 3D model type to this registry.
+     * Add the specified model type to this registry.
      * 
-     * @param asset The 3D model type to add.
+     * @param asset The model type to add.
      * @param id The ID of the asset.  May be an empty string (default).
      */
-    virtual void add(I3DModelType* asset, const std::string& id, const std::string& category) = 0;
+    virtual void add(IModel* asset, const std::string& id, const std::string& category) = 0;
       
     /**
      * Add the specified action type to this registry.
@@ -72,6 +77,14 @@ namespace IsoRealms {
     virtual void add(IBinding* asset, const std::string& id, const std::string& category) = 0;
       
     /**
+     * Add the specified binding type to this registry.
+     *
+     * @param asset The binding type to add.
+     * @param id The ID of the asset.  May be an empty string (default).
+     */
+    virtual void add(IBindingType* asset, const std::string& id, const std::string& category) = 0;
+
+    /**
      * Add the specified boolean to this registry.
      * 
      * @param asset The boolean to add.
@@ -89,12 +102,12 @@ namespace IsoRealms {
       
     /**
      * Add the specified editor context to this registry.
-     * 
+     *
      * @param asset The editor context to add.
      * @param id The ID of the asset.  May be an empty string (default).
      */
     virtual void add(IEditable* asset, const std::string& id, const std::string& category) = 0;
-      
+
     /**
      * Add the specified float to this registry.
      * 

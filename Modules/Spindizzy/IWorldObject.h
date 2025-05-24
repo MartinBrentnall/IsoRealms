@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Property/IProperty.h"
+#include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Literals.h"
 
 namespace IsoRealms::Spindizzy {
@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
     virtual bool contains(const LiteralVertex& location) const = 0;
     virtual void renderSelectionHighlight() const = 0;
     virtual void remove() = 0;
-    virtual std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyAppearance* appearance) = 0;
+    virtual std::vector<std::unique_ptr<IProperty>> getProperties() = 0;
     virtual std::string getTypeName() const = 0;
     virtual Zone& getObjectZone() = 0;
 

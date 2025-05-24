@@ -21,6 +21,10 @@
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Dummy/Dummy.h"
 
 namespace IsoRealms::Spindizzy {
+  ZoneObjectTypeTraitDummy::ZoneObjectTypeTraitDummy(ZoneObjectType& owner) {
+    // Nothing to do.
+  }
+
   void ZoneObjectTypeTraitDummy::save(JSONObject object) const {
     // Dummy, do nothing.
   }
@@ -34,10 +38,19 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool ZoneObjectTypeTraitDummy::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void ZoneObjectTypeTraitDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitDummy::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectTypeTraitDummy::isDefaultConfiguration() const {
+    return true;
   }
 }

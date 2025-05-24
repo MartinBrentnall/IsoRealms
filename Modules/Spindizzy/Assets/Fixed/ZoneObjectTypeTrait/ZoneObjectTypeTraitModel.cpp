@@ -26,8 +26,12 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitModel::JSON_LOCATION = "location";
   const std::string ZoneObjectTypeTraitModel::JSON_MODEL    = "model";
 
-  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject* project, ZoneObjectType* type, JSONObject object) :
+  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type) :
             cDefModel(project) {
+  }
+
+  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitModel(project, type) {
     cDefLocationID = object.getString(JSON_LOCATION);
     cDefModel.init(object, JSON_MODEL);
   }
@@ -63,5 +67,13 @@ namespace IsoRealms::Spindizzy {
 
   void ZoneObjectTypeTraitModel::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitModel::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectTypeTraitModel::isDefaultConfiguration() const {
+    return true;
   }
 }

@@ -34,20 +34,20 @@ namespace IsoRealms::UI {
   const float Prompt::DEFAULT_SHADOW_OFFSET = 0.008f;
   const float Prompt::DEFAULT_TEXT_SIZE     = 0.05f;
 
-  Prompt::Prompt(IProject* project, UI* ui) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  Prompt::Prompt(IProject& project, UI& ui, IResourceData& data) :
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefFont(project),
             cDefSelectionColour(project, 1.0f, 1.0f, 1.0f),
             cDefNegativeAction(project),
             cDefPositiveAction(project),
             cLuaBinding(project, this) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimePositiveHighlighted = false;
     });
   }
   
-  Prompt::Prompt(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
-            Prompt(project, ui) {
+  Prompt::Prompt(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+            Prompt(project, ui, data) {
     cDefTextSize     = object.getFloat(JSON_TEXT_SIZE,     DEFAULT_TEXT_SIZE);
     cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
     cDefMessage      = object.getString(JSON_MESSAGE);
@@ -59,19 +59,19 @@ namespace IsoRealms::UI {
     cDefPositiveAction.init(object, JSON_ON_CONFIRM);
   }
 
-  void Prompt::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IInputHandler*>(this), "", "System");
-    assets->add(static_cast<IScreen*>(this), "", "System");
-    assets->add(&cLuaBinding, "", "System");
+  void Prompt::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IInputHandler*>(this), "", "System");
+    assets.add(static_cast<IScreen*>(this), "", "System");
+    assets.add(&cLuaBinding, "", "System");
   }
   
-  void Prompt::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(&cLuaBinding);
+  void Prompt::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IInputHandler*>(this), relinquish);
+    assets.remove(static_cast<IScreen*>(this),       relinquish);
+    assets.remove(&cLuaBinding,                      relinquish);
   }
   
-  void Prompt::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Prompt::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_TEXT_SIZE,      cDefTextSize,     DEFAULT_TEXT_SIZE);
     object.addFloat(JSON_SHADOW_OFFSET,  cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
     object.addString(JSON_MESSAGE,       cDefMessage);
@@ -91,9 +91,18 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<IProperty*> Prompt::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Font",             cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Font Size",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Shadow Offset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Selection Colour", cDefSelectionColour));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Message",          [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Reject Label",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Accept Label",     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Rejection",     cDefNegativeAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Acceptance",    cDefPositiveAction));
+    return mProperties;
   }
   
   void Prompt::reset() {
@@ -136,9 +145,9 @@ namespace IsoRealms::UI {
 
   void Prompt::renderScreen(float scale, float aspectRatio) const {
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
-    Utils::shadowPrint( 0.0f,                 0.0f, **cDefFont, cDefTextSize,                                                      mWhite, cDefShadowOffset, IFont::Alignment::CENTER, cDefMessage);
-    Utils::shadowPrint(-0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize, !cRuntimePositiveHighlighted ? cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::LEFT,   cDefNegativeText);
-    Utils::shadowPrint( 0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize,  cRuntimePositiveHighlighted ? cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::RIGHT,  cDefPositiveText);
+    Utils::shadowPrint( 0.0f,                 0.0f, **cDefFont, cDefTextSize,                                                        mWhite, cDefShadowOffset, IFont::Alignment::CENTER, cDefMessage);
+    Utils::shadowPrint(-0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize, !cRuntimePositiveHighlighted ? **cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::LEFT,   cDefNegativeText);
+    Utils::shadowPrint( 0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize,  cRuntimePositiveHighlighted ? **cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::RIGHT,  cDefPositiveText);
   }
 
   bool Prompt::renderAssetIcon() const {
@@ -147,5 +156,13 @@ namespace IsoRealms::UI {
 
   void Prompt::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Prompt::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Prompt::isDefaultConfiguration() const {
+    return true;
   }
 }

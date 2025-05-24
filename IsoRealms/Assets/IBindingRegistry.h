@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Registry/IAssetUser.h"
+#include <string>
 
 namespace IsoRealms {
   class JSONObject;

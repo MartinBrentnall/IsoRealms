@@ -22,7 +22,7 @@
 #include "Modules/Spindizzy/Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewOverview::ZoneViewOverview(IProject* project, WorldView* worldView, ZoneViewTypeOverview& type, Zone* zone) :
+  ZoneViewOverview::ZoneViewOverview(IProject& project, WorldView& worldView, ZoneViewTypeOverview& type, Zone* zone) :
             cDefType(type),
             cLuaBinding(project, this) {
     zone->addProperty(this);

@@ -25,10 +25,10 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  CameraOverview::CameraOverview(IProject* project, WorldView* view) :
+  CameraOverview::CameraOverview(IProject& project, WorldView& view) :
             cParent(view) {
-    project->reset([this, view]() {
-      World* mWorld = view->getWorld();
+    project.reset([this]() {
+      World* mWorld = cParent.getWorld();
       float mXSize =  mWorld->getEndX() - mWorld->getStartX() + 1;
       float mYSize =  mWorld->getEndY() - mWorld->getStartY() + 1;
       float mZSize = (mWorld->getEndZ() - mWorld->getStartZ() + 3) / 2.0f;
@@ -40,15 +40,15 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  CameraOverview::CameraOverview(IProject* project, WorldView* view, JSONObject object) :
+  CameraOverview::CameraOverview(IProject& project, WorldView& view, JSONObject object) :
             CameraOverview(project, view) {
   }
 
-  void CameraOverview::registerAssets(IAssetRegistry* assets) {
+  void CameraOverview::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
     
-  void CameraOverview::unregisterAssets(IAssetRemover* assets) {
+  void CameraOverview::unregisterAssets(IAssetRemover& assets, bool relinquish) {
     // Nothing to do.
   }
   
@@ -102,5 +102,13 @@ namespace IsoRealms::Spindizzy {
   
   void CameraOverview::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> CameraOverview::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool CameraOverview::isDefaultConfiguration() const {
+    return true;
   }
 }

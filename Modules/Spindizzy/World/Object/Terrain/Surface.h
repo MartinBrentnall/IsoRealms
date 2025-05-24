@@ -69,7 +69,7 @@ namespace IsoRealms::Spindizzy {
     int getYStart() const override;
     int getYEnd() const override;
     IWorldObject* getOwner() override;
-    Zone* getZone() override;
+    Zone& getZone() override;
     bool isSolid() override;
     void adjustPosition(LiteralVertex& location, double milliseconds) override;
     int getSurfaceCellHeight(int x, int y) const override;
@@ -83,6 +83,10 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
+    // External interfaces.
+    IWorldObject& cOwner;
+    TerrainType& cType;
+    
     // Definition data.
     int cDefStartX;
     int cDefEndX;
@@ -92,9 +96,7 @@ namespace IsoRealms::Spindizzy {
     int cDefSlopeX;
     int cDefSlopeY;
     Direction cDefFacing;
-    TerrainType& cDefType;
     std::optional<Condition> cDefCondition;
-    IWorldObject& cDefOwner;
 
     std::unique_ptr<LiteralVertex> getBoundaryCrossingPoint(LiteralVertex& start, LiteralVertex& end, double* lowestGradient, double infinity);
   };

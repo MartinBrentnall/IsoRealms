@@ -18,48 +18,48 @@
  */
 #include "BoundaryType.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  BoundaryType::BoundaryType(Spindizzy& spindizzy) :
-            cSpindizzy(spindizzy),
-            cBoundaryType(cSpindizzy.createLiteralBoundaryType(this)) {
-  }
-
-  void BoundaryType::init(JSONObject object) {
-    cSpindizzy.getProject()->init([this, object](IAssets* assets) {
-      set(object);
-    });
-  }
-
-  void BoundaryType::set(JSONObject object) {
-    cSpindizzy.release(this, cBoundaryType);
-    cBoundaryType = cSpindizzy.getBoundaryType(this, object);
-  }
-
-  void BoundaryType::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cSpindizzy.save(mAssetObject, cBoundaryType);
-  }
-
-  void BoundaryType::relinquish(IBoundaryType* asset) {
-    if (cBoundaryType == asset) {
-      cBoundaryType = cSpindizzy.createLiteralBoundaryType(this);
-    }
+  BoundaryType::BoundaryType(Spindizzy& spindizzy) : 
+            Asset<IBoundaryType, Spindizzy>(spindizzy, spindizzy.createLiteralBoundaryType(this)) {
   }
 
   IBinding* BoundaryType::getBoundaryBinding(const std::string& id) const {
-    return cBoundaryType->getBinding(id);
+    return cAsset->getBinding(id);
   }
 
   std::string BoundaryType::getBoundaryBindingID(const IBinding* binding) const {
-    return cBoundaryType->getBindingID(binding);
+    return cAsset->getBindingID(binding);
   }
 
-  BoundaryType::~BoundaryType() {
-    if (cBoundaryType != nullptr) {
-      cSpindizzy.release(this, cBoundaryType);
-    }
+  IBoundaryType* BoundaryType::createLiteralAsset(Spindizzy& spindizzy) {
+    return spindizzy.createLiteralBoundaryType(this);
+  }
+  
+  IBoundaryType* BoundaryType::getAsset(Spindizzy& spindizzy, JSONObject object) {
+    return spindizzy.getBoundaryType(this, object);
+  }
+  
+  IBoundaryType* BoundaryType::getAsset(Spindizzy& spindizzy, const std::string& id) {
+    return spindizzy.getBoundaryType(this, id);
+  }
+  
+  std::vector<std::string> BoundaryType::getAvailableProviders() const {
+    return cManager.getAllBoundaryTypes();
+  }  
+
+  bool BoundaryType::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderBoundaryTypeIcon(id);
+  }
+
+  bool BoundaryType::hasConfiguration() const {
+    return cManager.isBoundaryTypeConfigurable(getID());
+  }
+
+  bool BoundaryType::isDefaultConfiguration() const {
+    return true;
   }
 }
-

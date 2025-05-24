@@ -42,7 +42,8 @@ namespace IsoRealms::UI {
   class MenuItemFileList final : public IMenuItem,
                                  public IString {
     public:
-    MenuItemFileList(IProject* project, Menu* menu, JSONObject object);
+    MenuItemFileList(IProject& project, Menu& menu);
+    MenuItemFileList(IProject& project, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -53,8 +54,8 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
-    void registerAssets(IAssetRegistry* assets) override;
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
+    void registerAssets(IAssetRegistry& assets) override;
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -72,6 +73,8 @@ namespace IsoRealms::UI {
     \*******************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     
@@ -101,8 +104,11 @@ namespace IsoRealms::UI {
       std::string cDefPath;  /// The path of this file (relative to the data folder from which it originates).
     };
 
-    // Definition data.      
+    // External Interfaces.
+    IProject& cProject;
     HatHandler& cHatHandler;
+
+    // Definition data.
     std::string cDefID;     /// ID of this menu item for binding.
     std::string cDefFolder; /// Path of folder to list files from.
     bool cDefUser;   /// True: path is relative to user data folder.  False: path is relative to program data folder.

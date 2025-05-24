@@ -54,19 +54,19 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource interface *
     \**********************/
-    World(IProject* project, Spindizzy* spindizzy);
-    World(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    World(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
     
     // General functions.
     void reset();
     void renderRuntime();
-    Spindizzy* getSpindizzy() const;
+    Spindizzy& getSpindizzy() const;
     std::vector<std::unique_ptr<Zone>>& getZones();
     Zone* getZone(IVertex* location);
     int getStartX();
@@ -75,6 +75,7 @@ namespace IsoRealms::Spindizzy {
     int getEndX();
     int getEndY();
     int getEndZ();
+    void updateDisplayLists();
 
     // Boundary support.
     void added(IBoundaryType* boundaryType);
@@ -116,19 +117,19 @@ namespace IsoRealms::Spindizzy {
     void flagTerrainForInitialisation(int xStart, int xEnd, int yStart, int yEnd);
     
     // Misc functions.
-    void registerView(IScreen* screen);
+    void registerView(IScreen& screen);
     int getMaxZoneHeight(int startX, int endX, int startY, int endY, int startZ, int endZ) const;
     
     // Object drawing functions (used for editing).
-    Alien*      draw(AlienType*      type, const WorldEditorCursorCell& cell, IScreen* screen);
-    Lift*       draw(LiftType*       type, const WorldEditorCursorCell& cell, int bottomRange, int topRange, IScreen* screen);
-    PickUp*     draw(PickUpType*     type, const WorldEditorCursorCell& cell, IScreen* screen);
-    Player*     draw(PlayerType*     type, const LiteralVertex& location);
-    Terrain*    draw(TerrainType*    type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation, IScreen* screen);
-    Zone*       draw(ZoneType*       type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen* screen, Zone* clone);
-    ZoneObject* draw(ZoneObjectType* type);
+    Alien*      draw(AlienType&      type, const WorldEditorCursorCell& cell, IScreen& screen);
+    Lift*       draw(LiftType&       type, const WorldEditorCursorCell& cell, int bottomRange, int topRange, IScreen& screen);
+    PickUp*     draw(PickUpType&     type, const WorldEditorCursorCell& cell, IScreen& screen);
+    Player*     draw(PlayerType&     type, const LiteralVertex& location);
+    Terrain*    draw(TerrainType&    type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation, IScreen& screen);
+    Zone*       draw(ZoneType&       type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen& screen, Zone* clone);
+    ZoneObject* draw(ZoneObjectType& type);
 
-    Zone* copy(Zone* zone, const WorldEditorCursorCell& cell, IScreen* screen);
+    Zone* copy(Zone* zone, const WorldEditorCursorCell& cell, IScreen& screen);
     
     // Object erasure functions (used for editing).
     void remove(Zone* zone);
@@ -143,9 +144,10 @@ namespace IsoRealms::Spindizzy {
     void removeAll(ZoneObjectType* type);
 
     // Simple drawing interface.
-    Zone* getOrDrawZone(const WorldEditorCursorCell& cell, IScreen* screen, Zone* clone);
+    Zone* getOrDrawZone(const WorldEditorCursorCell& cell, IScreen& screen, Zone* clone);
 
     // General editing functions.
+    bool isBasicProperties() const;
     void updateEditing(unsigned int milliseconds);
     void renderEditing(const IScreen* screen) const;
     Zone* getZone(const WorldEditorCursorCell& cell);
@@ -164,6 +166,8 @@ namespace IsoRealms::Spindizzy {
     IEditableScreen* createEditableScreen(Project* project) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     // TODO: To be replaced with dynamic solution.
     float getAbyssDepth() const;
@@ -171,6 +175,7 @@ namespace IsoRealms::Spindizzy {
     private:
     
     // JSON members.
+    static const std::string JSON_BASIC_PROPERTIES;
     static const std::string JSON_BOUNCE_CONTROL;
     static const std::string JSON_DEBRIS_GENERATORS;
     static const std::string JSON_GRAVITY;
@@ -188,8 +193,8 @@ namespace IsoRealms::Spindizzy {
     };
 
     // External interfaces.
-    Spindizzy* cDefSpindizzy;        /// Spindizzy module reference.
-    IResourceData* cDefResourceData; /// Access to world surface cache on disk.    
+    Spindizzy& cSpindizzy;        /// Spindizzy module reference.
+    IResourceData& cResourceData; /// Access to world surface cache on disk.
     
     // Fixed sub-components.
     TerrainProcessor cDefPhysicalSurfaceProcessor; /// Processor for physical surfaces.
@@ -219,6 +224,9 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<CollisionHandlerInstance>> cRuntimeCollisionHandlers;               /// Collision handlers to be processed.
     std::set<Zone*> cRuntimeZonesToInitialise;                                                      /// Zones flagged for terrain initialisation.
 
+    // Editor configuration.
+    bool cEditorBasicProperties;
+
     // Editing data.
     std::map<IEditableScreen*, std::unique_ptr<WorldEditor>> cEditors;
 
@@ -226,6 +234,7 @@ namespace IsoRealms::Spindizzy {
     LuaBinding<World> cLuaBinding;
     
     // Private functions.
+    void removeTool(IWorldEditorTool* tool);
     void updateBounds();
     void updateCache() const;
     PhysicalState calculateNewState(PhysicsObject* object, double milliseconds);

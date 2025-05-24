@@ -27,30 +27,49 @@
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "Offset/AbsoluteOffset.h"
-#include "Offset/LinkedOffset.h"
-#include "Location/AbsoluteLocation.h"
-#include "Location/RelativeLocation.h"
+#include "LayoutComponentEdge.h"
 
 namespace IsoRealms::UI {
   class Layout;
 
   class LayoutComponent final {
     public:
-    LayoutComponent(IProject* project, Layout& layout);
-    LayoutComponent(IProject* project, Layout& layout, JSONObject object);
-    void registerAssets(IAssetRegistry* assets, const std::string& name);
-    void unregisterAssets(IAssetRemover* assets);
+    LayoutComponent(IProject& project, Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio);
+    LayoutComponent(IProject& project, Layout& layout, JSONObject object);
+    LayoutComponent(const LayoutComponent& layoutComponent);
+    void registerAssets(IAssetRegistry& assets, const std::string& name);
+    void unregisterAssets(IAssetRemover& assets, bool relinquish);
     void render(float scale, float aspectRatio);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
-    bool inputEditor(sf::Event& event, IScreen* screen, float x, float y, float aspectRatio, float scale);
-    bool renderSelectionHighlight(float aspectRatio, float scale);
+    void renderEditor(float scale, float aspectRatio);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
+//    bool pickHandle(float x, float y, float scale, float aspectRatio);
+//    bool move(float x, float y, float aspectRatio);
+    void setLeftEdgeLocation(float value, float aspectRatio);
+    void setRightEdgeLocation(float value, float aspectRatio);
+    void setBottomEdgeLocation(float value);
+    void setTopEdgeLocation(float value);
+
+    void setLeftEdgeOffset(float value, float aspectRatio);
+    void setRightEdgeOffset(float value, float aspectRatio);
+    void setBottomEdgeOffset(float value);
+    void setTopEdgeOffset(float value);
+
+    void renderSelectionHighlight(float aspectRatio);
+//    void renderEditingHandles(float aspectRatio, float scale);
+    
+    void renderAsRelation(float aspectRatio) const;
     bool contains(float x, float y, float aspectRatio);
     bool isRelatedTo(LayoutComponent* component) const;
+    bool isHorizontalEdge(const LayoutComponentEdge& edge) const;
+    bool isPositiveEdge(const LayoutComponentEdge& edge) const;
     float getLeft(float aspectRatio) const;
     float getRight(float aspectRatio) const;
     float getBottom() const;
     float getTop() const;
+    Layout& getLayout();
+    std::string getName() const;
+    std::vector<std::string> getAvailableComponentNames();
+    std::vector<std::unique_ptr<IProperty>> getProperties();
 
     /***********************\
      * Scripting Interface *
@@ -62,67 +81,28 @@ namespace IsoRealms::UI {
     // JSON members.
     static const std::string JSON_BOTTOM;
     static const std::string JSON_LEFT;
-    static const std::string JSON_LOCATION;
-    static const std::string JSON_OFFSET;
     static const std::string JSON_RIGHT;
     static const std::string JSON_SCREEN;
     static const std::string JSON_TOP;
-    static const std::string JSON_TYPE;
 
-    static const std::string LOCATION_TYPE_ABSOLUTE;
-    static const std::string LOCATION_TYPE_RELATIVE;
-
-    static const std::string OFFSET_TYPE_ABSOLUTE;
-    static const std::string OFFSET_TYPE_LINKED;
-
-    // Private types.
-    class Edge {
-      public:
-      LayoutComponent& cDefParent;
-      std::unique_ptr<ILayoutLocation> cDefLocation;
-      std::unique_ptr<ILayoutOffset> cDefOffset;
-      
-      Edge(LayoutComponent& parent, float location);
-      Edge(IProject* project, LayoutComponent& parent, JSONObject object, const std::string& tag, bool horizontal, float defaultValue);
-
-      float getLocation(float aspectRatio) const;
-      void save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const;
-    };
-    
-    enum class Handle {
-      NONE,
-      WEST,
-      EAST,
-      SOUTH,
-      NORTH,
-      SOUTHWEST,
-      SOUTHEAST,
-      NORTHWEST,
-      NORTHEAST
-    };
-      
-    static const float EDIT_HANDLE_RADIUS;
+    // External interfaces.
+    Layout& cLayout;
     
     // Definition data.
-    Layout& cDefLayout;
     Screen cDefScreen;
-    Edge cDefLeftEdge;
-    Edge cDefRightEdge;
-    Edge cDefBottomEdge;
-    Edge cDefTopEdge;
+    LayoutComponentEdge cDefLeftEdge;
+    LayoutComponentEdge cDefRightEdge;
+    LayoutComponentEdge cDefBottomEdge;
+    LayoutComponentEdge cDefTopEdge;
     
     // Runtime data.
     IScreen* cRuntimeScreen;
-    
-    // Editing data.
-    Handle cEditingSelectedHandle;
-    bool cEditingDragging;
     
     // Scripting support.
     LuaBinding<LayoutComponent> cLuaBinding;
 
     // Private functions.
-    void renderEditingHandle(float, float, float, Handle);
-    void testHandlePick(float xPick, float yPick, float x, float y, float radius, LayoutComponent::Handle handle);
+    // void renderEditingHandle(float x, float y, float radius, Handle handle);
+    // void testHandlePick(float xPick, float yPick, float x, float y, float radius, LayoutComponent::Handle handle);
   };
 }

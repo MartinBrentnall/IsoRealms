@@ -34,14 +34,14 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    SimpleVertex(IProject* project, Basics* basics);
-    SimpleVertex(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    SimpleVertex(IProject& project, Basics& basics, IResourceData& data);
+    SimpleVertex(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**********************\
      * Implements IVertex *
@@ -51,6 +51,8 @@ namespace IsoRealms::Basics {
     double getZ() const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -72,9 +74,9 @@ namespace IsoRealms::Basics {
     static const std::string PROPERTY_Z;
 
     // Definition data.
-    double cDefX; /// Initial X value.
-    double cDefY; /// Initial Y value.
-    double cDefZ; /// Initial Z value.
+    float cDefX; /// Initial X value.
+    float cDefY; /// Initial Y value.
+    float cDefZ; /// Initial Z value.
 
     // Runtime data.
     double cRuntimeX; /// Current X value.

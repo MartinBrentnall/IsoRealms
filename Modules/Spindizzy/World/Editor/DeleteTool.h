@@ -30,16 +30,18 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
     // Internal classes.
     class Eraser : public IWorldEditorToolInstance {
       public:
-      Eraser(DeleteTool& parent, WorldEditor* editor);
+      Eraser(DeleteTool& parent, WorldEditor& editor);
 
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -56,7 +58,7 @@ namespace IsoRealms::Spindizzy {
 
       private:
       DeleteTool& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
       std::vector<IWorldObject*> cHoverObjects;
       int cSelectedObject;
       void removeSelectedObject();

@@ -22,6 +22,7 @@
 #include <GL/glew.h>
 
 #include "IsoRealms/Common/IVisualElement.h"
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
@@ -44,14 +45,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    AlienType(IProject* project, Spindizzy* spindizzy);
-    AlienType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     virtual ~AlienType();
 
@@ -84,9 +85,11 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 
@@ -110,7 +113,7 @@ namespace IsoRealms::Spindizzy {
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:
-      Pen(AlienType& parent, WorldEditor* editor);
+      Pen(AlienType& parent, WorldEditor& editor);
       
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -127,11 +130,11 @@ namespace IsoRealms::Spindizzy {
       
       private:
       AlienType& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
     };
 
     // External interfaces.
-    Spindizzy& cDefSpindizzy; /// Spindizzy module reference.
+    Spindizzy& cSpindizzy; /// Spindizzy module reference.
     
     // Definition data
     Model cDefModel;          /// Visual representation of this alien type.

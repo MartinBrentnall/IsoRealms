@@ -25,47 +25,47 @@
 #include "AssetCache.h"
 
 namespace IsoRealms {
-  template<class OWNER, class TYPE> class AssetLiteral : public AssetCache<TYPE>,
+  template<class OWNER, class TYPE> class AssetLiteral : public AssetCache<OWNER, TYPE>,
                                                          public ILiteralAssetProvider<OWNER, TYPE> {
     public:
 
     /******************************************\
      * Implements ILiteralAssetProvider<TYPE> *
     \******************************************/
-    TYPE* getLiteralAsset(const std::string& value) const override {
-      return this->getCachedAsset(value);
+    TYPE* getLiteralAsset(OWNER& owner, const std::string& value) const override {
+      return this->getCachedAsset(owner, value);
     }
 
     TYPE* getAsset(OWNER& owner, JSONObject object) const override {
-      return this->getCachedAsset(object);
+      return this->getCachedAsset(owner, object);
     }
 
+    TYPE* getAsset(OWNER& owner) const override {
+      return this->getCachedAsset(owner);
+    }
+    
     void releaseAsset(const TYPE* asset) override {
       this->releaseCachedAsset(asset);
-    }
-
-    void info() const override {
-      this->cacheInfo();
     }
 
     /*******************************\
      * Implements AssetCache<TYPE> *
     \*******************************/
-    std::string normalize(const std::string& expression) const override {
-      return normalizeLiteral(expression);
+    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, const std::string& value) const override {
+      return createLiteralAsset(owner, value);
     }
 
-    std::unique_ptr<TYPE> getUncachedAsset(const std::string& value) const override {
-      return createLiteralAsset(value);
+    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, JSONObject object) const override {
+      return createLiteralAsset(owner, object);
     }
 
-    std::unique_ptr<TYPE> getUncachedAsset(JSONObject object) const override {
-      return createLiteralAsset(object);
+    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner) const override {
+      return createLiteralAsset(owner);
     }
 
     private:
-    virtual std::string normalizeLiteral(const std::string& expression) const = 0;
-    virtual std::unique_ptr<TYPE> createLiteralAsset(const std::string& expression) const = 0;
-    virtual std::unique_ptr<TYPE> createLiteralAsset(JSONObject object) const = 0;
+    virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner) const = 0;
+    virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner, const std::string& expression) const = 0;
+    virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner, JSONObject object) const = 0;
   };
 }

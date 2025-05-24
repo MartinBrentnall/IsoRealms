@@ -17,19 +17,24 @@
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 
 #include "WallPatternTile.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPatternTile::WallPatternTile(IProject* project, Spindizzy* spindizzy, JSONObject object) :
-            cDefTexture(project) {
+  WallPatternTile::WallPatternTile(IProject& project, Spindizzy& spindizzy) :
+            cDefTexture(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  }
+
+  WallPatternTile::WallPatternTile(IProject& project, Spindizzy& spindizzy, JSONObject object) :
+            WallPatternTile(project, spindizzy) {
     cDefTexture.set(object, JSON_TEXTURE);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> WallPatternTile::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
-    mVisuals.emplace_back(std::make_unique<WallPatternTileSurface>(this, wall));
+    mVisuals.emplace_back(std::make_unique<WallPatternTileSurface>(*this, wall));
     return mVisuals;
   }
 
@@ -69,25 +74,25 @@ namespace IsoRealms::Spindizzy {
     return *cDefTexture == texture;
   }
 
-  WallPatternTile::WallPatternTileSurface::WallPatternTileSurface(const WallPatternTile* parent, Wall* wall) :
+  WallPatternTile::WallPatternTileSurface::WallPatternTileSurface(const WallPatternTile& parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {
   }
 
   void WallPatternTile::WallPatternTileSurface::render() {
-    int mX                              = cDefWall->getX();
-    int mY                              = cDefWall->getY();
-    int mZ                              = cDefWall->getZ();
-    int mLength                         = cDefWall->getLength();
-    int mHeight                         = cDefWall->getHeight();
-    int mTopSlope                       = cDefWall->getTopSlope();
-    int mBottomSlope                    = cDefWall->getBottomSlope();
+    int mX                         = cDefWall->getX();
+    int mY                         = cDefWall->getY();
+    int mZ                         = cDefWall->getZ();
+    int mLength                    = cDefWall->getLength();
+    int mHeight                    = cDefWall->getHeight();
+    int mTopSlope                  = cDefWall->getTopSlope();
+    int mBottomSlope               = cDefWall->getBottomSlope();
     Wall::Direction mFaceDirection = cDefWall->getFaceDirection();
-    cDefParent->render(mX, mY, mZ, mLength, mHeight, mTopSlope, mBottomSlope, mFaceDirection);
+    cDefParent.render(mX, mY, mZ, mLength, mHeight, mTopSlope, mBottomSlope, mFaceDirection);
   }
 
   ITexture* WallPatternTile::WallPatternTileSurface::getTexture() {
-    return cDefParent->cDefTexture->getTexture();
+    return cDefParent.cDefTexture->getTexture();
   }
 
   void WallPatternTile::WallPatternTileSurface::prepareVisual() {
@@ -99,11 +104,21 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WallPatternTile::renderAssetIcon() const {
-    return false;
+    return cDefTexture->renderAssetIcon();
   }
 
   void WallPatternTile::saveAsset(JSONObject object) const {
     cDefTexture.save(object, JSON_TEXTURE);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> WallPatternTile::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Texture", cDefTexture));
+    return mProperties;
+  }
+
+  bool WallPatternTile::isDefaultConfiguration() const {
+    return false; // TODO: Implement
   }
 
   const std::string WallPatternTile::JSON_TEXTURE = "texture";

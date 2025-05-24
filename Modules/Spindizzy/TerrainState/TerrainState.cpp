@@ -24,27 +24,27 @@ namespace IsoRealms::Spindizzy {
   const std::string TerrainState::JSON_ID    = "id";
   const std::string TerrainState::JSON_STATE = "state";
 
-  TerrainState::TerrainState(IProject* project, Spindizzy* spindizzy) :
+  TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             TerrainState(project, "TODO", true) {
   }
 
-  TerrainState::TerrainState(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
+  TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
             TerrainState(project, object.getString(JSON_ID), object.getBoolean(JSON_STATE)) {
     cDefIcon.init(object, JSON_ICON);
     cDefHintAction.init(object, JSON_HINT);
   }
 
-  void TerrainState::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IBoolean*>(this), "", "Spindizzy Terrain States");
-    assets->add(&cLuaBinding, "", "Spindizzy Terrain States");
+  void TerrainState::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IBoolean*>(this), "", "Spindizzy Terrain States");
+    assets.add(&cLuaBinding, "", "Spindizzy Terrain States");
   }
 
-  void TerrainState::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IBoolean*>(this));
-    assets->remove(&cLuaBinding);
+  void TerrainState::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IBoolean*>(this), relinquish);
+    assets.remove(&cLuaBinding,                 relinquish);
   }
 
-  void TerrainState::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void TerrainState::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_STATE, cDefValue);
     cDefIcon.save(object, JSON_ICON);
     cDefHintAction.save(object, JSON_HINT);
@@ -55,12 +55,17 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool TerrainState::renderIcon() const {
-    return false;
+    glScalef(2.0f, 2.0f, 1.0f);
+    cDefIcon->renderScreen(1.0f, 1.0f);
+    return true;
   }
 
-  std::vector<IProperty*> TerrainState::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Initial State", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Hint Action",   cDefHintAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Icon",          cDefIcon));
+    return mProperties;
   }
 
   ConditionElement& TerrainState::getConditionElement() {
@@ -87,18 +92,26 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> TerrainState::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool TerrainState::isDefaultConfiguration() const {
+    return true;
+  }
+
   void TerrainState::setValue(bool value) {
     cRuntimeValue = value;
   }
 
-  TerrainState::TerrainState(IProject* project, const std::string& name, bool state) :
+  TerrainState::TerrainState(IProject& project, const std::string& name, bool state) :
             cDefConditionElement(name, this, this),
             cDefValue(state),
             cDefHintAction(project),
             cDefIcon(project),
             cRuntimeValue(state),
-            cLuaBinding(project, this) {
-    project->reset([this]() {
+            cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
+    project.reset([this]() {
       cRuntimeValue = cDefValue;
     });
   }

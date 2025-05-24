@@ -26,8 +26,11 @@
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
 
 namespace IsoRealms::Spindizzy {
+  class Spindizzy;
+
   class WallPatternDummy : public IWallPattern {
     public:
+    WallPatternDummy(Spindizzy& spindizzy);
     
     /***************************\
      * Implements IWallPattern *
@@ -36,11 +39,13 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;
     void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const override;
     void hintInUse(bool inUse) override;
-    
+
     /**************************************\
      * Implements IAsset via IWallPattern *
     \**************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }

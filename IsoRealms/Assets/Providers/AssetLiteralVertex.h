@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Assets/Fixed/LiteralVertex.h"
+#include "IsoRealms/Assets/Literal/LiteralVertex.h"
 
 #include "AssetLiteral.h"
 
@@ -31,11 +31,15 @@ namespace IsoRealms {
     /************************************\
      * Implements AssetLiteral<IVertex> *
     \************************************/
-    std::string normalizeLiteral(const std::string& expression) const override {
-      return expression; // TODO
+    bool hasConfiguration() const override {
+      return true;
     }
 
-    std::unique_ptr<IVertex> createLiteralAsset(const std::string& expression) const override {
+    std::unique_ptr<IVertex> createLiteralAsset(Project& project) const override {
+      return std::make_unique<LiteralVertex>(0.0f, 0.0f, 0.0f);
+    }
+
+    std::unique_ptr<IVertex> createLiteralAsset(Project& project, const std::string& expression) const override {
       std::vector<std::string> mSections = Utils::splitWords(expression, ' ');
       if (mSections.size() == 3) {
         
@@ -48,7 +52,11 @@ namespace IsoRealms {
       return nullptr;
     }
 
-    std::unique_ptr<IVertex> createLiteralAsset(JSONObject object) const override {
+    bool renderAssetProviderIcon() const override {
+      return false;
+    }
+
+    std::unique_ptr<IVertex> createLiteralAsset(Project& project, JSONObject object) const override {
       return std::make_unique<LiteralVertex>(object.getFloat(JSON_X), object.getFloat(JSON_Y), object.getFloat(JSON_Z));
     }
 

@@ -18,5 +18,6 @@
  */
 #pragma once
 
+#include "IsoRealms/Assets/IBindingRegistry.h"
 #include "Lua/LuaBinding.h"
 #include "Lua/LocalLuaBinding.h"

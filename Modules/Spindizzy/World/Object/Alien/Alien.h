@@ -49,7 +49,7 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    Alien(Zone& zone, AlienType* type, int x, int y, int z);
+    Alien(Zone& zone, AlienType& type, int x, int y, int z);
     Alien(Zone& zone, Alien& alien, int x, int y, int z);
     Alien(Zone& zone, JSONObject object);
 
@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
     /******************\
      * Script support *
     \******************/
-    Zone* getZone();
+    Zone& getZone();
 
     /******************************\
      * Implements IPhysicalObject *
@@ -96,7 +96,7 @@ namespace IsoRealms::Spindizzy {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyAppearance* appearance) override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 
@@ -108,8 +108,10 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_Y;
     static const std::string JSON_Z;
 
+    // External interfaces.
+    Zone& cZone; /// Zone to which this alien belongs.
+    
     // Definition data
-    Zone& cDefZone;                             /// Zone to which this alien belongs.
     AlienType* cDefType;                        /// Type of this alien.
     MovementHandler* cDefMovementHandler;       /// Handles movement of this alien (saves a runtime map lookup from World).
     std::unique_ptr<ModelInstance> cDefModel;   /// Visual representation of this alien.

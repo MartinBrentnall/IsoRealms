@@ -41,12 +41,38 @@ namespace IsoRealms {
 
   class Utils {
     public:
+    class Point2D {
+      public:
+      Point2D(float x, float y) :
+                cX(x),
+                cY(y) {
+      }
+
+      // Get a point in 3D space on a straight line from A to B.
+      // Interpolation is from 0 (point A) to 1 (point B).
+      Point2D midPoint(const Point2D& other, float weight) const {
+        return Point2D(cX + (other.cX - cX) * weight, cY + (other.cY - cY) * weight);
+      }
+
+      float getX() const {
+        return cX;
+      }
+
+      float getY() const {
+        return cY;
+      }
+
+      private:
+      float cX;
+      float cY;
+    };
 
     /**
     * Convert the specified integer value to a string.
     */
     static std::string toString(int);
     static std::string toString(unsigned int);
+    static std::string toString(long);
 
     /**
     * Convert the specified float value to a string.
@@ -77,13 +103,16 @@ namespace IsoRealms {
     static void renderIconCustom();
     static void renderIconNone();
     static void renderIconTick();
+    static void renderIconTerminal();
     
+    static void renderCircle(float x, float y, float radius);
     static void renderCurve(float x, float y, float radius, float startAngle, float endAngle);
     static void renderCurveLine(float x, float y, float radius, float startAngle, float endAngle);
     static void renderRectangle(float left, float bottom, float right, float top);
     static void renderBar(float left, float bottom, float right, float top);
     static void renderRoundedRectangleLines(float left, float bottom, float right, float top, float curveSize);
     static void renderRoundedRectangle(float left, float bottom, float right, float top, float curveSize);
+    static void renderBezier(const Point2D& start, const Point2D& controlA, const Point2D& controlB, const Point2D& end, int resolution);
 
     template <class TYPE> static int removeElement(std::vector<TYPE>& vector, const TYPE& element) {
       int mRemoved = 0;
@@ -127,6 +156,15 @@ namespace IsoRealms {
       throw ArgumentException("ERROR: Utils::reverseLookup: Specified value not found in specified map");
     }
 
+    template <class MAP> static std::string getAvailableKey(MAP& map, const std::string proposedName) {
+      std::string mProposedName = proposedName;
+      int mCount = 1;
+      while (map.find(mProposedName) != map.end()) {
+        mProposedName = proposedName + " " + toString(mCount++);
+      }
+      return mProposedName;
+    }
+  
     static void calculateColour(float hue, float saturation, float lightness, float& red, float& green, float& blue);
     static float getMiddle(float a, float b, float c);
     static float getLightness(float red, float green, float blue);
@@ -143,7 +181,7 @@ namespace IsoRealms {
       * @param double  Y location of second point.
       * @returns  Distance between two points.
       */
-    static double distance(double, double, double, double);
+    static double distance(double x1, double y1, double x2, double y2);
 
     static double round(double value, double alignTo, double direction) {
       return direction == 0.0 ? std::round(value / alignTo) * alignTo
@@ -151,6 +189,12 @@ namespace IsoRealms {
            :                    std::floor(value / alignTo) * alignTo;
     }
     
+    static long round(double value, long alignTo, long direction) {
+      return direction == 0 ? std::round(value / static_cast<double>(alignTo)) * alignTo
+           : direction >  0 ? std::ceil( value / static_cast<double>(alignTo)) * alignTo
+           :                  std::floor(value / static_cast<double>(alignTo)) * alignTo;
+    }
+
     static std::unique_ptr<IDigitalInputMapping> toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event) {
       switch (event.type) {
         case sf::Event::KeyPressed:            return std::make_unique<KeyMapping>(event.key.code);

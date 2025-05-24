@@ -18,8 +18,7 @@
  */
 #include "PropertiesTool.h"
 
-#include "IsoRealms/Editing/Configurator.h"
-#include "IsoRealms/Editing/PropertiesMenu.h"
+#include "IsoRealms/Editing/UIManager.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
@@ -30,37 +29,49 @@ namespace IsoRealms::Spindizzy {
   const LiteralColour PropertiesTool::SELECTION_COLOUR(1.0f, 0.0f, 0.2f, 1.0f);
   const LiteralColour PropertiesTool::LOCKED_COLOUR(0.0f, 0.0f, 0.0f, 1.0f);
 
-  IWorldEditorToolInstance* PropertiesTool::createToolInstance(WorldEditor* editor) {
+  IWorldEditorToolInstance* PropertiesTool::createToolInstance(WorldEditor& editor) {
     return cEditingModifiers.emplace_back(std::make_unique<Modifier>(*this, editor)).get();
   }
 
   bool PropertiesTool::renderAssetIcon() const {
-    return false;
+    Utils::renderIconCustom();
+    return true;
   }
 
   void PropertiesTool::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  PropertiesTool::Modifier::Modifier(PropertiesTool& parent, WorldEditor* editor) :
+  std::vector<std::unique_ptr<IProperty>> PropertiesTool::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool PropertiesTool::isDefaultConfiguration() const {
+    return true;
+  }
+
+  PropertiesTool::Modifier::Modifier(PropertiesTool& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor),
             cSelectedObject(0),
-            cConfigurator(this),
-            cPropertiesMenu(&cConfigurator, editor->getPropertyAppearance()) {
+            cEditingProperties(false),
+            cPropertiesUI(editor.getWorld().getSpindizzy().getProject(), *this, [this]() { // TODO: Am I passing the right project here????
+              cEditingProperties = false;
+            }, [](IEditable* editor) {
+              std::cout << "WARNING: PropertiesTool::Modifier::Modifier: This UI does not support editables." << std::endl;
+            }) {
   }
 
   bool PropertiesTool::Modifier::inputTool(SignalInputID id, double yaw) {
-    // TODO: Implement this.
     if (cEditingProperties) {
       switch (id) {
-        case SignalInputID::MOVE_CURSOR_FORWARD:  cConfigurator.input(ConfiguratorSignalID::MOVE_UP);    break;
-        case SignalInputID::MOVE_CURSOR_BACKWARD: cConfigurator.input(ConfiguratorSignalID::MOVE_DOWN);  break;
-        case SignalInputID::MOVE_CURSOR_LEFT:     cConfigurator.input(ConfiguratorSignalID::MOVE_LEFT);  break;
-        case SignalInputID::MOVE_CURSOR_RIGHT:    cConfigurator.input(ConfiguratorSignalID::MOVE_RIGHT); break;
-        case SignalInputID::USE_TOOL:             cConfigurator.input(ConfiguratorSignalID::CONFIRM);    break;
-        case SignalInputID::CANCEL:               cConfigurator.input(ConfiguratorSignalID::CANCEL);     break;
-        default:                                                                                         break;
+        case SignalInputID::MOVE_CURSOR_FORWARD:  cPropertiesUI.input(UISignalID::MOVE_UP);    break;
+        case SignalInputID::MOVE_CURSOR_BACKWARD: cPropertiesUI.input(UISignalID::MOVE_DOWN);  break;
+        case SignalInputID::MOVE_CURSOR_LEFT:     cPropertiesUI.input(UISignalID::MOVE_LEFT);  break;
+        case SignalInputID::MOVE_CURSOR_RIGHT:    cPropertiesUI.input(UISignalID::MOVE_RIGHT); break;
+        case SignalInputID::USE_TOOL:             cPropertiesUI.input(UISignalID::CONFIRM);    break;
+        case SignalInputID::CANCEL:               cPropertiesUI.input(UISignalID::CANCEL);     break;
+        default:                                                                               break;
       }
       return true;
     }
@@ -79,23 +90,19 @@ namespace IsoRealms::Spindizzy {
 
   void PropertiesTool::Modifier::showProperties() {
     if (!cHoverObjects.empty() && !cEditingProperties) {
-      cProperties = cHoverObjects[cSelectedObject]->getProperties(cEditor->getPropertyAppearance());
-      cPropertiesMenu.clear();
-      cPropertiesMenu.setTitle(cHoverObjects[cSelectedObject]->getTypeName() + " Configuration:");
-      for (unsigned int i = 0; i < cProperties.size(); i++) {
-        cPropertiesMenu.addItem(cProperties[i].get());
-      }
-      cConfigurator.open(&cPropertiesMenu);
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, [this]() {
+        return cHoverObjects[cSelectedObject]->getProperties();
+      }, cHoverObjects[cSelectedObject]->getTypeName() + " Configuration:", 1.0f, 1.0f, 1.0f));
       cEditingProperties = true;
     }
   }
 
   void PropertiesTool::Modifier::processCursorMovement(LiteralVertex* start, LiteralVertex* end) {
     if (end != nullptr) {
-      cEditor->getWorld()->selectObjects(start, *end, [this](IWorldObject* object) {
+      cEditor.getWorld().selectObjects(start, *end, [this](IWorldObject* object) {
         return true;
       }, [this](IWorldObject* object) {
-        if (!object->getProperties(cEditor->getPropertyAppearance()).empty()) {
+        if (!object->getProperties().empty()) {
           cHoverObjects.push_back(object);
           cSelectedObject = cHoverObjects.size() - 1;
         }
@@ -131,7 +138,7 @@ namespace IsoRealms::Spindizzy {
       glDisable(GL_BLEND);
     }
 
-    glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
+    glTranslatef(cEditor.getCursorX(), cEditor.getCursorY(), cEditor.getCursorZ() * 0.5f);
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.5f);
     Utils::renderVolumeLines(-0.5f, 0.5f, -0.5f, 0.5f, -0.5f, 0.0f);
@@ -139,31 +146,42 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PropertiesTool::Modifier::renderUI(float aspectRatio) const {
-    cConfigurator.render(aspectRatio);
+    cPropertiesUI.render(aspectRatio);
   }
 
   bool PropertiesTool::Modifier::renderIcon(float yaw) const {
-    Utils::renderIconLeaf();
-    return true;
+    return cParent.renderAssetIcon();
   }
 
   void PropertiesTool::Modifier::updateUI(unsigned int milliseconds) {
-    cConfigurator.update(milliseconds);
+    cPropertiesUI.update(milliseconds);
   }
 
   IFont* PropertiesTool::Modifier::getFont() const {
-    return cConfigurator.getFont();
+    return cEditor.getFont();
   }
 
-  const IColour* PropertiesTool::Modifier::getSelectionColour() const {
-    return &SELECTION_COLOUR;
+  float PropertiesTool::Modifier::getFontSize() const {
+    return cEditor.getFontSize();
   }
 
-  const IColour* PropertiesTool::Modifier::getLockedColour() const {
-    return &LOCKED_COLOUR;
+  IFont* PropertiesTool::Modifier::getCodeFont() const {
+    return nullptr;
   }
 
-  void PropertiesTool::Modifier::exit() {
-    cEditingProperties = false;
+  float PropertiesTool::Modifier::getCodeFontSize() const {
+    return 0.2f;
   }
+
+  IProject& PropertiesTool::Modifier::getProject() const {
+    return cEditor.getWorld().getSpindizzy().getProject();
+  }
+  
+  // const IColour* PropertiesTool::Modifier::getSelectionColour() const {
+  //   return &SELECTION_COLOUR;
+  // }
+  //
+  // const IColour* PropertiesTool::Modifier::getLockedColour() const {
+  //   return &LOCKED_COLOUR;
+  // }
 }

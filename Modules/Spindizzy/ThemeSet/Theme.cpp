@@ -29,40 +29,69 @@ namespace IsoRealms::Spindizzy {
   const std::string Theme::JSON_TEXTURE  = "texture";
   const std::string Theme::JSON_TEXTURES = "textures";
 
-  Theme::Theme(IProject* project, Spindizzy* spindizzy, ThemeSet* themeSet, JSONObject object) {
-    cSpindizzy = spindizzy;
-    cThemeSet  = themeSet;
-  //       cThemes[mThemeName] = mTheme;
-  //       createThemeResources(mNode, resources);
+  Theme::Theme(IProject& project, ThemeSet& themeSet) :
+            cThemeSet(themeSet) {
+    std::vector<ThemeTexture*> mThemeTextures = themeSet.getThemeTextures();
+    for (ThemeTexture* mThemeTexture : mThemeTextures) {
+      cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(project));
+    }
 
+    std::vector<ThemeColour*> mThemeColours = themeSet.getThemeColours();
+    for (ThemeColour* mThemeColour : mThemeColours) {
+      cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(project));
+    }
+  }
+  
+  Theme::Theme(IProject& project, ThemeSet& themeSet, JSONObject object) :
+            cThemeSet(themeSet) {
     for (JSONObject mTextureObject : object.getArray(JSON_TEXTURES)) {
-      ThemeTexture* mThemeTexture = cThemeSet->createTexture(mTextureObject.getString(JSON_ELEMENT));
+      ThemeTexture* mThemeTexture = cThemeSet.createTexture(mTextureObject.getString(JSON_ELEMENT));
       cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(project)).first->second.init(mTextureObject, JSON_TEXTURE);
     }
 
     for (JSONObject mColourObject : object.getArray(JSON_COLOURS)) {
-      ThemeColour* mThemeColour = cThemeSet->createColour(project, mColourObject.getString(JSON_ELEMENT));
+      ThemeColour* mThemeColour = cThemeSet.createColour(project, mColourObject.getString(JSON_ELEMENT));
       cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(project, 1.0f, 0.0f, 1.0f)).first->second.init(mColourObject, JSON_COLOUR);
     }
 
-    project->init([this](IAssets* assets) {
+    project.init([this](IAssets& assets) {
       set();
     });
   }
 
-  void Theme::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Theme::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mTexturesArray = object.addArray(JSON_TEXTURES);
     for (const std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
       JSONObject mTextureObject = mTexturesArray.addObject();
-      mTextureObject.addString(JSON_ELEMENT, cThemeSet->getElement(mTexture.first));
+      mTextureObject.addString(JSON_ELEMENT, cThemeSet.getElement(mTexture.first));
       mTexture.second.save(mTextureObject, JSON_TEXTURE);
     }
     JSONArray mColoursArray = object.addArray(JSON_COLOURS);
     for (const std::pair<ThemeColour* const, Colour>& mColour : cColours) {
       JSONObject mColourObject = mColoursArray.addObject();
-      mColourObject.addString(JSON_ELEMENT, cThemeSet->getElement(mColour.first));
+      mColourObject.addString(JSON_ELEMENT, cThemeSet.getElement(mColour.first));
       mColour.second.save(mColourObject, JSON_COLOUR);
     }
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Theme::getProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", [this]() {return getName();}, [this](const std::string& value) {return cThemeSet.setName(*this, value);}));
+    for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(cThemeSet.getElement(mTexture.first), mTexture.second));
+    }
+    for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(cThemeSet.getElement(mColour.first), mColour.second));
+    }
+    return mProperties;
+  }
+
+  void Theme::themeTextureAdded(ThemeTexture* texture) {
+    cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(texture), std::forward_as_tuple(cThemeSet.getSpindizzy().getProject()));
+  }
+
+  void Theme::themeColourAdded(ThemeColour* colour) {
+    cColours.emplace(std::piecewise_construct, std::forward_as_tuple(colour), std::forward_as_tuple(cThemeSet.getSpindizzy().getProject()));
   }
 
   void Theme::set() {
@@ -70,20 +99,20 @@ namespace IsoRealms::Spindizzy {
       i->first->set(*i->second);
     }
     for (std::map<ThemeColour*, Colour>::iterator i = cColours.begin(); i != cColours.end(); i++) {
-      i->first->set(&i->second);
+      i->first->set(*(i->second));
     }
   }
 
   std::string Theme::getName() {
-    return cThemeSet->getName(this);
+    return cThemeSet.getName(this);
   }
 
   std::string Theme::getElementName(ThemeTexture* texture) {
-    return cThemeSet->getElement(texture);
+    return cThemeSet.getElement(texture);
   }
 
   std::string Theme::getElementName(ThemeColour* colour) {
-    return cThemeSet->getElement(colour);
+    return cThemeSet.getElement(colour);
   }
 
   void Theme::hintInUse(bool inUse) {
@@ -92,7 +121,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Theme::releaseAssets(IAssets* releaser) {
+  void Theme::releaseAssets(IAssets& releaser) {
     // Nothing to do.
   }
 
@@ -109,7 +138,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   IColour* Theme::getColour(ThemeColour* colour) {
-    return &cColours.find(colour)->second;
+    return *(cColours.find(colour)->second);
   }
 
   // TODO: Enable this

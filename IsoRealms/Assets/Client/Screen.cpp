@@ -18,39 +18,43 @@
  */
 #include "Screen.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Screen::Screen(IProject* project) :
-            cProject(project),
-            cScreen(cProject->createLiteralScreen(this)) {
+  Screen::Screen(IProject& project) : 
+            Asset<IScreen, IProject>(project, project.createLiteralScreen(this)) {
   }
 
-  void Screen::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  Screen::Screen(const Screen& screen) :
+            Asset<IScreen, IProject>(screen.cManager, screen.cManager.createLiteralScreen(this)) {
+    setID(screen.getID());
   }
 
-  void Screen::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cScreen);
-    cScreen = cProject->getScreen(this, mAssetObject);
+  IScreen* Screen::createLiteralAsset(IProject& project) {
+    return project.createLiteralScreen(this);
+  }
+  
+  IScreen* Screen::getAsset(IProject& project, JSONObject object) {
+    return project.getScreen(this, object);
+  }
+  
+  IScreen* Screen::getAsset(IProject& project, const std::string& id) {
+    return project.getScreen(this, id);
+  }
+  
+  std::vector<std::string> Screen::getAvailableProviders() const {
+    return cManager.getAllScreens();
+  }  
+
+  bool Screen::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderScreenIcon(id);
   }
 
-  void Screen::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cScreen);
-  }
+  bool Screen::hasConfiguration() const {
+    return cManager.isScreenConfigurable(getID());
+  }  
 
-  void Screen::relinquish(IScreen* asset) {
-    if (cScreen == asset) {
-      cScreen = cProject->createLiteralScreen(this);
-    }
-  }
-
-  Screen::~Screen() {
-    if (cScreen != nullptr) {
-      cProject->release(this, cScreen);
-    }
+  bool Screen::isDefaultConfiguration() const {
+    return true;
   }
 }
-

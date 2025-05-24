@@ -36,7 +36,12 @@ namespace IsoRealms::Spindizzy {
   const float ZoneObjectTypeTraitPhysics::DEFAULT_STEP_REACH    = 0.5f;
   const bool  ZoneObjectTypeTraitPhysics::DEFAULT_USE_NON_SOLID = false;
   
-  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(IProject* project, ZoneObjectType* type, JSONObject object) {
+  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(IProject& project, ZoneObjectType& type) {
+    // Nothing to do.
+  }
+
+  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(IProject& project, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitPhysics(project, type) {
     cDefMovableID = object.getString(JSON_CONTROLS);
     cDefStepReach = object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH);
     cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
@@ -102,5 +107,13 @@ namespace IsoRealms::Spindizzy {
 
   void ZoneObjectTypeTraitPhysics::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitPhysics::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ZoneObjectTypeTraitPhysics::isDefaultConfiguration() const {
+    return true;
   }
 }

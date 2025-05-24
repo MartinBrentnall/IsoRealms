@@ -19,7 +19,7 @@
 #include "ScoreTracker.h"
 
 namespace IsoRealms::HighScore {
-  ScoreTracker::ScoreTracker(IProject* project, HighScore* highScore) :
+  ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data) :
             cParentProject(project),
             cScriptQuit(project),
             cScriptOnHighScoreAchieved(project),
@@ -27,26 +27,26 @@ namespace IsoRealms::HighScore {
             cProjectDataPath(project),
             cProjectUser(project, false),
             cLuaBinding(project, this) {
-    project->mainThreadInit([this]() {
+    project.mainThreadInit([this]() {
       cProject->initMainThread();      
     });
     
-    project->reset([this]() {
+    project.reset([this]() {
       cProject->reset();
     });
     
-    project->updateRuntime([this](unsigned int milliseconds) {
+    project.updateRuntime([this](unsigned int milliseconds) {
       cProject->updateRuntime(milliseconds);
       cProject->updateRuntimeComplete();
     });
   }
   
-  ScoreTracker::ScoreTracker(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data) :
-            ScoreTracker(project, highScore) {
+  ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options) :
+            ScoreTracker(project, highScore, data) {
     LocalOptions mLocalOptions("Project", options);
-    cProject = std::make_unique<Project>(cParentProject->getApplication(), &mLocalOptions, [this](bool forceQuit) {
+    cProject = std::make_unique<Project>(cParentProject.getApplication(), mLocalOptions, [this](bool forceQuit) {
       if (forceQuit) {
-        cParentProject->finish(true);
+        cParentProject.finish(true);
       } else {
         projectCompleted();
       }
@@ -83,9 +83,8 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<IProperty*> ScoreTracker::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   bool ScoreTracker::renderAssetIcon() const {
@@ -94,6 +93,14 @@ namespace IsoRealms::HighScore {
 
   void ScoreTracker::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool ScoreTracker::isDefaultConfiguration() const {
+    return true;
   }
 
   void ScoreTracker::hintInUse(bool inUse) {
@@ -112,7 +119,7 @@ namespace IsoRealms::HighScore {
     // Nothing to do.
   }
 
-  void ScoreTracker::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void ScoreTracker::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addInteger(JSON_RECORD_LIMIT, cMaximumRecords);
     cProjectUser.save(object, JSON_USER);
     cProjectDataPath.save(object, JSON_SAVE_PATH);
@@ -134,21 +141,21 @@ namespace IsoRealms::HighScore {
     }
   }
 
-  void ScoreTracker::registerAssets(IAssetRegistry* assets) {
-    assets->add(static_cast<IScreen*>(this), "", "Score Trackers");
-    assets->add(static_cast<IInputHandler*>(this), "", "Score Trackers");
-    assets->add(&cLuaBinding, "", "Score Trackers");
-    assets->add(static_cast<IAssets*>(cProject.get()), "Project", "Score Trackers");
+  void ScoreTracker::registerAssets(IAssetRegistry& assets) {
+    assets.add(static_cast<IScreen*>(this), "", "Score Trackers");
+    assets.add(static_cast<IInputHandler*>(this), "", "Score Trackers");
+    assets.add(&cLuaBinding, "", "Score Trackers");
+    assets.add(static_cast<IAssets*>(cProject.get()), "Project", "Score Trackers");
 //    for (ScoreTable* mScoreTable : cScoreTables) {
       
 //    }
   }
   
-  void ScoreTracker::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(static_cast<IScreen*>(this));
-    assets->remove(&cLuaBinding);
-    assets->remove(static_cast<IAssets*>(cProject.get()));
+  void ScoreTracker::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IInputHandler*>(this),     relinquish);
+    assets.remove(static_cast<IScreen*>(this),           relinquish);
+    assets.remove(&cLuaBinding,                          relinquish);
+    assets.remove(static_cast<IAssets*>(cProject.get()), relinquish);
   }
   
   void ScoreTracker::projectCompleted() {

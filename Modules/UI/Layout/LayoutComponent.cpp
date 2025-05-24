@@ -21,62 +21,61 @@
 #include "Layout.h"
 
 namespace IsoRealms::UI {
-  const float LayoutComponent::EDIT_HANDLE_RADIUS = 0.01f;
-
   const std::string LayoutComponent::JSON_BOTTOM = "bottom";
   const std::string LayoutComponent::JSON_LEFT   = "left";
-  const std::string LayoutComponent::JSON_LOCATION = "location";
-  const std::string LayoutComponent::JSON_OFFSET   = "offset";
   const std::string LayoutComponent::JSON_RIGHT  = "right";
   const std::string LayoutComponent::JSON_SCREEN = "screen";
   const std::string LayoutComponent::JSON_TOP    = "top";
-  const std::string LayoutComponent::JSON_TYPE   = "type";
 
-  const std::string LayoutComponent::LOCATION_TYPE_ABSOLUTE = "Absolute";
-  const std::string LayoutComponent::LOCATION_TYPE_RELATIVE = "Relative";
-
-  const std::string LayoutComponent::OFFSET_TYPE_ABSOLUTE = "Absolute";
-  const std::string LayoutComponent::OFFSET_TYPE_LINKED   = "Linked";
-
-  LayoutComponent::LayoutComponent(IProject* project, Layout& layout) :
-            cDefLayout(layout),
+  LayoutComponent::LayoutComponent(IProject& project, Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio) :
+            cLayout(layout),
             cDefScreen(project),
-            cDefLeftEdge(*this, -1.0f),
-            cDefRightEdge(*this, 1.0f),
-            cDefBottomEdge(*this, -1.0f),
-            cDefTopEdge(*this, 1.0f),
+            cDefLeftEdge(*this, aspectRatio, std::min(x1, x2)),
+            cDefRightEdge(*this, aspectRatio, std::max(x1, x2)),
+            cDefBottomEdge(*this, 1.0f, std::min(y1, y2)),
+            cDefTopEdge(*this, 1.0f, std::max(y1, y2)),
             cRuntimeScreen(nullptr),
-            cEditingSelectedHandle(Handle::NONE),
-            cEditingDragging(false),
             cLuaBinding(project, this) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeScreen = *cDefScreen;
     });
   }
 
-  LayoutComponent::LayoutComponent(IProject* project, Layout& layout, JSONObject object) :
-            cDefLayout(layout),
+  LayoutComponent::LayoutComponent(IProject& project, Layout& layout, JSONObject object) :
+            cLayout(layout),
             cDefScreen(project),
-            cDefLeftEdge(project, *this, object, JSON_LEFT, true, -1.0f),
-            cDefRightEdge(project, *this, object, JSON_RIGHT, true, 1.0f),
-            cDefBottomEdge(project, *this, object, JSON_BOTTOM, false, -1.0f),
-            cDefTopEdge(project, *this, object, JSON_TOP, false, 1.0f),
+            cDefLeftEdge(*this, object, JSON_LEFT),
+            cDefRightEdge(*this, object, JSON_RIGHT),
+            cDefBottomEdge(*this, object, JSON_BOTTOM),
+            cDefTopEdge(*this, object, JSON_TOP),
             cRuntimeScreen(nullptr),
-            cEditingSelectedHandle(Handle::NONE),
-            cEditingDragging(false),
             cLuaBinding(project, this) {
     cDefScreen.init(object, JSON_SCREEN);
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeScreen = *cDefScreen;
     });
   }
 
-  void LayoutComponent::registerAssets(IAssetRegistry* assets, const std::string& name) {
-    assets->add(&cLuaBinding, name, "Layout Components");
+  LayoutComponent::LayoutComponent(const LayoutComponent& layoutComponent) :
+            cLayout(layoutComponent.cLayout),
+            cDefScreen(layoutComponent.cDefScreen),
+            cDefLeftEdge(layoutComponent.cDefLeftEdge),
+            cDefRightEdge(layoutComponent.cDefRightEdge),
+            cDefBottomEdge(layoutComponent.cDefBottomEdge),
+            cDefTopEdge(layoutComponent.cDefTopEdge),
+            cRuntimeScreen(nullptr),
+            cLuaBinding(cLayout.getUI().getProject(), this) {
+    cLayout.getUI().getProject().reset([this]() {
+      cRuntimeScreen = *cDefScreen;
+    });
+  }
+
+  void LayoutComponent::registerAssets(IAssetRegistry& assets, const std::string& name) {
+    assets.add(&cLuaBinding, name, "Layout Components");
   }
   
-  void LayoutComponent::unregisterAssets(IAssetRemover* assets) {
-    assets->remove(&cLuaBinding);
+  void LayoutComponent::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   void LayoutComponent::render(float scale, float aspectRatio) {
@@ -94,134 +93,134 @@ namespace IsoRealms::UI {
       glPushMatrix();
       glTranslatef(mXCenter, mYCenter, 0.0f);
       glScalef(mScale, mScale, mScale);
-//       glBindTexture(GL_TEXTURE_2D, 0);
-//       glColor3f(1.0f, 1.0f, 1.0f);
-//       glBegin(GL_LINE_LOOP);
-//       glVertex2f(-1.0f * mAspectRatio, -1.0f);
-//       glVertex2f( 1.0f * mAspectRatio, -1.0f);
-//       glVertex2f( 1.0f * mAspectRatio,  1.0f);
-//       glVertex2f(-1.0f * mAspectRatio,  1.0f);
-//       glEnd();
       cRuntimeScreen->renderScreen(mScale * scale, mAspectRatio);
       glPopMatrix();
     }
   }
 
-  void LayoutComponent::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void LayoutComponent::renderEditor(float scale, float aspectRatio) {
+    float mLeft        = cDefLeftEdge.getLocation(aspectRatio);
+    float mRight       = cDefRightEdge.getLocation(aspectRatio);
+    float mBottom      = cDefBottomEdge.getLocation(1.0f);
+    float mTop         = cDefTopEdge.getLocation(1.0f);
+    float mWidth       = mRight - mLeft;
+    float mHeight      = mTop - mBottom;
+    float mScale       = mHeight / 2.0f;
+    float mAspectRatio = mWidth / mHeight;
+    float mXCenter     = mLeft + mWidth / 2.0f;
+    float mYCenter     = mBottom + mHeight / 2.0f;
+    glPushMatrix();
+    glTranslatef(mXCenter, mYCenter, 0.0f);
+    glScalef(mScale, mScale, mScale);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+    glEnable(GL_BLEND);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(-1.0f * mAspectRatio, -1.0f);
+    glVertex2f( 1.0f * mAspectRatio, -1.0f);
+    glVertex2f( 1.0f * mAspectRatio,  1.0f);
+    glVertex2f(-1.0f * mAspectRatio,  1.0f);
+    glEnd();
+    glBegin(GL_LINES);
+    glVertex2f(-1.0f * mAspectRatio, -1.0f);
+    glVertex2f( 1.0f * mAspectRatio,  1.0f);
+    glVertex2f( 1.0f * mAspectRatio, -1.0f);
+    glVertex2f(-1.0f * mAspectRatio,  1.0f);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    cDefScreen->renderScreen(mScale * scale, mAspectRatio);
+    glPopMatrix();
+  }
+
+  void LayoutComponent::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefScreen.save(object, JSON_SCREEN);
-    cDefTopEdge.save(object, JSON_TOP, &cDefLayout, 1.0f);
-    cDefBottomEdge.save(object, JSON_BOTTOM, &cDefLayout, -1.0f);
-    cDefLeftEdge.save(object, JSON_LEFT, &cDefLayout, -1.0f);
-    cDefRightEdge.save(object, JSON_RIGHT, &cDefLayout, 1.0f);
+    cDefTopEdge.save(object, JSON_TOP, &cLayout, 1.0f);
+    cDefBottomEdge.save(object, JSON_BOTTOM, &cLayout, -1.0f);
+    cDefLeftEdge.save(object, JSON_LEFT, &cLayout, -1.0f);
+    cDefRightEdge.save(object, JSON_RIGHT, &cLayout, 1.0f);
   }
 
-  bool LayoutComponent::inputEditor(sf::Event& event, IScreen* screen, float x, float y, float aspectRatio, float scale) {
-/* FIXME:LayoutEditor
-    switch (event.type) {
-      case sf::Event::MouseButtonPressed: {
-        switch (event.button.button) {
-          case SDL_BUTTON_LEFT: {
-            float mNorth = cDefTopEdge.getLocation(1.0f);
-            float mSouth = cDefBottomEdge.getLocation(1.0f);
-            float mWest  = cDefLeftEdge.getLocation(aspectRatio);
-            float mEast  = cDefRightEdge.getLocation(aspectRatio);
-            cEditingSelectedHandle = LayoutComponent::NONE;
-            float mEditHandleRadius = EDIT_HANDLE_RADIUS / scale;
-            testHandlePick(x, y, mWest - mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, LayoutComponent::WEST);
-            testHandlePick(x, y, mEast + mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, LayoutComponent::EAST);
-            testHandlePick(x, y, (mWest + mEast) / 2.0,     mSouth - mEditHandleRadius, mEditHandleRadius, LayoutComponent::SOUTH);
-            testHandlePick(x, y, (mWest + mEast) / 2.0,     mNorth + mEditHandleRadius, mEditHandleRadius, LayoutComponent::NORTH);
-            testHandlePick(x, y, mWest - mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, LayoutComponent::SOUTHWEST);
-            testHandlePick(x, y, mEast + mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, LayoutComponent::SOUTHEAST);
-            testHandlePick(x, y, mWest - mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, LayoutComponent::NORTHWEST);
-            testHandlePick(x, y, mEast + mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, LayoutComponent::NORTHEAST);
-            cEditingDragging = true;
-            return cEditingSelectedHandle != LayoutComponent::NONE;
-          }
-        }
-      }
-      
-      case sf::Event::MouseButtonReleased: {
-        if (cEditingDragging) {
-          cEditingDragging = false;
-          return true;
-        }
-      }
+  // bool LayoutComponent::pickHandle(float x, float y, float scale, float aspectRatio) {
+  //   float mNorth = cDefTopEdge.getLocation(1.0f);
+  //   float mSouth = cDefBottomEdge.getLocation(1.0f);
+  //   float mWest  = cDefLeftEdge.getLocation(aspectRatio);
+  //   float mEast  = cDefRightEdge.getLocation(aspectRatio);
+  //   cEditingSelectedHandle = Handle::NONE;
+  //   float mEditHandleRadius = EDIT_HANDLE_RADIUS / scale;
+  //   testHandlePick(x, y, mWest - mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, Handle::WEST);
+  //   testHandlePick(x, y, mEast + mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, Handle::EAST);
+  //   testHandlePick(x, y, (mWest + mEast) / 2.0,     mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTH);
+  //   testHandlePick(x, y, (mWest + mEast) / 2.0,     mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTH);
+  //   testHandlePick(x, y, mWest - mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTHWEST);
+  //   testHandlePick(x, y, mEast + mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTHEAST);
+  //   testHandlePick(x, y, mWest - mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTHWEST);
+  //   testHandlePick(x, y, mEast + mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTHEAST);
+  //   return cEditingSelectedHandle != Handle::NONE;
+  // }
 
-      case sf::Event::MouseMoved: {
-        if (cEditingDragging) {
-          IApplication* mApplication = project->getApplication();
-          float mXPan =  mApplication->normalise(event.motion.xrel) / scale;
-          float mYPan = -mApplication->normalise(event.motion.yrel) / scale;
-          switch (cEditingSelectedHandle) {
-            case Handle::WEST:      cDefLeftEdge.editOffset(mXPan);   break;
-            case Handle::EAST:      cDefRightEdge.editOffset(mXPan);  break;
-            case Handle::SOUTH:     cDefBottomEdge.editOffset(mYPan); break;
-            case Handle::NORTH:     cDefTopEdge.editOffset(mYPan);    break;
-            case Handle::SOUTHWEST: cDefLeftEdge.editOffset(mXPan);
-                                    cDefBottomEdge.editOffset(mYPan); break;
-            case Handle::SOUTHEAST: cDefRightEdge.editOffset(mXPan);
-                                    cDefBottomEdge.editOffset(mYPan); break;
-            case Handle::NORTHWEST: cDefLeftEdge.editOffset(mXPan);
-                                    cDefTopEdge.editOffset(mYPan);    break;
-            case Handle::NORTHEAST: cDefRightEdge.editOffset(mXPan);
-                                    cDefTopEdge.editOffset(mYPan);    break;
-            case Handle::NONE:      cDefLeftEdge.editOffset(mXPan);   
-                                    cDefRightEdge.editOffset(mXPan);
-                                    cDefBottomEdge.editOffset(mYPan);
-                                    cDefTopEdge.editOffset(mYPan);    break;
-          }
-          return true;
-        }
-      }    
-      */
-  //     case sf::Event::KeyPressed: {
-  //       switch (event.key.code) {
-  //         case sf::Keyboard::Delete: {
-  //           cDefLayout.removeRelatableElement(cDefLayout, this);
-  //           cDefLayout.removeElement(cElement);
-  //           return true;
-  //         }
-  //         
-  //         default: {
-  //           return true;
-  //         }
-  //       }
-  //     }
-  //  }
-    return false;
+  void LayoutComponent::setLeftEdgeLocation(float value, float aspectRatio) {
+    cDefLeftEdge.setLocation(aspectRatio, value);
   }
 
-  bool LayoutComponent::renderSelectionHighlight(float aspectRatio, float scale) {
-/* FIXME:LayoutEditor    float mNorth = cDefTopEdge.getLocation(aspectRatio);
-    float mSouth = cDefBottomEdge.getLocation(aspectRatio);
+  void LayoutComponent::setRightEdgeLocation(float value, float aspectRatio) {
+    cDefRightEdge.setLocation(aspectRatio, value);
+  }
+
+  void LayoutComponent::setBottomEdgeLocation(float value) {
+    cDefBottomEdge.setLocation(1.0f, value);
+  }
+
+  void LayoutComponent::setTopEdgeLocation(float value) {
+    cDefTopEdge.setLocation(1.0f, value);
+  }
+
+  void LayoutComponent::setLeftEdgeOffset(float value, float aspectRatio) {
+    cDefLeftEdge.setOffset(aspectRatio, value);
+  }
+
+  void LayoutComponent::setRightEdgeOffset(float value, float aspectRatio) {
+    cDefRightEdge.setOffset(aspectRatio, value);
+  }
+
+  void LayoutComponent::setBottomEdgeOffset(float value) {
+    cDefBottomEdge.setOffset(1.0f, value);
+  }
+
+  void LayoutComponent::setTopEdgeOffset(float value) {
+    cDefTopEdge.setOffset(1.0f, value);
+  }
+
+  void LayoutComponent::renderAsRelation(float aspectRatio) const {
+    float mLeft        = cDefLeftEdge.getLocation(aspectRatio);
+    float mRight       = cDefRightEdge.getLocation(aspectRatio);
+    float mBottom      = cDefBottomEdge.getLocation(1.0f);
+    float mTop         = cDefTopEdge.getLocation(1.0f);
+    float mWidth       = mRight - mLeft;
+    float mHeight      = mTop - mBottom;
+    float mScale       = mHeight / 2.0f;
+    float mAspectRatio = mWidth / mHeight;
+    float mXCenter     = mLeft + mWidth / 2.0f;
+    float mYCenter     = mBottom + mHeight / 2.0f;
+    glPushMatrix();
+    glTranslatef(mXCenter, mYCenter, 0.0f);
+    glScalef(mScale, mScale, mScale);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glColor3f(0.0f, 1.0f, 1.0f);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(-1.0f * mAspectRatio, -1.0f);
+    glVertex2f( 1.0f * mAspectRatio, -1.0f);
+    glVertex2f( 1.0f * mAspectRatio,  1.0f);
+    glVertex2f(-1.0f * mAspectRatio,  1.0f);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glPopMatrix();
+  }
+  
+  void LayoutComponent::renderSelectionHighlight(float aspectRatio) {
+    float mNorth = cDefTopEdge.getLocation(1.0f);
+    float mSouth = cDefBottomEdge.getLocation(1.0f);
     float mWest  = cDefLeftEdge.getLocation(aspectRatio);
     float mEast  = cDefRightEdge.getLocation(aspectRatio);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    float mEditHandleRadius = EDIT_HANDLE_RADIUS / scale;
-    renderEditingHandle(mWest - mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, Handle::WEST);
-    renderEditingHandle(mEast + mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, Handle::EAST);
-    renderEditingHandle((mWest + mEast) / 2.0,     mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTH);
-    renderEditingHandle((mWest + mEast) / 2.0,     mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTH);
-    renderEditingHandle(mWest - mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTHWEST);
-    renderEditingHandle(mEast + mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTHEAST);
-    renderEditingHandle(mWest - mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTHWEST);
-    renderEditingHandle(mEast + mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTHEAST);
-    switch (cEditingSelectedHandle) {
-      case Handle::WEST:      cDefLeftEdge.renderRelation(aspectRatio);   break;
-      case Handle::EAST:      cDefRightEdge.renderRelation(aspectRatio);  break;
-      case Handle::SOUTH:     cDefBottomEdge.renderRelation(aspectRatio); break;
-      case Handle::NORTH:     cDefTopEdge.renderRelation(aspectRatio);    break;
-      case Handle::SOUTHWEST: cDefLeftEdge.renderRelation(aspectRatio);
-                              cDefBottomEdge.renderRelation(aspectRatio); break;
-      case Handle::SOUTHEAST: cDefRightEdge.renderRelation(aspectRatio);
-                              cDefBottomEdge.renderRelation(aspectRatio); break;
-      case Handle::NORTHWEST: cDefLeftEdge.renderRelation(aspectRatio);
-                              cDefTopEdge.renderRelation(aspectRatio);    break;
-      case Handle::NORTHEAST: cDefRightEdge.renderRelation(aspectRatio);
-                              cDefTopEdge.renderRelation(aspectRatio);    break;
-      case Handle::NONE:      *//* Do nothing *//*                        break;
-    }
     glEnable(GL_LINE_STIPPLE);
     glLineStipple(1, 255);
     glBegin(GL_LINE_LOOP);
@@ -231,12 +230,43 @@ namespace IsoRealms::UI {
     glVertex2f(mEast, mNorth);
     glVertex2f(mWest, mNorth);
     glEnd();  
-    glDisable(GL_LINE_STIPPLE);*/
-    return true;
+    glDisable(GL_LINE_STIPPLE);
   }
 
+  // void LayoutComponent::renderEditingHandles(float aspectRatio, float scale) {
+  //   float mNorth = cDefTopEdge.getLocation(1.0f);
+  //   float mSouth = cDefBottomEdge.getLocation(1.0f);
+  //   float mWest  = cDefLeftEdge.getLocation(aspectRatio);
+  //   float mEast  = cDefRightEdge.getLocation(aspectRatio);
+  //   glBindTexture(GL_TEXTURE_2D, 0);
+  //   float mEditHandleRadius = EDIT_HANDLE_RADIUS / scale;
+  //   renderEditingHandle(mWest - mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, Handle::WEST);
+  //   renderEditingHandle(mEast + mEditHandleRadius, (mSouth + mNorth) / 2.0f,   mEditHandleRadius, Handle::EAST);
+  //   renderEditingHandle((mWest + mEast) / 2.0,     mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTH);
+  //   renderEditingHandle((mWest + mEast) / 2.0,     mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTH);
+  //   renderEditingHandle(mWest - mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTHWEST);
+  //   renderEditingHandle(mEast + mEditHandleRadius, mSouth - mEditHandleRadius, mEditHandleRadius, Handle::SOUTHEAST);
+  //   renderEditingHandle(mWest - mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTHWEST);
+  //   renderEditingHandle(mEast + mEditHandleRadius, mNorth + mEditHandleRadius, mEditHandleRadius, Handle::NORTHEAST);
+  //   switch (cEditingSelectedHandle) {
+  //     case Handle::WEST:      cDefLeftEdge.renderRelation(aspectRatio);   break;
+  //     case Handle::EAST:      cDefRightEdge.renderRelation(aspectRatio);  break;
+  //     case Handle::SOUTH:     cDefBottomEdge.renderRelation(aspectRatio); break;
+  //     case Handle::NORTH:     cDefTopEdge.renderRelation(aspectRatio);    break;
+  //     case Handle::SOUTHWEST: cDefLeftEdge.renderRelation(aspectRatio);
+  //                             cDefBottomEdge.renderRelation(aspectRatio); break;
+  //     case Handle::SOUTHEAST: cDefRightEdge.renderRelation(aspectRatio);
+  //                             cDefBottomEdge.renderRelation(aspectRatio); break;
+  //     case Handle::NORTHWEST: cDefLeftEdge.renderRelation(aspectRatio);
+  //                             cDefTopEdge.renderRelation(aspectRatio);    break;
+  //     case Handle::NORTHEAST: cDefRightEdge.renderRelation(aspectRatio);
+  //                             cDefTopEdge.renderRelation(aspectRatio);    break;
+  //     case Handle::NONE:      /* Do nothing */                            break;
+  //   }
+  // }
+
   bool LayoutComponent::contains(float x, float y, float aspectRatio) {
-    return CollisionUtils::contains(x, y, cDefLeftEdge.getLocation(aspectRatio), cDefRightEdge.getLocation(aspectRatio), cDefBottomEdge.getLocation(aspectRatio), cDefTopEdge.getLocation(aspectRatio));
+    return CollisionUtils::contains(x, y, cDefLeftEdge.getLocation(aspectRatio), cDefRightEdge.getLocation(aspectRatio), cDefBottomEdge.getLocation(1.0f), cDefTopEdge.getLocation(1.0f));
   }
   
   bool LayoutComponent::isRelatedTo(LayoutComponent* component) const {
@@ -248,6 +278,14 @@ namespace IsoRealms::UI {
         || cDefBottomEdge.isRelatedTo(component);*/
   }
 
+  bool LayoutComponent::isHorizontalEdge(const LayoutComponentEdge& edge) const {
+    return &edge == &cDefLeftEdge || &edge == &cDefRightEdge;
+  }
+  
+  bool LayoutComponent::isPositiveEdge(const LayoutComponentEdge& edge) const {
+    return &edge == &cDefTopEdge || &edge == &cDefRightEdge;
+  }
+  
   float LayoutComponent::getLeft(float aspectRatio) const {
     return cDefLeftEdge.getLocation(aspectRatio);
   }
@@ -264,77 +302,38 @@ namespace IsoRealms::UI {
     return cDefTopEdge.getLocation(1.0f);
   }
     
+  Layout& LayoutComponent::getLayout() {
+    return cLayout;
+  }
+
+  std::string LayoutComponent::getName() const {
+    return cLayout.getName(this);
+  }
+
+  std::vector<std::string> LayoutComponent::getAvailableComponentNames() {
+    return cLayout.getAvailableRelativeNames(this);
+  }
+    
+  std::vector<std::unique_ptr<IProperty>> LayoutComponent::getProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Component", cDefScreen));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Left",   "Edit...", [this]() {return cDefLeftEdge.getProperties();}));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Right",  "Edit...", [this]() {return cDefRightEdge.getProperties();}));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Top",    "Edit...", [this]() {return cDefTopEdge.getProperties();}));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Bottom", "Edit...", [this]() {return cDefBottomEdge.getProperties();}));
+    return mProperties;
+  }
+  
   void LayoutComponent::setScreen(IScreen* screen) {
+    std::cout << "SETTING SCREEN" << std::endl;
     cRuntimeScreen = screen;
   }
     
-  void LayoutComponent::renderEditingHandle(float x, float y, float radius, LayoutComponent::Handle handle) {
-    if (cEditingSelectedHandle == handle) {
-      glColor3f(1.0f, 1.0f, 0.0f);
-    } else {
-      glColor3f(1.0f, 1.0f, 1.0f);
-    }
-    glBegin(GL_QUADS);
-    glVertex2f(x - radius, y - radius);
-    glVertex2f(x + radius, y - radius);
-    glVertex2f(x + radius, y + radius);
-    glVertex2f(x - radius, y + radius);
-    glEnd();  
-    
-    if (cEditingSelectedHandle == handle) {
-      glColor3f(0.0f, 1.0f, 0.0f);
-    } else {
-      glColor3f(1.0f, 0.0f, 0.0f);
-    }
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(x - radius, y - radius);
-    glVertex2f(x + radius, y - radius);
-    glVertex2f(x + radius, y + radius);
-    glVertex2f(x - radius, y + radius);
-    glEnd();  
-  }
 
-  void LayoutComponent::testHandlePick(float xPick, float yPick, float x, float y, float radius, LayoutComponent::Handle handle) {
-    if (CollisionUtils::contains(xPick, yPick, x - radius, x + radius, y - radius, y + radius)) {
-      cEditingSelectedHandle = handle;
-    }
-  }
-  
-  LayoutComponent::Edge::Edge(LayoutComponent& parent, float value) :
-            cDefParent(parent),
-            cDefLocation(std::make_unique<AbsoluteLocation>(value)),
-            cDefOffset(std::make_unique<AbsoluteOffset>(0.0f)) {
-  }
-  
-  LayoutComponent::Edge::Edge(IProject* project, LayoutComponent& parent, JSONObject object, const std::string& tag, bool horizontal, float defaultValue) :
-            Edge(parent, defaultValue) {
-    JSONObject mEdgeObject = object.getObject(tag);
-    if (mEdgeObject.hasMember(JSON_LOCATION)) {
-      JSONObject mLocationObject = mEdgeObject.getObject(JSON_LOCATION);
-      std::string mLocationType = mLocationObject.getString(JSON_TYPE, LOCATION_TYPE_ABSOLUTE);
-      cDefLocation = mLocationType == LOCATION_TYPE_ABSOLUTE ? static_cast<std::unique_ptr<ILayoutLocation>>(std::make_unique<AbsoluteLocation>(mLocationObject, defaultValue))
-                   : mLocationType == LOCATION_TYPE_RELATIVE ? static_cast<std::unique_ptr<ILayoutLocation>>(std::make_unique<RelativeLocation>(project, mLocationObject, &cDefParent.cDefLayout, horizontal, defaultValue))
-                   :                                           nullptr;
-    }
-
-    if (mEdgeObject.hasMember(JSON_OFFSET)) {
-      JSONObject mOffsetObject = mEdgeObject.getObject(JSON_OFFSET);
-      std::string mOffsetType = mOffsetObject.getString(JSON_TYPE, OFFSET_TYPE_ABSOLUTE);
-      cDefOffset = mOffsetType == OFFSET_TYPE_ABSOLUTE ? static_cast<std::unique_ptr<ILayoutOffset>>(std::make_unique<AbsoluteOffset>(mOffsetObject))
-                 : mOffsetType == OFFSET_TYPE_LINKED   ? static_cast<std::unique_ptr<ILayoutOffset>>(std::make_unique<LinkedOffset>(project, mOffsetObject, &cDefParent.cDefLayout, &cDefParent, (tag == JSON_LEFT || tag == JSON_BOTTOM) ? -1.0f : 1.0f))
-                 :                                       nullptr;
-    }
-  }
-
-  float LayoutComponent::Edge::getLocation(float aspectRatio) const {
-    return cDefLocation->getLocation(aspectRatio) + cDefOffset->getOffset(aspectRatio);
-  }
-  
-  void LayoutComponent::Edge::save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const {
-    JSONObject mEdgeObject = object.addObject(tag);
-    JSONObject mLocationObject = mEdgeObject.addObject(JSON_LOCATION);
-    cDefLocation->save(mLocationObject, layout, defaultValue);
-    JSONObject mOffsetObject = mEdgeObject.addObject(JSON_OFFSET);
-    cDefOffset->save(mOffsetObject, layout);
-  }
+  // void LayoutComponent::testHandlePick(float xPick, float yPick, float x, float y, float radius, LayoutComponent::Handle handle) {
+  //   if (CollisionUtils::contains(xPick, yPick, x - radius, x + radius, y - radius, y + radius)) {
+  //     cEditingSelectedHandle = handle;
+  //   }
+  // }
 }

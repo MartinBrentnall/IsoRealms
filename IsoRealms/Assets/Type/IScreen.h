@@ -35,7 +35,7 @@ namespace IsoRealms {
      * Render this screen.
      */
     virtual void renderScreen(float scale, float aspectRatio) const = 0;
-    
+
     virtual const IFloat* getYaw() const {
       return nullptr;
     }

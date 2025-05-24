@@ -18,6 +18,9 @@
  */
 #pragma once
 
+#include <functional>
+
+#include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
@@ -25,34 +28,28 @@
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
   
-  class WallPattern : public IAssetUser<IWallPattern> {
+  class WallPattern : public Asset<IWallPattern, Spindizzy>,
+                      public IStateListener<IWallPattern*>{
     public:
-    WallPattern(Spindizzy* spindizzy);
+    WallPattern(Spindizzy& spindizzy, std::function<void()> listener);
 
-    void init(JSONObject object);
-    void set(JSONObject object);
-    void save(JSONObject object, const std::string& name) const;
+    /*********************************************\
+     * Implements Asset<IWallPattern, Spindizzy> *
+    \*********************************************/
+    IWallPattern* createLiteralAsset(Spindizzy& spindizzy) override;
+    IWallPattern* getAsset(Spindizzy& spindizzy, JSONObject object) override;
+    IWallPattern* getAsset(Spindizzy& spindizzy, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
 
-    IWallPattern* operator->() const {
-      return cWallPattern;
-    }
-
-    IWallPattern* operator*() const {
-      return cWallPattern;
-    }
-
-    /***************************************\
-     * Implements IAssetUser<IWallPattern> *
-    \***************************************/
-    void relinquish(IWallPattern* asset) override;
-
-    virtual ~WallPattern();
+    /********************************************\
+     * Implements IStateListener<IWallPattern*> *
+    \********************************************/
+    void stateChanged(IWallPattern* asset) override;
 
     private:
-    Spindizzy* cSpindizzy;
-    IWallPattern* cWallPattern;
-
-    WallPattern(WallPattern const& WallPattern) = delete;
-    WallPattern& operator=(WallPattern const& WallPattern) = delete;
+    std::function<void()> cListener;
   };
 }

@@ -27,8 +27,8 @@
 namespace IsoRealms::Spindizzy {
   Model::Model(ZoneObject& object, ZoneObjectTypeTraitModel& type) :
             cDefType(type),
-            cLuaBinding(object.getZone()->getWorld()->getSpindizzy()->getProject(), this) {
-    object.getZone()->getWorld()->getSpindizzy()->getProject()->init([this, &object](IAssets* assets) {
+            cLuaBinding(object.getZone().getWorld().getSpindizzy().getProject(), this) {
+    object.getZone().getWorld().getSpindizzy().getProject().init([this, &object](IAssets& assets) {
       std::string mLocationID = cDefType.getLocationID();
       cDefLocation = object.getLocation(mLocationID);
       cDefModel = cDefType.createModel();

@@ -27,27 +27,34 @@ namespace IsoRealms {
 
   class AssetConvertedProjectToString : public IAssetProvider<Project, IString> {
     public:
-    AssetConvertedProjectToString(IProject* project) :
+    AssetConvertedProjectToString(IProject& project) :
               cProject(project) {
     }
 
     protected:
 
     IString* getAsset(Project& project, JSONObject object) const override {
-      IAssets* mAssets = cProject->getAssets(&cDummyUser, object.getObject(JSON_PROJECT));
+      IAssets* mAssets = cProject.getAssets(&cDummyUser, object.getObject(JSON_PROJECT));
       return mAssets->getString(&cDummyUser, object.getObject(JSON_VALUE));
 
 //      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(JSON_VALUE), nullptr);})).first->get();
     }
 
+    IString* getAsset(Project& project) const override {
+      return nullptr; // TODO: Implement this.
+    }
+    
     void releaseAsset(const IString* asset) override {
       // TODO: Implement this.
     }
-
-    void info() const override {
-      std::cout << "Extracted string from sub-project" << std::endl;
+    
+    bool hasConfiguration() const override {
+      return true;
     }
 
+    bool renderAssetProviderIcon() const override {
+      return false;
+    }
 
     private:
 
@@ -65,7 +72,7 @@ namespace IsoRealms {
     inline static const std::string JSON_PROJECT = "project";
     inline static const std::string JSON_VALUE   = "value";
 
-    IProject* cProject;
+    IProject& cProject;
     mutable DummyUser cDummyUser;
     mutable std::set<std::unique_ptr<IString>> cConvertedAssets;
   };

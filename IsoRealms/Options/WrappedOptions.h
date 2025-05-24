@@ -31,7 +31,7 @@ namespace IsoRealms {
    */
   class WrappedOptions : public IOptions {
     public:
-    WrappedOptions(IOptions* wrappedOptions);
+    WrappedOptions(IOptions& wrappedOptions);
     void addOption(const std::string& key, const std::string& value);
     
     /***********************\
@@ -41,7 +41,7 @@ namespace IsoRealms {
     Options getFixedOptions() override;
     
     private:
-    IOptions* cWrappedOptions;                   /// Wrapped set of options.
+    IOptions& cWrappedOptions;                   /// Wrapped set of options.
     std::map<std::string, std::string> cOptions; /// Additional/overriden options.
   };
 }

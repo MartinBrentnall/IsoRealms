@@ -87,6 +87,11 @@ namespace IsoRealms {
     object.addString(JSON_DIRECTION, getName(cDirection));
   }
 
+  std::vector<std::unique_ptr<IProperty>> HatMapping::getProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    return mProperties;
+  }
+
   std::string HatMapping::getShortName() const {
     return getName(cDirection);
   }

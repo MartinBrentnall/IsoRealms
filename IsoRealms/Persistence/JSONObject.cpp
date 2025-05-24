@@ -98,19 +98,4 @@ namespace IsoRealms {
   float JSONObject::getFloat(const std::string& name, float defaultValue) const {
     return cObject.HasMember(name) ? cObject[name].GetFloat() : defaultValue;
   }
-
-  bool JSONObject::operator<(const JSONObject object) const {
-    if (cObject.IsObject() != object.cObject.IsObject()) {
-      return !cObject.IsObject();
-    }
-    if (cObject.MemberCount() != object.cObject.MemberCount()) {
-      return cObject.MemberCount() < object.cObject.MemberCount();
-    }
-    for (rapidjson::Document::MemberIterator i = cObject.MemberBegin(); i != cObject.MemberEnd(); i++) {
-      if (!object.cObject.HasMember(i->name)) {
-
-      }
-    }
-    return true;
-  }
 }

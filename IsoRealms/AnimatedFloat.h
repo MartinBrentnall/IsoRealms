@@ -26,10 +26,6 @@ namespace IsoRealms {
    * Smoothly animate a float value for graphics.
    */ 
   class AnimatedFloat {
-    private:
-    float cValue;
-    float cAnimation;
-    
     public:
     AnimatedFloat();
     AnimatedFloat(float value);
@@ -41,5 +37,9 @@ namespace IsoRealms {
     AnimatedFloat& operator=(float value);
     AnimatedFloat& operator+=(float value);
     AnimatedFloat& operator-=(float value);
+
+    private:
+    float cValue;
+    float cAnimation;
   };
 }

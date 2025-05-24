@@ -22,6 +22,7 @@
 
 #include "IsoRealms/ResourceDefinition.h"
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Condition/ConditionElement.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Literals.h"
@@ -43,14 +44,14 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    TerrainState(IProject* project, Spindizzy* spindizzy);
-    TerrainState(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**
      * Get the condition element that represents this terrain state.
@@ -77,6 +78,8 @@ namespace IsoRealms::Spindizzy {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -110,6 +113,6 @@ namespace IsoRealms::Spindizzy {
      * @param name ID of this terrain state.
      * @param value initial value of this terrain state.
      */
-    TerrainState(IProject* project, const std::string& id, bool value);
+    TerrainState(IProject& project, const std::string& id, bool value);
   };
 }

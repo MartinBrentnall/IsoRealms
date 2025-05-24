@@ -23,37 +23,37 @@ namespace IsoRealms::Basics {
 
   const std::string SimpleFloat::PROPERTY_VALUE  = "Initial Value";
   
-  SimpleFloat::SimpleFloat(IProject* project, Basics* basics) :
+  SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data) :
             cDefValue(0.0f),
             cRuntimeValue(0.0f),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeValue = cDefValue;
     });
   }
   
-  SimpleFloat::SimpleFloat(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            SimpleFloat(project, basics) {
+  SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            SimpleFloat(project, basics, data) {
     cRuntimeValue = cDefValue = object.getFloat(JSON_VALUE);
 
-    project->init([this](IAssets* resources) {
+    project.init([this](IAssets& resources) {
       cStateNotifier->stateChanged(this);
     });
   }
 
-  void SimpleFloat::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(this, "", "Simple Floats");
-    assets->add(&cLuaBinding, "", "Simple Floats");
+  void SimpleFloat::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, "", "Simple Floats");
+    assets.add(&cLuaBinding, "", "Simple Floats");
   }
   
-  void SimpleFloat::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void SimpleFloat::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     cStateNotifier = nullptr;
   }
   
-  void SimpleFloat::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void SimpleFloat::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_VALUE, cDefValue);
   }
 
@@ -65,9 +65,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> SimpleFloat::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
+    return mProperties;
   }
 
   float SimpleFloat::getValue() const {
@@ -80,6 +81,14 @@ namespace IsoRealms::Basics {
 
   void SimpleFloat::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool SimpleFloat::isDefaultConfiguration() const {
+    return true;
   }
 
   void SimpleFloat::setValue(float value) {

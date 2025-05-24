@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Interface to be used by debris generator.
-    Debris(DebrisGenerator& parent, IVertex* location, double xMomentum, double yMomentum, double zMomentum, Model& model, unsigned int lifeTime, Zone* zone);
+    Debris(DebrisGenerator& parent, IVertex* location, double xMomentum, double yMomentum, double zMomentum, Model& model, unsigned int lifeTime, Zone& zone);
     void update(unsigned int milliseconds);
     void render();
     bool isDead();
@@ -65,12 +65,14 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
+    // External interfaces.
+    Zone& cZone;
+    
     // Definition data.
     DebrisGenerator& cDefParent;
     float cDefYawSpeed;
     float cDefPitchSpeed;
     float cDefRollSpeed;
-    Zone* cDefZone;
     std::unique_ptr<ModelInstance> cDefModel;
     
     // Runtime data.

@@ -35,8 +35,22 @@ namespace IsoRealms::UI {
   const float MenuItemSlider::DEFAULT_MINIMUM = 0.0f;
   const int   MenuItemSlider::DEFAULT_STEPS   = 20;
 
-  MenuItemSlider::MenuItemSlider(IProject* project, Menu* menu, JSONObject object) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  MenuItemSlider::MenuItemSlider(IProject& project, Menu& menu) :
+            cHatHandler(project.getApplication().getHatHandler()),
+            cDefID(""),
+            cDefLabel(""),
+            cDefMinimum(DEFAULT_MINIMUM),
+            cDefMaximum(DEFAULT_MAXIMUM),
+            cDefSteps(DEFAULT_STEPS),
+            cDefValueChangedAction(project),
+            cLuaBinding(project, this) {
+    project.reset([this]() {
+      cRuntimeValue = cDefMinimum;
+    });
+  }
+
+  MenuItemSlider::MenuItemSlider(IProject& project, Menu& menu, JSONObject object) :
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefMinimum(object.getFloat(JSON_MINIMUM, DEFAULT_MINIMUM)),
@@ -45,7 +59,7 @@ namespace IsoRealms::UI {
             cDefValueChangedAction(project),
             cLuaBinding(project, this) {
     cDefValueChangedAction.init(object, JSON_ON_CHANGE);
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeValue = cDefMinimum;
     });
   }
@@ -58,12 +72,12 @@ namespace IsoRealms::UI {
     return cRuntimeValue;
   }
 
-  void MenuItemSlider::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  void MenuItemSlider::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemSlider::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void MenuItemSlider::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   bool MenuItemSlider::input(sf::Event& event) {
@@ -100,7 +114,7 @@ namespace IsoRealms::UI {
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
-    const IColour& mColour = selected ? static_cast<const IColour&>(menu.getSelectionColour())
+    const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     Utils::shadowPrint(-aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::LEFT,  cDefLabel);
     
@@ -150,6 +164,21 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_MAXIMUM, cDefMaximum, DEFAULT_MAXIMUM);
     object.addInteger(JSON_STEPS, cDefSteps, DEFAULT_STEPS);
     cDefValueChangedAction.save(object, JSON_ON_CHANGE);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> MenuItemSlider::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "ID",        [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Label",     [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Minimum",   [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Maximum",   [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Steps",     [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Change", cDefValueChangedAction));
+    return mProperties;
+  }
+
+  bool MenuItemSlider::isDefaultConfiguration() const {
+    return false; // TODO: Implement this.
   }
 
   void MenuItemSlider::adjustValue(float amount) {

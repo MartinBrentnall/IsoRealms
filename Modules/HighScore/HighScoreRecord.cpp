@@ -21,21 +21,22 @@
 #include "HighScoreTable.h"
 
 namespace IsoRealms::HighScore {
-  HighScoreRecord::HighScoreRecord(JSONObject object, HighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
-    cParentTable = parentTable;
+  HighScoreRecord::HighScoreRecord(JSONObject object, HighScoreTable& parentTable) :
+            cParentTable(parentTable),
+            cValues(parentTable.getFieldCount()) {
     for (JSONObject mFieldObject : object.getArray(JSON_VALUES)) {
       std::string mFieldName   = mFieldObject.getString(JSON_FIELD);
       std::string mFieldValue  = mFieldObject.getString(JSON_VALUE);
-      unsigned int mFieldIndex = cParentTable->getFieldIndex(mFieldName);
+      unsigned int mFieldIndex = cParentTable.getFieldIndex(mFieldName);
       cValues[mFieldIndex] = mFieldValue;
     }
   }
 
-  HighScoreRecord::HighScoreRecord(std::map<std::string, std::string> record, HighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
-    cParentTable = parentTable;
-    
+  HighScoreRecord::HighScoreRecord(std::map<std::string, std::string> record, HighScoreTable& parentTable) :
+            cParentTable(parentTable),
+            cValues(parentTable.getFieldCount()) {
     for (std::pair<std::string, std::string> mField : record) {
-      unsigned int mFieldIndex = cParentTable->getFieldIndex(mField.first);
+      unsigned int mFieldIndex = cParentTable.getFieldIndex(mField.first);
       cValues[mFieldIndex] = mField.second;
     }
   }
@@ -44,20 +45,20 @@ namespace IsoRealms::HighScore {
     JSONArray mFieldArray = object.addArray(JSON_VALUES);
     for (unsigned int i = 0; i < cValues.size(); i++) {
       JSONObject mFieldObject = mFieldArray.addObject();
-      mFieldObject.addString(JSON_FIELD, cParentTable->getFieldName(i));
+      mFieldObject.addString(JSON_FIELD, cParentTable.getFieldName(i));
       mFieldObject.addString(JSON_VALUE, cValues[i]);
     }
   }
 
   bool HighScoreRecord::beats(const std::string& value) {
-    unsigned int mComparisonFieldIndex = cParentTable->getComparisonFieldIndex();
+    unsigned int mComparisonFieldIndex = cParentTable.getComparisonFieldIndex();
     int mMyValue = std::stoi(cValues[mComparisonFieldIndex]);
     int mChallengerValue = std::stoi(value);
     return mMyValue >= mChallengerValue;
   }
 
   bool HighScoreRecord::beats(HighScoreRecord* record) {
-    unsigned int mComparisonFieldIndex = cParentTable->getComparisonFieldIndex();
+    unsigned int mComparisonFieldIndex = cParentTable.getComparisonFieldIndex();
     int mMyValue = std::stoi(cValues[mComparisonFieldIndex]);
     int mChallengerValue = std::stoi(record->cValues[mComparisonFieldIndex]);
     return mMyValue >= mChallengerValue;

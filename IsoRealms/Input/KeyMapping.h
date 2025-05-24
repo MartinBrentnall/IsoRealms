@@ -30,17 +30,6 @@ namespace IsoRealms {
    * A digital input mapping to a key on a keyboard.
    */
   class KeyMapping : public IDigitalInputMapping {
-    private:
-    static const std::string JSON_KEY;
-    static const std::string JSON_TYPE;
-
-    static const std::string UNMAPPED_KEY_PREFIX;
-
-    static const std::map<std::string, sf::Keyboard::Key> cKeysByName; /// Mapping of keys by name.
-
-    const sf::Keyboard::Key cKey; /// The key associated with this mapping.
-    // TODO: Support inversion.
-
     public:
     static const std::string TYPE_KEY_DOWN;
       
@@ -86,7 +75,19 @@ namespace IsoRealms {
     bool matches(const sf::Event& event) const override;
     bool getState(const sf::Event& event) const override;
     void save(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
     std::string getShortName() const override;
     std::string getLongName() const override;
+
+    private:
+    static const std::string JSON_KEY;
+    static const std::string JSON_TYPE;
+
+    static const std::string UNMAPPED_KEY_PREFIX;
+
+    static const std::map<std::string, sf::Keyboard::Key> cKeysByName; /// Mapping of keys by name.
+
+    sf::Keyboard::Key cKey; /// The key associated with this mapping.
+    // TODO: Support inversion.
   };
 }

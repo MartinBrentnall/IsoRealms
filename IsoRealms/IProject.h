@@ -22,8 +22,6 @@
 #include <functional>
 #include <string>
 
-#include "Assets/IBindingRegistry.h"
-#include "Assets/Registry/IAssetUser.h"
 #include "IAssetBrowser.h"
 #include "IStateListener.h"
 
@@ -73,7 +71,7 @@ namespace IsoRealms {
      * 
      * @param initialiser The asset initialisation function.
      */
-    virtual void init(std::function<void(IAssets*)> initialiser) = 0;
+    virtual void init(std::function<void(IAssets&)> initialiser) = 0;
     
     /**
      * Create a callback to be called on a Project reset.  This callback
@@ -141,6 +139,6 @@ namespace IsoRealms {
 
     virtual void initMainThread() = 0;
 
-    virtual IApplication* getApplication() = 0;
+    virtual IApplication& getApplication() = 0;
   };
 }

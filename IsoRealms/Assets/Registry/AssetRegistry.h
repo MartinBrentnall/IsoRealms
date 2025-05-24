@@ -48,8 +48,8 @@ namespace IsoRealms {
       }
     }
 
-    IAssetProvider<OWNER, TYPE>* getProvider(const std::string& id, bool required) {
-      typename std::map<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>::iterator mValue = cProviders.find(id);
+    IAssetProvider<OWNER, TYPE>* getProvider(const std::string& id, bool required) const {
+      typename std::map<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>::const_iterator mValue = cProviders.find(id);
       if (mValue != cProviders.end()) {
         return mValue->second.first;
       } else if (!required) {
@@ -65,7 +65,12 @@ namespace IsoRealms {
     }
 
     void remove(IAssetProvider<OWNER, TYPE>* provider) {
-      // TODO cProviders.erase(provider);
+      for (std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& mPair : cProviders) {
+        if (mPair.second.first == provider) {
+          cProviders.erase(mPair.first);
+          break;
+        }
+      }
     }
     
     std::string getID(const IAssetProvider<OWNER, TYPE>* provider) const {
@@ -78,24 +83,28 @@ namespace IsoRealms {
       return "";
     }
     
-/*    std::vector<std::pair<std::string, std::string>> getAll() {
-      TODO: I think this was used for editing (browsing).
-    }*/
+    std::vector<std::string> getAll() {
+      std::vector<std::string> mAllIDs;
+      for (std::pair<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>> mPair : cProviders) {
+        mAllIDs.emplace_back(mPair.first);
+      }
+      return mAllIDs;
+    }
 
     void addAssetListener(IAssetListener<OWNER, TYPE>* assetListener) {
       cListeners.push_back(assetListener);
     }
     
-/*    bool renderIcon(const std::string& id) const {
-      TODO: I think this was used for editing (browsing).
-    }*/
+    bool renderIcon(const std::string& id) const {
+      IAssetProvider<OWNER, TYPE>* mProvider = getProvider(id, true);
+      return mProvider->renderAssetProviderIcon();
+    }
 
     void checkClean(const std::string& name) {
       if (!cProviders.empty()) {
         std::cout << "WARNING: AssetRegistry::checkClean: " << cProviders.size() << " \"" << name << "\" providers not removed." << std::endl;
-        for (std::pair<IAssetProvider<OWNER, TYPE>*, std::string>& mPair : cProviders) {
-          std::cout << " - Asset provider info: ";
-          mPair.first->info();
+        for (std::pair<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>> mPair : cProviders) {
+          std::cout << " - \"" << mPair.first << std::endl;
         }
       }
     }

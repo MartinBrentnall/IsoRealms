@@ -24,7 +24,6 @@
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Exception/ArgumentException.h"
 #include "IsoRealms/IAssetBrowser.h"
-#include "IsoRealms/Properties.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/ISurface.h"
@@ -87,7 +86,7 @@ namespace IsoRealms::Spindizzy {
      *         for non-conditional terrain elements.
      * @param dirty
      */
-    Terrain(Zone& zone, TerrainType* type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition);
+    Terrain(Zone& zone, TerrainType& type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition);
 
     Terrain(Zone& zone, Terrain& terrain, int x, int y, int z);
 
@@ -183,7 +182,7 @@ namespace IsoRealms::Spindizzy {
     int getXEnd() const;
     int getYStart() const;
     int getYEnd() const;
-    Zone* getZone();
+    Zone& getZone();
     unsigned int getOrderIndex();
     std::vector<std::unique_ptr<ISurface>> generateSurfaces(ISurface::Direction side);
     std::vector<std::unique_ptr<Wall>> generateWalls(Wall::Direction direction, int row);
@@ -196,7 +195,7 @@ namespace IsoRealms::Spindizzy {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyAppearance* appearance) override;
+    std::vector<std::unique_ptr<IProperty>> getProperties() override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 
@@ -249,8 +248,10 @@ namespace IsoRealms::Spindizzy {
     static const std::string BEHAVIOUR_DYNAMIC;
     static const std::string BEHAVIOUR_DYNAMIC_GHOST;
 
+    // External interfaces.
+    Zone& cZone;
+    
     // Definition data.
-    Zone& cDefZone;
     TerrainType* cDefType;
     int cDefStartX;
     int cDefStartY;
@@ -342,5 +343,8 @@ namespace IsoRealms::Spindizzy {
      * @returns  The wall surface meeting the specification.
      */
     std::unique_ptr<Wall> createWall(WallTemplate* wallTemplate);
+
+    std::string getBehaviourString() const;
+    static char getBehaviourFlags(const std::string& value);
   };
 }

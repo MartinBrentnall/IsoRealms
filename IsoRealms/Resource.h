@@ -12,8 +12,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  * You should have received a copy of the GNU General Public License
+ *
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
@@ -21,6 +21,7 @@
 #include <string>
 
 #include "Assets/Registry/AssetIDException.h"
+#include "Editing/Property/PropertyNativeString.h"
 #include "IAssetBrowser.h"
 #include "IAssetRegistry.h"
 #include "IProject.h"
@@ -29,36 +30,24 @@
 #include "IResourceType.h"
 #include "LocalAssetRegistry.h"
 #include "Options/IOptions.h"
-#include "Property/IPropertyListener.h"
 #include "System.h"
 #include "Utils.h"
 
 namespace IsoRealms {
   template <class MODULE, class RESOURCE> class Resource : public IResource,
-                                                           public IResourceData,
-                                                           public IPropertyListener {
-    private:
-    static const std::string JSON_ID;
-
-    IResourceType* cParent;
-    std::string cName;
-    unsigned int cPropertiesEditCount;
-    RESOURCE cResourceHandle;
-    LocalAssetRegistry cAssetRegistry;
-    std::set<IPropertyListener*> cPropertyClients;
-
+                                                           public IResourceData {
     public:
-    Resource(IResourceType* parent, IProject* project, MODULE* module, IAssetRegistry* registry, const std::string& name) :
+    Resource(IResourceType& parent, IProject& project, MODULE& module, IAssetRegistry& registry, const std::string& name) :
               cParent(parent),
               cName(name),
               cPropertiesEditCount(0),
-              cResourceHandle(project, module),
+              cResourceHandle(project, module, *this),
               cAssetRegistry(registry, cName) {
       bool mSuccess = false;
       unsigned int mExistingNameCount = 1;
       do {
         try {
-          cResourceHandle.registerAssets(&cAssetRegistry);
+          cResourceHandle.registerAssets(cAssetRegistry);
           mSuccess = true;
         } catch (AssetIDException& e) {
           std::cout << "WARNING: Resource::Resource: Caught AssetIDException on registering assets: " << e.what() << std::endl;
@@ -67,11 +56,11 @@ namespace IsoRealms {
       } while (!mSuccess);
     }
     
-    Resource(IResourceType* parent, IProject* project, MODULE* module, IAssetRegistry* registry, JSONObject object, IOptions* options) :
+    Resource(IResourceType& parent, IProject& project, MODULE& module, IAssetRegistry& registry, JSONObject object, IOptions& options) :
               cParent(parent),
               cName(object.getString(JSON_ID)),
               cPropertiesEditCount(0),
-              cResourceHandle(project, module, object, options, this),
+              cResourceHandle(project, module, *this, object, options),
               cAssetRegistry(registry, cName) {
     }
 
@@ -86,39 +75,29 @@ namespace IsoRealms {
       return cName;
     }
     
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IPropertyListener* listener) override {
-      
-      // FIXME:IsoRealmsEditor: Don't allow same client more than once?
-      cPropertyClients.insert(listener);
-      
-      std::vector<IProperty*> mProperties;
-      //mProperties.push_back(std::make_unique<PropertyNativeString>("Name", &cName));
-      // FIXME:IsoRealmsEditor: This will handle renaming of resources.
-//       [this](const std::string& value) {
-//         cName = value;
-//         try {
-//           cResourceHandle.registerAssets(&cAssetRegistry);
-//         } catch (AssetIDException& e) {
-//           // FIXME:IsoRealmsEditor: We might be catching this too far up the stack.  Maybe catch in the resource itself, then hand back another exception (e.g. AssetRegistrationException)?
-//           return false;
-//         }
-//         // FIXME:IsoRealmsEditor: Any existing data folder needs to be renamed to the new corresponding name
-//         return true;
-//       }));
-      std::vector<IProperty*> mResourceProperties = cResourceHandle.getProperties(browser, &cAssetRegistry, this);
-      mProperties.insert(std::end(mProperties), std::begin(mResourceProperties), std::end(mResourceProperties));
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser) override {
+      std::vector<std::unique_ptr<IProperty>> mProperties;
+      mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", [this]() {return cName;}, [this](const std::string& value) {
+        std::set<IResource*> mAllResources = cParent.getResources();
+        for (IResource* mResource : mAllResources) {
+          if (mResource->getName() == value) {
+            return mResource == this;
+          }
+        }
+        IAssetRemover& mRemover = cParent.getAssetRemover();
+        IAssets& mAssets = cParent. getAssets();
+
+        unregisterAssets(mRemover, mAssets, false);
+        cParent.renameResource(this, value);
+        cParent.renameUserDataDirectory(cName, value);
+        cName = value;
+        cAssetRegistry.setLocalPath(cName);
+        registerAssets();
+        return true;
+      }));
+      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(browser, cAssetRegistry);
+      mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mResourceProperties)), std::make_move_iterator(std::end(mResourceProperties)));
       return mProperties;
-    }
-    
-    void finishEditing() override {
-//       if (cPropertiesEditCount == 0) {
-//         throw IllegalStateException("ERROR: Resource::finishEditing: There are no properties being edited at this time." << std::endl;
-//       }
-//       
-//       if (--cPropertiesEditCount == 0) {
-           // FIXME:IsoRealmsEditor: Should be deleted in the module (e.g. cResourceHandle.deleteProperty()), except for the first one.
-//         cProperties.clear();
-//       }
     }
     
     bool renderIcon() override {
@@ -132,7 +111,7 @@ namespace IsoRealms {
       cResourceHandle.hintInUse(inUse);
     }
 
-    void save(JSONObject object, IAssetIdentifier* identifier) override {
+    void save(JSONObject object, IAssetIdentifier& identifier) override {
       cResourceHandle.save(object, identifier);
     }
 
@@ -141,39 +120,36 @@ namespace IsoRealms {
     }
     
     void registerAssets() override {
-      cResourceHandle.registerAssets(&cAssetRegistry);
+      cResourceHandle.registerAssets(cAssetRegistry);
     }
 
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override {
-      cResourceHandle.unregisterAssets(assets, releaser);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override {
+      cResourceHandle.unregisterAssets(assets, releaser, relinquish);
     }
     
     /****************************\
      * Implements IResourceData *
     \****************************/
     std::string getPath(const std::string& file, bool user) const override {
-      return cParent->getProjectPathPrefix(user) + getResourceDataPath() + "/" + file;
+      return cParent.getProjectPathPrefix(user) + getResourceDataPath() + "/" + file;
     }
 
     void makeUserDataDirectory() override {
-      cParent->makeUserDataDirectory(cName);
+      cParent.makeUserDataDirectory(cName);
     }
 
     bool isIncluded() const override {
-      return std::string(cParent->getDataPath(false) + "/" + cName) != getResourceDataPath();
+      return std::string(cParent.getDataPath(false) + "/" + cName) != getResourceDataPath();
     }
 
-    void propertyAdded(IProperty* property, unsigned int index) override {
-      for (IPropertyListener* mClient : cPropertyClients) {
-        mClient->propertyAdded(property, index + 1);
-      }
-    }
-    
-    void propertyRemoved(IProperty* property) override {
-      for (IPropertyListener* mClient : cPropertyClients) {
-        mClient->propertyRemoved(property);
-      }
-    }
+    private:
+    static const std::string JSON_ID;
+
+    IResourceType& cParent;
+    std::string cName;
+    unsigned int cPropertiesEditCount;
+    RESOURCE cResourceHandle;
+    LocalAssetRegistry cAssetRegistry;
   };
 
   template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";

@@ -27,8 +27,8 @@ namespace IsoRealms {
             cInput(input),
             cTestInput(false),
             cIcon(icon),
-            cPositiveClause(this, false),
-            cNegativeClause(this, true) {
+            cPositiveClause(*this, false),
+            cNegativeClause(*this, true) {
   }
 
   std::string ConditionElement::getName() const {
@@ -59,17 +59,17 @@ namespace IsoRealms {
     return cTestInput;
   }
 
-  ConditionElement::Clause::Clause(ConditionElement* parent, bool negated) :
+  ConditionElement::Clause::Clause(ConditionElement& parent, bool negated) :
             cParent(parent),
             cNegated(negated) {
   }
 
   bool ConditionElement::Clause::isTrue() const {
-    return cParent->cInput->getValue() != cNegated;
+    return cParent.cInput->getValue() != cNegated;
   }
 
   bool ConditionElement::Clause::isTestTrue() const {
-    return cParent->cTestInput != cNegated;
+    return cParent.cTestInput != cNegated;
   }
 
   bool ConditionElement::Clause::isNegated() const {
@@ -77,7 +77,7 @@ namespace IsoRealms {
   }
 
   bool ConditionElement::Clause::operator==(const Clause& clause) const {
-    return cParent->cInput == clause.cParent->cInput && cNegated == clause.cNegated;
+    return cParent.cInput == clause.cParent.cInput && cNegated == clause.cNegated;
   }
 
   bool ConditionElement::Clause::operator!=(const Clause& clause) const {
@@ -85,23 +85,23 @@ namespace IsoRealms {
   }
 
   ConditionElement::Clause* ConditionElement::Clause::getNegatedClause() const {
-    return this == &cParent->cPositiveClause ? &cParent->cNegativeClause : &cParent->cPositiveClause;
+    return this == &cParent.cPositiveClause ? &cParent.cNegativeClause : &cParent.cPositiveClause;
   }
 
   ConditionElement* ConditionElement::Clause::getElement() const {
-    return cParent;
+    return &cParent;
   }
 
   void ConditionElement::Clause::save(JSONObject object) const {
-    object.addString(JSON_INPUT, cParent->cInputName);
+    object.addString(JSON_INPUT, cParent.cInputName);
     object.addBoolean(JSON_NEGATED, cNegated);
   }
 
   void ConditionElement::Clause::saveCache(std::ostream& cache, unsigned char elementType) const {
     cache.write(reinterpret_cast<const char*>(&elementType), sizeof(elementType));
-    size_t mLength = cParent->cInputName.length();
+    size_t mLength = cParent.cInputName.length();
     cache.write(reinterpret_cast<const char*>(&mLength),                sizeof(mLength));
-    cache.write(reinterpret_cast<const char*>(&cParent->cInputName[0]), mLength);
+    cache.write(reinterpret_cast<const char*>(&cParent.cInputName[0]), mLength);
     cache.write(reinterpret_cast<const char*>(&cNegated),               sizeof(cNegated));
   }
 
@@ -109,6 +109,6 @@ namespace IsoRealms {
     if (cNegated) {
       std::cout << "!";
     }
-    std::cout << cParent->cInputName;
+    std::cout << cParent.cInputName;
   }
 }

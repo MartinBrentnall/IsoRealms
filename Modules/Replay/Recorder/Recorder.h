@@ -46,7 +46,7 @@ namespace IsoRealms::Replay {
     static const std::string TYPE_ANALOGUE;
     static const std::string TYPE_DIGITAL;
 
-    IProject* cParentProject;
+    IProject& cParentProject;
     std::vector<std::unique_ptr<Boolean>> cDefDigitalInputs;
     std::vector<std::unique_ptr<Float>> cDefAnalogueInputs;
     LiteralString cFilenameString;
@@ -60,14 +60,14 @@ namespace IsoRealms::Replay {
     LuaBinding<Recorder> cLuaBinding;
     
     public:
-    Recorder(IProject* project, Replay* replay);
-    Recorder(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data);
-    void registerAssets(IAssetRegistry* assets);
-    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    Recorder(IProject& project, Replay& replay, IResourceData& data);
+    Recorder(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options);
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
+    void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
     void writeInput(unsigned int id, bool state);
     void writeInput(unsigned int id, float state);
@@ -88,5 +88,7 @@ namespace IsoRealms::Replay {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }

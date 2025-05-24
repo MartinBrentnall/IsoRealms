@@ -26,12 +26,12 @@ namespace IsoRealms::Basics {
   const std::string DigitalInput::JSON_MOUSE_BUTTON_DOWN = "MouseButtonDown";
   const std::string DigitalInput::JSON_TYPE              = "type";
 
-  DigitalInput::DigitalInput(IProject* project, Basics* basics) :
+  DigitalInput::DigitalInput(IProject& project, Basics& basics) :
              cProject(project),
              cRuntimeState(false),
              cLuaBinding(project, this),
              cStateNotifier(nullptr) {
-    project->reset([this]() {
+    project.reset([this]() {
       cRuntimeState = false;
       for (std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {
         mMapping->reset();
@@ -41,11 +41,15 @@ namespace IsoRealms::Basics {
       }
     });
   }
-  
-  DigitalInput::DigitalInput(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
+
+  DigitalInput::DigitalInput(IProject& project, Basics& basics, IResourceData& data) :
             DigitalInput(project, basics) {
-    IApplication* mApplication = project->getApplication();
-    HatHandler& mHatHandler = mApplication->getHatHandler();
+  }
+  
+  DigitalInput::DigitalInput(IProject& project, Basics& basics, JSONObject object) :
+            DigitalInput(project, basics) {
+    IApplication& mApplication = project.getApplication();
+    HatHandler& mHatHandler = mApplication.getHatHandler();
     for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
       std::string mType = mMappingObject.getString(JSON_TYPE);
       if      (mType == KeyMapping::TYPE_KEY_DOWN)                  {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingObject)));}
@@ -56,20 +60,28 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void DigitalInput::registerAssets(IAssetRegistry* assets) {
-    cStateNotifier = assets->add(static_cast<IBoolean*>(this), "", "Digital Inputs");
-    assets->add(static_cast<IInputHandler*>(this), "", "Digital Inputs");
-    assets->add(&cLuaBinding, "", "Digital Inputs");
+  DigitalInput::DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            DigitalInput(project, basics, object) {
+  }
+
+  void DigitalInput::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(static_cast<IBoolean*>(this), "", "Digital Inputs");
+    assets.add(static_cast<IInputHandler*>(this), "", "Digital Inputs");
+    assets.add(&cLuaBinding, "", "Digital Inputs");
   }
   
-  void DigitalInput::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(static_cast<IBoolean*>(this));
-    assets->remove(static_cast<IInputHandler*>(this));
-    assets->remove(&cLuaBinding);
+  void DigitalInput::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(static_cast<IBoolean*>(this),      relinquish);
+    assets.remove(static_cast<IInputHandler*>(this), relinquish);
+    assets.remove(&cLuaBinding,                      relinquish);
     cStateNotifier = nullptr;
   }
   
-  void DigitalInput::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void DigitalInput::save(JSONObject object, IAssetIdentifier& identifier) const {
+    save(object);
+  }
+
+  void DigitalInput::save(JSONObject object) const {
     JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {
       JSONObject mMappingObject = mMappingsArray.addObject();
@@ -85,9 +97,26 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> DigitalInput::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> DigitalInput::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
+      mProperties.emplace_back(std::make_unique<PropertyStruct>(mInput->getShortName(), "Edit...", [&mInput]() {
+        return mInput->getProperties();
+      }, [this, &mInput]() {
+        Utils::removeElementUnique(cDefMapping, mInput.get());
+      }));
+    }
+    
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Mapping", "Add...", [this]() {
+      cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
+      std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
+      return std::make_unique<PropertyStruct>(mInput->getShortName(), "Edit...", [&mInput]() {
+        return mInput->getProperties();
+      }, [this, &mInput]() {
+        Utils::removeElementUnique(cDefMapping, mInput.get());
+      });
+    }));
+    return mProperties;
   }
 
   bool DigitalInput::getValue() const {
@@ -129,6 +158,14 @@ namespace IsoRealms::Basics {
 
   void DigitalInput::saveAsset(JSONObject object) const {
     // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> DigitalInput::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool DigitalInput::isDefaultConfiguration() const {
+    return true;
   }
 
   std::string DigitalInput::getInputsString() const {
@@ -195,9 +232,13 @@ namespace IsoRealms::Basics {
     cPhysicalInput->save(object);
   }
 
+  std::vector<std::unique_ptr<IProperty>> DigitalInput::PhysicalInputMapping::getProperties() {
+    return cPhysicalInput->getProperties();
+  }
+
   void DigitalInput::loadCustomMapping(JSONObject object) {
-    IApplication* mApplication = cProject->getApplication();
-    HatHandler& mHatHandler = mApplication->getHatHandler();
+    IApplication& mApplication = cProject.getApplication();
+    HatHandler& mHatHandler = mApplication.getHatHandler();
     cRuntimeMapping.clear();
     for (JSONObject mMappingsObject : object.getArray(JSON_MAPPINGS)) {
       std::string mType = mMappingsObject.getString(JSON_TYPE);

@@ -33,37 +33,41 @@
 
 namespace IsoRealms {
   class ResourceType : public IResourceType {
+    public:
+    ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent, IAssetRegistry& assetRegistry, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category);
+    virtual ~ResourceType();
+    void loadResource(JSONObject object, IProject& project, IOptions& options, const std::string& resourceDataPath);
+    bool needsSaving(const std::string& id) const;
+    void save(JSONArray& array, IAssetIdentifier& identifier, const std::string& tag);
+
+    /****************************\
+     * Implements IResourceType *
+    \****************************/
+    std::string const getPlural() const override;
+    std::string const getSingular() const override;
+    std::set<IResource*> getResources() override;
+    IResource* createResource() override;
+    void renameResource(IResource* resource, const std::string& name) override;
+    void deleteResource(IResource* resource) override;
+    std::string getPath() override;
+    std::string getDataPath(bool user) override;
+    void makeUserDataDirectory(const std::string& resourceName) override;
+    void renameUserDataDirectory(const std::string& oldName, const std::string& newName) override;
+    std::string getProjectPathPrefix(bool user) override;
+    std::string getCategory() override;
+    IAssetRemover& getAssetRemover() override;
+    IAssetRegistry& getAssetRegistry() override;
+    IAssets& getAssets() override;
+
     private:
     static const std::string JSON_ID;
 
     IResourceTypeDefinition* cResourceType;
     std::set<IResource*> cResources;
-    IModuleInternal* cParent;
-    std::string cName;
+    IModuleInternal& cParent;
+    std::string cSingular;
+    std::string cPlural;
     std::string cCategory;
     LocalAssetRegistry cResourceTypeAssetRegistry;
-    
-    public:
-    ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal* parent, IAssetRegistry* assetRegistry, const std::string& id, const std::string& name, const std::string& category);
-    void loadResource(JSONObject object, IProject* project, IOptions* options, const std::string& resourceDataPath);
-    bool needsSaving(const std::string& id) const;
-    void save(JSONArray& array, IAssetIdentifier* identifier, const std::string& tag);
-
-    /****************************\
-     * Implements IResourceType *
-    \****************************/
-    std::string const getName() const override;
-    std::set<IResource*> getResources() override;
-    IResource* createResource() override;
-    void deleteResource(IResource* resource) override;
-    std::string getPath() override;
-    std::string getDataPath(bool user) override;
-    void makeUserDataDirectory(const std::string& resourceName) override;
-    std::string getProjectPathPrefix(bool user) override;
-    std::string getCategory() override;
-    IAssetRemover* getAssetRemover() override;
-    IAssetRegistry* getAssetRegistry() override;
-
-    virtual ~ResourceType();
   };
 }

@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Types.h"
 
@@ -28,7 +29,8 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitDummy : public IZoneObjectTypeTrait {
     public:
-    
+    ZoneObjectTypeTraitDummy(ZoneObjectType& owner);
+
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
@@ -37,5 +39,7 @@ namespace IsoRealms::Spindizzy {
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
   };
 }

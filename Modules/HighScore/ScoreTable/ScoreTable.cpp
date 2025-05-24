@@ -31,14 +31,14 @@ namespace IsoRealms::HighScore {
   const std::string ScoreTable::JSON_VALUE            = "value";
   const std::string ScoreTable::JSON_VALUES           = "values";
 
-  ScoreTable::ScoreTable(IProject* project, HighScore* highScore) :
+  ScoreTable::ScoreTable(IProject& project, HighScore& highScore, IResourceData& data) :
             cProjectDataPath(project),
             cProjectUser(project, false),
             cLuaBinding(project, this) {
   }
 
-  ScoreTable::ScoreTable(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data) :
-            ScoreTable(project, highScore) {
+  ScoreTable::ScoreTable(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options) :
+            ScoreTable(project, highScore, data) {
     cProjectUser.init(object, JSON_USER);
     cProjectDataPath.init(object, JSON_PROJECT);
     int mRecordCount = object.getInteger(JSON_RECORD_LIMIT);
@@ -53,7 +53,7 @@ namespace IsoRealms::HighScore {
     }
     readRecords(object);
 
-    project->init([this](IAssets* assets) {
+    project.init([this](IAssets& assets) {
       writeDefaultTable();
     });
   }
@@ -62,16 +62,15 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<IProperty*> ScoreTable::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> ScoreTable::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 
   void ScoreTable::hintInUse(bool inUse) {
     // Nothing to do.
   }
   
-  void ScoreTable::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void ScoreTable::save(JSONObject object, IAssetIdentifier& identifier) const {
     cProjectDataPath.save(object, JSON_PROJECT);
     cProjectUser.save(object, JSON_USER);
     object.addInteger(JSON_RECORD_LIMIT, 10);
@@ -96,23 +95,23 @@ namespace IsoRealms::HighScore {
     }
   }
 
-  void ScoreTable::registerAssets(IAssetRegistry* assets) {
+  void ScoreTable::registerAssets(IAssetRegistry& assets) {
     // TODO: This is dangerous!  Exposing IStrings from inside a map/vector... Addresses could change without warning.
     for (std::map<const std::string, std::vector<LiteralString>>::iterator mValue = cValues.begin(); mValue != cValues.end(); mValue++) {
       for (unsigned int i = 0; i < mValue->second.size(); i++) {
-        assets->add(&mValue->second[i], mValue->first + "_" + std::to_string(i), "System");
+        assets.add(&mValue->second[i], mValue->first + "_" + std::to_string(i), "System");
       }
     }
-    assets->add(&cLuaBinding, "", "Score Tables");
+    assets.add(&cLuaBinding, "", "Score Tables");
   }
   
-  void ScoreTable::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void ScoreTable::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     for (std::pair<std::string, std::vector<LiteralString>> mValue : cValues) {
       for (LiteralString& mAsset : mValue.second) {
-        assets->remove(&mAsset);
+        assets.remove(&mAsset, relinquish);
       }
     }
-    assets->remove(&cLuaBinding);
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   void ScoreTable::readRecords(JSONObject object) {

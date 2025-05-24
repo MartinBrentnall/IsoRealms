@@ -30,6 +30,9 @@ namespace IsoRealms {
               cAsset(asset) {
     }
     
+    virtual ~AssetSingleton() {
+    }
+
     std::string getID() const {
       return cID;
     }
@@ -37,6 +40,10 @@ namespace IsoRealms {
     /******************************************\
      * Implements IAssetProvider<OWNER, TYPE> *
     \******************************************/
+    TYPE* getAsset(OWNER& owner) const override {
+      return cAsset;
+    }
+    
     TYPE* getAsset(OWNER& owner, JSONObject object) const override {
       return cAsset;
     }
@@ -45,11 +52,12 @@ namespace IsoRealms {
       // Nothing to do.
     }
 
-    void info() const override {
-      std::cout << "Asset singleton \"" << cID << "\"" << std::endl;
+    bool hasConfiguration() const override {
+      return false;
     }
-
-    virtual ~AssetSingleton() {
+    
+    bool renderAssetProviderIcon() const override {
+      return cAsset->renderAssetIcon();
     }
 
     private:

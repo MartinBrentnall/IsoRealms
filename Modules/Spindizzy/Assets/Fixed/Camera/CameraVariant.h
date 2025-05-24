@@ -34,14 +34,14 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    CameraVariant(IProject* project, WorldView* view);
-    CameraVariant(IProject* project, WorldView* view, JSONObject object);
+    CameraVariant(IProject& project, WorldView& view);
+    CameraVariant(IProject& project, WorldView& view, JSONObject object);
 
     /**********************\
      * Implements ICamera *
     \**********************/
-    void registerAssets(IAssetRegistry* assets) override; 
-    void unregisterAssets(IAssetRemover* assets) override;
+    void registerAssets(IAssetRegistry& assets) override; 
+    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -58,6 +58,8 @@ namespace IsoRealms::Spindizzy {
     \*********************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     
@@ -67,7 +69,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_YAW;
     static const std::string JSON_ZOOM;
     
-    WorldView* cParent;
+    WorldView& cParent;
     
     Camera cDefYaw;
     Camera cDefPitch;

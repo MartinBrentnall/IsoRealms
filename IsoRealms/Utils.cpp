@@ -42,6 +42,13 @@ namespace IsoRealms {
     return mString;
   }
 
+  std::string Utils::toString(long number) {
+    std::stringstream mStringStream;
+    mStringStream << number;
+    std::string mString = mStringStream.str();
+    return mString;
+  }
+
   std::string Utils::toString(float number) {
     std::stringstream mStringStream;
     mStringStream << std::fixed << std::setw(1) << number;
@@ -296,10 +303,10 @@ namespace IsoRealms {
     glDisable(GL_BLEND);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBegin(GL_QUADS);
-    glColor3f(0.4f, 0.4f, 1.0f);
+    glColor3f(1.0f, 1.0f, 0.4f);
     glVertex2f( 1.0f, -0.4f);
     glVertex2f(-0.1f,  0.7f);
-    glColor3f(0.2f, 0.2f, 0.5f);
+    glColor3f(0.5f, 0.5f, 0.2f);
     glVertex2f(-0.7f,  0.1f);
     glVertex2f( 0.4f, -1.0f);
     
@@ -377,6 +384,31 @@ namespace IsoRealms {
     glColor3f(1.0f, 1.0f, 1.0f);
   }
   
+  void Utils::renderIconTerminal() {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glColor3f(0.8f, 0.8f, 0.8f);
+    Utils::renderRoundedRectangle(-1.0f, -0.9f, 1.0f, 0.9f, 0.4f);
+    glColor3f(0.2f, 0.2f, 0.2f);
+    Utils::renderRoundedRectangle(-0.9f, -0.8f, 0.9f, 0.8f, 0.4f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glBegin(GL_QUADS);
+    glVertex2f(-0.0f,  0.0f);
+    glVertex2f(-0.4f,  0.4f);
+    glVertex2f(-0.5f,  0.3f);
+    glVertex2f(-0.1f, -0.1f);
+
+    glVertex2f( 0.0f,  0.0f);
+    glVertex2f(-0.1f,  0.1f);
+    glVertex2f(-0.5f, -0.3f);
+    glVertex2f(-0.4f, -0.4f);
+    glEnd();
+    Utils::renderBar(0.2f, -0.5f, 0.5f, -0.4f);
+  }
+
+  void Utils::renderCircle(float x, float y, float radius) {
+    renderCurve(x, y, radius, 0.0f, 1.0f);
+  }
+  
   void Utils::renderCurve(float x, float y, float radius, float startAngle, float endAngle) {
     glBegin(GL_TRIANGLE_FAN);
     glVertex2f(x, y);
@@ -446,6 +478,21 @@ namespace IsoRealms {
     renderCurve(right - curveSize, bottom + curveSize, curveSize, 0.5f,  0.75f);
     renderCurve(left  + curveSize, bottom + curveSize, curveSize, 0.25f, 0.5f);
     renderCurve(left  + curveSize, top    - curveSize, curveSize, 0.0f,  0.25f);
+  }
+
+  void Utils::renderBezier(const Point2D& start, const Point2D& controlA, const Point2D& controlB, const Point2D& end, int resolution) {
+    glBegin(GL_LINE_STRIP);
+    for (int i = 0; i < resolution; i++) {
+      float mInterpolation = i / static_cast<float>(resolution);
+      Point2D mAB    = start.midPoint(   controlA, mInterpolation);
+      Point2D mBC    = controlA.midPoint(controlB, mInterpolation);
+      Point2D mCD    = controlB.midPoint(end,      mInterpolation);
+      Point2D mABBC  = mAB.midPoint(     mBC,      mInterpolation);
+      Point2D mBCCD  = mBC.midPoint(     mCD,      mInterpolation);
+      Point2D mFinal = mABBC.midPoint(   mBCCD,    mInterpolation);
+      glVertex2f(mFinal.getX(), mFinal.getY());
+    }
+    glEnd();
   }
 
   void Utils::calculateColour(float hue, float saturation, float lightness, float& red, float& green, float& blue) {

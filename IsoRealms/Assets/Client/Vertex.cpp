@@ -18,38 +18,38 @@
  */
 #include "Vertex.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  Vertex::Vertex(IProject* project) :
-            cProject(project),
-            cVertex(cProject->createLiteralVertex(this, 0.0f, 0.0f, 0.0f)) {
+  Vertex::Vertex(IProject& project) : 
+            Asset<IVertex, IProject>(project, project.createLiteralVertex(this, 0.0f, 0.0f, 0.0f)) {
   }
 
-  void Vertex::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IVertex* Vertex::createLiteralAsset(IProject& project) {
+    return project.createLiteralVertex(this, 0.0f, 0.0f, 0.0f);
+  }
+  
+  IVertex* Vertex::getAsset(IProject& project, JSONObject object) {
+    return project.getVertex(this, object);
+  }
+  
+  IVertex* Vertex::getAsset(IProject& project, const std::string& id) {
+    return project.getVertex(this, id);
+  }
+  
+  std::vector<std::string> Vertex::getAvailableProviders() const {
+    return cManager.getAllVertices();
   }
 
-  void Vertex::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cVertex);
-    cVertex = cProject->getVertex(this, mAssetObject);
+  bool Vertex::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.renderVertexIcon(id);
   }
 
-  void Vertex::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cVertex);
+  bool Vertex::hasConfiguration() const {
+    return cManager.isVertexConfigurable(getID());
   }
 
-  void Vertex::relinquish(IVertex* asset) {
-    if (cVertex == asset) {
-      cVertex = cProject->createLiteralVertex(this, 0.0f, 0.0f, 0.0f);
-    }
-  }
-
-  Vertex::~Vertex() {
-    if (cVertex != nullptr) {
-      cProject->release(this, cVertex);
-    }
+  bool Vertex::isDefaultConfiguration() const {
+    return true;
   }
 }

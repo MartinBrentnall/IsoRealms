@@ -26,31 +26,37 @@ namespace IsoRealms::Spindizzy {
   const std::string Jewel::JSON_CYCLE_SPEED   = "cycleSpeed";
   const std::string Jewel::JSON_FRAME         = "frame";
 
-  Jewel::Jewel(IProject* project, Spindizzy* spindizzy) :
+  Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProject(project),
             cColourFrame(project, 1.0f, 1.0f, 0.0f) {
-    cEngine = project;
-    cSampleModel = std::make_unique<Instance>(this, cEngine);
+    cSampleModel = std::make_unique<Instance>(*this, cProject);
 
-    project->updateEditing([this](unsigned int milliseconds) {
+    project.updateEditing([this](unsigned int milliseconds) {
       cSampleModel->update(milliseconds);
     });
+    cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, project));
   }
   
-  Jewel::Jewel(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
-            Jewel(project, spindizzy) {
+  Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            Jewel(project, spindizzy, data) {
     cCycleSpeed = object.getFloat(JSON_CYCLE_SPEED);
     cColourFrame.init(object, JSON_FRAME);
+    cColoursCycle.clear();
     for (JSONObject mCycleColourObject : object.getArray(JSON_CYCLE_COLOURS)) {
-      cColoursCycle.emplace_back(std::make_unique<CycleColour>(this, project, mCycleColourObject));
+      cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, project, mCycleColourObject));
     }
   }
 
-  std::vector<IProperty*> Jewel::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
+      cColoursCycle[i]->getProperties(browser, "Colour " + Utils::toString(i + 1), mProperties);
+    }
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cColourFrame));
+    return mProperties;
   }
   
-  void Jewel::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Jewel::save(JSONObject object, IAssetIdentifier& identifier) const {
     cColourFrame.save(object, JSON_FRAME);
     object.addFloat(JSON_CYCLE_SPEED, cCycleSpeed);
     JSONArray mCycleColoursArray = object.addArray(JSON_CYCLE_COLOURS);
@@ -60,8 +66,8 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  I3DModel* Jewel::createModel() {
-    return cInstances.emplace_back(std::make_unique<Instance>(this, cEngine)).get();
+  IModelInstance* Jewel::createModel() {
+    return cInstances.emplace_back(std::make_unique<Instance>(*this, cProject)).get();
   }
 
   bool Jewel::renderIcon() const {
@@ -85,16 +91,24 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  std::vector<std::unique_ptr<IProperty>> Jewel::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Jewel::isDefaultConfiguration() const {
+    return true;
+  }
+
   void Jewel::hintInUse(bool inUse) {
     // Nothing to do.
   }
   
-  void Jewel::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, "", "Spindizzy Jewel Models");
+  void Jewel::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, "", "Spindizzy Jewel Models");
   }
     
-  void Jewel::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
+  void Jewel::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this, relinquish);
   }
 
   // TODO: Handle removal of a colour
@@ -117,17 +131,21 @@ namespace IsoRealms::Spindizzy {
 //     }
 //   }
   
-  Jewel::CycleColour::CycleColour(Jewel* parent, IProject* project, JSONObject object) :
+  Jewel::CycleColour::CycleColour(Jewel& parent, IProject& project) :
             cParent(parent),
             cDefColour(project, 1.0f, 0.0f, 1.0f) {
+  }
+
+  Jewel::CycleColour::CycleColour(Jewel& parent, IProject& project, JSONObject object) :
+            CycleColour(parent, project) {
     cDefColour.init(object, JSON_COLOUR);
   }
 
-  void Jewel::CycleColour::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void Jewel::CycleColour::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefColour.save(object, JSON_COLOUR);
   }
 
-  const IColour* Jewel::CycleColour::getColour() const {
+  const Colour* Jewel::CycleColour::getColour() const {
     return &cDefColour;
   }
   
@@ -135,6 +153,10 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
+  void Jewel::CycleColour::getProperties(IAssetBrowser& browser, const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties) {
+    properties.emplace_back(std::make_unique<PropertyAsset<Colour>>(name, cDefColour));
+  }
+
   unsigned int Jewel::Instance::cReferenceCount = 0;
   GLuint Jewel::Instance::cPanelDisplayList;
   GLuint Jewel::Instance::cFrameDisplayList;
@@ -142,12 +164,12 @@ namespace IsoRealms::Spindizzy {
   /****************\
    * Constructors *
   \****************/
-  Jewel::Instance::Instance(Jewel* parent, IProject* engine) :
+  Jewel::Instance::Instance(Jewel& parent, IProject& project) :
             cDefParent(parent) {
     
     // If this is the first model instance, we need to create some display lists.
     if (cReferenceCount == 0) {
-      engine->mainThreadInit([this]() {
+      project.mainThreadInit([this]() {
         float mRadius    = 0.5f;
         float mLineWidth = 0.05f;
         
@@ -194,24 +216,24 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Jewel::Instance::randomize() {
-    cProgress = cDefParent->cColoursCycle.empty() ? 0.0f : (std::rand() % (cDefParent->cColoursCycle.size() * 1000)) / 1000.0f;
+    cProgress = cDefParent.cColoursCycle.empty() ? 0.0f : (std::rand() % (cDefParent.cColoursCycle.size() * 1000)) / 1000.0f;
   }
 
   void Jewel::Instance::update(unsigned int milliseconds) {
-    cProgress += milliseconds * cDefParent->cCycleSpeed;
-    while (cProgress >= cDefParent->cColoursCycle.size()) {
-      cProgress -= cDefParent->cColoursCycle.size();
+    cProgress += milliseconds * cDefParent.cCycleSpeed;
+    while (cProgress >= cDefParent.cColoursCycle.size()) {
+      cProgress -= cDefParent.cColoursCycle.size();
     }
   }
 
   void Jewel::Instance::render() const {
     glBindTexture(GL_TEXTURE_2D, 0);
-    cDefParent->cColourFrame.set();
+    cDefParent.cColourFrame->set();
     glCallList(cFrameDisplayList);
     unsigned int mPrevious = cProgress;
-    unsigned int mNext     = mPrevious != cDefParent->cColoursCycle.size() - 1 ? cProgress + 1 : 0;
+    unsigned int mNext     = mPrevious != cDefParent.cColoursCycle.size() - 1 ? cProgress + 1 : 0;
     float mCurrent         = cProgress - mPrevious;
-    LiteralColour mColourPanel(*cDefParent->cColoursCycle[mPrevious]->getColour(), *cDefParent->cColoursCycle[mNext]->getColour(), mCurrent);
+    LiteralColour mColourPanel(***cDefParent.cColoursCycle[mPrevious]->getColour(), ***cDefParent.cColoursCycle[mNext]->getColour(), mCurrent);
     mColourPanel.set();
     glCallList(cPanelDisplayList);
     glColor3f(1.0, 1.0, 1.0);

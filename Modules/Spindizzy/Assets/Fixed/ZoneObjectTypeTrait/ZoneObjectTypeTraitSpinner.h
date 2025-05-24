@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include "IsoRealms/Editing.h"
+
 #include "Modules/Spindizzy/Assets/Type/IZoneObjectTypeTrait.h"
 
 namespace IsoRealms::Spindizzy {
@@ -25,7 +27,8 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitSpinner : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitSpinner(IProject* project, ZoneObjectType* type, JSONObject object);
+    ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type);
+    ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type, JSONObject object);
 
     // Interface to be used by instances.    
     std::unique_ptr<ModelInstance> createModel();
@@ -40,6 +43,8 @@ namespace IsoRealms::Spindizzy {
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     

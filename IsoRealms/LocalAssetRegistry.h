@@ -24,21 +24,20 @@
 
 namespace IsoRealms {
   class LocalAssetRegistry : public IAssetRegistry {
-    private:
-    IAssetRegistry* cAssetRegistry;
-    const std::string cLocalPath;
-
     public:
-    LocalAssetRegistry(IAssetRegistry* assetRegistry, const std::string& localPath);
-    
+    LocalAssetRegistry(IAssetRegistry& assetRegistry, const std::string& localPath);
+
+    void setLocalPath(const std::string& path);
     std::string getModule();
     
     /*****************************\
      * Implements IAssetRegistry *
     \*****************************/
-    void                      add(I3DModelType*    asset, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) override;
+    
     void                      add(IActionType*     asset, const std::string& id, const std::string& category) override;
     void                      add(IBinding*        asset, const std::string& id, const std::string& category) override;
+    void                      add(IBindingType*    asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IBoolean>* add(IBoolean*        asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IColour>*  add(IColour*         asset, const std::string& id, const std::string& category) override;
     void                      add(IEditable*       asset, const std::string& id, const std::string& category) override;
@@ -46,11 +45,16 @@ namespace IsoRealms {
     void                      add(IFont*           asset, const std::string& id, const std::string& category) override;
     void                      add(IInputHandler*   asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IInteger>* add(IInteger*        asset, const std::string& id, const std::string& category) override;
+    void                      add(IModel*          asset, const std::string& id, const std::string& category) override;
     void                      add(IProjectOptions* asset, const std::string& id, const std::string& category) override;
     void                      add(IAssets*         asset, const std::string& id, const std::string& category) override;
     IScreen*                  add(IScreen*         asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IString>*  add(IString*         asset, const std::string& id, const std::string& category) override;
     IStateNotifier<ITexture>* add(ITexture*        asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IVertex>*  add(IVertex*         asset, const std::string& id, const std::string& category) override;
+
+    private:
+    IAssetRegistry& cAssetRegistry;
+    std::string cLocalPath;
   };
 }

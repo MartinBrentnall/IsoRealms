@@ -29,15 +29,30 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemFileList::BINDING_TYPE = "FileList";
   
-  MenuItemFileList::MenuItemFileList(IProject* project, Menu* menu, JSONObject object) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu) :
+            cProject(project),
+            cHatHandler(project.getApplication().getHatHandler()),
+            cDefID(""),
+            cDefFolder(""),
+            cDefUser(false),
+            cDefAction(project),
+            cLuaBinding(project, this) {
+    project.reset([this]() {
+      refresh();
+      cRuntimeSelectedFile = 0;
+    });
+  }
+
+  MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu, JSONObject object) :
+            cProject(project),
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefFolder(object.getString(JSON_FOLDER)),
             cDefUser(object.getBoolean(JSON_USER)),
             cDefAction(project),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
-    project->reset([this]() {
+    project.reset([this]() {
       refresh();
       cRuntimeSelectedFile = 0;
     });
@@ -60,14 +75,14 @@ namespace IsoRealms::UI {
     cRuntimeSelectedFile = 0;
   }
   
-  void MenuItemFileList::registerAssets(IAssetRegistry* assets) {
-    assets->add(this, cDefID, "System");
-    assets->add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  void MenuItemFileList::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, cDefID, "System");
+    assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemFileList::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(this);
-    assets->remove(&cLuaBinding);
+  void MenuItemFileList::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(this,         relinquish);
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   bool MenuItemFileList::input(sf::Event& event) {
@@ -132,6 +147,19 @@ namespace IsoRealms::UI {
     cDefAction.save(object, JSON_ON_SELECTION);
   }
 
+  std::vector<std::unique_ptr<IProperty>> MenuItemFileList::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "ID",          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Folder",      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("User Data",   [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;},              cProject));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Selection", cDefAction));
+    return mProperties;
+  }
+
+  bool MenuItemFileList::isDefaultConfiguration() const {
+    return false; // TODO: Implement this.
+  }
+
   std::string MenuItemFileList::getValue() const {
     return cRuntimeFiles[cRuntimeSelectedFile]->getPath();
   }
@@ -145,7 +173,7 @@ namespace IsoRealms::UI {
     float mShadowOffset = menu.getShadowOffset();
     float mFontSize = menu.getFontSize();
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
-    const IColour& mColour = selected ? static_cast<const IColour&>(menu.getSelectionColour())
+    const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     Utils::shadowPrint(0.0, y, **menu.getFont(), mFontSize, mColour, mShadowOffset, IFont::Alignment::CENTER,  cDefLabel);
   }

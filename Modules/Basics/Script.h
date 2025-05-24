@@ -30,40 +30,42 @@ namespace IsoRealms::Basics {
   class Script : public IActionType {
     public:
     Script();
-    void unregisterAssets(IAssetRemover* remover, IAssets* releaser);
+    void unregisterAssets(IAssetRemover& remover, IAssets& releaser);
 
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) override;
-    IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
-    void destroyAction(IAction* action, IAssets* assets) override;
+    IAction* createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) override;
+    IAction* createAction(IProject& project, IBindingRegistry* localArgs) override;
+    void destroyAction(IAction* action, IAssets& assets) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     class ScriptAction : public IAction {
       public:
-      ScriptAction(Script* parent, JSONObject object, IProject* project, unsigned int index, IBindingRegistry* localArgs);
-      ScriptAction(Script* parent, IProject* project, unsigned int index);
+      ScriptAction(Script& parent, JSONObject object, IProject& project, unsigned int index, IBindingRegistry* localArgs);
+      ScriptAction(Script& parent, IProject& project, unsigned int index);
 
-      const IActionType* getInternalActionType();
-      void destroyInternalAction(IAssets* assets);
+      void destroyInternalAction(IAssets& assets);
       unsigned int getIndex() const;
-      void unregisterAssets(IAssets* releaser);
+      void unregisterAssets(IAssets& releaser);
 
       /**********************\
        * Implements IAction *
       \**********************/
       void execute() override;
-      IActionType* getActionType() const override;
-      void save(JSONObject object, IAssetIdentifier* identifier) const override;
+      void save(JSONObject object, IAssetIdentifier& identifier) const override;
       bool hasConfiguration() const override;
-      
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
       private:
       
       // External interfaces.
-      Script* cDefParent; /// Parent action type.
+      Script& cDefParent; /// Parent action type.
       
       // Definition data.
       Function cDefFunction;  /// Function of this action.

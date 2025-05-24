@@ -23,16 +23,16 @@
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 
 namespace IsoRealms::Spindizzy {
-  InfiniteSurface::InfiniteSurface(Zone* zone, float height) :
-            cDefZone(zone),
+  InfiniteSurface::InfiniteSurface(Zone& zone, float height) :
+            cZone(zone),
             cDefHeight(height) {
   }
   
   std::unique_ptr<CollisionData> InfiniteSurface::getCollision(LiteralVertex& start, LiteralVertex& end, float stepHeight, double startTime, double endTime) {
-    float mStartX = cDefZone->getStartX() - 0.5f;
-    float mEndX   = cDefZone->getEndX()   + 0.5f;
-    float mStartY = cDefZone->getStartY() - 0.5f;
-    float mEndY   = cDefZone->getEndY()   + 0.5f;
+    float mStartX = cZone.getStartX() - 0.5f;
+    float mEndX   = cZone.getEndX()   + 0.5f;
+    float mStartY = cZone.getStartY() - 0.5f;
+    float mEndY   = cZone.getEndY()   + 0.5f;
     if (contains(start, stepHeight)) {
 
       // Starting point is already within the surface.
@@ -122,10 +122,10 @@ namespace IsoRealms::Spindizzy {
   }
     
   bool InfiniteSurface::contains(LiteralVertex& location, float stepHeight) {
-    double mSouthEdge  = cDefZone->getStartY() - 0.5f;
-    double mWestEdge   = cDefZone->getStartX() - 0.5f;
-    double mNorthEdge  = cDefZone->getEndY()   + 0.5f;
-    double mEastEdge   = cDefZone->getEndX()   + 0.5f;
+    double mSouthEdge  = cZone.getStartY() - 0.5f;
+    double mWestEdge   = cZone.getStartX() - 0.5f;
+    double mNorthEdge  = cZone.getEndY()   + 0.5f;
+    double mEastEdge   = cZone.getEndX()   + 0.5f;
     if (location.y < mSouthEdge || location.y >= mNorthEdge || location.x < mWestEdge || location.x >= mEastEdge) {
       return location.z <= cDefHeight && location.z >= cDefHeight - stepHeight;
     }
@@ -188,8 +188,8 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
 
-  Zone* InfiniteSurface::getZone() {
-    return cDefZone;
+  Zone& InfiniteSurface::getZone() {
+    return cZone;
   }
   
   int InfiniteSurface::getXStart() const {
@@ -244,10 +244,10 @@ namespace IsoRealms::Spindizzy {
     *lowestGradient = 2.0f;
     double mXMovement = end.x - start.x;
     double mYMovement = end.y - start.y;
-    double mSouth = cDefZone->getStartY() - 0.5f;
-    double mWest  = cDefZone->getStartX() - 0.5f;
-    double mNorth = cDefZone->getEndY()   + 0.5f;
-    double mEast  = cDefZone->getEndX()   + 0.5f;
+    double mSouth = cZone.getStartY() - 0.5f;
+    double mWest  = cZone.getStartX() - 0.5f;
+    double mNorth = cZone.getEndY()   + 0.5f;
+    double mEast  = cZone.getEndX()   + 0.5f;
     double mImpactX;
     double mImpactY;
     bool mXKnown = false;

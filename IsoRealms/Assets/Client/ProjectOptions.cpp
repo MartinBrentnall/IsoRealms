@@ -18,38 +18,39 @@
  */
 #include "ProjectOptions.h"
 
+#include "IsoRealms/Editing/Property/IProperty.h"
+
 namespace IsoRealms {
-  ProjectOptions::ProjectOptions(IProject* project) :
-            cProject(project),
-            cProjectOptions(cProject->createLiteralProjectOptions(this)) {
+  ProjectOptions::ProjectOptions(IProject& project) : 
+            Asset<IProjectOptions, IProject>(project, project.createLiteralProjectOptions(this)) {
   }
 
-  void ProjectOptions::init(JSONObject object, const std::string& member) {
-    cProject->init([this, object, member](IAssets* assets) {
-      set(object, member);
-    });
+  IProjectOptions* ProjectOptions::createLiteralAsset(IProject& project) {
+    return project.createLiteralProjectOptions(this);
+  }
+  
+  IProjectOptions* ProjectOptions::getAsset(IProject& project, JSONObject object) {
+    return project.getProjectOptions(this, object);
+  }
+  
+  IProjectOptions* ProjectOptions::getAsset(IProject& project, const std::string& id) {
+    return project.getProjectOptions(this, id);
+  }
+  
+  std::vector<std::string> ProjectOptions::getAvailableProviders() const {
+    return std::vector<std::string>();
+    // TODO return cManager.getAllProjectOptionss();
+  }  
+
+  bool ProjectOptions::renderOtherProviderIcon(const std::string& id) const {
+    return false; // TODO
   }
 
-  void ProjectOptions::set(JSONObject object, const std::string& member) {
-    JSONObject mAssetObject = object.getObject(member);
-    cProject->release(this, cProjectOptions);
-    cProjectOptions = cProject->getProjectOptions(this, mAssetObject);
-  }
+  bool ProjectOptions::hasConfiguration() const {
+    return false; // TODO cManager.isProjectOptionsConfigurable(getID());
+  }  
 
-  void ProjectOptions::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cProject->save(mAssetObject, cProjectOptions);
-  }
-
-  void ProjectOptions::relinquish(IProjectOptions* asset) {
-    if (cProjectOptions == asset) {
-      cProjectOptions = cProject->createLiteralProjectOptions(this);
-    }
-  }
-
-  ProjectOptions::~ProjectOptions() {
-    if (cProjectOptions != nullptr) {
-      cProject->release(this, cProjectOptions);
-    }
+  bool ProjectOptions::isDefaultConfiguration() const {
+    return true;
   }
 }

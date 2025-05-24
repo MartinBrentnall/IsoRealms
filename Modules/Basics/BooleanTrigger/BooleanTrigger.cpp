@@ -27,28 +27,31 @@ namespace IsoRealms::Basics {
   const std::string BooleanTrigger::PROPERTY_TRUE_ACTION  = "Action on True";
   const std::string BooleanTrigger::PROPERTY_FALSE_ACTION = "Action on False";
   
-  BooleanTrigger::BooleanTrigger(IProject* project, Basics* basics) :
-            cDefValue(project, false, [this](bool value) {(value ? cDefTrueAction : cDefFalseAction).execute();}),
+  BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data) :
+            cDefValue(project, false, [this](bool value) {
+              std::cout << "Execute action for " << value << std::endl;
+              (value ? cDefTrueAction : cDefFalseAction).execute();
+            }),
             cDefTrueAction(project),
             cDefFalseAction(project) {
   }
   
-  BooleanTrigger::BooleanTrigger(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
-            BooleanTrigger(project, basics) {
+  BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+            BooleanTrigger(project, basics, data) {
     cDefValue.init(object, JSON_VALUE);
     cDefTrueAction.init(object, JSON_ON_BECOMING_TRUE);
     cDefFalseAction.init(object, JSON_ON_BECOMING_FALSE);
   }
 
-  void BooleanTrigger::registerAssets(IAssetRegistry* assets) {
+  void BooleanTrigger::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
   
-  void BooleanTrigger::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+  void BooleanTrigger::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     // Nothing to do.
   }
   
-  void BooleanTrigger::save(JSONObject object, IAssetIdentifier* identifier) const {
+  void BooleanTrigger::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefValue.save(object, JSON_VALUE);
     cDefTrueAction.save(object, JSON_ON_BECOMING_TRUE);
     cDefFalseAction.save(object, JSON_ON_BECOMING_FALSE);
@@ -62,8 +65,11 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<IProperty*> BooleanTrigger::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
-    return std::vector<IProperty*>({
-    });
+  std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("Monitored Value", cDefValue));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on True", cDefTrueAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on False", cDefFalseAction));
+    return mProperties;
   }
 }

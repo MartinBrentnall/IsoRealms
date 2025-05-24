@@ -21,6 +21,7 @@
 #include <sol.hpp>
 
 #include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/Editing/Property/PropertyAsset.h"
 #include "IsoRealms/Lua/LuaState.h"
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetRemover.h"
@@ -29,9 +30,13 @@
 namespace IsoRealms {
   template <class T> class BoundAsset : public IBinding {
     public:
-    BoundAsset(IProject* project, JSONObject object) :
-              cDefLuaState(project->getLuaState()->getState()),
+    BoundAsset(IProject& project) :
+              cDefLuaState(project.getLuaState()->getState()),
               cDefValue(project) {
+    }
+
+    BoundAsset(IProject& project, JSONObject object) :
+              BoundAsset(project) {
       cDefValue.set(object, JSON_ASSET);
     }
 
@@ -41,13 +46,51 @@ namespace IsoRealms {
     void bind(const std::string& bindFunction) const override {
       (*cDefLuaState)[bindFunction](*cDefValue);
     }
-    
+
+    std::vector<std::string> getAvailableProviders() const override {
+      return cDefValue.getAvailableProviders();
+    }
+
+    bool renderProviderIcon(const std::string& id) const override {
+      return cDefValue.renderProviderIcon(id);
+    }
+
+    bool renderWrappedIcon() const override {
+      return cDefValue.renderAssetIcon();
+    }
+
+    bool isConfigurable() const override {
+      return cDefValue.hasConfiguration();
+    }
+
+    std::string getID() const override {
+      return cDefValue.getID();
+    }
+
+    void set(const std::string& id) override {
+      cDefValue.setID(id);
+    }
+
+    std::vector<std::unique_ptr<IProperty>> getWrappedProperties() override {
+      return cDefValue.getAssetProperties();
+    }
+
     bool renderAssetIcon() const override {
       return false;
     }
 
     void saveAsset(JSONObject object) const override {
       cDefValue.save(object, JSON_ASSET);
+    }
+
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
+      std::vector<std::unique_ptr<IProperty>> mProperties;
+      mProperties.emplace_back(std::make_unique<PropertyAsset<T>>("Asset", cDefValue));
+      return mProperties;
+    }
+
+    bool isDefaultConfiguration() const override {
+      return cDefValue->isDefaultConfiguration();
     }
 
     private:

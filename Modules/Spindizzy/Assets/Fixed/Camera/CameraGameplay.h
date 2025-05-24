@@ -37,8 +37,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    CameraGameplay(IProject* project, WorldView* view);
-    CameraGameplay(IProject* project, WorldView* view, JSONObject object);
+    CameraGameplay(IProject& project, WorldView& view);
+    CameraGameplay(IProject& project, WorldView& view, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -54,8 +54,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Implements ICamera *
     \**********************/
-    void registerAssets(IAssetRegistry* assets) override; 
-    void unregisterAssets(IAssetRemover* assets) override;
+    void registerAssets(IAssetRegistry& assets) override; 
+    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -77,6 +77,8 @@ namespace IsoRealms::Spindizzy {
     \****************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     
@@ -103,7 +105,7 @@ namespace IsoRealms::Spindizzy {
     LiteralFloat cPitch;
 
     // External interfaces.
-    WorldView* cParent; /// Parent view.
+    WorldView& cParent; /// Parent view.
     
     // Definition data.
     float cDefAngle;          /// Initial angle value.
@@ -125,5 +127,7 @@ namespace IsoRealms::Spindizzy {
     
     // Private functions.
     void rollTo(float value);
+    std::string getDirectionString() const;
+    static int getDirectionValue(const std::string& value);
   };
 }

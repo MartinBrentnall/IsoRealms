@@ -31,9 +31,9 @@ namespace IsoRealms {
     public:
     AssetRegistry<OWNER, TYPE> cRegistry;
 
-    AssetClientManager(ILiteralAssetProvider<OWNER, TYPE>* provider) :
+    AssetClientManager(ILiteralAssetProvider<OWNER, TYPE>* provider, const std::string& label = "None") :
               cLiteralProvider(provider) {
-      add(provider, "Literal", "Literals");
+      add(provider, label, "Literals");
     }
 
     IStateNotifier<TYPE>* add(TYPE* asset, const std::string& id, const std::string& category = "TODO", bool stateChanges = false) {
@@ -49,32 +49,35 @@ namespace IsoRealms {
       }
     }
 
-    void remove(TYPE* asset) {
+    void remove(TYPE* asset, bool relinquish) {
       typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
       if (mIterator == cAssetSingletons.end()) {
         std::cout << "WARNING: AssetClientManager::remove: Specified asset has no singleton in this registry." << std::endl;
       } else {
-        remove(mIterator->second.get());
+        remove(mIterator->second.get(), relinquish);
         cAssetSingletons.erase(asset);
+//        cRegistry.checkClean("DEBUG");
       }
     }
 
-    void remove(IAssetProvider<OWNER, TYPE>* provider) {
-      typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
-      if (mIterator != cClients.end()) {
-        for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPair : mIterator->second) {
-          for (IAssetUser<TYPE>* mClient : mPair.second) {
-            mClient->relinquish(mPair.first);
+    void remove(IAssetProvider<OWNER, TYPE>* provider, bool relinquish) {
+      if (relinquish) {
+        typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
+        if (mIterator != cClients.end()) {
+          for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPair : mIterator->second) {
+            for (IAssetUser<TYPE>* mClient : mPair.second) {
+              mClient->relinquish(mPair.first);
+            }
           }
+          cClients.erase(provider);
         }
-        cClients.erase(provider);
       }
       cStateNotifiers.erase(provider);
       cRegistry.remove(provider);
     }
     
-    TYPE* literal(IAssetUser<TYPE>* client, const std::string& value) {
-      TYPE* mAsset = cLiteralProvider != nullptr ? cLiteralProvider->getLiteralAsset(value) : nullptr;
+    TYPE* literal(IAssetUser<TYPE>* client, OWNER& owner, const std::string& value) {
+      TYPE* mAsset = cLiteralProvider != nullptr ? cLiteralProvider->getLiteralAsset(owner, value) : nullptr;
       if (mAsset != nullptr) {
         cClients[cLiteralProvider][mAsset].emplace_back(client);
       }
@@ -107,6 +110,26 @@ namespace IsoRealms {
       return mAsset;
     }
 
+    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, const std::string& id, IStateListener<TYPE*>* listener) {
+      if (client == nullptr) {
+        throw std::invalid_argument("Client cannot be null");
+      }
+
+      IAssetProvider<OWNER, TYPE>* mProvider = cRegistry.getProvider(id, true);
+      TYPE* mAsset = mProvider->getAsset(owner);
+      if (mAsset != nullptr) {
+        cClients[mProvider][mAsset].emplace_back(client);
+
+        if (listener != nullptr) {
+          typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(mProvider);
+          if (mNotifier != cStateNotifiers.end()) {
+            mNotifier->second->addListener(listener);
+          }
+        }
+      }
+      return mAsset;
+    }
+
     void addStateChangeListener(const TYPE* asset, IStateListener<TYPE*>* listener) {
       typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(getProvider(asset));
       if (mNotifier != cStateNotifiers.end()) {
@@ -114,8 +137,8 @@ namespace IsoRealms {
       }
     }
     
-    std::vector<std::pair<std::string, std::string>> getAll() {
-      return std::vector<std::pair<std::string, std::string>>(); // TODO: Needed for editing.
+    std::vector<std::string> getAll() {
+      return cRegistry.getAll();
     }
     
     void release(IAssetUser<TYPE>* client, TYPE* asset) {
@@ -152,7 +175,7 @@ namespace IsoRealms {
     }
     
     std::string getID(const TYPE* asset) const {
-      return "TODO"; //cRegistry.getID(asset);
+      return cRegistry.getID(getProvider(asset));
     }
 
     void save(JSONObject object, const TYPE* asset) const {
@@ -167,7 +190,11 @@ namespace IsoRealms {
     }
     
     bool renderIcon(const std::string& id) const {
-      return false; // TODO cRegistry.renderIcon(id);
+      return cRegistry.renderIcon(id);
+    }
+    
+    bool hasConfiguration(const std::string& id) const {
+      return cRegistry.getProvider(id, true)->hasConfiguration();
     }
     
     AssetRegistry<OWNER, TYPE>* getRegistry() {
@@ -187,7 +214,7 @@ namespace IsoRealms {
     ~AssetClientManager() {
       cLiteralProvider = nullptr;
       for (std::pair<const TYPE* const, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>& mPair : cAssetSingletons) {
-        remove(mPair.second.get());
+        remove(mPair.second.get(), true);
       }
       for (std::pair<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> mPairA : cClients) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPairB : mPairA.second) {

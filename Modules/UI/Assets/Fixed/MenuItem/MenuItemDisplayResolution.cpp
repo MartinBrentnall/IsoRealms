@@ -27,15 +27,28 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemDisplayResolution::BINDING_TYPE = "DisplayResolution";
 
-  MenuItemDisplayResolution::MenuItemDisplayResolution(IProject* project, Menu* menu, JSONObject object) :
-            cHatHandler(project->getApplication()->getHatHandler()),
+  MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu) :
+            cHatHandler(project.getApplication().getHatHandler()),
+            cDefID(""),
+            cDefLabel(""),
+            cLuaBinding(project, this) {
+    project.reset([this, &project]() {
+      IApplication& mApplication = project.getApplication();
+      cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
+      DisplayResolution mResolution = mApplication.getDisplayResolution();
+      cRuntimeSelectedResolution = getIndex(mResolution);
+    });
+  }
+
+  MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu, JSONObject object) :
+            cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cLuaBinding(project, this) {
-    project->reset([this, project]() {
-      IApplication* mApplication = project->getApplication();
-      cRuntimeResolutions = mApplication->getAvailableDisplayResolutions();
-      DisplayResolution mResolution = mApplication->getDisplayResolution();
+    project.reset([this, &project]() {
+      IApplication& mApplication = project.getApplication();
+      cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
+      DisplayResolution mResolution = mApplication.getDisplayResolution();
       cRuntimeSelectedResolution = getIndex(mResolution);
     });
   }
@@ -48,12 +61,12 @@ namespace IsoRealms::UI {
     return cRuntimeResolutions[cRuntimeSelectedResolution];
   }
 
-  void MenuItemDisplayResolution::registerAssets(IAssetRegistry* assets) {
-    assets->add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  void MenuItemDisplayResolution::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemDisplayResolution::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
-    assets->remove(&cLuaBinding);
+  void MenuItemDisplayResolution::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
   }
   
   bool MenuItemDisplayResolution::input(sf::Event& event) {
@@ -88,7 +101,7 @@ namespace IsoRealms::UI {
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
-    const IColour& mColour = selected ? static_cast<const IColour&>(menu.getSelectionColour())
+    const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     std::string mValue = cRuntimeResolutions[cRuntimeSelectedResolution].toString();
     Utils::shadowPrint(-aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::LEFT,  cDefLabel);
@@ -110,6 +123,17 @@ namespace IsoRealms::UI {
   void MenuItemDisplayResolution::saveAsset(JSONObject object) const {
     object.addString(JSON_ID,    cDefID);
     object.addString(JSON_LABEL, cDefLabel);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> MenuItemDisplayResolution::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("ID",    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Label", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;}));
+    return mProperties;
+  }
+
+  bool MenuItemDisplayResolution::isDefaultConfiguration() const {
+    return false; // TODO: Implement this.
   }
 
   unsigned int MenuItemDisplayResolution::getIndex(const DisplayResolution& resolution) const {

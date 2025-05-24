@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
   const char Terrain::FLAG_STEPPED_BOTTOM    = 0x8;
   const char Terrain::FLAG_ALTERNATIVE_SPLIT = 0x10;
   const char Terrain::FLAG_BEHAVIOUR_MASK    = FLAG_INVISIBLE | FLAG_GHOST | FLAG_FORCE_DYNAMIC;
-    
+  
   const unsigned char Terrain::CACHE_BLOCK_END         = 0;
   const unsigned char Terrain::CACHE_SURFACE           = 1;
   const unsigned char Terrain::CACHE_SPLIT_SURFACE     = 2;
@@ -62,44 +62,32 @@ namespace IsoRealms::Spindizzy {
   const std::string Terrain::BEHAVIOUR_DYNAMIC       = "dynamic";
   const std::string Terrain::BEHAVIOUR_DYNAMIC_GHOST = "dynamicGhost";
 
-//   IDropDownListValues<char>* Terrain::DROP_DOWN_LIST_BEHAVIOURS = new DropDownListValuesVector<char>(std::vector<std::pair<std::string, char>>({
-//     {"Normal",        FLAGS_NORMAL},
-//     {"Invisible",     FLAG_INVISIBLE},
-//     {"Ghost",         FLAG_GHOST},
-//     {"Dynamic",       FLAG_FORCE_DYNAMIC},
-//     {"Dynamic Ghost", FLAG_GHOST | FLAG_FORCE_DYNAMIC}
-//   }));
-
   Terrain::Terrain(Zone& zone, JSONObject object) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(nullptr),
-            cDefStartX(object.getInteger(JSON_X) + cDefZone.getStartX()),
-            cDefStartY(object.getInteger(JSON_Y) + cDefZone.getStartY()),
-            cDefStartZ(object.getInteger(JSON_Z) + cDefZone.getStartZ() - 1), //(object.getInteger(JSON_HEIGHT) < 0 ? 0 : 1)),
+            cDefStartX(object.getInteger(JSON_X) + cZone.getStartX()),
+            cDefStartY(object.getInteger(JSON_Y) + cZone.getStartY()),
+            cDefStartZ(object.getInteger(JSON_Z) + cZone.getStartZ() - 1), //(object.getInteger(JSON_HEIGHT) < 0 ? 0 : 1)),
             cDefEndX(cDefStartX + object.getInteger(JSON_WIDTH) - 1),
             cDefEndY(cDefStartY + object.getInteger(JSON_LENGTH) - 1),
             cDefEndZ(cDefStartZ + object.getInteger(JSON_HEIGHT)),
             cDefCornerHeight{{object.getInteger(JSON_SOUTH_WEST_CORNER), object.getInteger(JSON_NORTH_WEST_CORNER)},
                              {object.getInteger(JSON_SOUTH_EAST_CORNER), object.getInteger(JSON_NORTH_EAST_CORNER)}},
-            cDefFlags((object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_INVISIBLE     ? FLAG_INVISIBLE
-                     : object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_GHOST         ? FLAG_GHOST
-                     : object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_DYNAMIC       ? FLAG_FORCE_DYNAMIC
-                     : object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_DYNAMIC_GHOST ? FLAG_FORCE_DYNAMIC | FLAG_FORCE_DYNAMIC
-                     :                                                                     FLAGS_NORMAL)
-                    | (object.getBoolean(JSON_STEPPED_BOTTOM)                ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)
-                    | (object.getBoolean(JSON_ALTERNATIVE_SPLIT)             ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getTerrainType(object.getString(JSON_TYPE));
+            cDefFlags(getBehaviourFlags(object.getString(JSON_BEHAVIOUR))
+                   | (object.getBoolean(JSON_STEPPED_BOTTOM)    ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)
+                   | (object.getBoolean(JSON_ALTERNATIVE_SPLIT) ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)) {
+    cZone.getWorld().getSpindizzy().getProject().init([this, object](IAssets& assets) {
+      cDefType = cZone.getWorld().getSpindizzy().getTerrainType(object.getString(JSON_TYPE));
       if (object.hasMember(JSON_CONDITION)) {
-        cDefCondition = std::make_optional<Condition>(object.getObject(JSON_CONDITION), cDefZone.getWorld()->getSpindizzy()->getTerrainStateConditionElements());
+        cDefCondition = std::make_optional<Condition>(object.getObject(JSON_CONDITION), cZone.getWorld().getSpindizzy().getTerrainStateConditionElements());
       }
     });
-    cDefZone.getWorld()->registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
+    cZone.getWorld().registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
   }
 
-  Terrain::Terrain(Zone& zone, TerrainType* type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition) :
-            cDefZone(zone),
-            cDefType(type),
+  Terrain::Terrain(Zone& zone, TerrainType& type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition) :
+            cZone(zone),
+            cDefType(&type),
             cDefStartX( endX > startX              ? startX : endX),
             cDefStartY( endY > startY              ? startY : endY),
             cDefStartZ((endZ > startZ) == addition ? startZ : endZ),
@@ -111,12 +99,12 @@ namespace IsoRealms::Spindizzy {
             cDefFlags((alternativeSplit ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)
                     | (steppedBottom    ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)) {
     (addition ? cDefStartZ : cDefEndZ)--;
-    cDefZone.getWorld()->registerTerrain(this, true, true);
-    cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+    cZone.getWorld().registerTerrain(this, true, true);
+    cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
   }
 
   Terrain::Terrain(Zone& zone, Terrain& terrain, int x, int y, int z) :
-            cDefZone(zone),
+            cZone(zone),
             cDefType(terrain.cDefType),
             cDefStartX(terrain.cDefStartX + x),
             cDefStartY(terrain.cDefStartY + y),
@@ -127,17 +115,13 @@ namespace IsoRealms::Spindizzy {
             cDefCornerHeight{{terrain.cDefCornerHeight[0][0], terrain.cDefCornerHeight[0][1]},
                              {terrain.cDefCornerHeight[1][0], terrain.cDefCornerHeight[1][1]}},
             cDefFlags(terrain.cDefFlags) {
-    cDefZone.getWorld()->registerTerrain(this, true, true);
-    cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+    cZone.getWorld().registerTerrain(this, true, true);
+    cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
   }
 
   void Terrain::save(JSONObject object, int originX, int originY, int originZ) {
-    object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
-    object.addString(JSON_BEHAVIOUR,         (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_INVISIBLE                   ? BEHAVIOUR_INVISIBLE
-                                           : (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_GHOST                       ? BEHAVIOUR_GHOST
-                                           : (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_FORCE_DYNAMIC               ? BEHAVIOUR_DYNAMIC
-                                           : (cDefFlags & FLAG_BEHAVIOUR_MASK) == (FLAG_GHOST | FLAG_FORCE_DYNAMIC) ? BEHAVIOUR_DYNAMIC_GHOST
-                                           :                                                                          BEHAVIOUR_NORMAL);
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
+    object.addString(JSON_BEHAVIOUR,          getBehaviourString());
     object.addInteger(JSON_X,                 cDefStartX      - originX);
     object.addInteger(JSON_Y,                 cDefStartY      - originY);
     object.addInteger(JSON_Z,                (cDefStartZ + 1) - originZ);
@@ -165,13 +149,13 @@ namespace IsoRealms::Spindizzy {
       // TODO: Make sure cache hasn't reached end
       unsigned char mEntityType;
       cache.read(reinterpret_cast<char*>(&mEntityType), sizeof(mEntityType));
-      World* mWorld = cDefZone.getWorld();
+      World& mWorld = cZone.getWorld();
       bool mPhysical;
       while (mEntityType != CACHE_BLOCK_END) {
         switch (mEntityType) {
           case CACHE_SURFACE: {
             cache.read(reinterpret_cast<char*>(&mPhysical), sizeof(mPhysical));
-            std::unique_ptr<Surface> mSurface = std::make_unique<Surface>(cache, cDefZone.getWorld()->getSpindizzy()->getTerrainStateConditionElements(), *cDefType, *this);
+            std::unique_ptr<Surface> mSurface = std::make_unique<Surface>(cache, cZone.getWorld().getSpindizzy().getTerrainStateConditionElements(), *cDefType, *this);
             std::vector<std::unique_ptr<ISurface>>* mSurfaces = mPhysical ?                                                              &cRuntimeSurfacesPhysical
                                                               : mSurface->getCondition().has_value() || cDefFlags & FLAG_FORCE_DYNAMIC ? &cRuntimeSurfacesDynamicVisual
                                                               :                                                                          &cRuntimeSurfacesStaticVisual;
@@ -181,7 +165,7 @@ namespace IsoRealms::Spindizzy {
 
           case CACHE_SPLIT_SURFACE: {
             cache.read(reinterpret_cast<char*>(&mPhysical), sizeof(mPhysical));
-            std::unique_ptr<SplitSurface> mSurface = std::make_unique<SplitSurface>(cache, cDefZone.getWorld()->getSpindizzy()->getTerrainStateConditionElements(), *cDefType, *this);
+            std::unique_ptr<SplitSurface> mSurface = std::make_unique<SplitSurface>(cache, cZone.getWorld().getSpindizzy().getTerrainStateConditionElements(), *cDefType, *this);
             std::vector<std::unique_ptr<ISurface>>* mSurfaces = mPhysical ?                                                              &cRuntimeSurfacesPhysical
                                                               : mSurface->getCondition().has_value() || cDefFlags & FLAG_FORCE_DYNAMIC ? &cRuntimeSurfacesDynamicVisual
                                                               :                                                                          &cRuntimeSurfacesStaticVisual;
@@ -207,10 +191,10 @@ namespace IsoRealms::Spindizzy {
       }
 
       for (std::unique_ptr<ISurface>& mSurface : cRuntimeSurfacesPhysical) {
-        mWorld->attachPhysicalSurface(mSurface.get(), false);
+        mWorld.attachPhysicalSurface(mSurface.get(), false);
       }
       for (std::unique_ptr<Wall>& mWall : cRuntimeWallsPhysical) {
-        mWorld->attachPhysicalWall(mWall.get());
+        mWorld.attachPhysicalWall(mWall.get());
       }
     }
   }
@@ -268,13 +252,13 @@ namespace IsoRealms::Spindizzy {
     char mNextEntity;
     cache.read(reinterpret_cast<char*>(&mNextEntity), sizeof(mNextEntity));
     if (mNextEntity == Terrain::CACHE_CONDITION) {
-      mWallCondition = std::make_optional<Condition>(cache, cDefZone.getWorld()->getSpindizzy()->getTerrainStateConditionElements(), CACHE_CONDITION, CACHE_CONDITION_ELEMENT, CACHE_CONDITION_END);
+      mWallCondition = std::make_optional<Condition>(cache, cZone.getWorld().getSpindizzy().getTerrainStateConditionElements(), CACHE_CONDITION, CACHE_CONDITION_ELEMENT, CACHE_CONDITION_END);
     }
     
     std::vector<std::unique_ptr<Wall>>* mWalls = mPhysical ?                                                    &cRuntimeWallsPhysical
                                                : mWallCondition.has_value() || cDefFlags & FLAG_FORCE_DYNAMIC ? &cRuntimeWallsDynamicVisual
                                                :                                                                &cRuntimeWallsStaticVisual;
-    mWalls->emplace_back(std::make_unique<Wall>(mX, mY, mZ, mLength, mHeight, mSlopeTop, mSlopeBottom, mFacing, mWallCondition, cDefType, *this));
+    mWalls->emplace_back(std::make_unique<Wall>(mX, mY, mZ, mLength, mHeight, mSlopeTop, mSlopeBottom, mFacing, mWallCondition, *cDefType, *this));
   }
 
   int Terrain::getXSlope() const {
@@ -381,7 +365,7 @@ namespace IsoRealms::Spindizzy {
     int mBottomSlope                    = wallTemplate->getBottomSlope();
     int mTopSlope                       = wallTemplate->getTopSlope();
     std::optional<Condition> mCondition = wallTemplate->getCondition();
-    return std::make_unique<Wall>(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mBottomSlope, mFaceDirection, mCondition, cDefType, *this);
+    return std::make_unique<Wall>(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mBottomSlope, mFaceDirection, mCondition, *cDefType, *this);
   }
 
   std::vector<std::unique_ptr<Wall>> Terrain::generateWalls(Wall::Direction facing, int location) {
@@ -398,7 +382,7 @@ namespace IsoRealms::Spindizzy {
         int mOtherAxisSlope = mFacesPole ? getYSlope() : getXSlope();
         int mHeight = cDefEndZ - cDefStartZ + std::max(0, (facing == Wall::Direction::SOUTH || facing == Wall::Direction::WEST) ? -mOtherAxisSlope : mOtherAxisSlope);
 
-        mWalls.emplace_back(std::make_unique<Wall>(mX, mY, mBaseHeight, 1, mHeight, mSlope, 0, facing, cDefCondition, cDefType, *this));
+        mWalls.emplace_back(std::make_unique<Wall>(mX, mY, mBaseHeight, 1, mHeight, mSlope, 0, facing, cDefCondition, *cDefType, *this));
       }
     } else {
       int mX = mFacesPole ? cDefStartX : location;
@@ -412,7 +396,7 @@ namespace IsoRealms::Spindizzy {
       if (!cDefType->isSolid() && mHeight > 0) {
         mHeight = -mHeight;
       }
-      mWalls.emplace_back(std::make_unique<Wall>(mX, mY, mBaseHeight, mLength, mHeight, mSlope, 0, facing, cDefCondition, cDefType, *this));
+      mWalls.emplace_back(std::make_unique<Wall>(mX, mY, mBaseHeight, mLength, mHeight, mSlope, 0, facing, cDefCondition, *cDefType, *this));
     }
     return mWalls;
   }
@@ -471,8 +455,8 @@ namespace IsoRealms::Spindizzy {
     renderRuntime();
   }
 
-  Zone* Terrain::getZone() {
-    return &cDefZone;
+  Zone& Terrain::getZone() {
+    return cZone;
   }
 
   int Terrain::getXStart() const {
@@ -505,21 +489,21 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Terrain::generateWalls(Wall::Direction faceDirection) {
-    World* mWorld = cDefZone.getWorld();
+    World& mWorld = cZone.getWorld();
     
     // Physical surfaces
     if (!(cDefFlags & FLAG_GHOST)) {
-      std::vector<std::unique_ptr<WallTemplate>> mWalls = cDefZone.getWorld()->createWallTemplates(this, faceDirection, false);
+      std::vector<std::unique_ptr<WallTemplate>> mWalls = cZone.getWorld().createWallTemplates(this, faceDirection, false);
       for (unsigned int i = 0; i < mWalls.size(); i++) {
         std::unique_ptr<Wall> mWall = createWall(mWalls[i].get());
         Wall* mRawWall = cRuntimeWallsPhysical.emplace_back(std::move(mWall)).get();
-        mWorld->attachPhysicalWall(mRawWall);
+        mWorld.attachPhysicalWall(mRawWall);
       }
     }
 
     // Visual surfaces
     if (!(cDefFlags & FLAG_INVISIBLE)) {
-      std::vector<std::unique_ptr<WallTemplate>> mWalls = cDefZone.getWorld()->createWallTemplates(this, faceDirection, true);
+      std::vector<std::unique_ptr<WallTemplate>> mWalls = cZone.getWorld().createWallTemplates(this, faceDirection, true);
       for (unsigned int i = 0; i < mWalls.size(); i++) {
         std::optional<Condition>& mCondition = mWalls[i]->getCondition();
         std::unique_ptr<Wall> mWall = createWall(mWalls[i].get());
@@ -533,11 +517,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Terrain::generateSurfaces() {
-    World* mWorld = cDefZone.getWorld();
+    World& mWorld = cZone.getWorld();
 
     // Physical surfaces
     if (!(cDefFlags & FLAG_GHOST)) {
-      std::vector<std::unique_ptr<SurfaceTemplate>> mTopSurfaces = cDefZone.getWorld()->createSurfaceTemplates(this, ISurface::Direction::UP, false);
+      std::vector<std::unique_ptr<SurfaceTemplate>> mTopSurfaces = cZone.getWorld().createSurfaceTemplates(this, ISurface::Direction::UP, false);
       for (unsigned int i = 0; i < mTopSurfaces.size(); i++) {
         int mNorth = mTopSurfaces[i]->getNorth();
         int mEast = mTopSurfaces[i]->getEast();
@@ -546,13 +530,13 @@ namespace IsoRealms::Spindizzy {
         std::optional<Condition>& mCondition = mTopSurfaces[i]->getCondition();
         std::unique_ptr<ISurface> mSurface = createSurface(ISurface::Direction::UP, mNorth, mEast, mSouth, mWest, mCondition);
         ISurface* mRawSurface = cRuntimeSurfacesPhysical.emplace_back(std::move(mSurface)).get();
-        mWorld->attachPhysicalSurface(mRawSurface, false);
+        mWorld.attachPhysicalSurface(mRawSurface, false);
       }
     }
 
     // Visual surfaces
     if (!(cDefFlags & FLAG_INVISIBLE)) {
-      std::vector<std::unique_ptr<SurfaceTemplate>> mTopSurfaces = cDefZone.getWorld()->createSurfaceTemplates(this, ISurface::Direction::UP, true);
+      std::vector<std::unique_ptr<SurfaceTemplate>> mTopSurfaces = cZone.getWorld().createSurfaceTemplates(this, ISurface::Direction::UP, true);
       for (unsigned int i = 0; i < mTopSurfaces.size(); i++) {
         int mNorth = mTopSurfaces[i]->getNorth();
         int mEast = mTopSurfaces[i]->getEast();
@@ -584,12 +568,12 @@ namespace IsoRealms::Spindizzy {
   void Terrain::flagForInitialisation() {
     
     // Detach physical stuff from the world.
-    World* mWorld = cDefZone.getWorld();
+    World& mWorld = cZone.getWorld();
     for (const std::unique_ptr<ISurface>& mSurface : cRuntimeSurfacesPhysical) {
-      mWorld->detachPhysicalSurface(mSurface.get());
+      mWorld.detachPhysicalSurface(mSurface.get());
     }
     for (const std::unique_ptr<Wall>& mWall : cRuntimeWallsPhysical) {
-      mWorld->detachPhysicalWall(mWall.get());
+      mWorld.detachPhysicalWall(mWall.get());
     }
 
     // Clear all of our generated surfaces and walls.
@@ -601,7 +585,7 @@ namespace IsoRealms::Spindizzy {
     cRuntimeWallsPhysical.clear();
     
     // Tell the parent zone that we want to regenerate our surfaces and walls.
-    cDefZone.flagForInitialisation(this);
+    cZone.flagForInitialisation(this);
   }
 
   bool Terrain::isGhost() {
@@ -613,7 +597,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   unsigned int Terrain::getOrderIndex() {
-    return cDefZone.getOrderIndex(this);
+    return cZone.getOrderIndex(this);
   }
 
   std::optional<Condition>& Terrain::getCondition() {
@@ -624,18 +608,18 @@ namespace IsoRealms::Spindizzy {
     char mOldFlags = cDefFlags;
     cDefFlags = flags;
     if (mOldFlags != cDefFlags) {
-      World* mWorld = cDefZone.getWorld();
-      mWorld->updateTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
+      World& mWorld = cZone.getWorld();
+      mWorld.updateTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
     }
   }
 
   Terrain::~Terrain() {
-    World* mWorld = cDefZone.getWorld();
+    World& mWorld = cZone.getWorld();
     for (std::unique_ptr<ISurface>& mSurface : cRuntimeSurfacesPhysical) {
-      mWorld->detachPhysicalSurface(mSurface.get());
+      mWorld.detachPhysicalSurface(mSurface.get());
     }
     for (std::unique_ptr<Wall>& mWall : cRuntimeWallsPhysical) {
-      mWorld->detachPhysicalWall(mWall.get());
+      mWorld.detachPhysicalWall(mWall.get());
     }
   }
   
@@ -692,35 +676,34 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Terrain::remove() {
-    World* mWorld = cDefZone.getWorld();
-    mWorld->unregisterTerrain(this);
-    mWorld->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
-    cDefZone.remove(this);
+    World& mWorld = cZone.getWorld();
+    mWorld.unregisterTerrain(this);
+    mWorld.flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+    cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Terrain::getProperties(IPropertyAppearance* appearance) {
+  std::vector<std::unique_ptr<IProperty>> Terrain::getProperties() {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    mProperties.emplace_back(std::make_unique<PropertyCondition>("Condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
-      cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
-      cDefZone.updateDisplayList();
+      cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+      cZone.updateDisplayList();
     }));
-    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Blah", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
-      cDefCondition = condition;
-      cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
-      cDefZone.updateDisplayList();
-    }));
-    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Really Really Really Really Really Really Really Loooooooooooooooooooooooooooooooooong", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
-      cDefCondition = condition;
-      cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
-      cDefZone.updateDisplayList();
-    }));
-    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Another", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
-      cDefCondition = condition;
-      cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
-      cDefZone.updateDisplayList();
-    }));
+    if (!cZone.getWorld().isBasicProperties()) {
+      mProperties.emplace_back(std::make_unique<PropertyList>(cZone.getWorld().getSpindizzy().getProject(),
+                               "Behaviour",
+                               std::vector<std::string>{BEHAVIOUR_NORMAL,
+                                                        BEHAVIOUR_INVISIBLE,
+                                                        BEHAVIOUR_GHOST,
+                                                        BEHAVIOUR_DYNAMIC,
+                                                        BEHAVIOUR_DYNAMIC_GHOST},
+                               [this]() {
+                                 return getBehaviourString();
+                               }, [this](const std::string& value) {
+                                 cDefFlags = (~cDefFlags & FLAG_BEHAVIOUR_MASK) | getBehaviourFlags(value);
+                               }));
+    }
     return mProperties;
   }
 
@@ -729,7 +712,22 @@ namespace IsoRealms::Spindizzy {
   }
 
   Zone& Terrain::getObjectZone() {
-    return cDefZone;
+    return cZone;
+  }
+  
+  std::string Terrain::getBehaviourString() const {
+    return (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_INVISIBLE                   ? BEHAVIOUR_INVISIBLE
+        :  (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_GHOST                       ? BEHAVIOUR_GHOST
+        :  (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_FORCE_DYNAMIC               ? BEHAVIOUR_DYNAMIC
+        :  (cDefFlags & FLAG_BEHAVIOUR_MASK) == (FLAG_GHOST | FLAG_FORCE_DYNAMIC) ? BEHAVIOUR_DYNAMIC_GHOST
+        :                                                                           BEHAVIOUR_NORMAL;
+  }
+  
+  char Terrain::getBehaviourFlags(const std::string& value) {
+    return value == BEHAVIOUR_INVISIBLE     ? FLAG_INVISIBLE
+         : value == BEHAVIOUR_GHOST         ? FLAG_GHOST
+         : value == BEHAVIOUR_DYNAMIC       ? FLAG_FORCE_DYNAMIC
+         : value == BEHAVIOUR_DYNAMIC_GHOST ? FLAG_FORCE_DYNAMIC | FLAG_FORCE_DYNAMIC
+         :                                    FLAGS_NORMAL;
   }
 }
-

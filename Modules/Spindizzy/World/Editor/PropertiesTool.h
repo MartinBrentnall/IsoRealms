@@ -21,9 +21,9 @@
 #include <algorithm>
 
 #include "IsoRealms/AnimatedFloat.h"
-#include "IsoRealms/Editing/Configurator.h"
 #include "IsoRealms/Editing/PropertiesMenu.h"
-#include "IsoRealms/Property/IPropertyAppearance.h"
+#include "IsoRealms/Editing/IUIStyle.h"
+#include "IsoRealms/Editing/UIManager.h"
 
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 #include "Modules/Spindizzy/IWorldObject.h"
@@ -37,9 +37,11 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
     static const LiteralColour SELECTION_COLOUR;
@@ -47,9 +49,9 @@ namespace IsoRealms::Spindizzy {
 
     // Internal classes.
     class Modifier : public IWorldEditorToolInstance,
-                     public IUIConfiguration {
+                     public IUIStyle {
       public:
-      Modifier(PropertiesTool& parent, WorldEditor* editor);
+      Modifier(PropertiesTool& parent, WorldEditor& editor);
 
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -64,23 +66,22 @@ namespace IsoRealms::Spindizzy {
       void processCursorMovement(LiteralVertex* start, LiteralVertex* end) override;
       double getSnapInterval() const override;
 
-      /*******************************\
-       * Implements IUIConfiguration *
-      \*******************************/
+      /***********************\
+       * Implements IUIStyle *
+      \***********************/
       IFont* getFont() const override;
-      const IColour* getSelectionColour() const override;
-      const IColour* getLockedColour() const override;
-      void exit() override;
+      float getFontSize() const override;
+      IFont* getCodeFont() const override;
+      float getCodeFontSize() const override;
+      IProject& getProject() const override;
       
       private:
       PropertiesTool& cParent;
-      WorldEditor* cEditor;
+      WorldEditor& cEditor;
       std::vector<IWorldObject*> cHoverObjects;
       int cSelectedObject;
       bool cEditingProperties;
-      Configurator cConfigurator;
-      PropertiesMenu cPropertiesMenu;
-      std::vector<std::unique_ptr<IProperty>> cProperties;
+      UIManager cPropertiesUI;
 
       void showProperties();
     };

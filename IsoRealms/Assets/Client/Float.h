@@ -25,43 +25,32 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Float : public IAssetUser<IFloat>,
-                      public IStateListener<IFloat*> {
-    private:
-    IProject* cProject;
-    float cDefaultValue;
-    IFloat* cFloat;
-    std::function<void(float)> cListener;
-
-    Float(Float const& other) = delete;
-    Float& operator=(Float const& other) = delete;
-
+  class Float : public Asset<IFloat, IProject>,
+                public IStateListener<IFloat*> {
     public:
-    Float(IProject* project, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
+    Float(IProject& project, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
 
-    void init(JSONObject object, const std::string& member);
-    void set(JSONObject object, const std::string& member);
-    void save(JSONObject object, const std::string& name) const;
-
-    IFloat* operator->() const {
-      return cFloat;
-    }
-
-    IFloat* operator*() const {
-      return cFloat;
-    }
-
-    /*********************************\
-     * Implements IAssetUser<IFloat> *
-    \*********************************/
-    void relinquish(IFloat* asset) override;
+    /**************************************\
+     * Implements Asset<IFloat, IProject> *
+    \**************************************/
+    IFloat* createLiteralAsset(IProject& project) override;
+    IFloat* getAsset(IProject& project, JSONObject object) override;
+    IFloat* getAsset(IProject& project, const std::string& id) override;
+    std::vector<std::string> getAvailableProviders() const override;
+    bool renderOtherProviderIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfiguration() const override;
 
     /**************************************\
      * Implements IStateListener<IFloat*> *
     \**************************************/
     void stateChanged(IFloat* asset) override;
 
-    virtual ~Float();
+    private:
+    float cDefaultValue;
+    std::function<void(float)> cListener;
   };
 }

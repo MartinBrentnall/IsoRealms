@@ -29,8 +29,8 @@ namespace IsoRealms::HighScore {
   
   class HighScoreRecord {
     public:
-    HighScoreRecord(JSONObject object, HighScoreTable* parentTable);
-    HighScoreRecord(std::map<std::string, std::string> record, HighScoreTable* parentTable);
+    HighScoreRecord(JSONObject object, HighScoreTable& parentTable);
+    HighScoreRecord(std::map<std::string, std::string> record, HighScoreTable& parentTable);
     
     void save(JSONObject node);
     bool beats(const std::string& value);
@@ -41,7 +41,7 @@ namespace IsoRealms::HighScore {
     static const std::string JSON_VALUE;
     static const std::string JSON_VALUES;
 
-    HighScoreTable* cParentTable;
+    HighScoreTable& cParentTable;
     std::vector<std::string> cValues;
   };
 }
