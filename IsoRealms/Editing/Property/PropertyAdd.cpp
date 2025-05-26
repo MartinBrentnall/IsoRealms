@@ -39,7 +39,7 @@ namespace IsoRealms {
   
   void PropertyAdd::confirm(IPropertyManager& manager, float y) {
     std::unique_ptr<IProperty> mProperty = cAddPropertyFunction();
-    IProperty* mRawProperty = mProperty.get();
+//    IProperty* mRawProperty = mProperty.get();
     manager.addProperty(std::move(mProperty));
 //    mRawProperty->confirm(manager, y);
   }

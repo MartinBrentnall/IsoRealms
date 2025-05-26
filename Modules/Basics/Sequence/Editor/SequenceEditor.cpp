@@ -161,6 +161,7 @@ namespace IsoRealms::Basics {
             cCursorEvent(nullptr),
             cMoveMode(false),
             cMoveAllMode(false),
+            cTrackLocks(cSequence.getTrackCount(), 0),
             cHasFocus(true),
             cEditingProperties(false),
             cPropertiesUI(sequence.getProject(), *this, [this]() {
@@ -201,7 +202,7 @@ namespace IsoRealms::Basics {
   void SequenceEditor::renderScreen(float scale, float aspectRatio) const {
     float mHeight = 0.08f;
     float mGap = 0.01f;
-    float mX = -aspectRatio + (mHeight + mGap);
+    float mX = -aspectRatio + mHeight + mGap;
     float mY = 1.0f;
     float mWidth = (aspectRatio * 2.0f - (mHeight + mGap));
     double mVisibleDuration = DEFAULT_VISIBLE_DURATION * cTimelineZoom;
@@ -295,6 +296,13 @@ namespace IsoRealms::Basics {
       mTrack->renderIcon();
       glPopMatrix();
 
+      if (cTrackLocks[i] == 1) {
+        glPushMatrix();
+        glTranslatef(-aspectRatio + mHeight * 0.75f, (1.0f - mHeight * 0.75f) - i * (mHeight + mGap), 0.0f);
+        glScalef(mHeight * 0.25f, mHeight * 0.25f, 0.0f);
+        Utils::renderIconNone();
+        glPopMatrix();
+      }
       mY -= mHeight + mGap;
     }
 
@@ -381,6 +389,7 @@ namespace IsoRealms::Basics {
     cFont->print( aspectRatio - cFontSize, -1.0f + cFontSize, cFontSize, IFont::Alignment::RIGHT, cTimeFormatMillisecondExact(cCursorTimeline.value()));
     cFont->print(-aspectRatio + cFontSize, -1.0f + cFontSize, cFontSize, IFont::Alignment::LEFT,  cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount()) ? cSequence.getTrack(cCursorTrack.value())->getName() : "");
 
+    glBindTexture(GL_TEXTURE_2D, 0);
     cPropertiesUI.render(aspectRatio);
   }
 
@@ -401,46 +410,46 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceEditor::updateScreen(unsigned int milliseconds) {
-    if (!cCursorTrackProperties) {
-      cCursorTimeline = std::max(cCursorTimeline.value() + cCursorTimelineSpeed * cTimelineZoom, 0.0);
-      unsigned int mOldTimeline = std::round(cCursorTimeline.animation());
-      cCursorTimeline.update(milliseconds);
-      cCursorTrack.update(milliseconds);
-      cMoveIndicatorBottom.update(milliseconds);
-      cMoveIndicatorTop.update(milliseconds);
-      if (cTimelineZoomSpeed != 0.0f) {
-        cTimelineZoomStep = std::clamp(cTimelineZoomStep + cTimelineZoomSpeed, ZOOM_LIMIT_MINIMUM, ZOOM_LIMIT_MAXIMUM);
-        cTimelineZoom = std::pow(2.0f, cTimelineZoomStep / 5.0f);
-      }
+    cCursorTimeline = std::max(cCursorTimeline.value() + cCursorTimelineSpeed * cTimelineZoom, 0.0);
+    unsigned int mOldTimeline = std::round(cCursorTimeline.animation());
+    cCursorTrack.update(milliseconds);
+    cCursorTimeline.update(milliseconds);
+    cMoveIndicatorBottom.update(milliseconds);
+    cMoveIndicatorTop.update(milliseconds);
+    if (cTimelineZoomSpeed != 0.0f) {
+      cTimelineZoomStep = std::clamp(cTimelineZoomStep + cTimelineZoomSpeed, ZOOM_LIMIT_MINIMUM, ZOOM_LIMIT_MAXIMUM);
+      cTimelineZoom = std::pow(2.0f, cTimelineZoomStep / 5.0f);
+    }
 
-      // Check which event the cursor is closest to.
-      updateSelectedEvent();
+    // Check which event the cursor is closest to.
+    updateSelectedEvent();
 
-      unsigned int mNewTimeline = std::round(cCursorTimeline.animation());
-      int mMovement = mNewTimeline - mOldTimeline;
-      if (cMoveMode && !cCursorTrackProperties && cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
-        cMoveIndicatorBottom = cCursorTrack.value() + 0.5f;
-        cMoveIndicatorTop    = cCursorTrack.value() - 0.5f;
-        std::vector<ISequenceTrackEvent*> mEvents = cSequence.getTrack(cCursorTrack.value())->getEvents();
-        for (ISequenceTrackEvent* mEvent : mEvents) {
-          if (mEvent->getTime() > mOldTimeline) {
-            mEvent->setTime(mEvent->getTime() + mMovement);
-          }
+    unsigned int mNewTimeline = std::round(cCursorTimeline.animation());
+    int mMovement = mNewTimeline - mOldTimeline;
+    if (cMoveMode && !cCursorTrackProperties && cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
+      cMoveIndicatorBottom = cCursorTrack.value() + 0.5f;
+      cMoveIndicatorTop    = cCursorTrack.value() - 0.5f;
+      std::vector<ISequenceTrackEvent*> mEvents = cSequence.getTrack(cCursorTrack.value())->getEvents();
+      for (ISequenceTrackEvent* mEvent : mEvents) {
+        if (mEvent->getTime() > mOldTimeline) {
+          mEvent->setTime(mEvent->getTime() + mMovement);
         }
-      } else if (cMoveAllMode && !cCursorTrackProperties && cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
-        cMoveIndicatorBottom = cSequence.getTrackCount() - 0.5f;
-        cMoveIndicatorTop    =                           - 0.5f;
-        for (unsigned int i = 0; i < cSequence.getTrackCount() && i < 9; i++) {
+      }
+    } else if (cMoveAllMode && !cCursorTrackProperties && cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
+      cMoveIndicatorBottom = cSequence.getTrackCount() - 0.5f;
+      cMoveIndicatorTop    =                           - 0.5f;
+      for (unsigned int i = 0; i < cSequence.getTrackCount(); i++) {
+        if (cTrackLocks[i] == 0) {
           for (ISequenceTrackEvent* mEvent : cSequence.getTrack(i)->getEvents()) {
             if (mEvent->getTime() > mOldTimeline) {
               mEvent->setTime(mEvent->getTime() + mMovement);
             }
           }
         }
-      } else {
-        cMoveIndicatorBottom = cCursorTrack.value();
-        cMoveIndicatorTop    = cCursorTrack.value();
       }
+    } else {
+      cMoveIndicatorBottom = cCursorTrack.value();
+      cMoveIndicatorTop    = cCursorTrack.value();
     }
     cPropertiesUI.update(milliseconds);
 
@@ -586,7 +595,9 @@ namespace IsoRealms::Basics {
           float mAmount = std::abs(event.joystickMove.position) < ANALOGUE_INPUT_DEAD_ZONE ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -ANALOGUE_INPUT_DEAD_ZONE : ANALOGUE_INPUT_DEAD_ZONE)) * (100.0f / (100.0f - ANALOGUE_INPUT_DEAD_ZONE));
           switch (event.joystickMove.axis) {
             case 0: {
-              cCursorTimelineSpeed = mAmount * 50.0f;
+              if (!cCursorTrackProperties) {
+                cCursorTimelineSpeed = mAmount * 50.0f;
+              }
               break;
             }
 
@@ -608,7 +619,6 @@ namespace IsoRealms::Basics {
         }
 
         case sf::Event::JoystickButtonPressed: {
-          std::cout << "BUTTON: " << event.joystickButton.button << std::endl;
           switch (event.joystickButton.button) {
             case 0: {
               if (cCursorTrack.value() == static_cast<int>(cSequence.getTrackCount())) {
@@ -646,6 +656,13 @@ namespace IsoRealms::Basics {
                   }, "Event Configuration:", 1.0f, 1.0f, 1.0f));
                   cEditingProperties = true;
                 }
+              }
+              break;
+            }
+
+            case 1: {
+              if (cCursorTrackProperties) {
+                cTrackLocks[cCursorTrack.value()] = cTrackLocks[cCursorTrack.value()] == 0 ? 1 : 0;
               }
               break;
             }

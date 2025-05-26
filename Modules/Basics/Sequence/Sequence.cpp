@@ -64,6 +64,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Sequences");
     assets.add(&cExposedLength, "Length", "Sequences");
     assets.add(&cExposedPosition, "Position", "Sequences");
+    assets.add(this, "", "Sequences");
     for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
       (*mTrack)->registerAssets(assets);
     }
@@ -73,6 +74,7 @@ namespace IsoRealms::Basics {
     assets.remove(&cLuaBinding, relinquish);
     assets.remove(&cExposedLength, relinquish);
     assets.remove(&cExposedPosition, relinquish);
+    assets.remove(this, relinquish);
     for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
       (*mTrack)->unregisterAssets(assets, relinquish);
     }

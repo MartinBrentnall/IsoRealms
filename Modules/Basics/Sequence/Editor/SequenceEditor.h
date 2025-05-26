@@ -132,6 +132,7 @@ namespace IsoRealms::Basics {
     ISequenceTrackEvent* cCursorEvent;
     bool cMoveMode;
     bool cMoveAllMode;
+    std::vector<int> cTrackLocks;
     
     bool cHasFocus;
     bool cEditingProperties;

@@ -550,7 +550,7 @@ namespace IsoRealms {
   }
 
   IEditable* Project::getDefaultEditable() {
-    return nullptr; // (*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
+    return (*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
   }
 
   LuaState* const Project::getLuaState() {
@@ -971,6 +971,7 @@ namespace IsoRealms {
     mProperties.emplace_back(cDefQuitAction.getProperty("On Quit"));
     mProperties.emplace_back(cDefInputHandler.getProperty("Input Handler"));
     mProperties.emplace_back(cDefScreen.getProperty("Display"));
+    mProperties.emplace_back(cDefDefaultEditor.getProperty("Default Editor"));
 
     unsigned int mIndex = 1;
     for (const std::unique_ptr<Module>& mModule : cModules) {

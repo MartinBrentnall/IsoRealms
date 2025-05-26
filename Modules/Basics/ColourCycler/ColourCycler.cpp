@@ -30,23 +30,17 @@ namespace IsoRealms::Basics {
             cProject(project),
             cDefCycleSpeed(project, 0.0f) {
     project.updateRuntime([this](unsigned int milliseconds) {
-    std::cout << "COLOUR CYCLER 5" << std::endl;
       update(milliseconds);
-    std::cout << "COLOUR CYCLER 6" << std::endl;
     });
     
     project.updateEditing([this](unsigned int milliseconds) {
-    std::cout << "COLOUR CYCLER 7" << std::endl;
       update(milliseconds);
-    std::cout << "COLOUR CYCLER 8" << std::endl;
     });
     
     project.reset([this]() {
-      std::cout << "COLOUR CYCLER 3" << std::endl;
       for (std::unique_ptr<ColourCycle>& mColourCycle : cDefOutputColours) {
         mColourCycle->reset();
       }
-      std::cout << "COLOUR CYCLER 4" << std::endl;
     });
 
     // There must be at least one input.
@@ -56,7 +50,6 @@ namespace IsoRealms::Basics {
 
   ColourCycler::ColourCycler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
             ColourCycler(project, basics, data) {
-    std::cout << "COLOUR CYCLER 1" << std::endl;
     cDefInputColours.clear();
     cDefOutputColours.clear();
     for (JSONObject mInputObject : object.getArray(JSON_INPUTS)) {
@@ -67,7 +60,6 @@ namespace IsoRealms::Basics {
       cDefOutputColours.emplace_back(std::make_unique<ColourCycle>(*this, mOutputObject.getFloat(JSON_OFFSET), mOutputObject.getFloat(JSON_SPEED_MULTIPLIER)));
     }
     cDefCycleSpeed.init(object, JSON_SPEED);
-    std::cout << "COLOUR CYCLER 2" << std::endl;
   }
 
   void ColourCycler::registerAssets(IAssetRegistry& assets) {
