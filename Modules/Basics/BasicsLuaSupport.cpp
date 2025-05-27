@@ -71,7 +71,9 @@ namespace IsoRealms::Basics {
     mLua->new_usertype<Sequence>("Sequence",                     "play",                       &Sequence::play,
                                                                  "pause",                      &Sequence::pause,
                                                                  "reset",                      &Sequence::reset,
-                                                                 "skip",                       &Sequence::skip);
+                                                                 "skip",                       &Sequence::skip,
+                                                                 "getTime",                    &Sequence::getTime,
+                                                                 "setTime",                    &Sequence::setTime);
     mLua->new_usertype<SequenceTrackAudio>("SequenceTrackAudio", "nextTrack",                  &SequenceTrackAudio::nextTrack,
                                                                  "previousTrack",              &SequenceTrackAudio::previousTrack);
     mLua->new_usertype<SimpleBoolean>("SimpleBoolean",           "setValue",                   &SimpleBoolean::setValue,

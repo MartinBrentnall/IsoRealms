@@ -68,6 +68,9 @@ namespace IsoRealms::Basics {
     void preview(unsigned int milliseconds);
     void skip(unsigned int milliseconds);
 
+    int getTime() const;
+    void setTime(int time);
+
     /*********************\
      * Editing Interface *
     \*********************/

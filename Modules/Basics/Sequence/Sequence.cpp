@@ -150,6 +150,7 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::setPreviewPosition(long position) {
+    cRuntimePosition = position;
     for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
       (*mTrack)->setPreviewPosition(position);
     }
@@ -178,6 +179,14 @@ namespace IsoRealms::Basics {
         }
       }
     }
+  }
+
+  int Sequence::getTime() const {
+    return cRuntimePosition;
+  }
+
+  void Sequence::setTime(int time) {
+    setPreviewPosition(std::max(0, std::min(static_cast<int>(getDuration()), time)));
   }
 
   IProject& Sequence::getProject() const {
