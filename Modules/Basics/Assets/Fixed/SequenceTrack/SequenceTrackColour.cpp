@@ -188,7 +188,7 @@ namespace IsoRealms::Basics {
   bool SequenceTrackColour::renderAssetIcon() const {
     return false;
   }
-  
+
   void SequenceTrackColour::saveAsset(JSONObject object) const {
     object.addString(JSON_OUTPUT, cDefName);
     cDefInitColour.save(object, JSON_START);
@@ -276,10 +276,6 @@ namespace IsoRealms::Basics {
 
   float SequenceTrackColour::Output::getAlpha() const {
     return cParent.cRuntimeColour.getAlpha();
-  }
-
-  bool SequenceTrackColour::Output::renderAssetIcon() const {
-    return false;
   }
 
   void SequenceTrackColour::Output::saveAsset(JSONObject object) const {

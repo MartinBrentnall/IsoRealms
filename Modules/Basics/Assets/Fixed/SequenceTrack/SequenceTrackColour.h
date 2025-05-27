@@ -85,7 +85,6 @@ namespace IsoRealms::Basics {
       float getGreen() const override;
       float getBlue() const override;
       float getAlpha() const override;
-      bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
       std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
       bool isDefaultConfiguration() const override;
