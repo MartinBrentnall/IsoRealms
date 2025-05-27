@@ -23,6 +23,7 @@
 #include <SFML/Audio.hpp>
 
 #include "IsoRealms/Literals.h"
+#include "IsoRealms/Lua.h"
 #include "IsoRealms/LocalAssetRegistry.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
@@ -66,6 +67,13 @@ namespace IsoRealms::Basics {
     void saveAsset(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
     bool isDefaultConfiguration() const override;
+
+    /***********************\
+      * Scripting interface *
+    \***********************/
+    void nextTrack();
+    void previousTrack();
+    void jumpToTrack(int track);
 
     private:
     class Audio : public ISequenceTrackEvent {
@@ -211,6 +219,9 @@ namespace IsoRealms::Basics {
     static const std::string JSON_TIME;
     static const std::string JSON_VOLUME;
 
+    // External interfaces.
+    Sequence& cSequence;
+
     // Definition data.
     std::string cDefName;
     std::vector<std::unique_ptr<Audio>> cDefEvents;
@@ -228,5 +239,8 @@ namespace IsoRealms::Basics {
     Current cExposedCurrent;
     Length cExposedLength;
     Position cExposedPosition;
+
+    // Scripting interface.
+    LuaBinding<SequenceTrackAudio> cLuaBinding;
   };
 }

@@ -18,8 +18,11 @@
  */
 #include "SequenceTrackAudio.h"
 
+#include "Modules/Basics/Sequence/Sequence.h"
+
 namespace IsoRealms::Basics {
   SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence, const std::string& name) :
+            cSequence(sequence),
             cDefName(name),
             cDefVolume(project, 1.0f),
             cRuntimeEvent(0),
@@ -28,7 +31,8 @@ namespace IsoRealms::Basics {
             cExposedCount(*this),
             cExposedCurrent(*this),
             cExposedLength(*this),
-            cExposedPosition(*this) {
+            cExposedPosition(*this),
+            cLuaBinding(project, this) {
   }
 
   SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence) :
@@ -45,6 +49,7 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudio::registerAssets(IAssetRegistry& assets) {
     LocalAssetRegistry mLocationRegistry(assets, cDefName);
+    mLocationRegistry.add(&cLuaBinding, "", "Sequences");
     mLocationRegistry.add(&cExposedName, "Audio Name", "SequenceTrackAudio");
     mLocationRegistry.add(&cExposedCount, "Audio Count", "SequenceTrackAudio");
     mLocationRegistry.add(&cExposedCurrent, "Current Audio", "SequenceTrackAudio");
@@ -53,6 +58,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
     assets.remove(&cExposedName, relinquish);
     assets.remove(&cExposedCount, relinquish);
     assets.remove(&cExposedCurrent, relinquish);
@@ -215,6 +221,18 @@ namespace IsoRealms::Basics {
 
   bool SequenceTrackAudio::isDefaultConfiguration() const {
     return true;
+  }
+
+  void SequenceTrackAudio::nextTrack() {
+    jumpToTrack(std::min(static_cast<int>(cDefEvents.size()) - 1, static_cast<int>(cRuntimeEvent)));
+  }
+
+  void SequenceTrackAudio::previousTrack() {
+    jumpToTrack(std::max(0, static_cast<int>(cRuntimeEvent) - 2));
+  }
+
+  void SequenceTrackAudio::jumpToTrack(int track) {
+    cSequence.setPreviewPosition(cDefEvents[track]->getTime());
   }
 
   SequenceTrackAudio::Audio::Audio(SequenceTrackAudio& parent, IProject& project, unsigned int time) :
