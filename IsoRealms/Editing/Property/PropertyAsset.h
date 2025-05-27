@@ -151,7 +151,11 @@ namespace IsoRealms {
 
         // Render black background.
         glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-        Utils::renderRoundedRectangle(x - mFontSize, (mYPosition + mFontSize * 2.0f) - mHeight, x + mWidth + mFontSize, mYPosition + mFontSize * 2.0f, mFontSize);
+        float mLeft = x - mFontSize;
+        float mRight = x + mWidth + mFontSize;
+        float mBottom = (mYPosition + mFontSize * 2.0f) - mHeight;
+        float mTop = mYPosition + mFontSize * 2.0f;
+        Utils::renderRoundedRectangle(mLeft, mBottom, mRight, mTop, mFontSize);
 
         // Render cursor.
         glColor3f(1.0f, 0.0f, 0.2f);
@@ -159,7 +163,7 @@ namespace IsoRealms {
 
         // Render background line border.
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        Utils::renderRoundedRectangleLines(x - mFontSize, (mYPosition + mFontSize * 2.0f) - mHeight, x + mWidth + mFontSize, mYPosition + mFontSize * 2.0f, mFontSize);
+        Utils::renderRoundedRectangleLines(mLeft, mBottom, mRight, mTop, mFontSize);
 
         // Render arrow indicating left possibility.
         glBegin(GL_TRIANGLES);

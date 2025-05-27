@@ -235,7 +235,9 @@ namespace IsoRealms::Basics {
     for (unsigned int i = 0; i < lines.size(); i ++) {
       float mTotalWidth = 0.0f;
       for (unsigned int j = 0; j < lines[i].length(); j++) {
-        mTotalWidth += static_cast<float>(cProcessedWidths[static_cast<int>(lines[i][j])]);
+        if (lines[i][j] >= 0 && lines[i][j] < 128) {
+          mTotalWidth += static_cast<float>(cProcessedWidths[static_cast<int>(lines[i][j])]);
+        }
       }
       if (mTotalWidth > mHighestWidth) {
         mHighestWidth = mTotalWidth;

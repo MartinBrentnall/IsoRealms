@@ -224,7 +224,7 @@ namespace IsoRealms::Basics {
               cDefFile(project, [this]() {
                 std::string mResource = cDefFile.getPath();
                 if (!cMusic.openFromFile(mResource)) {
-                  throw ArgumentException("ERROR: SequenceTrackAudio::Audio::Audio: Specified file \"" + cDefFile.getPath() + "\" could not be opened");
+                  std::cout << "WARNING: SequenceTrackAudio::Audio::Audio: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
                 }
               }) {
   }
@@ -234,7 +234,7 @@ namespace IsoRealms::Basics {
     cDefFile.load(JSON_FILE, object);
     std::string mResource = cDefFile.getPath();
     if (!cMusic.openFromFile(mResource)) {
-      throw ArgumentException("ERROR: SequenceTrackAudio::Audio::Audio: Specified file \"" + cDefFile.getPath() + "\" could not be opened");
+      std::cout << "WARNING: SequenceTrackAudio::Audio::Audio: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
     }
   }
 
