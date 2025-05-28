@@ -176,8 +176,8 @@ namespace IsoRealms::Spindizzy {
     int cPreviousX;
     int cPreviousY;
 
-    EditorToolbar<IWorldEditorTool*, IWorldEditorToolInstance*> cToolbar;
     World& cWorld;
+    EditorToolbar<IWorldEditorTool*, IWorldEditorToolInstance*> cToolbar;
     std::set<IVisualElement*> cEditingVisuals;
 
     IScreen* cProxyScreen;

@@ -92,8 +92,10 @@ namespace IsoRealms::Spindizzy {
             cScreenYaw(&cRotation),
             cScreenPitch(&cTilt),
             cHatHandler(world.getSpindizzy().getProject().getApplication().getHatHandler()),
+            cSelectedTool(nullptr),
             cPreviousX(0),
             cPreviousY(0),
+            cWorld(world),
             cToolbar(world.getSpindizzy().createToolSet(*this), [this](IWorldEditorToolInstance* tool) {
               if (cSelectedTool != nullptr) {
                 cSelectedTool->processCursorMovement(&cLocation, nullptr);
@@ -103,7 +105,6 @@ namespace IsoRealms::Spindizzy {
             }, [this](IWorldEditorToolInstance* tool) {
               tool->renderIcon(cScreenYaw.getValue());
             }),
-            cWorld(world),
             cProxyScreen(nullptr) {
     cDefAnalogueSensitivity = 10;
     cPaletteSelectionX.init(0.0f);
