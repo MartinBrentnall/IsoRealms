@@ -48,6 +48,7 @@ namespace IsoRealms {
           cAssetOverride(override),
           cLuaBinding(*this, this),
           cResourcesLoaded(false),
+          cLoading(false),
           cProcessingInput(false),
           cRuntimeUpdatingRuntime(false),
           cRuntimeResetPostponed(false),
@@ -157,6 +158,7 @@ namespace IsoRealms {
 
   Project::Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish, IAssetOverride* override) :
             Project(application, onFinish, override) {
+    cLoading = true;
     std::string mFile = options.getOption("file");
     if (!mFile.empty()) {
       cProcessingInput = true;
@@ -206,6 +208,11 @@ namespace IsoRealms {
     } else {
       cResourcesLoaded = true;
     }
+    cLoading = false;
+  }
+
+  bool Project::isLoading() const {
+    return cLoading;
   }
 
   Module* Project::getModule(const std::string& name) {

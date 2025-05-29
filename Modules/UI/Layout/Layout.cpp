@@ -181,9 +181,9 @@ namespace IsoRealms::UI {
     return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
   }
   
-  LayoutComponent* Layout::createComponent(LayoutComponent* component) {
+  LayoutComponent* Layout::createComponent(JSONObject& object) {
     std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
-    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*component));
+    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(cUI.getProject(), *this, object));
     return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
   }
 

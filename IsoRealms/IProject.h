@@ -41,6 +41,7 @@ namespace IsoRealms {
    */
   class IProject : public IAssetBrowser {
     public:
+    virtual bool isLoading() const = 0;
       
     /**
      * Perform the specified allocation task function on the main thread.

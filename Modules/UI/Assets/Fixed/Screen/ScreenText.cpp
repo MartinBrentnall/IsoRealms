@@ -47,6 +47,7 @@ namespace IsoRealms::UI {
              : cDefAlignment == IFont::Alignment::RIGHT ?  aspectRatio
              :                                             0.0f;
     Utils::shadowPrint(mX, -1.0f, **cDefFont, 1.0f, **cDefColour, cDefShadowOffset, cDefAlignment, cDefString->getValue());
+    glBindTexture(GL_TEXTURE_2D, 0);
   }
 
   bool ScreenText::renderAssetIcon() const {

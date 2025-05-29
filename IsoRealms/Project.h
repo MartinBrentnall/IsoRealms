@@ -280,6 +280,7 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<Include>> cInclusions;          /// List of other project files included within this project.
     LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
     bool cResourcesLoaded;                    /// Indicates that resource loading from modules has completed.
+    bool cLoading;
 
     // Callbacks
     std::queue<std::function<void()>> cMainThreadAllocTasks;         /// Allocation tasks to be perfomed on the main thread during initialisation.
@@ -427,6 +428,7 @@ namespace IsoRealms {
     void loadModules(JSONObject object);
     bool isModuleLoaded(const std::string& name) const;
     std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions& options, const std::string& resourceDataPath);
+    bool isLoading() const override;
     Module* getModule(const std::string& name);
     void saveFile(const std::string& file);
     

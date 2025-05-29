@@ -56,20 +56,6 @@ namespace IsoRealms::UI {
     });
   }
 
-  LayoutComponent::LayoutComponent(const LayoutComponent& layoutComponent) :
-            cLayout(layoutComponent.cLayout),
-            cDefScreen(layoutComponent.cDefScreen),
-            cDefLeftEdge(layoutComponent.cDefLeftEdge),
-            cDefRightEdge(layoutComponent.cDefRightEdge),
-            cDefBottomEdge(layoutComponent.cDefBottomEdge),
-            cDefTopEdge(layoutComponent.cDefTopEdge),
-            cRuntimeScreen(nullptr),
-            cLuaBinding(cLayout.getUI().getProject(), this) {
-    cLayout.getUI().getProject().reset([this]() {
-      cRuntimeScreen = *cDefScreen;
-    });
-  }
-
   void LayoutComponent::registerAssets(IAssetRegistry& assets, const std::string& name) {
     assets.add(&cLuaBinding, name, "Layout Components");
   }

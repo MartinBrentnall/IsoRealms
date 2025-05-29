@@ -1067,8 +1067,27 @@ namespace IsoRealms::UI {
       case sf::Event::JoystickButtonPressed: {
         switch (event.joystickButton.button) {
           case 0: {
-            LayoutComponent* mComponentCopy = cParent.cLayout.createComponent(cParent.cSelectedComponent);
+            JSONDocument mDocument;
+            JSONObject mComponentObject = mDocument.addObject("Component");
+            cParent.cSelectedComponent->save(mComponentObject, cParent.cLayout.getUI().getProject());
+            LayoutComponent* mComponentCopy = cParent.cLayout.createComponent(mComponentObject);
+
+            // Move the copy component down and right a bit so we can differentiate it from the original.
+            float mPreviousLeft = mComponentCopy->getLeft(cParent.cAspectRatio);
+            float mPreviousRight = mComponentCopy->getRight(cParent.cAspectRatio);
+            float mPreviousTop = mComponentCopy->getTop();
+            float mPreviousBottom = mComponentCopy->getBottom();
+            float mNewLeft = cParent.snapX(mPreviousLeft + cParent.cGridX * 2.0f);
+            float mNewTop = cParent.snapY(mPreviousTop - cParent.cGridY * 2.0f);
+            float mNewRight = mPreviousRight + (mNewLeft - mPreviousLeft);
+            float mNewBottom = mPreviousBottom - (mPreviousTop - mNewTop);
+            mComponentCopy->setLeftEdgeLocation(  mNewLeft, cParent.cAspectRatio);
+            mComponentCopy->setRightEdgeLocation( mNewRight, cParent.cAspectRatio);
+            mComponentCopy->setBottomEdgeLocation(mNewBottom);
+            mComponentCopy->setTopEdgeLocation(   mNewTop);
+
             cParent.cSelectedComponent = mComponentCopy;
+            cParent.updateSelectedComponentEdges();
             return true;
           }
 

@@ -68,7 +68,7 @@ namespace IsoRealms::UI {
     \*********************/
     IUI& getUI() const;
     LayoutComponent* createComponent(float x1, float y1, float x2, float y2, float aspectRatio);
-    LayoutComponent* createComponent(LayoutComponent* component);
+    LayoutComponent* createComponent(JSONObject& object);
     void deleteComponent(LayoutComponent* component);
     void moveComponentBackward(LayoutComponent* component);
     void moveComponentForward(LayoutComponent* component);

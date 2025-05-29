@@ -42,9 +42,13 @@ namespace IsoRealms {
     }
     
     void init(JSONObject object, const std::string& member) {
-      cManager.getProject().init([this, object, member](IAssets& assets) {
+      if (cManager.getProject().isLoading()) {
+        cManager.getProject().init([this, object, member](IAssets& assets) {
+          set(object, member);
+        });
+      } else {
         set(object, member);
-      });
+      }
     }
     
     void set(JSONObject object, const std::string& member) {
