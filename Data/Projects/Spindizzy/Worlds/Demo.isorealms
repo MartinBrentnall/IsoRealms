@@ -1,1 +1,106 @@
-{"project":{"include":[{"filename":"Projects/Spindizzy/Worlds/Hangworld.isorealms"}],"reset":{"key":"Basics/Script","bindings":[{"variable":"resetFunction","to":{"key":":Action","asset":{"key":"Basics/Function/SpindizzyReset","bindings":[]}}},{"variable":"leftPanel","to":{"key":"UI/Layout/Layout/PanelLeft"}},{"variable":"rightPanel","to":{"key":"UI/Layout/Layout/PanelRight"}},{"variable":"middlePanel","to":{"key":"UI/Layout/Layout/PanelMiddle"}},{"variable":"scoreIcon","to":{"key":"UI/Layout/Layout/IconScore"}},{"variable":"timeIcon","to":{"key":"UI/Layout/Layout/IconTime"}},{"variable":"jewelIcon","to":{"key":"UI/Layout/Layout/IconJewel"}},{"variable":"mapIcon","to":{"key":"UI/Layout/Layout/IconMap"}},{"variable":"scoreValue","to":{"key":"UI/Layout/Layout/ValueScore"}},{"variable":"timeValue","to":{"key":"UI/Layout/Layout/ValueTime"}},{"variable":"jewelValue","to":{"key":"UI/Layout/Layout/ValueJewel"}},{"variable":"mapValue","to":{"key":"UI/Layout/Layout/ValueMap"}},{"variable":"compass","to":{"key":"UI/Layout/Layout/Compass"}},{"variable":"hint","to":{"key":"UI/Layout/Layout/Hint"}},{"variable":"switchA","to":{"key":"UI/Layout/Layout/SwitchStatePrimary"}},{"variable":"switchB","to":{"key":"UI/Layout/Layout/SwitchStateSecondary"}}],"code":"resetFunction:execute()\n\n-- Remove all the HUD components for the demo.\nleftPanel:setScreen(nil)\nmiddlePanel:setScreen(nil)\nrightPanel:setScreen(nil)\nscoreIcon:setScreen(nil)\ntimeIcon:setScreen(nil)\njewelIcon:setScreen(nil)\nmapIcon:setScreen(nil)\nscoreValue:setScreen(nil)\ntimeValue:setScreen(nil)\njewelValue:setScreen(nil)\nmapValue:setScreen(nil)\ncompass:setScreen(nil)\nhint:setScreen(nil)\nswitchA:setScreen(nil)\nswitchB:setScreen(nil)\n\n-- Prevent switches and clues from (re-)appearing.\ndisableHud = 1"},"modules":[]}}
+{
+    "project": {
+        "include": [
+            {
+                "filename": "Projects/Spindizzy/Worlds/Hangworld.isorealms"
+            }
+        ],
+        "reset": {
+            "key": "Basics/Script",
+            "bindings": [
+                {
+                    "variable": "leftPanel",
+                    "to": {
+                        "key": "UI/Layout/Layout/PanelLeft"
+                    }
+                },
+                {
+                    "variable": "rightPanel",
+                    "to": {
+                        "key": "UI/Layout/Layout/PanelRight"
+                    }
+                },
+                {
+                    "variable": "middlePanel",
+                    "to": {
+                        "key": "UI/Layout/Layout/PanelMiddle"
+                    }
+                },
+                {
+                    "variable": "scoreIcon",
+                    "to": {
+                        "key": "UI/Layout/Layout/IconScore"
+                    }
+                },
+                {
+                    "variable": "timeIcon",
+                    "to": {
+                        "key": "UI/Layout/Layout/IconTime"
+                    }
+                },
+                {
+                    "variable": "jewelIcon",
+                    "to": {
+                        "key": "UI/Layout/Layout/IconJewel"
+                    }
+                },
+                {
+                    "variable": "mapIcon",
+                    "to": {
+                        "key": "UI/Layout/Layout/IconMap"
+                    }
+                },
+                {
+                    "variable": "scoreValue",
+                    "to": {
+                        "key": "UI/Layout/Layout/ValueScore"
+                    }
+                },
+                {
+                    "variable": "timeValue",
+                    "to": {
+                        "key": "UI/Layout/Layout/ValueTime"
+                    }
+                },
+                {
+                    "variable": "jewelValue",
+                    "to": {
+                        "key": "UI/Layout/Layout/ValueJewel"
+                    }
+                },
+                {
+                    "variable": "mapValue",
+                    "to": {
+                        "key": "UI/Layout/Layout/ValueMap"
+                    }
+                },
+                {
+                    "variable": "compass",
+                    "to": {
+                        "key": "UI/Layout/Layout/Compass"
+                    }
+                },
+                {
+                    "variable": "hint",
+                    "to": {
+                        "key": "UI/Layout/Layout/Hint"
+                    }
+                },
+                {
+                    "variable": "switchA",
+                    "to": {
+                        "key": "UI/Layout/Layout/SwitchStatePrimary"
+                    }
+                },
+                {
+                    "variable": "switchB",
+                    "to": {
+                        "key": "UI/Layout/Layout/SwitchStateSecondary"
+                    }
+                }
+            ],
+            "code": "-- Remove all the HUD components for the demo.\nleftPanel:setScreen(nil)\nmiddlePanel:setScreen(nil)\nrightPanel:setScreen(nil)\nscoreIcon:setScreen(nil)\ntimeIcon:setScreen(nil)\njewelIcon:setScreen(nil)\nmapIcon:setScreen(nil)\nscoreValue:setScreen(nil)\ntimeValue:setScreen(nil)\njewelValue:setScreen(nil)\nmapValue:setScreen(nil)\ncompass:setScreen(nil)\nhint:setScreen(nil)\nswitchA:setScreen(nil)\nswitchB:setScreen(nil)\n\n-- Prevent switches and clues from (re-)appearing.\ndisableHud = 1"
+        },
+        "modules": []
+    }
+}
