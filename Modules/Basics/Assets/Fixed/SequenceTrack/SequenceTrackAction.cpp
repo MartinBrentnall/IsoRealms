@@ -90,6 +90,10 @@ namespace IsoRealms::Basics {
     Utils::removeElementUnique(cDefEvents, event);
   }
 
+  void SequenceTrackAction::setEventTime(ISequenceTrackEvent* event, unsigned int time) {
+    // TODO: Implement this.
+  }
+
   std::vector<ISequenceTrackEvent*> SequenceTrackAction::getEvents() {
     std::vector<ISequenceTrackEvent*> mEvents;
     for (const std::unique_ptr<Event>& mEvent : cDefEvents) {

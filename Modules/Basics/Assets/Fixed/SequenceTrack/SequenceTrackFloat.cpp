@@ -110,6 +110,10 @@ namespace IsoRealms::Basics {
     Utils::removeElementUnique(cDefEvents, event);
   }
 
+  void SequenceTrackFloat::setEventTime(ISequenceTrackEvent* event, unsigned int time) {
+    // TODO: Implement this.
+  }
+
   std::vector<ISequenceTrackEvent*> SequenceTrackFloat::getEvents() {
     std::vector<ISequenceTrackEvent*> mEvents;
     mEvents.emplace_back(this);

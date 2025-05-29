@@ -132,6 +132,7 @@ namespace IsoRealms::Basics {
     ISequenceTrackEvent* cCursorEvent;
     bool cMoveMode;
     bool cMoveAllMode;
+    ISequenceTrackEvent* cMovingEvent;
     std::vector<int> cTrackLocks;
     
     bool cHasFocus;
@@ -146,6 +147,9 @@ namespace IsoRealms::Basics {
     std::vector<TickConfiguration> cMajorTicks;
 
     void updateSelectedEvent();
+    bool isEvent(unsigned int time) const;
+    unsigned int getPreviousAlignedEventTime() const;
+    unsigned int getNextAlignedEventTime() const;
     unsigned int getPreviousEventTime() const;
     unsigned int getNextEventTime() const;
     const TickConfiguration& getTickConfiguration(float duration) const;

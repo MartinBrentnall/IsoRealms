@@ -59,6 +59,10 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
+  void SequenceTrackDummy::setEventTime(ISequenceTrackEvent* event, unsigned int time) {
+    // TODO: Implement this.
+  }
+
   std::vector<ISequenceTrackEvent*> SequenceTrackDummy::getEvents() {
     return std::vector<ISequenceTrackEvent*>();
   }

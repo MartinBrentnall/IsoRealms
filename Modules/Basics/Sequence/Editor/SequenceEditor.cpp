@@ -161,6 +161,7 @@ namespace IsoRealms::Basics {
             cCursorEvent(nullptr),
             cMoveMode(false),
             cMoveAllMode(false),
+            cMovingEvent(nullptr),
             cTrackLocks(cSequence.getTrackCount(), 0),
             cHasFocus(true),
             cEditingProperties(false),
@@ -435,6 +436,8 @@ namespace IsoRealms::Basics {
           mEvent->setTime(mEvent->getTime() + mMovement);
         }
       }
+    } else if (cMovingEvent != nullptr) {
+      cSequence.getTrack(cCursorTrack.value())->setEventTime(cMovingEvent, cMovingEvent->getTime() + mMovement);
     } else if (cMoveAllMode && !cCursorTrackProperties && cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
       cMoveIndicatorBottom = cSequence.getTrackCount() - 0.5f;
       cMoveIndicatorTop    =                           - 0.5f;
@@ -573,20 +576,28 @@ namespace IsoRealms::Basics {
           }
           if (cHatHandler.leftPressed()) {
             if (cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
-              if (cCursorTimeline.value() == 0) {
-                cCursorTrackProperties = true;
+              if (cMovingEvent != nullptr) {
+                cCursorTimeline = getPreviousAlignedEventTime();
               } else {
-                cCursorTimeline = getPreviousEventTime();
+                if (cCursorTimeline.value() == 0) {
+                  cCursorTrackProperties = true;
+                } else {
+                  cCursorTimeline = getPreviousEventTime();
+                }
               }
             }
             return true;
           }
           if (cHatHandler.rightPressed()) {
             if (cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
-              if (cCursorTrackProperties) {
-                cCursorTrackProperties = false;
+              if (cMovingEvent != nullptr) {
+                cCursorTimeline = getNextAlignedEventTime();
               } else {
-                cCursorTimeline = getNextEventTime();
+                if (cCursorTrackProperties) {
+                  cCursorTrackProperties = false;
+                } else {
+                  cCursorTimeline = getNextEventTime();
+                }
               }
             }
             return true;
@@ -663,6 +674,11 @@ namespace IsoRealms::Basics {
             case 1: {
               if (cCursorTrackProperties) {
                 cTrackLocks[cCursorTrack.value()] = cTrackLocks[cCursorTrack.value()] == 0 ? 1 : 0;
+              } else {
+                if (cCursorEvent != nullptr) {
+                  cCursorTimeline.init(cCursorEvent->getTime());
+                  cMovingEvent = cCursorEvent;
+                }
               }
               break;
             }
@@ -712,6 +728,11 @@ namespace IsoRealms::Basics {
 
         case sf::Event::JoystickButtonReleased: {
           switch (event.joystickButton.button) {
+            case 1: {
+              cMovingEvent = nullptr;
+              break;
+            }
+
             case 4: {
               cMoveMode = false;
               break;
@@ -805,6 +826,46 @@ namespace IsoRealms::Basics {
   
   IProject& SequenceEditor::getProject() const {
     return cSequence.getProject();
+  }
+
+  bool SequenceEditor::isEvent(unsigned int time) const {
+    std::vector<ISequenceTrackEvent*> mEvents = cSequence.getTrack(cCursorTrack.value())->getEvents();
+    for (ISequenceTrackEvent* mEvent : mEvents) {
+      if (time == mEvent->getTime()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  unsigned int SequenceEditor::getPreviousAlignedEventTime() const {
+    unsigned int mTime = 0U;
+    for (unsigned int i = 0; i < cSequence.getTrackCount(); i++) {
+      if (cCursorTrack.value() != static_cast<int>(i)) {
+        std::vector<ISequenceTrackEvent*> mEvents = cSequence.getTrack(i)->getEvents();
+        for (ISequenceTrackEvent* mEvent : mEvents) {
+          if (mEvent->getTime() < cCursorTimeline.value() && mEvent->getTime() > mTime && !isEvent(mEvent->getTime())) {
+            mTime = mEvent->getTime();
+          }
+        }
+      }
+    }
+    return mTime == 0U ? cCursorTimeline.value() : mTime;
+  }
+
+  unsigned int SequenceEditor::getNextAlignedEventTime() const {
+    unsigned int mTime = cSequence.getDuration();
+    for (unsigned int i = 0; i < cSequence.getTrackCount(); i++) {
+      if (cCursorTrack.value() != static_cast<int>(i)) {
+        std::vector<ISequenceTrackEvent*> mEvents = cSequence.getTrack(i)->getEvents();
+        for (ISequenceTrackEvent* mEvent : mEvents) {
+          if (mEvent->getTime() > cCursorTimeline.value() && mEvent->getTime() < mTime && !isEvent(mEvent->getTime())) {
+            mTime = mEvent->getTime();
+          }
+        }
+      }
+    }
+    return mTime;
   }
 
   unsigned int SequenceEditor::getPreviousEventTime() const {

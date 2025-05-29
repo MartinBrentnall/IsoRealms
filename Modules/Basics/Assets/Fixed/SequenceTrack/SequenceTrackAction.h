@@ -47,6 +47,7 @@ namespace IsoRealms::Basics {
     std::string getName() const override;
     ISequenceTrackEvent* createEvent(IProject& project, unsigned int time) override;
     void deleteEvent(ISequenceTrackEvent* event) override;
+    void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
     std::vector<ISequenceTrackEvent*> getEvents() override;
     void stopPreview() override;
     void setPreviewPosition(long position) override;

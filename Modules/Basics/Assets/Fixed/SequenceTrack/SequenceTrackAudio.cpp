@@ -142,6 +142,10 @@ namespace IsoRealms::Basics {
     // TODO: Implement this.
   }
 
+  void SequenceTrackAudio::setEventTime(ISequenceTrackEvent* event, unsigned int time) {
+    // TODO: Implement this.
+  }
+
   std::vector<ISequenceTrackEvent*> SequenceTrackAudio::getEvents() {
     std::vector<ISequenceTrackEvent*> mEvents;
     for (const std::unique_ptr<Audio>& mEvent : cDefEvents) {

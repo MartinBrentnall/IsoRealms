@@ -114,6 +114,15 @@ namespace IsoRealms {
     static void renderRoundedRectangle(float left, float bottom, float right, float top, float curveSize);
     static void renderBezier(const Point2D& start, const Point2D& controlA, const Point2D& controlB, const Point2D& end, int resolution);
 
+    template <class TYPE, class TYPEB> static int getIndex(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
+      for (std::size_t i = 0; i < vector.size(); i++) {
+        if (vector[i].get() == element) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
     template <class TYPE> static int removeElement(std::vector<TYPE>& vector, const TYPE& element) {
       int mRemoved = 0;
       for (std::size_t i = vector.size(); i > 0; i--) {
