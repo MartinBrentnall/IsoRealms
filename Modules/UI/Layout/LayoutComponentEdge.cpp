@@ -43,12 +43,6 @@ namespace IsoRealms::UI {
     }
   }
 
-  LayoutComponentEdge::LayoutComponentEdge(const LayoutComponentEdge& edge) :
-            cDefParent(edge.cDefParent),
-            cDefLocation(edge.cDefLocation),
-            cDefOffset(edge.cDefOffset) {
-  }
-
   void LayoutComponentEdge::setLocation(float aspectRatio, float value) {
     cDefLocation->setAbsolute(aspectRatio, value - cDefOffset->getOffset(aspectRatio));
   }

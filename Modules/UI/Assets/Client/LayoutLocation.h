@@ -30,7 +30,6 @@ namespace IsoRealms::UI {
   class LayoutLocation : public Asset<ILayoutLocation, IUI> {
     public:
     LayoutLocation(IUI& ui, LayoutComponentEdge& owner);
-    LayoutLocation(const LayoutLocation& location);
 
     /******************************************\
      * Implements Asset<ILayoutLocation, IUI> *

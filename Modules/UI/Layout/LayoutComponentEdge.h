@@ -38,7 +38,6 @@ namespace IsoRealms::UI {
     public:
     LayoutComponentEdge(LayoutComponent& parent, float aspectRatio, float value);
     LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag);
-    LayoutComponentEdge(const LayoutComponentEdge& edge);
 
     void setLocation(float aspectRatio, float value);
     void setOffset(float aspectRatio, float value);

@@ -26,12 +26,6 @@ namespace IsoRealms::UI {
             cOwner(owner) {
   }
 
-  LayoutOffset::LayoutOffset(const LayoutOffset& offset) :
-            Asset<ILayoutOffset, IUI>(offset.cManager, offset.cManager.getLayoutOffset(this, "Absolute", offset.cOwner)),
-            cOwner(offset.cOwner) {
-    setID(offset.getID());
-  }
-
   ILayoutOffset* LayoutOffset::createLiteralAsset(IUI& ui) {
     return ui.createLiteralLayoutOffset(this, cOwner);
   }

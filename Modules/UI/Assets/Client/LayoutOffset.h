@@ -30,7 +30,6 @@ namespace IsoRealms::UI {
   class LayoutOffset : public Asset<ILayoutOffset, IUI> {
     public:
     LayoutOffset(IUI& ui, LayoutComponentEdge& owner);
-    LayoutOffset(const LayoutOffset& offset);
 
     /****************************************\
      * Implements Asset<ILayoutOffset, IUI> *

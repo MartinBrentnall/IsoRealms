@@ -28,12 +28,6 @@ namespace IsoRealms::UI {
             cOwner(owner) {
   }
 
-  LayoutLocation::LayoutLocation(const LayoutLocation& location) :
-            Asset<ILayoutLocation, IUI>(location.cManager, location.cManager.getLayoutLocation(this, "Absolute", location.cOwner)),
-            cOwner(location.cOwner) {
-    setID(location.getID());
-  }
-
   ILayoutLocation* LayoutLocation::createLiteralAsset(IUI& ui) {
     return ui.createLiteralLayoutLocation(this, cOwner);
   }
