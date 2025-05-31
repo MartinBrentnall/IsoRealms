@@ -22,12 +22,10 @@ namespace IsoRealms::Basics {
   const std::string Basics::ID_RESOURCE_ANALOGUE_INPUT     = "AnalogueInput";
   const std::string Basics::ID_RESOURCE_BOOLEAN_TRIGGER    = "BooleanTrigger";
   const std::string Basics::ID_RESOURCE_COLOUR_CYCLER      = "ColourCycler";
-  const std::string Basics::ID_RESOURCE_COLOUR_SWITCH      = "ColourSwitch";
   const std::string Basics::ID_RESOURCE_DIGITAL_INPUT      = "DigitalInput";
   const std::string Basics::ID_RESOURCE_FILE_FONT          = "Font";
   const std::string Basics::ID_RESOURCE_FILE_SOUND         = "Sound";
   const std::string Basics::ID_RESOURCE_FILE_TEXTURE       = "Texture";
-  const std::string Basics::ID_RESOURCE_FLOAT_SWITCH       = "FloatSwitch";
   const std::string Basics::ID_RESOURCE_FUNCTION           = "Function";
   const std::string Basics::ID_RESOURCE_INPUT_GROUP        = "InputGroup";
   const std::string Basics::ID_RESOURCE_INPUT_SWITCH       = "InputSwitch";
@@ -75,12 +73,10 @@ namespace IsoRealms::Basics {
                     cResourceTypeAnalogueInput(*this),
                     cResourceTypeBooleanTrigger(*this),
                     cResourceTypeColourCycler(*this),
-                    cResourceTypeColourSwitch(*this),
                     cResourceTypeDigitalInput(*this),
                     cResourceTypeFileFont(*this),
                     cResourceTypeFileSound(*this),
                     cResourceTypeFileTexture(*this),
-                    cResourceTypeFloatSwitch(*this),
                     cResourceTypeFunction(*this),
                     cResourceTypeInputGroup(*this),
                     cResourceTypeInputSwitch(*this),
@@ -103,12 +99,10 @@ namespace IsoRealms::Basics {
     registry->add(&cResourceTypeAnalogueInput,     ID_RESOURCE_ANALOGUE_INPUT,     "Input (Analogue)",   "Inputs (Analogue)",    "Input");
     registry->add(&cResourceTypeBooleanTrigger,    ID_RESOURCE_BOOLEAN_TRIGGER,    "Boolean Trigger",    "Boolean Triggers",     "Logic");
     registry->add(&cResourceTypeColourCycler,      ID_RESOURCE_COLOUR_CYCLER,      "Colour Cycler",      "Colour Cyclers",       IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeColourSwitch,      ID_RESOURCE_COLOUR_SWITCH,      "Scriptable Colour",  "Scriptable Colours",   IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
     registry->add(&cResourceTypeDigitalInput,      ID_RESOURCE_DIGITAL_INPUT,      "Input (Digital)",    "Inputs (Digital)",     "Input");
     registry->add(&cResourceTypeFileFont,          ID_RESOURCE_FILE_FONT,          "Font",               "Fonts",                IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
     registry->add(&cResourceTypeFileSound,         ID_RESOURCE_FILE_SOUND,         "Sound",              "Sounds",               IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
     registry->add(&cResourceTypeFileTexture,       ID_RESOURCE_FILE_TEXTURE,       "Image",              "Images",               IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeFloatSwitch,       ID_RESOURCE_FLOAT_SWITCH,       "Scriptable Float",   "Scriptable Floats",    IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
     registry->add(&cResourceTypeFunction,          ID_RESOURCE_FUNCTION,           "Function",           "Functions",            "Logic");
     registry->add(&cResourceTypeInputGroup,        ID_RESOURCE_INPUT_GROUP,        "Input Group",        "Input Groups",         "Input");
     registry->add(&cResourceTypeInputSwitch,       ID_RESOURCE_INPUT_SWITCH,       "Input Switch",       "Input Switches",       "Input");

@@ -40,13 +40,11 @@ namespace IsoRealms::Basics {
                                                                  "setMusicVolume",             &Basics::setMusicVolume,
                                                                  "reloadGlobalConfiguration",  &Basics::reloadGlobalConfiguration,
                                                                  "persistGlobalConfiguration", &Basics::persistGlobalConfiguration);
-    mLua->new_usertype<ColourSwitch>("ColourSwitch",             "setValue",                   &ColourSwitch::setValue);
     mLua->new_usertype<DigitalInput>("DigitalInput",             "getInputsString",            &DigitalInput::getInputsString,
                                                                  "clearCustomInputs",          &DigitalInput::clearCustomInputs,
                                                                  "addCustomInput",             &DigitalInput::addCustomInput,
                                                                  "getMappingCount",            &DigitalInput::getMappingCount,
                                                                  "getMapping",                 &DigitalInput::getMapping);
-    mLua->new_usertype<FloatSwitch>("FloatSwitch",               "setValue",                   &FloatSwitch::setValue);
     mLua->new_usertype<InputSwitch>("InputSwitch",               "setInputHandler",            &InputSwitch::setInputHandler);
     mLua->new_usertype<ModelCycler>("ModelSetCycleable",         "next",                       &ModelCycler::next,
                                                                  "previous",                   &ModelCycler::previous);

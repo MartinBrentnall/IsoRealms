@@ -23,8 +23,6 @@
 #include <sol.hpp>
 
 #include "AnalogueInput/AnalogueInput.h"
-#include "ColourSwitch/ColourSwitch.h"
-#include "FloatSwitch/FloatSwitch.h"
 #include "InputSwitch/InputSwitch.h"
 #include "ModelCycler/ModelCycler.h"
 #include "Project/Project.h"

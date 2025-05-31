@@ -27,12 +27,10 @@ add_library(Basics MODULE
   Assets/Fixed/SequenceTrack/SequenceTrackDummy.cpp
   BooleanTrigger/BooleanTrigger.cpp
   ColourCycler/ColourCycler.cpp
-  ColourSwitch/ColourSwitch.cpp
   DigitalInput/DigitalInput.cpp
   FileFont/FileFont.cpp
   FileSound/FileSound.cpp
   FileTexture/FileTexture.cpp
-  FloatSwitch/FloatSwitch.cpp
   Function/ArgumentDefinition.cpp
   Function/Binding.cpp
   Function/Function.cpp

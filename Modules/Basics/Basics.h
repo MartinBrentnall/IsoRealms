@@ -34,12 +34,10 @@
 #include "Assets/Type/ISequenceTrack.h"
 #include "BooleanTrigger/BooleanTrigger.h"
 #include "ColourCycler/ColourCycler.h"
-#include "ColourSwitch/ColourSwitch.h"
 #include "DigitalInput/DigitalInput.h"
 #include "FileFont/FileFont.h"
 #include "FileSound/FileSound.h"
 #include "FileTexture/FileTexture.h"
-#include "FloatSwitch/FloatSwitch.h"
 #include "Function/Function.h"
 #include "IBasics.h"
 #include "InputGroup/InputGroup.h"
@@ -163,12 +161,10 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, AnalogueInput>     cResourceTypeAnalogueInput;
     ResourceTypeDefinition<Basics, BooleanTrigger>    cResourceTypeBooleanTrigger;
     ResourceTypeDefinition<Basics, ColourCycler>      cResourceTypeColourCycler;
-    ResourceTypeDefinition<Basics, ColourSwitch>      cResourceTypeColourSwitch;
     ResourceTypeDefinition<Basics, DigitalInput>      cResourceTypeDigitalInput;
     ResourceTypeDefinition<Basics, FileFont>          cResourceTypeFileFont;
     ResourceTypeDefinition<Basics, FileSound>         cResourceTypeFileSound;
     ResourceTypeDefinition<Basics, FileTexture>       cResourceTypeFileTexture;
-    ResourceTypeDefinition<Basics, FloatSwitch>       cResourceTypeFloatSwitch;
     ResourceTypeDefinition<Basics, Function>          cResourceTypeFunction;
     ResourceTypeDefinition<Basics, InputGroup>        cResourceTypeInputGroup;
     ResourceTypeDefinition<Basics, InputSwitch>       cResourceTypeInputSwitch;

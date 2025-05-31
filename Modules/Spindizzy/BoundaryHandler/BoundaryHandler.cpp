@@ -76,8 +76,8 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> BoundaryHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<BoundaryType>>("Boundary Type", cDefBoundaryType));
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type", cDefObjectType));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<BoundaryType>>("Boundary Type", cDefBoundaryType));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Entry", cDefEnteredAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Exit", cDefExitedAction));
     return mProperties;
