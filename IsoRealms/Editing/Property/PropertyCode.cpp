@@ -640,12 +640,11 @@ namespace IsoRealms {
     int mCurrentLine = 0;
     int mLineStartIndex = 0;
     int mCaretPosition = 0;
-    for (unsigned int i = 0; i < cEditingCode.length(); i++) {
+    for (unsigned int i = 0; i <= cEditingCode.length(); i++) {
       if (mCurrentLine == mLine) {
         std::string mLine = cEditingCode.substr(mLineStartIndex, i - mLineStartIndex);
         float mWidth = mFont->getWidth(mFontSize, mLine);
         float mDifference = std::abs(mX - mWidth);
-        std::cout << "Checking \"" << mLine << "\" is" << mDifference << "..." << std::endl;
         if (mDifference < mSmallestDifference) {
           mSmallestDifference = mDifference;
           mCaretPosition = i;
@@ -663,7 +662,7 @@ namespace IsoRealms {
         }
       }
     }
-    return mCaretPosition;
+    return (mLine > mCurrentLine && mCaretPosition == 0) ? cEditingCode.length() : mCaretPosition;
   }
 
   PropertyCode::Editor::Edit::Edit(Editor& parent, bool addition, const std::string& content, unsigned int position) :
