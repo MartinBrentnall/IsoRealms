@@ -310,11 +310,11 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::execute() {
-    if (cDefParent.cDefName[0] != '_') {
-      std::cout << "Executing Function \"" << cDefParent.cDefName << "\"..." << std::endl;
-    } else {
-      std::cout << "Executing Script: ===============================================================================" << std::endl << cDefParent.cDefCode << std::endl;
-    }
+    // if (cDefParent.cDefName[0] != '_') {
+    //   std::cout << "Executing Function \"" << cDefParent.cDefName << "\"..." << std::endl;
+    // } else {
+      std::cout << "\n\n\n\nExecuting \"" << cDefParent.cDefName  << "\": ===============================================================================" << std::endl << cDefParent.cDefCode << std::endl;
+    // }
     try {
       for (unsigned int i = 0; i < cDefParent.cDefBindings.size(); i++) {
         std::string mBindFunctionName = cDefParent.cDefName + "_arg" + Utils::toString(i);

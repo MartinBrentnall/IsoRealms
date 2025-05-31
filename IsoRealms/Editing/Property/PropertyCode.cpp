@@ -97,7 +97,7 @@ namespace IsoRealms {
     ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(-mPanelWidth / 2.0f + mFontSize, mPanelWidth / 2.0f - mFontSize, -mPanelHeight / 2.0f + mFontSize, mPanelHeight / 2.0f - mFontSize));
     
     glPushMatrix();
-    glTranslatef(-cScrollX.animation(), -cScrollY.animation(), 0.0f);
+    glTranslatef(cScrollX.animation(), cScrollY.animation(), 0.0f);
 
     // Render selection highlight.
     if (cCaret != cSelection) {
@@ -169,6 +169,8 @@ namespace IsoRealms {
   }
 
   bool PropertyCode::Editor::update(unsigned int milliseconds) {
+    cScrollX.update(milliseconds);
+    cScrollY.update(milliseconds);
     cDelayUntilBlinkChange -= milliseconds;
     if (cDelayUntilBlinkChange <= 0) {
       cDelayUntilBlinkChange += BLINK_DELAY;
@@ -494,8 +496,9 @@ namespace IsoRealms {
     
     float mLineHeight = mFont->getHeight(mFontSize, "A");
     float mCaretOffsetY = cLine * mLineHeight;
-    if (mCurrentViewBottom < mAvailableHeight) {
-      cScrollY = mCaretOffsetY - mAvailableHeight;
+    float mCaretBottom = mCaretOffsetY + mLineHeight * 2.5f;
+    if (mCurrentViewBottom < mCaretBottom) {
+      cScrollY = mCaretBottom - mAvailableHeight;
     } else if (mCurrentViewTop > mCaretOffsetY) {
       cScrollY = mCaretOffsetY;
     }
