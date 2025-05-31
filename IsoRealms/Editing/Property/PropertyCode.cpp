@@ -19,8 +19,9 @@
 #include "PropertyCode.h"
 
 namespace IsoRealms {
-  PropertyCode::PropertyCode(const std::string& name, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) :
+  PropertyCode::PropertyCode(IProject& project, const std::string& name, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) :
             Property(name, removeFunction),
+            cProject(project),
             cGetter(getter),
             cSetter(setter) {
   }
@@ -61,6 +62,7 @@ namespace IsoRealms {
             cParent(parent),
             cEditingCode(parent.cGetter()),
             cCaret(0),
+            cMouseSelecting(false),
             cLineStartIndex(0),
             cLine(0),
             cCaretXPosition(0.0f),
@@ -147,7 +149,7 @@ namespace IsoRealms {
     // Render the caret.
     if (cBlinkShowing) {
       glBindTexture(GL_TEXTURE_2D, 0);
-      glLineWidth(5.0);
+      glLineWidth(2.0);
       float mCaretX = -mPanelWidth / 2.0f + mFontSize * 2.0f + cCaretOffsetX;
       glColor3f(1.0f, 1.0f, 1.0f);
       glBegin(GL_LINES);
@@ -217,6 +219,62 @@ namespace IsoRealms {
           updateValues(style);
           updateCaretColumnPosition(style);
           cSelection = cCaret;
+        }
+        break;
+      }
+
+      case sf::Event::MouseButtonPressed: {
+        switch (event.mouseButton.button) {
+          case sf::Mouse::Left: {
+            cMouseSelecting = true;
+            cCaret = getCaretPosition(style, event.mouseButton.x, event.mouseButton.y);
+            cSelection = cCaret;
+            updateValues(style);
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
+        break;
+      }
+
+      case sf::Event::MouseButtonReleased: {
+        switch (event.mouseButton.button) {
+          case sf::Mouse::Left: {
+            cMouseSelecting = false;
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
+        break;
+      }
+
+      case sf::Event::MouseMoved: {
+        if (cMouseSelecting) {
+          cCaret = getCaretPosition(style, event.mouseMove.x, event.mouseMove.y);
+          updateValues(style);
+        }
+        break;
+      }
+
+      case sf::Event::MouseWheelScrolled: {
+        switch (event.mouseWheelScroll.wheel) {
+          case sf::Mouse::VerticalWheel: {
+            IFont* mFont = style.getCodeFont();
+            float mFontSize = style.getCodeFontSize();
+            float mLineHeight = mFont->getHeight(mFontSize, "A");
+            cScrollY = std::max(0.0f, cScrollY.value() - event.mouseWheelScroll.delta * mLineHeight * 3.0f);
+            break;
+          }
+
+          default: {
+            break;
+          }
         }
         break;
       }
@@ -495,12 +553,12 @@ namespace IsoRealms {
     }
     
     float mLineHeight = mFont->getHeight(mFontSize, "A");
-    float mCaretOffsetY = cLine * mLineHeight;
-    float mCaretBottom = mCaretOffsetY + mLineHeight * 2.5f;
+    float mCaretTop = cLine * mLineHeight;
+    float mCaretBottom = mCaretTop + mLineHeight * 2.5f; // TODO: This is wrong (* 2.5 should not be there), meaning mCurrentViewBottom is also probably wrong.
     if (mCurrentViewBottom < mCaretBottom) {
       cScrollY = mCaretBottom - mAvailableHeight;
-    } else if (mCurrentViewTop > mCaretOffsetY) {
-      cScrollY = mCaretOffsetY;
+    } else if (mCurrentViewTop > mCaretTop) {
+      cScrollY = mCaretTop;
     }
   }
 
@@ -563,6 +621,49 @@ namespace IsoRealms {
       cUndoStack.emplace(mEdit);
       cRedoStack.pop();
     }
+  }
+
+  int PropertyCode::Editor::getCaretPosition(IUIStyle& style, int x, int y) {
+    IApplication& mApplication = cParent.cProject.getApplication();
+    Point2D mLocation = mApplication.normalise(x, y);
+    IFont* mFont = style.getCodeFont();
+    float mFontSize = style.getCodeFontSize();
+    float mY = (std::abs(mLocation.getY() - 1.0f) - mFontSize * 3.5f) + cScrollY.animation();
+    float mLineHeight = mFont->getHeight(mFontSize, "A");
+    int mLine = std::floor(mY / mLineHeight);
+
+    float mTotalCodeWidth = mFont->getWidth(mFontSize, cEditingCode);
+    float mPanelWidth  = cOpenness / 250.0f * std::min(mTotalCodeWidth + mFontSize * 4.0f, (1.0f / mApplication.getScreenAspectRatio()) * 2.0f - mFontSize * 2.0f) ;
+    float mTextLeft = -mPanelWidth / 2.0f + mFontSize * 2.0f;
+    float mX = mLocation.getX() - mTextLeft;
+    float mSmallestDifference = std::numeric_limits<float>::max();
+    int mCurrentLine = 0;
+    int mLineStartIndex = 0;
+    int mCaretPosition = 0;
+    for (unsigned int i = 0; i < cEditingCode.length(); i++) {
+      if (mCurrentLine == mLine) {
+        std::string mLine = cEditingCode.substr(mLineStartIndex, i - mLineStartIndex);
+        float mWidth = mFont->getWidth(mFontSize, mLine);
+        float mDifference = std::abs(mX - mWidth);
+        std::cout << "Checking \"" << mLine << "\" is" << mDifference << "..." << std::endl;
+        if (mDifference < mSmallestDifference) {
+          mSmallestDifference = mDifference;
+          mCaretPosition = i;
+        } else {
+          break;
+        }
+      }
+      if (cEditingCode[i] == '\n') {
+        if (mLineStartIndex != 0) {
+          break;
+        }
+        mCurrentLine++;
+        if (mCurrentLine == mLine) {
+          mLineStartIndex = i + 1;
+        }
+      }
+    }
+    return mCaretPosition;
   }
 
   PropertyCode::Editor::Edit::Edit(Editor& parent, bool addition, const std::string& content, unsigned int position) :

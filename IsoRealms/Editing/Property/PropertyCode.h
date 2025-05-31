@@ -36,7 +36,7 @@
 namespace IsoRealms {
   class PropertyCode : public Property {
     public:
-    PropertyCode(const std::string& name, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyCode(IProject& project, const std::string& name, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -82,6 +82,7 @@ namespace IsoRealms {
       PropertyCode& cParent;
       std::string cEditingCode;
       unsigned int cCaret;
+      bool cMouseSelecting;
 
       // Cached calculated values.
       unsigned int cLineStartIndex;
@@ -112,9 +113,12 @@ namespace IsoRealms {
       void paste(IUIStyle& style);
       void undo(IUIStyle& style);
       void redo(IUIStyle& style);
+      int getCaretPosition(IUIStyle& style, int x, int y);
     };
 
     static const unsigned int BLINK_DELAY = 200;
+
+    IProject& cProject;
 
     std::function<std::string()> cGetter;
     std::function<void(const std::string&)> cSetter;

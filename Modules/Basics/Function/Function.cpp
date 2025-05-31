@@ -111,7 +111,7 @@ namespace IsoRealms::Basics {
       }));
       return mProperties;
     }));
-    mProperties.emplace_back(std::make_unique<PropertyCode>("Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;}));
+    mProperties.emplace_back(std::make_unique<PropertyCode>(cProject, "Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;}));
     return mProperties;
   }
   
@@ -168,7 +168,7 @@ namespace IsoRealms::Basics {
       }));
       return mProperties;
     }));
-    mProperties.emplace_back(std::make_unique<PropertyCode>("Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;}));
+    mProperties.emplace_back(std::make_unique<PropertyCode>(cProject, "Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;}));
     return mProperties;
   }
 
