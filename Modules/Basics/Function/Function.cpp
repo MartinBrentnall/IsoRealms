@@ -102,7 +102,7 @@ namespace IsoRealms::Basics {
         }));
       }
       mProperties.emplace_back(std::make_unique<PropertyAdd>("Argument", "New...", [this]() {
-        ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(cProject, getNextAvailableName("newArgument"))).get();
+        ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(cProject, *this, getNextAvailableName("newArgument"))).get();
         return std::make_unique<PropertyStruct>(mNewArgumentDefinition->getName(), "Edit...", [this, mNewArgumentDefinition]() {
           return mNewArgumentDefinition->getProperties(*this);
         }, [this, mNewArgumentDefinition]() {
@@ -125,7 +125,7 @@ namespace IsoRealms::Basics {
             Function(project, name) {
     if (init) {
       for (JSONObject mArgumentObject : object.getArray(JSON_ARGUMENTS)) {
-        cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(project, mArgumentObject));
+        cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(project, *this, mArgumentObject));
       }
     }
     for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {

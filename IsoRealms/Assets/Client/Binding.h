@@ -30,8 +30,8 @@
 namespace IsoRealms {
   class Binding : public Asset<IBinding, IProject> {
     public:
-    Binding(IProject& project, IBindingRegistry* registry);
-    Binding(IProject& project, IBindingRegistry* registry, const std::string& type);
+    Binding(IProject& project, IBindingRegistry* registry, std::function<void()> listener = nullptr);
+    Binding(IProject& project, IBindingRegistry* registry, const std::string& type, std::function<void()> listener = nullptr);
     std::string getType() const;
 
     std::string getID() const override;
@@ -48,10 +48,12 @@ namespace IsoRealms {
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;
     bool isDefaultConfiguration() const override;
+    void stateChanged(IBinding* asset) override;
     std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(IBinding* asset) override;
 
     private:
     std::string cDefType;
     IBindingRegistry* cDefRegistry;
+    std::function<void()> cListener;
   };
 }

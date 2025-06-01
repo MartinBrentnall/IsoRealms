@@ -21,8 +21,9 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 
 namespace IsoRealms {
-  BindingType::BindingType(IProject& project) :
-            Asset<IBindingType, IProject>(project, project.createLiteralBindingType(this)) {
+  BindingType::BindingType(IProject& project, std::function<void()> listener) :
+            Asset<IBindingType, IProject>(project, project.createLiteralBindingType(this)),
+            cListener(listener) {
   }
 
   IBindingType* BindingType::createLiteralAsset(IProject& project) {
@@ -51,5 +52,11 @@ namespace IsoRealms {
 
   bool BindingType::isDefaultConfiguration() const {
     return true;
+  }
+
+  void BindingType::stateChanged(IBindingType* value) {
+    if (value == cAsset && cListener != nullptr) {
+      cListener();
+    }
   }
 }

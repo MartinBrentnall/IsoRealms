@@ -29,8 +29,8 @@ namespace IsoRealms::Basics {
 
   class ArgumentDefinition final {
     public:
-    ArgumentDefinition(IProject& project, const std::string& name);
-    ArgumentDefinition(IProject& project, JSONObject object);
+    ArgumentDefinition(IProject& project, Function& parent, const std::string& name);
+    ArgumentDefinition(IProject& project, Function& parent, JSONObject object);
     void save(JSONObject object) const;
     void setName(const std::string& name);
     std::string getName() const;
@@ -42,6 +42,7 @@ namespace IsoRealms::Basics {
     std::string getCleanup() const;
 
     private:
+    Function& cParent;
     std::string cDefName;
     BindingType cDefType;
 

@@ -21,14 +21,15 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 
 namespace IsoRealms {
-  Binding::Binding(IProject& project, IBindingRegistry* registry) :
-            Binding(project, registry, "") {
+  Binding::Binding(IProject& project, IBindingRegistry* registry, std::function<void()> listener) :
+            Binding(project, registry, "", listener) {
   }
 
-  Binding::Binding(IProject& project, IBindingRegistry* registry, const std::string& type) :
+  Binding::Binding(IProject& project, IBindingRegistry* registry, const std::string& type, std::function<void()> listener) :
             Asset<IBinding, IProject>(project, project.createLiteralBinding(this)),
             cDefType(type),
-            cDefRegistry(registry) {
+            cDefRegistry(registry),
+            cListener(listener) {
     std::vector<std::string> mProviders = getAvailableProviders();
     for (std::string mProvider : mProviders) {
       if (mProvider == cDefType) {
@@ -125,6 +126,12 @@ namespace IsoRealms {
 
   bool Binding::isDefaultConfiguration() const {
     return true;
+  }
+
+  void Binding::stateChanged(IBinding* value) {
+    if (value == cAsset && cListener != nullptr) {
+      cListener();
+    }
   }
 
   std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset) {

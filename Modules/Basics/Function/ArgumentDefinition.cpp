@@ -21,13 +21,28 @@
 #include "Function.h"
 
 namespace IsoRealms::Basics {
-  ArgumentDefinition::ArgumentDefinition(IProject& project, const std::string& name) :
+  ArgumentDefinition::ArgumentDefinition(IProject& project, Function& parent, const std::string& name) :
+            cParent(parent),
             cDefName(name),
-            cDefType(project) {
+            cDefType(project, [this]() {
+              std::string mNewBindingID = cDefType.getID();
+              std::size_t mLastSeparator = mNewBindingID.rfind('/');
+              if (mLastSeparator != std::string::npos) {
+                mNewBindingID = mNewBindingID.substr(mLastSeparator + 1);
+              }
+              std::string mStrippedID;
+              for (unsigned int i = 0; i < mNewBindingID.length(); i++) {
+                char mChar = std::toupper(mNewBindingID[i]);
+                if ((mChar >= 'A' && mChar <= 'Z') || (mChar >= '0' && mChar <= '9')) {
+                  mStrippedID += (mStrippedID.empty() ? std::tolower(mNewBindingID[i]) : mNewBindingID[i]);
+                }
+              }
+              cParent.setArgumentDefinitionName(*this, mStrippedID);
+            }) {
   }
 
-  ArgumentDefinition::ArgumentDefinition(IProject& project, JSONObject object) :
-            ArgumentDefinition(project, object.getString(JSON_NAME)) {
+  ArgumentDefinition::ArgumentDefinition(IProject& project, Function& parent, JSONObject object) :
+            ArgumentDefinition(project, parent, object.getString(JSON_NAME)) {
     cDefType.init(object, JSON_TYPE);
   }
 
@@ -50,8 +65,8 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> ArgumentDefinition::getProperties(Function& parent) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>(      "Name", [this]() {return cDefName;}, [this, &parent](const std::string& value) {return parent.setArgumentDefinitionName(*this, value);}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<BindingType>>("Type", cDefType));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>(      "Name", [this]() {return cDefName;}, [this, &parent](const std::string& value) {return parent.setArgumentDefinitionName(*this, value);}));
     return mProperties;
   }
 

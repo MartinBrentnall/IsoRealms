@@ -221,7 +221,7 @@ namespace IsoRealms {
   }
 
   void PropertiesMenu::refresh() {
-    // Nothing to do.
+    refreshProperties();
   }
 
   void PropertiesMenu::addProperty(std::unique_ptr<IProperty> property) {

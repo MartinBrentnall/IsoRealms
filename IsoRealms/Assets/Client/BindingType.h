@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class BindingType : public Asset<IBindingType, IProject> {
     public:
-    BindingType(IProject& project);
+    BindingType(IProject& project, std::function<void()> listener);
 
     /********************************************\
      * Implements Asset<IBindingType, IProject> *
@@ -42,5 +42,9 @@ namespace IsoRealms {
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;
     bool isDefaultConfiguration() const override;
+    void stateChanged(IBindingType* asset) override;
+
+    private:
+    std::function<void()> cListener;
   };
 }

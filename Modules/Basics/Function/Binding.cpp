@@ -30,7 +30,21 @@ namespace IsoRealms::Basics {
   Binding::Binding(Function& parent, IBindingRegistry* localArgs, const std::string& name) :
             cParent(parent),
             cDefName(name),
-            cDefValue(parent.getProject(), localArgs) {
+            cDefValue(parent.getProject(), localArgs, [this]() {
+              std::string mNewBindingID = cDefValue.getID();
+              std::size_t mLastSeparator = mNewBindingID.rfind('/');
+              if (mLastSeparator != std::string::npos) {
+                mNewBindingID = mNewBindingID.substr(mLastSeparator + 1);
+              }
+              std::string mStrippedID;
+              for (unsigned int i = 0; i < mNewBindingID.length(); i++) {
+                char mChar = std::toupper(mNewBindingID[i]);
+                if ((mChar >= 'A' && mChar <= 'Z') || (mChar >= '0' && mChar <= '9')) {
+                  mStrippedID += (mStrippedID.empty() ? std::tolower(mNewBindingID[i]) : mNewBindingID[i]);
+                }
+              }
+              cParent.setBindingName(*this, mStrippedID);
+            }) {
   }
 
   Binding::Binding(Function& parent, IBindingRegistry* localArgs, bool init, JSONObject object) :
@@ -97,8 +111,8 @@ namespace IsoRealms::Basics {
   
   std::vector<std::unique_ptr<IProperty>> Binding::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyAsset<IsoRealms::Binding>>("What", cDefValue));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name",  [this]() {return cDefName;}, [this](const std::string& value) {return cParent.setBindingName(*this, value);}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<IsoRealms::Binding>>("Value", cDefValue));
     return mProperties;
   }
 }
