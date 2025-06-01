@@ -992,16 +992,16 @@
                       "key": "UI/Gradient",
                       "colourA": {
                         "key": "Literal",
-                        "red": 0.3,
+                        "red": 0.0,
                         "green": 0,
-                        "blue": 0.6,
+                        "blue": 0.5,
                         "alpha": 1
                       },
                       "colourB": {
                         "key": "Literal",
-                        "red": 0,
+                        "red": 0.5,
                         "green": 0,
-                        "blue": 0,
+                        "blue": 0.25,
                         "alpha": 1
                       }
                     },

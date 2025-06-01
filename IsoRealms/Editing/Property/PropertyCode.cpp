@@ -138,7 +138,6 @@ namespace IsoRealms {
         glEnd();
         glColor3f(1.0f, 1.0f, 1.0f);
         mCurrentIndex = mCurrentLineEnd + 1;
-//        std::cout << "Set current index to " << mCurrentIndex << "     (line start: " << mCurrentLineStart << ")     (line end: " << mCurrentLineEnd << ")     (selection end: " << mSelectionEnd << ")     (code length: " << cEditingCode.length() << ")" << std::endl;
         mCurrentLineNumber++;
       }
     }
@@ -268,7 +267,10 @@ namespace IsoRealms {
             IFont* mFont = style.getCodeFont();
             float mFontSize = style.getCodeFontSize();
             float mLineHeight = mFont->getHeight(mFontSize, "A");
-            cScrollY = std::max(0.0f, cScrollY.value() - event.mouseWheelScroll.delta * mLineHeight * 3.0f);
+            float mContentHeight = mFont->getHeight(mFontSize, cEditingCode);
+            float mAvailableHeight = (2.0f - mFontSize * 4.0f) - mLineHeight;
+            float mMaxScroll = std::max(0.0f, mContentHeight - mAvailableHeight);
+            cScrollY = std::min(mMaxScroll, std::max(0.0f, cScrollY.value() - event.mouseWheelScroll.delta * mLineHeight * 3.0f));
             break;
           }
 
@@ -572,7 +574,6 @@ namespace IsoRealms {
 
       cEditingCode = cEditingCode.substr(0, mSelectionStart) + cEditingCode.substr(mSelectionEnd);
       cCaret = mSelectionStart;
-      std::cout << "Caret Set to " << cCaret << std::endl;
       cSelection = cCaret;
       updateValues(style);
       updateCaretColumnPosition(style);
@@ -628,14 +629,24 @@ namespace IsoRealms {
     Point2D mLocation = mApplication.normalise(x, y);
     IFont* mFont = style.getCodeFont();
     float mFontSize = style.getCodeFontSize();
-    float mY = (std::abs(mLocation.getY() - 1.0f) - mFontSize * 3.5f) + cScrollY.animation();
-    float mLineHeight = mFont->getHeight(mFontSize, "A");
-    int mLine = std::floor(mY / mLineHeight);
 
+    // Get X position in the code text.
     float mTotalCodeWidth = mFont->getWidth(mFontSize, cEditingCode);
     float mPanelWidth  = cOpenness / 250.0f * std::min(mTotalCodeWidth + mFontSize * 4.0f, (1.0f / mApplication.getScreenAspectRatio()) * 2.0f - mFontSize * 2.0f) ;
     float mTextLeft = -mPanelWidth / 2.0f + mFontSize * 2.0f;
-    float mX = mLocation.getX() - mTextLeft;
+    float mX = (mLocation.getX() - mTextLeft) + cScrollX.animation();
+
+    // Get Y position in the code text.
+    float mTotalCodeHeight = mFont->getHeight(mFontSize, cEditingCode);
+    float mPanelHeight = cOpenness / 250.0f * std::min(mTotalCodeHeight + mFontSize * 4.0f, 2.0f - mFontSize * 2.0f);
+    float mTextTop = (mPanelHeight / 2.0f - mFontSize * 2.0f);
+    float mY = (-mLocation.getY() + mTextTop) + cScrollY.animation();
+
+    // Translate Y position to line number in the text.
+    float mLineHeight = mFont->getHeight(mFontSize, "A");
+    int mLine = std::floor(mY / mLineHeight);
+
+    // Now figure out exact caret position.
     float mSmallestDifference = std::numeric_limits<float>::max();
     int mCurrentLine = 0;
     int mLineStartIndex = 0;
