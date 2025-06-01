@@ -187,7 +187,7 @@ namespace IsoRealms {
         IFont* mFont = style.getFont();
 
         // Render path bar.
-        if (cPathBarWidth.animation() > 0.0f) {
+        if (cPathBarWidth.animation() > 0.0f && cMenus[0]->getMenu().hasChildren()) {
           glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
           Utils::renderRoundedRectangle(-aspectRatio - mFontSize, mPathBarY - mFontSize * 1.5f, -aspectRatio + cPathBarWidth.animation() + mFontSize, mPathBarY + mFontSize * 1.5f, mFontSize);
           glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -418,6 +418,15 @@ namespace IsoRealms {
           return cPath;
         }
 
+        bool hasChildren() const {
+          for (const std::unique_ptr<IAssetMenuItem>& mMenuItem : cMenuItems) {
+            if (mMenuItem->hasChildren()) {
+              return true;
+            }
+          }
+          return false;
+        }
+
         private:
         class IAssetMenuItem {
           public:
@@ -425,6 +434,7 @@ namespace IsoRealms {
           virtual float getWidth(IUIStyle& style) const = 0;
           virtual bool confirm(IUIStyle& style) = 0;
           virtual void enter(IUIStyle& style) = 0;
+          virtual bool hasChildren() const = 0;
         };
 
         class AssetMenuItemFolder : public IAssetMenuItem {
@@ -462,6 +472,10 @@ namespace IsoRealms {
 
           void enter(IUIStyle& style) override {
             confirm(style);
+          }
+
+          bool hasChildren() const override {
+            return true;
           }
 
           private:
@@ -526,6 +540,10 @@ namespace IsoRealms {
 
           void enter(IUIStyle& style) override {
             // Nothing to do.
+          }
+
+          bool hasChildren() const override {
+            return false;
           }
 
           private:
