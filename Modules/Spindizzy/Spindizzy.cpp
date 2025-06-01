@@ -565,20 +565,20 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> Spindizzy::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Width",    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Length",   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Height",   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Width",    "TODO", [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Length",   "TODO", [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Height",   "TODO", [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value; return true;}));
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneType>>("Default Zone Type", *cAutomaticZoneManagementType));
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<ThemeSet>>("Default Zone Theme", *cDefaultThemeSet));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>(  "Default Editor Tool",   cDefaultWorldEditorTool));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World West Boundary",   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World East Boundary",   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World South Boundary",  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World North Boundary",  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World Depth Boundary",  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World Height Boundary", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>(  "Default Editor Tool",   "TODO", cDefaultWorldEditorTool));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World West Boundary",   "TODO", [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World East Boundary",   "TODO", [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World South Boundary",  "TODO", [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World North Boundary",  "TODO", [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World Depth Boundary",  "TODO", [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World Height Boundary", "TODO", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value; return true;}));
     for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>("World Editing Tool " + Utils::toString(i + 1), *cAvailableWorldEditorTools[i].get(), [this, i]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>("World Editing Tool " + Utils::toString(i + 1), "TODO", *cAvailableWorldEditorTools[i].get(), [this, i]() {
         cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
       }));
     }

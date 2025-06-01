@@ -31,7 +31,7 @@ namespace IsoRealms {
 
   class PropertyNativeBoolean : public Property {
     public:
-    PropertyNativeBoolean(const std::string& name, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction = nullptr);
+    PropertyNativeBoolean(const std::string& name, const std::string& tooltip, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *

@@ -113,10 +113,10 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> CameraVariant::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Location", cDefLocation));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Angle",    cDefYaw));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Tilt",     cDefPitch));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Zoom",     cDefZoom));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Location", "TODO", cDefLocation));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Angle",    "TODO", cDefYaw));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Tilt",     "TODO", cDefPitch));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>("Zoom",     "TODO", cDefZoom));
     return mProperties;
   }
 

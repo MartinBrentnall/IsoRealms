@@ -202,18 +202,18 @@ namespace IsoRealms::Hue {
   
   std::vector<std::unique_ptr<IProperty>> HueManager::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Address", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("User",    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("PSK",     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Address", "TODO", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("User",    "TODO", [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("PSK",     "TODO", [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;}));
     for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Bulb", mBulb->getColour(), [this, &mBulb]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Bulb", "TODO", mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Bulb", "Add...", [this, &browser]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Bulb", "TODO", "Add...", [this, &browser]() {
       cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, browser.getProject(), cDefBulbs.size()));
       std::unique_ptr<Bulb>& mBulb  = cDefBulbs.back();
-      return std::make_unique<PropertyAsset<Colour>>("Bulb", mBulb->getColour(), [this, &mBulb]() {
+      return std::make_unique<PropertyAsset<Colour>>("Bulb", "TODO", mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       });
     }));

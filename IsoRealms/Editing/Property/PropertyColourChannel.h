@@ -34,7 +34,7 @@ namespace IsoRealms {
     static float MIN_CHANNEL_VALUE;
     static float MAX_CHANNEL_VALUE;
     
-    PropertyColourChannel(const std::string& name, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback);
+    PropertyColourChannel(const std::string& name, const std::string& tooltip, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback);
       
     /*****************************\
      * Implements PropertySlider *

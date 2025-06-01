@@ -36,6 +36,7 @@ namespace IsoRealms {
     void render(IUIStyle& style, float y, float xRemoveOffset, float aspectRatio) const;
     bool input(UISignalID id);
     bool isAddResource() const;
+    std::string getTooltip() const;
 
     private:
     std::string cLabel;

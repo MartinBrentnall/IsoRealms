@@ -77,7 +77,7 @@ namespace IsoRealms {
     
     std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser) override {
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", [this]() {return cName;}, [this](const std::string& value) {
+      mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", "Descriptive name for this resource", [this]() {return cName;}, [this](const std::string& value) {
         std::set<IResource*> mAllResources = cParent.getResources();
         for (IResource* mResource : mAllResources) {
           if (mResource->getName() == value) {

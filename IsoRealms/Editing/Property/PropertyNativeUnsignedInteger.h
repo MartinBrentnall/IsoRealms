@@ -29,7 +29,7 @@
 namespace IsoRealms {
   class PropertyNativeUnsignedInteger : public PropertyInputField {
     public:
-    PropertyNativeUnsignedInteger(const std::string& name, std::function<unsigned int()> getter, std::function<bool(unsigned int)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyNativeUnsignedInteger(const std::string& name, const std::string& tooltip, std::function<unsigned int()> getter, std::function<bool(unsigned int)> setter, std::function<void()> removeFunction = nullptr);
 
     protected:
 

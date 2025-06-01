@@ -27,7 +27,7 @@
 namespace IsoRealms {
   class Property : public IProperty {
     public:
-    Property(const std::string& name, std::function<void()> removeFunction);
+    Property(const std::string& name, const std::string& tooltip, std::function<void()> removeFunction);
       
     /************************\
      * Implements IProperty *
@@ -35,9 +35,11 @@ namespace IsoRealms {
     std::string getPropertyName() const override;
     bool isRemovable() const override;
     void remove() override;
-    
+    std::string getTooltip() const override;
+
     private:
     const std::string cName;
+    const std::string cTooltip;
     const std::function<void()> cRemoveFunction;
   };
 }

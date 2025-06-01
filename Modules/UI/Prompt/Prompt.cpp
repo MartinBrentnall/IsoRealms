@@ -93,15 +93,15 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Font",             cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Font Size",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Shadow Offset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Selection Colour", cDefSelectionColour));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Message",          [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Reject Label",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Accept Label",     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Rejection",     cDefNegativeAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Acceptance",    cDefPositiveAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Font",             "TODO", cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Font Size",        "TODO", [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Shadow Offset",    "TODO", [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Selection Colour", "TODO", cDefSelectionColour));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Message",          "TODO", [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Reject Label",     "TODO", [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Accept Label",     "TODO", [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Rejection",     "TODO", cDefNegativeAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Acceptance",    "TODO", cDefPositiveAction));
     return mProperties;
   }
   

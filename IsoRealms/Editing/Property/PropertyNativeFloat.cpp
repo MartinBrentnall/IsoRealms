@@ -19,8 +19,8 @@
 #include "PropertyNativeFloat.h"
 
 namespace IsoRealms {
-  PropertyNativeFloat::PropertyNativeFloat(const std::string& name, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) :
-            PropertyInputField(name, Utils::toString(getter()), removeFunction),
+  PropertyNativeFloat::PropertyNativeFloat(const std::string& name, const std::string& tooltip, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) :
+            PropertyInputField(name, tooltip, Utils::toString(getter()), removeFunction),
             cSetter(setter) {
     while (cValue.length() > 3 && cValue[cValue.length() - 1] == '0' && cValue[cValue.length() - 2] != '.') {
       cValue = cValue.substr(0, cValue.length() - 1);

@@ -136,19 +136,19 @@ namespace IsoRealms::Spindizzy {
   
   std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Friction",      [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Grip",          [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Bounce",        [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Wall Bounce",           [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Allow Respawn",         [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              browser.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Solid",                 [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              browser.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Touch",       cDefContactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Impact",      cDefImpactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Surface Appearance",    cDefSurfacePattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "North Wall Appearance", cDefNorthWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "South Wall Appearance", cDefSouthWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "West Wall Appearance",  cDefWestWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "East Wall Appearance",  cDefEastWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Friction",      "TODO", [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Grip",          "TODO", [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Bounce",        "TODO", [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Wall Bounce",           "TODO", [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Allow Respawn",         "TODO", [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Solid",                 "TODO", [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Touch",       "TODO", cDefContactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Impact",      "TODO", cDefImpactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Surface Appearance",    "TODO", cDefSurfacePattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "North Wall Appearance", "TODO", cDefNorthWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "South Wall Appearance", "TODO", cDefSouthWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "West Wall Appearance",  "TODO", cDefWestWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   "East Wall Appearance",  "TODO", cDefEastWallPattern));
     return mProperties;
   }
   

@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", cDefFile));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cDefFile));
     return mProperties;
   }
 

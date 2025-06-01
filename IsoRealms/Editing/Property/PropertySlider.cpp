@@ -21,8 +21,8 @@
 namespace IsoRealms {
   const float PropertySlider::WIDTH = 0.7f;
   
-  PropertySlider::PropertySlider(const std::string& name, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
-            Property(name, removeFunction),
+  PropertySlider::PropertySlider(const std::string& name, const std::string& tooltip, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
+            Property(name, tooltip, removeFunction),
             cConfirmationCallback(confirmationCallback),
             cValueFunction(valueFunction),
             cMininum(minimum),
@@ -56,7 +56,7 @@ namespace IsoRealms {
   void PropertySlider::configure(IPropertyManager& manager) {
     manager.openProperties(getPropertyName(), [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(getPropertyName(), [this]() {
+      mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(getPropertyName(), "TODO", [this]() {
         return cValueFunction();
       }, [this](float value) {
         cConfirmationCallback(value);

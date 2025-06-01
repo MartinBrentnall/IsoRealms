@@ -78,9 +78,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> SurfacePatternSplitVariant::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Regular", cDefRegularPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Split A", cDefSplitAPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Split B", cDefSplitBPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Regular", "TODO", cDefRegularPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Split A", "TODO", cDefSplitAPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Split B", "TODO", cDefSplitBPattern));
     return mProperties;
   }
 

@@ -57,7 +57,7 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> PickUpType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance", cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance", "TODO", cDefModel));
     return mProperties;
   }
 

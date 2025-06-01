@@ -86,8 +86,8 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> Timer::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Initial Value (MS)", [this]() {return cDefMilliseconds;}, [this](int value) {cDefMilliseconds = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Expiration Action",  cDefExpirationAction));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Initial Value (MS)", "TODO", [this]() {return cDefMilliseconds;}, [this](int value) {cDefMilliseconds = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Expiration Action",  "TODO", cDefExpirationAction));
     return mProperties;
   }
 

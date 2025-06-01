@@ -22,8 +22,8 @@ namespace IsoRealms {
   int PropertyInputField::Editor::cDelayUntilBlinkChange = BLINK_DELAY;
   bool PropertyInputField::Editor::cBlinkShowing = true;
   
-  PropertyInputField::PropertyInputField(const std::string& name, const std::string& value, std::function<void()> removeFunction) :
-            Property(name, removeFunction),
+  PropertyInputField::PropertyInputField(const std::string& name, const std::string& tooltip, const std::string& value, std::function<void()> removeFunction) :
+            Property(name, tooltip, removeFunction),
             cValue(value) {
   }
   

@@ -67,7 +67,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SimpleInteger::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Value", "TODO", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;}));
     return mProperties;
   }
 

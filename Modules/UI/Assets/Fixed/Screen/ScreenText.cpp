@@ -64,11 +64,11 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> ScreenText::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<String>>( "Value",         cDefString));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(   "Font",          cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyList>(cProject, "Alignment",     std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>( "Colour",        cDefColour));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(   "Shadow Offset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<String>>( "Value",         "TODO", cDefString));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(   "Font",          "TODO", cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyList>(cProject, "Alignment",     "TODO", std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>( "Colour",        "TODO", cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(   "Shadow Offset", "TODO", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
     return mProperties;
   }
   

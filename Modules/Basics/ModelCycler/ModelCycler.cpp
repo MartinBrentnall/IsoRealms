@@ -82,7 +82,7 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     unsigned int mModelCount = 1;
     for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Model " + Utils::toString(mModelCount), *mModel.get()));
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Model " + Utils::toString(mModelCount), "TODO", *mModel.get()));
       mModelCount++;
     }
     return mProperties;

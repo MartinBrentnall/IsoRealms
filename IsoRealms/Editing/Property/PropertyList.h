@@ -29,7 +29,7 @@
 namespace IsoRealms {
   class PropertyList : public Property {
     public:
-    PropertyList(IProject& project, const std::string& name, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyList(IProject& project, const std::string& name, const std::string& tooltip, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *

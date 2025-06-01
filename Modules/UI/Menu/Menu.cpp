@@ -112,14 +112,14 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", cDefColour));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>("Font", cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Font Size",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Shadow Offset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Exit", cDefExitAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", "TODO", cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>("Font", "TODO", cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Font Size",     "TODO", [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Shadow Offset", "TODO", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Exit", "TODO", cDefExitAction));
     unsigned int mItemCount = 1;
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<MenuItem>>("Menu Item " + Utils::toString(mItemCount), *mItem.get()));
+      mProperties.emplace_back(std::make_unique<PropertyAsset<MenuItem>>("Menu Item " + Utils::toString(mItemCount), "TODO", *mItem.get()));
       mItemCount++;
     }
     return mProperties;

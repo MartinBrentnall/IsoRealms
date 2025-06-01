@@ -19,10 +19,10 @@
 #include "PropertyList.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(IProject& project, const std::string& name, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
-            Property(name, removeFunction),
+  PropertyList::PropertyList(IProject& project, const std::string& name, const std::string& tooltip, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+            Property(name, tooltip, removeFunction),
             cInternalSelection(project, options, getter, setter),
-            cInternalProperty(name, cInternalSelection, removeFunction) {
+            cInternalProperty(name, tooltip, cInternalSelection, removeFunction) {
   }
   
   void PropertyList::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {

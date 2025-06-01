@@ -44,4 +44,8 @@ namespace IsoRealms {
     mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cName + ":");
     cProperty->renderValue(style, y, x, aspectRatio);
   }
+
+  std::string MenuItemProperty::getTooltip() const {
+    return cProperty->getTooltip();
+  }
 }

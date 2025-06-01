@@ -98,14 +98,14 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance",            cDefModel));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>("Target",               cDefTarget));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Acceleration",           [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Friction",               [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Spin Speed",             [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Height",                 [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Radius",                 [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Hug Momentum Threshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance",            "TODO", cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>("Target",               "TODO", cDefTarget));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Acceleration",           "TODO", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Friction",               "TODO", [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Spin Speed",             "TODO", [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Height",                 "TODO", [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Radius",                 "TODO", [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Hug Momentum Threshold", "TODO", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
     return mProperties;
   }
 

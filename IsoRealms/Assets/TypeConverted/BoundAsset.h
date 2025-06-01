@@ -85,7 +85,7 @@ namespace IsoRealms {
 
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyAsset<T>>("Asset", cDefValue));
+      mProperties.emplace_back(std::make_unique<PropertyAsset<T>>("Asset", "TODO", cDefValue));
       return mProperties;
     }
 

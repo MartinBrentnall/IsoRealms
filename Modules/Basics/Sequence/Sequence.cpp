@@ -100,7 +100,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> Sequence::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", this));
+    mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", "TODO", this));
     return mProperties;
   }
 

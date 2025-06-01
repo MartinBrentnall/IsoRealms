@@ -219,7 +219,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Volume", cDefVolume));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Volume", "TODO", cDefVolume));
     return mProperties;
   }
 
@@ -308,7 +308,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Audio::getEventProperties(IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("Audio File", cDefFile));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("Audio File", "TODO", cDefFile));
     return mProperties;
   }
 

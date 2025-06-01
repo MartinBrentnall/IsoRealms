@@ -127,8 +127,8 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> MenuItemDisplayResolution::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("ID",    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Label", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("ID",    "TODO", [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Label", "TODO", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;}));
     return mProperties;
   }
 

@@ -586,15 +586,15 @@ namespace IsoRealms::Spindizzy {
   std::vector<std::unique_ptr<IProperty>> Lift::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     if (cZone.getWorld().isBasicProperties()) {
-      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
+      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Pause", "TODO", [this]() {return cDefTopPause > 0;}, [this](bool value) {
         cDefTopPause = value ? 1500 : 0;
         cDefBottomPause = value ? 1500 : 0;
       }, cZone.getWorld().getSpindizzy().getProject()));
     } else {
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Bottom Pause", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value; return true;}));
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Top Pause",    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value; return true;}));
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Up Speed",     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value; return true;}));
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Down Speed",   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value; return true;}));
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Bottom Pause", "TODO", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value; return true;}));
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Top Pause",    "TODO", [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value; return true;}));
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Up Speed",     "TODO", [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value; return true;}));
+      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Down Speed",   "TODO", [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value; return true;}));
     }
     return mProperties;
   }

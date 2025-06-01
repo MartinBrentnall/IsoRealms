@@ -38,8 +38,8 @@
 namespace IsoRealms {
   template<class TYPE> class PropertyAsset : public Property {
     public:
-    PropertyAsset(const std::string& name, TYPE& asset, std::function<void()> removeFunction = nullptr) :
-              Property(name, removeFunction),
+    PropertyAsset(const std::string& name, const std::string& tooltip, TYPE& asset, std::function<void()> removeFunction = nullptr) :
+              Property(name, tooltip, removeFunction),
               cAsset(asset),
               cValueLabel(getValue()) {
     }

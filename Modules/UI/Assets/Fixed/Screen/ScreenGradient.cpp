@@ -61,8 +61,8 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> ScreenGradient::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour A", cDefColourA));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour B", cDefColourB));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour A", "TODO", cDefColourA));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour B", "TODO", cDefColourB));
     return mProperties;
   }
 

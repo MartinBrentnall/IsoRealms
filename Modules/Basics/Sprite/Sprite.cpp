@@ -82,9 +82,9 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Appearance",      cDefTexture));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Yaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, browser.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Pitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Appearance",      "TODO", cDefTexture));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Yaw",   "TODO", [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Pitch", "TODO", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}, browser.getProject()));
     return mProperties;
   }
 

@@ -557,7 +557,7 @@ namespace IsoRealms {
   }
 
   IEditable* Project::getDefaultEditable() {
-    return (*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
+    return nullptr; //(*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
   }
 
   LuaState* const Project::getLuaState() {
@@ -982,7 +982,7 @@ namespace IsoRealms {
 
     unsigned int mIndex = 1;
     for (const std::unique_ptr<Module>& mModule : cModules) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>("Module \"" + mModule->getName() + "\"", "Edit...", [this, &mModule]() {
+      mProperties.emplace_back(std::make_unique<PropertyStruct>("Module \"" + mModule->getName() + "\"", "TODO", "Edit...", [this, &mModule]() {
         return mModule->getProperties();
       }, [this, &mModule]() {
         Utils::removeElementUnique(cModules, mModule.get());
@@ -990,7 +990,7 @@ namespace IsoRealms {
       mIndex++;
     }
 
-    mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), [this](const std::string& value) {
+    mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO", [this](const std::string& value) {
       loadModule(value);
     }, *this, cApplication));
     

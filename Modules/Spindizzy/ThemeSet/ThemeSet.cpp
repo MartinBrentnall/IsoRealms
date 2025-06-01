@@ -72,45 +72,45 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     
     // Texture elements of each theme in this set.
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Texture Elements", "Edit...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Texture Elements", "TODO", "Edit...", [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
         mProperties.emplace_back(createTextureElementProperty(mTexture.second.get()));
       }
       
-      mProperties.emplace_back(std::make_unique<PropertyAdd>("Element", "Add...",  [this]() {
+      mProperties.emplace_back(std::make_unique<PropertyAdd>("Element", "TODO", "Add...",  [this]() {
         return createTextureElementProperty(createTexture(Utils::getAvailableKey(cTextures, "New Texture")));
       }));
       return mProperties;
     }));
     
     // Colour elements of each theme in this set.
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Colour Elements", "Edit...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Colour Elements", "TODO", "Edit...", [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
         mProperties.emplace_back(createColourElementProperty(mColour.second.get()));
       }
       
-      mProperties.emplace_back(std::make_unique<PropertyAdd>("Element", "Add...",  [this]() {
+      mProperties.emplace_back(std::make_unique<PropertyAdd>("Element", "TODO", "Add...",  [this]() {
         return createColourElementProperty(createColour(cSpindizzy.getProject(), Utils::getAvailableKey(cColours, "New Colour")));
       }));
       return mProperties;
     }));
     
     // Actual themes in this set.
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Themes", "Edit...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Themes", "TODO", "Edit...", [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
         Theme* mExistingTheme = mTheme.second.get();
-        mProperties.emplace_back(std::make_unique<PropertyStruct>(mTheme.first, "Edit...", [this, mExistingTheme]() {
+        mProperties.emplace_back(std::make_unique<PropertyStruct>(mTheme.first, "TODO", "Edit...", [this, mExistingTheme]() {
           return mExistingTheme->getProperties();
         }));
       }
 
-      mProperties.emplace_back(std::make_unique<PropertyAdd>("Theme", "Add...",  [this]() {
+      mProperties.emplace_back(std::make_unique<PropertyAdd>("Theme", "TODO", "Add...",  [this]() {
         std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
         Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(cSpindizzy.getProject(), *this)).first->second.get();
-        return std::make_unique<PropertyStruct>(mNewThemeName, "Edit...", [this, mNewTheme]() {
+        return std::make_unique<PropertyStruct>(mNewThemeName, "TODO", "Edit...", [this, mNewTheme]() {
           return mNewTheme->getProperties();
         });
       }));
@@ -369,7 +369,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   std::unique_ptr<IProperty> ThemeSet::createTextureElementProperty(ThemeTexture* element) {
-    return std::make_unique<PropertyNativeString>("Element", [this, element]() {
+    return std::make_unique<PropertyNativeString>("Element", "TODO", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
@@ -391,7 +391,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   std::unique_ptr<IProperty> ThemeSet::createColourElementProperty(ThemeColour* element) {
-    return std::make_unique<PropertyNativeString>("Element", [this, element]() {
+    return std::make_unique<PropertyNativeString>("Element", "TODO", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

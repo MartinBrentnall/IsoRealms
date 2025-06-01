@@ -19,8 +19,9 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  Property::Property(const std::string& name, std::function<void()> removeFunction) :
+  Property::Property(const std::string& name, const std::string& tooltip, std::function<void()> removeFunction) :
             cName(name),
+            cTooltip(tooltip),
             cRemoveFunction(removeFunction) {
   }
   
@@ -34,5 +35,9 @@ namespace IsoRealms {
   
   void Property::remove() {
     cRemoveFunction();
+  }
+
+  std::string Property::getTooltip() const {
+    return cTooltip;
   }
 }

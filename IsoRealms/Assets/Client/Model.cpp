@@ -108,14 +108,14 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> Model::getClientProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Offset X", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Offset Y", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Offset Z", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale X",  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale Y",  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale Z",  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Angle",    [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Tilt",     [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Offset X", "TODO", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Offset Y", "TODO", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Offset Z", "TODO", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale X",  "TODO", [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale Y",  "TODO", [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale Z",  "TODO", [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Angle",    "TODO", [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Tilt",     "TODO", [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value; return true;}));
     return mProperties;
   }
   

@@ -302,12 +302,12 @@ namespace IsoRealms::UI {
     
   std::vector<std::unique_ptr<IProperty>> LayoutComponent::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Component", cDefScreen));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Left",   "Edit...", [this]() {return cDefLeftEdge.getProperties();}));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Right",  "Edit...", [this]() {return cDefRightEdge.getProperties();}));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Top",    "Edit...", [this]() {return cDefTopEdge.getProperties();}));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Bottom", "Edit...", [this]() {return cDefBottomEdge.getProperties();}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", "TODO", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Component", "TODO", cDefScreen));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Left",   "TODO", "Edit...", [this]() {return cDefLeftEdge.getProperties();}));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Right",  "TODO", "Edit...", [this]() {return cDefRightEdge.getProperties();}));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Top",    "TODO", "Edit...", [this]() {return cDefTopEdge.getProperties();}));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Bottom", "TODO", "Edit...", [this]() {return cDefBottomEdge.getProperties();}));
     return mProperties;
   }
   

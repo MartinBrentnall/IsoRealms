@@ -32,6 +32,7 @@ namespace IsoRealms {
     float getWidth(IUIStyle& style) const;
     float getValueWidth(IUIStyle& style) const;
     void render(IUIStyle& style, float y, float x, float aspectRatio) const;
+    std::string getTooltip() const;
 
     private:
     std::unique_ptr<IProperty> cProperty;

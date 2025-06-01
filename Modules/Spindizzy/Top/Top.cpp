@@ -82,9 +82,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> Top::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Top Colour", cDefColourTop));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side Colour", cDefColourSide));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefColourOutline));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Top Colour",     "TODO", cDefColourTop));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side Colour",    "TODO", cDefColourSide));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", "TODO", cDefColourOutline));
     return mProperties;
   }
 

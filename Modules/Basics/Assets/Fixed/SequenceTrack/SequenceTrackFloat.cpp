@@ -183,7 +183,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::getEventProperties(IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Start Value", cDefStartValue));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Start Value", "TODO", cDefStartValue));
     return mProperties;
   }
 
@@ -295,8 +295,8 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::Event::getEventProperties(IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Value", cDefValue));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Fade", [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;}, project));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Value", "TODO", cDefValue));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Fade", "TODO", [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;}, project));
     return mProperties;
   }
 

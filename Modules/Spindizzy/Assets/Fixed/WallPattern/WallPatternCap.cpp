@@ -185,9 +185,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> WallPatternCap::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Top", cDefTextureTop));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Middle", cDefTextureMiddle));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Bottom", cDefTextureBottom));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Top",    "TODO", cDefTextureTop));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Middle", "TODO", cDefTextureMiddle));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Bottom", "TODO", cDefTextureBottom));
     return mProperties;
   }
 

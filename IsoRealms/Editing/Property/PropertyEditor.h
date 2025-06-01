@@ -29,7 +29,7 @@
 namespace IsoRealms {
   class PropertyEditor : public Property {
     public:
-    PropertyEditor(const std::string& name, IEditable* editable);
+    PropertyEditor(const std::string& name, const std::string& tooltip, IEditable* editable);
       
     /************************\
      * Implements IProperty *

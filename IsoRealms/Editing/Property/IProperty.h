@@ -35,6 +35,7 @@ namespace IsoRealms {
     virtual void configure(IPropertyManager& manager) = 0;
     virtual bool isRemovable() const = 0;
     virtual void remove() = 0;
+    virtual std::string getTooltip() const = 0;
     
     virtual ~IProperty() {}
   };

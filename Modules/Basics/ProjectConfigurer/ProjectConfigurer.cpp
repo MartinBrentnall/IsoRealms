@@ -112,12 +112,12 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Regular Font",      cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Regular Font Size", [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Code Font",         cDefCodeFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Code Font Size",    [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Exit",    cDefExitAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Editor",  cDefEditorAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Regular Font",      "TODO", cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Regular Font Size", "TODO", [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Code Font",         "TODO", cDefCodeFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Code Font Size",    "TODO", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Exit",    "TODO", cDefExitAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Editor",  "TODO", cDefEditorAction));
     // TODO: Input configuration
     return mProperties;
   }

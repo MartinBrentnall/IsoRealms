@@ -115,27 +115,27 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> ColourCycler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Cycle Speed", cDefCycleSpeed));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Cycle Speed", "TODO", cDefCycleSpeed));
     for (unsigned int i = 0; i < cDefInputColours.size(); i++) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour " + Utils::toString(i + 1), *cDefInputColours[i].get(), [this, i]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour " + Utils::toString(i + 1), "TODO", *cDefInputColours[i].get(), [this, i]() {
         cDefInputColours.erase(cDefInputColours.begin() + i);
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Colour ?", "Add...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Colour ?", "TODO", "Add...", [this]() {
       cDefInputColours.emplace_back(std::make_unique<Colour>(cProject, 0.0f, 0.0f, 0.0f));
-      return std::make_unique<PropertyAsset<Colour>>("Colour " + Utils::toString(static_cast<int>(cDefInputColours.size() + 1)), *cDefInputColours[cDefInputColours.size() - 1].get());
+      return std::make_unique<PropertyAsset<Colour>>("Colour " + Utils::toString(static_cast<int>(cDefInputColours.size() + 1)), "TODO", *cDefInputColours[cDefInputColours.size() - 1].get());
     }));
     for (unsigned int i = 0; i < cDefOutputColours.size(); i++) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>("Output " + Utils::toString(i + 1), "Edit...", [this, i]() {
+      mProperties.emplace_back(std::make_unique<PropertyStruct>("Output " + Utils::toString(i + 1), "TODO", "Edit...", [this, i]() {
         return cDefOutputColours[i]->getProperties();
       }, [this, i]() {
         cDefOutputColours.erase(cDefOutputColours.begin() + i);
 //        mOutputColour->unregisterAssets(assets); // TODO
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Output ?", "Add...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Output ?", "TODO", "Add...", [this]() {
       cDefOutputColours.emplace_back(std::make_unique<ColourCycle>(*this, 0.0f, 1.0f));
-      return std::make_unique<PropertyStruct>("Output " + Utils::toString(static_cast<int>(cDefOutputColours.size() + 1)), "Edit...", [this]() {
+      return std::make_unique<PropertyStruct>("Output " + Utils::toString(static_cast<int>(cDefOutputColours.size() + 1)), "TODO", "Edit...", [this]() {
         return cDefOutputColours[cDefOutputColours.size() + 1]->getProperties();
       });
     }));
@@ -184,8 +184,8 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> ColourCycler::ColourCycle::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Phase Offset",     [this]() {return cDefStartPosition;},   [this](float value) {cDefStartPosition   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Speed Multiplier", [this]() {return cDefSpeedMultiplier;}, [this](float value) {cDefSpeedMultiplier = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Phase Offset",     "TODO", [this]() {return cDefStartPosition;},   [this](float value) {cDefStartPosition   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Speed Multiplier", "TODO", [this]() {return cDefSpeedMultiplier;}, [this](float value) {cDefSpeedMultiplier = value; return true;}));
     return mProperties;
   }
 

@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include <string>
+
 #include "UISignalID.h"
 
 namespace IsoRealms {
@@ -35,6 +37,7 @@ namespace IsoRealms {
     virtual bool input(UISignalID id) = 0;
     virtual bool input(sf::Event& event) = 0;
     virtual void refresh() = 0;
+    virtual std::string getTooltip() const = 0;
 
     virtual ~IUIScreen() {
     }

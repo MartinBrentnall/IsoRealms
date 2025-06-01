@@ -166,7 +166,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceTrackAction::Event::getEventProperties(IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action", cDefAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action", "TODO", cDefAction));
     return mProperties;
   }
 

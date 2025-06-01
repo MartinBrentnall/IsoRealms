@@ -168,12 +168,12 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> MenuItemSlider::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "ID",        [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Label",     [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Minimum",   [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Maximum",   [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Steps",     [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Change", cDefValueChangedAction));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "ID",        "TODO", [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Label",     "TODO", [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Minimum",   "TODO", [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Maximum",   "TODO", [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Steps",     "TODO", [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Change", "TODO", cDefValueChangedAction));
     return mProperties;
   }
 

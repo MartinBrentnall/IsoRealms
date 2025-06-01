@@ -49,6 +49,10 @@ namespace IsoRealms {
     return false;
   }
 
+  std::string MenuItemAction::getTooltip() const {
+    return "Menu Item Action";
+  }
+
   std::string MenuItemAction::getLabel() const {
     return cLabel;
   }

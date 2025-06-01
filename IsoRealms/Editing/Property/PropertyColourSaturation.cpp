@@ -19,8 +19,8 @@
 #include "PropertyColourSaturation.h"
 
 namespace IsoRealms {
-  PropertyColourSaturation::PropertyColourSaturation(const std::string& name, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) :
-            PropertySlider(name, valueFunction, 0.0f, 1.0f, confirmationCallback, nullptr),
+  PropertyColourSaturation::PropertyColourSaturation(const std::string& name, const std::string& tooltip, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) :
+            PropertySlider(name, tooltip, valueFunction, 0.0f, 1.0f, confirmationCallback, nullptr),
             cAlpha(alpha),
             cHue(hue),
             cLightness(lightness) {

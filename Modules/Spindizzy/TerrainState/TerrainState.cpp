@@ -62,9 +62,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Initial State", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Hint Action",   cDefHintAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Icon",          cDefIcon));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Initial State", "TODO", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Hint Action",   "TODO", cDefHintAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Icon",          "TODO", cDefIcon));
     return mProperties;
   }
 

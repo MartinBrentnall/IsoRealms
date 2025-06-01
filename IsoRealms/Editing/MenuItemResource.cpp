@@ -68,6 +68,10 @@ namespace IsoRealms {
   bool MenuItemResource::isAddResource() const {
     return cResource == nullptr;
   }
+
+  std::string MenuItemResource::getTooltip() const {
+    return "Menu Item Resource";
+  }
 }
 
 

@@ -40,7 +40,7 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> LiteralInteger::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Value", [this]() {return cValue;}, [this](int value) {cValue = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Value", "TODO", [this]() {return cValue;}, [this](int value) {cValue = value; return true;}));
     return mProperties;
   }
 

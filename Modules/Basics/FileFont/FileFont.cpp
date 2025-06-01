@@ -167,12 +167,12 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  "File",         cDefFilename));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Detail",       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Scale",        [this]() {return cDefScale;},       [this](float value) {cDefScale       = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "X Offset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Y Offset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Line Spacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  "File",         "TODO", cDefFilename));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Detail",       "TODO", [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Scale",        "TODO", [this]() {return cDefScale;},       [this](float value) {cDefScale       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "X Offset",     "TODO", [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Y Offset",     "TODO", [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Line Spacing", "TODO", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value; return true;}));
     return mProperties;
   }
   

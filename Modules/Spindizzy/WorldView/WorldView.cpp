@@ -85,9 +85,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> WorldView::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-//    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          cDefWorld)); // TODO:
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      "Camera",         cDefCamera));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneViewType>>("Zone View Type", cDefZoneViewType));
+//    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          "TODO", cDefWorld)); // TODO:
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      "Camera",         "TODO", cDefCamera));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneViewType>>("Zone View Type", "TODO", cDefZoneViewType));
     return mProperties;
   }
   

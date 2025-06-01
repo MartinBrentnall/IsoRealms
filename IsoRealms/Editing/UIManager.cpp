@@ -77,6 +77,44 @@ namespace IsoRealms {
       glColor3f(1.0f, 0.0f, 0.3f);
       Utils::renderBar(cHighlightLeft.animation(), cHighlightBottom.animation(), cHighlightRight.animation(), cHighlightTop.animation());
       glColor3f(1.0f, 1.0f, 1.0f);
+
+      // Tooltip information.
+      std::string mHelpText = cRuntimeUIs.back()->cScreen->getTooltip();
+      std::string mWrappedText;
+      int mLineBeginning = 0;
+      int mPrevSpace = 0;
+      int mLineCount = 1;
+      float mMaxLineWidth = 0.5f;
+      for (unsigned int i = 0; i < mHelpText.length(); i++) {
+        if (mHelpText[i] == ' ') {
+          float mLineWidth = mFont->getWidth(mFontSize, mHelpText.substr(mLineBeginning, i - mLineBeginning));
+          if (mLineWidth > mMaxLineWidth) {
+            if (mLineBeginning != 0) {
+              mWrappedText += '\n';
+              mLineCount++;
+            }
+            mWrappedText += mHelpText.substr(mLineBeginning, mPrevSpace - mLineBeginning);
+            mLineBeginning = i + 1;
+          }
+          mPrevSpace = i;
+        }
+      }
+      if (mLineBeginning != 0) {
+        mWrappedText += '\n';
+        mLineCount++;
+      }
+      mWrappedText += mHelpText.substr(mLineBeginning);
+
+
+      float mLineHeight = mFont->getHeight(mFontSize, "A");
+      float mLeft = cHighlightRight.animation() + mFontSize * 4.0f;
+      float mRight = mLeft + mMaxLineWidth;
+      float mTop = cHighlightTop.animation() + mLineHeight;
+      float mBottom = mTop - mFont->getHeight(mFontSize, mWrappedText);
+      glColor4f(0.0f, 1.0f, 0.0f, 0.75f);
+      Utils::renderRoundedRectangle(mLeft, mBottom, mRight, mTop, mFontSize);
+      glColor3f(1.0f, 1.0f, 1.0f);
+      mFont->print(mLeft, cHighlightTop.animation(), mFontSize, IFont::Alignment::LEFT, mWrappedText);
     }
 
     // Render UI's (menus, etc.).

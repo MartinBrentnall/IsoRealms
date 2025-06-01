@@ -19,10 +19,10 @@
 #include "PropertyNativeBoolean.h"
 
 namespace IsoRealms {
-  PropertyNativeBoolean::PropertyNativeBoolean(const std::string& name, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
-            Property(name, removeFunction),
+  PropertyNativeBoolean::PropertyNativeBoolean(const std::string& name, const std::string& tooltip, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
+            Property(name, tooltip, removeFunction),
             cInternalSelection(setter, project, getter()),
-            cInternalProperty(name, cInternalSelection, removeFunction) {
+            cInternalProperty(name, tooltip, cInternalSelection, removeFunction) {
   }
 
   void PropertyNativeBoolean::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {

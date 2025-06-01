@@ -52,7 +52,7 @@ namespace IsoRealms::Spindizzy {
     for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
       cColoursCycle[i]->getProperties(browser, "Colour " + Utils::toString(i + 1), mProperties);
     }
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cColourFrame));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", "TODO", cColourFrame));
     return mProperties;
   }
   
@@ -154,7 +154,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Jewel::CycleColour::getProperties(IAssetBrowser& browser, const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties) {
-    properties.emplace_back(std::make_unique<PropertyAsset<Colour>>(name, cDefColour));
+    properties.emplace_back(std::make_unique<PropertyAsset<Colour>>(name, "TODO", cDefColour));
   }
 
   unsigned int Jewel::Instance::cReferenceCount = 0;

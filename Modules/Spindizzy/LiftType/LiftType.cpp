@@ -68,9 +68,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> LiftType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance", cDefModel));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("State", cDefActive));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Tick Action", cDefTickAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(  "Appearance",  "TODO", cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("State",       "TODO", cDefActive));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>( "Tick Action", "TODO", cDefTickAction));
     return mProperties;
   }
 

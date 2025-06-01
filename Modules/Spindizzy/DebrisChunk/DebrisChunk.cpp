@@ -90,11 +90,11 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 1 Colour", cDefSide[0]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 2 Colour", cDefSide[1]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 3 Colour", cDefSide[2]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 4 Colour", cDefSide[3]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefOutline));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 1 Colour",  "TODO", cDefSide[0]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 2 Colour",  "TODO", cDefSide[1]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 3 Colour",  "TODO", cDefSide[2]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 4 Colour",  "TODO", cDefSide[3]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", "TODO", cDefOutline));
     return mProperties;
   }
 

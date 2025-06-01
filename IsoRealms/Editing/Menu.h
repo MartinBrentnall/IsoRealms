@@ -159,6 +159,10 @@ namespace IsoRealms {
       return cItems.empty() ? false : input(*cItems[cSelectedItem], event);
     }
 
+    std::string getTooltip() const override {
+      return cItems.empty() ? "" : cItems[cSelectedItem]->getTooltip();
+    }
+
     virtual float getWidth(MENU_ITEM_TYPE& item, IUIStyle& style) const = 0;
     virtual void renderMenuItem(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;
     virtual void renderOverlay(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;

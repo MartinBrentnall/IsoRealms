@@ -56,8 +56,8 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> DamageIndicator::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", cDefColour));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Size", cDefSize));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", "TODO", cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>( "Size",   "TODO", cDefSize));
     return mProperties;
   }
 

@@ -130,10 +130,10 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> MenuItemBoolean::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("ID",          [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Label",       [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("True Label",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("False Label", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("ID",          "TODO", [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Label",       "TODO", [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("True Label",  "TODO", [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>("False Label", "TODO", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value; return true;}));
     return mProperties;
   }
 

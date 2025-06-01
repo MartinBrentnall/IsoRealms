@@ -62,7 +62,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Initial Value", cDefInputHandler));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Initial Value", "TODO", cDefInputHandler));
     return mProperties;
   }
 

@@ -19,8 +19,8 @@
 #include "PropertyEditor.h"
 
 namespace IsoRealms {
-  PropertyEditor::PropertyEditor(const std::string& name, IEditable* editable) :
-            Property(name, nullptr),
+  PropertyEditor::PropertyEditor(const std::string& name, const std::string& tooltip, IEditable* editable) :
+            Property(name, tooltip, nullptr),
             cEditable(editable) {
   }
       

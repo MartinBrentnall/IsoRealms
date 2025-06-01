@@ -265,7 +265,7 @@ namespace IsoRealms {
       }
       
       std::unique_ptr<IProperty> getProperty(const std::string& name) {
-        return std::make_unique<PropertyAsset<TYPE>>(name, cAsset);
+        return std::make_unique<PropertyAsset<TYPE>>(name, "TODO", cAsset);
       }
 
       private:

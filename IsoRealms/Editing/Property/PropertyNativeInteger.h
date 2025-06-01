@@ -29,7 +29,7 @@
 namespace IsoRealms {
   class PropertyNativeInteger : public PropertyInputField {
     public:
-    PropertyNativeInteger(const std::string& name, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyNativeInteger(const std::string& name, const std::string& tooltip, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction = nullptr);
       
     protected:
     

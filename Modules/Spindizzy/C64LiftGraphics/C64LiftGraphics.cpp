@@ -122,9 +122,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> C64LiftGraphics::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Primary Colour", cDefPrimary));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Secondary Colour", cDefSecondary));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", cDefOutline));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Primary Colour",   "TODO", cDefPrimary));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Secondary Colour", "TODO", cDefSecondary));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour",   "TODO", cDefOutline));
     return mProperties;
   }
   

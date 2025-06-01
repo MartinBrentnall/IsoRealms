@@ -19,8 +19,8 @@
 #include "PropertyNativeInteger.h"
 
 namespace IsoRealms {
-  PropertyNativeInteger::PropertyNativeInteger(const std::string& name, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) :
-            PropertyInputField(name, Utils::toString(getter()), removeFunction),
+  PropertyNativeInteger::PropertyNativeInteger(const std::string& name, const std::string& tooltip, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) :
+            PropertyInputField(name, tooltip, Utils::toString(getter()), removeFunction),
             cSetter(setter) {
   }
   

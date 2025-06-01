@@ -62,16 +62,16 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     unsigned int i = 1;
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Input Handler " + Utils::toString(i), *mInputHandler.get(), [this, &mInputHandler]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Input Handler " + Utils::toString(i), "TODO", *mInputHandler.get(), [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
       }));
       i++;
     }
 
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Input Handler " + Utils::toString(i), "Add...", [this, &browser]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Input Handler " + Utils::toString(i), "TODO", "Add...", [this, &browser]() {
       cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(browser.getProject()));
       std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
-      return std::make_unique<PropertyAsset<InputHandler>>("Input Handler", *mInputHandler, [this, &mInputHandler]() {
+      return std::make_unique<PropertyAsset<InputHandler>>("Input Handler", "TODO", *mInputHandler, [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
       });
     }));

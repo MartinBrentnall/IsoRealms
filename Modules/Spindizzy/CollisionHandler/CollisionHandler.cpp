@@ -71,10 +71,10 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type A", cDefPhysicalObjectTypeA));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type B", cDefPhysicalObjectTypeB));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Contact", cDefEnteredAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Departure", cDefExitedAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type A", "TODO", cDefPhysicalObjectTypeA));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type B", "TODO", cDefPhysicalObjectTypeB));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Contact", "TODO", cDefEnteredAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Departure", "TODO", cDefExitedAction));
     return mProperties;
   }
 
