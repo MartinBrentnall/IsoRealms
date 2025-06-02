@@ -58,7 +58,6 @@ namespace IsoRealms::Spindizzy {
                     cResourceC64LiftGraphics(*this),
                     cResourceC64TerrainGraphics(*this),
                     cResourceCollisionHandler(*this),
-                    cResourceDamageIndicator(*this),
                     cResourceDebrisChunk(*this),
                     cResourceGyroscope(*this),
                     cResourceJewel(*this),
@@ -109,7 +108,6 @@ namespace IsoRealms::Spindizzy {
     registry->add(&cResourceC64LiftGraphics,    ID_RESOURCE_C64_LIFT_GRAPHICS,    "Lift Textures",       "Lift Textures",        RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceC64TerrainGraphics, ID_RESOURCE_C64_TERRAIN_GRAPHICS, "Terrain Textures",    "Terrain Textures",     RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceCollisionHandler,   ID_RESOURCE_COLLISION_HANDLER,    "Collision Handler",   "Collision Handlers",   RESOURCE_CATEGORY_SPINDIZZY_LOGIC);
-    registry->add(&cResourceDamageIndicator,    ID_RESOURCE_DAMAGE_INDICATOR,     "Damage Indicator",    "Damage Indicators",    RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceDebrisChunk,        ID_RESOURCE_DEBRIS_CHUNK,         "Debris Chunk Model",  "Debris Chunk Models",  RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceGyroscope,          ID_RESOURCE_GYROSCOPE,            "Gyroscope Model",     "Gyroscope Models",     RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourcePickUp,             ID_RESOURCE_PICK_UP,              "Pick Up",             "Pick Ups",             RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
@@ -759,7 +757,6 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::ID_RESOURCE_C64_LIFT_GRAPHICS    = "C64LiftGraphics";
   const std::string Spindizzy::ID_RESOURCE_C64_TERRAIN_GRAPHICS = "C64TerrainGraphics";
   const std::string Spindizzy::ID_RESOURCE_COLLISION_HANDLER    = "CollisionHandler";
-  const std::string Spindizzy::ID_RESOURCE_DAMAGE_INDICATOR     = "DamageIndicator";
   const std::string Spindizzy::ID_RESOURCE_DEBRIS_CHUNK         = "DebrisChunk";
   const std::string Spindizzy::ID_RESOURCE_GYROSCOPE            = "Gyroscope";
   const std::string Spindizzy::ID_RESOURCE_JEWEL                = "Jewel";

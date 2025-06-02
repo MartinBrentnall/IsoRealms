@@ -24,14 +24,17 @@
 
 namespace IsoRealms::UI {
   ScreenGradient::ScreenGradient(IProject& project, Project& owner) :
+            cProject(project),
             cDefColourA(project, 0.0f, 0.0f, 1.0f),
-            cDefColourB(project, 0.0f, 1.0f, 0.0f) {
+            cDefColourB(project, 0.0f, 1.0f, 0.0f),
+            cDefVertical(false) {
   }
 
   ScreenGradient::ScreenGradient(IProject& project, Project& owner, JSONObject object) :
             ScreenGradient(project, owner) {
     cDefColourA.set(object, JSON_COLOUR_A);
     cDefColourB.set(object, JSON_COLOUR_B);
+    cDefVertical = object.getString(JSON_ORIENTATION) == VALUE_VERTICAL;
   }
 
   void ScreenGradient::renderScreen(float scale, float aspectRatio) const {
@@ -40,11 +43,19 @@ namespace IsoRealms::UI {
     glBindTexture(GL_TEXTURE_2D, 0);
     glBegin(GL_QUADS);
     cDefColourA->set();
-    glVertex2f(-aspectRatio,  1.0f);
-    glVertex2f(-aspectRatio, -1.0f);
-    cDefColourB->set();
-    glVertex2f( aspectRatio, -1.0f);
-    glVertex2f( aspectRatio,  1.0f);
+    if (cDefVertical) {
+      glVertex2f( aspectRatio,  1.0f);
+      glVertex2f(-aspectRatio,  1.0f);
+      cDefColourB->set();
+      glVertex2f(-aspectRatio, -1.0f);
+      glVertex2f( aspectRatio, -1.0f);
+    } else {
+      glVertex2f(-aspectRatio,  1.0f);
+      glVertex2f(-aspectRatio, -1.0f);
+      cDefColourB->set();
+      glVertex2f( aspectRatio, -1.0f);
+      glVertex2f( aspectRatio,  1.0f);
+    }
     glEnd();
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glDisable(GL_BLEND);
@@ -57,12 +68,20 @@ namespace IsoRealms::UI {
   void ScreenGradient::saveAsset(JSONObject object) const {
     cDefColourA.save(object, JSON_COLOUR_A);
     cDefColourB.save(object, JSON_COLOUR_B);
+    object.addString(JSON_ORIENTATION, cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL);
   }
 
   std::vector<std::unique_ptr<IProperty>> ScreenGradient::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour A", "TODO", cDefColourA));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour B", "TODO", cDefColourB));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>( "Colour A",    "TODO", cDefColourA));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>( "Colour B",    "TODO", cDefColourB));
+    mProperties.emplace_back(std::make_unique<PropertyList>(cProject, "Orientation", "TODO", std::vector<std::string>{
+      VALUE_HORIZONTAL, VALUE_VERTICAL
+    }, [this]() {
+      return cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL;
+    }, [this](const std::string& value) {
+      cDefVertical = value == VALUE_VERTICAL; return true;
+    }));
     return mProperties;
   }
 
@@ -70,7 +89,11 @@ namespace IsoRealms::UI {
     return cDefColourA.isDefaultConfigured() && cDefColourB.isDefaultConfigured(); // TODO: This doesn't factor in the custom colours????'
   }
 
-  const std::string ScreenGradient::JSON_COLOUR_A = "colourA";
-  const std::string ScreenGradient::JSON_COLOUR_B = "colourB";
+  const std::string ScreenGradient::JSON_COLOUR_A    = "colourA";
+  const std::string ScreenGradient::JSON_COLOUR_B    = "colourB";
+  const std::string ScreenGradient::JSON_ORIENTATION = "orientation";
+
+  const std::string ScreenGradient::VALUE_HORIZONTAL = "Horizontal";
+  const std::string ScreenGradient::VALUE_VERTICAL   = "Vertical";
 }
 

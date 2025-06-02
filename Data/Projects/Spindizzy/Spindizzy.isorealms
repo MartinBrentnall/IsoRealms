@@ -442,11 +442,25 @@
                 "alpha": 1
               },
               {
+                "id": "GreenTransparent",
+                "red": 0.40625,
+                "green": 0.6601560115814209,
+                "blue": 0.2539060115814209,
+                "alpha": 0
+              },
+              {
                 "id": "Purple",
                 "red": 0.5507810115814209,
                 "green": 0.2773439884185791,
                 "blue": 0.6992189884185791,
                 "alpha": 1
+              },
+              {
+                "id": "PurpleTransparent",
+                "red": 0.5507810115814209,
+                "green": 0.2773439884185791,
+                "blue": 0.6992189884185791,
+                "alpha": 0
               },
               {
                 "id": "White",
@@ -463,11 +477,25 @@
                 "alpha": 1
               },
               {
+                "id": "CyanTransparent",
+                "red": 0.4765619933605194,
+                "green": 0.7460939884185791,
+                "blue": 0.7773439884185791,
+                "alpha": 0
+              },
+              {
                 "id": "Red",
                 "red": 0.546875,
                 "green": 0.2421880066394806,
                 "blue": 0.203125,
                 "alpha": 1
+              },
+              {
+                "id": "RedTransparent",
+                "red": 0.546875,
+                "green": 0.2421880066394806,
+                "blue": 0.203125,
+                "alpha": 0
               },
               {
                 "id": "Black",
@@ -481,11 +509,25 @@
                 "alpha": 1
               },
               {
+                "id": "BlueTransparent",
+                "red": 0.2421880066394806,
+                "green": 0.1914059966802597,
+                "blue": 0.6328120231628418,
+                "alpha": 0
+              },
+              {
                 "id": "Yellow",
                 "red": 0.8125,
                 "green": 0.859375,
                 "blue": 0.4414060115814209,
                 "alpha": 1
+              },
+              {
+                "id": "YellowTransparent",
+                "red": 0.8125,
+                "green": 0.859375,
+                "blue": 0.4414060115814209,
+                "alpha": 0
               },
               {
                 "id": "Orange",
@@ -762,6 +804,50 @@
                   {
                     "colour": {
                       "key": "Basics/Colour/Purple"
+                    }
+                  }
+                ],
+                "outputs": [
+                  {
+                    "speedMultiplier": 1
+                  }
+                ]
+              },
+              {
+                "id": "DamageColoursTransparent",
+                "speed": {
+                  "key": "Literal",
+                  "value": 10000
+                },
+                "inputs": [
+                  {
+                    "colour": {
+                      "key": "Basics/Colour/RedTransparent"
+                    }
+                  },
+                  {
+                    "colour": {
+                      "key": "Basics/Colour/YellowTransparent"
+                    }
+                  },
+                  {
+                    "colour": {
+                      "key": "Basics/Colour/GreenTransparent"
+                    }
+                  },
+                  {
+                    "colour": {
+                      "key": "Basics/Colour/CyanTransparent"
+                    }
+                  },
+                  {
+                    "colour": {
+                      "key": "Basics/Colour/BlueTransparent"
+                    }
+                  },
+                  {
+                    "colour": {
+                      "key": "Basics/Colour/PurpleTransparent"
                     }
                   }
                 ],
@@ -2522,7 +2608,30 @@
                           }
                         },
                         {
+                          "duration": 100,
+                          "target": {
+                            "key": "Literal"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "VisualTransparent",
+                      "start": {
+                        "key": "Literal"
+                      },
+                      "events": [
+                        {
                           "duration": 50,
+                          "target": {
+                            "key": "Basics/ColourCycler/DamageColoursTransparent/0"
+                          }
+                        },
+                        {
+                          "duration": 100,
                           "target": {
                             "key": "Literal"
                           }
@@ -3743,7 +3852,7 @@
                       "to": {
                         "key": ":Screen",
                         "asset": {
-                          "key": "Spindizzy/DamageIndicator/DamageIndicator"
+                          "key": "UI/Layout/Damage Indicator"
                         }
                       }
                     },
@@ -3821,7 +3930,7 @@
                       "to": {
                         "key": ":Screen",
                         "asset": {
-                          "key": "Spindizzy/DamageIndicator/DamageIndicator"
+                          "key": "UI/Layout/Damage Indicator"
                         }
                       }
                     },
@@ -3863,21 +3972,6 @@
                     }
                   ],
                   "code": "alienContactCount = alienContactCount - 1\nif alienContactCount == 0 then\n  sound:pause()\n  damage:pause()\n  screen:setScreen(nil)\nend\ntimeLimit:setSpeed(1.0 + alienContactCount * 20.0)"
-                }
-              }
-            ]
-          },
-          {
-            "type": "DamageIndicator",
-            "instances": [
-              {
-                "id": "DamageIndicator",
-                "colour": {
-                  "key": "Basics/Sequence/DamageVisual/Visual"
-                },
-                "size": {
-                  "key": "Literal",
-                  "value": 0.20000000298023224
                 }
               }
             ]
@@ -9427,6 +9521,195 @@
           {
             "type": "Layout",
             "instances": [
+              {
+                "id": "Damage Indicator",
+                "components": [
+                  {
+                    "id": "Top",
+                    "screen": {
+                      "key": "UI/Gradient",
+                      "colourA": {
+                        "key": "Basics/Sequence/DamageVisual/Visual"
+                      },
+                      "colourB": {
+                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                      },
+                      "orientation": "Vertical"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 0.800000011920929
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Bottom",
+                    "screen": {
+                      "key": "UI/Gradient",
+                      "colourA": {
+                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                      },
+                      "colourB": {
+                        "key": "Basics/Sequence/DamageVisual/Visual"
+                      },
+                      "orientation": "Vertical"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": -0.824999988079071
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Left",
+                    "screen": {
+                      "key": "UI/Gradient",
+                      "colourA": {
+                        "key": "Basics/Sequence/DamageVisual/Visual"
+                      },
+                      "colourB": {
+                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                      },
+                      "orientation": "Horizontal"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": -0.887499988079071
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Right",
+                    "screen": {
+                      "key": "UI/Gradient",
+                      "colourA": {
+                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                      },
+                      "colourB": {
+                        "key": "Basics/Sequence/DamageVisual/Visual"
+                      },
+                      "orientation": "Horizontal"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 0.887499988079071
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  }
+                ]
+              },
               {
                 "id": "Main",
                 "components": [

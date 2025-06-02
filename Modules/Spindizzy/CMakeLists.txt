@@ -77,7 +77,6 @@ add_library(Spindizzy MODULE
   C64TerrainGraphics/C64TerrainGraphics.cpp
   CollisionHandler/CollisionHandler.cpp
   CollisionHandler/CollisionHandlerInstance.cpp
-  DamageIndicator/DamageIndicator.cpp
   DebrisChunk/DebrisChunk.cpp
   Gyroscope/Gyroscope.cpp
   InfiniteSurface.cpp

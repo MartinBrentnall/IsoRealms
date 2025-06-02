@@ -64,7 +64,6 @@
 #include "C64LiftGraphics/C64LiftGraphics.h"
 #include "C64TerrainGraphics/C64TerrainGraphics.h"
 #include "CollisionHandler/CollisionHandler.h"
-#include "DamageIndicator/DamageIndicator.h"
 #include "DebrisChunk/DebrisChunk.h"
 #include "Gyroscope/Gyroscope.h"
 #include "IBindingIdentifier.h"
@@ -497,7 +496,6 @@ namespace IsoRealms::Spindizzy {
     ResourceTypeDefinition<Spindizzy, C64LiftGraphics>    cResourceC64LiftGraphics;
     ResourceTypeDefinition<Spindizzy, C64TerrainGraphics> cResourceC64TerrainGraphics;
     ResourceTypeDefinition<Spindizzy, CollisionHandler>   cResourceCollisionHandler;
-    ResourceTypeDefinition<Spindizzy, DamageIndicator>    cResourceDamageIndicator;
     ResourceTypeDefinition<Spindizzy, DebrisChunk>        cResourceDebrisChunk;
     ResourceTypeDefinition<Spindizzy, Gyroscope>          cResourceGyroscope;
     ResourceTypeDefinition<Spindizzy, Jewel>              cResourceJewel;
