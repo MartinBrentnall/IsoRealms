@@ -9099,6 +9099,7 @@
               {
                 "id": "Compass",
                 "world": "Compass",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Variant",
                   "yaw": {
@@ -9128,6 +9129,7 @@
               {
                 "id": "HintCircleNone",
                 "world": "HintCircleNone",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9139,6 +9141,7 @@
               {
                 "id": "HintCircleLeft",
                 "world": "HintCircleLeft",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9150,6 +9153,7 @@
               {
                 "id": "HintCircleRight",
                 "world": "HintCircleRight",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9161,6 +9165,7 @@
               {
                 "id": "HintCircleBoth",
                 "world": "HintCircleBoth",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9172,6 +9177,7 @@
               {
                 "id": "HintSquareNone",
                 "world": "HintSquareNone",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9183,6 +9189,7 @@
               {
                 "id": "HintSquareLeft",
                 "world": "HintSquareLeft",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9194,6 +9201,7 @@
               {
                 "id": "HintSquareRight",
                 "world": "HintSquareRight",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9205,6 +9213,7 @@
               {
                 "id": "HintSquareBoth",
                 "world": "HintSquareBoth",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9216,6 +9225,7 @@
               {
                 "id": "HintDiamondLeft",
                 "world": "HintDiamondLeft",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9227,6 +9237,7 @@
               {
                 "id": "HintDiamondRight",
                 "world": "HintDiamondRight",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9238,6 +9249,7 @@
               {
                 "id": "HintDiamondBoth",
                 "world": "HintDiamondBoth",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "Compass"
@@ -9249,6 +9261,7 @@
               {
                 "id": "SwitchSquareNone",
                 "world": "SwitchSquareNone",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Variant",
                   "yaw": {
@@ -9278,6 +9291,7 @@
               {
                 "id": "SwitchSquareLeft",
                 "world": "SwitchSquareLeft",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9289,6 +9303,7 @@
               {
                 "id": "SwitchSquareRight",
                 "world": "SwitchSquareRight",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9300,6 +9315,7 @@
               {
                 "id": "SwitchSquareBoth",
                 "world": "SwitchSquareBoth",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9311,6 +9327,7 @@
               {
                 "id": "SwitchCircleNone",
                 "world": "SwitchCircleNone",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9322,6 +9339,7 @@
               {
                 "id": "SwitchCircleLeft",
                 "world": "SwitchCircleLeft",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9333,6 +9351,7 @@
               {
                 "id": "SwitchCircleRight",
                 "world": "SwitchCircleRight",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9344,6 +9363,7 @@
               {
                 "id": "SwitchCircleBoth",
                 "world": "SwitchCircleBoth",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9355,6 +9375,7 @@
               {
                 "id": "SwitchDiamondLeft",
                 "world": "SwitchDiamondLeft",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9366,6 +9387,7 @@
               {
                 "id": "SwitchDiamondRight",
                 "world": "SwitchDiamondRight",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -9377,6 +9399,7 @@
               {
                 "id": "SwitchDiamondBoth",
                 "world": "SwitchDiamondBoth",
+                "zoom": 1.899999976158142,
                 "camera": {
                   "key": "Linked",
                   "view": "SwitchSquareNone"
@@ -10949,7 +10972,6 @@
                     "top": {
                       "location": {
                         "key": "Relative",
-                        "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
@@ -10959,7 +10981,6 @@
                     "bottom": {
                       "location": {
                         "key": "Relative",
-                        "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
@@ -10995,7 +11016,6 @@
                     "top": {
                       "location": {
                         "key": "Relative",
-                        "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
@@ -11005,7 +11025,6 @@
                     "bottom": {
                       "location": {
                         "key": "Relative",
-                        "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
@@ -11041,7 +11060,6 @@
                     "top": {
                       "location": {
                         "key": "Relative",
-                        "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
@@ -11051,7 +11069,6 @@
                     "bottom": {
                       "location": {
                         "key": "Relative",
-                        "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
@@ -11086,7 +11103,6 @@
                     "top": {
                       "location": {
                         "key": "Relative",
-                        "value": 2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {
@@ -11096,7 +11112,6 @@
                     "bottom": {
                       "location": {
                         "key": "Relative",
-                        "value": -2,
                         "relative": "PanelMiddle"
                       },
                       "offset": {

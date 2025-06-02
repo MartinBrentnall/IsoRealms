@@ -24,6 +24,7 @@ namespace IsoRealms::Spindizzy {
   const std::string WorldView::JSON_CAMERA = "camera";
   const std::string WorldView::JSON_TYPE   = "type";
   const std::string WorldView::JSON_WORLD  = "world";
+  const std::string WorldView::JSON_ZOOM   = "zoom";
 
   const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
 
@@ -32,6 +33,7 @@ namespace IsoRealms::Spindizzy {
             cDefWorld(nullptr),
             cDefCamera(spindizzy, *this),
             cDefZoneViewType(spindizzy, *this),
+            cDefZoom(1.0f),
             cRuntimeZone(nullptr),
             cLuaBinding(project, this) {
     project.reset([this]() {
@@ -44,6 +46,7 @@ namespace IsoRealms::Spindizzy {
     
   WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
             WorldView(project, spindizzy, data) {
+    cDefZoom = object.getFloat(JSON_ZOOM, 1.0f);
     cDefCamera.set(object, JSON_CAMERA);
     cDefZoneViewType.set(object, JSON_TYPE);
     project.init([this, object](IAssets& resources) {
@@ -66,11 +69,12 @@ namespace IsoRealms::Spindizzy {
   void WorldView::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     assets.remove(static_cast<IScreen*>(this), relinquish);
     assets.remove(&cLuaBinding,                relinquish);
-    cDefCamera->unregisterAssets(assets, relinquish);
+    cDefCamera->unregisterAssets(assets,       relinquish);
   }
   
   void WorldView::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addString(JSON_WORLD, cSpindizzy.getID(cDefWorld));
+    object.addFloat(JSON_ZOOM, cDefZoom, 1.0f);
     cDefCamera.save(object, JSON_CAMERA);
     cDefZoneViewType.save(object, JSON_TYPE);
   }
@@ -88,6 +92,13 @@ namespace IsoRealms::Spindizzy {
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          "TODO", cDefWorld)); // TODO:
     mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      "Camera",         "TODO", cDefCamera));
     mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneViewType>>("Zone View Type", "TODO", cDefZoneViewType));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(        "Zoom",           "TODO", [this]() {return cDefZoom;}, [this](float value) {
+      if (value > 0.0f) {
+        cDefZoom = value;
+        return true;
+      }
+      return false;
+    }));
     return mProperties;
   }
   
@@ -133,7 +144,7 @@ namespace IsoRealms::Spindizzy {
       glDisable(GL_BLEND);
       glBindTexture(GL_TEXTURE_2D, 0);
       glPushMatrix();
-      float mZoom = std::max(cDefCamera->getXZoom() / aspectRatio, cDefCamera->getYZoom());
+      float mZoom = std::max(cDefCamera->getXZoom() / aspectRatio, cDefCamera->getYZoom()) / cDefZoom;
       glOrtho(-mZoom, mZoom, -mZoom, mZoom, -60.0f, 60.0f); // TODO: Magic numbers -60.0f and 60.0f
       glRotatef(cDefCamera->getPitch()->getValue(), 1.0f, 0.0f, 0.0f);
       glRotatef(cDefCamera->getYaw()->getValue(), 0.0f, 0.0f, 1.0f);

@@ -110,6 +110,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_CAMERA;
     static const std::string JSON_TYPE;
     static const std::string JSON_WORLD;
+    static const std::string JSON_ZOOM;
 
     static const std::string TYPE_ZONE_VIEW;
     
@@ -120,6 +121,7 @@ namespace IsoRealms::Spindizzy {
     World* cDefWorld;              /// World being viewed.
     Camera cDefCamera;             /// Camera for this view.
     ZoneViewType cDefZoneViewType; /// The type of representation of zones within this view.
+    float cDefZoom;                /// Zoom adjustment.
     
     // Runtime data.
     std::vector<std::unique_ptr<ZoneView>> cRuntimeZoneViews; /// Representation of zones within this view.

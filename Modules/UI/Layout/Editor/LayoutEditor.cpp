@@ -185,7 +185,8 @@ namespace IsoRealms::UI {
     glPushMatrix();    
     cLayout.renderEditing(cAspectRatio);
     glPopMatrix();
-    
+    glBindTexture(GL_TEXTURE_2D, 0);
+
     // Render controller cursor.
     glColor3f(1.0f, 1.0f, 1.0f);
     Utils::renderCircle(-cPanX.animation(), -cPanY.animation(), 0.02f / cZoomFactor.animation());
