@@ -94,10 +94,19 @@ namespace IsoRealms {
               mLineCount++;
             }
             mWrappedText += mHelpText.substr(mLineBeginning, mPrevSpace - mLineBeginning);
-            mLineBeginning = i + 1;
+            mLineBeginning = mPrevSpace + 1;
           }
           mPrevSpace = i;
         }
+      }
+      float mLineWidth = mFont->getWidth(mFontSize, mHelpText.substr(mLineBeginning));
+      if (mLineWidth > mMaxLineWidth) {
+        if (mLineBeginning != 0) {
+          mWrappedText += '\n';
+          mLineCount++;
+        }
+        mWrappedText += mHelpText.substr(mLineBeginning, mPrevSpace - mLineBeginning);
+        mLineBeginning = mPrevSpace + 1;
       }
       if (mLineBeginning != 0) {
         mWrappedText += '\n';
@@ -109,12 +118,12 @@ namespace IsoRealms {
       float mLineHeight = mFont->getHeight(mFontSize, "A");
       float mLeft = cHighlightRight.animation() + mFontSize * 4.0f;
       float mRight = mLeft + mMaxLineWidth;
-      float mTop = cHighlightTop.animation() + mLineHeight;
+      float mTop = cHighlightTop.animation();// + mLineHeight;
       float mBottom = mTop - mFont->getHeight(mFontSize, mWrappedText);
-      glColor4f(0.0f, 1.0f, 0.0f, 0.75f);
-      Utils::renderRoundedRectangle(mLeft, mBottom, mRight, mTop, mFontSize);
+      glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
+      Utils::renderRoundedRectangle(mLeft - mFontSize, mBottom - mFontSize, mRight + mFontSize, mTop + mFontSize, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
-      mFont->print(mLeft, cHighlightTop.animation(), mFontSize, IFont::Alignment::LEFT, mWrappedText);
+      mFont->print(mLeft, cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mWrappedText);
     }
 
     // Render UI's (menus, etc.).

@@ -247,8 +247,9 @@ namespace IsoRealms::Basics {
   }
 
   float FileFont::getHeight(float size, const std::string& text) {
+    float mComposedScale = size * cDefScale;
     std::vector<std::string> lines = Utils::split(text, '\n');
-    return lines.size() * size * cDefLineSpacing;
+    return lines.size() * cDefLineSpacing * mComposedScale;
   }
 
   unsigned int FileFont::getChar(float position, float size, const std::string& text) {
