@@ -38,10 +38,6 @@ namespace IsoRealms::Basics {
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-    bool play(unsigned int milliseconds) override;
-    void reset() override;
     unsigned int getDuration() const override;
     void setName(const std::string& name) override;
     std::string getName() const override;
@@ -49,10 +45,9 @@ namespace IsoRealms::Basics {
     void deleteEvent(ISequenceTrackEvent* event) override;
     void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
     std::vector<ISequenceTrackEvent*> getEvents() override;
-    void stopPreview() override;
-    void setPreviewPosition(long position) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
+    ISequenceTrackInstance* createTrackInstance() override;
 
     /****************************************\
      * Implements IAsset via ISequenceTrack *
@@ -69,10 +64,31 @@ namespace IsoRealms::Basics {
     static const std::string JSON_EVENTS;
     static const std::string JSON_EXECUTE;
 
-    // Definition data.
+    class Instance : public ISequenceTrackInstance {
+      public:
+      Instance(SequenceTrackAction& parent);
+
+      /*************************************\
+       * Implements ISequenceTrackInstance *
+      \*************************************/
+      void registerAssets(IAssetRegistry& assets) override;
+      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
+      bool play(unsigned int milliseconds) override;
+      void reset() override;
+      void stopPreview() override;
+      void setPreviewPosition(long position) override;
+
+      private:
+      SequenceTrackAction& cParent;
+
+      // Runtime data.
+      unsigned int cRuntimeEvent;
+      int cRuntimeEventPosition;
+    };
+
     class Event final : public ISequenceTrackEvent {
       public:
-      Event(JSONObject object, IProject& project, unsigned int prevTimes);
+      Event(JSONObject object, IProject& project);
 
       void save(JSONObject object) const;
       void execute();
@@ -88,10 +104,11 @@ namespace IsoRealms::Basics {
       Action cDefAction;
       unsigned int cDefTime;
     };
+
+    // Definition data.
     std::vector<std::unique_ptr<Event>> cDefEvents;
 
     // Runtime data.
-    unsigned int cRuntimeAction;
-    unsigned int cRuntimeActionRemaining;
+    std::vector<std::unique_ptr<Instance>> cInstances;
   };
 }

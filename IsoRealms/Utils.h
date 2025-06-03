@@ -156,6 +156,15 @@ namespace IsoRealms {
       return mRemoved;
     }
 
+    template <class KEY, class VALUE> static KEY reverseLookupUnique(const std::map<KEY, std::unique_ptr<VALUE>>& map, const VALUE& value) {
+      for (const std::pair<const KEY, std::unique_ptr<VALUE>>& mPair : map) {
+        if (mPair.second.get() == &value) {
+          return mPair.first;
+        }
+      }
+      throw ArgumentException("ERROR: Utils::reverseLookup: Specified value not found in specified map");
+    }
+
     template <class KEY, class VALUE> static KEY reverseLookup(const std::map<KEY, VALUE>& map, const VALUE& value) {
       for (const std::pair<const KEY, VALUE>& mPair : map) {
         if (mPair.second == value) {

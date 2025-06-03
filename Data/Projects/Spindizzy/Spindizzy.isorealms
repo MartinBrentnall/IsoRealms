@@ -664,245 +664,6 @@
             ]
           },
           {
-            "type": "ColourCycler",
-            "instances": [
-              {
-                "id": "Ending Effect",
-                "speed": {
-                  "key": "Basics/Float/Ending Effect Cycle Speed"
-                },
-                "inputs": [
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Red"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Yellow"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Green"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Cyan"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Blue"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Purple"
-                    }
-                  }
-                ],
-                "outputs": [
-                  {
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.0625,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.125,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.1875,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.25,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.3125,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.375,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.4375,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.5,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.5625,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.625,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.6875,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.75,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.8125,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.875,
-                    "speedMultiplier": 1
-                  },
-                  {
-                    "offset": 0.9375,
-                    "speedMultiplier": 1
-                  }
-                ]
-              },
-              {
-                "id": "DamageColours",
-                "speed": {
-                  "key": "Literal",
-                  "value": 10000
-                },
-                "inputs": [
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Red"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Yellow"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Green"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Cyan"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Blue"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Purple"
-                    }
-                  }
-                ],
-                "outputs": [
-                  {
-                    "speedMultiplier": 1
-                  }
-                ]
-              },
-              {
-                "id": "DamageColoursTransparent",
-                "speed": {
-                  "key": "Literal",
-                  "value": 10000
-                },
-                "inputs": [
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/RedTransparent"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/YellowTransparent"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/GreenTransparent"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/CyanTransparent"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/BlueTransparent"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/PurpleTransparent"
-                    }
-                  }
-                ],
-                "outputs": [
-                  {
-                    "speedMultiplier": 1
-                  }
-                ]
-              },
-              {
-                "id": "CurrentRoom",
-                "speed": {
-                  "key": "Literal",
-                  "value": 0.02500000037252903
-                },
-                "inputs": [
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Yellow"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Yellow"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Purple"
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Basics/Colour/Purple"
-                    }
-                  }
-                ],
-                "outputs": [
-                  {
-                    "speedMultiplier": 1
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "Float",
-            "instances": [
-              {
-                "id": "Ending Effect Cycle Speed",
-                "value": 0.0024999999441206455
-              }
-            ]
-          },
-          {
             "type": "Function",
             "instances": [
               {
@@ -1451,7 +1212,7 @@
                     "to": {
                       "key": ":Colour",
                       "asset": {
-                        "key": "Basics/ColourCycler/CurrentRoom/0"
+                        "key": "Basics/Sequence/Map Current Room/Instance/Colour"
                       }
                     }
                   },
@@ -1651,7 +1412,166 @@
             "type": "Sequence",
             "instances": [
               {
+                "id": "Damage Colours",
+                "playing": true,
+                "loop": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Colour",
+                      "start": {
+                        "key": "Basics/Colour/Red"
+                      },
+                      "events": [
+                        {
+                          "duration": 42,
+                          "target": {
+                            "key": "Basics/Colour/Yellow"
+                          }
+                        },
+                        {
+                          "duration": 84,
+                          "target": {
+                            "key": "Basics/Colour/Green"
+                          }
+                        },
+                        {
+                          "duration": 126,
+                          "target": {
+                            "key": "Basics/Colour/Cyan"
+                          }
+                        },
+                        {
+                          "duration": 168,
+                          "target": {
+                            "key": "Basics/Colour/Blue"
+                          }
+                        },
+                        {
+                          "duration": 210,
+                          "target": {
+                            "key": "Basics/Colour/Purple"
+                          }
+                        },
+                        {
+                          "duration": 252,
+                          "target": {
+                            "key": "Basics/Colour/Red"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Transparent",
+                      "start": {
+                        "key": "Basics/Colour/RedTransparent"
+                      },
+                      "events": [
+                        {
+                          "duration": 42,
+                          "target": {
+                            "key": "Basics/Colour/YellowTransparent"
+                          }
+                        },
+                        {
+                          "duration": 84,
+                          "target": {
+                            "key": "Basics/Colour/GreenTransparent"
+                          }
+                        },
+                        {
+                          "duration": 126,
+                          "target": {
+                            "key": "Basics/Colour/CyanTransparent"
+                          }
+                        },
+                        {
+                          "duration": 168,
+                          "target": {
+                            "key": "Basics/Colour/BlueTransparent"
+                          }
+                        },
+                        {
+                          "duration": 210,
+                          "target": {
+                            "key": "Basics/Colour/PurpleTransparent"
+                          }
+                        },
+                        {
+                          "duration": 252,
+                          "target": {
+                            "key": "Basics/Colour/RedTransparent"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
+                "id": "Map Current Room",
+                "playing": true,
+                "loop": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Colour",
+                      "start": {
+                        "key": "Basics/Colour/Purple"
+                      },
+                      "events": [
+                        {
+                          "duration": 101,
+                          "fade": false,
+                          "target": {
+                            "key": "Basics/Colour/Yellow"
+                          }
+                        },
+                        {
+                          "duration": 201,
+                          "target": {
+                            "key": "Basics/Colour/Yellow"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
                 "id": "GameOver",
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ],
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
                 "tracks": [
                   {
                     "track": {
@@ -1973,6 +1893,10 @@
               },
               {
                 "id": "Ending",
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
                 "tracks": [
                   {
                     "track": {
@@ -1985,13 +1909,13 @@
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/0"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Black/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/0"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Black/Colour"
                           }
                         },
                         {
@@ -2014,13 +1938,13 @@
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/1"
+                            "key": "Basics/Sequence/Ending Colour Cycle/White/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/1"
+                            "key": "Basics/Sequence/Ending Colour Cycle/White/Colour"
                           }
                         },
                         {
@@ -2037,19 +1961,19 @@
                       "key": "Colour",
                       "outputs": "Red",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Red"
+                        "key": "Basics/Sequence/GameOver/Instance/Red"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/2"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Red/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/2"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Red/Colour"
                           }
                         },
                         {
@@ -2066,19 +1990,19 @@
                       "key": "Colour",
                       "outputs": "Cyan",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Cyan"
+                        "key": "Basics/Sequence/GameOver/Instance/Cyan"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/3"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Cyan/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/3"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Cyan/Colour"
                           }
                         },
                         {
@@ -2095,19 +2019,19 @@
                       "key": "Colour",
                       "outputs": "Purple",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Purple"
+                        "key": "Basics/Sequence/GameOver/Instance/Purple"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/4"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Purple/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/4"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Purple/Colour"
                           }
                         },
                         {
@@ -2124,19 +2048,19 @@
                       "key": "Colour",
                       "outputs": "Green",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Green"
+                        "key": "Basics/Sequence/GameOver/Instance/Green"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/5"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Green/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/5"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Green/Colour"
                           }
                         },
                         {
@@ -2153,19 +2077,19 @@
                       "key": "Colour",
                       "outputs": "Blue",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Blue"
+                        "key": "Basics/Sequence/GameOver/Instance/Blue"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/6"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Blue/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/6"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Blue/Colour"
                           }
                         },
                         {
@@ -2182,19 +2106,19 @@
                       "key": "Colour",
                       "outputs": "Yellow",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Yellow"
+                        "key": "Basics/Sequence/GameOver/Instance/Yellow"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/7"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Yellow/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/7"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Yellow/Colour"
                           }
                         },
                         {
@@ -2211,19 +2135,19 @@
                       "key": "Colour",
                       "outputs": "Orange",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Orange"
+                        "key": "Basics/Sequence/GameOver/Instance/Orange"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/8"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Orange/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/8"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Orange/Colour"
                           }
                         },
                         {
@@ -2240,19 +2164,19 @@
                       "key": "Colour",
                       "outputs": "Brown",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Brown"
+                        "key": "Basics/Sequence/GameOver/Instance/Brown"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/9"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Brown/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/9"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Brown/Colour"
                           }
                         },
                         {
@@ -2269,19 +2193,19 @@
                       "key": "Colour",
                       "outputs": "Pink",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/Pink"
+                        "key": "Basics/Sequence/GameOver/Instance/Pink"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/10"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Pink/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/10"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Pink/Colour"
                           }
                         },
                         {
@@ -2304,13 +2228,13 @@
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/11"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Dark Gray/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/11"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Dark Gray/Colour"
                           }
                         },
                         {
@@ -2333,13 +2257,13 @@
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/12"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Medium Gray/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/12"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Medium Gray/Colour"
                           }
                         },
                         {
@@ -2356,19 +2280,19 @@
                       "key": "Colour",
                       "outputs": "LightGreen",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/LightGreen"
+                        "key": "Basics/Sequence/GameOver/Instance/LightGreen"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/13"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Light Green/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/13"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Light Green/Colour"
                           }
                         },
                         {
@@ -2385,19 +2309,19 @@
                       "key": "Colour",
                       "outputs": "LightBlue",
                       "start": {
-                        "key": "Basics/Sequence/GameOver/LightBlue"
+                        "key": "Basics/Sequence/GameOver/Instance/LightBlue"
                       },
                       "events": [
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/14"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Light Blue/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/14"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Light Blue/Colour"
                           }
                         },
                         {
@@ -2420,13 +2344,13 @@
                         {
                           "duration": 5000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/15"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Light Gray/Colour"
                           }
                         },
                         {
                           "duration": 8000,
                           "target": {
-                            "key": "Basics/ColourCycler/Ending Effect/15"
+                            "key": "Basics/Sequence/Ending Colour Cycle/Light Gray/Colour"
                           }
                         },
                         {
@@ -2466,7 +2390,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 14500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -2489,7 +2413,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 15500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -2512,7 +2436,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 16500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -2535,7 +2459,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 17500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -2558,7 +2482,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 18500,
                           "execute": {
                             "key": "Basics/Function/Quit",
                             "bindings": []
@@ -2567,11 +2491,56 @@
                       ]
                     }
                   }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
                 ]
               },
               {
                 "id": "DamageSound",
                 "loop": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 30,
+                          "execute": {
+                            "key": "Basics/Sound/AlienContact",
+                            "filename": {
+                              "path": "Sounds/Alien Contact.ogg"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
+                "id": "DamageSound",
+                "loop": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ],
                 "tracks": [
                   {
                     "track": {
@@ -2592,6 +2561,15 @@
                 "id": "DamageVisual",
                 "playing": true,
                 "loop": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ],
                 "tracks": [
                   {
                     "track": {
@@ -2604,7 +2582,7 @@
                         {
                           "duration": 50,
                           "target": {
-                            "key": "Basics/ColourCycler/DamageColours/0"
+                            "key": "Basics/Sequence/Damage Colours/Instance/Colour"
                           }
                         },
                         {
@@ -2627,7 +2605,7 @@
                         {
                           "duration": 50,
                           "target": {
-                            "key": "Basics/ColourCycler/DamageColoursTransparent/0"
+                            "key": "Basics/Sequence/Damage Colours/Instance/Transparent"
                           }
                         },
                         {
@@ -2638,6 +2616,129 @@
                         }
                       ]
                     }
+                  }
+                ]
+              },
+              {
+                "id": "Ending Colour Cycle",
+                "playing": true,
+                "loop": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Colour",
+                      "start": {
+                        "key": "Basics/Colour/Red"
+                      },
+                      "events": [
+                        {
+                          "duration": 500,
+                          "target": {
+                            "key": "Basics/Colour/Yellow"
+                          }
+                        },
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Basics/Colour/Green"
+                          }
+                        },
+                        {
+                          "duration": 1500,
+                          "target": {
+                            "key": "Basics/Colour/Cyan"
+                          }
+                        },
+                        {
+                          "duration": 2000,
+                          "target": {
+                            "key": "Basics/Colour/Blue"
+                          }
+                        },
+                        {
+                          "duration": 2500,
+                          "target": {
+                            "key": "Basics/Colour/Purple"
+                          }
+                        },
+                        {
+                          "duration": 3000,
+                          "target": {
+                            "key": "Basics/Colour/Red"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Black"
+                  },
+                  {
+                    "name": "Blue",
+                    "startTime": 1125
+                  },
+                  {
+                    "name": "Brown",
+                    "startTime": 1687
+                  },
+                  {
+                    "name": "Cyan",
+                    "startTime": 562
+                  },
+                  {
+                    "name": "Dark Gray",
+                    "startTime": 2063
+                  },
+                  {
+                    "name": "Green",
+                    "startTime": 937
+                  },
+                  {
+                    "name": "Light Blue",
+                    "startTime": 2625
+                  },
+                  {
+                    "name": "Light Gray",
+                    "startTime": 2812
+                  },
+                  {
+                    "name": "Light Green",
+                    "startTime": 2437
+                  },
+                  {
+                    "name": "Medium Gray",
+                    "startTime": 2250
+                  },
+                  {
+                    "name": "Orange",
+                    "startTime": 1500
+                  },
+                  {
+                    "name": "Pink",
+                    "startTime": 1875
+                  },
+                  {
+                    "name": "Purple",
+                    "startTime": 750
+                  },
+                  {
+                    "name": "Red",
+                    "startTime": 375
+                  },
+                  {
+                    "name": "White",
+                    "startTime": 187
+                  },
+                  {
+                    "name": "Yellow",
+                    "startTime": 1312
                   }
                 ]
               }
@@ -3387,13 +3488,13 @@
               {
                 "id": "Craft",
                 "fill": {
-                  "key": "Basics/Sequence/GameOver/Purple"
+                  "key": "Basics/Sequence/GameOver/Instance/Purple"
                 },
                 "outline": {
                   "key": "Basics/Colour/Black"
                 },
                 "shine": {
-                  "key": "Basics/Sequence/GameOver/Yellow"
+                  "key": "Basics/Sequence/GameOver/Instance/Yellow"
                 }
               }
             ]
@@ -3562,25 +3663,25 @@
               {
                 "id": "Game Graphics",
                 "outline": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 },
                 "primary": {
-                  "key": "Basics/Sequence/Ending/Purple"
+                  "key": "Basics/Sequence/Ending/Instance/Purple"
                 },
                 "secondary": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 }
               },
               {
                 "id": "Layout Graphics",
                 "outline": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 },
                 "primary": {
-                  "key": "Basics/Sequence/Ending/Cyan"
+                  "key": "Basics/Sequence/Ending/Instance/Cyan"
                 },
                 "secondary": {
-                  "key": "Basics/Sequence/Ending/Orange"
+                  "key": "Basics/Sequence/Ending/Instance/Orange"
                 }
               }
             ]
@@ -3591,226 +3692,226 @@
               {
                 "id": "BlueRed",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/LightBlue"
+                  "key": "Basics/Sequence/Ending/Instance/LightBlue"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Red"
+                  "key": "Basics/Sequence/Ending/Instance/Red"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "BlueYellow",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Orange"
+                  "key": "Basics/Sequence/Ending/Instance/Orange"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/White"
+                  "key": "Basics/Sequence/Ending/Instance/White"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 }
               },
               {
                 "id": "Blue",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/LightBlue"
+                  "key": "Basics/Sequence/Ending/Instance/LightBlue"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/White"
+                  "key": "Basics/Sequence/Ending/Instance/White"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 }
               },
               {
                 "id": "Chocolate",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Purple"
+                  "key": "Basics/Sequence/Ending/Instance/Purple"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Brown"
+                  "key": "Basics/Sequence/Ending/Instance/Brown"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 }
               },
               {
                 "id": "Dark",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Red"
+                  "key": "Basics/Sequence/Ending/Instance/Red"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "Green",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Green"
+                  "key": "Basics/Sequence/Ending/Instance/Green"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "GreenRed",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Green"
+                  "key": "Basics/Sequence/Ending/Instance/Green"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Red"
+                  "key": "Basics/Sequence/Ending/Instance/Red"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/White"
+                  "key": "Basics/Sequence/Ending/Instance/White"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "Grey",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/White"
+                  "key": "Basics/Sequence/Ending/Instance/White"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/DarkGray"
+                  "key": "Basics/Sequence/Ending/Instance/DarkGray"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/LightGray"
+                  "key": "Basics/Sequence/Ending/Instance/LightGray"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "GreyForWater",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/White"
+                  "key": "Basics/Sequence/Ending/Instance/White"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/LightGray"
+                  "key": "Basics/Sequence/Ending/Instance/LightGray"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "LightGreen",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/LightGreen"
+                  "key": "Basics/Sequence/Ending/Instance/LightGreen"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Pink"
+                  "key": "Basics/Sequence/Ending/Instance/Pink"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "Pink",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Pink"
+                  "key": "Basics/Sequence/Ending/Instance/Pink"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/LightGreen"
+                  "key": "Basics/Sequence/Ending/Instance/LightGreen"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "RedGreen",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Red"
+                  "key": "Basics/Sequence/Ending/Instance/Red"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Green"
+                  "key": "Basics/Sequence/Ending/Instance/Green"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/White"
+                  "key": "Basics/Sequence/Ending/Instance/White"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/MediumGray"
+                  "key": "Basics/Sequence/Ending/Instance/MediumGray"
                 }
               },
               {
                 "id": "RedPurple",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Red"
+                  "key": "Basics/Sequence/Ending/Instance/Red"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Purple"
+                  "key": "Basics/Sequence/Ending/Instance/Purple"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/White"
+                  "key": "Basics/Sequence/Ending/Instance/White"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 }
               },
               {
                 "id": "Yellow",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Orange"
+                  "key": "Basics/Sequence/Ending/Instance/Orange"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/Black"
+                  "key": "Basics/Sequence/Ending/Instance/Black"
                 }
               },
               {
                 "id": "YellowPurple",
                 "floor": {
-                  "key": "Basics/Sequence/Ending/Yellow"
+                  "key": "Basics/Sequence/Ending/Instance/Yellow"
                 },
                 "wall": {
-                  "key": "Basics/Sequence/Ending/Purple"
+                  "key": "Basics/Sequence/Ending/Instance/Purple"
                 },
                 "grid": {
-                  "key": "Basics/Sequence/Ending/Blue"
+                  "key": "Basics/Sequence/Ending/Instance/Blue"
                 },
                 "highlight": {
-                  "key": "Basics/Sequence/Ending/MediumGray"
+                  "key": "Basics/Sequence/Ending/Instance/MediumGray"
                 }
               }
             ]
@@ -4041,13 +4142,13 @@
               {
                 "id": "Alien",
                 "colour1": {
-                  "key": "Basics/Sequence/GameOver/Purple"
+                  "key": "Basics/Sequence/GameOver/Instance/Purple"
                 },
                 "colour2": {
-                  "key": "Basics/Sequence/GameOver/Yellow"
+                  "key": "Basics/Sequence/GameOver/Instance/Yellow"
                 },
                 "colour3": {
-                  "key": "Basics/Sequence/GameOver/Pink"
+                  "key": "Basics/Sequence/GameOver/Instance/Pink"
                 },
                 "colour4": {
                   "key": "Literal"
@@ -4059,13 +4160,13 @@
               {
                 "id": "Player",
                 "colour1": {
-                  "key": "Basics/Sequence/GameOver/Purple"
+                  "key": "Basics/Sequence/GameOver/Instance/Purple"
                 },
                 "colour2": {
-                  "key": "Basics/Sequence/GameOver/Yellow"
+                  "key": "Basics/Sequence/GameOver/Instance/Yellow"
                 },
                 "colour3": {
-                  "key": "Basics/Sequence/GameOver/Cyan"
+                  "key": "Basics/Sequence/GameOver/Instance/Cyan"
                 },
                 "colour4": {
                   "key": "Literal"
@@ -4082,38 +4183,38 @@
               {
                 "id": "Jewel",
                 "frame": {
-                  "key": "Basics/Sequence/GameOver/Yellow"
+                  "key": "Basics/Sequence/GameOver/Instance/Yellow"
                 },
                 "cycleSpeed": 0.006000000052154064,
                 "cycleColours": [
                   {
                     "colour": {
-                      "key": "Basics/Sequence/GameOver/Red"
+                      "key": "Basics/Sequence/GameOver/Instance/Red"
                     }
                   },
                   {
                     "colour": {
-                      "key": "Basics/Sequence/GameOver/Yellow"
+                      "key": "Basics/Sequence/GameOver/Instance/Yellow"
                     }
                   },
                   {
                     "colour": {
-                      "key": "Basics/Sequence/GameOver/Green"
+                      "key": "Basics/Sequence/GameOver/Instance/Green"
                     }
                   },
                   {
                     "colour": {
-                      "key": "Basics/Sequence/GameOver/Cyan"
+                      "key": "Basics/Sequence/GameOver/Instance/Cyan"
                     }
                   },
                   {
                     "colour": {
-                      "key": "Basics/Sequence/GameOver/Blue"
+                      "key": "Basics/Sequence/GameOver/Instance/Blue"
                     }
                   },
                   {
                     "colour": {
-                      "key": "Basics/Sequence/GameOver/Purple"
+                      "key": "Basics/Sequence/GameOver/Instance/Purple"
                     }
                   }
                 ]
@@ -6602,7 +6703,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Blue"
+                          "key": "Basics/Sequence/Ending/Instance/Blue"
                         }
                       }
                     ]
@@ -6729,7 +6830,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -6856,7 +6957,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Yellow"
+                          "key": "Basics/Sequence/Ending/Instance/Yellow"
                         }
                       }
                     ]
@@ -6983,7 +7084,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Yellow"
+                          "key": "Basics/Sequence/Ending/Instance/Yellow"
                         }
                       }
                     ]
@@ -7110,7 +7211,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -7237,7 +7338,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -7364,7 +7465,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -7491,7 +7592,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -7618,7 +7719,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -7745,7 +7846,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -7872,7 +7973,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -7999,7 +8100,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/DarkGray"
+                          "key": "Basics/Sequence/Ending/Instance/DarkGray"
                         }
                       }
                     ]
@@ -8126,7 +8227,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Blue"
+                          "key": "Basics/Sequence/Ending/Instance/Blue"
                         }
                       }
                     ]
@@ -8253,7 +8354,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/Black"
+                          "key": "Basics/Sequence/Ending/Instance/Black"
                         }
                       }
                     ]
@@ -8380,7 +8481,7 @@
                       {
                         "element": "Background",
                         "colour": {
-                          "key": "Basics/Sequence/Ending/DarkGray"
+                          "key": "Basics/Sequence/Ending/Instance/DarkGray"
                         }
                       }
                     ]
@@ -8395,10 +8496,10 @@
               {
                 "id": "Alien",
                 "top": {
-                  "key": "Basics/Sequence/GameOver/Pink"
+                  "key": "Basics/Sequence/GameOver/Instance/Pink"
                 },
                 "sides": {
-                  "key": "Basics/Sequence/GameOver/Purple"
+                  "key": "Basics/Sequence/GameOver/Instance/Purple"
                 },
                 "outline": {
                   "key": "Basics/Colour/Black"
@@ -8407,10 +8508,10 @@
               {
                 "id": "Player",
                 "top": {
-                  "key": "Basics/Sequence/GameOver/Cyan"
+                  "key": "Basics/Sequence/GameOver/Instance/Cyan"
                 },
                 "sides": {
-                  "key": "Basics/Sequence/GameOver/Purple"
+                  "key": "Basics/Sequence/GameOver/Instance/Purple"
                 },
                 "outline": {
                   "key": "Basics/Colour/Black"
@@ -9529,10 +9630,10 @@
                     "screen": {
                       "key": "UI/Gradient",
                       "colourA": {
-                        "key": "Basics/Sequence/DamageVisual/Visual"
+                        "key": "Basics/Sequence/DamageVisual/Instance/Visual"
                       },
                       "colourB": {
-                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                        "key": "Basics/Sequence/DamageVisual/Instance/VisualTransparent"
                       },
                       "orientation": "Vertical"
                     },
@@ -9575,10 +9676,10 @@
                     "screen": {
                       "key": "UI/Gradient",
                       "colourA": {
-                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                        "key": "Basics/Sequence/DamageVisual/Instance/VisualTransparent"
                       },
                       "colourB": {
-                        "key": "Basics/Sequence/DamageVisual/Visual"
+                        "key": "Basics/Sequence/DamageVisual/Instance/Visual"
                       },
                       "orientation": "Vertical"
                     },
@@ -9621,10 +9722,10 @@
                     "screen": {
                       "key": "UI/Gradient",
                       "colourA": {
-                        "key": "Basics/Sequence/DamageVisual/Visual"
+                        "key": "Basics/Sequence/DamageVisual/Instance/Visual"
                       },
                       "colourB": {
-                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                        "key": "Basics/Sequence/DamageVisual/Instance/VisualTransparent"
                       },
                       "orientation": "Horizontal"
                     },
@@ -9667,10 +9768,10 @@
                     "screen": {
                       "key": "UI/Gradient",
                       "colourA": {
-                        "key": "Basics/Sequence/DamageVisual/VisualTransparent"
+                        "key": "Basics/Sequence/DamageVisual/Instance/VisualTransparent"
                       },
                       "colourB": {
-                        "key": "Basics/Sequence/DamageVisual/Visual"
+                        "key": "Basics/Sequence/DamageVisual/Instance/Visual"
                       },
                       "orientation": "Horizontal"
                     },
@@ -11471,7 +11572,7 @@
               {
                 "id": "Pause",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -11574,7 +11675,7 @@
                 "cancelLabel": "No",
                 "confirmLabel": "Yes",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"

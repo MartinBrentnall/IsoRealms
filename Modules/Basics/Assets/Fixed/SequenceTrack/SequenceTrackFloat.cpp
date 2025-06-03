@@ -27,57 +27,17 @@ namespace IsoRealms::Basics {
   const std::string SequenceTrackFloat::JSON_VALUE    = "value";
 
   SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence) :
-            cOutput(*this),
             cDefName("TODO"),
-            cDefStartValue(project, 0.0f, [this](float value) {stateChanged(cDefStartValue->getValue());}),
-            cRuntimeEvent(0),
-            cRuntimeEventPosition(0),
-            cStateNotifier(nullptr) {
+            cDefStartValue(project, 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
 
   SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence, JSONObject object) :
-            cOutput(*this),
             cDefName(object.getString(JSON_OUTPUT)),
-            cDefStartValue(project, 0.0f, [this](float value) {stateChanged(cDefStartValue->getValue());}),
-            cRuntimeEvent(0),
-            cRuntimeEventPosition(0),
-            cStateNotifier(nullptr) {
+            cDefStartValue(project, 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
     cDefStartValue.init(object, JSON_START);
     for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
       cDefEvents.push_back(std::make_unique<Event>(project, mEventObject));
     }
-  }
-
-  void SequenceTrackFloat::registerAssets(IAssetRegistry& assets) {
-    cStateNotifier = assets.add(&cOutput, cDefName, "Sequences");
-  }
-
-  void SequenceTrackFloat::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cOutput, relinquish);
-    cStateNotifier = nullptr;
-  }
-
-  bool SequenceTrackFloat::play(unsigned int milliseconds) {
-    bool mStillPlaying = false;
-    if (cRuntimeEvent < cDefEvents.size()) {
-      cRuntimeEventPosition += milliseconds;
-      int mNextEventTime = cDefEvents[cRuntimeEvent]->getTime();
-      while (cRuntimeEvent < cDefEvents.size() && cRuntimeEventPosition >= mNextEventTime) {
-        cRuntimeEvent++;
-        if (cRuntimeEvent < cDefEvents.size()) {
-          mNextEventTime = cDefEvents[cRuntimeEvent]->getTime();;
-        }
-      }
-      mStillPlaying = true;
-    }
-    updateValue();
-    return mStillPlaying;
-  }
-
-  void SequenceTrackFloat::reset() {
-    cRuntimeEvent         = 0;
-    cRuntimeEventPosition = 0;
-    updateValue();
   }
 
   unsigned int SequenceTrackFloat::getDuration() const {
@@ -123,17 +83,6 @@ namespace IsoRealms::Basics {
     return mEvents;
   }
 
-  void SequenceTrackFloat::stopPreview() {
-    cRuntimeEvent = 0;
-    cRuntimeEventPosition = 0;
-  }
-
-  void SequenceTrackFloat::setPreviewPosition(long position) {
-    cRuntimeEvent = 0;
-    cRuntimeEventPosition = 0;
-    play(position);
-  }
-
   void SequenceTrackFloat::renderIcon() const {
     Utils::renderIconBranch();
   }
@@ -145,8 +94,8 @@ namespace IsoRealms::Basics {
     float mHighest = std::numeric_limits<float>::min();
     float mLowest  = std::numeric_limits<float>::max();
     for (const std::unique_ptr<Event>& mEvent : cDefEvents) {
-      mHighest = std::max(mHighest, mEvent->getValue());
-      mLowest  = std::min(mLowest,  mEvent->getValue());
+      mHighest = std::max(mHighest, mEvent->getValue()->getValue());
+      mLowest  = std::min(mLowest,  mEvent->getValue()->getValue());
     }
     float mRange = mHighest - mLowest;
     float mHeight = top - bottom;
@@ -159,14 +108,18 @@ namespace IsoRealms::Basics {
       glVertex2f(mLeft,  mPosition);
       glVertex2f(mLeft,  bottom);
       if (mEvent->isFade()) {
-        mPosition = bottom + mHeight * (mEvent->getValue() - mLowest) / mRange;
+        mPosition = bottom + mHeight * (mEvent->getValue()->getValue() - mLowest) / mRange;
       }
       glVertex2f(mRight, bottom);
       glVertex2f(mRight, mPosition);
-      mPosition = bottom + mHeight * (mEvent->getValue() - mLowest) / mRange;
+      mPosition = bottom + mHeight * (mEvent->getValue()->getValue() - mLowest) / mRange;
       mLeft = mRight;
     }
     glEnd();
+  }
+
+  ISequenceTrackInstance* SequenceTrackFloat::createTrackInstance() {
+    return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
   }
 
   bool SequenceTrackFloat::renderAssetIcon() const {
@@ -205,38 +158,26 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void SequenceTrackFloat::updateValue() {
-    float mPreviousEventValue = getPreviousValue();
-    float mPreviousValue = cRuntimeValue;
-    if (cRuntimeEvent < cDefEvents.size() && cDefEvents[cRuntimeEvent]->isFade()) {
-      float mCurrentValue = cDefEvents[cRuntimeEvent]->getValue();
-      int mEventDuration = cDefEvents[cRuntimeEvent]->getTime() - (cRuntimeEvent == 0 ? 0 : cDefEvents[cRuntimeEvent - 1]->getTime());
-      int mEventPosition = cRuntimeEventPosition                - (cRuntimeEvent == 0 ? 0 : cDefEvents[cRuntimeEvent - 1]->getTime());
-      float mRelativePosition = mEventPosition / static_cast<float>(mEventDuration);
-      cRuntimeValue = mPreviousEventValue + (mCurrentValue - mPreviousEventValue) * mRelativePosition;
-    } else {
-      cRuntimeValue = mPreviousEventValue;
-    }
-
-    if (cRuntimeValue != mPreviousValue) {
-      cStateNotifier->stateChanged(&cOutput);
+  void SequenceTrackFloat::stateChanged(IFloat* value) {
+    for (std::unique_ptr<Instance>& mInstance : cInstances) {
+      mInstance->stateChanged(value);
     }
   }
 
-  float SequenceTrackFloat::getPreviousValue() {
-    return cRuntimeEvent > 0 ? cDefEvents[cRuntimeEvent - 1]->getValue() : cDefStartValue->getValue();
+  SequenceTrackFloat::Instance::Instance(SequenceTrackFloat& parent) :
+            cParent(parent) {
   }
 
-  void SequenceTrackFloat::stateChanged(float value) {
-    float mUsedFloat = getPreviousValue();
+  void SequenceTrackFloat::Instance::stateChanged(IFloat* value) {
+    IFloat* mUsedFloat = getPreviousValue();
     if (value == mUsedFloat) {
       updateValue();
       return;
     }
 
-    if (cRuntimeEvent < cDefEvents.size() && (cRuntimeEvent > 0 || cRuntimeEventPosition > 0)) {
+    if (cRuntimeEvent < cParent.cDefEvents.size() && (cRuntimeEvent > 0 || cRuntimeEventPosition > 0)) {
       int mRuntimeEvent = cRuntimeEventPosition == 0 ? cRuntimeEvent - 1 : cRuntimeEvent;
-      mUsedFloat = cDefEvents[mRuntimeEvent]->getValue();
+      mUsedFloat = cParent.cDefEvents[mRuntimeEvent]->getValue();
       if (value == mUsedFloat) {
         updateValue();
         return;
@@ -244,28 +185,89 @@ namespace IsoRealms::Basics {
     }
   }
 
-  SequenceTrackFloat::Output::Output(SequenceTrackFloat& parent) :
-            cParent(parent) {
+  void SequenceTrackFloat::Instance::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, cParent.cDefName, "Sequences");
   }
 
-  float SequenceTrackFloat::Output::getValue() const {
-    return cParent.cRuntimeValue;
+  void SequenceTrackFloat::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(this, relinquish);
+    cStateNotifier = nullptr;
   }
 
-  bool SequenceTrackFloat::Output::renderAssetIcon() const {
+  bool SequenceTrackFloat::Instance::play(unsigned int milliseconds) {
+    bool mStillPlaying = false;
+    if (cRuntimeEvent < cParent.cDefEvents.size()) {
+      cRuntimeEventPosition += milliseconds;
+      int mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();
+      while (cRuntimeEvent < cParent.cDefEvents.size() && cRuntimeEventPosition >= mNextEventTime) {
+        cRuntimeEvent++;
+        if (cRuntimeEvent < cParent.cDefEvents.size()) {
+          mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();;
+        }
+      }
+      mStillPlaying = true;
+    }
+    updateValue();
+    return mStillPlaying;
+  }
+
+  void SequenceTrackFloat::Instance::reset() {
+    cRuntimeEvent         = 0;
+    cRuntimeEventPosition = 0;
+    updateValue();
+  }
+
+  void SequenceTrackFloat::Instance::stopPreview() {
+    cRuntimeEvent = 0;
+    cRuntimeEventPosition = 0;
+  }
+
+  void SequenceTrackFloat::Instance::setPreviewPosition(long position) {
+    cRuntimeEvent = 0;
+    cRuntimeEventPosition = 0;
+    play(position);
+  }
+
+  float SequenceTrackFloat::Instance::getValue() const {
+    return cRuntimeValue;
+  }
+
+  bool SequenceTrackFloat::Instance::renderAssetIcon() const {
     return false;
   }
 
-  void SequenceTrackFloat::Output::saveAsset(JSONObject object) const {
+  void SequenceTrackFloat::Instance::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::Output::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::Instance::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool SequenceTrackFloat::Output::isDefaultConfiguration() const {
+  bool SequenceTrackFloat::Instance::isDefaultConfiguration() const {
     return true;
+  }
+
+  void SequenceTrackFloat::Instance::updateValue() {
+    float mPreviousEventValue = getPreviousValue()->getValue();
+    float mPreviousValue = cRuntimeValue;
+    if (cRuntimeEvent < cParent.cDefEvents.size() && cParent.cDefEvents[cRuntimeEvent]->isFade()) {
+      float mCurrentValue = cParent.cDefEvents[cRuntimeEvent]->getValue()->getValue();
+      int mEventDuration = cParent.cDefEvents[cRuntimeEvent]->getTime() - (cRuntimeEvent == 0 ? 0 : cParent.cDefEvents[cRuntimeEvent - 1]->getTime());
+      int mEventPosition = cRuntimeEventPosition                        - (cRuntimeEvent == 0 ? 0 : cParent.cDefEvents[cRuntimeEvent - 1]->getTime());
+      float mRelativePosition = mEventPosition / static_cast<float>(mEventDuration);
+      cRuntimeValue = mPreviousEventValue + (mCurrentValue - mPreviousEventValue) * mRelativePosition;
+    } else {
+      cRuntimeValue = mPreviousEventValue;
+    }
+
+    if (cRuntimeValue != mPreviousValue) {
+      cStateNotifier->stateChanged(this);
+    }
+  }
+
+  IFloat* SequenceTrackFloat::Instance::getPreviousValue() {
+    return cRuntimeEvent > 0 ? cParent.cDefEvents[cRuntimeEvent - 1]->getValue() : *cParent.cDefStartValue;
   }
 
   SequenceTrackFloat::Event::Event(IProject& project, unsigned int time, bool fade) :
@@ -300,8 +302,8 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
-  float SequenceTrackFloat::Event::getValue() const {
-    return cDefValue->getValue();
+  IFloat* SequenceTrackFloat::Event::getValue() const {
+    return *cDefValue;
   }
 
   bool SequenceTrackFloat::Event::isFade() const {

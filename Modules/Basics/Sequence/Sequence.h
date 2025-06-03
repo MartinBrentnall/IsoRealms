@@ -38,6 +38,9 @@ namespace IsoRealms::Basics {
    * of track that play in tandem, each of which may do something different.
    */
   class Sequence final : public IEditable {
+    private:
+    class Instance;
+
     public:
     Sequence(IProject& project, Basics& basics, IResourceData& data);
     Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
@@ -47,6 +50,9 @@ namespace IsoRealms::Basics {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+
+    std::string getInstanceName(Instance& instance) const;
+    bool setInstanceName(Instance& instance, const std::string& name);
 
     /************************\
      * Implements IEditable *
@@ -66,7 +72,6 @@ namespace IsoRealms::Basics {
     void stopPreview();
     void setPreviewPosition(long position);
     void preview(unsigned int milliseconds);
-    void skip(unsigned int milliseconds);
 
     int getTime() const;
     void setTime(int time);
@@ -81,6 +86,33 @@ namespace IsoRealms::Basics {
     void addTrack();
     
     private:
+
+    class Instance {
+      public:
+      Instance(Sequence& parent);
+      Instance(Sequence& parent, JSONObject object);
+
+      void registerAssets(IAssetRegistry& assets);
+      void unregisterAssets(IAssetRemover& assets, bool relinquish);
+      void reset();
+      void stopPreview();
+      void setPreviewPosition(long position);
+      void play(unsigned int milliseconds);
+      void save(JSONObject object) const;
+      std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+
+      private:
+
+      // External interfaces.
+      Sequence& cParent;
+
+      // Definition data.
+      int cDefStartTime;
+
+      // Runtime data.
+      std::vector<ISequenceTrackInstance*> cTrackInstances;
+      int cRuntimePosition;
+    };
 
     class Length : public IString {
       public:
@@ -117,8 +149,12 @@ namespace IsoRealms::Basics {
     };
 
     // JSON members.
+    static const std::string JSON_INSTANCES;
     static const std::string JSON_LOOP;
+    static const std::string JSON_NAME;
     static const std::string JSON_PLAYING;
+    static const std::string JSON_SPEED;
+    static const std::string JSON_START_TIME;
     static const std::string JSON_TRACKS;
     static const std::string JSON_TRACK;
     static const std::string JSON_TYPE;
@@ -130,10 +166,13 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<SequenceTrack>> cDefTracks; /// Tracks in this sequence.
     bool cDefPlaying;                                       /// Initial state of this sequence.
     bool cDefLoop;                                          /// Sequence should loop upon reaching the end.
+    Float cDefSpeed;                                        /// Play at multiple speed of specified value.
+    std::map<std::string, std::unique_ptr<Instance>> cDefInstances;      /// Instances of this sequence.
 
     // Runtime data.
     bool cRuntimePlaying; /// Current state of this sequence.
     int cRuntimePosition; /// Current position of this sequence.
+    float cRuntimePositionFraction;
 
     // Editing data.
     bool cEditorPlaying; /// Current editor state of this sequence.

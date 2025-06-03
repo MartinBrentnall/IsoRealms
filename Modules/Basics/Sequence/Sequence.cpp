@@ -21,28 +21,53 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string Sequence::JSON_LOOP    = "loop";
-  const std::string Sequence::JSON_PLAYING = "playing";
-  const std::string Sequence::JSON_TRACKS  = "tracks";
-  const std::string Sequence::JSON_TRACK  = "track";
-  const std::string Sequence::JSON_TYPE    = "type";
+  const std::string Sequence::JSON_INSTANCES  = "instances";
+  const std::string Sequence::JSON_LOOP       = "loop";
+  const std::string Sequence::JSON_NAME       = "name";
+  const std::string Sequence::JSON_PLAYING    = "playing";
+  const std::string Sequence::JSON_SPEED      = "speed";
+  const std::string Sequence::JSON_START_TIME = "startTime";
+  const std::string Sequence::JSON_TRACKS     = "tracks";
+  const std::string Sequence::JSON_TRACK      = "track";
+  const std::string Sequence::JSON_TYPE       = "type";
 
   Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data) :
             cBasics(basics),
             cDefPlaying(false),
             cDefLoop(false),
+            cDefSpeed(project, 1.0f),
             cExposedLength(*this),
             cExposedPosition(*this),
             cLuaBinding(project, this) {
     project.updateRuntime([this](unsigned int milliseconds) {
-      skip(milliseconds);
-    });    
+      float mSpeedMultiplier = cDefSpeed->getValue();
+      if (mSpeedMultiplier != 1.0f) {
+        float mActualMilliseconds = milliseconds * mSpeedMultiplier;
+        milliseconds = std::floor(mActualMilliseconds);
+        float mFractional = mActualMilliseconds - milliseconds;
+        cRuntimePositionFraction += mFractional;
+        if (cRuntimePositionFraction >= 1.0f) {
+          milliseconds++;
+          cRuntimePositionFraction = 0.0f;
+        }
+      }
+
+      if (cRuntimePlaying) {
+        for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+          mEntry.second->play(milliseconds);
+        }
+      }
+    });
     
     project.updateEditing([this](unsigned int milliseconds) {
+      if (cRuntimePlaying && cDefLoop && cDefPlaying) {
+        for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+          mEntry.second->play(milliseconds);
+        }
+      }
       for (const std::pair<IEditableScreen* const, std::unique_ptr<SequenceEditor>>& mEditor : cEditors) {
         mEditor.second->updateScreen(milliseconds);
       }
-
     });
 
     project.reset([this]() {
@@ -54,9 +79,13 @@ namespace IsoRealms::Basics {
             Sequence(project, basics, data) {
     cDefPlaying = object.getBoolean(JSON_PLAYING);
     cDefLoop = object.getBoolean(JSON_LOOP);
+    cDefSpeed.init(object, JSON_SPEED);
     for (JSONObject mTrackObject : object.getArray(JSON_TRACKS)) {
       cDefTracks.emplace_back(std::make_unique<SequenceTrack>(basics, *this));
       cDefTracks.back()->set(mTrackObject, JSON_TRACK);
+    }
+    for (JSONObject mInstanceObject : object.getArray(JSON_INSTANCES)) {
+      cDefInstances.emplace(mInstanceObject.getString(JSON_NAME), std::make_unique<Instance>(*this, mInstanceObject));
     }
   }
 
@@ -65,8 +94,9 @@ namespace IsoRealms::Basics {
     assets.add(&cExposedLength, "Length", "Sequences");
     assets.add(&cExposedPosition, "Position", "Sequences");
     assets.add(this, "", "Sequences");
-    for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-      (*mTrack)->registerAssets(assets);
+    for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      LocalAssetRegistry mInstanceAssetRegistry(assets, mEntry.first);
+      mEntry.second->registerAssets(mInstanceAssetRegistry);
     }
   }
   
@@ -75,18 +105,25 @@ namespace IsoRealms::Basics {
     assets.remove(&cExposedLength, relinquish);
     assets.remove(&cExposedPosition, relinquish);
     assets.remove(this, relinquish);
-    for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-      (*mTrack)->unregisterAssets(assets, relinquish);
+    for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      mEntry.second->unregisterAssets(assets, relinquish);
     }
   }
   
   void Sequence::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_PLAYING, cDefPlaying);
     object.addBoolean(JSON_LOOP, cDefLoop);
+    cDefSpeed.save(object, JSON_SPEED);
     JSONArray mTrackArray = object.addArray(JSON_TRACKS);
     for (const std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
       JSONObject mTrackObject = mTrackArray.addObject();
       mTrack->save(mTrackObject, JSON_TRACK);
+    }
+    JSONArray mInstanceArray = object.addArray(JSON_INSTANCES);
+    for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      JSONObject mInstanceObject = mInstanceArray.addObject();
+      mInstanceObject.addString(JSON_NAME, mEntry.first);
+      mEntry.second->save(mInstanceObject);
     }
   }
 
@@ -101,7 +138,41 @@ namespace IsoRealms::Basics {
   std::vector<std::unique_ptr<IProperty>> Sequence::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", "TODO", this));
+
+    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      mProperties.emplace_back(std::make_unique<PropertyStruct>(mEntry.first, "TODO", "Edit...", [this, &browser, &assets, &mEntry]() {
+        return mEntry.second->getProperties(browser, assets);
+      }));
+    }
+
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Playing", "Specifies the initial state of this sequence", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;}, cBasics.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Loop", "Specifies whether this Sequence repeats from the beginning after reaching the end", [this]() {return cDefLoop;}, [this](bool value) {cDefLoop = value;}, cBasics.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Speed", "The sequence plays at multiple speed of the specified value", cDefSpeed));
+    mProperties.emplace_back(std::make_unique<PropertyAdd>(   "Instance", "TODO", "Add...", [this, &browser, &assets]() {
+      std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
+      std::unique_ptr<Instance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<Instance>(*this)).first->second;
+      return std::make_unique<PropertyStruct>("Instance", "TODO", "Edit...", [this, &browser, &assets, &mInstance]() {
+        return mInstance->getProperties(browser, assets);
+      });
+    }));
     return mProperties;
+  }
+
+  std::string Sequence::getInstanceName(Instance& instance) const {
+    return Utils::reverseLookupUnique(cDefInstances, instance);
+  }
+
+  bool Sequence::setInstanceName(Instance& instance, const std::string& name) {
+    std::string mOldName = getInstanceName(instance);
+    if (mOldName == name) {
+      return true;
+    }
+    if (cDefInstances.find(name) != cDefInstances.end()) {
+      return false;
+    }
+    cDefInstances.emplace(name, std::move(cDefInstances[mOldName]));
+    cDefInstances.erase(mOldName);
+    return true;
   }
 
   IEditableScreen* Sequence::createEditableScreen(IsoRealms::Project* project) {
@@ -138,46 +209,27 @@ namespace IsoRealms::Basics {
   void Sequence::reset() {
     cRuntimePlaying = cDefPlaying;
     cRuntimePosition = 0;
-    for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-      (*mTrack)->reset();
+    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      mEntry.second->reset();
     }
   }
 
   void Sequence::stopPreview() {
-    for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-      (*mTrack)->stopPreview();
+    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      mEntry.second->stopPreview();
     }
   }
 
   void Sequence::setPreviewPosition(long position) {
     cRuntimePosition = position;
-    for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-      (*mTrack)->setPreviewPosition(position);
+    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      mEntry.second->setPreviewPosition(position);
     }
   }
   
   void Sequence::preview(unsigned int milliseconds) {
-    for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-      (*mTrack)->play(milliseconds);
-    }
-  }
-
-  void Sequence::skip(unsigned int milliseconds) {
-    if (cRuntimePlaying) {
-      cRuntimePosition += milliseconds;
-      bool mSequenceFinished = true;
-      for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-        if ((*mTrack)->play(milliseconds)) {
-          mSequenceFinished = false;
-        }
-      }
-      
-      if (mSequenceFinished && cDefLoop) {
-        for (std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-          cRuntimePosition = 0;
-          (*mTrack)->reset();
-        }
-      }
+    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      mEntry.second->play(milliseconds);
     }
   }
 
@@ -211,6 +263,78 @@ namespace IsoRealms::Basics {
 
   void Sequence::addTrack() {
     cDefTracks.emplace_back(std::make_unique<SequenceTrack>(cBasics, *this));
+  }
+
+  Sequence::Instance::Instance(Sequence& parent) :
+            cParent(parent) {
+  }
+
+  Sequence::Instance::Instance(Sequence& parent, JSONObject object) :
+            cParent(parent),
+            cDefStartTime(object.getInteger(JSON_START_TIME)) {
+    for (std::unique_ptr<SequenceTrack>& mTrack : cParent.cDefTracks) {
+      ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance();
+      if (mTrackInstance != nullptr) {
+        cTrackInstances.emplace_back(mTrackInstance);
+      }
+    }
+  }
+
+  void Sequence::Instance::registerAssets(IAssetRegistry& assets) {
+    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+      mTrack->registerAssets(assets);
+    }
+  }
+
+  void Sequence::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+      mTrack->unregisterAssets(assets, relinquish);
+    }
+  }
+
+  void Sequence::Instance::reset() {
+    cRuntimePosition = 0;
+    play(cDefStartTime);
+  }
+
+  void Sequence::Instance::stopPreview() {
+    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+      mTrack->stopPreview();
+    }
+  }
+
+  void Sequence::Instance::setPreviewPosition(long position) {
+    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+      mTrack->setPreviewPosition(position);
+    }
+  }
+
+  void Sequence::Instance::play(unsigned int milliseconds) {
+    cRuntimePosition += milliseconds;
+    bool mSequenceFinished = true;
+    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+      if (mTrack->play(milliseconds)) {
+        mSequenceFinished = false;
+      }
+    }
+
+    if (mSequenceFinished && cParent.cDefLoop) {
+      for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+        cRuntimePosition = 0;
+        mTrack->reset();
+      }
+    }
+  }
+
+  void Sequence::Instance::save(JSONObject object) const {
+    object.addInteger(JSON_START_TIME, cDefStartTime);
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Sequence::Instance::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Instance Name", "TODO", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Start Time",    "TODO", [this]() {return cDefStartTime;}, [this](int value) {cDefStartTime = value; return true;}));
+    return mProperties;
   }
 
   Sequence::Length::Length(Sequence& parent) :

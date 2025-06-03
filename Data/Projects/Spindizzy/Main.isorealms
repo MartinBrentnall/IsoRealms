@@ -20,7 +20,7 @@
         {
           "variable": "splash",
           "to": {
-            "key": "Basics/Sequence/Splash"
+            "key": "Basics/Sequence/Splash/Instance"
           }
         },
         {
@@ -992,7 +992,7 @@
                     {
                       "variable": "splash",
                       "to": {
-                        "key": "Basics/Sequence/Splash"
+                        "key": "Basics/Sequence/Splash/Instance"
                       }
                     },
                     {
@@ -1295,6 +1295,15 @@
             "instances": [
               {
                 "id": "Splash",
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ],
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
                 "tracks": [
                   {
                     "track": {
@@ -1336,7 +1345,7 @@
                   },
                   {
                     "track": {
-                      "type": "Action",
+                      "key": "Action",
                       "events": [
                         {
                           "delay": 5000,
@@ -2733,7 +2742,7 @@
                         "key": "Basics/Font/Menu"
                       },
                       "colour": {
-                        "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                        "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                       }
                     },
                     "top": {
@@ -3709,7 +3718,7 @@
                         "key": "Basics/Font/Menu"
                       },
                       "colour": {
-                        "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                        "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                       }
                     },
                     "top": {
@@ -6209,7 +6218,7 @@
                     "screen": {
                       "key": "UI/Panel",
                       "colour": {
-                        "key": "Basics/Sequence/Splash/Colour"
+                        "key": "Basics/Sequence/Splash/Instance/Colour"
                       }
                     },
                     "top": {
@@ -6295,7 +6304,7 @@
               {
                 "id": "Main",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -6617,7 +6626,7 @@
               {
                 "id": "PlayMode",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -6722,7 +6731,7 @@
               {
                 "id": "Links",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -6809,7 +6818,7 @@
               {
                 "id": "MissionSelect",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -6890,7 +6899,7 @@
               {
                 "id": "MyMissions",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -6937,7 +6946,7 @@
               {
                 "id": "Replay",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -7006,7 +7015,7 @@
                 "cancelLabel": "No",
                 "confirmLabel": "Yes",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -7028,7 +7037,7 @@
               {
                 "id": "LoadingScreen",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 }
               }
             ]

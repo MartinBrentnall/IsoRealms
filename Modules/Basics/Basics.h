@@ -33,7 +33,6 @@
 #include "Assets/Fixed/SequenceTrack/SequenceTrackDummy.h"
 #include "Assets/Type/ISequenceTrack.h"
 #include "BooleanTrigger/BooleanTrigger.h"
-#include "ColourCycler/ColourCycler.h"
 #include "DigitalInput/DigitalInput.h"
 #include "FileFont/FileFont.h"
 #include "FileSound/FileSound.h"
@@ -160,7 +159,6 @@ namespace IsoRealms::Basics {
 
     ResourceTypeDefinition<Basics, AnalogueInput>     cResourceTypeAnalogueInput;
     ResourceTypeDefinition<Basics, BooleanTrigger>    cResourceTypeBooleanTrigger;
-    ResourceTypeDefinition<Basics, ColourCycler>      cResourceTypeColourCycler;
     ResourceTypeDefinition<Basics, DigitalInput>      cResourceTypeDigitalInput;
     ResourceTypeDefinition<Basics, FileFont>          cResourceTypeFileFont;
     ResourceTypeDefinition<Basics, FileSound>         cResourceTypeFileSound;

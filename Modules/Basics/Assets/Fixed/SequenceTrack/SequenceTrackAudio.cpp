@@ -24,15 +24,7 @@ namespace IsoRealms::Basics {
   SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence, const std::string& name) :
             cSequence(sequence),
             cDefName(name),
-            cDefVolume(project, 1.0f),
-            cRuntimeEvent(0),
-            cRuntimePosition(0),
-            cExposedName(*this),
-            cExposedCount(*this),
-            cExposedCurrent(*this),
-            cExposedLength(*this),
-            cExposedPosition(*this),
-            cLuaBinding(project, this) {
+            cDefVolume(project, 1.0f) {
   }
 
   SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence) :
@@ -45,70 +37,6 @@ namespace IsoRealms::Basics {
     for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
       cDefEvents.push_back(std::make_unique<Audio>(*this, project, mEventObject));
     }
-  }
-
-  void SequenceTrackAudio::registerAssets(IAssetRegistry& assets) {
-    LocalAssetRegistry mLocationRegistry(assets, cDefName);
-    mLocationRegistry.add(&cLuaBinding, "", "Sequences");
-    mLocationRegistry.add(&cExposedName, "Audio Name", "SequenceTrackAudio");
-    mLocationRegistry.add(&cExposedCount, "Audio Count", "SequenceTrackAudio");
-    mLocationRegistry.add(&cExposedCurrent, "Current Audio", "SequenceTrackAudio");
-    mLocationRegistry.add(&cExposedLength, "Current Audio Length", "SequenceTrackAudio");
-    mLocationRegistry.add(&cExposedPosition, "Current Audio Position", "SequenceTrackAudio");
-  }
-
-  void SequenceTrackAudio::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-    assets.remove(&cExposedName, relinquish);
-    assets.remove(&cExposedCount, relinquish);
-    assets.remove(&cExposedCurrent, relinquish);
-    assets.remove(&cExposedLength, relinquish);
-    assets.remove(&cExposedPosition, relinquish);
-  }
-
-  bool SequenceTrackAudio::play(unsigned int milliseconds) {
-
-    // Update volume.
-    // float mVal = powf(cDefVolume->getValue(), 2.0f);
-    // float mNewVolume = (cRuntimeVolume / static_cast<float>(cParent.cDefFade)) * 100.0f * mVal;
-    // if (cRuntimeActualVolume != mNewVolume || mNewVolume == 0) {
-    //   cRuntimeActualVolume = mNewVolume;
-    //   cMusic.setVolume(cRuntimeActualVolume);
-    // }
-
-    // Simple volume curve.
-    cRuntimeVolume = powf(cDefVolume->getValue(), 2.0f) * 100.0f;
-
-    bool mStillPlaying = false;
-    if (cRuntimeEvent < cDefEvents.size()) {
-      cRuntimePosition += milliseconds;
-      int mRuntimeEventTime = cDefEvents[cRuntimeEvent]->getTime();
-      while (cRuntimeEvent < cDefEvents.size() && cRuntimePosition >= mRuntimeEventTime) {
-        cDefEvents[cRuntimeEvent]->play();
-        cRuntimeEventsPlaying.emplace_back(cRuntimeEvent);
-        cRuntimeEvent++;
-        if (cRuntimeEvent < cDefEvents.size()) {
-          mRuntimeEventTime = cDefEvents[cRuntimeEvent]->getTime();
-        }
-      }
-      mStillPlaying = true;
-    }
-
-    for (int i = cRuntimeEventsPlaying.size() - 1; i >= 0; i--) {
-      if (cRuntimePosition > static_cast<int>(cDefEvents[cRuntimeEventsPlaying[i]]->getTime() + cDefEvents[cRuntimeEventsPlaying[i]]->getDuration())) {
-        cRuntimeEventsPlaying.erase(cRuntimeEventsPlaying.begin() + i);
-      } else {
-        cDefEvents[cRuntimeEventsPlaying[i]]->updateVolume();
-      }
-    }
-
-    return mStillPlaying;
-  }
-
-  void SequenceTrackAudio::reset() {
-    cRuntimeEventsPlaying.clear();
-    cRuntimeEvent    = 0;
-    cRuntimePosition = 0;
   }
 
   unsigned int SequenceTrackAudio::getDuration() const {
@@ -156,30 +84,6 @@ namespace IsoRealms::Basics {
     return mEvents;
   }
 
-  void SequenceTrackAudio::stopPreview() {
-    cRuntimeEventsPlaying.clear();
-    cRuntimeEvent = 0;
-    cRuntimePosition = 0;
-    for (const std::unique_ptr<Audio>& mEvent : cDefEvents) {
-      mEvent->stop();
-    }
-  }
-
-  void SequenceTrackAudio::setPreviewPosition(long position) {
-    cRuntimeEventsPlaying.clear();
-    cRuntimeEvent = 0;
-    cRuntimePosition = position;
-    for (const std::unique_ptr<Audio>& mEvent : cDefEvents) {
-      if (position >= mEvent->getTime()) {
-        if (position <= mEvent->getTime() + mEvent->getDuration()) {
-          cRuntimeEventsPlaying.emplace_back(cRuntimeEvent);
-          mEvent->playFrom(position - mEvent->getTime());
-        }
-        cRuntimeEvent++;
-      }
-    }
-  }
-
   void SequenceTrackAudio::renderIcon() const {
     Utils::renderIconLeaf();
   }
@@ -201,6 +105,10 @@ namespace IsoRealms::Basics {
       mLeft = mRight;
     }
     glEnd();
+  }
+
+  ISequenceTrackInstance* SequenceTrackAudio::createTrackInstance() {
+    return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
   }
 
   bool SequenceTrackAudio::renderAssetIcon() const {
@@ -227,16 +135,116 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void SequenceTrackAudio::nextTrack() {
-    jumpToTrack(std::min(static_cast<int>(cDefEvents.size()) - 1, static_cast<int>(cRuntimeEvent)));
+  SequenceTrackAudio::Instance::Instance(SequenceTrackAudio& parent) :
+            cParent(parent),
+            cRuntimeEvent(0),
+            cRuntimePosition(0),
+            cExposedName(*this),
+            cExposedCount(*this),
+            cExposedCurrent(*this),
+            cExposedLength(*this),
+            cExposedPosition(*this),
+            cLuaBinding(parent.cSequence.getProject(), this) {
   }
 
-  void SequenceTrackAudio::previousTrack() {
+  void SequenceTrackAudio::Instance::nextTrack() {
+    jumpToTrack(std::min(static_cast<int>(cParent.cDefEvents.size()) - 1, static_cast<int>(cRuntimeEvent)));
+  }
+
+  void SequenceTrackAudio::Instance::previousTrack() {
     jumpToTrack(std::max(0, static_cast<int>(cRuntimeEvent) - 2));
   }
 
-  void SequenceTrackAudio::jumpToTrack(int track) {
-    cSequence.setPreviewPosition(cDefEvents[track]->getTime());
+  void SequenceTrackAudio::Instance::jumpToTrack(int track) {
+// TODO: Implement this.    cSequence.setPreviewPosition(cDefEvents[track]->getTime());
+  }
+
+  void SequenceTrackAudio::Instance::registerAssets(IAssetRegistry& assets) {
+    LocalAssetRegistry mLocationRegistry(assets, cParent.cDefName);
+    mLocationRegistry.add(&cLuaBinding, "", "Sequences");
+    mLocationRegistry.add(&cExposedName, "Audio Name", "SequenceTrackAudio");
+    mLocationRegistry.add(&cExposedCount, "Audio Count", "SequenceTrackAudio");
+    mLocationRegistry.add(&cExposedCurrent, "Current Audio", "SequenceTrackAudio");
+    mLocationRegistry.add(&cExposedLength, "Current Audio Length", "SequenceTrackAudio");
+    mLocationRegistry.add(&cExposedPosition, "Current Audio Position", "SequenceTrackAudio");
+  }
+
+  void SequenceTrackAudio::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(&cLuaBinding, relinquish);
+    assets.remove(&cExposedName, relinquish);
+    assets.remove(&cExposedCount, relinquish);
+    assets.remove(&cExposedCurrent, relinquish);
+    assets.remove(&cExposedLength, relinquish);
+    assets.remove(&cExposedPosition, relinquish);
+  }
+
+  bool SequenceTrackAudio::Instance::play(unsigned int milliseconds) {
+
+    // Update volume.
+    // float mVal = powf(cDefVolume->getValue(), 2.0f);
+    // float mNewVolume = (cRuntimeVolume / static_cast<float>(cParent.cDefFade)) * 100.0f * mVal;
+    // if (cRuntimeActualVolume != mNewVolume || mNewVolume == 0) {
+    //   cRuntimeActualVolume = mNewVolume;
+    //   cMusic.setVolume(cRuntimeActualVolume);
+    // }
+
+    // Simple volume curve.
+    cRuntimeVolume = powf(cParent.cDefVolume->getValue(), 2.0f) * 100.0f;
+
+    bool mStillPlaying = false;
+    if (cRuntimeEvent < cParent.cDefEvents.size()) {
+      cRuntimePosition += milliseconds;
+      int mRuntimeEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();
+      while (cRuntimeEvent < cParent.cDefEvents.size() && cRuntimePosition >= mRuntimeEventTime) {
+        cParent.cDefEvents[cRuntimeEvent]->play();
+        cRuntimeEventsPlaying.emplace_back(cRuntimeEvent);
+        cRuntimeEvent++;
+        if (cRuntimeEvent < cParent.cDefEvents.size()) {
+          mRuntimeEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();
+        }
+      }
+      mStillPlaying = true;
+    }
+
+    for (int i = cRuntimeEventsPlaying.size() - 1; i >= 0; i--) {
+      if (cRuntimePosition > static_cast<int>(cParent.cDefEvents[cRuntimeEventsPlaying[i]]->getTime() + cParent.cDefEvents[cRuntimeEventsPlaying[i]]->getDuration())) {
+        cRuntimeEventsPlaying.erase(cRuntimeEventsPlaying.begin() + i);
+      } else {
+        cParent.cDefEvents[cRuntimeEventsPlaying[i]]->updateVolume(cRuntimeEvent);
+      }
+    }
+
+    return mStillPlaying;
+  }
+
+  void SequenceTrackAudio::Instance::reset() {
+    cRuntimeEventsPlaying.clear();
+    cRuntimeEvent    = 0;
+    cRuntimePosition = 0;
+  }
+
+  void SequenceTrackAudio::Instance::stopPreview() {
+    cRuntimeEventsPlaying.clear();
+    cRuntimeEvent = 0;
+    cRuntimePosition = 0;
+    for (const std::unique_ptr<Audio>& mEvent : cParent.cDefEvents) {
+      mEvent->stop();
+    }
+  }
+
+  void SequenceTrackAudio::Instance::setPreviewPosition(long position) {
+    cRuntimeEventsPlaying.clear();
+    cRuntimeEvent = 0;
+    cRuntimePosition = position;
+    for (const std::unique_ptr<Audio>& mEvent : cParent.cDefEvents) {
+      if (position >= mEvent->getTime()) {
+        if (position <= mEvent->getTime() + mEvent->getDuration()) {
+          cRuntimeEventsPlaying.emplace_back(cRuntimeEvent);
+          mEvent->playFrom(position - mEvent->getTime(), cRuntimeVolume);
+        }
+        cRuntimeEvent++;
+      }
+    }
   }
 
   SequenceTrackAudio::Audio::Audio(SequenceTrackAudio& parent, IProject& project, unsigned int time) :
@@ -260,12 +268,12 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void SequenceTrackAudio::Audio::updateVolume() {
-    cMusic.setVolume(cParent.cRuntimeVolume);
+  void SequenceTrackAudio::Audio::updateVolume(float volume) {
+    cMusic.setVolume(volume);
   }
 
-  void SequenceTrackAudio::Audio::playFrom(int position) {
-    updateVolume();
+  void SequenceTrackAudio::Audio::playFrom(int position, float volume) {
+    updateVolume(volume);
     cMusic.play();
     cMusic.setPlayingOffset(sf::milliseconds(std::max(0, cMusic.getPlayingOffset().asMilliseconds() + position)));
   }
@@ -332,84 +340,84 @@ namespace IsoRealms::Basics {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  SequenceTrackAudio::Name::Name(SequenceTrackAudio& parent) :
+  SequenceTrackAudio::Instance::Name::Name(Instance& parent) :
             cParent(parent) {
   }
 
-  std::string SequenceTrackAudio::Name::getValue() const {
-    return cParent.cRuntimeEvent == 0 ? "" : cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getName();
+  std::string SequenceTrackAudio::Instance::Name::getValue() const {
+    return cParent.cRuntimeEvent == 0 ? "" : cParent.cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getName();
   }
 
-  bool SequenceTrackAudio::Name::renderAssetIcon() const {
+  bool SequenceTrackAudio::Instance::Name::renderAssetIcon() const {
     return false;
   }
 
-  void SequenceTrackAudio::Name::saveAsset(JSONObject object) const {
+  void SequenceTrackAudio::Instance::Name::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Name::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Instance::Name::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool SequenceTrackAudio::Name::isDefaultConfiguration() const {
+  bool SequenceTrackAudio::Instance::Name::isDefaultConfiguration() const {
     return true;
   }
 
-  SequenceTrackAudio::Count::Count(SequenceTrackAudio& parent) :
+  SequenceTrackAudio::Instance::Count::Count(Instance& parent) :
             cParent(parent) {
   }
 
-  int SequenceTrackAudio::Count::getValue() const {
-    return cParent.cDefEvents.size();
+  int SequenceTrackAudio::Instance::Count::getValue() const {
+    return cParent.cParent.cDefEvents.size();
   }
 
-  bool SequenceTrackAudio::Count::renderAssetIcon() const {
+  bool SequenceTrackAudio::Instance::Count::renderAssetIcon() const {
     return false;
   }
 
-  void SequenceTrackAudio::Count::saveAsset(JSONObject object) const {
+  void SequenceTrackAudio::Instance::Count::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Count::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Instance::Count::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool SequenceTrackAudio::Count::isDefaultConfiguration() const {
+  bool SequenceTrackAudio::Instance::Count::isDefaultConfiguration() const {
     return true;
   }
 
-  SequenceTrackAudio::Current::Current(SequenceTrackAudio& parent) :
+  SequenceTrackAudio::Instance::Current::Current(Instance& parent) :
             cParent(parent) {
   }
 
-  int SequenceTrackAudio::Current::getValue() const {
+  int SequenceTrackAudio::Instance::Current::getValue() const {
     return cParent.cRuntimeEvent;
   }
 
-  bool SequenceTrackAudio::Current::renderAssetIcon() const {
+  bool SequenceTrackAudio::Instance::Current::renderAssetIcon() const {
     return false;
   }
 
-  void SequenceTrackAudio::Current::saveAsset(JSONObject object) const {
+  void SequenceTrackAudio::Instance::Current::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Current::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Instance::Current::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool SequenceTrackAudio::Current::isDefaultConfiguration() const {
+  bool SequenceTrackAudio::Instance::Current::isDefaultConfiguration() const {
     return true;
   }
 
-  SequenceTrackAudio::Length::Length(SequenceTrackAudio& parent) :
+  SequenceTrackAudio::Instance::Length::Length(Instance& parent) :
             cParent(parent) {
   }
 
-  std::string SequenceTrackAudio::Length::getValue() const {
-    int cLength = cParent.cRuntimeEvent == 0 ? 0 : cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getDuration();
+  std::string SequenceTrackAudio::Instance::Length::getValue() const {
+    int cLength = cParent.cRuntimeEvent == 0 ? 0 : cParent.cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getDuration();
     int mMilliseconds = cLength % 1000;
     int mSeconds = cLength / 1000;
     int mMinutes = mSeconds / 60;
@@ -419,28 +427,28 @@ namespace IsoRealms::Basics {
     return mStringStream.str();
   }
 
-  bool SequenceTrackAudio::Length::renderAssetIcon() const {
+  bool SequenceTrackAudio::Instance::Length::renderAssetIcon() const {
     return false;
   }
 
-  void SequenceTrackAudio::Length::saveAsset(JSONObject object) const {
+  void SequenceTrackAudio::Instance::Length::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Length::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Instance::Length::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool SequenceTrackAudio::Length::isDefaultConfiguration() const {
+  bool SequenceTrackAudio::Instance::Length::isDefaultConfiguration() const {
     return true;
   }
 
-  SequenceTrackAudio::Position::Position(SequenceTrackAudio& parent) :
+  SequenceTrackAudio::Instance::Position::Position(Instance& parent) :
             cParent(parent) {
   }
 
-  std::string SequenceTrackAudio::Position::getValue() const {
-    int cLength = cParent.cRuntimeEvent == 0 ? 0 : cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getPosition();
+  std::string SequenceTrackAudio::Instance::Position::getValue() const {
+    int cLength = cParent.cRuntimeEvent == 0 ? 0 : cParent.cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getPosition();
     int mMilliseconds = cLength % 1000;
     int mSeconds = cLength / 1000;
     int mMinutes = mSeconds / 60;
@@ -450,19 +458,19 @@ namespace IsoRealms::Basics {
     return mStringStream.str();
   }
 
-  bool SequenceTrackAudio::Position::renderAssetIcon() const {
+  bool SequenceTrackAudio::Instance::Position::renderAssetIcon() const {
     return false;
   }
 
-  void SequenceTrackAudio::Position::saveAsset(JSONObject object) const {
+  void SequenceTrackAudio::Instance::Position::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Position::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::Instance::Position::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool SequenceTrackAudio::Position::isDefaultConfiguration() const {
+  bool SequenceTrackAudio::Instance::Position::isDefaultConfiguration() const {
     return true;
   }
 

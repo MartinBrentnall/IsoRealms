@@ -22,6 +22,7 @@
 #include "IsoRealms/Types.h"
 
 #include "ISequenceTrackEvent.h"
+#include "ISequenceTrackInstance.h"
 
 namespace IsoRealms::Basics {
 
@@ -30,34 +31,6 @@ namespace IsoRealms::Basics {
     */
   class ISequenceTrack : public IAsset {
     public:
-
-    /**
-      * Register assets belonging to this track.
-      *
-      * @param assets Interface for asset registration.
-      */
-    virtual void registerAssets(IAssetRegistry& assets) = 0;
-
-    /**
-      * Unregister assets belonging to this track.
-      *
-      * @param assets Interface for asset unregistration.
-      */
-    virtual void unregisterAssets(IAssetRemover& assets, bool relinquish) = 0;
-
-    /**
-      * Forward this track and perform processing according to events within
-      * the track.
-      *
-      * @param milliseconds The amount to forward by.
-      * @return true if there are still events to process within the track.
-      */
-    virtual bool play(unsigned int milliseconds) = 0;
-
-    /**
-      * Reset this track to its initial state.
-      */
-    virtual void reset() = 0;
 
     /**
       * Get the number of milliseconds it will take in total to process all
@@ -74,13 +47,12 @@ namespace IsoRealms::Basics {
     virtual void setEventTime(ISequenceTrackEvent* event, unsigned int time) = 0;
     virtual std::vector<ISequenceTrackEvent*> getEvents() = 0;
 
-    virtual void stopPreview() = 0;
-    virtual void setPreviewPosition(long position) = 0;
-
     /**
      * Render icon representing this track.
      */
     virtual void renderIcon() const = 0;
+
+    virtual ISequenceTrackInstance* createTrackInstance() = 0;
 
     /**
       * Render a visual representation of the track for editing, fitting

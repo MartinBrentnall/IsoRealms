@@ -28,57 +28,17 @@ namespace IsoRealms::Basics {
   const std::string SequenceTrackColour::JSON_TYPE     = "type";
 
   SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence) :
-            cOutput(*this),
             cDefName("TODO"),
-            cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}),
-            cRuntimeEvent(0),
-            cRuntimeEventPosition(0),
-            cStateNotifier(nullptr) {
+            cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
   
   SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence, JSONObject object) :
-            cOutput(*this),
             cDefName(object.getString(JSON_OUTPUT)),
-            cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}),
-            cRuntimeEvent(0),
-            cRuntimeEventPosition(0),
-            cStateNotifier(nullptr) {
+            cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
     cDefInitColour.init(object, JSON_START);
     for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
       cDefEvents.push_back(std::make_unique<Event>(project, mEventObject));
     }
-  }
-
-  void SequenceTrackColour::registerAssets(IAssetRegistry& assets) {
-    cStateNotifier = assets.add(&cOutput, cDefName, "Sequences");
-  }
-  
-  void SequenceTrackColour::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cOutput, relinquish);
-    cStateNotifier = nullptr;
-  }
-
-  bool SequenceTrackColour::play(unsigned int milliseconds) {
-    bool mStillPlaying = false;
-    if (cRuntimeEvent < cDefEvents.size()) {
-      cRuntimeEventPosition += milliseconds;
-      int mNextEventTime = cDefEvents[cRuntimeEvent]->getTime();
-      while (cRuntimeEvent < cDefEvents.size() && cRuntimeEventPosition >= mNextEventTime) {
-        cRuntimeEvent++;
-        if (cRuntimeEvent < cDefEvents.size()) {
-          mNextEventTime = cDefEvents[cRuntimeEvent]->getTime();;
-        }
-      }
-      mStillPlaying = true;
-    }
-    updateColour();
-    return mStillPlaying;
-  }
-
-  void SequenceTrackColour::reset() {
-    cRuntimeEvent         = 0;
-    cRuntimeEventPosition = 0;
-    updateColour();
   }
 
   unsigned int SequenceTrackColour::getDuration() const {
@@ -146,17 +106,6 @@ namespace IsoRealms::Basics {
     return mEvents;
   }
 
-  void SequenceTrackColour::stopPreview() {
-    cRuntimeEvent = 0;
-    cRuntimeEventPosition = 0;
-  }
-
-  void SequenceTrackColour::setPreviewPosition(long position) {
-    cRuntimeEvent = 0;
-    cRuntimeEventPosition = 0;
-    play(position);
-  }
-
   void SequenceTrackColour::renderIcon() const {
     float mOffset = 0.15f;
     glColor3f(1.0f, 1.0f, 1.0f);
@@ -197,6 +146,10 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
+  ISequenceTrackInstance* SequenceTrackColour::createTrackInstance() {
+    return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
+  }
+
   unsigned int SequenceTrackColour::getTime() const {
     return 0U;
   }
@@ -233,13 +186,86 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void SequenceTrackColour::updateColour() {
+  void SequenceTrackColour::stateChanged(IColour* colour) {
+    for (std::unique_ptr<Instance>& mInstance : cInstances) {
+      mInstance->stateChanged(colour);
+    }
+  }
+
+  SequenceTrackColour::Instance::Instance(SequenceTrackColour& parent) :
+            cParent(parent),
+            cRuntimeEvent(0),
+            cRuntimeEventPosition(0),
+            cStateNotifier(nullptr) {
+  }
+
+  void SequenceTrackColour::Instance::registerAssets(IAssetRegistry& assets) {
+    cStateNotifier = assets.add(this, cParent.cDefName, "Sequences");
+  }
+
+  void SequenceTrackColour::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(this, relinquish);
+    cStateNotifier = nullptr;
+  }
+
+  void SequenceTrackColour::Instance::stateChanged(IColour* colour) {
+    const IColour* mUsedColour = getPreviousColour();
+    if (colour == mUsedColour) {
+      updateColour();
+      return;
+    }
+
+    if (cRuntimeEvent < cParent.cDefEvents.size() && (cRuntimeEvent > 0 || cRuntimeEventPosition > 0)) {
+      int mRuntimeEvent = cRuntimeEventPosition == 0 ? cRuntimeEvent - 1 : cRuntimeEvent;
+      mUsedColour = cParent.cDefEvents[mRuntimeEvent]->getColour();
+      if (colour == mUsedColour) {
+        updateColour();
+        return;
+      }
+    }
+  }
+
+  bool SequenceTrackColour::Instance::play(unsigned int milliseconds) {
+    bool mStillPlaying = false;
+    if (cRuntimeEvent < cParent.cDefEvents.size()) {
+      cRuntimeEventPosition += milliseconds;
+      int mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();
+      while (cRuntimeEvent < cParent.cDefEvents.size() && cRuntimeEventPosition >= mNextEventTime) {
+        cRuntimeEvent++;
+        if (cRuntimeEvent < cParent.cDefEvents.size()) {
+          mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();;
+        }
+      }
+      mStillPlaying = true;
+    }
+    updateColour();
+    return mStillPlaying;
+  }
+
+  void SequenceTrackColour::Instance::reset() {
+    cRuntimeEvent         = 0;
+    cRuntimeEventPosition = 0;
+    updateColour();
+  }
+
+  void SequenceTrackColour::Instance::stopPreview() {
+    cRuntimeEvent = 0;
+    cRuntimeEventPosition = 0;
+  }
+
+  void SequenceTrackColour::Instance::setPreviewPosition(long position) {
+    cRuntimeEvent = 0;
+    cRuntimeEventPosition = 0;
+    play(position);
+  }
+
+  void SequenceTrackColour::Instance::updateColour() {
     const IColour* mPreviousEventColour = getPreviousColour();
     LiteralColour mPreviousColour = cRuntimeColour;
-    if (cRuntimeEvent < cDefEvents.size() && cDefEvents[cRuntimeEvent]->isFade()) {
-      const IColour* mCurrentColour = cDefEvents[cRuntimeEvent]->getColour();
-      int mEventDuration = cDefEvents[cRuntimeEvent]->getTime() - (cRuntimeEvent == 0 ? 0 : cDefEvents[cRuntimeEvent - 1]->getTime());
-      int mEventPosition = cRuntimeEventPosition                - (cRuntimeEvent == 0 ? 0 : cDefEvents[cRuntimeEvent - 1]->getTime());
+    if (cRuntimeEvent < cParent.cDefEvents.size() && cParent.cDefEvents[cRuntimeEvent]->isFade()) {
+      const IColour* mCurrentColour = cParent.cDefEvents[cRuntimeEvent]->getColour();
+      int mEventDuration = cParent.cDefEvents[cRuntimeEvent]->getTime() - (cRuntimeEvent == 0 ? 0 : cParent.cDefEvents[cRuntimeEvent - 1]->getTime());
+      int mEventPosition = cRuntimeEventPosition                        - (cRuntimeEvent == 0 ? 0 : cParent.cDefEvents[cRuntimeEvent - 1]->getTime());
       float mRelativePosition = mEventPosition / static_cast<float>(mEventDuration);
       cRuntimeColour = LiteralColour(*mPreviousEventColour, *mCurrentColour, mRelativePosition);
     } else if (mPreviousEventColour != nullptr) {
@@ -248,71 +274,50 @@ namespace IsoRealms::Basics {
       cRuntimeColour = LiteralColour(1.0f, 0.0f, 0.0f);
     }
 
-    if (cRuntimeColour != mPreviousColour) {
-      cStateNotifier->stateChanged(&cOutput);
+    if (cRuntimeColour != mPreviousColour && cStateNotifier != nullptr) { // TODO: State notifier should never be nullptr!!!  Need to make sure "registerAssets" is called after adding a track in editor.
+      cStateNotifier->stateChanged(this);
     }
   }
 
-  const IColour* SequenceTrackColour::getPreviousColour() {
+  const IColour* SequenceTrackColour::Instance::getPreviousColour() {
     for (int i = cRuntimeEvent; i > 0; i--) {
-      const IColour* mPreviousEventColour = cDefEvents[i - 1]->getColour();
+      const IColour* mPreviousEventColour = cParent.cDefEvents[i - 1]->getColour();
       if (mPreviousEventColour != nullptr) {
         return mPreviousEventColour;
       }
     }
-    return *cDefInitColour;
+    return *cParent.cDefInitColour;
   }
 
-  void SequenceTrackColour::stateChanged(IColour* colour) {
-    const IColour* mUsedColour = getPreviousColour();
-    if (colour == mUsedColour) {
-      updateColour();
-      return;
-    }
-    
-    if (cRuntimeEvent < cDefEvents.size() && (cRuntimeEvent > 0 || cRuntimeEventPosition > 0)) {
-      int mRuntimeEvent = cRuntimeEventPosition == 0 ? cRuntimeEvent - 1 : cRuntimeEvent;
-      mUsedColour = cDefEvents[mRuntimeEvent]->getColour();
-      if (colour == mUsedColour) {
-        updateColour();
-        return;
-      }
-    }
+  void SequenceTrackColour::Instance::set() const {
+    cRuntimeColour.set();
   }
 
-  SequenceTrackColour::Output::Output(SequenceTrackColour& parent) :
-            cParent(parent) {
+  float SequenceTrackColour::Instance::getRed() const {
+    return cRuntimeColour.getRed();
   }
 
-  void SequenceTrackColour::Output::set() const {
-    cParent.cRuntimeColour.set();
+  float SequenceTrackColour::Instance::getGreen() const {
+    return cRuntimeColour.getGreen();
   }
 
-  float SequenceTrackColour::Output::getRed() const {
-    return cParent.cRuntimeColour.getRed();
+  float SequenceTrackColour::Instance::getBlue() const {
+    return cRuntimeColour.getBlue();
   }
 
-  float SequenceTrackColour::Output::getGreen() const {
-    return cParent.cRuntimeColour.getGreen();
+  float SequenceTrackColour::Instance::getAlpha() const {
+    return cRuntimeColour.getAlpha();
   }
 
-  float SequenceTrackColour::Output::getBlue() const {
-    return cParent.cRuntimeColour.getBlue();
-  }
-
-  float SequenceTrackColour::Output::getAlpha() const {
-    return cParent.cRuntimeColour.getAlpha();
-  }
-
-  void SequenceTrackColour::Output::saveAsset(JSONObject object) const {
+  void SequenceTrackColour::Instance::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackColour::Output::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackColour::Instance::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool SequenceTrackColour::Output::isDefaultConfiguration() const {
+  bool SequenceTrackColour::Instance::isDefaultConfiguration() const {
     return true;
   }
 

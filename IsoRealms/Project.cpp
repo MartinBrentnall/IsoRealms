@@ -185,7 +185,7 @@ namespace IsoRealms {
 
       // Initialise everything
       for (unsigned int j = 0; j < cInitialisers.size(); j++) {
-        std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
+//        std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
 //         if (j == 833) {
 //           std::cout << "DEBUG!" << std::endl;
 //         }
@@ -814,7 +814,7 @@ namespace IsoRealms {
   void Project::remove(IVertex*         asset, bool relinquish) {cVertices.remove(      asset, relinquish);}
   
   void Project::init(std::function<void(IAssets&)> initialiser) {
-    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
+//    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
 //     if (cInitialisers.size() == 833) {
 //       std::cout << "DEBUG!" << std::endl;
 //     }

@@ -107,75 +107,6 @@
             ]
           },
           {
-            "type": "ColourCycler",
-            "instances": [
-              {
-                "id": "Menu Selection Highlight",
-                "speed": {
-                  "key": "Literal",
-                  "value": 0.004999999888241291
-                },
-                "inputs": [
-                  {
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 0.5,
-                      "blue": 0.5,
-                      "alpha": 1
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "alpha": 1
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Literal",
-                      "green": 1,
-                      "alpha": 1
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Literal",
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Literal",
-                      "red": 0.5,
-                      "green": 0.5,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  {
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 0.5,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  }
-                ],
-                "outputs": [
-                  {
-                    "speedMultiplier": 1
-                  }
-                ]
-              }
-            ]
-          },
-          {
             "type": "DigitalInput",
             "instances": [
               {
@@ -709,6 +640,98 @@
             ]
           },
           {
+            "type": "Sequence",
+            "instances": [
+              {
+                "id": "Menu Selection Colour",
+                "playing": true,
+                "loop": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1.0
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Colour",
+                      "outputs": "Colour",
+                      "start": {
+                        "key": "Literal",
+                        "red": 1,
+                        "green": 0.5000000596046448,
+                        "blue": 0.5000000596046448,
+                        "alpha": 1
+                      },
+                      "events": [
+                        {
+                          "duration": 200,
+                          "target": {
+                            "key": "Literal",
+                            "red": 1,
+                            "green": 1,
+                            "alpha": 1
+                          }
+                        },
+                        {
+                          "duration": 400,
+                          "target": {
+                            "key": "Literal",
+                            "green": 1,
+                            "alpha": 1
+                          }
+                        },
+                        {
+                          "duration": 600,
+                          "target": {
+                            "key": "Literal",
+                            "green": 1,
+                            "blue": 1,
+                            "alpha": 1
+                          }
+                        },
+                        {
+                          "duration": 800,
+                          "target": {
+                            "key": "Literal",
+                            "red": 0.49999988079071045,
+                            "green": 0.5000000596046448,
+                            "blue": 1,
+                            "alpha": 1
+                          }
+                        },
+                        {
+                          "duration": 1000,
+                          "target": {
+                            "key": "Literal",
+                            "red": 1,
+                            "green": 0.5000000596046448,
+                            "blue": 1,
+                            "alpha": 1
+                          }
+                        },
+                        {
+                          "duration": 1200,
+                          "target": {
+                            "key": "Literal",
+                            "red": 1,
+                            "green": 0.5000000596046448,
+                            "blue": 0.5000000596046448,
+                            "alpha": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "type": "String",
             "instances": [
               {
@@ -803,7 +826,7 @@
               {
                 "id": "Options",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -923,7 +946,7 @@
               {
                 "id": "Visual",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -1058,7 +1081,7 @@
               {
                 "id": "Audio",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -1098,7 +1121,7 @@
               {
                 "id": "Control",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -1540,7 +1563,7 @@
               {
                 "id": "ConfigureInput",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -1597,7 +1620,7 @@
                 "cancelLabel": "No",
                 "confirmLabel": "Yes",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -1637,7 +1660,7 @@
                 "cancelLabel": "No",
                 "confirmLabel": "Yes",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"

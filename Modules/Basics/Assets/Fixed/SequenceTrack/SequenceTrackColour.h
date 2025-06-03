@@ -41,10 +41,6 @@ namespace IsoRealms::Basics {
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-    bool play(unsigned int milliseconds) override;
-    void reset() override;
     unsigned int getDuration() const override;
     void setName(const std::string& name) override;
     std::string getName() const override;
@@ -52,10 +48,9 @@ namespace IsoRealms::Basics {
     void deleteEvent(ISequenceTrackEvent* event) override;
     void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
     std::vector<ISequenceTrackEvent*> getEvents() override;
-    void stopPreview() override;
-    void setPreviewPosition(long position) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
+    ISequenceTrackInstance* createTrackInstance() override;
 
     /**********************************\
       * Implements ISequenceTrackEvent *
@@ -74,12 +69,24 @@ namespace IsoRealms::Basics {
 
     private:
 
-    class Output : public IColour {
+    class Instance : public ISequenceTrackInstance,
+                     public IColour {
       public:
-      Output(SequenceTrackColour& parent);
+      Instance(SequenceTrackColour& parent);
+
+      /*************************************\
+       * Implements ISequenceTrackInstance *
+      \*************************************/
+      void registerAssets(IAssetRegistry& assets) override;
+      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
+      void stateChanged(IColour* colour);
+      bool play(unsigned int milliseconds) override;
+      void reset() override;
+      void stopPreview() override;
+      void setPreviewPosition(long position) override;
 
       /**********************\
-      * Implements IColour *
+       * Implements IColour *
       \**********************/
       void set() const override;
       float getRed() const override;
@@ -92,6 +99,18 @@ namespace IsoRealms::Basics {
 
       private:
       SequenceTrackColour& cParent;
+
+      // Runtime data.
+      LiteralColour cRuntimeColour;
+      unsigned int cRuntimeEvent;
+      int cRuntimeEventPosition;
+
+      // Misc.
+      IStateNotifier<IColour>* cStateNotifier;
+
+      // Internal funcctions.
+      void updateColour();
+      const IColour* getPreviousColour();
     };
 
     class Event : public ISequenceTrackEvent {
@@ -127,26 +146,17 @@ namespace IsoRealms::Basics {
     static const std::string JSON_TARGET;
     static const std::string JSON_TYPE;
 
-    Output cOutput;
-
     // Definition data.
     std::string cDefName;
     Colour cDefInitColour;
     std::vector<std::unique_ptr<Event>> cDefEvents;
 
     // Runtime data.
-    LiteralColour cRuntimeColour;
-    unsigned int cRuntimeEvent;
-    int cRuntimeEventPosition;
-
-    // Misc.
-    IStateNotifier<IColour>* cStateNotifier;
+    std::vector<std::unique_ptr<Instance>> cInstances;
 
     /**********************\
      * Internal Functions *
     \**********************/
-    void updateColour();
-    const IColour* getPreviousColour();
     void stateChanged(IColour* colour);
   };
 }

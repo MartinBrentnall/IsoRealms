@@ -634,6 +634,7 @@ namespace IsoRealms::Basics {
             case 0: {
               if (cCursorTrack.value() == static_cast<int>(cSequence.getTrackCount())) {
                 cSequence.addTrack();
+                cTrackLocks.emplace_back(0);
                 cCursorTrackProperties = true;
                 cCursorTimeline = 0.0f;
               }

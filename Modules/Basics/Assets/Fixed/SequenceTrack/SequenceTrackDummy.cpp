@@ -23,22 +23,6 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackDummy::registerAssets(IAssetRegistry& assets) {
-    // Nothing to do.
-  }
-  
-  void SequenceTrackDummy::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-
-  bool SequenceTrackDummy::play(unsigned int milliseconds) {
-    return false;
-  }
-
-  void SequenceTrackDummy::reset() {
-    // Nothing to do.
-  }
-
   unsigned int SequenceTrackDummy::getDuration() const {
     return 0;
   }
@@ -67,14 +51,6 @@ namespace IsoRealms::Basics {
     return std::vector<ISequenceTrackEvent*>();
   }
 
-  void SequenceTrackDummy::stopPreview() {
-    // Nothing to do.
-  }
-
-  void SequenceTrackDummy::setPreviewPosition(long position) {
-    // Nothing to do.
-  }
-
   void SequenceTrackDummy::renderIcon() const {
     Utils::renderIconNone();
   }
@@ -83,6 +59,10 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
+  ISequenceTrackInstance* SequenceTrackDummy::createTrackInstance() {
+    return nullptr; // TODO: Implement this.
+  }
+
   bool SequenceTrackDummy::renderAssetIcon() const {
     return false;
   }

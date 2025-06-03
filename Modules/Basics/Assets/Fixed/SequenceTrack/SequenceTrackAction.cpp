@@ -24,50 +24,14 @@ namespace IsoRealms::Basics {
   const std::string SequenceTrackAction::JSON_EXECUTE = "execute";
 
   SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence) {
-    reset();
+//    reset();
   }
   
   SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object) {
     for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
-      cDefEvents.emplace_back(std::make_unique<Event>(mEventObject, project, cDefEvents.empty() ? 0 : cDefEvents.back()->getTime()));
+      cDefEvents.emplace_back(std::make_unique<Event>(mEventObject, project));
     }
-    reset();
-  }
-
-  void SequenceTrackAction::registerAssets(IAssetRegistry& assets) {
-    // Nothing to do.
-  }
-
-  void SequenceTrackAction::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-
-  bool SequenceTrackAction::play(unsigned int milliseconds) {
-    if (cRuntimeAction < cDefEvents.size()) {
-      std::vector<Event*> mEventToExecute;
-      while (milliseconds > cRuntimeActionRemaining) {
-        mEventToExecute.emplace_back(cDefEvents[cRuntimeAction].get());
-        cRuntimeAction++;
-        if (cRuntimeAction == cDefEvents.size()) {
-          break;
-        }
-        milliseconds -= cRuntimeActionRemaining;
-        cRuntimeActionRemaining = cDefEvents[cRuntimeAction]->getTime() - (cRuntimeAction == 0 ? 0 : cDefEvents[cRuntimeAction - 1]->getTime());
-      }
-      cRuntimeActionRemaining -= milliseconds;
-
-      // Execute actions at the end in case one triggers a modification to the state of the sequence.
-      for (Event* mEvent : mEventToExecute) {
-        mEvent->execute();
-      }
-      return true;
-    }
-    return false;
-  }
-
-  void SequenceTrackAction::reset() {
-    cRuntimeAction = 0;
-    cRuntimeActionRemaining = cDefEvents[cRuntimeAction]->getTime() - (cRuntimeAction == 0 ? 0 : cDefEvents[cRuntimeAction - 1]->getTime());
+//    reset();
   }
 
   unsigned int SequenceTrackAction::getDuration() const {
@@ -102,14 +66,6 @@ namespace IsoRealms::Basics {
     return mEvents;
   }
 
-  void SequenceTrackAction::stopPreview() {
-    // TODO: Implement this.
-  }
-
-  void SequenceTrackAction::setPreviewPosition(long position) {
-    // TODO: Implement this.
-  }
-
   void SequenceTrackAction::renderIcon() const {
     Utils::renderIconTerminal();
   }
@@ -127,6 +83,10 @@ namespace IsoRealms::Basics {
     glVertex2f(left,  bottom);
     glVertex2f(mRight, bottom);
     glEnd();
+  }
+
+  ISequenceTrackInstance* SequenceTrackAction::createTrackInstance() {
+    return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
   }
 
   bool SequenceTrackAction::renderAssetIcon() const {
@@ -150,9 +110,59 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  SequenceTrackAction::Event::Event(JSONObject object, IProject& project, unsigned int prevTimes) :
+  SequenceTrackAction::Instance::Instance(SequenceTrackAction& parent) :
+            cParent(parent),
+            cRuntimeEvent(0),
+            cRuntimeEventPosition(0) {
+  }
+
+  void SequenceTrackAction::Instance::registerAssets(IAssetRegistry& assets) {
+    // Nothing to do.
+  }
+
+  void SequenceTrackAction::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    // Nothing to do.
+  }
+
+  bool SequenceTrackAction::Instance::play(unsigned int milliseconds) {
+    bool mStillPlaying = false;
+    if (cRuntimeEvent < cParent.cDefEvents.size()) {
+      std::vector<Event*> mEventToExecute;
+      cRuntimeEventPosition += milliseconds;
+      int mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();
+      while (cRuntimeEvent < cParent.cDefEvents.size() && cRuntimeEventPosition >= mNextEventTime) {
+        mEventToExecute.emplace_back(cParent.cDefEvents[cRuntimeEvent].get());
+        cRuntimeEvent++;
+        if (cRuntimeEvent < cParent.cDefEvents.size()) {
+          mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();;
+        }
+      }
+      mStillPlaying = true;
+
+      // Execute actions at the end in case one triggers a modification to the state of the sequence.
+      for (Event* mEvent : mEventToExecute) {
+        mEvent->execute();
+      }
+    }
+    return mStillPlaying;
+  }
+
+  void SequenceTrackAction::Instance::reset() {
+    cRuntimeEvent = 0;
+    cRuntimeEventPosition = 0;
+  }
+
+  void SequenceTrackAction::Instance::stopPreview() {
+    // TODO: Implement this.
+  }
+
+  void SequenceTrackAction::Instance::setPreviewPosition(long position) {
+    // TODO: Implement this.
+  }
+
+  SequenceTrackAction::Event::Event(JSONObject object, IProject& project) :
             cDefAction(project),
-            cDefTime(object.getInteger(JSON_DELAY) + prevTimes) {
+            cDefTime(object.getInteger(JSON_DELAY)) {
     cDefAction.init(object, JSON_EXECUTE);
   }
 

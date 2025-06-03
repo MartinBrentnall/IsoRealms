@@ -42,10 +42,6 @@ namespace IsoRealms::Basics {
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-    bool play(unsigned int milliseconds) override;
-    void reset() override;
     unsigned int getDuration() const override;
     void setName(const std::string& name) override;
     std::string getName() const override;
@@ -53,10 +49,9 @@ namespace IsoRealms::Basics {
     void deleteEvent(ISequenceTrackEvent* event) override;
     void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
     std::vector<ISequenceTrackEvent*> getEvents() override;
-    void stopPreview() override;
-    void setPreviewPosition(long position) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
+    ISequenceTrackInstance* createTrackInstance() override;
 
     /****************************************\
      * Implements IAsset via ISequenceTrack *
@@ -75,9 +70,22 @@ namespace IsoRealms::Basics {
 
     private:
 
-    class Output : public IFloat {
+    class Instance : public ISequenceTrackInstance,
+                     public IFloat {
       public:
-      Output(SequenceTrackFloat& parent);
+      Instance(SequenceTrackFloat& parent);
+
+      void stateChanged(IFloat* value);
+
+      /*************************************\
+       * Implements ISequenceTrackInstance *
+      \*************************************/
+      void registerAssets(IAssetRegistry& assets) override;
+      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
+      bool play(unsigned int milliseconds) override;
+      void reset() override;
+      void stopPreview() override;
+      void setPreviewPosition(long position) override;
 
       /*********************\
        * Implements IFloat *
@@ -90,6 +98,18 @@ namespace IsoRealms::Basics {
 
       private:
       SequenceTrackFloat& cParent;
+
+      // Runtime data.
+      float cRuntimeValue;
+      unsigned int cRuntimeEvent;
+      int cRuntimeEventPosition;
+
+      // Misc.
+      IStateNotifier<IFloat>* cStateNotifier;
+
+      // Internal funcctions.
+      void updateValue();
+      IFloat* getPreviousValue();
     };
 
     class Event : public ISequenceTrackEvent {
@@ -98,7 +118,7 @@ namespace IsoRealms::Basics {
       Event(IProject& project, JSONObject object);
 
       void save(JSONObject object) const;
-      float getValue() const;
+      IFloat* getValue() const;
       bool isFade() const;
 
       /**********************************\
@@ -122,26 +142,14 @@ namespace IsoRealms::Basics {
     static const std::string JSON_START;
     static const std::string JSON_VALUE;
 
-    Output cOutput;
-
     // Definition data.
     std::string cDefName;
     Float cDefStartValue;
     std::vector<std::unique_ptr<Event>> cDefEvents;
 
     // Runtime data.
-    float cRuntimeValue;
-    unsigned int cRuntimeEvent;
-    int cRuntimeEventPosition;
+    std::vector<std::unique_ptr<Instance>> cInstances;
 
-    // Misc.
-    IStateNotifier<IFloat>* cStateNotifier;
-
-    /**********************\
-     * Internal Functions *
-    \**********************/
-    void updateValue();
-    float getPreviousValue();
-    void stateChanged(float value);
+    void stateChanged(IFloat* value);
   };
 }

@@ -1268,7 +1268,7 @@
               {
                 "id": "Pause",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -1614,7 +1614,7 @@
               {
                 "id": "EditorControls",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -2161,7 +2161,7 @@
               {
                 "id": "UserMissions",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -2246,7 +2246,7 @@
                 "cancelLabel": "Cancel",
                 "confirmLabel": "New Map",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -2308,7 +2308,7 @@
                 "cancelLabel": "Cancel",
                 "confirmLabel": "Close",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -2351,7 +2351,7 @@
                 "cancelLabel": "Cancel",
                 "confirmLabel": "Quit",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -2379,7 +2379,7 @@
                 "cancelLabel": "Cancel",
                 "confirmLabel": "Load world",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -2441,7 +2441,7 @@
                 "cancelLabel": "Cancel",
                 "confirmLabel": "Overwrite",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"
@@ -2490,7 +2490,7 @@
               {
                 "id": "LoadingScreen",
                 "colour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 }
               }
             ]
@@ -2501,7 +2501,7 @@
               {
                 "id": "SaveAsPrompt",
                 "selectionColour": {
-                  "key": "Basics/ColourCycler/Menu Selection Highlight/0"
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
                 },
                 "font": {
                   "key": "Basics/Font/Menu"

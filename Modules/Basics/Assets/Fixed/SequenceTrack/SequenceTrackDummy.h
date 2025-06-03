@@ -39,10 +39,6 @@ namespace IsoRealms::Basics {
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-    bool play(unsigned int milliseconds) override;
-    void reset() override;
     unsigned int getDuration() const override;
     void setName(const std::string& name) override;
     std::string getName() const override;
@@ -50,10 +46,9 @@ namespace IsoRealms::Basics {
     void deleteEvent(ISequenceTrackEvent* event) override;
     void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
     std::vector<ISequenceTrackEvent*> getEvents() override;
-    void stopPreview() override;
-    void setPreviewPosition(long position) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
+    ISequenceTrackInstance* createTrackInstance() override;
 
     /****************************************\
      * Implements IAsset via ISequenceTrack *

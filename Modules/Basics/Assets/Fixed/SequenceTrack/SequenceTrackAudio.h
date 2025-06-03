@@ -45,10 +45,6 @@ namespace IsoRealms::Basics {
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-    bool play(unsigned int milliseconds) override;
-    void reset() override;
     unsigned int getDuration() const override;
     void setName(const std::string& name) override;
     std::string getName() const override;
@@ -56,10 +52,9 @@ namespace IsoRealms::Basics {
     void deleteEvent(ISequenceTrackEvent* event) override;
     void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
     std::vector<ISequenceTrackEvent*> getEvents() override;
-    void stopPreview() override;
-    void setPreviewPosition(long position) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
+    ISequenceTrackInstance* createTrackInstance() override;
 
     /****************************************\
      * Implements IAsset via ISequenceTrack *
@@ -69,12 +64,132 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
     bool isDefaultConfiguration() const override;
 
-    /***********************\
-      * Scripting interface *
-    \***********************/
-    void nextTrack();
-    void previousTrack();
-    void jumpToTrack(int track);
+    class Instance : public ISequenceTrackInstance {
+      public:
+      Instance(SequenceTrackAudio& parent);
+
+      /***********************\
+       * Scripting interface *
+      \***********************/
+      void nextTrack();
+      void previousTrack();
+      void jumpToTrack(int track);
+
+      /*************************************\
+       * Implements ISequenceTrackInstance *
+      \*************************************/
+      void registerAssets(IAssetRegistry& assets) override;
+      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
+      bool play(unsigned int milliseconds) override;
+      void reset() override;
+      void stopPreview() override;
+      void setPreviewPosition(long position) override;
+
+      private:
+      class Name : public IString {
+        public:
+        Name(Instance& parent);
+
+        /**********************\
+        * Implements IString *
+        \**********************/
+        std::string getValue() const override;
+        bool renderAssetIcon() const override;
+        void saveAsset(JSONObject object) const override;
+        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+        bool isDefaultConfiguration() const override;
+
+        private:
+        Instance& cParent;
+      };
+
+      class Count : public IInteger {
+        public:
+        Count(Instance& parent);
+
+        /***********************\
+        * Implements IInteger *
+        \***********************/
+        int getValue() const override;
+        bool renderAssetIcon() const override;
+        void saveAsset(JSONObject object) const override;
+        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+        bool isDefaultConfiguration() const override;
+
+        private:
+        Instance& cParent;
+      };
+
+      class Current : public IInteger {
+        public:
+        Current(Instance& parent);
+
+        /***********************\
+        * Implements IInteger *
+        \***********************/
+        int getValue() const override;
+        bool renderAssetIcon() const override;
+        void saveAsset(JSONObject object) const override;
+        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+        bool isDefaultConfiguration() const override;
+
+        private:
+        Instance& cParent;
+      };
+
+      class Length : public IString {
+        public:
+        Length(Instance& parent);
+
+        /**********************\
+        * Implements IString *
+        \**********************/
+        std::string getValue() const override;
+        bool renderAssetIcon() const override;
+        void saveAsset(JSONObject object) const override;
+        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+        bool isDefaultConfiguration() const override;
+
+        private:
+        Instance& cParent;
+      };
+
+      class Position : public IString {
+        public:
+        Position(Instance& parent);
+
+        /**********************\
+        * Implements IString *
+        \**********************/
+        std::string getValue() const override;
+        bool renderAssetIcon() const override;
+        void saveAsset(JSONObject object) const override;
+        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+        bool isDefaultConfiguration() const override;
+
+        private:
+        Instance& cParent;
+      };
+
+      // External interfaces.
+      SequenceTrackAudio& cParent;
+
+      // Runtime data.
+      unsigned int cRuntimeEvent;
+      int cRuntimePosition;
+      float cRuntimeVolume;
+      std::vector<int> cRuntimeEventsPlaying;
+
+      // Exposed data.
+      Name cExposedName;
+      Count cExposedCount;
+      Current cExposedCurrent;
+      Length cExposedLength;
+      Position cExposedPosition;
+
+      // Scripting interface.
+      LuaBinding<Instance> cLuaBinding;
+    };
 
     private:
     class Audio : public ISequenceTrackEvent {
@@ -101,8 +216,8 @@ namespace IsoRealms::Basics {
 
       void play();
       void stop();
-      void updateVolume();
-      void playFrom(int position);
+      void updateVolume(float volume);
+      void playFrom(int position, float volume);
 
       unsigned int getDuration() const;
       int getPosition() const;
@@ -128,91 +243,6 @@ namespace IsoRealms::Basics {
       sf::Music cMusic;
     };
 
-    class Name : public IString {
-      public:
-      Name(SequenceTrackAudio& parent);
-
-      /**********************\
-       * Implements IString *
-      \**********************/
-      std::string getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      SequenceTrackAudio& cParent;
-    };
-
-    class Count : public IInteger {
-      public:
-      Count(SequenceTrackAudio& parent);
-
-      /***********************\
-       * Implements IInteger *
-      \***********************/
-      int getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      SequenceTrackAudio& cParent;
-    };
-
-    class Current : public IInteger {
-      public:
-      Current(SequenceTrackAudio& parent);
-
-      /***********************\
-       * Implements IInteger *
-      \***********************/
-      int getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      SequenceTrackAudio& cParent;
-    };
-
-    class Length : public IString {
-      public:
-      Length(SequenceTrackAudio& parent);
-
-      /**********************\
-       * Implements IString *
-      \**********************/
-      std::string getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      SequenceTrackAudio& cParent;
-    };
-
-    class Position : public IString {
-      public:
-      Position(SequenceTrackAudio& parent);
-
-      /**********************\
-       * Implements IString *
-      \**********************/
-      std::string getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      SequenceTrackAudio& cParent;
-    };
-
     // JSON members.
     static const std::string JSON_EVENTS;
     static const std::string JSON_FILE;
@@ -229,19 +259,6 @@ namespace IsoRealms::Basics {
     Float cDefVolume;
 
     // Runtime data.
-    unsigned int cRuntimeEvent;
-    int cRuntimePosition;
-    float cRuntimeVolume;
-    std::vector<int> cRuntimeEventsPlaying;
-
-    // Exposed data.
-    Name cExposedName;
-    Count cExposedCount;
-    Current cExposedCurrent;
-    Length cExposedLength;
-    Position cExposedPosition;
-
-    // Scripting interface.
-    LuaBinding<SequenceTrackAudio> cLuaBinding;
+    std::vector<std::unique_ptr<Instance>> cInstances;
   };
 }
