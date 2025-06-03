@@ -28,16 +28,13 @@ add_library(UI MODULE
   Assets/Client/LayoutOffset.cpp
   Assets/Client/MenuItem.cpp
   Assets/Fixed/LayoutOffset/LayoutOffsetAbsolute.cpp
-  Assets/Fixed/LayoutOffset/LayoutOffsetDummy.cpp
   Assets/Fixed/LayoutOffset/LayoutOffsetLinked.cpp
   Assets/Fixed/LayoutLocation/LayoutLocationAbsolute.cpp
-  Assets/Fixed/LayoutLocation/LayoutLocationDummy.cpp
   Assets/Fixed/LayoutLocation/LayoutLocationRelative.cpp
   Assets/Fixed/MenuItem/MenuItemAction.cpp
   Assets/Fixed/MenuItem/MenuItemBoolean.cpp
   Assets/Fixed/MenuItem/MenuItemDigitalInput.cpp
   Assets/Fixed/MenuItem/MenuItemDisplayResolution.cpp
-  Assets/Fixed/MenuItem/MenuItemDummy.cpp
   Assets/Fixed/MenuItem/MenuItemFileList.cpp
   Assets/Fixed/MenuItem/MenuItemSlider.cpp
   Assets/Fixed/Screen/ScreenGradient.cpp

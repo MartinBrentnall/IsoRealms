@@ -64,7 +64,6 @@ namespace IsoRealms::Basics {
 
   Basics::Basics(IProject& project, IResourceTypeRegistry* registry):
                     cProject(project),
-                    cSequenceTracks(&cDummyProviderSequenceTrack),
                     cProviderSequenceTrackAction(project),
                     cProviderSequenceTrackAudio(project),
                     cProviderSequenceTrackColour(project),

@@ -46,9 +46,6 @@ namespace IsoRealms::UI {
 
   UI::UI(IProject& project, IResourceTypeRegistry* registry):
                     cProject(project),
-                    cLayoutLocations(&cDummyProviderLayoutLocation),
-                    cLayoutOffsets(&cDummyProviderLayoutOffset),
-                    cMenuItems(&cDummyProviderMenuItem),
                     cProviderLayoutLocationAbsolute(project),
                     cProviderLayoutLocationRelative(project),
                     cProviderLayoutOffsetAbsolute(project),

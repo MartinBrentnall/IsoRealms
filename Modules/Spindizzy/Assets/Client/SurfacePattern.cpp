@@ -24,7 +24,7 @@
 
 namespace IsoRealms::Spindizzy {
   SurfacePattern::SurfacePattern(Spindizzy& spindizzy, std::function<void()> listener) :
-            Asset<ISurfacePattern, Spindizzy>(spindizzy, spindizzy.createLiteralSurfacePattern(this)),
+            Asset<ISurfacePattern, Spindizzy>(spindizzy, spindizzy.getSurfacePattern(this, "Tile", this)),
             cListener(listener) {
   }
 

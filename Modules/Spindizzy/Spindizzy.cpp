@@ -25,13 +25,8 @@ namespace IsoRealms::Spindizzy {
   Spindizzy::Spindizzy(IProject& project, IResourceTypeRegistry* registry) :
                     cProject(project),
                     cBoundaryTypes(&cDummyProviderBoundaryType),
-                    cCameras(&cDummyProviderCamera),
                     cPhysicalObjectTypes(&cDummyProviderPhysicalObjectType),
-                    cSurfacePatterns(&cDummyProviderSurfacePattern),
-                    cWallPatterns(&cDummyProviderWallPattern),
                     cWorldEditorTools(&cDummyProviderWorldEditorTool),
-                    cZoneObjectTypeTraits(&cDummyProviderZoneObjectTypeTrait),
-                    cZoneViewTypes(&cDummyProviderZoneViewType),
                     cProviderCameraGameplay(project),
                     cProviderCameraLinked(project),
                     cProviderCameraOverview(project),

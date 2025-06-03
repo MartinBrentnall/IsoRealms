@@ -25,7 +25,7 @@
 
 namespace IsoRealms::Spindizzy {
   ZoneViewType::ZoneViewType(Spindizzy& spindizzy, WorldView& owner) :
-            Asset<IZoneViewType, Spindizzy>(spindizzy, spindizzy.createLiteralZoneViewType(this, owner)),
+            Asset<IZoneViewType, Spindizzy>(spindizzy, spindizzy.getZoneViewType(this, "Actual", owner)),
             cSpindizzy(spindizzy),
             cOwner(owner) {
   }

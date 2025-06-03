@@ -30,7 +30,6 @@
 #include "Assets/Fixed/SequenceTrack/SequenceTrackAudio.h"
 #include "Assets/Fixed/SequenceTrack/SequenceTrackColour.h"
 #include "Assets/Fixed/SequenceTrack/SequenceTrackFloat.h"
-#include "Assets/Fixed/SequenceTrack/SequenceTrackDummy.h"
 #include "Assets/Type/ISequenceTrack.h"
 #include "BooleanTrigger/BooleanTrigger.h"
 #include "DigitalInput/DigitalInput.h"
@@ -147,9 +146,6 @@ namespace IsoRealms::Basics {
     
     // Asset registries
     AssetClientManager<Sequence, ISequenceTrack> cSequenceTracks;
-    
-    // Dummy asset providers.
-    AssetLiteralDummy<Sequence, ISequenceTrack, SequenceTrackDummy> cDummyProviderSequenceTrack;
     
     // Built-in providers for UI asset types.
     AssetInstanced<Sequence, ISequenceTrack, SequenceTrackAction> cProviderSequenceTrackAction;

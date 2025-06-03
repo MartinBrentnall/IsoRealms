@@ -25,7 +25,7 @@
 
 namespace IsoRealms::Spindizzy {
   Camera::Camera(Spindizzy& spindizzy, WorldView& owner) :
-            Asset<ICamera, Spindizzy>(spindizzy, spindizzy.createLiteralCamera(this, owner)),
+            Asset<ICamera, Spindizzy>(spindizzy, spindizzy.getCamera(this, "Gameplay", owner)),
             cSpindizzy(spindizzy),
             cOwner(owner) {
   }

@@ -24,7 +24,7 @@
 
 namespace IsoRealms::Basics {
   SequenceTrack::SequenceTrack(IBasics& basics, Sequence& sequence) :
-            Asset<ISequenceTrack, IBasics>(basics, basics.getSequenceTrack(this, "None", sequence)),
+            Asset<ISequenceTrack, IBasics>(basics, basics.getSequenceTrack(this, "Colour", sequence)),
             cOwner(sequence) {
   }
 

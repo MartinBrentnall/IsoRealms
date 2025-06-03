@@ -31,9 +31,15 @@ namespace IsoRealms {
     public:
     AssetRegistry<OWNER, TYPE> cRegistry;
 
+    AssetClientManager() :
+              AssetClientManager(nullptr) {
+    }
+
     AssetClientManager(ILiteralAssetProvider<OWNER, TYPE>* provider, const std::string& label = "None") :
               cLiteralProvider(provider) {
-      add(provider, label, "Literals");
+      if (cLiteralProvider != nullptr) {
+        add(provider, label, "Literals");
+      }
     }
 
     IStateNotifier<TYPE>* add(TYPE* asset, const std::string& id, const std::string& category = "TODO", bool stateChanges = false) {

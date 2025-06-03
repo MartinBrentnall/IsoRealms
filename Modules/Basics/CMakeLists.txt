@@ -24,7 +24,6 @@ add_library(Basics MODULE
   Assets/Fixed/SequenceTrack/SequenceTrackAudio.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackColour.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackFloat.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackDummy.cpp
   BooleanTrigger/BooleanTrigger.cpp
   DigitalInput/DigitalInput.cpp
   FileFont/FileFont.cpp

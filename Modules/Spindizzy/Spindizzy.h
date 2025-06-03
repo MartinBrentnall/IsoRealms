@@ -30,29 +30,24 @@
 
 #include "Assets/Client/WorldEditorTool.h"
 #include "Assets/Fixed/BoundaryType/BoundaryTypeDummy.h"
-#include "Assets/Fixed/Camera/CameraDummy.h"
 #include "Assets/Fixed/Camera/CameraGameplay.h"
 #include "Assets/Fixed/Camera/CameraLinked.h"
 #include "Assets/Fixed/Camera/CameraOverview.h"
 #include "Assets/Fixed/Camera/CameraTransitional.h"
 #include "Assets/Fixed/Camera/CameraVariant.h"
 #include "Assets/Fixed/PhysicalObjectType/PhysicalObjectTypeDummy.h"
-#include "Assets/Fixed/SurfacePattern/SurfacePatternDummy.h"
 #include "Assets/Fixed/SurfacePattern/SurfacePatternOutline.h"
 #include "Assets/Fixed/SurfacePattern/SurfacePatternTile.h"
 #include "Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.h"
-#include "Assets/Fixed/WallPattern/WallPatternDummy.h"
 #include "Assets/Fixed/WallPattern/WallPatternCap.h"
 #include "Assets/Fixed/WallPattern/WallPatternOutline.h"
 #include "Assets/Fixed/WallPattern/WallPatternTile.h"
 #include "Assets/Fixed/WorldEditorTool/WorldEditorToolDummy.h"
-#include "Assets/Fixed/ZoneViewType/ZoneViewTypeDummy.h"
 #include "Assets/Fixed/ZoneViewType/ZoneViewTypeActual.h"
 #include "Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.h"
 #include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.h"
 #include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitCellLocation.h"
 #include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitDummy.h"
 #include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitModel.h"
 #include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.h"
 #include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitPhysics.h"
@@ -455,13 +450,8 @@ namespace IsoRealms::Spindizzy {
 
     // Dummy asset providers.
     AssetLiteralDummy<Spindizzy,      IBoundaryType,        BoundaryTypeDummy>        cDummyProviderBoundaryType;
-    AssetLiteralDummy<WorldView,      ICamera,              CameraDummy>              cDummyProviderCamera;
     AssetLiteralDummy<Spindizzy,      IPhysicalObjectType,  PhysicalObjectTypeDummy>  cDummyProviderPhysicalObjectType;
-    AssetLiteralDummy<Spindizzy,      ISurfacePattern,      SurfacePatternDummy>      cDummyProviderSurfacePattern;
-    AssetLiteralDummy<Spindizzy,      IWallPattern,         WallPatternDummy>         cDummyProviderWallPattern;
     AssetLiteralDummy<Spindizzy,      IWorldEditorTool,     WorldEditorToolDummy>     cDummyProviderWorldEditorTool;
-    AssetLiteralDummy<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitDummy> cDummyProviderZoneObjectTypeTrait;
-    AssetLiteralDummy<WorldView,      IZoneViewType,        ZoneViewTypeDummy>        cDummyProviderZoneViewType;
 
     // Built-in providers for Spindizzy asset types.
     AssetInstanced<WorldView, ICamera, CameraGameplay>     cProviderCameraGameplay;

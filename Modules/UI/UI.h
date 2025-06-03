@@ -32,16 +32,13 @@
 #include "IsoRealms/System.h"
 
 #include "Assets/Fixed/LayoutLocation/LayoutLocationAbsolute.h"
-#include "Assets/Fixed/LayoutLocation/LayoutLocationDummy.h"
 #include "Assets/Fixed/LayoutLocation/LayoutLocationRelative.h"
 #include "Assets/Fixed/LayoutOffset/LayoutOffsetAbsolute.h"
-#include "Assets/Fixed/LayoutOffset/LayoutOffsetDummy.h"
 #include "Assets/Fixed/LayoutOffset/LayoutOffsetLinked.h"
 #include "Assets/Fixed/MenuItem/MenuItemAction.h"
 #include "Assets/Fixed/MenuItem/MenuItemBoolean.h"
 #include "Assets/Fixed/MenuItem/MenuItemDigitalInput.h"
 #include "Assets/Fixed/MenuItem/MenuItemDisplayResolution.h"
-#include "Assets/Fixed/MenuItem/MenuItemDummy.h"
 #include "Assets/Fixed/MenuItem/MenuItemFileList.h"
 #include "Assets/Fixed/MenuItem/MenuItemSlider.h"
 #include "Assets/Fixed/Screen/ScreenGradient.h"
@@ -141,11 +138,6 @@ namespace IsoRealms::UI {
     AssetClientManager<LayoutComponentEdge, ILayoutLocation> cLayoutLocations;
     AssetClientManager<LayoutComponentEdge, ILayoutOffset>   cLayoutOffsets;
     AssetClientManager<Menu,                IMenuItem>       cMenuItems;
-
-    // Dummy asset providers.
-    AssetLiteralDummy<LayoutComponentEdge, ILayoutLocation, LayoutLocationDummy> cDummyProviderLayoutLocation;
-    AssetLiteralDummy<LayoutComponentEdge, ILayoutOffset,   LayoutOffsetDummy>   cDummyProviderLayoutOffset;
-    AssetLiteralDummy<Menu,                IMenuItem,       MenuItemDummy>       cDummyProviderMenuItem;
 
     // Built-in providers for UI asset types.
     AssetInstanced<LayoutComponentEdge, ILayoutLocation, LayoutLocationAbsolute> cProviderLayoutLocationAbsolute;

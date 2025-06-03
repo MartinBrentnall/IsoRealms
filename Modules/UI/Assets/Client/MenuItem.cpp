@@ -24,7 +24,7 @@ namespace IsoRealms::UI {
   MenuItem::MenuItem(UI& ui, Menu& owner) :
             cUI(ui),
             cOwner(owner),
-            cMenuItem(cUI.createLiteralMenuItem(this, owner)) {
+            cMenuItem(ui.getMenuItem(this, "Action", owner)) {
   }
 
   void MenuItem::init(JSONObject object, const std::string& member, Menu& owner) {
