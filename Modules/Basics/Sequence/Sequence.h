@@ -108,10 +108,12 @@ namespace IsoRealms::Basics {
 
       // Definition data.
       int cDefStartTime;
+      float cDefSpeed;
 
       // Runtime data.
       std::vector<ISequenceTrackInstance*> cTrackInstances;
       int cRuntimePosition;
+      float cRuntimePositionFraction;
     };
 
     class Length : public IString {

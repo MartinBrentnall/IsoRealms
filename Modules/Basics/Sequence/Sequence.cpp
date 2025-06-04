@@ -209,6 +209,7 @@ namespace IsoRealms::Basics {
   void Sequence::reset() {
     cRuntimePlaying = cDefPlaying;
     cRuntimePosition = 0;
+    cRuntimePositionFraction = 0.0f;
     for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
       mEntry.second->reset();
     }
@@ -271,7 +272,8 @@ namespace IsoRealms::Basics {
 
   Sequence::Instance::Instance(Sequence& parent, JSONObject object) :
             cParent(parent),
-            cDefStartTime(object.getInteger(JSON_START_TIME)) {
+            cDefStartTime(object.getInteger(JSON_START_TIME)),
+            cDefSpeed(object.getFloat(JSON_SPEED, 1.0f)) {
     for (std::unique_ptr<SequenceTrack>& mTrack : cParent.cDefTracks) {
       ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance();
       if (mTrackInstance != nullptr) {
@@ -295,6 +297,7 @@ namespace IsoRealms::Basics {
   void Sequence::Instance::reset() {
     cRuntimePosition = 0;
     play(cDefStartTime);
+    cRuntimePositionFraction = 0.0f;
   }
 
   void Sequence::Instance::stopPreview() {
@@ -311,6 +314,19 @@ namespace IsoRealms::Basics {
 
   void Sequence::Instance::play(unsigned int milliseconds) {
     cRuntimePosition += milliseconds;
+
+    if (cDefSpeed != 1.0f) {
+      float mActualMilliseconds = milliseconds * cDefSpeed;
+      milliseconds = std::floor(mActualMilliseconds);
+      float mFractional = mActualMilliseconds - milliseconds;
+      cRuntimePositionFraction += mFractional;
+      if (cRuntimePositionFraction >= 1.0f) {
+        milliseconds++;
+        cRuntimePositionFraction = 0.0f;
+      }
+    }
+
+
     bool mSequenceFinished = true;
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {
       if (mTrack->play(milliseconds)) {
@@ -328,12 +344,14 @@ namespace IsoRealms::Basics {
 
   void Sequence::Instance::save(JSONObject object) const {
     object.addInteger(JSON_START_TIME, cDefStartTime);
+    object.addFloat(JSON_SPEED, cDefSpeed, 1.0f);
   }
 
   std::vector<std::unique_ptr<IProperty>> Sequence::Instance::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Instance Name", "TODO", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);}));
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Start Time",    "TODO", [this]() {return cDefStartTime;}, [this](int value) {cDefStartTime = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Speed",         "TODO", [this]() {return cDefSpeed;},     [this](int value) {cDefSpeed     = value; return true;}));
     return mProperties;
   }
 
