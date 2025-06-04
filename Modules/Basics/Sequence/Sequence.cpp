@@ -48,7 +48,7 @@ namespace IsoRealms::Basics {
         cRuntimePositionFraction += mFractional;
         if (cRuntimePositionFraction >= 1.0f) {
           milliseconds++;
-          cRuntimePositionFraction = 0.0f;
+          cRuntimePositionFraction -= 1.0f;
         }
       }
 
@@ -295,9 +295,12 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::Instance::reset() {
+    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+      mTrack->reset();
+    }
     cRuntimePosition = 0;
-    play(cDefStartTime);
     cRuntimePositionFraction = 0.0f;
+    play(cDefStartTime);
   }
 
   void Sequence::Instance::stopPreview() {
@@ -313,8 +316,6 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::Instance::play(unsigned int milliseconds) {
-    cRuntimePosition += milliseconds;
-
     if (cDefSpeed != 1.0f) {
       float mActualMilliseconds = milliseconds * cDefSpeed;
       milliseconds = std::floor(mActualMilliseconds);
@@ -322,10 +323,11 @@ namespace IsoRealms::Basics {
       cRuntimePositionFraction += mFractional;
       if (cRuntimePositionFraction >= 1.0f) {
         milliseconds++;
-        cRuntimePositionFraction = 0.0f;
+        cRuntimePositionFraction -= 1.0f;
       }
     }
 
+    cRuntimePosition += milliseconds;
 
     bool mSequenceFinished = true;
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {

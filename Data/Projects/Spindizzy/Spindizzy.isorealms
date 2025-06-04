@@ -2490,6 +2490,39 @@
                         }
                       ]
                     }
+                  },
+                  {
+                    "track": {
+                      "key": "Float",
+                      "outputs": "Colour Cycle Speed",
+                      "start": {
+                        "key": "Literal",
+                        "value": 1
+                      },
+                      "events": [
+                        {
+                          "duration": 5020,
+                          "value": {
+                            "key": "Literal",
+                            "value": 0.5
+                          }
+                        },
+                        {
+                          "duration": 11000,
+                          "value": {
+                            "key": "Literal",
+                            "value": 2.5
+                          }
+                        },
+                        {
+                          "duration": 13000,
+                          "value": {
+                            "key": "Literal",
+                            "value": 5
+                          }
+                        }
+                      ]
+                    }
                   }
                 ],
                 "instances": [
@@ -2624,8 +2657,7 @@
                 "playing": true,
                 "loop": true,
                 "speed": {
-                  "key": "Literal",
-                  "value": 1
+                  "key": "Basics/Sequence/Ending/Instance/Colour Cycle Speed"
                 },
                 "tracks": [
                   {
@@ -3572,7 +3604,7 @@
                       }
                     }
                   ],
-                  "code": "sound:execute()\njewelsCollected:setValue(jewelsCollected:getValue() + 1)\nlocal earned = 600\nlocal newTime = time:getValue() + 12000\nif newTime > 180000 then\n  local excess = newTime - 180000\n  local extraScore = excess / 10\n  earned = earned + extraScore\n  newTime = 180000\nend\ntime:setValue(newTime)\nscore:setValue(math.floor(score:getValue() + earned))\n\n-- Do we show the ending yet?\nif zoneCount:getValue() == 0 and hangworld:getPickUpCount() == jewelsCollected:getValue() then\n  ending:execute()\nend"
+                  "code": "sound:execute()\njewelsCollected:setValue(jewelsCollected:getValue() + 1)\nlocal earned = 600\nlocal newTime = time:getValue() + 12000\nif newTime > 180000 then\n  local excess = newTime - 180000\n  local extraScore = excess / 10\n  earned = earned + extraScore\n  newTime = 180000\nend\ntime:setValue(newTime)\nscore:setValue(math.floor(score:getValue() + earned))\n\n-- Do we show the ending yet?\n  ending:execute()"
                 },
                 "onExit": {
                   "key": "None"
