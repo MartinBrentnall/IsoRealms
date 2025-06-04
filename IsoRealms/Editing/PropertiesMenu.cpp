@@ -210,6 +210,7 @@ namespace IsoRealms {
           cClosingProperty = std::move(cEditingProperty);
           cEditingProperty = nullptr;
           recalculateColumnWidths();
+          // refreshProperties(); TODO: Doing this nulls out the closing property... need a less brute-force way of refreshing properties (names and values)
         });
       }
     }
@@ -249,6 +250,8 @@ namespace IsoRealms {
   
   void PropertiesMenu::refreshProperties() {
     clear();
+    cEditingProperty = nullptr;
+    cClosingProperty = nullptr;
     std::vector<std::unique_ptr<IProperty>> mProperties = cPropertyFetcher();
     for (std::unique_ptr<IProperty>& mProperty : mProperties) {
       std::string mPropertyName = mProperty->getPropertyName();

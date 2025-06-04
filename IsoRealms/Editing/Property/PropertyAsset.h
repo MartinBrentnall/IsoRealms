@@ -73,7 +73,7 @@ namespace IsoRealms {
 
     void confirm(IPropertyManager& manager, float y) override {
       IUIStyle& mStyle = manager.getPropertyStyle();
-      manager.edit(std::make_unique<Editor>(*this, manager, mStyle, y, getValueWidth(mStyle), mStyle.getFontSize() * 2.0f));
+      manager.edit(std::make_unique<Editor>(*this, mStyle, y, getValueWidth(mStyle), mStyle.getFontSize() * 2.0f));
     }
     
     bool hasConfiguration() const override {
@@ -89,9 +89,8 @@ namespace IsoRealms {
     private:
     class Editor : public IPropertyEditor {
       public:
-      Editor(PropertyAsset<TYPE>& parent, IPropertyManager& manager, IUIStyle& style, float y, float width, float height) :
+      Editor(PropertyAsset<TYPE>& parent, IUIStyle& style, float y, float width, float height) :
                 cParent(parent),
-                cManager(manager),
                 cStyle(style),
                 cY(y),
                 cOpenness(0),
@@ -523,7 +522,6 @@ namespace IsoRealms {
                     cParent.cParent.cParent.cAsset.setID(cAssetID);
                     cParent.cParent.cParent.cValueLabel = cParent.cParent.cParent.getValue();
                     cParent.cParent.cClosing = true;
-                    cParent.cParent.cManager.refreshProperties();
                   }
                   cParent.cParent.cClosedConfirmSelection = std::move(cParent.cParent.cConfirmSelection);
                   cParent.cParent.cConfirmSelection = nullptr;
@@ -536,9 +534,6 @@ namespace IsoRealms {
               }
             } else {
               cParent.cParent.cClosing = true;
-            }
-            if (cParent.cParent.cClosing) {
-              cParent.cParent.cManager.refreshProperties();
             }
             return cParent.cParent.cClosing;
           }
@@ -622,7 +617,6 @@ namespace IsoRealms {
       };
 
       PropertyAsset<TYPE>& cParent;
-      IPropertyManager& cManager;
       IUIStyle& cStyle;
 
       float cY;

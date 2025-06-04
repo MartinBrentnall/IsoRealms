@@ -88,7 +88,8 @@ namespace IsoRealms::Basics {
 
     class Event final : public ISequenceTrackEvent {
       public:
-      Event(JSONObject object, IProject& project);
+      Event(IProject& project, unsigned int time);
+      Event(IProject& project, JSONObject object);
 
       void save(JSONObject object) const;
       void execute();

@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
   
   SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object) {
     for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
-      cDefEvents.emplace_back(std::make_unique<Event>(mEventObject, project));
+      cDefEvents.emplace_back(std::make_unique<Event>(project, mEventObject));
     }
 //    reset();
   }
@@ -47,7 +47,14 @@ namespace IsoRealms::Basics {
   }
 
   ISequenceTrackEvent* SequenceTrackAction::createEvent(IProject& project, unsigned int time) {
-    return nullptr; // TODO: Implement this.
+    for (unsigned int i = 0; i < cDefEvents.size(); i++) {
+      if (cDefEvents[i]->getTime() == time) {
+        return cDefEvents[i].get();
+      } else if (cDefEvents[i]->getTime() > time) {
+        return cDefEvents.insert(cDefEvents.begin() + i, std::make_unique<Event>(project, time))->get();
+      }
+    }
+    return cDefEvents.emplace_back(std::make_unique<Event>(project, time)).get();
   }
 
   void SequenceTrackAction::deleteEvent(ISequenceTrackEvent* event) {
@@ -160,9 +167,13 @@ namespace IsoRealms::Basics {
     // TODO: Implement this.
   }
 
-  SequenceTrackAction::Event::Event(JSONObject object, IProject& project) :
+  SequenceTrackAction::Event::Event(IProject& project, unsigned int time) :
             cDefAction(project),
-            cDefTime(object.getInteger(JSON_DELAY)) {
+            cDefTime(time) {
+  }
+
+  SequenceTrackAction::Event::Event(IProject& project, JSONObject object) :
+            Event(project, object.getInteger(JSON_DELAY)) {
     cDefAction.init(object, JSON_EXECUTE);
   }
 
