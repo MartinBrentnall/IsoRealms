@@ -37,7 +37,6 @@ namespace IsoRealms::Basics {
             cDefLoop(false),
             cDefSpeed(project, 1.0f),
             cExposedLength(*this),
-            cExposedPosition(*this),
             cLuaBinding(project, this) {
     project.updateRuntime([this](unsigned int milliseconds) {
       float mSpeedMultiplier = cDefSpeed->getValue();
@@ -92,7 +91,6 @@ namespace IsoRealms::Basics {
   void Sequence::registerAssets(IAssetRegistry& assets) {
     assets.add(&cLuaBinding, "", "Sequences");
     assets.add(&cExposedLength, "Length", "Sequences");
-    assets.add(&cExposedPosition, "Position", "Sequences");
     assets.add(this, "", "Sequences");
     for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
       LocalAssetRegistry mInstanceAssetRegistry(assets, mEntry.first);
@@ -103,7 +101,6 @@ namespace IsoRealms::Basics {
   void Sequence::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
     assets.remove(&cLuaBinding, relinquish);
     assets.remove(&cExposedLength, relinquish);
-    assets.remove(&cExposedPosition, relinquish);
     assets.remove(this, relinquish);
     for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
       mEntry.second->unregisterAssets(assets, relinquish);
@@ -267,13 +264,19 @@ namespace IsoRealms::Basics {
   }
 
   Sequence::Instance::Instance(Sequence& parent) :
-            cParent(parent) {
+            cParent(parent),
+            cDefStartTime(0),
+            cDefSpeed(1.0f),
+            cExposedPosition(*this),
+            cExposedRemaining(*this) {
   }
 
   Sequence::Instance::Instance(Sequence& parent, JSONObject object) :
             cParent(parent),
             cDefStartTime(object.getInteger(JSON_START_TIME)),
-            cDefSpeed(object.getFloat(JSON_SPEED, 1.0f)) {
+            cDefSpeed(object.getFloat(JSON_SPEED, 1.0f)),
+            cExposedPosition(*this),
+            cExposedRemaining(*this) {
     for (std::unique_ptr<SequenceTrack>& mTrack : cParent.cDefTracks) {
       ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance();
       if (mTrackInstance != nullptr) {
@@ -283,12 +286,16 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::Instance::registerAssets(IAssetRegistry& assets) {
+    assets.add(&cExposedPosition, "Position", "Sequences");
+    assets.add(&cExposedRemaining, "Remaining", "Sequences");
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {
       mTrack->registerAssets(assets);
     }
   }
 
   void Sequence::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
+    assets.remove(&cExposedPosition, relinquish);
+    assets.remove(&cExposedRemaining, relinquish);
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {
       mTrack->unregisterAssets(assets, relinquish);
     }
@@ -390,11 +397,11 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  Sequence::Position::Position(Sequence& parent) :
+  Sequence::Instance::Position::Position(Instance& parent) :
             cParent(parent) {
   }
 
-  std::string Sequence::Position::getValue() const {
+  std::string Sequence::Instance::Position::getValue() const {
     int mMilliseconds = cParent.cRuntimePosition % 1000;
     int mSeconds = cParent.cRuntimePosition / 1000;
     int mMinutes = mSeconds / 60;
@@ -406,19 +413,52 @@ namespace IsoRealms::Basics {
     return mStringStream.str();
   }
 
-  bool Sequence::Position::renderAssetIcon() const {
+  bool Sequence::Instance::Position::renderAssetIcon() const {
     return false;
   }
 
-  void Sequence::Position::saveAsset(JSONObject object) const {
+  void Sequence::Instance::Position::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sequence::Position::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Sequence::Instance::Position::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
-  bool Sequence::Position::isDefaultConfiguration() const {
+  bool Sequence::Instance::Position::isDefaultConfiguration() const {
+    return true;
+  }
+
+  Sequence::Instance::Remaining::Remaining(Instance& parent) :
+            cParent(parent) {
+  }
+
+  std::string Sequence::Instance::Remaining::getValue() const {
+    int mRemainingTime = -cParent.cRuntimePosition + cParent.cParent.getDuration();
+    int mMilliseconds = mRemainingTime % 1000;
+    int mSeconds = mRemainingTime / 1000;
+    int mMinutes = mSeconds / 60;
+//    int mHours   = mMinutes / 60;
+    mMinutes = mMinutes % 60;
+    mSeconds = mSeconds % 60;
+    std::stringstream mStringStream;
+    mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setfill('0') << std::setw(2) << (mMilliseconds / 10);
+    return mStringStream.str();
+  }
+
+  bool Sequence::Instance::Remaining::renderAssetIcon() const {
+    return false;
+  }
+
+  void Sequence::Instance::Remaining::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> Sequence::Instance::Remaining::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool Sequence::Instance::Remaining::isDefaultConfiguration() const {
     return true;
   }
 }

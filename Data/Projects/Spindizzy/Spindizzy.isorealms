@@ -1412,6 +1412,140 @@
             "type": "Sequence",
             "instances": [
               {
+                "id": "Time Limit",
+                "playing": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 180000,
+                          "execute": {
+                            "key": "Basics/Script",
+                            "bindings": [
+                              {
+                                "variable": "spindizzy",
+                                "to": {
+                                  "key": "Spindizzy"
+                                }
+                              },
+                              {
+                                "variable": "timeLimit",
+                                "to": {
+                                  "key": "Basics/Timer/TimeLimit"
+                                }
+                              },
+                              {
+                                "variable": "gameOverSequence",
+                                "to": {
+                                  "key": "Basics/Sequence/GameOver"
+                                }
+                              },
+                              {
+                                "variable": "project",
+                                "to": {
+                                  "key": "Project"
+                                }
+                              },
+                              {
+                                "variable": "endMessage",
+                                "to": {
+                                  "key": "Basics/String/EndingMessage"
+                                }
+                              },
+                              {
+                                "variable": "scoreMessage",
+                                "to": {
+                                  "key": "Basics/String/ScoreMessage"
+                                }
+                              },
+                              {
+                                "variable": "mappedMessage",
+                                "to": {
+                                  "key": "Basics/String/MappedMessage"
+                                }
+                              },
+                              {
+                                "variable": "jewelsMessage",
+                                "to": {
+                                  "key": "Basics/String/JewelsMessage"
+                                }
+                              },
+                              {
+                                "variable": "completeMessage",
+                                "to": {
+                                  "key": "Basics/String/CompleteMessage"
+                                }
+                              },
+                              {
+                                "variable": "score",
+                                "to": {
+                                  "key": "Basics/Integer/Score"
+                                }
+                              },
+                              {
+                                "variable": "jewelsCollected",
+                                "to": {
+                                  "key": ":Integer",
+                                  "asset": {
+                                    "key": "Basics/Integer/JewelCount"
+                                  }
+                                }
+                              },
+                              {
+                                "variable": "zoneCount",
+                                "to": {
+                                  "key": ":Integer",
+                                  "asset": {
+                                    "key": "Basics/Integer/RemainingZones"
+                                  }
+                                }
+                              },
+                              {
+                                "variable": "hangworld",
+                                "to": {
+                                  "key": "Spindizzy/World/Hangworld"
+                                }
+                              },
+                              {
+                                "variable": "sound",
+                                "to": {
+                                  "key": "Basics/Sequence/DamageSound"
+                                }
+                              },
+                              {
+                                "variable": "damage",
+                                "to": {
+                                  "key": "Basics/Sequence/DamageVisual"
+                                }
+                              },
+                              {
+                                "variable": "screen",
+                                "to": {
+                                  "key": "UI/Layout/Main/Damage"
+                                }
+                              }
+                            ],
+                            "code": "-- Stop alien damage; we've probably had enough of that...\nsound:pause()\ndamage:pause()\nscreen:setScreen(nil)\n\n-- Pause the game\nlocks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  timeLimit:pause()\nend\n\nlocal message = endMessage:getValue()\nif string.len(message) == 0 then\n  endMessage:setValue(\"Fuel Depleted: Mission Aborted\")\nend\n\n-- Calculate some rounded percentages\ntotalZones = hangworld:getZoneCount()\nmappedPercentage = math.ceil((math.abs((zoneCount:getValue() / totalZones) - 1) * 100) - 0.5)\ntotalJewels = hangworld:getPickUpCount()\njewelsPercentage = math.ceil(((jewelsCollected:getValue() / totalJewels) * 100) - 0.5)\ncompletePercentage = math.ceil(((mappedPercentage + jewelsPercentage) / 2) - 0.5)\n\n-- Set result values\nmappedMessage:setValue(\"\" .. mappedPercentage .. \"%\")\njewelsMessage:setValue(\"\" .. jewelsPercentage .. \"%\")\ncompleteMessage:setValue(\"\" .. completePercentage .. \"%\")\nif GlobalExplorer ~= 1 then\n  scoreMessage:setValue(\"\" .. score:getValue())\nelse\n  -- Prevent high score from triggering\n  score:setValue(-1)\n  scoreMessage:setValue(\"N/A\")\n  GlobalExplorer = nil\nend\nhasFocus = false\ngameOverSequence:play()"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance",
+                    "startTime": 30000
+                  }
+                ]
+              },
+              {
                 "id": "Damage Colours",
                 "playing": true,
                 "loop": true,

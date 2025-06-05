@@ -102,6 +102,39 @@ namespace IsoRealms::Basics {
       std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
       private:
+      class Position : public IString {
+        public:
+        Position(Instance& parent);
+
+        /**********************\
+        * Implements IString *
+        \**********************/
+        std::string getValue() const override;
+        bool renderAssetIcon() const override;
+        void saveAsset(JSONObject object) const override;
+        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+        bool isDefaultConfiguration() const override;
+
+        private:
+        Instance& cParent;
+      };
+
+      class Remaining : public IString {
+        public:
+        Remaining(Instance& parent);
+
+        /**********************\
+        * Implements IString *
+        \**********************/
+        std::string getValue() const override;
+        bool renderAssetIcon() const override;
+        void saveAsset(JSONObject object) const override;
+        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+        bool isDefaultConfiguration() const override;
+
+        private:
+        Instance& cParent;
+      };
 
       // External interfaces.
       Sequence& cParent;
@@ -114,28 +147,15 @@ namespace IsoRealms::Basics {
       std::vector<ISequenceTrackInstance*> cTrackInstances;
       int cRuntimePosition;
       float cRuntimePositionFraction;
+
+      // Exposed data.
+      Position cExposedPosition;
+      Remaining cExposedRemaining;
     };
 
     class Length : public IString {
       public:
       Length(Sequence& parent);
-
-      /**********************\
-       * Implements IString *
-      \**********************/
-      std::string getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      Sequence& cParent;
-    };
-
-    class Position : public IString {
-      public:
-      Position(Sequence& parent);
 
       /**********************\
        * Implements IString *
@@ -182,7 +202,6 @@ namespace IsoRealms::Basics {
 
     // Exposed data.
     Length cExposedLength;
-    Position cExposedPosition;
 
     // Scripting interface.
     LuaBinding<Sequence> cLuaBinding;
