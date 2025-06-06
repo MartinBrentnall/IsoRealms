@@ -83,7 +83,7 @@ namespace IsoRealms::Basics {
 
       // Runtime data.
       unsigned int cRuntimeEvent;
-      int cRuntimeEventPosition;
+      int cRuntimePosition;
     };
 
     class Event final : public ISequenceTrackEvent {

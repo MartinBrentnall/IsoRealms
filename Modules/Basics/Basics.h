@@ -53,7 +53,6 @@
 #include "SimpleString/SimpleString.h"
 #include "SimpleVertex/SimpleVertex.h"
 #include "Sprite/Sprite.h"
-#include "Timer/Timer.h"
 #include "Script.h"
 
 namespace IsoRealms::Basics {
@@ -175,7 +174,6 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, SimpleString>      cResourceTypeSimpleString;
     ResourceTypeDefinition<Basics, SimpleVertex>      cResourceTypeSimpleVertex;
     ResourceTypeDefinition<Basics, Sprite>            cResourceTypeSprite;
-    ResourceTypeDefinition<Basics, Timer>             cResourceTypeTimer;
 
     Script cActionTypeScript;
     LuaBinding<Basics> cLuaBinding;

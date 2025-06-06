@@ -38,10 +38,9 @@ namespace IsoRealms::Basics {
    * of track that play in tandem, each of which may do something different.
    */
   class Sequence final : public IEditable {
-    private:
+    public:
     class Instance;
 
-    public:
     Sequence(IProject& project, Basics& basics, IResourceData& data);
     Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
@@ -63,18 +62,11 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
     bool isDefaultConfiguration() const override;
 
-    /***********************\
-     * Scripting Interface *
-    \***********************/
-    void play();
-    void pause();
     void reset();
     void stopPreview();
     void setPreviewPosition(long position);
     void preview(unsigned int milliseconds);
 
-    int getTime() const;
-    void setTime(int time);
 
     /*********************\
      * Editing Interface *
@@ -85,8 +77,6 @@ namespace IsoRealms::Basics {
     unsigned int getDuration() const;
     void addTrack();
     
-    private:
-
     class Instance {
       public:
       Instance(Sequence& parent);
@@ -94,22 +84,30 @@ namespace IsoRealms::Basics {
 
       void registerAssets(IAssetRegistry& assets);
       void unregisterAssets(IAssetRemover& assets, bool relinquish);
-      void reset();
       void stopPreview();
       void setPreviewPosition(long position);
-      void play(unsigned int milliseconds);
+      void update(unsigned int milliseconds);
       void save(JSONObject object) const;
       std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
+      /***********************\
+       * Scripting Interface *
+      \***********************/
+      void play();
+      void pause();
+      void reset();
+      int getTime() const;
+      void setTime(int time);
+
       private:
-      class Position : public IString {
+      class Position : public IInteger {
         public:
         Position(Instance& parent);
 
-        /**********************\
-        * Implements IString *
-        \**********************/
-        std::string getValue() const override;
+        /***********************\
+         * Implements IInteger *
+        \***********************/
+        int getValue() const override;
         bool renderAssetIcon() const override;
         void saveAsset(JSONObject object) const override;
         std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
@@ -119,14 +117,14 @@ namespace IsoRealms::Basics {
         Instance& cParent;
       };
 
-      class Remaining : public IString {
+      class Remaining : public IInteger {
         public:
         Remaining(Instance& parent);
 
-        /**********************\
-        * Implements IString *
-        \**********************/
-        std::string getValue() const override;
+        /***********************\
+         * Implements IInteger *
+        \***********************/
+        int getValue() const override;
         bool renderAssetIcon() const override;
         void saveAsset(JSONObject object) const override;
         std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
@@ -147,12 +145,17 @@ namespace IsoRealms::Basics {
       std::vector<ISequenceTrackInstance*> cTrackInstances;
       int cRuntimePosition;
       float cRuntimePositionFraction;
+      bool cRuntimePlaying; /// Current state of this sequence.
 
       // Exposed data.
       Position cExposedPosition;
       Remaining cExposedRemaining;
+
+      // Scripting interface.
+      LuaBinding<Instance> cLuaBinding;
     };
 
+    private:
     class Length : public IString {
       public:
       Length(Sequence& parent);
@@ -192,8 +195,6 @@ namespace IsoRealms::Basics {
     std::map<std::string, std::unique_ptr<Instance>> cDefInstances;      /// Instances of this sequence.
 
     // Runtime data.
-    bool cRuntimePlaying; /// Current state of this sequence.
-    int cRuntimePosition; /// Current position of this sequence.
     float cRuntimePositionFraction;
 
     // Editing data.

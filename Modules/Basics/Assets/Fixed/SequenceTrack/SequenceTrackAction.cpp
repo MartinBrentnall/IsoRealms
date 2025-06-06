@@ -120,7 +120,7 @@ namespace IsoRealms::Basics {
   SequenceTrackAction::Instance::Instance(SequenceTrackAction& parent) :
             cParent(parent),
             cRuntimeEvent(0),
-            cRuntimeEventPosition(0) {
+            cRuntimePosition(0) {
   }
 
   void SequenceTrackAction::Instance::registerAssets(IAssetRegistry& assets) {
@@ -135,9 +135,9 @@ namespace IsoRealms::Basics {
     bool mStillPlaying = false;
     if (cRuntimeEvent < cParent.cDefEvents.size()) {
       std::vector<Event*> mEventToExecute;
-      cRuntimeEventPosition += milliseconds;
+      cRuntimePosition += milliseconds;
       int mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();
-      while (cRuntimeEvent < cParent.cDefEvents.size() && cRuntimeEventPosition >= mNextEventTime) {
+      while (cRuntimeEvent < cParent.cDefEvents.size() && cRuntimePosition >= mNextEventTime) {
         mEventToExecute.emplace_back(cParent.cDefEvents[cRuntimeEvent].get());
         cRuntimeEvent++;
         if (cRuntimeEvent < cParent.cDefEvents.size()) {
@@ -156,15 +156,23 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAction::Instance::reset() {
     cRuntimeEvent = 0;
-    cRuntimeEventPosition = 0;
+    cRuntimePosition = 0;
   }
 
   void SequenceTrackAction::Instance::stopPreview() {
-    // TODO: Implement this.
+    cRuntimeEvent = 0;
+    cRuntimePosition = 0;
   }
 
   void SequenceTrackAction::Instance::setPreviewPosition(long position) {
-    // TODO: Implement this.
+    cRuntimeEvent = 0;
+    cRuntimePosition = position;
+    for (const std::unique_ptr<Event>& mEvent : cParent.cDefEvents) {
+      if (position >= mEvent->getTime()) {
+        mEvent->execute();
+        cRuntimeEvent++;
+      }
+    }
   }
 
   SequenceTrackAction::Event::Event(IProject& project, unsigned int time) :

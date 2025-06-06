@@ -41,7 +41,6 @@ namespace IsoRealms::Basics {
   const std::string Basics::ID_RESOURCE_SIMPLE_STRING      = "String";
   const std::string Basics::ID_RESOURCE_SIMPLE_VERTEX      = "Vertex";
   const std::string Basics::ID_RESOURCE_SPRITE             = "Sprite";
-  const std::string Basics::ID_RESOURCE_TIMER              = "Timer";
 
   const std::string Basics::SEQUENCE_TRACK_ACTION = "Action";
   const std::string Basics::SEQUENCE_TRACK_AUDIO  = "Audio";
@@ -90,7 +89,6 @@ namespace IsoRealms::Basics {
                     cResourceTypeSimpleString(*this),
                     cResourceTypeSimpleVertex(*this),
                     cResourceTypeSprite(*this),
-                    cResourceTypeTimer(*this),
                     cActionTypeScript(),
                     cLuaBinding(project, this) {
     registry->add(&cResourceTypeAnalogueInput,     ID_RESOURCE_ANALOGUE_INPUT,     "Input (Analogue)",   "Inputs (Analogue)",    "Input");
@@ -115,7 +113,6 @@ namespace IsoRealms::Basics {
     registry->add(&cResourceTypeSimpleString,      ID_RESOURCE_SIMPLE_STRING,      "String",             "Strings",              IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
     registry->add(&cResourceTypeSimpleVertex,      ID_RESOURCE_SIMPLE_VERTEX,      "Vertex",             "Vertices",             IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
     registry->add(&cResourceTypeSprite,            ID_RESOURCE_SPRITE,             "Sprite",             "Sprites",              IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeTimer,             ID_RESOURCE_TIMER,              "Timer",              "Timers",               "Logic");
 
     // Register Basics built-in asset providers.
     cSequenceTracks.add(&cProviderSequenceTrackAction, SEQUENCE_TRACK_ACTION, "Basics");

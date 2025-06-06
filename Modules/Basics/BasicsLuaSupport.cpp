@@ -66,11 +66,11 @@ namespace IsoRealms::Basics {
                                                                  "hide",                       &ProjectConfigurer::hide,
                                                                  "show",                       &ProjectConfigurer::show,
                                                                  "isHidden",                   &ProjectConfigurer::isHidden);
-    mLua->new_usertype<Sequence>("Sequence",                     "play",                       &Sequence::play,
-                                                                 "pause",                      &Sequence::pause,
-                                                                 "reset",                      &Sequence::reset,
-                                                                 "getTime",                    &Sequence::getTime,
-                                                                 "setTime",                    &Sequence::setTime);
+    mLua->new_usertype<Sequence::Instance>("Sequence",                     "play",                       &Sequence::Instance::play,
+                                                                 "pause",                      &Sequence::Instance::pause,
+                                                                 "reset",                      &Sequence::Instance::reset,
+                                                                 "getTime",                    &Sequence::Instance::getTime,
+                                                                 "setTime",                    &Sequence::Instance::setTime);
     mLua->new_usertype<SequenceTrackAudio::Instance>("SequenceTrackAudio", "nextTrack",                  &SequenceTrackAudio::Instance::nextTrack,
                                                                  "previousTrack",              &SequenceTrackAudio::Instance::previousTrack);
     mLua->new_usertype<SimpleBoolean>("SimpleBoolean",           "setValue",                   &SimpleBoolean::setValue,
@@ -95,11 +95,5 @@ namespace IsoRealms::Basics {
                                                                  "setX",                       &SimpleVertex::setX,
                                                                  "setY",                       &SimpleVertex::setY,
                                                                  "setZ",                       &SimpleVertex::setZ);
-    mLua->new_usertype<Timer>("Timer",                           "pause",                      &Timer::pause,
-                                                                 "resume",                     &Timer::resume,
-                                                                 "start",                      &Timer::start,
-                                                                 "getValue",                   &Timer::getValue,
-                                                                 "setValue",                   &Timer::setValue,
-                                                                 "setSpeed",                   &Timer::setSpeed);
   }
 }

@@ -469,6 +469,7 @@ namespace IsoRealms {
      * Implements IAssetRegistry *
     \*****************************/
     void add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<Project, IString>* provider, const std::string& id, const std::string& category) override;
 
     void                      add(IActionType*     asset, const std::string& id, const std::string& category) override;
     void                      add(IBinding*        asset, const std::string& id, const std::string& category) override;
@@ -490,8 +491,9 @@ namespace IsoRealms {
 
     /****************************\
      * Implements IAssetRemover * 
-    \****************************/   
+    \****************************/
     void remove(IAssetProvider<Project, IScreen>* provider, bool relinquish) override;
+    void remove(IAssetProvider<Project, IString>* provider, bool relinquish) override;
 
     void remove(IActionType*     asset, bool relinquish) override;
     void remove(IAssets*         asset, bool relinquish) override;

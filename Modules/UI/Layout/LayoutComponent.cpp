@@ -312,7 +312,6 @@ namespace IsoRealms::UI {
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {
-    std::cout << "SETTING SCREEN" << std::endl;
     cRuntimeScreen = screen;
   }
     

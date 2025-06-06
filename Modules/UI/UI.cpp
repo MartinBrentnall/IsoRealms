@@ -44,6 +44,8 @@ namespace IsoRealms::UI {
   const std::string UI::SCREEN_PANEL    = "Panel";
   const std::string UI::SCREEN_TEXT     = "Text";
 
+  const std::string UI::STRING_TIME = "Time";
+
   UI::UI(IProject& project, IResourceTypeRegistry* registry):
                     cProject(project),
                     cProviderLayoutLocationAbsolute(project),
@@ -60,6 +62,7 @@ namespace IsoRealms::UI {
                     cProviderScreenModel(project),
                     cProviderScreenPanel(project),
                     cProviderScreenText(project),
+                    cProviderStringTime(project),
                     cResourceTypeLayout(*this),
                     cResourceTypeMenu(*this),
                     cResourceTypePrompt(*this),
@@ -119,6 +122,7 @@ namespace IsoRealms::UI {
     assets.add(&cProviderScreenModel,    SCREEN_MODEL,    "");
     assets.add(&cProviderScreenPanel,    SCREEN_PANEL,    "");
     assets.add(&cProviderScreenText,     SCREEN_TEXT,     "");
+    assets.add(&cProviderStringTime,     STRING_TIME,     "");
   }
   
   void UI::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
@@ -126,6 +130,7 @@ namespace IsoRealms::UI {
     remover.remove(&cProviderScreenModel,    true);
     remover.remove(&cProviderScreenPanel,    true);
     remover.remove(&cProviderScreenText,     true);
+    remover.remove(&cProviderStringTime,     true);
   }
   
   std::vector<std::unique_ptr<IProperty>> UI::getProperties() {

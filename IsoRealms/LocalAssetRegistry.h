@@ -34,7 +34,8 @@ namespace IsoRealms {
      * Implements IAssetRegistry *
     \*****************************/
     void add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) override;
-    
+    void add(IAssetProvider<Project, IString>* provider, const std::string& id, const std::string& category) override;
+
     void                      add(IActionType*     asset, const std::string& id, const std::string& category) override;
     void                      add(IBinding*        asset, const std::string& id, const std::string& category) override;
     void                      add(IBindingType*    asset, const std::string& id, const std::string& category) override;

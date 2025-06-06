@@ -34,5 +34,4 @@
 #include "SimpleInteger/SimpleInteger.h"
 #include "SimpleString/SimpleString.h"
 #include "SimpleVertex/SimpleVertex.h"
-#include "Timer/Timer.h"
 #include "Basics.h"

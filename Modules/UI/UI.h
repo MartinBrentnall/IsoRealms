@@ -45,6 +45,7 @@
 #include "Assets/Fixed/Screen/ScreenModel.h"
 #include "Assets/Fixed/Screen/ScreenPanel.h"
 #include "Assets/Fixed/Screen/ScreenText.h"
+#include "Assets/Fixed/String/StringTime.h"
 #include "IUI.h"
 #include "Layout/Layout.h"
 #include "Menu/Menu.h"
@@ -131,6 +132,8 @@ namespace IsoRealms::UI {
     static const std::string SCREEN_PANEL;
     static const std::string SCREEN_TEXT;
 
+    static const std::string STRING_TIME;
+
     // External interfaces.
     IProject& cProject;
     
@@ -158,6 +161,8 @@ namespace IsoRealms::UI {
     AssetInstanced<Project, IScreen, ScreenModel>    cProviderScreenModel;
     AssetInstanced<Project, IScreen, ScreenPanel>    cProviderScreenPanel;
     AssetInstanced<Project, IScreen, ScreenText>     cProviderScreenText;
+
+    AssetInstanced<Project, IString, StringTime> cProviderStringTime;
 
     ResourceTypeDefinition<UI, Layout>          cResourceTypeLayout;
     ResourceTypeDefinition<UI, Menu>            cResourceTypeMenu;

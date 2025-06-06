@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
   
   BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data) :
             cDefValue(project, false, [this](bool value) {
-              std::cout << "Execute action for " << value << std::endl;
               (value ? cDefTrueAction : cDefFalseAction).execute();
             }),
             cDefTrueAction(project),

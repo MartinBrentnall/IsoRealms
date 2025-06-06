@@ -51,17 +51,15 @@ namespace IsoRealms::Basics {
         }
       }
 
-      if (cRuntimePlaying) {
-        for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
-          mEntry.second->play(milliseconds);
-        }
+      for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+        mEntry.second->update(milliseconds);
       }
     });
     
     project.updateEditing([this](unsigned int milliseconds) {
-      if (cRuntimePlaying && cDefLoop && cDefPlaying) {
+      if (cDefLoop && cDefPlaying) {
         for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
-          mEntry.second->play(milliseconds);
+          mEntry.second->update(milliseconds);
         }
       }
       for (const std::pair<IEditableScreen* const, std::unique_ptr<SequenceEditor>>& mEditor : cEditors) {
@@ -195,17 +193,7 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void Sequence::play() {
-    cRuntimePlaying = true;
-  }
-
-  void Sequence::pause() {
-    cRuntimePlaying = false;
-  }
-
   void Sequence::reset() {
-    cRuntimePlaying = cDefPlaying;
-    cRuntimePosition = 0;
     cRuntimePositionFraction = 0.0f;
     for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
       mEntry.second->reset();
@@ -219,7 +207,6 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::setPreviewPosition(long position) {
-    cRuntimePosition = position;
     for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
       mEntry.second->setPreviewPosition(position);
     }
@@ -227,16 +214,8 @@ namespace IsoRealms::Basics {
   
   void Sequence::preview(unsigned int milliseconds) {
     for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
-      mEntry.second->play(milliseconds);
+      mEntry.second->update(milliseconds);
     }
-  }
-
-  int Sequence::getTime() const {
-    return cRuntimePosition;
-  }
-
-  void Sequence::setTime(int time) {
-    setPreviewPosition(std::max(0, std::min(static_cast<int>(getDuration()), time)));
   }
 
   IProject& Sequence::getProject() const {
@@ -268,7 +247,8 @@ namespace IsoRealms::Basics {
             cDefStartTime(0),
             cDefSpeed(1.0f),
             cExposedPosition(*this),
-            cExposedRemaining(*this) {
+            cExposedRemaining(*this),
+            cLuaBinding(parent.cBasics.getProject(), this) {
   }
 
   Sequence::Instance::Instance(Sequence& parent, JSONObject object) :
@@ -276,7 +256,8 @@ namespace IsoRealms::Basics {
             cDefStartTime(object.getInteger(JSON_START_TIME)),
             cDefSpeed(object.getFloat(JSON_SPEED, 1.0f)),
             cExposedPosition(*this),
-            cExposedRemaining(*this) {
+            cExposedRemaining(*this),
+            cLuaBinding(parent.cBasics.getProject(), this) {
     for (std::unique_ptr<SequenceTrack>& mTrack : cParent.cDefTracks) {
       ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance();
       if (mTrackInstance != nullptr) {
@@ -288,6 +269,7 @@ namespace IsoRealms::Basics {
   void Sequence::Instance::registerAssets(IAssetRegistry& assets) {
     assets.add(&cExposedPosition, "Position", "Sequences");
     assets.add(&cExposedRemaining, "Remaining", "Sequences");
+    assets.add(&cLuaBinding, "", "Sequences");
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {
       mTrack->registerAssets(assets);
     }
@@ -296,6 +278,7 @@ namespace IsoRealms::Basics {
   void Sequence::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
     assets.remove(&cExposedPosition, relinquish);
     assets.remove(&cExposedRemaining, relinquish);
+    assets.remove(&cLuaBinding, relinquish);
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {
       mTrack->unregisterAssets(assets, relinquish);
     }
@@ -307,7 +290,8 @@ namespace IsoRealms::Basics {
     }
     cRuntimePosition = 0;
     cRuntimePositionFraction = 0.0f;
-    play(cDefStartTime);
+    cRuntimePlaying = cParent.cDefPlaying;
+    update(cDefStartTime);
   }
 
   void Sequence::Instance::stopPreview() {
@@ -322,31 +306,33 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void Sequence::Instance::play(unsigned int milliseconds) {
-    if (cDefSpeed != 1.0f) {
-      float mActualMilliseconds = milliseconds * cDefSpeed;
-      milliseconds = std::floor(mActualMilliseconds);
-      float mFractional = mActualMilliseconds - milliseconds;
-      cRuntimePositionFraction += mFractional;
-      if (cRuntimePositionFraction >= 1.0f) {
-        milliseconds++;
-        cRuntimePositionFraction -= 1.0f;
+  void Sequence::Instance::update(unsigned int milliseconds) {
+    if (cRuntimePlaying) {
+      if (cDefSpeed != 1.0f) {
+        float mActualMilliseconds = milliseconds * cDefSpeed;
+        milliseconds = std::floor(mActualMilliseconds);
+        float mFractional = mActualMilliseconds - milliseconds;
+        cRuntimePositionFraction += mFractional;
+        if (cRuntimePositionFraction >= 1.0f) {
+          milliseconds++;
+          cRuntimePositionFraction -= 1.0f;
+        }
       }
-    }
 
-    cRuntimePosition += milliseconds;
+      cRuntimePosition = std::min(cParent.getDuration(), cRuntimePosition + milliseconds);
 
-    bool mSequenceFinished = true;
-    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      if (mTrack->play(milliseconds)) {
-        mSequenceFinished = false;
-      }
-    }
-
-    if (mSequenceFinished && cParent.cDefLoop) {
+      bool mSequenceFinished = true;
       for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-        cRuntimePosition = 0;
-        mTrack->reset();
+        if (mTrack->play(milliseconds)) {
+          mSequenceFinished = false;
+        }
+      }
+
+      if (mSequenceFinished && cParent.cDefLoop) {
+        for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+          cRuntimePosition = 0;
+          mTrack->reset();
+        }
       }
     }
   }
@@ -362,6 +348,23 @@ namespace IsoRealms::Basics {
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Start Time",    "TODO", [this]() {return cDefStartTime;}, [this](int value) {cDefStartTime = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Speed",         "TODO", [this]() {return cDefSpeed;},     [this](int value) {cDefSpeed     = value; return true;}));
     return mProperties;
+  }
+
+  void Sequence::Instance::play() {
+    cRuntimePlaying = true;
+  }
+
+  void Sequence::Instance::pause() {
+    cRuntimePlaying = false;
+  }
+
+  int Sequence::Instance::getTime() const {
+    return cRuntimePosition;
+  }
+
+  void Sequence::Instance::setTime(int time) {
+    cRuntimePosition = std::max(0, std::min(static_cast<int>(cParent.getDuration()), time));
+    setPreviewPosition(cRuntimePosition);
   }
 
   Sequence::Length::Length(Sequence& parent) :
@@ -401,16 +404,8 @@ namespace IsoRealms::Basics {
             cParent(parent) {
   }
 
-  std::string Sequence::Instance::Position::getValue() const {
-    int mMilliseconds = cParent.cRuntimePosition % 1000;
-    int mSeconds = cParent.cRuntimePosition / 1000;
-    int mMinutes = mSeconds / 60;
-    int mHours   = mMinutes / 60;
-    mMinutes = mMinutes % 60;
-    mSeconds = mSeconds % 60;
-    std::stringstream mStringStream;
-    mStringStream << mHours << ":" << std::setfill('0') << std::setw(2) << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setfill('0') << std::setw(2) << (mMilliseconds / 10);
-    return mStringStream.str();
+  int Sequence::Instance::Position::getValue() const {
+    return cParent.cRuntimePosition;
   }
 
   bool Sequence::Instance::Position::renderAssetIcon() const {
@@ -433,17 +428,8 @@ namespace IsoRealms::Basics {
             cParent(parent) {
   }
 
-  std::string Sequence::Instance::Remaining::getValue() const {
-    int mRemainingTime = -cParent.cRuntimePosition + cParent.cParent.getDuration();
-    int mMilliseconds = mRemainingTime % 1000;
-    int mSeconds = mRemainingTime / 1000;
-    int mMinutes = mSeconds / 60;
-//    int mHours   = mMinutes / 60;
-    mMinutes = mMinutes % 60;
-    mSeconds = mSeconds % 60;
-    std::stringstream mStringStream;
-    mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setfill('0') << std::setw(2) << (mMilliseconds / 10);
-    return mStringStream.str();
+  int Sequence::Instance::Remaining::getValue() const {
+    return -cParent.cRuntimePosition + cParent.cParent.getDuration();
   }
 
   bool Sequence::Instance::Remaining::renderAssetIcon() const {
@@ -461,4 +447,4 @@ namespace IsoRealms::Basics {
   bool Sequence::Instance::Remaining::isDefaultConfiguration() const {
     return true;
   }
-}
+  }

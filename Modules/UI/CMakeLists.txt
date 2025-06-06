@@ -41,6 +41,7 @@ add_library(UI MODULE
   Assets/Fixed/Screen/ScreenModel.cpp
   Assets/Fixed/Screen/ScreenPanel.cpp
   Assets/Fixed/Screen/ScreenText.cpp
+  Assets/Fixed/String/StringTime.cpp
   Layout/Editor/LayoutEditor.cpp
   Layout/Layout.cpp
   Layout/LayoutComponent.cpp

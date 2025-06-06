@@ -754,7 +754,8 @@ namespace IsoRealms {
   }
   
   void Project::add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) {cScreens.add(provider, id, category);}
-  
+  void Project::add(IAssetProvider<Project, IString>* provider, const std::string& id, const std::string& category) {cStrings.add(provider, id, category);}
+
   void                      Project::add(IActionType*     asset, const std::string& id, const std::string& category) {       cActionTypes.add(   asset, id, category      );}
   void                      Project::add(IBinding*        asset, const std::string& id, const std::string& category) {       cBindings.add(      asset, id, category      );}
   void                      Project::add(IBindingType*    asset, const std::string& id, const std::string& category) {       cBindingTypes.add(  asset, id, category      );}
@@ -788,6 +789,7 @@ namespace IsoRealms {
   IStateNotifier<IVertex>*  Project::add(IVertex*         asset, const std::string& id, const std::string& category) {return cVertices.add(      asset, id, category, true);}
 
   void Project::remove(IAssetProvider<Project, IScreen>* provider, bool relinquish) {cScreens.remove(provider, relinquish);}
+  void Project::remove(IAssetProvider<Project, IString>* provider, bool relinquish) {cStrings.remove(provider, relinquish);}
 
   void Project::remove(IActionType*     asset, bool relinquish) {cActionTypes.remove(   asset, relinquish);}
   void Project::remove(IBinding*        asset, bool relinquish) {cBindings.remove(      asset, relinquish);}

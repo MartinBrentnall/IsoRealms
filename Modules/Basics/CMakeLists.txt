@@ -49,7 +49,6 @@ add_library(Basics MODULE
   SimpleString/SimpleString.cpp
   SimpleVertex/SimpleVertex.cpp
   Sprite/Sprite.cpp
-  Timer/Timer.cpp
   Basics.cpp
   BasicsLuaSupport.cpp
   Script.cpp

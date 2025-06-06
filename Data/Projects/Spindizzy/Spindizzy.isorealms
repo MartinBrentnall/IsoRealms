@@ -82,12 +82,6 @@
           }
         },
         {
-          "variable": "timeLimit",
-          "to": {
-            "key": "Basics/Timer/TimeLimit"
-          }
-        },
-        {
           "variable": "spindizzy",
           "to": {
             "key": "Spindizzy"
@@ -113,9 +107,9 @@
               }
             },
             {
-              "variable": "timer",
+              "variable": "gameTimeLimit",
               "to": {
-                "key": "Basics/Timer/TimeLimit"
+                "key": "Basics/Sequence/Time Limit/Instance"
               }
             },
             {
@@ -179,7 +173,7 @@
               }
             }
           ],
-          "code": "if value:getValue() == \"Explorer\" then\n  timer:pause()\n  GlobalExplorer = 1\n  timeValue:setScreen(notApplicableTime)\n  scoreValue:setScreen(notApplicableScore)\nend"
+          "code": "if value:getValue() == \"Explorer\" then\n  gameTimeLimit:pause()\n  GlobalExplorer = 1\n  timeValue:setScreen(notApplicableTime)\n  scoreValue:setScreen(notApplicableScore)\nend"
         }
       }
     ],
@@ -251,13 +245,13 @@
                       }
                     },
                     {
-                      "variable": "time",
+                      "variable": "gameTimeLimit",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Sequence/Time Limit/Instance"
                       }
                     }
                   ],
-                  "code": "if hasFocus then\n  player:stop()\n  if GlobalExplorer ~= 1 then\n    local newTime = time:getValue() - 500\n    if newTime < 0 then\n      newTime = 0\n    end\n    time:setValue(newTime)\n  end\nend"
+                  "code": "if hasFocus then\n  player:stop()\n  if GlobalExplorer ~= 1 then\n    local newTime = gameTimeLimit:getTime() + 500\n    gameTimeLimit:setTime(newTime)\n  end\nend"
                 },
                 "onBecomingFalse": {
                   "key": "None"
@@ -664,6 +658,15 @@
             ]
           },
           {
+            "type": "Float",
+            "instances": [
+              {
+                "id": "Time Speed",
+                "value": 1.0
+              }
+            ]
+          },
+          {
             "type": "Function",
             "instances": [
               {
@@ -755,9 +758,9 @@
                 "name": "Unpause",
                 "bindings": [
                   {
-                    "variable": "timeLimit",
+                    "variable": "gameTimeLimit",
                     "to": {
-                      "key": "Basics/Timer/TimeLimit"
+                      "key": "Basics/Sequence/Time Limit/Instance"
                     }
                   },
                   {
@@ -796,18 +799,18 @@
                   {
                     "variable": "sound",
                     "to": {
-                      "key": "Basics/Sequence/DamageSound"
+                      "key": "Basics/Sequence/DamageSound/Instance"
                     }
                   },
                   {
                     "variable": "damage",
                     "to": {
-                      "key": "Basics/Sequence/DamageVisual"
+                      "key": "Basics/Sequence/DamageVisual/Instance"
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "-- Unpause the game\nlocks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    timeLimit:resume()\n  end\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend\nhasFocus = true\n\n-- Remove the menu\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\nmenuInput:setInputHandler(nil)\nmainInput:setInputHandler(gameControls)"
+                "code": "-- Unpause the game\nlocks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    gameTimeLimit:play()\n  end\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend\nhasFocus = true\n\n-- Remove the menu\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\nmenuInput:setInputHandler(nil)\nmainInput:setInputHandler(gameControls)"
               },
               {
                 "id": "Ending",
@@ -816,7 +819,7 @@
                   {
                     "variable": "endingSequence",
                     "to": {
-                      "key": "Basics/Sequence/Ending"
+                      "key": "Basics/Sequence/Ending/Instance"
                     }
                   },
                   {
@@ -865,9 +868,9 @@
                     }
                   },
                   {
-                    "variable": "timeLimit",
+                    "variable": "gameTimeLimit",
                     "to": {
-                      "key": "Basics/Timer/TimeLimit"
+                      "key": "Basics/Sequence/Time Limit/Instance"
                     }
                   },
                   {
@@ -879,27 +882,27 @@
                   {
                     "variable": "sound",
                     "to": {
-                      "key": "Basics/Sequence/DamageSound"
+                      "key": "Basics/Sequence/DamageSound/Instance"
                     }
                   },
                   {
                     "variable": "damage",
                     "to": {
-                      "key": "Basics/Sequence/DamageVisual"
+                      "key": "Basics/Sequence/DamageVisual/Instance"
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "-- Prevent menu access, etc.\nhasFocus = false\n\n-- Set result values\nendingMessage:setValue(\"Map Complete: Mission Success\")\nmappedMessage:setValue(\"100%\")\njewelsMessage:setValue(\"100%\")\ncompleteMessage:setValue(\"100%\")\nscoreMessage:setValue(\"\" .. score:getValue())\n\n-- Pause the game\nspindizzy:setPause(true)\ntimeLimit:pause()\nif alienContactCount > 0 then\n  sound:pause()\n  damage:pause()\nend\n\n-- Play the ending\nendingSequence:play()"
+                "code": "-- Prevent menu access, etc.\nhasFocus = false\n\n-- Set result values\nendingMessage:setValue(\"Map Complete: Mission Success\")\nmappedMessage:setValue(\"100%\")\njewelsMessage:setValue(\"100%\")\ncompleteMessage:setValue(\"100%\")\nscoreMessage:setValue(\"\" .. score:getValue())\n\n-- Pause the game\nspindizzy:setPause(true)\ngameTimeLimit:pause()\nif alienContactCount > 0 then\n  sound:pause()\n  damage:pause()\nend\n\n-- Play the ending\nendingSequence:play()"
               },
               {
                 "id": "Pause",
                 "name": "Pause",
                 "bindings": [
                   {
-                    "variable": "timeLimit",
+                    "variable": "gameTimeLimit",
                     "to": {
-                      "key": "Basics/Timer/TimeLimit"
+                      "key": "Basics/Sequence/Time Limit/Instance"
                     }
                   },
                   {
@@ -947,13 +950,13 @@
                   {
                     "variable": "sound",
                     "to": {
-                      "key": "Basics/Sequence/DamageSound"
+                      "key": "Basics/Sequence/DamageSound/Instance"
                     }
                   },
                   {
                     "variable": "damage",
                     "to": {
-                      "key": "Basics/Sequence/DamageVisual"
+                      "key": "Basics/Sequence/DamageVisual/Instance"
                     }
                   },
                   {
@@ -973,7 +976,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "if hasFocus then\n\n  -- Pause the game\n  locks = locks + 1\n  if locks == 1 then\n    spindizzy:setPause(true)\n    timeLimit:pause()\n    if alienContactCount > 0 then\n      sound:pause()\n      damage:pause()\n    end\n  end\n  hasFocus = false\n\n  -- Show the menu\n  table.insert(menuStack, screenMenu)\n  table.insert(inputStack, inputHandlerMenu)\n  screenSwitch:setScreen(screenMenu)\n  menu:reset()\n  inputSwitchFE:setInputHandler(inputHandlerMenu)\n  mainInput:setInputHandler(optionsInput)\nend"
+                "code": "if hasFocus then\n\n  -- Pause the game\n  locks = locks + 1\n  if locks == 1 then\n    spindizzy:setPause(true)\n    gameTimeLimit:pause()\n    if alienContactCount > 0 then\n      sound:pause()\n      damage:pause()\n    end\n  end\n  hasFocus = false\n\n  -- Show the menu\n  table.insert(menuStack, screenMenu)\n  table.insert(inputStack, inputHandlerMenu)\n  screenSwitch:setScreen(screenMenu)\n  menu:reset()\n  inputSwitchFE:setInputHandler(inputHandlerMenu)\n  mainInput:setInputHandler(optionsInput)\nend"
               },
               {
                 "id": "SetHint",
@@ -1117,9 +1120,9 @@
                     }
                   },
                   {
-                    "variable": "time",
+                    "variable": "gameTimeLimit",
                     "to": {
-                      "key": "Basics/Timer/TimeLimit"
+                      "key": "Basics/Sequence/Time Limit/Instance"
                     }
                   },
                   {
@@ -1192,19 +1195,13 @@
                   {
                     "variable": "mandatoryZoneTime",
                     "to": {
-                      "key": "Basics/Timer/MandatoryZoneTime"
+                      "key": "Basics/Sequence/Mandatory Zone Time/Instance"
                     }
                   },
                   {
                     "variable": "spindizzy",
                     "to": {
                       "key": "Spindizzy"
-                    }
-                  },
-                  {
-                    "variable": "timeLimit",
-                    "to": {
-                      "key": "Basics/Timer/TimeLimit"
                     }
                   },
                   {
@@ -1219,18 +1216,18 @@
                   {
                     "variable": "sound",
                     "to": {
-                      "key": "Basics/Sequence/DamageSound"
+                      "key": "Basics/Sequence/DamageSound/Instance"
                     }
                   },
                   {
                     "variable": "damage",
                     "to": {
-                      "key": "Basics/Sequence/DamageVisual"
+                      "key": "Basics/Sequence/DamageVisual/Instance"
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "-- Delay entry to the previous zone when leaving too quickly.\nif mandatoryZoneTime:getValue() < 800 or entered ~= previousZone then\n\n  -- Clear all debris from the screen.\n  if entered ~= exitedZone then\n    topDebris:clear()\n    ballDebris:clear()\n    gyroscopeDebris:clear()\n  end\n\n  -- Keep track of the current zone and the previous zone.\n  previousZone = currentZone\n  currentZone = entered\n\n  -- Update timer, score, and overview if this is the first time visiting the zone.\n  -- TODO: Can test colour from zone to determine if visited.\n  if entered:isVisited() == false then\n    zoneCount:setValue(zoneCount:getValue() - 1)\n    local earned = 400\n    local newTime = time:getValue() + 8000\n\n    -- Any time to add beyond the 3-minute cap is converted to additional score bonus.\n    if newTime > 180000 then\n      local excess = newTime - 180000\n      local extraScore = excess / 10\n      earned = earned + extraScore\n      newTime = 180000\n    end\n    time:setValue(newTime)\n    score:setValue(math.floor(score:getValue() + earned))\n\n    -- Set that the zone has been visited.\n    entered:setVisited()\n  end\n\n  -- Set the colour on the overview to show where we are.\n  enteredColour:setColour(currentZoneColour)\n\n  -- Set the zone to show in our view.\n  view:setZone(entered)\n\n  -- Set the default theme to use in the UI.\n  theme = entered:getTheme()\n  themeSet:setDefaultTheme(theme)\n\n  -- Activate dynamic objects in the zone.\n  entered:resetDynamics()\n  entered:setActive(true)\n\n  -- Update the hint icon\n  if disableHud == nil then\n    local hintCount = currentZone:getHintCount()\n    if hintCount > 0 then\n      currentZone:giveHint(0)\n    else\n      hintIcon:setScreen(nil)\n    end\n  end\n\n  -- Do we show the ending yet?\n  if zoneCount:getValue() == 0 and hangworld:getPickUpCount() == jewelsCollected:getValue() then\n    ending:execute()\n  end\n  mandatoryZoneTime:setValue(1000);\nelse\n  -- The entrance delay is implemented by momentarily pausing the game.\n  zoneToEnter = entered\n  spindizzy:setPause(true)\n  timeLimit:pause()\n  if alienContactCount > 0 then\n    sound:pause()\n    damage:pause()\n  end\nend"
+                "code": "-- Delay entry to the previous zone when leaving too quickly.\nif mandatoryZoneTime:getTime() > 200 or entered ~= previousZone then\n\n  -- Clear all debris from the screen.\n  if entered ~= exitedZone then\n    topDebris:clear()\n    ballDebris:clear()\n    gyroscopeDebris:clear()\n  end\n\n  -- Keep track of the current zone and the previous zone.\n  previousZone = currentZone\n  currentZone = entered\n\n  -- Update timer, score, and overview if this is the first time visiting the zone.\n  -- TODO: Can test colour from zone to determine if visited.\n  if entered:isVisited() == false then\n    zoneCount:setValue(zoneCount:getValue() - 1)\n    local earned = 400\n    local newTime = gameTimeLimit:getTime() - 8000\n    -- Any time to add beyond the 3-minute cap is converted to additional score bonus.\n    if newTime < 0 then\n      local excess = -newTime\n      local extraScore = excess / 10\n      earned = earned + extraScore\n      newTime = 0\n    end\n    gameTimeLimit:setTime(newTime)\n    score:setValue(math.floor(score:getValue() + earned))\n\n    -- Set that the zone has been visited.\n    entered:setVisited()\n  end\n\n  -- Set the colour on the overview to show where we are.\n  enteredColour:setColour(currentZoneColour)\n\n  -- Set the zone to show in our view.\n  view:setZone(entered)\n\n  -- Set the default theme to use in the UI.\n  theme = entered:getTheme()\n  themeSet:setDefaultTheme(theme)\n\n  -- Activate dynamic objects in the zone.\n  entered:resetDynamics()\n  entered:setActive(true)\n\n  -- Update the hint icon\n  if disableHud == nil then\n    local hintCount = currentZone:getHintCount()\n    if hintCount > 0 then\n      currentZone:giveHint(0)\n    else\n      hintIcon:setScreen(nil)\n    end\n  end\n\n  -- Do we show the ending yet?\n  if zoneCount:getValue() == 0 and hangworld:getPickUpCount() == jewelsCollected:getValue() then\n    ending:execute()\n  end\n  mandatoryZoneTime:setTime(0);\nelse\n  -- The entrance delay is implemented by momentarily pausing the game.\n  zoneToEnter = entered\n  spindizzy:setPause(true)\n  gameTimeLimit:pause()\n  if alienContactCount > 0 then\n    sound:pause()\n    damage:pause()\n  end\nend"
               },
               {
                 "id": "ZoneExited",
@@ -1412,11 +1409,75 @@
             "type": "Sequence",
             "instances": [
               {
-                "id": "Time Limit",
+                "id": "Mandatory Zone Time",
                 "playing": true,
                 "speed": {
                   "key": "Literal",
                   "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 1000,
+                          "execute": {
+                            "key": "Basics/Script",
+                            "bindings": [
+                              {
+                                "variable": "spindizzy",
+                                "to": {
+                                  "key": "Spindizzy"
+                                }
+                              },
+                              {
+                                "variable": "gameTimeLimit",
+                                "to": {
+                                  "key": "Basics/Sequence/Time Limit/Instance"
+                                }
+                              },
+                              {
+                                "variable": "zoneEnterFunction",
+                                "to": {
+                                  "key": ":Action",
+                                  "asset": {
+                                    "key": "Basics/Function/ZoneEntered",
+                                    "bindings": []
+                                  }
+                                }
+                              },
+                              {
+                                "variable": "sound",
+                                "to": {
+                                  "key": "Basics/Sequence/DamageSound/Instance"
+                                }
+                              },
+                              {
+                                "variable": "damage",
+                                "to": {
+                                  "key": "Basics/Sequence/DamageVisual/Instance"
+                                }
+                              }
+                            ],
+                            "code": "if zoneToEnter ~= nil then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    gameTimeLimit:play()\n  end\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\n  entered = zoneToEnter\n  zoneEnterFunction:execute()\n  zoneToEnter = nil\nend"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
+                "id": "Time Limit",
+                "playing": true,
+                "speed": {
+                  "key": "Basics/Float/Time Speed"
                 },
                 "tracks": [
                   {
@@ -1435,15 +1496,15 @@
                                 }
                               },
                               {
-                                "variable": "timeLimit",
+                                "variable": "gameTimeLimit",
                                 "to": {
-                                  "key": "Basics/Timer/TimeLimit"
+                                  "key": "Basics/Sequence/Time Limit/Instance"
                                 }
                               },
                               {
                                 "variable": "gameOverSequence",
                                 "to": {
-                                  "key": "Basics/Sequence/GameOver"
+                                  "key": "Basics/Sequence/GameOver/Instance"
                                 }
                               },
                               {
@@ -1515,13 +1576,13 @@
                               {
                                 "variable": "sound",
                                 "to": {
-                                  "key": "Basics/Sequence/DamageSound"
+                                  "key": "Basics/Sequence/DamageSound/Instance"
                                 }
                               },
                               {
                                 "variable": "damage",
                                 "to": {
-                                  "key": "Basics/Sequence/DamageVisual"
+                                  "key": "Basics/Sequence/DamageVisual/Instance"
                                 }
                               },
                               {
@@ -1531,7 +1592,7 @@
                                 }
                               }
                             ],
-                            "code": "-- Stop alien damage; we've probably had enough of that...\nsound:pause()\ndamage:pause()\nscreen:setScreen(nil)\n\n-- Pause the game\nlocks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  timeLimit:pause()\nend\n\nlocal message = endMessage:getValue()\nif string.len(message) == 0 then\n  endMessage:setValue(\"Fuel Depleted: Mission Aborted\")\nend\n\n-- Calculate some rounded percentages\ntotalZones = hangworld:getZoneCount()\nmappedPercentage = math.ceil((math.abs((zoneCount:getValue() / totalZones) - 1) * 100) - 0.5)\ntotalJewels = hangworld:getPickUpCount()\njewelsPercentage = math.ceil(((jewelsCollected:getValue() / totalJewels) * 100) - 0.5)\ncompletePercentage = math.ceil(((mappedPercentage + jewelsPercentage) / 2) - 0.5)\n\n-- Set result values\nmappedMessage:setValue(\"\" .. mappedPercentage .. \"%\")\njewelsMessage:setValue(\"\" .. jewelsPercentage .. \"%\")\ncompleteMessage:setValue(\"\" .. completePercentage .. \"%\")\nif GlobalExplorer ~= 1 then\n  scoreMessage:setValue(\"\" .. score:getValue())\nelse\n  -- Prevent high score from triggering\n  score:setValue(-1)\n  scoreMessage:setValue(\"N/A\")\n  GlobalExplorer = nil\nend\nhasFocus = false\ngameOverSequence:play()"
+                            "code": "-- Stooop alien damage; we've probably had enough of that...\nsound:pause()\ndamage:pause()\nscreen:setScreen(nil)\n\n-- Pause the game\nlocks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  gameTimeLimit:pause()\nend\n\nlocal message = endMessage:getValue()\nif string.len(message) == 0 then\n  endMessage:setValue(\"Fuel Depleted: Mission Aborted\")\nend\n\n-- Calculate some rounded percentages\ntotalZones = hangworld:getZoneCount()\nmappedPercentage = math.ceil((math.abs((zoneCount:getValue() / totalZones) - 1) * 100) - 0.5)\ntotalJewels = hangworld:getPickUpCount()\njewelsPercentage = math.ceil(((jewelsCollected:getValue() / totalJewels) * 100) - 0.5)\ncompletePercentage = math.ceil(((mappedPercentage + jewelsPercentage) / 2) - 0.5)\n\n-- Set result values\nmappedMessage:setValue(\"\" .. mappedPercentage .. \"%\")\njewelsMessage:setValue(\"\" .. jewelsPercentage .. \"%\")\ncompleteMessage:setValue(\"\" .. completePercentage .. \"%\")\nif GlobalExplorer ~= 1 then\n  scoreMessage:setValue(\"\" .. score:getValue())\nelse\n  -- Prevent high score from triggering\n  score:setValue(-1)\n  scoreMessage:setValue(\"N/A\")\n  GlobalExplorer = nil\nend\nhasFocus = false\ngameOverSequence:play()"
                           }
                         }
                       ]
@@ -1922,7 +1983,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 2500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -1945,7 +2006,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 3500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -1968,7 +2029,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 4500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -1991,7 +2052,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 5500,
                           "execute": {
                             "key": "Basics/Function/ShowScreen",
                             "bindings": [
@@ -2014,7 +2075,7 @@
                           }
                         },
                         {
-                          "delay": 1000,
+                          "delay": 6500,
                           "execute": {
                             "key": "Basics/Function/Quit",
                             "bindings": []
@@ -3232,166 +3293,6 @@
             ]
           },
           {
-            "type": "Timer",
-            "instances": [
-              {
-                "id": "MandatoryZoneTime",
-                "onExpiration": {
-                  "key": "Basics/Script",
-                  "bindings": [
-                    {
-                      "variable": "spindizzy",
-                      "to": {
-                        "key": "Spindizzy"
-                      }
-                    },
-                    {
-                      "variable": "timeLimit",
-                      "to": {
-                        "key": "Basics/Timer/TimeLimit"
-                      }
-                    },
-                    {
-                      "variable": "zoneEnterFunction",
-                      "to": {
-                        "key": ":Action",
-                        "asset": {
-                          "key": "Basics/Function/ZoneEntered",
-                          "bindings": []
-                        }
-                      }
-                    },
-                    {
-                      "variable": "sound",
-                      "to": {
-                        "key": "Basics/Sequence/DamageSound"
-                      }
-                    },
-                    {
-                      "variable": "damage",
-                      "to": {
-                        "key": "Basics/Sequence/DamageVisual"
-                      }
-                    }
-                  ],
-                  "code": "if zoneToEnter ~= nil then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    timeLimit:resume()\n  end\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\n  entered = zoneToEnter\n  zoneEnterFunction:execute()\n  zoneToEnter = nil\nend"
-                }
-              },
-              {
-                "id": "TimeLimit",
-                "value": 150000,
-                "onExpiration": {
-                  "key": "Basics/Script",
-                  "bindings": [
-                    {
-                      "variable": "spindizzy",
-                      "to": {
-                        "key": "Spindizzy"
-                      }
-                    },
-                    {
-                      "variable": "timeLimit",
-                      "to": {
-                        "key": "Basics/Timer/TimeLimit"
-                      }
-                    },
-                    {
-                      "variable": "gameOverSequence",
-                      "to": {
-                        "key": "Basics/Sequence/GameOver"
-                      }
-                    },
-                    {
-                      "variable": "project",
-                      "to": {
-                        "key": "Project"
-                      }
-                    },
-                    {
-                      "variable": "endMessage",
-                      "to": {
-                        "key": "Basics/String/EndingMessage"
-                      }
-                    },
-                    {
-                      "variable": "scoreMessage",
-                      "to": {
-                        "key": "Basics/String/ScoreMessage"
-                      }
-                    },
-                    {
-                      "variable": "mappedMessage",
-                      "to": {
-                        "key": "Basics/String/MappedMessage"
-                      }
-                    },
-                    {
-                      "variable": "jewelsMessage",
-                      "to": {
-                        "key": "Basics/String/JewelsMessage"
-                      }
-                    },
-                    {
-                      "variable": "completeMessage",
-                      "to": {
-                        "key": "Basics/String/CompleteMessage"
-                      }
-                    },
-                    {
-                      "variable": "score",
-                      "to": {
-                        "key": "Basics/Integer/Score"
-                      }
-                    },
-                    {
-                      "variable": "jewelsCollected",
-                      "to": {
-                        "key": ":Integer",
-                        "asset": {
-                          "key": "Basics/Integer/JewelCount"
-                        }
-                      }
-                    },
-                    {
-                      "variable": "zoneCount",
-                      "to": {
-                        "key": ":Integer",
-                        "asset": {
-                          "key": "Basics/Integer/RemainingZones"
-                        }
-                      }
-                    },
-                    {
-                      "variable": "hangworld",
-                      "to": {
-                        "key": "Spindizzy/World/Hangworld"
-                      }
-                    },
-                    {
-                      "variable": "sound",
-                      "to": {
-                        "key": "Basics/Sequence/DamageSound"
-                      }
-                    },
-                    {
-                      "variable": "damage",
-                      "to": {
-                        "key": "Basics/Sequence/DamageVisual"
-                      }
-                    },
-                    {
-                      "variable": "screen",
-                      "to": {
-                        "key": "UI/Layout/Main/Damage"
-                      }
-                    }
-                  ],
-                  "code": "-- Stop alien damage; we've probably had enough of that...\nsound:pause()\ndamage:pause()\nscreen:setScreen(nil)\n\n-- Pause the game\nlocks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  timeLimit:pause()\nend\n\nlocal message = endMessage:getValue()\nif string.len(message) == 0 then\n  endMessage:setValue(\"Fuel Depleted: Mission Aborted\")\nend\n\n-- Calculate some rounded percentages\ntotalZones = hangworld:getZoneCount()\nmappedPercentage = math.ceil((math.abs((zoneCount:getValue() / totalZones) - 1) * 100) - 0.5)\ntotalJewels = hangworld:getPickUpCount()\njewelsPercentage = math.ceil(((jewelsCollected:getValue() / totalJewels) * 100) - 0.5)\ncompletePercentage = math.ceil(((mappedPercentage + jewelsPercentage) / 2) - 0.5)\n\n-- Set result values\nmappedMessage:setValue(\"\" .. mappedPercentage .. \"%\")\njewelsMessage:setValue(\"\" .. jewelsPercentage .. \"%\")\ncompleteMessage:setValue(\"\" .. completePercentage .. \"%\")\nif GlobalExplorer ~= 1 then\n  scoreMessage:setValue(\"\" .. score:getValue())\nelse\n  -- Prevent high score from triggering\n  score:setValue(-1)\n  scoreMessage:setValue(\"N/A\")\n  GlobalExplorer = nil\nend\nhasFocus = false\ngameOverSequence:play()"
-                }
-              }
-            ]
-          },
-          {
             "type": "Vertex",
             "instances": [
               {
@@ -3695,9 +3596,9 @@
                       }
                     },
                     {
-                      "variable": "time",
+                      "variable": "gameTimeLimit",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Sequence/Time Limit/Instance"
                       }
                     },
                     {
@@ -3738,7 +3639,7 @@
                       }
                     }
                   ],
-                  "code": "sound:execute()\njewelsCollected:setValue(jewelsCollected:getValue() + 1)\nlocal earned = 600\nlocal newTime = time:getValue() + 12000\nif newTime > 180000 then\n  local excess = newTime - 180000\n  local extraScore = excess / 10\n  earned = earned + extraScore\n  newTime = 180000\nend\ntime:setValue(newTime)\nscore:setValue(math.floor(score:getValue() + earned))\n\n-- Do we show the ending yet?\n  ending:execute()"
+                  "code": "sound:execute()\njewelsCollected:setValue(jewelsCollected:getValue() + 1)\nlocal earned = 600\nlocal newTime = gameTimeLimit:getTime() - 12000\nif newTime < 0 then\n  local excess = -newTime\n  local extraScore = excess / 10\n  earned = earned + extraScore\n  newTime = 0\nend\ngameTimeLimit:setTime(newTime)\n\nscore:setValue(math.floor(score:getValue() + earned))\n\n-- Do we show the ending yet?\nif zoneCount:getValue() == 0 and hangworld:getPickUpCount() == jewelsCollected:getValue() then\n  ending:execute()\nend"
                 },
                 "onExit": {
                   "key": "None"
@@ -4099,13 +4000,13 @@
                     {
                       "variable": "sound",
                       "to": {
-                        "key": "Basics/Sequence/DamageSound"
+                        "key": "Basics/Sequence/DamageSound/Instance"
                       }
                     },
                     {
                       "variable": "damage",
                       "to": {
-                        "key": "Basics/Sequence/DamageVisual"
+                        "key": "Basics/Sequence/DamageVisual/Instance"
                       }
                     },
                     {
@@ -4124,13 +4025,13 @@
                       }
                     },
                     {
-                      "variable": "timeLimit",
+                      "variable": "timeSpeed",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Float/Time Speed"
                       }
                     }
                   ],
-                  "code": "if alienContactCount == 0 then\n  sound:play()\n  damage:play()\n  screen:setScreen(indicator)\nend\nalienContactCount = alienContactCount + 1\ntimeLimit:setSpeed(1.0 + alienContactCount * 20.0)"
+                  "code": "if alienContactCount == 0 then\n  sound:play()\n  damage:play()\n  screen:setScreen(indicator)\nend\nalienContactCount = alienContactCount + 1\ntimeSpeed:setValue(1.0 + alienContactCount * 20.0)"
                 },
                 "onParting": {
                   "key": "Basics/Script",
@@ -4138,13 +4039,13 @@
                     {
                       "variable": "sound",
                       "to": {
-                        "key": "Basics/Sequence/DamageSound"
+                        "key": "Basics/Sequence/DamageSound/Instance"
                       }
                     },
                     {
                       "variable": "damage",
                       "to": {
-                        "key": "Basics/Sequence/DamageVisual"
+                        "key": "Basics/Sequence/DamageVisual/Instance"
                       }
                     },
                     {
@@ -4154,13 +4055,13 @@
                       }
                     },
                     {
-                      "variable": "timeLimit",
+                      "variable": "timeSpeed",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Float/Time Speed"
                       }
                     }
                   ],
-                  "code": "alienContactCount = alienContactCount - 1\nif alienContactCount == 0 then\n  sound:pause()\n  damage:pause()\n  screen:setScreen(nil)\nend\ntimeLimit:setSpeed(1.0 + alienContactCount * 20.0)"
+                  "code": "alienContactCount = alienContactCount - 1\nif alienContactCount == 0 then\n  sound:pause()\n  damage:pause()\n  screen:setScreen(nil)\nend\ntimeSpeed:setValue(1.0 + alienContactCount * 20.0)"
                 }
               },
               {
@@ -4177,13 +4078,13 @@
                     {
                       "variable": "sound",
                       "to": {
-                        "key": "Basics/Sequence/DamageSound"
+                        "key": "Basics/Sequence/DamageSound/Instance"
                       }
                     },
                     {
                       "variable": "damage",
                       "to": {
-                        "key": "Basics/Sequence/DamageVisual"
+                        "key": "Basics/Sequence/DamageVisual/Instance"
                       }
                     },
                     {
@@ -4202,13 +4103,13 @@
                       }
                     },
                     {
-                      "variable": "timeLimit",
+                      "variable": "timeSpeed",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Float/Time Speed"
                       }
                     }
                   ],
-                  "code": "if alienContactCount == 0 then\n  sound:play()\n  damage:play()\n  screen:setScreen(indicator)\nend\nalienContactCount = alienContactCount + 1\ntimeLimit:setSpeed(1.0 + alienContactCount * 20.0)"
+                  "code": "if alienContactCount == 0 then\n  sound:play()\n  damage:play()\n  screen:setScreen(indicator)\nend\nalienContactCount = alienContactCount + 1\ntimeSpeed:setValue(1.0 + alienContactCount * 20.0)"
                 },
                 "onParting": {
                   "key": "Basics/Script",
@@ -4216,13 +4117,13 @@
                     {
                       "variable": "sound",
                       "to": {
-                        "key": "Basics/Sequence/DamageSound"
+                        "key": "Basics/Sequence/DamageSound/Instance"
                       }
                     },
                     {
                       "variable": "damage",
                       "to": {
-                        "key": "Basics/Sequence/DamageVisual"
+                        "key": "Basics/Sequence/DamageVisual/Instance"
                       }
                     },
                     {
@@ -4232,13 +4133,13 @@
                       }
                     },
                     {
-                      "variable": "timeLimit",
+                      "variable": "timeSpeed",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Float/Time Speed"
                       }
                     }
                   ],
-                  "code": "alienContactCount = alienContactCount - 1\nif alienContactCount == 0 then\n  sound:pause()\n  damage:pause()\n  screen:setScreen(nil)\nend\ntimeLimit:setSpeed(1.0 + alienContactCount * 20.0)"
+                  "code": "alienContactCount = alienContactCount - 1\nif alienContactCount == 0 then\n  sound:pause()\n  damage:pause()\n  screen:setScreen(nil)\nend\ntimeSpeed:setValue(1.0 + alienContactCount * 20.0)"
                 }
               }
             ]
@@ -4712,9 +4613,9 @@
                   "key": "Basics/Script",
                   "bindings": [
                     {
-                      "variable": "time",
+                      "variable": "gameTimeLimit",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Sequence/Time Limit/Instance"
                       }
                     },
                     {
@@ -4733,7 +4634,7 @@
                       }
                     }
                   ],
-                  "code": "local newTime = time:getValue() - 10000\n  if newTime < 0 then\n  newTime = 0\nend\ntime:setValue(newTime)\nif launchMomentum:getZ() > 0.0 then\n  soundRespawnHard:execute()\nend"
+                  "code": "local newTime = gameTimeLimit:getTime() + 10000\ngameTimeLimit:setTime(newTime)\nif launchMomentum:getZ() > 0.0 then\n  soundRespawnHard:execute()\nend"
                 },
                 "thrustInput": {
                   "key": "Basics/DigitalInput/Thrust"
@@ -9304,9 +9205,9 @@
                         }
                       },
                       {
-                        "variable": "timeLimit",
+                        "variable": "gameTimeLimit",
                         "to": {
-                          "key": "Basics/Timer/TimeLimit"
+                          "key": "Basics/Sequence/Time Limit/Instance"
                         }
                       },
                       {
@@ -9351,17 +9252,17 @@
                       {
                         "variable": "sound",
                         "to": {
-                          "key": "Basics/Sequence/DamageSound"
+                          "key": "Basics/Sequence/DamageSound/Instance"
                         }
                       },
                       {
                         "variable": "damage",
                         "to": {
-                          "key": "Basics/Sequence/DamageVisual"
+                          "key": "Basics/Sequence/DamageVisual/Instance"
                         }
                       }
                     ],
-                    "code": "locks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  timeLimit:pause()\n  background:setScreen(backgroundBlack)\n  world:setScreen(worldOverview)\n  if alienContactCount > 0 then\n    sound:pause()\n    damage:pause()\n  end\nend"
+                    "code": "locks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  gameTimeLimit:pause()\n  background:setScreen(backgroundBlack)\n  world:setScreen(worldOverview)\n  if alienContactCount > 0 then\n    sound:pause()\n    damage:pause()\n  end\nend"
                   },
                   "onStartArrival": {
                     "key": "Basics/Script",
@@ -9373,9 +9274,9 @@
                         }
                       },
                       {
-                        "variable": "timeLimit",
+                        "variable": "gameTimeLimit",
                         "to": {
-                          "key": "Basics/Timer/TimeLimit"
+                          "key": "Basics/Sequence/Time Limit/Instance"
                         }
                       },
                       {
@@ -9420,17 +9321,17 @@
                       {
                         "variable": "sound",
                         "to": {
-                          "key": "Basics/Sequence/DamageSound"
+                          "key": "Basics/Sequence/DamageSound/Instance"
                         }
                       },
                       {
                         "variable": "damage",
                         "to": {
-                          "key": "Basics/Sequence/DamageVisual"
+                          "key": "Basics/Sequence/DamageVisual/Instance"
                         }
                       }
                     ],
-                    "code": "locks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    timeLimit:resume()\n  end\n  background:setScreen(backgroundNormal)\n  world:setScreen(worldNormal)\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend"
+                    "code": "locks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    gameTimeLimit:play()\n  end\n  background:setScreen(backgroundNormal)\n  world:setScreen(worldNormal)\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend"
                   },
                   "onEndDeparture": {
                     "key": "None"
@@ -11168,7 +11069,11 @@
                       "key": "UI/Text",
                       "alignment": "Left",
                       "value": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "UI/Time",
+                        "value": {
+                          "key": "Basics/Sequence/Time Limit/Instance/Remaining"
+                        },
+                        "format": "{m}:{s:02}.{ms:2}"
                       },
                       "font": {
                         "key": "Basics/Font/Menu"
@@ -11850,9 +11755,9 @@
                   "key": "Basics/Script",
                   "bindings": [
                     {
-                      "variable": "time",
+                      "variable": "gameTimeLimit",
                       "to": {
-                        "key": "Basics/Timer/TimeLimit"
+                        "key": "Basics/Sequence/Time Limit/Instance"
                       }
                     },
                     {
@@ -11874,7 +11779,7 @@
                       }
                     }
                   ],
-                  "code": "-- Setting time to zero causes mission to end\ntime:setValue(0)\n\n-- Pop all menu screens\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\n\n-- Set message that player has quit\nendingMessage:setValue(\"Cartographer Quit: Mission Aborted\")\n\n-- Get rid of the prompt\nscreen:setScreen(nil)\n\n-- Unpause the game\nlocks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    time:resume()\n  end\nend\n\n-- Disable menu access\nhasFocus = false"
+                  "code": "-- Setting time to 3 minutes causes mission to end\ngameTimeLimit:setTime(180000)\n\n-- Pop all menu screens\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\n\n-- Set message that player has quit\nendingMessage:setValue(\"Cartographer Quit: Mission Aborted\")\n\n-- Get rid of the prompt\nscreen:setScreen(nil)\n\n-- Unpause the game\nlocks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    gameTimeLimit:play()\n  end\nend\n\n-- Disable menu access\nhasFocus = false"
                 },
                 "onCancel": {
                   "key": "Basics/Function/PopScreen",

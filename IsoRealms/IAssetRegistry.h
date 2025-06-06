@@ -51,7 +51,8 @@ namespace IsoRealms {
     public:
     // TODO: Experimental. Add other types if successful.
     virtual void add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) = 0;
-      
+    virtual void add(IAssetProvider<Project, IString>* provider, const std::string& id, const std::string& category) = 0;
+
     /**
      * Add the specified model type to this registry.
      * 

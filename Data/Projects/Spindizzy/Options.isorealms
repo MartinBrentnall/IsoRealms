@@ -273,7 +273,7 @@
                   {
                     "variable": "screenTestTimer",
                     "to": {
-                      "key": "Basics/Timer/VideoModeTestDelay"
+                      "key": "Basics/Sequence/Video Mode Test Time/Instance"
                     }
                   },
                   {
@@ -643,6 +643,35 @@
             "type": "Sequence",
             "instances": [
               {
+                "id": "Video Mode Test Time",
+                "playing": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 10000,
+                          "execute": {
+                            "key": "Basics/Function/RestorePrevious",
+                            "bindings": []
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
                 "id": "Menu Selection Colour",
                 "playing": true,
                 "loop": true,
@@ -736,18 +765,6 @@
             "instances": [
               {
                 "id": "InputName"
-              }
-            ]
-          },
-          {
-            "type": "Timer",
-            "instances": [
-              {
-                "id": "VideoModeTestDelay",
-                "onExpiration": {
-                  "key": "Basics/Function/RestorePrevious",
-                  "bindings": []
-                }
               }
             ]
           }
@@ -1068,11 +1085,11 @@
                           {
                             "variable": "screenTestTimer",
                             "to": {
-                              "key": "Basics/Timer/VideoModeTestDelay"
+                              "key": "Basics/Sequence/Video Mode Test Time/Instance"
                             }
                           }
                         ],
-                        "code": "previousMode = project:getDisplayResolution()\npreviousFullScreen = project:isFullScreen()\nmode = optionResolution:getValue()\nfullScreen = optionFullScreen:getValue()\nproject:setDisplayResolution(mode, fullScreen)\nscreen:setScreen(promptScreen)\ninput:setInputHandler(promptInput)\nscreenTestTimer:start(10000)\nprompt:reset()"
+                        "code": "previousMode = project:getDisplayResolution()\npreviousFullScreen = project:isFullScreen()\nmode = optionResolution:getValue()\nfullScreen = optionFullScreen:getValue()\nproject:setDisplayResolution(mode, fullScreen)\nscreen:setScreen(promptScreen)\ninput:setInputHandler(promptInput)\nscreenTestTimer:setTime(0)\nscreenTestTimer:play()\nprompt:reset()"
                       }
                     }
                   }
@@ -1631,7 +1648,7 @@
                     {
                       "variable": "screenTestTimer",
                       "to": {
-                        "key": "Basics/Timer/VideoModeTestDelay"
+                        "key": "Basics/Sequence/Video Mode Test Time/Instance"
                       }
                     },
                     {

@@ -44,6 +44,7 @@ namespace IsoRealms {
   class IAssetRemover {
     public:
     virtual void remove(IAssetProvider<Project, IScreen>* provider, bool relinquish) = 0;
+    virtual void remove(IAssetProvider<Project, IString>* provider, bool relinquish) = 0;
 
     virtual void remove(IActionType*     asset, bool relinquish) = 0;
     virtual void remove(IBinding*        asset, bool relinquish) = 0;
