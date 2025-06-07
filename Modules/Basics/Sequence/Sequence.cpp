@@ -20,16 +20,18 @@
 
 #include "Modules/Basics/Basics.h"
 
+#include "Editor/SequenceEditor.h"
+#include "SequenceInstance.h"
+
 namespace IsoRealms::Basics {
-  const std::string Sequence::JSON_INSTANCES  = "instances";
-  const std::string Sequence::JSON_LOOP       = "loop";
-  const std::string Sequence::JSON_NAME       = "name";
-  const std::string Sequence::JSON_PLAYING    = "playing";
-  const std::string Sequence::JSON_SPEED      = "speed";
-  const std::string Sequence::JSON_START_TIME = "startTime";
-  const std::string Sequence::JSON_TRACKS     = "tracks";
-  const std::string Sequence::JSON_TRACK      = "track";
-  const std::string Sequence::JSON_TYPE       = "type";
+  const std::string Sequence::JSON_INSTANCES = "instances";
+  const std::string Sequence::JSON_LOOP      = "loop";
+  const std::string Sequence::JSON_NAME      = "name";
+  const std::string Sequence::JSON_PLAYING   = "playing";
+  const std::string Sequence::JSON_SPEED     = "speed";
+  const std::string Sequence::JSON_TRACKS    = "tracks";
+  const std::string Sequence::JSON_TRACK     = "track";
+  const std::string Sequence::JSON_TYPE      = "type";
 
   Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data) :
             cBasics(basics),
@@ -51,14 +53,14 @@ namespace IsoRealms::Basics {
         }
       }
 
-      for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+      for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
         mEntry.second->update(milliseconds);
       }
     });
     
     project.updateEditing([this](unsigned int milliseconds) {
       if (cDefLoop && cDefPlaying) {
-        for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+        for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
           mEntry.second->update(milliseconds);
         }
       }
@@ -82,7 +84,7 @@ namespace IsoRealms::Basics {
       cDefTracks.back()->set(mTrackObject, JSON_TRACK);
     }
     for (JSONObject mInstanceObject : object.getArray(JSON_INSTANCES)) {
-      cDefInstances.emplace(mInstanceObject.getString(JSON_NAME), std::make_unique<Instance>(*this, mInstanceObject));
+      cDefInstances.emplace(mInstanceObject.getString(JSON_NAME), std::make_unique<SequenceInstance>(*this, mInstanceObject));
     }
   }
 
@@ -90,7 +92,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Sequences");
     assets.add(&cExposedLength, "Length", "Sequences");
     assets.add(this, "", "Sequences");
-    for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       LocalAssetRegistry mInstanceAssetRegistry(assets, mEntry.first);
       mEntry.second->registerAssets(mInstanceAssetRegistry);
     }
@@ -100,7 +102,7 @@ namespace IsoRealms::Basics {
     assets.remove(&cLuaBinding, relinquish);
     assets.remove(&cExposedLength, relinquish);
     assets.remove(this, relinquish);
-    for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->unregisterAssets(assets, relinquish);
     }
   }
@@ -115,7 +117,7 @@ namespace IsoRealms::Basics {
       mTrack->save(mTrackObject, JSON_TRACK);
     }
     JSONArray mInstanceArray = object.addArray(JSON_INSTANCES);
-    for (const std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       JSONObject mInstanceObject = mInstanceArray.addObject();
       mInstanceObject.addString(JSON_NAME, mEntry.first);
       mEntry.second->save(mInstanceObject);
@@ -134,18 +136,18 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", "TODO", this));
 
-    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>(mEntry.first, "TODO", "Edit...", [this, &browser, &assets, &mEntry]() {
-        return mEntry.second->getProperties(browser, assets);
-      }));
-    }
 
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Playing", "Specifies the initial state of this sequence", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;}, cBasics.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Loop", "Specifies whether this Sequence repeats from the beginning after reaching the end", [this]() {return cDefLoop;}, [this](bool value) {cDefLoop = value;}, cBasics.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Speed", "The sequence plays at multiple speed of the specified value", cDefSpeed));
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
+      mProperties.emplace_back(std::make_unique<PropertyStruct>(mEntry.first, "TODO", "Edit...", [this, &browser, &assets, &mEntry]() {
+        return mEntry.second->getProperties(browser, assets);
+      }));
+    }
     mProperties.emplace_back(std::make_unique<PropertyAdd>(   "Instance", "TODO", "Add...", [this, &browser, &assets]() {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
-      std::unique_ptr<Instance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<Instance>(*this)).first->second;
+      std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       return std::make_unique<PropertyStruct>("Instance", "TODO", "Edit...", [this, &browser, &assets, &mInstance]() {
         return mInstance->getProperties(browser, assets);
       });
@@ -153,11 +155,23 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
-  std::string Sequence::getInstanceName(Instance& instance) const {
+  bool Sequence::isPlaying() const {
+    return cDefPlaying;
+  }
+
+  bool Sequence::isLooped() const {
+    return cDefLoop;
+  }
+
+  Basics& Sequence::getBasics() const {
+    return cBasics;
+  }
+
+  std::string Sequence::getInstanceName(SequenceInstance& instance) const {
     return Utils::reverseLookupUnique(cDefInstances, instance);
   }
 
-  bool Sequence::setInstanceName(Instance& instance, const std::string& name) {
+  bool Sequence::setInstanceName(SequenceInstance& instance, const std::string& name) {
     std::string mOldName = getInstanceName(instance);
     if (mOldName == name) {
       return true;
@@ -195,25 +209,25 @@ namespace IsoRealms::Basics {
 
   void Sequence::reset() {
     cRuntimePositionFraction = 0.0f;
-    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->reset();
     }
   }
 
   void Sequence::stopPreview() {
-    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->stopPreview();
     }
   }
 
   void Sequence::setPreviewPosition(long position) {
-    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->setPreviewPosition(position);
     }
   }
   
   void Sequence::preview(unsigned int milliseconds) {
-    for (std::pair<const std::string, std::unique_ptr<Instance>>& mEntry : cDefInstances) {
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->update(milliseconds);
     }
   }
@@ -242,131 +256,6 @@ namespace IsoRealms::Basics {
     cDefTracks.emplace_back(std::make_unique<SequenceTrack>(cBasics, *this));
   }
 
-  Sequence::Instance::Instance(Sequence& parent) :
-            cParent(parent),
-            cDefStartTime(0),
-            cDefSpeed(1.0f),
-            cExposedPosition(*this),
-            cExposedRemaining(*this),
-            cLuaBinding(parent.cBasics.getProject(), this) {
-  }
-
-  Sequence::Instance::Instance(Sequence& parent, JSONObject object) :
-            cParent(parent),
-            cDefStartTime(object.getInteger(JSON_START_TIME)),
-            cDefSpeed(object.getFloat(JSON_SPEED, 1.0f)),
-            cExposedPosition(*this),
-            cExposedRemaining(*this),
-            cLuaBinding(parent.cBasics.getProject(), this) {
-    for (std::unique_ptr<SequenceTrack>& mTrack : cParent.cDefTracks) {
-      ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance();
-      if (mTrackInstance != nullptr) {
-        cTrackInstances.emplace_back(mTrackInstance);
-      }
-    }
-  }
-
-  void Sequence::Instance::registerAssets(IAssetRegistry& assets) {
-    assets.add(&cExposedPosition, "Position", "Sequences");
-    assets.add(&cExposedRemaining, "Remaining", "Sequences");
-    assets.add(&cLuaBinding, "", "Sequences");
-    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      mTrack->registerAssets(assets);
-    }
-  }
-
-  void Sequence::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cExposedPosition, relinquish);
-    assets.remove(&cExposedRemaining, relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      mTrack->unregisterAssets(assets, relinquish);
-    }
-  }
-
-  void Sequence::Instance::reset() {
-    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      mTrack->reset();
-    }
-    cRuntimePosition = 0;
-    cRuntimePositionFraction = 0.0f;
-    cRuntimePlaying = cParent.cDefPlaying;
-    update(cDefStartTime);
-  }
-
-  void Sequence::Instance::stopPreview() {
-    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      mTrack->stopPreview();
-    }
-  }
-
-  void Sequence::Instance::setPreviewPosition(long position) {
-    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      mTrack->setPreviewPosition(position);
-    }
-  }
-
-  void Sequence::Instance::update(unsigned int milliseconds) {
-    if (cRuntimePlaying) {
-      if (cDefSpeed != 1.0f) {
-        float mActualMilliseconds = milliseconds * cDefSpeed;
-        milliseconds = std::floor(mActualMilliseconds);
-        float mFractional = mActualMilliseconds - milliseconds;
-        cRuntimePositionFraction += mFractional;
-        if (cRuntimePositionFraction >= 1.0f) {
-          milliseconds++;
-          cRuntimePositionFraction -= 1.0f;
-        }
-      }
-
-      cRuntimePosition = std::min(cParent.getDuration(), cRuntimePosition + milliseconds);
-
-      bool mSequenceFinished = true;
-      for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-        if (mTrack->play(milliseconds)) {
-          mSequenceFinished = false;
-        }
-      }
-
-      if (mSequenceFinished && cParent.cDefLoop) {
-        for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-          cRuntimePosition = 0;
-          mTrack->reset();
-        }
-      }
-    }
-  }
-
-  void Sequence::Instance::save(JSONObject object) const {
-    object.addInteger(JSON_START_TIME, cDefStartTime);
-    object.addFloat(JSON_SPEED, cDefSpeed, 1.0f);
-  }
-
-  std::vector<std::unique_ptr<IProperty>> Sequence::Instance::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Instance Name", "TODO", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Start Time",    "TODO", [this]() {return cDefStartTime;}, [this](int value) {cDefStartTime = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Speed",         "TODO", [this]() {return cDefSpeed;},     [this](int value) {cDefSpeed     = value; return true;}));
-    return mProperties;
-  }
-
-  void Sequence::Instance::play() {
-    cRuntimePlaying = true;
-  }
-
-  void Sequence::Instance::pause() {
-    cRuntimePlaying = false;
-  }
-
-  int Sequence::Instance::getTime() const {
-    return cRuntimePosition;
-  }
-
-  void Sequence::Instance::setTime(int time) {
-    cRuntimePosition = std::max(0, std::min(static_cast<int>(cParent.getDuration()), time));
-    setPreviewPosition(cRuntimePosition);
-  }
-
   Sequence::Length::Length(Sequence& parent) :
             cParent(parent) {
   }
@@ -390,52 +279,4 @@ namespace IsoRealms::Basics {
   bool Sequence::Length::isDefaultConfiguration() const {
     return true;
   }
-
-  Sequence::Instance::Position::Position(Instance& parent) :
-            cParent(parent) {
-  }
-
-  int Sequence::Instance::Position::getValue() const {
-    return cParent.cRuntimePosition;
-  }
-
-  bool Sequence::Instance::Position::renderAssetIcon() const {
-    return false;
-  }
-
-  void Sequence::Instance::Position::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  std::vector<std::unique_ptr<IProperty>> Sequence::Instance::Position::getAssetProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
-  }
-
-  bool Sequence::Instance::Position::isDefaultConfiguration() const {
-    return true;
-  }
-
-  Sequence::Instance::Remaining::Remaining(Instance& parent) :
-            cParent(parent) {
-  }
-
-  int Sequence::Instance::Remaining::getValue() const {
-    return -cParent.cRuntimePosition + cParent.cParent.getDuration();
-  }
-
-  bool Sequence::Instance::Remaining::renderAssetIcon() const {
-    return false;
-  }
-
-  void Sequence::Instance::Remaining::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  std::vector<std::unique_ptr<IProperty>> Sequence::Instance::Remaining::getAssetProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
-  }
-
-  bool Sequence::Instance::Remaining::isDefaultConfiguration() const {
-    return true;
-  }
-  }
+}

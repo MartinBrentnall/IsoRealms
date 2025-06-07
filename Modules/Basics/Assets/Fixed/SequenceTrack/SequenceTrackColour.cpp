@@ -146,7 +146,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  ISequenceTrackInstance* SequenceTrackColour::createTrackInstance() {
+  ISequenceTrackInstance* SequenceTrackColour::createTrackInstance(SequenceInstance& sequenceInstance) {
     return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
   }
 

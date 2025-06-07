@@ -19,10 +19,10 @@
 #include "SequenceTrackAudio.h"
 
 #include "Modules/Basics/Sequence/Sequence.h"
+#include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {
   SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence, const std::string& name) :
-            cSequence(sequence),
             cDefName(name),
             cDefVolume(project, 1.0f) {
   }
@@ -107,8 +107,8 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  ISequenceTrackInstance* SequenceTrackAudio::createTrackInstance() {
-    return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
+  ISequenceTrackInstance* SequenceTrackAudio::createTrackInstance(SequenceInstance& sequenceInstance) {
+    return cInstances.emplace_back(std::make_unique<Instance>(*this, sequenceInstance)).get();
   }
 
   bool SequenceTrackAudio::renderAssetIcon() const {
@@ -135,8 +135,9 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  SequenceTrackAudio::Instance::Instance(SequenceTrackAudio& parent) :
+  SequenceTrackAudio::Instance::Instance(SequenceTrackAudio& parent, SequenceInstance& sequenceInstance) :
             cParent(parent),
+            cSequenceInstance(sequenceInstance),
             cRuntimeEvent(0),
             cRuntimePosition(0),
             cExposedName(*this),
@@ -144,7 +145,7 @@ namespace IsoRealms::Basics {
             cExposedCurrent(*this),
             cExposedLength(*this),
             cExposedPosition(*this),
-            cLuaBinding(parent.cSequence.getProject(), this) {
+            cLuaBinding(cSequenceInstance.getSequence().getProject(), this) {
   }
 
   void SequenceTrackAudio::Instance::nextTrack() {
@@ -156,7 +157,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::Instance::jumpToTrack(int track) {
-// TODO: Implement this.    cSequence.setPreviewPosition(cDefEvents[track]->getTime());
+    cSequenceInstance.setPreviewPosition(cParent.cDefEvents[track]->getTime());
   }
 
   void SequenceTrackAudio::Instance::registerAssets(IAssetRegistry& assets) {

@@ -29,6 +29,7 @@
 #include "Modules/Basics/Assets/Client/SequenceTrack.h"
 
 #include "Editor/SequenceEditor.h"
+#include "SequenceInstance.h"
 
 namespace IsoRealms::Basics {
   class Basics;
@@ -39,8 +40,6 @@ namespace IsoRealms::Basics {
    */
   class Sequence final : public IEditable {
     public:
-    class Instance;
-
     Sequence(IProject& project, Basics& basics, IResourceData& data);
     Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
@@ -50,8 +49,11 @@ namespace IsoRealms::Basics {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
 
-    std::string getInstanceName(Instance& instance) const;
-    bool setInstanceName(Instance& instance, const std::string& name);
+    Basics& getBasics() const;
+    bool isPlaying() const;
+    bool isLooped() const;
+    std::string getInstanceName(SequenceInstance& instance) const;
+    bool setInstanceName(SequenceInstance& instance, const std::string& name);
 
     /************************\
      * Implements IEditable *
@@ -67,7 +69,6 @@ namespace IsoRealms::Basics {
     void setPreviewPosition(long position);
     void preview(unsigned int milliseconds);
 
-
     /*********************\
      * Editing Interface *
     \*********************/
@@ -76,92 +77,15 @@ namespace IsoRealms::Basics {
     SequenceTrack& getTrack(unsigned int track) const;
     unsigned int getDuration() const;
     void addTrack();
-    
-    class Instance {
-      public:
-      Instance(Sequence& parent);
-      Instance(Sequence& parent, JSONObject object);
-
-      void registerAssets(IAssetRegistry& assets);
-      void unregisterAssets(IAssetRemover& assets, bool relinquish);
-      void stopPreview();
-      void setPreviewPosition(long position);
-      void update(unsigned int milliseconds);
-      void save(JSONObject object) const;
-      std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
-
-      /***********************\
-       * Scripting Interface *
-      \***********************/
-      void play();
-      void pause();
-      void reset();
-      int getTime() const;
-      void setTime(int time);
-
-      private:
-      class Position : public IInteger {
-        public:
-        Position(Instance& parent);
-
-        /***********************\
-         * Implements IInteger *
-        \***********************/
-        int getValue() const override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        Instance& cParent;
-      };
-
-      class Remaining : public IInteger {
-        public:
-        Remaining(Instance& parent);
-
-        /***********************\
-         * Implements IInteger *
-        \***********************/
-        int getValue() const override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        Instance& cParent;
-      };
-
-      // External interfaces.
-      Sequence& cParent;
-
-      // Definition data.
-      int cDefStartTime;
-      float cDefSpeed;
-
-      // Runtime data.
-      std::vector<ISequenceTrackInstance*> cTrackInstances;
-      int cRuntimePosition;
-      float cRuntimePositionFraction;
-      bool cRuntimePlaying; /// Current state of this sequence.
-
-      // Exposed data.
-      Position cExposedPosition;
-      Remaining cExposedRemaining;
-
-      // Scripting interface.
-      LuaBinding<Instance> cLuaBinding;
-    };
 
     private:
+
     class Length : public IInteger {
       public:
       Length(Sequence& parent);
 
       /***********************\
-       * Implements IInteger *
+        * Implements IInteger *
       \***********************/
       int getValue() const override;
       bool renderAssetIcon() const override;
@@ -179,7 +103,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_NAME;
     static const std::string JSON_PLAYING;
     static const std::string JSON_SPEED;
-    static const std::string JSON_START_TIME;
     static const std::string JSON_TRACKS;
     static const std::string JSON_TRACK;
     static const std::string JSON_TYPE;
@@ -192,7 +115,7 @@ namespace IsoRealms::Basics {
     bool cDefPlaying;                                       /// Initial state of this sequence.
     bool cDefLoop;                                          /// Sequence should loop upon reaching the end.
     Float cDefSpeed;                                        /// Play at multiple speed of specified value.
-    std::map<std::string, std::unique_ptr<Instance>> cDefInstances;      /// Instances of this sequence.
+    std::map<std::string, std::unique_ptr<SequenceInstance>> cDefInstances;      /// Instances of this sequence.
 
     // Runtime data.
     float cRuntimePositionFraction;

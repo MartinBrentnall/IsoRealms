@@ -27,7 +27,7 @@
 #include "ModelCycler/ModelCycler.h"
 #include "Project/Project.h"
 #include "ProjectConfigurer/ProjectConfigurer.h"
-#include "Sequence/Sequence.h"
+#include "Sequence/SequenceInstance.h"
 #include "SimpleBoolean/SimpleBoolean.h"
 #include "SimpleColour/SimpleColour.h"
 #include "SimpleFloat/SimpleFloat.h"

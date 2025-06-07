@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
     std::vector<ISequenceTrackEvent*> getEvents() override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    ISequenceTrackInstance* createTrackInstance() override;
+    ISequenceTrackInstance* createTrackInstance(SequenceInstance& sequenceInstance) override;
 
     /****************************************\
      * Implements IAsset via ISequenceTrack *
@@ -66,7 +66,7 @@ namespace IsoRealms::Basics {
 
     class Instance : public ISequenceTrackInstance {
       public:
-      Instance(SequenceTrackAudio& parent);
+      Instance(SequenceTrackAudio& parent, SequenceInstance& sequenceInstance);
 
       /***********************\
        * Scripting interface *
@@ -173,6 +173,7 @@ namespace IsoRealms::Basics {
 
       // External interfaces.
       SequenceTrackAudio& cParent;
+      SequenceInstance& cSequenceInstance;
 
       // Runtime data.
       unsigned int cRuntimeEvent;
@@ -249,9 +250,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_NAME;
     static const std::string JSON_TIME;
     static const std::string JSON_VOLUME;
-
-    // External interfaces.
-    Sequence& cSequence;
 
     // Definition data.
     std::string cDefName;

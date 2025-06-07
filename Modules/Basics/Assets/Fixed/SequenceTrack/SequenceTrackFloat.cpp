@@ -118,7 +118,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  ISequenceTrackInstance* SequenceTrackFloat::createTrackInstance() {
+  ISequenceTrackInstance* SequenceTrackFloat::createTrackInstance(SequenceInstance& sequenceInstance) {
     return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
   }
 

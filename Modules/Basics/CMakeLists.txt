@@ -40,8 +40,9 @@ add_library(Basics MODULE
   Project/ProjectLoader.cpp
   ProjectConfigurer/ProjectConfigurer.cpp
   ProjectOptions/ProjectOptions.cpp
-  Sequence/Sequence.cpp
   Sequence/Editor/SequenceEditor.cpp
+  Sequence/Sequence.cpp
+  Sequence/SequenceInstance.cpp
   SimpleBoolean/SimpleBoolean.cpp
   SimpleColour/SimpleColour.cpp
   SimpleFloat/SimpleFloat.cpp

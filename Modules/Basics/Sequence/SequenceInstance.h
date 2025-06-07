@@ -1,0 +1,117 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <iostream>
+#include <vector>
+
+#include "IsoRealms/Lua.h"
+#include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/Types.h"
+#include "IsoRealms/Utils.h"
+
+#include "Modules/Basics/Assets/Client/SequenceTrack.h"
+
+namespace IsoRealms::Basics {
+  class Sequence;
+
+  class SequenceInstance {
+    public:
+    SequenceInstance(Sequence& parent);
+    SequenceInstance(Sequence& parent, JSONObject object);
+
+    Sequence& getSequence() const;
+
+    void registerAssets(IAssetRegistry& assets);
+    void unregisterAssets(IAssetRemover& assets, bool relinquish);
+    void stopPreview();
+    void setPreviewPosition(long position);
+    void update(unsigned int milliseconds);
+    void save(JSONObject object) const;
+    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+
+    /***********************\
+      * Scripting Interface *
+    \***********************/
+    void play();
+    void pause();
+    void reset();
+    int getTime() const;
+    void setTime(int time);
+
+    private:
+    static const std::string JSON_SPEED;
+    static const std::string JSON_START_TIME;
+
+    class Position : public IInteger {
+      public:
+      Position(SequenceInstance& parent);
+
+      /***********************\
+        * Implements IInteger *
+      \***********************/
+      int getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+      SequenceInstance& cParent;
+    };
+
+    class Remaining : public IInteger {
+      public:
+      Remaining(SequenceInstance& parent);
+
+      /***********************\
+        * Implements IInteger *
+      \***********************/
+      int getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+      SequenceInstance& cParent;
+    };
+
+    // External interfaces.
+    Sequence& cParent;
+
+    // Definition data.
+    int cDefStartTime;
+    float cDefSpeed;
+
+    // Runtime data.
+    std::vector<ISequenceTrackInstance*> cTrackInstances;
+    int cRuntimePosition;
+    float cRuntimePositionFraction;
+    bool cRuntimePlaying; /// Current state of this sequence.
+
+    // Exposed data.
+    Position cExposedPosition;
+    Remaining cExposedRemaining;
+
+    // Scripting interface.
+    LuaBinding<SequenceInstance> cLuaBinding;
+  };
+}
+

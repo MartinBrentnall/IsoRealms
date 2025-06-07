@@ -66,11 +66,11 @@ namespace IsoRealms::Basics {
                                                                  "hide",                       &ProjectConfigurer::hide,
                                                                  "show",                       &ProjectConfigurer::show,
                                                                  "isHidden",                   &ProjectConfigurer::isHidden);
-    mLua->new_usertype<Sequence::Instance>("Sequence",                     "play",                       &Sequence::Instance::play,
-                                                                 "pause",                      &Sequence::Instance::pause,
-                                                                 "reset",                      &Sequence::Instance::reset,
-                                                                 "getTime",                    &Sequence::Instance::getTime,
-                                                                 "setTime",                    &Sequence::Instance::setTime);
+    mLua->new_usertype<SequenceInstance>("Sequence",             "play",                       &SequenceInstance::play,
+                                                                 "pause",                      &SequenceInstance::pause,
+                                                                 "reset",                      &SequenceInstance::reset,
+                                                                 "getTime",                    &SequenceInstance::getTime,
+                                                                 "setTime",                    &SequenceInstance::setTime);
     mLua->new_usertype<SequenceTrackAudio::Instance>("SequenceTrackAudio", "nextTrack",                  &SequenceTrackAudio::Instance::nextTrack,
                                                                  "previousTrack",              &SequenceTrackAudio::Instance::previousTrack);
     mLua->new_usertype<SimpleBoolean>("SimpleBoolean",           "setValue",                   &SimpleBoolean::setValue,

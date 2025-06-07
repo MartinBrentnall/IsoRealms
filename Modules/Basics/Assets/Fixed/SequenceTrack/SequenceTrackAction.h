@@ -47,7 +47,7 @@ namespace IsoRealms::Basics {
     std::vector<ISequenceTrackEvent*> getEvents() override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    ISequenceTrackInstance* createTrackInstance() override;
+    ISequenceTrackInstance* createTrackInstance(SequenceInstance& sequenceInstance) override;
 
     /****************************************\
      * Implements IAsset via ISequenceTrack *

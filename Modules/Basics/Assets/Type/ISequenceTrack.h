@@ -25,6 +25,7 @@
 #include "ISequenceTrackInstance.h"
 
 namespace IsoRealms::Basics {
+  class SequenceInstance;
 
   /**
     * Interface for a sequence track.
@@ -52,7 +53,7 @@ namespace IsoRealms::Basics {
      */
     virtual void renderIcon() const = 0;
 
-    virtual ISequenceTrackInstance* createTrackInstance() = 0;
+    virtual ISequenceTrackInstance* createTrackInstance(SequenceInstance& sequenceInstance) = 0;
 
     /**
       * Render a visual representation of the track for editing, fitting
