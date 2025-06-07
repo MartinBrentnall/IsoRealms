@@ -416,15 +416,8 @@ namespace IsoRealms::Basics {
             cParent(parent) {
   }
 
-  std::string SequenceTrackAudio::Instance::Length::getValue() const {
-    int cLength = cParent.cRuntimeEvent == 0 ? 0 : cParent.cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getDuration();
-    int mMilliseconds = cLength % 1000;
-    int mSeconds = cLength / 1000;
-    int mMinutes = mSeconds / 60;
-    mSeconds = mSeconds % 60;
-    std::stringstream mStringStream;
-    mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setfill('0') << std::setw(2) << (mMilliseconds / 10);
-    return mStringStream.str();
+  int SequenceTrackAudio::Instance::Length::getValue() const {
+    return cParent.cRuntimeEvent == 0 ? 0 : cParent.cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getDuration();
   }
 
   bool SequenceTrackAudio::Instance::Length::renderAssetIcon() const {
@@ -447,15 +440,8 @@ namespace IsoRealms::Basics {
             cParent(parent) {
   }
 
-  std::string SequenceTrackAudio::Instance::Position::getValue() const {
-    int cLength = cParent.cRuntimeEvent == 0 ? 0 : cParent.cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getPosition();
-    int mMilliseconds = cLength % 1000;
-    int mSeconds = cLength / 1000;
-    int mMinutes = mSeconds / 60;
-    mSeconds = mSeconds % 60;
-    std::stringstream mStringStream;
-    mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setfill('0') << std::setw(2) << (mMilliseconds / 10);
-    return mStringStream.str();
+  int SequenceTrackAudio::Instance::Position::getValue() const {
+    return cParent.cRuntimeEvent == 0 ? 0 : cParent.cParent.cDefEvents[cParent.cRuntimeEvent - 1]->getPosition();
   }
 
   bool SequenceTrackAudio::Instance::Position::renderAssetIcon() const {

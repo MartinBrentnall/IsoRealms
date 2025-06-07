@@ -137,14 +137,14 @@ namespace IsoRealms::Basics {
         Instance& cParent;
       };
 
-      class Length : public IString {
+      class Length : public IInteger {
         public:
         Length(Instance& parent);
 
         /**********************\
-        * Implements IString *
+        * Implements IInteger *
         \**********************/
-        std::string getValue() const override;
+        int getValue() const override;
         bool renderAssetIcon() const override;
         void saveAsset(JSONObject object) const override;
         std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
@@ -154,14 +154,14 @@ namespace IsoRealms::Basics {
         Instance& cParent;
       };
 
-      class Position : public IString {
+      class Position : public IInteger {
         public:
         Position(Instance& parent);
 
         /**********************\
-        * Implements IString *
+        * Implements IInteger *
         \**********************/
-        std::string getValue() const override;
+        int getValue() const override;
         bool renderAssetIcon() const override;
         void saveAsset(JSONObject object) const override;
         std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
