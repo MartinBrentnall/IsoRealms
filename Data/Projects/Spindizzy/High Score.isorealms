@@ -723,7 +723,11 @@
                           "key": "Replay/Recorder/Recorder/Project"
                         },
                         "value": {
-                          "key": "Basics/Timer/TimeLimit"
+                          "key": "UI/Time",
+                          "value": {
+                            "key": "Basics/Sequence/Time Limit/Instance/Remaining"
+                          },
+                          "format": "{m}:{s:02}.{ms:2}"
                         }
                       }
                     }

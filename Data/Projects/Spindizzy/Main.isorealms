@@ -183,14 +183,14 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "titleTimer",
                     "to": {
-                      "key": "Basics/Timer/TitleTimer"
+                      "key": "Basics/Sequence/Title Timer/Instance"
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "decor:setScreen(title)\nproject:setScreen(demo)\ndemoProject:setRunning(true)\ntimer:start(10000)"
+                "code": "decor:setScreen(title)\nproject:setScreen(demo)\ndemoProject:setRunning(true)\ntitleTimer:setTime(0)\ntitleTimer:play()"
               },
               {
                 "id": "UIQuit",
@@ -292,9 +292,9 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "menuIdleTimer",
                     "to": {
-                      "key": "Basics/Timer/MenuIdleTimer"
+                      "key": "Basics/Sequence/Menu Idle Timer/Instance"
                     }
                   },
                   {
@@ -348,7 +348,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "-- Did the project terminate by a close request?\nif currentMission:isQuitRequestGranted() then\n  quit:execute()\nelse\n\n  -- Return to main menu.\n  table.insert(menuStack, menuScreen)\n  table.insert(inputStack, menuInput)\n  menu:reset()\n  input:setInputHandler(menuInput)\n  screen:setScreen(menuScreen)\n\n  -- Set title decor.\n  decor:setScreen(title)\n\n  -- Deactive mission.\n  currentMission:setRunning(false)\n\n  -- Activate demo.\n  project:setScreen(demoScreen)\n  demo:setRunning(true)\n  demo:reset()\n\n  -- Reload configuration in case it changed during the game.\n  optionsLoader:execute()\n\n  -- Reload the score table in case the player achieved a high score.\n  scoreTable:reload()\n\n  -- Start idle menu timer\n  timer:start(15000)\n\n  -- Enable menu interruption\n  interrupt:setInputHandler(menuInterrupt)\nend"
+                "code": "-- Did the project terminate by a close request?\nif currentMission:isQuitRequestGranted() then\n  quit:execute()\nelse\n\n  -- Return to main menu.\n  table.insert(menuStack, menuScreen)\n  table.insert(inputStack, menuInput)\n  menu:reset()\n  input:setInputHandler(menuInput)\n  screen:setScreen(menuScreen)\n\n  -- Set title decor.\n  decor:setScreen(title)\n\n  -- Deactive mission.\n  currentMission:setRunning(false)\n\n  -- Activate demo.\n  project:setScreen(demoScreen)\n  demo:setRunning(true)\n  demo:reset()\n\n  -- Reload configuration in case it changed during the game.\n  optionsLoader:execute()\n\n  -- Reload the score table in case the player achieved a high score.\n  scoreTable:reload()\n\n  -- Start idle menu timer\n  menuIdleTimer:setTime(0)\n  menuIdleTimer:play()\n\n  -- Enable menu interruption\n  interrupt:setInputHandler(menuInterrupt)\nend"
               },
               {
                 "id": "MissionReady",
@@ -536,14 +536,14 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "highScoreTimer",
                     "to": {
-                      "key": "Basics/Timer/HighScoreTimer"
+                      "key": "Basics/Sequence/High Score Timer/Instance"
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ndecor:setScreen(highScores)\ninput:setInputHandler(interruptHandler)\ntimer:start(10000)"
+                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ndecor:setScreen(highScores)\ninput:setInputHandler(interruptHandler)\nhighScoreTimer:setTime(0)\nhighScoreTimer:play()"
               },
               {
                 "id": "StartMessage",
@@ -586,9 +586,9 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "messageTimer",
                     "to": {
-                      "key": "Basics/Timer/MessageTimer"
+                      "key": "Basics/Sequence/Message Timer/Instance"
                     }
                   },
                   {
@@ -611,7 +611,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ndecor:setScreen(message)\nselectedMessage = math.random(1,11)\nmessageText1:setValue(messages1[selectedMessage])\nmessageText2:setValue(messages2[selectedMessage])\nmessageText3:setValue(messages3[selectedMessage])\ninput:setInputHandler(interruptHandler)\ntimer:start(10000)"
+                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ndecor:setScreen(message)\nselectedMessage = math.random(1,11)\nmessageText1:setValue(messages1[selectedMessage])\nmessageText2:setValue(messages2[selectedMessage])\nmessageText3:setValue(messages3[selectedMessage])\ninput:setInputHandler(interruptHandler)\nmessageTimer:setTime(0)\nmessageTimer:play()"
               },
               {
                 "id": "StartAuthorsMessage",
@@ -654,14 +654,14 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "menuIdleTimer",
                     "to": {
-                      "key": "Basics/Timer/MenuIdleTimer"
+                      "key": "Basics/Sequence/Menu Idle Timer/Instance"
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "screen:setScreen(nil)\ndecor:setScreen(authorsMessage)\ninput:setInputHandler(authorsMessageHandler)\ntimer:pause()"
+                "code": "screen:setScreen(nil)\ndecor:setScreen(authorsMessage)\ninput:setInputHandler(authorsMessageHandler)\nmenuIdleTimer:pause()"
               },
               {
                 "id": "StartCreditsMessage",
@@ -704,14 +704,14 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "menuIdleTimer",
                     "to": {
-                      "key": "Basics/Timer/MenuIdleTimer"
+                      "key": "Basics/Sequence/Menu Idle Timer/Instance"
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "screen:setScreen(nil)\ndecor:setScreen(creditsMessage)\ninput:setInputHandler(authorsMessageHandler)\ntimer:pause()"
+                "code": "screen:setScreen(nil)\ndecor:setScreen(creditsMessage)\ninput:setInputHandler(authorsMessageHandler)\nmenuIdleTimer:pause()"
               },
               {
                 "id": "StartProject",
@@ -757,9 +757,9 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "menuIdleTimer",
                     "to": {
-                      "key": "Basics/Timer/MenuIdleTimer"
+                      "key": "Basics/Sequence/Menu Idle Timer/Instance"
                     }
                   },
                   {
@@ -795,7 +795,7 @@
                     }
                   }
                 ],
-                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nif mission:isReady() then\n  screen:setScreen(nil)\n  input:setInputHandler(missionInput)\n  project:setScreen(missionScreen)\n  decor:setScreen(nil)\n  mission:setRunning(true)\n  mission:setProperty(\"Mode\", mode:getValue())\n  demo:setRunning(false)\nelse\n  gameLoading = true\n  screen:setScreen(loading)\n  input:setInputHandler(nil)\nend\n\n-- Set current mission\ncurrentMission = mission\ncurrentMissionInput = missionInput\ncurrentMissionScreen = missionScreen\n\n-- Stop menu idle timer\ntimer:pause()\n\n-- Prevent menu interrupt from triggering.\ninterrupt:setInputHandler(nil)"
+                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nif mission:isReady() then\n  screen:setScreen(nil)\n  input:setInputHandler(missionInput)\n  project:setScreen(missionScreen)\n  decor:setScreen(nil)\n  mission:setRunning(true)\n  mission:setProperty(\"Mode\", mode:getValue())\n  demo:setRunning(false)\nelse\n  gameLoading = true\n  screen:setScreen(loading)\n  input:setInputHandler(nil)\nend\n\n-- Set current mission\ncurrentMission = mission\ncurrentMissionInput = missionInput\ncurrentMissionScreen = missionScreen\n\n-- Stop menu idle timer\nmenuIdleTimer:pause()\n\n-- Prevent menu interrupt from triggering.\ninterrupt:setInputHandler(nil)"
               },
               {
                 "id": "StartProjectNew",
@@ -841,9 +841,9 @@
                     }
                   },
                   {
-                    "variable": "timer",
+                    "variable": "menuIdleTimer",
                     "to": {
-                      "key": "Basics/Timer/MenuIdleTimer"
+                      "key": "Basics/Sequence/Menu Idle Timer/Instance"
                     }
                   },
                   {
@@ -879,7 +879,7 @@
                     }
                   }
                 ],
-                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\n\nmission:prepare(projectArgs, false)\n\nif mission:isReady() then\n  screen:setScreen(nil)\n  input:setInputHandler(missionInput)\n  project:setScreen(missionScreen)\n  decor:setScreen(nil)\n  mission:setRunning(true)\n  demo:setRunning(false)\nelse\n  gameLoading = true\n  screen:setScreen(loading)\n  input:setInputHandler(nil)\nend\n\n-- Set current mission\ncurrentMission = mission\ncurrentMissionInput = missionInput\ncurrentMissionScreen = missionScreen\n\n-- Stop menu idle timer\ntimer:pause()\n\n-- Prevent menu interrupt from triggering.\ninterrupt:setInputHandler(nil)"
+                "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\n\nmission:prepare(projectArgs, false)\n\nif mission:isReady() then\n  screen:setScreen(nil)\n  input:setInputHandler(missionInput)\n  project:setScreen(missionScreen)\n  decor:setScreen(nil)\n  mission:setRunning(true)\n  demo:setRunning(false)\nelse\n  gameLoading = true\n  screen:setScreen(loading)\n  input:setInputHandler(nil)\nend\n\n-- Set current mission\ncurrentMission = mission\ncurrentMissionInput = missionInput\ncurrentMissionScreen = missionScreen\n\n-- Stop menu idle timer\nmenuIdleTimer:pause()\n\n-- Prevent menu interrupt from triggering.\ninterrupt:setInputHandler(nil)"
               }
             ]
           },
@@ -923,13 +923,13 @@
                   "key": "Basics/Script",
                   "bindings": [
                     {
-                      "variable": "timer",
+                      "variable": "menuIdleTimer",
                       "to": {
-                        "key": "Basics/Timer/MenuIdleTimer"
+                        "key": "Basics/Sequence/Menu Idle Timer/Instance"
                       }
                     }
                   ],
-                  "code": "timer:start(15000)"
+                  "code": "menuIdleTimer:setTime(0)\nmenuIdleTimer:play()"
                 },
                 "consume": false
               },
@@ -998,19 +998,19 @@
                     {
                       "variable": "titleTimer",
                       "to": {
-                        "key": "Basics/Timer/TitleTimer"
+                        "key": "Basics/Sequence/Title Timer/Instance"
                       }
                     },
                     {
                       "variable": "highScoreTimer",
                       "to": {
-                        "key": "Basics/Timer/HighScoreTimer"
+                        "key": "Basics/Sequence/High Score Timer/Instance"
                       }
                     },
                     {
                       "variable": "messageTimer",
                       "to": {
-                        "key": "Basics/Timer/MessageTimer"
+                        "key": "Basics/Sequence/Message Timer/Instance"
                       }
                     }
                   ],
@@ -1294,6 +1294,151 @@
             "type": "Sequence",
             "instances": [
               {
+                "id": "Menu Idle Timer",
+                "playing": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 15000,
+                          "execute": {
+                            "key": "Basics/Script",
+                            "bindings": [
+                              {
+                                "variable": "screen",
+                                "to": {
+                                  "key": "UI/Layout/Main/Menu"
+                                }
+                              },
+                              {
+                                "variable": "input",
+                                "to": {
+                                  "key": "Basics/InputSwitch/Options Screen"
+                                }
+                              },
+                              {
+                                "variable": "interruptHandler",
+                                "to": {
+                                  "key": ":InputHandler",
+                                  "asset": {
+                                    "key": "Basics/InterruptHandler/AttractInterrupt"
+                                  }
+                                }
+                              },
+                              {
+                                "variable": "titleTimer",
+                                "to": {
+                                  "key": "Basics/Sequence/Title Timer/Instance"
+                                }
+                              }
+                            ],
+                            "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ninput:setInputHandler(interruptHandler)\ntitleTimer:setTime(0)\ntitleTimer:play()"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
+                "id": "Title Timer",
+                "playing": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 10000,
+                          "execute": {
+                            "key": "Basics/Function/StartHighScore",
+                            "bindings": []
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
+                "id": "Message Timer",
+                "playing": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 10000,
+                          "execute": {
+                            "key": "Basics/Function/StartAttract",
+                            "bindings": []
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
+                "id": "High Score Timer",
+                "playing": true,
+                "speed": {
+                  "key": "Literal",
+                  "value": 1
+                },
+                "tracks": [
+                  {
+                    "track": {
+                      "key": "Action",
+                      "events": [
+                        {
+                          "delay": 10000,
+                          "execute": {
+                            "key": "Basics/Function/StartMessage",
+                            "bindings": []
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "instances": [
+                  {
+                    "name": "Instance"
+                  }
+                ]
+              },
+              {
                 "id": "Splash",
                 "instances": [
                   {
@@ -1315,27 +1460,26 @@
                       },
                       "events": [
                         {
-                          "type": "Fade",
                           "duration": 1500,
                           "target": {
                             "key": "Literal"
                           }
                         },
                         {
-                          "type": "Pause",
-                          "duration": 2000
+                          "duration": 3500,
+                          "target": {
+                            "key": "Literal"
+                          }
                         },
                         {
-                          "type": "Fade",
-                          "duration": 1500,
+                          "duration": 5000,
                           "target": {
                             "key": "Literal",
                             "alpha": 1
                           }
                         },
                         {
-                          "type": "Fade",
-                          "duration": 1500,
+                          "duration": 6500,
                           "target": {
                             "key": "Literal"
                           }
@@ -1392,68 +1536,6 @@
               {
                 "id": "Error",
                 "value": "Error"
-              }
-            ]
-          },
-          {
-            "type": "Timer",
-            "instances": [
-              {
-                "id": "TitleTimer",
-                "onExpiration": {
-                  "key": "Basics/Function/StartHighScore",
-                  "bindings": []
-                }
-              },
-              {
-                "id": "MenuIdleTimer",
-                "onExpiration": {
-                  "key": "Basics/Script",
-                  "bindings": [
-                    {
-                      "variable": "screen",
-                      "to": {
-                        "key": "UI/Layout/Main/Menu"
-                      }
-                    },
-                    {
-                      "variable": "input",
-                      "to": {
-                        "key": "Basics/InputSwitch/Options Screen"
-                      }
-                    },
-                    {
-                      "variable": "interruptHandler",
-                      "to": {
-                        "key": ":InputHandler",
-                        "asset": {
-                          "key": "Basics/InterruptHandler/AttractInterrupt"
-                        }
-                      }
-                    },
-                    {
-                      "variable": "timer",
-                      "to": {
-                        "key": "Basics/Timer/TitleTimer"
-                      }
-                    }
-                  ],
-                  "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ninput:setInputHandler(interruptHandler)\ntimer:start(10000)"
-                }
-              },
-              {
-                "id": "MessageTimer",
-                "onExpiration": {
-                  "key": "Basics/Function/StartAttract",
-                  "bindings": []
-                }
-              },
-              {
-                "id": "HighScoreTimer",
-                "onExpiration": {
-                  "key": "Basics/Function/StartMessage",
-                  "bindings": []
-                }
               }
             ]
           }

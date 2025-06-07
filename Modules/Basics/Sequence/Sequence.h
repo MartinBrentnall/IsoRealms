@@ -156,14 +156,14 @@ namespace IsoRealms::Basics {
     };
 
     private:
-    class Length : public IString {
+    class Length : public IInteger {
       public:
       Length(Sequence& parent);
 
-      /**********************\
-       * Implements IString *
-      \**********************/
-      std::string getValue() const override;
+      /***********************\
+       * Implements IInteger *
+      \***********************/
+      int getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
       std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;

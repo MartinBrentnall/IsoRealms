@@ -371,17 +371,8 @@ namespace IsoRealms::Basics {
             cParent(parent) {
   }
 
-  std::string Sequence::Length::getValue() const {
-    int mLength = cParent.getDuration();
-    int mMilliseconds = mLength % 1000;
-    int mSeconds = mLength / 1000;
-    int mMinutes = mSeconds / 60;
-    int mHours   = mMinutes / 60;
-    mMinutes = mMinutes % 60;
-    mSeconds = mSeconds % 60;
-    std::stringstream mStringStream;
-    mStringStream << mHours << ":" << std::setfill('0') << std::setw(2) << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setfill('0') << std::setw(2) << (mMilliseconds / 10);
-    return mStringStream.str();
+  int Sequence::Length::getValue() const {
+    return cParent.getDuration();
   }
 
   bool Sequence::Length::renderAssetIcon() const {
