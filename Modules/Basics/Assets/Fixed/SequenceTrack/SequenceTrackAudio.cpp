@@ -220,12 +220,6 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudio::Instance::reset() {
     cRuntimeEventsPlaying.clear();
-    cRuntimeEvent    = 0;
-    cRuntimePosition = 0;
-  }
-
-  void SequenceTrackAudio::Instance::stopPreview() {
-    cRuntimeEventsPlaying.clear();
     cRuntimeEvent = 0;
     cRuntimePosition = 0;
     for (const std::unique_ptr<Audio>& mEvent : cParent.cDefEvents) {
@@ -233,10 +227,12 @@ namespace IsoRealms::Basics {
     }
   }
 
+  void SequenceTrackAudio::Instance::stopPreview() {
+    reset();
+  }
+
   void SequenceTrackAudio::Instance::setPreviewPosition(long position) {
-    cRuntimeEventsPlaying.clear();
-    cRuntimeEvent = 0;
-    cRuntimePosition = position;
+    reset();
     for (const std::unique_ptr<Audio>& mEvent : cParent.cDefEvents) {
       if (position >= mEvent->getTime()) {
         if (position <= mEvent->getTime() + mEvent->getDuration()) {
