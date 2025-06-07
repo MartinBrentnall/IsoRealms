@@ -38,6 +38,7 @@ namespace IsoRealms {
     virtual bool input(sf::Event& event) = 0;
     virtual void refresh() = 0;
     virtual std::string getTooltip() const = 0;
+    virtual float getTooltipXPosition() const = 0;
 
     virtual ~IUIScreen() {
     }

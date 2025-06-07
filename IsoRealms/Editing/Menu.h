@@ -51,15 +51,10 @@ namespace IsoRealms {
       float mTop = 1.0f - mFontSize;
       float mLeft = -1.0 * aspectRatio;
       float mBottom = std::max(-1.0f + mFontSize, 1.0f - ((cItems.size() + 2.0f) * mFontSize * 2.0f));
-      float mRight = 0.0f;
-      for (std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
-        mRight = std::max(mRight, getWidth(*mItem, cStyle));
-      }
-      mRight = std::max(mRight, minimumWidth) + mFontSize * 2.0f - aspectRatio;
-      mRight = std::min(1.0f * aspectRatio, mRight);
+      updateRight(aspectRatio, minimumWidth);
 
       glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
-      Utils::renderRoundedRectangle(mLeft, mBottom, mRight, mTop, mFontSize);
+      Utils::renderRoundedRectangle(mLeft, mBottom, cPanelRight, mTop, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
     }
 
@@ -163,6 +158,10 @@ namespace IsoRealms {
       return cItems.empty() ? "" : cItems[cSelectedItem]->getTooltip();
     }
 
+    float getTooltipXPosition() const override {
+      return cPanelRight;
+    }
+
     virtual float getWidth(MENU_ITEM_TYPE& item, IUIStyle& style) const = 0;
     virtual void renderMenuItem(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;
     virtual void renderOverlay(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;
@@ -216,6 +215,16 @@ namespace IsoRealms {
       return cItems;
     }
 
+    void updateRight(float aspectRatio, float minimumWidth) {
+      float mFontSize = cStyle.getFontSize();
+      cPanelRight = 0.0f;
+      for (std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
+        cPanelRight = std::max(cPanelRight, getWidth(*mItem, cStyle));
+      }
+      cPanelRight = std::max(cPanelRight, minimumWidth) + mFontSize * 2.0f - aspectRatio;
+      cPanelRight = std::min(1.0f * aspectRatio, cPanelRight);
+    }
+
     private:
     UIManager& cUIManager;
     IUIStyle& cStyle;
@@ -226,6 +235,9 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<MENU_ITEM_TYPE>> cItems;
     unsigned int cSelectedItem;
     AnimatedFloat cScroll;
+
+    // Runtime data.
+    float cPanelRight;
     
     void updateScrollPosition() {
       float mFontSize = cStyle.getFontSize();

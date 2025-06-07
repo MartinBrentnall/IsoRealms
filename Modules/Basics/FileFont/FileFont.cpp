@@ -226,6 +226,7 @@ namespace IsoRealms::Basics {
         glPopMatrix();
       }
       glPopAttrib();
+      glBindTexture(GL_TEXTURE_2D, 0);
     }
   }
 

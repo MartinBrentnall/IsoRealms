@@ -84,7 +84,8 @@ namespace IsoRealms {
       int mLineBeginning = 0;
       int mPrevSpace = 0;
       int mLineCount = 1;
-      float mMaxLineWidth = 0.5f;
+      float mMaxLineWidth = 0.5f * aspectRatio;
+      float mWidestLineWidth = 0.0f;
       for (unsigned int i = 0; i < mHelpText.length(); i++) {
         if (mHelpText[i] == ' ') {
           float mLineWidth = mFont->getWidth(mFontSize, mHelpText.substr(mLineBeginning, i - mLineBeginning));
@@ -95,6 +96,8 @@ namespace IsoRealms {
             }
             mWrappedText += mHelpText.substr(mLineBeginning, mPrevSpace - mLineBeginning);
             mLineBeginning = mPrevSpace + 1;
+          } else if (mLineWidth > mWidestLineWidth) {
+            mWidestLineWidth = mLineWidth;
           }
           mPrevSpace = i;
         }
@@ -107,6 +110,8 @@ namespace IsoRealms {
         }
         mWrappedText += mHelpText.substr(mLineBeginning, mPrevSpace - mLineBeginning);
         mLineBeginning = mPrevSpace + 1;
+      } else if (mLineWidth > mWidestLineWidth) {
+        mWidestLineWidth = mLineWidth;
       }
       if (mLineBeginning != 0) {
         mWrappedText += '\n';
@@ -116,14 +121,23 @@ namespace IsoRealms {
 
 
       float mLineHeight = mFont->getHeight(mFontSize, "A");
-      float mLeft = cHighlightRight.animation() + mFontSize * 4.0f;
-      float mRight = mLeft + mMaxLineWidth;
+      float mLeft = cRuntimeUIs.back()->cScreen->getTooltipXPosition() + mFontSize * 2.0f;
+      float mRight = mLeft + mWidestLineWidth;
       float mTop = cHighlightTop.animation();// + mLineHeight;
       float mBottom = mTop - mFont->getHeight(mFontSize, mWrappedText);
-      glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
+      glColor4f(0.2f, 0.0f, 0.0f, 0.75f);
       Utils::renderRoundedRectangle(mLeft - mFontSize, mBottom - mFontSize, mRight + mFontSize, mTop + mFontSize, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
       mFont->print(mLeft, cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mWrappedText);
+
+      glBegin(GL_QUADS);
+      glColor3f(1.0f, 0.0f, 0.3f);
+      glVertex2f(cHighlightRight.animation(), cHighlightTop.animation()    - mLineHeight / 3.0f);
+      glVertex2f(cHighlightRight.animation(), cHighlightBottom.animation() + mLineHeight / 3.0f);
+      glColor4f(0.2f, 0.0f, 0.0f, 0.75f);
+      glVertex2f(mLeft - mFontSize, cHighlightBottom.animation() + mLineHeight / 3.0f);
+      glVertex2f(mLeft - mFontSize, cHighlightTop.animation()    - mLineHeight / 3.0f);
+      glEnd();
     }
 
     // Render UI's (menus, etc.).
