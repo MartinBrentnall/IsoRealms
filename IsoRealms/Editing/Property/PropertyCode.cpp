@@ -80,23 +80,37 @@ namespace IsoRealms {
 
     float mTotalCodeWidth = mFont->getWidth(mFontSize, cEditingCode);
     float mTotalCodeHeight = mFont->getHeight(mFontSize, cEditingCode);
-    // float mPanelLeft   = cOpenness / 250.0f; // TODO: Implement this.
-    // float mPanelBottom = cOpenness / 250.0f; // TODO: Implement this.
-    float mPanelWidth  = cOpenness / 250.0f * std::min(mTotalCodeWidth + mFontSize * 4.0f, aspectRatio * 2.0f - mFontSize * 2.0f) ;
-    float mPanelHeight = cOpenness / 250.0f * std::min(mTotalCodeHeight + mFontSize * 4.0f, 2.0f - mFontSize * 2.0f);
 
+    float mOpenWidth  = std::min(mTotalCodeWidth + mFontSize * 4.0f, aspectRatio * 2.0f - mFontSize * 2.0f);
+    float mOpenHeight = std::min(mTotalCodeHeight + mFontSize * 4.0f, 2.0f - mFontSize * 2.0f);
+    float mOpenLeft   = -mOpenWidth  / 2.0f;
+    float mOpenRight  =  mOpenWidth  / 2.0f;
+    float mOpenBottom = -mOpenHeight / 2.0f;
+    float mOpenTop    =  mOpenHeight / 2.0f;
+
+    float mUIFontSize = style.getFontSize();
+
+    float mClosedLeft   = x - mUIFontSize * 2.0f;
+    float mClosedRight  = x + cParent.getValueWidth(style) + mUIFontSize * 2.0f;
+    float mClosedBottom = y;
+    float mClosedTop    = y + mUIFontSize * 2.0f;
+
+    float mFrameLeft   = mClosedLeft   + (mOpenLeft   - mClosedLeft)   * (cOpenness / 250.0f);
+    float mFrameRight  = mClosedRight  + (mOpenRight  - mClosedRight)  * (cOpenness / 250.0f);
+    float mFrameBottom = mClosedBottom + (mOpenBottom - mClosedBottom) * (cOpenness / 250.0f);
+    float mFrameTop    = mClosedTop    + (mOpenTop    - mClosedTop)    * (cOpenness / 250.0f);
 
     glDisable(GL_DEPTH_TEST);
     glBindTexture(GL_TEXTURE_2D, 0);
     glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
-    Utils::renderRoundedRectangle(-mPanelWidth / 2.0f, -mPanelHeight / 2.0f, mPanelWidth / 2.0f, mPanelHeight / 2.0f, mFontSize * 2.0f);
+    Utils::renderRoundedRectangle(mFrameLeft, mFrameBottom, mFrameRight, mFrameTop, mFontSize * 2.0f);
     glColor3f(1.0f, 1.0f, 1.0f);
-    Utils::renderRoundedRectangleLines(-mPanelWidth / 2.0f, -mPanelHeight / 2.0f, mPanelWidth / 2.0f, mPanelHeight / 2.0f, mFontSize * 2.0f);
+    Utils::renderRoundedRectangleLines(mFrameLeft, mFrameBottom, mFrameRight, mFrameTop, mFontSize * 2.0f);
 
     float mLineHeight = mFont->getHeight(mFontSize, "A");
 
     IApplication& mApplication = style.getProject().getApplication();
-    ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(-mPanelWidth / 2.0f + mFontSize, mPanelWidth / 2.0f - mFontSize, -mPanelHeight / 2.0f + mFontSize, mPanelHeight / 2.0f - mFontSize));
+    ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(mFrameLeft + mFontSize, mFrameRight - mFontSize, mFrameBottom + mFontSize, mFrameTop - mFontSize));
     
     glPushMatrix();
     glTranslatef(cScrollX.animation(), cScrollY.animation(), 0.0f);
@@ -126,15 +140,15 @@ namespace IsoRealms {
         unsigned int mLineHighlightLeft = std::max(mSelectionStart, static_cast<unsigned int>(mCurrentLineStart));
         unsigned int mLineHighlightRight = std::min(mSelectionEnd, static_cast<unsigned int>(mCurrentLineEnd));
 
-        float mHighlightLeft = -mPanelWidth / 2.0f + mFontSize * 2.0f + mFont->getWidth(mFontSize, mCurrentLineText.substr(0, mLineHighlightLeft - mCurrentLineStart));
-        float mHighlightRight = -mPanelWidth / 2.0f + mFontSize * 2.0f + mFont->getWidth(mFontSize, mCurrentLineText.substr(0, mLineHighlightRight - mCurrentLineStart));
+        float mHighlightLeft = mFrameLeft + mFontSize * 2.0f + mFont->getWidth(mFontSize, mCurrentLineText.substr(0, mLineHighlightLeft - mCurrentLineStart));
+        float mHighlightRight = mFrameLeft + mFontSize * 2.0f + mFont->getWidth(mFontSize, mCurrentLineText.substr(0, mLineHighlightRight - mCurrentLineStart));
 
         glColor3f(1.0f, 0.0f, 0.5f);
         glBegin(GL_QUADS);
-        glVertex2f(mHighlightLeft, mPanelHeight / 2.0f - (mFontSize * 2.0f + mCurrentLineNumber * mLineHeight));
-        glVertex2f(mHighlightLeft, mPanelHeight / 2.0f - (mFontSize * 4.5f + mCurrentLineNumber * mLineHeight));
-        glVertex2f(mHighlightRight, mPanelHeight / 2.0f - (mFontSize * 4.5f + mCurrentLineNumber * mLineHeight));
-        glVertex2f(mHighlightRight, mPanelHeight / 2.0f - (mFontSize * 2.0f + mCurrentLineNumber * mLineHeight));
+        glVertex2f(mHighlightLeft,  mFrameTop - (mFontSize * 2.0f + mCurrentLineNumber * mLineHeight));
+        glVertex2f(mHighlightLeft,  mFrameTop - (mFontSize * 4.5f + mCurrentLineNumber * mLineHeight));
+        glVertex2f(mHighlightRight, mFrameTop - (mFontSize * 4.5f + mCurrentLineNumber * mLineHeight));
+        glVertex2f(mHighlightRight, mFrameTop - (mFontSize * 2.0f + mCurrentLineNumber * mLineHeight));
         glEnd();
         glColor3f(1.0f, 1.0f, 1.0f);
         mCurrentIndex = mCurrentLineEnd + 1;
@@ -143,17 +157,17 @@ namespace IsoRealms {
     }
 
     // Render the actual code.
-    mFont->print(-mPanelWidth / 2.0f + mFontSize * 2.0f, mPanelHeight / 2.0f - mFontSize * 4.0f, mFontSize, IFont::Alignment::LEFT, cEditingCode);
+    mFont->print(mFrameLeft + mFontSize * 2.0f, mFrameTop - mFontSize * 4.0f, mFontSize, IFont::Alignment::LEFT, cEditingCode);
 
     // Render the caret.
     if (cBlinkShowing) {
       glBindTexture(GL_TEXTURE_2D, 0);
       glLineWidth(2.0);
-      float mCaretX = -mPanelWidth / 2.0f + mFontSize * 2.0f + cCaretOffsetX;
+      float mCaretX = mFrameLeft + mFontSize * 2.0f + cCaretOffsetX;
       glColor3f(1.0f, 1.0f, 1.0f);
       glBegin(GL_LINES);
-      glVertex2f(mCaretX, mPanelHeight / 2.0f - (mFontSize * 4.5f + cLine * mLineHeight));
-      glVertex2f(mCaretX, mPanelHeight / 2.0f - (mFontSize * 2.0f + cLine * mLineHeight));
+      glVertex2f(mCaretX, mFrameTop - (mFontSize * 4.5f + cLine * mLineHeight));
+      glVertex2f(mCaretX, mFrameTop - (mFontSize * 2.0f + cLine * mLineHeight));
       glEnd();
     }
     
