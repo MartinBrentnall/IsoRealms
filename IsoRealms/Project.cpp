@@ -557,7 +557,7 @@ namespace IsoRealms {
   }
 
   IEditable* Project::getDefaultEditable() {
-    return nullptr; //(*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
+    return (*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
   }
 
   LuaState* const Project::getLuaState() {

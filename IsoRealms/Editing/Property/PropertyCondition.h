@@ -196,6 +196,9 @@ namespace IsoRealms {
       bool cSelectedNotGate;
       bool cShowingConditionPalette;
 
+      int cOpenness;
+      bool cClosing;
+
       void showConditionPalette(bool isAnd);
       void showConditionPalette(ConditionElement* element);
       void renderConditionPalette(IUIStyle& style, bool tick) const;

@@ -63,7 +63,9 @@ namespace IsoRealms {
             cSelectionHeight(0.0f),
             cSelectionDepth(0.0f),
             cSelectedNotGate(false),
-            cShowingConditionPalette(false) {
+            cShowingConditionPalette(false),
+            cOpenness(0),
+            cClosing(false) {
     cConditionDiagram = std::make_unique<ResultOutput>(*this);
     cConditionDiagram->setInput(getConditionDiagram(*this, cParent.cGetter(), cConditionDiagram.get()));
     updatePosition(true);
@@ -79,17 +81,37 @@ namespace IsoRealms {
     int mMaxDepth = cConditionDiagram->getMaxDepth();
     int mMaxHeight = cConditionDiagram->getElementCount() - 1;
 
-    glPushMatrix();
-    glTranslatef((mXSpacing + mXScale * 2.0f) * cSelectionDepth.animation(), -cSelectionHeight.animation() * mYSpacing, 0.0f);
+    float mOpenLeft   = -mXScale * 2.0f - mMaxDepth * (mXSpacing + mXScale * 2.0f);
+    float mOpenBottom = -mYScale * 2.0f;
+    float mOpenRight  =  mXScale * 2.0f;
+    float mOpenTop    =  mYScale * 2.0f + mMaxHeight * mYSpacing;
+
+    mOpenLeft += (mXSpacing + mXScale * 2.0f) * cSelectionDepth.animation();
+    mOpenRight += (mXSpacing + mXScale * 2.0f) * cSelectionDepth.animation();
+    mOpenBottom += -cSelectionHeight.animation() * mYSpacing;
+    mOpenTop += -cSelectionHeight.animation() * mYSpacing;
+
+    float mClosedLeft   = x - mYScale * 2.0f;
+    float mClosedRight  = x + cParent.getValueWidth(style) + mYScale * 2.0f;
+    float mClosedBottom = y;
+    float mClosedTop    = y + mYScale * 2.0f;
+
+    float mFrameLeft   = mClosedLeft   + (mOpenLeft   - mClosedLeft)   * (cOpenness / 250.0f);
+    float mFrameRight  = mClosedRight  + (mOpenRight  - mClosedRight)  * (cOpenness / 250.0f);
+    float mFrameBottom = mClosedBottom + (mOpenBottom - mClosedBottom) * (cOpenness / 250.0f);
+    float mFrameTop    = mClosedTop    + (mOpenTop    - mClosedTop)    * (cOpenness / 250.0f);
+
     glBindTexture(GL_TEXTURE_2D, 0);
     glColor4f(0.0f, 0.0f, 0.0f, 0.9f);
     glEnable(GL_BLEND);
-    Utils::renderRoundedRectangle(-mXScale * 2.0f - mMaxDepth * (mXSpacing + mXScale * 2.0f), -mYScale * 2.0f , mXScale * 2.0f , mYScale * 2.0f  + mMaxHeight * mYSpacing, mYScale * 2.0f );
-    glPopMatrix();
+    Utils::renderRoundedRectangle(mFrameLeft, mFrameBottom, mFrameRight, mFrameTop, mYScale * 2.0f );
+    IApplication& mApplication = style.getProject().getApplication();
+    ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(mFrameLeft, mFrameRight, mFrameBottom, mFrameTop));
     glColor4f(1.0f, 0.0f, 0.2f, 1.0f);
     Utils::renderBar(0.0f, -mYScale * 1.2f, 0.0f, mYScale * 1.2f);
     glDepthMask(GL_TRUE);
     cConditionDiagram->render(style);
+    mApplication.crop(mPreviousCrop);
 
 
     renderConditionPalette(style, cSelectedInput->getOutput()->isAnd());
@@ -99,7 +121,12 @@ namespace IsoRealms {
     cSelectionHeight.update(milliseconds);
     cSelectionDepth.update(milliseconds);
     cSelectedElement.update(milliseconds);
-    return true;
+    if (cClosing) {
+      cOpenness = std::max(cOpenness - static_cast<int>(milliseconds), 0);
+    } else if (cOpenness < 250) {
+      cOpenness = std::min(cOpenness + static_cast<int>(milliseconds), 250);
+    }
+    return cOpenness == 0;
   }
 
   bool PropertyCondition::Editor::input(UISignalID id, IUIStyle& style) {
@@ -112,16 +139,16 @@ namespace IsoRealms {
         default:                                                       break;
       }
     } else if (cSelectedInput->input(id)) {
-      return false;
+      // Nothing to do.
     } else switch (id) {
       case UISignalID::MOVE_UP:     moveCursorUp();     break;
       case UISignalID::MOVE_DOWN:   moveCursorDown();   break;
       case UISignalID::MOVE_LEFT:   moveCursorLeft();   break;
       case UISignalID::MOVE_RIGHT:  moveCursorRight();  break;
-      case UISignalID::CANCEL:      confirmCondition(); return true;
+      case UISignalID::CANCEL:      confirmCondition(); cClosing = true; break;
       default:                                          break;
     }
-    return false;
+    return cClosing;
   }
 
   bool PropertyCondition::Editor::input(sf::Event& event, IUIStyle& style) {
