@@ -19,17 +19,18 @@
 #include "TerrainState.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string TerrainState::JSON_HINT  = "hint";
-  const std::string TerrainState::JSON_ICON  = "icon";
-  const std::string TerrainState::JSON_ID    = "id";
-  const std::string TerrainState::JSON_STATE = "state";
+  const std::string TerrainState::JSON_HINT       = "hint";
+  const std::string TerrainState::JSON_ICON       = "icon";
+  const std::string TerrainState::JSON_ICON_SCALE = "iconScale";
+  const std::string TerrainState::JSON_ID         = "id";
+  const std::string TerrainState::JSON_STATE      = "state";
 
   TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            TerrainState(project, "TODO", true) {
+            TerrainState(project, "TODO", true, 1.0f) {
   }
 
   TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
-            TerrainState(project, object.getString(JSON_ID), object.getBoolean(JSON_STATE)) {
+            TerrainState(project, object.getString(JSON_ID), object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
     cDefIcon.init(object, JSON_ICON);
     cDefHintAction.init(object, JSON_HINT);
   }
@@ -47,6 +48,7 @@ namespace IsoRealms::Spindizzy {
   void TerrainState::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_STATE, cDefValue);
     cDefIcon.save(object, JSON_ICON);
+    object.addFloat(JSON_ICON_SCALE, cDefIconScale);
     cDefHintAction.save(object, JSON_HINT);
   }
 
@@ -55,7 +57,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool TerrainState::renderIcon() const {
-    glScalef(2.0f, 2.0f, 1.0f);
     cDefIcon->renderScreen(1.0f, 1.0f);
     return true;
   }
@@ -65,6 +66,12 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Initial State", "TODO", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Hint Action",   "TODO", cDefHintAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Icon",          "TODO", cDefIcon));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Icon Scale",    "TODO", [this]() {return cDefIconScale;}, [this](float value) {if (value > 0.0f) {
+      cDefIconScale = value;
+      return true;
+    }
+    return false;
+    }));
     return mProperties;
   }
 
@@ -81,7 +88,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainState::renderScreen(float scale, float aspectRatio) const {
+    glPushMatrix();
+    glScalef(cDefIconScale, cDefIconScale, 0.0f);
     cDefIcon->renderScreen(scale, aspectRatio);
+    glPopMatrix();
   }
 
   bool TerrainState::renderAssetIcon() const {
@@ -104,11 +114,12 @@ namespace IsoRealms::Spindizzy {
     cRuntimeValue = value;
   }
 
-  TerrainState::TerrainState(IProject& project, const std::string& name, bool state) :
+  TerrainState::TerrainState(IProject& project, const std::string& name, bool state, float iconScale) :
             cDefConditionElement(name, this, this),
             cDefValue(state),
             cDefHintAction(project),
             cDefIcon(project),
+            cDefIconScale(iconScale),
             cRuntimeValue(state),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
     project.reset([this]() {

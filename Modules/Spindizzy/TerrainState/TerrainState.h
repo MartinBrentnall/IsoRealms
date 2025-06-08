@@ -91,6 +91,7 @@ namespace IsoRealms::Spindizzy {
     // JSON members.
     static const std::string JSON_HINT;
     static const std::string JSON_ICON;
+    static const std::string JSON_ICON_SCALE;
     static const std::string JSON_ID;
     static const std::string JSON_STATE;
 
@@ -99,6 +100,7 @@ namespace IsoRealms::Spindizzy {
     bool cDefValue;                        /// Initial value of this terrain state.
     Action cDefHintAction;                 /// Action to perform when hinting of a required change to this state.
     Screen cDefIcon;                       /// Icon to represent this state when editing.
+    float cDefIconScale;
 
     // Runtime data.
     bool cRuntimeValue; /// Current value of this terrain state.
@@ -113,6 +115,6 @@ namespace IsoRealms::Spindizzy {
      * @param name ID of this terrain state.
      * @param value initial value of this terrain state.
      */
-    TerrainState(IProject& project, const std::string& id, bool value);
+    TerrainState(IProject& project, const std::string& id, bool value, float iconScale);
   };
 }

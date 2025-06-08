@@ -6425,6 +6425,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintDiamondLeft"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6445,6 +6446,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintDiamondRight"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6465,6 +6467,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintDiamondBoth"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6485,6 +6488,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintSquareNone"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6505,6 +6509,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintSquareLeft"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6525,6 +6530,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintSquareRight"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6545,6 +6551,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintSquareBoth"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6565,6 +6572,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintCircleNone"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6585,6 +6593,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintCircleLeft"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6605,6 +6614,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintCircleRight"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
@@ -6625,6 +6635,7 @@
                 "icon": {
                   "key": "Spindizzy/WorldView/HintCircleBoth"
                 },
+                "iconScale": 0.55,
                 "hint": {
                   "key": "Basics/Function/SetHint",
                   "bindings": [
