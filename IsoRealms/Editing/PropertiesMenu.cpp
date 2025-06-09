@@ -51,7 +51,7 @@ namespace IsoRealms {
   }
 
   float PropertiesMenu::getWidth(MenuItemProperty& item, IUIStyle& style) const {
-    return cColumnWidthLabel.animation() + cColumnWidthValue.animation() + style.getFontSize() * 2.25f * (1.5f + (cHasRemoveColumn ? 1 : 0) + (cHasRemoveColumn ? 1 : 0));
+    return cColumnWidthLabel.animation() + cColumnWidthValue.animation() + style.getFontSize() * 2.25f * (1.5f + (cHasRemoveColumn ? 1 : 0) + (cHasConfigureColumn ? 1 : 0));
   }
 
   void PropertiesMenu::renderMenuItem(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const {
@@ -67,7 +67,7 @@ namespace IsoRealms {
 
     if (item.getProperty()->isRemovable()) {
       glPushMatrix();
-      glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * 6.50f, y + mFontSize, 0.0f);
+      glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * 6.75f, y + mFontSize, 0.0f);
       glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
       Utils::renderIconNone();
       glPopMatrix();

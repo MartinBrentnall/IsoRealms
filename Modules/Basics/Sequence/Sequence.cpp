@@ -143,6 +143,8 @@ namespace IsoRealms::Basics {
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mProperties.emplace_back(std::make_unique<PropertyStruct>(mEntry.first, "TODO", "Edit...", [this, &browser, &assets, &mEntry]() {
         return mEntry.second->getProperties(browser, assets);
+      }, [this, &mEntry]() {
+        cDefInstances.erase(mEntry.first);
       }));
     }
     mProperties.emplace_back(std::make_unique<PropertyAdd>(   "Instance", "TODO", "Add...", [this, &browser, &assets]() {
@@ -150,6 +152,8 @@ namespace IsoRealms::Basics {
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       return std::make_unique<PropertyStruct>("Instance", "TODO", "Edit...", [this, &browser, &assets, &mInstance]() {
         return mInstance->getProperties(browser, assets);
+      }, [this, mKey]() {
+        cDefInstances.erase(mKey);
       });
     }));
     return mProperties;
