@@ -80,6 +80,7 @@ namespace IsoRealms::Spindizzy {
     // Default constants.
     static const float DEFAULT_OUTLINE_WIDTH;
 
+    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
 
     // Definition data.

@@ -83,6 +83,9 @@ namespace IsoRealms::UI {
     static const unsigned int DEFAULT_SPOT_SIDES;
     static const unsigned int DEFAULT_SPOTS;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     unsigned int cDefDuration;    /// Duration of the animation loop in milliseconds.
     unsigned int cDefRepetitions; /// Number of animation repetitions along the spots.

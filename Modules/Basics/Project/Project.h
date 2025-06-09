@@ -32,8 +32,8 @@ namespace IsoRealms::Basics {
    * Resource definition for an iso-realms project, allowing projects to be
    * nested.
    */
-  class Project : public IInputHandler,
-                  public IScreen {
+  class Project final : public IInputHandler,
+                        public IScreen {
     public:
     
     /**********************\
@@ -94,8 +94,10 @@ namespace IsoRealms::Basics {
     static const std::string JSON_OPTIONS;
     static const std::string JSON_RUNNING;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
-      
+
     // Definition data
     std::string cDefProjectPath;
     Options cDefProjectOptionsArg;

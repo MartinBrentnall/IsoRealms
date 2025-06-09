@@ -23,14 +23,15 @@ namespace IsoRealms::Basics {
   const std::string ModelCycler::JSON_MODELS = "models";
 
   ModelCycler::ModelCycler(IProject& project, Basics& basics, IResourceData& data) :
+            cProjectCallbackManager(project),
             cRuntimeCycleIndex(0),
             cLuaBinding(project, this),
             cEditingIconCycle(0) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeCycleIndex = 0; 
     });
     
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       cEditingIconCycle += milliseconds;
       if (cEditingIconCycle >= cOffsetModels.size() * 500) {
         cEditingIconCycle -= static_cast<float>(cOffsetModels.size()) * 500;

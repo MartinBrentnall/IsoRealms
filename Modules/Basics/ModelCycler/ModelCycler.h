@@ -124,6 +124,9 @@ namespace IsoRealms::Basics {
       std::vector<std::unique_ptr<Instance>> cRuntimeInstances; /// Instances created from this offset.
     };
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     std::vector<std::unique_ptr<Model>> cDefModels;
     std::vector<std::unique_ptr<Offset>> cOffsetModels;

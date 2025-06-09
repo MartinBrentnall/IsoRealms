@@ -104,7 +104,7 @@ namespace IsoRealms::Spindizzy {
 
       private:
       CameraTransitional& cParent;
-    } cYaw;
+    };
     
     class Pitch : public IFloat {
       public:
@@ -121,11 +121,14 @@ namespace IsoRealms::Spindizzy {
 
       private:
       CameraTransitional& cParent;
-    } cPitch;
-    
+    };
+
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     WorldView& cParent; /// Parent view.
-    
+    Yaw cYaw;
+    Pitch cPitch;
+
     // Definition data.
     Camera cDefStart;              /// Camera to start transition at.
     Camera cDefEnd;                /// Camera to end transition at.

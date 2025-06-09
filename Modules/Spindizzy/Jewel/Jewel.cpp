@@ -27,11 +27,12 @@ namespace IsoRealms::Spindizzy {
   const std::string Jewel::JSON_FRAME         = "frame";
 
   Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cProject(project),
             cColourFrame(project, 1.0f, 1.0f, 0.0f) {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
 
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       cSampleModel->update(milliseconds);
     });
     cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, project));

@@ -155,7 +155,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_MOUSE_BUTTON_DOWN;
     static const std::string JSON_TYPE;
 
-    // Definition data.
     class PhysicalInputMapping {
       public:
       PhysicalInputMapping(std::shared_ptr<IDigitalInputMapping> physicalInput);
@@ -172,8 +171,13 @@ namespace IsoRealms::Basics {
       std::shared_ptr<IDigitalInputMapping> cPhysicalInput;
       bool cState;
     };
-    std::vector<std::unique_ptr<PhysicalInputMapping>> cDefMapping; /// Default input mapping.
+
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
+
+    // Definition data.
+    std::vector<std::unique_ptr<PhysicalInputMapping>> cDefMapping; /// Default input mapping.
 
     // Runtime data.
     std::vector<std::unique_ptr<PhysicalInputMapping>> cRuntimeMapping; /// User input mapping.

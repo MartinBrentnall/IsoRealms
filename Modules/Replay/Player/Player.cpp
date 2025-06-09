@@ -32,6 +32,7 @@ namespace IsoRealms::Replay {
   const std::string Player::TYPE_DIGITAL  = "Digital";
 
   Player::Player(IProject& project, Replay& replay, IResourceData& data) :
+            cProjectCallbackManager(project),
             cParentProject(project),
             cFilename(""),
             cQuitAction(project) {
@@ -86,7 +87,7 @@ namespace IsoRealms::Replay {
       cQuitAction.execute();
     }, this); // TODO: 'user' flag shouldn't always be false
 
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       while (!cFinished && cNextEvent.cTime == cElapsedTime) {
         if (cNextEvent.cID < cDigitalInputs.size()) {
           cDigitalInputs[cNextEvent.cID]->setValue(cNextEvent.cState.cDigital);
@@ -100,7 +101,7 @@ namespace IsoRealms::Replay {
       cProject->updateRuntimeComplete();
     });
 
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cProject->reset();
       cElapsedTime = 0;
       cRecording   = std::ifstream(cFilename, std::ios::binary);

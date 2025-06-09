@@ -28,11 +28,12 @@ namespace IsoRealms::UI {
   const std::string MenuItemDisplayResolution::BINDING_TYPE = "DisplayResolution";
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu) :
+            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
             cLuaBinding(project, this) {
-    project.reset([this, &project]() {
+    cProjectCallbackManager.reset([this, &project]() {
       IApplication& mApplication = project.getApplication();
       cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
       DisplayResolution mResolution = mApplication.getDisplayResolution();
@@ -41,11 +42,12 @@ namespace IsoRealms::UI {
   }
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu, JSONObject object) :
+            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cLuaBinding(project, this) {
-    project.reset([this, &project]() {
+    cProjectCallbackManager.reset([this, &project]() {
       IApplication& mApplication = project.getApplication();
       cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
       DisplayResolution mResolution = mApplication.getDisplayResolution();

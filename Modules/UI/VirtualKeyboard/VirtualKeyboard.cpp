@@ -28,13 +28,14 @@ namespace IsoRealms::UI {
   const unsigned int VirtualKeyboard::CARET_BLINK_DELAY = 200;
 
   VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data) :
+            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefConfirmAction(project),
             cDefSelectionColour(project, 1.0f, 0.0f, 1.0f),
             cDefFont(project),
             cRuntimeControllerCaps(false),
             cLuaBinding(project, this) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       cRuntimeCaretBlinkDelay -= milliseconds;
       if (cRuntimeCaretBlinkDelay <= 0) {
         cRuntimeCaretBlinkDelay += CARET_BLINK_DELAY;
@@ -42,7 +43,7 @@ namespace IsoRealms::UI {
       }
     });
 
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeSelected = 0;
       cRuntimeValue = "";
       cRuntimeCaretVisible = true;

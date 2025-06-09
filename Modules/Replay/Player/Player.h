@@ -32,9 +32,9 @@
 namespace IsoRealms::Replay {
   class Replay;
   
-  class Player : public IAssetOverride,
-                 public IScreen,
-                 public IInputHandler {
+  class Player final : public IAssetOverride,
+                       public IScreen,
+                       public IInputHandler {
     private:
     static const std::string JSON_INPUT;
     static const std::string JSON_INPUT_CONFIGURATION;
@@ -96,6 +96,9 @@ namespace IsoRealms::Replay {
       std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
       bool isDefaultConfiguration() const override;
     };
+
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
 
     IProject& cParentProject;
     std::string cFilename; 

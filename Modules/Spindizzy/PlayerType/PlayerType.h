@@ -166,8 +166,9 @@ namespace IsoRealms::Spindizzy {
     };
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;     /// Spindizzy module reference.
-    
+
     // Definition data.
     float   cDefAcceleration;     /// Initial speed of movement.
     float   cDefSpinSpeed;        /// Initial speed at which the player spins while moving.

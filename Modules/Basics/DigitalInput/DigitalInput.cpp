@@ -27,11 +27,12 @@ namespace IsoRealms::Basics {
   const std::string DigitalInput::JSON_TYPE              = "type";
 
   DigitalInput::DigitalInput(IProject& project, Basics& basics) :
+             cProjectCallbackManager(project),
              cProject(project),
              cRuntimeState(false),
              cLuaBinding(project, this),
              cStateNotifier(nullptr) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeState = false;
       for (std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {
         mMapping->reset();

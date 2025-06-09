@@ -35,6 +35,7 @@ namespace IsoRealms {
   class IScreen;
   class IScreenListener;
   class LuaState;
+  class ProjectCallbackManager;
 
   /**
    * Project interface made available to modules and their resources.
@@ -81,7 +82,7 @@ namespace IsoRealms {
      * 
      * @param resetter The reset function.
      */
-    virtual ICallbackHandle* reset(std::function<void()> resetter) = 0;
+    virtual ICallbackHandle* reset(ProjectCallbackManager& manager, std::function<void()> resetter) = 0;
 
     /**
      * Create a callback to be called once at each update cycle during runtime.
@@ -89,7 +90,7 @@ namespace IsoRealms {
      * 
      * @param dynamic The runtime update function.
      */
-    virtual ICallbackHandle* updateRuntime(std::function<void(unsigned int)> dynamic) = 0;
+    virtual ICallbackHandle* updateRuntime(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) = 0;
     
     /**
      * Create a callback to be called once at each update cycle during editing.
@@ -97,7 +98,7 @@ namespace IsoRealms {
      * 
      * @param dynamic The editing update function.
      */
-    virtual ICallbackHandle* updateEditing(std::function<void(unsigned int)> dynamic) = 0;
+    virtual ICallbackHandle* updateEditing(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) = 0;
     
     /**
      * Defer the specified function to be performed following completion of the

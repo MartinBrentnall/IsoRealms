@@ -115,6 +115,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   TerrainState::TerrainState(IProject& project, const std::string& name, bool state, float iconScale) :
+            cProjectCallbackManager(project),
             cDefConditionElement(name, this, this),
             cDefValue(state),
             cDefHintAction(project),
@@ -122,7 +123,7 @@ namespace IsoRealms::Spindizzy {
             cDefIconScale(iconScale),
             cRuntimeValue(state),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeValue = cDefValue;
     });
   }

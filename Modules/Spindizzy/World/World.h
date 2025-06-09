@@ -193,9 +193,10 @@ namespace IsoRealms::Spindizzy {
     };
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;        /// Spindizzy module reference.
     IResourceData& cResourceData; /// Access to world surface cache on disk.
-    
+
     // Fixed sub-components.
     TerrainProcessor cDefPhysicalSurfaceProcessor; /// Processor for physical surfaces.
     TerrainProcessor cDefVisualSurfaceProcessor;   /// Processor for rendered surfaces.

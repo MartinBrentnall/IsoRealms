@@ -25,8 +25,9 @@ namespace IsoRealms::UI {
   const std::string Layout::JSON_ID         = "id";
 
   Layout::Layout(IProject& project, UI& ui, IResourceData& data) :
+            cProjectCallbackManager(project),
             cUI(ui) {
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       for (const std::pair<IEditableScreen* const, std::unique_ptr<LayoutEditor>>& mEditor : cEditors) {
         mEditor.second->updateScreen(milliseconds);
       }

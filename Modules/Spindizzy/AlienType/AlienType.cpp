@@ -39,6 +39,7 @@ namespace IsoRealms::Spindizzy {
   const float AlienType::DEFAULT_SPIN_SPEED   = 0.0f;
 
   AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cDefModel(project),
             cDefTarget(project),
@@ -51,7 +52,7 @@ namespace IsoRealms::Spindizzy {
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
 
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeSpinSpeed = cDefSpinSpeed;
     });
   }

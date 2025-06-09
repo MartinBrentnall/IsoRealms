@@ -26,9 +26,10 @@ namespace IsoRealms::Spindizzy {
   const unsigned int CameraTransitional::DEFAULT_DURATION = 500U;
 
   CameraTransitional::CameraTransitional(IProject& project, WorldView& view) :
+            cProjectCallbackManager(project),
+            cParent(view),
             cYaw(*this),
             cPitch(*this),
-            cParent(view),
             cDefStart(cParent.getSpindizzy(), view),
             cDefEnd(cParent.getSpindizzy(), view),
             cDefDuration(DEFAULT_DURATION),
@@ -38,7 +39,7 @@ namespace IsoRealms::Spindizzy {
             cDefEndArrivalAction(project),
             cRuntimeYawStateNotifier(nullptr),
             cLuaBinding(project, this) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       if (cRuntimeEnd) {
         if (cRuntimeAnimation < cDefDuration) {
           if (cRuntimeAnimation == 0U) {
@@ -64,7 +65,7 @@ namespace IsoRealms::Spindizzy {
       }
     });
 
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeEnd = false;
       cRuntimeAnimation = 0U;
     });

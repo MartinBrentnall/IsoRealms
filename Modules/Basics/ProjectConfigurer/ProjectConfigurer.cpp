@@ -30,6 +30,7 @@ namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_MAPPING          = "mapping";
 
   ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data) :
+            cProjectCallbackManager(project),
             cDefFont(project),
             cDefCodeFont(project),
             cDefFontSize(0.03f),
@@ -59,7 +60,7 @@ namespace IsoRealms::Basics {
             cNextItem(project, *this, SignalInputID::MOVE_CURSOR_DOWN),
             cLuaBinding(project, this),
             cBindingEditor(project, nullptr, this) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       cProjectConfigurationUI.update(milliseconds);
     });
   }

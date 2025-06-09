@@ -69,6 +69,9 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Runtime data.
     float cCachedXLocation;
     float cCachedYLocation;

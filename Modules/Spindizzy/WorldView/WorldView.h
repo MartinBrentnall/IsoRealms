@@ -115,6 +115,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string TYPE_ZONE_VIEW;
     
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;      /// Spindizzy module reference.
 
     // Definition data.

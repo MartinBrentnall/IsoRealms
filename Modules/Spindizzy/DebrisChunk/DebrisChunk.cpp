@@ -31,6 +31,7 @@ namespace IsoRealms::Spindizzy {
   const float DebrisChunk::DEFAULT_OUTLINE_WIDTH = 0.18f;
 
   DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cProject(project),
             cDefSide{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                      Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -41,7 +42,7 @@ namespace IsoRealms::Spindizzy {
             cTextures{project, project, project, project},
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       cEditingIconRotation += 0.1f * milliseconds;
     });
     setNeedsRedrawing();

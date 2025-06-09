@@ -34,13 +34,14 @@ namespace IsoRealms::Basics {
   const std::string Sequence::JSON_TYPE      = "type";
 
   Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data) :
+            cProjectCallbackManager(project),
             cBasics(basics),
             cDefPlaying(false),
             cDefLoop(false),
             cDefSpeed(project, 1.0f),
             cExposedLength(*this),
             cLuaBinding(project, this) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       float mSpeedMultiplier = cDefSpeed->getValue();
       if (mSpeedMultiplier != 1.0f) {
         float mActualMilliseconds = milliseconds * mSpeedMultiplier;
@@ -58,7 +59,7 @@ namespace IsoRealms::Basics {
       }
     });
     
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       if (cDefLoop && cDefPlaying) {
         for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
           mEntry.second->update(milliseconds);
@@ -69,8 +70,8 @@ namespace IsoRealms::Basics {
       }
     });
 
-    project.reset([this]() {
-      reset(); 
+    cProjectCallbackManager.reset([this]() {
+      resetSequence();
     });
   }
   
@@ -211,7 +212,7 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void Sequence::reset() {
+  void Sequence::resetSequence() {
     cRuntimePositionFraction = 0.0f;
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->reset();

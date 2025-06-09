@@ -26,8 +26,9 @@
 
 namespace IsoRealms::Spindizzy {
   CameraOverview::CameraOverview(IProject& project, WorldView& view) :
+            cProjectCallbackManager(project),
             cParent(view) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       World* mWorld = cParent.getWorld();
       float mXSize =  mWorld->getEndX() - mWorld->getStartX() + 1;
       float mYSize =  mWorld->getEndY() - mWorld->getStartY() + 1;

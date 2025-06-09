@@ -28,6 +28,7 @@ namespace IsoRealms::Basics {
   const std::string Project::JSON_RUNNING   = "running";
 
   Project::Project(IProject& project, Basics& basics, IResourceData& data) :
+            cProjectCallbackManager(project),
             cProject(project),
             cDefReadyAction(project),
             cDefEndAction(project),
@@ -36,7 +37,7 @@ namespace IsoRealms::Basics {
             cDefEditing(false),
             cRuntimeProject(nullptr),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
 
       // Wait to prevent a crash if a project is still under construction..
       if (cRuntimeProjectLoader != nullptr) {
@@ -62,7 +63,7 @@ namespace IsoRealms::Basics {
       }
     });
 
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       if (cRuntimeLoading) {
         IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
         if (mProject != nullptr) {

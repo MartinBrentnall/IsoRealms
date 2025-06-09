@@ -30,6 +30,7 @@ namespace IsoRealms::UI {
   const std::string MenuItemFileList::BINDING_TYPE = "FileList";
   
   MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu) :
+            cProjectCallbackManager(project),
             cProject(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
@@ -37,13 +38,14 @@ namespace IsoRealms::UI {
             cDefUser(false),
             cDefAction(project),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       refresh();
       cRuntimeSelectedFile = 0;
     });
   }
 
   MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu, JSONObject object) :
+            cProjectCallbackManager(project),
             cProject(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
@@ -52,7 +54,7 @@ namespace IsoRealms::UI {
             cDefAction(project),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       refresh();
       cRuntimeSelectedFile = 0;
     });

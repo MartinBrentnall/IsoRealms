@@ -30,6 +30,7 @@ namespace IsoRealms::Replay {
   const std::string Recorder::TYPE_DIGITAL  = "Digital";
 
   Recorder::Recorder(IProject& project, Replay& replay, IResourceData& data) :
+            cProjectCallbackManager(project),
             cParentProject(project),
             cFilenameString(""),
             cQuitAction(project),
@@ -66,7 +67,7 @@ namespace IsoRealms::Replay {
       mInputID++;
     }
 
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       if (cElapsedTime == 0) {
 
         // Construct date and time string for filename
@@ -98,7 +99,7 @@ namespace IsoRealms::Replay {
       cProject->updateRuntimeComplete();
     });
 
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cProject->reset();
       cElapsedTime = 0;
 

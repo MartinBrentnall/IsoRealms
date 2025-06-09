@@ -134,7 +134,8 @@ namespace IsoRealms::Basics {
     static const std::string JSON_ON_EDITOR;
     static const std::string JSON_ON_EXIT;
 
-    // Property names.
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     Font cDefFont;

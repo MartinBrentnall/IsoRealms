@@ -33,6 +33,7 @@ namespace IsoRealms::Spindizzy {
   const float Gyroscope::HEIGHT            = 0.9f;
 
   Gyroscope::Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cProject(project),
             cDefQuadrant{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -42,7 +43,7 @@ namespace IsoRealms::Spindizzy {
             cTexture(project),
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       cEditingIconRotation -= 0.5f * milliseconds;
     });
     setNeedsRedrawing();

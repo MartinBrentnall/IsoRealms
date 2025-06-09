@@ -29,6 +29,7 @@
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
+#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
@@ -105,6 +106,7 @@ namespace IsoRealms::UI {
     };
 
     // External Interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
     HatHandler& cHatHandler;
 

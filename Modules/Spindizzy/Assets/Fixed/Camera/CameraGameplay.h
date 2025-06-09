@@ -102,11 +102,13 @@ namespace IsoRealms::Spindizzy {
     static const int VALUE_SOUTH_WEST;
     static const int VALUE_INVALID;
     
-    LiteralFloat cPitch;
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     WorldView& cParent; /// Parent view.
-    
+
+    LiteralFloat cPitch;
+
     // Definition data.
     float cDefAngle;          /// Initial angle value.
     int cDefRollDuration;     /// Millisecond duration of transition to a new angle.

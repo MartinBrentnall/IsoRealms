@@ -86,8 +86,8 @@ namespace IsoRealms::Basics {
     static const std::string PROPERTY_SATURATION;
     static const std::string PROPERTY_LIGHTNESS;
 
-    // Debug
-    bool cDebug;
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     float cDefRed;   /// Initial red intensity.
@@ -113,6 +113,6 @@ namespace IsoRealms::Basics {
     IStateNotifier<IColour>* cStateNotifier;
 
     // Private functions.
-    void reset();
+    void resetColour();
   };
 }

@@ -29,6 +29,7 @@ namespace IsoRealms::Spindizzy {
   const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
 
   WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cDefWorld(nullptr),
             cDefCamera(spindizzy, *this),
@@ -36,7 +37,7 @@ namespace IsoRealms::Spindizzy {
             cDefZoom(1.0f),
             cRuntimeZone(nullptr),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeZone = nullptr;
       for (std::unique_ptr<ZoneView>& mZoneView : cRuntimeZoneViews) {
         mZoneView->cView->reset();

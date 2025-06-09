@@ -24,11 +24,12 @@ namespace IsoRealms::Basics {
   const std::string SimpleBoolean::PROPERTY_VALUE = "Initial Value";
   
   SimpleBoolean::SimpleBoolean(IProject& project, Basics& basics, IResourceData& data) :
+            cProjectCallbackManager(project),
             cDefValue(false),
             cRuntimeValue(false),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeValue = cDefValue;
     });
   }

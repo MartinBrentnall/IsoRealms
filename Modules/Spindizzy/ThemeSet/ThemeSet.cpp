@@ -28,6 +28,7 @@ namespace IsoRealms::Spindizzy {
   const std::string ThemeSet::JSON_THEMES = "themes";
 
   ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cDefaultTheme(nullptr),
             cAnimation(0),
@@ -36,7 +37,7 @@ namespace IsoRealms::Spindizzy {
             cLuaBinding(project, this) {
     
     // TODO: Only for editor!
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       if (cPause > 0) {
         cPause -= milliseconds;
         if (cPause <= 0) {

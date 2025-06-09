@@ -455,9 +455,9 @@ namespace IsoRealms {
     void mainThreadInit(std::function<void()> function) override;
     void mainThreadCleanUp(std::function<void()> function) override;
     void init(std::function<void(IAssets&)> initialiser) override;
-    ICallbackHandle* reset(std::function<void()> resetter) override;
-    ICallbackHandle* updateRuntime(std::function<void(unsigned int)> dynamic) override;
-    ICallbackHandle* updateEditing(std::function<void(unsigned int)> dynamic) override;
+    ICallbackHandle* reset(ProjectCallbackManager& manager, std::function<void()> resetter) override;
+    ICallbackHandle* updateRuntime(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) override;
+    ICallbackHandle* updateEditing(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) override;
     void updateLater(std::function<void()> task) override;
     void removeCallback(ICallbackHandle* callbackHandle) override;
     LuaState* const getLuaState() override;

@@ -97,7 +97,10 @@ namespace IsoRealms::UI {
 
     static const float DEFAULT_FONT_SIZE;
     static const float DEFAULT_SHADOW_OFFSET;
-      
+
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     HatHandler& cHatHandler;
     std::vector<std::unique_ptr<MenuItem>> cDefItems; /// Items defined in this menu.

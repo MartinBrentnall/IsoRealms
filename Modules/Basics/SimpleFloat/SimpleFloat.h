@@ -67,6 +67,9 @@ namespace IsoRealms::Basics {
     // Property names.
     static const std::string PROPERTY_VALUE;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data
     float cDefValue;
 

@@ -75,6 +75,8 @@ namespace IsoRealms::Spindizzy {
     static const float WIDTH;
     static const float HEIGHT;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
 
     // Definition data.

@@ -33,13 +33,14 @@ namespace IsoRealms::Spindizzy {
   const unsigned int World::DEFAULT_BOUNCE_CONTROL = 10;
 
   World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefPhysicalSurfaceProcessor(true),
             cDefVisualSurfaceProcessor(false),
             cEditorBasicProperties(false),
             cLuaBinding(project, this) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       for (std::unique_ptr<Player>&                   mPlayer           : cDefPlayers)               {mPlayer->updateRuntime(milliseconds);}
       for (std::unique_ptr<DebrisGenerator>&          mDebrisGenerator  : cDefDebrisGenerators)      {mDebrisGenerator->updateRuntime(milliseconds);}
       for (std::unique_ptr<Zone>&                     mZone             : cDefZones)                 {mZone->updateRuntime(milliseconds);}
@@ -47,7 +48,7 @@ namespace IsoRealms::Spindizzy {
       for (std::unique_ptr<BoundaryHandlerInstance>&  mBoundaryHandler  : cRuntimeBoundaryHandlers)  {mBoundaryHandler->processCrossings();}
     });
 
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       for (const std::pair<IEditableScreen* const, std::unique_ptr<WorldEditor>>& mEditor : cEditors) {
         mEditor.second->updateScreen(milliseconds);
       }
@@ -65,7 +66,7 @@ namespace IsoRealms::Spindizzy {
       added(mBoundaryType);
     }
 
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       reset();
     });
 

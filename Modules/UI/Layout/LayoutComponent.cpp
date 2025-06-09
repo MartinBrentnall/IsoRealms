@@ -28,6 +28,7 @@ namespace IsoRealms::UI {
   const std::string LayoutComponent::JSON_TOP    = "top";
 
   LayoutComponent::LayoutComponent(IProject& project, Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio) :
+            cProjectCallbackManager(project),
             cLayout(layout),
             cDefScreen(project),
             cDefLeftEdge(*this, aspectRatio, std::min(x1, x2)),
@@ -36,12 +37,13 @@ namespace IsoRealms::UI {
             cDefTopEdge(*this, 1.0f, std::max(y1, y2)),
             cRuntimeScreen(nullptr),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeScreen = *cDefScreen;
     });
   }
 
   LayoutComponent::LayoutComponent(IProject& project, Layout& layout, JSONObject object) :
+            cProjectCallbackManager(project),
             cLayout(layout),
             cDefScreen(project),
             cDefLeftEdge(*this, object, JSON_LEFT),
@@ -51,7 +53,7 @@ namespace IsoRealms::UI {
             cRuntimeScreen(nullptr),
             cLuaBinding(project, this) {
     cDefScreen.init(object, JSON_SCREEN);
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeScreen = *cDefScreen;
     });
   }

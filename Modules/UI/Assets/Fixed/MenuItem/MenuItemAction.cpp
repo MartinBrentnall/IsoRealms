@@ -27,22 +27,24 @@ namespace IsoRealms::UI {
   const std::string MenuItemAction::BINDING_TYPE = "Action";
     
   MenuItemAction::MenuItemAction(IProject& project, Menu& menu) :
+            cProjectCallbackManager(project),
             cDefID(""),
             cDefLabel(""),
             cDefAction(project),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
 // TODO      cRuntimeValue = "";
     });
   }
 
   MenuItemAction::MenuItemAction(IProject& project, Menu& menu, JSONObject object) :
+            cProjectCallbackManager(project),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefAction(project),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
 // TODO      cRuntimeValue = "";
     });
   }

@@ -18,19 +18,24 @@
  */
 #pragma once
 
-#include <set>
-#include <string>
+#include <functional>
+#include <vector>
 
-#include "Assets/Registry/IAssetUser.h"
-#include "Assets/Type/IScreenListener.h"
-#include "Editing/Property/IProperty.h"
-#include "Exception/ResourceInitException.h"
-#include "IAssetIdentifier.h"
-#include "IAssetRegistry.h"
-#include "IAssetRemover.h"
-#include "IAssets.h"
-#include "IModuleHandle.h"
-#include "IProject.h"
-#include "IResourceData.h"
-#include "Options/IOptions.h"
-#include "ProjectCallbackManager.h"
+#include "ICallbackHandle.h"
+
+namespace IsoRealms {
+  class IProject;
+
+  class ProjectCallbackManager {
+    public:
+    ProjectCallbackManager(IProject& project);
+    void reset(std::function<void()> resetter);
+    void updateRuntime(std::function<void(unsigned int)> dynamic);
+    void updateEditing(std::function<void(unsigned int)> dynamic);
+    ~ProjectCallbackManager();
+
+    private:
+    IProject& cProject;
+    std::vector<ICallbackHandle*> cCallbackHandles;
+  };
+}

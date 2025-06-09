@@ -44,7 +44,7 @@ extern char *__progname;
 namespace IsoRealms::Hue {
   class Hue;
 
-  class HueManager {
+  class HueManager final {
     public:
         
     /**********************\
@@ -292,6 +292,9 @@ namespace IsoRealms::Hue {
       Colour cDefColour;
     };
     
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     std::string cDefBridgeAddress;
     std::string cDefBridgeUser;
     std::string cDefBridgePSK;

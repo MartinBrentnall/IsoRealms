@@ -55,6 +55,7 @@ namespace IsoRealms::Spindizzy {
   const std::string PlayerType::BIND_TO_TERRAIN = "Terrain";
 
   PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
@@ -75,7 +76,7 @@ namespace IsoRealms::Spindizzy {
             cDefWallBounceAction(project),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeSpinSpeed = cDefSpinSpeed;
     });
   }

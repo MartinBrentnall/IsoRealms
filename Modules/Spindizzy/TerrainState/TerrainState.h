@@ -95,6 +95,9 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_ID;
     static const std::string JSON_STATE;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     ConditionElement cDefConditionElement; /// Condition element representing this terrain state.
     bool cDefValue;                        /// Initial value of this terrain state.

@@ -24,6 +24,7 @@
 #include "IsoRealms/Collision/CollisionUtils.h"
 #include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Lua.h"
+#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
@@ -85,8 +86,9 @@ namespace IsoRealms::UI {
     static const std::string JSON_TOP;
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     Layout& cLayout;
-    
+
     // Definition data.
     Screen cDefScreen;
     LayoutComponentEdge cDefLeftEdge;

@@ -92,6 +92,9 @@ namespace IsoRealms::UI {
     static const float DEFAULT_SHADOW_OFFSET;
     static const float DEFAULT_TEXT_SIZE;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     HatHandler& cHatHandler;
     Font cDefFont;                /// Font for the prompt to be displayed in.

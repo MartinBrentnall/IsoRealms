@@ -32,6 +32,7 @@
 #include "IsoRealms/Input/KeyMapping.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
+#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
@@ -83,6 +84,9 @@ namespace IsoRealms::UI {
 
     // Constants.
     static const std::string BINDING_TYPE;
+
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     HatHandler& cHatHandler;

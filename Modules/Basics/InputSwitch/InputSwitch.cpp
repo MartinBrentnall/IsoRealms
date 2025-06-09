@@ -22,10 +22,11 @@ namespace IsoRealms::Basics {
   const std::string InputSwitch::JSON_VALUE = "value";
 
   InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data) :
+            cProjectCallbackManager(project),
             cDefInputHandler(project),
             cRuntimeInputHandler(*cDefInputHandler),
             cLuaBinding(project, this) {
-    project.reset([this] {
+    cProjectCallbackManager.reset([this] {
       cRuntimeInputHandler = *cDefInputHandler;
     });
   }

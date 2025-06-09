@@ -134,8 +134,9 @@ namespace IsoRealms::Spindizzy {
     };
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy; /// Spindizzy module reference.
-    
+
     // Definition data
     Model cDefModel;          /// Visual representation of this alien type.
     Vertex cDefTarget;        /// Target that aliens of this type move towards.

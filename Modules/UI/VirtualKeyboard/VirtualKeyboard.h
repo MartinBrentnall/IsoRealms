@@ -32,7 +32,7 @@ namespace IsoRealms::UI {
    * Resource definition for a virtual keyboard that enables the input of
    * strings via other input methods.
    */
-  class VirtualKeyboard final : public IInputHandler, 
+  class VirtualKeyboard final : public IInputHandler,
                                 public IScreen,
                                 public IString {
     public:
@@ -88,8 +88,11 @@ namespace IsoRealms::UI {
     static const std::string JSON_ON_CONFIRM;
     static const std::string JSON_SELECTION_COLOUR;
 
-    // Definition data.
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     HatHandler& cHatHandler;
+
+    // Definition data.
     Action cDefConfirmAction;   /// Action to be performed upon confirmation of the input.
     Colour cDefSelectionColour; /// Colour used to highlight the selected character.
     Font cDefFont;              /// Font used to render the virtual keyboard.

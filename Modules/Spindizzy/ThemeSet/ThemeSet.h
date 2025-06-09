@@ -76,6 +76,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_THEMES;
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;
 
     // Definition data.

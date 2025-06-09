@@ -73,6 +73,9 @@ namespace IsoRealms::Basics {
     static const std::string PROPERTY_Y;
     static const std::string PROPERTY_Z;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     float cDefX; /// Initial X value.
     float cDefY; /// Initial Y value.

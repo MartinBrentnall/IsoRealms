@@ -24,13 +24,14 @@
 
 namespace IsoRealms::UI {
   ScreenModel::ScreenModel(IProject& project, Project& owner) :
+            cProjectCallbackManager(project),
             cDefModel(project),
             cDefModelInstance(cDefModel.createInstance()) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       cDefModelInstance->update(milliseconds);
     });
 
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       cDefModelInstance->update(milliseconds);
     });
   }

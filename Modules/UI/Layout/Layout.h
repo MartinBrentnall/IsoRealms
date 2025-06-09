@@ -90,6 +90,7 @@ namespace IsoRealms::UI {
     static const std::string JSON_ID;
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     IUI& cUI;
 
     // Definition data.

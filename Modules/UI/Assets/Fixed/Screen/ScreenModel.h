@@ -53,6 +53,9 @@ namespace IsoRealms::UI {
     // JSON members.
     static const std::string JSON_MODEL;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     Model cDefModel;
     std::unique_ptr<ModelInstance> cDefModelInstance;

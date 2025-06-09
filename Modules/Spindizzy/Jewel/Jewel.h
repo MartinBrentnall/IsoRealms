@@ -114,8 +114,9 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_FRAME;
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject; // Required for pre-rendering.
-      
+
     // Definition data.
     std::vector<std::unique_ptr<Instance>> cInstances;       /// Model instances.  Each instance has a different position.
     Colour cColourFrame;                                     /// Colour of the frame.

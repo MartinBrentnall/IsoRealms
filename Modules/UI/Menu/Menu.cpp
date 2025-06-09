@@ -32,6 +32,7 @@ namespace IsoRealms::UI {
   const float Menu::DEFAULT_SHADOW_OFFSET = 0.008f;
 
   Menu::Menu(IProject& project, UI& ui, IResourceData& data) :
+            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefExitAction(project),
             cDefFont(project),
@@ -40,7 +41,7 @@ namespace IsoRealms::UI {
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cRuntimeSelectedItem(996),
             cLuaBinding(project, this) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       float mPositionY = 0.0f;
       for (unsigned int i = 0; i < cRuntimeSelectedItem; i++) {
         mPositionY -= (*cDefItems[i].get())->getHeight(*this);
@@ -53,7 +54,7 @@ namespace IsoRealms::UI {
       }
     });
     
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeSelectedItem = 0;
       cRuntimeScroll = 0.0f;
     });

@@ -20,6 +20,7 @@
 
 namespace IsoRealms::HighScore {
   ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data) :
+            cProjectCallbackManager(project),
             cParentProject(project),
             cScriptQuit(project),
             cScriptOnHighScoreAchieved(project),
@@ -31,11 +32,11 @@ namespace IsoRealms::HighScore {
       cProject->initMainThread();      
     });
     
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cProject->reset();
     });
     
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       cProject->updateRuntime(milliseconds);
       cProject->updateRuntimeComplete();
     });

@@ -31,8 +31,8 @@
 namespace IsoRealms::HighScore {
   class HighScore;
   
-  class ScoreTracker : public IScreen,
-                       public IInputHandler {
+  class ScoreTracker final : public IScreen,
+                             public IInputHandler {
     public:
     
     /**********************\
@@ -90,6 +90,9 @@ namespace IsoRealms::HighScore {
 
     static const std::string TYPE_INTEGER;
     static const std::string TYPE_STRING;
+
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
 
     IProject& cParentProject;
     std::unique_ptr<Project> cProject;

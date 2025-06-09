@@ -32,6 +32,7 @@ namespace IsoRealms::Spindizzy {
   const float Top::HEIGHT         = 0.75f;
 
   Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+            cProjectCallbackManager(project),
             cProject(project),
             cDefColourTop(    project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourSide(   project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -40,7 +41,7 @@ namespace IsoRealms::Spindizzy {
             cRuntimeTextureSide(project),
             cNeedsRedrawing(false),
             cEditingIconAngle(0.0f) {
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       cEditingIconAngle -= 0.25f * milliseconds;
     });
     setNeedsRedrawing();

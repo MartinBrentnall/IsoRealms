@@ -827,15 +827,15 @@ namespace IsoRealms {
     cInitialisers.push_back(initialiser);
   }
 
-  ICallbackHandle* Project::reset(std::function<void()> resetter) {
+  ICallbackHandle* Project::reset(ProjectCallbackManager& manager, std::function<void()> resetter) {
     return cResetters.emplace_back(std::make_unique<ResetCallbackHandle>(resetter)).get();
   }
 
-  ICallbackHandle* Project::updateRuntime(std::function<void(unsigned int)> dynamic) {
+  ICallbackHandle* Project::updateRuntime(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) {
     return cRuntimeDynamics.emplace_back(std::make_unique<UpdateCallbackHandle>(dynamic)).get();
   }
   
-  ICallbackHandle* Project::updateEditing(std::function<void(unsigned int)> dynamic) {
+  ICallbackHandle* Project::updateEditing(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) {
     return cEditingDynamics.emplace_back(std::make_unique<UpdateCallbackHandle>(dynamic)).get();
   }
 

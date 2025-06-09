@@ -28,6 +28,7 @@
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/Types.h"
+#include "IsoRealms/ProjectCallbackManager.h"
 
 #include "Modules/UI/Assets/Type/IMenuItem.h"
 
@@ -76,6 +77,9 @@ namespace IsoRealms::UI {
     // Constants.
     static const std::string BINDING_TYPE;
     
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     std::string cDefID;    /// ID of this menu item for binding.
     std::string cDefLabel; /// Label to show for this menu item.

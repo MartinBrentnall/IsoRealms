@@ -39,13 +39,14 @@ namespace IsoRealms::Spindizzy {
   const int CameraGameplay::VALUE_INVALID    =    0;
   
   CameraGameplay::CameraGameplay(IProject& project, WorldView& view) :
-            cPitch(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH),
+            cProjectCallbackManager(project),
             cParent(view),
+            cPitch(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH),
             cDefAngle(VALUE_NORTH_WEST),
             cDefRollDuration(DEFAULT_DURATION),
             cListener(nullptr),
             cLuaBinding(project, this) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       if (cRuntimeRollTimeRemaining > 0) {
         cStateNotifier->stateChanged(this);
         if (cListener != nullptr) {
@@ -59,7 +60,7 @@ namespace IsoRealms::Spindizzy {
       }
     });    
     
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeCurrentValue = cDefAngle;
       cRuntimePreviousValue = cDefAngle;
       cRuntimeRollTimeRemaining = 0U;

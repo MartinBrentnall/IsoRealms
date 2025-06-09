@@ -28,6 +28,7 @@
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
+#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/UI/Assets/Type/IMenuItem.h"
@@ -86,6 +87,8 @@ namespace IsoRealms::UI {
     static const float DEFAULT_MINIMUM;
     static const int DEFAULT_STEPS;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     HatHandler& cHatHandler;
 
     // Definition data.

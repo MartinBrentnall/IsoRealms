@@ -91,20 +91,21 @@ namespace IsoRealms::Hue {
   
   const int HueManager::DEBUG_LEVEL = HUE_MSG_ERR;
   
-  HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data) {
-    project.updateRuntime([this](unsigned int milliseconds) {
+  HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data) :
+            cProjectCallbackManager(project) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
         mBulb->sync();
       }
     });
 
-    project.updateEditing([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
         mBulb->sync();
       }
     });
 
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       // FIXME:TripPlayer: Implement this
     });
   }

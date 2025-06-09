@@ -27,10 +27,11 @@ namespace IsoRealms::UI {
   const std::string MenuItemDigitalInput::BINDING_TYPE = "DigitalInput";
   
   MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu) :
+            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeSelectedMapping = 0;
       cRuntimeAddingMapping = false;
       clear();
@@ -38,10 +39,11 @@ namespace IsoRealms::UI {
   }
 
   MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu, JSONObject object) :
+            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimeSelectedMapping = 0;
       cRuntimeAddingMapping = false;
       clear();

@@ -37,6 +37,7 @@ namespace IsoRealms::UI {
   const unsigned int Throbber::DEFAULT_SPOTS         = 8U;
 
   Throbber::Throbber(IProject& project, UI& ui, IResourceData& data) :
+            cProjectCallbackManager(project),
             cDefDuration(DEFAULT_DURATION),
             cDefRepetitions(DEFAULT_REPETITIONS),
             cDefSpots(DEFAULT_SPOTS),
@@ -47,7 +48,7 @@ namespace IsoRealms::UI {
             cDefColour(project, 1.0f, 0.0f, 1.0f) {
     cRuntimeAnimation = 0U;
 
-    project.updateRuntime([this](unsigned int milliseconds) {
+    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       cRuntimeAnimation += milliseconds;
       while (cRuntimeAnimation >= cDefDuration) {
         cRuntimeAnimation -= cDefDuration;

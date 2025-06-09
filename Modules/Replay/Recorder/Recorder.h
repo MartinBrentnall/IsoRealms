@@ -33,8 +33,8 @@
 namespace IsoRealms::Replay {
   class Replay;
   
-  class Recorder : public IScreen,
-                   public IInputHandler {
+  class Recorder final : public IScreen,
+                         public IInputHandler {
     private:
     static const std::string JSON_INPUT;
     static const std::string JSON_INPUT_CONFIGURATION;
@@ -45,6 +45,9 @@ namespace IsoRealms::Replay {
 
     static const std::string TYPE_ANALOGUE;
     static const std::string TYPE_DIGITAL;
+
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
 
     IProject& cParentProject;
     std::vector<std::unique_ptr<Boolean>> cDefDigitalInputs;

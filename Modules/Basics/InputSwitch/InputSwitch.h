@@ -65,6 +65,9 @@ namespace IsoRealms::Basics {
     // JSON members.
     static const std::string JSON_VALUE;
 
+    // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
+
     // Definition data.
     InputHandler cDefInputHandler;       /// Initial value.
 

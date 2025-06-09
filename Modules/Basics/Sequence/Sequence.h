@@ -64,7 +64,7 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
     bool isDefaultConfiguration() const override;
 
-    void reset();
+    void resetSequence();
     void stopPreview();
     void setPreviewPosition(long position);
     void preview(unsigned int milliseconds);
@@ -108,6 +108,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_TYPE;
 
     // External interfaces.
+    ProjectCallbackManager cProjectCallbackManager;
     Basics& cBasics;
 
     // Definition data.

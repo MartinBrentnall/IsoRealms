@@ -35,13 +35,14 @@ namespace IsoRealms::UI {
   const float Prompt::DEFAULT_TEXT_SIZE     = 0.05f;
 
   Prompt::Prompt(IProject& project, UI& ui, IResourceData& data) :
+            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefFont(project),
             cDefSelectionColour(project, 1.0f, 1.0f, 1.0f),
             cDefNegativeAction(project),
             cDefPositiveAction(project),
             cLuaBinding(project, this) {
-    project.reset([this]() {
+    cProjectCallbackManager.reset([this]() {
       cRuntimePositiveHighlighted = false;
     });
   }
