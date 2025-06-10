@@ -233,6 +233,7 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudio::Instance::setPreviewPosition(long position) {
     reset();
+    cRuntimePosition = position;
     for (const std::unique_ptr<Audio>& mEvent : cParent.cDefEvents) {
       if (position >= mEvent->getTime()) {
         if (position <= mEvent->getTime() + mEvent->getDuration()) {

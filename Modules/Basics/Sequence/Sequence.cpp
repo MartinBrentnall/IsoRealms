@@ -233,7 +233,7 @@ namespace IsoRealms::Basics {
   
   void Sequence::preview(unsigned int milliseconds) {
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      mEntry.second->update(milliseconds);
+      mEntry.second->updatePreview(milliseconds);
     }
   }
 

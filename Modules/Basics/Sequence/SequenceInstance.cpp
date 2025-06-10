@@ -93,34 +93,38 @@ namespace IsoRealms::Basics {
     }
   }
 
+  void SequenceInstance::updatePreview(unsigned int milliseconds) {
+    if (cDefSpeed != 1.0f) {
+      float mActualMilliseconds = milliseconds * cDefSpeed;
+      milliseconds = std::floor(mActualMilliseconds);
+      float mFractional = mActualMilliseconds - milliseconds;
+      cRuntimePositionFraction += mFractional;
+      if (cRuntimePositionFraction >= 1.0f) {
+        milliseconds++;
+        cRuntimePositionFraction -= 1.0f;
+      }
+    }
+
+    cRuntimePosition = std::min(cParent.getDuration(), cRuntimePosition + milliseconds);
+
+    bool mSequenceFinished = true;
+    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+      if (mTrack->play(milliseconds)) {
+        mSequenceFinished = false;
+      }
+    }
+
+    if (mSequenceFinished && cParent.isLooped()) {
+      for (ISequenceTrackInstance* mTrack : cTrackInstances) {
+        cRuntimePosition = 0;
+        mTrack->reset();
+      }
+    }
+  }
+
   void SequenceInstance::update(unsigned int milliseconds) {
     if (cRuntimePlaying) {
-      if (cDefSpeed != 1.0f) {
-        float mActualMilliseconds = milliseconds * cDefSpeed;
-        milliseconds = std::floor(mActualMilliseconds);
-        float mFractional = mActualMilliseconds - milliseconds;
-        cRuntimePositionFraction += mFractional;
-        if (cRuntimePositionFraction >= 1.0f) {
-          milliseconds++;
-          cRuntimePositionFraction -= 1.0f;
-        }
-      }
-
-      cRuntimePosition = std::min(cParent.getDuration(), cRuntimePosition + milliseconds);
-
-      bool mSequenceFinished = true;
-      for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-        if (mTrack->play(milliseconds)) {
-          mSequenceFinished = false;
-        }
-      }
-
-      if (mSequenceFinished && cParent.isLooped()) {
-        for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-          cRuntimePosition = 0;
-          mTrack->reset();
-        }
-      }
+      updatePreview(milliseconds);
     }
   }
 
