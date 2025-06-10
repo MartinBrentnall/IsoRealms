@@ -146,6 +146,9 @@ namespace IsoRealms::Basics {
     static const std::string JSON_TARGET;
     static const std::string JSON_TYPE;
 
+    // External interfaces.
+    Sequence& cSequence;
+
     // Definition data.
     std::string cDefName;
     Colour cDefInitColour;

@@ -18,6 +18,8 @@
  */
 #include "SequenceTrackColour.h"
 
+#include "Modules/Basics/Sequence/Sequence.h"
+
 namespace IsoRealms::Basics {
   const std::string SequenceTrackColour::JSON_DURATION = "duration";
   const std::string SequenceTrackColour::JSON_EVENTS   = "events";
@@ -28,11 +30,13 @@ namespace IsoRealms::Basics {
   const std::string SequenceTrackColour::JSON_TYPE     = "type";
 
   SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence) :
+            cSequence(sequence),
             cDefName("TODO"),
             cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
   
   SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence, JSONObject object) :
+            cSequence(sequence),
             cDefName(object.getString(JSON_OUTPUT)),
             cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
     cDefInitColour.init(object, JSON_START);
@@ -143,6 +147,11 @@ namespace IsoRealms::Basics {
       mEvent->getColour()->set();
       mLeft = mRight;
     }
+    float mRight = (right - left) * (cSequence.getDuration() / static_cast<float>(mViewDuration));
+    glVertex2f(mLeft,  top);
+    glVertex2f(mLeft,  bottom);
+    glVertex2f(mRight, bottom);
+    glVertex2f(mRight, top);
     glEnd();
   }
 
