@@ -71,7 +71,29 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::setEventTime(ISequenceTrackEvent* event, unsigned int time) {
-    // TODO: Implement this.
+    int mEventIndex = Utils::getIndex(cDefEvents, event);
+    int mNewIndex = 0;
+    for (unsigned int i = 0; i < cDefEvents.size(); i++) {
+      if (cDefEvents[i]->getTime() >= time) {
+        mNewIndex = i;
+        break;
+      }
+    }
+
+    std::unique_ptr<Audio> mEventToMove = nullptr;
+    if (mNewIndex < mEventIndex) {
+      mEventToMove = std::move(cDefEvents[mEventIndex]);
+      cDefEvents.erase(cDefEvents.begin() + mEventIndex);
+    } else if (mNewIndex > mEventIndex + 1) {
+      mEventToMove = std::move(cDefEvents[mEventIndex]);
+      cDefEvents.erase(cDefEvents.begin() + mEventIndex);
+      mNewIndex--;
+    }
+
+    if (mEventToMove != nullptr) {
+      cDefEvents.insert(cDefEvents.begin() + mNewIndex, std::move(mEventToMove));
+    }
+    event->setTime(time);
   }
 
   std::vector<ISequenceTrackEvent*> SequenceTrackAudio::getEvents() {

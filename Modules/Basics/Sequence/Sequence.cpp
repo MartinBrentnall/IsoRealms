@@ -42,28 +42,12 @@ namespace IsoRealms::Basics {
             cExposedLength(*this),
             cLuaBinding(project, this) {
     cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      float mSpeedMultiplier = cDefSpeed->getValue();
-      if (mSpeedMultiplier != 1.0f) {
-        float mActualMilliseconds = milliseconds * mSpeedMultiplier;
-        milliseconds = std::floor(mActualMilliseconds);
-        float mFractional = mActualMilliseconds - milliseconds;
-        cRuntimePositionFraction += mFractional;
-        if (cRuntimePositionFraction >= 1.0f) {
-          milliseconds++;
-          cRuntimePositionFraction -= 1.0f;
-        }
-      }
-
-      for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-        mEntry.second->update(milliseconds);
-      }
+      process(milliseconds);
     });
     
     cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       if (cDefLoop && cDefPlaying) {
-        for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-          mEntry.second->update(milliseconds);
-        }
+        process(milliseconds);
       }
       for (const std::pair<IEditableScreen* const, std::unique_ptr<SequenceEditor>>& mEditor : cEditors) {
         mEditor.second->updateScreen(milliseconds);
@@ -283,5 +267,23 @@ namespace IsoRealms::Basics {
 
   bool Sequence::Length::isDefaultConfiguration() const {
     return true;
+  }
+
+  void Sequence::process(unsigned int milliseconds) {
+    float mSpeedMultiplier = cDefSpeed->getValue();
+    if (mSpeedMultiplier != 1.0f) {
+      float mActualMilliseconds = milliseconds * mSpeedMultiplier;
+      milliseconds = std::floor(mActualMilliseconds);
+      float mFractional = mActualMilliseconds - milliseconds;
+      cRuntimePositionFraction += mFractional;
+      if (cRuntimePositionFraction >= 1.0f) {
+        milliseconds++;
+        cRuntimePositionFraction -= 1.0f;
+      }
+    }
+
+    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
+      mEntry.second->update(milliseconds);
+    }
   }
 }

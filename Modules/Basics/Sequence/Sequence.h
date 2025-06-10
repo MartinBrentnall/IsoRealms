@@ -130,5 +130,8 @@ namespace IsoRealms::Basics {
 
     // Scripting interface.
     LuaBinding<Sequence> cLuaBinding;
+
+    // Private functions.
+    void process(unsigned int milliseconds);
   };
 }
