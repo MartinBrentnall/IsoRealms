@@ -147,7 +147,7 @@ namespace IsoRealms::Basics {
       mEvent->getColour()->set();
       mLeft = mRight;
     }
-    float mRight = (right - left) * (cSequence.getDuration() / static_cast<float>(mViewDuration));
+    float mRight = (right - left) * (cSequence.getDuration() / static_cast<float>(mViewDuration)) + left;
     glVertex2f(mLeft,  top);
     glVertex2f(mLeft,  bottom);
     glVertex2f(mRight, bottom);

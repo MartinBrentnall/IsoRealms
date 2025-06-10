@@ -26,6 +26,7 @@
 #include "IsoRealms/Types.h"
 
 #include "Modules/Basics/Assets/Type/ISequenceTrack.h"
+#include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {
   class Sequence;
@@ -141,6 +142,9 @@ namespace IsoRealms::Basics {
     static const std::string JSON_OUTPUT;
     static const std::string JSON_START;
     static const std::string JSON_VALUE;
+
+    // External interfaces.
+    Sequence& cSequence;
 
     // Definition data.
     std::string cDefName;

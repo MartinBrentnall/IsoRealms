@@ -27,11 +27,13 @@ namespace IsoRealms::Basics {
   const std::string SequenceTrackFloat::JSON_VALUE    = "value";
 
   SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence) :
+            cSequence(sequence),
             cDefName("TODO"),
             cDefStartValue(project, 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
 
   SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence, JSONObject object) :
+            cSequence(sequence),
             cDefName(object.getString(JSON_OUTPUT)),
             cDefStartValue(project, 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
     cDefStartValue.init(object, JSON_START);
@@ -137,6 +139,11 @@ namespace IsoRealms::Basics {
       mPosition = bottom + mHeight * (mEvent->getValue()->getValue() - mLowest) / mRange;
       mLeft = mRight;
     }
+    float mRight = (right - left) * (cSequence.getDuration() / static_cast<float>(mViewDuration)) + left;
+    glVertex2f(mLeft,  mPosition);
+    glVertex2f(mLeft,  bottom);
+    glVertex2f(mRight, bottom);
+    glVertex2f(mRight, mPosition);
     glEnd();
   }
 
