@@ -36,11 +36,23 @@ namespace IsoRealms {
   }
   
   void ResourceTypeMenu::renderOverlay(MenuItemResource& item, IUIStyle& style, float y, float aspectRatio) const {
-    // Nothing to do.
+    if (cConfirmSelection != nullptr) {
+      cConfirmSelection->render(style);
+    }
+    if (cClosedConfirmSelection != nullptr) {
+      cClosedConfirmSelection->render(style);
+    }
   }
 
   void ResourceTypeMenu::updateOverlay(unsigned int milliseconds) {
-    // Nothing to do.
+    if (cConfirmSelection != nullptr) {
+      cConfirmSelection->update(milliseconds);
+    }
+    if (cClosedConfirmSelection != nullptr) {
+      if (cClosedConfirmSelection->update(milliseconds)) {
+        cClosedConfirmSelection = nullptr;
+      }
+    }
   }
 
   float ResourceTypeMenu::getSelectionHighlightLeft(MenuItemResource& item, IUIStyle& style, float aspectRatio) const {
@@ -54,7 +66,9 @@ namespace IsoRealms {
   }
   
   bool ResourceTypeMenu::input(MenuItemResource& item, UISignalID id, float y) {
-    switch (id) {
+    if (cConfirmSelection != nullptr) {
+      return cConfirmSelection->input(id);
+    } else switch (id) {
       case UISignalID::MOVE_LEFT: {
         cDeleteSelected = false;
         return true;
@@ -67,9 +81,16 @@ namespace IsoRealms {
       
       case UISignalID::CONFIRM: {
         if (cDeleteSelected && !item.isAddResource()) {
-          IResource* mResource = item.getResource();
-          cResourceType.deleteResource(mResource);
-          removeItem(item);
+          cConfirmSelection = std::make_unique<Choice>(getStyle(), "Are you sure you want to delete \"" + item.getResource()->getName()  + "\"?", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, &item](const std::string& choice)->bool {
+            if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
+              IResource* mResource = item.getResource();
+              cResourceType.deleteResource(mResource);
+              removeItem(item);
+            }
+            cClosedConfirmSelection = std::move(cConfirmSelection);
+            cConfirmSelection = nullptr;
+            return true;
+          });
           return true;
         }
       }

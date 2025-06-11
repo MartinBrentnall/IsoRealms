@@ -51,7 +51,10 @@ namespace IsoRealms {
     IAssetBrowser& cBrowser;
     float cRemoveButtonOffset;
     bool cDeleteSelected;
-    
+
+    std::unique_ptr<Choice> cConfirmSelection;
+    std::unique_ptr<Choice> cClosedConfirmSelection;
+
     void addResource(IResource* resource);
     void openResourcePropertiesMenu(IResource* resource);
   };
