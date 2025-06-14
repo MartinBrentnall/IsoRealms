@@ -67,7 +67,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::deleteEvent(ISequenceTrackEvent* event) {
-    // TODO: Implement this.
+    Utils::removeElementUnique(cDefEvents, event);
   }
 
   void SequenceTrackAudio::setEventTime(ISequenceTrackEvent* event, unsigned int time) {

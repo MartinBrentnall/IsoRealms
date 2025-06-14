@@ -103,9 +103,11 @@ namespace IsoRealms {
     static const std::string CATEGORY_LOCAL;
 
     struct Include {
-      std::string cResourcePath;
-      std::string cProject; /// File name of included project.
-      bool cUser;           /// User or program project.
+      Include(Project& project) :
+                  cFilename(project) {
+      }
+
+      File cFilename;
     };
 
     class Filename : public IString {
@@ -403,9 +405,7 @@ namespace IsoRealms {
     AssetLocalBinding cLocalProviderBinding;
 
     std::function<void(bool)> cFunctionNotifyComplete;
-    bool cCanSave;
-    std::string cFilename;
-    std::string cProjectDataPath; // TODO: We can probably remove this as it seems to be the same as cFilename, just without the file extension
+    File cFilename;
     Filename cFilenameString;
     FileUser cFileUserBoolean;
     QuitActionType cQuitAction;

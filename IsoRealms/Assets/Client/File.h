@@ -28,7 +28,11 @@ namespace IsoRealms {
   class File {
     public:
     File(IProject& project, std::function<void()> changeCallback = nullptr);
+    void setPath(const std::string& path, bool user);
     std::string getPath() const;
+    std::string getRelativePath() const;
+    bool isUser() const;
+    bool isSet() const;
     void load(const std::string& name, JSONObject object);
     void save(const std::string& name, JSONObject object) const;
 

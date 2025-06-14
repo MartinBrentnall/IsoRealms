@@ -26,8 +26,25 @@ namespace IsoRealms {
             cChangeCallback(changeCallback) {
   }
   
+  void File::setPath(const std::string& path, bool user) {
+    cPath = path;
+    cUser = user;
+  }
+
   std::string File::getPath() const {
     return System::getPath(cPath, cUser);
+  }
+
+  std::string File::getRelativePath() const {
+    return cPath;
+  }
+
+  bool File::isUser() const {
+    return cUser;
+  }
+
+  bool File::isSet() const {
+    return !cPath.empty();
   }
   
   void File::load(const std::string& name, JSONObject object) {
