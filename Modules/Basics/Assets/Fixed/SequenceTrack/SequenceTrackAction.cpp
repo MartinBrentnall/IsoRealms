@@ -19,58 +19,20 @@
 #include "SequenceTrackAction.h"
 
 namespace IsoRealms::Basics {
-  const std::string SequenceTrackAction::JSON_DELAY   = "delay";
-  const std::string SequenceTrackAction::JSON_EVENTS  = "events";
-  const std::string SequenceTrackAction::JSON_EXECUTE = "execute";
-
-  SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence) {
-//    reset();
+  SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence) :
+            SequenceTrackBase(project, sequence) {
   }
   
-  SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object) {
-    for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
-      cDefEvents.emplace_back(std::make_unique<Event>(project, mEventObject));
-    }
-//    reset();
+  SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object) :
+            SequenceTrackBase(project, sequence, object) {
   }
 
-  unsigned int SequenceTrackAction::getDuration() const {
-    return cDefEvents.empty() ? 0 : cDefEvents[cDefEvents.size() - 1]->getTime();
+  ISequenceTrackEvent* SequenceTrackAction::getEvent(unsigned int time) {
+    return nullptr;
   }
 
-  void SequenceTrackAction::setName(const std::string& name) {
-    // Track has no name, not supported.
-  }
-
-  std::string SequenceTrackAction::getName() const {
-    return "";
-  }
-
-  ISequenceTrackEvent* SequenceTrackAction::createEvent(IProject& project, unsigned int time) {
-    for (unsigned int i = 0; i < cDefEvents.size(); i++) {
-      if (cDefEvents[i]->getTime() == time) {
-        return cDefEvents[i].get();
-      } else if (cDefEvents[i]->getTime() > time) {
-        return cDefEvents.insert(cDefEvents.begin() + i, std::make_unique<Event>(project, time))->get();
-      }
-    }
-    return cDefEvents.emplace_back(std::make_unique<Event>(project, time)).get();
-  }
-
-  void SequenceTrackAction::deleteEvent(ISequenceTrackEvent* event) {
-    Utils::removeElementUnique(cDefEvents, event);
-  }
-
-  void SequenceTrackAction::setEventTime(ISequenceTrackEvent* event, unsigned int time) {
-    // TODO: Implement this.
-  }
-
-  std::vector<ISequenceTrackEvent*> SequenceTrackAction::getEvents() {
-    std::vector<ISequenceTrackEvent*> mEvents;
-    for (const std::unique_ptr<Event>& mEvent : cDefEvents) {
-      mEvents.emplace_back(mEvent.get());
-    }
-    return mEvents;
+  void SequenceTrackAction::saveAssetTrack(JSONObject object) const {
+    // Nothing to do.
   }
 
   void SequenceTrackAction::renderIcon() const {
@@ -92,119 +54,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  ISequenceTrackInstance* SequenceTrackAction::createTrackInstance(SequenceInstance& sequenceInstance) {
-    return cInstances.emplace_back(std::make_unique<Instance>(*this)).get();
-  }
-
-  bool SequenceTrackAction::renderAssetIcon() const {
-    return false;
-  }
-  
-  void SequenceTrackAction::saveAsset(JSONObject object) const {
-    JSONArray mEventsArray = object.addArray(JSON_EVENTS);
-    for (const std::unique_ptr<Event>& mEvent : cDefEvents) {
-      JSONObject mEventObject = mEventsArray.addObject();
-      mEvent->save(mEventObject);
-    }
-  }
-  
   std::vector<std::unique_ptr<IProperty>> SequenceTrackAction::getAssetProperties() {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    return mProperties;
-  }
-
-  bool SequenceTrackAction::isDefaultConfiguration() const {
-    return true;
-  }
-
-  SequenceTrackAction::Instance::Instance(SequenceTrackAction& parent) :
-            cParent(parent),
-            cRuntimeEvent(0),
-            cRuntimePosition(0) {
-  }
-
-  void SequenceTrackAction::Instance::registerAssets(IAssetRegistry& assets) {
-    // Nothing to do.
-  }
-
-  void SequenceTrackAction::Instance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-
-  bool SequenceTrackAction::Instance::play(unsigned int milliseconds) {
-    bool mStillPlaying = false;
-    if (cRuntimeEvent < cParent.cDefEvents.size()) {
-      std::vector<Event*> mEventToExecute;
-      cRuntimePosition += milliseconds;
-      int mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();
-      while (cRuntimeEvent < cParent.cDefEvents.size() && cRuntimePosition >= mNextEventTime) {
-        mEventToExecute.emplace_back(cParent.cDefEvents[cRuntimeEvent].get());
-        cRuntimeEvent++;
-        if (cRuntimeEvent < cParent.cDefEvents.size()) {
-          mNextEventTime = cParent.cDefEvents[cRuntimeEvent]->getTime();;
-        }
-      }
-      mStillPlaying = true;
-
-      // Execute actions at the end in case one triggers a modification to the state of the sequence.
-      for (Event* mEvent : mEventToExecute) {
-        mEvent->execute();
-      }
-    }
-    return mStillPlaying;
-  }
-
-  void SequenceTrackAction::Instance::reset() {
-    cRuntimeEvent = 0;
-    cRuntimePosition = 0;
-  }
-
-  void SequenceTrackAction::Instance::stopPreview() {
-    cRuntimeEvent = 0;
-    cRuntimePosition = 0;
-  }
-
-  void SequenceTrackAction::Instance::setPreviewPosition(long position) {
-    cRuntimeEvent = 0;
-    cRuntimePosition = position;
-    for (const std::unique_ptr<Event>& mEvent : cParent.cDefEvents) {
-      if (position >= mEvent->getTime()) {
-        mEvent->execute();
-        cRuntimeEvent++;
-      }
-    }
-  }
-
-  SequenceTrackAction::Event::Event(IProject& project, unsigned int time) :
-            cDefAction(project),
-            cDefTime(time) {
-  }
-
-  SequenceTrackAction::Event::Event(IProject& project, JSONObject object) :
-            Event(project, object.getInteger(JSON_DELAY)) {
-    cDefAction.init(object, JSON_EXECUTE);
-  }
-
-  unsigned int SequenceTrackAction::Event::getTime() const {
-    return cDefTime;
-  }
-
-  void SequenceTrackAction::Event::setTime(unsigned int time) {
-    cDefTime = time;
-  }
-
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAction::Event::getEventProperties(IProject& project) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action", "TODO", cDefAction));
-    return mProperties;
-  }
-
-  void SequenceTrackAction::Event::save(JSONObject object) const {
-    object.addInteger(JSON_DELAY, cDefTime);
-    cDefAction.save(object, JSON_EXECUTE);
-  }
-
-  void SequenceTrackAction::Event::execute() {
-    cDefAction.execute();
+    return std::vector<std::unique_ptr<IProperty>>();
   }
 }

@@ -21,9 +21,17 @@ add_library(Basics MODULE
   AnalogueInput/DigitalToAnalogueMapping.cpp
   Assets/Client/SequenceTrack.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackAction.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackActionEvent.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackActionInstance.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackAudio.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackAudioEvent.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackAudioInstance.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackColour.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackColourEvent.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackColourInstance.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackFloat.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackFloatEvent.cpp
+  Assets/Fixed/SequenceTrack/SequenceTrackFloatInstance.cpp
   BooleanTrigger/BooleanTrigger.cpp
   DigitalInput/DigitalInput.cpp
   FileFont/FileFont.cpp

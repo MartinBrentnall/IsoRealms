@@ -71,8 +71,8 @@ namespace IsoRealms::Basics {
                                                                  "reset",                      &SequenceInstance::reset,
                                                                  "getTime",                    &SequenceInstance::getTime,
                                                                  "setTime",                    &SequenceInstance::setTime);
-    mLua->new_usertype<SequenceTrackAudio::Instance>("SequenceTrackAudio", "nextTrack",                  &SequenceTrackAudio::Instance::nextTrack,
-                                                                 "previousTrack",              &SequenceTrackAudio::Instance::previousTrack);
+    mLua->new_usertype<SequenceTrackAudioInstance>("SequenceTrackAudio", "nextTrack",          &SequenceTrackAudioInstance::nextTrack,
+                                                                 "previousTrack",              &SequenceTrackAudioInstance::previousTrack);
     mLua->new_usertype<SimpleBoolean>("SimpleBoolean",           "setValue",                   &SimpleBoolean::setValue,
                                                                  "getValue",                   &SimpleBoolean::getValue);
     mLua->new_usertype<SimpleColour>("SimpleColour",             "getRed",                     &SimpleColour::getRed,

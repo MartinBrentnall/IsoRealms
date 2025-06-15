@@ -28,7 +28,9 @@
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "Modules/Basics/Assets/Type/ISequenceTrack.h"
+#include "SequenceTrackBase.h"
+#include "SequenceTrackAudioEvent.h"
+#include "SequenceTrackAudioInstance.h"
 
 namespace IsoRealms::Basics {
   class Sequence;
@@ -36,213 +38,23 @@ namespace IsoRealms::Basics {
   /**
    * Track to change a numeric value.
    */
-  class SequenceTrackAudio final : public ISequenceTrack {
+  class SequenceTrackAudio final : public SequenceTrackBase<SequenceTrackAudio, SequenceTrackAudioEvent, SequenceTrackAudioInstance> {
     public:
-    SequenceTrackAudio(IProject& project, Sequence& sequence, const std::string& name);
     SequenceTrackAudio(IProject& project, Sequence& sequence);
     SequenceTrackAudio(IProject& project, Sequence& sequence, JSONObject object);
+
+    float getVolume() const;
+    ISequenceTrackEvent* getEvent(unsigned int time);
+    void saveAssetTrack(JSONObject object) const;
 
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    unsigned int getDuration() const override;
-    void setName(const std::string& name) override;
-    std::string getName() const override;
-    ISequenceTrackEvent* createEvent(IProject& project, unsigned int time) override;
-    void deleteEvent(ISequenceTrackEvent* event) override;
-    void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
-    std::vector<ISequenceTrackEvent*> getEvents() override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    ISequenceTrackInstance* createTrackInstance(SequenceInstance& sequenceInstance) override;
-
-    /****************************************\
-     * Implements IAsset via ISequenceTrack *
-    \****************************************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-    bool isDefaultConfiguration() const override;
-
-    class Instance : public ISequenceTrackInstance {
-      public:
-      Instance(SequenceTrackAudio& parent, SequenceInstance& sequenceInstance);
-
-      /***********************\
-       * Scripting interface *
-      \***********************/
-      void nextTrack();
-      void previousTrack();
-      void jumpToTrack(int track);
-
-      /*************************************\
-       * Implements ISequenceTrackInstance *
-      \*************************************/
-      void registerAssets(IAssetRegistry& assets) override;
-      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-      bool play(unsigned int milliseconds) override;
-      void reset() override;
-      void stopPreview() override;
-      void setPreviewPosition(long position) override;
-
-      private:
-      class Name : public IString {
-        public:
-        Name(Instance& parent);
-
-        /**********************\
-        * Implements IString *
-        \**********************/
-        std::string getValue() const override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        Instance& cParent;
-      };
-
-      class Count : public IInteger {
-        public:
-        Count(Instance& parent);
-
-        /***********************\
-        * Implements IInteger *
-        \***********************/
-        int getValue() const override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        Instance& cParent;
-      };
-
-      class Current : public IInteger {
-        public:
-        Current(Instance& parent);
-
-        /***********************\
-        * Implements IInteger *
-        \***********************/
-        int getValue() const override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        Instance& cParent;
-      };
-
-      class Length : public IInteger {
-        public:
-        Length(Instance& parent);
-
-        /**********************\
-        * Implements IInteger *
-        \**********************/
-        int getValue() const override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        Instance& cParent;
-      };
-
-      class Position : public IInteger {
-        public:
-        Position(Instance& parent);
-
-        /**********************\
-        * Implements IInteger *
-        \**********************/
-        int getValue() const override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        Instance& cParent;
-      };
-
-      // External interfaces.
-      SequenceTrackAudio& cParent;
-      SequenceInstance& cSequenceInstance;
-
-      // Runtime data.
-      unsigned int cRuntimeEvent;
-      int cRuntimePosition;
-      float cRuntimeVolume;
-      std::vector<int> cRuntimeEventsPlaying;
-
-      // Exposed data.
-      Name cExposedName;
-      Count cExposedCount;
-      Current cExposedCurrent;
-      Length cExposedLength;
-      Position cExposedPosition;
-
-      // Scripting interface.
-      LuaBinding<Instance> cLuaBinding;
-    };
 
     private:
-    class Audio : public ISequenceTrackEvent {
-      public:
-      class End : public ISequenceTrackEvent {
-        public:
-        End(Audio& parent);
-
-        /**********************************\
-        * Implements ISequenceTrackEvent *
-        \**********************************/
-        unsigned int getTime() const override;
-        void setTime(unsigned int time) override;
-        std::vector<std::unique_ptr<IProperty>> getEventProperties(IProject& project) override;
-
-        private:
-        Audio& cParent;
-      };
-
-      Audio(SequenceTrackAudio& parent, IProject& project, unsigned int time);
-      Audio(SequenceTrackAudio& parent, IProject& project, JSONObject object);
-
-      End* getEndEvent();
-
-      void play();
-      void stop();
-      void updateVolume(float volume);
-      void playFrom(int position, float volume);
-
-      unsigned int getDuration() const;
-      int getPosition() const;
-
-      std::string getName() const;
-      void save(JSONObject object) const;
-
-      /**********************************\
-       * Implements ISequenceTrackEvent *
-      \**********************************/
-      unsigned int getTime() const override;
-      void setTime(unsigned int time) override;
-      std::vector<std::unique_ptr<IProperty>> getEventProperties(IProject& project) override;
-
-      private:
-      SequenceTrackAudio& cParent;
-
-      End cEnd;
-
-      unsigned int cDefTime;
-      File cDefFile;
-
-      sf::Music cMusic;
-    };
 
     // JSON members.
     static const std::string JSON_EVENTS;
@@ -252,11 +64,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_VOLUME;
 
     // Definition data.
-    std::string cDefName;
-    std::vector<std::unique_ptr<Audio>> cDefEvents;
     Float cDefVolume;
-
-    // Runtime data.
-    std::vector<std::unique_ptr<Instance>> cInstances;
   };
 }

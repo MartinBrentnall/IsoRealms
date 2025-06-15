@@ -163,7 +163,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Colour",
+                      "name": "Colour",
                       "start": {
                         "key": "Literal",
                         "red": 1,

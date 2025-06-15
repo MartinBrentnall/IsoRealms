@@ -22,7 +22,9 @@
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "Modules/Basics/Assets/Type/ISequenceTrack.h"
+#include "SequenceTrackBase.h"
+#include "SequenceTrackActionEvent.h"
+#include "SequenceTrackActionInstance.h"
 
 namespace IsoRealms::Basics {
   class Sequence;
@@ -30,86 +32,19 @@ namespace IsoRealms::Basics {
   /**
    * Action track executes actions at predetermined times in a Sequence.
    */
-  class SequenceTrackAction final : public ISequenceTrack {
+  class SequenceTrackAction final : public SequenceTrackBase<SequenceTrackAction, SequenceTrackActionEvent, SequenceTrackActionInstance> {
     public:
     SequenceTrackAction(IProject& project, Sequence& sequence);
     SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object);
 
+    ISequenceTrackEvent* getEvent(unsigned int time);
+    void saveAssetTrack(JSONObject object) const;
+
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    unsigned int getDuration() const override;
-    void setName(const std::string& name) override;
-    std::string getName() const override;
-    ISequenceTrackEvent* createEvent(IProject& project, unsigned int time) override;
-    void deleteEvent(ISequenceTrackEvent* event) override;
-    void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
-    std::vector<ISequenceTrackEvent*> getEvents() override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    ISequenceTrackInstance* createTrackInstance(SequenceInstance& sequenceInstance) override;
-
-    /****************************************\
-     * Implements IAsset via ISequenceTrack *
-    \****************************************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-    bool isDefaultConfiguration() const override;
-
-    private:
-
-    // JSON members.
-    static const std::string JSON_DELAY;
-    static const std::string JSON_EVENTS;
-    static const std::string JSON_EXECUTE;
-
-    class Instance : public ISequenceTrackInstance {
-      public:
-      Instance(SequenceTrackAction& parent);
-
-      /*************************************\
-       * Implements ISequenceTrackInstance *
-      \*************************************/
-      void registerAssets(IAssetRegistry& assets) override;
-      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-      bool play(unsigned int milliseconds) override;
-      void reset() override;
-      void stopPreview() override;
-      void setPreviewPosition(long position) override;
-
-      private:
-      SequenceTrackAction& cParent;
-
-      // Runtime data.
-      unsigned int cRuntimeEvent;
-      int cRuntimePosition;
-    };
-
-    class Event final : public ISequenceTrackEvent {
-      public:
-      Event(IProject& project, unsigned int time);
-      Event(IProject& project, JSONObject object);
-
-      void save(JSONObject object) const;
-      void execute();
-
-      /**********************************\
-       * Implements ISequenceTrackEvent *
-      \**********************************/
-      unsigned int getTime() const override;
-      void setTime(unsigned int time) override;
-      std::vector<std::unique_ptr<IProperty>> getEventProperties(IProject& project) override;
-
-      private:
-      Action cDefAction;
-      unsigned int cDefTime;
-    };
-
-    // Definition data.
-    std::vector<std::unique_ptr<Event>> cDefEvents;
-
-    // Runtime data.
-    std::vector<std::unique_ptr<Instance>> cInstances;
   };
 }

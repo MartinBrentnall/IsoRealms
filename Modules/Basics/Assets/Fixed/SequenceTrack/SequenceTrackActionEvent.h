@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2023 Martin Brentnall
  *
@@ -20,37 +21,24 @@
 
 #include <set>
 
+#include <SFML/Audio.hpp>
+
 #include "IsoRealms/Literals.h"
-#include "IsoRealms/LocalAssetRegistry.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "SequenceTrackBase.h"
-#include "SequenceTrackFloatEvent.h"
-#include "SequenceTrackFloatInstance.h"
+#include "Modules/Basics/Assets/Type/ISequenceTrack.h"
 
 namespace IsoRealms::Basics {
-  class Sequence;
+  class SequenceTrackAction;
 
-  /**
-   * Track to change a numeric value.
-   */
-  class SequenceTrackFloat final : public SequenceTrackBase<SequenceTrackFloat, SequenceTrackFloatEvent, SequenceTrackFloatInstance>,
-                                   public ISequenceTrackEvent {
+  class SequenceTrackActionEvent final : public ISequenceTrackEvent {
     public:
-    SequenceTrackFloat(IProject& project, Sequence& sequence);
-    SequenceTrackFloat(IProject& project, Sequence& sequence, JSONObject object);
+    SequenceTrackActionEvent(SequenceTrackAction& parent, IProject& project, unsigned int time);
+    SequenceTrackActionEvent(SequenceTrackAction& parent, IProject& project, JSONObject object);
 
-    const Float& getStartValue() const;
-    ISequenceTrackEvent* getEvent(unsigned int time);
-    void saveAssetTrack(JSONObject object) const;
-
-    /*****************************\
-     * Implements ISequenceTrack *
-    \*****************************/
-    void renderIcon() const override;
-    void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    void save(JSONObject object) const;
+    void execute();
 
     /**********************************\
       * Implements ISequenceTrackEvent *
@@ -61,12 +49,12 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // JSON members.
-    static const std::string JSON_START;
+      // JSON members.
+    static const std::string JSON_DELAY;
+    static const std::string JSON_EXECUTE;
 
     // Definition data.
-    Float cDefStartValue;
-
-    void stateChanged(IFloat* value);
+    Action cDefAction;
+    unsigned int cDefTime;
   };
 }

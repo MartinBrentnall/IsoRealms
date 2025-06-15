@@ -24,7 +24,9 @@
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "Modules/Basics/Assets/Type/ISequenceTrack.h"
+#include "SequenceTrackBase.h"
+#include "SequenceTrackColourEvent.h"
+#include "SequenceTrackColourInstance.h"
 
 namespace IsoRealms::Basics {
   class Sequence;
@@ -32,25 +34,22 @@ namespace IsoRealms::Basics {
   /**
    * Colour track fades between colours over various durations.
    */
-  class SequenceTrackColour final : public ISequenceTrack,
+  class SequenceTrackColour final : public SequenceTrackBase<SequenceTrackColour, SequenceTrackColourEvent, SequenceTrackColourInstance>,
                                     public ISequenceTrackEvent {
     public:
     SequenceTrackColour(IProject& project, Sequence& sequence);
     SequenceTrackColour(IProject& project, Sequence& sequence, JSONObject object);
 
+    const Colour& getStartColour() const;
+    ISequenceTrackEvent* getEvent(unsigned int time);
+    void saveAssetTrack(JSONObject object) const;
+
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    unsigned int getDuration() const override;
-    void setName(const std::string& name) override;
-    std::string getName() const override;
-    ISequenceTrackEvent* createEvent(IProject& project, unsigned int time) override;
-    void deleteEvent(ISequenceTrackEvent* event) override;
-    void setEventTime(ISequenceTrackEvent* event, unsigned int time) override;
-    std::vector<ISequenceTrackEvent*> getEvents() override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    ISequenceTrackInstance* createTrackInstance(SequenceInstance& sequenceInstance) override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
 
     /**********************************\
       * Implements ISequenceTrackEvent *
@@ -59,103 +58,13 @@ namespace IsoRealms::Basics {
     void setTime(unsigned int time) override;
     std::vector<std::unique_ptr<IProperty>> getEventProperties(IProject& project) override;
 
-    /****************************************\
-     * Implements IAsset via ISequenceTrack *
-    \****************************************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-    bool isDefaultConfiguration() const override;
-
     private:
 
-    class Instance : public ISequenceTrackInstance,
-                     public IColour {
-      public:
-      Instance(SequenceTrackColour& parent);
-
-      /*************************************\
-       * Implements ISequenceTrackInstance *
-      \*************************************/
-      void registerAssets(IAssetRegistry& assets) override;
-      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
-      void stateChanged(IColour* colour);
-      bool play(unsigned int milliseconds) override;
-      void reset() override;
-      void stopPreview() override;
-      void setPreviewPosition(long position) override;
-
-      /**********************\
-       * Implements IColour *
-      \**********************/
-      void set() const override;
-      float getRed() const override;
-      float getGreen() const override;
-      float getBlue() const override;
-      float getAlpha() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      SequenceTrackColour& cParent;
-
-      // Runtime data.
-      LiteralColour cRuntimeColour;
-      unsigned int cRuntimeEvent;
-      int cRuntimeEventPosition;
-
-      // Misc.
-      IStateNotifier<IColour>* cStateNotifier;
-
-      // Internal funcctions.
-      void updateColour();
-      const IColour* getPreviousColour();
-    };
-
-    class Event : public ISequenceTrackEvent {
-      public:
-      Event(IProject& project, unsigned int time, bool fade);
-      Event(IProject& project, JSONObject object);
-
-      void save(JSONObject object) const;
-      const IColour* getColour() const;
-      bool isFade() const;
-
-      /**********************************\
-       * Implements ISequenceTrackEvent *
-      \**********************************/
-      unsigned int getTime() const override;
-      void setTime(unsigned int time) override;
-      std::vector<std::unique_ptr<IProperty>> getEventProperties(IProject& project) override;
-
-      private:
-
-      // Definition data.
-      unsigned int cDefTime;
-      Colour cDefTarget;
-      bool cDefFade;
-    };
-
     // JSON members.
-    static const std::string JSON_DURATION;
-    static const std::string JSON_EVENTS;
-    static const std::string JSON_FADE;
-    static const std::string JSON_OUTPUT;
     static const std::string JSON_START;
-    static const std::string JSON_TARGET;
-    static const std::string JSON_TYPE;
-
-    // External interfaces.
-    Sequence& cSequence;
 
     // Definition data.
-    std::string cDefName;
     Colour cDefInitColour;
-    std::vector<std::unique_ptr<Event>> cDefEvents;
-
-    // Runtime data.
-    std::vector<std::unique_ptr<Instance>> cInstances;
 
     /**********************\
      * Internal Functions *
@@ -163,3 +72,4 @@ namespace IsoRealms::Basics {
     void stateChanged(IColour* colour);
   };
 }
+

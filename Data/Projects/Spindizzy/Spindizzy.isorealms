@@ -1618,7 +1618,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Colour",
+                      "name": "Colour",
                       "start": {
                         "key": "Basics/Colour/Red"
                       },
@@ -1665,7 +1665,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Transparent",
+                      "name": "Transparent",
                       "start": {
                         "key": "Basics/Colour/RedTransparent"
                       },
@@ -1728,7 +1728,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Colour",
+                      "name": "Colour",
                       "start": {
                         "key": "Basics/Colour/Purple"
                       },
@@ -1771,7 +1771,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Red",
+                      "name": "Red",
                       "start": {
                         "key": "Basics/Colour/Red"
                       },
@@ -1788,7 +1788,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Cyan",
+                      "name": "Cyan",
                       "start": {
                         "key": "Basics/Colour/Cyan"
                       },
@@ -1805,7 +1805,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Purple",
+                      "name": "Purple",
                       "start": {
                         "key": "Basics/Colour/Purple"
                       },
@@ -1822,7 +1822,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Green",
+                      "name": "Green",
                       "start": {
                         "key": "Basics/Colour/Green"
                       },
@@ -1839,7 +1839,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Blue",
+                      "name": "Blue",
                       "start": {
                         "key": "Basics/Colour/Blue"
                       },
@@ -1856,7 +1856,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Yellow",
+                      "name": "Yellow",
                       "start": {
                         "key": "Basics/Colour/Yellow"
                       },
@@ -1873,7 +1873,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Orange",
+                      "name": "Orange",
                       "start": {
                         "key": "Basics/Colour/Orange"
                       },
@@ -1890,7 +1890,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Brown",
+                      "name": "Brown",
                       "start": {
                         "key": "Basics/Colour/Brown"
                       },
@@ -1907,7 +1907,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Pink",
+                      "name": "Pink",
                       "start": {
                         "key": "Basics/Colour/Pink"
                       },
@@ -1924,7 +1924,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "LightGreen",
+                      "name": "LightGreen",
                       "start": {
                         "key": "Basics/Colour/LightGreen"
                       },
@@ -1941,7 +1941,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "LightBlue",
+                      "name": "LightBlue",
                       "start": {
                         "key": "Basics/Colour/LightBlue"
                       },
@@ -2096,7 +2096,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Black",
+                      "name": "Black",
                       "start": {
                         "key": "Basics/Colour/Black"
                       },
@@ -2125,7 +2125,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "White",
+                      "name": "White",
                       "start": {
                         "key": "Basics/Colour/White"
                       },
@@ -2154,7 +2154,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Red",
+                      "name": "Red",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Red"
                       },
@@ -2183,7 +2183,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Cyan",
+                      "name": "Cyan",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Cyan"
                       },
@@ -2212,7 +2212,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Purple",
+                      "name": "Purple",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Purple"
                       },
@@ -2241,7 +2241,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Green",
+                      "name": "Green",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Green"
                       },
@@ -2270,7 +2270,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Blue",
+                      "name": "Blue",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Blue"
                       },
@@ -2299,7 +2299,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Yellow",
+                      "name": "Yellow",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Yellow"
                       },
@@ -2328,7 +2328,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Orange",
+                      "name": "Orange",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Orange"
                       },
@@ -2357,7 +2357,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Brown",
+                      "name": "Brown",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Brown"
                       },
@@ -2386,7 +2386,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Pink",
+                      "name": "Pink",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/Pink"
                       },
@@ -2415,7 +2415,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "DarkGray",
+                      "name": "DarkGray",
                       "start": {
                         "key": "Basics/Colour/DarkGray"
                       },
@@ -2444,7 +2444,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "MediumGray",
+                      "name": "MediumGray",
                       "start": {
                         "key": "Basics/Colour/MediumGray"
                       },
@@ -2473,7 +2473,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "LightGreen",
+                      "name": "LightGreen",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/LightGreen"
                       },
@@ -2502,7 +2502,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "LightBlue",
+                      "name": "LightBlue",
                       "start": {
                         "key": "Basics/Sequence/GameOver/Instance/LightBlue"
                       },
@@ -2531,7 +2531,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "LightGray",
+                      "name": "LightGray",
                       "start": {
                         "key": "Basics/Colour/LightGray"
                       },
@@ -2689,7 +2689,7 @@
                   {
                     "track": {
                       "key": "Float",
-                      "outputs": "Colour Cycle Speed",
+                      "name": "Colour Cycle Speed",
                       "start": {
                         "key": "Literal",
                         "value": 1
@@ -2802,7 +2802,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Visual",
+                      "name": "Visual",
                       "start": {
                         "key": "Literal"
                       },
@@ -2825,7 +2825,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "VisualTransparent",
+                      "name": "VisualTransparent",
                       "start": {
                         "key": "Literal"
                       },
@@ -2858,7 +2858,7 @@
                   {
                     "track": {
                       "key": "Colour",
-                      "outputs": "Colour",
+                      "name": "Colour",
                       "start": {
                         "key": "Basics/Colour/Red"
                       },

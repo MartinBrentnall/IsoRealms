@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -21,36 +21,22 @@
 #include <set>
 
 #include "IsoRealms/Literals.h"
-#include "IsoRealms/LocalAssetRegistry.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "SequenceTrackBase.h"
-#include "SequenceTrackFloatEvent.h"
-#include "SequenceTrackFloatInstance.h"
+#include "Modules/Basics/Assets/Type/ISequenceTrack.h"
 
 namespace IsoRealms::Basics {
-  class Sequence;
+  class SequenceTrackFloat;
 
-  /**
-   * Track to change a numeric value.
-   */
-  class SequenceTrackFloat final : public SequenceTrackBase<SequenceTrackFloat, SequenceTrackFloatEvent, SequenceTrackFloatInstance>,
-                                   public ISequenceTrackEvent {
+  class SequenceTrackFloatEvent : public ISequenceTrackEvent {
     public:
-    SequenceTrackFloat(IProject& project, Sequence& sequence);
-    SequenceTrackFloat(IProject& project, Sequence& sequence, JSONObject object);
+    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IProject& project, unsigned int time, bool fade = true);
+    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IProject& project, JSONObject object);
 
-    const Float& getStartValue() const;
-    ISequenceTrackEvent* getEvent(unsigned int time);
-    void saveAssetTrack(JSONObject object) const;
-
-    /*****************************\
-     * Implements ISequenceTrack *
-    \*****************************/
-    void renderIcon() const override;
-    void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    void save(JSONObject object) const;
+    IFloat* getValue() const;
+    bool isFade() const;
 
     /**********************************\
       * Implements ISequenceTrackEvent *
@@ -60,13 +46,13 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> getEventProperties(IProject& project) override;
 
     private:
-
-    // JSON members.
-    static const std::string JSON_START;
+    static const std::string JSON_DURATION;
+    static const std::string JSON_FADE;
+    static const std::string JSON_VALUE;
 
     // Definition data.
-    Float cDefStartValue;
-
-    void stateChanged(IFloat* value);
+    unsigned int cDefTime;
+    Float cDefValue;
+    bool cDefFade;
   };
 }
