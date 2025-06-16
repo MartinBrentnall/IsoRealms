@@ -121,6 +121,10 @@ namespace IsoRealms::Basics {
     cSequenceTracks.add(&cProviderSequenceTrackFloat,  SEQUENCE_TRACK_FLOAT,  "Basics");
   }
 
+  void Basics::refreshAssetRegistration(Sequence& sequence) {
+    cResourceTypeSequence.refreshAssetRegistration(sequence);
+  }
+
   void Basics::load(IProject& project, JSONObject object) {
     // Nothing to do.
   }

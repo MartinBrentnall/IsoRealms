@@ -134,6 +134,14 @@ namespace IsoRealms {
       }
     }
 
+    void refreshAssetRegistration(TYPE& resource) {
+      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResourceType : cResources) {
+        if (mResourceType.second->isResource(&resource)) {
+          return mResourceType.second->registerAssets();
+        }
+      }
+    }
+
     ~ResourceTypeDefinition() {
       cResources.clear();
     }

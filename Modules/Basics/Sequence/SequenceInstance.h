@@ -33,8 +33,11 @@ namespace IsoRealms::Basics {
 
   class SequenceInstance {
     public:
+    SequenceInstance(Sequence& parent, int startTime, float speed);
     SequenceInstance(Sequence& parent);
     SequenceInstance(Sequence& parent, JSONObject object);
+
+    void addTrackInstance(ISequenceTrackInstance* trackInstance);
 
     Sequence& getSequence() const;
 

@@ -61,6 +61,8 @@ namespace IsoRealms::Basics {
     public:
     Basics(IProject& project, IResourceTypeRegistry* registry);
 
+    void refreshAssetRegistration(Sequence& sequence);
+
     /****************************\
      * Implements IModuleHandle *
     \****************************/

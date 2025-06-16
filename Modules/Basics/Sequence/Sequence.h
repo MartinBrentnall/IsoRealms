@@ -77,6 +77,7 @@ namespace IsoRealms::Basics {
     SequenceTrack& getTrack(unsigned int track) const;
     unsigned int getDuration() const;
     void addTrack();
+    void refreshAssetRegistration();
 
     private:
 

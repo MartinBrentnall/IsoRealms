@@ -23,19 +23,10 @@
 #include "Sequence.h"
 
 namespace IsoRealms::Basics {
-  SequenceInstance::SequenceInstance(Sequence& parent) :
+  SequenceInstance::SequenceInstance(Sequence& parent, int startTime, float speed) :
             cParent(parent),
-            cDefStartTime(0),
-            cDefSpeed(1.0f),
-            cExposedPosition(*this),
-            cExposedRemaining(*this),
-            cLuaBinding(parent.getBasics().getProject(), this) {
-  }
-
-  SequenceInstance::SequenceInstance(Sequence& parent, JSONObject object) :
-            cParent(parent),
-            cDefStartTime(object.getInteger(JSON_START_TIME)),
-            cDefSpeed(object.getFloat(JSON_SPEED, 1.0f)),
+            cDefStartTime(startTime),
+            cDefSpeed(speed),
             cExposedPosition(*this),
             cExposedRemaining(*this),
             cLuaBinding(parent.getBasics().getProject(), this) {
@@ -45,6 +36,20 @@ namespace IsoRealms::Basics {
       if (mTrackInstance != nullptr) {
         cTrackInstances.emplace_back(mTrackInstance);
       }
+    }
+  }
+
+  SequenceInstance::SequenceInstance(Sequence& parent) :
+            SequenceInstance(parent, 0, 1.0f) {
+  }
+
+  SequenceInstance::SequenceInstance(Sequence& parent, JSONObject object) :
+            SequenceInstance(parent, object.getInteger(JSON_START_TIME), object.getFloat(JSON_SPEED, 1.0f)) {
+  }
+
+  void SequenceInstance::addTrackInstance(ISequenceTrackInstance* trackInstance) {
+    if (trackInstance != nullptr) {
+      cTrackInstances.emplace_back(trackInstance);
     }
   }
 

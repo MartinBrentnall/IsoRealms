@@ -135,6 +135,8 @@ namespace IsoRealms::Basics {
     mProperties.emplace_back(std::make_unique<PropertyAdd>(   "Instance", "TODO", "Add...", [this, &browser, &assets]() {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
+      LocalAssetRegistry mInstanceAssetRegistry(assets, mKey);
+      mInstance->registerAssets(mInstanceAssetRegistry);
       return std::make_unique<PropertyStruct>("Instance", "TODO", "Edit...", [this, &browser, &assets, &mInstance]() {
         return mInstance->getProperties(browser, assets);
       }, [this, mKey]() {
@@ -170,6 +172,7 @@ namespace IsoRealms::Basics {
     }
     cDefInstances.emplace(name, std::move(cDefInstances[mOldName]));
     cDefInstances.erase(mOldName);
+    refreshAssetRegistration();
     return true;
   }
 
@@ -242,7 +245,16 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::addTrack() {
-    cDefTracks.emplace_back(std::make_unique<SequenceTrack>(cBasics, *this));
+    SequenceTrack* mTrack = cDefTracks.emplace_back(std::make_unique<SequenceTrack>(cBasics, *this)).get();
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
+      ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance(*mEntry.second.get());
+      mEntry.second->addTrackInstance(mTrackInstance);
+    }
+    refreshAssetRegistration();
+  }
+
+  void Sequence::refreshAssetRegistration() {
+    cBasics.refreshAssetRegistration(*this);
   }
 
   Sequence::Length::Length(Sequence& parent) :

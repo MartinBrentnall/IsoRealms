@@ -84,10 +84,7 @@ namespace IsoRealms {
             return mResource == this;
           }
         }
-        IAssetRemover& mRemover = cParent.getAssetRemover();
-        IAssets& mAssets = cParent. getAssets();
 
-        unregisterAssets(mRemover, mAssets, false);
         cParent.renameResource(this, value);
         cParent.renameUserDataDirectory(cName, value);
         cName = value;
@@ -126,7 +123,7 @@ namespace IsoRealms {
     void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override {
       cResourceHandle.unregisterAssets(assets, releaser, relinquish);
     }
-    
+
     /****************************\
      * Implements IResourceData *
     \****************************/

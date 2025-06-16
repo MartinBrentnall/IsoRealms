@@ -35,13 +35,23 @@ namespace IsoRealms {
   template<class OWNER, class TYPE> class AssetRegistry final {
     public:
     void add(IAssetProvider<OWNER, TYPE>* provider, const std::string& key, const std::string& category) {
-      
+
       // Don't allow nullptr assets to be added
       if (provider == nullptr) {
         throw std::invalid_argument("ERROR: AssetRegistry::add: Specified provider is nullptr.");
       }
-      
-      // It's OK, register the asset and ID.
+
+      // Check if it's already registered and just rename it if so.
+      for (typename std::map<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>::iterator it = cProviders.begin(); it != cProviders.end(); ++it) {
+        if (it->second.first == provider) {
+          typename std::map<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>::node_type node = cProviders.extract(it);
+          node.key() = key;
+          cProviders.insert(std::move(node));
+          return;
+        }
+      }
+
+      // It's not already registered, so register the asset and ID.
       cProviders.emplace(key, std::make_pair(provider, category));
       for (unsigned int i = 0; i < cListeners.size(); i++) {
         cListeners[i]->assetAdded(provider);
