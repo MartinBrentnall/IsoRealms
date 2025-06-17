@@ -51,9 +51,8 @@ namespace IsoRealms {
     cResources.clear();
   }
 
-  void ResourceType::loadResource(JSONObject object, IProject& project, IOptions& options, const std::string& resourceDataPath) {
+  void ResourceType::loadResource(JSONObject object, IProject& project, IOptions& options, File* ownerProject, const std::string& resourceDataPath) {
     std::string mResourceName = object.getString(JSON_ID);
-//    std::cout << "INFO: ResourceType::loadResource: \"" << mResourceName << "\"" << std::endl;
     for (IResource* mResource : cResources) {
       if (mResource->getName() == mResourceName) {
         // Ignore resource if name matches an existing one (useful for include overrides).
@@ -61,30 +60,26 @@ namespace IsoRealms {
       }
     }
     LocalOptions mResourceOptions(mResourceName, options);
-    IResource* mResource = cResourceType->loadResource(*this, project, cResourceTypeAssetRegistry, object, mResourceOptions);
-    mResource->setResourceDataPath(resourceDataPath + "/" + mResourceName);
+    IResource* mResource = cResourceType->loadResource(*this, project, cResourceTypeAssetRegistry, object, mResourceOptions, ownerProject, resourceDataPath + "/" + mResourceName);
     cResources.insert(mResource);
-//    std::cout << "INFO: ResourceType::loadResource: \"" << mResourceName << "\" done!" << std::endl;
   }
 
-  bool ResourceType::needsSaving(const std::string& id) const {
+  bool ResourceType::needsSaving(File* savingProject) const {
     for (IResource* mResource : cResources) {
-      if (mResource->getResourceDataPath() == (cParent.getDataPath(false) + "/" + id + "/" + mResource->getName())) {
+      if (mResource->needsSaving(savingProject)) {
         return true;
       }
-      return true; // TODO: Remove this. Should only return true if the resource belongs to the file/project being saved.
     }
     return false;
   }
 
-  void ResourceType::save(JSONArray& array, IAssetIdentifier& identifier, const std::string& tag) {
+  void ResourceType::save(JSONArray& array, IAssetIdentifier& identifier, const std::string& tag, File* savingProject) {
     for (IResource* mResource : cResources) {
-      // TODO: Remove comment. Should only save if the resource belongs to the file/project being saved.
-//      if (mResource->getResourceDataPath() == (cParent.getDataPath(false) + "/" + tag + "/" + mResource->getName())) {
+      if (mResource->needsSaving(savingProject)) {
         JSONObject mResourceObject = array.addObject();
         mResourceObject.addString(JSON_ID, mResource->getName());
         mResource->save(mResourceObject, identifier);
-//      }
+      }
     }
   }
 
@@ -102,7 +97,8 @@ namespace IsoRealms {
 
   IResource* ResourceType::createResource() {
     IProject& mProject = cParent.getProjectRuntime();
-    IResource* mResource = cResourceType->createResource(*this, mProject, cResourceTypeAssetRegistry, "Unnamed " + cParent.getName(this));
+    File* mOwnerProject = mProject.getFile();
+    IResource* mResource = cResourceType->createResource(*this, mProject, cResourceTypeAssetRegistry, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
     cResources.insert(mResource);
     return mResource;
   }
@@ -130,6 +126,10 @@ namespace IsoRealms {
   
   std::string ResourceType::getDataPath(bool user) {
     return cParent.getDataPath(user) + "/" + cParent.getName(this);
+  }
+  
+  File* ResourceType::getProjectFile() {
+    return cParent.getProjectFile();
   }
   
   void ResourceType::makeUserDataDirectory(const std::string& resourceName) {

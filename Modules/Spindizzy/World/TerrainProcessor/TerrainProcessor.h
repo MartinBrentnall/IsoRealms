@@ -93,18 +93,18 @@ namespace IsoRealms::Spindizzy {
     std::vector<SurfaceTemplate*> getSurfaces(ISurface* surface, Terrain* terrain, ISurface::Direction facing);
     FullTileColumn* getTileColumn(int x, int y);
     Wall::Direction getOppositeOf(Wall::Direction facing);
-    std::optional<Condition> getSurfaceTileCondition(Terrain*, int x, int y, ISurface::Direction facing, std::vector<Terrain*> nearbyTerrain);
+    std::optional<Condition> getSurfaceTileCondition(Terrain*, int x, int y, ISurface::Direction facing, const std::vector<Terrain*>& nearbyTerrain);
     bool inSurface(std::vector<std::unique_ptr<SurfaceTemplate>>&, int x, int y);
     std::vector<WallSegment*> getWallSegments(int x, int y, Wall::Direction facing);
     std::unique_ptr<WallColumn> getRawWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing);
-    std::vector<std::unique_ptr<WallColumn>> getPhysicalWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain);
-    std::vector<std::unique_ptr<WallColumn>> getPhysicalWallMasks(int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain);
-    std::vector<std::unique_ptr<WallColumn>> getOptimisedWallColumn(Terrain*, int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain);
-    std::vector<std::unique_ptr<WallColumn>> getVisibleWallColumn(Terrain*, int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain);
+    std::vector<std::unique_ptr<WallColumn>> getPhysicalWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain);
+    std::vector<std::unique_ptr<WallColumn>> getPhysicalWallMasks(int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain);
+    std::vector<std::unique_ptr<WallColumn>> getOptimisedWallColumn(Terrain*, int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain);
+    std::vector<std::unique_ptr<WallColumn>> getVisibleWallColumn(Terrain*, int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain);
     ISurface* getSurfaceAt(std::vector<std::unique_ptr<ISurface>>& surfaces, int x, int y);
     Wall* findSurfaceAt(std::vector<std::unique_ptr<Wall>>& surfaces, int x, int y);
-    int getEast(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int x , int y, ISurface::Direction facing, std::vector<Terrain*> nearbyTerrain);
-    int getNorth(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int xStart, int xEnd, int yStart, ISurface::Direction facing, std::vector<Terrain*> nearbyTerrain);
+    int getEast(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int x , int y, ISurface::Direction facing, const std::vector<Terrain*>& nearbyTerrain);
+    int getNorth(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int xStart, int xEnd, int yStart, ISurface::Direction facing, const std::vector<Terrain*>& nearbyTerrain);
     std::vector<Terrain*> getTerrain(int yStart, int yEnd, int xStart, int xEnd);
   };
 

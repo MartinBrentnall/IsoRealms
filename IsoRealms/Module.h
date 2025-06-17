@@ -51,10 +51,10 @@ namespace IsoRealms {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
-    void loadResources(JSONObject object, IOptions& options, const std::string& resourceDataPath);
+    void loadResources(JSONObject object, IOptions& options, File* ownerProject);
     void registerAssets();
-    bool needsSaving() const;
-    void save(JSONObject object, IAssetIdentifier& identifier, const std::string& resourcePath) const;
+    bool needsSaving(File* savingProject) const;
+    void save(JSONObject object, IAssetIdentifier& identifier, File* savingProject) const;
     std::vector<std::unique_ptr<IProperty>> getProperties();
 
     /************************************\
@@ -78,6 +78,7 @@ namespace IsoRealms {
     IAssets& getAssets() override;
     std::string getPath() override;
     std::string getDataPath(bool user) override;
+    File* getProjectFile() override;
     void makeUserDataDirectory(const std::string& resourcePath) override;
     void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) override;
     std::string getProjectPathPrefix(bool user) override;
@@ -96,7 +97,7 @@ namespace IsoRealms {
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
     Project& cProject;
     LocalAssetRegistry cModuleAssetRegistry;
-    std::string cResourceDataPath;
+    File* cOwnerProject;
 #ifdef __linux__
     void* cModuleHandle;
 #elif _WIN32

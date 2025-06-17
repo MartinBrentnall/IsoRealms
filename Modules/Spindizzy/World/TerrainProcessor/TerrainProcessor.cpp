@@ -141,7 +141,7 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
 
-  std::optional<Condition> TerrainProcessor::getSurfaceTileCondition(Terrain* terrain, int x, int y, ISurface::Direction facing, std::vector<Terrain*> nearbyTerrain) {
+  std::optional<Condition> TerrainProcessor::getSurfaceTileCondition(Terrain* terrain, int x, int y, ISurface::Direction facing, const std::vector<Terrain*>& nearbyTerrain) {
     FullTileColumn* mFullTileColumn = getTileColumn(x, y);
 
     // In case the full tile column isn't cached yet, we'll create it and add it to the cache for next time.
@@ -230,7 +230,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  int TerrainProcessor::getNorth(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int west, int east, int south, ISurface::Direction facing, std::vector<Terrain*> nearbyTerrain) {
+  int TerrainProcessor::getNorth(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int west, int east, int south, ISurface::Direction facing, const std::vector<Terrain*>& nearbyTerrain) {
     std::optional<Condition> mSurfaceCondition = getSurfaceTileCondition(terrain, west, south, facing, nearbyTerrain);
 
     std::vector<std::unique_ptr<ISurface>> mRawSurfaces = terrain->generateSurfaces(facing);
@@ -250,7 +250,7 @@ namespace IsoRealms::Spindizzy {
     return mSurface->getYEnd();
   }
 
-  int TerrainProcessor::getEast(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int x, int y, ISurface::Direction facing, std::vector<Terrain*> nearbyTerrain) {
+  int TerrainProcessor::getEast(Terrain* terrain, std::vector<std::unique_ptr<SurfaceTemplate>>& calculatedSurfaces, int x, int y, ISurface::Direction facing, const std::vector<Terrain*>& nearbyTerrain) {
     std::optional<Condition> mSurfaceCondition = getSurfaceTileCondition(terrain, x, y, facing, nearbyTerrain);
     std::vector<std::unique_ptr<ISurface>> mRawSurfaces = terrain->generateSurfaces(facing);
     ISurface* mSurface = getSurfaceAt(mRawSurfaces, x, y);
@@ -307,7 +307,7 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
 
-  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getPhysicalWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain) {
+  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getPhysicalWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain) {
     std::unique_ptr<WallColumn> mRawWallColumn = getRawWallColumn(terrain, x, y, facing);
     std::vector<std::unique_ptr<WallColumn>> mPhysicalColumns;
     if (mRawWallColumn == nullptr || mRawWallColumn->isSubtraction()) {
@@ -366,7 +366,7 @@ namespace IsoRealms::Spindizzy {
     throw ArgumentException("ERROR: TerrainProcessor::getOppositeOf: Argument value is not recognised.");
   }
 
-  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getPhysicalWallMasks(int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain) {
+  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getPhysicalWallMasks(int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain) {
     std::vector<std::unique_ptr<WallColumn>> mOpposingMask;
     mOpposingMask.emplace_back(std::make_unique<WallColumn>());
     for (unsigned int i = 0; i < nearbyTerrain.size(); i++) {
@@ -395,7 +395,7 @@ namespace IsoRealms::Spindizzy {
     return mOpposingMask;
   }
 
-  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getOptimisedWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain) {
+  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getOptimisedWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain) {
     std::vector<std::unique_ptr<WallColumn>> mWallColumns = getPhysicalWallColumn(terrain, x, y, facing, nearbyTerrain);
     switch (facing) {
       case Wall::Direction::NORTH: y++; break;
@@ -434,7 +434,7 @@ namespace IsoRealms::Spindizzy {
     return mWallColumns;
   }
 
-  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getVisibleWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, std::vector<Terrain*> nearbyTerrain) {
+  std::vector<std::unique_ptr<WallColumn>> TerrainProcessor::getVisibleWallColumn(Terrain* terrain, int x, int y, Wall::Direction facing, const std::vector<Terrain*>& nearbyTerrain) {
     std::vector<std::unique_ptr<WallColumn>> mWallColumns = getOptimisedWallColumn(terrain, x, y, facing, nearbyTerrain);
     switch (facing) {
       case Wall::Direction::NORTH: y++; break;

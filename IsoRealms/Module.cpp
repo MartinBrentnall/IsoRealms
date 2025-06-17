@@ -32,7 +32,8 @@ namespace IsoRealms {
   Module::Module(const std::string& name, Project& project, LuaState* luaState) :
             cName(name),
             cProject(project),
-            cModuleAssetRegistry(cProject, cName) {
+            cModuleAssetRegistry(cProject, cName),
+            cOwnerProject(nullptr) {
     std::string mModulePath = "IsoRealms-" + name;
     if (!System::moduleExists(mModulePath, false)) {
       throw InitException("ERROR: Module::Module: Specified module \"" + mModulePath + "\" not found");
@@ -70,9 +71,9 @@ namespace IsoRealms {
     cModule = mCreateFunction(&project, this);
   }
 
-  void Module::loadResources(JSONObject object, IOptions& options, const std::string& resourceDataPath) {
-    if (object.hasMember(JSON_CONFIGURATION) && cResourceDataPath.empty()) {
-      cResourceDataPath = resourceDataPath;
+  void Module::loadResources(JSONObject object, IOptions& options, File* ownerProject) {
+    if (object.hasMember(JSON_CONFIGURATION) && cOwnerProject == nullptr) {
+      cOwnerProject = ownerProject;
       cModule->load(cProject, object.getObject(JSON_CONFIGURATION));
     }
 
@@ -90,7 +91,7 @@ namespace IsoRealms {
       for (JSONObject mInstanceObject : mResourceObject.getArray(JSON_INSTANCES)) {
         LocalOptions mModuleOptions(mResourceTypeName, options);
         mInstanceObject.getString(JSON_NAME);
-        mResourceType->loadResource(mInstanceObject, cProject, mModuleOptions, resourceDataPath + "/" + cName + "/" + mResourceTypeName);
+        mResourceType->loadResource(mInstanceObject, cProject, mModuleOptions, ownerProject, cName + "/" + mResourceTypeName);
       }
     }
   }
@@ -99,31 +100,31 @@ namespace IsoRealms {
     cModule->registerAssets(cModuleAssetRegistry);
   }
 
-  bool Module::needsSaving() const {
+  bool Module::needsSaving(File* savingProject) const {
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      if (mResourceType.second->needsSaving(mResourceType.first)) {
+      if (mResourceType.second->needsSaving(savingProject)) {
         return true;
       }
     }
     return false;
   }
 
-  void Module::save(JSONObject object, IAssetIdentifier& identifier, const std::string& resourcePath) const {
+  void Module::save(JSONObject object, IAssetIdentifier& identifier, File* savingProject) const {
     object.addString(JSON_NAME, cName);
 
     // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
-    if (cResourceDataPath == resourcePath) {
+    if (cOwnerProject == savingProject) {
       JSONObject mConfigurationObject = object.addObject(JSON_CONFIGURATION);
       cModule->save(mConfigurationObject, identifier);
     }
 
     JSONArray mResourceTypesArray = object.addArray(JSON_RESOURCES);
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      if (mResourceType.second->needsSaving(mResourceType.first)) {
+      if (mResourceType.second->needsSaving(savingProject)) {
         JSONObject mResourceTypeObject = mResourceTypesArray.addObject();
         mResourceTypeObject.addString(JSON_TYPE, mResourceType.first);
         JSONArray mResourceArray = mResourceTypeObject.addArray(JSON_INSTANCES);
-        mResourceType.second->save(mResourceArray, identifier, mResourceType.first);
+        mResourceType.second->save(mResourceArray, identifier, mResourceType.first, savingProject);
       }
     }
   }
@@ -191,6 +192,10 @@ namespace IsoRealms {
   
   std::string Module::getDataPath(bool user) {
     return cProject.getDataPath(user) + "/" + getName();
+  }
+  
+  File* Module::getProjectFile() {
+    return cProject.getFile();
   }
   
   void Module::makeUserDataDirectory(const std::string& resourcePath) {

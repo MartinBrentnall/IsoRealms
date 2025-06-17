@@ -27,6 +27,7 @@
 
 namespace IsoRealms {
   class Application;
+  class File;
   class IApplication;
   class IAssets;
   class ICallbackHandle;
@@ -141,6 +142,7 @@ namespace IsoRealms {
 
     virtual void initMainThread() = 0;
 
+    virtual File* getFile() = 0;
     virtual IApplication& getApplication() = 0;
   };
 }

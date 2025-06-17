@@ -22,6 +22,7 @@
 #include <string>
 
 namespace IsoRealms {
+  class File;
   class IAssetRegistry;
   class IAssetRemover;
   class IAssets;
@@ -38,6 +39,7 @@ namespace IsoRealms {
     virtual void deleteResource(IResource* resource) = 0;
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
+    virtual File* getProjectFile() = 0;
     virtual void makeUserDataDirectory(const std::string& resourceName) = 0;
     virtual void renameUserDataDirectory(const std::string& oldName, const std::string& newName) = 0;
     virtual std::string getProjectPathPrefix(bool user) = 0;

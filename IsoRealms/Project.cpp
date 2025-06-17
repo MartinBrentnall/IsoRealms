@@ -99,7 +99,7 @@ namespace IsoRealms {
           cConversionProviderProjectToString(*this),
           cConversionProviderProjectToInteger(*this),
           cFunctionNotifyComplete(onFinish),
-          cFilename(*this),
+          cProjectFile(*this, "", true),
           cFilenameString(*this),
           cFileUserBoolean(*this),
           cQuitAction(*this),
@@ -166,7 +166,7 @@ namespace IsoRealms {
 
 //       std::cout << "TYPE: " << options.getOption("type") << std::endl;
       bool mUser = options.getOption("type") == "user";
-      cFilename.setPath(mFile, mUser);
+      cProjectFile.cFile.setPath(mFile, mUser);
 
       // Open Project File and Node
       JSONDocument mProjectDocument(mFile, mUser);
@@ -174,7 +174,7 @@ namespace IsoRealms {
 
       // Load modules and any resources declared within them
       loadModules(mProjectObject);
-      std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(mProjectObject, options, mFile.substr(0, mFile.find_last_of('.')));
+      std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(mProjectObject, options, cProjectFile);
       for (const std::unique_ptr<Module>& mModule : cModules) {
         mModule->registerAssets();
       }
@@ -245,20 +245,20 @@ namespace IsoRealms {
     return false;
   }
   
-  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(JSONObject object, IOptions& options, const std::string& resourceDataPath) {
-    cDefScreen.init(object, JSON_SCREEN, resourceDataPath);
-    cDefInputHandler.init(object, JSON_INPUT, resourceDataPath);
-    cDefInitAction.init(object, JSON_INITIALISATION, resourceDataPath);
-    cDefResetAction.init(object, JSON_RESET, resourceDataPath);
-    cDefStartAction.init(object, JSON_START, resourceDataPath);
-    cDefQuitAction.init(object, JSON_QUIT, resourceDataPath);
-    cDefDefaultEditor.init(object, JSON_EDITOR, resourceDataPath);
+  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(JSONObject object, IOptions& options, ProjectFile& file) {
+    cDefScreen.init(object, JSON_SCREEN, &file.cFile);
+    cDefInputHandler.init(object, JSON_INPUT, &file.cFile);
+    cDefInitAction.init(object, JSON_INITIALISATION, &file.cFile);
+    cDefResetAction.init(object, JSON_RESET, &file.cFile);
+    cDefStartAction.init(object, JSON_START, &file.cFile);
+    cDefQuitAction.init(object, JSON_QUIT, &file.cFile);
+    cDefDefaultEditor.init(object, JSON_EDITOR, &file.cFile);
 
     if (object.hasMember(JSON_PROPERTIES)) {
       for (JSONObject mPropertyObject : object.getArray(JSON_PROPERTIES)) {
         std::string mPropertyID = mPropertyObject.getString(JSON_ID);
         if (cProperties.find(mPropertyID) == cProperties.end()) {
-          cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(*this, mPropertyObject, resourceDataPath));
+          cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(*this, mPropertyObject, &file.cFile));
         }
       }
     }
@@ -267,20 +267,20 @@ namespace IsoRealms {
       std::string mModuleName = mModuleObject.getString(JSON_NAME);
       Module* mModule = getModule(mModuleName);
       LocalOptions mModuleOptions(mModuleName, options);
-      mModule->loadResources(mModuleObject, mModuleOptions, resourceDataPath);
+      mModule->loadResources(mModuleObject, mModuleOptions, &file.cFile);
     }
 
     std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
     for (JSONObject mIncludeObject : object.getArray(JSON_INCLUDE)) {
       std::string mName = mIncludeObject.getString(JSON_FILENAME);
       bool mUser = mIncludeObject.getBoolean(JSON_USER);
+      ProjectFile* mIncludedProject = file.cInclusions.emplace_back(std::make_unique<ProjectFile>(*this, mName, mUser)).get();
+      
       std::unique_ptr<JSONDocument> mProjectDocument = std::make_unique<JSONDocument>(mName, mUser);
       JSONObject mProjectObject = mProjectDocument->getObject(JSON_PROJECT);
-      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(mProjectObject, options, mName.substr(0, mName.find_last_of('.')));
+      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(mProjectObject, options, *mIncludedProject);
       mOpenedDocuments.insert(mOpenedDocuments.end(), std::make_move_iterator(mMoreOpenedDocuments.begin()), std::make_move_iterator(mMoreOpenedDocuments.end()));
       mOpenedDocuments.emplace_back(std::move(mProjectDocument));
-      cInclusions.emplace_back(std::make_unique<Include>(*this));
-      cInclusions.back()->cFilename.setPath(mName, mUser);
     }
     return mOpenedDocuments;
   }
@@ -387,7 +387,7 @@ namespace IsoRealms {
   }
 
   std::filesystem::file_time_type Project::getLastWriteTime() {
-    std::string mPath = cFilename.getPath();
+    std::string mPath = cProjectFile.cFile.getPath();
     return std::filesystem::last_write_time(mPath);
   }
 
@@ -405,40 +405,32 @@ namespace IsoRealms {
   }
 
   bool Project::canSave() {
-    return cFilename.isUser();
+    return cProjectFile.cFile.isUser();
   }
 
-  void Project::saveFile(const std::string& include) {
-    std::string mOriginalFileName = cFilename.getRelativePath();
-    bool mOriginalFileUser = cFilename.isUser();
-    cFilename.setPath(include, true);
-    // TODO: Allow saving of include files.
-    std::string mProjectDataPath = mOriginalFileName.substr(0, mOriginalFileName.find_last_of('.'));
-
-    if (cFilename.isSet() && cFilename.isUser()) {
+  void Project::saveFile(ProjectFile& file) {
+    if (cProjectFile.cFile.isSet() && cProjectFile.cFile.isUser()) {
       JSONDocument mJSONDocument;
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
       JSONArray mIncludeArray = mProjectObject.addArray(JSON_INCLUDE);
-      for (std::unique_ptr<Include>& mInclusion : cInclusions) {
-        if (cFilename.getPath() == mInclusion->cFilename.getPath()) {
-          JSONObject mIncludeObject = mIncludeArray.addObject();
-          mInclusion->cFilename.save(JSON_FILENAME, mIncludeObject);
-        }
+      for (std::unique_ptr<ProjectFile>& mInclusion : file.cInclusions) {
+        JSONObject mIncludeObject = mIncludeArray.addObject();
+        mInclusion->cFile.save(JSON_FILENAME, mIncludeObject);
       }
 
       // Save project used assets
-      cDefScreen.save(mProjectObject, JSON_SCREEN, mProjectDataPath);
-      cDefInputHandler.save(mProjectObject, JSON_INPUT, mProjectDataPath);
-      cDefDefaultEditor.save(mProjectObject, JSON_EDITOR, mProjectDataPath);
-      cDefInitAction.save(mProjectObject, JSON_INITIALISATION, mProjectDataPath);
-      cDefResetAction.save(mProjectObject, JSON_RESET, mProjectDataPath);
-      cDefStartAction.save(mProjectObject, JSON_START, mProjectDataPath);
-      cDefQuitAction.save(mProjectObject, JSON_QUIT, mProjectDataPath);
+      cDefScreen.save(mProjectObject, JSON_SCREEN, &file.cFile);
+      cDefInputHandler.save(mProjectObject, JSON_INPUT, &file.cFile);
+      cDefDefaultEditor.save(mProjectObject, JSON_EDITOR, &file.cFile);
+      cDefInitAction.save(mProjectObject, JSON_INITIALISATION, &file.cFile);
+      cDefResetAction.save(mProjectObject, JSON_RESET, &file.cFile);
+      cDefStartAction.save(mProjectObject, JSON_START, &file.cFile);
+      cDefQuitAction.save(mProjectObject, JSON_QUIT, &file.cFile);
 
       // Save properties
       bool mPropertiesNeedSaving = false;
       for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
-        if (mPair.second->isThisProject(mProjectDataPath)) {
+        if (mPair.second->isOwnedBy(&file.cFile)) {
           mPropertiesNeedSaving = true;
           break;
         }
@@ -446,41 +438,41 @@ namespace IsoRealms {
       if (mPropertiesNeedSaving) {
         JSONArray mPropertiesArray = mProjectObject.addArray(JSON_PROPERTIES);
         for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
-          mPair.second->save(mPropertiesArray, mProjectDataPath, mPair.first);
+          mPair.second->save(mPropertiesArray, &file.cFile, mPair.first);
         }
       }
 
       // Save modules
       JSONArray mModulesArray = mProjectObject.addArray(JSON_MODULES);
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        if (mModule->needsSaving()) {
+        if (mModule->needsSaving(&file.cFile)) {
           JSONObject mModuleObject = mModulesArray.addObject();
-          mModule->save(mModuleObject, *this, mProjectDataPath);
+          mModule->save(mModuleObject, *this, &file.cFile);
         }
       }
 
-      mJSONDocument.save(cFilename.getRelativePath());
+      mJSONDocument.save(cProjectFile.cFile.getRelativePath());
     }
-    cFilename.setPath(mOriginalFileName, mOriginalFileUser);
-    // TODO: Allow saving of include files.
-//    cProjectDataPath = cFilename.substr(0, cFilename.find_last_of('.'));
+  }
+
+  void Project::save(ProjectFile& file) {
+    saveFile(file);
+    for (std::unique_ptr<ProjectFile>& mIncludedProject : file.cInclusions) {
+      saveFile(*mIncludedProject.get());
+    }
   }
 
   void Project::save() {
-    saveFile(cFilename.getRelativePath());
-    // TODO: Allow saving of include files.
-//     for (std::unique_ptr<Include>& mInclusion : cInclusions) {
-//       saveFile(mInclusion->cProject);
-//     }
+    save(cProjectFile);
   }
 
   void Project::save(const std::string& filename) {
-    cFilename.setPath(filename, true);
+    cProjectFile.cFile.setPath(filename, true);
     save();
   }
 
   bool Project::isUserProject() {
-    return cFilename.isUser();
+    return cProjectFile.cFile.isUser();
   }
 
   IAssetBrowser& Project::getResourceManager() {
@@ -488,7 +480,11 @@ namespace IsoRealms {
   }
 
   std::string Project::getFilename() {
-    return cFilename.getPath();
+    return cProjectFile.cFile.getPath();
+  }
+  
+  File* Project::getFile() {
+    return &cProjectFile.cFile;
   }
 
   Module* Project::loadModule(const std::string& moduleName) {
@@ -530,13 +526,13 @@ namespace IsoRealms {
   }
 
   std::string Project::getUserDataPath() {
-    std::string mDataPath = cFilename.getRelativePath();
+    std::string mDataPath = cProjectFile.cFile.getRelativePath();
     mDataPath = mDataPath.substr(0, mDataPath.find_last_of('.'));
-    return (cFilename.isUser() ? "" : "Program/") + mDataPath;
+    return (cProjectFile.cFile.isUser() ? "" : "Program/") + mDataPath;
   }
 
   std::string Project::getDataPath(bool user) {
-    std::string mDataPath = cFilename.getRelativePath();
+    std::string mDataPath = cProjectFile.cFile.getRelativePath();
     mDataPath = mDataPath.substr(0, mDataPath.find_last_of('.'));
     return getProjectPathPrefix(user) + mDataPath;
   }
@@ -550,8 +546,8 @@ namespace IsoRealms {
   }
   
   std::string Project::getProjectPathPrefix(bool user) {
-    return user ? (System::USER_DATA_DIRECTORY + (cFilename.isUser() ? "" : "/Program/"))
-                : (""                                                                   );
+    return user ? (System::USER_DATA_DIRECTORY + (cProjectFile.cFile.isUser() ? "" : "/Program/"))
+                : (""                                                                            );
   }
 
   IEditable* Project::getDefaultEditable() {
@@ -563,7 +559,7 @@ namespace IsoRealms {
   }
   
   std::string Project::getProjectResourceDataPath(const std::string& file) {
-    std::string mDataPath = cFilename.getRelativePath();
+    std::string mDataPath = cProjectFile.cFile.getRelativePath();
     return mDataPath.substr(0, mDataPath.find_last_of('.')) + "/" + file;
   }
 
@@ -949,9 +945,9 @@ namespace IsoRealms {
     return cApplication;
   }
 
-  Project::ProjectProperty::ProjectProperty(Project& parent, JSONObject object, const std::string& resourcePath) :
+  Project::ProjectProperty::ProjectProperty(Project& parent, JSONObject object, File* ownerProject) :
             cChangeAction(parent),
-            cResourcePath(resourcePath) {
+            cOwnerProject(ownerProject) {
     cChangeAction.init(object, JSON_ACTION, &parent);
   }
 
@@ -959,20 +955,39 @@ namespace IsoRealms {
     cChangeAction.execute();
   }
 
-  void Project::ProjectProperty::save(JSONArray& array, const std::string& resourcePath, const std::string& id) const {
-    if (resourcePath == cResourcePath) {
+  void Project::ProjectProperty::save(JSONArray& array, File* savingProject, const std::string& id) const {
+    if (savingProject == cOwnerProject) {
       JSONObject mPropertyObject = array.addObject();
       mPropertyObject.addString(JSON_ID, id);
       cChangeAction.save(mPropertyObject, JSON_ACTION);
     }
   }
 
-  bool Project::ProjectProperty::isThisProject(const std::string& resourcePath) {
-    return resourcePath == cResourcePath;
+  bool Project::ProjectProperty::isOwnedBy(File* project) {
+    return project == cOwnerProject;
   }
 
   std::vector<std::unique_ptr<IProperty>> Project::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("App Modules", "View or change the modules used by this app", "Edit...", [this]() {
+      std::vector<std::unique_ptr<IProperty>> mProperties;
+      unsigned int mIndex = 1;
+      for (const std::unique_ptr<Module>& mModule : cModules) {
+        mProperties.emplace_back(std::make_unique<PropertyStruct>("Module \"" + mModule->getName() + "\"", "TODO", "Edit...", [this, &mModule]() {
+          return mModule->getProperties();
+        }, [this, &mModule]() {
+          Utils::removeElementUnique(cModules, mModule.get());
+        }));
+        mIndex++;
+      }
+      mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO", [this](const std::string& value) {
+        loadModule(value);
+      }, *this, cApplication));
+      return mProperties;
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("App File Structure", "View or configure the files that make up this app", "Edit...", [this]() {
+      return cProjectFile.getProperties(*this);
+    }));
     mProperties.emplace_back(cDefInitAction.getProperty("On Initialisation"));
     mProperties.emplace_back(cDefResetAction.getProperty("On Reset"));
     mProperties.emplace_back(cDefStartAction.getProperty("On Start"));
@@ -980,21 +995,6 @@ namespace IsoRealms {
     mProperties.emplace_back(cDefInputHandler.getProperty("Input Handler"));
     mProperties.emplace_back(cDefScreen.getProperty("Display"));
     mProperties.emplace_back(cDefDefaultEditor.getProperty("Default Editor"));
-
-    unsigned int mIndex = 1;
-    for (const std::unique_ptr<Module>& mModule : cModules) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>("Module \"" + mModule->getName() + "\"", "TODO", "Edit...", [this, &mModule]() {
-        return mModule->getProperties();
-      }, [this, &mModule]() {
-        Utils::removeElementUnique(cModules, mModule.get());
-      }));
-      mIndex++;
-    }
-
-    mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO", [this](const std::string& value) {
-      loadModule(value);
-    }, *this, cApplication));
-    
     return mProperties;
   }
   
@@ -1061,7 +1061,7 @@ namespace IsoRealms {
   }
 
   std::string Project::Filename::getValue() const {
-    return cParent.cFilename.getRelativePath();
+    return cParent.cProjectFile.cFile.getRelativePath();
   }
 
   bool Project::Filename::renderAssetIcon() const {
@@ -1085,7 +1085,7 @@ namespace IsoRealms {
   }
 
   bool Project::FileUser::getValue() const {
-    return cParent.cFilename.isUser();
+    return cParent.cProjectFile.cFile.isUser();
   }
 
   bool Project::FileUser::renderAssetIcon() const {

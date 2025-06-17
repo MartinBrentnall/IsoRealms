@@ -560,7 +560,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WorldEditor::isCursorLocked() const {
-    return !cHasFocus || cSelectedTool->isCursorLocked();
+    return !cHasFocus || (cSelectedTool != nullptr ? cSelectedTool->isCursorLocked() : false);
   }
 
   void WorldEditor::move(float x, float y, float z) {

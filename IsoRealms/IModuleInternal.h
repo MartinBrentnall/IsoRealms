@@ -19,6 +19,7 @@
 #pragma once
 
 namespace IsoRealms {
+  class File;
   class IAssetRemover;
   class IAssets;
   class IProject;
@@ -34,6 +35,7 @@ namespace IsoRealms {
     virtual IAssets& getAssets() = 0;
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
+    virtual File* getProjectFile() = 0;
     virtual void makeUserDataDirectory(const std::string& resourcePath) = 0;
     virtual void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) = 0;
 

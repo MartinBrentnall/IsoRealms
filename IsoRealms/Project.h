@@ -102,12 +102,39 @@ namespace IsoRealms {
     static const std::string CATEGORY_FIXED;
     static const std::string CATEGORY_LOCAL;
 
-    struct Include {
-      Include(Project& project) :
-                  cFilename(project) {
+    struct ProjectFile {
+      ProjectFile(Project& project) :
+                  cFile(project) {
+      }
+      
+      ProjectFile(Project& project, const std::string& filename, bool user) :
+                  ProjectFile(project) {
+        cFile.setPath(filename, user);
       }
 
-      File cFilename;
+      std::vector<std::unique_ptr<IProperty>> getProperties(Project& project) {
+        std::vector<std::unique_ptr<IProperty>> mProperties;
+        mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cFile));
+        for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
+          mProperties.emplace_back(std::make_unique<PropertyStruct>("Inclusion \"" + mInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mInclusion, &project]() {
+            return mInclusion->getProperties(project);
+          }, [this, &mInclusion]() {
+            Utils::removeElementUnique(cInclusions, mInclusion.get());
+          }));
+        }
+        mProperties.emplace_back(std::make_unique<PropertyAdd>("Inclusion", "TODO", "Add...", [this, &project]() {
+          ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
+          return std::make_unique<PropertyStruct>("Inclusion \"" + mNewInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mNewInclusion, &project]() {
+            return mNewInclusion->getProperties(project);
+          }, [this, &mNewInclusion]() {
+            Utils::removeElementUnique(cInclusions, mNewInclusion);
+          });
+        }));
+        return mProperties;
+      }
+
+      File cFile;
+      std::vector<std::unique_ptr<ProjectFile>> cInclusions;
     };
 
     class Filename : public IString {
@@ -233,26 +260,27 @@ namespace IsoRealms {
 
     class ProjectProperty {
       public:
-      ProjectProperty(Project& parent, JSONObject object, const std::string& resourcePath);
+      ProjectProperty(Project& parent, JSONObject object, File* ownerProject);
       void setValue(const std::string& value);
-      void save(JSONArray& object, const std::string& resourcePath, const std::string& id) const;
-      bool isThisProject(const std::string& resourcePath);
+      void save(JSONArray& object, File* savingProject, const std::string& id) const;
+      bool isOwnedBy(File* project);
 
       private:
       Action cChangeAction;
-      std::string cResourcePath;
+      File* cOwnerProject;
     };
 
     template <class TYPE> class ProjectAsset {
       public:
       ProjectAsset(IProject& project) :
-                cAsset(project) {
+                cAsset(project),
+                cOwnerProject(nullptr) {
       }
 
-      void init(JSONObject object, const std::string& tag, const std::string& path) {
-        if (object.hasMember(tag) && cResourcePath.empty()) {
+      void init(JSONObject object, const std::string& tag, File* ownerProject) {
+        if (object.hasMember(tag) && cOwnerProject == nullptr) {
           cAsset.init(object, tag);
-          cResourcePath = path;
+          cOwnerProject = ownerProject;
         }
       }
 
@@ -260,8 +288,8 @@ namespace IsoRealms {
         return &cAsset;
       }
 
-      void save(JSONObject object, const std::string& tag, const std::string& path) {
-//        if (cResourcePath == path) {
+      void save(JSONObject object, const std::string& tag, File* savingProject) {
+//        if (cOwnerProject == savingProject) {
           cAsset.save(object, tag);
 //        }
       }
@@ -272,14 +300,13 @@ namespace IsoRealms {
 
       private:
       TYPE cAsset;
-      std::string cResourcePath;
+      File* cOwnerProject;
     };
 
     IApplication& cApplication; /// Host application of this project.
     
     const IAssetOverride* const cAssetOverride; /// External asset override for this project.
     LuaState cLuaState;                         /// Lua State for this project.
-    std::vector<std::unique_ptr<Include>> cInclusions;          /// List of other project files included within this project.
     LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
     bool cResourcesLoaded;                    /// Indicates that resource loading from modules has completed.
     bool cLoading;
@@ -405,7 +432,7 @@ namespace IsoRealms {
     AssetLocalBinding cLocalProviderBinding;
 
     std::function<void(bool)> cFunctionNotifyComplete;
-    File cFilename;
+    ProjectFile cProjectFile;
     Filename cFilenameString;
     FileUser cFileUserBoolean;
     QuitActionType cQuitAction;
@@ -427,10 +454,10 @@ namespace IsoRealms {
 
     void loadModules(JSONObject object);
     bool isModuleLoaded(const std::string& name) const;
-    std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions& options, const std::string& resourceDataPath);
+    std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions& options, ProjectFile& file);
     bool isLoading() const override;
     Module* getModule(const std::string& name);
-    void saveFile(const std::string& file);
+    void saveFile(ProjectFile& file);
     
     public:
 
@@ -551,6 +578,7 @@ namespace IsoRealms {
     void reset();
     
     bool canSave();
+    void save(ProjectFile& file);
     void save();
     void save(const std::string& file);
     bool isUserProject() override;
@@ -558,6 +586,7 @@ namespace IsoRealms {
     IAssetBrowser& getResourceManager();
 
     std::string getFilename();
+    File* getFile() override;
     
     Module* loadModule(const std::string& name);
     void unloadModule(const std::string& name);
