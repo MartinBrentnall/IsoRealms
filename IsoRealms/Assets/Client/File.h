@@ -31,6 +31,7 @@ namespace IsoRealms {
     void setPath(const std::string& path, bool user);
     std::string getPath() const;
     std::string getRelativePath() const;
+    std::string getFilename() const;
     bool isUser() const;
     bool isSet() const;
     void load(const std::string& name, JSONObject object);

@@ -116,7 +116,7 @@ namespace IsoRealms {
         std::vector<std::unique_ptr<IProperty>> mProperties;
         mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cFile));
         for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-          mProperties.emplace_back(std::make_unique<PropertyStruct>("Inclusion \"" + mInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mInclusion, &project]() {
+          mProperties.emplace_back(std::make_unique<PropertyStruct>("Inclusion \"" + mInclusion->cFile.getFilename() + "\"", "TODO", "Edit...", [this, &mInclusion, &project]() {
             return mInclusion->getProperties(project);
           }, [this, &mInclusion]() {
             Utils::removeElementUnique(cInclusions, mInclusion.get());
@@ -124,7 +124,7 @@ namespace IsoRealms {
         }
         mProperties.emplace_back(std::make_unique<PropertyAdd>("Inclusion", "TODO", "Add...", [this, &project]() {
           ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-          return std::make_unique<PropertyStruct>("Inclusion \"" + mNewInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mNewInclusion, &project]() {
+          return std::make_unique<PropertyStruct>("Inclusion \"" + mNewInclusion->cFile.getFilename() + "\"", "TODO", "Edit...", [this, &mNewInclusion, &project]() {
             return mNewInclusion->getProperties(project);
           }, [this, &mNewInclusion]() {
             Utils::removeElementUnique(cInclusions, mNewInclusion);
