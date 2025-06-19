@@ -16,11 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <cmath>
+#include "ZoneObjectTypeTraitSpinner.h"
 
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Spinner/Spinner.h"
-
-#include "ZoneObjectTypeTraitSpinner.h"
+#include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitSpinner::JSON_LOCATION   = "location";
@@ -28,7 +27,7 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitSpinner::JSON_SPIN_SPEED = "spinSpeed";
   
   ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type) :
-            cDefModel(project) {
+            cDefModel(type.getResourceData()) {
   }
 
   ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type, JSONObject object) :

@@ -23,7 +23,7 @@
 namespace IsoRealms {
   DummyEditable::EditableScreen DummyEditable::DUMMY;
 
-  DummyEditable::DummyEditable(IProject& project) {
+  DummyEditable::DummyEditable(IResourceData& owner) {
     // Nothing to do.
   }
 

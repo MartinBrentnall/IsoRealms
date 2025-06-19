@@ -23,7 +23,7 @@ namespace IsoRealms::Basics {
 
   InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data) :
             cProjectCallbackManager(project),
-            cDefInputHandler(project),
+            cDefInputHandler(data),
             cRuntimeInputHandler(*cDefInputHandler),
             cLuaBinding(project, this) {
     cProjectCallbackManager.reset([this] {
@@ -61,7 +61,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Initial Value", "TODO", cDefInputHandler));
     return mProperties;

@@ -33,7 +33,7 @@ namespace IsoRealms::Replay {
             cProjectCallbackManager(project),
             cParentProject(project),
             cFilenameString(""),
-            cQuitAction(project),
+            cQuitAction(data),
             cLuaBinding(project, this) {
     cElapsedTime = 0;
   }
@@ -155,7 +155,7 @@ namespace IsoRealms::Replay {
     assets.remove(cProject.get(),                    relinquish);
   }
   
-  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

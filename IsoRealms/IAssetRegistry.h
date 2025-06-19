@@ -25,9 +25,8 @@
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
 
 namespace IsoRealms {
-  class IModelInstance;
-  class IModel;
   class IActionType;
+  class IAssets;
   class IBinding;
   class IBindingType;
   class IBoolean;
@@ -38,9 +37,11 @@ namespace IsoRealms {
   class IFont;
   class IInputHandler;
   class IInteger;
+  class IModelInstance;
+  class IModel;
+  class IResourceData;
   class IScreen;
   class IProjectOptions;
-  class IAssets;
   template <class ASSET_TYPE> class IAssetUser;
   class IString;
   class ITexture;
@@ -50,8 +51,8 @@ namespace IsoRealms {
   class IAssetRegistry {
     public:
     // TODO: Experimental. Add other types if successful.
-    virtual void add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) = 0;
-    virtual void add(IAssetProvider<Project, IString>* provider, const std::string& id, const std::string& category) = 0;
+    virtual void add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category) = 0;
+    virtual void add(IAssetProvider<IResourceData, IString>* provider, const std::string& id, const std::string& category) = 0;
 
     /**
      * Add the specified model type to this registry.

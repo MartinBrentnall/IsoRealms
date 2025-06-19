@@ -23,14 +23,14 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::UI {
-  StringTime::StringTime(IProject& project, Project& owner) :
+  StringTime::StringTime(IProject& project, IResourceData& owner) :
             cProject(project),
-            cDefValue(project),
+            cDefValue(owner),
             format(DEFAULT_FORMAT) {
     parseFormatString();
   }
 
-  StringTime::StringTime(IProject& project, Project& owner, JSONObject object) :
+  StringTime::StringTime(IProject& project, IResourceData& owner, JSONObject object) :
             StringTime(project, owner) {
     cDefValue.set(object, JSON_VALUE);
     format = object.getString(JSON_FORMAT, DEFAULT_FORMAT);

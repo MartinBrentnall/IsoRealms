@@ -27,14 +27,14 @@
 #include "Modules/Spindizzy/Assets/Type/ISurfacePattern.h"
 
 namespace IsoRealms::Spindizzy {
-  class Spindizzy;
   class SplitSurface;
   class Surface;
+  class TerrainType;
 
   class SurfacePatternTile : public ISurfacePattern {
     public:
-    SurfacePatternTile(IProject& project, Spindizzy& spindizzy);
-    SurfacePatternTile(IProject& project, Spindizzy& spindizzy, JSONObject object);
+    SurfacePatternTile(IProject& project, TerrainType& owner);
+    SurfacePatternTile(IProject& project, TerrainType& owner, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *

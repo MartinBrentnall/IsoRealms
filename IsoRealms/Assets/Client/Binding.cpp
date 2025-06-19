@@ -19,22 +19,23 @@
 #include "Binding.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Binding::Binding(IProject& project, IBindingRegistry* registry, std::function<void()> listener) :
-            Binding(project, registry, "", listener) {
+  Binding::Binding(IResourceData& owner, IBindingRegistry* registry, std::function<void()> listener) :
+            Binding(owner, registry, "", listener) {
   }
 
-  Binding::Binding(IProject& project, IBindingRegistry* registry, const std::string& type, std::function<void()> listener) :
-            Asset<IBinding, IProject>(project, project.createLiteralBinding(this)),
+  Binding::Binding(IResourceData& owner, IBindingRegistry* registry, const std::string& type, std::function<void()> listener) :
+            Asset<IBinding, IResourceData>(owner, owner.getAssetManager().createLiteralBinding(this, owner)),
             cDefType(type),
             cDefRegistry(registry),
             cListener(listener) {
     std::vector<std::string> mProviders = getAvailableProviders();
     for (std::string mProvider : mProviders) {
       if (mProvider == cDefType) {
-        cManager.release(this, cAsset);
-        cAsset = cManager.getBinding(this, mProvider);
+        cManager.getAssetManager().release(this, cAsset);
+        cAsset = cManager.getAssetManager().getBinding(this, mProvider, owner);
         break;
       }
     }
@@ -45,16 +46,16 @@ namespace IsoRealms {
   }
 
   void Binding::setID(const std::string& id) {
-    std::string mRawID = Asset<IBinding, IProject>::getID();
+    std::string mRawID = Asset<IBinding, IResourceData>::getID();
     if (cDefType == mRawID) {
       cAsset->set(id);
     } else {
-      Asset<IBinding, IProject>::setID(id);
+      Asset<IBinding, IResourceData>::setID(id);
     }
   }
 
   std::string Binding::getID() const {
-    std::string mRawID = Asset<IBinding, IProject>::getID();
+    std::string mRawID = Asset<IBinding, IResourceData>::getID();
     if (cDefType == mRawID) {
       return cAsset->getID();
     }
@@ -63,32 +64,32 @@ namespace IsoRealms {
   }
 
   bool Binding::renderAssetIcon() const {
-    std::string mRawID = Asset<IBinding, IProject>::getID();
+    std::string mRawID = Asset<IBinding, IResourceData>::getID();
     return cDefType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
   }
 
-  IBinding* Binding::createLiteralAsset(IProject& project) {
-    return project.createLiteralBinding(this);
+  IBinding* Binding::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralBinding(this, owner);
   }
   
-  IBinding* Binding::getAsset(IProject& project, JSONObject object) {
-    return project.getBinding(this, object, cDefRegistry);
+  IBinding* Binding::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getBinding(this, object, owner, cDefRegistry);
   }
   
-  IBinding* Binding::getAsset(IProject& project, const std::string& id) {
-    return project.getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id); // TODO: What happens if there's an option called "None"????
+  IBinding* Binding::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
   }
   
   std::vector<std::string> Binding::getAvailableProviders() const {
 
     // Case where any type is allowed.
-    std::vector<std::string> mProviders = cManager.getAllBindings();
+    std::vector<std::string> mProviders = cManager.getAssetManager().getAllBindings();
     if (cDefType.empty()) {
       return mProviders;
     }
 
     // Case where a conversion type is allowed.
-    std::string mRawID = Asset<IBinding, IProject>::getID();
+    std::string mRawID = Asset<IBinding, IResourceData>::getID();
     if (cDefType == mRawID) {
       return cAsset->getAvailableProviders();
     }
@@ -107,21 +108,21 @@ namespace IsoRealms {
   }  
 
   bool Binding::renderOtherProviderIcon(const std::string& id) const {
-    std::string mRawID = Asset<IBinding, IProject>::getID();
+    std::string mRawID = Asset<IBinding, IResourceData>::getID();
     if (cDefType == mRawID) {
       return cAsset->renderProviderIcon(id);
     }
 
-    return cManager.renderBindingIcon(cDefType.empty() || id == "None" ? id : cDefType + "/" + id);
+    return cManager.getAssetManager().renderBindingIcon(cDefType.empty() || id == "None" ? id : cDefType + "/" + id);
   }
 
   bool Binding::hasConfiguration() const {
-    std::string mRawID = Asset<IBinding, IProject>::getID();
+    std::string mRawID = Asset<IBinding, IResourceData>::getID();
     if (cDefType == mRawID) {
       return cAsset->isConfigurable();
     }
 
-    return cManager.isBindingConfigurable(Asset<IBinding, IProject>::getID());
+    return cManager.getAssetManager().isBindingConfigurable(Asset<IBinding, IResourceData>::getID());
   }  
 
   bool Binding::isDefaultConfiguration() const {
@@ -135,7 +136,7 @@ namespace IsoRealms {
   }
 
   std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset) {
-    std::string mRawID = Asset<IBinding, IProject>::getID();
+    std::string mRawID = Asset<IBinding, IResourceData>::getID();
     return cDefType == mRawID ? asset->getWrappedProperties() : asset->getAssetProperties();
   }
 }

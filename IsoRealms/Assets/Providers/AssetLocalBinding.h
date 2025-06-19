@@ -24,7 +24,7 @@
 namespace IsoRealms {
   class Project;
 
-  class AssetLocalBinding final : public IAssetProvider<Project, IBinding> {
+  class AssetLocalBinding final : public IAssetProvider<IResourceData, IBinding> {
     public:
     AssetLocalBinding() :
               cRuntimeLocals(nullptr) {
@@ -37,11 +37,11 @@ namespace IsoRealms {
     /************************************************\
      * Implements IAssetProvider<Project, IBinding> *
     \************************************************/
-    IBinding* getAsset(Project& project) const override {
+    IBinding* getAsset(IResourceData& owner) const override {
       return nullptr; // TODO: Implement this.
     }
     
-    IBinding* getAsset(Project& project, JSONObject object) const override {
+    IBinding* getAsset(IResourceData& owner, JSONObject object) const override {
       std::string mLocalBindingID = object.getString(JSON_LOCAL);
       if (cRuntimeLocals == nullptr) {
         std::cout << "WARNING: AssetLocalBinding::getAsset: No action-specific bindings provided for this action (looking for \"" << mLocalBindingID << "\")." << std::endl;

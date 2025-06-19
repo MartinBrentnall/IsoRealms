@@ -32,8 +32,8 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenModel(IProject& project, Project& owner);
-    ScreenModel(IProject& project, Project& owner, JSONObject object);
+    ScreenModel(IProject& project, IResourceData& owner);
+    ScreenModel(IProject& project, IResourceData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *

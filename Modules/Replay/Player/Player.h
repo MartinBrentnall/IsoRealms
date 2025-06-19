@@ -124,7 +124,7 @@ namespace IsoRealms::Replay {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
     
     /*********************\
     * Implements IScreen *

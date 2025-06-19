@@ -104,7 +104,10 @@ namespace IsoRealms {
     static void renderIconNone();
     static void renderIconTick();
     static void renderIconTerminal();
+    static void renderIconLock();
     
+    static void renderRingSection(float x, float y, float innerRadius, float outerRadius, float startAngle, float endAngle);
+    static void renderRing(float x, float y, float innerRadius, float outerRadius);
     static void renderCircle(float x, float y, float radius);
     static void renderCurve(float x, float y, float radius, float startAngle, float endAngle);
     static void renderCurveLine(float x, float y, float radius, float startAngle, float endAngle);

@@ -19,35 +19,36 @@
 #include "BindingType.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  BindingType::BindingType(IProject& project, std::function<void()> listener) :
-            Asset<IBindingType, IProject>(project, project.createLiteralBindingType(this)),
+  BindingType::BindingType(IResourceData& owner, std::function<void()> listener) :
+            Asset<IBindingType, IResourceData>(owner, owner.getAssetManager().createLiteralBindingType(this, owner)),
             cListener(listener) {
   }
 
-  IBindingType* BindingType::createLiteralAsset(IProject& project) {
-    return project.createLiteralBindingType(this);
+  IBindingType* BindingType::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralBindingType(this, owner);
   }
 
-  IBindingType* BindingType::getAsset(IProject& project, JSONObject object) {
-    return project.getBindingType(this, object);
+  IBindingType* BindingType::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getBindingType(this, object, owner);
   }
 
-  IBindingType* BindingType::getAsset(IProject& project, const std::string& id) {
-    return project.getBindingType(this, id);
+  IBindingType* BindingType::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getBindingType(this, id, owner);
   }
 
   std::vector<std::string> BindingType::getAvailableProviders() const {
-    return cManager.getAllBindingTypes();
+    return cManager.getAssetManager().getAllBindingTypes();
   }
 
   bool BindingType::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderBindingTypeIcon(id);
+    return cManager.getAssetManager().renderBindingTypeIcon(id);
   }
 
   bool BindingType::hasConfiguration() const {
-    return cManager.isBindingTypeConfigurable(getID());
+    return cManager.getAssetManager().isBindingTypeConfigurable(getID());
   }
 
   bool BindingType::isDefaultConfiguration() const {

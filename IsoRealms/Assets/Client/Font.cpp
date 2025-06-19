@@ -19,34 +19,35 @@
 #include "Font.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Font::Font(IProject& project) : 
-            Asset<IFont, IProject>(project, project.createLiteralFont(this)) {
+  Font::Font(IResourceData& owner) :
+            Asset<IFont, IResourceData>(owner, owner.getAssetManager().createLiteralFont(this, owner)) {
   }
 
-  IFont* Font::createLiteralAsset(IProject& project) {
-    return project.createLiteralFont(this);
+  IFont* Font::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralFont(this, owner);
   }
   
-  IFont* Font::getAsset(IProject& project, JSONObject object) {
-    return project.getFont(this, object);
+  IFont* Font::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getFont(this, object, owner);
   }
   
-  IFont* Font::getAsset(IProject& project, const std::string& id) {
-    return project.getFont(this, id);
+  IFont* Font::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getFont(this, id, owner);
   }
   
   std::vector<std::string> Font::getAvailableProviders() const {
-    return cManager.getAllFonts();
+    return cManager.getAssetManager().getAllFonts();
   }  
 
   bool Font::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderFontIcon(id);
+    return cManager.getAssetManager().renderFontIcon(id);
   }
 
   bool Font::hasConfiguration() const {
-    return cManager.isFontConfigurable(getID());
+    return cManager.getAssetManager().isFontConfigurable(getID());
   }  
 
   bool Font::isDefaultConfiguration() const {

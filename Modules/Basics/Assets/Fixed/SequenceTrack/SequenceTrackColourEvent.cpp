@@ -19,14 +19,14 @@
 #include "SequenceTrackColourEvent.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IProject& project, unsigned int time, bool fade) :
+  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade) :
             cDefTime(time),
-            cDefTarget(project, 1.0f, 0.0f, 0.0f),
+            cDefTarget(owner, 1.0f, 0.0f, 0.0f),
             cDefFade(fade) {
   }
 
-  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IProject& project, JSONObject object) :
-            SequenceTrackColourEvent(parent, project, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
+  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, IProject& project, JSONObject object) :
+            SequenceTrackColourEvent(parent, owner, project, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
     cDefTarget.init(object, JSON_TARGET);
   }
 

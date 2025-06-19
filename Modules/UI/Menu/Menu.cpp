@@ -33,10 +33,11 @@ namespace IsoRealms::UI {
 
   Menu::Menu(IProject& project, UI& ui, IResourceData& data) :
             cProjectCallbackManager(project),
+            cResourceData(data),
             cHatHandler(project.getApplication().getHatHandler()),
-            cDefExitAction(project),
-            cDefFont(project),
-            cDefColour(project, 1.0f, 1.0f, 1.0f),
+            cDefExitAction(data),
+            cDefFont(data),
+            cDefColour(data, 1.0f, 1.0f, 1.0f),
             cDefFontSize(DEFAULT_FONT_SIZE),
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cRuntimeSelectedItem(996),
@@ -111,7 +112,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", "TODO", cDefColour));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>("Font", "TODO", cDefFont));
@@ -126,6 +127,10 @@ namespace IsoRealms::UI {
     return mProperties;
   }
   
+  IResourceData& Menu::getResourceData() {
+    return cResourceData;
+  }
+
   const Font& Menu::getFont() const {
     return cDefFont;
   }

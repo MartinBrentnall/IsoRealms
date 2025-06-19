@@ -35,11 +35,11 @@ namespace IsoRealms::Spindizzy {
   Gyroscope::Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cProject(project),
-            cDefQuadrant{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                         Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                         Colour(project, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                         Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
-            cDefOutline(project, 1.0f, 0.0f, 1.0f),
+            cDefQuadrant{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(data, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(data, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
+            cDefOutline(data, 1.0f, 0.0f, 1.0f),
             cTexture(project),
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
@@ -86,7 +86,7 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 1 Colour", "TODO", cDefQuadrant[0]));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 2 Colour", "TODO", cDefQuadrant[1]));

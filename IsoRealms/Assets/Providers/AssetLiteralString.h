@@ -25,7 +25,7 @@
 #include "AssetLiteral.h"
 
 namespace IsoRealms {
-  class AssetLiteralString : public AssetLiteral<Project, IString> {
+  class AssetLiteralString : public AssetLiteral<IResourceData, IString> {
     public:
     
     /************************************\
@@ -35,15 +35,15 @@ namespace IsoRealms {
       return true;
     }
 
-    std::unique_ptr<IString> createLiteralAsset(Project& project) const override {
+    std::unique_ptr<IString> createLiteralAsset(IResourceData& owner) const override {
       return std::make_unique<LiteralString>("");
     }
 
-    std::unique_ptr<IString> createLiteralAsset(Project& project, const std::string& expression) const override {
+    std::unique_ptr<IString> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
       return std::make_unique<LiteralString>(expression);
     }
 
-    std::unique_ptr<IString> createLiteralAsset(Project& project, JSONObject object) const override {
+    std::unique_ptr<IString> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
       return std::make_unique<LiteralString>(object.getString(JSON_VALUE));
     }
 

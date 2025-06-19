@@ -21,11 +21,11 @@
 #include "IsoRealms/Assets/Type/IInputHandler.h"
 
 namespace IsoRealms {
-  class IProject;
+  class IResourceData;
 
   class DummyInputHandler : public IInputHandler {
     public:
-    DummyInputHandler(IProject& project);
+    DummyInputHandler(IResourceData& owner);
     
     /****************************\
      * Implements IInputHandler *

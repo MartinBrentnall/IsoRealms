@@ -59,7 +59,7 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileTexture::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> FileTexture::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cDefFile));
     return mProperties;

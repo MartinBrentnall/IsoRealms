@@ -65,11 +65,11 @@ namespace IsoRealms::Spindizzy {
 
   C64TerrainGraphics::C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
-            cDefaultYaw(project, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),
-            cDefFloor(project, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsFullRedraw();}),
-            cDefWall(project, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsFullRedraw();}),
-            cDefGrid(project, 0.3f, 0.3f, 0.3f, 0.0f, [this]() {setNeedsFullRedraw();}),
-            cDefHighlight(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsFullRedraw();}) {
+            cDefaultYaw(data, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),
+            cDefFloor(data, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsFullRedraw();}),
+            cDefWall(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsFullRedraw();}),
+            cDefGrid(data, 0.3f, 0.3f, 0.3f, 0.0f, [this]() {setNeedsFullRedraw();}),
+            cDefHighlight(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsFullRedraw();}) {
 
 
     cTexturesInUseCount = 0;
@@ -123,7 +123,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Floor Colour",     "TODO", cDefFloor));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Wall Colour",      "TODO", cDefWall));

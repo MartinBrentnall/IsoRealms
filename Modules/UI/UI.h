@@ -60,6 +60,7 @@ namespace IsoRealms::UI {
     UI(IProject& project, IResourceTypeRegistry* registry);
 
     // Interface access (used by all).
+    IUI& getAssetManager() override;
     IProject& getProject() const override;
     
     /****************************\
@@ -157,12 +158,12 @@ namespace IsoRealms::UI {
     AssetInstanced<Menu, IMenuItem, MenuItemSlider>            cProviderMenuItemSlider;
 
     // Built-in providers for ad-hoc screens.
-    AssetInstanced<Project, IScreen, ScreenGradient> cProviderScreenGradient;
-    AssetInstanced<Project, IScreen, ScreenModel>    cProviderScreenModel;
-    AssetInstanced<Project, IScreen, ScreenPanel>    cProviderScreenPanel;
-    AssetInstanced<Project, IScreen, ScreenText>     cProviderScreenText;
+    AssetInstanced<IResourceData, IScreen, ScreenGradient> cProviderScreenGradient;
+    AssetInstanced<IResourceData, IScreen, ScreenModel>    cProviderScreenModel;
+    AssetInstanced<IResourceData, IScreen, ScreenPanel>    cProviderScreenPanel;
+    AssetInstanced<IResourceData, IScreen, ScreenText>     cProviderScreenText;
 
-    AssetInstanced<Project, IString, StringTime> cProviderStringTime;
+    AssetInstanced<IResourceData, IString, StringTime> cProviderStringTime;
 
     ResourceTypeDefinition<UI, Layout>          cResourceTypeLayout;
     ResourceTypeDefinition<UI, Menu>            cResourceTypeMenu;

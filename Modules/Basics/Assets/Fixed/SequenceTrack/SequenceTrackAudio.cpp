@@ -24,12 +24,12 @@
 namespace IsoRealms::Basics {
   SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence) :
             SequenceTrackBase(project, sequence),
-            cDefVolume(project, 1.0f) {
+            cDefVolume(sequence.getResourceData(), 1.0f) {
   }
 
   SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence, object),
-            cDefVolume(project, 1.0f) {
+            SequenceTrackBase(project, sequence.getResourceData(), sequence, object),
+            cDefVolume(sequence.getResourceData(), 1.0f) {
     cDefVolume.init(object, JSON_VOLUME);
   }
 

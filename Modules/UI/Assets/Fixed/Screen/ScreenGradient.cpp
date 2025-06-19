@@ -23,14 +23,14 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::UI {
-  ScreenGradient::ScreenGradient(IProject& project, Project& owner) :
+  ScreenGradient::ScreenGradient(IProject& project, IResourceData& owner) :
             cProject(project),
-            cDefColourA(project, 0.0f, 0.0f, 1.0f),
-            cDefColourB(project, 0.0f, 1.0f, 0.0f),
+            cDefColourA(owner, 0.0f, 0.0f, 1.0f),
+            cDefColourB(owner, 0.0f, 1.0f, 0.0f),
             cDefVertical(false) {
   }
 
-  ScreenGradient::ScreenGradient(IProject& project, Project& owner, JSONObject object) :
+  ScreenGradient::ScreenGradient(IProject& project, IResourceData& owner, JSONObject object) :
             ScreenGradient(project, owner) {
     cDefColourA.set(object, JSON_COLOUR_A);
     cDefColourB.set(object, JSON_COLOUR_B);

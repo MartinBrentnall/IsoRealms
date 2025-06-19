@@ -89,6 +89,10 @@ namespace IsoRealms::UI {
     cMenuItems.add(&cProviderMenuItemSlider,            MENU_ITEM_SLIDER,             "UI");
   }
 
+  IUI& UI::getAssetManager() {
+    return *this;
+  }
+
   IProject& UI::getProject() const {
     return cProject;
   }

@@ -35,6 +35,7 @@ namespace IsoRealms {
   class IInteger;
   class IModel;
   class IProjectOptions;
+  class IResourceData;
   class IScreen;
   class IString;
   class ITexture;
@@ -43,8 +44,8 @@ namespace IsoRealms {
 
   class IAssetRemover {
     public:
-    virtual void remove(IAssetProvider<Project, IScreen>* provider, bool relinquish) = 0;
-    virtual void remove(IAssetProvider<Project, IString>* provider, bool relinquish) = 0;
+    virtual void remove(IAssetProvider<IResourceData, IScreen>* provider, bool relinquish) = 0;
+    virtual void remove(IAssetProvider<IResourceData, IString>* provider, bool relinquish) = 0;
 
     virtual void remove(IActionType*     asset, bool relinquish) = 0;
     virtual void remove(IBinding*        asset, bool relinquish) = 0;

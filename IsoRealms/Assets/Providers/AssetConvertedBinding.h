@@ -24,20 +24,20 @@
 #include "IsoRealms/Assets/TypeConverted/BoundAsset.h"
 
 namespace IsoRealms {
-  class Project;
+  class IResourceData;
 
-  template <class FROM> class AssetConvertedBinding : public IAssetProvider<Project, IBinding> {
+  template <class FROM> class AssetConvertedBinding : public IAssetProvider<IResourceData, IBinding> {
     public:
     AssetConvertedBinding(IProject& project) :
               cProject(project) {
     }
 
-    IBinding* getAsset(Project& project, JSONObject object) const override {
-      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject, object)).first->get();
+    IBinding* getAsset(IResourceData& owner, JSONObject object) const override {
+      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(owner, object)).first->get();
     }
 
-    IBinding* getAsset(Project& project) const override {
-      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject)).first->get();
+    IBinding* getAsset(IResourceData& owner) const override {
+      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(owner)).first->get();
     }
     
     void releaseAsset(const IBinding* asset) override {

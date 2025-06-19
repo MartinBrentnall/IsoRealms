@@ -20,10 +20,11 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Texture::Texture(IProject& project, std::function<void()> listener) :
-            Asset<ITexture, IProject>(project, project.createLiteralTexture(this)),
+  Texture::Texture(IResourceData& owner, std::function<void()> listener) :
+            Asset<ITexture, IResourceData>(owner, owner.getAssetManager().createLiteralTexture(this, owner)),
             cListener(listener),
             cDefScaleX(1.0f),
             cDefScaleY(1.0f),
@@ -38,24 +39,24 @@ namespace IsoRealms {
     cAsset->coord(mX / cDefScaleX, mY / cDefScaleY);
   }
 
-  ITexture* Texture::createLiteralAsset(IProject& project) {
-    return project.createLiteralTexture(this);
+  ITexture* Texture::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralTexture(this, owner);
   }
   
-  ITexture* Texture::getAsset(IProject& project, JSONObject object) {
-    return project.getTexture(this, object, cListener != nullptr ? this : nullptr);
+  ITexture* Texture::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getTexture(this, object, owner, cListener != nullptr ? this : nullptr);
   }
   
-  ITexture* Texture::getAsset(IProject& project, const std::string& id) {
-    return project.getTexture(this, id, cListener != nullptr ? this : nullptr);
+  ITexture* Texture::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getTexture(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
   std::vector<std::string> Texture::getAvailableProviders() const {
-    return cManager.getAllTextures();
+    return cManager.getAssetManager().getAllTextures();
   }  
 
   bool Texture::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderTextureIcon(id);
+    return cManager.getAssetManager().renderTextureIcon(id);
   }
 
   bool Texture::hasConfiguration() const {

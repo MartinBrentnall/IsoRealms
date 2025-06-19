@@ -59,6 +59,7 @@ namespace IsoRealms {
     IAssetRemover& getAssetRemover() override;
     IAssetRegistry& getAssetRegistry() override;
     IAssets& getAssets() override;
+    IProject& getProject() override;
 
     private:
     static const std::string JSON_ID;

@@ -16,16 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Chaser/Chaser.h"
-
 #include "ZoneObjectTypeTraitChaser.h"
+
+#include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Chaser/Chaser.h"
+#include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitChaser::JSON_OBJECT = "object";
   const std::string ZoneObjectTypeTraitChaser::JSON_TARGET = "target";
 
   ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(IProject& project, ZoneObjectType& type) :
-            cDefTarget(project) {
+            cDefTarget(type.getResourceData()) {
   }
 
   ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(IProject& project, ZoneObjectType& type, JSONObject object) :

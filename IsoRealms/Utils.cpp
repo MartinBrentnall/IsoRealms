@@ -387,9 +387,9 @@ namespace IsoRealms {
   void Utils::renderIconTerminal() {
     glBindTexture(GL_TEXTURE_2D, 0);
     glColor3f(0.8f, 0.8f, 0.8f);
-    Utils::renderRoundedRectangle(-1.0f, -0.9f, 1.0f, 0.9f, 0.4f);
+    renderRoundedRectangle(-1.0f, -0.9f, 1.0f, 0.9f, 0.4f);
     glColor3f(0.2f, 0.2f, 0.2f);
-    Utils::renderRoundedRectangle(-0.9f, -0.8f, 0.9f, 0.8f, 0.4f);
+    renderRoundedRectangle(-0.9f, -0.8f, 0.9f, 0.8f, 0.4f);
     glColor3f(0.0f, 1.0f, 0.0f);
     glBegin(GL_QUADS);
     glVertex2f(-0.0f,  0.0f);
@@ -405,6 +405,43 @@ namespace IsoRealms {
     Utils::renderBar(0.2f, -0.5f, 0.5f, -0.4f);
   }
 
+  void Utils::renderIconLock() {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glColor3f(0.2f, 0.2f, 0.2f);
+    renderRingSection(0.0f, 0.4f, 0.4f, 0.6f, 0.0f, 0.5f);
+    renderRectangle(-0.6f, -0.4f, -0.6f, -0.2f);
+    renderRectangle( 0.4f, -0.4f,  0.4f, -0.2f);
+    glColor3f(1.0f, 1.0f, 3.0f);
+    renderRingSection(0.0f, 0.4f, 0.43f, 0.57f, 0.0f, 0.5f);
+    renderRectangle(-0.57f, -0.4f, -0.57f, -0.2f);
+    renderRectangle( 0.43f, -0.4f,  0.43f, -0.2f);
+    glColor3f(0.2f, 0.2f, 0.2f);
+    renderRoundedRectangle(-1.0f, -1.0f, 1.0f, -0.4f, 0.2f);
+    glColor3f(1.0f, 1.0f, 3.0f);
+    renderRoundedRectangle(-0.97f, -0.97f, 0.97f, -0.37f, 0.17f);
+    glEnd();    
+  }
+
+  void Utils::renderRingSection(float x, float y, float innerRadius, float outerRadius, float startAngle, float endAngle) {
+    glBegin(GL_TRIANGLE_STRIP);
+    unsigned int mStartAngle = static_cast<unsigned int>(32 * std::min(startAngle, endAngle));
+    unsigned int mEndAngle   = static_cast<unsigned int>(32 * std::max(startAngle, endAngle));
+    for (unsigned int i = mStartAngle; i <= mEndAngle; ++i) {
+      float mCircle = static_cast<float>(-((static_cast<float>(i) * M_PI) * (2.0 / 32)) + M_PI * 2.0);
+      float mPlotInnerX = (std::sin(mCircle) * innerRadius) + x;
+      float mPlotInnerY = (std::cos(mCircle) * innerRadius) + y;
+      float mPlotOuterX = (std::sin(mCircle) * outerRadius) + x;
+      float mPlotOuterY = (std::cos(mCircle) * outerRadius) + y;
+      glVertex2f(mPlotInnerX, mPlotInnerY);
+      glVertex2f(mPlotOuterX, mPlotOuterY);
+    }
+    glEnd();
+  }
+  
+  void Utils::renderRing(float x, float y, float innerRadius, float outerRadius) {
+    renderRingSection(x, y, innerRadius, outerRadius, 0.0f, 1.0f);
+  }
+  
   void Utils::renderCircle(float x, float y, float radius) {
     renderCurve(x, y, radius, 0.0f, 1.0f);
   }

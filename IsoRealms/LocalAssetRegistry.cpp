@@ -32,8 +32,8 @@ namespace IsoRealms {
     return cLocalPath;
   }
 
-  void LocalAssetRegistry::add(IAssetProvider<Project, IScreen>* provider, const std::string& id, const std::string& category) {cAssetRegistry.add(provider, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
-  void LocalAssetRegistry::add(IAssetProvider<Project, IString>* provider, const std::string& id, const std::string& category) {cAssetRegistry.add(provider, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void LocalAssetRegistry::add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category) {cAssetRegistry.add(provider, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
+  void LocalAssetRegistry::add(IAssetProvider<IResourceData, IString>* provider, const std::string& id, const std::string& category) {cAssetRegistry.add(provider, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
 
   void                      LocalAssetRegistry::add(IActionType*     asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}
   void                      LocalAssetRegistry::add(IAssets*         asset, const std::string& id, const std::string& category) {       cAssetRegistry.add(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}

@@ -28,16 +28,16 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Vertex : public Asset<IVertex, IProject> {
+  class Vertex : public Asset<IVertex, IResourceData> {
     public:
-    Vertex(IProject& project);
+    Vertex(IResourceData& owner);
 
-    /***************************************\
-     * Implements Asset<IVertex, IProject> *
-    \***************************************/
-    IVertex* createLiteralAsset(IProject& project) override;
-    IVertex* getAsset(IProject& project, JSONObject object) override;
-    IVertex* getAsset(IProject& project, const std::string& id) override;
+    /********************************************\
+     * Implements Asset<IVertex, IResourceData> *
+    \********************************************/
+    IVertex* createLiteralAsset(IResourceData& owner) override;
+    IVertex* getAsset(IResourceData& owner, JSONObject object) override;
+    IVertex* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

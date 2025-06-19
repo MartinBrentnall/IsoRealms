@@ -19,16 +19,17 @@
 
 #include "SurfacePatternOutline.h"
 
+#include "Modules/Spindizzy/TerrainType/TerrainType.h"
 #include "Modules/Spindizzy/World/Object/Terrain/SplitSurface.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternOutline::SurfacePatternOutline(IProject& project, Spindizzy& spindizzy) {
+  SurfacePatternOutline::SurfacePatternOutline(IProject& project, TerrainType& owner) {
     // Nothing to do.
   }
 
-  SurfacePatternOutline::SurfacePatternOutline(IProject& project, Spindizzy& spindizzy, JSONObject object) :
-            SurfacePatternOutline(project, spindizzy) {
+  SurfacePatternOutline::SurfacePatternOutline(IProject& project, TerrainType& owner, JSONObject object) :
+            SurfacePatternOutline(project, owner) {
     // Nothing to do.
   }
 

@@ -25,7 +25,7 @@
 namespace IsoRealms {
   class DummyEditable : public IEditable {
     public:
-    DummyEditable(IProject& project);
+    DummyEditable(IResourceData& owner);
 
     /************************\
      * Implements IEditable *

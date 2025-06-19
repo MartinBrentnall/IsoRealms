@@ -26,7 +26,7 @@ namespace IsoRealms::Spindizzy {
 
   PickUpType::PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
-            cDefModel(project) {
+            cDefModel(data) {
     cSpindizzy.added(this);
   }
   
@@ -55,7 +55,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> PickUpType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> PickUpType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance", "TODO", cDefModel));
     return mProperties;

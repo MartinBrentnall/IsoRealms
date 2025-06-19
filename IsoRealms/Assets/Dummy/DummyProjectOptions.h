@@ -21,11 +21,11 @@
 #include "IsoRealms/Assets/Type/IProjectOptions.h"
 
 namespace IsoRealms {
-  class IProject;
+  class IResourceData;
 
   class DummyProjectOptions : public IProjectOptions {
     public:
-    DummyProjectOptions(IProject& project);
+    DummyProjectOptions(IResourceData& owner);
 
     /******************************\
      * Implements IProjectOptions *

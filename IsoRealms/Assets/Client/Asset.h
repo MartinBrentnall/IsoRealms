@@ -37,7 +37,7 @@ namespace IsoRealms {
 
     virtual ~Asset() {
       if (cAsset != nullptr) {
-        cManager.release(this, cAsset);
+        cManager.getAssetManager().release(this, cAsset);
       }
     }
     
@@ -53,13 +53,13 @@ namespace IsoRealms {
     
     void set(JSONObject object, const std::string& member) {
       JSONObject mAssetObject = object.getObject(member);
-      cManager.release(this, cAsset);
+      cManager.getAssetManager().release(this, cAsset);
       cAsset = getAsset(cManager, mAssetObject);
       loadClientConfiguration(mAssetObject);
     }
     
     virtual void setID(const std::string& id) {
-      cManager.release(this, cAsset);
+      cManager.getAssetManager().release(this, cAsset);
       cAsset = getAsset(cManager, id);
       stateChanged(cAsset);
     }
@@ -67,11 +67,11 @@ namespace IsoRealms {
     void save(JSONObject object, const std::string& name) const {
       JSONObject mAssetObject = object.addObject(name);
       saveClientConfiguration(mAssetObject);
-      cManager.save(mAssetObject, cAsset);
+      cManager.getAssetManager().save(mAssetObject, cAsset);
     }
 
     virtual std::string getID() const {
-      return cManager.getID(cAsset);
+      return cManager.getAssetManager().getID(cAsset);
     }
 
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() {
@@ -89,6 +89,10 @@ namespace IsoRealms {
       return cAsset->isDefaultConfiguration() && isDefaultConfiguration();
     }
 
+    bool isReadOnly() const {
+      return cManager.isReadOnly();
+    }
+
     TYPE* operator->() const {
       return cAsset;
     }
@@ -98,7 +102,7 @@ namespace IsoRealms {
     }
 
     IApplication& getApplication() {
-      return cManager.getProject().getApplication();
+      return cManager.getAssetManager().getProject().getApplication();
     }
 
     /*******************************\

@@ -28,22 +28,22 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Binding : public Asset<IBinding, IProject> {
+  class Binding : public Asset<IBinding, IResourceData> {
     public:
-    Binding(IProject& project, IBindingRegistry* registry, std::function<void()> listener = nullptr);
-    Binding(IProject& project, IBindingRegistry* registry, const std::string& type, std::function<void()> listener = nullptr);
+    Binding(IResourceData& owner, IBindingRegistry* registry, std::function<void()> listener = nullptr);
+    Binding(IResourceData& owner, IBindingRegistry* registry, const std::string& type, std::function<void()> listener = nullptr);
     std::string getType() const;
 
     std::string getID() const override;
     void setID(const std::string& id) override;
     bool renderAssetIcon() const override;
 
-    /****************************************\
-     * Implements Asset<IBinding, IProject> *
-    \****************************************/
-    IBinding* createLiteralAsset(IProject& project) override;
-    IBinding* getAsset(IProject& project, JSONObject object) override;
-    IBinding* getAsset(IProject& project, const std::string& id) override;
+    /*********************************************\
+     * Implements Asset<IBinding, IResourceData> *
+    \*********************************************/
+    IBinding* createLiteralAsset(IResourceData& owner) override;
+    IBinding* getAsset(IResourceData& owner, JSONObject object) override;
+    IBinding* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

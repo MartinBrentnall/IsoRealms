@@ -21,12 +21,12 @@
 namespace IsoRealms::Basics {
   SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence) :
             SequenceTrackBase(project, sequence),
-            cDefStartValue(project, 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
+            cDefStartValue(sequence.getResourceData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
 
   SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence, object),
-            cDefStartValue(project, 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
+            SequenceTrackBase(project, sequence.getResourceData(), sequence, object),
+            cDefStartValue(sequence.getResourceData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
     cDefStartValue.init(object, JSON_START);
   }
 

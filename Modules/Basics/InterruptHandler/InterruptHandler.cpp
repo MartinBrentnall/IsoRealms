@@ -23,7 +23,7 @@ namespace IsoRealms::Basics {
   const std::string InterruptHandler::JSON_ON_INPUT = "onInput";
 
   InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data) :
-            cDefAction(project) {
+            cDefAction(data) {
   }
   
   InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -53,7 +53,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

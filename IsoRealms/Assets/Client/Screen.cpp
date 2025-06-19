@@ -19,39 +19,35 @@
 #include "Screen.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Screen::Screen(IProject& project) : 
-            Asset<IScreen, IProject>(project, project.createLiteralScreen(this)) {
+  Screen::Screen(IResourceData& owner) : 
+            Asset<IScreen, IResourceData>(owner, owner.getAssetManager().createLiteralScreen(this, owner)) {
   }
 
-  Screen::Screen(const Screen& screen) :
-            Asset<IScreen, IProject>(screen.cManager, screen.cManager.createLiteralScreen(this)) {
-    setID(screen.getID());
-  }
-
-  IScreen* Screen::createLiteralAsset(IProject& project) {
-    return project.createLiteralScreen(this);
+  IScreen* Screen::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralScreen(this, owner);
   }
   
-  IScreen* Screen::getAsset(IProject& project, JSONObject object) {
-    return project.getScreen(this, object);
+  IScreen* Screen::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getScreen(this, object, owner);
   }
   
-  IScreen* Screen::getAsset(IProject& project, const std::string& id) {
-    return project.getScreen(this, id);
+  IScreen* Screen::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getScreen(this, id, owner);
   }
   
   std::vector<std::string> Screen::getAvailableProviders() const {
-    return cManager.getAllScreens();
+    return cManager.getAssetManager().getAllScreens();
   }  
 
   bool Screen::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderScreenIcon(id);
+    return cManager.getAssetManager().renderScreenIcon(id);
   }
 
   bool Screen::hasConfiguration() const {
-    return cManager.isScreenConfigurable(getID());
+    return cManager.getAssetManager().isScreenConfigurable(getID());
   }  
 
   bool Screen::isDefaultConfiguration() const {

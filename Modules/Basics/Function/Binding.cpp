@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
   Binding::Binding(Function& parent, IBindingRegistry* localArgs, const std::string& name) :
             cParent(parent),
             cDefName(name),
-            cDefValue(parent.getProject(), localArgs, [this]() {
+            cDefValue(parent.getResourceData(), localArgs, [this]() {
               std::string mNewBindingID = cDefValue.getID();
               std::size_t mLastSeparator = mNewBindingID.rfind('/');
               if (mLastSeparator != std::string::npos) {

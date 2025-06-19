@@ -109,6 +109,7 @@ namespace IsoRealms::Spindizzy {
   
     // Interface access (used by all).
     IProject& getProject() const;
+    Spindizzy& getAssetManager();
 
     // Resource retrieval.
     AlienType*        getAlienType(      const std::string& id) const;
@@ -150,8 +151,8 @@ namespace IsoRealms::Spindizzy {
     IBoundaryType*        createLiteralBoundaryType(       IAssetUser<IBoundaryType>*        user);
     ICamera*              createLiteralCamera(             IAssetUser<ICamera>*              user, WorldView&      owner);
     IPhysicalObjectType*  createLiteralPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user);
-    ISurfacePattern*      createLiteralSurfacePattern(     IAssetUser<ISurfacePattern>*      user);
-    IWallPattern*         createLiteralWallPattern(        IAssetUser<IWallPattern>*         user);
+    ISurfacePattern*      createLiteralSurfacePattern(     IAssetUser<ISurfacePattern>*      user, TerrainType&    owner);
+    IWallPattern*         createLiteralWallPattern(        IAssetUser<IWallPattern>*         user, TerrainType&    owner);
     IWorldEditorTool*     createLiteralWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user);
     IZoneObjectTypeTrait* createLiteralZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, ZoneObjectType& owner);
     IZoneViewType*        createLiteralZoneViewType(       IAssetUser<IZoneViewType>*        user, WorldView&      owner);
@@ -159,8 +160,8 @@ namespace IsoRealms::Spindizzy {
     IBoundaryType*        getBoundaryType(       IAssetUser<IBoundaryType>*        user, const std::string& id);
     ICamera*              getCamera(             IAssetUser<ICamera>*              user, const std::string& id, WorldView&      owner);
     IPhysicalObjectType*  getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, const std::string& id);
-    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, const std::string& id, IStateListener<ISurfacePattern*>* listener);
-    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, const std::string& id, IStateListener<IWallPattern*>*    listener);
+    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, const std::string& id, TerrainType&    owner, IStateListener<ISurfacePattern*>* listener);
+    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, const std::string& id, TerrainType&    owner, IStateListener<IWallPattern*>*    listener);
     IWorldEditorTool*     getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, const std::string& id);
     IZoneObjectTypeTrait* getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, const std::string& id, ZoneObjectType& owner);
     IZoneViewType*        getZoneViewType(       IAssetUser<IZoneViewType>*        user, const std::string& id, WorldView&      owner);
@@ -168,8 +169,8 @@ namespace IsoRealms::Spindizzy {
     IBoundaryType*        getBoundaryType(       IAssetUser<IBoundaryType>*        user, JSONObject object);
     ICamera*              getCamera(             IAssetUser<ICamera>*              user, JSONObject object, WorldView&      owner);
     IPhysicalObjectType*  getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, JSONObject object);
-    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, JSONObject object, IStateListener<ISurfacePattern*>* listener);
-    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, JSONObject object, IStateListener<IWallPattern*>*    listener);
+    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, JSONObject object, TerrainType&    owner, IStateListener<ISurfacePattern*>* listener);
+    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, JSONObject object, TerrainType&    owner, IStateListener<IWallPattern*>*    listener);
     IWorldEditorTool*     getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, JSONObject object);
     IZoneObjectTypeTrait* getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType& owner);
     IZoneViewType*        getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView&      owner);
@@ -442,8 +443,8 @@ namespace IsoRealms::Spindizzy {
     AssetClientManager<Spindizzy,      IBoundaryType>        cBoundaryTypes;
     AssetClientManager<WorldView,      ICamera>              cCameras;
     AssetClientManager<Spindizzy,      IPhysicalObjectType>  cPhysicalObjectTypes;
-    AssetClientManager<Spindizzy,      ISurfacePattern>      cSurfacePatterns;
-    AssetClientManager<Spindizzy,      IWallPattern>         cWallPatterns;
+    AssetClientManager<TerrainType,    ISurfacePattern>      cSurfacePatterns;
+    AssetClientManager<TerrainType,    IWallPattern>         cWallPatterns;
     AssetClientManager<Spindizzy,      IWorldEditorTool>     cWorldEditorTools;
     AssetClientManager<ZoneObjectType, IZoneObjectTypeTrait> cZoneObjectTypeTraits;
     AssetClientManager<WorldView,      IZoneViewType>        cZoneViewTypes;
@@ -460,13 +461,13 @@ namespace IsoRealms::Spindizzy {
     AssetInstanced<WorldView, ICamera, CameraTransitional> cProviderCameraTransitional;
     AssetInstanced<WorldView, ICamera, CameraVariant>      cProviderCameraVariant;
     
-    AssetInstanced<Spindizzy, ISurfacePattern, SurfacePatternOutline>      cProviderSurfacePatternOutline;
-    AssetInstanced<Spindizzy, ISurfacePattern, SurfacePatternSplitVariant> cProviderSurfacePatternSplitVariant;
-    AssetInstanced<Spindizzy, ISurfacePattern, SurfacePatternTile>         cProviderSurfacePatternTile;
+    AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternOutline>      cProviderSurfacePatternOutline;
+    AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternSplitVariant> cProviderSurfacePatternSplitVariant;
+    AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternTile>         cProviderSurfacePatternTile;
     
-    AssetInstanced<Spindizzy, IWallPattern, WallPatternCap>      cProviderWallPatternCap;
-    AssetInstanced<Spindizzy, IWallPattern, WallPatternOutline>  cProviderWallPatternOutline;
-    AssetInstanced<Spindizzy, IWallPattern, WallPatternTile>     cProviderWallPatternTile;
+    AssetInstanced<TerrainType, IWallPattern, WallPatternCap>      cProviderWallPatternCap;
+    AssetInstanced<TerrainType, IWallPattern, WallPatternOutline>  cProviderWallPatternOutline;
+    AssetInstanced<TerrainType, IWallPattern, WallPatternTile>     cProviderWallPatternTile;
 
     AssetInstanced<WorldView, IZoneViewType, ZoneViewTypeActual>   cProviderZoneViewTypeActual;
     AssetInstanced<WorldView, IZoneViewType, ZoneViewTypeOverview> cProviderZoneViewTypeOverview;

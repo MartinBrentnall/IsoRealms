@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   }
   
   SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence, object) {
+            SequenceTrackBase(project, sequence.getResourceData(), sequence, object) {
   }
 
   ISequenceTrackEvent* SequenceTrackAction::getEvent(unsigned int time) {

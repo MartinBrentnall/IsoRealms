@@ -48,6 +48,7 @@ namespace IsoRealms::Basics {
 
     virtual void save(JSONObject object, ISequenceTrack* asset) const = 0;
 
+    virtual IBasics& getAssetManager() = 0;
     virtual IProject& getProject() const = 0;
 
     virtual ~IBasics() {}

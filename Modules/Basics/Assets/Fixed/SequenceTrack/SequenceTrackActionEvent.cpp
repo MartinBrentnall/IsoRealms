@@ -21,13 +21,13 @@
 #include "SequenceTrackAction.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IProject& project, unsigned int time) :
-            cDefAction(project),
+  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, IProject& project, unsigned int time) :
+            cDefAction(owner),
             cDefTime(time) {
   }
 
-  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IProject& project, JSONObject object) :
-            SequenceTrackActionEvent(parent, project, object.getInteger(JSON_DELAY)) {
+  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, IProject& project, JSONObject object) :
+            SequenceTrackActionEvent(parent, owner, project, object.getInteger(JSON_DELAY)) {
     cDefAction.init(object, JSON_EXECUTE);
   }
 

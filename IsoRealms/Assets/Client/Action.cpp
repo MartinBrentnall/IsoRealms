@@ -19,11 +19,13 @@
 #include "Action.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Action::Action(IProject& project) :
-            cProject(project),
-            cAction(cProject.createLiteralAction(this)) {
+  Action::Action(IResourceData& owner) :
+            cProject(owner.getProject()),
+            cManager(owner),
+            cAction(cProject.createLiteralAction(this, owner)) {
   }
 
   void Action::init(JSONObject object, const std::string& tag, IBindingRegistry* localArgs) {
@@ -36,12 +38,12 @@ namespace IsoRealms {
 
   void Action::set(JSONObject object, const std::string& tag, IBindingRegistry* localArgs) {
     cProject.release(this, cAction);
-    cAction = cProject.getAction(this, object, tag, localArgs);
+    cAction = cProject.getAction(this, object, cManager, tag, localArgs);
   }
 
   void Action::setID(const std::string& id) {
     cProject.release(this, cAction);
-    cAction = cProject.getAction(this, id);
+    cAction = cProject.getAction(this, id, cManager);
   }
 
   void Action::execute() {
@@ -83,7 +85,7 @@ namespace IsoRealms {
 
   void Action::relinquish(ActionExecutor* asset) {
     if (cAction == asset) {
-      cAction = cProject.createLiteralAction(this);
+      cAction = cProject.createLiteralAction(this, cManager);
     }
   }
 

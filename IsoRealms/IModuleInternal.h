@@ -33,6 +33,7 @@ namespace IsoRealms {
     virtual IAssetRemover& getAssetRemover() = 0;
     virtual IAssetRegistry& getAssetRegistry() = 0;
     virtual IAssets& getAssets() = 0;
+    virtual IProject& getProject() = 0;
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
     virtual File* getProjectFile() = 0;

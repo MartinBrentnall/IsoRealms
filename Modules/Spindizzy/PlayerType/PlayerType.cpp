@@ -65,15 +65,15 @@ namespace IsoRealms::Spindizzy {
             cDefRadius(DEFAULT_RADIUS),
             cDefHugMomentum(DEFAULT_HUG_MOMENTUM),
             cDefRespawnDelay(DEFAULT_RESPAWN_DELAY),
-            cDefModel(project),
-            cDefInputThrust(project, false),
-            cDefInputX(project, 0.0f),
-            cDefInputY(project, 0.0f),
-            cDefOrientation(project, 0.0f),
-            cDefRespawnAction(project),
-            cDefFallImpactAction(project),
-            cDefFallBounceAction(project),
-            cDefWallBounceAction(project),
+            cDefModel(data),
+            cDefInputThrust(data, false),
+            cDefInputX(data, 0.0f),
+            cDefInputY(data, 0.0f),
+            cDefOrientation(data, 0.0f),
+            cDefRespawnAction(data),
+            cDefFallImpactAction(data),
+            cDefFallBounceAction(data),
+            cDefWallBounceAction(data),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
     cProjectCallbackManager.reset([this]() {
@@ -139,7 +139,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> PlayerType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> PlayerType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 
     // Dimensions

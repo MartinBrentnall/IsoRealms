@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
   ProjectOptions::ProjectOptions(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
             ProjectOptions(project, basics, data) {
     for (JSONObject mOptionsObject : object.getArray(JSON_OPTIONS)) {
-      cDefOptions.emplace(std::piecewise_construct, std::forward_as_tuple(mOptionsObject.getString(JSON_ID)), std::forward_as_tuple(project)).first->second.init(mOptionsObject, JSON_VALUE);
+      cDefOptions.emplace(std::piecewise_construct, std::forward_as_tuple(mOptionsObject.getString(JSON_ID)), std::forward_as_tuple(data)).first->second.init(mOptionsObject, JSON_VALUE);
     }
   }
 
@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

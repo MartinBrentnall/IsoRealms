@@ -26,6 +26,7 @@ namespace IsoRealms {
   class IAssetRegistry;
   class IAssetRemover;
   class IAssets;
+  class IProject;
   class IResource;
   class LocalAssetRegistry;
 
@@ -47,5 +48,6 @@ namespace IsoRealms {
     virtual IAssetRemover& getAssetRemover() = 0;
     virtual IAssetRegistry& getAssetRegistry() = 0;
     virtual IAssets& getAssets() = 0;
+    virtual IProject& getProject() = 0;
   };
 }

@@ -43,7 +43,7 @@ namespace IsoRealms::Basics {
             ModelCycler(project, basics, data) {
     unsigned int mIndex = 0;
     for (JSONObject mModelObject : object.getArray(JSON_MODELS)) {
-      cDefModels.emplace_back(std::make_unique<Model>(project))->init(mModelObject, JSON_MODEL);
+      cDefModels.emplace_back(std::make_unique<Model>(data))->init(mModelObject, JSON_MODEL);
       cOffsetModels.emplace_back(std::make_unique<Offset>(*this, mIndex++));
     }
   }
@@ -79,7 +79,7 @@ namespace IsoRealms::Basics {
     return cDefModels[mIndex]->renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> ModelCycler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ModelCycler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     unsigned int mModelCount = 1;
     for (const std::unique_ptr<Model>& mModel : cDefModels) {

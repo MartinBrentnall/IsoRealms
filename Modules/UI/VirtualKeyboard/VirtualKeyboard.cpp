@@ -30,9 +30,9 @@ namespace IsoRealms::UI {
   VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data) :
             cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
-            cDefConfirmAction(project),
-            cDefSelectionColour(project, 1.0f, 0.0f, 1.0f),
-            cDefFont(project),
+            cDefConfirmAction(data),
+            cDefSelectionColour(data, 1.0f, 0.0f, 1.0f),
+            cDefFont(data),
             cRuntimeControllerCaps(false),
             cLuaBinding(project, this) {
     cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
@@ -86,7 +86,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

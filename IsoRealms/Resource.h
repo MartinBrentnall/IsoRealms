@@ -87,6 +87,8 @@ namespace IsoRealms {
           }
         }
 
+        // TODO: If the resource belongs to a read-only project file, it should be changed to the main one and an omission should be created in place of the original name.
+
         cParent.renameResource(this, value);
         cParent.renameUserDataDirectory(cName, value);
         cName = value;
@@ -94,7 +96,7 @@ namespace IsoRealms {
         registerAssets();
         return true;
       }));
-      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(browser, cAssetRegistry);
+      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(*this, browser, cAssetRegistry);
       mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mResourceProperties)), std::make_move_iterator(std::end(mResourceProperties)));
       return mProperties;
     }
@@ -102,6 +104,14 @@ namespace IsoRealms {
     bool renderIcon() override {
       if (!cResourceHandle.renderIcon()) {
         Utils::renderIconLeaf();
+      }
+      if (!cOwnerProject->isUser()) {
+        glPushMatrix();
+        float mHeight = 0.08f;
+        glTranslatef(-1.0f + mHeight * 0.75f, 1.0f - mHeight * 0.75f, 0.0f);
+        glScalef(mHeight * 0.25f, mHeight * 0.25f, 0.0f);
+        Utils::renderIconLock();
+        glPopMatrix();
       }
       return true;
     }
@@ -148,6 +158,18 @@ namespace IsoRealms {
 
     bool isIncluded() const override {
       return cParent.getProjectFile() != cOwnerProject;
+    }
+
+    bool isReadOnly() const override {
+      return !cOwnerProject->isUser();
+    }
+
+    IProject& getProject() override {
+      return cParent.getProject();
+    }
+
+    IProject& getAssetManager() override {
+      return cParent.getProject();
     }
 
     private:

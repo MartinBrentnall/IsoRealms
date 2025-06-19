@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
             cSpindizzy(spindizzy),
             cDefPhysicalObjectTypeA(spindizzy),
             cDefPhysicalObjectTypeB(spindizzy),
-            cDefEnteredAction(project),
-            cDefExitedAction(project) {
+            cDefEnteredAction(data),
+            cDefExitedAction(data) {
   }
 
   CollisionHandler::CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -69,7 +69,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type A", "TODO", cDefPhysicalObjectTypeA));
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type B", "TODO", cDefPhysicalObjectTypeB));

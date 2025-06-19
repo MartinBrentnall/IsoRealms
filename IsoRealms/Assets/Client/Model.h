@@ -29,9 +29,9 @@
 #include "ModelInstance.h"
 
 namespace IsoRealms {
-  class Model : public Asset<IModel, IProject> {
+  class Model : public Asset<IModel, IResourceData> {
     public:
-    Model(IProject& project);
+    Model(IResourceData& owner);
 
     std::unique_ptr<ModelInstance> createInstance();
     bool renderIcon() const;
@@ -39,12 +39,12 @@ namespace IsoRealms {
     void notifyDestruction(ModelInstance* instance);
     void applyTransformation() const;
 
-    /****************************************\
-     * Implements Asset<IInteger, IProject> *
-    \****************************************/
-    IModel* createLiteralAsset(IProject& project) override;
-    IModel* getAsset(IProject& project, JSONObject object) override;
-    IModel* getAsset(IProject& project, const std::string& id) override;
+    /*********************************************\
+     * Implements Asset<IInteger, IResourceData> *
+    \*********************************************/
+    IModel* createLiteralAsset(IResourceData& owner) override;
+    IModel* getAsset(IResourceData& owner, JSONObject object) override;
+    IModel* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

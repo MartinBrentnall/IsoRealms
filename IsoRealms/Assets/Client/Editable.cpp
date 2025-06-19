@@ -19,26 +19,27 @@
 #include "Editable.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Editable::Editable(IProject& project) : 
-            Asset<IEditable, IProject>(project, project.createLiteralEditable(this)) {
+  Editable::Editable(IResourceData& owner) :
+            Asset<IEditable, IResourceData>(owner, owner.getAssetManager().createLiteralEditable(this, owner)) {
   }
 
-  IEditable* Editable::createLiteralAsset(IProject& project) {
-    return project.createLiteralEditable(this);
+  IEditable* Editable::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralEditable(this, owner);
   }
   
-  IEditable* Editable::getAsset(IProject& project, JSONObject object) {
-    return project.getEditable(this, object);
+  IEditable* Editable::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getEditable(this, object, owner);
   }
   
-  IEditable* Editable::getAsset(IProject& project, const std::string& id) {
-    return project.getEditable(this, id);
+  IEditable* Editable::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getEditable(this, id, owner);
   }
   
   std::vector<std::string> Editable::getAvailableProviders() const {
-    return cManager.getAllEditables();
+    return cManager.getAssetManager().getAllEditables();
   }  
 
   bool Editable::renderOtherProviderIcon(const std::string& id) const {

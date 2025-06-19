@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class DummyTexture : public ITexture {
     public:
-    DummyTexture(IProject& project);
+    DummyTexture(IResourceData& owner);
 
     /***********************\
      * Implements ITexture *

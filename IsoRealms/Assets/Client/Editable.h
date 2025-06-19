@@ -28,16 +28,16 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Editable : public Asset<IEditable, IProject> {
+  class Editable : public Asset<IEditable, IResourceData> {
     public:
-    Editable(IProject& project);
+    Editable(IResourceData& owner);
 
-    /*****************************************\
-     * Implements Asset<IEditable, IProject> *
-    \*****************************************/
-    IEditable* createLiteralAsset(IProject& project) override;
-    IEditable* getAsset(IProject& project, JSONObject object) override;
-    IEditable* getAsset(IProject& project, const std::string& id) override;
+    /**********************************************\
+     * Implements Asset<IEditable, IResourceData> *
+    \**********************************************/
+    IEditable* createLiteralAsset(IResourceData& owner) override;
+    IEditable* getAsset(IResourceData& owner, JSONObject object) override;
+    IEditable* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

@@ -28,16 +28,16 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class BindingType : public Asset<IBindingType, IProject> {
+  class BindingType : public Asset<IBindingType, IResourceData> {
     public:
-    BindingType(IProject& project, std::function<void()> listener);
+    BindingType(IResourceData& owner, std::function<void()> listener);
 
-    /********************************************\
-     * Implements Asset<IBindingType, IProject> *
-    \********************************************/
-    IBindingType* createLiteralAsset(IProject& project) override;
-    IBindingType* getAsset(IProject& project, JSONObject object) override;
-    IBindingType* getAsset(IProject& project, const std::string& id) override;
+    /*************************************************\
+     * Implements Asset<IBindingType, IResourceData> *
+    \*************************************************/
+    IBindingType* createLiteralAsset(IResourceData& owner) override;
+    IBindingType* getAsset(IResourceData& owner, JSONObject object) override;
+    IBindingType* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

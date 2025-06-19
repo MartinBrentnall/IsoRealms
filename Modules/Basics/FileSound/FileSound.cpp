@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cDefFile));
     return mProperties;
@@ -68,11 +68,11 @@ namespace IsoRealms::Basics {
     }
   }
 
-  IAction* FileSound::createAction(JSONObject object, IProject& project, IBindingRegistry* localObjects) {
+  IAction* FileSound::createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localObjects) {
     return this;
   }
 
-  IAction* FileSound::createAction(IProject& project, IBindingRegistry* localObjects) {
+  IAction* FileSound::createAction(IResourceData& owner, IBindingRegistry* localObjects) {
     return this;
   }
   

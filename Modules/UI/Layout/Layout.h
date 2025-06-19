@@ -47,7 +47,7 @@ namespace IsoRealms::UI {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**********************\
      * Implements IScreen *
@@ -67,6 +67,7 @@ namespace IsoRealms::UI {
      * Editing Interface *
     \*********************/
     IUI& getUI() const;
+    IResourceData& getResourceData();
     LayoutComponent* createComponent(float x1, float y1, float x2, float y2, float aspectRatio);
     LayoutComponent* createComponent(JSONObject& object);
     void deleteComponent(LayoutComponent* component);
@@ -91,6 +92,7 @@ namespace IsoRealms::UI {
 
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
+    IResourceData& cResourceData;
     IUI& cUI;
 
     // Definition data.

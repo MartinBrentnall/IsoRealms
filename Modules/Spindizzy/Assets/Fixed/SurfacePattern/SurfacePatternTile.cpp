@@ -20,16 +20,17 @@
 #include "SurfacePatternTile.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/TerrainType/TerrainType.h"
 #include "Modules/Spindizzy/World/Object/Terrain/SplitSurface.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternTile::SurfacePatternTile(IProject& project, Spindizzy& spindizzy) :
-            cDefTexture(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  SurfacePatternTile::SurfacePatternTile(IProject& project, TerrainType& owner) :
+            cDefTexture(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}) {
   }
 
-  SurfacePatternTile::SurfacePatternTile(IProject& project, Spindizzy& spindizzy, JSONObject object) :
-            SurfacePatternTile(project, spindizzy) {
+  SurfacePatternTile::SurfacePatternTile(IProject& project, TerrainType& owner, JSONObject object) :
+            SurfacePatternTile(project, owner) {
     cDefTexture.set(object, JSON_TEXTURE);
   }
 

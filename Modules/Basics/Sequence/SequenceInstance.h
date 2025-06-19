@@ -48,7 +48,7 @@ namespace IsoRealms::Basics {
     void update(unsigned int milliseconds);
     void updatePreview(unsigned int milliseconds);
     void save(JSONObject object) const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     /***********************\
       * Scripting Interface *

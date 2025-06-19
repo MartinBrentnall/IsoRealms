@@ -32,8 +32,8 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenText(IProject& project, Project& owner);
-    ScreenText(IProject& project, Project& owner, JSONObject object);
+    ScreenText(IProject& project, IResourceData& owner);
+    ScreenText(IProject& project, IResourceData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *

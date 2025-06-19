@@ -45,15 +45,15 @@ namespace IsoRealms::Basics {
     return mAvailableIndex;
   }
 
-  IAction* Script::createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, object, project, getNextAvailableIndex(), localArgs);
+  IAction* Script::createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) {
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, object, owner, getNextAvailableIndex(), localArgs);
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
 
-  IAction* Script::createAction(IProject& project, IBindingRegistry* localArgs) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, project, getNextAvailableIndex());
+  IAction* Script::createAction(IResourceData& owner, IBindingRegistry* localArgs) {
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
@@ -85,17 +85,17 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  Script::ScriptAction::ScriptAction(Script& parent, JSONObject object, IProject& project, unsigned int index, IBindingRegistry* localArgs) :
+  Script::ScriptAction::ScriptAction(Script& parent, JSONObject object, IResourceData& owner, unsigned int index, IBindingRegistry* localArgs) :
             cDefParent(parent),
-            cDefFunction(project, "_t" + Utils::toString(index), object, localArgs, false),
-            cDefAction(cDefFunction.createAction(object, project, nullptr)),
+            cDefFunction(owner.getProject(), "_t" + Utils::toString(index), owner, object, localArgs, false),
+            cDefAction(cDefFunction.createAction(object, owner, nullptr)),
             cDefIndex(index) {
   }
 
-  Script::ScriptAction::ScriptAction(Script& parent, IProject& project, unsigned int index) :
+  Script::ScriptAction::ScriptAction(Script& parent, IResourceData& owner, unsigned int index) :
             cDefParent(parent),
-            cDefFunction(project, "_t" + Utils::toString(index)),
-            cDefAction(cDefFunction.createAction(project, nullptr)),
+            cDefFunction(owner.getProject(), "_t" + Utils::toString(index), owner),
+            cDefAction(cDefFunction.createAction(owner, nullptr)),
             cDefIndex(index) {
   }
 

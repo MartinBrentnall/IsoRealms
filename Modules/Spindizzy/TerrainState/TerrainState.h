@@ -51,7 +51,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**
      * Get the condition element that represents this terrain state.
@@ -118,6 +118,6 @@ namespace IsoRealms::Spindizzy {
      * @param name ID of this terrain state.
      * @param value initial value of this terrain state.
      */
-    TerrainState(IProject& project, const std::string& id, bool value, float iconScale);
+    TerrainState(IProject& project, IResourceData& owner, const std::string& id, bool value, float iconScale);
   };
 }

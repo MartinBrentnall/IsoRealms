@@ -51,9 +51,10 @@ namespace IsoRealms::UI {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Interface to be used by menu items.
+    IResourceData& getResourceData();
     const Font& getFont() const;
     float getFontSize() const;
     float getShadowOffset() const;
@@ -100,6 +101,7 @@ namespace IsoRealms::UI {
 
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
+    IResourceData& cResourceData;
 
     // Definition data.
     HatHandler& cHatHandler;

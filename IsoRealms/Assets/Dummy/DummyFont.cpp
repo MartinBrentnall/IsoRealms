@@ -22,7 +22,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  DummyFont::DummyFont(IProject& project) {
+  DummyFont::DummyFont(IResourceData& owner) {
     // Nothing to do.
   }
 

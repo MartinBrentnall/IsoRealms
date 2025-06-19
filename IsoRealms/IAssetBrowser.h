@@ -58,17 +58,17 @@ namespace IsoRealms {
     virtual std::vector<std::string> getAllTextures()      = 0;
     virtual std::vector<std::string> getAllVertices()      = 0;
     
-    virtual void addListener(IAssetListener<Project, IBoolean>*)     = 0;
-    virtual void addListener(IAssetListener<Project, IColour>*)      = 0;
-    virtual void addListener(IAssetListener<Project, IEditable>*)    = 0;
-    virtual void addListener(IAssetListener<Project, IFloat>*)       = 0;
-    virtual void addListener(IAssetListener<Project, IFont>*)        = 0;
-    virtual void addListener(IAssetListener<Project, IInteger>*)     = 0;
-    virtual void addListener(IAssetListener<Project, IModel>*)       = 0;
-    virtual void addListener(IAssetListener<Project, IScreen>*)      = 0;
-    virtual void addListener(IAssetListener<Project, IString>*)      = 0;
-    virtual void addListener(IAssetListener<Project, ITexture>*)     = 0;
-    virtual void addListener(IAssetListener<Project, IVertex>*)      = 0;
+    virtual void addListener(IAssetListener<IResourceData, IBoolean>*)     = 0;
+    virtual void addListener(IAssetListener<IResourceData, IColour>*)      = 0;
+    virtual void addListener(IAssetListener<IResourceData, IEditable>*)    = 0;
+    virtual void addListener(IAssetListener<IResourceData, IFloat>*)       = 0;
+    virtual void addListener(IAssetListener<IResourceData, IFont>*)        = 0;
+    virtual void addListener(IAssetListener<IResourceData, IInteger>*)     = 0;
+    virtual void addListener(IAssetListener<IResourceData, IModel>*)       = 0;
+    virtual void addListener(IAssetListener<IResourceData, IScreen>*)      = 0;
+    virtual void addListener(IAssetListener<IResourceData, IString>*)      = 0;
+    virtual void addListener(IAssetListener<IResourceData, ITexture>*)     = 0;
+    virtual void addListener(IAssetListener<IResourceData, IVertex>*)      = 0;
     
     virtual bool renderActionIcon(      const std::string& id) const = 0;
     virtual bool renderBindingIcon(     const std::string& id) const = 0;

@@ -22,7 +22,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  DummyInputHandler::DummyInputHandler(IProject& project) {
+  DummyInputHandler::DummyInputHandler(IResourceData& owner) {
     // Nothing to do.
   }
 

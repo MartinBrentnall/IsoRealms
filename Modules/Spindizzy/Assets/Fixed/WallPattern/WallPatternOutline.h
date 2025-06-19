@@ -26,12 +26,12 @@
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
 
 namespace IsoRealms::Spindizzy {
-  class Spindizzy;
+  class TerrainType;
 
   class WallPatternOutline : public IWallPattern {
     public:
-    WallPatternOutline(IProject& project, Spindizzy& spindizzy);
-    WallPatternOutline(IProject& project, Spindizzy& spindizzy, JSONObject object);
+    WallPatternOutline(IProject& project, TerrainType& owner);
+    WallPatternOutline(IProject& project, TerrainType& owner, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *

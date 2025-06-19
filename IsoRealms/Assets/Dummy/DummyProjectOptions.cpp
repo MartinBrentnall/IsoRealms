@@ -22,7 +22,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  DummyProjectOptions::DummyProjectOptions(IProject& project) {
+  DummyProjectOptions::DummyProjectOptions(IResourceData& owner) {
     // Nothing to do.
   }
 

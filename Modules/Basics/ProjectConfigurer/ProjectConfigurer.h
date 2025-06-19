@@ -47,7 +47,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     /**********************\
      * Implements IScreen *
@@ -93,9 +93,9 @@ namespace IsoRealms::Basics {
     // TODO: Duplicated from WorldEditor
     class DigitalInput {
       public:
-      DigitalInput(IProject& project, ProjectConfigurer& parent, SignalInputID signal) :
+      DigitalInput(IResourceData& owner, ProjectConfigurer& parent, SignalInputID signal) :
                 cParent(parent),
-                cInput(project, false, [this](bool value) {
+                cInput(owner, false, [this](bool value) {
                   if (value && !cValue) {
                     cParent.signal(cSignal);
                   }

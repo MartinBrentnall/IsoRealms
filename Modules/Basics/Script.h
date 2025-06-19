@@ -35,8 +35,8 @@ namespace IsoRealms::Basics {
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) override;
-    IAction* createAction(IProject& project, IBindingRegistry* localArgs) override;
+    IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
+    IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets& assets) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
@@ -46,8 +46,8 @@ namespace IsoRealms::Basics {
     private:
     class ScriptAction : public IAction {
       public:
-      ScriptAction(Script& parent, JSONObject object, IProject& project, unsigned int index, IBindingRegistry* localArgs);
-      ScriptAction(Script& parent, IProject& project, unsigned int index);
+      ScriptAction(Script& parent, JSONObject object, IResourceData& owner, unsigned int index, IBindingRegistry* localArgs);
+      ScriptAction(Script& parent, IResourceData& owner, unsigned int index);
 
       void destroyInternalAction(IAssets& assets);
       unsigned int getIndex() const;

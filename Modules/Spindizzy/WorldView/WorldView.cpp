@@ -31,6 +31,7 @@ namespace IsoRealms::Spindizzy {
   WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
+            cResourceData(data),
             cDefWorld(nullptr),
             cDefCamera(spindizzy, *this),
             cDefZoneViewType(spindizzy, *this),
@@ -88,7 +89,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> WorldView::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> WorldView::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          "TODO", cDefWorld)); // TODO:
     mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      "Camera",         "TODO", cDefCamera));
@@ -128,6 +129,10 @@ namespace IsoRealms::Spindizzy {
 
   Spindizzy& WorldView::getSpindizzy() {
     return cSpindizzy;
+  }
+
+  IResourceData& WorldView::getResourceData() {
+    return cResourceData;
   }
 
   ICamera* WorldView::getCamera() {

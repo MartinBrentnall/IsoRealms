@@ -54,14 +54,15 @@ namespace IsoRealms::Basics {
     void save(JSONObject object, IAssetIdentifier& identifier, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Constructors for use by scripts (in-line functions).
-    Function(IProject& project, const std::string& name);
-    Function(IProject& project, const std::string& name, JSONObject object, IBindingRegistry* localArgs, bool init);
+    Function(IProject& project, const std::string& name, IResourceData& data);
+    Function(IProject& project, const std::string& name, IResourceData& data, JSONObject object, IBindingRegistry* localArgs, bool init);
     void unregisterAssets(IAssets& releaser);
     std::vector<std::unique_ptr<IProperty>> getScriptProperties();
     IProject& getProject() const;
+    IResourceData& getResourceData() const;
     bool setBindingName(Binding& binding, const std::string& name);
     bool setArgumentDefinitionName(ArgumentDefinition& argumentDefinition, const std::string& name);
     Binding* getBinding(const std::string& name);
@@ -71,8 +72,8 @@ namespace IsoRealms::Basics {
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) override;
-    IAction* createAction(IProject& project, IBindingRegistry* localArgs) override;
+    IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
+    IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets& assets) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
@@ -95,8 +96,8 @@ namespace IsoRealms::Basics {
     // Private types.
     class Call : public IAction {
       public:
-      Call(Function& parent, IProject& project, IBindingRegistry* localObjects);
-      Call(Function& parent, JSONObject object, IProject& project, IBindingRegistry* localObjects);
+      Call(Function& parent, IResourceData& owner, IBindingRegistry* localObjects);
+      Call(Function& parent, JSONObject object, IResourceData& owner, IBindingRegistry* localObjects);
       void release(IAssets& releaser);
 
       /**********************\
@@ -120,6 +121,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     IProject& cProject;
+    IResourceData& cResourceData;
     sol::state* const cDefLuaState; /// The Lua state machine.
     
     // Definition data.

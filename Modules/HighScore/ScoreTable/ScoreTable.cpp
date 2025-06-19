@@ -32,8 +32,8 @@ namespace IsoRealms::HighScore {
   const std::string ScoreTable::JSON_VALUES           = "values";
 
   ScoreTable::ScoreTable(IProject& project, HighScore& highScore, IResourceData& data) :
-            cProjectDataPath(project),
-            cProjectUser(project, false),
+            cProjectDataPath(data),
+            cProjectUser(data, false),
             cLuaBinding(project, this) {
   }
 
@@ -62,7 +62,7 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScoreTable::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ScoreTable::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

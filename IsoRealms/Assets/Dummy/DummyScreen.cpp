@@ -22,7 +22,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  DummyScreen::DummyScreen(IProject& project) {
+  DummyScreen::DummyScreen(IResourceData& owner) {
     // Nothing to do.
   }
 

@@ -69,6 +69,7 @@ namespace IsoRealms::UI {
     virtual void save(JSONObject object, ILayoutOffset*   asset) const = 0;
     virtual void save(JSONObject object, IMenuItem*       asset) const = 0;
 
+    virtual IUI& getAssetManager() = 0;
     virtual IProject& getProject() const = 0;
 
     virtual ~IUI() {}

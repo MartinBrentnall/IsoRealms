@@ -25,7 +25,7 @@
 namespace IsoRealms {
   class Project;
 
-  class AssetConvertedProjectToString : public IAssetProvider<Project, IString> {
+  class AssetConvertedProjectToString : public IAssetProvider<IResourceData, IString> {
     public:
     AssetConvertedProjectToString(IProject& project) :
               cProject(project) {
@@ -33,14 +33,14 @@ namespace IsoRealms {
 
     protected:
 
-    IString* getAsset(Project& project, JSONObject object) const override {
-      IAssets* mAssets = cProject.getAssets(&cDummyUser, object.getObject(JSON_PROJECT));
-      return mAssets->getString(&cDummyUser, object.getObject(JSON_VALUE));
+    IString* getAsset(IResourceData& owner, JSONObject object) const override {
+      IAssets* mAssets = cProject.getAssets(&cDummyUser, object.getObject(JSON_PROJECT), owner);
+      return mAssets->getString(&cDummyUser, object.getObject(JSON_VALUE), owner);
 
 //      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(JSON_VALUE), nullptr);})).first->get();
     }
 
-    IString* getAsset(Project& project) const override {
+    IString* getAsset(IResourceData& owner) const override {
       return nullptr; // TODO: Implement this.
     }
     

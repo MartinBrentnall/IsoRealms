@@ -28,16 +28,16 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Font : public Asset<IFont, IProject> {
+  class Font : public Asset<IFont, IResourceData> {
     public:
-    Font(IProject& project);
+    Font(IResourceData& owner);
 
-    /*************************************\
-     * Implements Asset<IFont, IProject> *
-    \*************************************/
-    IFont* createLiteralAsset(IProject& project) override;
-    IFont* getAsset(IProject& project, JSONObject object) override;
-    IFont* getAsset(IProject& project, const std::string& id) override;
+    /******************************************\
+     * Implements Asset<IFont, IResourceData> *
+    \******************************************/
+    IFont* createLiteralAsset(IResourceData& owner) override;
+    IFont* getAsset(IResourceData& owner, JSONObject object) override;
+    IFont* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

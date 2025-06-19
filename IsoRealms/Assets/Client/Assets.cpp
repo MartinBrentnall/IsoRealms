@@ -19,22 +19,23 @@
 #include "Assets.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Assets::Assets(IProject& project) : 
-            Asset<IAssets, IProject>(project, project.createLiteralAssets(this)) {
+  Assets::Assets(IResourceData& owner) :
+            Asset<IAssets, IResourceData>(owner, owner.getAssetManager().createLiteralAssets(this, owner)) {
   }
 
-  IAssets* Assets::createLiteralAsset(IProject& project) {
-    return project.createLiteralAssets(this);
+  IAssets* Assets::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralAssets(this, owner);
   }
   
-  IAssets* Assets::getAsset(IProject& project, JSONObject object) {
-    return project.getAssets(this, object);
+  IAssets* Assets::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getAssets(this, object, owner);
   }
   
-  IAssets* Assets::getAsset(IProject& project, const std::string& id) {
-    return project.getAssets(this, id);
+  IAssets* Assets::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getAssets(this, id, owner);
   }
   
   std::vector<std::string> Assets::getAvailableProviders() const {

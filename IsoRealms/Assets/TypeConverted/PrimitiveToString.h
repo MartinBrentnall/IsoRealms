@@ -30,12 +30,12 @@
 namespace IsoRealms {
   template <class T> class PrimitiveToString : public IString {
     public:
-    PrimitiveToString(IProject& project) :
-              cDefValue(project) {
+    PrimitiveToString(IResourceData& owner) :
+              cDefValue(owner) {
     }
 
-    PrimitiveToString(IProject& project, JSONObject object) :
-              PrimitiveToString(project) {
+    PrimitiveToString(IResourceData& owner, JSONObject object) :
+              PrimitiveToString(owner) {
       cDefValue.set(object, JSON_ASSET);
     }
 

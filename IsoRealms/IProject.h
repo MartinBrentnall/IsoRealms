@@ -142,6 +142,8 @@ namespace IsoRealms {
 
     virtual void initMainThread() = 0;
 
+    virtual IProject& getAssetManager() = 0; // TODO: Remove this (used for prototyping)
+    virtual bool isReadOnly() const = 0;     // TODO: Remove this (used for prototyping)
     virtual File* getFile() = 0;
     virtual IApplication& getApplication() = 0;
   };

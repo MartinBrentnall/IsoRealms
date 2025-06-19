@@ -75,6 +75,7 @@ namespace IsoRealms::Basics {
     /**********************\
      * Implements IBasics *
     \**********************/
+    IBasics& getAssetManager() override;
     IProject& getProject() const override;
     std::vector<std::string> getAllSequenceTracks() override;
     std::string getID(const ISequenceTrack* asset) const override;

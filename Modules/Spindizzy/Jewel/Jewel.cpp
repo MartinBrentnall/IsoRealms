@@ -29,13 +29,13 @@ namespace IsoRealms::Spindizzy {
   Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cProject(project),
-            cColourFrame(project, 1.0f, 1.0f, 0.0f) {
+            cColourFrame(data, 1.0f, 1.0f, 0.0f) {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
 
     cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       cSampleModel->update(milliseconds);
     });
-    cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, project));
+    cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data));
   }
   
   Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -44,11 +44,11 @@ namespace IsoRealms::Spindizzy {
     cColourFrame.init(object, JSON_FRAME);
     cColoursCycle.clear();
     for (JSONObject mCycleColourObject : object.getArray(JSON_CYCLE_COLOURS)) {
-      cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, project, mCycleColourObject));
+      cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data, mCycleColourObject));
     }
   }
 
-  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
       cColoursCycle[i]->getProperties(browser, "Colour " + Utils::toString(i + 1), mProperties);
@@ -132,13 +132,13 @@ namespace IsoRealms::Spindizzy {
 //     }
 //   }
   
-  Jewel::CycleColour::CycleColour(Jewel& parent, IProject& project) :
+  Jewel::CycleColour::CycleColour(Jewel& parent, IResourceData& data) :
             cParent(parent),
-            cDefColour(project, 1.0f, 0.0f, 1.0f) {
+            cDefColour(data, 1.0f, 0.0f, 1.0f) {
   }
 
-  Jewel::CycleColour::CycleColour(Jewel& parent, IProject& project, JSONObject object) :
-            CycleColour(parent, project) {
+  Jewel::CycleColour::CycleColour(Jewel& parent, IResourceData& data, JSONObject object) :
+            CycleColour(parent, data) {
     cDefColour.init(object, JSON_COLOUR);
   }
 

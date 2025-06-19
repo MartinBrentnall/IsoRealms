@@ -22,7 +22,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  DummyBindingType::DummyBindingType(IProject& project) {
+  DummyBindingType::DummyBindingType(IResourceData& owner) {
     // Nothing to do.
   }
 

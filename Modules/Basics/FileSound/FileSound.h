@@ -49,7 +49,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object, IAssetIdentifier& identifier) const override;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Interface called by module when adjusting global sound volume.
     void setVolume(float volume);
@@ -57,8 +57,8 @@ namespace IsoRealms::Basics {
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) override;
-    IAction* createAction(IProject& project, IBindingRegistry* localArgs) override;
+    IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
+    IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets& assets) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;

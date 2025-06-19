@@ -22,66 +22,66 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  DummyAssets::DummyAssets(IProject& project) {
+  DummyAssets::DummyAssets(IResourceData& owner) {
     // Nothing to do.
   }
 
-  ActionExecutor*  DummyAssets::createLiteralAction(        IAssetUser<ActionExecutor>*  user) {return nullptr;}
-  IActionType*     DummyAssets::createLiteralActionType(    IAssetUser<IActionType>*     user) {return nullptr;}
-  IAssets*         DummyAssets::createLiteralAssets(        IAssetUser<IAssets>*         user) {return nullptr;}
-  IBinding*        DummyAssets::createLiteralBinding(       IAssetUser<IBinding>*        user) {return nullptr;}
-  IBindingType*    DummyAssets::createLiteralBindingType(   IAssetUser<IBindingType>*    user) {return nullptr;}
-  IBoolean*        DummyAssets::createLiteralBoolean(       IAssetUser<IBoolean>*        user, const bool value) {return nullptr;}
-  IColour*         DummyAssets::createLiteralColour(        IAssetUser<IColour>*         user, const float red, const float green, const float blue, const float alpha) {return nullptr;}
-  IEditable*       DummyAssets::createLiteralEditable(      IAssetUser<IEditable>*       user) {return nullptr;}
-  IFloat*          DummyAssets::createLiteralFloat(         IAssetUser<IFloat>*          user, const float value) {return nullptr;}
-  IFont*           DummyAssets::createLiteralFont(          IAssetUser<IFont>*           user) {return nullptr;}
-  IInputHandler*   DummyAssets::createLiteralInputHandler(  IAssetUser<IInputHandler>*   user) {return nullptr;}
-  IInteger*        DummyAssets::createLiteralInteger(       IAssetUser<IInteger>*        user, const int value) {return nullptr;}
-  IModel*          DummyAssets::createLiteralModel(         IAssetUser<IModel>*          user) {return nullptr;}
-  IProjectOptions* DummyAssets::createLiteralProjectOptions(IAssetUser<IProjectOptions>* user) {return nullptr;}
-  IScreen*         DummyAssets::createLiteralScreen(        IAssetUser<IScreen>*         user) {return nullptr;}
-  IString*         DummyAssets::createLiteralString(        IAssetUser<IString>*         user, const std::string& value) {return nullptr;}
-  ITexture*        DummyAssets::createLiteralTexture(       IAssetUser<ITexture>*        user) {return nullptr;}
-  IVertex*         DummyAssets::createLiteralVertex(        IAssetUser<IVertex>*         user, const float x, const float y, const float z) {return nullptr;}
+  ActionExecutor*  DummyAssets::createLiteralAction(        IAssetUser<ActionExecutor>*  user, IResourceData& owner) {return nullptr;}
+  IActionType*     DummyAssets::createLiteralActionType(    IAssetUser<IActionType>*     user, IResourceData& owner) {return nullptr;}
+  IAssets*         DummyAssets::createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) {return nullptr;}
+  IBinding*        DummyAssets::createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner) {return nullptr;}
+  IBindingType*    DummyAssets::createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) {return nullptr;}
+  IBoolean*        DummyAssets::createLiteralBoolean(       IAssetUser<IBoolean>*        user, IResourceData& owner, const bool value) {return nullptr;}
+  IColour*         DummyAssets::createLiteralColour(        IAssetUser<IColour>*         user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return nullptr;}
+  IEditable*       DummyAssets::createLiteralEditable(      IAssetUser<IEditable>*       user, IResourceData& owner) {return nullptr;}
+  IFloat*          DummyAssets::createLiteralFloat(         IAssetUser<IFloat>*          user, IResourceData& owner, const float value) {return nullptr;}
+  IFont*           DummyAssets::createLiteralFont(          IAssetUser<IFont>*           user, IResourceData& owner) {return nullptr;}
+  IInputHandler*   DummyAssets::createLiteralInputHandler(  IAssetUser<IInputHandler>*   user, IResourceData& owner) {return nullptr;}
+  IInteger*        DummyAssets::createLiteralInteger(       IAssetUser<IInteger>*        user, IResourceData& owner, const int value) {return nullptr;}
+  IModel*          DummyAssets::createLiteralModel(         IAssetUser<IModel>*          user, IResourceData& owner) {return nullptr;}
+  IProjectOptions* DummyAssets::createLiteralProjectOptions(IAssetUser<IProjectOptions>* user, IResourceData& owner) {return nullptr;}
+  IScreen*         DummyAssets::createLiteralScreen(        IAssetUser<IScreen>*         user, IResourceData& owner) {return nullptr;}
+  IString*         DummyAssets::createLiteralString(        IAssetUser<IString>*         user, IResourceData& owner, const std::string& value) {return nullptr;}
+  ITexture*        DummyAssets::createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) {return nullptr;}
+  IVertex*         DummyAssets::createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) {return nullptr;}
 
-  ActionExecutor*  DummyAssets::getAction(        IAssetUser<ActionExecutor>*  user, JSONObject object, const std::string& tag, IBindingRegistry* registry) {return nullptr;}
-  IActionType*     DummyAssets::getActionType(    IAssetUser<IActionType>*     user, JSONObject object,                                      bool required) {return nullptr;}
-  IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, JSONObject object,                                      bool required) {return nullptr;}
-  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IBindingRegistry* locals,            bool required) {return nullptr;}
-  IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object,                                      bool required) {return nullptr;}
-  IBoolean*        DummyAssets::getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IStateListener<IBoolean*>* listener, bool required) {return nullptr;}
-  IColour*         DummyAssets::getColour(        IAssetUser<IColour>*         user, JSONObject object, IStateListener<IColour*>*  listener, bool required) {return nullptr;}
-  IEditable*       DummyAssets::getEditable(      IAssetUser<IEditable>*       user, JSONObject object,                                      bool required) {return nullptr;}
-  IFloat*          DummyAssets::getFloat(         IAssetUser<IFloat>*          user, JSONObject object, IStateListener<IFloat*>*   listener, bool required) {return nullptr;}
-  IFont*           DummyAssets::getFont(          IAssetUser<IFont>*           user, JSONObject object,                                      bool required) {return nullptr;}
-  IInputHandler*   DummyAssets::getInputHandler(  IAssetUser<IInputHandler>*   user, JSONObject object,                                      bool required) {return nullptr;}
-  IInteger*        DummyAssets::getInteger(       IAssetUser<IInteger>*        user, JSONObject object, IStateListener<IInteger*>* listener, bool required) {return nullptr;}
-  IModel*          DummyAssets::getModel(         IAssetUser<IModel>*          user, JSONObject object,                                      bool required) {return nullptr;}
-  IProjectOptions* DummyAssets::getProjectOptions(IAssetUser<IProjectOptions>* user, JSONObject object,                                      bool required) {return nullptr;}
-  IScreen*         DummyAssets::getScreen(        IAssetUser<IScreen>*         user, JSONObject object,                                      bool required) {return nullptr;}
-  IString*         DummyAssets::getString(        IAssetUser<IString>*         user, JSONObject object, IStateListener<IString*>*  listener, bool required) {return nullptr;}
-  ITexture*        DummyAssets::getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IStateListener<ITexture*>* listener, bool required) {return nullptr;}
-  IVertex*         DummyAssets::getVertex(        IAssetUser<IVertex>*         user, JSONObject object,                                      bool required) {return nullptr;}
+  ActionExecutor*  DummyAssets::getAction(        IAssetUser<ActionExecutor>*  user, JSONObject object, IResourceData& owner, const std::string& tag, IBindingRegistry* registry) {return nullptr;}
+  IActionType*     DummyAssets::getActionType(    IAssetUser<IActionType>*     user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals,            bool required) {return nullptr;}
+  IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IBoolean*        DummyAssets::getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required) {return nullptr;}
+  IColour*         DummyAssets::getColour(        IAssetUser<IColour>*         user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required) {return nullptr;}
+  IEditable*       DummyAssets::getEditable(      IAssetUser<IEditable>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IFloat*          DummyAssets::getFloat(         IAssetUser<IFloat>*          user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required) {return nullptr;}
+  IFont*           DummyAssets::getFont(          IAssetUser<IFont>*           user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IInputHandler*   DummyAssets::getInputHandler(  IAssetUser<IInputHandler>*   user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IInteger*        DummyAssets::getInteger(       IAssetUser<IInteger>*        user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required) {return nullptr;}
+  IModel*          DummyAssets::getModel(         IAssetUser<IModel>*          user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IProjectOptions* DummyAssets::getProjectOptions(IAssetUser<IProjectOptions>* user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IScreen*         DummyAssets::getScreen(        IAssetUser<IScreen>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IString*         DummyAssets::getString(        IAssetUser<IString>*         user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required) {return nullptr;}
+  ITexture*        DummyAssets::getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required) {return nullptr;}
+  IVertex*         DummyAssets::getVertex(        IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
 
-  ActionExecutor*  DummyAssets::getAction(        IAssetUser<ActionExecutor>*  user, const std::string& id)                                                {return nullptr;}
-  IActionType*     DummyAssets::getActionType(    IAssetUser<IActionType>*     user, const std::string& id)                                                {return nullptr;}
-  IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, const std::string& id)                                                {return nullptr;}
-  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, const std::string& id)                                                {return nullptr;}
-  IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id)                                                {return nullptr;}
-  IBoolean*        DummyAssets::getBoolean(       IAssetUser<IBoolean>*        user, const std::string& id, IStateListener<IBoolean*>* listener = nullptr) {return nullptr;}
-  IColour*         DummyAssets::getColour(        IAssetUser<IColour>*         user, const std::string& id, IStateListener<IColour*>*  listener = nullptr) {return nullptr;}
-  IEditable*       DummyAssets::getEditable(      IAssetUser<IEditable>*       user, const std::string& id)                                                {return nullptr;}
-  IFloat*          DummyAssets::getFloat(         IAssetUser<IFloat>*          user, const std::string& id, IStateListener<IFloat*>*   listener = nullptr) {return nullptr;}
-  IFont*           DummyAssets::getFont(          IAssetUser<IFont>*           user, const std::string& id)                                                {return nullptr;}
-  IInputHandler*   DummyAssets::getInputHandler(  IAssetUser<IInputHandler>*   user, const std::string& id)                                                {return nullptr;}
-  IInteger*        DummyAssets::getInteger(       IAssetUser<IInteger>*        user, const std::string& id, IStateListener<IInteger*>* listener = nullptr) {return nullptr;}
-  IModel*          DummyAssets::getModel(         IAssetUser<IModel>*          user, const std::string& id)                                                {return nullptr;}
-  IProjectOptions* DummyAssets::getProjectOptions(IAssetUser<IProjectOptions>* user, const std::string& id)                                                {return nullptr;}
-  IScreen*         DummyAssets::getScreen(        IAssetUser<IScreen>*         user, const std::string& id)                                                {return nullptr;}
-  IString*         DummyAssets::getString(        IAssetUser<IString>*         user, const std::string& id, IStateListener<IString*>*  listener = nullptr) {return nullptr;}
-  ITexture*        DummyAssets::getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IStateListener<ITexture*>* listener = nullptr) {return nullptr;}
-  IVertex*         DummyAssets::getVertex(        IAssetUser<IVertex>*         user, const std::string& id)                                                {return nullptr;}
+  ActionExecutor*  DummyAssets::getAction(        IAssetUser<ActionExecutor>*  user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IActionType*     DummyAssets::getActionType(    IAssetUser<IActionType>*     user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IBoolean*        DummyAssets::getBoolean(       IAssetUser<IBoolean>*        user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener = nullptr) {return nullptr;}
+  IColour*         DummyAssets::getColour(        IAssetUser<IColour>*         user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener = nullptr) {return nullptr;}
+  IEditable*       DummyAssets::getEditable(      IAssetUser<IEditable>*       user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IFloat*          DummyAssets::getFloat(         IAssetUser<IFloat>*          user, const std::string& id, IResourceData& owner, IStateListener<IFloat*>*   listener = nullptr) {return nullptr;}
+  IFont*           DummyAssets::getFont(          IAssetUser<IFont>*           user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IInputHandler*   DummyAssets::getInputHandler(  IAssetUser<IInputHandler>*   user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IInteger*        DummyAssets::getInteger(       IAssetUser<IInteger>*        user, const std::string& id, IResourceData& owner, IStateListener<IInteger*>* listener = nullptr) {return nullptr;}
+  IModel*          DummyAssets::getModel(         IAssetUser<IModel>*          user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IProjectOptions* DummyAssets::getProjectOptions(IAssetUser<IProjectOptions>* user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IScreen*         DummyAssets::getScreen(        IAssetUser<IScreen>*         user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IString*         DummyAssets::getString(        IAssetUser<IString>*         user, const std::string& id, IResourceData& owner, IStateListener<IString*>*  listener = nullptr) {return nullptr;}
+  ITexture*        DummyAssets::getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener = nullptr) {return nullptr;}
+  IVertex*         DummyAssets::getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
 
   void DummyAssets::release(IAssetUser<ActionExecutor>*  user, ActionExecutor*  asset) {}
   void DummyAssets::release(IAssetUser<IActionType>*     user, IActionType*     asset) {}

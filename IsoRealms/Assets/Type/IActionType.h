@@ -27,12 +27,12 @@ namespace IsoRealms {
   class IAssetRegistry;
   class IAssets;
   class IBindingRegistry;
-  class IProject;
+  class IResourceData;
 
   class IActionType : public IAsset {
     public:
-    virtual IAction* createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) = 0;
-    virtual IAction* createAction(IProject& project, IBindingRegistry* localArgs) = 0;
+    virtual IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) = 0;
+    virtual IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) = 0;
     virtual void destroyAction(IAction* action, IAssets& assets) = 0;
       
     virtual ~IActionType() {}

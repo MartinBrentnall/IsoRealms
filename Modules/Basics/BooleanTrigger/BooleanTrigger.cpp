@@ -28,11 +28,11 @@ namespace IsoRealms::Basics {
   const std::string BooleanTrigger::PROPERTY_FALSE_ACTION = "Action on False";
   
   BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data) :
-            cDefValue(project, false, [this](bool value) {
+            cDefValue(data, false, [this](bool value) {
               (value ? cDefTrueAction : cDefFalseAction).execute();
             }),
-            cDefTrueAction(project),
-            cDefFalseAction(project) {
+            cDefTrueAction(data),
+            cDefFalseAction(data) {
   }
   
   BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -64,7 +64,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("Monitored Value", "Boolean to monitor for value changes.", cDefValue));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on True",   "Action to execute when the monitored boolean changes value from FALSE to TRUE", cDefTrueAction));

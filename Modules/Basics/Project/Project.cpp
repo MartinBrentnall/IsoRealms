@@ -30,9 +30,9 @@ namespace IsoRealms::Basics {
   Project::Project(IProject& project, Basics& basics, IResourceData& data) :
             cProjectCallbackManager(project),
             cProject(project),
-            cDefReadyAction(project),
-            cDefEndAction(project),
-            cDefProjectOptions(project),
+            cDefReadyAction(data),
+            cDefEndAction(data),
+            cDefProjectOptions(data),
             cDefRunning(false),
             cDefEditing(false),
             cRuntimeProject(nullptr),
@@ -140,7 +140,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   

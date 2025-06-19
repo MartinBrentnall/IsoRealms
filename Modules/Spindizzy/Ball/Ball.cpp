@@ -29,9 +29,9 @@ namespace IsoRealms::Spindizzy {
 
   Ball::Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
-            cDefFill(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefShine(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefFill(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefShine(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cTexture(project),
             cNeedsRedrawing(false) {
     setNeedsRedrawing();
@@ -67,7 +67,7 @@ namespace IsoRealms::Spindizzy {
     return cTexture.renderAssetIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Fill Colour",    "TODO", cDefFill));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Shine Colour",   "TODO", cDefShine));

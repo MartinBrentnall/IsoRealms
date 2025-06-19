@@ -47,7 +47,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Collision handler interface.
     const PhysicalObjectType* getPhysicalObjectTypeA() const;

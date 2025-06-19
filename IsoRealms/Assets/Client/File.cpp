@@ -39,14 +39,6 @@ namespace IsoRealms {
     return cPath;
   }
 
-  std::string File::getFilename() const {
-    std::string::size_type mLastSeparatorPosition = cPath.find_last_of('/');
-    if (mLastSeparatorPosition != std::string::npos) {
-      return cPath.substr(mLastSeparatorPosition + 1);
-    }
-    return cPath;
-  }
-
   bool File::isUser() const {
     return cUser;
   }

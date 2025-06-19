@@ -23,9 +23,9 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::UI {
-  ScreenModel::ScreenModel(IProject& project, Project& owner) :
+  ScreenModel::ScreenModel(IProject& project, IResourceData& owner) :
             cProjectCallbackManager(project),
-            cDefModel(project),
+            cDefModel(owner),
             cDefModelInstance(cDefModel.createInstance()) {
     cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
       cDefModelInstance->update(milliseconds);
@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
     });
   }
   
-  ScreenModel::ScreenModel(IProject& project, Project& owner, JSONObject object) :
+  ScreenModel::ScreenModel(IProject& project, IResourceData& owner, JSONObject object) :
             ScreenModel(project, owner) {
     cDefModel.set(object, JSON_MODEL);
   }

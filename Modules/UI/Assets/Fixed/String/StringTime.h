@@ -32,8 +32,8 @@ namespace IsoRealms::UI {
     public:
 
     // Constructors.
-    StringTime(IProject& project, Project& owner);
-    StringTime(IProject& project, Project& owner, JSONObject object);
+    StringTime(IProject& project, IResourceData& owner);
+    StringTime(IProject& project, IResourceData& owner, JSONObject object);
 
     /**********************\
      * Implements IString *
@@ -49,25 +49,36 @@ namespace IsoRealms::UI {
     bool isDefaultConfiguration() const override;
 
     private:
-class FormatElement {
-public:
-    // true if this element is a token (like {m}, {s:02}, etc), false if literal text
-    bool isToken;
+    class FormatElement {
+      
+      public:
+      // true if this element is a token (like {m}, {s:02}, etc), false if literal text
+      bool isToken;
 
-    // valid if isToken == false
-    std::string literal;
+      // valid if isToken == false
+      std::string literal;
 
-    // valid if isToken == true
-    std::string unit;   // e.g. "m", "s", "ms"
-    int width = 0;      // 0 means no width specified
-    bool zeroPad = false;
+      // valid if isToken == true
+      std::string unit;   // e.g. "m", "s", "ms"
+      int width = 0;      // 0 means no width specified
+      bool zeroPad = false;
 
-    FormatElement(const std::string& lit)
-        : isToken(false), literal(lit), unit(), width(0), zeroPad(false) {}
+      FormatElement(const std::string& lit) :
+                isToken(false),
+                literal(lit),
+                unit(),
+                width(0),
+                zeroPad(false) {
+      }
 
-    FormatElement(const std::string& u, int w, bool zp)
-        : isToken(true), literal(), unit(u), width(w), zeroPad(zp) {}
-};
+      FormatElement(const std::string& u, int w, bool zp) :
+                isToken(true),
+                literal(),
+                unit(u),
+                width(w),
+                zeroPad(zp) {
+      }
+    };
 
     // JSON members.
     static const std::string JSON_FORMAT;

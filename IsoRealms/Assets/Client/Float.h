@@ -28,17 +28,17 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Float : public Asset<IFloat, IProject>,
+  class Float : public Asset<IFloat, IResourceData>,
                 public IStateListener<IFloat*> {
     public:
-    Float(IProject& project, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
+    Float(IResourceData& owner, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
 
-    /**************************************\
-     * Implements Asset<IFloat, IProject> *
-    \**************************************/
-    IFloat* createLiteralAsset(IProject& project) override;
-    IFloat* getAsset(IProject& project, JSONObject object) override;
-    IFloat* getAsset(IProject& project, const std::string& id) override;
+    /*******************************************\
+     * Implements Asset<IFloat, IResourceData> *
+    \*******************************************/
+    IFloat* createLiteralAsset(IResourceData& owner) override;
+    IFloat* getAsset(IResourceData& owner, JSONObject object) override;
+    IFloat* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

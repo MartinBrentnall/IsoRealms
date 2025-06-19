@@ -23,15 +23,17 @@
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
+  class IResourceData;
+
   class DummyActionType : public IActionType {
     public:
-    DummyActionType(IProject& project);
+    DummyActionType(IResourceData& owner);
       
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) override;
-    IAction* createAction(IProject& project, IBindingRegistry* localArgs) override;
+    IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
+    IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets& assets) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;

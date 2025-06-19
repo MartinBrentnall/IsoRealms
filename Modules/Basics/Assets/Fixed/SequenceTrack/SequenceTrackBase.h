@@ -36,11 +36,11 @@ namespace IsoRealms::Basics {
               cDefName("Unnamed Track") {
     }
 
-    SequenceTrackBase(IProject& project, Sequence& sequence, JSONObject object) :
+    SequenceTrackBase(IProject& project, IResourceData& owner, Sequence& sequence, JSONObject object) :
               cSequence(sequence),
               cDefName(object.getString(JSON_NAME)) {
       for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
-        cDefEvents.push_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), project, mEventObject));
+        cDefEvents.push_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, project, mEventObject));
       }
     }
 
@@ -67,7 +67,7 @@ namespace IsoRealms::Basics {
       return cDefName;
     }
 
-    ISequenceTrackEvent* createEvent(IProject& project, unsigned int time) override {
+    ISequenceTrackEvent* createEvent(IProject& project, IResourceData& owner, unsigned int time) override {
       ISequenceTrackEvent* mTrackSpecificEvent = static_cast<DERIVED*>(this)->getEvent(time);
       if (mTrackSpecificEvent != nullptr) {
         return mTrackSpecificEvent;
@@ -76,10 +76,10 @@ namespace IsoRealms::Basics {
         if (cDefEvents[i]->getTime() == time) {
           return cDefEvents[i].get();
         } else if (cDefEvents[i]->getTime() > time) {
-          return cDefEvents.insert(cDefEvents.begin() + i, std::make_unique<EVENT>(*static_cast<DERIVED*>(this), project, time))->get();
+          return cDefEvents.insert(cDefEvents.begin() + i, std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, project, time))->get();
         }
       }
-      return cDefEvents.emplace_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), project, time)).get();
+      return cDefEvents.emplace_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, project, time)).get();
     }
 
     void deleteEvent(ISequenceTrackEvent* event) override {

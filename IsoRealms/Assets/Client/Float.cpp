@@ -19,36 +19,37 @@
 #include "Float.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Float::Float(IProject& project, float defaultValue, std::function<void(float)> listener) :
-            Asset<IFloat, IProject>(project, project.createLiteralFloat(this, defaultValue)),
+  Float::Float(IResourceData& owner, float defaultValue, std::function<void(float)> listener) :
+            Asset<IFloat, IResourceData>(owner, owner.getAssetManager().createLiteralFloat(this, owner, defaultValue)),
             cDefaultValue(defaultValue),
             cListener(listener) {
   }
 
-  IFloat* Float::createLiteralAsset(IProject& project) {
-    return project.createLiteralFloat(this, cDefaultValue);
+  IFloat* Float::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralFloat(this, owner, cDefaultValue);
   }
   
-  IFloat* Float::getAsset(IProject& project, JSONObject object) {
-    return project.getFloat(this, object, cListener != nullptr ? this : nullptr);
+  IFloat* Float::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getFloat(this, object, owner, cListener != nullptr ? this : nullptr);
   }
   
-  IFloat* Float::getAsset(IProject& project, const std::string& id) {
-    return project.getFloat(this, id, cListener != nullptr ? this : nullptr);
+  IFloat* Float::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getFloat(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
   std::vector<std::string> Float::getAvailableProviders() const {
-    return cManager.getAllFloats();
+    return cManager.getAssetManager().getAllFloats();
   }  
 
   bool Float::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderFloatIcon(id);
+    return cManager.getAssetManager().renderFloatIcon(id);
   }
 
   bool Float::hasConfiguration() const {
-    return cManager.isFloatConfigurable(getID());
+    return cManager.getAssetManager().isFloatConfigurable(getID());
   }
 
   void Float::stateChanged(IFloat* value) {

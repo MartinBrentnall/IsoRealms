@@ -30,7 +30,7 @@ namespace IsoRealms::UI {
   LayoutComponent::LayoutComponent(IProject& project, Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio) :
             cProjectCallbackManager(project),
             cLayout(layout),
-            cDefScreen(project),
+            cDefScreen(layout.getResourceData()),
             cDefLeftEdge(*this, aspectRatio, std::min(x1, x2)),
             cDefRightEdge(*this, aspectRatio, std::max(x1, x2)),
             cDefBottomEdge(*this, 1.0f, std::min(y1, y2)),
@@ -45,7 +45,7 @@ namespace IsoRealms::UI {
   LayoutComponent::LayoutComponent(IProject& project, Layout& layout, JSONObject object) :
             cProjectCallbackManager(project),
             cLayout(layout),
-            cDefScreen(project),
+            cDefScreen(layout.getResourceData()),
             cDefLeftEdge(*this, object, JSON_LEFT),
             cDefRightEdge(*this, object, JSON_RIGHT),
             cDefBottomEdge(*this, object, JSON_BOTTOM),

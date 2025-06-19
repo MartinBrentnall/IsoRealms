@@ -45,7 +45,7 @@ namespace IsoRealms::UI {
             cDefSpotRadius(DEFAULT_SPOT_RADIUS),
             cDefRingRadius(DEFAULT_RING_RADIUS),
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
-            cDefColour(project, 1.0f, 0.0f, 1.0f) {
+            cDefColour(data, 1.0f, 0.0f, 1.0f) {
     cRuntimeAnimation = 0U;
 
     cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
@@ -95,7 +95,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Animation Duration (ms)",    "TODO", [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spots",                      "TODO", [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;}));

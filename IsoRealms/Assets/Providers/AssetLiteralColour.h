@@ -25,9 +25,9 @@
 #include "AssetLiteral.h"
 
 namespace IsoRealms {
-  class Project;
+  class IResourceData;
 
-  class AssetLiteralColour : public AssetLiteral<Project, IColour> {
+  class AssetLiteralColour : public AssetLiteral<IResourceData, IColour> {
     public:
     
     /************************************\
@@ -37,11 +37,11 @@ namespace IsoRealms {
       return true;
     }
 
-    std::unique_ptr<IColour> createLiteralAsset(Project& project) const override {
+    std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner) const override {
       return std::make_unique<LiteralColour>();
     }
 
-    std::unique_ptr<IColour> createLiteralAsset(Project& project, const std::string& expression) const override {
+    std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
       std::vector<std::string> mSections = Utils::splitWords(expression, ' ');
       if (mSections.size() >= 3 && mSections.size() <= 4) {
         // TODO: Check that the components are actually numerics
@@ -54,7 +54,7 @@ namespace IsoRealms {
       return nullptr;
     }
 
-    std::unique_ptr<IColour> createLiteralAsset(Project& project, JSONObject object) const override {
+    std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
       return std::make_unique<LiteralColour>(object.getFloat(JSON_RED), object.getFloat(JSON_GREEN), object.getFloat(JSON_BLUE), object.getFloat(JSON_ALPHA));
     }
 

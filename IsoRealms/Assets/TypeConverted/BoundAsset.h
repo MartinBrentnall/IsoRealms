@@ -26,17 +26,18 @@
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IAssets.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
   template <class T> class BoundAsset : public IBinding {
     public:
-    BoundAsset(IProject& project) :
-              cDefLuaState(project.getLuaState()->getState()),
-              cDefValue(project) {
+    BoundAsset(IResourceData& owner) :
+              cDefLuaState(owner.getProject().getLuaState()->getState()),
+              cDefValue(owner) {
     }
 
-    BoundAsset(IProject& project, JSONObject object) :
-              BoundAsset(project) {
+    BoundAsset(IResourceData& owner, JSONObject object) :
+              BoundAsset(owner) {
       cDefValue.set(object, JSON_ASSET);
     }
 

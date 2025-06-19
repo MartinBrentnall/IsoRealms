@@ -21,11 +21,11 @@
 #include "IsoRealms/Assets/Type/IFont.h"
 
 namespace IsoRealms {
-  class IProject;
+  class IResourceData;
 
   class DummyFont : public IFont {
     public:
-    DummyFont(IProject& project);
+    DummyFont(IResourceData& owner);
     
     /********************\
      * Implements IFont *

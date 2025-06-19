@@ -34,7 +34,8 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectType::BIND_TO_ZONE  = "Zone";
 
   ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cSpindizzy(spindizzy) {
+            cSpindizzy(spindizzy),
+            cResourceData(data) {
   }
   
   ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -81,7 +82,7 @@ namespace IsoRealms::Spindizzy {
     return false; // TODO
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -99,6 +100,10 @@ namespace IsoRealms::Spindizzy {
   
   Spindizzy& ZoneObjectType::getSpindizzy() {
     return cSpindizzy;
+  }
+
+  IResourceData& ZoneObjectType::getResourceData() {
+    return cResourceData;
   }
   
   void ZoneObjectType::registerEditor(IZoneObjectTraitEditor* editor) {

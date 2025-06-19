@@ -25,14 +25,14 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject& project, Spindizzy& spindizzy) :
-            cDefRegularPattern(spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefSplitAPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefSplitBPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject& project, TerrainType& owner) :
+            cDefRegularPattern(owner.getSpindizzy(), owner, [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}),
+            cDefSplitAPattern( owner.getSpindizzy(), owner, [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}),
+            cDefSplitBPattern( owner.getSpindizzy(), owner, [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}) {
   }
 
-  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject& project, Spindizzy& spindizzy, JSONObject object) :
-            SurfacePatternSplitVariant(project, spindizzy) {
+  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject& project, TerrainType& owner, JSONObject object) :
+            SurfacePatternSplitVariant(project, owner) {
     cDefRegularPattern.set(object, JSON_REGULAR);
     cDefSplitAPattern.set(object, JSON_SPLIT_A);
     cDefSplitBPattern.set(object, JSON_SPLIT_B);

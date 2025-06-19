@@ -147,6 +147,10 @@ namespace IsoRealms::Basics {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   
+  IBasics& Basics::getAssetManager() {
+    return *this;
+  }
+
   IProject& Basics::getProject() const {
     return cProject;
   }

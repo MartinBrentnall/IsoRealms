@@ -30,7 +30,7 @@ namespace IsoRealms::UI {
             cProjectCallbackManager(project),
             cDefID(""),
             cDefLabel(""),
-            cDefAction(project),
+            cDefAction(menu.getResourceData()),
             cLuaBinding(project, this) {
     cProjectCallbackManager.reset([this]() {
 // TODO      cRuntimeValue = "";
@@ -41,7 +41,7 @@ namespace IsoRealms::UI {
             cProjectCallbackManager(project),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
-            cDefAction(project),
+            cDefAction(menu.getResourceData()),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
     cProjectCallbackManager.reset([this]() {

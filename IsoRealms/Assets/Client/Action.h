@@ -28,7 +28,7 @@
 namespace IsoRealms {
   class Action final : public IAssetUser<ActionExecutor> {
     public:
-    Action(IProject& project);
+    Action(IResourceData& owner);
 
     void init(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr);
     void set(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr);
@@ -64,6 +64,7 @@ namespace IsoRealms {
 
     private:
     IProject& cProject;
+    IResourceData& cManager;
     ActionExecutor* cAction;
 
     Action(Action const& action) = delete;

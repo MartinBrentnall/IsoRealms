@@ -23,13 +23,13 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::UI {
-  ScreenPanel::ScreenPanel(IProject& project, Project& owner) :
-            cDefColour(project, 0.0f, 0.0f, 1.0f),
+  ScreenPanel::ScreenPanel(IProject& project, IResourceData& owner) :
+            cDefColour(owner, 0.0f, 0.0f, 1.0f),
             cDefCornerSize(0.0f) {
     initTextures(project);
   }
   
-  ScreenPanel::ScreenPanel(IProject& project, Project& owner, JSONObject object) :
+  ScreenPanel::ScreenPanel(IProject& project, IResourceData& owner, JSONObject object) :
             ScreenPanel(project, owner) {
     cDefColour.set(object, JSON_COLOUR);
     cDefCornerSize = object.getFloat(JSON_CORNER_SIZE);

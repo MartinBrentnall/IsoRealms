@@ -28,17 +28,16 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Screen : public Asset<IScreen, IProject> {
+  class Screen : public Asset<IScreen, IResourceData> {
     public:
-    Screen(IProject& project);
-    Screen(const Screen& screen);
+    Screen(IResourceData& owner);
 
-    /***************************************\
-     * Implements Asset<IScreen, IProject> *
-    \***************************************/
-    IScreen* createLiteralAsset(IProject& project) override;
-    IScreen* getAsset(IProject& project, JSONObject object) override;
-    IScreen* getAsset(IProject& project, const std::string& id) override;
+    /********************************************\
+     * Implements Asset<IScreen, IResourceData> *
+    \********************************************/
+    IScreen* createLiteralAsset(IResourceData& owner) override;
+    IScreen* getAsset(IResourceData& owner, JSONObject object) override;
+    IScreen* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

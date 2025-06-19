@@ -37,10 +37,10 @@ namespace IsoRealms::UI {
   Prompt::Prompt(IProject& project, UI& ui, IResourceData& data) :
             cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
-            cDefFont(project),
-            cDefSelectionColour(project, 1.0f, 1.0f, 1.0f),
-            cDefNegativeAction(project),
-            cDefPositiveAction(project),
+            cDefFont(data),
+            cDefSelectionColour(data, 1.0f, 1.0f, 1.0f),
+            cDefNegativeAction(data),
+            cDefPositiveAction(data),
             cLuaBinding(project, this) {
     cProjectCallbackManager.reset([this]() {
       cRuntimePositiveHighlighted = false;
@@ -92,7 +92,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Font",             "TODO", cDefFont));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Font Size",        "TODO", [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));

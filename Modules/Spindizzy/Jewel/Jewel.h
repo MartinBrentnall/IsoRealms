@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     /*********************\
      * Implements IModel *
@@ -59,8 +59,8 @@ namespace IsoRealms::Spindizzy {
     private:
     class CycleColour {
       public:
-      CycleColour(Jewel& parent, IProject& project);
-      CycleColour(Jewel& parent, IProject& project, JSONObject object);
+      CycleColour(Jewel& parent, IResourceData& owner);
+      CycleColour(Jewel& parent, IResourceData& owner, JSONObject object);
 
       void save(JSONObject object, IAssetIdentifier& identifier) const;
       const Colour* getColour() const;

@@ -16,20 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "Modules/Spindizzy/Spindizzy.h"
-#include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
-
 #include "WallPatternCap.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/TerrainType/TerrainType.h"
+#include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
+
 namespace IsoRealms::Spindizzy {
-  WallPatternCap::WallPatternCap(IProject& project, Spindizzy& spindizzy) :
-            cDefTextureBottom(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefTextureMiddle(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefTextureTop(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  WallPatternCap::WallPatternCap(IProject& project, TerrainType& owner) :
+            cDefTextureBottom(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}),
+            cDefTextureMiddle(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}),
+            cDefTextureTop(   owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}) {
   }
 
-  WallPatternCap::WallPatternCap(IProject& project, Spindizzy& spindizzy, JSONObject object) :
-            WallPatternCap(project, spindizzy) {
+  WallPatternCap::WallPatternCap(IProject& project, TerrainType& owner, JSONObject object) :
+            WallPatternCap(project, owner) {
     cDefTextureBottom.set(object, JSON_BOTTOM);
     cDefTextureMiddle.set(object, JSON_MIDDLE);
     cDefTextureTop.set(object, JSON_TOP);

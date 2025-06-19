@@ -186,6 +186,10 @@ namespace IsoRealms {
     return cProject;
   }
 
+  IProject& Module::getProject() {
+    return cProject;
+  }
+
   std::string Module::getPath() {
     return getName();
   }

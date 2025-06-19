@@ -34,8 +34,8 @@ namespace IsoRealms::Spindizzy {
             cSpindizzy(spindizzy),
             cDefBoundaryType(spindizzy),
             cDefObjectType(spindizzy),
-            cDefEnteredAction(project),
-            cDefExitedAction(project) {
+            cDefEnteredAction(data),
+            cDefExitedAction(data) {
   }
 
   BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -74,7 +74,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> BoundaryHandler::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> BoundaryHandler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type", "TODO", cDefObjectType));
     mProperties.emplace_back(std::make_unique<PropertyAsset<BoundaryType>>("Boundary Type", "TODO", cDefBoundaryType));

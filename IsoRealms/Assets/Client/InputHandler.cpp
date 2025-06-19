@@ -19,34 +19,35 @@
 #include "InputHandler.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  InputHandler::InputHandler(IProject& project) : 
-            Asset<IInputHandler, IProject>(project, project.createLiteralInputHandler(this)) {
+  InputHandler::InputHandler(IResourceData& owner) :
+            Asset<IInputHandler, IResourceData>(owner, owner.getAssetManager().createLiteralInputHandler(this, owner)) {
   }
 
-  IInputHandler* InputHandler::createLiteralAsset(IProject& project) {
-    return project.createLiteralInputHandler(this);
+  IInputHandler* InputHandler::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralInputHandler(this, owner);
   }
   
-  IInputHandler* InputHandler::getAsset(IProject& project, JSONObject object) {
-    return project.getInputHandler(this, object);
+  IInputHandler* InputHandler::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getInputHandler(this, object, owner);
   }
   
-  IInputHandler* InputHandler::getAsset(IProject& project, const std::string& id) {
-    return project.getInputHandler(this, id);
+  IInputHandler* InputHandler::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getInputHandler(this, id, owner);
   }
   
   std::vector<std::string> InputHandler::getAvailableProviders() const {
-    return cManager.getAllInputHandlers();
+    return cManager.getAssetManager().getAllInputHandlers();
   }  
 
   bool InputHandler::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderInputHandlerIcon(id);
+    return cManager.getAssetManager().renderInputHandlerIcon(id);
   }
 
   bool InputHandler::hasConfiguration() const {
-    return cManager.isInputHandlerConfigurable(getID());
+    return cManager.getAssetManager().isInputHandlerConfigurable(getID());
   }  
 
   bool InputHandler::isDefaultConfiguration() const {

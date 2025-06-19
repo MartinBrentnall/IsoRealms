@@ -22,15 +22,15 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  DummyActionType::DummyActionType(IProject& project) :
+  DummyActionType::DummyActionType(IResourceData& owner) :
     DUMMY() {
   }
   
-  IAction* DummyActionType::createAction(JSONObject object, IProject& project, IBindingRegistry* localObjects) {
+  IAction* DummyActionType::createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localObjects) {
     return &DUMMY;
   }
 
-  IAction* DummyActionType::createAction(IProject& project, IBindingRegistry* localArgs) {
+  IAction* DummyActionType::createAction(IResourceData& owner, IBindingRegistry* localArgs) {
     return &DUMMY;
   }
   

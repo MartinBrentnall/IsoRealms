@@ -23,12 +23,12 @@
 namespace IsoRealms::Basics {
   SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence) :
             SequenceTrackBase(project, sequence),
-            cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
+            cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
 
   SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence, object),
-            cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
+            SequenceTrackBase(project, sequence.getResourceData(), sequence, object),
+            cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
     cDefInitColour.init(object, JSON_START);
   }
 

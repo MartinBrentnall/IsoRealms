@@ -21,11 +21,11 @@
 #include "IsoRealms/Assets/Type/IScreen.h"
 
 namespace IsoRealms {
-  class IProject;
+  class IResourceData;
 
   class DummyScreen : public IScreen {
     public:
-    DummyScreen(IProject& project);
+    DummyScreen(IResourceData& owner);
     
     /**********************\
      * Implements IScreen *

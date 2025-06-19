@@ -21,9 +21,9 @@
 #include "IsoRealms/Project.h"
 
 namespace IsoRealms {
-  DummyTexture::DummyTexture(IProject& project) :
-            cDummyTexture(project) {
-    project.mainThreadInit([this, &project]() { // TODO: Do I need to make sure this is only executed once?
+  DummyTexture::DummyTexture(IResourceData& owner) :
+            cDummyTexture(owner.getProject()) {
+    owner.getProject().mainThreadInit([this, &owner]() { // TODO: Do I need to make sure this is only executed once?
       glPushAttrib(GL_TRANSFORM_BIT);
       glMatrixMode(GL_PROJECTION);
       glPushMatrix();
@@ -70,7 +70,7 @@ namespace IsoRealms {
       glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
       glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-      IApplication& mApplication = project.getApplication();
+      IApplication& mApplication = owner.getProject().getApplication();
       mApplication.setViewPort();
     });
   }

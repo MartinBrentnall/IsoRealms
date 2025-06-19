@@ -57,7 +57,7 @@ namespace IsoRealms::Hue {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
     
     virtual ~HueManager() {
       cREST.cleanup();
@@ -280,8 +280,8 @@ namespace IsoRealms::Hue {
   
     class Bulb {
       public:
-      Bulb(HueManager& parent, IProject& project, int id);
-      Bulb(HueManager& parent, IProject& project, int id, JSONObject object);
+      Bulb(HueManager& parent, IResourceData& data, int id);
+      Bulb(HueManager& parent, IResourceData& data, int id, JSONObject object);
       void save(JSONObject object);
       Colour& getColour();
       void sync();
@@ -294,6 +294,7 @@ namespace IsoRealms::Hue {
     
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
+    IResourceData& cResourceData;
 
     std::string cDefBridgeAddress;
     std::string cDefBridgeUser;

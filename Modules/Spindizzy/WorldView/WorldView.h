@@ -50,7 +50,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     // Interface to be used by Spindizzy.
     void registerAssets(ISpindizzyRegistry* registry);
@@ -58,6 +58,7 @@ namespace IsoRealms::Spindizzy {
     void removeZoneView(Zone* zone);
     World* getWorld() const;
     Spindizzy& getSpindizzy();
+    IResourceData& getResourceData();
     ICamera* getCamera();
 
     /***********************\
@@ -117,6 +118,7 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;      /// Spindizzy module reference.
+    IResourceData& cResourceData;
 
     // Definition data.
     World* cDefWorld;              /// World being viewed.

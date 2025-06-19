@@ -22,11 +22,11 @@ namespace IsoRealms::HighScore {
   ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data) :
             cProjectCallbackManager(project),
             cParentProject(project),
-            cScriptQuit(project),
-            cScriptOnHighScoreAchieved(project),
-            cScriptOnHighScoreFailed(project),
-            cProjectDataPath(project),
-            cProjectUser(project, false),
+            cScriptQuit(data),
+            cScriptOnHighScoreAchieved(data),
+            cScriptOnHighScoreFailed(data),
+            cProjectDataPath(data),
+            cProjectUser(data, false),
             cLuaBinding(project, this) {
     project.mainThreadInit([this]() {
       cProject->initMainThread();      
@@ -65,14 +65,14 @@ namespace IsoRealms::HighScore {
       std::string mFieldType  = mFieldMappingsObject.getString(JSON_TYPE);
       cFields.push_back(mFieldName);
       if (mFieldType == TYPE_INTEGER) {
-        cWriteIntegers.emplace(mFieldName, project);
+        cWriteIntegers.emplace(mFieldName, data);
         cWriteIntegers.find(mFieldName)->second.init(mFieldMappingsObject, JSON_VALUE);
         bool mCompare = mFieldMappingsObject.getBoolean(JSON_COMPARE);
         if (mCompare) {
           cComparisonField = mFieldName;
         }
       } else if (mFieldType == TYPE_STRING) {
-        cWriteStrings.emplace(std::piecewise_construct, std::forward_as_tuple(mFieldName), std::forward_as_tuple(project));
+        cWriteStrings.emplace(std::piecewise_construct, std::forward_as_tuple(mFieldName), std::forward_as_tuple(data));
         cWriteStrings.find(mFieldName)->second.init(mFieldMappingsObject, JSON_VALUE);
       } else {
         throw ResourceInitException("ERROR: ScoreTracker::ScoreTracker: Unsupported field type \"" + mFieldType + "\".");
@@ -84,7 +84,7 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

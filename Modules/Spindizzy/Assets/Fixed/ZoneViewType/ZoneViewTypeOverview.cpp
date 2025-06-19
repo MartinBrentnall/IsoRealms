@@ -28,7 +28,7 @@ namespace IsoRealms::Spindizzy {
   ZoneViewTypeOverview::ZoneViewTypeOverview(IProject& project, WorldView& worldView) :
             cProject(project),
             cWorldView(worldView),
-            cDefColour(project, 1.0f, 0.0f, 0.0f, 0.0f),
+            cDefColour(worldView.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f),
             cRuntimeParameterView1(project, nullptr, &worldView.getSpindizzy()),
             cRuntimeParameterView2(project, nullptr, &worldView.getSpindizzy()) {
   }

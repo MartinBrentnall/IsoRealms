@@ -26,11 +26,11 @@ namespace IsoRealms::Spindizzy {
   const std::string TerrainState::JSON_STATE      = "state";
 
   TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            TerrainState(project, "TODO", true, 1.0f) {
+            TerrainState(project, data, "TODO", true, 1.0f) {
   }
 
   TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
-            TerrainState(project, object.getString(JSON_ID), object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
+            TerrainState(project, data, object.getString(JSON_ID), object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
     cDefIcon.init(object, JSON_ICON);
     cDefHintAction.init(object, JSON_HINT);
   }
@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Initial State", "TODO", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Hint Action",   "TODO", cDefHintAction));
@@ -114,12 +114,12 @@ namespace IsoRealms::Spindizzy {
     cRuntimeValue = value;
   }
 
-  TerrainState::TerrainState(IProject& project, const std::string& name, bool state, float iconScale) :
+  TerrainState::TerrainState(IProject& project, IResourceData& owner, const std::string& name, bool state, float iconScale) :
             cProjectCallbackManager(project),
             cDefConditionElement(name, this, this),
             cDefValue(state),
-            cDefHintAction(project),
-            cDefIcon(project),
+            cDefHintAction(owner),
+            cDefIcon(owner),
             cDefIconScale(iconScale),
             cRuntimeValue(state),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {

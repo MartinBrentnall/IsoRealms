@@ -19,10 +19,11 @@
 #include "Colour.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Colour::Colour(IProject& project, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
-            Asset<IColour, IProject>(project, project.createLiteralColour(this, defaultRed, defaultGreen, defaultBlue, defaultAlpha)),
+  Colour::Colour(IResourceData& owner, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
+            Asset<IColour, IResourceData>(owner, owner.getAssetManager().createLiteralColour(this, owner, defaultRed, defaultGreen, defaultBlue, defaultAlpha)),
             cDefaultRed(defaultRed),
             cDefaultGreen(defaultGreen),
             cDefaultBlue(defaultBlue),
@@ -30,28 +31,28 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  IColour* Colour::createLiteralAsset(IProject& project) {
-    return project.createLiteralColour(this, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
+  IColour* Colour::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralColour(this, owner, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
   }
   
-  IColour* Colour::getAsset(IProject& project, JSONObject object) {
-    return project.getColour(this, object, cListener != nullptr ? this : nullptr);
+  IColour* Colour::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getColour(this, object, owner, cListener != nullptr ? this : nullptr);
   }
   
-  IColour* Colour::getAsset(IProject& project, const std::string& id) {
-    return project.getColour(this, id, cListener != nullptr ? this : nullptr);
+  IColour* Colour::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getColour(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
   std::vector<std::string> Colour::getAvailableProviders() const {
-    return cManager.getAllColours();
+    return cManager.getAssetManager().getAllColours();
   }  
 
   bool Colour::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderColourIcon(id);
+    return cManager.getAssetManager().renderColourIcon(id);
   }
 
   bool Colour::hasConfiguration() const {
-    return cManager.isColourConfigurable(getID());
+    return cManager.getAssetManager().isColourConfigurable(getID());
   }
 
   bool Colour::isDefaultConfiguration() const {

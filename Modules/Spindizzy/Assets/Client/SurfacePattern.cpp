@@ -23,33 +23,33 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePattern::SurfacePattern(Spindizzy& spindizzy, std::function<void()> listener) :
-            Asset<ISurfacePattern, Spindizzy>(spindizzy, spindizzy.getSurfacePattern(this, "Tile", this)),
+  SurfacePattern::SurfacePattern(Spindizzy& spindizzy, TerrainType& owner, std::function<void()> listener) :
+            Asset<ISurfacePattern, TerrainType>(owner, spindizzy.getSurfacePattern(this, "Tile", owner, this)),
             cListener(listener) {
   }
 
-  ISurfacePattern* SurfacePattern::createLiteralAsset(Spindizzy& spindizzy) {
-    return spindizzy.createLiteralSurfacePattern(this);
+  ISurfacePattern* SurfacePattern::createLiteralAsset(TerrainType& owner) {
+    return owner.getSpindizzy().createLiteralSurfacePattern(this, owner);
   }
   
-  ISurfacePattern* SurfacePattern::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return spindizzy.getSurfacePattern(this, object, this);
+  ISurfacePattern* SurfacePattern::getAsset(TerrainType& owner, JSONObject object) {
+    return owner.getSpindizzy().getSurfacePattern(this, object, owner, this);
   }
   
-  ISurfacePattern* SurfacePattern::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return spindizzy.getSurfacePattern(this, id, this);
+  ISurfacePattern* SurfacePattern::getAsset(TerrainType& owner, const std::string& id) {
+    return owner.getSpindizzy().getSurfacePattern(this, id, owner, this);
   }
   
   std::vector<std::string> SurfacePattern::getAvailableProviders() const {
-    return cManager.getAllSurfacePatterns();
+    return cManager.getSpindizzy().getAllSurfacePatterns();
   }  
 
   bool SurfacePattern::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderSurfacePatternIcon(id);
+    return cManager.getSpindizzy().renderSurfacePatternIcon(id);
   }
 
   bool SurfacePattern::hasConfiguration() const {
-    return cManager.isSurfacePatternConfigurable(getID());
+    return cManager.getSpindizzy().isSurfacePatternConfigurable(getID());
   }
 
   bool SurfacePattern::isDefaultConfiguration() const {

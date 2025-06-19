@@ -27,7 +27,7 @@
 namespace IsoRealms {
   class Project;
 
-  class AssetLiteralBoolean : public AssetLiteral<Project, IBoolean> {
+  class AssetLiteralBoolean : public AssetLiteral<IResourceData, IBoolean> {
     public:
     AssetLiteralBoolean(Project& project) :
               cProject(project) {
@@ -40,11 +40,11 @@ namespace IsoRealms {
       return true;
     }
 
-    std::unique_ptr<IBoolean> createLiteralAsset(Project& project) const override {
+    std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner) const override {
       return std::make_unique<LiteralBoolean>(cProject, false);
     }
 
-    std::unique_ptr<IBoolean> createLiteralAsset(Project& project, const std::string& expression) const override {
+    std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
       return expression == VALUE_TRUE  ? std::make_unique<LiteralBoolean>(cProject, true)
            : expression == VALUE_FALSE ? std::make_unique<LiteralBoolean>(cProject, false)
            :                             nullptr;
@@ -56,7 +56,7 @@ namespace IsoRealms {
 
     private:
 
-    std::unique_ptr<IBoolean> createLiteralAsset(Project& project, JSONObject object) const override {
+    std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
       return object.getBoolean(JSON_VALUE) ? std::make_unique<LiteralBoolean>(cProject, true) : std::make_unique<LiteralBoolean>(cProject, false);
     }
 

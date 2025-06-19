@@ -20,10 +20,11 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Model::Model(IProject& project) : 
-            Asset<IModel, IProject>(project, project.createLiteralModel(this)) {
+  Model::Model(IResourceData& owner) :
+            Asset<IModel, IResourceData>(owner, owner.getAssetManager().createLiteralModel(this, owner)) {
   }
 
   std::unique_ptr<ModelInstance> Model::createInstance() {
@@ -53,24 +54,24 @@ namespace IsoRealms {
     glScalef(cDefScaleX, cDefScaleY, cDefScaleZ);
   }
 
-  IModel* Model::createLiteralAsset(IProject& project) {
-    return project.createLiteralModel(this);
+  IModel* Model::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralModel(this, owner);
   }
   
-  IModel* Model::getAsset(IProject& project, JSONObject object) {
-    return project.getModel(this, object);
+  IModel* Model::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getModel(this, object, owner);
   }
   
-  IModel* Model::getAsset(IProject& project, const std::string& id) {
-    return project.getModel(this, id);
+  IModel* Model::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getModel(this, id, owner);
   }
   
   std::vector<std::string> Model::getAvailableProviders() const {
-    return cManager.getAllModels();
+    return cManager.getAssetManager().getAllModels();
   }  
 
   bool Model::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderModelIcon(id);
+    return cManager.getAssetManager().renderModelIcon(id);
   }
 
   bool Model::hasConfiguration() const {

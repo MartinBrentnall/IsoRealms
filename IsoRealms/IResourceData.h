@@ -26,5 +26,8 @@ namespace IsoRealms {
     virtual std::string getPath(const std::string& file, bool user) const = 0;
     virtual void makeUserDataDirectory() = 0;
     virtual bool isIncluded() const = 0;
+    virtual bool isReadOnly() const = 0;
+    virtual IProject& getProject() = 0;
+    virtual IProject& getAssetManager() = 0;
   };
 }

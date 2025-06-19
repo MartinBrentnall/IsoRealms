@@ -18,22 +18,27 @@
  */
 #include "ActionType.h"
 
+#include "IsoRealms/IResourceData.h"
+
 namespace IsoRealms {
-  ActionType::ActionType(IProject& project, std::function<void()> relinquishInstances) :
-            cProject(project),
-            cActionType(cProject.createLiteralActionType(this)),
+  ActionType::ActionType(IResourceData& owner, std::function<void()> relinquishInstances) :
+            cProject(owner.getProject()),
+            cManager(owner),
+            cActionType(cProject.createLiteralActionType(this, owner)),
             cRelinquishInstances(relinquishInstances) {
   }
 
-  ActionType::ActionType(IProject& project, std::function<void()> relinquishInstances, const std::string& id) :
-            cProject(project),
-            cActionType(cProject.getActionType(this, id)),
+  ActionType::ActionType(IResourceData& owner, std::function<void()> relinquishInstances, const std::string& id) :
+            cProject(owner.getProject()),
+            cManager(owner),
+            cActionType(cProject.getActionType(this, id, owner)),
             cRelinquishInstances(relinquishInstances) {
   }
 
-  ActionType::ActionType(IProject& project, std::function<void()> relinquishInstances, JSONObject object) :
-            cProject(project),
-            cActionType(cProject.getActionType(this, object)),
+  ActionType::ActionType(IResourceData& owner, std::function<void()> relinquishInstances, JSONObject object) :
+            cProject(owner.getProject()),
+            cManager(owner),
+            cActionType(cProject.getActionType(this, object, owner)),
             cRelinquishInstances(relinquishInstances) {
   }
 
@@ -46,7 +51,7 @@ namespace IsoRealms {
   void ActionType::set(JSONObject object, const std::string& member) {
     JSONObject mAssetObject = object.getObject(member);
     cProject.release(this, cActionType);
-    cActionType= cProject.getActionType(this, mAssetObject);
+    cActionType= cProject.getActionType(this, mAssetObject, cManager);
   }
 
   void ActionType::save(JSONObject object, const std::string& name) const {
@@ -56,7 +61,7 @@ namespace IsoRealms {
 
   void ActionType::relinquish(IActionType* asset) {
     if (cActionType == asset) {
-      cActionType = cProject.createLiteralActionType(this);
+      cActionType = cProject.createLiteralActionType(this, cManager);
       cRelinquishInstances();
     }
   }

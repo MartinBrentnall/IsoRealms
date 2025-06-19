@@ -57,9 +57,9 @@ namespace IsoRealms::Spindizzy {
 
   C64LiftGraphics::C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProject(project),
-            cDefPrimary(project, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefSecondary(project, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefPrimary(data, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefSecondary(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cNeedsRedrawing(false) {
     cTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(project);
     cTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(project);
@@ -120,7 +120,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> C64LiftGraphics::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> C64LiftGraphics::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Primary Colour",   "TODO", cDefPrimary));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Secondary Colour", "TODO", cDefSecondary));

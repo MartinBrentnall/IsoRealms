@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   ArgumentDefinition::ArgumentDefinition(IProject& project, Function& parent, const std::string& name) :
             cParent(parent),
             cDefName(name),
-            cDefType(project, [this]() {
+            cDefType(parent.getResourceData(), [this]() {
               std::string mNewBindingID = cDefType.getID();
               std::size_t mLastSeparator = mNewBindingID.rfind('/');
               if (mLastSeparator != std::string::npos) {

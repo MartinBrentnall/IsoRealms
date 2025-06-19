@@ -31,12 +31,12 @@ namespace IsoRealms::Basics {
 
   ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data) :
             cProjectCallbackManager(project),
-            cDefFont(project),
-            cDefCodeFont(project),
+            cDefFont(data),
+            cDefCodeFont(data),
             cDefFontSize(0.03f),
             cDefCodeFontSize(0.02f),
-            cDefExitAction(project),
-            cDefEditorAction(project),
+            cDefExitAction(data),
+            cDefEditorAction(data),
             cProjectConfigurationUI(project, *this, [this]() {
               cDefExitAction.execute();
             }, [this](IEditable* editor) {
@@ -52,12 +52,12 @@ namespace IsoRealms::Basics {
               {"PreviousItem", &cPreviousItem},
               {"NextItem",     &cNextItem}
             }),
-            cAdjustLeft(project, *this, SignalInputID::MOVE_CURSOR_LEFT),
-            cAdjustRight(project, *this, SignalInputID::MOVE_CURSOR_RIGHT),
-            cCancel(project, *this, SignalInputID::CANCEL),
-            cConfirm(project, *this, SignalInputID::CONFIRM),
-            cPreviousItem(project, *this, SignalInputID::MOVE_CURSOR_UP),
-            cNextItem(project, *this, SignalInputID::MOVE_CURSOR_DOWN),
+            cAdjustLeft(data, *this, SignalInputID::MOVE_CURSOR_LEFT),
+            cAdjustRight(data, *this, SignalInputID::MOVE_CURSOR_RIGHT),
+            cCancel(data, *this, SignalInputID::CANCEL),
+            cConfirm(data, *this, SignalInputID::CONFIRM),
+            cPreviousItem(data, *this, SignalInputID::MOVE_CURSOR_UP),
+            cNextItem(data, *this, SignalInputID::MOVE_CURSOR_DOWN),
             cLuaBinding(project, this),
             cBindingEditor(project, nullptr, this) {
     cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
@@ -111,7 +111,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Regular Font",      "TODO", cDefFont));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Regular Font Size", "TODO", [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));

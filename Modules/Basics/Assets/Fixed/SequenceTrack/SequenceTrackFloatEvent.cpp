@@ -19,14 +19,14 @@
 #include "SequenceTrackFloatEvent.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IProject& project, unsigned int time, bool fade) :
+  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade) :
             cDefTime(time),
-            cDefValue(project, 0.0f),
+            cDefValue(owner, 0.0f),
             cDefFade(fade) {
   }
 
-  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IProject& project, JSONObject object) :
-            SequenceTrackFloatEvent(parent, project, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
+  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, IProject& project, JSONObject object) :
+            SequenceTrackFloatEvent(parent, owner, project, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
     cDefValue.init(object, JSON_VALUE);
   }
 

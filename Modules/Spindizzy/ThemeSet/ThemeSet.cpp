@@ -30,6 +30,7 @@ namespace IsoRealms::Spindizzy {
   ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
+            cResourceData(data),
             cDefaultTheme(nullptr),
             cAnimation(0),
             cPause(0),
@@ -69,7 +70,7 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  std::vector<std::unique_ptr<IProperty>> ThemeSet::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ThemeSet::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     
     // Texture elements of each theme in this set.
@@ -343,6 +344,10 @@ namespace IsoRealms::Spindizzy {
   
   Spindizzy& ThemeSet::getSpindizzy() {
     return cSpindizzy;
+  }
+
+  IResourceData& ThemeSet::getResourceData() {
+    return cResourceData;
   }
 
   void ThemeSet::setNextTheme() {

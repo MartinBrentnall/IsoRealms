@@ -34,9 +34,9 @@ namespace IsoRealms::Spindizzy {
   Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cProject(project),
-            cDefColourTop(    project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefColourSide(   project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefColourOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefColourTop(    data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefColourSide(   data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefColourOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cRuntimeTextureTop(project),
             cRuntimeTextureSide(project),
             cNeedsRedrawing(false),
@@ -81,7 +81,7 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Top Colour",     "TODO", cDefColourTop));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side Colour",    "TODO", cDefColourSide));

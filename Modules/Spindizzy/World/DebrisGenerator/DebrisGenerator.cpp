@@ -31,9 +31,9 @@ namespace IsoRealms::Spindizzy {
   const float        DebrisGenerator::DEFAULT_RADIUS     = 0.3f;
   const float        DebrisGenerator::DEFAULT_STEP_REACH = 0.2f;
 
-  DebrisGenerator::DebrisGenerator(JSONObject object, IProject& project) :
+  DebrisGenerator::DebrisGenerator(JSONObject object, IProject& project, IResourceData& owner) :
             cDefID(object.getString(JSON_ID)),
-            cDefModel(project),
+            cDefModel(owner),
             cDefLifeTime(object.getInteger(JSON_LIFE, DEFAULT_LIFE)),
             cDefHeight(object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT)),
             cDefRadius(object.getFloat(JSON_RADIUS, DEFAULT_RADIUS)),

@@ -28,9 +28,9 @@
 namespace IsoRealms {
   class ActionType : public IAssetUser<IActionType> {
     public:
-    ActionType(IProject& project, std::function<void()> relinquishInstances);
-    ActionType(IProject& project, std::function<void()> relinquishInstances, const std::string& id);
-    ActionType(IProject& project, std::function<void()> relinquishInstances, JSONObject object);
+    ActionType(IResourceData& owner, std::function<void()> relinquishInstances);
+    ActionType(IResourceData& owner, std::function<void()> relinquishInstances, const std::string& id);
+    ActionType(IResourceData& owner, std::function<void()> relinquishInstances, JSONObject object);
 
     void init(JSONObject object, const std::string& member);
     void set(JSONObject object, const std::string& member);
@@ -53,6 +53,7 @@ namespace IsoRealms {
 
     private:
     IProject& cProject;
+    IResourceData& cManager;
     IActionType* cActionType;
     std::function<void()> cRelinquishInstances;
 

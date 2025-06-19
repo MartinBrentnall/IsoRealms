@@ -159,4 +159,8 @@ namespace IsoRealms {
   IAssets& ResourceType::getAssets() {
     return cParent.getAssets();
   }
+
+  IProject& ResourceType::getProject() {
+    return cParent.getProject();
+  }
 }

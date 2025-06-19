@@ -301,7 +301,7 @@ namespace IsoRealms::Basics {
         glPushMatrix();
         glTranslatef(-aspectRatio + mHeight * 0.75f, (1.0f - mHeight * 0.75f) - i * (mHeight + mGap), 0.0f);
         glScalef(mHeight * 0.25f, mHeight * 0.25f, 0.0f);
-        Utils::renderIconNone();
+        Utils::renderIconLock();
         glPopMatrix();
       }
       mY -= mHeight + mGap;
@@ -659,7 +659,7 @@ namespace IsoRealms::Basics {
                 cEditingProperties = true;
               } else {
                 if (cCursorEvent == nullptr) {
-                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getProject(), std::round(cCursorTimeline.animation()));
+                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getProject(), cSequence.getResourceData(), std::round(cCursorTimeline.animation()));
                 }
 
                 if (cCursorEvent != nullptr) {

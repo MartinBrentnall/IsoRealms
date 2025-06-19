@@ -16,19 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#include "Modules/Spindizzy/Spindizzy.h"
-#include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
-
 #include "WallPatternTile.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/TerrainType/TerrainType.h"
+#include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
+
 namespace IsoRealms::Spindizzy {
-  WallPatternTile::WallPatternTile(IProject& project, Spindizzy& spindizzy) :
-            cDefTexture(project, [&spindizzy]() {spindizzy.stateChanged(nullptr);}) {
+  WallPatternTile::WallPatternTile(IProject& project, TerrainType& owner) :
+            cDefTexture(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}) {
   }
 
-  WallPatternTile::WallPatternTile(IProject& project, Spindizzy& spindizzy, JSONObject object) :
-            WallPatternTile(project, spindizzy) {
+  WallPatternTile::WallPatternTile(IProject& project, TerrainType& owner, JSONObject object) :
+            WallPatternTile(project, owner) {
     cDefTexture.set(object, JSON_TEXTURE);
   }
 

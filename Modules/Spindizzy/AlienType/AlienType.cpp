@@ -41,8 +41,8 @@ namespace IsoRealms::Spindizzy {
   AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
-            cDefModel(project),
-            cDefTarget(project),
+            cDefModel(data),
+            cDefTarget(data),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefFriction(DEFAULT_FRICTION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
@@ -97,7 +97,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance",            "TODO", cDefModel));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>("Target",               "TODO", cDefTarget));

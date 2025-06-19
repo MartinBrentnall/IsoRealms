@@ -19,34 +19,35 @@
 #include "Vertex.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Vertex::Vertex(IProject& project) : 
-            Asset<IVertex, IProject>(project, project.createLiteralVertex(this, 0.0f, 0.0f, 0.0f)) {
+  Vertex::Vertex(IResourceData& owner) :
+            Asset<IVertex, IResourceData>(owner, owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f)) {
   }
 
-  IVertex* Vertex::createLiteralAsset(IProject& project) {
-    return project.createLiteralVertex(this, 0.0f, 0.0f, 0.0f);
+  IVertex* Vertex::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f);
   }
   
-  IVertex* Vertex::getAsset(IProject& project, JSONObject object) {
-    return project.getVertex(this, object);
+  IVertex* Vertex::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getVertex(this, object, owner);
   }
   
-  IVertex* Vertex::getAsset(IProject& project, const std::string& id) {
-    return project.getVertex(this, id);
+  IVertex* Vertex::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getVertex(this, id, owner);
   }
   
   std::vector<std::string> Vertex::getAvailableProviders() const {
-    return cManager.getAllVertices();
+    return cManager.getAssetManager().getAllVertices();
   }
 
   bool Vertex::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderVertexIcon(id);
+    return cManager.getAssetManager().renderVertexIcon(id);
   }
 
   bool Vertex::hasConfiguration() const {
-    return cManager.isVertexConfigurable(getID());
+    return cManager.getAssetManager().isVertexConfigurable(getID());
   }
 
   bool Vertex::isDefaultConfiguration() const {

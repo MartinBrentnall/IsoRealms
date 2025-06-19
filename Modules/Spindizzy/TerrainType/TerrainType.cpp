@@ -41,19 +41,20 @@ namespace IsoRealms::Spindizzy {
 
   TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
+            cResourceData(data),
             cDefSurfaceFriction(0.0f),
             cDefSurfaceGrip(0.0f),
             cDefSurfaceBounce(0.0f),
             cDefWallBounce(DEFAULT_WALL_BOUNCE),
             cDefRespawnAllowed(true),
             cDefSolid(false),
-            cDefSurfacePattern(  spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefWestWallPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefEastWallPattern( spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefSouthWallPattern(spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefNorthWallPattern(spindizzy, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefContactAction(project),
-            cDefImpactAction(project) {
+            cDefSurfacePattern(  spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefWestWallPattern( spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefEastWallPattern( spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefSouthWallPattern(spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefNorthWallPattern(spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
+            cDefContactAction(data),
+            cDefImpactAction(data) {
   }
   
   TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -134,7 +135,7 @@ namespace IsoRealms::Spindizzy {
   
   
   
-  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Friction",      "TODO", [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Grip",          "TODO", [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
@@ -172,8 +173,20 @@ namespace IsoRealms::Spindizzy {
     return *cDefNorthWallPattern;
   }
 
+  IProject& TerrainType::getProject() {
+    return cSpindizzy.getProject();
+  }
+
   Spindizzy& TerrainType::getSpindizzy() const {
     return cSpindizzy;
+  }
+
+  Spindizzy& TerrainType::getAssetManager() {
+    return cSpindizzy;
+  }
+
+  IResourceData& TerrainType::getResourceData() {
+    return cResourceData;
   }
 
   void TerrainType::executeContactScript() {

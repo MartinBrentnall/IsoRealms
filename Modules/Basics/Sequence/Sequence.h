@@ -47,9 +47,10 @@ namespace IsoRealms::Basics {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     Basics& getBasics() const;
+    IResourceData& getResourceData();
     bool isPlaying() const;
     bool isLooped() const;
     std::string getInstanceName(SequenceInstance& instance) const;
@@ -111,6 +112,7 @@ namespace IsoRealms::Basics {
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
     Basics& cBasics;
+    IResourceData& cResourceData;
 
     // Definition data.
     std::vector<std::unique_ptr<SequenceTrack>> cDefTracks; /// Tracks in this sequence.

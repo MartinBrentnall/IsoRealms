@@ -25,7 +25,7 @@ namespace IsoRealms::Basics {
 
   Sprite::Sprite(IProject& project, Basics& basics, IResourceData& data) :
             cDefProject(project),
-            cDefTexture(project),
+            cDefTexture(data),
             cDefBillboardYaw(false),
             cDefBillboardPitch(false),
             cRuntimeScreen(nullptr) {
@@ -80,7 +80,7 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Appearance",      "TODO", cDefTexture));
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Yaw",   "TODO", [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, browser.getProject()));

@@ -29,19 +29,19 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Texture : public Asset<ITexture, IProject>,
+  class Texture : public Asset<ITexture, IResourceData>,
                   public IStateListener<ITexture*> {
     public:
-    Texture(IProject& project, std::function<void()> listener = nullptr);
+    Texture(IResourceData& owner, std::function<void()> listener = nullptr);
 
     void coord(float x, float y) const;
 
-    /****************************************\
-     * Implements Asset<ITexture, IProject> *
-    \****************************************/
-    ITexture* createLiteralAsset(IProject& project) override;
-    ITexture* getAsset(IProject& project, JSONObject object) override;
-    ITexture* getAsset(IProject& project, const std::string& id) override;
+    /*********************************************\
+     * Implements Asset<ITexture, IResourceData> *
+    \*********************************************/
+    ITexture* createLiteralAsset(IResourceData& owner) override;
+    ITexture* getAsset(IResourceData& owner, JSONObject object) override;
+    ITexture* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

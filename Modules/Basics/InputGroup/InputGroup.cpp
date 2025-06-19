@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
   InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
             InputGroup(project, basics, data) {
     for (JSONObject mInputObject : object.getArray(JSON_INPUTS)) {
-      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(project)).get()->init(mInputObject, JSON_INPUT);
+      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(data)).get()->init(mInputObject, JSON_INPUT);
     }
   }
 
@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     unsigned int i = 1;
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
@@ -68,8 +68,8 @@ namespace IsoRealms::Basics {
       i++;
     }
 
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Input Handler " + Utils::toString(i), "TODO", "Add...", [this, &browser]() {
-      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Input Handler " + Utils::toString(i), "TODO", "Add...", [this, &owner]() {
+      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(owner));
       std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
       return std::make_unique<PropertyAsset<InputHandler>>("Input Handler", "TODO", *mInputHandler, [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());

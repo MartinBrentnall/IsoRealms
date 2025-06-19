@@ -16,18 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
-
 #include "WallPatternOutline.h"
 
+#include "Modules/Spindizzy/TerrainType/TerrainType.h"
+#include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
+
 namespace IsoRealms::Spindizzy {
-  WallPatternOutline::WallPatternOutline(IProject& project, Spindizzy& spindizzy) {
+  WallPatternOutline::WallPatternOutline(IProject& project, TerrainType& owner) {
     // Nothing to do.
   }
 
-  WallPatternOutline::WallPatternOutline(IProject& project, Spindizzy& spindizzy, JSONObject object) :
-            WallPatternOutline(project, spindizzy) {
+  WallPatternOutline::WallPatternOutline(IProject& project, TerrainType& owner, JSONObject object) :
+            WallPatternOutline(project, owner) {
     // Nothing to do.
   }
 

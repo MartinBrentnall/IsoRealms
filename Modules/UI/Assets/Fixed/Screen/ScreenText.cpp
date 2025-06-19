@@ -23,16 +23,16 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::UI {
-  ScreenText::ScreenText(IProject& project, Project& owner) :
+  ScreenText::ScreenText(IProject& project, IResourceData& owner) :
             cProject(project),
-            cDefString(project),
-            cDefFont(project),
-            cDefColour(project, 1.0f, 1.0f, 1.0f),
+            cDefString(owner),
+            cDefFont(owner),
+            cDefColour(owner, 1.0f, 1.0f, 1.0f),
             cDefAlignment(IFont::Alignment::LEFT),
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET) {
   }
   
-  ScreenText::ScreenText(IProject& project, Project& owner, JSONObject object) :
+  ScreenText::ScreenText(IProject& project, IResourceData& owner, JSONObject object) :
             ScreenText(project, owner) {
     std::string mAlignment = object.getString(JSON_ALIGNMENT);
     setAlignment(mAlignment);

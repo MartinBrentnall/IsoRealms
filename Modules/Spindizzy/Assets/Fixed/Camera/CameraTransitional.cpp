@@ -33,10 +33,10 @@ namespace IsoRealms::Spindizzy {
             cDefStart(cParent.getSpindizzy(), view),
             cDefEnd(cParent.getSpindizzy(), view),
             cDefDuration(DEFAULT_DURATION),
-            cDefStartDepartureAction(project),
-            cDefStartArrivalAction(project),
-            cDefEndDepartureAction(project),
-            cDefEndArrivalAction(project),
+            cDefStartDepartureAction(view.getResourceData()),
+            cDefStartArrivalAction(view.getResourceData()),
+            cDefEndDepartureAction(view.getResourceData()),
+            cDefEndArrivalAction(view.getResourceData()),
             cRuntimeYawStateNotifier(nullptr),
             cLuaBinding(project, this) {
     cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {

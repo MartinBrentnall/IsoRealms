@@ -30,11 +30,11 @@ namespace IsoRealms::Basics {
   const std::string Function::JSON_VARIABLE      = "variable";
 
   Function::Function(IProject& project, Basics& basics, IResourceData& data) :
-            Function(project, "") {
+            Function(project, "", data) {
   }
     
   Function::Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
-            Function(project, object.getString(JSON_ID), object, nullptr, true) {
+            Function(project, object.getString(JSON_ID), data, object, nullptr, true) {
   }
 
   void Function::registerAssets(IAssetRegistry& assets) {
@@ -71,7 +71,7 @@ namespace IsoRealms::Basics {
     return renderAssetIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Function::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Function::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyStruct>("Bindings", "TODO", "Edit...", [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
@@ -115,14 +115,15 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
   
-  Function::Function(IProject& project, const std::string& name) :
+  Function::Function(IProject& project, const std::string& name, IResourceData& data) :
             cProject(project),
+            cResourceData(data),
             cDefLuaState(project.getLuaState()->getState()),
             cDefName(name) {
   }
 
-  Function::Function(IProject& project, const std::string& name, JSONObject object, IBindingRegistry* localArgs, bool init) :
-            Function(project, name) {
+  Function::Function(IProject& project, const std::string& name, IResourceData& data, JSONObject object, IBindingRegistry* localArgs, bool init) :
+            Function(project, name, data) {
     if (init) {
       for (JSONObject mArgumentObject : object.getArray(JSON_ARGUMENTS)) {
         cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(project, *this, mArgumentObject));
@@ -176,6 +177,10 @@ namespace IsoRealms::Basics {
     return cProject;
   }
 
+  IResourceData& Function::getResourceData() const {
+    return cResourceData;
+  }
+
   bool Function::setBindingName(Binding& binding, const std::string& name) {
     Binding* mBinding = getBinding(name);
     if (mBinding != nullptr && mBinding != &binding) {
@@ -221,15 +226,15 @@ namespace IsoRealms::Basics {
     return mProposedName;
   }
 
-  IAction* Function::createAction(JSONObject object, IProject& project, IBindingRegistry* localArgs) {
-    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, object, project, localArgs);
+  IAction* Function::createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) {
+    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, object, owner, localArgs);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
   }
 
-  IAction* Function::createAction(IProject& project, IBindingRegistry* localArgs) {
-    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, project, localArgs);
+  IAction* Function::createAction(IResourceData& owner, IBindingRegistry* localArgs) {
+    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner, localArgs);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
@@ -271,21 +276,21 @@ namespace IsoRealms::Basics {
     return false; // TODO: Implement this.
   }
 
-  Function::Call::Call(Function& parent, IProject& project, IBindingRegistry* localObjects) :
+  Function::Call::Call(Function& parent, IResourceData& owner, IBindingRegistry* localObjects) :
             cDefParent(parent),
             cDefLocalBindingRegistry(localObjects) {
     for (unsigned int i = 0; i < cDefParent.cDefArgumentDefinitions.size(); i++) {
-      cDefArguments.emplace_back(std::make_unique<IsoRealms::Binding>(project, cDefLocalBindingRegistry, cDefParent.cDefArgumentDefinitions[i]->getType()));
+      cDefArguments.emplace_back(std::make_unique<IsoRealms::Binding>(owner, cDefLocalBindingRegistry, cDefParent.cDefArgumentDefinitions[i]->getType()));
     }
   }
 
-  Function::Call::Call(Function& parent, JSONObject object, IProject& project, IBindingRegistry* localObjects) :
-            Call(parent, project, localObjects) {
+  Function::Call::Call(Function& parent, JSONObject object, IResourceData& owner, IBindingRegistry* localObjects) :
+            Call(parent, owner, localObjects) {
     if (!cDefParent.cDefArgumentDefinitions.empty()) {
       for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {
         std::string mArgumentName = mBindingObject.getString(JSON_ARGUMENT);
         unsigned int mBindingIndex = cDefParent.getDynamicBindingIndex(mArgumentName);
-        cDefArguments[mBindingIndex] = std::make_unique<IsoRealms::Binding>(project, cDefLocalBindingRegistry, cDefParent.cDefArgumentDefinitions[mBindingIndex]->getType());
+        cDefArguments[mBindingIndex] = std::make_unique<IsoRealms::Binding>(owner, cDefLocalBindingRegistry, cDefParent.cDefArgumentDefinitions[mBindingIndex]->getType());
         cDefArguments[mBindingIndex]->set(mBindingObject, JSON_TO);
       }
     }

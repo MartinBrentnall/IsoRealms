@@ -23,33 +23,33 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPattern::WallPattern(Spindizzy& spindizzy, std::function<void()> listener) :
-            Asset<IWallPattern, Spindizzy>(spindizzy, spindizzy.getWallPattern(this, "Tile", this)),
+  WallPattern::WallPattern(Spindizzy& spindizzy, TerrainType& owner, std::function<void()> listener) :
+            Asset<IWallPattern, TerrainType>(owner, spindizzy.getWallPattern(this, "Tile", owner, this)),
             cListener(listener) {
   }
 
-  IWallPattern* WallPattern::createLiteralAsset(Spindizzy& spindizzy) {
-    return spindizzy.createLiteralWallPattern(this);
+  IWallPattern* WallPattern::createLiteralAsset(TerrainType& owner) {
+    return owner.getSpindizzy().createLiteralWallPattern(this, owner);
   }
   
-  IWallPattern* WallPattern::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return spindizzy.getWallPattern(this, object, this);
+  IWallPattern* WallPattern::getAsset(TerrainType& owner, JSONObject object) {
+    return owner.getSpindizzy().getWallPattern(this, object, owner, this);
   }
   
-  IWallPattern* WallPattern::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return spindizzy.getWallPattern(this, id, this);
+  IWallPattern* WallPattern::getAsset(TerrainType& owner, const std::string& id) {
+    return owner.getSpindizzy().getWallPattern(this, id, owner, this);
   }
   
   std::vector<std::string> WallPattern::getAvailableProviders() const {
-    return cManager.getAllWallPatterns();
+    return cManager.getSpindizzy().getAllWallPatterns();
   }  
 
   bool WallPattern::renderOtherProviderIcon(const std::string& id) const {
-    return id == getID() ? renderAssetIcon() : cManager.renderWallPatternIcon(id);
+    return id == getID() ? renderAssetIcon() : cManager.getSpindizzy().renderWallPatternIcon(id);
   }
 
   bool WallPattern::hasConfiguration() const {
-    return cManager.isWallPatternConfigurable(getID());
+    return cManager.getSpindizzy().isWallPatternConfigurable(getID());
   }
 
   bool WallPattern::isDefaultConfiguration() const {

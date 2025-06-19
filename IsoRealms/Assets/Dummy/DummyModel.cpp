@@ -24,7 +24,7 @@
 namespace IsoRealms {
   DummyModel::ModelInstance DummyModel::DUMMY;
   
-  DummyModel::DummyModel(IProject& project) {
+  DummyModel::DummyModel(IResourceData& owner) {
     // Nothing to do.
   }
 

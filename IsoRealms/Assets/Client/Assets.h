@@ -27,16 +27,16 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Assets : public Asset<IAssets, IProject> {
+  class Assets : public Asset<IAssets, IResourceData> {
     public:
-    Assets(IProject& project);
+    Assets(IResourceData& owner);
 
-    /***************************************\
-     * Implements Asset<IAssets, IProject> *
-    \***************************************/
-    IAssets* createLiteralAsset(IProject& project) override;
-    IAssets* getAsset(IProject& project, JSONObject object) override;
-    IAssets* getAsset(IProject& project, const std::string& id) override;
+    /********************************************\
+     * Implements Asset<IAssets, IResourceData> *
+    \********************************************/
+    IAssets* createLiteralAsset(IResourceData& owner) override;
+    IAssets* getAsset(IResourceData& owner, JSONObject object) override;
+    IAssets* getAsset(IResourceData& owner, const std::string& id) override;
     std::vector<std::string> getAvailableProviders() const override;
     bool renderOtherProviderIcon(const std::string& id) const override;
     bool hasConfiguration() const override;

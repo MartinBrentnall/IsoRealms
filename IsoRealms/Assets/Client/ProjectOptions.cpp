@@ -19,22 +19,23 @@
 #include "ProjectOptions.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  ProjectOptions::ProjectOptions(IProject& project) : 
-            Asset<IProjectOptions, IProject>(project, project.createLiteralProjectOptions(this)) {
+  ProjectOptions::ProjectOptions(IResourceData& owner) :
+            Asset<IProjectOptions, IResourceData>(owner, owner.getAssetManager().createLiteralProjectOptions(this, owner)) {
   }
 
-  IProjectOptions* ProjectOptions::createLiteralAsset(IProject& project) {
-    return project.createLiteralProjectOptions(this);
+  IProjectOptions* ProjectOptions::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralProjectOptions(this, owner);
   }
   
-  IProjectOptions* ProjectOptions::getAsset(IProject& project, JSONObject object) {
-    return project.getProjectOptions(this, object);
+  IProjectOptions* ProjectOptions::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getProjectOptions(this, object, owner);
   }
   
-  IProjectOptions* ProjectOptions::getAsset(IProject& project, const std::string& id) {
-    return project.getProjectOptions(this, id);
+  IProjectOptions* ProjectOptions::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getProjectOptions(this, id, owner);
   }
   
   std::vector<std::string> ProjectOptions::getAvailableProviders() const {

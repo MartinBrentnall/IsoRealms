@@ -22,11 +22,11 @@
 #include "IsoRealms/Assets/Type/IModel.h"
 
 namespace IsoRealms {
-  class IProject;
+  class IResourceData;
 
   class DummyModel : public IModel {
     public:
-    DummyModel(IProject& project);
+    DummyModel(IResourceData& owner);
       
     /*********************\
      * Implements IModel *

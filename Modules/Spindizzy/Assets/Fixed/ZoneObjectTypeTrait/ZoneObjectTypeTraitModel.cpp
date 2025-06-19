@@ -16,18 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <cmath>
+#include "ZoneObjectTypeTraitModel.h"
 
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Model/Model.h"
-
-#include "ZoneObjectTypeTraitModel.h"
+#include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitModel::JSON_LOCATION = "location";
   const std::string ZoneObjectTypeTraitModel::JSON_MODEL    = "model";
 
   ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type) :
-            cDefModel(project) {
+            cDefModel(type.getResourceData()) {
   }
 
   ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type, JSONObject object) :

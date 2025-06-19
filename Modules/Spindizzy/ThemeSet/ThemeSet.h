@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
     public:
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
     bool renderIcon();
     void hintInUse(bool inUse);
     void save(JSONObject object, IAssetIdentifier& identifier) const;
@@ -54,6 +54,7 @@ namespace IsoRealms::Spindizzy {
     void applyDefaultTheme();
     Theme* getDefaultTheme();
     Spindizzy& getSpindizzy();
+    IResourceData& getResourceData();
 
     void setNextTheme();
     void setPreviousTheme();
@@ -78,6 +79,7 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;
+    IResourceData& cResourceData;
 
     // Definition data.
     std::map<std::string, std::unique_ptr<Theme>> cThemes;

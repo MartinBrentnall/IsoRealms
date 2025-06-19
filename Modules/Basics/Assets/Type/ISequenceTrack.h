@@ -43,7 +43,7 @@ namespace IsoRealms::Basics {
     virtual void setName(const std::string& name) = 0;
     virtual std::string getName() const = 0;
 
-    virtual ISequenceTrackEvent* createEvent(IProject& project, unsigned int time) = 0;
+    virtual ISequenceTrackEvent* createEvent(IProject& project, IResourceData& owner, unsigned int time) = 0;
     virtual void deleteEvent(ISequenceTrackEvent* event) = 0;
     virtual void setEventTime(ISequenceTrackEvent* event, unsigned int time) = 0;
     virtual std::vector<ISequenceTrackEvent*> getEvents() = 0;

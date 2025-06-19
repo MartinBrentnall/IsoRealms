@@ -21,7 +21,7 @@
 #include "SequenceTrackAudio.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IProject& project, unsigned int time) :
+  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, IProject& project, unsigned int time) :
               cParent(parent),
               cEnd(*this),
               cDefTime(time),
@@ -33,8 +33,8 @@ namespace IsoRealms::Basics {
               }) {
   }
 
-  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IProject& project, JSONObject object) :
-            SequenceTrackAudioEvent(parent, project, object.getInteger(JSON_TIME)) {
+  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, IProject& project, JSONObject object) :
+            SequenceTrackAudioEvent(parent, owner, project, object.getInteger(JSON_TIME)) {
     cDefFile.load(JSON_FILE, object);
     std::string mResource = cDefFile.getPath();
     if (!cMusic.openFromFile(mResource)) {

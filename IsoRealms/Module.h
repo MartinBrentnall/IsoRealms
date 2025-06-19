@@ -76,6 +76,7 @@ namespace IsoRealms {
     IAssetRemover& getAssetRemover() override;
     IAssetRegistry& getAssetRegistry() override;
     IAssets& getAssets() override;
+    IProject& getProject() override;
     std::string getPath() override;
     std::string getDataPath(bool user) override;
     File* getProjectFile() override;

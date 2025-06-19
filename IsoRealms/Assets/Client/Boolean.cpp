@@ -19,36 +19,37 @@
 #include "Boolean.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Boolean::Boolean(IProject& project, bool defaultValue, std::function<void(bool)> listener) :
-            Asset<IBoolean, IProject>(project, project.createLiteralBoolean(this, defaultValue)),
+  Boolean::Boolean(IResourceData& owner, bool defaultValue, std::function<void(bool)> listener) :
+            Asset<IBoolean, IResourceData>(owner, owner.getAssetManager().createLiteralBoolean(this, owner, defaultValue)),
             cDefaultValue(defaultValue),
             cListener(listener) {
   }
 
-  IBoolean* Boolean::createLiteralAsset(IProject& project) {
-    return project.createLiteralBoolean(this, false);
+  IBoolean* Boolean::createLiteralAsset(IResourceData& owner) {
+    return owner.getAssetManager().createLiteralBoolean(this, owner, false);
   }
   
-  IBoolean* Boolean::getAsset(IProject& project, JSONObject object) {
-    return project.getBoolean(this, object, cListener != nullptr ? this : nullptr);
+  IBoolean* Boolean::getAsset(IResourceData& owner, JSONObject object) {
+    return owner.getAssetManager().getBoolean(this, object, owner, cListener != nullptr ? this : nullptr);
   }
   
-  IBoolean* Boolean::getAsset(IProject& project, const std::string& id) {
-    return project.getBoolean(this, id, cListener != nullptr ? this : nullptr);
+  IBoolean* Boolean::getAsset(IResourceData& owner, const std::string& id) {
+    return owner.getAssetManager().getBoolean(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
   std::vector<std::string> Boolean::getAvailableProviders() const {
-    return cManager.getAllBooleans();
+    return cManager.getAssetManager().getAllBooleans();
   }
 
   bool Boolean::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderBooleanIcon(id);
+    return cManager.getAssetManager().renderBooleanIcon(id);
   }
 
   bool Boolean::hasConfiguration() const {
-    return cManager.isBooleanConfigurable(getID());
+    return cManager.getAssetManager().isBooleanConfigurable(getID());
   }
 
   bool Boolean::isDefaultConfiguration() const {

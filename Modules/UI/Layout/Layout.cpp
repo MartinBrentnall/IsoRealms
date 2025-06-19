@@ -26,6 +26,7 @@ namespace IsoRealms::UI {
 
   Layout::Layout(IProject& project, UI& ui, IResourceData& data) :
             cProjectCallbackManager(project),
+            cResourceData(data),
             cUI(ui) {
     cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
       for (const std::pair<IEditableScreen* const, std::unique_ptr<LayoutEditor>>& mEditor : cEditors) {
@@ -81,7 +82,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", "TODO", this));
     return mProperties;
@@ -174,6 +175,10 @@ namespace IsoRealms::UI {
 
   IUI& Layout::getUI() const {
     return cUI;
+  }
+
+  IResourceData& Layout::getResourceData() {
+    return cResourceData;
   }
 
   LayoutComponent* Layout::createComponent(float x1, float y1, float x2, float y2, float aspectRatio) {

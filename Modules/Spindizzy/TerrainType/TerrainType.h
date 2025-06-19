@@ -51,7 +51,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
     
     ~TerrainType();
     
@@ -71,7 +71,10 @@ namespace IsoRealms::Spindizzy {
     IWallPattern* getSouthWallPattern() const;
     IWallPattern* getNorthWallPattern() const;
     
+    IProject& getProject();
     Spindizzy& getSpindizzy() const;
+    Spindizzy& getAssetManager();
+    IResourceData& getResourceData();
     void executeContactScript();
     void executeImpactScript();
     float getSurfaceFriction() const;
@@ -145,8 +148,10 @@ namespace IsoRealms::Spindizzy {
     // Defaults.
     static const float DEFAULT_WALL_BOUNCE;
 
+    // External interfaces.
     Spindizzy& cSpindizzy;
-      
+    IResourceData& cResourceData;
+
     // Properties
     float cDefSurfaceFriction;
     float cDefSurfaceGrip;

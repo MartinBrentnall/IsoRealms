@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include <cmath>
+
 #include "IsoRealms/Editing.h"
 
 #include "Modules/Spindizzy/Assets/Type/IZoneObjectTypeTrait.h"

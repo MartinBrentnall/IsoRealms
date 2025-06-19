@@ -33,11 +33,11 @@ namespace IsoRealms::Spindizzy {
   DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cProject(project),
-            cDefSide{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                     Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                     Colour(project, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                     Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
-            cDefOutline(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefSide{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(data, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(data, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
+            cDefOutline(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutlineWidth(DEFAULT_OUTLINE_WIDTH),
             cTextures{project, project, project, project},
             cNeedsRedrawing(false),
@@ -89,7 +89,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 1 Colour",  "TODO", cDefSide[0]));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 2 Colour",  "TODO", cDefSide[1]));

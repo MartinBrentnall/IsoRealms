@@ -25,7 +25,7 @@
 #include "AssetLiteral.h"
 
 namespace IsoRealms {
-  class AssetLiteralVertex : public AssetLiteral<Project, IVertex> {
+  class AssetLiteralVertex : public AssetLiteral<IResourceData, IVertex> {
     public:
     
     /************************************\
@@ -35,11 +35,11 @@ namespace IsoRealms {
       return true;
     }
 
-    std::unique_ptr<IVertex> createLiteralAsset(Project& project) const override {
+    std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner) const override {
       return std::make_unique<LiteralVertex>(0.0f, 0.0f, 0.0f);
     }
 
-    std::unique_ptr<IVertex> createLiteralAsset(Project& project, const std::string& expression) const override {
+    std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
       std::vector<std::string> mSections = Utils::splitWords(expression, ' ');
       if (mSections.size() == 3) {
         
@@ -56,7 +56,7 @@ namespace IsoRealms {
       return false;
     }
 
-    std::unique_ptr<IVertex> createLiteralAsset(Project& project, JSONObject object) const override {
+    std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
       return std::make_unique<LiteralVertex>(object.getFloat(JSON_X), object.getFloat(JSON_Y), object.getFloat(JSON_Z));
     }
 

@@ -46,7 +46,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
 
     ~ZoneObjectType();
     
@@ -55,6 +55,7 @@ namespace IsoRealms::Spindizzy {
 
     // Interface to be used by trait types.
     Spindizzy& getSpindizzy();
+    IResourceData& getResourceData();
     void registerEditor(IZoneObjectTraitEditor* editor);
     IBinding* getBinding(const std::string& id) const;
     std::string getBindingID(const IBinding* binding) const;
@@ -117,7 +118,8 @@ namespace IsoRealms::Spindizzy {
 
     // External interfaces.
     Spindizzy& cSpindizzy; /// Spindizzy module reference.
-    
+    IResourceData& cResourceData;
+
     // Definition data.
     std::map<std::string, IZoneObjectTypeTrait*> cDefTypeTraits; /// Traits of this object type.
     std::string cDefRuntimeRendererID;

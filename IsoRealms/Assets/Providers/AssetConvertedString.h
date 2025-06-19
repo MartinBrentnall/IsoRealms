@@ -26,18 +26,18 @@
 namespace IsoRealms {
   class Project;
 
-  template <class FROM> class AssetConvertedString : public IAssetProvider<Project, IString> {
+  template <class FROM> class AssetConvertedString : public IAssetProvider<IResourceData, IString> {
     public:
     AssetConvertedString(IProject& project) :
               cProject(project) {
     }
 
-    IString* getAsset(Project& project, JSONObject object) const override {
-      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(cProject, object)).first->get();
+    IString* getAsset(IResourceData& owner, JSONObject object) const override {
+      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(owner, object)).first->get();
     }
 
-    IString* getAsset(Project& project) const override {
-      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(cProject)).first->get();
+    IString* getAsset(IResourceData& owner) const override {
+      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(owner)).first->get();
     }
     
     void releaseAsset(const IString* asset) override {
