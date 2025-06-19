@@ -408,18 +408,13 @@ namespace IsoRealms {
   void Utils::renderIconLock() {
     glBindTexture(GL_TEXTURE_2D, 0);
     glColor3f(0.2f, 0.2f, 0.2f);
-    renderRingSection(0.0f, 0.4f, 0.4f, 0.6f, 0.0f, 0.5f);
-    renderRectangle(-0.6f, -0.4f, -0.6f, -0.2f);
-    renderRectangle( 0.4f, -0.4f,  0.4f, -0.2f);
-    glColor3f(1.0f, 1.0f, 3.0f);
-    renderRingSection(0.0f, 0.4f, 0.43f, 0.57f, 0.0f, 0.5f);
-    renderRectangle(-0.57f, -0.4f, -0.57f, -0.2f);
-    renderRectangle( 0.43f, -0.4f,  0.43f, -0.2f);
-    glColor3f(0.2f, 0.2f, 0.2f);
-    renderRoundedRectangle(-1.0f, -1.0f, 1.0f, -0.4f, 0.2f);
-    glColor3f(1.0f, 1.0f, 3.0f);
-    renderRoundedRectangle(-0.97f, -0.97f, 0.97f, -0.37f, 0.17f);
-    glEnd();    
+    renderRing(0.0f, 0.2f, 0.2f, 0.8f);
+    renderRoundedRectangle(-1.0f, -1.0f, 1.0f, 0.2f, 0.4f);
+    glColor3f(1.0f, 1.0f, 0.0f);
+    renderRing(0.0f, 0.2f, 0.4f, 0.6f);
+    renderRoundedRectangle(-0.8f, -0.8f, 0.8f, 0.0f, 0.2f);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    renderRectangle(-0.2f, -0.6f, 0.2f, 0.0f);
   }
 
   void Utils::renderRingSection(float x, float y, float innerRadius, float outerRadius, float startAngle, float endAngle) {
