@@ -35,7 +35,8 @@ namespace IsoRealms {
     cLua.open_libraries(sol::lib::math);
     cLua.open_libraries(sol::lib::table);
     cLua.open_libraries(sol::lib::string);
-    
+    cLua.open_libraries(sol::lib::os);
+
     // TODO: Sandbox the lua state!  See http://lua-users.org/wiki/SandBoxes
     
     // Bind IsoRealms library API's.

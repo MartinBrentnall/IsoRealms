@@ -46,13 +46,12 @@ namespace IsoRealms::Basics {
     // Simple volume curve.
     cRuntimeVolume = powf(cParent.getVolume(), 2.0f) * 100.0f;
 
-    unsigned int mRuntimeEvent = getRuntimeEvent();
     int mRuntimeEventPosition = getRuntimeEventPosition();
     for (int i = cRuntimeEventsPlaying.size() - 1; i >= 0; i--) {
       if (mRuntimeEventPosition > static_cast<int>(cParent.getRealEvents()[cRuntimeEventsPlaying[i]]->getTime() + cParent.getRealEvents()[cRuntimeEventsPlaying[i]]->getDuration())) {
         cRuntimeEventsPlaying.erase(cRuntimeEventsPlaying.begin() + i);
       } else {
-        cParent.getRealEvents()[cRuntimeEventsPlaying[i]]->updateVolume(mRuntimeEvent);
+        cParent.getRealEvents()[cRuntimeEventsPlaying[i]]->updateVolume(cRuntimeVolume);
       }
     }
   }

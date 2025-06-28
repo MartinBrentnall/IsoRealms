@@ -818,11 +818,11 @@ namespace IsoRealms::Basics {
   }
   
   IFont* SequenceEditor::getCodeFont() const {
-    return nullptr;
+    return cFont;
   }
   
   float SequenceEditor::getCodeFontSize() const {
-    return 0.0f;
+    return cFontSize;
   }
   
   IProject& SequenceEditor::getProject() const {
