@@ -50,6 +50,7 @@
 #include "Layout/Layout.h"
 #include "Menu/Menu.h"
 #include "Prompt/Prompt.h"
+#include "ScreenFader/ScreenFader.h"
 #include "Throbber/Throbber.h"
 #include "VirtualKeyboard/VirtualKeyboard.h"
 
@@ -114,6 +115,7 @@ namespace IsoRealms::UI {
     static const std::string ID_RESOURCE_LAYOUT;
     static const std::string ID_RESOURCE_MENU;
     static const std::string ID_RESOURCE_PROMPT;
+    static const std::string ID_RESOURCE_SCREEN_FADER;
     static const std::string ID_RESOURCE_THROBBER;
     static const std::string ID_RESOURCE_VIRTUAL_KEYBOARD;
 
@@ -170,6 +172,7 @@ namespace IsoRealms::UI {
     ResourceTypeDefinition<UI, Layout>          cResourceTypeLayout;
     ResourceTypeDefinition<UI, Menu>            cResourceTypeMenu;
     ResourceTypeDefinition<UI, Prompt>          cResourceTypePrompt;
+    ResourceTypeDefinition<UI, ScreenFader>     cResourceTypeScreenFader;
     ResourceTypeDefinition<UI, Throbber>        cResourceTypeThrobber;
     ResourceTypeDefinition<UI, VirtualKeyboard> cResourceTypeVirtualKeyboard;
   };

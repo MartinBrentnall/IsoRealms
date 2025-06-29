@@ -31,7 +31,7 @@ namespace IsoRealms {
     public:
     LiteralTexture(IProject& project, bool clampX = false, bool clampY = false);
     
-    void setRenderTarget();
+    void setRenderTarget() const;
     void addUseListener(ITextureUseListener* listener);
 
     /***********************\

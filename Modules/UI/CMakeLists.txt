@@ -48,6 +48,7 @@ add_library(UI MODULE
   Layout/LayoutComponentEdge.cpp
   Menu/Menu.cpp
   Prompt/Prompt.cpp
+  ScreenFader/ScreenFader.cpp
   Throbber/Throbber.cpp
   VirtualKeyboard/VirtualKeyboard.cpp
   UI.cpp

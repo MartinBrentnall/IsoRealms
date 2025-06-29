@@ -49,7 +49,7 @@ namespace IsoRealms {
     });
   }
 
-  void LiteralTexture::setRenderTarget() {
+  void LiteralTexture::setRenderTarget() const {
     glViewport(0, 0, 128, 128);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, cFrameBuffer);

@@ -23,6 +23,7 @@ namespace IsoRealms::UI {
   const std::string UI::ID_RESOURCE_LAYOUT           = "Layout";
   const std::string UI::ID_RESOURCE_MENU             = "Menu";
   const std::string UI::ID_RESOURCE_PROMPT           = "Prompt";
+  const std::string UI::ID_RESOURCE_SCREEN_FADER     = "ScreenFader";
   const std::string UI::ID_RESOURCE_THROBBER         = "Throbber";
   const std::string UI::ID_RESOURCE_VIRTUAL_KEYBOARD = "VirtualKeyboard";
 
@@ -66,11 +67,13 @@ namespace IsoRealms::UI {
                     cResourceTypeLayout(*this),
                     cResourceTypeMenu(*this),
                     cResourceTypePrompt(*this),
+                    cResourceTypeScreenFader(*this),
                     cResourceTypeThrobber(*this),
                     cResourceTypeVirtualKeyboard(*this) {
     registry->add(&cResourceTypeLayout,          ID_RESOURCE_LAYOUT,           "Layout",           "Layouts",           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
     registry->add(&cResourceTypeMenu,            ID_RESOURCE_MENU,             "Menu",             "Menus",             IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
     registry->add(&cResourceTypePrompt,          ID_RESOURCE_PROMPT,           "Prompt",           "Prompts",           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeScreenFader,     ID_RESOURCE_SCREEN_FADER,     "Screen Fader",     "Screen Faders",     IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
     registry->add(&cResourceTypeThrobber,        ID_RESOURCE_THROBBER,         "Throbber",         "Throbbers",         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
     registry->add(&cResourceTypeVirtualKeyboard, ID_RESOURCE_VIRTUAL_KEYBOARD, "Virtual Keyboard", "Virtual Keyboards", IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
 
