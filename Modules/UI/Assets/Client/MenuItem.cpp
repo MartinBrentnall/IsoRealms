@@ -87,7 +87,7 @@ namespace IsoRealms::UI {
   }
 
   bool MenuItem::isReadOnly() const {
-    // TODO: Implement this.
+    return false; // TODO: Implement this.
   }
 
   void MenuItem::setOwner(File* owner) {

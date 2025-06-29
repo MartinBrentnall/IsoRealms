@@ -21,6 +21,8 @@
 #include <string>
 
 namespace IsoRealms {
+  class File;
+
   class IResourceData {
     public:
     virtual std::string getPath(const std::string& file, bool user) const = 0;

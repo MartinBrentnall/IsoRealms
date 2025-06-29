@@ -191,11 +191,7 @@ namespace IsoRealms {
       cInitialisers.clear();
 
       // Screen listeners cannot notified of screens before initialisation, so we need to do it now.
-      for (std::pair<IScreen* const, std::unique_ptr<ScreenProxy>>& mPair : cScreenProxyMapping) {
-        for (IScreenListener* mListener : cListeners) {
-          mListener->screenAdded(*this, mPair.second.get());
-        }
-      }
+      cScreens.notifyAllScreensAdded(*this);
 
       cProcessingInput = false;
 
@@ -774,21 +770,7 @@ namespace IsoRealms {
   void                      Project::add(IInputHandler*   asset, const std::string& id, const std::string& category) {       cInputHandlers.add( asset, id, category      );}
   IStateNotifier<IInteger>* Project::add(IInteger*        asset, const std::string& id, const std::string& category) {return cIntegers.add(      asset, id, category, true);}
   void                      Project::add(IModel*          asset, const std::string& id, const std::string& category) {       cModels.add(        asset, id, category      );}
-  IScreen*                  Project::add(IScreen*         asset, const std::string& id, const std::string& category) {
-    std::map<IScreen*, std::unique_ptr<ScreenProxy>>::iterator mExistingProxy = cScreenProxyMapping.find(asset);
-    if (mExistingProxy == cScreenProxyMapping.end()) {
-      std::unique_ptr<ScreenProxy> mNewProxy = std::make_unique<ScreenProxy>(*this, asset);
-      cScreens.add(mNewProxy.get(), id, category);
-      if (!cProcessingInput) {
-        for (IScreenListener* mListener : cListeners) {
-          mListener->screenAdded(*this, mNewProxy.get());
-        }
-      }
-      return cScreenProxyMapping.emplace(asset, std::move(mNewProxy)).first->second.get();
-    }
-    cScreens.add(mExistingProxy->second.get(), id, category);
-    return mExistingProxy->second.get();
-  }
+  IScreen*                  Project::add(IScreen*         asset, const std::string& id, const std::string& category) {return cScreens.add(       asset, id, category, false, *this);}
   void                      Project::add(IProjectOptions* asset, const std::string& id, const std::string& category) {       cProjectOptions.add(asset, id, category      );}
   void                      Project::add(IAssets*         asset, const std::string& id, const std::string& category) {       cAssets.add(        asset, id, category      );}
   IStateNotifier<IString>*  Project::add(IString*         asset, const std::string& id, const std::string& category) {return cStrings.add(       asset, id, category, true);}
@@ -824,13 +806,7 @@ namespace IsoRealms {
   void Project::remove(IInputHandler*   asset) {cInputHandlers.remove( asset);}
   void Project::remove(IInteger*        asset) {cIntegers.remove(      asset);}
   void Project::remove(IModel*          asset) {cModels.remove(        asset);}
-  void Project::remove(IScreen*         asset) {
-    std::map<IScreen*, std::unique_ptr<ScreenProxy>>::iterator mProxy = cScreenProxyMapping.find(asset);
-    if (mProxy == cScreenProxyMapping.end()) {
-      throw ArgumentException("ERROR: Project::remove: Proxy for specified screen asset not found.");
-    }
-    cScreens.remove(mProxy->second.get());
-  }
+  void Project::remove(IScreen*         asset) {cScreens.remove(       asset);}
   void Project::remove(IString*         asset) {cStrings.remove(       asset);}
   void Project::remove(IProjectOptions* asset) {cProjectOptions.remove(asset);}
   void Project::remove(IAssets*         asset) {cAssets.remove(        asset);}
@@ -866,13 +842,7 @@ namespace IsoRealms {
   bool Project::hasReadOnlyReferences(IInputHandler*   asset) {return cInputHandlers.hasReadOnlyReferences( asset);}
   bool Project::hasReadOnlyReferences(IInteger*        asset) {return cIntegers.hasReadOnlyReferences      (asset);}
   bool Project::hasReadOnlyReferences(IModel*          asset) {return cModels.hasReadOnlyReferences(        asset);}
-  bool Project::hasReadOnlyReferences(IScreen*         asset) {
-    std::map<IScreen*, std::unique_ptr<ScreenProxy>>::iterator mProxy = cScreenProxyMapping.find(asset);
-    if (mProxy == cScreenProxyMapping.end()) {
-      throw ArgumentException("ERROR: Project::remove: Proxy for specified screen asset not found.");
-    }
-    return cScreens.hasReadOnlyReferences(mProxy->second.get());
-  }
+  bool Project::hasReadOnlyReferences(IScreen*         asset) {return cScreens.hasReadOnlyReferences(       asset);}
   bool Project::hasReadOnlyReferences(IProjectOptions* asset) {return cProjectOptions.hasReadOnlyReferences(asset);}
   bool Project::hasReadOnlyReferences(IAssets*         asset) {return cAssets.hasReadOnlyReferences(        asset);}
   bool Project::hasReadOnlyReferences(IString*         asset) {return cStrings.hasReadOnlyReferences(       asset);}
@@ -897,29 +867,23 @@ namespace IsoRealms {
   void Project::overrideReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) {return cTextures.overrideReadOnlyReferences(      provider, &cProjectFile.cFile);}
   void Project::overrideReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) {return cVertices.overrideReadOnlyReferences(      provider, &cProjectFile.cFile);}
 
-  void Project::overrideReadOnlyReferences(IActionType*     asset) {return cActionTypes.overrideReadOnlyReferences(   asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IBinding*        asset) {return cBindings.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IBindingType*    asset) {return cBindingTypes.overrideReadOnlyReferences(  asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IBoolean*        asset) {return cBooleans.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IColour*         asset) {return cColours.overrideReadOnlyReferences(       asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IEditable*       asset) {return cEditables.overrideReadOnlyReferences(     asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IFloat*          asset) {return cFloats.overrideReadOnlyReferences(        asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IFont*           asset) {return cFonts.overrideReadOnlyReferences(         asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IInputHandler*   asset) {return cInputHandlers.overrideReadOnlyReferences( asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IInteger*        asset) {return cIntegers.overrideReadOnlyReferences      (asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IModel*          asset) {return cModels.overrideReadOnlyReferences(        asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IScreen*         asset) {
-    std::map<IScreen*, std::unique_ptr<ScreenProxy>>::iterator mProxy = cScreenProxyMapping.find(asset);
-    if (mProxy == cScreenProxyMapping.end()) {
-      throw ArgumentException("ERROR: Project::remove: Proxy for specified screen asset not found.");
-    }
-    cScreens.overrideReadOnlyReferences(mProxy->second.get(), &cProjectFile.cFile);
-  }
-  void Project::overrideReadOnlyReferences(IProjectOptions* asset) {return cProjectOptions.overrideReadOnlyReferences(asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IAssets*         asset) {return cAssets.overrideReadOnlyReferences(        asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IString*         asset) {return cStrings.overrideReadOnlyReferences(       asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(ITexture*        asset) {return cTextures.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
-  void Project::overrideReadOnlyReferences(IVertex*         asset) {return cVertices.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IActionType*     asset) {cActionTypes.overrideReadOnlyReferences(   asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IBinding*        asset) {cBindings.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IBindingType*    asset) {cBindingTypes.overrideReadOnlyReferences(  asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IBoolean*        asset) {cBooleans.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IColour*         asset) {cColours.overrideReadOnlyReferences(       asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IEditable*       asset) {cEditables.overrideReadOnlyReferences(     asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IFloat*          asset) {cFloats.overrideReadOnlyReferences(        asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IFont*           asset) {cFonts.overrideReadOnlyReferences(         asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IInputHandler*   asset) {cInputHandlers.overrideReadOnlyReferences( asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IInteger*        asset) {cIntegers.overrideReadOnlyReferences      (asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IModel*          asset) {cModels.overrideReadOnlyReferences(        asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IScreen*         asset) {cScreens.overrideReadOnlyReferences(       asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IProjectOptions* asset) {cProjectOptions.overrideReadOnlyReferences(asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IAssets*         asset) {cAssets.overrideReadOnlyReferences(        asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IString*         asset) {cStrings.overrideReadOnlyReferences(       asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(ITexture*        asset) {cTextures.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
+  void Project::overrideReadOnlyReferences(IVertex*         asset) {cVertices.overrideReadOnlyReferences(      asset, &cProjectFile.cFile);}
   
   void Project::init(std::function<void(IAssets&)> initialiser) {
 //    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
@@ -1022,32 +986,14 @@ namespace IsoRealms {
   void Project::save(JSONObject object, const ITexture*        asset) const {cTextures.save(      object, asset);}
   void Project::save(JSONObject object, const IVertex*         asset) const {cVertices.save(      object, asset);}
 
-  Project::ScreenProxy::ScreenProxy(Project& parent, IScreen* screen) :
-            cParent(parent) {
-    if (screen == nullptr) {
-      throw std::invalid_argument("Screen cannot be nullptr");
-    }
-    cScreen = screen;
-  }
-
-  void Project::renderScreen(IScreen* screen, float scale, float aspectRatio) {
-    for (IScreenListener* mListener : cListeners) {
-      mListener->screenPreRender(screen);
-    }
-    screen->renderScreen(scale, aspectRatio);
-    for (IScreenListener* mListener : cListeners) {
-      mListener->screenPostRender(screen);
-    }
-  }
-
   void Project::addScreenListener(IScreenListener* listener) {
-    cListeners.push_back(listener);
+    cScreens.addScreenListener(listener);
   }
 
   void Project::removeScreenListener(IScreenListener* listener) {
-    Utils::removeElement(cListeners, listener);
+    cScreens.removeScreenListener(listener);
   }
-  
+
   void Project::addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) {
     cFloats.addStateChangeListener(asset, listener);
   }
@@ -1149,34 +1095,6 @@ namespace IsoRealms {
 
   void Project::postponeAction(IAction* action) {
     cPostponedActions.emplace_back(action);
-  }
-
-  void Project::ScreenProxy::renderScreen(float scale, float aspectRatio) const {
-    cParent.renderScreen(cScreen, scale, aspectRatio);
-  }
-
-  void Project::ScreenProxy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  bool Project::ScreenProxy::renderAssetIcon() const {
-    return cScreen->renderAssetIcon();
-  }
-
-  std::vector<std::unique_ptr<IProperty>> Project::ScreenProxy::getAssetProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
-  }
-
-  bool Project::ScreenProxy::isDefaultConfiguration() const {
-    return cScreen->isDefaultConfiguration();
-  }
-
-  const IFloat* Project::ScreenProxy::getYaw() const {
-    return cScreen->getYaw();
-  }
-
-  const IFloat* Project::ScreenProxy::getPitch() const {
-    return cScreen->getPitch();
   }
 
   Project::Filename::Filename(Project& parent) :

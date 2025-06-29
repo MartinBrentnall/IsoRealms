@@ -67,7 +67,7 @@ namespace IsoRealms {
   }
 
   bool ActionType::isReadOnly() const {
-    // TODO: Implement this.
+    return false; // TODO: Implement this.
   }
 
   void ActionType::setOwner(File* owner) {

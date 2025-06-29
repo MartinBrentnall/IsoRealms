@@ -56,6 +56,7 @@
 #include "Assets/Providers/AssetLiteralVertex.h"
 #include "Assets/Providers/AssetLocalBinding.h"
 #include "Assets/Registry/AssetClientManager.h"
+#include "Assets/Registry/ScreenClientManager.h"
 #include "Assets/Type/IScreenListener.h"
 #include "DisplayResolution.h"
 #include "IAssetBrowser.h"
@@ -237,28 +238,6 @@ namespace IsoRealms {
       bool isDefaultConfiguration() const override;
     };
 
-    std::vector<IScreenListener*> cListeners;
-
-    class ScreenProxy : public IScreen {
-      private:
-      Project& cParent;
-      IScreen* cScreen;
-      
-      public:
-      ScreenProxy(Project& parent, IScreen* screen);
-      
-      /**********************\
-       * Implements IScreen *
-      \**********************/
-      void renderScreen(float scale, float aspectRatio) const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-      const IFloat* getYaw() const override;
-      const IFloat* getPitch() const override;
-    };
-
     class ProjectProperty {
       public:
       ProjectProperty(Project& parent, JSONObject object, File* ownerProject);
@@ -365,7 +344,7 @@ namespace IsoRealms {
     AssetClientManager<IResourceData, IInputHandler>   cInputHandlers;
     AssetClientManager<IResourceData, IInteger>        cIntegers;
     AssetClientManager<IResourceData, IModel>          cModels;
-    AssetClientManager<IResourceData, IScreen>         cScreens;
+    ScreenClientManager                                cScreens;
     AssetClientManager<IResourceData, IProjectOptions> cProjectOptions;
     AssetClientManager<IResourceData, IAssets>         cAssets;
     AssetClientManager<IResourceData, IString>         cStrings;
@@ -374,7 +353,6 @@ namespace IsoRealms {
 
     // Unsorted
     std::map<ActionExecutor*, std::unique_ptr<ActionExecutor>> cActionExecutors;
-    std::map<IScreen*, std::unique_ptr<ScreenProxy>> cScreenProxyMapping;
 
     // Literal and dummy asset providers.
     AssetLiteralDummy<IResourceData, IActionType,     DummyActionType>     cLiteralProviderActionType;
@@ -882,7 +860,6 @@ namespace IsoRealms {
     
     IProject& getProject() override;
     
-    void renderScreen(IScreen* screen, float scale, float aspectRatio);
     void addScreenListener(IScreenListener* listener) override;
     void removeScreenListener(IScreenListener* listener) override;
 
