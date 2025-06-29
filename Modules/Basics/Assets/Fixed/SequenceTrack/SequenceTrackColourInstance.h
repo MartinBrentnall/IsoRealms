@@ -41,7 +41,6 @@ namespace IsoRealms::Basics {
       * Implements ISequenceTrackInstance *
     \*************************************/
     void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
 
     /**********************\
       * Implements IColour *

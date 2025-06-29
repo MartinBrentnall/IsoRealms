@@ -29,20 +29,20 @@ namespace IsoRealms::Spindizzy {
   class WorldView;
   class Spindizzy;
 
-  class ZoneViewType : public Asset<IZoneViewType, Spindizzy> {
+  class ZoneViewType : public Asset<ZoneViewType, IZoneViewType, Spindizzy> {
     public:
     ZoneViewType(Spindizzy& spindizzy, WorldView& owner);
 
     /**********************************************\
      * Implements Asset<IZoneViewType, Spindizzy> *
     \**********************************************/
-    IZoneViewType* createLiteralAsset(Spindizzy& spindizzy) override;
-    IZoneViewType* getAsset(Spindizzy& spindizzy, JSONObject object) override;
-    IZoneViewType* getAsset(Spindizzy& spindizzy, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IZoneViewType* createLiteralAsset(Spindizzy& spindizzy);
+    IZoneViewType* getAsset(Spindizzy& spindizzy, JSONObject object);
+    IZoneViewType* getAsset(Spindizzy& spindizzy, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
 
     private:
     Spindizzy& cSpindizzy;

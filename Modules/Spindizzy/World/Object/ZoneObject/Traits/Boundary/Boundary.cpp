@@ -56,10 +56,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
-  void Boundary::unregisterAssets(ZoneObject& object) {
-    // Nothing to do.
-  }
-
   void Boundary::save(JSONObject object) const {
     // Nothing to do.
   }

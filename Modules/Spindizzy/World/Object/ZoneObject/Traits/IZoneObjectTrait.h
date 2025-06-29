@@ -28,7 +28,6 @@ namespace IsoRealms::Spindizzy {
   class IZoneObjectTrait {
     public:
     virtual void registerAssets(ITraitRegistry& registry) = 0;
-    virtual void unregisterAssets(ZoneObject& object) = 0;
     virtual void save(JSONObject object) const = 0;
     virtual bool hasConfiguration() const = 0;
     virtual void reset() = 0;

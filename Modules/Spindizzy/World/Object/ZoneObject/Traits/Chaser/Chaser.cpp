@@ -36,10 +36,6 @@ namespace IsoRealms::Spindizzy {
     registry.registerProcessor(this);
   }
 
-  void Chaser::unregisterAssets(ZoneObject& object) {
-    object.unregisterProcessor(this);
-  }
-
   void Chaser::save(JSONObject object) const {
     // Nothing to do.
   }

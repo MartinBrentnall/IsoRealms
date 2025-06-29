@@ -59,7 +59,6 @@ namespace IsoRealms::Spindizzy {
 
     // Interface to be used by parent world.
     void registerAssets(IAssetRegistry& assets);  
-    void unregisterAssets(IAssetRemover& assets, bool relinquish);
     void reset();
     void save(JSONObject object) const;
     bool isType(const PlayerType* const type) const;

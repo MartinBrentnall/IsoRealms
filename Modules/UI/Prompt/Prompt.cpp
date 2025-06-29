@@ -66,12 +66,6 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, "", "System");
   }
   
-  void Prompt::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(static_cast<IScreen*>(this),       relinquish);
-    assets.remove(&cLuaBinding,                      relinquish);
-  }
-  
   void Prompt::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_TEXT_SIZE,      cDefTextSize,     DEFAULT_TEXT_SIZE);
     object.addFloat(JSON_SHADOW_OFFSET,  cDefShadowOffset, DEFAULT_SHADOW_OFFSET);

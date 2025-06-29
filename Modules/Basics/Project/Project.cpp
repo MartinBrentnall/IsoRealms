@@ -117,12 +117,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Projects");
   }
   
-  void Project::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(static_cast<IScreen*>(this),       relinquish);
-    assets.remove(&cLuaBinding,                      relinquish);
-  }
-  
   void Project::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_RUNNING, cDefRunning);
     object.addBoolean(JSON_EDITING, cDefEditing);

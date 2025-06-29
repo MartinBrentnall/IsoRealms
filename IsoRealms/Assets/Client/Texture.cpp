@@ -24,7 +24,7 @@
 
 namespace IsoRealms {
   Texture::Texture(IResourceData& owner, std::function<void()> listener) :
-            Asset<ITexture, IResourceData>(owner, owner.getAssetManager().createLiteralTexture(this, owner)),
+            Asset<Texture, ITexture, IResourceData>(owner, owner.getAssetManager().createLiteralTexture(this, owner)),
             cListener(listener),
             cDefScaleX(1.0f),
             cDefScaleY(1.0f),

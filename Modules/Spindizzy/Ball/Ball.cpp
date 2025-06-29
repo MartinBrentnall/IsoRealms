@@ -48,10 +48,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Ball Craft Textures");
   }
   
-  void Ball::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-  
   void Ball::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefFill.save(object, JSON_FILL);
     cDefOutline.save(object, JSON_OUTLINE);

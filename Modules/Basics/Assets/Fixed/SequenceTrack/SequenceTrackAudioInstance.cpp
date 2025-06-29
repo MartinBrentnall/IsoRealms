@@ -100,15 +100,6 @@ namespace IsoRealms::Basics {
     mLocationRegistry.add(&cExposedPosition, "Current Audio Position", "SequenceTrackAudio");
   }
 
-  void SequenceTrackAudioInstance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-    assets.remove(&cExposedName, relinquish);
-    assets.remove(&cExposedCount, relinquish);
-    assets.remove(&cExposedCurrent, relinquish);
-    assets.remove(&cExposedLength, relinquish);
-    assets.remove(&cExposedPosition, relinquish);
-  }
-
   SequenceTrackAudioInstance::Name::Name(SequenceTrackAudioInstance& parent) :
             cParent(parent) {
   }

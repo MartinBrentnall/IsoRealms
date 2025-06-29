@@ -50,13 +50,6 @@ namespace IsoRealms::Spindizzy {
     cDefZoom->registerAssets(    mZoomRegistry);
   }
     
-  void CameraVariant::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    cDefYaw->unregisterAssets(     assets, relinquish);
-    cDefPitch->unregisterAssets(   assets, relinquish);
-    cDefLocation->unregisterAssets(assets, relinquish);
-    cDefZoom->unregisterAssets(    assets, relinquish);
-  }
-  
   const IFloat* CameraVariant::getYaw() const {
     return cDefYaw->getYaw();
   }  

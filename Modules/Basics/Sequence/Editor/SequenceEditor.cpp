@@ -801,10 +801,6 @@ namespace IsoRealms::Basics {
     cFontSize = scale;
   }
 
-  void SequenceEditor::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-
   IScreen* SequenceEditor::screen() {
     return this;
   }

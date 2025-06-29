@@ -62,10 +62,6 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, name, "Layout Components");
   }
   
-  void LayoutComponent::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   void LayoutComponent::render(float scale, float aspectRatio) {
     if (cRuntimeScreen != nullptr) {
       float mLeft        = cDefLeftEdge.getLocation(aspectRatio);

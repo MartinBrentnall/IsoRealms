@@ -28,7 +28,7 @@
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
   
-  class BoundaryType : public Asset<IBoundaryType, Spindizzy> {
+  class BoundaryType : public Asset<BoundaryType, IBoundaryType, Spindizzy> {
     public:
     BoundaryType(Spindizzy& spindizzy);
 
@@ -38,12 +38,12 @@ namespace IsoRealms::Spindizzy {
     /**********************************************\
      * Implements Asset<IBoundaryType, Spindizzy> *
     \**********************************************/
-    IBoundaryType* createLiteralAsset(Spindizzy& spindizzy) override;
-    IBoundaryType* getAsset(Spindizzy& spindizzy, JSONObject object) override;
-    IBoundaryType* getAsset(Spindizzy& spindizzy, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IBoundaryType* createLiteralAsset(Spindizzy& spindizzy);
+    IBoundaryType* getAsset(Spindizzy& spindizzy, JSONObject object);
+    IBoundaryType* getAsset(Spindizzy& spindizzy, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
   };
 }

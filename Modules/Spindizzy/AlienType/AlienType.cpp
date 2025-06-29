@@ -73,10 +73,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "", "Spindizzy Aliens");
   }
     
-  void AlienType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   void AlienType::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefModel.save(object, JSON_APPEARANCE);
     cDefTarget.save(object, JSON_TARGET);

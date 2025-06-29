@@ -169,12 +169,6 @@ namespace IsoRealms::Replay {
     assets.add(static_cast<IInputHandler*>(this), "", "System");
   }
   
-  void Player::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IAssets*>(cProject.get()), relinquish);
-    assets.remove(static_cast<IScreen*>(this),           relinquish);
-    assets.remove(static_cast<IInputHandler*>(this),     relinquish);
-  }
-  
   std::vector<std::unique_ptr<IProperty>> Player::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }

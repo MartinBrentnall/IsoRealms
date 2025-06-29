@@ -23,13 +23,6 @@ namespace IsoRealms::Basics {
     // Nothing to do
   }
 
-  void Script::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
-    remover.remove(this, true);
-    for (const std::pair<IAction* const, std::unique_ptr<ScriptAction>>& mScript : cDefScriptActions) {
-      mScript.second->unregisterAssets(releaser);
-    }
-  }
-
   unsigned int Script::getNextAvailableIndex() {
     unsigned int mAvailableIndex = 0;
     bool mAvailableIndexChanged = true;
@@ -105,10 +98,6 @@ namespace IsoRealms::Basics {
 
   unsigned int Script::ScriptAction::getIndex() const {
     return cDefIndex;
-  }
-
-  void Script::ScriptAction::unregisterAssets(IAssets& releaser) {
-    cDefFunction.unregisterAssets(releaser);
   }
 
   void Script::ScriptAction::execute() {

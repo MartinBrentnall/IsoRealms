@@ -48,12 +48,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Integers");
   }
   
-  void SimpleInteger::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    cStateNotifier = nullptr;
-  }
-  
   void SimpleInteger::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addInteger(JSON_VALUE, cDefValue);
   }

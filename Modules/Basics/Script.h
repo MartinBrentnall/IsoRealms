@@ -30,7 +30,6 @@ namespace IsoRealms::Basics {
   class Script : public IActionType {
     public:
     Script();
-    void unregisterAssets(IAssetRemover& remover, IAssets& releaser);
 
     /**************************\
      * Implements IActionType *
@@ -51,7 +50,6 @@ namespace IsoRealms::Basics {
 
       void destroyInternalAction(IAssets& assets);
       unsigned int getIndex() const;
-      void unregisterAssets(IAssets& releaser);
 
       /**********************\
        * Implements IAction *

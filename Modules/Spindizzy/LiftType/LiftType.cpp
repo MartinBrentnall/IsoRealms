@@ -43,10 +43,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
     
-  void LiftType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-  
   void LiftType::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefModel.save(object, JSON_APPEARANCE);
     cDefActive.save(object, JSON_STATE);

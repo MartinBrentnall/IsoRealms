@@ -49,10 +49,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
     
-  void CameraOverview::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-  
   const IFloat* CameraOverview::getYaw() const {
     return this;
   }  

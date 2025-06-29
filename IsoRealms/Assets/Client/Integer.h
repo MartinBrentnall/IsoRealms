@@ -28,19 +28,19 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Integer : public Asset<IInteger, IResourceData> {
+  class Integer : public Asset<Integer, IInteger, IResourceData> {
     public:
     Integer(IResourceData& owner);
 
     /*********************************************\
      * Implements Asset<IInteger, IResourceData> *
     \*********************************************/
-    IInteger* createLiteralAsset(IResourceData& owner) override;
-    IInteger* getAsset(IResourceData& owner, JSONObject object) override;
-    IInteger* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IInteger* createLiteralAsset(IResourceData& owner);
+    IInteger* getAsset(IResourceData& owner, JSONObject object);
+    IInteger* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
   };
 }

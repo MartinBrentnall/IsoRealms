@@ -187,15 +187,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
     
-  void C64TerrainGraphics::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
-      assets.remove(mTexture.second.get(), relinquish);
-    }
-    for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      assets.remove(mOrientedTexture.second.get(), relinquish);
-    }
-  }
-  
   std::unique_ptr<LiteralTexture> C64TerrainGraphics::createTexture(bool clamp) {
     std::unique_ptr<LiteralTexture> mTexture = std::make_unique<LiteralTexture>(cProject, false, clamp);
     mTexture->addUseListener(this);

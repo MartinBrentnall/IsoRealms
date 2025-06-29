@@ -82,15 +82,6 @@ namespace IsoRealms::UI {
     }
   }
   
-  void Menu::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(static_cast<IScreen*>(this),       relinquish);
-    assets.remove(&cLuaBinding,                      relinquish);
-    for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
-      (*mMenuItem)->unregisterAssets(assets, releaser, relinquish);
-    }
-  }
-  
   void Menu::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefColour.save(object, JSON_COLOUR);
     cDefFont.save(object, JSON_FONT);

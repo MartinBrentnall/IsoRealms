@@ -72,10 +72,6 @@ namespace IsoRealms::UI {
     assets.add(this, "", "Throbbers");
   }
 
-  void Throbber::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-
   void Throbber::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addInteger(JSON_DURATION,      cDefDuration,     DEFAULT_DURATION);
     object.addInteger(JSON_REPETITIONS,   cDefRepetitions,  DEFAULT_REPETITIONS);

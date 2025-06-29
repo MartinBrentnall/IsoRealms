@@ -48,6 +48,8 @@ namespace IsoRealms {
      * Implements IAssetUser<IActionType> *
     \**************************************/
     void relinquish(IActionType* asset) override;
+    bool isReadOnly() const override;
+    void setOwner(File* owner) override;
 
     virtual ~ActionType();
 

@@ -152,13 +152,6 @@ namespace IsoRealms::HighScore {
 //    }
   }
   
-  void ScoreTracker::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IInputHandler*>(this),     relinquish);
-    assets.remove(static_cast<IScreen*>(this),           relinquish);
-    assets.remove(&cLuaBinding,                          relinquish);
-    assets.remove(static_cast<IAssets*>(cProject.get()), relinquish);
-  }
-  
   void ScoreTracker::projectCompleted() {
     
     // See if score qualifies

@@ -140,12 +140,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "", "Gameplay Cameras");
   }
     
-  void CameraGameplay::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cPitch,      relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   const IFloat* CameraGameplay::getYaw() const {
     return this;
   }  

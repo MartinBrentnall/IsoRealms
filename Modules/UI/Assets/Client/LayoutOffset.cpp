@@ -22,7 +22,7 @@
 
 namespace IsoRealms::UI {
   LayoutOffset::LayoutOffset(IUI& ui, LayoutComponentEdge& owner) :
-            Asset<ILayoutOffset, IUI>(ui, ui.getLayoutOffset(this, "Absolute", owner)),
+            Asset<LayoutOffset, ILayoutOffset, IUI>(ui, ui.getLayoutOffset(this, "Absolute", owner)),
             cOwner(owner) {
   }
 

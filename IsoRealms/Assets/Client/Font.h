@@ -28,19 +28,19 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Font : public Asset<IFont, IResourceData> {
+  class Font : public Asset<Font, IFont, IResourceData> {
     public:
     Font(IResourceData& owner);
 
     /******************************************\
      * Implements Asset<IFont, IResourceData> *
     \******************************************/
-    IFont* createLiteralAsset(IResourceData& owner) override;
-    IFont* getAsset(IResourceData& owner, JSONObject object) override;
-    IFont* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IFont* createLiteralAsset(IResourceData& owner);
+    IFont* getAsset(IResourceData& owner, JSONObject object);
+    IFont* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
   };
 }

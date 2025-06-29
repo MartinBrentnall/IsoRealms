@@ -138,11 +138,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding,       "",                 "Basics");
   }
   
-  void Basics::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
-    cActionTypeScript.unregisterAssets(remover, releaser);
-    remover.remove(&cLuaBinding, true);
-  }
-
   std::vector<std::unique_ptr<IProperty>> Basics::getProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
@@ -154,6 +149,13 @@ namespace IsoRealms::Basics {
   IProject& Basics::getProject() const {
     return cProject;
   }
+
+  bool Basics::isReadOnly() const {
+    return false;
+  } // TODO: Probably shouldn't be here.
+
+  void Basics::setOwner(File* owner) {
+  }; // TODO: Probably shouldn't be here.
 
   std::vector<std::string> Basics::getAllSequenceTracks() {return cSequenceTracks.getAll();}
 

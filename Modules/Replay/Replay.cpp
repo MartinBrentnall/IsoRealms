@@ -41,10 +41,6 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
   
-  void Replay::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
-    // Nothing to do.
-  }
-
   std::vector<std::unique_ptr<IProperty>> Replay::getProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }

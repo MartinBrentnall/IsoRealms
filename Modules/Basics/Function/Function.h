@@ -50,7 +50,6 @@ namespace IsoRealms::Basics {
     Function(IProject& project, Basics& basics, IResourceData& data);
     Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     void save(JSONObject object, IAssetIdentifier& identifier, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
@@ -59,7 +58,6 @@ namespace IsoRealms::Basics {
     // Constructors for use by scripts (in-line functions).
     Function(IProject& project, const std::string& name, IResourceData& data);
     Function(IProject& project, const std::string& name, IResourceData& data, JSONObject object, IBindingRegistry* localArgs, bool init);
-    void unregisterAssets(IAssets& releaser);
     std::vector<std::unique_ptr<IProperty>> getScriptProperties();
     IProject& getProject() const;
     IResourceData& getResourceData() const;

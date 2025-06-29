@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   ProjectOptions::ProjectOptions(IResourceData& owner) :
-            Asset<IProjectOptions, IResourceData>(owner, owner.getAssetManager().createLiteralProjectOptions(this, owner)) {
+            Asset<ProjectOptions, IProjectOptions, IResourceData>(owner, owner.getAssetManager().createLiteralProjectOptions(this, owner)) {
   }
 
   IProjectOptions* ProjectOptions::createLiteralAsset(IResourceData& owner) {

@@ -144,10 +144,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Fonts");
   }
   
-  void FileFont::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-  
   void FileFont::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefFilename.save(JSON_FILENAME, object);
     object.addInteger(JSON_DETAIL, cDefDetail, DEFAULT_DETAIL);

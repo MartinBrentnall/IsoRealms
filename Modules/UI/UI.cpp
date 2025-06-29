@@ -97,6 +97,13 @@ namespace IsoRealms::UI {
     return cProject;
   }
 
+  bool UI::isReadOnly() const {
+    return false;
+  } // TODO: Probably shouldn't be here.
+
+  void UI::setOwner(File* owner) {
+  } // TODO: Probably shouldn't be here.
+
   std::vector<std::string> UI::getAllLayoutLocations() {return cLayoutLocations.getAll();}
   std::vector<std::string> UI::getAllLayoutOffsets()   {return cLayoutOffsets.getAll();}
   std::vector<std::string> UI::getAllMenuItems()       {return cMenuItems.getAll();}
@@ -127,14 +134,6 @@ namespace IsoRealms::UI {
     assets.add(&cProviderScreenPanel,    SCREEN_PANEL,    "");
     assets.add(&cProviderScreenText,     SCREEN_TEXT,     "");
     assets.add(&cProviderStringTime,     STRING_TIME,     "");
-  }
-  
-  void UI::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
-    remover.remove(&cProviderScreenGradient, true);
-    remover.remove(&cProviderScreenModel,    true);
-    remover.remove(&cProviderScreenPanel,    true);
-    remover.remove(&cProviderScreenText,     true);
-    remover.remove(&cProviderStringTime,     true);
   }
   
   std::vector<std::unique_ptr<IProperty>> UI::getProperties() {

@@ -68,6 +68,14 @@ namespace IsoRealms {
       void relinquish(IInteger* asset) override {
         // TODO: Implement this.
       }
+
+      bool isReadOnly() const override {
+        return false; // TODO: Implement this.
+      }
+
+      void setOwner(File* owner) override {
+        // TODO: Implement this.
+      }
     };
 
     IProject& cProject;

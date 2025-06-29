@@ -179,10 +179,6 @@ namespace IsoRealms::Hue {
     // Nothing to do.
   }
 
-  void HueManager::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-  
   void HueManager::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addString(JSON_BRIDGE, cDefBridgeAddress);
     object.addString(JSON_PSK,    cDefBridgePSK);

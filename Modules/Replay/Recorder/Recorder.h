@@ -66,7 +66,6 @@ namespace IsoRealms::Replay {
     Recorder(IProject& project, Replay& replay, IResourceData& data);
     Recorder(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;

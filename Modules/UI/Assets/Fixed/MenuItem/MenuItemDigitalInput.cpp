@@ -70,10 +70,6 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemDigitalInput::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   bool MenuItemDigitalInput::input(sf::Event& event) {
     if (cRuntimeAddingMapping) {
       std::unique_ptr<IDigitalInputMapping> mMapping = Utils::toDigitalInputMapping(cHatHandler, event);

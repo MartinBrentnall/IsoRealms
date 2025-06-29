@@ -215,7 +215,7 @@ namespace IsoRealms {
   }
 
   Module::~Module() {
-    cModule->unregisterAssets(cProject, cProject);
+    cModuleAssetRegistry.unregisterAssets(cProject);
     cResourceTypes.clear();
 #ifdef __linux__
     destroyModule* mDestroyFunction = voidToFunction<destroyModule*>(dlsym(cModuleHandle, "destroy"));

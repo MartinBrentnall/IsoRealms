@@ -64,7 +64,6 @@ namespace IsoRealms::UI {
     void setAnalogueInput(const std::string& name, IFloat* input) override;
     void setExitAction(ActionExecutor* action) override;
     void setAppearance(IFont* font, float scale) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     IScreen* screen() override;
     
     /*******************************\

@@ -49,15 +49,6 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueInput::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IFloat*>(this),        relinquish);
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(&cLuaBinding,                      relinquish);
-    for (std::unique_ptr<InputMapping>& mInput : cDefMapping) {
-      mInput->unregisterAssets(assets, releaser, relinquish);
-    }
-  }
-
   void AnalogueInput::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
@@ -218,10 +209,6 @@ namespace IsoRealms::Basics {
     cPhysicalInput->registerAssets(mLocalRegistry);
   }
   
-  void AnalogueInput::InputMapping::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    cPhysicalInput->unregisterAssets(assets, releaser, relinquish);
-  }
-
   std::string AnalogueInput::InputMapping::getShortName() const {
     return cPhysicalInput->getShortName();
   }

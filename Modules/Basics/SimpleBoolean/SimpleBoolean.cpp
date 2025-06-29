@@ -48,12 +48,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Booleans");
   }
 
-  void SimpleBoolean::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    cStateNotifier = nullptr;
-  }
-  
   void SimpleBoolean::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_VALUE, cDefValue);
   }

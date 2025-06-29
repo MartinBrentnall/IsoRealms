@@ -56,6 +56,8 @@ namespace IsoRealms::UI {
      * Implements IAssetUser<IMenuItem> *
     \************************************/
     void relinquish(IMenuItem* asset) override;
+    bool isReadOnly() const override;
+    void setOwner(File* owner) override;
 
     virtual ~MenuItem();
 

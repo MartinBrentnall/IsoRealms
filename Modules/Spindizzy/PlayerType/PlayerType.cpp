@@ -106,10 +106,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "", "Spindizzy Players");
   }
 
-  void PlayerType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-  }
-
   void PlayerType::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
     object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);

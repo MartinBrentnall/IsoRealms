@@ -66,15 +66,6 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void SequenceInstance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cExposedPosition, relinquish);
-    assets.remove(&cExposedRemaining, relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      mTrack->unregisterAssets(assets, relinquish);
-    }
-  }
-
   void SequenceInstance::reset() {
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {
       mTrack->reset();

@@ -28,7 +28,7 @@
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
   
-  class PhysicalObjectType : public Asset<IPhysicalObjectType, Spindizzy> {
+  class PhysicalObjectType : public Asset<PhysicalObjectType, IPhysicalObjectType, Spindizzy> {
     public:
     PhysicalObjectType(Spindizzy& spindizzy);
 
@@ -38,12 +38,12 @@ namespace IsoRealms::Spindizzy {
     /****************************************************\
      * Implements Asset<IPhysicalObjectType, Spindizzy> *
     \****************************************************/
-    IPhysicalObjectType* createLiteralAsset(Spindizzy& spindizzy) override;
-    IPhysicalObjectType* getAsset(Spindizzy& spindizzy, JSONObject object) override;
-    IPhysicalObjectType* getAsset(Spindizzy& spindizzy, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IPhysicalObjectType* createLiteralAsset(Spindizzy& spindizzy);
+    IPhysicalObjectType* getAsset(Spindizzy& spindizzy, JSONObject object);
+    IPhysicalObjectType* getAsset(Spindizzy& spindizzy, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
   };
 }

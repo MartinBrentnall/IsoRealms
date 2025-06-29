@@ -558,10 +558,6 @@ namespace IsoRealms::UI {
     cFontSize = scale;
   }
 
-  void LayoutEditor::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-
   IScreen* LayoutEditor::screen() {
     return this;
   }

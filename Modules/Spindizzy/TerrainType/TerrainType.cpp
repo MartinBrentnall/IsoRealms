@@ -78,10 +78,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void TerrainType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-
 
   
   
@@ -433,6 +429,13 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.removeAll(this);
   }
   
+  bool TerrainType::isReadOnly() const {
+    return false;
+  } // TODO: Probably shouldn't be here.
+
+  void TerrainType::setOwner(File* owner) {
+  } // TODO: Probably shouldn't be here.
+
   void TerrainType::registerAssets(ISpindizzyRegistry* registry) {
     registry->add(this, "");
   }  

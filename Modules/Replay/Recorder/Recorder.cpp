@@ -147,14 +147,6 @@ namespace IsoRealms::Replay {
     assets.add(cProject.get(), "Project", "Gameplay Recorders");
   }
   
-  void Recorder::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding,                      relinquish);
-    assets.remove(static_cast<IScreen*>(this),       relinquish);
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(&cFilenameString,                  relinquish);
-    assets.remove(cProject.get(),                    relinquish);
-  }
-  
   std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
     return std::vector<std::unique_ptr<IProperty>>();
   }

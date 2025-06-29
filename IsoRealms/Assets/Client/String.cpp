@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   String::String(IResourceData& owner) :
-            Asset<IString, IResourceData>(owner, owner.getAssetManager().createLiteralString(this, owner)) {
+            Asset<String, IString, IResourceData>(owner, owner.getAssetManager().createLiteralString(this, owner)) {
   }
 
   IString* String::createLiteralAsset(IResourceData& owner) {

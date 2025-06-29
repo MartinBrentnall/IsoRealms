@@ -60,10 +60,6 @@ namespace IsoRealms::Spindizzy {
     // TODO
   }
     
-  void ZoneObjectType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // TODO
-  }
-  
   void ZoneObjectType::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {

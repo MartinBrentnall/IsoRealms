@@ -82,11 +82,6 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemFileList::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   bool MenuItemFileList::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {

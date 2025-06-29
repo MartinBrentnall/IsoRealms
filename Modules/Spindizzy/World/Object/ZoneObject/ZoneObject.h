@@ -44,7 +44,6 @@ namespace IsoRealms::Spindizzy {
 
     // Interface for use by parent zone.
     void registerAssets();
-    void unregisterAssets();
     void reset();
     void save(JSONObject object) const;
     bool isType(const ZoneObjectType* const type) const;

@@ -86,12 +86,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void C64LiftGraphics::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mPair : cTextures) {
-      assets.remove(mPair.second.get(), relinquish);
-    }
-  }
-  
   void C64LiftGraphics::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefOutline.save(object, JSON_OUTLINE);
     cDefPrimary.save(object, JSON_PRIMARY);

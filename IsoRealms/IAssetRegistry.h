@@ -54,141 +54,22 @@ namespace IsoRealms {
     virtual void add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category) = 0;
     virtual void add(IAssetProvider<IResourceData, IString>* provider, const std::string& id, const std::string& category) = 0;
 
-    /**
-     * Add the specified model type to this registry.
-     * 
-     * @param asset The model type to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IModel* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified action type to this registry.
-     * 
-     * @param asset The action type to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IActionType* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified binding to this registry.
-     * 
-     * @param asset The binding to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IBinding* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified binding type to this registry.
-     *
-     * @param asset The binding type to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IBindingType* asset, const std::string& id, const std::string& category) = 0;
-
-    /**
-     * Add the specified boolean to this registry.
-     * 
-     * @param asset The boolean to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual IStateNotifier<IBoolean>* add(IBoolean* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified colour to this registry.
-     * 
-     * @param asset The colour to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual IStateNotifier<IColour>* add(IColour* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified editor context to this registry.
-     *
-     * @param asset The editor context to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IEditable* asset, const std::string& id, const std::string& category) = 0;
-
-    /**
-     * Add the specified float to this registry.
-     * 
-     * @param asset The float to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual IStateNotifier<IFloat>* add(IFloat* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified font to this registry.
-     * 
-     * @param asset The font to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IFont* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified input handler to this registry.
-     * 
-     * @param asset The input handler to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IInputHandler* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified integer to this registry.
-     * 
-     * @param asset The integer to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual IStateNotifier<IInteger>* add(IInteger* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified screen to this registry.
-     * 
-     * @param asset The screen to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     * @return The screen to be used by clients.
-     */
     virtual IScreen* add(IScreen* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified project options to this registry.
-     * 
-     * @param asset The project options to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IProjectOptions* asset, const std::string& id, const std::string& category) = 0;
-
-    /**
-     * Add the specified asset collection to this registry.  
-     * 
-     * @param asset The asset collection to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual void add(IAssets* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified string to this registry.
-     * 
-     * @param asset The string to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual IStateNotifier<IString>* add(IString* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified texture to this registry.
-     * 
-     * @param asset The texture to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual IStateNotifier<ITexture>* add(ITexture* asset, const std::string& id, const std::string& category) = 0;
-      
-    /**
-     * Add the specified vertex to this registry.
-     * 
-     * @param asset The vertex to add.
-     * @param id The ID of the asset.  May be an empty string (default).
-     */
     virtual IStateNotifier<IVertex>* add(IVertex* asset, const std::string& id, const std::string& category) = 0;
   };
 }

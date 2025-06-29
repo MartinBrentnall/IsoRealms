@@ -67,10 +67,6 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
-  void MenuItemDisplayResolution::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   bool MenuItemDisplayResolution::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {

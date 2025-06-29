@@ -28,19 +28,19 @@
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
   
-  class WorldEditorTool : public Asset<IWorldEditorTool, Spindizzy> {
+  class WorldEditorTool : public Asset<WorldEditorTool, IWorldEditorTool, Spindizzy> {
     public:
     WorldEditorTool(Spindizzy& spindizzy);
 
     /*************************************************\
      * Implements Asset<IWorldEditorTool, Spindizzy> *
     \*************************************************/
-    IWorldEditorTool* createLiteralAsset(Spindizzy& spindizzy) override;
-    IWorldEditorTool* getAsset(Spindizzy& spindizzy, JSONObject object) override;
-    IWorldEditorTool* getAsset(Spindizzy& spindizzy, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IWorldEditorTool* createLiteralAsset(Spindizzy& spindizzy);
+    IWorldEditorTool* getAsset(Spindizzy& spindizzy, JSONObject object);
+    IWorldEditorTool* getAsset(Spindizzy& spindizzy, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
   };
 }

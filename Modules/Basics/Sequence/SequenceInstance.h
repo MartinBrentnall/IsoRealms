@@ -42,7 +42,6 @@ namespace IsoRealms::Basics {
     Sequence& getSequence() const;
 
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, bool relinquish);
     void stopPreview();
     void setPreviewPosition(long position);
     void update(unsigned int milliseconds);

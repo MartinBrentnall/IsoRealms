@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
   class TerrainType;
   
-  class WallPattern : public Asset<IWallPattern, TerrainType>,
+  class WallPattern : public Asset<WallPattern, IWallPattern, TerrainType>,
                       public IStateListener<IWallPattern*>{
     public:
     WallPattern(Spindizzy& spindizzy, TerrainType& owner, std::function<void()> listener);
@@ -37,13 +37,13 @@ namespace IsoRealms::Spindizzy {
     /***********************************************\
      * Implements Asset<IWallPattern, TerrainType> *
     \***********************************************/
-    IWallPattern* createLiteralAsset(TerrainType& owner) override;
-    IWallPattern* getAsset(TerrainType& owner, JSONObject object) override;
-    IWallPattern* getAsset(TerrainType& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IWallPattern* createLiteralAsset(TerrainType& owner);
+    IWallPattern* getAsset(TerrainType& owner, JSONObject object);
+    IWallPattern* getAsset(TerrainType& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
 
     /********************************************\
      * Implements IStateListener<IWallPattern*> *

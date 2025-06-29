@@ -46,10 +46,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, cDefID, "Debris Generators");
   }
   
-  void DebrisGenerator::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   void DebrisGenerator::updateRuntime(unsigned int milliseconds) {
     for (std::unique_ptr<Debris>& mDebris : cRuntimeDebris) {
       mDebris->update(milliseconds);

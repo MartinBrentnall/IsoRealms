@@ -157,6 +157,13 @@ namespace IsoRealms::Spindizzy {
     return *this;
   }
 
+  bool Spindizzy::isReadOnly() const {
+    return false;
+  } // TODO: Probably shouldn't be here.
+
+  void Spindizzy::setOwner(File* owner) {
+  } // TODO: Probably shouldn't be here.
+
   AlienType*      Spindizzy::getAlienType(     const std::string& id) const {return cResourceAlien.getResource(     id);}
   LiftType*       Spindizzy::getLiftType(      const std::string& id) const {return cResourceLift.getResource(      id);}
   PickUpType*     Spindizzy::getPickUpType(    const std::string& id) const {return cResourcePickUp.getResource(    id);}
@@ -549,17 +556,6 @@ namespace IsoRealms::Spindizzy {
     add(&cToolDeleteZone, TOOL_DELETE_ZONE);
   }
   
-  void Spindizzy::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
-    remover.remove(&cRuntimeParameterAlien,          true);
-    remover.remove(&cRuntimeParameterFallDistance,   true);
-    remover.remove(&cRuntimeParameterLaunchLocation, true);
-    remover.remove(&cRuntimeParameterLaunchMomentum, true);
-    remover.remove(&cRuntimeParameterWall,           true);
-    remover.remove(&cRuntimeParameterZone,           true);
-    remover.remove(&cRuntimeParameterPlayer,         true);
-    remover.remove(&cLuaBinding,                     true);
-  }
-
   std::vector<std::unique_ptr<IProperty>> Spindizzy::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Width",    "TODO", [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;}));
@@ -586,7 +582,7 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::add(IPhysicalObjectType* asset, const std::string& id) {cPhysicalObjectTypes.add(asset, id);}
   void Spindizzy::add(IWorldEditorTool*    asset, const std::string& id) {cWorldEditorTools.add(   asset, id);}
   
-  void Spindizzy::remove(IWorldEditorTool*    asset) {cWorldEditorTools.remove(   asset, true);}
+  void Spindizzy::remove(IWorldEditorTool*    asset) {cWorldEditorTools.remove(   asset);}
 
   void Spindizzy::remove(WorldEditorTool& tool) {
     // TODO: Remove from our selection.

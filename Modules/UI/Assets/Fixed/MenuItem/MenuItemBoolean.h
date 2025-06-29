@@ -51,7 +51,6 @@ namespace IsoRealms::UI {
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;

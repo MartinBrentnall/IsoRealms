@@ -113,7 +113,7 @@ namespace IsoRealms {
     }
     
     void deleteResource(IAssetRemover& assets, IAssets& releaser, IResource* resource) override {
-      resource->unregisterAssets(assets, releaser, true);
+      resource->unregisterAssets(assets, releaser);
       for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResourceType : cResources) {
         if (mResourceType.second.get() == resource) {
           cResources.erase(mResourceType.first);

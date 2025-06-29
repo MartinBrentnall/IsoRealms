@@ -40,7 +40,7 @@ namespace IsoRealms {
     virtual void hintInUse(bool inUse) = 0;
     virtual void save(JSONObject object, IAssetIdentifier& identifier) = 0;
     virtual void registerAssets() = 0;
-    virtual void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) = 0;
+    virtual void unregisterAssets(IAssetRemover& assets, IAssets& releaser) = 0;
     virtual std::string getResourceDataPath() const = 0;    
     virtual bool needsSaving(File* savingProject) = 0;
     

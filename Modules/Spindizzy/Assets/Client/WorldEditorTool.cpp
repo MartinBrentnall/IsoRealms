@@ -24,7 +24,7 @@
 
 namespace IsoRealms::Spindizzy {
   WorldEditorTool::WorldEditorTool(Spindizzy& spindizzy) : 
-            Asset<IWorldEditorTool, Spindizzy>(spindizzy, spindizzy.createLiteralWorldEditorTool(this)) {
+            Asset<WorldEditorTool, IWorldEditorTool, Spindizzy>(spindizzy, spindizzy.createLiteralWorldEditorTool(this)) {
   }
 
   IWorldEditorTool* WorldEditorTool::createLiteralAsset(Spindizzy& spindizzy) {

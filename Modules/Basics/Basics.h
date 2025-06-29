@@ -69,7 +69,6 @@ namespace IsoRealms::Basics {
     void load(IProject& project, JSONObject object) override;
     void save(JSONObject object, IAssetIdentifier& identifier) override;
     void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& remover, IAssets& releaser) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
 
     /**********************\
@@ -77,6 +76,10 @@ namespace IsoRealms::Basics {
     \**********************/
     IBasics& getAssetManager() override;
     IProject& getProject() const override;
+
+    bool isReadOnly() const override; // TODO: Probably shouldn't be here.
+    void setOwner(File* owner) override; // TODO: Probably shouldn't be here.
+
     std::vector<std::string> getAllSequenceTracks() override;
     std::string getID(const ISequenceTrack* asset) const override;
     bool renderSequenceTrackIcon(const std::string& id) const override;

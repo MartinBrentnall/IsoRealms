@@ -28,19 +28,19 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class InputHandler : public Asset<IInputHandler, IResourceData> {
+  class InputHandler : public Asset<InputHandler, IInputHandler, IResourceData> {
     public:
     InputHandler(IResourceData& owner);
 
     /**************************************************\
      * Implements Asset<IInputHandler, IResourceData> *
     \**************************************************/
-    IInputHandler* createLiteralAsset(IResourceData& owner) override;
-    IInputHandler* getAsset(IResourceData& owner, JSONObject object) override;
-    IInputHandler* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IInputHandler* createLiteralAsset(IResourceData& owner);
+    IInputHandler* getAsset(IResourceData& owner, JSONObject object);
+    IInputHandler* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
   };
 }

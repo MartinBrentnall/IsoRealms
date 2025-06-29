@@ -38,10 +38,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Input Groups");
   }
 
-  void InputGroup::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-
   void InputGroup::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mInputsArray = object.addArray(JSON_INPUTS);
     for (const std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {

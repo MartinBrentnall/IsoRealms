@@ -37,10 +37,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Project Options");
   }
   
-  void ProjectOptions::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-  
   void ProjectOptions::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mOptionsArray = object.addArray(JSON_OPTIONS);
     for (const std::pair<const std::string, String>& mOption : cDefOptions) {

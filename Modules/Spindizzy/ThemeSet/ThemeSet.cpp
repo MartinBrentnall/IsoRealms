@@ -144,19 +144,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void ThemeSet::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-    for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
-      mPair.second->unregisterAssets(assets, releaser, relinquish);
-    }
-    for (const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mPair : cColours) {
-      mPair.second->unregisterAssets(assets, releaser, relinquish);
-    }
-    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mPair : cThemes) {
-      mPair.second->releaseAssets(releaser);
-    }
-  }
-  
   ThemeTexture* ThemeSet::createTexture(const std::string& type) {
     std::map<std::string, std::unique_ptr<ThemeTexture>>::iterator i = cTextures.find(type);
     if (i == cTextures.end()) {

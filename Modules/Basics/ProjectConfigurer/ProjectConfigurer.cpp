@@ -87,12 +87,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Project Configurers");
   }
 
-  void ProjectConfigurer::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IScreen*>(this),       relinquish);
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(&cLuaBinding,                      relinquish);
-  }
-
   void ProjectConfigurer::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_FONT_SIZE, cDefFontSize);
     object.addFloat(JSON_CODE_FONT_SIZE, cDefCodeFontSize);

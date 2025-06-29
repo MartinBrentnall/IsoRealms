@@ -56,7 +56,6 @@ namespace IsoRealms::Spindizzy {
     void copy(Zone* zone);
 
     void registerAssets();
-    void unregisterAssets();
     
     //
     void registerView(IScreen& screen);

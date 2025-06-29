@@ -105,15 +105,6 @@ namespace IsoRealms::HighScore {
     assets.add(&cLuaBinding, "", "Score Tables");
   }
   
-  void ScoreTable::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    for (std::pair<std::string, std::vector<LiteralString>> mValue : cValues) {
-      for (LiteralString& mAsset : mValue.second) {
-        assets.remove(&mAsset, relinquish);
-      }
-    }
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   void ScoreTable::readRecords(JSONObject object) {
     // TODO: Keep definition and values separate.
     int mRecordIndex = 0;

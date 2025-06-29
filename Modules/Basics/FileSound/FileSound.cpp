@@ -40,10 +40,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Play Sound");
   }
   
-  void FileSound::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-  
   void FileSound::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefFile.save(JSON_FILENAME, object);
   }

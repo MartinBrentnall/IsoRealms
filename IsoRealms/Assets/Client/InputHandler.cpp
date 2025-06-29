@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   InputHandler::InputHandler(IResourceData& owner) :
-            Asset<IInputHandler, IResourceData>(owner, owner.getAssetManager().createLiteralInputHandler(this, owner)) {
+            Asset<InputHandler, IInputHandler, IResourceData>(owner, owner.getAssetManager().createLiteralInputHandler(this, owner)) {
   }
 
   IInputHandler* InputHandler::createLiteralAsset(IResourceData& owner) {

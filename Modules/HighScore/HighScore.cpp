@@ -41,10 +41,6 @@ namespace IsoRealms::HighScore {
     // Nothing to do.
   }
   
-  void HighScore::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
-    // Nothing to do.
-  }
-
   std::vector<std::unique_ptr<IProperty>> HighScore::getProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }

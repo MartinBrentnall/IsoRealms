@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Float::Float(IResourceData& owner, float defaultValue, std::function<void(float)> listener) :
-            Asset<IFloat, IResourceData>(owner, owner.getAssetManager().createLiteralFloat(this, owner, defaultValue)),
+            Asset<Float, IFloat, IResourceData>(owner, owner.getAssetManager().createLiteralFloat(this, owner, defaultValue)),
             cDefaultValue(defaultValue),
             cListener(listener) {
   }

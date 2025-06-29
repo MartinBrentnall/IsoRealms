@@ -29,7 +29,7 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Texture : public Asset<ITexture, IResourceData>,
+  class Texture : public Asset<Texture, ITexture, IResourceData>,
                   public IStateListener<ITexture*> {
     public:
     Texture(IResourceData& owner, std::function<void()> listener = nullptr);
@@ -39,13 +39,14 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<ITexture, IResourceData> *
     \*********************************************/
-    ITexture* createLiteralAsset(IResourceData& owner) override;
-    ITexture* getAsset(IResourceData& owner, JSONObject object) override;
-    ITexture* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    ITexture* createLiteralAsset(IResourceData& owner);
+    ITexture* getAsset(IResourceData& owner, JSONObject object);
+    ITexture* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
+
     void loadClientConfiguration(JSONObject object) override;
     void saveClientConfiguration(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getClientProperties() override;

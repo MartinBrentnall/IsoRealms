@@ -48,11 +48,6 @@ namespace IsoRealms::Spindizzy {
     registry.registerProcessor(this);
   }
   
-  void Spinner::unregisterAssets(ZoneObject& object) {
-    object.unregisterRenderer(this);
-    object.unregisterProcessor(this);
-  }
-
   void Spinner::save(JSONObject object) const {
     // Nothing to do.
   }

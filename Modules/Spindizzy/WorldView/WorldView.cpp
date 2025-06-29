@@ -68,12 +68,6 @@ namespace IsoRealms::Spindizzy {
     cDefCamera->registerAssets(mLocalRegistry);
   }
 
-  void WorldView::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IScreen*>(this), relinquish);
-    assets.remove(&cLuaBinding,                relinquish);
-    cDefCamera->unregisterAssets(assets,       relinquish);
-  }
-  
   void WorldView::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addString(JSON_WORLD, cSpindizzy.getID(cDefWorld));
     object.addFloat(JSON_ZOOM, cDefZoom, 1.0f);

@@ -59,12 +59,6 @@ namespace IsoRealms::UI {
     }
   }
   
-  void MenuItemAction::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    if (!cDefID.empty()) {
-      assets.remove(&cLuaBinding, relinquish);
-    }
-  }
-  
   bool MenuItemAction::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {

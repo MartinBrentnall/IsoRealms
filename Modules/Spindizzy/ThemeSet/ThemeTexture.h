@@ -31,7 +31,6 @@ namespace IsoRealms::Spindizzy {
     public:
     ThemeTexture(IIconAnimator* animator);
     void registerAssets(IAssetRegistry& assets, const std::string& id);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
       
     void set(ITexture* texture);
 

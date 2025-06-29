@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Screen::Screen(IResourceData& owner) : 
-            Asset<IScreen, IResourceData>(owner, owner.getAssetManager().createLiteralScreen(this, owner)) {
+            Asset<Screen, IScreen, IResourceData>(owner, owner.getAssetManager().createLiteralScreen(this, owner)) {
   }
 
   IScreen* Screen::createLiteralAsset(IResourceData& owner) {

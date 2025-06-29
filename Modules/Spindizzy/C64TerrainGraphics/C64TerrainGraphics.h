@@ -42,7 +42,6 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon();
     void hintInUse(bool inUse);
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
 
     /**********************************\
      * Implements ITextureUseListener *
@@ -112,7 +111,6 @@ namespace IsoRealms::Spindizzy {
       void setScreen(const IFloat* screen);
             
       void addUseListener(ITextureUseListener* listener);
-      void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
 
       /***********************\
        * Implements ITexture *

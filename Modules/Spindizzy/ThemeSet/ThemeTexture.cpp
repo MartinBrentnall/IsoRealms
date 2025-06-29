@@ -28,10 +28,6 @@ namespace IsoRealms::Spindizzy {
     cStateNotifier = assets.add(this, id, "Spindizzy Themes");
   }
   
-  void ThemeTexture::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-  
   void ThemeTexture::notifyChange() {
     cStateNotifier->stateChanged(this);
   }

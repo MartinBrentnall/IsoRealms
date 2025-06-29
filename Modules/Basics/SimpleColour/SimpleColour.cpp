@@ -73,12 +73,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding,  "", "Simple Colours");
   }
 
-  void SimpleColour::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    cStateNotifier = nullptr;
-  }
-
   void SimpleColour::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_RED,   cDefRed);
     object.addFloat(JSON_GREEN, cDefGreen);

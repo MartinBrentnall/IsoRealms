@@ -84,10 +84,6 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void DummyEditable::EditableScreen::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-
   void DummyEditable::EditableScreen::setAppearance(IFont* font, float scale) {
     // Nothing to do.
   }

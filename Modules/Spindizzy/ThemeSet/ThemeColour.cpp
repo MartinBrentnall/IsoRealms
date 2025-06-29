@@ -30,11 +30,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "ThemeColour/" + id, "Spindizzy Themes");
   }
   
-  void ThemeColour::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   void ThemeColour::set(IColour* colour) {
     cColour = colour;
   }

@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Colour::Colour(IResourceData& owner, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
-            Asset<IColour, IResourceData>(owner, owner.getAssetManager().createLiteralColour(this, owner, defaultRed, defaultGreen, defaultBlue, defaultAlpha)),
+            Asset<Colour, IColour, IResourceData>(owner, owner.getAssetManager().createLiteralColour(this, owner, defaultRed, defaultGreen, defaultBlue, defaultAlpha)),
             cDefaultRed(defaultRed),
             cDefaultGreen(defaultGreen),
             cDefaultBlue(defaultBlue),

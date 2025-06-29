@@ -102,16 +102,6 @@ namespace IsoRealms::Spindizzy {
     cDefEnd->addListener(this);
   }
     
-  void CameraTransitional::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cYaw,        relinquish);
-    assets.remove(&cPitch,      relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    cDefStart->removeListener(this);
-    cDefEnd->removeListener(this);
-    cDefStart->unregisterAssets(assets, relinquish);
-    cDefEnd->unregisterAssets(  assets, relinquish);
-  }
-  
   const IFloat* CameraTransitional::getYaw() const {
     return &cYaw;
   }  

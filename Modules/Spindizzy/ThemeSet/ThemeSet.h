@@ -36,7 +36,6 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     
     ThemeTexture* createTexture(const std::string& type);
     ThemeColour* createColour(IProject& project, const std::string& type);

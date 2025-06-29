@@ -27,20 +27,20 @@
 #include "Modules/UI/IUI.h"
 
 namespace IsoRealms::UI {
-  class LayoutOffset : public Asset<ILayoutOffset, IUI> {
+  class LayoutOffset : public Asset<LayoutOffset, ILayoutOffset, IUI> {
     public:
     LayoutOffset(IUI& ui, LayoutComponentEdge& owner);
 
     /****************************************\
      * Implements Asset<ILayoutOffset, IUI> *
     \****************************************/
-    ILayoutOffset* createLiteralAsset(IUI& ui) override;
-    ILayoutOffset* getAsset(IUI& ui, JSONObject object) override;
-    ILayoutOffset* getAsset(IUI& ui, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    ILayoutOffset* createLiteralAsset(IUI& ui);
+    ILayoutOffset* getAsset(IUI& ui, JSONObject object);
+    ILayoutOffset* getAsset(IUI& ui, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
 
     private:
     LayoutComponentEdge& cOwner;

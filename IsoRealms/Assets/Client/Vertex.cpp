@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Vertex::Vertex(IResourceData& owner) :
-            Asset<IVertex, IResourceData>(owner, owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f)) {
+            Asset<Vertex, IVertex, IResourceData>(owner, owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f)) {
   }
 
   IVertex* Vertex::createLiteralAsset(IResourceData& owner) {

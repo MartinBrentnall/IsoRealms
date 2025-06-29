@@ -41,11 +41,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Call Function");
   }
     
-  void Function::unregisterAssets(IAssetRemover& remover, IAssets& releaser, bool relinquish) {
-    remover.remove(this, relinquish);
-    unregisterAssets(releaser);
-  }
-  
   void Function::save(JSONObject object, IAssetIdentifier& identifier, bool script) const {
     JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
     for (const std::unique_ptr<Binding>& mBinding : cDefBindings) {
@@ -136,18 +131,6 @@ namespace IsoRealms::Basics {
     declare();
   }
 
-  void Function::unregisterAssets(IAssets& releaser) {
-    for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-      mBinding->release(releaser);
-    }
-//    for (std::unique_ptr<ArgumentDefinition>& mArgumentDefinition : cDefArgumentDefinitions) {
-// TODO      mArgumentDefinition->release(releaser);
-//    }
-    for (auto& mInstance : cInstances) {
-      mInstance.second->release(releaser);
-    }
-  }
-  
   std::vector<std::unique_ptr<IProperty>> Function::getScriptProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyStruct>("Bindings", "TODO", "Edit...", [this]() {

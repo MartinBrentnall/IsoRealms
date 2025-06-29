@@ -48,12 +48,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Floats");
   }
   
-  void SimpleFloat::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    cStateNotifier = nullptr;
-  }
-  
   void SimpleFloat::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_VALUE, cDefValue);
   }

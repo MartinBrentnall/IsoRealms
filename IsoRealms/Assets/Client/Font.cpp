@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Font::Font(IResourceData& owner) :
-            Asset<IFont, IResourceData>(owner, owner.getAssetManager().createLiteralFont(this, owner)) {
+            Asset<Font, IFont, IResourceData>(owner, owner.getAssetManager().createLiteralFont(this, owner)) {
   }
 
   IFont* Font::createLiteralAsset(IResourceData& owner) {

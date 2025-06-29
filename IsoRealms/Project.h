@@ -520,28 +520,113 @@ namespace IsoRealms {
     /****************************\
      * Implements IAssetRemover * 
     \****************************/
-    void remove(IAssetProvider<IResourceData, IScreen>* provider, bool relinquish) override;
-    void remove(IAssetProvider<IResourceData, IString>* provider, bool relinquish) override;
+    void remove(IAssetProvider<IResourceData, IActionType>*     provider) override;
+    void remove(IAssetProvider<IResourceData, IBinding>*        provider) override;
+    void remove(IAssetProvider<IResourceData, IBindingType>*    provider) override;
+    void remove(IAssetProvider<IResourceData, IBoolean>*        provider) override;
+    void remove(IAssetProvider<IResourceData, IColour>*         provider) override;
+    void remove(IAssetProvider<IResourceData, IEditable>*       provider) override;
+    void remove(IAssetProvider<IResourceData, IFloat>*          provider) override;
+    void remove(IAssetProvider<IResourceData, IFont>*           provider) override;
+    void remove(IAssetProvider<IResourceData, IInputHandler>*   provider) override;
+    void remove(IAssetProvider<IResourceData, IInteger>*        provider) override;
+    void remove(IAssetProvider<IResourceData, IModel>*          provider) override;
+    void remove(IAssetProvider<IResourceData, IScreen>*         provider) override;
+    void remove(IAssetProvider<IResourceData, IString>*         provider) override;
+    void remove(IAssetProvider<IResourceData, IProjectOptions>* provider) override;
+    void remove(IAssetProvider<IResourceData, IAssets>*         provider) override;
+    void remove(IAssetProvider<IResourceData, ITexture>*        provider) override;
+    void remove(IAssetProvider<IResourceData, IVertex>*         provider) override;
 
-    void remove(IActionType*     asset, bool relinquish) override;
-    void remove(IAssets*         asset, bool relinquish) override;
-    void remove(IBinding*        asset, bool relinquish) override;
-    void remove(IBindingType*    asset, bool relinquish) override;
-    void remove(IBoolean*        asset, bool relinquish) override;
-    void remove(IColour*         asset, bool relinquish) override;
-    void remove(IEditable*       asset, bool relinquish) override;
-    void remove(IFloat*          asset, bool relinquish) override;
-    void remove(IFont*           asset, bool relinquish) override;
-    void remove(IInputHandler*   asset, bool relinquish) override;
-    void remove(IInteger*        asset, bool relinquish) override;
-    void remove(IModel*          asset, bool relinquish) override;
-    void remove(IScreen*         asset, bool relinquish) override;
-    void remove(IProjectOptions* asset, bool relinquish) override;
-    void remove(IString*         asset, bool relinquish) override;
-    void remove(ITexture*        asset, bool relinquish) override;
-    void remove(IVertex*         asset, bool relinquish) override;
+    void remove(IActionType*     asset) override;
+    void remove(IAssets*         asset) override;
+    void remove(IBinding*        asset) override;
+    void remove(IBindingType*    asset) override;
+    void remove(IBoolean*        asset) override;
+    void remove(IColour*         asset) override;
+    void remove(IEditable*       asset) override;
+    void remove(IFloat*          asset) override;
+    void remove(IFont*           asset) override;
+    void remove(IInputHandler*   asset) override;
+    void remove(IInteger*        asset) override;
+    void remove(IModel*          asset) override;
+    void remove(IScreen*         asset) override;
+    void remove(IProjectOptions* asset) override;
+    void remove(IString*         asset) override;
+    void remove(ITexture*        asset) override;
+    void remove(IVertex*         asset) override;
     
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IActionType>*     provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IColour>*         provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IEditable>*       provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IFloat>*          provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IFont>*           provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IInputHandler>*   provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IInteger>*        provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IModel>*          provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IScreen>*         provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IString>*         provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IProjectOptions>* provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IAssets>*         provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) override;
+
+    bool hasReadOnlyReferences(IActionType*     asset) override;
+    bool hasReadOnlyReferences(IBinding*        asset) override;
+    bool hasReadOnlyReferences(IBindingType*    asset) override;
+    bool hasReadOnlyReferences(IBoolean*        asset) override;
+    bool hasReadOnlyReferences(IColour*         asset) override;
+    bool hasReadOnlyReferences(IEditable*       asset) override;
+    bool hasReadOnlyReferences(IFloat*          asset) override;
+    bool hasReadOnlyReferences(IFont*           asset) override;
+    bool hasReadOnlyReferences(IInputHandler*   asset) override;
+    bool hasReadOnlyReferences(IInteger*        asset) override;
+    bool hasReadOnlyReferences(IModel*          asset) override;
+    bool hasReadOnlyReferences(IScreen*         asset) override;
+    bool hasReadOnlyReferences(IProjectOptions* asset) override;
+    bool hasReadOnlyReferences(IAssets*         asset) override;
+    bool hasReadOnlyReferences(IString*         asset) override;
+    bool hasReadOnlyReferences(ITexture*        asset) override;
+    bool hasReadOnlyReferences(IVertex*         asset) override;
    
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IActionType>*     provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IColour>*         provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IEditable>*       provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IFloat>*          provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IFont>*           provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IInputHandler>*   provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IInteger>*        provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IModel>*          provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IScreen>*         provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IString>*         provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IProjectOptions>* provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IAssets>*         provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) override;
+
+    void overrideReadOnlyReferences(IActionType*     asset) override;
+    void overrideReadOnlyReferences(IBinding*        asset) override;
+    void overrideReadOnlyReferences(IBindingType*    asset) override;
+    void overrideReadOnlyReferences(IBoolean*        asset) override;
+    void overrideReadOnlyReferences(IColour*         asset) override;
+    void overrideReadOnlyReferences(IEditable*       asset) override;
+    void overrideReadOnlyReferences(IFloat*          asset) override;
+    void overrideReadOnlyReferences(IFont*           asset) override;
+    void overrideReadOnlyReferences(IInputHandler*   asset) override;
+    void overrideReadOnlyReferences(IInteger*        asset) override;
+    void overrideReadOnlyReferences(IModel*          asset) override;
+    void overrideReadOnlyReferences(IScreen*         asset) override;
+    void overrideReadOnlyReferences(IProjectOptions* asset) override;
+    void overrideReadOnlyReferences(IAssets*         asset) override;
+    void overrideReadOnlyReferences(IString*         asset) override;
+    void overrideReadOnlyReferences(ITexture*        asset) override;
+    void overrideReadOnlyReferences(IVertex*         asset) override;
     
     
     
@@ -589,6 +674,7 @@ namespace IsoRealms {
     std::string getFilename();
     IProject& getAssetManager() override;
     bool isReadOnly() const override;
+    void setOwner(File* file) override;
     File* getFile() override;
     
     Module* loadModule(const std::string& name);

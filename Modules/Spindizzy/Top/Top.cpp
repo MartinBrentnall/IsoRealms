@@ -58,10 +58,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Top Models");
   }
     
-  void Top::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-  
   void Top::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefColourTop.save(object, JSON_TOP);
     cDefColourSide.save(object, JSON_SIDES);

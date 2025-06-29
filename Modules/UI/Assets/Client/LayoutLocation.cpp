@@ -24,7 +24,7 @@
 
 namespace IsoRealms::UI {
   LayoutLocation::LayoutLocation(IUI& ui, LayoutComponentEdge& owner) :
-            Asset<ILayoutLocation, IUI>(ui, ui.getLayoutLocation(this, "Absolute", owner)),
+            Asset<LayoutLocation, ILayoutLocation, IUI>(ui, ui.getLayoutLocation(this, "Absolute", owner)),
             cOwner(owner) {
   }
 

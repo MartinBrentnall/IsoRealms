@@ -23,10 +23,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void Dummy::unregisterAssets(ZoneObject& object) {
-    // Nothing to do.
-  }
-
   void Dummy::save(JSONObject object) const {
     // Nothing to do.
   }

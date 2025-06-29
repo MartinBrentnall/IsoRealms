@@ -71,13 +71,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Digital Inputs");
   }
   
-  void DigitalInput::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IBoolean*>(this),      relinquish);
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(&cLuaBinding,                      relinquish);
-    cStateNotifier = nullptr;
-  }
-  
   void DigitalInput::save(JSONObject object, IAssetIdentifier& identifier) const {
     save(object);
   }

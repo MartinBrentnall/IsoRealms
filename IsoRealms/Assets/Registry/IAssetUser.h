@@ -21,6 +21,7 @@
 #include <string>
 
 namespace IsoRealms {
+  class File;
   
   /**
    * Interface to be implemented by resources that use assets, to be notified
@@ -35,5 +36,7 @@ namespace IsoRealms {
      * @param asset The asset that is about to be destructed.
      */
     virtual void relinquish(TYPE* asset) = 0;
+    virtual bool isReadOnly() const = 0;
+    virtual void setOwner(File* owner) = 0;
   };
 }

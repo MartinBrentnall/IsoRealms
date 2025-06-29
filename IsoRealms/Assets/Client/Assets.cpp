@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Assets::Assets(IResourceData& owner) :
-            Asset<IAssets, IResourceData>(owner, owner.getAssetManager().createLiteralAssets(this, owner)) {
+            Asset<Assets, IAssets, IResourceData>(owner, owner.getAssetManager().createLiteralAssets(this, owner)) {
   }
 
   IAssets* Assets::createLiteralAsset(IResourceData& owner) {

@@ -39,10 +39,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void PickUpType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-
   void PickUpType::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefModel.save(object, JSON_APPEARANCE);
   }

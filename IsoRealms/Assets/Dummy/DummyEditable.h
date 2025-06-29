@@ -52,7 +52,6 @@ namespace IsoRealms {
       void setDigitalInput(const std::string& name, IBoolean* input) override;
       void setAnalogueInput(const std::string& name, IFloat* input) override;
       void setExitAction(ActionExecutor* action) override;
-      void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
       void setAppearance(IFont* font, float scale) override;
       IScreen* screen() override;
       void renderScreen(float scale, float aspectRatio) const override;

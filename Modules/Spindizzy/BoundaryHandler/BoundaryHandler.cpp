@@ -53,10 +53,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void BoundaryHandler::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-
   void BoundaryHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefBoundaryType.save(object, JSON_BOUNDARY);
     cDefObjectType.save(object, JSON_OBJECT);

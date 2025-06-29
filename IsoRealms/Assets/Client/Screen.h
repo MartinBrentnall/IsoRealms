@@ -28,19 +28,19 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Screen : public Asset<IScreen, IResourceData> {
+  class Screen : public Asset<Screen, IScreen, IResourceData> {
     public:
     Screen(IResourceData& owner);
 
     /********************************************\
      * Implements Asset<IScreen, IResourceData> *
     \********************************************/
-    IScreen* createLiteralAsset(IResourceData& owner) override;
-    IScreen* getAsset(IResourceData& owner, JSONObject object) override;
-    IScreen* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IScreen* createLiteralAsset(IResourceData& owner);
+    IScreen* getAsset(IResourceData& owner, JSONObject object);
+    IScreen* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
   };
 }

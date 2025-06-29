@@ -28,7 +28,7 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Colour : public Asset<IColour, IResourceData>,
+  class Colour : public Asset<Colour, IColour, IResourceData>,
                  public IStateListener<IColour*> {
     public:
     Colour(IResourceData& owner, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 1.0f, std::function<void()> listener = nullptr);
@@ -36,13 +36,13 @@ namespace IsoRealms {
     /***************************************\
      * Implements Asset<IColour, IProject> *
     \***************************************/
-    IColour* createLiteralAsset(IResourceData& owner) override;
-    IColour* getAsset(IResourceData& owner, JSONObject object) override;
-    IColour* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IColour* createLiteralAsset(IResourceData& owner);
+    IColour* getAsset(IResourceData& owner, JSONObject object);
+    IColour* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
 
     /***************************************\
      * Implements IStateListener<IColour*> *

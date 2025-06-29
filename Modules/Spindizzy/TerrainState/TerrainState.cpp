@@ -40,11 +40,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "", "Spindizzy Terrain States");
   }
 
-  void TerrainState::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IBoolean*>(this), relinquish);
-    assets.remove(&cLuaBinding,                 relinquish);
-  }
-
   void TerrainState::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_STATE, cDefValue);
     cDefIcon.save(object, JSON_ICON);

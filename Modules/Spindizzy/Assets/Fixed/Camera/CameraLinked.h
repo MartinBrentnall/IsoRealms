@@ -41,7 +41,6 @@ namespace IsoRealms::Spindizzy {
      * Implements ICamera *
     \**********************/
     void registerAssets(IAssetRegistry& assets) override; 
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;

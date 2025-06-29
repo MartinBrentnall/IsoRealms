@@ -111,6 +111,9 @@ namespace IsoRealms::Spindizzy {
     IProject& getProject() const;
     Spindizzy& getAssetManager();
 
+    bool isReadOnly() const; // TODO: Probably shouldn't be here.
+    void setOwner(File* owner); // TODO: Probably shouldn't be here.
+
     // Resource retrieval.
     AlienType*        getAlienType(      const std::string& id) const;
     LiftType*         getLiftType(       const std::string& id) const;
@@ -251,7 +254,6 @@ namespace IsoRealms::Spindizzy {
     void load(IProject& project, JSONObject object) override;
     void save(JSONObject object, IAssetIdentifier& identifier) override;
     void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& remover, IAssets& releaser) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
 
     /*********************************\

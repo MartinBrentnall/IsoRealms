@@ -68,11 +68,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, cDefID, "Spindizzy Players");
   }
   
-  void Player::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cRuntimePhysicsObject.cLocation, relinquish);
-    assets.remove(&cLuaBinding,                     relinquish);
-  }
-    
   void Player::reset() {
     cRuntimePhysicsObject.cLocation.x = cDefX;
     cRuntimePhysicsObject.cLocation.y = cDefY;

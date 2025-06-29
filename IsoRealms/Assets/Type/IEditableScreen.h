@@ -41,7 +41,6 @@ namespace IsoRealms {
     virtual void setAnalogueInput(const std::string& name, IFloat* input) = 0;
     virtual void setExitAction(ActionExecutor* action) = 0;
 
-    virtual void unregisterAssets(IAssetRemover& assets, bool relinquish) = 0;
     virtual void setAppearance(IFont* font, float scale) = 0;
     virtual IScreen* screen() = 0;
 

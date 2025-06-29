@@ -24,7 +24,7 @@
 
 namespace IsoRealms::Spindizzy {
   BoundaryType::BoundaryType(Spindizzy& spindizzy) : 
-            Asset<IBoundaryType, Spindizzy>(spindizzy, spindizzy.createLiteralBoundaryType(this)) {
+            Asset<BoundaryType, IBoundaryType, Spindizzy>(spindizzy, spindizzy.createLiteralBoundaryType(this)) {
   }
 
   IBinding* BoundaryType::getBoundaryBinding(const std::string& id) const {

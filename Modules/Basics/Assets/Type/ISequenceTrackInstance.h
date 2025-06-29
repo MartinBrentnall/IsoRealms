@@ -39,13 +39,6 @@ namespace IsoRealms::Basics {
     virtual void registerAssets(IAssetRegistry& assets) = 0;
 
     /**
-      * Unregister assets belonging to this track.
-      *
-      * @param assets Interface for asset unregistration.
-      */
-    virtual void unregisterAssets(IAssetRemover& assets, bool relinquish) = 0;
-
-    /**
       * Forward this track and perform processing according to events within
       * the track.
       *

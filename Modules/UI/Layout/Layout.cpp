@@ -56,14 +56,6 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IEditable*>(this), relinquish);
-    assets.remove(static_cast<IScreen*>(this),   relinquish);
-    for (LayoutComponent* mComponent : cComponentsByOrder) {
-      mComponent->unregisterAssets(assets, relinquish);
-    }
-  }
-
   void Layout::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
     for (LayoutComponent* mComponent : cComponentsByOrder) {

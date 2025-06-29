@@ -28,7 +28,7 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Boolean : public Asset<IBoolean, IResourceData>,
+  class Boolean : public Asset<Boolean, IBoolean, IResourceData>,
                   public IStateListener<IBoolean*> {
     public:
     Boolean(IResourceData& owner, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
@@ -36,13 +36,13 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IBoolean, IResourceData> *
     \*********************************************/
-    IBoolean* createLiteralAsset(IResourceData& owner) override;
-    IBoolean* getAsset(IResourceData& owner, JSONObject object) override;
-    IBoolean* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IBoolean* createLiteralAsset(IResourceData& owner);
+    IBoolean* getAsset(IResourceData& owner, JSONObject object);
+    IBoolean* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
 
     /****************************************\
      * Implements IStateListener<IBoolean*> *

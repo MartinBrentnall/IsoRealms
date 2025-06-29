@@ -75,8 +75,4 @@ namespace IsoRealms::Basics {
   void DigitalToAnalogueMapping::registerAssets(IAssetRegistry& assets) {
     cDefInput.registerAssets(assets);
   }
-  
-  void DigitalToAnalogueMapping::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    cDefInput.unregisterAssets(assets, releaser, relinquish);
-  }
 }

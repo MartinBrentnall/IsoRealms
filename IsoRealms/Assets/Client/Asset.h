@@ -28,7 +28,7 @@
 namespace IsoRealms {
   class IAssets;
   
-  template<class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {
+  template<class DERIVED, class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
     Asset(MANAGER& manager, TYPE* asset) :
               cManager(manager),
@@ -54,14 +54,14 @@ namespace IsoRealms {
     void set(JSONObject object, const std::string& member) {
       JSONObject mAssetObject = object.getObject(member);
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = getAsset(cManager, mAssetObject);
+      cAsset = static_cast<DERIVED*>(this)->getAsset(cManager, mAssetObject);
       loadClientConfiguration(mAssetObject);
     }
     
     virtual void setID(const std::string& id) {
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = getAsset(cManager, id);
-      stateChanged(cAsset);
+      cAsset = static_cast<DERIVED*>(this)->getAsset(cManager, id);
+      static_cast<DERIVED*>(this)->stateChanged(cAsset);
     }
     
     void save(JSONObject object, const std::string& name) const {
@@ -86,11 +86,7 @@ namespace IsoRealms {
     }
 
     bool isDefaultConfigured() const {
-      return cAsset->isDefaultConfiguration() && isDefaultConfiguration();
-    }
-
-    bool isReadOnly() const {
-      return cManager.isReadOnly();
+      return cAsset->isDefaultConfiguration() && static_cast<const DERIVED*>(this)->isDefaultConfiguration();
     }
 
     TYPE* operator->() const {
@@ -110,25 +106,29 @@ namespace IsoRealms {
     \*******************************/
     void relinquish(TYPE* asset) override {
       if (cAsset == asset) {
-        cAsset = createLiteralAsset(cManager);
+        cAsset = static_cast<DERIVED*>(this)->createLiteralAsset(cManager);
       }
     }
 
+    bool isReadOnly() const override {
+      return cManager.isReadOnly();
+    }
+
+    void setOwner(File* owner) override {
+      return cManager.setOwner(owner);
+    }
+
     bool renderProviderIcon(const std::string& id) const {
-      return id == getID() ? renderAssetIcon() : renderOtherProviderIcon(id);
+      return id == getID() ? renderAssetIcon() : static_cast<const DERIVED*>(this)->renderOtherProviderIcon(id);
     }
 
     protected:
     MANAGER& cManager;
     TYPE* cAsset;
 
-    virtual TYPE* createLiteralAsset(MANAGER& manager) = 0;
-    virtual TYPE* getAsset(MANAGER& manager, JSONObject object) = 0;
-    virtual TYPE* getAsset(MANAGER& manager, const std::string& id) = 0;
-    virtual std::vector<std::string> getAvailableProviders() const = 0;
-    virtual bool renderOtherProviderIcon(const std::string& id) const = 0;
-    virtual bool hasConfiguration() const = 0;
-    virtual bool isDefaultConfiguration() const = 0;
+//    virtual std::vector<std::string> getAvailableProviders() const = 0;
+//    virtual bool hasConfiguration() const = 0;
+//    virtual bool isDefaultConfiguration() const = 0;
     virtual void stateChanged(TYPE* asset) {
       // Nothing to do.
     }
@@ -146,7 +146,7 @@ namespace IsoRealms {
     }
 
     private:
-    Asset(Asset<TYPE, MANAGER> const& asset) = delete;
-    Asset& operator=(Asset<TYPE, MANAGER> const& asset) = delete;
+    Asset(Asset<DERIVED, TYPE, MANAGER> const& asset) = delete;
+    Asset& operator=(Asset<DERIVED, TYPE, MANAGER> const& asset) = delete;
   };
 }

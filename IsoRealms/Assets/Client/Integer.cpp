@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Integer::Integer(IResourceData& owner) :
-            Asset<IInteger, IResourceData>(owner, owner.getAssetManager().createLiteralInteger(this, owner)) {
+            Asset<Integer, IInteger, IResourceData>(owner, owner.getAssetManager().createLiteralInteger(this, owner)) {
   }
 
   IInteger* Integer::createLiteralAsset(IResourceData& owner) {

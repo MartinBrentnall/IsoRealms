@@ -108,10 +108,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Jewel Models");
   }
     
-  void Jewel::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-
   // TODO: Handle removal of a colour
 //   void Jewel::relinquish(IColour* destroyee) {
 //     bool mChanged = false;

@@ -40,10 +40,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
     
-  void CameraLinked::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
-  
   const IFloat* CameraLinked::getYaw() const {
     return cDefLinkedView->getYaw();
   }  

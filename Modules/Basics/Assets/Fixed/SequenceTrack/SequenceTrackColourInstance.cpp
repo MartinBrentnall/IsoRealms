@@ -54,11 +54,6 @@ namespace IsoRealms::Basics {
     cStateNotifier = assets.add(this, cParent.getName(), "Sequences");
   }
 
-  void SequenceTrackColourInstance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(this, relinquish);
-    cStateNotifier = nullptr;
-  }
-
   void SequenceTrackColourInstance::set() const {
     cRuntimeColour.set();
   }

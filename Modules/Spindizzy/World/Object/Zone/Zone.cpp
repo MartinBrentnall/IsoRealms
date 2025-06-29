@@ -135,12 +135,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void Zone::unregisterAssets() {
-    for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {
-      mObject->unregisterAssets();
-    }
-  }  
-
   Alien* Zone::draw(AlienType& type, const WorldEditorCursorCell& cell) {
     if (cell.cDefX >= cDefStartX && cell.cDefX <= cDefEndX && cell.cDefY >= cDefStartY && cell.cDefY <= cDefEndY && cell.cDefZ >= cDefStartZ && cell.cDefZ <= cDefEndZ) {
       return cDefAliens.emplace_back(std::make_unique<Alien>(*this, type, cell.cDefX, cell.cDefY, cell.cDefZ)).get();

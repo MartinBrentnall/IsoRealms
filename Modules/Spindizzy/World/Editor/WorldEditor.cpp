@@ -119,12 +119,6 @@ namespace IsoRealms::Spindizzy {
     cProxyScreen         = assets.add(static_cast<IScreen*>(this), "Editor", "External"); // TODO: Should have a unique name in case multple instances
   }
 
-  void WorldEditor::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(&cScreenYaw,                 relinquish);
-    assets.remove(&cScreenPitch,               relinquish);
-    assets.remove(static_cast<IScreen*>(this), relinquish);
-  }
-
   bool WorldEditor::isMovingNorth() {
     if (isCursorLocked()) {
       return false;

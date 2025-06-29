@@ -44,11 +44,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Input Switches");
   }
   
-  void InputSwitch::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-  }
-  
   void InputSwitch::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefInputHandler.save(object, JSON_VALUE);
   }

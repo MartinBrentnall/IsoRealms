@@ -43,10 +43,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Sprite Models");
   }
 
-  void Sprite::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-
   void Sprite::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefTexture.save(object, JSON_TEXTURE);
     object.addBoolean(JSON_BILLBOARD_YAW, cDefBillboardYaw);

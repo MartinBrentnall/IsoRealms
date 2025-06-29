@@ -36,10 +36,6 @@ namespace IsoRealms::Hue {
     // Nothing to do.
   }
   
-  void Hue::unregisterAssets(IAssetRemover& remover, IAssets& releaser) {
-    // Nothing to do.
-  }
-
   std::vector<std::unique_ptr<IProperty>> Hue::getProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }

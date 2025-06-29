@@ -66,6 +66,14 @@ namespace IsoRealms {
     }
   }
 
+  bool ActionType::isReadOnly() const {
+    // TODO: Implement this.
+  }
+
+  void ActionType::setOwner(File* owner) {
+    // TODO: Implement this.
+  }
+
   ActionType::~ActionType() {
     if (cActionType != nullptr) {
       cProject.release(this, cActionType);

@@ -62,10 +62,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Debris Chunks");
   }
 
-  void DebrisChunk::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-
   void DebrisChunk::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefOutline.save(object, JSON_OUTLINE);
     object.addFloat(JSON_OUTLINE_WIDTH, cDefOutlineWidth, DEFAULT_OUTLINE_WIDTH);

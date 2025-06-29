@@ -40,11 +40,6 @@ namespace IsoRealms::Spindizzy {
     registry.registerProcessor(this);
   }
   
-  void Physics::unregisterAssets(ZoneObject& object) {
-    object.unregisterPhysics(this);
-    object.unregisterProcessor(this);
-  }
-
   void Physics::save(JSONObject object) const {
     // Nothing to do.
   }

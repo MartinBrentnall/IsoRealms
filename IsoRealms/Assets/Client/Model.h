@@ -29,7 +29,7 @@
 #include "ModelInstance.h"
 
 namespace IsoRealms {
-  class Model : public Asset<IModel, IResourceData> {
+  class Model : public Asset<Model, IModel, IResourceData> {
     public:
     Model(IResourceData& owner);
 
@@ -42,13 +42,14 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IInteger, IResourceData> *
     \*********************************************/
-    IModel* createLiteralAsset(IResourceData& owner) override;
-    IModel* getAsset(IResourceData& owner, JSONObject object) override;
-    IModel* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IModel* createLiteralAsset(IResourceData& owner);
+    IModel* getAsset(IResourceData& owner, JSONObject object);
+    IModel* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
+
     void loadClientConfiguration(JSONObject object) override;
     void saveClientConfiguration(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getClientProperties() override;

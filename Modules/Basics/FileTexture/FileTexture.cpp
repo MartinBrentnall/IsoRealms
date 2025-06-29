@@ -35,10 +35,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Stored Textures");
   }
   
-  void FileTexture::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-
   void FileTexture::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefFile.save(JSON_FILENAME, object);
   }

@@ -80,7 +80,6 @@ namespace IsoRealms::Spindizzy {
     bool signal(SignalInputID id);
 
     void setAppearance(IFont* font, float scale) override;
-    void unregisterAssets(IAssetRemover& assets, bool relinquish) override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     IScreen* screen() override;

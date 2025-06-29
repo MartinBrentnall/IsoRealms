@@ -86,6 +86,14 @@ namespace IsoRealms::UI {
     }
   }
 
+  bool MenuItem::isReadOnly() const {
+    // TODO: Implement this.
+  }
+
+  void MenuItem::setOwner(File* owner) {
+    // TODO: Implement this.
+  }
+
   MenuItem::~MenuItem() {
     if (cMenuItem != nullptr) {
       cUI.release(this, cMenuItem);

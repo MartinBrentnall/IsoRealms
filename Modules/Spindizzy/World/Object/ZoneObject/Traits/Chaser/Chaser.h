@@ -38,7 +38,6 @@ namespace IsoRealms::Spindizzy {
      * Implements IZoneObjectTrait *
     \*******************************/
     void registerAssets(ITraitRegistry& registry) override;
-    void unregisterAssets(ZoneObject& object) override;
     void save(JSONObject object) const override;
     bool hasConfiguration() const override;
     void reset() override;

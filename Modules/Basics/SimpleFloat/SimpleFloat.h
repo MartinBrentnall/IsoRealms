@@ -38,7 +38,6 @@ namespace IsoRealms::Basics {
     \**********************/
     SimpleFloat(IProject& project, Basics& basics, IResourceData& data);
     SimpleFloat(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     void registerAssets(IAssetRegistry& assets);
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);

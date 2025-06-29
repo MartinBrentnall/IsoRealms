@@ -46,10 +46,6 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
-  void BooleanTrigger::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-  
   void BooleanTrigger::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefValue.save(object, JSON_VALUE);
     cDefTrueAction.save(object, JSON_ON_BECOMING_TRUE);

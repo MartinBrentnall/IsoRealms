@@ -54,11 +54,6 @@ namespace IsoRealms::Basics {
     cStateNotifier = assets.add(this, cParent.getName(), "Sequences");
   }
 
-  void SequenceTrackFloatInstance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    assets.remove(this, relinquish);
-    cStateNotifier = nullptr;
-  }
-
   float SequenceTrackFloatInstance::getValue() const {
     return cRuntimeValue;
   }

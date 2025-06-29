@@ -33,7 +33,6 @@ namespace IsoRealms::Spindizzy {
     public:
     ThemeColour(IProject& project, IIconAnimator* animator);
     void registerAssets(IAssetRegistry& assets, const std::string& idd);  
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
       
     void set(IColour* colour);
 

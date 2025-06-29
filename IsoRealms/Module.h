@@ -97,7 +97,7 @@ namespace IsoRealms {
     IModuleHandle* cModule;
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
     Project& cProject;
-    LocalAssetRegistry cModuleAssetRegistry;
+    ResourceAssetRegistry cModuleAssetRegistry;
     File* cOwnerProject;
 #ifdef __linux__
     void* cModuleHandle;

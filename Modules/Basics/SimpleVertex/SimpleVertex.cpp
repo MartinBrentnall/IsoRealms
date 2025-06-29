@@ -60,12 +60,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Vertices");
   }
 
-  void SimpleVertex::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    cStateNotifier = nullptr;
-  }
-
   void SimpleVertex::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_X, cDefX);
     object.addFloat(JSON_Y, cDefY);

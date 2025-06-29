@@ -36,10 +36,6 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Interrupt Handlers");
   }
   
-  void InterruptHandler::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-  
   void InterruptHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefAction.save(object, JSON_ON_INPUT);
     object.addBoolean(JSON_CONSUME, cDefConsume, true);

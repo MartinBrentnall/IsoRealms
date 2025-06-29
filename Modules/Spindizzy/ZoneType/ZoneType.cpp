@@ -35,10 +35,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
-  void ZoneType::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-  
   void ZoneType::save(JSONObject object, IAssetIdentifier& identifier) const {
     // Nothing to do.
   }

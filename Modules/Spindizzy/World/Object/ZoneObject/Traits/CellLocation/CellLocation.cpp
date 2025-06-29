@@ -36,10 +36,6 @@ namespace IsoRealms::Spindizzy {
     registry.registerLocation(this);
   }
   
-  void CellLocation::unregisterAssets(ZoneObject& object) {
-    object.unregisterLocation(this);
-  }
-
   void CellLocation::save(JSONObject object) const {
     Zone& mZone = cDefObject.getZone();
     object.addInteger(JSON_X, cDefX - mZone.getStartX());

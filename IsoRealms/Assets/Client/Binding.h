@@ -28,7 +28,7 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Binding : public Asset<IBinding, IResourceData> {
+  class Binding : public Asset<Binding, IBinding, IResourceData> {
     public:
     Binding(IResourceData& owner, IBindingRegistry* registry, std::function<void()> listener = nullptr);
     Binding(IResourceData& owner, IBindingRegistry* registry, const std::string& type, std::function<void()> listener = nullptr);
@@ -41,13 +41,14 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IBinding, IResourceData> *
     \*********************************************/
-    IBinding* createLiteralAsset(IResourceData& owner) override;
-    IBinding* getAsset(IResourceData& owner, JSONObject object) override;
-    IBinding* getAsset(IResourceData& owner, const std::string& id) override;
-    std::vector<std::string> getAvailableProviders() const override;
-    bool renderOtherProviderIcon(const std::string& id) const override;
-    bool hasConfiguration() const override;
-    bool isDefaultConfiguration() const override;
+    IBinding* createLiteralAsset(IResourceData& owner);
+    IBinding* getAsset(IResourceData& owner, JSONObject object);
+    IBinding* getAsset(IResourceData& owner, const std::string& id);
+    std::vector<std::string> getAvailableProviders() const;
+    bool renderOtherProviderIcon(const std::string& id) const;
+    bool hasConfiguration() const;
+    bool isDefaultConfiguration() const;
+
     void stateChanged(IBinding* asset) override;
     std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(IBinding* asset) override;
 

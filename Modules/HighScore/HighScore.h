@@ -48,7 +48,6 @@ namespace IsoRealms::HighScore {
     void load(IProject& project, JSONObject object) override;
     void save(JSONObject object, IAssetIdentifier& identifier) override;
     void registerAssets(IAssetRegistry& assets) override;
-    void unregisterAssets(IAssetRemover& remover, IAssets& releaser) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
   };
 }

@@ -37,7 +37,6 @@ namespace IsoRealms::Spindizzy {
     public:
     DebrisGenerator(JSONObject object, IProject& project, IResourceData& owner);
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     void updateRuntime(unsigned int milliseconds);
     void renderRuntime();
     void save(JSONObject object, IAssetIdentifier& identifier) const;

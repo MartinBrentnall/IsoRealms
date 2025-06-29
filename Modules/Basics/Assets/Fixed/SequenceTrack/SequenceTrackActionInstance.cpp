@@ -45,8 +45,4 @@ namespace IsoRealms::Basics {
   void SequenceTrackActionInstance::registerAssets(IAssetRegistry& assets) {
     // Nothing to do.
   }
-
-  void SequenceTrackActionInstance::unregisterAssets(IAssetRemover& assets, bool relinquish) {
-    // Nothing to do.
-  }
 }

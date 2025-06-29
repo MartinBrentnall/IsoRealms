@@ -158,18 +158,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void World::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this,         relinquish);
-    assets.remove(&cLuaBinding, relinquish);
-    for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
-      mDebrisGenerator->unregisterAssets(assets, releaser, relinquish);
-    }
-    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
-      mPlayer->unregisterAssets(assets, relinquish);
-    }
-// TODO: Need to do this on editor destruction.    mEditor->unregisterAssets(assets);
-  }
-
   void World::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addFloat(JSON_SLOPE_FORCE, cDefSurfaceAccelerationFactor);
     object.addFloat(JSON_GRAVITY, cDefGravity);

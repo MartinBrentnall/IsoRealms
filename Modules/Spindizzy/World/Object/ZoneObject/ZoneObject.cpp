@@ -72,12 +72,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void ZoneObject::unregisterAssets() {
-    for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
-      mPair.second->unregisterAssets(*this);
-    }
-  }  
-
   void ZoneObject::reset() {
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       mPair.second->reset();

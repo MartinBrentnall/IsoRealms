@@ -50,10 +50,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void CollisionHandler::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    // Nothing to do.
-  }
-
   void CollisionHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefPhysicalObjectTypeA.save(object, JSON_OBJECT_A);
     cDefPhysicalObjectTypeB.save(object, JSON_OBJECT_B);

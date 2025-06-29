@@ -38,11 +38,6 @@ namespace IsoRealms::Spindizzy {
     registry.registerMovable(this);
   }
   
-  void Movable::unregisterAssets(ZoneObject& object) {
-    object.unregisterLocation(this);
-    object.unregisterMovable(this);
-  }
-
   void Movable::save(JSONObject object) const {
     // Nothing to do.
   }

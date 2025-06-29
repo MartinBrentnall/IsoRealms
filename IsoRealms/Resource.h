@@ -30,6 +30,7 @@
 #include "IResourceType.h"
 #include "LocalAssetRegistry.h"
 #include "Options/IOptions.h"
+#include "ResourceAssetRegistry.h"
 #include "System.h"
 #include "Utils.h"
 
@@ -132,8 +133,8 @@ namespace IsoRealms {
       cResourceHandle.registerAssets(cAssetRegistry);
     }
 
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) override {
-      cResourceHandle.unregisterAssets(assets, releaser, relinquish);
+    void unregisterAssets(IAssetRemover& assets, IAssets& releaser) override {
+      cAssetRegistry.unregisterAssets(assets);
     }
 
     std::string getResourceDataPath() const override {
@@ -164,6 +165,10 @@ namespace IsoRealms {
       return !cOwnerProject->isUser();
     }
 
+    void setOwner(File* owner) override {
+      cOwnerProject = owner;
+    }
+
     IProject& getProject() override {
       return cParent.getProject();
     }
@@ -180,7 +185,7 @@ namespace IsoRealms {
     File* cOwnerProject;
     std::string cResourceDataPath;
     RESOURCE cResourceHandle;
-    LocalAssetRegistry cAssetRegistry;
+    ResourceAssetRegistry cAssetRegistry;
   };
 
   template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";

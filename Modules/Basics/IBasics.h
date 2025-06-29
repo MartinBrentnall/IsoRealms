@@ -51,6 +51,9 @@ namespace IsoRealms::Basics {
     virtual IBasics& getAssetManager() = 0;
     virtual IProject& getProject() const = 0;
 
+    virtual bool isReadOnly() const = 0; // TODO: Probably shouldn't be here.
+    virtual void setOwner(File* owner) = 0; // TODO: Probably shouldn't be here.
+
     virtual ~IBasics() {}
   };
 }

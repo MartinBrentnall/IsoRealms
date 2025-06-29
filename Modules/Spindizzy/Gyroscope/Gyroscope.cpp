@@ -62,10 +62,6 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Gyroscope Models");
   }
     
-  void Gyroscope::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(this, relinquish);
-  }
-
   void Gyroscope::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefQuadrant[0].save(object, JSON_COLOUR_1);
     cDefQuadrant[1].save(object, JSON_COLOUR_2);

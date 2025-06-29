@@ -41,7 +41,6 @@ namespace IsoRealms::Spindizzy {
     Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool);
     bool renderIcon() const;

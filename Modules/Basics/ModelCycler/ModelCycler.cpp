@@ -55,13 +55,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Cycleable Models");
   }
   
-  void ModelCycler::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    for (std::unique_ptr<Offset>& mOffsetModel : cOffsetModels) {
-      assets.remove(mOffsetModel.get(), relinquish);
-    }
-    assets.remove(&cLuaBinding, relinquish);
-  }
-
   void ModelCycler::save(JSONObject object, IAssetIdentifier& identifier) const {
     JSONArray mModelArray = object.addArray(JSON_MODELS);
     for (const std::unique_ptr<Model>& mModel : cDefModels) {

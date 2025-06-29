@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Editable::Editable(IResourceData& owner) :
-            Asset<IEditable, IResourceData>(owner, owner.getAssetManager().createLiteralEditable(this, owner)) {
+            Asset<Editable, IEditable, IResourceData>(owner, owner.getAssetManager().createLiteralEditable(this, owner)) {
   }
 
   IEditable* Editable::createLiteralAsset(IResourceData& owner) {

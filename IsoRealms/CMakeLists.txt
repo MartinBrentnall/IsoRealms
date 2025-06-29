@@ -125,6 +125,7 @@ add_library(IsoRealms
   Persistence/JSONObject.cpp
   Persistence/ParseException.cpp
   Project.cpp
+  ResourceAssetRegistry.cpp
   ResourceType.cpp
   System.cpp
   Utils.cpp

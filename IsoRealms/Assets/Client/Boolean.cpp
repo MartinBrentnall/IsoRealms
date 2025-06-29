@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   Boolean::Boolean(IResourceData& owner, bool defaultValue, std::function<void(bool)> listener) :
-            Asset<IBoolean, IResourceData>(owner, owner.getAssetManager().createLiteralBoolean(this, owner, defaultValue)),
+            Asset<Boolean, IBoolean, IResourceData>(owner, owner.getAssetManager().createLiteralBoolean(this, owner, defaultValue)),
             cDefaultValue(defaultValue),
             cListener(listener) {
   }

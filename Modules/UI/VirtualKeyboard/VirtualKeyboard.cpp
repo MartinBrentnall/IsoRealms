@@ -65,13 +65,6 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, "", "System");
   }
   
-  void VirtualKeyboard::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(static_cast<IInputHandler*>(this), relinquish);
-    assets.remove(static_cast<IScreen*>(this),       relinquish);
-    assets.remove(static_cast<IString*>(this),       relinquish);
-    assets.remove(&cLuaBinding,                      relinquish);
-  }
-  
   void VirtualKeyboard::save(JSONObject object, IAssetIdentifier& identifier) const {
     cDefSelectionColour.save(object, JSON_SELECTION_COLOUR);
     cDefFont.save(object, JSON_FONT);

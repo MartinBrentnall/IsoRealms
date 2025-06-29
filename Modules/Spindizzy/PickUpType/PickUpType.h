@@ -48,7 +48,6 @@ namespace IsoRealms::Spindizzy {
     PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish);
     void save(JSONObject object, IAssetIdentifier& identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;

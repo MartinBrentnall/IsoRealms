@@ -84,15 +84,6 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void Sequence::unregisterAssets(IAssetRemover& assets, IAssets& releaser, bool relinquish) {
-    assets.remove(&cLuaBinding, relinquish);
-    assets.remove(&cExposedLength, relinquish);
-    assets.remove(this, relinquish);
-    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      mEntry.second->unregisterAssets(assets, relinquish);
-    }
-  }
-  
   void Sequence::save(JSONObject object, IAssetIdentifier& identifier) const {
     object.addBoolean(JSON_PLAYING, cDefPlaying);
     object.addBoolean(JSON_LOOP, cDefLoop);
