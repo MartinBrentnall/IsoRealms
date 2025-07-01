@@ -22,8 +22,8 @@
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
 
-namespace IsoRealms::Basics {
-  class Basics;
+namespace IsoRealms::Spindizzy {
+  class Spindizzy;
 
   /**
    * Resource definition for a model that can be dynamically cycled through
@@ -36,13 +36,19 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    ModelCycler(IProject& project, Basics& basics, IResourceData& data);
-    ModelCycler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data);
+    ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateEditing(unsigned int milliseconds);
+    void reset();
 
     /***********************\
      * Scripting Interface *
@@ -122,9 +128,6 @@ namespace IsoRealms::Basics {
       // Runtime data.
       std::vector<std::unique_ptr<Instance>> cRuntimeInstances; /// Instances created from this offset.
     };
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     std::vector<std::unique_ptr<Model>> cDefModels;

@@ -41,7 +41,6 @@
 #include "InputGroup/InputGroup.h"
 #include "InputSwitch/InputSwitch.h"
 #include "InterruptHandler/InterruptHandler.h"
-#include "ModelCycler/ModelCycler.h"
 #include "Project/Project.h"
 #include "ProjectConfigurer/ProjectConfigurer.h"
 #include "ProjectOptions/ProjectOptions.h"
@@ -103,19 +102,14 @@ namespace IsoRealms::Basics {
     private:
     static const std::string ID_RESOURCE_ANALOGUE_INPUT;
     static const std::string ID_RESOURCE_BOOLEAN_TRIGGER;
-    static const std::string ID_RESOURCE_COLOUR_CYCLER;
-    static const std::string ID_RESOURCE_COLOUR_SWITCH;
     static const std::string ID_RESOURCE_DIGITAL_INPUT;
     static const std::string ID_RESOURCE_FILE_FONT;
     static const std::string ID_RESOURCE_FILE_SOUND;
     static const std::string ID_RESOURCE_FILE_TEXTURE;
-    static const std::string ID_RESOURCE_FLOAT_SWITCH;
     static const std::string ID_RESOURCE_FUNCTION;
     static const std::string ID_RESOURCE_INPUT_GROUP;
     static const std::string ID_RESOURCE_INPUT_SWITCH;
     static const std::string ID_RESOURCE_INTERRUPT_HANDLER;
-    static const std::string ID_RESOURCE_MODEL_CYCLER;
-    static const std::string ID_RESOURCE_MODEL_SCREEN;
     static const std::string ID_RESOURCE_PROJECT;
     static const std::string ID_RESOURCE_PROJECT_CONFIGURER;
     static const std::string ID_RESOURCE_PROJECT_OPTIONS;
@@ -127,8 +121,6 @@ namespace IsoRealms::Basics {
     static const std::string ID_RESOURCE_SIMPLE_STRING;
     static const std::string ID_RESOURCE_SIMPLE_VERTEX;
     static const std::string ID_RESOURCE_SPRITE;
-    static const std::string ID_RESOURCE_STRING_SCREEN;
-    static const std::string ID_RESOURCE_TIMER;
 
     static const std::string SEQUENCE_TRACK_ACTION;
     static const std::string SEQUENCE_TRACK_AUDIO;
@@ -168,7 +160,6 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, InputGroup>        cResourceTypeInputGroup;
     ResourceTypeDefinition<Basics, InputSwitch>       cResourceTypeInputSwitch;
     ResourceTypeDefinition<Basics, InterruptHandler>  cResourceTypeInterruptHandler;
-    ResourceTypeDefinition<Basics, ModelCycler>       cResourceTypeModelCycler;
     ResourceTypeDefinition<Basics, Project>           cResourceTypeProject;
     ResourceTypeDefinition<Basics, ProjectConfigurer> cResourceTypeProjectConfigurer;
     ResourceTypeDefinition<Basics, ProjectOptions>    cResourceTypeProjectOptions;

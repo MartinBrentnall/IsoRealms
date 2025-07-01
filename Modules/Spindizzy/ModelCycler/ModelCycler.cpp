@@ -18,29 +18,18 @@
  */
 #include "ModelCycler.h"
 
-namespace IsoRealms::Basics {
+namespace IsoRealms::Spindizzy {
   const std::string ModelCycler::JSON_MODEL  = "model";
   const std::string ModelCycler::JSON_MODELS = "models";
 
-  ModelCycler::ModelCycler(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
+  ModelCycler::ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cRuntimeCycleIndex(0),
             cLuaBinding(project, this),
             cEditingIconCycle(0) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeCycleIndex = 0; 
-    });
-    
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      cEditingIconCycle += milliseconds;
-      if (cEditingIconCycle >= cOffsetModels.size() * 500) {
-        cEditingIconCycle -= static_cast<float>(cOffsetModels.size()) * 500;
-      }
-    });
   }
   
-  ModelCycler::ModelCycler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
-            ModelCycler(project, basics, data) {
+  ModelCycler::ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+            ModelCycler(project, spindizzy, data) {
     unsigned int mIndex = 0;
     for (JSONObject mModelObject : object.getArray(JSON_MODELS)) {
       cDefModels.emplace_back(std::make_unique<Model>(data))->init(mModelObject, JSON_MODEL);
@@ -80,6 +69,17 @@ namespace IsoRealms::Basics {
       mModelCount++;
     }
     return mProperties;
+  }
+  
+  void ModelCycler::updateEditing(unsigned int milliseconds) {
+    cEditingIconCycle += milliseconds;
+    if (cEditingIconCycle >= cOffsetModels.size() * 500) {
+      cEditingIconCycle -= static_cast<float>(cOffsetModels.size()) * 500;
+    }
+  }
+    
+  void ModelCycler::reset() {
+    cRuntimeCycleIndex = 0; 
   }
 
   void ModelCycler::next() {

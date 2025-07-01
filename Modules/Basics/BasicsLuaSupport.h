@@ -24,7 +24,6 @@
 
 #include "AnalogueInput/AnalogueInput.h"
 #include "InputSwitch/InputSwitch.h"
-#include "ModelCycler/ModelCycler.h"
 #include "Project/Project.h"
 #include "ProjectConfigurer/ProjectConfigurer.h"
 #include "Sequence/SequenceInstance.h"

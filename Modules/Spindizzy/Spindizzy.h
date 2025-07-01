@@ -67,6 +67,7 @@
 #include "ISpindizzyRegistry.h"
 #include "Jewel/Jewel.h"
 #include "LiftType/LiftType.h"
+#include "ModelCycler/ModelCycler.h"
 #include "PickUpType/PickUpType.h"
 #include "PlayerType/PlayerType.h"
 #include "TerrainState/TerrainState.h"
@@ -350,6 +351,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string ID_RESOURCE_GYROSCOPE;
     static const std::string ID_RESOURCE_JEWEL;
     static const std::string ID_RESOURCE_LIFT;
+    static const std::string ID_RESOURCE_MODEL_CYCLER;
     static const std::string ID_RESOURCE_PICK_UP;
     static const std::string ID_RESOURCE_PLAYER;
     static const std::string ID_RESOURCE_TERRAIN;
@@ -493,6 +495,7 @@ namespace IsoRealms::Spindizzy {
     ResourceTypeDefinition<Spindizzy, Gyroscope>          cResourceGyroscope;
     ResourceTypeDefinition<Spindizzy, Jewel>              cResourceJewel;
     ResourceTypeDefinition<Spindizzy, LiftType>           cResourceLift;
+    ResourceTypeDefinition<Spindizzy, ModelCycler>        cResourceModelCycler;
     ResourceTypeDefinition<Spindizzy, PickUpType>         cResourcePickUp;
     ResourceTypeDefinition<Spindizzy, PlayerType>         cResourcePlayer;
     ResourceTypeDefinition<Spindizzy, TerrainType>        cResourceTerrain;

@@ -46,8 +46,6 @@ namespace IsoRealms::Basics {
                                                                  "getMappingCount",            &DigitalInput::getMappingCount,
                                                                  "getMapping",                 &DigitalInput::getMapping);
     mLua->new_usertype<InputSwitch>("InputSwitch",               "setInputHandler",            &InputSwitch::setInputHandler);
-    mLua->new_usertype<ModelCycler>("ModelSetCycleable",         "next",                       &ModelCycler::next,
-                                                                 "previous",                   &ModelCycler::previous);
     mLua->new_usertype<Project>("SubProject",                    "setRunning",                 &Project::setRunning,
                                                                  "setEditing",                 &Project::setEditing,
                                                                  "prepare",                    &Project::prepare,

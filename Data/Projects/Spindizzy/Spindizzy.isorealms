@@ -196,13 +196,13 @@
                     {
                       "variable": "playerCraftModels",
                       "to": {
-                        "key": "Basics/ModelCycler/Player Craft"
+                        "key": "Spindizzy/ModelCycler/Player Craft"
                       }
                     },
                     {
                       "variable": "alienCraftModels",
                       "to": {
-                        "key": "Basics/ModelCycler/Alien Craft"
+                        "key": "Spindizzy/ModelCycler/Alien Craft"
                       }
                     },
                     {
@@ -1349,59 +1349,6 @@
               },
               {
                 "id": "RemainingZones"
-              }
-            ]
-          },
-          {
-            "type": "ModelCycler",
-            "instances": [
-              {
-                "id": "Player Craft",
-                "models": [
-                  {
-                    "model": {
-                      "key": "Spindizzy/Top/Player"
-                    }
-                  },
-                  {
-                    "model": {
-                      "offsetZ": 0.33000001311302185,
-                      "scaleX": 0.6600000262260437,
-                      "scaleY": 0.6600000262260437,
-                      "scaleZ": 0.6600000262260437,
-                      "key": "Basics/Sprite/Ball"
-                    }
-                  },
-                  {
-                    "model": {
-                      "key": "Spindizzy/Gyroscope/Player"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "Alien Craft",
-                "models": [
-                  {
-                    "model": {
-                      "key": "Spindizzy/Top/Alien"
-                    }
-                  },
-                  {
-                    "model": {
-                      "offsetZ": 0.33000001311302185,
-                      "scaleX": 0.6600000262260437,
-                      "scaleY": 0.6600000262260437,
-                      "scaleZ": 0.6600000262260437,
-                      "key": "Basics/Sprite/Ball"
-                    }
-                  },
-                  {
-                    "model": {
-                      "key": "Spindizzy/Gyroscope/Alien"
-                    }
-                  }
-                ]
               }
             ]
           },
@@ -3525,7 +3472,7 @@
               {
                 "id": "Ball",
                 "appearance": {
-                  "key": "Basics/ModelCycler/Alien Craft/1"
+                  "key": "Spindizzy/ModelCycler/Alien Craft/1"
                 },
                 "target": {
                   "key": "Spindizzy/World/Hangworld/Player",
@@ -3537,7 +3484,7 @@
               {
                 "id": "Gyroscope",
                 "appearance": {
-                  "key": "Basics/ModelCycler/Alien Craft/2"
+                  "key": "Spindizzy/ModelCycler/Alien Craft/2"
                 },
                 "target": {
                   "key": "Spindizzy/World/Hangworld/Player",
@@ -4494,6 +4441,59 @@
             ]
           },
           {
+            "type": "ModelCycler",
+            "instances": [
+              {
+                "id": "Player Craft",
+                "models": [
+                  {
+                    "model": {
+                      "key": "Spindizzy/Top/Player"
+                    }
+                  },
+                  {
+                    "model": {
+                      "offsetZ": 0.33000001311302185,
+                      "scaleX": 0.6600000262260437,
+                      "scaleY": 0.6600000262260437,
+                      "scaleZ": 0.6600000262260437,
+                      "key": "Basics/Sprite/Ball"
+                    }
+                  },
+                  {
+                    "model": {
+                      "key": "Spindizzy/Gyroscope/Player"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "Alien Craft",
+                "models": [
+                  {
+                    "model": {
+                      "key": "Spindizzy/Top/Alien"
+                    }
+                  },
+                  {
+                    "model": {
+                      "offsetZ": 0.33000001311302185,
+                      "scaleX": 0.6600000262260437,
+                      "scaleY": 0.6600000262260437,
+                      "scaleZ": 0.6600000262260437,
+                      "key": "Basics/Sprite/Ball"
+                    }
+                  },
+                  {
+                    "model": {
+                      "key": "Spindizzy/Gyroscope/Alien"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "type": "PickUp",
             "instances": [
               {
@@ -4607,7 +4607,7 @@
                 "spinSpeed": -180,
                 "bounceFactor": 0.3100000023841858,
                 "appearance": {
-                  "key": "Basics/ModelCycler/Player Craft/0"
+                  "key": "Spindizzy/ModelCycler/Player Craft/0"
                 },
                 "onRespawn": {
                   "key": "Basics/Script",

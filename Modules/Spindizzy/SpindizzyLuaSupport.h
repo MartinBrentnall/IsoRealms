@@ -24,6 +24,7 @@
 
 #include "Assets/Fixed/ZoneViewType/ZoneViewOverview.h"
 #include "AlienType/AlienType.h"
+#include "ModelCycler/ModelCycler.h"
 #include "PlayerType/PlayerType.h"
 #include "Spindizzy.h"
 #include "TerrainState/TerrainState.h"

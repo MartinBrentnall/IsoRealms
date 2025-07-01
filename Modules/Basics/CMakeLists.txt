@@ -43,7 +43,6 @@ add_library(Basics MODULE
   InputGroup/InputGroup.cpp
   InputSwitch/InputSwitch.cpp
   InterruptHandler/InterruptHandler.cpp
-  ModelCycler/ModelCycler.cpp
   Project/Project.cpp
   Project/ProjectLoader.cpp
   ProjectConfigurer/ProjectConfigurer.cpp

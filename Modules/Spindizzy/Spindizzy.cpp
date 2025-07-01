@@ -57,6 +57,7 @@ namespace IsoRealms::Spindizzy {
                     cResourceGyroscope(*this),
                     cResourceJewel(*this),
                     cResourceLift(*this),
+                    cResourceModelCycler(*this),
                     cResourcePickUp(*this),
                     cResourcePlayer(*this),
                     cResourceTerrain(*this),
@@ -110,6 +111,7 @@ namespace IsoRealms::Spindizzy {
     registry->add(&cResourceTop,                ID_RESOURCE_TOP,                  "Top Model",           "Top Models",           RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceJewel,              ID_RESOURCE_JEWEL,                "Jewel Model",         "Jewel Models",         RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceLift,               ID_RESOURCE_LIFT,                 "Lift",                "Lifts",                RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceModelCycler,        ID_RESOURCE_MODEL_CYCLER,         "Model Cycler",        "Model Cyclers",        RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceTerrain,            ID_RESOURCE_TERRAIN,              "Terrain",             "Terrain",              RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
     registry->add(&cResourceTerrainState,       ID_RESOURCE_TERRAIN_STATE,        "Terrain State",       "Terrain States",       RESOURCE_CATEGORY_SPINDIZZY_LOGIC);
     registry->add(&cResourceThemeSet,           ID_RESOURCE_THEME_SET,            "Theme Set",           "Theme Sets",           RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
@@ -756,6 +758,7 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::ID_RESOURCE_GYROSCOPE            = "Gyroscope";
   const std::string Spindizzy::ID_RESOURCE_JEWEL                = "Jewel";
   const std::string Spindizzy::ID_RESOURCE_LIFT                 = "Lift";
+  const std::string Spindizzy::ID_RESOURCE_MODEL_CYCLER         = "ModelCycler";
   const std::string Spindizzy::ID_RESOURCE_PICK_UP              = "PickUp";
   const std::string Spindizzy::ID_RESOURCE_PLAYER               = "Player";
   const std::string Spindizzy::ID_RESOURCE_TERRAIN              = "Terrain";

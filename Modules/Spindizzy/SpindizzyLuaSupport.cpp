@@ -40,6 +40,8 @@ namespace IsoRealms::Spindizzy {
                                                                  "transitionToEnd",          &CameraTransitional::transitionToEnd);
     mLua->new_usertype<DebrisGenerator>("DebrisGenerator",       "generateDebris",           &DebrisGenerator::generateDebris,
                                                                  "clear",                    &DebrisGenerator::clear);
+    mLua->new_usertype<ModelCycler>("ModelCycler",               "next",                     &ModelCycler::next,
+                                                                 "previous",                 &ModelCycler::previous);
     mLua->new_usertype<Model>("Model",                           "isEnabled",                &Model::isEnabled,
                                                                  "setEnabled",               &Model::setEnabled);
     mLua->new_usertype<Player>("Player",                         "destroy",                  &Player::destroy,

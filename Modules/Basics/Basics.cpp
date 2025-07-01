@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
   const std::string Basics::ID_RESOURCE_INPUT_GROUP        = "InputGroup";
   const std::string Basics::ID_RESOURCE_INPUT_SWITCH       = "InputSwitch";
   const std::string Basics::ID_RESOURCE_INTERRUPT_HANDLER  = "InterruptHandler";
-  const std::string Basics::ID_RESOURCE_MODEL_CYCLER       = "ModelCycler";
   const std::string Basics::ID_RESOURCE_PROJECT            = "Project";
   const std::string Basics::ID_RESOURCE_PROJECT_CONFIGURER = "ProjectConfigurer";
   const std::string Basics::ID_RESOURCE_PROJECT_OPTIONS    = "ProjectOptions";
@@ -77,7 +76,6 @@ namespace IsoRealms::Basics {
                     cResourceTypeInputGroup(*this),
                     cResourceTypeInputSwitch(*this),
                     cResourceTypeInterruptHandler(*this),
-                    cResourceTypeModelCycler(*this),
                     cResourceTypeProject(*this),
                     cResourceTypeProjectConfigurer(*this),
                     cResourceTypeProjectOptions(*this),
@@ -101,7 +99,6 @@ namespace IsoRealms::Basics {
     registry->add(&cResourceTypeInputGroup,        ID_RESOURCE_INPUT_GROUP,        "Input Group",        "Input Groups",         "Input");
     registry->add(&cResourceTypeInputSwitch,       ID_RESOURCE_INPUT_SWITCH,       "Input Switch",       "Input Switches",       "Input");
     registry->add(&cResourceTypeInterruptHandler,  ID_RESOURCE_INTERRUPT_HANDLER,  "Interrupt Handler",  "Interrupt Handlers",   "Input");
-    registry->add(&cResourceTypeModelCycler,       ID_RESOURCE_MODEL_CYCLER,       "Model Cycler",       "Model Cyclers",        IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
     registry->add(&cResourceTypeProject,           ID_RESOURCE_PROJECT,            "Project",            "Projects",             IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
     registry->add(&cResourceTypeProjectConfigurer, ID_RESOURCE_PROJECT_CONFIGURER, "Project Configurer", "Project Configurers",  IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
     registry->add(&cResourceTypeProjectOptions,    ID_RESOURCE_PROJECT_OPTIONS,    "Project Option Set", "Project Options Sets", IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
