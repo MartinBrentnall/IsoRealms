@@ -62,7 +62,7 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScoreTable::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ScoreTable::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -70,7 +70,7 @@ namespace IsoRealms::HighScore {
     // Nothing to do.
   }
   
-  void ScoreTable::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void ScoreTable::save(JSONObject object) const {
     cProjectDataPath.save(object, JSON_PROJECT);
     cProjectUser.save(object, JSON_USER);
     object.addInteger(JSON_RECORD_LIMIT, 10);

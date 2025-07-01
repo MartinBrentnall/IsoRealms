@@ -33,7 +33,7 @@ namespace IsoRealms::HighScore {
     // Nothing to do.
   }
 
-  void HighScore::save(JSONObject object, IAssetIdentifier& identifier) {
+  void HighScore::save(JSONObject object) {
     // Nothing to do.
   }
 

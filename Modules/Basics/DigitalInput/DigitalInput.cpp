@@ -71,10 +71,6 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Digital Inputs");
   }
   
-  void DigitalInput::save(JSONObject object, IAssetIdentifier& identifier) const {
-    save(object);
-  }
-
   void DigitalInput::save(JSONObject object) const {
     JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {
@@ -91,7 +87,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> DigitalInput::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> DigitalInput::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
       mProperties.emplace_back(std::make_unique<PropertyStruct>(mInput->getShortName(), "TODO", "Edit...", [&mInput]() {

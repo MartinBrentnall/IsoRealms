@@ -43,10 +43,10 @@ namespace IsoRealms::Spindizzy {
     CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     // Collision handler interface.
     const PhysicalObjectType* getPhysicalObjectTypeA() const;

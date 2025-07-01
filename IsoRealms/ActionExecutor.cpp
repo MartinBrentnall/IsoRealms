@@ -67,13 +67,13 @@ namespace IsoRealms {
     cProject.postponeAction(cAction);
   }
 
-  std::string ActionExecutor::getID(IAssetIdentifier& identifier) const {
-    return identifier.getID(*cActionType);
+  std::string ActionExecutor::getID() const {
+    return cProject.getID(*cActionType);
   }
 
-  void ActionExecutor::save(JSONObject object, IAssetIdentifier& identifier) const {
-    identifier.save(object, *cActionType);
-    cAction->save(object, identifier);
+  void ActionExecutor::save(JSONObject object) const {
+    cProject.save(object, *cActionType);
+    cAction->save(object);
   }
 
   bool ActionExecutor::renderAssetIcon() const {

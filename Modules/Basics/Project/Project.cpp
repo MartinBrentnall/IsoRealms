@@ -117,7 +117,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Projects");
   }
   
-  void Project::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Project::save(JSONObject object) const {
     object.addBoolean(JSON_RUNNING, cDefRunning);
     object.addBoolean(JSON_EDITING, cDefEditing);
     cDefEndAction.save(object, JSON_ON_FINISH);
@@ -134,7 +134,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   

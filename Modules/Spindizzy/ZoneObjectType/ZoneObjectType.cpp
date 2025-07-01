@@ -60,7 +60,7 @@ namespace IsoRealms::Spindizzy {
     // TODO
   }
     
-  void ZoneObjectType::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void ZoneObjectType::save(JSONObject object) const {
     JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {
       JSONObject mTraitObject = mTraitsArray.addObject();
@@ -78,7 +78,7 @@ namespace IsoRealms::Spindizzy {
     return false; // TODO
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

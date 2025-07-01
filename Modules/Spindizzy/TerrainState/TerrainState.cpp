@@ -40,7 +40,7 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "", "Spindizzy Terrain States");
   }
 
-  void TerrainState::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void TerrainState::save(JSONObject object) const {
     object.addBoolean(JSON_STATE, cDefValue);
     cDefIcon.save(object, JSON_ICON);
     object.addFloat(JSON_ICON_SCALE, cDefIconScale);
@@ -56,9 +56,9 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Initial State", "TODO", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Initial State", "TODO", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, owner.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Hint Action",   "TODO", cDefHintAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>("Icon",          "TODO", cDefIcon));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Icon Scale",    "TODO", [this]() {return cDefIconScale;}, [this](float value) {if (value > 0.0f) {

@@ -1066,7 +1066,7 @@ namespace IsoRealms::UI {
           case 0: {
             JSONDocument mDocument;
             JSONObject mComponentObject = mDocument.addObject("Component");
-            cParent.cSelectedComponent->save(mComponentObject, cParent.cLayout.getUI().getProject());
+            cParent.cSelectedComponent->save(mComponentObject);
             LayoutComponent* mComponentCopy = cParent.cLayout.createComponent(mComponentObject);
 
             // Move the copy component down and right a bit so we can differentiate it from the original.

@@ -48,10 +48,10 @@ namespace IsoRealms::Spindizzy {
     PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     ~PickUpType();
 

@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void PickUpType::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void PickUpType::save(JSONObject object) const {
     cDefModel.save(object, JSON_APPEARANCE);
   }
 
@@ -51,7 +51,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> PickUpType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> PickUpType::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance", "TODO", cDefModel));
     return mProperties;

@@ -23,7 +23,6 @@
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/Editing/Property/PropertyAsset.h"
 #include "IsoRealms/Lua/LuaState.h"
-#include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/IResourceData.h"

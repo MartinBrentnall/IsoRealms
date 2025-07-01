@@ -66,7 +66,7 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, "", "System");
   }
   
-  void Prompt::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Prompt::save(JSONObject object) const {
     object.addFloat(JSON_TEXT_SIZE,      cDefTextSize,     DEFAULT_TEXT_SIZE);
     object.addFloat(JSON_SHADOW_OFFSET,  cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
     object.addString(JSON_MESSAGE,       cDefMessage);
@@ -86,7 +86,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Font",             "TODO", cDefFont));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Font Size",        "TODO", [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));

@@ -40,7 +40,7 @@ namespace IsoRealms::UI {
     void registerAssets(IAssetRegistry& assets, const std::string& name);
     void render(float scale, float aspectRatio);
     void renderEditor(float scale, float aspectRatio);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
 //    bool pickHandle(float x, float y, float scale, float aspectRatio);
 //    bool move(float x, float y, float aspectRatio);
     void setLeftEdgeLocation(float value, float aspectRatio);

@@ -84,7 +84,7 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void Sequence::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Sequence::save(JSONObject object) const {
     object.addBoolean(JSON_PLAYING, cDefPlaying);
     object.addBoolean(JSON_LOOP, cDefLoop);
     cDefSpeed.save(object, JSON_SPEED);
@@ -109,7 +109,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sequence::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Sequence::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", "TODO", this));
 
@@ -118,19 +118,19 @@ namespace IsoRealms::Basics {
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Loop", "Specifies whether this Sequence repeats from the beginning after reaching the end", [this]() {return cDefLoop;}, [this](bool value) {cDefLoop = value;}, cBasics.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Speed", "The sequence plays at multiple speed of the specified value", cDefSpeed));
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>(mEntry.first, "TODO", "Edit...", [this, &owner, &browser, &assets, &mEntry]() {
-        return mEntry.second->getProperties(owner, browser, assets);
+      mProperties.emplace_back(std::make_unique<PropertyStruct>(mEntry.first, "TODO", "Edit...", [this, &owner, &mEntry]() {
+        return mEntry.second->getProperties(owner);
       }, [this, &mEntry]() {
         cDefInstances.erase(mEntry.first);
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>(   "Instance", "TODO", "Add...", [this, &owner, &browser, &assets]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>(   "Instance", "TODO", "Add...", [this, &owner]() {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
-      LocalAssetRegistry mInstanceAssetRegistry(assets, mKey);
-      mInstance->registerAssets(mInstanceAssetRegistry);
-      return std::make_unique<PropertyStruct>("Instance", "TODO", "Edit...", [this, &owner, &browser, &assets, &mInstance]() {
-        return mInstance->getProperties(owner, browser, assets);
+      // LocalAssetRegistry mInstanceAssetRegistry(assets, mKey);
+      // mInstance->registerAssets(mInstanceAssetRegistry);
+      return std::make_unique<PropertyStruct>("Instance", "TODO", "Edit...", [this, &owner, &mInstance]() {
+        return mInstance->getProperties(owner);
       }, [this, mKey]() {
         cDefInstances.erase(mKey);
       });

@@ -38,7 +38,7 @@ namespace IsoRealms {
     virtual ~ResourceType();
     void loadResource(JSONObject object, IProject& project, IOptions& options, File* ownerProject, const std::string& resourceDataPath);
     bool needsSaving(File* savingProject) const;
-    void save(JSONArray& array, IAssetIdentifier& identifier, const std::string& tag, File* savingProject);
+    void save(JSONArray& array, const std::string& tag, File* savingProject);
 
     /****************************\
      * Implements IResourceType *

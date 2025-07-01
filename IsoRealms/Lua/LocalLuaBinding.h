@@ -20,7 +20,6 @@
 
 #include <sol.hpp>
 
-#include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
 #include "IsoRealms/Assets/IBindingRegistry.h"

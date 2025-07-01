@@ -48,8 +48,8 @@ namespace IsoRealms {
 
     void execute();
     void postpone();
-    std::string getID(IAssetIdentifier& identifier) const;
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    std::string getID() const;
+    void save(JSONObject object) const;
     bool renderAssetIcon() const;
     bool hasConfiguration() const;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties();

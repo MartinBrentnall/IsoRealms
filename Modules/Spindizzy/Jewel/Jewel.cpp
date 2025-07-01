@@ -48,22 +48,22 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
-      cColoursCycle[i]->getProperties(browser, "Colour " + Utils::toString(i + 1), mProperties);
+      cColoursCycle[i]->getProperties("Colour " + Utils::toString(i + 1), mProperties);
     }
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", "TODO", cColourFrame));
     return mProperties;
   }
   
-  void Jewel::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Jewel::save(JSONObject object) const {
     cColourFrame.save(object, JSON_FRAME);
     object.addFloat(JSON_CYCLE_SPEED, cCycleSpeed);
     JSONArray mCycleColoursArray = object.addArray(JSON_CYCLE_COLOURS);
     for (const std::unique_ptr<CycleColour>& mCycleColour : cColoursCycle) {
       JSONObject mCycleColourObject =  mCycleColoursArray.addObject();
-      mCycleColour->save(mCycleColourObject, identifier);
+      mCycleColour->save(mCycleColourObject);
     }
   }
 
@@ -138,7 +138,7 @@ namespace IsoRealms::Spindizzy {
     cDefColour.init(object, JSON_COLOUR);
   }
 
-  void Jewel::CycleColour::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Jewel::CycleColour::save(JSONObject object) const {
     cDefColour.save(object, JSON_COLOUR);
   }
 
@@ -150,7 +150,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void Jewel::CycleColour::getProperties(IAssetBrowser& browser, const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties) {
+  void Jewel::CycleColour::getProperties(const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties) {
     properties.emplace_back(std::make_unique<PropertyAsset<Colour>>(name, "TODO", cDefColour));
   }
 

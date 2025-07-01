@@ -169,7 +169,7 @@ namespace IsoRealms::Replay {
     assets.add(static_cast<IInputHandler*>(this), "", "System");
   }
   
-  std::vector<std::unique_ptr<IProperty>> Player::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Player::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -360,7 +360,7 @@ namespace IsoRealms::Replay {
     return true;
   }
 
-  void Player::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Player::save(JSONObject object) const {
     cQuitAction.save(object, JSON_ON_FINISH);
   }
 }

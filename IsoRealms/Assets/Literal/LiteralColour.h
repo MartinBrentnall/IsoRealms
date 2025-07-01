@@ -24,7 +24,6 @@
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Assets/Type/IColour.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/Utils.h"
 

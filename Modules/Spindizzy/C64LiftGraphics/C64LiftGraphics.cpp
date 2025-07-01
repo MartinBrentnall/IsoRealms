@@ -86,7 +86,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void C64LiftGraphics::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void C64LiftGraphics::save(JSONObject object) const {
     cDefOutline.save(object, JSON_OUTLINE);
     cDefPrimary.save(object, JSON_PRIMARY);
     cDefSecondary.save(object, JSON_SECONDARY);
@@ -114,7 +114,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> C64LiftGraphics::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> C64LiftGraphics::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Primary Colour",   "TODO", cDefPrimary));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Secondary Colour", "TODO", cDefSecondary));

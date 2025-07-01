@@ -87,7 +87,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Project Configurers");
   }
 
-  void ProjectConfigurer::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void ProjectConfigurer::save(JSONObject object) const {
     object.addFloat(JSON_FONT_SIZE, cDefFontSize);
     object.addFloat(JSON_CODE_FONT_SIZE, cDefCodeFontSize);
     cDefFont.save(object, JSON_FONT);
@@ -105,7 +105,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Regular Font",      "TODO", cDefFont));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Regular Font Size", "TODO", [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));

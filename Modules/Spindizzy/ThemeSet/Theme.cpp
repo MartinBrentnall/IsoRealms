@@ -59,7 +59,7 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void Theme::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Theme::save(JSONObject object) const {
     JSONArray mTexturesArray = object.addArray(JSON_TEXTURES);
     for (const std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
       JSONObject mTextureObject = mTexturesArray.addObject();

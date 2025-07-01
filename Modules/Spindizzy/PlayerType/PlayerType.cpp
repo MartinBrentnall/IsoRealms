@@ -106,7 +106,7 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "", "Spindizzy Players");
   }
 
-  void PlayerType::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void PlayerType::save(JSONObject object) const {
     object.addFloat(JSON_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
     object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
     object.addFloat(JSON_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
@@ -135,7 +135,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> PlayerType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> PlayerType::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 
     // Dimensions

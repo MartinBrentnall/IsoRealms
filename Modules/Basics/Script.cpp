@@ -104,8 +104,8 @@ namespace IsoRealms::Basics {
     cDefAction->execute();
   }
   
-  void Script::ScriptAction::save(JSONObject object, IAssetIdentifier& identifier) const {
-    cDefFunction.save(object, identifier, true);
+  void Script::ScriptAction::save(JSONObject object) const {
+    cDefFunction.save(object, true);
   }
   
   bool Script::ScriptAction::hasConfiguration() const {

@@ -31,10 +31,10 @@ namespace IsoRealms::Spindizzy {
     public:
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
     bool renderIcon();
     void hintInUse(bool inUse);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void registerAssets(IAssetRegistry& assets);
     
     ThemeTexture* createTexture(const std::string& type);

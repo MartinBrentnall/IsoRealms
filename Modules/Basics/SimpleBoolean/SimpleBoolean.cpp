@@ -48,7 +48,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Booleans");
   }
 
-  void SimpleBoolean::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void SimpleBoolean::save(JSONObject object) const {
     object.addBoolean(JSON_VALUE, cDefValue);
   }
 
@@ -60,9 +60,9 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Value", "TODO", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Value", "TODO", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, owner.getProject()));
     return mProperties;
   }
 

@@ -120,10 +120,10 @@ namespace IsoRealms::Replay {
     Player(IProject& project, Replay& replay, IResourceData& data);
     Player(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
     
     /*********************\
     * Implements IScreen *

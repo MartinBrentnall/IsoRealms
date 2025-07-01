@@ -41,11 +41,11 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Call Function");
   }
     
-  void Function::save(JSONObject object, IAssetIdentifier& identifier, bool script) const {
+  void Function::save(JSONObject object, bool script) const {
     JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
     for (const std::unique_ptr<Binding>& mBinding : cDefBindings) {
       JSONObject mBindingObject = mBindingsArray.addObject();
-      mBinding->save(mBindingObject, JSON_VARIABLE, identifier, JSON_TO); // TODO: JSON_TO is handled elsewhere!
+      mBinding->save(mBindingObject, JSON_VARIABLE, JSON_TO); // TODO: JSON_TO is handled elsewhere!
     }
 
     if (!script) {
@@ -66,7 +66,7 @@ namespace IsoRealms::Basics {
     return renderAssetIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Function::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Function::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyStruct>("Bindings", "TODO", "Edit...", [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
@@ -320,7 +320,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void Function::Call::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Function::Call::save(JSONObject object) const {
     JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
     for (unsigned int i = 0; i < cDefArguments.size(); i++) {
       JSONObject mBindingObject =  mBindingsArray.addObject();

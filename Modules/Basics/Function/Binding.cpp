@@ -89,7 +89,7 @@ namespace IsoRealms::Basics {
     return mFunction;
   }
 
-  void Binding::save(JSONObject object, const std::string& attributeName, IAssetIdentifier& identifier, const std::string& attributeValueName) const {
+  void Binding::save(JSONObject object, const std::string& attributeName, const std::string& attributeValueName) const {
     object.addString(attributeName, cDefName);
     cDefValue.save(object, attributeValueName);
   }

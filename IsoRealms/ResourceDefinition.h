@@ -25,7 +25,6 @@
 #include "Assets/Type/IScreenListener.h"
 #include "Editing/Property/IProperty.h"
 #include "Exception/ResourceInitException.h"
-#include "IAssetIdentifier.h"
 #include "IAssetRegistry.h"
 #include "IAssetRemover.h"
 #include "IAssets.h"

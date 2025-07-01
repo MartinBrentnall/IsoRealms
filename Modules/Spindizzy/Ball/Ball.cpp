@@ -48,7 +48,7 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Ball Craft Textures");
   }
   
-  void Ball::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Ball::save(JSONObject object) const {
     cDefFill.save(object, JSON_FILL);
     cDefOutline.save(object, JSON_OUTLINE);
     cDefShine.save(object, JSON_SHINE);
@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
     return cTexture.renderAssetIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Fill Colour",    "TODO", cDefFill));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Shine Colour",   "TODO", cDefShine));

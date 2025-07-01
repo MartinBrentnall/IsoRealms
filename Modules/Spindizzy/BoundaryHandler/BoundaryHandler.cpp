@@ -53,7 +53,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void BoundaryHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void BoundaryHandler::save(JSONObject object) const {
     cDefBoundaryType.save(object, JSON_BOUNDARY);
     cDefObjectType.save(object, JSON_OBJECT);
     cSpindizzy.setBindingIdentifier(this);
@@ -70,7 +70,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> BoundaryHandler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> BoundaryHandler::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type", "TODO", cDefObjectType));
     mProperties.emplace_back(std::make_unique<PropertyAsset<BoundaryType>>("Boundary Type", "TODO", cDefBoundaryType));

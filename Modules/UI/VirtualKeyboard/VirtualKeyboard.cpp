@@ -65,7 +65,7 @@ namespace IsoRealms::UI {
     assets.add(&cLuaBinding, "", "System");
   }
   
-  void VirtualKeyboard::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void VirtualKeyboard::save(JSONObject object) const {
     cDefSelectionColour.save(object, JSON_SELECTION_COLOUR);
     cDefFont.save(object, JSON_FONT);
     cDefConfirmAction.save(object, JSON_ON_CONFIRM);
@@ -79,7 +79,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

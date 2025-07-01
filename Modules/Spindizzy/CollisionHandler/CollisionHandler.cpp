@@ -50,7 +50,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void CollisionHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void CollisionHandler::save(JSONObject object) const {
     cDefPhysicalObjectTypeA.save(object, JSON_OBJECT_A);
     cDefPhysicalObjectTypeB.save(object, JSON_OBJECT_B);
     cDefEnteredAction.save(object, JSON_ON_COLLISION);
@@ -65,7 +65,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type A", "TODO", cDefPhysicalObjectTypeA));
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type B", "TODO", cDefPhysicalObjectTypeB));

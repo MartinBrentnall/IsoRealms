@@ -37,8 +37,8 @@ namespace IsoRealms::Spindizzy {
     public:
     C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+    void save(JSONObject object) const;
     bool renderIcon();
     void hintInUse(bool inUse);
     void registerAssets(IAssetRegistry& assets);

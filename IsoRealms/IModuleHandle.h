@@ -29,18 +29,14 @@ namespace IsoRealms {
   class IModule;
   class IProject;
   class IProperty;
-  class IAssetIdentifier;
   class IResourceTypeRegistry;
   class LuaState;
   class ModuleOptions;
 
   class IModuleHandle {
     public:
-    /**
-    * Save the configuration and resources of the module.
-    */
     virtual void load(IProject& project, JSONObject object) = 0;
-    virtual void save(JSONObject object, IAssetIdentifier& identifier) = 0;
+    virtual void save(JSONObject object) = 0;
     virtual void registerAssets(IAssetRegistry& assets) = 0;
     virtual std::vector<std::unique_ptr<IProperty>> getProperties() = 0;
 

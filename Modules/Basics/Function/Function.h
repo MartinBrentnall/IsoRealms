@@ -50,10 +50,10 @@ namespace IsoRealms::Basics {
     Function(IProject& project, Basics& basics, IResourceData& data);
     Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void save(JSONObject object, IAssetIdentifier& identifier, bool script = false) const;
+    void save(JSONObject object, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     // Constructors for use by scripts (in-line functions).
     Function(IProject& project, const std::string& name, IResourceData& data);
@@ -102,7 +102,7 @@ namespace IsoRealms::Basics {
        * Implements IAction *
       \**********************/
       void execute() override;
-      void save(JSONObject object, IAssetIdentifier& identifier) const override;
+      void save(JSONObject object) const override;
       bool hasConfiguration() const override;
       std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
       bool isDefaultConfiguration() const override;

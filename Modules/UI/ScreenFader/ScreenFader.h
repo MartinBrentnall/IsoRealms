@@ -18,65 +18,59 @@
  */
 #pragma once
 
+#include <vector>
+
+#include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
 
-namespace IsoRealms::Basics {
-  class Basics;
+namespace IsoRealms::UI {
+  class UI;
 
   /**
-   * Resource definition for a simple Boolean variable.
+   * Resource definition for a switchable input handler.
    */
-  class SimpleBoolean final : public IBoolean {
+  class ScreenFader final : public IScreen {
     public:
 
     /**********************\
      * Resource Interface *
     \**********************/
-    SimpleBoolean(IProject& project, Basics& basics, IResourceData& data);
-    SimpleBoolean(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    ScreenFader(IProject& project, UI& ui, IResourceData& data);
+    ScreenFader(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
-    /***********************\
-     * Implements IBoolean *
-    \***********************/
-    bool getValue() const override;
+    /**********************\
+     * Implements IScreen *
+    \**********************/
+    void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
     bool isDefaultConfiguration() const override;
-
-    /***********************\
-     * Scripting Interface *
-    \***********************/
-    void setValue(bool value);
-
+    
     private:
 
     // JSON members.
-    static const std::string JSON_VALUE;
-
-    // Property names.
-    static const std::string PROPERTY_VALUE;
+    static const std::string JSON_SCREEN_A;
+    static const std::string JSON_SCREEN_B;
+    static const std::string JSON_TRANSITION;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
+    IProject& cProject;
 
     // Definition data.
-    bool cDefValue;     /// Initial value.
-
+    Screen cDefScreenA;
+    Screen cDefScreenB;
+    Float cDefTransition;
+    
     // Runtime data.
-    bool cRuntimeValue; /// Current value.
-
-    // Scripting Interface.
-    LuaBinding<SimpleBoolean> cLuaBinding;
-
-    // Misc.
-    IStateNotifier<IBoolean>* cStateNotifier;
+    LiteralTexture cRuntimeScreenA;
+    LiteralTexture cRuntimeScreenB;
   };
 }

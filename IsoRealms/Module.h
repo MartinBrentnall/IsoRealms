@@ -54,7 +54,7 @@ namespace IsoRealms {
     void loadResources(JSONObject object, IOptions& options, File* ownerProject);
     void registerAssets();
     bool needsSaving(File* savingProject) const;
-    void save(JSONObject object, IAssetIdentifier& identifier, File* savingProject) const;
+    void save(JSONObject object, File* savingProject) const;
     std::vector<std::unique_ptr<IProperty>> getProperties();
 
     /************************************\

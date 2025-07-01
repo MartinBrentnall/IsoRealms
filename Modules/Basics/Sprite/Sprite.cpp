@@ -43,7 +43,7 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Sprite Models");
   }
 
-  void Sprite::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Sprite::save(JSONObject object) const {
     cDefTexture.save(object, JSON_TEXTURE);
     object.addBoolean(JSON_BILLBOARD_YAW, cDefBillboardYaw);
     object.addBoolean(JSON_BILLBOARD_PITCH, cDefBillboardPitch);
@@ -76,11 +76,11 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Appearance",      "TODO", cDefTexture));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Yaw",   "TODO", [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, browser.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Pitch", "TODO", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}, browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Yaw",   "TODO", [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, owner.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( "Billboard Pitch", "TODO", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}, owner.getProject()));
     return mProperties;
   }
 

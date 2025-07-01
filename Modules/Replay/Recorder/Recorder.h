@@ -66,10 +66,10 @@ namespace IsoRealms::Replay {
     Recorder(IProject& project, Replay& replay, IResourceData& data);
     Recorder(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     void writeInput(unsigned int id, bool state);
     void writeInput(unsigned int id, float state);

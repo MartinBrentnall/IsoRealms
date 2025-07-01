@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Debris Chunks");
   }
 
-  void DebrisChunk::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void DebrisChunk::save(JSONObject object) const {
     cDefOutline.save(object, JSON_OUTLINE);
     object.addFloat(JSON_OUTLINE_WIDTH, cDefOutlineWidth, DEFAULT_OUTLINE_WIDTH);
     cDefSide[0].save(object, JSON_SIDE_1);
@@ -85,7 +85,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 1 Colour",  "TODO", cDefSide[0]));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side 2 Colour",  "TODO", cDefSide[1]));

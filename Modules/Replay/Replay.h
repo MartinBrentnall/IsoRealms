@@ -45,7 +45,7 @@ namespace IsoRealms::Replay {
      * Implements IModuleHandle *
     \****************************/
     void load(IProject& project, JSONObject object) override;
-    void save(JSONObject object, IAssetIdentifier& identifier) override;
+    void save(JSONObject object) override;
     void registerAssets(IAssetRegistry& assets) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
   };

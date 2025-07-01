@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Gyroscope Models");
   }
     
-  void Gyroscope::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Gyroscope::save(JSONObject object) const {
     cDefQuadrant[0].save(object, JSON_COLOUR_1);
     cDefQuadrant[1].save(object, JSON_COLOUR_2);
     cDefQuadrant[2].save(object, JSON_COLOUR_3);
@@ -82,7 +82,7 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 1 Colour", "TODO", cDefQuadrant[0]));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 2 Colour", "TODO", cDefQuadrant[1]));

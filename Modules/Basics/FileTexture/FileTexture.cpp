@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Stored Textures");
   }
   
-  void FileTexture::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void FileTexture::save(JSONObject object) const {
     cDefFile.save(JSON_FILENAME, object);
   }
 
@@ -55,7 +55,7 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileTexture::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> FileTexture::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cDefFile));
     return mProperties;

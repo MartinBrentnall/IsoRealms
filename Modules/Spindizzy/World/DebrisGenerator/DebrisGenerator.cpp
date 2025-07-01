@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void DebrisGenerator::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void DebrisGenerator::save(JSONObject object) const {
     object.addString(JSON_ID, cDefID);
     object.addInteger(JSON_LIFE, cDefLifeTime, DEFAULT_LIFE);
     object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);

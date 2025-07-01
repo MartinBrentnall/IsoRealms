@@ -68,7 +68,7 @@ namespace IsoRealms::Spindizzy {
     cDefCamera->registerAssets(mLocalRegistry);
   }
 
-  void WorldView::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void WorldView::save(JSONObject object) const {
     object.addString(JSON_WORLD, cSpindizzy.getID(cDefWorld));
     object.addFloat(JSON_ZOOM, cDefZoom, 1.0f);
     cDefCamera.save(object, JSON_CAMERA);
@@ -83,7 +83,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> WorldView::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> WorldView::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          "TODO", cDefWorld)); // TODO:
     mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      "Camera",         "TODO", cDefCamera));

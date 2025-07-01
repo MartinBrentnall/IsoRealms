@@ -144,7 +144,7 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Fonts");
   }
   
-  void FileFont::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void FileFont::save(JSONObject object) const {
     cDefFilename.save(JSON_FILENAME, object);
     object.addInteger(JSON_DETAIL, cDefDetail, DEFAULT_DETAIL);
     object.addFloat(JSON_LINE_SPACING, cDefLineSpacing, DEFAULT_LINE_SPACING);
@@ -161,7 +161,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  "File",         "TODO", cDefFilename));
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Detail",       "TODO", [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;}));

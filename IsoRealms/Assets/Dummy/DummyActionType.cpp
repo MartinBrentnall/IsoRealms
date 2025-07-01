@@ -63,7 +63,7 @@ namespace IsoRealms {
     // Do nothing.
   }
   
-  void DummyActionType::Action::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void DummyActionType::Action::save(JSONObject object) const {
     // Nothing to do.
   }
 

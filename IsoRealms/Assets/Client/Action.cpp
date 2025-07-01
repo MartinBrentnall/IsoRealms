@@ -51,7 +51,7 @@ namespace IsoRealms {
   }
 
   std::string Action::getID() const {
-    return cAction->getID(cProject);
+    return cAction->getID();
   }
 
   std::vector<std::string> Action::getAvailableProviders() const {
@@ -76,7 +76,7 @@ namespace IsoRealms {
 
   void Action::save(JSONObject object, const std::string& name) const {
     JSONObject mAssetObject = object.addObject(name);
-    cAction->save(mAssetObject, cProject);
+    cAction->save(mAssetObject);
   }
 
   std::vector<std::unique_ptr<IProperty>> Action::getAssetProperties() {

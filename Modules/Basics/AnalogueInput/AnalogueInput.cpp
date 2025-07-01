@@ -49,7 +49,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueInput::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void AnalogueInput::save(JSONObject object) const {
     JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
       JSONObject mMappingObject = mMappingsArray.addObject();
@@ -65,7 +65,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

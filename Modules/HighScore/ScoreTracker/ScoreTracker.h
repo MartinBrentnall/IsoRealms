@@ -40,9 +40,9 @@ namespace IsoRealms::HighScore {
     \**********************/
     ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data);
     ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
     void registerAssets(IAssetRegistry& assets);  
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
       

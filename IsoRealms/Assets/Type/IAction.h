@@ -21,15 +21,14 @@
 #include <memory>
 #include <vector>
 
-#include "IsoRealms/IAssetIdentifier.h"
-
 namespace IsoRealms {
+  class JSONObject;
   class IProperty;
 
   class IAction {
     public:
     virtual void execute() = 0;
-    virtual void save(JSONObject object, IAssetIdentifier& identifier) const = 0;
+    virtual void save(JSONObject object) const = 0;
     virtual bool hasConfiguration() const = 0;
     virtual std::vector<std::unique_ptr<IProperty>> getAssetProperties() = 0;
     virtual bool isDefaultConfiguration() const = 0;

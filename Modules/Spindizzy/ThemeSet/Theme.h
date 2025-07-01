@@ -37,7 +37,7 @@ namespace IsoRealms::Spindizzy {
     Theme(IProject& project, ThemeSet& themeSet);
     Theme(IProject& project, ThemeSet& themeSet, JSONObject object);
 
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     std::vector<std::unique_ptr<IProperty>> getProperties();
     void themeTextureAdded(ThemeTexture* texture);
     void themeColourAdded(ThemeColour* colour);

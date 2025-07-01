@@ -97,7 +97,7 @@ namespace IsoRealms {
         registerAssets();
         return true;
       }));
-      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(*this, browser, cAssetRegistry);
+      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(*this);
       mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mResourceProperties)), std::make_move_iterator(std::end(mResourceProperties)));
       return mProperties;
     }
@@ -121,8 +121,8 @@ namespace IsoRealms {
       cResourceHandle.hintInUse(inUse);
     }
 
-    void save(JSONObject object, IAssetIdentifier& identifier) override {
-      cResourceHandle.save(object, identifier);
+    void save(JSONObject object) override {
+      cResourceHandle.save(object);
     }
 
     bool isResource(const RESOURCE* resource) const {

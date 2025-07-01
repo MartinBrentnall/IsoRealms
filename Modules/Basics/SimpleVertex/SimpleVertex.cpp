@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Vertices");
   }
 
-  void SimpleVertex::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void SimpleVertex::save(JSONObject object) const {
     object.addFloat(JSON_X, cDefX);
     object.addFloat(JSON_Y, cDefY);
     object.addFloat(JSON_Z, cDefZ);
@@ -74,7 +74,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("X", "TODO", [this]() {return cDefX;}, [this](float value) {cDefX = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Y", "TODO", [this]() {return cDefY;}, [this](float value) {cDefY = value; return true;}));

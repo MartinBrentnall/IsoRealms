@@ -158,7 +158,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void World::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void World::save(JSONObject object) const {
     object.addFloat(JSON_SLOPE_FORCE, cDefSurfaceAccelerationFactor);
     object.addFloat(JSON_GRAVITY, cDefGravity);
     object.addInteger(JSON_BOUNCE_CONTROL, cDefBounceTime, DEFAULT_BOUNCE_CONTROL);
@@ -170,7 +170,7 @@ namespace IsoRealms::Spindizzy {
 
     for (const std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
       JSONObject mDebrisGeneratorObject = mDebrisGeneratorsArray.addObject();
-      mDebrisGenerator->save(mDebrisGeneratorObject, identifier);
+      mDebrisGenerator->save(mDebrisGeneratorObject);
     }
     for (const std::unique_ptr<Player>& mPlayer : cDefPlayers) {
       JSONObject mPlayerObject = mPlayersArray.addObject();
@@ -191,7 +191,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> World::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> World::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Gravity",             "TODO", [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Slope Effect",        "TODO", [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));

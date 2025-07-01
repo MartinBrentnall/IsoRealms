@@ -33,7 +33,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  void Replay::save(JSONObject object, IAssetIdentifier& identifier) {
+  void Replay::save(JSONObject object) {
     // Nothing to do.
   }
 

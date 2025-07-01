@@ -35,7 +35,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
-  void ZoneType::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void ZoneType::save(JSONObject object) const {
     // Nothing to do.
   }
 
@@ -58,7 +58,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ZoneType::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -56,13 +56,13 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Layout::save(JSONObject object) const {
     JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
     for (LayoutComponent* mComponent : cComponentsByOrder) {
       JSONObject mComponentObject = mComponentsArray.addObject();
       std::string mComponentName = getName(mComponent);
       mComponentObject.addString(JSON_ID, mComponentName);
-      mComponent->save(mComponentObject, identifier);
+      mComponent->save(mComponentObject);
     }
   }
 
@@ -74,7 +74,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyEditor>("Content", "TODO", this));
     return mProperties;

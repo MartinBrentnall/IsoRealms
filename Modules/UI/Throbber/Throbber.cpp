@@ -72,7 +72,7 @@ namespace IsoRealms::UI {
     assets.add(this, "", "Throbbers");
   }
 
-  void Throbber::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Throbber::save(JSONObject object) const {
     object.addInteger(JSON_DURATION,      cDefDuration,     DEFAULT_DURATION);
     object.addInteger(JSON_REPETITIONS,   cDefRepetitions,  DEFAULT_REPETITIONS);
     object.addInteger(JSON_SPOTS,         cDefSpots,        DEFAULT_SPOTS);
@@ -91,7 +91,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Animation Duration (ms)",    "TODO", [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spots",                      "TODO", [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;}));

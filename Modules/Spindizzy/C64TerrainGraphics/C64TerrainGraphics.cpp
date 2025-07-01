@@ -123,7 +123,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Floor Colour",     "TODO", cDefFloor));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Wall Colour",      "TODO", cDefWall));
@@ -449,7 +449,7 @@ namespace IsoRealms::Spindizzy {
 
   // TODO: Redraw on Float relinquish
 
-  void C64TerrainGraphics::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void C64TerrainGraphics::save(JSONObject object) const {
     cDefFloor.save(object, JSON_FLOOR);
     cDefWall.save(object, JSON_WALL);
     cDefGrid.save(object, JSON_GRID);

@@ -23,7 +23,6 @@
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/Types.h"
@@ -39,7 +38,7 @@ namespace IsoRealms::Spindizzy {
     void registerAssets(IAssetRegistry& assets);
     void updateRuntime(unsigned int milliseconds);
     void renderRuntime();
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void reset();
     
     float getStepReach() const;

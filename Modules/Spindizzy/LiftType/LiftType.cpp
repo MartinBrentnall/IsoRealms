@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
     
-  void LiftType::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void LiftType::save(JSONObject object) const {
     cDefModel.save(object, JSON_APPEARANCE);
     cDefActive.save(object, JSON_STATE);
     cDefTickAction.save(object, JSON_ON_TICK);
@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiftType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> LiftType::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(  "Appearance",  "TODO", cDefModel));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("State",       "TODO", cDefActive));

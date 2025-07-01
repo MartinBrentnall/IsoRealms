@@ -443,7 +443,7 @@ namespace IsoRealms {
       for (const std::unique_ptr<Module>& mModule : cModules) {
         if (mModule->needsSaving(&file.cFile)) {
           JSONObject mModuleObject = mModulesArray.addObject();
-          mModule->save(mModuleObject, *this, &file.cFile);
+          mModule->save(mModuleObject, &file.cFile);
         }
       }
 
@@ -1182,7 +1182,7 @@ namespace IsoRealms {
             cParent(parent) {
   }
 
-  void Project::QuitActionType::QuitAction::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Project::QuitActionType::QuitAction::save(JSONObject object) const {
     // Nothing to do.
   }
 

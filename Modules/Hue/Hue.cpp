@@ -28,7 +28,7 @@ namespace IsoRealms::Hue {
     // Nothing to do.
   }
 
-  void Hue::save(JSONObject object, IAssetIdentifier& identifier) {
+  void Hue::save(JSONObject object) {
     // Nothing to do.
   }
   

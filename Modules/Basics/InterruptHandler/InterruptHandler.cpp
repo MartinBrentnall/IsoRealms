@@ -36,7 +36,7 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Interrupt Handlers");
   }
   
-  void InterruptHandler::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void InterruptHandler::save(JSONObject object) const {
     cDefAction.save(object, JSON_ON_INPUT);
     object.addBoolean(JSON_CONSUME, cDefConsume, true);
   }
@@ -49,7 +49,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

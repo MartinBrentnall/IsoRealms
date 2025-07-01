@@ -82,7 +82,7 @@ namespace IsoRealms::UI {
     }
   }
   
-  void Menu::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Menu::save(JSONObject object) const {
     cDefColour.save(object, JSON_COLOUR);
     cDefFont.save(object, JSON_FONT);
     cDefExitAction.save(object, JSON_ON_EXIT);
@@ -103,7 +103,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Colour", "TODO", cDefColour));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>("Font", "TODO", cDefFont));

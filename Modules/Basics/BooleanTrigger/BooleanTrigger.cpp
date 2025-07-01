@@ -46,7 +46,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
-  void BooleanTrigger::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void BooleanTrigger::save(JSONObject object) const {
     cDefValue.save(object, JSON_VALUE);
     cDefTrueAction.save(object, JSON_ON_BECOMING_TRUE);
     cDefFalseAction.save(object, JSON_ON_BECOMING_FALSE);
@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("Monitored Value", "Boolean to monitor for value changes.", cDefValue));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on True",   "Action to execute when the monitored boolean changes value from FALSE to TRUE", cDefTrueAction));

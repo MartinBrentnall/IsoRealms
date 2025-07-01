@@ -116,7 +116,7 @@ namespace IsoRealms::UI {
     glPopMatrix();
   }
 
-  void LayoutComponent::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void LayoutComponent::save(JSONObject object) const {
     cDefScreen.save(object, JSON_SCREEN);
     cDefTopEdge.save(object, JSON_TOP, &cLayout, 1.0f);
     cDefBottomEdge.save(object, JSON_BOTTOM, &cLayout, -1.0f);

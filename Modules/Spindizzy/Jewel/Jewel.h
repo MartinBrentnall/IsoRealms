@@ -40,10 +40,10 @@ namespace IsoRealms::Spindizzy {
     Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);  
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     /*********************\
      * Implements IModel *
@@ -61,10 +61,10 @@ namespace IsoRealms::Spindizzy {
       CycleColour(Jewel& parent, IResourceData& owner);
       CycleColour(Jewel& parent, IResourceData& owner, JSONObject object);
 
-      void save(JSONObject object, IAssetIdentifier& identifier) const;
+      void save(JSONObject object) const;
       const Colour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
-      void getProperties(IAssetBrowser& browser, const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties);
+      void getProperties(const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties);
       
       private:
       

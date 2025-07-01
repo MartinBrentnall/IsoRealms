@@ -73,7 +73,7 @@ namespace IsoRealms::Spindizzy {
     assets.add(&cLuaBinding, "", "Spindizzy Aliens");
   }
     
-  void AlienType::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void AlienType::save(JSONObject object) const {
     cDefModel.save(object, JSON_APPEARANCE);
     cDefTarget.save(object, JSON_TARGET);
     object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
@@ -93,7 +93,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance",            "TODO", cDefModel));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>("Target",               "TODO", cDefTarget));

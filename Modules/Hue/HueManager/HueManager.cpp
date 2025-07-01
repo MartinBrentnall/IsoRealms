@@ -179,7 +179,7 @@ namespace IsoRealms::Hue {
     // Nothing to do.
   }
 
-  void HueManager::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void HueManager::save(JSONObject object) const {
     object.addString(JSON_BRIDGE, cDefBridgeAddress);
     object.addString(JSON_PSK,    cDefBridgePSK);
     object.addString(JSON_USER,   cDefBridgeUser);
@@ -198,7 +198,7 @@ namespace IsoRealms::Hue {
     return false;
   }
   
-  std::vector<std::unique_ptr<IProperty>> HueManager::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> HueManager::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>("Address", "TODO", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>("User",    "TODO", [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
@@ -208,7 +208,7 @@ namespace IsoRealms::Hue {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Bulb", "TODO", "Add...", [this, &browser]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>("Bulb", "TODO", "Add...", [this]() {
       cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cResourceData, cDefBulbs.size()));
       std::unique_ptr<Bulb>& mBulb  = cDefBulbs.back();
       return std::make_unique<PropertyAsset<Colour>>("Bulb", "TODO", mBulb->getColour(), [this, &mBulb]() {

@@ -109,13 +109,13 @@ namespace IsoRealms {
     return false;
   }
 
-  void Module::save(JSONObject object, IAssetIdentifier& identifier, File* savingProject) const {
+  void Module::save(JSONObject object, File* savingProject) const {
     object.addString(JSON_NAME, cName);
 
     // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
     if (cOwnerProject == savingProject) {
       JSONObject mConfigurationObject = object.addObject(JSON_CONFIGURATION);
-      cModule->save(mConfigurationObject, identifier);
+      cModule->save(mConfigurationObject);
     }
 
     JSONArray mResourceTypesArray = object.addArray(JSON_RESOURCES);
@@ -124,7 +124,7 @@ namespace IsoRealms {
         JSONObject mResourceTypeObject = mResourceTypesArray.addObject();
         mResourceTypeObject.addString(JSON_TYPE, mResourceType.first);
         JSONArray mResourceArray = mResourceTypeObject.addArray(JSON_INSTANCES);
-        mResourceType.second->save(mResourceArray, identifier, mResourceType.first, savingProject);
+        mResourceType.second->save(mResourceArray, mResourceType.first, savingProject);
       }
     }
   }

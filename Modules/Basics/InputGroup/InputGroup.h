@@ -41,10 +41,10 @@ namespace IsoRealms::Basics {
     InputGroup(IProject& project, Basics& basics, IResourceData& data);
     InputGroup(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void save(JSONObject object, IAssetIdentifier& identifier) const;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     /****************************\
      * Implements IInputHandler *

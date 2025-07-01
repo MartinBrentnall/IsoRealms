@@ -58,7 +58,7 @@ namespace IsoRealms::Spindizzy {
     assets.add(this, "", "Spindizzy Top Models");
   }
     
-  void Top::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Top::save(JSONObject object) const {
     cDefColourTop.save(object, JSON_TOP);
     cDefColourSide.save(object, JSON_SIDES);
     cDefColourOutline.save(object, JSON_OUTLINE);
@@ -77,7 +77,7 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Top Colour",     "TODO", cDefColourTop));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Side Colour",    "TODO", cDefColourSide));

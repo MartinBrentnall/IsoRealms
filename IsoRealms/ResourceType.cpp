@@ -73,12 +73,12 @@ namespace IsoRealms {
     return false;
   }
 
-  void ResourceType::save(JSONArray& array, IAssetIdentifier& identifier, const std::string& tag, File* savingProject) {
+  void ResourceType::save(JSONArray& array, const std::string& tag, File* savingProject) {
     for (IResource* mResource : cResources) {
       if (mResource->needsSaving(savingProject)) {
         JSONObject mResourceObject = array.addObject();
         mResourceObject.addString(JSON_ID, mResource->getName());
-        mResource->save(mResourceObject, identifier);
+        mResource->save(mResourceObject);
       }
     }
   }

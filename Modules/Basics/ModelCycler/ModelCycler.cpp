@@ -55,7 +55,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Cycleable Models");
   }
   
-  void ModelCycler::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void ModelCycler::save(JSONObject object) const {
     JSONArray mModelArray = object.addArray(JSON_MODELS);
     for (const std::unique_ptr<Model>& mModel : cDefModels) {
       JSONObject mModelObject = mModelArray.addObject();
@@ -72,7 +72,7 @@ namespace IsoRealms::Basics {
     return cDefModels[mIndex]->renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> ModelCycler::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ModelCycler::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     unsigned int mModelCount = 1;
     for (const std::unique_ptr<Model>& mModel : cDefModels) {

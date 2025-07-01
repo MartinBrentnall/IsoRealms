@@ -55,7 +55,7 @@ namespace IsoRealms::Basics {
        * Implements IAction *
       \**********************/
       void execute() override;
-      void save(JSONObject object, IAssetIdentifier& identifier) const override;
+      void save(JSONObject object) const override;
       bool hasConfiguration() const override;
       std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
       bool isDefaultConfiguration() const override;

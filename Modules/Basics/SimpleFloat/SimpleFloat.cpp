@@ -48,7 +48,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Floats");
   }
   
-  void SimpleFloat::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void SimpleFloat::save(JSONObject object) const {
     object.addFloat(JSON_VALUE, cDefValue);
   }
 
@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Value", "TODO", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
     return mProperties;

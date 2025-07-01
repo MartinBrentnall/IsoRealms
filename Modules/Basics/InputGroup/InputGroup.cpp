@@ -38,7 +38,7 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Input Groups");
   }
 
-  void InputGroup::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void InputGroup::save(JSONObject object) const {
     JSONArray mInputsArray = object.addArray(JSON_INPUTS);
     for (const std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
       JSONObject mInputObject = mInputsArray.addObject();
@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     unsigned int i = 1;
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {

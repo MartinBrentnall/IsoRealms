@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Play Sound");
   }
   
-  void FileSound::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void FileSound::save(JSONObject object) const {
     cDefFile.save(JSON_FILENAME, object);
   }
 
@@ -52,7 +52,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cDefFile));
     return mProperties;

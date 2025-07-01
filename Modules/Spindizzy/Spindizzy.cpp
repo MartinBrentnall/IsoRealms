@@ -485,7 +485,7 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void Spindizzy::save(JSONObject object, IAssetIdentifier& identifier) {
+  void Spindizzy::save(JSONObject object) {
     object.addInteger(JSON_AUTOMATIC_ZONE_X_SIZE,     cAutomaticZoneXSize, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
     object.addInteger(JSON_AUTOMATIC_ZONE_Y_SIZE,     cAutomaticZoneYSize, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
     object.addInteger(JSON_AUTOMATIC_ZONE_Z_SIZE,     cAutomaticZoneZSize, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);

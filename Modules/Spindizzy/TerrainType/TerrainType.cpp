@@ -131,14 +131,14 @@ namespace IsoRealms::Spindizzy {
   
   
   
-  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Friction",      "TODO", [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Grip",          "TODO", [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Surface Bounce",        "TODO", [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Wall Bounce",           "TODO", [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Allow Respawn",         "TODO", [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              browser.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Solid",                 "TODO", [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              browser.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Allow Respawn",         "TODO", [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              owner.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        "Solid",                 "TODO", [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              owner.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Touch",       "TODO", cDefContactAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "Action on Impact",      "TODO", cDefImpactAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>("Surface Appearance",    "TODO", cDefSurfacePattern));
@@ -217,7 +217,7 @@ namespace IsoRealms::Spindizzy {
     return cDefSolid;
   }
 
-  void TerrainType::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void TerrainType::save(JSONObject object) const {
     object.addBoolean(JSON_SOLID, cDefSolid);
     object.addFloat(JSON_FRICTION, cDefSurfaceFriction);
     object.addFloat(JSON_GRIP, cDefSurfaceGrip);

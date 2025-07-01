@@ -127,7 +127,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  void UI::save(JSONObject object, IAssetIdentifier& identifier) {
+  void UI::save(JSONObject object) {
     // Nothing to do.
   }
 

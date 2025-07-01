@@ -27,7 +27,6 @@ namespace IsoRealms {
   class JSONObject;
   class IEditingContext;
   class IAssetBrowser;
-  class IAssetIdentifier;
   class IAssetRemover;
   class IAssets;
   class IFont;
@@ -38,7 +37,7 @@ namespace IsoRealms {
     virtual std::string getName() = 0;
     virtual bool renderIcon() = 0;
     virtual void hintInUse(bool inUse) = 0;
-    virtual void save(JSONObject object, IAssetIdentifier& identifier) = 0;
+    virtual void save(JSONObject object) = 0;
     virtual void registerAssets() = 0;
     virtual void unregisterAssets(IAssetRemover& assets, IAssets& releaser) = 0;
     virtual std::string getResourceDataPath() const = 0;    

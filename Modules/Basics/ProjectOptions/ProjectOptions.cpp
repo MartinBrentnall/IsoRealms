@@ -37,7 +37,7 @@ namespace IsoRealms::Basics {
     assets.add(this, "", "Project Options");
   }
   
-  void ProjectOptions::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void ProjectOptions::save(JSONObject object) const {
     JSONArray mOptionsArray = object.addArray(JSON_OPTIONS);
     for (const std::pair<const std::string, String>& mOption : cDefOptions) {
       JSONObject mOptionObject = mOptionsArray.addObject();
@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

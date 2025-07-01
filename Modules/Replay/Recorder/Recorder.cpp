@@ -147,7 +147,7 @@ namespace IsoRealms::Replay {
     assets.add(cProject.get(), "Project", "Gameplay Recorders");
   }
   
-  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -177,7 +177,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  void Recorder::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void Recorder::save(JSONObject object) const {
     cQuitAction.save(object, JSON_ON_FINISH);
   }
 }

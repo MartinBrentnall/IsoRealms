@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Input Switches");
   }
   
-  void InputSwitch::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void InputSwitch::save(JSONObject object) const {
     cDefInputHandler.save(object, JSON_VALUE);
   }
 
@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Initial Value", "TODO", cDefInputHandler));
     return mProperties;

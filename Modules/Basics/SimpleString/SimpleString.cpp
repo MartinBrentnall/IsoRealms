@@ -48,7 +48,7 @@ namespace IsoRealms::Basics {
     assets.add(&cLuaBinding, "", "Simple Strings");
   }
   
-  void SimpleString::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void SimpleString::save(JSONObject object) const {
     object.addString(JSON_VALUE, cDefValue);
   }
 
@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleString::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> SimpleString::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>("Initial Value", "TODO", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value; return true;}));
     return mProperties;

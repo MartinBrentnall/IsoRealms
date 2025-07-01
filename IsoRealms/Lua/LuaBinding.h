@@ -21,7 +21,6 @@
 #include <sol.hpp>
 
 #include "IsoRealms/Editing.h"
-#include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
 #include "IsoRealms/Assets/Type/IBinding.h"

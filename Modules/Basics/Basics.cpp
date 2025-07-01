@@ -129,7 +129,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void Basics::save(JSONObject object, IAssetIdentifier& identifier) {
+  void Basics::save(JSONObject object) {
     // Nothing to do.
   }
 

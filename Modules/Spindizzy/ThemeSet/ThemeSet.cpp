@@ -70,7 +70,7 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  std::vector<std::unique_ptr<IProperty>> ThemeSet::getProperties(IResourceData& owner, IAssetBrowser& browser, IAssetRegistry& assets) {
+  std::vector<std::unique_ptr<IProperty>> ThemeSet::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     
     // Texture elements of each theme in this set.
@@ -125,12 +125,12 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void ThemeSet::save(JSONObject object, IAssetIdentifier& identifier) const {
+  void ThemeSet::save(JSONObject object) const {
     JSONArray mThemesArray = object.addArray(JSON_THEMES);
     for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
       JSONObject mThemeObject = mThemesArray.addObject();
       mThemeObject.addString(JSON_ID, mTheme.first);
-      mTheme.second->save(mThemeObject, identifier);
+      mTheme.second->save(mThemeObject);
     }
   }
 
