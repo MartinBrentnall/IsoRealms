@@ -188,7 +188,7 @@ namespace IsoRealms::Spindizzy {
   }
     
   std::unique_ptr<LiteralTexture> C64TerrainGraphics::createTexture(bool clamp) {
-    std::unique_ptr<LiteralTexture> mTexture = std::make_unique<LiteralTexture>(cProject, false, clamp);
+    std::unique_ptr<LiteralTexture> mTexture = std::make_unique<LiteralTexture>(cProject, 128, 128, false, clamp);
     mTexture->addUseListener(this);
     return mTexture;
   }
@@ -535,7 +535,7 @@ namespace IsoRealms::Spindizzy {
     
   void C64TerrainGraphics::OrientedTexture::addOrientation(const IFloat* angle, IProject& project, bool clamp) {
     if (cTextures.find(angle) == cTextures.end()) {
-      cTextures[angle] = std::make_unique<LiteralTexture>(project, false, clamp);
+      cTextures[angle] = std::make_unique<LiteralTexture>(project, 128, 128, false, clamp);
       if (angle == nullptr) {
         cCurrentTexture = cTextures[angle].get();
       }

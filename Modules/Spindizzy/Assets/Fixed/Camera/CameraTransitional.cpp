@@ -30,6 +30,7 @@ namespace IsoRealms::Spindizzy {
             cParent(view),
             cYaw(*this),
             cPitch(*this),
+            cTransition(*this),
             cDefStart(cParent.getSpindizzy(), view),
             cDefEnd(cParent.getSpindizzy(), view),
             cDefDuration(DEFAULT_DURATION),
@@ -93,6 +94,7 @@ namespace IsoRealms::Spindizzy {
   void CameraTransitional::registerAssets(IAssetRegistry& assets) {
     cRuntimeYawStateNotifier = assets.add(&cYaw, "Yaw", "Cameras");
     assets.add(&cPitch, "Pitch", "Cameras");
+    assets.add(&cTransition, "Transition", "Cameras");
     assets.add(&cLuaBinding, "", "Cameras");
     LocalAssetRegistry mStartRegistry(assets, "Start");
     cDefStart->registerAssets(mStartRegistry);
@@ -232,6 +234,30 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool CameraTransitional::Pitch::isDefaultConfiguration() const {
+    return true; // TODO?
+  }
+
+  CameraTransitional::Transition::Transition(CameraTransitional& parent) :
+            cParent(parent) {
+  }
+
+  float CameraTransitional::Transition::getValue() const {
+    return cParent.cRuntimeAnimation / static_cast<float>(cParent.cDefDuration);
+  }
+
+  bool CameraTransitional::Transition::renderAssetIcon() const {
+    return false;
+  }
+
+  void CameraTransitional::Transition::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Transition::getAssetProperties() {
+    return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  bool CameraTransitional::Transition::isDefaultConfiguration() const {
     return true; // TODO?
   }
 

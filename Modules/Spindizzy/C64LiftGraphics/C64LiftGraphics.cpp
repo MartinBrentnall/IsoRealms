@@ -61,15 +61,15 @@ namespace IsoRealms::Spindizzy {
             cDefSecondary(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cNeedsRedrawing(false) {
-    cTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(project);
-    cTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(project);
-    cTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(project);
-    cTextures[SQUARE_NONE]  = std::make_unique<LiteralTexture>(project);
-    cTextures[SQUARE_HALF]  = std::make_unique<LiteralTexture>(project);
-    cTextures[SQUARE_BOTH]  = std::make_unique<LiteralTexture>(project);
-    cTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(project);
-    cTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(project);
-    cTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(project);
+    cTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[SQUARE_NONE]  = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[SQUARE_HALF]  = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[SQUARE_BOTH]  = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(project, 128, 128);
     setNeedsRedrawing();
   }
   

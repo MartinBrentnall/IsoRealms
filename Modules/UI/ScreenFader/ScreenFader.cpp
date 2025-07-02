@@ -24,8 +24,8 @@ namespace IsoRealms::UI {
             cDefScreenA(data),
             cDefScreenB(data),
             cDefTransition(data),
-            cRuntimeScreenA(project, true, true),
-            cRuntimeScreenB(project, true, true) {
+            cRuntimeScreenA(project, 2560, 1440, true, true, true), // TODO: Resolution shouldn't be hard-coded, and should update based on window size
+            cRuntimeScreenB(project, 2560, 1440, true, true, true) {
   }
   
   ScreenFader::ScreenFader(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
@@ -62,50 +62,62 @@ namespace IsoRealms::UI {
   }
 
   void ScreenFader::renderScreen(float scale, float aspectRatio) const {
-    glPushAttrib(GL_TRANSFORM_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glPopAttrib();
+    float mTransition = cDefTransition->getValue();
+    if (mTransition <= 0.0f) {
+      cDefScreenA->renderScreen(scale, aspectRatio);
+    } else if (mTransition >= 1.0f) {
+      cDefScreenB->renderScreen(scale, aspectRatio);
+    } else {
+      glPushAttrib(GL_TRANSFORM_BIT);
+      glMatrixMode(GL_PROJECTION);
+      glPushMatrix();
+      glLoadIdentity();
+      glPopAttrib();
 
-    cRuntimeScreenA.setRenderTarget();
-    cDefScreenA->renderScreen(scale, aspectRatio);    
-    cRuntimeScreenB.setRenderTarget();
-    cDefScreenB->renderScreen(scale, aspectRatio);
-    
-    glPushAttrib(GL_TRANSFORM_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glPopAttrib();
+      cRuntimeScreenA.setRenderTarget();
+      cDefScreenA->renderScreen(1.0f, aspectRatio);
+      cRuntimeScreenB.setRenderTarget();
+      cDefScreenB->renderScreen(1.0f, aspectRatio);
 
-    IApplication& mApplication = cProject.getApplication();
-    mApplication.setViewPort();
+      glPushAttrib(GL_TRANSFORM_BIT);
+      glMatrixMode(GL_PROJECTION);
+      glPopMatrix();
+      glPopAttrib();
 
-    // Draw Scene A
-    cRuntimeScreenA.set();
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0); glVertex2f(-1.0f, -1.0f);
-    glTexCoord2f(1, 0); glVertex2f( 1.0f, -1.0f);
-    glTexCoord2f(1, 1); glVertex2f( 1.0f,  1.0f);
-    glTexCoord2f(0, 1); glVertex2f(-1.0f,  1.0f);
-    glEnd();
+      IApplication& mApplication = cProject.getApplication();
+      mApplication.setViewPort();
 
-    // Enable blending and draw Scene B over it
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      // Draw Scene A
+      glColor3f(1.0f, 1.0f, 1.0f);
+      cRuntimeScreenA.set();
+      glDisable(GL_DEPTH_TEST);
+      glDepthMask(GL_FALSE);
+      glBegin(GL_QUADS);
+      glTexCoord2f(0, 0); glVertex2f(-aspectRatio, -1.0f);
+      glTexCoord2f(1, 0); glVertex2f( aspectRatio, -1.0f);
+      glTexCoord2f(1, 1); glVertex2f( aspectRatio,  1.0f);
+      glTexCoord2f(0, 1); glVertex2f(-aspectRatio,  1.0f);
+      glEnd();
 
-    glColor4f(1.0f, 1.0f, 1.0f, cDefTransition->getValue());
+      // Enable blending and draw Scene B over it
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    cRuntimeScreenB.set();
-    glBegin(GL_QUADS);
-    glTexCoord2f(0, 0); glVertex2f(-1.0f, -1.0f);
-    glTexCoord2f(1, 0); glVertex2f( 1.0f, -1.0f);
-    glTexCoord2f(1, 1); glVertex2f( 1.0f,  1.0f);
-    glTexCoord2f(0, 1); glVertex2f(-1.0f,  1.0f);
-    glEnd();
+      glColor4f(1.0f, 1.0f, 1.0f, mTransition);
 
-    glDisable(GL_BLEND);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+      cRuntimeScreenB.set();
+      glBegin(GL_QUADS);
+      glTexCoord2f(0, 0); glVertex2f(-aspectRatio, -1.0f);
+      glTexCoord2f(1, 0); glVertex2f( aspectRatio, -1.0f);
+      glTexCoord2f(1, 1); glVertex2f( aspectRatio,  1.0f);
+      glTexCoord2f(0, 1); glVertex2f(-aspectRatio,  1.0f);
+      glEnd();
+      glDisable(GL_BLEND);
+
+      glDepthMask(GL_TRUE);
+      glEnable(GL_DEPTH_TEST);
+      glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
   }
 
   bool ScreenFader::renderAssetIcon() const {

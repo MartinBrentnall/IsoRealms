@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   DummyTexture::DummyTexture(IResourceData& owner) :
-            cDummyTexture(owner.getProject()) {
+            cDummyTexture(owner.getProject(), 128, 128) {
     owner.getProject().mainThreadInit([this, &owner]() { // TODO: Do I need to make sure this is only executed once?
       glPushAttrib(GL_TRANSFORM_BIT);
       glMatrixMode(GL_PROJECTION);

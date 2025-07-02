@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
             cDefFill(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefShine(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cTexture(project),
+            cTexture(project, 128, 128),
             cNeedsRedrawing(false) {
     setNeedsRedrawing();
   }

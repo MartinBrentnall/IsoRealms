@@ -21,18 +21,27 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 
 namespace IsoRealms {
-  LiteralTexture::LiteralTexture(IProject& project, bool clampX, bool clampY) :
+  LiteralTexture::LiteralTexture(IProject& project, int width, int height, bool clampX, bool clampY, bool depth) :
             cProject(project),
+            cWidth(width),
+            cHeight(height),
             cTexture(0),
             cFrameBuffer(0) {
     project.mainThreadAlloc([this]() {
       glGenTextures(1, &cTexture);
     });
     
-    project.mainThreadInit([this, clampX, clampY]() {
+    project.mainThreadInit([this, clampX, clampY, depth]() {
       glGenFramebuffersEXT(1, &cFrameBuffer);
-
       glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, cFrameBuffer);
+
+      if (depth) {
+        GLuint depthBuffer;
+        glGenRenderbuffersEXT(1, &depthBuffer);
+        glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthBuffer);
+        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, cWidth, cHeight);
+        glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthBuffer);
+      }
 
       glBindTexture(GL_TEXTURE_2D, cTexture);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -42,7 +51,7 @@ namespace IsoRealms {
       if (clampY) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
       }
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 128, 128, 0,GL_RGBA, GL_INT, nullptr);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, cWidth, cHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
       glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, cTexture, 0);
 
       glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
@@ -50,10 +59,10 @@ namespace IsoRealms {
   }
 
   void LiteralTexture::setRenderTarget() const {
-    glViewport(0, 0, 128, 128);
+    glViewport(0, 0, cWidth, cHeight);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, cFrameBuffer);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
 
   void LiteralTexture::addUseListener(ITextureUseListener* listener) {

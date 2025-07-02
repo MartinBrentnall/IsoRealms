@@ -37,8 +37,8 @@ namespace IsoRealms::Spindizzy {
             cDefColourTop(    data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourSide(   data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cRuntimeTextureTop(project),
-            cRuntimeTextureSide(project),
+            cRuntimeTextureTop(project, 128, 128),
+            cRuntimeTextureSide(project, 128, 128),
             cNeedsRedrawing(false),
             cEditingIconAngle(0.0f) {
     cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {

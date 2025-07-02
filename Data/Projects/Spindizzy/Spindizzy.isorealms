@@ -9228,39 +9228,6 @@
                         }
                       },
                       {
-                        "variable": "background",
-                        "to": {
-                          "key": "UI/Layout/Main/Background"
-                        }
-                      },
-                      {
-                        "variable": "backgroundBlack",
-                        "to": {
-                          "key": ":Screen",
-                          "asset": {
-                            "key": "UI/Panel",
-                            "colour": {
-                              "key": "Basics/Colour/Black"
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "variable": "world",
-                        "to": {
-                          "key": "UI/Layout/Layout/Game"
-                        }
-                      },
-                      {
-                        "variable": "worldOverview",
-                        "to": {
-                          "key": ":Screen",
-                          "asset": {
-                            "key": "Spindizzy/WorldView/Overview"
-                          }
-                        }
-                      },
-                      {
                         "variable": "sound",
                         "to": {
                           "key": "Basics/Sequence/DamageSound/Instance"
@@ -9273,7 +9240,7 @@
                         }
                       }
                     ],
-                    "code": "locks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  gameTimeLimit:pause()\n  background:setScreen(backgroundBlack)\n  world:setScreen(worldOverview)\n  if alienContactCount > 0 then\n    sound:pause()\n    damage:pause()\n  end\nend"
+                    "code": "locks = locks + 1\nif locks == 1 then\n  spindizzy:setPause(true)\n  gameTimeLimit:pause()\n  if alienContactCount > 0 then\n    sound:pause()\n    damage:pause()\n  end\nend"
                   },
                   "onStartArrival": {
                     "key": "Basics/Script",
@@ -9297,39 +9264,6 @@
                         }
                       },
                       {
-                        "variable": "background",
-                        "to": {
-                          "key": "UI/Layout/Main/Background"
-                        }
-                      },
-                      {
-                        "variable": "backgroundNormal",
-                        "to": {
-                          "key": ":Screen",
-                          "asset": {
-                            "key": "UI/Panel",
-                            "colour": {
-                              "key": "Spindizzy/ThemeSet/C64/Background"
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "variable": "world",
-                        "to": {
-                          "key": "UI/Layout/Layout/Game"
-                        }
-                      },
-                      {
-                        "variable": "worldNormal",
-                        "to": {
-                          "key": ":Screen",
-                          "asset": {
-                            "key": "Spindizzy/WorldView/Hangworld"
-                          }
-                        }
-                      },
-                      {
                         "variable": "sound",
                         "to": {
                           "key": "Basics/Sequence/DamageSound/Instance"
@@ -9342,7 +9276,7 @@
                         }
                       }
                     ],
-                    "code": "locks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    gameTimeLimit:play()\n  end\n  background:setScreen(backgroundNormal)\n  world:setScreen(worldNormal)\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend"
+                    "code": "locks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    gameTimeLimit:play()\n  end\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend"
                   },
                   "onEndDeparture": {
                     "key": "None"
@@ -9890,7 +9824,93 @@
                 ]
               },
               {
-                "id": "Main",
+                "id": "Overview",
+                "components": [
+                  {
+                    "id": "Background",
+                    "screen": {
+                      "key": "UI/Panel",
+                      "colour": {
+                        "key": "Basics/Colour/Black"
+                      }
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Game",
+                    "screen": {
+                      "key": "Spindizzy/WorldView/Overview"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 1
+                      },
+                      "offset": {
+                        "key": "Absolute",
+                        "value": -0.22499999403953552
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "GameView",
                 "components": [
                   {
                     "id": "Background",
@@ -9899,6 +9919,89 @@
                       "colour": {
                         "key": "Spindizzy/ThemeSet/C64/Background"
                       }
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  },
+                  {
+                    "id": "Game",
+                    "screen": {
+                      "key": "Spindizzy/WorldView/Hangworld"
+                    },
+                    "top": {
+                      "location": {
+                        "key": "Absolute",
+                        "value": 1
+                      },
+                      "offset": {
+                        "key": "Absolute",
+                        "value": -0.22499999403953552
+                      }
+                    },
+                    "bottom": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "left": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    },
+                    "right": {
+                      "location": {
+                        "key": "Absolute"
+                      },
+                      "offset": {
+                        "key": "Absolute"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "Main",
+                "components": [
+                  {
+                    "id": "Background",
+                    "screen": {
+                      "key": "UI/ScreenFader/Game"
                     },
                     "top": {
                       "location": {
@@ -11603,46 +11706,6 @@
                         "key": "Absolute"
                       }
                     }
-                  },
-                  {
-                    "id": "Game",
-                    "screen": {
-                      "key": "Spindizzy/WorldView/Hangworld"
-                    },
-                    "top": {
-                      "location": {
-                        "key": "Relative",
-                        "value": -1,
-                        "relative": "PanelMiddle"
-                      },
-                      "offset": {
-                        "key": "Absolute"
-                      }
-                    },
-                    "bottom": {
-                      "location": {
-                        "key": "Absolute"
-                      },
-                      "offset": {
-                        "key": "Absolute"
-                      }
-                    },
-                    "left": {
-                      "location": {
-                        "key": "Absolute"
-                      },
-                      "offset": {
-                        "key": "Absolute"
-                      }
-                    },
-                    "right": {
-                      "location": {
-                        "key": "Absolute"
-                      },
-                      "offset": {
-                        "key": "Absolute"
-                      }
-                    }
                   }
                 ]
               }
@@ -11795,6 +11858,23 @@
                 "onCancel": {
                   "key": "Basics/Function/PopScreen",
                   "bindings": []
+                }
+              }
+            ]
+          },
+          {
+            "type": "ScreenFader",
+            "instances": [
+              {
+                "id": "Game",
+                "screenA": {
+                  "key": "UI/Layout/GameView"
+                },
+                "screenB": {
+                  "key": "UI/Layout/Overview"
+                },
+                "transition": {
+                  "key": "Spindizzy/WorldView/Hangworld/Camera/Transition"
                 }
               }
             ]

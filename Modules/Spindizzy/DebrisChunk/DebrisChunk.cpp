@@ -39,7 +39,10 @@ namespace IsoRealms::Spindizzy {
                      Colour(data, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
             cDefOutline(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutlineWidth(DEFAULT_OUTLINE_WIDTH),
-            cTextures{project, project, project, project},
+            cTextures{{project, 128, 128},
+                      {project, 128, 128},
+                      {project, 128, 128},
+                      {project, 128, 128}},
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
     cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {

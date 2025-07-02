@@ -29,7 +29,7 @@
 namespace IsoRealms {
   class LiteralTexture : public ITexture {
     public:
-    LiteralTexture(IProject& project, bool clampX = false, bool clampY = false);
+    LiteralTexture(IProject& project, int width, int height, bool clampX = false, bool clampY = false, bool depth = false);
     
     void setRenderTarget() const;
     void addUseListener(ITextureUseListener* listener);
@@ -49,6 +49,8 @@ namespace IsoRealms {
 
     private:
     IProject& cProject;
+    int cWidth;
+    int cHeight;
     GLuint cTexture;
     GLuint cFrameBuffer;
     std::vector<ITextureUseListener*> cUseListeners;

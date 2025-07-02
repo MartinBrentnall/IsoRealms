@@ -122,11 +122,29 @@ namespace IsoRealms::Spindizzy {
       CameraTransitional& cParent;
     };
 
+    class Transition : public IFloat {
+      public:
+      Transition(CameraTransitional& parent);
+
+      /*********************\
+       * Implements IFloat *
+      \*********************/
+      float getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+      CameraTransitional& cParent;
+    };
+
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
     WorldView& cParent; /// Parent view.
     Yaw cYaw;
     Pitch cPitch;
+    Transition cTransition;
 
     // Definition data.
     Camera cDefStart;              /// Camera to start transition at.
