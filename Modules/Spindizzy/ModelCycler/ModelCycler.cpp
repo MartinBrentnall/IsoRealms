@@ -18,6 +18,8 @@
  */
 #include "ModelCycler.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Spindizzy {
   const std::string ModelCycler::JSON_MODEL  = "model";
   const std::string ModelCycler::JSON_MODELS = "models";

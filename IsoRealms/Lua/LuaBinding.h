@@ -20,13 +20,13 @@
 
 #include <sol.hpp>
 
-#include "IsoRealms/Editing.h"
+#include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
-#include "IsoRealms/Assets/Type/IBinding.h"
 
 namespace IsoRealms {
-  
+  class IProperty;
+
   /**
    * Permits the binding of an arbitrary object to a lua variable.  This
    * binding resides in the parent project.

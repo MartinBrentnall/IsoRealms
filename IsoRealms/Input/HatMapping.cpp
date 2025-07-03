@@ -18,6 +18,7 @@
  */
 #include "HatMapping.h"
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {

@@ -18,6 +18,10 @@
  */
 #include "MenuItemProperty.h"
 
+#include "IsoRealms/Assets/Type/IFont.h"
+
+#include "IUIStyle.h"
+
 namespace IsoRealms {
   MenuItemProperty::MenuItemProperty(const std::string& name, std::unique_ptr<IProperty> property) :
             cProperty(std::move(property)),

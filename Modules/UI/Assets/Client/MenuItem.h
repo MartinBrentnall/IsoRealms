@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/Assets/Registry/IAssetUser.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 #include "Modules/UI/Assets/Type/IMenuItem.h"
 

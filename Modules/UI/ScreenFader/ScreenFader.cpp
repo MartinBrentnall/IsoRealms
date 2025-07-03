@@ -18,6 +18,8 @@
  */
 #include "ScreenFader.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::UI {
   ScreenFader::ScreenFader(IProject& project, UI& ui, IResourceData& data) :
             cProject(project),

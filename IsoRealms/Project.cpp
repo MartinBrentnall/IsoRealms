@@ -19,6 +19,9 @@
 #include "Project.h"
 
 #include "Application.h"
+#include "Assets/Type/IScreenListener.h"
+#include "DisplayResolution.h"
+#include "IAssetOverride.h"
 
 namespace IsoRealms {
   const std::string Project::JSON_ACTION         = "action";

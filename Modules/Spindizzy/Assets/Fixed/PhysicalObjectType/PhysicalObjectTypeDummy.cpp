@@ -19,6 +19,7 @@
 #include "PhysicalObjectTypeDummy.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Spindizzy {
   PhysicalObjectTypeDummy::PhysicalObjectTypeDummy(Spindizzy& spindizzy) {

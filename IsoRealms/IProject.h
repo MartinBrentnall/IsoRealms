@@ -23,9 +23,10 @@
 #include <string>
 
 #include "IAssetBrowser.h"
-#include "IStateListener.h"
 
 namespace IsoRealms {
+  template<class TYPE> class IStateListener;
+
   class Application;
   class File;
   class IApplication;

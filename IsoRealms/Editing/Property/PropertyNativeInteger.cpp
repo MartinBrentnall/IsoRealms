@@ -18,6 +18,8 @@
  */
 #include "PropertyNativeInteger.h"
 
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   PropertyNativeInteger::PropertyNativeInteger(const std::string& name, const std::string& tooltip, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) :
             PropertyInputField(name, tooltip, Utils::toString(getter()), removeFunction),

@@ -18,6 +18,7 @@
  */
 #include "MouseButtonMapping.h"
 
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {

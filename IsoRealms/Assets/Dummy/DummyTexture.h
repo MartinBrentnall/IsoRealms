@@ -24,10 +24,10 @@
 
 #include "IsoRealms/Assets/Literal/LiteralTexture.h"
 #include "IsoRealms/Assets/Type/ITexture.h"
-#include "IsoRealms/Assets/Type/ITextureUseListener.h"
-#include "IsoRealms/IProject.h"
 
 namespace IsoRealms {
+  class IResourceData;
+
   class DummyTexture : public ITexture {
     public:
     DummyTexture(IResourceData& owner);

@@ -24,7 +24,7 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
   class IProperty;

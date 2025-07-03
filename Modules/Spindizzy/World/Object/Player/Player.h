@@ -28,8 +28,6 @@
 
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/IAssetRegistry.h"
-#include "IsoRealms/IAssetRemover.h"
-#include "IsoRealms/IAssets.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"

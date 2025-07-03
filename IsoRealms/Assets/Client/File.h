@@ -18,13 +18,17 @@
  */
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <vector>
 #include <string>
 
-#include "IsoRealms/IProject.h"
-
 namespace IsoRealms {
+  class JSONObject;
+  class IApplication;
+  class IProject;
+  class IProperty;
+
   class File {
     public:
     File(IProject& project, std::function<void()> changeCallback = nullptr);

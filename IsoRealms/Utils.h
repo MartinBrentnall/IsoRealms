@@ -27,16 +27,17 @@
 #include <string>
 #include <vector>
 
-#include "IsoRealms/Common/IVisualElement.h"
+#include <SFML/Window/Event.hpp>
+
+#include "IsoRealms/Assets/Type/IFont.h"
 #include "IsoRealms/Exception/ArgumentException.h"
-#include "IsoRealms/Input/ButtonMapping.h"
-#include "IsoRealms/Input/HatMapping.h"
-#include "IsoRealms/Input/IDigitalInputMapping.h"
-#include "IsoRealms/Input/KeyMapping.h"
-#include "IsoRealms/Types.h"
 
 namespace IsoRealms {
+  class HatHandler;
+  class IDigitalInputMapping;
   class IColour;
+  class ITexture;
+  class IVisualElement;
   class LiteralVertex;
 
   class Utils {
@@ -216,38 +217,7 @@ namespace IsoRealms {
            :                  std::floor(value / static_cast<double>(alignTo)) * alignTo;
     }
 
-    static std::unique_ptr<IDigitalInputMapping> toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event) {
-      switch (event.type) {
-        case sf::Event::KeyPressed:            return std::make_unique<KeyMapping>(event.key.code);
-        case sf::Event::JoystickButtonPressed: return std::make_unique<ButtonMapping>(event.joystickButton.button);
-        case sf::Event::JoystickMoved: {
-          if (event.joystickMove.axis == sf::Joystick::Axis::PovX) {
-            if (event.joystickMove.position < 0) {
-              return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_LEFT);
-            } else if (event.joystickMove.position > 0) {
-              return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_RIGHT);
-            }
-          } else if (event.joystickMove.axis == sf::Joystick::Axis::PovY) {
-#if _WIN32
-            if (event.joystickMove.position > 0) {
-              return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_UP);
-            } else if (event.joystickMove.position < 0) {
-              return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_DOWN);
-            }
-#elif __linux__
-            if (event.joystickMove.position < 0) {
-              return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_UP);
-            } else if (event.joystickMove.position > 0) {
-              return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_DOWN);
-            }
-#endif
-          }
-          break;
-        }
-        default: break;
-      }                               
-      return nullptr;
-    }
+    static std::unique_ptr<IDigitalInputMapping> toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event);
     
     static void shadowPrint(float x, float y, IFont& font, float fontSize, const IColour& colour, float shadowOffset, IFont::Alignment alignment, const std::string& text);
 

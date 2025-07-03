@@ -18,6 +18,9 @@
  */
 #include "Menu.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Input.h"
+
 namespace IsoRealms::UI {
   const std::string Menu::JSON_COLOUR        = "colour";
   const std::string Menu::JSON_FONT          = "font";

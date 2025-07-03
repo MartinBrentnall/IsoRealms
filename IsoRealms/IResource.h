@@ -18,9 +18,9 @@
  */
 #pragma once
 
+#include <memory>
 #include <string>
-
-#include "Editing/Property/IProperty.h"
+#include <vector>
 
 namespace IsoRealms {
   class File;
@@ -30,6 +30,7 @@ namespace IsoRealms {
   class IAssetRemover;
   class IAssets;
   class IFont;
+  class IProperty;
 
   class IResource {
     public:

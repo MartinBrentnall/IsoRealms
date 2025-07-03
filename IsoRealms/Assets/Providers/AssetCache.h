@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Assets/Registry/IAssetProvider.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
   

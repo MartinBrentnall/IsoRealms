@@ -18,6 +18,8 @@
  */
 #include "ScoreTracker.h"
 
+#include "IsoRealms/System.h"
+
 namespace IsoRealms::HighScore {
   ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data) :
             cProjectCallbackManager(project),

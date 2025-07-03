@@ -18,6 +18,8 @@
  */
 #include "MovementHandler.h"
 
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms::Spindizzy {
   void MovementHandler::addListener(IMovementListener* listener) {
     cMovementListeners.emplace_back(listener);

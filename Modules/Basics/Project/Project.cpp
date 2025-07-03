@@ -19,6 +19,7 @@
 #include "Project.h"
 
 #include "IsoRealms/IApplication.h"
+#include "IsoRealms/System.h"
 
 namespace IsoRealms::Basics {
   const std::string Project::JSON_EDITING   = "editing";

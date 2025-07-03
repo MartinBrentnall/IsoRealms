@@ -18,6 +18,8 @@
  */
 #include "InputSwitch.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Basics {
   const std::string InputSwitch::JSON_VALUE = "value";
 

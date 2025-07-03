@@ -22,8 +22,7 @@
 #include <functional>
 #include <string>
 
-#include "IsoRealms/Utils.h"
-
+#include "Property.h"
 #include "PropertyAsset.h"
 
 namespace IsoRealms {

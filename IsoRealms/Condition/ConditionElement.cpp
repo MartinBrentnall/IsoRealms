@@ -18,6 +18,9 @@
  */
 #include "ConditionElement.h"
 
+#include "IsoRealms/Assets/Type/IBoolean.h"
+#include "IsoRealms/Assets/Type/IScreen.h"
+
 namespace IsoRealms {
   const std::string ConditionElement::JSON_INPUT   = "input";
   const std::string ConditionElement::JSON_NEGATED = "negated";

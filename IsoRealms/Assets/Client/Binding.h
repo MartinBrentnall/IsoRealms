@@ -21,14 +21,13 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/IActionClient.h"
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/IResourceData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
+  class IActionClient;
+
   class Binding : public Asset<Binding, IBinding, IResourceData> {
     public:
     Binding(IActionClient& owner);

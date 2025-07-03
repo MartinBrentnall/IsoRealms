@@ -21,7 +21,6 @@
 #include <string>
 
 #include "IsoRealms/Assets/Literal/LiteralInteger.h"
-#include "IsoRealms/Utils.h"
 
 #include "AssetLiteral.h"
 

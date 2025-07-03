@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "IsoRealms/Exception/ArgumentException.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 #include "HighScoreRecord.h"
 

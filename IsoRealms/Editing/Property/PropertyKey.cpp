@@ -18,6 +18,11 @@
  */
 #include "PropertyKey.h"
 
+#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Editing/IUIStyle.h"
+
+#include "IPropertyManager.h"
+
 namespace IsoRealms {
   PropertyKey::PropertyKey(const std::string& name, const std::string& tooltip, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) :
             Property(name, tooltip, removeFunction),

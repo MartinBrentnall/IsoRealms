@@ -18,6 +18,9 @@
  */
 #include "MenuItemFileList.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Input.h"
+
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {

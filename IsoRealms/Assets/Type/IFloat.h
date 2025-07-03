@@ -19,7 +19,6 @@
 #pragma once
 
 #include "IAsset.h"
-#include "IStateNotifier.h"
 
 namespace IsoRealms {
 

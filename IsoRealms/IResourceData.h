@@ -22,6 +22,8 @@
 
 namespace IsoRealms {
   class File;
+  class IActionClient;
+  class IProject;
 
   class IResourceData {
     public:

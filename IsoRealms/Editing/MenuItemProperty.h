@@ -19,6 +19,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <string>
 
 #include "Property/IProperty.h"

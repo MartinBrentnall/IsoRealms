@@ -18,6 +18,17 @@
  */
 #include "PropertyCondition.h"
 
+#include "IsoRealms/Common/ScreenArea.h"
+#include "IsoRealms/Condition/Condition.h"
+#include "IsoRealms/Editing/IUIStyle.h"
+#include "IsoRealms/IApplication.h"
+#include "IsoRealms/IProject.h"
+#include "IsoRealms/Utils.h"
+
+#include "IsoRealms/Editing/UISignalID.h"
+
+#include "IPropertyManager.h"
+
 namespace IsoRealms {
   PropertyCondition::PropertyCondition(const std::string& label, const std::string& tooltip, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) :
             Property(label, tooltip, nullptr),

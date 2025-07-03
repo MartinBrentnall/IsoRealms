@@ -20,7 +20,9 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
+#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
   Texture::Texture(IResourceData& owner, std::function<void()> listener) :

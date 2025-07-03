@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::UI {

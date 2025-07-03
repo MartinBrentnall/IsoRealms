@@ -19,6 +19,7 @@
 #include "BoundaryTypeDummy.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Spindizzy {
   BoundaryTypeDummy::BoundaryTypeDummy(Spindizzy& spindizzy) {

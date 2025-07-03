@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 namespace IsoRealms::Spindizzy {
   class ITraitRegistry;

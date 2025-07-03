@@ -18,6 +18,8 @@
  */
 #include "LayoutLocationAbsolute.h"
 
+#include "IsoRealms/Editing.h"
+
 #include "Modules/UI/Layout/LayoutComponentEdge.h"
 
 namespace IsoRealms::UI {

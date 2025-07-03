@@ -18,13 +18,13 @@
  */
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <vector>
 #include <string>
 
-#include "IsoRealms/IProject.h"
-
 namespace IsoRealms {
+  class IEditable;
   class IPropertyEditor;
   class IUIStyle;
 

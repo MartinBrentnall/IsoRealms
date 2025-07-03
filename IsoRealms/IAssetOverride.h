@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/IStateListener.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 #include <string>
 

@@ -18,6 +18,12 @@
  */
 #include "PropertyEditor.h"
 
+#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Editing/IUIStyle.h"
+#include "IsoRealms/Utils.h"
+
+#include "IPropertyManager.h"
+
 namespace IsoRealms {
   PropertyEditor::PropertyEditor(const std::string& name, const std::string& tooltip, IEditable* editable) :
             Property(name, tooltip, nullptr),

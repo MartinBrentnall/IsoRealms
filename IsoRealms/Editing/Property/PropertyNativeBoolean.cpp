@@ -18,6 +18,8 @@
  */
 #include "PropertyNativeBoolean.h"
 
+#include "IsoRealms/IProject.h"
+
 namespace IsoRealms {
   PropertyNativeBoolean::PropertyNativeBoolean(const std::string& name, const std::string& tooltip, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
             Property(name, tooltip, removeFunction),

@@ -18,6 +18,10 @@
  */
 #include "MenuItemResource.h"
 
+#include "IsoRealms/Utils.h"
+
+#include "IUIStyle.h"
+
 namespace IsoRealms {
   MenuItemResource::MenuItemResource(const std::string& label, IResource* resource, std::function<void(IResource* resource)> action, std::function<bool(IResource* resource)> icon) : 
             cLabel(label),

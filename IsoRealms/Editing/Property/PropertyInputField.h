@@ -22,10 +22,9 @@
 #include <functional>
 #include <string>
 
-#include "IsoRealms/Editing/IUIStyle.h"
-#include "IsoRealms/Utils.h"
+#include <GL/glew.h>
 
-#include "IPropertyManager.h"
+#include "IPropertyEditor.h"
 #include "Property.h"
 
 namespace IsoRealms {

@@ -18,6 +18,8 @@
  */
 #include "SimpleVertex.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Basics {
   const std::string SimpleVertex::JSON_X = "x";
   const std::string SimpleVertex::JSON_Y = "y";

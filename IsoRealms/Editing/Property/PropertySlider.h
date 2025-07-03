@@ -24,10 +24,8 @@
 
 #include <GL/glew.h>
 
-#include "IsoRealms/Utils.h"
-
+#include "IPropertyEditor.h"
 #include "Property.h"
-#include "PropertyNativeFloat.h"
 
 namespace IsoRealms {
   class PropertySlider : public Property {

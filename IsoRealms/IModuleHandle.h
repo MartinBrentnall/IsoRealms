@@ -24,7 +24,6 @@
 namespace IsoRealms {
   class JSONObject;
   class IAssetRegistry;
-  class IAssetRemover;
   class IAssets;
   class IModule;
   class IProject;

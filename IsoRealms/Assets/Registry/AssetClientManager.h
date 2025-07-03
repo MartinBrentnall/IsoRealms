@@ -21,8 +21,7 @@
 #include "IsoRealms/Assets/Providers/AssetSingleton.h"
 #include "IsoRealms/Assets/Registry/ILiteralAssetProvider.h"
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 #include "AssetRegistry.h"
 

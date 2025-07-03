@@ -24,8 +24,6 @@
 
 #include <GL/glew.h>
 
-#include "IsoRealms/Utils.h"
-
 #include "PropertySlider.h"
 
 namespace IsoRealms {

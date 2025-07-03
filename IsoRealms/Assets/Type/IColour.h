@@ -30,7 +30,6 @@
 #include <GL/glew.h>
 
 #include "IAsset.h"
-#include "IStateNotifier.h"
 
 namespace IsoRealms {
   

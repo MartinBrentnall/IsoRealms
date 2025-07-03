@@ -18,6 +18,8 @@
  */
 #include "Options.h"
 
+#include "IsoRealms/Exception/ApplicationException.h"
+
 namespace IsoRealms {
   Options::Options() {
     // Nothing to do.

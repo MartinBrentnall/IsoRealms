@@ -18,7 +18,10 @@
  */
 #include "Module.h"
 
-#include "IsoRealms/Exception/ResourceInitException.h"
+#include "IModuleHandle.h"
+#include "Exception/InitException.h"
+#include "Exception/ResourceInitException.h"
+#include "ResourceType.h"
 
 #include "Project.h"
 

@@ -21,16 +21,16 @@
 #include <GL/glew.h>
 
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "IsoRealms/AnimatedFloat.h"
-#include "IsoRealms/Utils.h"
-
-#include "IUIStyle.h"
-#include "UISignalID.h"
 
 namespace IsoRealms {
+  class IUIStyle;
+  enum class UISignalID;
+
   class Choice {
     public:
     Choice(IUIStyle& style, const std::string& message, const std::vector<std::string>& options, std::function<bool(const std::string&)> confirmationCallback);

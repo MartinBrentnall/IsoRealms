@@ -25,6 +25,7 @@
 #include <sol.hpp>
 
 #include "IsoRealms/Assets/IBindingRegistry.h"
+#include "IsoRealms/Assets/Registry/IAssetProvider.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua/LuaState.h"
 #include "IsoRealms/ResourceDefinition.h"

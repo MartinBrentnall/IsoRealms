@@ -26,24 +26,26 @@
 #include <windows.h>
 #endif
 
+#include <map>
+#include <memory>
 #include <string>
 #include <set>
 
-#include "IAssetRemover.h"
 #include "IModule.h"
 #include "IModuleInternal.h"
-#include "IModuleHandle.h"
-#include "Exception/InitException.h"
-#include "IProject.h"
 #include "IResourceTypeRegistry.h"
-#include "LocalAssetRegistry.h"
-#include "Options/LocalOptions.h"
-#include "ResourceType.h"
-#include "System.h"
+#include "ResourceAssetRegistry.h"
 
 namespace IsoRealms {
+  class IAssetRemover;
+  class IModuleHandle;
+  class IProject;
+  class IProperty;
+  class IOptions;
+  class JSONObject;
   class LuaState;
   class Project;
+  class ResourceType;
 
   class Module : public IResourceTypeRegistry,
                  public IModule,

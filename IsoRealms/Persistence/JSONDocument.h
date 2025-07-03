@@ -27,13 +27,9 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
 
-#include "IsoRealms/System.h"
-
-#include "JSONArray.h"
-#include "JSONObject.h"
-#include "ParseException.h"
-
 namespace IsoRealms {
+  class JSONObject;
+
   class JSONDocument {
     public:
     JSONDocument();

@@ -21,7 +21,9 @@
 #include <string>
 
 #include "Assets/Registry/AssetIDException.h"
+#include "Assets/Client/File.h"
 #include "Editing/Property/PropertyNativeString.h"
+#include "IActionClient.h"
 #include "IAssetBrowser.h"
 #include "IAssetRegistry.h"
 #include "IProject.h"

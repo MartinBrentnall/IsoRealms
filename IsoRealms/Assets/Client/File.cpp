@@ -19,6 +19,9 @@
 #include "File.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IProject.h"
+#include "IsoRealms/Persistence.h"
+#include "IsoRealms/System.h"
 
 namespace IsoRealms {
   File::File(IProject& project, std::function<void()> changeCallback) :

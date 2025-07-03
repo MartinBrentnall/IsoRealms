@@ -19,13 +19,14 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
 #include "IsoRealms/Assets/Registry/IAssetUser.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IApplication.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
+  class IApplication;
   class IAssets;
   
   template<class DERIVED, class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {

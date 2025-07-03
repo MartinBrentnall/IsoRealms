@@ -21,9 +21,7 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IProjectOptions.h"
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/IResourceData.h"
 
 #include "Asset.h"
 

@@ -18,6 +18,9 @@
  */
 #include "Condition.h"
 
+#include "IsoRealms/Exception/ArgumentException.h"
+#include "IsoRealms/Persistence.h"
+
 namespace IsoRealms {
   const char Condition::ATTRIB_AND    = 0x1;
   const char Condition::ATTRIB_NEGATE = 0x2;

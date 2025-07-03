@@ -18,6 +18,8 @@
  */
 #include "HighScoreRecord.h"
 
+#include "IsoRealms/Persistence.h"
+
 #include "HighScoreTable.h"
 
 namespace IsoRealms::HighScore {

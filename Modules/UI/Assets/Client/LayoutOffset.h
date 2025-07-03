@@ -21,7 +21,7 @@
 #include "IsoRealms/Assets/Client/Asset.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 #include "Modules/UI/Assets/Type/ILayoutOffset.h"
 #include "Modules/UI/IUI.h"

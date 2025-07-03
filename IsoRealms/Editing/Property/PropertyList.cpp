@@ -18,6 +18,8 @@
  */
 #include "PropertyList.h"
 
+#include "IsoRealms/IProject.h"
+
 namespace IsoRealms {
   PropertyList::PropertyList(IProject& project, const std::string& name, const std::string& tooltip, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
             Property(name, tooltip, removeFunction),

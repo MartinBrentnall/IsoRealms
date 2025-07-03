@@ -22,7 +22,6 @@
 #include <GL/gl.h>
 
 #include "IsoRealms/IAssetRegistry.h"
-#include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/Types.h"
 

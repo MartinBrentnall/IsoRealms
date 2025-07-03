@@ -18,6 +18,10 @@
  */
 #include "MenuItemAction.h"
 
+#include "IsoRealms/Utils.h"
+
+#include "IUIStyle.h"
+
 namespace IsoRealms {
   MenuItemAction::MenuItemAction(const std::string& label, std::function<void()> action) :
             cLabel(label),

@@ -18,8 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/IStateListener.h"
-
 namespace IsoRealms {
   template<class TYPE> class IStateNotifier {
     public:

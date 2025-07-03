@@ -21,12 +21,12 @@
 #include <string>
 #include <vector>
 
-#include "Assets/Registry/IAssetUser.h"
 #include "Assets/Type/IAsset.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
-#include "IStateListener.h"
 
 namespace IsoRealms {
+  template<class TYPE> class IAssetUser;
+  template<class TYPE> class IStateListener;
+
   class IAction;
   class IActionClient;
   class IAssetRegistry;
@@ -52,7 +52,7 @@ namespace IsoRealms {
   class IString;
   class ITexture;
   class IVertex;
-  class Sequence;
+  class JSONObject;
 
   class IAssets : public IAsset {
     public:

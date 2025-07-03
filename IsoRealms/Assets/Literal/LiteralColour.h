@@ -21,11 +21,7 @@
 #include <GL/glew.h>
 #include <iostream>
 
-#include "IsoRealms/Editing.h"
 #include "IsoRealms/Assets/Type/IColour.h"
-#include "IsoRealms/IAssets.h"
-#include "IsoRealms/IAssetRegistry.h"
-#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
   class LiteralColour : public IColour {

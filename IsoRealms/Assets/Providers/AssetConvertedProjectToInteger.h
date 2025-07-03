@@ -19,11 +19,9 @@
 #pragma once
 
 #include "IsoRealms/Assets/Registry/IAssetProvider.h"
-#include "IsoRealms/Assets/TypeConverted/PrimitiveToString.h"
+#include "IsoRealms/IProject.h"
 
 namespace IsoRealms {
-  class Project;
-
   class AssetConvertedProjectToInteger : public IAssetProvider<IResourceData, IInteger> {
     public:
     AssetConvertedProjectToInteger(IProject& project) :

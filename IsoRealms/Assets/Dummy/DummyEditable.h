@@ -19,10 +19,10 @@
 #pragma once
 
 #include "IsoRealms/Assets/Type/IEditable.h"
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
+  class IResourceData;
+
   class DummyEditable : public IEditable {
     public:
     DummyEditable(IResourceData& owner);

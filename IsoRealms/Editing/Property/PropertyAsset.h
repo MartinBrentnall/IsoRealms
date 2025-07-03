@@ -28,10 +28,11 @@
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Editing/Choice.h"
 #include "IsoRealms/Editing/IUIStyle.h"
+#include "IsoRealms/Editing/UISignalID.h"
 #include "IsoRealms/IApplication.h"
-#include "IsoRealms/Types.h"
 #include "IsoRealms/Utils.h"
 
+#include "IPropertyEditor.h"
 #include "IPropertyManager.h"
 #include "Property.h"
 

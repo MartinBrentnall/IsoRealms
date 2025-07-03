@@ -21,10 +21,10 @@
 #include <functional>
 #include <string>
 
-#include "IsoRealms/Assets/Registry/IAssetProvider.h"
-#include "IsoRealms/Assets/Type/IStateNotifier.h"
-
 namespace IsoRealms {
+  template<class OWNER, class TYPE> class IAssetProvider;
+  template<class TYPE> class IStateNotifier;
+
   class IAction;
   class IActionClient;
   class IAssets;
@@ -43,7 +43,6 @@ namespace IsoRealms {
   class IResourceData;
   class IScreen;
   class IProjectOptions;
-  template <class ASSET_TYPE> class IAssetUser;
   class IString;
   class ITexture;
   class IVertex;

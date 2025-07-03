@@ -18,6 +18,8 @@
  */
 #include "Player.h"
 
+#include "IsoRealms/System.h"
+
 #include "Modules/Replay/Recorder/Recorder.h"
 
 namespace IsoRealms::Replay {

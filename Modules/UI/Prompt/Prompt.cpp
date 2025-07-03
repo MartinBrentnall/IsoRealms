@@ -18,6 +18,8 @@
  */
 #include "Prompt.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Input.h"
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::UI {

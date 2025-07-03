@@ -18,9 +18,8 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Type/IFont.h"
-
 namespace IsoRealms {
+  class IFont;
   class IProject;
 
   class IUIStyle {

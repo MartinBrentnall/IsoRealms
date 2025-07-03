@@ -18,6 +18,8 @@
  */
 #include "ResourceAssetRegistry.h"
 
+#include "IAssetRemover.h"
+
 namespace IsoRealms {
   ResourceAssetRegistry::ResourceAssetRegistry(IAssetRegistry& assetRegistry, const std::string& localPath) :
             cAssetRegistry(assetRegistry),
@@ -30,6 +32,30 @@ namespace IsoRealms {
 
   std::string ResourceAssetRegistry::getModule() {
     return cLocalPath;
+  }
+
+  void ResourceAssetRegistry::unregisterAssets(IAssetRemover& remover) {
+    for (AssetVariant& mAsset : cRegisteredAssets) {
+      std::visit([this, &remover](auto* asset) {
+        remover.remove(asset);
+      }, mAsset);
+    }
+  }
+
+  bool ResourceAssetRegistry::hasReadOnlyReferences(IAssetRemover& remover) const {
+    return std::ranges::any_of(cRegisteredAssets, [&remover](const AssetVariant& asset) {
+      return std::visit([&remover](auto* asset) {
+        return remover.hasReadOnlyReferences(asset);
+      }, asset);
+    });
+  }
+
+  void ResourceAssetRegistry::overrideReadOnlyReferences(IAssetRemover& remover) {
+    std::ranges::for_each(cRegisteredAssets, [&remover](const AssetVariant& asset) {
+      std::visit([&remover](auto* asset) {
+        remover.overrideReadOnlyReferences(asset);
+      }, asset);
+    });
   }
 
   void ResourceAssetRegistry::add(IAssetProvider<IActionClient, IAction>*         provider, const std::string& id, const std::string& category) {registerAsset(provider); cAssetRegistry.add(provider, id == "" ? cLocalPath : cLocalPath + "/" + id, category);}

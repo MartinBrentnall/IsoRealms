@@ -21,6 +21,7 @@
 #include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IProject.h"
 
 namespace IsoRealms {
   Binding::Binding(IActionClient& owner) :

@@ -18,6 +18,13 @@
  */
 #include "PropertySlider.h"
 
+#include "IsoRealms/Editing/IUIStyle.h"
+#include "IsoRealms/Editing/UISignalID.h"
+#include "IsoRealms/Utils.h"
+
+#include "IPropertyManager.h"
+#include "PropertyNativeFloat.h"
+
 namespace IsoRealms {
   const float PropertySlider::WIDTH = 0.7f;
   

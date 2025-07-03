@@ -21,7 +21,8 @@
 #include <string>
 
 #include "IsoRealms/Editing.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
+#include "IsoRealms/Types.h"
 
 namespace IsoRealms::Basics {
   class Basics;

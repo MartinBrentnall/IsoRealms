@@ -18,6 +18,8 @@
  */
 #include "InputGroup.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Basics {
   const std::string InputGroup::JSON_INPUT  = "input";
   const std::string InputGroup::JSON_INPUTS = "inputs";

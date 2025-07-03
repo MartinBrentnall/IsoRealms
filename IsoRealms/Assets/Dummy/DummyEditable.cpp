@@ -19,6 +19,7 @@
 #include "DummyEditable.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
   DummyEditable::EditableScreen DummyEditable::DUMMY;

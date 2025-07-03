@@ -18,9 +18,9 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Registry/IAssetProvider.h"
-
 namespace IsoRealms {
+  template<class OWNER, class TYPE> class IAssetProvider;
+
   class IAction;
   class IActionClient;
   class IAssets;

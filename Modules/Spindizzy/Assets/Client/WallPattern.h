@@ -21,7 +21,7 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Client/Asset.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
 

@@ -23,6 +23,7 @@
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
+#include "IsoRealms/Utils.h"
 
 #include "Modules/Basics/Assets/Type/ISequenceTrack.h"
 

@@ -18,4 +18,7 @@
  */
 #pragma once
 
+#include "Persistence/JSONArray.h"
 #include "Persistence/JSONDocument.h"
+#include "Persistence/JSONObject.h"
+#include "Persistence/ParseException.h"

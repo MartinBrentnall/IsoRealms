@@ -20,10 +20,10 @@
 
 #include <sol.hpp>
 
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/Lua/LuaState.h"
 #include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/IProject.h"
+#include "IsoRealms/Lua/LuaState.h"
 
 namespace IsoRealms {
   

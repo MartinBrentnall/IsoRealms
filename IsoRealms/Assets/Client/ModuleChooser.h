@@ -22,9 +22,9 @@
 #include <vector>
 #include <string>
 
-#include "IsoRealms/IProject.h"
-
 namespace IsoRealms {
+  class IApplication;
+  class IProperty;
   class Project;
   
   class ModuleChooser {

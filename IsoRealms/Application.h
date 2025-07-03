@@ -36,7 +36,7 @@
 #include "Exception/ApplicationException.h"
 #include "IApplication.h"
 #include "Input/HatHandler.h"
-#include "Persistence/JSONDocument.h"
+#include "Persistence.h"
 #include "System.h"
  
 namespace IsoRealms {

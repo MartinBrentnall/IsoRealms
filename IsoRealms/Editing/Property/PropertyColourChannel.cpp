@@ -18,6 +18,8 @@
  */
 #include "PropertyColourChannel.h"
 
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   float PropertyColourChannel::MIN_CHANNEL_VALUE = 0.0f;
   float PropertyColourChannel::MAX_CHANNEL_VALUE = 1.0f;

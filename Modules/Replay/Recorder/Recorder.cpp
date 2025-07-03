@@ -18,6 +18,8 @@
  */
 #include "Recorder.h"
 
+#include "IsoRealms/System.h"
+
 namespace IsoRealms::Replay {
   const std::string Recorder::JSON_INPUT               = "input";
   const std::string Recorder::JSON_INPUT_CONFIGURATION = "inputConfiguration";

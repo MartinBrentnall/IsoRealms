@@ -21,21 +21,21 @@
 #include <cmath>
 #include <functional>
 #include <limits>
+#include <memory>
+#include <optional>
 #include <set>
 #include <stack>
 #include <GL/glew.h>
 
 #include "IsoRealms/AnimatedFloat.h"
-#include "IsoRealms/Condition/Condition.h"
-#include "IsoRealms/Editing/UISignalID.h"
-#include "IsoRealms/IApplication.h"
-#include "IsoRealms/System.h"
-#include "IsoRealms/Utils.h"
+#include "IsoRealms/Condition/ConditionElement.h"
 
-#include "IPropertyManager.h"
+#include "IPropertyEditor.h"
 #include "Property.h"
 
 namespace IsoRealms {
+  class Condition;
+
   class PropertyCondition : public Property {
     public:
     PropertyCondition(const std::string& label, const std::string& tooltip, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);

@@ -18,8 +18,6 @@
  */
 #pragma once
 
-#include <iostream>
-
 #define RAPIDJSON_HAS_STDSTRING 1
 
 #include "rapidjson/document.h"

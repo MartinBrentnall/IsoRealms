@@ -23,9 +23,10 @@
 #include <variant>
 
 #include "IAssetRegistry.h"
-#include "IAssetRemover.h"
 
 namespace IsoRealms {
+  class IAssetRemover;
+
   class ResourceAssetRegistry : public IAssetRegistry {
     public:
     ResourceAssetRegistry(IAssetRegistry& assetRegistry, const std::string& localPath);
@@ -77,29 +78,9 @@ namespace IsoRealms {
       cRegisteredAssets.emplace_back(asset);
     }
     
-    void unregisterAssets(IAssetRemover& remover) {
-      for (AssetVariant& mAsset : cRegisteredAssets) {
-        std::visit([this, &remover](auto* asset) {
-          remover.remove(asset);
-        }, mAsset);
-      }
-    }
-
-    bool hasReadOnlyReferences(IAssetRemover& remover) const {
-      return std::ranges::any_of(cRegisteredAssets, [&remover](const AssetVariant& asset) {
-        return std::visit([&remover](auto* asset) {
-          return remover.hasReadOnlyReferences(asset);
-        }, asset);
-      });
-    }
-    
-    void overrideReadOnlyReferences(IAssetRemover& remover) {
-      std::ranges::for_each(cRegisteredAssets, [&remover](const AssetVariant& asset) {
-        std::visit([&remover](auto* asset) {
-          remover.overrideReadOnlyReferences(asset);
-        }, asset);
-      });
-    }
+    void unregisterAssets(IAssetRemover& remover);
+    bool hasReadOnlyReferences(IAssetRemover& remover) const;
+    void overrideReadOnlyReferences(IAssetRemover& remover);
 
     /*****************************\
      * Implements IAssetRegistry *

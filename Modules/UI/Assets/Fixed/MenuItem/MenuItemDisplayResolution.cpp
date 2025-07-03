@@ -18,6 +18,8 @@
  */
 #include "MenuItemDisplayResolution.h"
 
+#include "IsoRealms/Editing.h"
+
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {

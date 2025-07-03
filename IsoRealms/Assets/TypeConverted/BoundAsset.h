@@ -23,8 +23,6 @@
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/Editing/Property/PropertyAsset.h"
 #include "IsoRealms/Lua/LuaState.h"
-#include "IsoRealms/IAssetRemover.h"
-#include "IsoRealms/IAssets.h"
 
 namespace IsoRealms {
   template <class OWNER, class TYPE> class BoundAsset : public IBinding {

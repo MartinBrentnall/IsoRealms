@@ -18,6 +18,13 @@
  */
 #include "Choice.h"
 
+#include "IsoRealms/IApplication.h"
+#include "IsoRealms/IProject.h"
+#include "IsoRealms/Utils.h"
+
+#include "IUIStyle.h"
+#include "UISignalID.h"
+
 namespace IsoRealms {
   Choice::Choice(IUIStyle& style, const std::string& message, const std::vector<std::string>& options, std::function<bool(const std::string&)> confirmationCallback) :
             cMessage(message),

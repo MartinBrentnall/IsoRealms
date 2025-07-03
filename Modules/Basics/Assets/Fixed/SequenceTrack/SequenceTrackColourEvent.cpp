@@ -18,6 +18,8 @@
  */
 #include "SequenceTrackColourEvent.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Basics {
   SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade) :
             cDefTime(time),

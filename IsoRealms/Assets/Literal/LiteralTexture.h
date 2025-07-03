@@ -19,14 +19,16 @@
 #pragma once
 
 #include <GL/glew.h>
+
 #include <iostream>
 #include <vector>
 
 #include "IsoRealms/Assets/Type/ITexture.h"
-#include "IsoRealms/Assets/Type/ITextureUseListener.h"
-#include "IsoRealms/IProject.h"
 
 namespace IsoRealms {
+  class IProject;
+  class ITextureUseListener;
+
   class LiteralTexture : public ITexture {
     public:
     LiteralTexture(IProject& project, int width, int height, bool clampX = false, bool clampY = false, bool depth = false);

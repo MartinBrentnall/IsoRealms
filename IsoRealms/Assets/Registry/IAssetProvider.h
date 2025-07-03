@@ -18,10 +18,10 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/JSONObject.h"
-
 namespace IsoRealms {
-  template <class OWNER, class TYPE> class IAssetProvider {
+  class JSONObject;
+
+  template<class OWNER, class TYPE> class IAssetProvider {
     public:
     virtual TYPE* getAsset(OWNER& owner, JSONObject object) = 0;
     virtual TYPE* getAsset(OWNER& owner) = 0;

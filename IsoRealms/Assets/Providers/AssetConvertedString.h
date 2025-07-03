@@ -24,8 +24,6 @@
 #include "IsoRealms/Assets/TypeConverted/PrimitiveToString.h"
 
 namespace IsoRealms {
-  class Project;
-
   template <class FROM> class AssetConvertedString : public IAssetProvider<IResourceData, IString> {
     public:
     AssetConvertedString(IProject& project) :

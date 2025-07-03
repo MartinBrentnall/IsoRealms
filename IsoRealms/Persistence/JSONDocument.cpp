@@ -18,7 +18,12 @@
  */
 #include "JSONDocument.h"
 
+#include "IsoRealms/System.h"
 #include "IsoRealms/Utils.h"
+
+#include "JSONArray.h"
+#include "JSONObject.h"
+#include "ParseException.h"
 
 namespace IsoRealms {
   JSONDocument::JSONDocument() :

@@ -22,8 +22,6 @@
 
 namespace IsoRealms {
   class IAssetRegistry;
-  class IAssetRemover;
-  class IAssets;
 
   namespace UI {
     class Menu;

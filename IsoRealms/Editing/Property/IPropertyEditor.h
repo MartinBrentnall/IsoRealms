@@ -22,11 +22,10 @@
 
 #include <SFML/Window.hpp>
 
-#include "IsoRealms/Assets/Type/IFont.h"
-#include "IsoRealms/Editing/IUIStyle.h"
-#include "IsoRealms/Editing/UISignalID.h"
-
 namespace IsoRealms {
+  class IUIStyle;
+  enum class UISignalID;
+
   class IPropertyEditor {
     public:
     virtual void render(IUIStyle& style, float y, float x, float aspectRatio) const = 0;

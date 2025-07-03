@@ -22,8 +22,6 @@
 #include <functional>
 #include <string>
 
-#include "IsoRealms/Utils.h"
-
 #include "PropertyInputField.h"
 
 namespace IsoRealms {

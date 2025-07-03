@@ -18,7 +18,7 @@
  */
 #include "LiteralColour.h"
 
-#include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Editing.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {

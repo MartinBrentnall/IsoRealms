@@ -20,13 +20,11 @@
 
 #include <GL/glew.h>
 
-#include "IsoRealms/Editing/IUIStyle.h"
-#include "IsoRealms/Utils.h"
-
-#include "IPropertyManager.h"
 #include "Property.h"
 
 namespace IsoRealms {
+  class IEditable;
+
   class PropertyEditor : public Property {
     public:
     PropertyEditor(const std::string& name, const std::string& tooltip, IEditable* editable);

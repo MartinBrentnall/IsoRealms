@@ -27,13 +27,13 @@
 
 #include "IsoRealms/AnimatedFloat.h"
 #include "IsoRealms/Editing/Choice.h"
-#include "IsoRealms/Editing/IUIStyle.h"
-#include "IsoRealms/Utils.h"
 
-#include "IPropertyManager.h"
+#include "IPropertyEditor.h"
 #include "Property.h"
 
 namespace IsoRealms {
+  class IProject;
+
   class PropertyCode : public Property {
     public:
     PropertyCode(IProject& project, const std::string& name, const std::string& tooltip, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction = nullptr);

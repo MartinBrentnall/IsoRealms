@@ -18,6 +18,8 @@
  */
 #include "SimpleFloat.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Basics {
   const std::string SimpleFloat::JSON_VALUE = "value";
 

@@ -18,6 +18,8 @@
  */
 #include "SimpleBoolean.h"
 
+#include "IsoRealms/Editing.h"
+
 namespace IsoRealms::Basics {
   const std::string SimpleBoolean::JSON_VALUE = "value";
 

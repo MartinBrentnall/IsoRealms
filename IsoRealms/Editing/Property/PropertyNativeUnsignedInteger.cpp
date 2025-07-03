@@ -18,6 +18,8 @@
  */
 #include "PropertyNativeUnsignedInteger.h"
 
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   PropertyNativeUnsignedInteger::PropertyNativeUnsignedInteger(const std::string& name, const std::string& tooltip, std::function<unsigned int()> getter, std::function<bool(unsigned int)> setter, std::function<void()> removeFunction) :
             PropertyInputField(name, tooltip, Utils::toString(getter()), removeFunction),

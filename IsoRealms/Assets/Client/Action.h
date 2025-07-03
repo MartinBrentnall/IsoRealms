@@ -22,9 +22,6 @@
 
 #include "IsoRealms/Assets/Type/IAction.h"
 #include "IsoRealms/IActionClient.h"
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Asset.h"
 

@@ -18,6 +18,8 @@
  */
 #include "Dummy.h"
 
+#include "IsoRealms/Persistence.h"
+
 namespace IsoRealms::Spindizzy {
   void Dummy::registerAssets(ITraitRegistry& registry) {
     // Nothing to do.

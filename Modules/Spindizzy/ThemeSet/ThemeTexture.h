@@ -20,7 +20,6 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/IAssetRegistry.h"
-#include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Types.h"
 

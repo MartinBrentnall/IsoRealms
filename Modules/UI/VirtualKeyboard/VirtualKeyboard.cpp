@@ -18,6 +18,8 @@
  */
 #include "VirtualKeyboard.h"
 
+#include "IsoRealms/Input.h"
+
 namespace IsoRealms::UI {
   const std::string VirtualKeyboard::JSON_FONT             = "font";
   const std::string VirtualKeyboard::JSON_ON_CONFIRM       = "onConfirm";

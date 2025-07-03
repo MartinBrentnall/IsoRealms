@@ -18,6 +18,8 @@
  */
 #include "HighScoreTable.h"
 
+#include "IsoRealms/Persistence.h"
+
 namespace IsoRealms::HighScore {
   HighScoreTable::HighScoreTable(JSONObject object) {
     cMaximumRecords = object.getInteger(JSON_RECORD_LIMIT);

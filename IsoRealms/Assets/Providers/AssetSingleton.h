@@ -21,6 +21,7 @@
 #include <string>
 
 #include "IsoRealms/Assets/Registry/IAssetProvider.h"
+#include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
   template<class OWNER, class TYPE> class AssetSingleton : public IAssetProvider<OWNER, TYPE> {

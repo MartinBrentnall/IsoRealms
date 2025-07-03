@@ -18,6 +18,14 @@
  */
 #include "PropertyCode.h"
 
+#include "IsoRealms/Common/ScreenArea.h"
+#include "IsoRealms/Editing/IUIStyle.h"
+#include "IsoRealms/IApplication.h"
+#include "IsoRealms/IProject.h"
+#include "IsoRealms/Utils.h"
+
+#include "IPropertyManager.h"
+
 namespace IsoRealms {
   PropertyCode::PropertyCode(IProject& project, const std::string& name, const std::string& tooltip, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) :
             Property(name, tooltip, removeFunction),

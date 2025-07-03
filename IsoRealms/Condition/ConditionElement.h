@@ -21,9 +21,11 @@
 #include <iostream>
 #include <string>
 
-#include "IsoRealms/Types.h"
-
 namespace IsoRealms {
+  class JSONObject;
+  class IBoolean;
+  class IScreen;
+
   class ConditionElement {
     public:
     class Clause {

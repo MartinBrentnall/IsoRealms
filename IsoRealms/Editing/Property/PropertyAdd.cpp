@@ -18,6 +18,11 @@
  */
 #include "PropertyAdd.h"
 
+#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Editing/IUIStyle.h"
+
+#include "IPropertyManager.h"
+
 namespace IsoRealms {
   PropertyAdd::PropertyAdd(const std::string& name, const std::string& tooltip, const std::string& value, std::function<std::unique_ptr<IProperty>()> addPropertyFunction) :
             Property(name, tooltip, nullptr),

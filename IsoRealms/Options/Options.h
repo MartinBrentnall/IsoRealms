@@ -23,8 +23,6 @@
 #include <map>
 #include <string>
 
-#include "IsoRealms/Exception/ApplicationException.h"
-
 #include "IOptions.h"
 
 namespace IsoRealms {

@@ -23,8 +23,6 @@
 #include <string>
 
 #include "IsoRealms/IAssetRegistry.h"
-#include "IsoRealms/IAssetRemover.h"
-#include "IsoRealms/IAssets.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Literals.h"

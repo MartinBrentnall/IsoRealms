@@ -24,8 +24,6 @@
 #include "IEditableScreen.h"
 
 namespace IsoRealms {
-  class IAssetRegistry;
-  class IAssetRemover;
   class Project;
 
   /**

@@ -26,7 +26,6 @@
 #include "Editing/Property/IProperty.h"
 #include "Exception/ResourceInitException.h"
 #include "IAssetRegistry.h"
-#include "IAssetRemover.h"
 #include "IAssets.h"
 #include "IModuleHandle.h"
 #include "IProject.h"

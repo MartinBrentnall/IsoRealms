@@ -21,6 +21,7 @@
 #include <string>
 
 namespace IsoRealms {
+  class IAssetRegistry;
 
   /**
    * Interface to a analogue input mapping on which input events can be tested

@@ -22,8 +22,6 @@
 #include <string>
 
 #include "IsoRealms/IAssetRegistry.h"
-#include "IsoRealms/IAssetRemover.h"
-#include "IsoRealms/IAssets.h"
 #include "IsoRealms/Input/AxisMapping.h"
 #include "IsoRealms/Input/ButtonMapping.h"
 #include "IsoRealms/Input/HatHandler.h"

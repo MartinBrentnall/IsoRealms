@@ -21,10 +21,8 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/ITexture.h"
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/JSONDocument.h"
-#include "IsoRealms/Utils.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IStateListener.h"
 
 #include "Asset.h"
 

@@ -20,11 +20,8 @@
 
 #include <sol.hpp>
 
-#include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/Assets/Type/IString.h"
 #include "IsoRealms/Editing/Property/PropertyAsset.h"
-#include "IsoRealms/Lua/LuaState.h"
-#include "IsoRealms/IAssetRemover.h"
-#include "IsoRealms/IAssets.h"
 
 namespace IsoRealms {
   template <class T> class PrimitiveToString : public IString {

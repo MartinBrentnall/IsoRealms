@@ -19,8 +19,9 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
   class IAssetBrowser;

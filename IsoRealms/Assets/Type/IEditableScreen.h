@@ -25,7 +25,6 @@
 
 namespace IsoRealms {
   class Action;
-  class IAssetRemover;
 
   class IEditableScreen : public IScreen,
                           public IInputHandler {

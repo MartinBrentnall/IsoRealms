@@ -18,6 +18,8 @@
  */
 #include "PropertyNativeFloat.h"
 
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   PropertyNativeFloat::PropertyNativeFloat(const std::string& name, const std::string& tooltip, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) :
             PropertyInputField(name, tooltip, Utils::toString(getter()), removeFunction),

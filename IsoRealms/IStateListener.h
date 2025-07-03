@@ -24,7 +24,7 @@ namespace IsoRealms {
    * Interface to be implemented by those wishing to be notified of changes to
    * the state of an object.
    */
-  template <class T> class IStateListener {
+  template<class T> class IStateListener {
     public:
       
     /**

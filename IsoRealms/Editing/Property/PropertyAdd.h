@@ -20,13 +20,11 @@
 
 #include <limits>
 #include <functional>
+#include <memory>
 #include <string>
 
 #include <GL/glew.h>
 
-#include "IsoRealms/Utils.h"
-
-#include "IPropertyManager.h"
 #include "Property.h"
 
 namespace IsoRealms {

@@ -18,6 +18,9 @@
  */
 #include "DigitalInput.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Persistence.h"
+
 namespace IsoRealms::Basics {
   const std::string DigitalInput::JSON_BUTTON_DOWN       = "ButtonDown";
   const std::string DigitalInput::JSON_HAT               = "Hat";

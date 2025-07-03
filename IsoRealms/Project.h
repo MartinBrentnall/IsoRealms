@@ -23,13 +23,8 @@
 #include <set>
 #include <string>
 
-#define RAPIDJSON_HAS_STDSTRING 1
-
-#include "rapidjson/document.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/prettywriter.h"
-
-#include "Assets/Client/ModuleChooser.h"
+#include "Assets/Literal/LiteralBindingType.h"
+#include "Assets/Registry/AssetClientManager.h"
 #include "Assets/Dummy/DummyAction.h"
 #include "Assets/Dummy/DummyAssets.h"
 #include "Assets/Dummy/DummyBinding.h"
@@ -41,7 +36,6 @@
 #include "Assets/Dummy/DummyProjectOptions.h"
 #include "Assets/Dummy/DummyScreen.h"
 #include "Assets/Dummy/DummyTexture.h"
-#include "Assets/Literal/LiteralBindingType.h"
 #include "Assets/Providers/AssetConvertedBinding.h"
 #include "Assets/Providers/AssetConvertedString.h"
 #include "Assets/Providers/AssetConvertedProjectToInteger.h"
@@ -54,21 +48,18 @@
 #include "Assets/Providers/AssetLiteralString.h"
 #include "Assets/Providers/AssetLiteralVertex.h"
 #include "Assets/Providers/AssetLocalBinding.h"
-#include "Assets/Registry/AssetClientManager.h"
-#include "Assets/Type/IScreenListener.h"
-#include "DisplayResolution.h"
-#include "IAssetBrowser.h"
-#include "IAssetOverride.h"
-#include "IAssetRemover.h"
+#include "Editing.h"
 #include "ICallbackHandle.h"
+#include "IResourceData.h"
 #include "Lua.h"
+#include "Module.h"
 #include "Options/LocalOptions.h"
 #include "Options/Options.h"
-#include "Persistence/JSONDocument.h"
-#include "Module.h"
 #include "Types.h"
 
 namespace IsoRealms {
+  class IAssetOverride;
+  class IScreenListener;
 
   /**
    * The Project is the root object of an IsoRealms game or application.  The

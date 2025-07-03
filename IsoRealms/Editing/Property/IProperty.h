@@ -20,10 +20,9 @@
 
 #include <string>
 
-#include "IPropertyEditor.h"
-
 namespace IsoRealms {
   class IPropertyManager;
+  class IUIStyle;
   
   class IProperty {
     public:

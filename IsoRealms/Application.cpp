@@ -18,6 +18,8 @@
  */
 #include "Application.h"
 
+#include "IsoRealms/Persistence.h"
+
 namespace IsoRealms {
   const std::string Application::JSON_FULL_SCREEN = "fullScreen";
   const std::string Application::JSON_HEIGHT      = "height";
