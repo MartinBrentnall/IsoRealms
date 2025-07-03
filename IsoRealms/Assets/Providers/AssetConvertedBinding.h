@@ -26,18 +26,19 @@
 namespace IsoRealms {
   class IResourceData;
 
-  template <class FROM> class AssetConvertedBinding : public IAssetProvider<IResourceData, IBinding> {
+  template <class OWNER, class FROM> class AssetConvertedBinding : public IAssetProvider<IResourceData, IBinding> {
     public:
-    AssetConvertedBinding(IProject& project) :
-              cProject(project) {
+    AssetConvertedBinding(IProject& project, OWNER& owner) :
+              cProject(project),
+              cOwner(owner) {
     }
 
-    IBinding* getAsset(IResourceData& owner, JSONObject object) const override {
-      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(owner, object)).first->get();
+    IBinding* getAsset(IResourceData& owner, JSONObject object) override {
+      return cBoundAssets.emplace(std::make_unique<BoundAsset<OWNER, FROM>>(cOwner, object)).first->get();
     }
 
-    IBinding* getAsset(IResourceData& owner) const override {
-      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(owner)).first->get();
+    IBinding* getAsset(IResourceData& owner) override {
+      return cBoundAssets.emplace(std::make_unique<BoundAsset<OWNER, FROM>>(cOwner)).first->get();
     }
     
     void releaseAsset(const IBinding* asset) override {
@@ -54,6 +55,7 @@ namespace IsoRealms {
 
     private:
     IProject& cProject;
+    OWNER& cOwner;
     mutable std::set<std::unique_ptr<IBinding>> cBoundAssets;
   };
 }

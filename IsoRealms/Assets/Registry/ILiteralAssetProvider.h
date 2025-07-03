@@ -25,6 +25,6 @@
 namespace IsoRealms {
   template <class OWNER, class TYPE> class ILiteralAssetProvider : public IAssetProvider<OWNER, TYPE> {
     public:
-    virtual TYPE* getLiteralAsset(OWNER& owner, const std::string& value) const = 0;
+    virtual TYPE* getLiteralAsset(OWNER& owner, const std::string& value) = 0;
   };
 }

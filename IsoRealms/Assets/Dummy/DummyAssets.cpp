@@ -26,8 +26,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  ActionExecutor*  DummyAssets::createLiteralAction(        IAssetUser<ActionExecutor>*  user, IResourceData& owner) {return nullptr;}
-  IActionType*     DummyAssets::createLiteralActionType(    IAssetUser<IActionType>*     user, IResourceData& owner) {return nullptr;}
+  IAction*         DummyAssets::createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) {return nullptr;}
   IAssets*         DummyAssets::createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) {return nullptr;}
   IBinding*        DummyAssets::createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner) {return nullptr;}
   IBindingType*    DummyAssets::createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) {return nullptr;}
@@ -45,8 +44,7 @@ namespace IsoRealms {
   ITexture*        DummyAssets::createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) {return nullptr;}
   IVertex*         DummyAssets::createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) {return nullptr;}
 
-  ActionExecutor*  DummyAssets::getAction(        IAssetUser<ActionExecutor>*  user, JSONObject object, IResourceData& owner, const std::string& tag, IBindingRegistry* registry) {return nullptr;}
-  IActionType*     DummyAssets::getActionType(    IAssetUser<IActionType>*     user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
+  IAction*         DummyAssets::getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return nullptr;}
   IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
   IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals,            bool required) {return nullptr;}
   IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
@@ -64,8 +62,7 @@ namespace IsoRealms {
   ITexture*        DummyAssets::getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required) {return nullptr;}
   IVertex*         DummyAssets::getVertex(        IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
 
-  ActionExecutor*  DummyAssets::getAction(        IAssetUser<ActionExecutor>*  user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
-  IActionType*     DummyAssets::getActionType(    IAssetUser<IActionType>*     user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IAction*         DummyAssets::getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner)                                                {return nullptr;}
   IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
   IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
   IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
@@ -83,8 +80,7 @@ namespace IsoRealms {
   ITexture*        DummyAssets::getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener = nullptr) {return nullptr;}
   IVertex*         DummyAssets::getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
 
-  void DummyAssets::release(IAssetUser<ActionExecutor>*  user, ActionExecutor*  asset) {}
-  void DummyAssets::release(IAssetUser<IActionType>*     user, IActionType*     asset) {}
+  void DummyAssets::release(IAssetUser<IAction>*         user, IAction*         asset) {}
   void DummyAssets::release(IAssetUser<IAssets>*         user, IAssets*         asset) {}
   void DummyAssets::release(IAssetUser<IBinding>*        user, IBinding*        asset) {}
   void DummyAssets::release(IAssetUser<IBindingType>*    user, IBindingType*    asset) {}

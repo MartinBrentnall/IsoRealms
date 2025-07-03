@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/ResourceDefinition.h"
@@ -84,6 +85,9 @@ namespace IsoRealms::Spindizzy {
 
     // External interfaces.
     Spindizzy& cSpindizzy;
+    
+    // Action client.
+    ActionClient cActionClient;
 
     // Definition data.
     BoundaryType cDefBoundaryType;     /// Boundary type to handle.

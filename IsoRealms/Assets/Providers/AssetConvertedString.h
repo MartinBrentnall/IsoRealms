@@ -32,11 +32,11 @@ namespace IsoRealms {
               cProject(project) {
     }
 
-    IString* getAsset(IResourceData& owner, JSONObject object) const override {
+    IString* getAsset(IResourceData& owner, JSONObject object) override {
       return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(owner, object)).first->get();
     }
 
-    IString* getAsset(IResourceData& owner) const override {
+    IString* getAsset(IResourceData& owner) override {
       return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(owner)).first->get();
     }
     

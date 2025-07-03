@@ -27,28 +27,28 @@ namespace IsoRealms::Basics {
   const std::string Binding::JSON_TO       = "to";
   const std::string Binding::JSON_VARIABLE = "variable";
 
-  Binding::Binding(Function& parent, IBindingRegistry* localArgs, const std::string& name) :
+  Binding::Binding(Function& parent, IActionClient& owner, const std::string& name) :
             cParent(parent),
             cDefName(name),
-            cDefValue(parent.getResourceData(), localArgs, [this]() {
-              std::string mNewBindingID = cDefValue.getID();
-              std::size_t mLastSeparator = mNewBindingID.rfind('/');
-              if (mLastSeparator != std::string::npos) {
-                mNewBindingID = mNewBindingID.substr(mLastSeparator + 1);
-              }
-              std::string mStrippedID;
-              for (unsigned int i = 0; i < mNewBindingID.length(); i++) {
-                char mChar = std::toupper(mNewBindingID[i]);
-                if ((mChar >= 'A' && mChar <= 'Z') || (mChar >= '0' && mChar <= '9')) {
-                  mStrippedID += (mStrippedID.empty() ? std::tolower(mNewBindingID[i]) : mNewBindingID[i]);
-                }
-              }
-              cParent.setBindingName(*this, mStrippedID);
-            }) {
+            cDefValue(owner) { //, [this]() {
+            //   std::string mNewBindingID = cDefValue.getID();
+            //   std::size_t mLastSeparator = mNewBindingID.rfind('/');
+            //   if (mLastSeparator != std::string::npos) {
+            //     mNewBindingID = mNewBindingID.substr(mLastSeparator + 1);
+            //   }
+            //   std::string mStrippedID;
+            //   for (unsigned int i = 0; i < mNewBindingID.length(); i++) {
+            //     char mChar = std::toupper(mNewBindingID[i]);
+            //     if ((mChar >= 'A' && mChar <= 'Z') || (mChar >= '0' && mChar <= '9')) {
+            //       mStrippedID += (mStrippedID.empty() ? std::tolower(mNewBindingID[i]) : mNewBindingID[i]);
+            //     }
+            //   }
+            //   cParent.setBindingName(*this, mStrippedID);
+            // }) {
   }
 
-  Binding::Binding(Function& parent, IBindingRegistry* localArgs, bool init, JSONObject object) :
-            Binding(parent, localArgs, object.getString(JSON_VARIABLE)) {
+  Binding::Binding(Function& parent, IActionClient& owner, bool init, JSONObject object) :
+            Binding(parent, owner, object.getString(JSON_VARIABLE)) {
     if (object.hasMember(JSON_TO)) {
       if (init) {
         cDefValue.init(object, JSON_TO);

@@ -35,7 +35,7 @@ namespace IsoRealms::Replay {
             cProjectCallbackManager(project),
             cParentProject(project),
             cFilename(""),
-            cQuitAction(data) {
+            cQuitAction(data.getDummyActionClient()) {
     cElapsedTime = 0;
     cFinished    = false;
   }
@@ -221,7 +221,7 @@ namespace IsoRealms::Replay {
     return nullptr;
   }
 
-  IActionType* Player::getActionType(JSONObject object, IStateListener<IActionType*>* listener) const {
+  IAction* Player::getAction(JSONObject object, IStateListener<IAction*>* listener) const {
     return nullptr;
   }
 

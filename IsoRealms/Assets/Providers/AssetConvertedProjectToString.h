@@ -33,14 +33,14 @@ namespace IsoRealms {
 
     protected:
 
-    IString* getAsset(IResourceData& owner, JSONObject object) const override {
+    IString* getAsset(IResourceData& owner, JSONObject object) override {
       IAssets* mAssets = cProject.getAssets(&cDummyUser, object.getObject(JSON_PROJECT), owner);
       return mAssets->getString(&cDummyUser, object.getObject(JSON_VALUE), owner);
 
 //      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(JSON_VALUE), nullptr);})).first->get();
     }
 
-    IString* getAsset(IResourceData& owner) const override {
+    IString* getAsset(IResourceData& owner) override {
       return nullptr; // TODO: Implement this.
     }
     

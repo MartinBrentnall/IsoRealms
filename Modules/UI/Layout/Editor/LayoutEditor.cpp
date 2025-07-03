@@ -549,7 +549,7 @@ namespace IsoRealms::UI {
     cAnalogueInputsByName.find(name)->second->set(input);
   }
 
-  void LayoutEditor::setExitAction(ActionExecutor* action) {
+  void LayoutEditor::setExitAction(Action* action) {
     cExitAction = action;
   }
 

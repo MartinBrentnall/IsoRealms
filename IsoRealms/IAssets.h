@@ -27,10 +27,8 @@
 #include "IStateListener.h"
 
 namespace IsoRealms {
-  class ActionExecutor;
-  class IModelInstance;
-  class IModel;
-  class IActionType;
+  class IAction;
+  class IActionClient;
   class IAssetRegistry;
   class IBinding;
   class IBindingRegistry;
@@ -44,6 +42,8 @@ namespace IsoRealms {
   class IFont;
   class IInputHandler;
   class IInteger;
+  class IModel;
+  class IModelInstance;
   class IScreen;
   class IScreenListener;
   class IProject;
@@ -56,8 +56,7 @@ namespace IsoRealms {
 
   class IAssets : public IAsset {
     public:
-    virtual ActionExecutor*  createLiteralAction(        IAssetUser<ActionExecutor>*  user, IResourceData& owner) = 0;
-    virtual IActionType*     createLiteralActionType(    IAssetUser<IActionType>*     user, IResourceData& owner) = 0;
+    virtual IAction*         createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) = 0;
     virtual IAssets*         createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) = 0;
     virtual IBinding*        createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner) = 0;
     virtual IBindingType*    createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) = 0;
@@ -75,8 +74,7 @@ namespace IsoRealms {
     virtual ITexture*        createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) = 0;
     virtual IVertex*         createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) = 0;
 
-    virtual ActionExecutor*  getAction(        IAssetUser<ActionExecutor>*  user, JSONObject object, IResourceData& owner, const std::string& tag, IBindingRegistry* = nullptr) = 0;
-    virtual IActionType*     getActionType(    IAssetUser<IActionType>*     user, JSONObject object, IResourceData& owner,                                                bool required = true) = 0;
+    virtual IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                                bool required = true) = 0;
     virtual IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                                bool required = true) = 0;
     virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals = nullptr,            bool required = true) = 0;
     virtual IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                                bool required = true) = 0;
@@ -94,8 +92,7 @@ namespace IsoRealms {
     virtual ITexture*        getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener = nullptr, bool required = true) = 0;
     virtual IVertex*         getVertex(        IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                                bool required = true) = 0;
 
-    virtual ActionExecutor*  getAction(        IAssetUser<ActionExecutor>*  user, const std::string& id, IResourceData& owner) = 0;
-    virtual IActionType*     getActionType(    IAssetUser<IActionType>*     user, const std::string& id, IResourceData& owner) = 0;
+    virtual IAction*         getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner) = 0;
     virtual IAssets*         getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner) = 0;
     virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner) = 0;
     virtual IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner) = 0;
@@ -113,8 +110,7 @@ namespace IsoRealms {
     virtual ITexture*        getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener = nullptr) = 0;
     virtual IVertex*         getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner) = 0;
 
-    virtual void release(IAssetUser<ActionExecutor>*  user, ActionExecutor*  asset) = 0;
-    virtual void release(IAssetUser<IActionType>*     user, IActionType*     asset) = 0;
+    virtual void release(IAssetUser<IAction>*         user, IAction*         asset) = 0;
     virtual void release(IAssetUser<IAssets>*         user, IAssets*         asset) = 0;
     virtual void release(IAssetUser<IBinding>*        user, IBinding*        asset) = 0;
     virtual void release(IAssetUser<IBindingType>*    user, IBindingType*    asset) = 0;

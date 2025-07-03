@@ -30,13 +30,13 @@ namespace IsoRealms {
               cProject(project) {
     }
     
-    BASE* getAsset(OWNER& owner, JSONObject object) const override {
+    BASE* getAsset(OWNER& owner, JSONObject object) override {
       std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, owner, object);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
 
-    BASE* getAsset(OWNER& owner) const override {
+    BASE* getAsset(OWNER& owner) override {
       std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, owner);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();

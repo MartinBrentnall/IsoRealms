@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   class IAction;
-  class IActionType;
+  class IActionClient;
   class IAssets;
   class IBinding;
   class IBindingType;
@@ -44,7 +44,7 @@ namespace IsoRealms {
 
   class IAssetRemover {
     public:
-    virtual void remove(IAssetProvider<IResourceData, IActionType>*     provider) = 0;
+    virtual void remove(IAssetProvider<IActionClient, IAction>*         provider) = 0;
     virtual void remove(IAssetProvider<IResourceData, IBinding>*        provider) = 0;
     virtual void remove(IAssetProvider<IResourceData, IBindingType>*    provider) = 0;
     virtual void remove(IAssetProvider<IResourceData, IBoolean>*        provider) = 0;
@@ -62,7 +62,7 @@ namespace IsoRealms {
     virtual void remove(IAssetProvider<IResourceData, ITexture>*        provider) = 0;
     virtual void remove(IAssetProvider<IResourceData, IVertex>*         provider) = 0;
 
-    virtual void remove(IActionType*     asset) = 0;
+    virtual void remove(IAction*         asset) = 0;
     virtual void remove(IBinding*        asset) = 0;
     virtual void remove(IBindingType*    asset) = 0;
     virtual void remove(IBoolean*        asset) = 0;
@@ -80,7 +80,7 @@ namespace IsoRealms {
     virtual void remove(ITexture*        asset) = 0;
     virtual void remove(IVertex*         asset) = 0;
 
-    virtual bool hasReadOnlyReferences(IAssetProvider<IResourceData, IActionType>*     provider) = 0;
+    virtual bool hasReadOnlyReferences(IAssetProvider<IActionClient, IAction>*         provider) = 0;
     virtual bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) = 0;
     virtual bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) = 0;
     virtual bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) = 0;
@@ -98,7 +98,7 @@ namespace IsoRealms {
     virtual bool hasReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) = 0;
     virtual bool hasReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) = 0;
 
-    virtual bool hasReadOnlyReferences(IActionType*     asset) = 0;
+    virtual bool hasReadOnlyReferences(IAction*         asset) = 0;
     virtual bool hasReadOnlyReferences(IBinding*        asset) = 0;
     virtual bool hasReadOnlyReferences(IBindingType*    asset) = 0;
     virtual bool hasReadOnlyReferences(IBoolean*        asset) = 0;
@@ -116,7 +116,7 @@ namespace IsoRealms {
     virtual bool hasReadOnlyReferences(ITexture*        asset) = 0;
     virtual bool hasReadOnlyReferences(IVertex*         asset) = 0;
     
-    virtual void overrideReadOnlyReferences(IAssetProvider<IResourceData, IActionType>*     provider) = 0;
+    virtual void overrideReadOnlyReferences(IAssetProvider<IActionClient, IAction>*         provider) = 0;
     virtual void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) = 0;
     virtual void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) = 0;
     virtual void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) = 0;
@@ -134,7 +134,7 @@ namespace IsoRealms {
     virtual void overrideReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) = 0;
     virtual void overrideReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) = 0;
 
-    virtual void overrideReadOnlyReferences(IActionType*     asset) = 0;
+    virtual void overrideReadOnlyReferences(IAction*         asset) = 0;
     virtual void overrideReadOnlyReferences(IBinding*        asset) = 0;
     virtual void overrideReadOnlyReferences(IBindingType*    asset) = 0;
     virtual void overrideReadOnlyReferences(IBoolean*        asset) = 0;

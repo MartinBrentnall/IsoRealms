@@ -25,7 +25,6 @@ namespace IsoRealms {
   // Forward declaration of asset type classes.
   class JSONObject;
   class IAction;
-  class IActionType;
   class IAssets;
   class IBinding;
   class IBindingType;
@@ -49,7 +48,7 @@ namespace IsoRealms {
    */
   class IAssetIdentifier {
     public:
-    virtual std::string getID(const IActionType*     asset) const = 0;
+    virtual std::string getID(const IAction*         asset) const = 0;
     virtual std::string getID(const IAssets*         asset) const = 0;
     virtual std::string getID(const IBinding*        asset) const = 0;
     virtual std::string getID(const IBindingType*    asset) const = 0;
@@ -67,7 +66,7 @@ namespace IsoRealms {
     virtual std::string getID(const ITexture*        asset) const = 0;
     virtual std::string getID(const IVertex*         asset) const = 0;
 
-    virtual void save(JSONObject object, const IActionType*     asset) const = 0;
+    virtual void save(JSONObject object, const IAction*         asset) const = 0;
     virtual void save(JSONObject object, const IAssets*         asset) const = 0;
     virtual void save(JSONObject object, const IBinding*        asset) const = 0;
     virtual void save(JSONObject object, const IBindingType*    asset) const = 0;

@@ -30,11 +30,11 @@ namespace IsoRealms::Basics {
   const std::string Function::JSON_VARIABLE      = "variable";
 
   Function::Function(IProject& project, Basics& basics, IResourceData& data) :
-            Function(project, "", data) {
+            Function(project, "", data.getDummyActionClient()) {
   }
     
   Function::Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
-            Function(project, object.getString(JSON_ID), data, object, nullptr, true) {
+            Function(project, object.getString(JSON_ID), data.getDummyActionClient(), object, true) {
   }
 
   void Function::registerAssets(IAssetRegistry& assets) {
@@ -63,12 +63,12 @@ namespace IsoRealms::Basics {
   }
   
   bool Function::renderIcon() const {
-    return renderAssetIcon();
+    return renderAssetProviderIcon();
   }
 
   std::vector<std::unique_ptr<IProperty>> Function::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("Bindings", "TODO", "Edit...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyStruct>("Bindings", "TODO", "Edit...", [this, &owner]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
         mProperties.emplace_back(std::make_unique<PropertyStruct>(mBinding->getName(), "TODO", "Edit...", [&mBinding]() {
@@ -77,8 +77,8 @@ namespace IsoRealms::Basics {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
         }));
       }
-      mProperties.emplace_back(std::make_unique<PropertyAdd>("Binding", "TODO", "New...", [this]() {
-        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, nullptr, getNextAvailableName("newBinding"))).get();
+      mProperties.emplace_back(std::make_unique<PropertyAdd>("Binding", "TODO", "New...", [this, &owner]() {
+        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, owner.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
         return std::make_unique<PropertyStruct>(mNewBinding->getName(), "TODO", "Edit...", [mNewBinding]() {
           return mNewBinding->getProperties();
         }, [this, mNewBinding]() {
@@ -110,22 +110,22 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
   
-  Function::Function(IProject& project, const std::string& name, IResourceData& data) :
+  Function::Function(IProject& project, const std::string& name, IActionClient& owner) :
             cProject(project),
-            cResourceData(data),
+            cResourceData(owner.getResourceData()),
             cDefLuaState(project.getLuaState()->getState()),
             cDefName(name) {
   }
 
-  Function::Function(IProject& project, const std::string& name, IResourceData& data, JSONObject object, IBindingRegistry* localArgs, bool init) :
-            Function(project, name, data) {
+  Function::Function(IProject& project, const std::string& name, IActionClient& owner, JSONObject object, bool init) :
+            Function(project, name, owner) {
     if (init) {
       for (JSONObject mArgumentObject : object.getArray(JSON_ARGUMENTS)) {
         cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(project, *this, mArgumentObject));
       }
     }
     for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {
-      cDefBindings.emplace_back(std::make_unique<Binding>(*this, localArgs, init, mBindingObject));
+      cDefBindings.emplace_back(std::make_unique<Binding>(*this, owner, init, mBindingObject));
     }
     cDefCode = object.getString(JSON_CODE);
     declare();
@@ -143,7 +143,7 @@ namespace IsoRealms::Basics {
         }));
       }
       mProperties.emplace_back(std::make_unique<PropertyAdd>("Binding", "TODO", "New...", [this]() {
-        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, nullptr, getNextAvailableName("newBinding"))).get();
+        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
         return std::make_unique<PropertyStruct>(mNewBinding->getName(), "TODO", "Edit...", [mNewBinding]() {
           return mNewBinding->getProperties();
         }, [this, mNewBinding]() {
@@ -209,30 +209,33 @@ namespace IsoRealms::Basics {
     return mProposedName;
   }
 
-  IAction* Function::createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) {
-    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, object, owner, localArgs);
+  IAction* Function::getAsset(IActionClient& owner, JSONObject object) {
+    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner, object);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
   }
 
-  IAction* Function::createAction(IResourceData& owner, IBindingRegistry* localArgs) {
-    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner, localArgs);
+  IAction* Function::getAsset(IActionClient& owner) {
+    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
   }  
 
-  void Function::destroyAction(IAction* action, IAssets& assets) {
-    std::map<IAction*, std::unique_ptr<Call>>::iterator mInstance = cInstances.find(action);
+  void Function::releaseAsset(const IAction* asset) {
+    std::map<const IAction*, std::unique_ptr<Call>>::iterator mInstance = cInstances.find(asset);
     if (mInstance == cInstances.end()) {
       throw std::invalid_argument("Specified action isn't derived from this function");
     }
-    mInstance->second->release(assets);
-    cInstances.erase(action);
+    cInstances.erase(asset);
   }
 
-  bool Function::renderAssetIcon() const {
+  bool Function::hasConfiguration() const {
+    return true;
+  }
+
+  bool Function::renderAssetProviderIcon() const {
     glBindTexture(GL_TEXTURE_2D, 0);
     glLineWidth(4.0f);
     glColor3f(1.0f, 1.0f, 0.5f);
@@ -247,96 +250,66 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void Function::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  std::vector<std::unique_ptr<IProperty>> Function::getAssetProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
-  }
-
-  bool Function::isDefaultConfiguration() const {
-    return false; // TODO: Implement this.
-  }
-
-  Function::Call::Call(Function& parent, IResourceData& owner, IBindingRegistry* localObjects) :
-            cDefParent(parent),
-            cDefLocalBindingRegistry(localObjects) {
-    for (unsigned int i = 0; i < cDefParent.cDefArgumentDefinitions.size(); i++) {
-      cDefArguments.emplace_back(std::make_unique<IsoRealms::Binding>(owner, cDefLocalBindingRegistry, cDefParent.cDefArgumentDefinitions[i]->getType()));
+  Function::Call::Call(Function& parent, IActionClient& owner) :
+            cParent(parent),
+            cOwner(owner) {
+    for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
+      cDefArguments.emplace_back(std::make_unique<IsoRealms::Binding>(owner, cParent.cDefArgumentDefinitions[i]->getType()));
     }
   }
 
-  Function::Call::Call(Function& parent, JSONObject object, IResourceData& owner, IBindingRegistry* localObjects) :
-            Call(parent, owner, localObjects) {
-    if (!cDefParent.cDefArgumentDefinitions.empty()) {
+  Function::Call::Call(Function& parent, IActionClient& owner, JSONObject object) :
+            Call(parent, owner) {
+    if (!cParent.cDefArgumentDefinitions.empty()) {
       for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {
         std::string mArgumentName = mBindingObject.getString(JSON_ARGUMENT);
-        unsigned int mBindingIndex = cDefParent.getDynamicBindingIndex(mArgumentName);
-        cDefArguments[mBindingIndex] = std::make_unique<IsoRealms::Binding>(owner, cDefLocalBindingRegistry, cDefParent.cDefArgumentDefinitions[mBindingIndex]->getType());
+        unsigned int mBindingIndex = cParent.getDynamicBindingIndex(mArgumentName);
+        cDefArguments[mBindingIndex] = std::make_unique<IsoRealms::Binding>(owner, cParent.cDefArgumentDefinitions[mBindingIndex]->getType());
         cDefArguments[mBindingIndex]->set(mBindingObject, JSON_TO);
       }
     }
   }
 
-  // TODO: What was the purpose of this?  I'm pretty sure this has no effect because the type of cDefArguments is different than asset?
-//   void Function::Call::relinquish(IBinding* asset) {
-//     for (unsigned int i = 0; i < cDefArguments.size(); i++) {
-//       if (cDefArguments[i] == asset) {
-//         cDefArguments[i] = std::make_unique<IsoRealms::Binding>(project, cDefLocalBindingRegistry);
-//       }
-//     }
-//   }
-
-  void Function::Call::release(IAssets& releaser) {
-    // TODO: I think this needs enabling... to be investigated.
-//     for (unsigned int i = 0; i < cDefArguments.size(); i++) {
-//       if (!cDefLocal[i] && !cDefParent.cDefArgumentDefinitions[i]->isDefaultValue(cDefArguments[i])) {
-//         releaser->release(cDefParent, cDefArguments[i]);
-//       }
-//     }
-  }
-
   void Function::Call::execute() {
-    // if (cDefParent.cDefName[0] != '_') {
-    //   std::cout << "Executing Function \"" << cDefParent.cDefName << "\"..." << std::endl;
+    // if (cParent.cDefName[0] != '_') {
+    //   std::cout << "Executing Function \"" << cParent.cDefName << "\"..." << std::endl;
     // } else {
-      std::cout << "\n\n\n\nExecuting \"" << cDefParent.cDefName  << "\": ===============================================================================" << std::endl << cDefParent.cDefCode << std::endl;
+      std::cout << "\n\n\n\nExecuting \"" << cParent.cDefName  << "\": ===============================================================================" << std::endl << cParent.cDefCode << std::endl;
     // }
     try {
-      for (unsigned int i = 0; i < cDefParent.cDefBindings.size(); i++) {
-        std::string mBindFunctionName = cDefParent.cDefName + "_arg" + Utils::toString(i);
-        IBinding* mBinding = cDefParent.cDefBindings[i]->getValue();
+      for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
+        std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(i);
+        IBinding* mBinding = cParent.cDefBindings[i]->getValue();
         mBinding->bind(mBindFunctionName);
       }
-      for (unsigned int i = 0; i < cDefParent.cDefArgumentDefinitions.size(); i++) {
-        std::string mBindFunctionName = cDefParent.cDefName + "_arg" + Utils::toString(static_cast<int>(i + cDefParent.cDefBindings.size()));
+      for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
+        std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(static_cast<int>(i + cParent.cDefBindings.size()));
         (**cDefArguments[i])->bind(mBindFunctionName);
       }
-      (*cDefParent.cDefLuaState)[cDefParent.cDefName]();
+      (*cParent.cDefLuaState)[cParent.cDefName]();
     } catch (sol::error& e) {
       std::cout << "Error in Script: " << e.what() << std::endl;
       throw e;
     }
   }
 
-  void Function::Call::save(JSONObject object) const {
+  bool Function::Call::renderAssetIcon() const {
+    return cParent.renderIcon();
+  }
+
+  void Function::Call::saveAsset(JSONObject object) const {
     JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
     for (unsigned int i = 0; i < cDefArguments.size(); i++) {
       JSONObject mBindingObject =  mBindingsArray.addObject();
-      cDefParent.cDefArgumentDefinitions[i]->saveCall(mBindingObject, JSON_ARGUMENT);
+      cParent.cDefArgumentDefinitions[i]->saveCall(mBindingObject, JSON_ARGUMENT);
       cDefArguments[i]->save(mBindingObject, JSON_TO);
     }
   }
 
-  bool Function::Call::hasConfiguration() const {
-    return !cDefArguments.empty();
-  }
-
   std::vector<std::unique_ptr<IProperty>> Function::Call::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    for (unsigned int i = 0; i < cDefParent.cDefArgumentDefinitions.size(); i++) {
-      std::string mArgumentName = cDefParent.cDefArgumentDefinitions[i]->getName();
+    for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
+      std::string mArgumentName = cParent.cDefArgumentDefinitions[i]->getName();
       std::unique_ptr<IsoRealms::Binding>& mBinding = cDefArguments[i];
       mProperties.emplace_back(std::make_unique<PropertyAsset<IsoRealms::Binding>>(mArgumentName, "TODO", *mBinding));
     }

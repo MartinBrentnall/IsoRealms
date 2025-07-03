@@ -30,15 +30,15 @@ namespace IsoRealms {
   // Maybe I can find a way to improve this later.
   template<class OWNER, class TYPE> class AssetCache {
     public:
-    TYPE* getCachedAsset(OWNER& owner, const std::string& value) const {
+    TYPE* getCachedAsset(OWNER& owner, const std::string& value) {
       return cCache.emplace_back(this->getUncachedAsset(owner, value)).get();
     }
 
-    TYPE* getCachedAsset(OWNER& owner, JSONObject object) const {
+    TYPE* getCachedAsset(OWNER& owner, JSONObject object) {
       return cCache.emplace_back(this->getUncachedAsset(owner, object)).get();
     }
     
-    TYPE* getCachedAsset(OWNER& owner) const {
+    TYPE* getCachedAsset(OWNER& owner) {
       return cCache.emplace_back(this->getUncachedAsset(owner)).get();
     }
 
@@ -49,8 +49,8 @@ namespace IsoRealms {
     private:
     mutable std::vector<std::unique_ptr<TYPE>> cCache;
 
-    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, const std::string& value) const = 0;
-    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, JSONObject object) const = 0;
-    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner) const = 0;
+    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, const std::string& value) = 0;
+    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, JSONObject object) = 0;
+    virtual std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner) = 0;
   };
 }

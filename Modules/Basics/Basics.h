@@ -127,7 +127,7 @@ namespace IsoRealms::Basics {
     static const std::string SEQUENCE_TRACK_COLOUR;
     static const std::string SEQUENCE_TRACK_FLOAT;
 
-    static const std::string ACTION_TYPE_SCRIPT;
+    static const std::string ACTION_SCRIPT;
 
     static const std::string JSON_ANALOGUE_INPUT_MAPPINGS;
     static const std::string JSON_DIGITAL_INPUT_MAPPINGS;
@@ -172,7 +172,7 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, SimpleVertex>      cResourceTypeSimpleVertex;
     ResourceTypeDefinition<Basics, Sprite>            cResourceTypeSprite;
 
-    Script cActionTypeScript;
+    Script cActionScript;
     LuaBinding<Basics> cLuaBinding;
 
     static float cSoundVolume;

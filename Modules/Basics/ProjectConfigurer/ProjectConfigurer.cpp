@@ -31,12 +31,13 @@ namespace IsoRealms::Basics {
 
   ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data) :
             cProjectCallbackManager(project),
+            cActionClient(data, *this),
             cDefFont(data),
             cDefCodeFont(data),
             cDefFontSize(0.03f),
             cDefCodeFontSize(0.02f),
-            cDefExitAction(data),
-            cDefEditorAction(data),
+            cDefExitAction(cActionClient),
+            cDefEditorAction(cActionClient),
             cProjectConfigurationUI(project, *this, [this]() {
               cDefExitAction.execute();
             }, [this](IEditable* editor) {
@@ -78,7 +79,7 @@ namespace IsoRealms::Basics {
     cDefFont.init(object, JSON_FONT);
     cDefCodeFont.init(object, JSON_CODE_FONT);
     cDefExitAction.init(object, JSON_ON_EXIT);
-    cDefEditorAction.init(object, JSON_ON_EDITOR, this);
+    cDefEditorAction.init(object, JSON_ON_EDITOR);
   }
 
   void ProjectConfigurer::registerAssets(IAssetRegistry& assets) {

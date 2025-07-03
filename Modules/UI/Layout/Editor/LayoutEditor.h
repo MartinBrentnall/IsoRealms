@@ -62,7 +62,7 @@ namespace IsoRealms::UI {
     std::vector<std::string> getAnalogueInputs() const override;
     void setDigitalInput(const std::string& name, IBoolean* input) override;
     void setAnalogueInput(const std::string& name, IFloat* input) override;
-    void setExitAction(ActionExecutor* action) override;
+    void setExitAction(Action* action) override;
     void setAppearance(IFont* font, float scale) override;
     IScreen* screen() override;
     
@@ -261,7 +261,7 @@ namespace IsoRealms::UI {
     EditorDigitalInput<LayoutEditor, SignalInputID> cUseTool;
     EditorDigitalInput<LayoutEditor, SignalInputID> cExit;
 
-    ActionExecutor* cExitAction;
+    Action* cExitAction;
 
     bool cSignalConsumed;
     bool cHasFocus;

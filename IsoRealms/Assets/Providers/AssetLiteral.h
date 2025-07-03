@@ -32,15 +32,15 @@ namespace IsoRealms {
     /******************************************\
      * Implements ILiteralAssetProvider<TYPE> *
     \******************************************/
-    TYPE* getLiteralAsset(OWNER& owner, const std::string& value) const override {
+    TYPE* getLiteralAsset(OWNER& owner, const std::string& value) override {
       return this->getCachedAsset(owner, value);
     }
 
-    TYPE* getAsset(OWNER& owner, JSONObject object) const override {
+    TYPE* getAsset(OWNER& owner, JSONObject object) override {
       return this->getCachedAsset(owner, object);
     }
 
-    TYPE* getAsset(OWNER& owner) const override {
+    TYPE* getAsset(OWNER& owner) override {
       return this->getCachedAsset(owner);
     }
     
@@ -51,15 +51,15 @@ namespace IsoRealms {
     /*******************************\
      * Implements AssetCache<TYPE> *
     \*******************************/
-    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, const std::string& value) const override {
+    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, const std::string& value) override {
       return createLiteralAsset(owner, value);
     }
 
-    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, JSONObject object) const override {
+    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, JSONObject object) override {
       return createLiteralAsset(owner, object);
     }
 
-    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner) const override {
+    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner) override {
       return createLiteralAsset(owner);
     }
 

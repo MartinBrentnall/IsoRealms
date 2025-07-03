@@ -19,41 +19,22 @@
 #pragma once
 
 #include "IsoRealms/Assets/Type/IAction.h"
-#include "IsoRealms/Assets/Type/IActionType.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
-  class IResourceData;
+  class IActionClient;
 
-  class DummyActionType : public IActionType {
+  class DummyAction : public IAction {
     public:
-    DummyActionType(IResourceData& owner);
-      
-    /**************************\
-     * Implements IActionType *
-    \**************************/
-    IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
-    IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
-    void destroyAction(IAction* action, IAssets& assets) override;
+    DummyAction(IActionClient& owner);
+    
+    /**********************\
+     * Implements IAction *
+    \**********************/
+    void execute() override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
     bool isDefaultConfiguration() const override;
-
-    private:
-    class Action : public IAction {
-      public:
-      Action();
-      
-      /**********************\
-       * Implements IAction *
-      \**********************/
-      void execute() override;
-      void save(JSONObject object) const override;
-      bool hasConfiguration() const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-    };
-    Action DUMMY;
   };
 }

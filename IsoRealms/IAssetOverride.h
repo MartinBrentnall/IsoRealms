@@ -24,7 +24,7 @@
 #include <string>
 
 namespace IsoRealms {
-  class IActionType;
+  class IAction;
   class IAssets;
   class IBinding;
   class IBindingType;
@@ -48,7 +48,7 @@ namespace IsoRealms {
    */
   class IAssetOverride {
     public:
-    virtual IActionType*     getActionType(    JSONObject object, IStateListener<IActionType*>*     listener) const = 0;
+    virtual IAction*         getAction(        JSONObject object, IStateListener<IAction*>*         listener) const = 0;
     virtual IAssets*         getAssets(        JSONObject object, IStateListener<IAssets*>*         listener) const = 0;
     virtual IBinding*        getBinding(       JSONObject object, IStateListener<IBinding*>*        listener) const = 0;
     virtual IBindingType*    getBindingType(   JSONObject object, IStateListener<IBindingType*>*    listener) const = 0;

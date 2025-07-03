@@ -42,7 +42,7 @@ namespace IsoRealms {
                         public IAssetRemover,
                         public IAssets {
     public:
-    virtual std::vector<std::string> getAllActionTypes()   = 0;
+    virtual std::vector<std::string> getAllActions()       = 0;
     virtual std::vector<std::string> getAllBindings()      = 0;
     virtual std::vector<std::string> getAllBindingTypes()  = 0;
     virtual std::vector<std::string> getAllBooleans()      = 0;

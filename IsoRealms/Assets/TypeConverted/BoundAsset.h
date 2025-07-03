@@ -25,17 +25,16 @@
 #include "IsoRealms/Lua/LuaState.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  template <class T> class BoundAsset : public IBinding {
+  template <class OWNER, class TYPE> class BoundAsset : public IBinding {
     public:
-    BoundAsset(IResourceData& owner) :
+    BoundAsset(OWNER& owner) :
               cDefLuaState(owner.getProject().getLuaState()->getState()),
               cDefValue(owner) {
     }
 
-    BoundAsset(IResourceData& owner, JSONObject object) :
+    BoundAsset(OWNER& owner, JSONObject object) :
               BoundAsset(owner) {
       cDefValue.set(object, JSON_ASSET);
     }
@@ -85,7 +84,7 @@ namespace IsoRealms {
 
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyAsset<T>>("Asset", "TODO", cDefValue));
+      mProperties.emplace_back(std::make_unique<PropertyAsset<TYPE>>("Asset", "TODO", cDefValue));
       return mProperties;
     }
 
@@ -97,6 +96,6 @@ namespace IsoRealms {
     inline static const std::string JSON_ASSET = "asset";
     
     sol::state* cDefLuaState;
-    T cDefValue;
+    TYPE cDefValue;
   };
 }

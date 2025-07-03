@@ -26,6 +26,12 @@ namespace IsoRealms {
             Asset<Screen, IScreen, IResourceData>(owner, owner.getAssetManager().createLiteralScreen(this, owner)) {
   }
 
+  void Screen::render(float scale, float aspectRatio) const {
+    cManager.getProject().screenPreRender(cAsset);
+    cAsset->renderScreen(scale, aspectRatio);
+    cManager.getProject().screenPostRender(cAsset);
+  }
+
   IScreen* Screen::createLiteralAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralScreen(this, owner);
   }

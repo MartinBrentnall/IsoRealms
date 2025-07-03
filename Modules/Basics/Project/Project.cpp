@@ -30,8 +30,8 @@ namespace IsoRealms::Basics {
   Project::Project(IProject& project, Basics& basics, IResourceData& data) :
             cProjectCallbackManager(project),
             cProject(project),
-            cDefReadyAction(data),
-            cDefEndAction(data),
+            cDefReadyAction(data.getDummyActionClient()),
+            cDefEndAction(data.getDummyActionClient()),
             cDefProjectOptions(data),
             cDefRunning(false),
             cDefEditing(false),

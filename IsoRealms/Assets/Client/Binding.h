@@ -21,6 +21,7 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/IActionClient.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
@@ -30,8 +31,8 @@
 namespace IsoRealms {
   class Binding : public Asset<Binding, IBinding, IResourceData> {
     public:
-    Binding(IResourceData& owner, IBindingRegistry* registry, std::function<void()> listener = nullptr);
-    Binding(IResourceData& owner, IBindingRegistry* registry, const std::string& type, std::function<void()> listener = nullptr);
+    Binding(IActionClient& owner);
+    Binding(IActionClient& owner, const std::string& type);
     std::string getType() const;
 
     std::string getID() const override;
@@ -49,7 +50,6 @@ namespace IsoRealms {
     bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
 
-    void stateChanged(IBinding* asset) override;
     std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(IBinding* asset) override;
 
     private:

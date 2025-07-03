@@ -46,7 +46,7 @@ namespace IsoRealms::Basics {
   const std::string Basics::SEQUENCE_TRACK_COLOUR = "Colour";
   const std::string Basics::SEQUENCE_TRACK_FLOAT  = "Float";
 
-  const std::string Basics::ACTION_TYPE_SCRIPT = "Script";
+  const std::string Basics::ACTION_SCRIPT = "Script";
   
   const std::string Basics::JSON_ANALOGUE_INPUT_MAPPINGS = "analogueInputMappings";
   const std::string Basics::JSON_DIGITAL_INPUT_MAPPINGS  = "digitalInputMappings";
@@ -87,7 +87,7 @@ namespace IsoRealms::Basics {
                     cResourceTypeSimpleString(*this),
                     cResourceTypeSimpleVertex(*this),
                     cResourceTypeSprite(*this),
-                    cActionTypeScript(),
+                    cActionScript(),
                     cLuaBinding(project, this) {
     registry->add(&cResourceTypeAnalogueInput,     ID_RESOURCE_ANALOGUE_INPUT,     "Input (Analogue)",   "Inputs (Analogue)",    "Input");
     registry->add(&cResourceTypeBooleanTrigger,    ID_RESOURCE_BOOLEAN_TRIGGER,    "Boolean Trigger",    "Boolean Triggers",     "Logic");
@@ -131,8 +131,8 @@ namespace IsoRealms::Basics {
   }
 
   void Basics::registerAssets(IAssetRegistry& assets) {
-    assets.add(&cActionTypeScript, ACTION_TYPE_SCRIPT, "");
-    assets.add(&cLuaBinding,       "",                 "Basics");
+    assets.add(&cActionScript, ACTION_SCRIPT, "");
+    assets.add(&cLuaBinding,   "",            "Basics");
   }
   
   std::vector<std::unique_ptr<IProperty>> Basics::getProperties() {

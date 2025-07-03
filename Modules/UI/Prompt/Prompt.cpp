@@ -39,8 +39,8 @@ namespace IsoRealms::UI {
             cHatHandler(project.getApplication().getHatHandler()),
             cDefFont(data),
             cDefSelectionColour(data, 1.0f, 1.0f, 1.0f),
-            cDefNegativeAction(data),
-            cDefPositiveAction(data),
+            cDefNegativeAction(data.getDummyActionClient()),
+            cDefPositiveAction(data.getDummyActionClient()),
             cLuaBinding(project, this) {
     cProjectCallbackManager.reset([this]() {
       cRuntimePositiveHighlighted = false;

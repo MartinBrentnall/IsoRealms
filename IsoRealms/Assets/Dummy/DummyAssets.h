@@ -32,8 +32,7 @@ namespace IsoRealms {
     /**********************\
      * Implements IAssets *
     \**********************/
-    ActionExecutor*  createLiteralAction(        IAssetUser<ActionExecutor>*  user, IResourceData& owner) override;
-    IActionType*     createLiteralActionType(    IAssetUser<IActionType>*     user, IResourceData& owner) override;
+    IAction*         createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) override;
     IAssets*         createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) override;
     IBinding*        createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner) override;
     IBindingType*    createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) override;
@@ -51,8 +50,7 @@ namespace IsoRealms {
     ITexture*        createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) override;
     IVertex*         createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) override;
 
-    ActionExecutor*  getAction(        IAssetUser<ActionExecutor>*  user, JSONObject object, IResourceData& owner, const std::string& tag, IBindingRegistry* localArgs) override;
-    IActionType*     getActionType(    IAssetUser<IActionType>*     user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
     IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
     IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals,            bool required = true) override;
     IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
@@ -70,8 +68,7 @@ namespace IsoRealms {
     ITexture*        getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required = true) override;
     IVertex*         getVertex(        IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
 
-    ActionExecutor*  getAction(        IAssetUser<ActionExecutor>*  user, const std::string& id, IResourceData& owner) override;
-    IActionType*     getActionType(    IAssetUser<IActionType>*     user, const std::string& id, IResourceData& owner) override;
+    IAction*         getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner) override;
     IAssets*         getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner) override;
     IBinding*        getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner) override;
     IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner) override;
@@ -89,8 +86,7 @@ namespace IsoRealms {
     ITexture*        getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) override;
     IVertex*         getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner) override;
 
-    void release(IAssetUser<ActionExecutor>*  user, ActionExecutor*  asset) override;
-    void release(IAssetUser<IActionType>*     user, IActionType*     asset) override;
+    void release(IAssetUser<IAction>*         user, IAction*         asset) override;
     void release(IAssetUser<IAssets>*         user, IAssets*         asset) override;
     void release(IAssetUser<IBinding>*        user, IBinding*        asset) override;
     void release(IAssetUser<IBindingType>*    user, IBindingType*    asset) override;

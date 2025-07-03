@@ -36,7 +36,8 @@
 
 namespace IsoRealms {
   template <class MODULE, class RESOURCE> class Resource : public IResource,
-                                                           public IResourceData {
+                                                           public IResourceData,
+                                                           public IActionClient {
     public:
     Resource(IResourceType& parent, IProject& project, MODULE& module, IAssetRegistry& registry, const std::string& name, File* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
@@ -175,6 +176,18 @@ namespace IsoRealms {
 
     IProject& getAssetManager() override {
       return cParent.getProject();
+    }
+
+    IActionClient& getDummyActionClient() override {
+      return *this;
+    }
+
+    IResourceData& getResourceData() override {
+      return *this;
+    }
+
+    IBindingRegistry* getBindingRegistry() override {
+      return nullptr;
     }
 
     private:

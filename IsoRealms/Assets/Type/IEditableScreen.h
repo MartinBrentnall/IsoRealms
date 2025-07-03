@@ -24,7 +24,7 @@
 #include "IScreen.h"
 
 namespace IsoRealms {
-  class ActionExecutor;
+  class Action;
   class IAssetRemover;
 
   class IEditableScreen : public IScreen,
@@ -39,7 +39,7 @@ namespace IsoRealms {
     virtual std::vector<std::string> getAnalogueInputs() const = 0;
     virtual void setDigitalInput(const std::string& name, IBoolean* input) = 0;
     virtual void setAnalogueInput(const std::string& name, IFloat* input) = 0;
-    virtual void setExitAction(ActionExecutor* action) = 0;
+    virtual void setExitAction(Action* action) = 0;
 
     virtual void setAppearance(IFont* font, float scale) = 0;
     virtual IScreen* screen() = 0;

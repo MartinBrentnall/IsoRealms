@@ -52,7 +52,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool TerrainState::renderIcon() const {
-    cDefIcon->renderScreen(1.0f, 1.0f);
+    cDefIcon.render(1.0f, 1.0f);
     return true;
   }
 
@@ -85,7 +85,7 @@ namespace IsoRealms::Spindizzy {
   void TerrainState::renderScreen(float scale, float aspectRatio) const {
     glPushMatrix();
     glScalef(cDefIconScale, cDefIconScale, 0.0f);
-    cDefIcon->renderScreen(scale, aspectRatio);
+    cDefIcon.render(scale, aspectRatio);
     glPopMatrix();
   }
 
@@ -111,9 +111,9 @@ namespace IsoRealms::Spindizzy {
 
   TerrainState::TerrainState(IProject& project, IResourceData& owner, const std::string& name, bool state, float iconScale) :
             cProjectCallbackManager(project),
-            cDefConditionElement(name, this, this),
+            cDefConditionElement(name, *this, this),
             cDefValue(state),
-            cDefHintAction(owner),
+            cDefHintAction(owner.getDummyActionClient()),
             cDefIcon(owner),
             cDefIconScale(iconScale),
             cRuntimeValue(state),

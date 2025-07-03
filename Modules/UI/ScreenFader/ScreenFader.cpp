@@ -64,9 +64,9 @@ namespace IsoRealms::UI {
   void ScreenFader::renderScreen(float scale, float aspectRatio) const {
     float mTransition = cDefTransition->getValue();
     if (mTransition <= 0.0f) {
-      cDefScreenA->renderScreen(scale, aspectRatio);
+      cDefScreenA.render(scale, aspectRatio);
     } else if (mTransition >= 1.0f) {
-      cDefScreenB->renderScreen(scale, aspectRatio);
+      cDefScreenB.render(scale, aspectRatio);
     } else {
       glPushAttrib(GL_TRANSFORM_BIT);
       glMatrixMode(GL_PROJECTION);

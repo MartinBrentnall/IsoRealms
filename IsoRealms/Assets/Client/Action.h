@@ -20,56 +20,29 @@
 
 #include <functional>
 
-#include "IsoRealms/ActionExecutor.h"
+#include "IsoRealms/Assets/Type/IAction.h"
+#include "IsoRealms/IActionClient.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 
+#include "Asset.h"
+
 namespace IsoRealms {
-  class Action final : public IAssetUser<ActionExecutor> {
+  class Action : public Asset<Action, IAction, IActionClient> {
     public:
-    Action(IResourceData& owner);
-
-    void init(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr);
-    void set(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr);
-    void setID(const std::string& id);
+    Action(IActionClient& owner);
     void execute();
-    std::string getID() const;
+
+    /****************************************************\
+     * Implements Asset<Action, IAction, IActionClient> *
+    \****************************************************/
+    IAction* createLiteralAsset(IActionClient& owner);
+    IAction* getAsset(IActionClient& owner, JSONObject object);
+    IAction* getAsset(IActionClient& owner, const std::string& id);
     std::vector<std::string> getAvailableProviders() const;
-    bool renderProviderIcon(const std::string& id) const;
+    bool renderOtherProviderIcon(const std::string& id) const;
     bool hasConfiguration() const;
-    bool isDefaultConfigured() const;
-    bool renderAssetIcon() const;
-    void save(JSONObject object, const std::string& name) const;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties();
-
-    ActionExecutor* operator*() const {
-      return cAction;
-    }
-
-    ActionExecutor* operator->() const {
-      return cAction;
-    }
-
-    IApplication& getApplication() {
-      return cProject.getApplication();
-    }
-
-    /*****************************************\
-     * Implements IAssetUser<ActionExecutor> *
-    \*****************************************/
-    void relinquish(ActionExecutor* asset) override;
-    bool isReadOnly() const override;
-    void setOwner(File* owner) override;
-
-    virtual ~Action();
-
-    private:
-    IProject& cProject;
-    IResourceData& cManager;
-    ActionExecutor* cAction;
-
-    Action(Action const& action) = delete;
-    Action& operator=(Action const& action) = delete;
+    bool isDefaultConfiguration() const;
   };
 }

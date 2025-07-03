@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
    * function may override dynamic bindings with their own values.  This class
    * also facilitates scripting (in-line functions) via the Script type.
    */
-  class Function final : public IActionType {
+  class Function final : public IAssetProvider<IActionClient, IAction> {
     public:
     
     /**********************\
@@ -56,8 +56,8 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     // Constructors for use by scripts (in-line functions).
-    Function(IProject& project, const std::string& name, IResourceData& data);
-    Function(IProject& project, const std::string& name, IResourceData& data, JSONObject object, IBindingRegistry* localArgs, bool init);
+    Function(IProject& project, const std::string& name, IActionClient& owner);
+    Function(IProject& project, const std::string& name, IActionClient& owner, JSONObject object, bool init);
     std::vector<std::unique_ptr<IProperty>> getScriptProperties();
     IProject& getProject() const;
     IResourceData& getResourceData() const;
@@ -67,16 +67,14 @@ namespace IsoRealms::Basics {
     ArgumentDefinition* getArgumentDefinition(const std::string& name);
     std::string getNextAvailableName(const std::string& name);
 
-    /**************************\
-     * Implements IActionType *
-    \**************************/
-    IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
-    IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
-    void destroyAction(IAction* action, IAssets& assets) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-    bool isDefaultConfiguration() const override;
+    /****************************************************\
+     * Implements IAssetProvider<IActionClient, IAction *
+    \****************************************************/
+    IAction* getAsset(IActionClient& owner, JSONObject object) override;
+    IAction* getAsset(IActionClient& owner) override;
+    void releaseAsset(const IAction* asset) override;
+    bool hasConfiguration() const override;
+    bool renderAssetProviderIcon() const override;
 
     private:
     
@@ -94,26 +92,25 @@ namespace IsoRealms::Basics {
     // Private types.
     class Call : public IAction {
       public:
-      Call(Function& parent, IResourceData& owner, IBindingRegistry* localObjects);
-      Call(Function& parent, JSONObject object, IResourceData& owner, IBindingRegistry* localObjects);
-      void release(IAssets& releaser);
+      Call(Function& parent, IActionClient& owner);
+      Call(Function& parent, IActionClient& owner, JSONObject object);
 
       /**********************\
        * Implements IAction *
       \**********************/
       void execute() override;
-      void save(JSONObject object) const override;
-      bool hasConfiguration() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
       std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
       bool isDefaultConfiguration() const override;
 
       private:
       
       // External interfaces.
-      Function& cDefParent; /// Owner of this function call.
-      
+      Function& cParent; /// Function from which this call is derived.
+      IActionClient& cOwner;                                       /// The one who is making this call.
+
       // Definition data.
-      IBindingRegistry* cDefLocalBindingRegistry;                     /// Registry from which local bindings can be retrieved.
       std::vector<std::unique_ptr<IsoRealms::Binding>> cDefArguments; /// Overrides default values of dynamic bindings in the function.
     };
 
@@ -128,7 +125,7 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<Binding>> cDefBindings;   /// Fixed bindings for access within this function.
     std::vector<std::unique_ptr<ArgumentDefinition>> cDefArgumentDefinitions; /// Dynamic bindings for access within this function.
     
-    std::map<IAction*, std::unique_ptr<Call>> cInstances;      /// Calls derived from this function.
+    mutable std::map<const IAction*, std::unique_ptr<Call>> cInstances;      /// Calls derived from this function.
 
     // Private functions.
     template <class VECTOR> std::string generateBindingDeclarations(VECTOR& bindings, unsigned int baseIndex) const {

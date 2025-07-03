@@ -32,5 +32,6 @@ namespace IsoRealms {
     virtual void setOwner(File* owner) = 0;
     virtual IProject& getProject() = 0;
     virtual IProject& getAssetManager() = 0;
+    virtual IActionClient& getDummyActionClient() = 0;
   };
 }

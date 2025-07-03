@@ -32,18 +32,19 @@ namespace IsoRealms::Spindizzy {
 
   BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
+            cActionClient(data, *this),
             cDefBoundaryType(spindizzy),
             cDefObjectType(spindizzy),
-            cDefEnteredAction(data),
-            cDefExitedAction(data) {
+            cDefEnteredAction(cActionClient),
+            cDefExitedAction(cActionClient) {
   }
 
   BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
             BoundaryHandler(project, spindizzy, data) {
     cDefBoundaryType.init(object, JSON_BOUNDARY);
     cDefObjectType.init(object, JSON_OBJECT);
-    cDefEnteredAction.init(object, JSON_ON_ENTRY, this);
-    cDefExitedAction.init(object, JSON_ON_EXIT, this);
+    cDefEnteredAction.init(object, JSON_ON_ENTRY);
+    cDefExitedAction.init(object, JSON_ON_EXIT);
     spindizzy.getProject().init([this, &spindizzy](IAssets& assets) {
       spindizzy.added(this);
     });

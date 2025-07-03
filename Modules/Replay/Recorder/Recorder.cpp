@@ -33,7 +33,7 @@ namespace IsoRealms::Replay {
             cProjectCallbackManager(project),
             cParentProject(project),
             cFilenameString(""),
-            cQuitAction(data),
+            cQuitAction(data.getDummyActionClient()),
             cLuaBinding(project, this) {
     cElapsedTime = 0;
   }

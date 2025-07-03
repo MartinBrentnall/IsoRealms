@@ -53,8 +53,8 @@ namespace IsoRealms::Spindizzy {
             cDefEastWallPattern( spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
             cDefSouthWallPattern(spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
             cDefNorthWallPattern(spindizzy, *this, [&spindizzy]() {spindizzy.stateChanged(nullptr);}),
-            cDefContactAction(data),
-            cDefImpactAction(data) {
+            cDefContactAction(data.getDummyActionClient()),
+            cDefImpactAction(data.getDummyActionClient()) {
   }
   
   TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :

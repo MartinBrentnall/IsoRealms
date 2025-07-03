@@ -18,88 +18,48 @@
  */
 #include "Action.h"
 
+#include "IsoRealms/Project.h"
+#include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Action::Action(IResourceData& owner) :
-            cProject(owner.getProject()),
-            cManager(owner),
-            cAction(cProject.createLiteralAction(this, owner)) {
-  }
-
-  void Action::init(JSONObject object, const std::string& tag, IBindingRegistry* localArgs) {
-    if (object.hasMember(tag)) {
-      cProject.init([this, object, tag, localArgs](IAssets& assets) {
-        set(object, tag, localArgs);
-      });
-    }
-  }
-
-  void Action::set(JSONObject object, const std::string& tag, IBindingRegistry* localArgs) {
-    cProject.release(this, cAction);
-    cAction = cProject.getAction(this, object, cManager, tag, localArgs);
-  }
-
-  void Action::setID(const std::string& id) {
-    cProject.release(this, cAction);
-    cAction = cProject.getAction(this, id, cManager);
+  Action::Action(IActionClient& owner) :
+            Asset<Action, IAction, IActionClient>(owner, owner.getAssetManager().createLiteralAction(this, owner)) {
   }
 
   void Action::execute() {
-    cAction->execute();
+    if (cManager.getProject().isProcessingInput()) {
+      cManager.getProject().postponeAction(cAsset);
+    } else {
+      cAsset->execute();
+    }
   }
 
-  std::string Action::getID() const {
-    return cAction->getID();
+  IAction* Action::createLiteralAsset(IActionClient& owner) {
+    return owner.getAssetManager().createLiteralAction(this, owner);
   }
-
+  
+  IAction* Action::getAsset(IActionClient& owner, JSONObject object) {
+    return owner.getAssetManager().getAction(this, object, owner);
+  }
+  
+  IAction* Action::getAsset(IActionClient& owner, const std::string& id) {
+    return owner.getAssetManager().getAction(this, id, owner);
+  }
+  
   std::vector<std::string> Action::getAvailableProviders() const {
-    return cProject.getAllActionTypes();
+    return cManager.getAssetManager().getAllActions();
   }  
 
-  bool Action::renderProviderIcon(const std::string& id) const {
-    return cProject.renderActionIcon(id);
+  bool Action::renderOtherProviderIcon(const std::string& id) const {
+    return cManager.getAssetManager().renderActionIcon(id);
   }
 
   bool Action::hasConfiguration() const {
-    return cAction->hasConfiguration();
-  }
-  
-  bool Action::isDefaultConfigured() const {
-    return cAction->isDefaultConfiguration();
-  }
+    return cManager.getAssetManager().isActionConfigurable(getID());
+  }  
 
-  bool Action::renderAssetIcon() const {
-    return cAction->renderAssetIcon();
-  }
-
-  void Action::save(JSONObject object, const std::string& name) const {
-    JSONObject mAssetObject = object.addObject(name);
-    cAction->save(mAssetObject);
-  }
-
-  std::vector<std::unique_ptr<IProperty>> Action::getAssetProperties() {
-    return cAction->getAssetProperties();
-  }
-
-  void Action::relinquish(ActionExecutor* asset) {
-    if (cAction == asset) {
-      cAction = cProject.createLiteralAction(this, cManager);
-    }
-  }
-
-  bool Action::isReadOnly() const {
-    return false; // TODO: Implement this.
-  }
-
-  void Action::setOwner(File* owner) {
-    // TODO: Implement this.
-  }
-
-  Action::~Action() {
-    if (cAction != nullptr) {
-      cProject.release(this, cAction);
-    }
+  bool Action::isDefaultConfiguration() const {
+    return true;
   }
 }

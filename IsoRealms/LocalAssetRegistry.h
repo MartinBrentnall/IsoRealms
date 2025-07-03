@@ -33,10 +33,25 @@ namespace IsoRealms {
     /*****************************\
      * Implements IAssetRegistry *
     \*****************************/
-    void add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category) override;
-    void add(IAssetProvider<IResourceData, IString>* provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IActionClient, IAction>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IBinding>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IBindingType>*    provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IBoolean>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IColour>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IEditable>*       provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IFloat>*          provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IFont>*           provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IInputHandler>*   provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IInteger>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IModel>*          provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IProjectOptions>* provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IAssets>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IScreen>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IString>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, ITexture>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IVertex>*         provider, const std::string& id, const std::string& category) override;
 
-    void                      add(IActionType*     asset, const std::string& id, const std::string& category) override;
+    void                      add(IAction*         asset, const std::string& id, const std::string& category) override;
     void                      add(IBinding*        asset, const std::string& id, const std::string& category) override;
     void                      add(IBindingType*    asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IBoolean>* add(IBoolean*        asset, const std::string& id, const std::string& category) override;
@@ -49,7 +64,7 @@ namespace IsoRealms {
     void                      add(IModel*          asset, const std::string& id, const std::string& category) override;
     void                      add(IProjectOptions* asset, const std::string& id, const std::string& category) override;
     void                      add(IAssets*         asset, const std::string& id, const std::string& category) override;
-    IScreen*                  add(IScreen*         asset, const std::string& id, const std::string& category) override;
+    void                      add(IScreen*         asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IString>*  add(IString*         asset, const std::string& id, const std::string& category) override;
     IStateNotifier<ITexture>* add(ITexture*        asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IVertex>*  add(IVertex*         asset, const std::string& id, const std::string& category) override;

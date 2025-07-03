@@ -40,11 +40,11 @@ namespace IsoRealms {
     /******************************************\
      * Implements IAssetProvider<OWNER, TYPE> *
     \******************************************/
-    TYPE* getAsset(OWNER& owner) const override {
+    TYPE* getAsset(OWNER& owner) override {
       return cAsset;
     }
     
-    TYPE* getAsset(OWNER& owner, JSONObject object) const override {
+    TYPE* getAsset(OWNER& owner, JSONObject object) override {
       return cAsset;
     }
 

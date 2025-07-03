@@ -22,7 +22,7 @@ namespace IsoRealms {
   const std::string ConditionElement::JSON_INPUT   = "input";
   const std::string ConditionElement::JSON_NEGATED = "negated";
 
-  ConditionElement::ConditionElement(const std::string& name, IScreen* icon, IBoolean* input) :
+  ConditionElement::ConditionElement(const std::string& name, IScreen& icon, IBoolean* input) :
             cInputName(name),
             cInput(input),
             cTestInput(false),
@@ -40,7 +40,7 @@ namespace IsoRealms {
   }
 
   void ConditionElement::renderIcon() const {
-    cIcon->renderScreen(1.0f, 1.0f);
+    cIcon.renderScreen(1.0f, 1.0f);
   }
 
   ConditionElement::Clause* ConditionElement::getPositiveClause() {

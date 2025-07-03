@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <stack>
 
+#include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
@@ -167,6 +168,9 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;     /// Spindizzy module reference.
+
+    // Action client.
+    ActionClient cActionClient;
 
     // Definition data.
     float   cDefAcceleration;     /// Initial speed of movement.

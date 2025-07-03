@@ -16,18 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "DummyAction.h"
 
-#include "IAsset.h"
+#include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  class JSONObject;
-  class IProperty;
+  DummyAction::DummyAction(IActionClient& owner) {
+    // Nothing to do.
+  }
+  
+  void DummyAction::execute() {
+    // Do nothing.
+  }
+  
+  bool DummyAction::renderAssetIcon() const {
+    return false;
+  }
 
-  class IAction : public IAsset {
-    public:
-    virtual void execute() = 0;
+  void DummyAction::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 
-    virtual ~IAction() {}
-  };
+  std::vector<std::unique_ptr<IProperty>> DummyAction::getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> mProperties;
+    // TODO: Implement this.
+    return mProperties;
+  }
+
+  bool DummyAction::isDefaultConfiguration() const {
+    return true;
+  }
 }

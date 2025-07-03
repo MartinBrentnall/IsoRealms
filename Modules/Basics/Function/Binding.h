@@ -28,8 +28,8 @@ namespace IsoRealms::Basics {
 
   class Binding {
     public:
-    Binding(Function& parent, IBindingRegistry* localArgs, const std::string& name);
-    Binding(Function& parent, IBindingRegistry* localArgs, bool init, JSONObject object);
+    Binding(Function& parent, IActionClient& owner, const std::string& name);
+    Binding(Function& parent, IActionClient& owner, bool init, JSONObject object);
     void setName(const std::string& name);
     std::string getName() const;
     std::string getType() const;

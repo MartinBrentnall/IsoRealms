@@ -46,7 +46,7 @@ namespace IsoRealms {
       bool cNegated;
     };
 
-    ConditionElement(const std::string& name, IScreen* icon, IBoolean* input);
+    ConditionElement(const std::string& name, IScreen& icon, IBoolean* input);
 
     std::string getName() const;
     IBoolean* getInputAddress() const;
@@ -63,7 +63,7 @@ namespace IsoRealms {
     std::string cInputName;
     IBoolean* cInput;
     bool cTestInput;
-    IScreen* cIcon;
+    IScreen& cIcon;
     Clause cPositiveClause;
     Clause cNegativeClause;
   };

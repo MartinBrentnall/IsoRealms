@@ -64,16 +64,15 @@ namespace IsoRealms::Basics {
     }
   }
 
-  IAction* FileSound::createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localObjects) {
-    return this;
-  }
+  void FileSound::execute() {
+    sf::Sound& mNewSound = cRuntimeSounds.emplace_back(cRuntimeSoundData);
+    mNewSound.setVolume(cDefBasics.getSoundVolume() * 100.0f);
+    mNewSound.play();
 
-  IAction* FileSound::createAction(IResourceData& owner, IBindingRegistry* localObjects) {
-    return this;
-  }
-  
-  void FileSound::destroyAction(IAction* action, IAssets& assets) {
-    // Nothing to do.
+    // Clean up any finished instances of this sound.
+    while (cRuntimeSounds.front().getStatus() == sf::Sound::Stopped) {
+      cRuntimeSounds.pop_front();
+    }
   }
 
   bool FileSound::renderAssetIcon() const {
@@ -84,27 +83,12 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  bool FileSound::hasConfiguration() const {
-    return false;
-  }
-
   std::vector<std::unique_ptr<IProperty>> FileSound::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
   bool FileSound::isDefaultConfiguration() const {
     return true;
-  }
-
-  void FileSound::execute() {
-    sf::Sound& mNewSound = cRuntimeSounds.emplace_back(cRuntimeSoundData);
-    mNewSound.setVolume(cDefBasics.getSoundVolume() * 100.0f);
-    mNewSound.play();
-
-    // Clean up any finished instances of this sound.
-    while (cRuntimeSounds.front().getStatus() == sf::Sound::Stopped) {
-      cRuntimeSounds.pop_front();
-    }
   }
 
   void FileSound::reloadData() {

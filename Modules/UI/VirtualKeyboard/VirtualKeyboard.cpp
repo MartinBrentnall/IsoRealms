@@ -30,7 +30,7 @@ namespace IsoRealms::UI {
   VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data) :
             cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
-            cDefConfirmAction(data),
+            cDefConfirmAction(data.getDummyActionClient()),
             cDefSelectionColour(data, 1.0f, 0.0f, 1.0f),
             cDefFont(data),
             cRuntimeControllerCaps(false),

@@ -35,7 +35,7 @@ namespace IsoRealms::UI {
             cProjectCallbackManager(project),
             cResourceData(data),
             cHatHandler(project.getApplication().getHatHandler()),
-            cDefExitAction(data),
+            cDefExitAction(data.getDummyActionClient()),
             cDefFont(data),
             cDefColour(data, 1.0f, 1.0f, 1.0f),
             cDefFontSize(DEFAULT_FONT_SIZE),

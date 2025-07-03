@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
             cDefID(""),
             cDefFolder(""),
             cDefUser(false),
-            cDefAction(menu.getResourceData()),
+            cDefAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
     cProjectCallbackManager.reset([this]() {
       refresh();
@@ -51,7 +51,7 @@ namespace IsoRealms::UI {
             cDefID(object.getString(JSON_ID)),
             cDefFolder(object.getString(JSON_FOLDER)),
             cDefUser(object.getBoolean(JSON_USER)),
-            cDefAction(menu.getResourceData()),
+            cDefAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
     cProjectCallbackManager.reset([this]() {

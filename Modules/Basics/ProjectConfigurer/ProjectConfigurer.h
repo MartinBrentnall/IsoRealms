@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/UIManager.h"
 #include "IsoRealms/Editing/ProjectMenu.h"
 #include "IsoRealms/ResourceDefinition.h"
@@ -135,6 +136,9 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     ProjectCallbackManager cProjectCallbackManager;
+
+    // Action client.
+    ActionClient cActionClient;
 
     // Definition data.
     Font cDefFont;

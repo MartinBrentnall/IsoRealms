@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
             cSpindizzy(spindizzy),
             cDefModel(data),
             cDefActive(data, true),
-            cDefTickAction(data) {
+            cDefTickAction(data.getDummyActionClient()) {
   }
   
   LiftType::LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :

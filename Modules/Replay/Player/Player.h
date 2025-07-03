@@ -147,7 +147,7 @@ namespace IsoRealms::Replay {
     /*****************************\
      * Implements IAssetOverride *
     \*****************************/
-    IActionType*     getActionType(    JSONObject object, IStateListener<IActionType*>*     listener) const override;
+    IAction*         getAction(        JSONObject object, IStateListener<IAction*>*         listener) const override;
     IAssets*         getAssets(        JSONObject object, IStateListener<IAssets*>*         listener) const override;
     IBinding*        getBinding(       JSONObject object, IStateListener<IBinding*>*        listener) const override;
     IBindingType*    getBindingType(   JSONObject object, IStateListener<IBindingType*>*    listener) const override;

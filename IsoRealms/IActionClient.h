@@ -18,23 +18,21 @@
  */
 #pragma once
 
-#include <vector>
-
-#include "IAsset.h"
+#include <string>
 
 namespace IsoRealms {
-  class IAction;
-  class IAssetRegistry;
-  class IAssets;
   class IBindingRegistry;
   class IResourceData;
+  class IProject;
+  class File;
 
-  class IActionType : public IAsset {
+  class IActionClient {
     public:
-    virtual IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) = 0;
-    virtual IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) = 0;
-    virtual void destroyAction(IAction* action, IAssets& assets) = 0;
-      
-    virtual ~IActionType() {}
+    virtual bool isReadOnly() const = 0;
+    virtual void setOwner(File* owner) = 0;
+    virtual IProject& getProject() = 0;
+    virtual IProject& getAssetManager() = 0;
+    virtual IResourceData& getResourceData() = 0;
+    virtual IBindingRegistry* getBindingRegistry() = 0;
   };
 }

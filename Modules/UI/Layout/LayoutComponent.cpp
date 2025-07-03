@@ -77,7 +77,14 @@ namespace IsoRealms::UI {
       glPushMatrix();
       glTranslatef(mXCenter, mYCenter, 0.0f);
       glScalef(mScale, mScale, mScale);
+      
+      // TODO: Consider making "renderScreen" only callable from "Screen" or "ScreenReference" in order to enforce pre/post calls.
+      IProject& mProject = cLayout.getUI().getProject();
+      mProject.screenPreRender(cRuntimeScreen);
       cRuntimeScreen->renderScreen(mScale * scale, mAspectRatio);
+      mProject.screenPreRender(cRuntimeScreen);
+      // TODO: End
+      
       glPopMatrix();
     }
   }
@@ -112,7 +119,7 @@ namespace IsoRealms::UI {
     glVertex2f(-1.0f * mAspectRatio,  1.0f);
     glEnd();
     glColor3f(1.0f, 1.0f, 1.0f);
-    cDefScreen->renderScreen(mScale * scale, mAspectRatio);
+    cDefScreen.render(mScale * scale, mAspectRatio);
     glPopMatrix();
   }
 

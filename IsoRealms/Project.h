@@ -29,9 +29,8 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
 
-#include "ActionExecutor.h"
 #include "Assets/Client/ModuleChooser.h"
-#include "Assets/Dummy/DummyActionType.h"
+#include "Assets/Dummy/DummyAction.h"
 #include "Assets/Dummy/DummyAssets.h"
 #include "Assets/Dummy/DummyBinding.h"
 #include "Assets/Dummy/DummyBindingType.h"
@@ -56,7 +55,6 @@
 #include "Assets/Providers/AssetLiteralVertex.h"
 #include "Assets/Providers/AssetLocalBinding.h"
 #include "Assets/Registry/AssetClientManager.h"
-#include "Assets/Registry/ScreenClientManager.h"
 #include "Assets/Type/IScreenListener.h"
 #include "DisplayResolution.h"
 #include "IAssetBrowser.h"
@@ -80,7 +78,8 @@ namespace IsoRealms {
   class Project : public IProject,
                   public IAssetRegistry,
                   public IBindingRegistry,
-                  public IResourceData {
+                  public IResourceData,
+                  public IActionClient {
     private:
     static const std::string JSON_ACTION;
     static const std::string JSON_EDITOR;
@@ -201,41 +200,21 @@ namespace IsoRealms {
       }
     };
 
-    class QuitActionType : public IActionType {
-      private:
-
-      class QuitAction : public IAction {
-        public:
-        QuitAction(QuitActionType& parent);
-
-        /**********************\
-         * Implements IAction *
-        \**********************/
-        void execute() override;
-        void save(JSONObject object) const override;
-        bool hasConfiguration() const override;
-        std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        QuitActionType& cParent;
-      };
-      Project& cParent;
-      QuitAction cQuitAction;
-
+    class QuitAction : public IAction {
       public:
-      QuitActionType(Project& parent);
+      QuitAction(Project& parent);
 
-      /**************************\
-       * Implements IActionType *
-      \**************************/
-      IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
-      IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
-      void destroyAction(IAction* action, IAssets& assets) override;
+      /**********************\
+       * Implements IAction *
+      \**********************/
+      void execute() override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
       std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
       bool isDefaultConfiguration() const override;
+
+      private:
+      Project& cParent;
     };
 
     class ProjectProperty {
@@ -250,9 +229,9 @@ namespace IsoRealms {
       File* cOwnerProject;
     };
 
-    template <class TYPE> class ProjectAsset {
+    template <class OWNER, class TYPE> class ProjectAsset {
       public:
-      ProjectAsset(IResourceData& owner) :
+      ProjectAsset(OWNER& owner) :
                 cAsset(owner),
                 cOwnerProject(nullptr) {
       }
@@ -306,7 +285,7 @@ namespace IsoRealms {
     bool cRuntimeUpdatingRuntime;            /// Flag is set when update cycle is being performed.
     bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
 
-
+    std::vector<IScreenListener*> cScreenListeners;
 
 
 
@@ -333,7 +312,7 @@ namespace IsoRealms {
     std::map<std::string, std::vector<IModelInstance*>> cInstantiatedModels;
 
     // Asset registries.
-    AssetClientManager<IResourceData, IActionType>     cActionTypes;
+    AssetClientManager<IActionClient, IAction>         cActions;
     AssetClientManager<IResourceData, IBinding>        cBindings;
     AssetClientManager<IResourceData, IBindingType>    cBindingTypes; // Note: Contents of this module is set by modules (i.e. NOT configurable!)
     AssetClientManager<IResourceData, IBoolean>        cBooleans;
@@ -344,18 +323,15 @@ namespace IsoRealms {
     AssetClientManager<IResourceData, IInputHandler>   cInputHandlers;
     AssetClientManager<IResourceData, IInteger>        cIntegers;
     AssetClientManager<IResourceData, IModel>          cModels;
-    ScreenClientManager                                cScreens;
+    AssetClientManager<IResourceData, IScreen>         cScreens;
     AssetClientManager<IResourceData, IProjectOptions> cProjectOptions;
     AssetClientManager<IResourceData, IAssets>         cAssets;
     AssetClientManager<IResourceData, IString>         cStrings;
     AssetClientManager<IResourceData, ITexture>        cTextures;
     AssetClientManager<IResourceData, IVertex>         cVertices;
 
-    // Unsorted
-    std::map<ActionExecutor*, std::unique_ptr<ActionExecutor>> cActionExecutors;
-
     // Literal and dummy asset providers.
-    AssetLiteralDummy<IResourceData, IActionType,     DummyActionType>     cLiteralProviderActionType;
+    AssetLiteralDummy<IActionClient, IAction,         DummyAction>         cLiteralProviderAction;
     AssetLiteralDummy<IResourceData, IBinding,        DummyBinding>        cLiteralProviderBinding;
     AssetLiteralDummy<IResourceData, IBindingType,    DummyBindingType>    cLiteralProviderBindingType;
     AssetLiteralBoolean                                                    cLiteralProviderBoolean;
@@ -388,18 +364,18 @@ namespace IsoRealms {
     LiteralBindingType cBindingTypeVertex;
 
     // Conversion asset providers.
-    AssetConvertedBinding<Action>         cConversionProviderActionToBinding;
-    AssetConvertedBinding<Boolean>        cConversionProviderBooleanToBinding;
-    AssetConvertedBinding<Colour>         cConversionProviderColourToBinding;
-    AssetConvertedBinding<Float>          cConversionProviderFloatToBinding;
-    AssetConvertedBinding<Font>           cConversionProviderFontToBinding;
-    AssetConvertedBinding<InputHandler>   cConversionProviderInputHandlerToBinding;
-    AssetConvertedBinding<Integer>        cConversionProviderIntegerToBinding;
-    AssetConvertedBinding<ProjectOptions> cConversionProviderProjectOptionsToBinding;
-    AssetConvertedBinding<Assets>         cConversionProviderProjectToBinding;
-    AssetConvertedBinding<Screen>         cConversionProviderScreenToBinding;
-    AssetConvertedBinding<String>         cConversionProviderStringToBinding;
-    AssetConvertedBinding<Vertex>         cConversionProviderVertexToBinding;
+    AssetConvertedBinding<IActionClient, Action>         cConversionProviderActionToBinding;
+    AssetConvertedBinding<IResourceData, Boolean>        cConversionProviderBooleanToBinding;
+    AssetConvertedBinding<IResourceData, Colour>         cConversionProviderColourToBinding;
+    AssetConvertedBinding<IResourceData, Float>          cConversionProviderFloatToBinding;
+    AssetConvertedBinding<IResourceData, Font>           cConversionProviderFontToBinding;
+    AssetConvertedBinding<IResourceData, InputHandler>   cConversionProviderInputHandlerToBinding;
+    AssetConvertedBinding<IResourceData, Integer>        cConversionProviderIntegerToBinding;
+    AssetConvertedBinding<IResourceData, ProjectOptions> cConversionProviderProjectOptionsToBinding;
+    AssetConvertedBinding<IResourceData, Assets>         cConversionProviderProjectToBinding;
+    AssetConvertedBinding<IResourceData, Screen>         cConversionProviderScreenToBinding;
+    AssetConvertedBinding<IResourceData, String>         cConversionProviderStringToBinding;
+    AssetConvertedBinding<IResourceData, Vertex>         cConversionProviderVertexToBinding;
     
     AssetConvertedString<Integer>         cConversionProviderIntegerToString;
     AssetConvertedString<Float>           cConversionProviderFloatToString;
@@ -414,20 +390,20 @@ namespace IsoRealms {
     ProjectFile cProjectFile;
     Filename cFilenameString;
     FileUser cFileUserBoolean;
-    QuitActionType cQuitAction;
+    QuitAction cQuitAction;
 
     std::map<std::string, std::unique_ptr<ProjectProperty>> cProperties;
 
     int cTime;
 
     // Project definition
-    ProjectAsset<InputHandler> cDefInputHandler;            /// Input handler of this project.
-    ProjectAsset<Screen> cDefScreen;                        /// Screen of this project.
-    ProjectAsset<Editable> cDefDefaultEditor;               /// Default editor of this project.
-    ProjectAsset<Action> cDefInitAction;                    /// Action to execute after project has loaded.
-    ProjectAsset<Action> cDefResetAction;                   /// Action to execute after project has completed.
-    ProjectAsset<Action> cDefStartAction;                   /// Action to execute upon starting project (following reset)
-    ProjectAsset<Action> cDefQuitAction;                    /// Action to execute upon project quit.
+    ProjectAsset<IResourceData, InputHandler> cDefInputHandler;  /// Input handler of this project.
+    ProjectAsset<IResourceData, Screen>       cDefScreen;        /// Screen of this project.
+    ProjectAsset<IResourceData, Editable>     cDefDefaultEditor; /// Default editor of this project.
+    ProjectAsset<IActionClient, Action>       cDefInitAction;    /// Action to execute after project has loaded.
+    ProjectAsset<IActionClient, Action>       cDefResetAction;   /// Action to execute after project has completed.
+    ProjectAsset<IActionClient, Action>       cDefStartAction;   /// Action to execute upon starting project (following reset)
+    ProjectAsset<IActionClient, Action>       cDefQuitAction;    /// Action to execute upon project quit.
 
     std::vector<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
 
@@ -474,10 +450,25 @@ namespace IsoRealms {
     /*****************************\
      * Implements IAssetRegistry *
     \*****************************/
-    void add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category) override;
-    void add(IAssetProvider<IResourceData, IString>* provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IActionClient, IAction>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IBinding>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IBindingType>*    provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IBoolean>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IColour>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IEditable>*       provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IFloat>*          provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IFont>*           provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IInputHandler>*   provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IInteger>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IModel>*          provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IProjectOptions>* provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IAssets>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IScreen>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IString>*         provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, ITexture>*        provider, const std::string& id, const std::string& category) override;
+    void add(IAssetProvider<IResourceData, IVertex>*         provider, const std::string& id, const std::string& category) override;
 
-    void                      add(IActionType*     asset, const std::string& id, const std::string& category) override;
+    void                      add(IAction*         asset, const std::string& id, const std::string& category) override;
     void                      add(IBinding*        asset, const std::string& id, const std::string& category) override;
     void                      add(IBindingType*    asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IBoolean>* add(IBoolean*        asset, const std::string& id, const std::string& category) override;
@@ -487,7 +478,7 @@ namespace IsoRealms {
     void                      add(IFont*           asset, const std::string& id, const std::string& category) override;
     void                      add(IInputHandler*   asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IInteger>* add(IInteger*        asset, const std::string& id, const std::string& category) override;
-    IScreen*                  add(IScreen*         asset, const std::string& id, const std::string& category) override;
+    void                      add(IScreen*         asset, const std::string& id, const std::string& category) override;
     void                      add(IModel*          asset, const std::string& id, const std::string& category) override;
     void                      add(IProjectOptions* asset, const std::string& id, const std::string& category) override;
     void                      add(IAssets*         asset, const std::string& id, const std::string& category) override;
@@ -498,7 +489,7 @@ namespace IsoRealms {
     /****************************\
      * Implements IAssetRemover * 
     \****************************/
-    void remove(IAssetProvider<IResourceData, IActionType>*     provider) override;
+    void remove(IAssetProvider<IActionClient, IAction>*         provider) override;
     void remove(IAssetProvider<IResourceData, IBinding>*        provider) override;
     void remove(IAssetProvider<IResourceData, IBindingType>*    provider) override;
     void remove(IAssetProvider<IResourceData, IBoolean>*        provider) override;
@@ -516,7 +507,7 @@ namespace IsoRealms {
     void remove(IAssetProvider<IResourceData, ITexture>*        provider) override;
     void remove(IAssetProvider<IResourceData, IVertex>*         provider) override;
 
-    void remove(IActionType*     asset) override;
+    void remove(IAction*         asset) override;
     void remove(IAssets*         asset) override;
     void remove(IBinding*        asset) override;
     void remove(IBindingType*    asset) override;
@@ -534,7 +525,7 @@ namespace IsoRealms {
     void remove(ITexture*        asset) override;
     void remove(IVertex*         asset) override;
     
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IActionType>*     provider) override;
+    bool hasReadOnlyReferences(IAssetProvider<IActionClient, IAction>*         provider) override;
     bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) override;
     bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) override;
     bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) override;
@@ -552,7 +543,7 @@ namespace IsoRealms {
     bool hasReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) override;
     bool hasReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) override;
 
-    bool hasReadOnlyReferences(IActionType*     asset) override;
+    bool hasReadOnlyReferences(IAction*         asset) override;
     bool hasReadOnlyReferences(IBinding*        asset) override;
     bool hasReadOnlyReferences(IBindingType*    asset) override;
     bool hasReadOnlyReferences(IBoolean*        asset) override;
@@ -570,7 +561,7 @@ namespace IsoRealms {
     bool hasReadOnlyReferences(ITexture*        asset) override;
     bool hasReadOnlyReferences(IVertex*         asset) override;
    
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IActionType>*     provider) override;
+    void overrideReadOnlyReferences(IAssetProvider<IActionClient, IAction>*         provider) override;
     void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) override;
     void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) override;
     void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) override;
@@ -588,7 +579,7 @@ namespace IsoRealms {
     void overrideReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) override;
     void overrideReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) override;
 
-    void overrideReadOnlyReferences(IActionType*     asset) override;
+    void overrideReadOnlyReferences(IAction*         asset) override;
     void overrideReadOnlyReferences(IBinding*        asset) override;
     void overrideReadOnlyReferences(IBindingType*    asset) override;
     void overrideReadOnlyReferences(IBoolean*        asset) override;
@@ -651,8 +642,11 @@ namespace IsoRealms {
 
     std::string getFilename();
     IProject& getAssetManager() override;
+    IActionClient& getDummyActionClient() override;
     bool isReadOnly() const override;
     void setOwner(File* file) override;
+    IResourceData& getResourceData() override;
+    IBindingRegistry* getBindingRegistry() override;
     File* getFile() override;
     
     Module* loadModule(const std::string& name);
@@ -677,8 +671,7 @@ namespace IsoRealms {
     /**********************\
      * Implements IAssets *
     \**********************/
-    ActionExecutor*  getAction(        IAssetUser<ActionExecutor>*  user, JSONObject object, IResourceData& owner, const std::string& tag, IBindingRegistry* localAssetRegistry) override;
-    IActionType*     getActionType(    IAssetUser<IActionType>*     user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
     IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
     IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals,            bool required = true) override;
     IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
@@ -696,8 +689,7 @@ namespace IsoRealms {
     ITexture*        getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required = true) override;
     IVertex*         getVertex(        IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
 
-    ActionExecutor*  getAction(        IAssetUser<ActionExecutor>*  user, const std::string& id, IResourceData& owner) override;
-    IActionType*     getActionType(    IAssetUser<IActionType>*     user, const std::string& id, IResourceData& owner) override;
+    IAction*         getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner) override;
     IAssets*         getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner) override;
     IBinding*        getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner) override;
     IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner) override;
@@ -715,8 +707,7 @@ namespace IsoRealms {
     ITexture*        getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) override;
     IVertex*         getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner) override;
 
-    ActionExecutor*  createLiteralAction(        IAssetUser<ActionExecutor>*  user, IResourceData& owner) override;
-    IActionType*     createLiteralActionType(    IAssetUser<IActionType>*     user, IResourceData& owner) override;
+    IAction*         createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) override;
     IAssets*         createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) override;
     IBinding*        createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner) override;
     IBindingType*    createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) override;
@@ -734,8 +725,7 @@ namespace IsoRealms {
     ITexture*        createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) override;
     IVertex*         createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) override;
 
-    void release(IAssetUser<ActionExecutor>*      user, ActionExecutor*  asset) override;
-    void release(IAssetUser<IActionType>*         user, IActionType*     asset) override;
+    void release(IAssetUser<IAction>*             user, IAction*         asset) override;
     void release(IAssetUser<IAssets>*             user, IAssets*         asset) override;
     void release(IAssetUser<IBinding>*            user, IBinding*        asset) override;
     void release(IAssetUser<IBindingType>*        user, IBindingType*    asset) override;
@@ -761,7 +751,7 @@ namespace IsoRealms {
     /*******************************\
      * Implements IAssetIdentifier *
     \*******************************/
-    std::string getID(const IActionType*     asset) const override;
+    std::string getID(const IAction*         asset) const override;
     std::string getID(const IAssets*         asset) const override;
     std::string getID(const IBinding*        asset) const override;
     std::string getID(const IBindingType*    asset) const override;
@@ -779,7 +769,7 @@ namespace IsoRealms {
     std::string getID(const ITexture*        asset) const override;
     std::string getID(const IVertex*         asset) const override;
 
-    void save(JSONObject object, const IActionType*     asset) const override;
+    void save(JSONObject object, const IAction*         asset) const override;
     void save(JSONObject object, const IAssets*         asset) const override;
     void save(JSONObject object, const IBinding*        asset) const override;
     void save(JSONObject object, const IBindingType*    asset) const override;
@@ -800,7 +790,7 @@ namespace IsoRealms {
     /****************************\
      * Implements IAssetBrowser *
     \****************************/
-    std::vector<std::string> getAllActionTypes() override;
+    std::vector<std::string> getAllActions() override;
     std::vector<std::string> getAllBindings() override;
     std::vector<std::string> getAllBindingTypes() override;
     std::vector<std::string> getAllBooleans() override;
@@ -862,6 +852,8 @@ namespace IsoRealms {
     
     void addScreenListener(IScreenListener* listener) override;
     void removeScreenListener(IScreenListener* listener) override;
+    void screenPreRender(IScreen* screen) override;
+    void screenPostRender(IScreen* screen) override;
 
     void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) override;
 
@@ -885,8 +877,8 @@ namespace IsoRealms {
     void makeUserDataDirectory() override;
     bool isIncluded() const override;
 
-    bool isProcessingInput();
-    void postponeAction(IAction* action);
+    bool isProcessingInput() override;
+    void postponeAction(IAction* action) override;
 
     LiteralString cPropertyValue;
     LocalLuaBinding<IString> cPropertyValueBinding;

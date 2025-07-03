@@ -22,9 +22,9 @@ namespace IsoRealms::HighScore {
   ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data) :
             cProjectCallbackManager(project),
             cParentProject(project),
-            cScriptQuit(data),
-            cScriptOnHighScoreAchieved(data),
-            cScriptOnHighScoreFailed(data),
+            cScriptQuit(data.getDummyActionClient()),
+            cScriptOnHighScoreAchieved(data.getDummyActionClient()),
+            cScriptOnHighScoreFailed(data.getDummyActionClient()),
             cProjectDataPath(data),
             cProjectUser(data, false),
             cLuaBinding(project, this) {

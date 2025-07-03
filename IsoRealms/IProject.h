@@ -133,6 +133,10 @@ namespace IsoRealms {
     virtual bool isUserProject() = 0;
     virtual void addScreenListener(IScreenListener* listener) = 0;
     virtual void removeScreenListener(IScreenListener* listener) = 0;
+    virtual void screenPreRender(IScreen* screen) = 0;
+    virtual void screenPostRender(IScreen* screen) = 0;
+    virtual bool isProcessingInput() = 0;
+    virtual void postponeAction(IAction* action) = 0;
 
     // TODO: Probably shouldn't be here?
     virtual void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) = 0;

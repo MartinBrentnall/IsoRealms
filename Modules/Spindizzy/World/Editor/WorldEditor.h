@@ -76,7 +76,7 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::string> getAnalogueInputs() const override;
     void setDigitalInput(const std::string& name, IBoolean* input) override;
     void setAnalogueInput(const std::string& name, IFloat* input) override;
-    void setExitAction(ActionExecutor* action) override;
+    void setExitAction(Action* action) override;
     bool signal(SignalInputID id);
 
     void setAppearance(IFont* font, float scale) override;
@@ -154,7 +154,7 @@ namespace IsoRealms::Spindizzy {
     bool cSignalConsumed;
     bool cHasFocus;
 
-    ActionExecutor* cExitAction;
+    Action* cExitAction;
 
     double cDistance;
     double cRotation;
@@ -178,8 +178,6 @@ namespace IsoRealms::Spindizzy {
     World& cWorld;
     EditorToolbar<IWorldEditorTool*, IWorldEditorToolInstance*> cToolbar;
     std::set<IVisualElement*> cEditingVisuals;
-
-    IScreen* cProxyScreen;
 
     IFont* cFont;
     float cFontSize;

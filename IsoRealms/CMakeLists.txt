@@ -19,12 +19,11 @@ include_directories(${PROJECT_SOURCE_DIR})
 #set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 add_library(IsoRealms
-  ActionExecutor.cpp
+  ActionClient.cpp
   AnimatedFloat.cpp
   AnimatedInteger.cpp
   Application.cpp
   Assets/Client/Action.cpp
-  Assets/Client/ActionType.cpp
   Assets/Client/Assets.cpp
   Assets/Client/Binding.cpp
   Assets/Client/BindingType.cpp
@@ -44,7 +43,7 @@ add_library(IsoRealms
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
-  Assets/Dummy/DummyActionType.cpp
+  Assets/Dummy/DummyAction.cpp
   Assets/Dummy/DummyAssets.cpp
   Assets/Dummy/DummyBinding.cpp
   Assets/Dummy/DummyBindingType.cpp
@@ -64,7 +63,6 @@ add_library(IsoRealms
   Assets/Literal/LiteralTexture.cpp
   Assets/Literal/LiteralVertex.cpp
   Assets/Registry/AssetIDException.cpp
-  Assets/Registry/ScreenClientManager.cpp
   ProjectCallbackManager.cpp
   Collision/CollisionData.cpp
   Collision/CollisionUtils.cpp

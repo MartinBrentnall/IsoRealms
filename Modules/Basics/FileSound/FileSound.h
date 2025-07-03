@@ -35,8 +35,7 @@ namespace IsoRealms::Basics {
    * Resource definition for a sound loaded from a file that can be played as
    * an action.  File type support is provided by SFML.
    */
-  class FileSound final : public IActionType,
-                          public IAction {
+  class FileSound final : public IAction {
     public:
 
     /**********************\
@@ -45,7 +44,7 @@ namespace IsoRealms::Basics {
     FileSound(IProject& project, Basics& basics, IResourceData& data);
     FileSound(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
     void registerAssets(IAssetRegistry& assets);
-    void save(JSONObject object) const override;
+    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
@@ -53,22 +52,14 @@ namespace IsoRealms::Basics {
     // Interface called by module when adjusting global sound volume.
     void setVolume(float volume);
 
-    /**************************\
-     * Implements IActionType *
-    \**************************/
-    IAction* createAction(JSONObject object, IResourceData& owner, IBindingRegistry* localArgs) override;
-    IAction* createAction(IResourceData& owner, IBindingRegistry* localArgs) override;
-    void destroyAction(IAction* action, IAssets& assets) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    bool hasConfiguration() const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-    bool isDefaultConfiguration() const override;
-
     /**********************\
      * Implements IAction *
     \**********************/
     void execute() override;
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    bool isDefaultConfiguration() const override;
 
     private:
 

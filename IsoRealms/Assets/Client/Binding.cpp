@@ -18,24 +18,24 @@
  */
 #include "Binding.h"
 
+#include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IResourceData.h"
 
 namespace IsoRealms {
-  Binding::Binding(IResourceData& owner, IBindingRegistry* registry, std::function<void()> listener) :
-            Binding(owner, registry, "", listener) {
+  Binding::Binding(IActionClient& owner) :
+            Binding(owner, "") {
   }
 
-  Binding::Binding(IResourceData& owner, IBindingRegistry* registry, const std::string& type, std::function<void()> listener) :
-            Asset<Binding, IBinding, IResourceData>(owner, owner.getAssetManager().createLiteralBinding(this, owner)),
+  Binding::Binding(IActionClient& owner, const std::string& type) :
+            Asset<Binding, IBinding, IResourceData>(owner.getResourceData(), owner.getAssetManager().createLiteralBinding(this, owner.getResourceData())),
             cDefType(type),
-            cDefRegistry(registry),
-            cListener(listener) {
+            cDefRegistry(owner.getBindingRegistry()) {
     std::vector<std::string> mProviders = getAvailableProviders();
     for (std::string mProvider : mProviders) {
       if (mProvider == cDefType) {
         cManager.getAssetManager().release(this, cAsset);
-        cAsset = cManager.getAssetManager().getBinding(this, mProvider, owner);
+        cAsset = cManager.getAssetManager().getBinding(this, mProvider, owner.getResourceData());
         break;
       }
     }
@@ -127,12 +127,6 @@ namespace IsoRealms {
 
   bool Binding::isDefaultConfiguration() const {
     return true;
-  }
-
-  void Binding::stateChanged(IBinding* value) {
-    if (value == cAsset && cListener != nullptr) {
-      cListener();
-    }
   }
 
   std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset) {

@@ -31,6 +31,7 @@ namespace IsoRealms {
   class Screen : public Asset<Screen, IScreen, IResourceData> {
     public:
     Screen(IResourceData& owner);
+    void render(float scale, float aspectRatio) const;
 
     /********************************************\
      * Implements Asset<IScreen, IResourceData> *

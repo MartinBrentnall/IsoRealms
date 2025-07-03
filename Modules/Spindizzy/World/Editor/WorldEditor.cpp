@@ -104,8 +104,7 @@ namespace IsoRealms::Spindizzy {
               cSelectedTool->processCursorMovement(nullptr, &cLocation);
             }, [this](IWorldEditorToolInstance* tool) {
               tool->renderIcon(cScreenYaw.getValue());
-            }),
-            cProxyScreen(nullptr) {
+            }) {
     cDefAnalogueSensitivity = 10;
     cPaletteSelectionX.init(0.0f);
     resetEditingView();
@@ -116,7 +115,7 @@ namespace IsoRealms::Spindizzy {
     // TODO: I think 'assets' is wrong... should be local assets, not the whole project.
     cScreenYawNotifier   = assets.add(&cScreenYaw,   "EditorYaw",   "System");
     cScreenPitchNotifier = assets.add(&cScreenPitch, "EditorPitch", "System");
-    cProxyScreen         = assets.add(static_cast<IScreen*>(this), "Editor", "External"); // TODO: Should have a unique name in case multple instances
+    assets.add(static_cast<IScreen*>(this), "Editor", "External"); // TODO: Should have a unique name in case multple instances
   }
 
   bool WorldEditor::isMovingNorth() {
@@ -486,7 +485,7 @@ namespace IsoRealms::Spindizzy {
     cAnalogueInputsByName.find(name)->second->set(input);
   }
 
-  void WorldEditor::setExitAction(ActionExecutor* action) {
+  void WorldEditor::setExitAction(Action* action) {
     cExitAction = action;
   }
 
@@ -604,6 +603,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   IScreen* WorldEditor::screen() {
-    return cProxyScreen;
+    return this;
   }
 }

@@ -57,6 +57,7 @@ namespace IsoRealms::Spindizzy {
   PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
             cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
+            cActionClient(data, *this),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
             cDefBounceFactor(DEFAULT_BOUNCE_FACTOR),
@@ -70,10 +71,10 @@ namespace IsoRealms::Spindizzy {
             cDefInputX(data, 0.0f),
             cDefInputY(data, 0.0f),
             cDefOrientation(data, 0.0f),
-            cDefRespawnAction(data),
-            cDefFallImpactAction(data),
-            cDefFallBounceAction(data),
-            cDefWallBounceAction(data),
+            cDefRespawnAction(cActionClient),
+            cDefFallImpactAction(cActionClient),
+            cDefFallBounceAction(cActionClient),
+            cDefWallBounceAction(cActionClient),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
     cProjectCallbackManager.reset([this]() {
@@ -96,10 +97,10 @@ namespace IsoRealms::Spindizzy {
     cDefInputX.init(object, JSON_X_INPUT);
     cDefInputY.init(object, JSON_Y_INPUT);
     cDefOrientation.init(object, JSON_ORIENTATION);
-    cDefFallImpactAction.init(object, JSON_ON_FALL_IMPACT, &cSpindizzy);
-    cDefFallBounceAction.init(object, JSON_ON_FALL_BOUNCE, &cSpindizzy);
-    cDefWallBounceAction.init(object, JSON_ON_WALL_BOUNCE, this);
-    cDefRespawnAction.init(object, JSON_ON_RESPAWN, &cSpindizzy);
+    cDefFallImpactAction.init(object, JSON_ON_FALL_IMPACT);
+    cDefFallBounceAction.init(object, JSON_ON_FALL_BOUNCE);
+    cDefWallBounceAction.init(object, JSON_ON_WALL_BOUNCE);
+    cDefRespawnAction.init(object, JSON_ON_RESPAWN);
   }
 
   void PlayerType::registerAssets(IAssetRegistry& assets) {
