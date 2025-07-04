@@ -18,6 +18,8 @@
  */
 #include "Movable.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"

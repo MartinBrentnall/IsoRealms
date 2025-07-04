@@ -44,6 +44,11 @@ namespace IsoRealms::Basics {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void reset();
+
     /****************************\
      * Implements IInputHandler *
     \****************************/
@@ -63,9 +68,6 @@ namespace IsoRealms::Basics {
 
     // JSON members.
     static const std::string JSON_VALUE;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     InputHandler cDefInputHandler;       /// Initial value.

@@ -18,6 +18,8 @@
  */
 #include "ZoneObjectTypeTraitSpinner.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Spinner/Spinner.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 

@@ -92,7 +92,7 @@ namespace IsoRealms::UI {
     cMenuItems.add(&cProviderMenuItemSlider,            MENU_ITEM_SLIDER,             "UI");
   }
 
-  IUI& UI::getAssetManager() {
+  UI& UI::getAssetManager() {
     return *this;
   }
 
@@ -106,22 +106,6 @@ namespace IsoRealms::UI {
 
   void UI::setOwner(File* owner) {
   } // TODO: Probably shouldn't be here.
-
-  std::vector<std::string> UI::getAllLayoutLocations() {return cLayoutLocations.getAll();}
-  std::vector<std::string> UI::getAllLayoutOffsets()   {return cLayoutOffsets.getAll();}
-  std::vector<std::string> UI::getAllMenuItems()       {return cMenuItems.getAll();}
-
-  std::string UI::getID(const ILayoutLocation* asset) const {return cLayoutLocations.getID(asset);}
-  std::string UI::getID(const ILayoutOffset*   asset) const {return cLayoutOffsets.getID  (asset);}
-  std::string UI::getID(const IMenuItem*       asset) const {return cMenuItems.getID(      asset);}
-
-  bool UI::renderLayoutLocationIcon(const std::string& id) const {return cLayoutLocations.renderIcon(id);}
-  bool UI::renderLayoutOffsetIcon(  const std::string& id) const {return cLayoutOffsets.renderIcon(  id);}
-  bool UI::renderMenuItemIcon(      const std::string& id) const {return cMenuItems.renderIcon(      id);}
-
-  bool UI::isLayoutLocationConfigurable(const std::string& id) const {return cLayoutLocations.hasConfiguration(id);}
-  bool UI::isLayoutOffsetConfigurable(  const std::string& id) const {return cLayoutOffsets.hasConfiguration(  id);}
-  bool UI::isMenuItemConfigurable(      const std::string& id) const {return cMenuItems.hasConfiguration(      id);}
 
   void UI::load(IProject& project, JSONObject object) {
     // Nothing to do.
@@ -143,6 +127,29 @@ namespace IsoRealms::UI {
     return std::vector<std::unique_ptr<IProperty>>();
   }  
 
+  void UI::updateRuntime(unsigned int milliseconds) {
+    updateRuntime2(cResourceTypeMenu,            milliseconds);
+    updateRuntime2(cResourceTypeThrobber,        milliseconds);
+    updateRuntime2(cResourceTypeVirtualKeyboard, milliseconds);
+    for (std::unique_ptr<ScreenModel>& mScreenModel : cProviderScreenModel) {
+      mScreenModel->updateRuntime(milliseconds);
+    }
+  }
+  
+  void UI::updateEditing(unsigned int milliseconds) {
+    updateEditing2(cResourceTypeLayout, milliseconds);
+    for (std::unique_ptr<ScreenModel>& mScreenModel : cProviderScreenModel) {
+      mScreenModel->updateEditing(milliseconds);
+    }
+  }
+  
+  void UI::reset() {
+    reset2(cResourceTypeLayout);
+    reset2(cResourceTypeMenu);
+    reset2(cResourceTypePrompt);
+    reset2(cResourceTypeVirtualKeyboard);
+  }  
+  
   ILayoutLocation* UI::createLiteralLayoutLocation(IAssetUser<ILayoutLocation>* user, LayoutComponentEdge& owner) {return cLayoutLocations.literal(user, owner, "");}
   ILayoutOffset*   UI::createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner) {return cLayoutOffsets.literal(  user, owner, "");}
   IMenuItem*       UI::createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner) {return cMenuItems.literal(      user, owner, "");}
@@ -154,14 +161,6 @@ namespace IsoRealms::UI {
   ILayoutLocation* UI::getLayoutLocation(IAssetUser<ILayoutLocation>* user, const std::string& id, LayoutComponentEdge& owner) {return cLayoutLocations.get(user, owner, id, nullptr);}
   ILayoutOffset*   UI::getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, const std::string& id, LayoutComponentEdge& owner) {return cLayoutOffsets.get(  user, owner, id, nullptr);}
   IMenuItem*       UI::getMenuItem(      IAssetUser<IMenuItem>*       user, const std::string& id, Menu&                owner) {return cMenuItems.get(      user, owner, id, nullptr);}
-
-  void UI::release(IAssetUser<ILayoutLocation>* user, ILayoutLocation* asset) {cLayoutLocations.release(user, asset);}
-  void UI::release(IAssetUser<ILayoutOffset>*   user, ILayoutOffset*   asset) {cLayoutOffsets.release(  user, asset);}
-  void UI::release(IAssetUser<IMenuItem>*       user, IMenuItem*       asset) {cMenuItems.release(      user, asset);}
-
-  void UI::save(JSONObject object, ILayoutLocation* asset) const {cLayoutLocations.save(object, asset);}
-  void UI::save(JSONObject object, ILayoutOffset*   asset) const {cLayoutOffsets.save(  object, asset);}
-  void UI::save(JSONObject object, IMenuItem*       asset) const {cMenuItems.save(      object, asset);}
 
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<UI>> ModuleInstances;

@@ -19,6 +19,7 @@
 #include "PhysicalObjectType.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -47,18 +48,6 @@ namespace IsoRealms::Spindizzy {
     return spindizzy.getPhysicalObjectType(this, id);
   }
   
-  std::vector<std::string> PhysicalObjectType::getAvailableProviders() const {
-    return cManager.getAllPhysicalObjectTypes();
-  }
-
-  bool PhysicalObjectType::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderPhysicalObjectTypeIcon(id);
-  }
-
-  bool PhysicalObjectType::hasConfiguration() const {
-    return cManager.isPhysicalObjectTypeConfigurable(getID());
-  }  
-
   bool PhysicalObjectType::isDefaultConfiguration() const {
     return true;
   }

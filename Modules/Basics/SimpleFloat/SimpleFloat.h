@@ -45,6 +45,11 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     /*********************\
+     * Module interfaces *
+    \*********************/
+    void reset();
+
+    /*********************\
      * Implements IFloat *
     \*********************/
     float getValue() const override;
@@ -65,9 +70,6 @@ namespace IsoRealms::Basics {
 
     // Property names.
     static const std::string PROPERTY_VALUE;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data
     float cDefValue;

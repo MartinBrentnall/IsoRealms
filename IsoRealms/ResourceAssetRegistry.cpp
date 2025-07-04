@@ -18,7 +18,7 @@
  */
 #include "ResourceAssetRegistry.h"
 
-#include "IAssetRemover.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   ResourceAssetRegistry::ResourceAssetRegistry(IAssetRegistry& assetRegistry, const std::string& localPath) :
@@ -34,26 +34,32 @@ namespace IsoRealms {
     return cLocalPath;
   }
 
-  void ResourceAssetRegistry::unregisterAssets(IAssetRemover& remover) {
+  void ResourceAssetRegistry::unregisterAssets(Project& project) {
     for (AssetVariant& mAsset : cRegisteredAssets) {
-      std::visit([this, &remover](auto* asset) {
-        remover.remove(asset);
+      std::visit([this, &project](auto* asset) {
+        using RAW = std::decay_t<decltype(*asset)>;
+        using TYPE = typename AssetTypeOf<RAW>::type;
+        project.remove<TYPE>(asset);
       }, mAsset);
     }
   }
 
-  bool ResourceAssetRegistry::hasReadOnlyReferences(IAssetRemover& remover) const {
-    return std::ranges::any_of(cRegisteredAssets, [&remover](const AssetVariant& asset) {
-      return std::visit([&remover](auto* asset) {
-        return remover.hasReadOnlyReferences(asset);
+  bool ResourceAssetRegistry::hasReadOnlyReferences(Project& project) const {
+    return std::ranges::any_of(cRegisteredAssets, [&project](const AssetVariant& asset) {
+      return std::visit([&project](auto* asset) {
+        using RAW = std::decay_t<decltype(*asset)>;
+        using TYPE = typename AssetTypeOf<RAW>::type;
+        return project.hasReadOnlyReferences<TYPE>(asset);
       }, asset);
     });
   }
 
-  void ResourceAssetRegistry::overrideReadOnlyReferences(IAssetRemover& remover) {
-    std::ranges::for_each(cRegisteredAssets, [&remover](const AssetVariant& asset) {
-      std::visit([&remover](auto* asset) {
-        remover.overrideReadOnlyReferences(asset);
+  void ResourceAssetRegistry::overrideReadOnlyReferences(Project& project) {
+    std::ranges::for_each(cRegisteredAssets, [&project](const AssetVariant& asset) {
+      std::visit([&project](auto* asset) {
+        using RAW = std::decay_t<decltype(*asset)>;
+        using TYPE = typename AssetTypeOf<RAW>::type;
+        project.overrideReadOnlyReferences<TYPE>(asset);
       }, asset);
     });
   }

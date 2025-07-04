@@ -38,7 +38,28 @@ namespace IsoRealms {
     virtual void save(JSONObject object) = 0;
     virtual void registerAssets(IAssetRegistry& assets) = 0;
     virtual std::vector<std::unique_ptr<IProperty>> getProperties() = 0;
+    virtual void updateRuntime(unsigned int milliseconds) = 0;
+    virtual void updateEditing(unsigned int milliseconds) = 0;
+    virtual void reset() = 0;
 
+    template<class RESOURCE_TYPE_DEFINITION> void updateRuntime2(RESOURCE_TYPE_DEFINITION& resources, int milliseconds) {
+      for (auto* mResource : resources) {
+        mResource->updateRuntime(milliseconds);
+      }
+    }
+    
+    template<class RESOURCE_TYPE_DEFINITION> void updateEditing2(RESOURCE_TYPE_DEFINITION& resources, int milliseconds) {
+      for (auto* mResource : resources) {
+        mResource->updateEditing(milliseconds);
+      }
+    }
+    
+    template<class RESOURCE_TYPE_DEFINITION> void reset2(RESOURCE_TYPE_DEFINITION& resources) {
+      for (auto* mResource : resources) {
+        mResource->reset();
+      }
+    }
+    
     virtual ~IModuleHandle() {}
   };
 

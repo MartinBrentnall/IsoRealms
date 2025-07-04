@@ -18,11 +18,13 @@
  */
 #include "ZoneViewTypeOverview.h"
 
-#include "ZoneViewOverview.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/ISpindizzyRegistry.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/WorldView/WorldView.h"
+
+#include "ZoneViewOverview.h"
 
 namespace IsoRealms::Spindizzy {
   ZoneViewTypeOverview::ZoneViewTypeOverview(IProject& project, WorldView& worldView) :

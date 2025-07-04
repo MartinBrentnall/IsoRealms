@@ -51,6 +51,12 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void reset();
+
     // Interface to be used by Spindizzy.
     void registerAssets(ISpindizzyRegistry* registry);
     void addZoneView(Zone* zone);
@@ -115,7 +121,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string TYPE_ZONE_VIEW;
     
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;      /// Spindizzy module reference.
     IResourceData& cResourceData;
 

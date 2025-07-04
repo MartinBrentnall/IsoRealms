@@ -18,6 +18,8 @@
  */
 #include "PlayerType.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 #include "Modules/Spindizzy/World/World.h"
@@ -55,7 +57,6 @@ namespace IsoRealms::Spindizzy {
   const std::string PlayerType::BIND_TO_TERRAIN = "Terrain";
 
   PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cActionClient(data, *this),
             cDefAcceleration(DEFAULT_ACCELERATION),
@@ -77,9 +78,6 @@ namespace IsoRealms::Spindizzy {
             cDefWallBounceAction(cActionClient),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeSpinSpeed = cDefSpinSpeed;
-    });
   }
 
   PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -170,6 +168,10 @@ namespace IsoRealms::Spindizzy {
     return mProperties;
   }
 
+  void PlayerType::reset() {
+    cRuntimeSpinSpeed = cDefSpinSpeed;
+  }
+  
   PlayerType::~PlayerType() {
     cSpindizzy.removed(this);
     cSpindizzy.removeAll(this);

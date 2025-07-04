@@ -18,6 +18,8 @@
  */
 #include "PickUp.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/PickUpType/PickUpType.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/World.h"

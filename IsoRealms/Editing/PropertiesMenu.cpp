@@ -18,6 +18,8 @@
  */
 #include "PropertiesMenu.h"
 
+#include "Property/IPropertyEditor.h"
+
 namespace IsoRealms {
   PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue) : Menu(manager, style, breadCrumb, red, green, blue),
             cPropertyFetcher(propertyFetcher),

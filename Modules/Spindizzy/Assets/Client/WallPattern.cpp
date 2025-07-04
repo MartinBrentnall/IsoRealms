@@ -19,6 +19,7 @@
 #include "WallPattern.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -40,18 +41,6 @@ namespace IsoRealms::Spindizzy {
     return owner.getSpindizzy().getWallPattern(this, id, owner, this);
   }
   
-  std::vector<std::string> WallPattern::getAvailableProviders() const {
-    return cManager.getSpindizzy().getAllWallPatterns();
-  }  
-
-  bool WallPattern::renderOtherProviderIcon(const std::string& id) const {
-    return id == getID() ? renderAssetIcon() : cManager.getSpindizzy().renderWallPatternIcon(id);
-  }
-
-  bool WallPattern::hasConfiguration() const {
-    return cManager.getSpindizzy().isWallPatternConfigurable(getID());
-  }
-
   bool WallPattern::isDefaultConfiguration() const {
     return true;
   }

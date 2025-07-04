@@ -98,9 +98,8 @@ namespace IsoRealms::Replay {
     };
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
-
     IProject& cParentProject;
+    
     std::string cFilename; 
     Action cQuitAction;
     std::ifstream cRecording;
@@ -124,6 +123,12 @@ namespace IsoRealms::Replay {
     bool renderIcon() const;
     void hintInUse(bool inUse);
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void reset();
     
     /*********************\
     * Implements IScreen *

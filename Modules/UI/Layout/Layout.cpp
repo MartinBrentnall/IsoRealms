@@ -25,14 +25,8 @@ namespace IsoRealms::UI {
   const std::string Layout::JSON_ID         = "id";
 
   Layout::Layout(IProject& project, UI& ui, IResourceData& data) :
-            cProjectCallbackManager(project),
             cResourceData(data),
             cUI(ui) {
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      for (const std::pair<IEditableScreen* const, std::unique_ptr<LayoutEditor>>& mEditor : cEditors) {
-        mEditor.second->updateScreen(milliseconds);
-      }
-    });
   }
   
   Layout::Layout(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
@@ -80,6 +74,18 @@ namespace IsoRealms::UI {
     return mProperties;
   }
 
+  void Layout::updateEditing(unsigned int milliseconds) {
+    for (const std::pair<IEditableScreen* const, std::unique_ptr<LayoutEditor>>& mEditor : cEditors) {
+      mEditor.second->updateScreen(milliseconds);
+    }
+  }
+  
+  void Layout::reset() {
+    for (LayoutComponent* mComponent : cComponentsByOrder) {
+      mComponent->reset();
+    }
+  }
+  
   void Layout::renderScreen(float scale, float aspectRatio) const {
     for (LayoutComponent* mComponent : cComponentsByOrder) {
       mComponent->render(scale, aspectRatio);
@@ -165,7 +171,7 @@ namespace IsoRealms::UI {
     return mFirstComponent;
   }
 
-  IUI& Layout::getUI() const {
+  UI& Layout::getUI() const {
     return cUI;
   }
 

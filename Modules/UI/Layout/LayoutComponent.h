@@ -22,9 +22,7 @@
 #include <string>
 
 #include "IsoRealms/Collision/CollisionUtils.h"
-#include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
@@ -37,6 +35,7 @@ namespace IsoRealms::UI {
     public:
     LayoutComponent(IProject& project, Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio);
     LayoutComponent(IProject& project, Layout& layout, JSONObject object);
+    void reset();
     void registerAssets(IAssetRegistry& assets, const std::string& name);
     void render(float scale, float aspectRatio);
     void renderEditor(float scale, float aspectRatio);
@@ -85,7 +84,6 @@ namespace IsoRealms::UI {
     static const std::string JSON_TOP;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     Layout& cLayout;
 
     // Definition data.

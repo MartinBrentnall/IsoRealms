@@ -32,13 +32,6 @@
 
 namespace IsoRealms::HighScore {
   class HighScore : public IModuleHandle {
-    private:
-    static const std::string ID_RESOURCE_SCORE_TABLE;
-    static const std::string ID_RESOURCE_SCORE_TRACKER;
-      
-    ResourceTypeDefinition<HighScore, ScoreTable>   cResourceTypeScoreTable;
-    ResourceTypeDefinition<HighScore, ScoreTracker> cResourceTypeScoreTracker;
-      
     public:
     HighScore(IProject& project, IResourceTypeRegistry* registry);
 
@@ -49,5 +42,15 @@ namespace IsoRealms::HighScore {
     void save(JSONObject object) override;
     void registerAssets(IAssetRegistry& assets) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void updateRuntime(unsigned int milliseconds) override;
+    void updateEditing(unsigned int milliseconds) override;
+    void reset() override;
+      
+    private:
+    static const std::string ID_RESOURCE_SCORE_TABLE;
+    static const std::string ID_RESOURCE_SCORE_TRACKER;
+      
+    ResourceTypeDefinition<HighScore, ScoreTable>   cResourceTypeScoreTable;
+    ResourceTypeDefinition<HighScore, ScoreTracker> cResourceTypeScoreTracker;
   };
 }

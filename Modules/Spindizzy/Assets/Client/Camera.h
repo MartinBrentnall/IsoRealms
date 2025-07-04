@@ -39,9 +39,6 @@ namespace IsoRealms::Spindizzy {
     ICamera* createLiteralAsset(Spindizzy& spindizzy);
     ICamera* getAsset(Spindizzy& spindizzy, JSONObject object);
     ICamera* getAsset(Spindizzy& spindizzy, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
 
     private:

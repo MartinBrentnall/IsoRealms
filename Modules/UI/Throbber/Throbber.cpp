@@ -18,6 +18,8 @@
  */
 #include "Throbber.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::UI {
   const std::string Throbber::JSON_COLOUR        = "colour";
   const std::string Throbber::JSON_DURATION      = "duration";
@@ -37,7 +39,6 @@ namespace IsoRealms::UI {
   const unsigned int Throbber::DEFAULT_SPOTS         = 8U;
 
   Throbber::Throbber(IProject& project, UI& ui, IResourceData& data) :
-            cProjectCallbackManager(project),
             cDefDuration(DEFAULT_DURATION),
             cDefRepetitions(DEFAULT_REPETITIONS),
             cDefSpots(DEFAULT_SPOTS),
@@ -47,13 +48,6 @@ namespace IsoRealms::UI {
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cDefColour(data, 1.0f, 0.0f, 1.0f) {
     cRuntimeAnimation = 0U;
-
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      cRuntimeAnimation += milliseconds;
-      while (cRuntimeAnimation >= cDefDuration) {
-        cRuntimeAnimation -= cDefDuration;
-      }
-    });
   }
 
   Throbber::Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
@@ -102,6 +96,13 @@ namespace IsoRealms::UI {
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Ring Size",                  "TODO", [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spot Animation Repetitions", "TODO", [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;}));
     return mProperties;
+  }
+
+  void Throbber::updateRuntime(unsigned int milliseconds) {
+    cRuntimeAnimation += milliseconds;
+    while (cRuntimeAnimation >= cDefDuration) {
+      cRuntimeAnimation -= cDefDuration;
+    }
   }
 
   void Throbber::renderScreen(float scale, float aspectRatio) const {

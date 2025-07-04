@@ -30,20 +30,10 @@ namespace IsoRealms::Basics {
   const std::string DigitalInput::JSON_TYPE              = "type";
 
   DigitalInput::DigitalInput(IProject& project, Basics& basics) :
-             cProjectCallbackManager(project),
              cProject(project),
              cRuntimeState(false),
              cLuaBinding(project, this),
              cStateNotifier(nullptr) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeState = false;
-      for (std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {
-        mMapping->reset();
-      }
-      for (std::unique_ptr<PhysicalInputMapping>& mMapping : cRuntimeMapping) {
-        mMapping->reset();
-      }
-    });
   }
 
   DigitalInput::DigitalInput(IProject& project, Basics& basics, IResourceData& data) :
@@ -112,6 +102,16 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void DigitalInput::reset() {
+    cRuntimeState = false;
+    for (std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {
+      mMapping->reset();
+    }
+    for (std::unique_ptr<PhysicalInputMapping>& mMapping : cRuntimeMapping) {
+      mMapping->reset();
+    }
+  }
+  
   bool DigitalInput::getValue() const {
     return cRuntimeState;
   }

@@ -52,18 +52,21 @@ namespace IsoRealms::Hue {
     \**********************/
     HueManager(IProject& project, Hue& hue, IResourceData& data);
     HueManager(IProject& project, Hue& hue, IResourceData& data, JSONObject object, IOptions& options);
-    void registerAssets(IAssetRegistry& assets);  
+    void registerAssets(IAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
-    
-    virtual ~HueManager() {
-      cREST.cleanup();
-      RESTCleanup();
-      cDTLS.cleanup();
-      cEntertainment.cleanup();
-    }
+
+    virtual ~HueManager();
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void updateEditing(unsigned int milliseconds);
+    void reset();
+
     
     private:
     static const std::string JSON_BRIDGE;
@@ -292,7 +295,6 @@ namespace IsoRealms::Hue {
     };
     
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     IResourceData& cResourceData;
 
     std::string cDefBridgeAddress;

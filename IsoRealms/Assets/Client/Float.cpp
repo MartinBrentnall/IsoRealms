@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Float::Float(IResourceData& owner, float defaultValue, std::function<void(float)> listener) :
@@ -41,18 +42,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getFloat(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
-  std::vector<std::string> Float::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllFloats();
-  }  
-
-  bool Float::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderFloatIcon(id);
-  }
-
-  bool Float::hasConfiguration() const {
-    return cManager.getAssetManager().isFloatConfigurable(getID());
-  }
-
   void Float::stateChanged(IFloat* value) {
     if (value == cAsset && cListener != nullptr) {
       cListener(cAsset->getValue());

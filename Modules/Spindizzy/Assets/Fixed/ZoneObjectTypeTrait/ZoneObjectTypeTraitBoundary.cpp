@@ -18,11 +18,13 @@
  */
 #include <cmath>
 
+#include "ZoneObjectTypeTraitBoundary.h"
+
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Boundary/Boundary.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
-
-#include "ZoneObjectTypeTraitBoundary.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitBoundary::JSON_ENABLED = "enabled";

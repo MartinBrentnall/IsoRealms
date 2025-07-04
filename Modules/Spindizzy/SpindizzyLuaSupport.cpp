@@ -18,6 +18,8 @@
  */
 #include "SpindizzyLuaSupport.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Spindizzy {
 #ifdef __linux__
   extern "C" void initLua(LuaState* luaState) {

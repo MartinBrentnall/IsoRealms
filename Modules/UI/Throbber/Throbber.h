@@ -52,6 +52,11 @@ namespace IsoRealms::UI {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+
     /**********************\
      * Implements IScreen *
     \**********************/
@@ -81,9 +86,6 @@ namespace IsoRealms::UI {
     static const float        DEFAULT_SPOT_RADIUS;
     static const unsigned int DEFAULT_SPOT_SIDES;
     static const unsigned int DEFAULT_SPOTS;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     unsigned int cDefDuration;    /// Duration of the animation loop in milliseconds.

@@ -24,22 +24,21 @@
 #include "IsoRealms/Persistence.h"
 
 #include "Modules/UI/Assets/Type/ILayoutLocation.h"
-#include "Modules/UI/IUI.h"
 
 namespace IsoRealms::UI {
-  class LayoutLocation : public Asset<LayoutLocation, ILayoutLocation, IUI> {
+  class LayoutComponentEdge;
+  class UI;
+
+  class LayoutLocation : public Asset<LayoutLocation, ILayoutLocation, UI> {
     public:
-    LayoutLocation(IUI& ui, LayoutComponentEdge& owner);
+    LayoutLocation(UI& ui, LayoutComponentEdge& owner);
 
     /******************************************\
      * Implements Asset<ILayoutLocation, IUI> *
     \******************************************/
-    ILayoutLocation* createLiteralAsset(IUI& ui);
-    ILayoutLocation* getAsset(IUI& ui, JSONObject object);
-    ILayoutLocation* getAsset(IUI& ui, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
+    ILayoutLocation* createLiteralAsset(UI& ui);
+    ILayoutLocation* getAsset(UI& ui, JSONObject object);
+    ILayoutLocation* getAsset(UI& ui, const std::string& id);
     bool isDefaultConfiguration() const;
 
     private:

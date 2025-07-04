@@ -18,6 +18,8 @@
  */
 #include "World.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -33,27 +35,12 @@ namespace IsoRealms::Spindizzy {
   const unsigned int World::DEFAULT_BOUNCE_CONTROL = 10;
 
   World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefPhysicalSurfaceProcessor(true),
             cDefVisualSurfaceProcessor(false),
             cEditorBasicProperties(false),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      for (std::unique_ptr<Player>&                   mPlayer           : cDefPlayers)               {mPlayer->updateRuntime(milliseconds);}
-      for (std::unique_ptr<DebrisGenerator>&          mDebrisGenerator  : cDefDebrisGenerators)      {mDebrisGenerator->updateRuntime(milliseconds);}
-      for (std::unique_ptr<Zone>&                     mZone             : cDefZones)                 {mZone->updateRuntime(milliseconds);}
-      for (std::unique_ptr<CollisionHandlerInstance>& mCollisionHandler : cRuntimeCollisionHandlers) {mCollisionHandler->processCollisions();}
-      for (std::unique_ptr<BoundaryHandlerInstance>&  mBoundaryHandler  : cRuntimeBoundaryHandlers)  {mBoundaryHandler->processCrossings();}
-    });
-
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      for (const std::pair<IEditableScreen* const, std::unique_ptr<WorldEditor>>& mEditor : cEditors) {
-        mEditor.second->updateScreen(milliseconds);
-      }
-    });
-
     // Physical object types.
     std::vector<IPhysicalObjectType*> mPhysicalObjectTypes = cSpindizzy.getAllPhysicalObjectTypeObjects();
     for (IPhysicalObjectType* mPhysicalObjectType : mPhysicalObjectTypes) {
@@ -65,10 +52,6 @@ namespace IsoRealms::Spindizzy {
     for (IBoundaryType* mBoundaryType : mBoundaryTypes) {
       added(mBoundaryType);
     }
-
-    cProjectCallbackManager.reset([this]() {
-      reset();
-    });
 
     project.mainThreadInit([this]() {
       glColor3f(1.0f, 1.0f, 1.0f);
@@ -199,6 +182,30 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Advanced Properties", "TODO", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;}, cSpindizzy.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyEditor>(       "World Layout",        "TODO", this));
     return mProperties;
+  }
+
+  void World::updateRuntime(unsigned int milliseconds) {
+    for (std::unique_ptr<Player>&                   mPlayer           : cDefPlayers)               {mPlayer->updateRuntime(milliseconds);}
+    for (std::unique_ptr<DebrisGenerator>&          mDebrisGenerator  : cDefDebrisGenerators)      {mDebrisGenerator->updateRuntime(milliseconds);}
+    for (std::unique_ptr<Zone>&                     mZone             : cDefZones)                 {mZone->updateRuntime(milliseconds);}
+    for (std::unique_ptr<CollisionHandlerInstance>& mCollisionHandler : cRuntimeCollisionHandlers) {mCollisionHandler->processCollisions();}
+    for (std::unique_ptr<BoundaryHandlerInstance>&  mBoundaryHandler  : cRuntimeBoundaryHandlers)  {mBoundaryHandler->processCrossings();}
+  }
+
+  void World::updateEditing(unsigned int milliseconds) {
+    for (const std::pair<IEditableScreen* const, std::unique_ptr<WorldEditor>>& mEditor : cEditors) {
+      mEditor.second->updateScreen(milliseconds);
+    }
+    for (Zone* mZone : cRuntimeZonesToInitialise) {
+      mZone->initialiseTerrain();
+    }
+    cRuntimeZonesToInitialise.clear();
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->updateEditing(milliseconds);
+    }
+    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->updateEditing(milliseconds);
+    }
   }
 
   void World::reset() {
@@ -654,19 +661,6 @@ namespace IsoRealms::Spindizzy {
     return cEditorBasicProperties;
   }
   
-  void World::updateEditing(unsigned int milliseconds) {
-    for (Zone* mZone : cRuntimeZonesToInitialise) {
-      mZone->initialiseTerrain();
-    }
-    cRuntimeZonesToInitialise.clear();
-    for (std::unique_ptr<Zone>& mZone : cDefZones) {
-      mZone->updateEditing(milliseconds);
-    }
-    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
-      mPlayer->updateEditing(milliseconds);
-    }
-  }
-
   void World::renderEditing(const IScreen* screen) const {
     for (const std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->renderEditing(screen);

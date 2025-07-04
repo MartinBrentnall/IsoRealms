@@ -22,7 +22,6 @@
 #include <set>
 #include <vector>
 
-#include "IsoRealms/Project.h"
 #include "IsoRealms/IModule.h"
 
 #include "Menu.h"

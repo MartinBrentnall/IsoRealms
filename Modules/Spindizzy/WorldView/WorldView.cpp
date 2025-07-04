@@ -18,6 +18,8 @@
  */
 #include "WorldView.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
@@ -29,7 +31,6 @@ namespace IsoRealms::Spindizzy {
   const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
 
   WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefWorld(nullptr),
@@ -38,12 +39,6 @@ namespace IsoRealms::Spindizzy {
             cDefZoom(1.0f),
             cRuntimeZone(nullptr),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeZone = nullptr;
-      for (std::unique_ptr<ZoneView>& mZoneView : cRuntimeZoneViews) {
-        mZoneView->cView->reset();
-      }
-    });
   }
     
   WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -96,6 +91,17 @@ namespace IsoRealms::Spindizzy {
       return false;
     }));
     return mProperties;
+  }
+  
+  void WorldView::updateRuntime(unsigned int milliseconds) {
+    cDefCamera->updateRuntime(milliseconds);
+  }
+
+  void WorldView::reset() {
+    cRuntimeZone = nullptr;
+    for (std::unique_ptr<ZoneView>& mZoneView : cRuntimeZoneViews) {
+      mZoneView->cView->reset();
+    }
   }
   
   void WorldView::registerAssets(ISpindizzyRegistry* registry) {

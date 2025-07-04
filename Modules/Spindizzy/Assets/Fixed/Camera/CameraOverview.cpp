@@ -18,6 +18,7 @@
  */
 #include "CameraOverview.h"
 
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
@@ -26,19 +27,7 @@
 
 namespace IsoRealms::Spindizzy {
   CameraOverview::CameraOverview(IProject& project, WorldView& view) :
-            cProjectCallbackManager(project),
             cParent(view) {
-    cProjectCallbackManager.reset([this]() {
-      World* mWorld = cParent.getWorld();
-      float mXSize =  mWorld->getEndX() - mWorld->getStartX() + 1;
-      float mYSize =  mWorld->getEndY() - mWorld->getStartY() + 1;
-      float mZSize = (mWorld->getEndZ() - mWorld->getStartZ() + 3) / 2.0f;
-      cCachedXLocation = (mWorld->getStartX()        - 0.5f) + mXSize / 2.0f;
-      cCachedYLocation = (mWorld->getStartY()        - 0.5f) + mYSize / 2.0f;
-      cCachedZLocation = (mWorld->getStartZ() / 2.0f - 0.5f) + mZSize / 2.0f;
-      cCachedXZoom = mXSize / 2.0f;
-      cCachedYZoom = mYSize / 2.0f;
-    });
   }
   
   CameraOverview::CameraOverview(IProject& project, WorldView& view, JSONObject object) :
@@ -49,6 +38,22 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
     
+  void CameraOverview::updateRuntime(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
+  void CameraOverview::reset() {
+    World* mWorld = cParent.getWorld();
+    float mXSize =  mWorld->getEndX() - mWorld->getStartX() + 1;
+    float mYSize =  mWorld->getEndY() - mWorld->getStartY() + 1;
+    float mZSize = (mWorld->getEndZ() - mWorld->getStartZ() + 3) / 2.0f;
+    cCachedXLocation = (mWorld->getStartX()        - 0.5f) + mXSize / 2.0f;
+    cCachedYLocation = (mWorld->getStartY()        - 0.5f) + mYSize / 2.0f;
+    cCachedZLocation = (mWorld->getStartZ() / 2.0f - 0.5f) + mZSize / 2.0f;
+    cCachedXZoom = mXSize / 2.0f;
+    cCachedYZoom = mYSize / 2.0f;
+  }
+  
   const IFloat* CameraOverview::getYaw() const {
     return this;
   }  

@@ -24,21 +24,21 @@
 
 namespace IsoRealms::UI {
   ScreenModel::ScreenModel(IProject& project, IResourceData& owner) :
-            cProjectCallbackManager(project),
             cDefModel(owner),
             cDefModelInstance(cDefModel.createInstance()) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      cDefModelInstance->update(milliseconds);
-    });
-
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      cDefModelInstance->update(milliseconds);
-    });
   }
   
   ScreenModel::ScreenModel(IProject& project, IResourceData& owner, JSONObject object) :
             ScreenModel(project, owner) {
     cDefModel.set(object, JSON_MODEL);
+  }
+
+  void ScreenModel::updateRuntime(unsigned int milliseconds) {
+    cDefModelInstance->update(milliseconds);
+  }
+
+  void ScreenModel::updateEditing(unsigned int milliseconds) {
+    cDefModelInstance->update(milliseconds);
   }
 
   void ScreenModel::renderScreen(float scale, float aspectRatio) const {

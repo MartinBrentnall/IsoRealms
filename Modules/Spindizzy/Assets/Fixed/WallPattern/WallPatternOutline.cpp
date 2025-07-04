@@ -18,6 +18,8 @@
  */
 #include "WallPatternOutline.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 

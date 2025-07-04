@@ -45,6 +45,18 @@ namespace IsoRealms::HighScore {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
+  void HighScore::updateRuntime(unsigned int milliseconds) {
+    updateRuntime2(cResourceTypeScoreTracker, milliseconds);
+  }
+  
+  void HighScore::updateEditing(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
+  void HighScore::reset() {
+    reset2(cResourceTypeScoreTracker);
+  }  
+  
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<HighScore>> ModuleInstances;
 }

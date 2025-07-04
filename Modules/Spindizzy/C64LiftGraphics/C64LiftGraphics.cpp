@@ -18,6 +18,8 @@
  */
 #include "C64LiftGraphics.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {

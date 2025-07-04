@@ -18,6 +18,8 @@
  */
 #include "ZoneViewActual.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 
 namespace IsoRealms::Spindizzy {

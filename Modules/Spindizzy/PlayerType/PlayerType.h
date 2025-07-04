@@ -59,6 +59,11 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void reset();
+
     ~PlayerType();
 
     // Interface to be used by module.
@@ -166,7 +171,6 @@ namespace IsoRealms::Spindizzy {
     };
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;     /// Spindizzy module reference.
 
     // Action client.

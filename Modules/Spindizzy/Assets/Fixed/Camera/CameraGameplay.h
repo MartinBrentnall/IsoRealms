@@ -55,6 +55,8 @@ namespace IsoRealms::Spindizzy {
      * Implements ICamera *
     \**********************/
     void registerAssets(IAssetRegistry& assets) override; 
+    void updateRuntime(unsigned int milliseconds) override;
+    void reset() override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -103,7 +105,6 @@ namespace IsoRealms::Spindizzy {
     
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     WorldView& cParent; /// Parent view.
 
     LiteralFloat cPitch;

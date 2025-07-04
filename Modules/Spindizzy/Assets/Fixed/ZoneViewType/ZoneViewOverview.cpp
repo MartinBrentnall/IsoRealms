@@ -18,6 +18,8 @@
  */
 #include "ZoneViewOverview.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 #include "Modules/Spindizzy/Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.h"
 

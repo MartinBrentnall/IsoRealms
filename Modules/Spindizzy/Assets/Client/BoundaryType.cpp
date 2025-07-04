@@ -19,6 +19,7 @@
 #include "BoundaryType.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -47,18 +48,6 @@ namespace IsoRealms::Spindizzy {
     return spindizzy.getBoundaryType(this, id);
   }
   
-  std::vector<std::string> BoundaryType::getAvailableProviders() const {
-    return cManager.getAllBoundaryTypes();
-  }  
-
-  bool BoundaryType::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderBoundaryTypeIcon(id);
-  }
-
-  bool BoundaryType::hasConfiguration() const {
-    return cManager.isBoundaryTypeConfigurable(getID());
-  }
-
   bool BoundaryType::isDefaultConfiguration() const {
     return true;
   }

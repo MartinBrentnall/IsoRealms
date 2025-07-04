@@ -18,6 +18,8 @@
  */
 #include "WallTemplate.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Spindizzy {
   WallTemplate::WallTemplate(int x, int y, WallSegment* segment, std::optional<Condition>& condition, Wall::Direction facing) :
             cX(x),

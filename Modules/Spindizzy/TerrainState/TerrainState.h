@@ -52,6 +52,11 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void reset();
+
     /**
      * Get the condition element that represents this terrain state.
      */
@@ -93,9 +98,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_ICON_SCALE;
     static const std::string JSON_ID;
     static const std::string JSON_STATE;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     ConditionElement cDefConditionElement; /// Condition element representing this terrain state.

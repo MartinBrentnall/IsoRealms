@@ -22,7 +22,6 @@
 #include <string>
 
 #include "IsoRealms/Collision/CollisionUtils.h"
-#include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"

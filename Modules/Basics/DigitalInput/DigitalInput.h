@@ -62,6 +62,11 @@ namespace IsoRealms::Basics {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void reset();
+
     /***********************\
      * Implements IBoolean *
     \***********************/
@@ -171,7 +176,6 @@ namespace IsoRealms::Basics {
     };
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
 
     // Definition data.

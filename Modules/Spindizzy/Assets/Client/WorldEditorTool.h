@@ -38,9 +38,6 @@ namespace IsoRealms::Spindizzy {
     IWorldEditorTool* createLiteralAsset(Spindizzy& spindizzy);
     IWorldEditorTool* getAsset(Spindizzy& spindizzy, JSONObject object);
     IWorldEditorTool* getAsset(Spindizzy& spindizzy, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
   };
 }

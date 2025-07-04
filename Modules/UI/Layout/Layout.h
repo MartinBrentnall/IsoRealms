@@ -48,6 +48,12 @@ namespace IsoRealms::UI {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateEditing(unsigned int milliseconds);
+    void reset();
+
     /**********************\
      * Implements IScreen *
     \**********************/
@@ -65,7 +71,7 @@ namespace IsoRealms::UI {
     /*********************\
      * Editing Interface *
     \*********************/
-    IUI& getUI() const;
+    UI& getUI() const;
     IResourceData& getResourceData();
     LayoutComponent* createComponent(float x1, float y1, float x2, float y2, float aspectRatio);
     LayoutComponent* createComponent(JSONObject& object);
@@ -90,9 +96,8 @@ namespace IsoRealms::UI {
     static const std::string JSON_ID;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     IResourceData& cResourceData;
-    IUI& cUI;
+    UI& cUI;
 
     // Definition data.
     std::vector<LayoutComponent*> cComponentsByOrder;         /// Components in order of rendering.

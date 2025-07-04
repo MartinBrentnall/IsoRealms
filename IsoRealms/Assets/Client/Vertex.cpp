@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Vertex::Vertex(IResourceData& owner) :
@@ -39,18 +40,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getVertex(this, id, owner);
   }
   
-  std::vector<std::string> Vertex::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllVertices();
-  }
-
-  bool Vertex::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderVertexIcon(id);
-  }
-
-  bool Vertex::hasConfiguration() const {
-    return cManager.getAssetManager().isVertexConfigurable(getID());
-  }
-
   bool Vertex::isDefaultConfiguration() const {
     return true;
   }

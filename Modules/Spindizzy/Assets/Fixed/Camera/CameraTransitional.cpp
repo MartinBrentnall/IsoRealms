@@ -18,6 +18,7 @@
  */
 #include "CameraTransitional.h"
 
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
@@ -26,7 +27,6 @@ namespace IsoRealms::Spindizzy {
   const unsigned int CameraTransitional::DEFAULT_DURATION = 500U;
 
   CameraTransitional::CameraTransitional(IProject& project, WorldView& view) :
-            cProjectCallbackManager(project),
             cParent(view),
             cYaw(*this),
             cPitch(*this),
@@ -40,36 +40,6 @@ namespace IsoRealms::Spindizzy {
             cDefEndArrivalAction(view.getResourceData().getDummyActionClient()),
             cRuntimeYawStateNotifier(nullptr),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      if (cRuntimeEnd) {
-        if (cRuntimeAnimation < cDefDuration) {
-          if (cRuntimeAnimation == 0U) {
-            cDefStartDepartureAction.execute();
-          }
-          cRuntimeAnimation = std::min(cDefDuration, cRuntimeAnimation + milliseconds);
-          if (cRuntimeAnimation == cDefDuration) {
-            cDefEndArrivalAction.execute();
-          }
-        }
-        cRuntimeYawStateNotifier->stateChanged(&cYaw);
-      } else {
-        if (cRuntimeAnimation > 0U) {
-          if (cRuntimeAnimation == cDefDuration) {
-            cDefEndDepartureAction.execute();
-          }
-          cRuntimeAnimation = cRuntimeAnimation >= milliseconds ? cRuntimeAnimation - milliseconds : 0U;
-          if (cRuntimeAnimation == 0U) {
-            cDefStartArrivalAction.execute();
-          }
-          cRuntimeYawStateNotifier->stateChanged(&cYaw);
-        }
-      }
-    });
-
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeEnd = false;
-      cRuntimeAnimation = 0U;
-    });
   }
   
   CameraTransitional::CameraTransitional(IProject& project, WorldView& view, JSONObject object) :
@@ -104,6 +74,43 @@ namespace IsoRealms::Spindizzy {
     cDefEnd->addListener(this);
   }
     
+  void CameraTransitional::updateRuntime(unsigned int milliseconds) {
+    cDefStart->updateRuntime(milliseconds);
+    cDefEnd->updateRuntime(milliseconds);
+    
+    if (cRuntimeEnd) {
+      if (cRuntimeAnimation < cDefDuration) {
+        if (cRuntimeAnimation == 0U) {
+          cDefStartDepartureAction.execute();
+        }
+        cRuntimeAnimation = std::min(cDefDuration, cRuntimeAnimation + milliseconds);
+        if (cRuntimeAnimation == cDefDuration) {
+          cDefEndArrivalAction.execute();
+        }
+      }
+      cRuntimeYawStateNotifier->stateChanged(&cYaw);
+    } else {
+      if (cRuntimeAnimation > 0U) {
+        if (cRuntimeAnimation == cDefDuration) {
+          cDefEndDepartureAction.execute();
+        }
+        cRuntimeAnimation = cRuntimeAnimation >= milliseconds ? cRuntimeAnimation - milliseconds : 0U;
+        if (cRuntimeAnimation == 0U) {
+          cDefStartArrivalAction.execute();
+        }
+        cRuntimeYawStateNotifier->stateChanged(&cYaw);
+      }
+    }
+  }
+  
+  void CameraTransitional::reset() {
+    cDefStart->reset();
+    cDefEnd->reset();
+    
+    cRuntimeEnd = false;
+    cRuntimeAnimation = 0U;
+  }
+  
   const IFloat* CameraTransitional::getYaw() const {
     return &cYaw;
   }  

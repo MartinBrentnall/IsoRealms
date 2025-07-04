@@ -36,9 +36,6 @@ namespace IsoRealms {
     IFont* createLiteralAsset(IResourceData& owner);
     IFont* getAsset(IResourceData& owner, JSONObject object);
     IFont* getAsset(IResourceData& owner, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
   };
 }

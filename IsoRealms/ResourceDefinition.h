@@ -31,4 +31,3 @@
 #include "IProject.h"
 #include "IResourceData.h"
 #include "Options/IOptions.h"
-#include "ProjectCallbackManager.h"

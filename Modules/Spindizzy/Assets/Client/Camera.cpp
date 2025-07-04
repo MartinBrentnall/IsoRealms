@@ -19,6 +19,7 @@
 #include "Camera.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/WorldView/WorldView.h"
@@ -40,18 +41,6 @@ namespace IsoRealms::Spindizzy {
 
   ICamera* Camera::getAsset(Spindizzy& spindizzy, const std::string& id) {
     return cSpindizzy.getCamera(this, id, cOwner);
-  }
-
-  std::vector<std::string> Camera::getAvailableProviders() const {
-    return cManager.getAllCameras();
-  }
-
-  bool Camera::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderCameraIcon(id);
-  }
-
-  bool Camera::hasConfiguration() const {
-    return cManager.isCameraConfigurable(getID());
   }
 
   bool Camera::isDefaultConfiguration() const {

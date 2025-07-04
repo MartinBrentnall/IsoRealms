@@ -19,6 +19,7 @@
 #include "Binding.h"
 
 #include "IsoRealms/IAssets.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Types.h"
 
 #include "Function.h"

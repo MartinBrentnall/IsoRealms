@@ -19,6 +19,7 @@
 #include "LayoutEditor.h"
 
 #include "Modules/UI/Layout/Layout.h"
+#include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
   LayoutEditor::LayoutEditor(Layout& layout) :

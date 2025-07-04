@@ -38,9 +38,6 @@ namespace IsoRealms {
     IFloat* createLiteralAsset(IResourceData& owner);
     IFloat* getAsset(IResourceData& owner, JSONObject object);
     IFloat* getAsset(IResourceData& owner, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
 
     /**************************************\

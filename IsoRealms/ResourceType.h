@@ -56,10 +56,9 @@ namespace IsoRealms {
     void renameUserDataDirectory(const std::string& oldName, const std::string& newName) override;
     std::string getProjectPathPrefix(bool user) override;
     std::string getCategory() override;
-    IAssetRemover& getAssetRemover() override;
     IAssetRegistry& getAssetRegistry() override;
     IAssets& getAssets() override;
-    IProject& getProject() override;
+    Project& getProject() override;
 
     private:
     static const std::string JSON_ID;

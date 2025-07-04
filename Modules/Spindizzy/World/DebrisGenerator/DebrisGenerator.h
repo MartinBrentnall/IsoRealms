@@ -23,7 +23,6 @@
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/Types.h"
 

@@ -25,7 +25,15 @@
 #include "IAssetRegistry.h"
 
 namespace IsoRealms {
-  class IAssetRemover;
+  class Project;
+
+  template<typename TYPE> struct AssetTypeOf {
+    using type = TYPE;
+  };
+
+  template<typename TYPE, typename OWNER> struct AssetTypeOf<IAssetProvider<OWNER, TYPE>> {
+    using type = TYPE;
+  };
 
   class ResourceAssetRegistry : public IAssetRegistry {
     public:
@@ -68,7 +76,7 @@ namespace IsoRealms {
                                       IString*,
                                       ITexture*,
                                       IVertex*>;
-                                      
+
     template <typename TYPE> void registerAsset(TYPE* asset) {
       for (const AssetVariant& mAsset : cRegisteredAssets) {
         if (std::holds_alternative<TYPE*>(mAsset) && std::get<TYPE*>(mAsset) == asset) {
@@ -78,9 +86,9 @@ namespace IsoRealms {
       cRegisteredAssets.emplace_back(asset);
     }
     
-    void unregisterAssets(IAssetRemover& remover);
-    bool hasReadOnlyReferences(IAssetRemover& remover) const;
-    void overrideReadOnlyReferences(IAssetRemover& remover);
+    void unregisterAssets(Project& project);
+    bool hasReadOnlyReferences(Project& project) const;
+    void overrideReadOnlyReferences(Project& project);
 
     /*****************************\
      * Implements IAssetRegistry *

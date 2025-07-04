@@ -18,6 +18,9 @@
  */
 #include "ProjectConfigurer.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_CODE_FONT        = "codeFont";
   const std::string ProjectConfigurer::JSON_CODE_FONT_SIZE   = "codeFontSize";
@@ -30,7 +33,6 @@ namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_MAPPING          = "mapping";
 
   ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cActionClient(data, *this),
             cDefFont(data),
             cDefCodeFont(data),
@@ -61,9 +63,6 @@ namespace IsoRealms::Basics {
             cNextItem(data, *this, SignalInputID::MOVE_CURSOR_DOWN),
             cLuaBinding(project, this),
             cBindingEditor(project, nullptr, this) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      cProjectConfigurationUI.update(milliseconds);
-    });
   }
 
   ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -118,6 +117,10 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void ProjectConfigurer::updateRuntime(unsigned int milliseconds) {
+    cProjectConfigurationUI.update(milliseconds);
+  }
+    
   void ProjectConfigurer::renderScreen(float scale, float aspectRatio) const {
     cProjectConfigurationUI.render(aspectRatio);
   }

@@ -18,6 +18,10 @@
  */
 #include "SequenceEditor.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
+
+#include "Modules/Basics/Basics.h"
 #include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {

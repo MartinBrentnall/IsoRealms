@@ -18,6 +18,8 @@
  */
 #include "ZoneObjectTypeTraitModel.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Model/Model.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 

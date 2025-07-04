@@ -18,7 +18,9 @@
  */
 #pragma once
 
+#include "IsoRealms/Assets/Registry/AssetClientManager.h"
 #include "IsoRealms/Assets/Providers/AssetInstanced.h"
+#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceTypeRegistry.h"
@@ -63,7 +65,6 @@
 #include "Gyroscope/Gyroscope.h"
 #include "IBindingIdentifier.h"
 #include "IIconAnimator.h"
-#include "ISpindizzyAssetBrowser.h"
 #include "ISpindizzyRegistry.h"
 #include "Jewel/Jewel.h"
 #include "LiftType/LiftType.h"
@@ -83,9 +84,10 @@
 #include "ZoneType/ZoneType.h"
 
 namespace IsoRealms::Spindizzy {
+  template<class TYPE> struct AssetContainerTraits;
+
   class Spindizzy : public IModuleHandle,
                     public ISpindizzyRegistry,
-                    public ISpindizzyAssetBrowser,
                     public IBindingRegistry,
                     public IStateListener<ITexture*> {
     public:
@@ -138,7 +140,7 @@ namespace IsoRealms::Spindizzy {
     std::string getID(const WorldView*      asset) const;
     std::string getID(const ZoneObjectType* asset) const;
     std::string getID(const ZoneType*       asset) const;
-    
+
     std::vector<IBoundaryType*>       getAllBoundaryTypeObjects();
     std::vector<IPhysicalObjectType*> getAllPhysicalObjectTypeObjects();
 
@@ -179,23 +181,29 @@ namespace IsoRealms::Spindizzy {
     IZoneObjectTypeTrait* getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType& owner);
     IZoneViewType*        getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView&      owner);
 
-    void release(IAssetUser<IBoundaryType>*        user, IBoundaryType*        asset);
-    void release(IAssetUser<ICamera>*              user, ICamera*              asset);
-    void release(IAssetUser<IPhysicalObjectType>*  user, IPhysicalObjectType*  asset);
-    void release(IAssetUser<ISurfacePattern>*      user, ISurfacePattern*      asset);
-    void release(IAssetUser<IWallPattern>*         user, IWallPattern*         asset);
-    void release(IAssetUser<IWorldEditorTool>*     user, IWorldEditorTool*     asset);
-    void release(IAssetUser<IZoneObjectTypeTrait>* user, IZoneObjectTypeTrait* asset);
-    void release(IAssetUser<IZoneViewType>*        user, IZoneViewType*        asset);
+    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
+      AssetContainerTraits<TYPE>::get(*this).release(user, asset);
+    }
 
-    void save(JSONObject object, IBoundaryType*        asset) const;
-    void save(JSONObject object, ICamera*              asset) const;
-    void save(JSONObject object, IPhysicalObjectType*  asset) const;
-    void save(JSONObject object, ISurfacePattern*      asset) const;
-    void save(JSONObject object, IWallPattern*         asset) const;
-    void save(JSONObject object, IWorldEditorTool*     asset) const;
-    void save(JSONObject object, IZoneObjectTypeTrait* asset) const;
-    void save(JSONObject object, IZoneViewType*        asset) const;
+    template <typename TYPE> std::string getID(const TYPE* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).getID(asset);
+    }
+
+    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
+      AssetContainerTraits<TYPE>::get(*this).save(object, asset);
+    }
+
+    template <typename TYPE> std::vector<std::string> getAll() const {
+      return AssetContainerTraits<TYPE>::get(*this).getAll();
+    }
+
+    template <typename TYPE> bool renderIcon(const std::string& id) const {
+      return AssetContainerTraits<TYPE>::get(*this).renderIcon(id);
+    }
+
+    template <typename TYPE> bool isConfigurable(const std::string& id) const {
+      return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+    }
 
     // Event handling.
     void added(BoundaryHandler* handler);
@@ -256,6 +264,9 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) override;
     void registerAssets(IAssetRegistry& assets) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void updateRuntime(unsigned int milliseconds) override;
+    void updateEditing(unsigned int milliseconds) override;
+    void reset() override;
 
     /*********************************\
      * Implements ISpindizzyRegistry *
@@ -277,45 +288,6 @@ namespace IsoRealms::Spindizzy {
 //     void add(IAssetProvider<IZoneObjectTypeTrait>* provider, const std::string& id) override;
 //     void add(IAssetProvider<IZoneViewType>*        provider, const std::string& id) override;
     void addZoneBinding(IBinding* binding1, IBinding* binding2, const std::string& id) override;
-
-    /*************************************\
-     * Implements ISpindizzyAssetBrowser *
-    \*************************************/
-    std::vector<std::string> getAllBoundaryTypes() override;
-    std::vector<std::string> getAllCameras() override;
-    std::vector<std::string> getAllPhysicalObjectTypes() override;
-    std::vector<std::string> getAllSurfacePatterns() override;
-    std::vector<std::string> getAllWallPatterns() override;
-    std::vector<std::string> getAllWorldEditorTools() override;
-    std::vector<std::string> getAllZoneObjectTypeTraits() override;
-    std::vector<std::string> getAllZoneViewTypes() override;
-    
-    std::string getID(const IBoundaryType*        asset) const override;
-    std::string getID(const ICamera*              asset) const override;
-    std::string getID(const IPhysicalObjectType*  asset) const override;
-    std::string getID(const ISurfacePattern*      asset) const override;
-    std::string getID(const IWallPattern*         asset) const override;
-    std::string getID(const IWorldEditorTool*     asset) const override;
-    std::string getID(const IZoneObjectTypeTrait* asset) const override;
-    std::string getID(const IZoneViewType*        asset) const override;
-
-    bool renderBoundaryTypeIcon(       const std::string& id) const override;
-    bool renderCameraIcon(             const std::string& id) const override;
-    bool renderPhysicalObjectTypeIcon( const std::string& id) const override;
-    bool renderSurfacePatternIcon(     const std::string& id) const override;
-    bool renderWallPatternIcon(        const std::string& id) const override;
-    bool renderWorldEditorToolIcon(    const std::string& id) const override;
-    bool renderZoneObjectTypeTraitIcon(const std::string& id) const override;
-    bool renderZoneViewTypeIcon(       const std::string& id) const override;
-
-    bool isBoundaryTypeConfigurable(       const std::string& id) const override;
-    bool isCameraConfigurable(             const std::string& id) const override;
-    bool isPhysicalObjectTypeConfigurable( const std::string& id) const override;
-    bool isSurfacePatternConfigurable(     const std::string& id) const override;
-    bool isWallPatternConfigurable(        const std::string& id) const override;
-    bool isWorldEditorToolConfigurable(    const std::string& id) const override;
-    bool isZoneObjectTypeTraitConfigurable(const std::string& id) const override;
-    bool isZoneViewTypeConfigurable(       const std::string& id) const override;
 
     IBinding* getZoneBinding(const std::string& id);
     IBinding* getZoneBinding2(const std::string& id);
@@ -567,5 +539,16 @@ namespace IsoRealms::Spindizzy {
     std::map<std::string, IBinding*> cRuntimeZoneBindings1;
     std::map<std::string, IBinding*> cRuntimeZoneBindings2;
     mutable const IBindingIdentifier* cRuntimeLocalBindingIdentifier;
+
+    template <class TYPE> friend struct AssetContainerTraits;
   };
+
+  template<> struct AssetContainerTraits<IBoundaryType>        {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cBoundaryTypes;       }};
+  template<> struct AssetContainerTraits<ICamera>              {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cCameras;             }};
+  template<> struct AssetContainerTraits<IPhysicalObjectType>  {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cPhysicalObjectTypes; }};
+  template<> struct AssetContainerTraits<ISurfacePattern>      {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cSurfacePatterns;     }};
+  template<> struct AssetContainerTraits<IWallPattern>         {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cWallPatterns;        }};
+  template<> struct AssetContainerTraits<IWorldEditorTool>     {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cWorldEditorTools;    }};
+  template<> struct AssetContainerTraits<IZoneObjectTypeTrait> {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneObjectTypeTraits;}};
+  template<> struct AssetContainerTraits<IZoneViewType>        {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneViewTypes;       }};
 }

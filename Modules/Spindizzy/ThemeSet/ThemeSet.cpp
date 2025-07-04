@@ -18,6 +18,8 @@
  */
 #include "ThemeSet.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
@@ -28,7 +30,6 @@ namespace IsoRealms::Spindizzy {
   const std::string ThemeSet::JSON_THEMES = "themes";
 
   ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefaultTheme(nullptr),
@@ -36,27 +37,6 @@ namespace IsoRealms::Spindizzy {
             cPause(0),
             cThemeIcon(0),
             cLuaBinding(project, this) {
-    
-    // TODO: Only for editor!
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      if (cPause > 0) {
-        cPause -= milliseconds;
-        if (cPause <= 0) {
-          cAnimation = ICON_TRANSITION_TIME;
-          cPause = 0;
-          cThemeIcon++;
-          if (cThemeIcon == cThemes.size()) {
-            cThemeIcon = 0;
-          }
-        }
-      } else {
-        cAnimation -= milliseconds;
-        if (cAnimation <= 0) {
-          cAnimation = 0;
-          cPause = ICON_PAUSE_TIME;
-        }
-      }
-    });
   }
 
   ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -141,6 +121,26 @@ namespace IsoRealms::Spindizzy {
     }
     for (const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mPair : cColours) {
       mPair.second->registerAssets(assets, mPair.first);
+    }
+  }
+  
+  void ThemeSet::updateEditing(unsigned int milliseconds) {
+    if (cPause > 0) {
+      cPause -= milliseconds;
+      if (cPause <= 0) {
+        cAnimation = ICON_TRANSITION_TIME;
+        cPause = 0;
+        cThemeIcon++;
+        if (cThemeIcon == cThemes.size()) {
+          cThemeIcon = 0;
+        }
+      }
+    } else {
+      cAnimation -= milliseconds;
+      if (cAnimation <= 0) {
+        cAnimation = 0;
+        cPause = ICON_PAUSE_TIME;
+      }
     }
   }
   

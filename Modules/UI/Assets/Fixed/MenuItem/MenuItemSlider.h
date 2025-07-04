@@ -26,7 +26,6 @@
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/UI/Assets/Type/IMenuItem.h"
@@ -51,6 +50,7 @@ namespace IsoRealms::UI {
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry& assets) override;
+    void reset() override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -85,7 +85,6 @@ namespace IsoRealms::UI {
     static const int DEFAULT_STEPS;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     HatHandler& cHatHandler;
 
     // Definition data.

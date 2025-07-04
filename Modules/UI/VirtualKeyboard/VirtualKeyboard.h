@@ -48,7 +48,10 @@ namespace IsoRealms::UI {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
-    // Scripting interface.
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
     void reset();
 
     /****************************\
@@ -88,7 +91,6 @@ namespace IsoRealms::UI {
     static const std::string JSON_SELECTION_COLOUR;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     HatHandler& cHatHandler;
 
     // Definition data.

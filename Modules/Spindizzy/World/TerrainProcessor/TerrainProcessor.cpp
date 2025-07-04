@@ -18,6 +18,8 @@
  */
 #include "TerrainProcessor.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/Terrain/Terrain.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"

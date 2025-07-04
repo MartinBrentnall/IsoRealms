@@ -24,11 +24,11 @@
 namespace IsoRealms {
   class File;
   class IAssetRegistry;
-  class IAssetRemover;
   class IAssets;
   class IProject;
   class IResource;
   class LocalAssetRegistry;
+  class Project;
 
   class IResourceType {
     public:
@@ -45,9 +45,8 @@ namespace IsoRealms {
     virtual void renameUserDataDirectory(const std::string& oldName, const std::string& newName) = 0;
     virtual std::string getProjectPathPrefix(bool user) = 0;
     virtual std::string getCategory() = 0;
-    virtual IAssetRemover& getAssetRemover() = 0;
     virtual IAssetRegistry& getAssetRegistry() = 0;
     virtual IAssets& getAssets() = 0;
-    virtual IProject& getProject() = 0;
+    virtual Project& getProject() = 0;
   };
 }

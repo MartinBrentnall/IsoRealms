@@ -18,6 +18,8 @@
  */
 #include "BooleanTrigger.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   const std::string BooleanTrigger::JSON_ON_BECOMING_FALSE = "onBecomingFalse";
   const std::string BooleanTrigger::JSON_ON_BECOMING_TRUE  = "onBecomingTrue";

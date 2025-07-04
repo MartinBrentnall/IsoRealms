@@ -19,6 +19,7 @@
 #include "Ball.h"
 
 #include "IsoRealms/IApplication.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string Ball::JSON_FILL    = "fill";

@@ -18,6 +18,8 @@
  */
 #include "BoundaryHandlerInstance.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/BoundaryHandler/BoundaryHandler.h"
 #include "Modules/Spindizzy/World/World.h"
 

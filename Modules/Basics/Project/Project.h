@@ -46,6 +46,12 @@ namespace IsoRealms::Basics {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void reset();
     
     /***********************\
      * Scripting Interface *
@@ -54,7 +60,7 @@ namespace IsoRealms::Basics {
     void setEditing(bool editing);
     void prepare(IProjectOptions* options, bool force);
     bool isReady();
-    void reset();
+    void resetProject();
     IEditable* getDefaultEditor();
     IsoRealms::Project* getProject();
     bool canSave();
@@ -94,7 +100,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_RUNNING;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
 
     // Definition data

@@ -18,6 +18,8 @@
  */
 #include "ProjectMenu.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style, ""),
             cProject(project) {

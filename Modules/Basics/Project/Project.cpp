@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
   const std::string Project::JSON_RUNNING   = "running";
 
   Project::Project(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cProject(project),
             cDefReadyAction(data.getDummyActionClient()),
             cDefEndAction(data.getDummyActionClient()),
@@ -38,68 +37,6 @@ namespace IsoRealms::Basics {
             cDefEditing(false),
             cRuntimeProject(nullptr),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-
-      // Wait to prevent a crash if a project is still under construction..
-      if (cRuntimeProjectLoader != nullptr) {
-        while (cRuntimeLoading) {
-          IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
-          if (mProject != nullptr) {
-            cRuntimeLoading = false;
-          }
-        }
-      }
-      cRuntimeOldProjects.clear();
-      cRuntimeLoading            = false;
-      cRuntimeRunning            = cDefRunning;
-      cRuntimeEditing            = cDefEditing;
-      cRuntimeQuitRequestGranted = false;
-      
-      // Start loading the project, ready action will be executed when it's done.
-      std::string mFile = cDefProjectOptionsArg.getOption("file");
-      if (mFile != "") {
-        prepareInternal(&cDefProjectOptionsArg, false);
-      } else {
-        prepare(*cDefProjectOptions, false);
-      }
-    });
-
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      if (cRuntimeLoading) {
-        IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
-        if (mProject != nullptr) {
-          cRuntimeProject = mProject;
-          cRuntimeProject->reset();
-          cDefReadyAction.execute();
-          cRuntimeLoading = false;
-        }
-      }
-
-      if (cRuntimeRunning && cRuntimeProject != nullptr) {
-        cRuntimeProject->updateRuntime(milliseconds);
-        cRuntimeProject->updateRuntimeComplete();
-      }
-      if (cRuntimeEditing && cRuntimeProject != nullptr) {
-        cRuntimeProject->updateEditing(milliseconds);
-      }
-
-      // Clean up any old projects that could have still been being constructed.
-      if (!cRuntimeLoading) {
-        for (int i = static_cast<int>(cRuntimeOldProjects.size()) - 1; i >= 0; i--) {
-          if (cRuntimeOldProjects[i]->isDestructReady()) {
-            cRuntimeOldProjects[i]->setDestructing();
-            IApplication& mApplication = cProject.getApplication();
-            mApplication.executeAndReturn([this, i, &mApplication]() {
-              cRuntimeOldProjects[i]->destruct();
-            });
-          }
-
-          if (cRuntimeOldProjects[i]->isDestructed()) {
-            cRuntimeOldProjects.erase(cRuntimeOldProjects.begin() + i);
-          }
-        }
-      }
-    });
   }
   
   Project::Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -139,6 +76,69 @@ namespace IsoRealms::Basics {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   
+  void Project::reset() {
+
+    // Wait to prevent a crash if a project is still under construction..
+    if (cRuntimeProjectLoader != nullptr) {
+      while (cRuntimeLoading) {
+        IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
+        if (mProject != nullptr) {
+          cRuntimeLoading = false;
+        }
+      }
+    }
+    cRuntimeOldProjects.clear();
+    cRuntimeLoading            = false;
+    cRuntimeRunning            = cDefRunning;
+    cRuntimeEditing            = cDefEditing;
+    cRuntimeQuitRequestGranted = false;
+    
+    // Start loading the project, ready action will be executed when it's done.
+    std::string mFile = cDefProjectOptionsArg.getOption("file");
+    if (mFile != "") {
+      prepareInternal(&cDefProjectOptionsArg, false);
+    } else {
+      prepare(*cDefProjectOptions, false);
+    }
+  }
+
+  void Project::updateRuntime(unsigned int milliseconds) {
+    if (cRuntimeLoading) {
+      IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
+      if (mProject != nullptr) {
+        cRuntimeProject = mProject;
+        cRuntimeProject->reset();
+        cDefReadyAction.execute();
+        cRuntimeLoading = false;
+      }
+    }
+
+    if (cRuntimeRunning && cRuntimeProject != nullptr) {
+      cRuntimeProject->updateRuntime(milliseconds);
+      cRuntimeProject->updateRuntimeComplete();
+    }
+    if (cRuntimeEditing && cRuntimeProject != nullptr) {
+      cRuntimeProject->updateEditing(milliseconds);
+    }
+
+    // Clean up any old projects that could have still been being constructed.
+    if (!cRuntimeLoading) {
+      for (int i = static_cast<int>(cRuntimeOldProjects.size()) - 1; i >= 0; i--) {
+        if (cRuntimeOldProjects[i]->isDestructReady()) {
+          cRuntimeOldProjects[i]->setDestructing();
+          IApplication& mApplication = cProject.getApplication();
+          mApplication.executeAndReturn([this, i, &mApplication]() {
+            cRuntimeOldProjects[i]->destruct();
+          });
+        }
+
+        if (cRuntimeOldProjects[i]->isDestructed()) {
+          cRuntimeOldProjects.erase(cRuntimeOldProjects.begin() + i);
+        }
+      }
+    }
+  }
+
   void Project::setRunning(bool running) {
     cRuntimeRunning = running;
   }
@@ -156,7 +156,7 @@ namespace IsoRealms::Basics {
     return cRuntimeProject != nullptr;
   }
   
-  void Project::reset() {
+  void Project::resetProject() {
     cRuntimeProject->reset();
   }
   

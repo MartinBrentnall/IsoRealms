@@ -35,6 +35,9 @@ namespace IsoRealms::UI {
     ScreenModel(IProject& project, IResourceData& owner);
     ScreenModel(IProject& project, IResourceData& owner, JSONObject object);
 
+    void updateRuntime(unsigned int milliseconds);
+    void updateEditing(unsigned int milliseconds);
+
     /**********************\
      * Implements IScreen *
     \**********************/
@@ -52,9 +55,6 @@ namespace IsoRealms::UI {
     
     // JSON members.
     static const std::string JSON_MODEL;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     Model cDefModel;

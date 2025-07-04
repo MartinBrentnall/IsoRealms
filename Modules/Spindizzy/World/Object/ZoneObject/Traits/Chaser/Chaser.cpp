@@ -18,6 +18,8 @@
  */
 #include "Chaser.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/ZoneObject.h"

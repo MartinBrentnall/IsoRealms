@@ -20,6 +20,7 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Input.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/UI/Menu/Menu.h"
 
@@ -30,26 +31,18 @@ namespace IsoRealms::UI {
   const std::string MenuItemAction::BINDING_TYPE = "Action";
     
   MenuItemAction::MenuItemAction(IProject& project, Menu& menu) :
-            cProjectCallbackManager(project),
             cDefID(""),
             cDefLabel(""),
             cDefAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-// TODO      cRuntimeValue = "";
-    });
   }
 
   MenuItemAction::MenuItemAction(IProject& project, Menu& menu, JSONObject object) :
-            cProjectCallbackManager(project),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
-    cProjectCallbackManager.reset([this]() {
-// TODO      cRuntimeValue = "";
-    });
   }
 
   void MenuItemAction::setValue(const std::string& value) {
@@ -60,6 +53,10 @@ namespace IsoRealms::UI {
     if (!cDefID.empty()) {
       assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
     }
+  }
+  
+  void MenuItemAction::reset() {
+// TODO      cRuntimeValue = "";
   }
   
   bool MenuItemAction::input(sf::Event& event) {

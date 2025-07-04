@@ -18,6 +18,8 @@
  */
 #include "ProjectOptions.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   const std::string ProjectOptions::JSON_ID      = "id";
   const std::string ProjectOptions::JSON_OPTIONS = "options";

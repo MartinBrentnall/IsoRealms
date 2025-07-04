@@ -31,13 +31,13 @@ namespace IsoRealms {
     }
     
     BASE* getAsset(OWNER& owner, JSONObject object) override {
-      std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, owner, object);
+      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cProject, owner, object);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
 
     BASE* getAsset(OWNER& owner) override {
-      std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, owner);
+      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cProject, owner);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
@@ -54,8 +54,32 @@ namespace IsoRealms {
       return false;
     }
 
+    typename std::vector<std::unique_ptr<TYPE>>::iterator begin() {
+      return cInstances.begin();
+    }
+
+    typename std::vector<std::unique_ptr<TYPE>>::iterator end() {
+      return cInstances.end();
+    }
+
+    typename std::vector<std::unique_ptr<TYPE>>::const_iterator begin() const {
+      return cInstances.begin();
+    }
+
+    typename std::vector<std::unique_ptr<TYPE>>::const_iterator end() const {
+      return cInstances.end();
+    }
+
+    typename std::vector<std::unique_ptr<TYPE>>::const_iterator cbegin() const {
+      return cInstances.cbegin();
+    }
+
+    typename std::vector<std::unique_ptr<TYPE>>::const_iterator cend() const {
+      return cInstances.cend();
+    }
+    
     private:
     IProject& cProject;
-    mutable std::vector<std::unique_ptr<BASE>> cInstances;
+    mutable std::vector<std::unique_ptr<TYPE>> cInstances;
   };
 }

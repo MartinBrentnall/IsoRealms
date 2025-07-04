@@ -41,9 +41,6 @@ namespace IsoRealms::Spindizzy {
     IBoundaryType* createLiteralAsset(Spindizzy& spindizzy);
     IBoundaryType* getAsset(Spindizzy& spindizzy, JSONObject object);
     IBoundaryType* getAsset(Spindizzy& spindizzy, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
   };
 }

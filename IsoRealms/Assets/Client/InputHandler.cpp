@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   InputHandler::InputHandler(IResourceData& owner) :
@@ -39,18 +40,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getInputHandler(this, id, owner);
   }
   
-  std::vector<std::string> InputHandler::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllInputHandlers();
-  }  
-
-  bool InputHandler::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderInputHandlerIcon(id);
-  }
-
-  bool InputHandler::hasConfiguration() const {
-    return cManager.getAssetManager().isInputHandlerConfigurable(getID());
-  }  
-
   bool InputHandler::isDefaultConfiguration() const {
     return true;
   }

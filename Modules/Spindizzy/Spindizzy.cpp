@@ -18,6 +18,8 @@
  */
 #include "Spindizzy.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Spindizzy {
   const double Spindizzy::DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
   const double Spindizzy::DEFAULT_VIEW_ANGLE_YAW = -45.0;
@@ -268,24 +270,6 @@ namespace IsoRealms::Spindizzy {
   IWorldEditorTool*     Spindizzy::getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, JSONObject object)                                                                    {return cWorldEditorTools.get(    user, *this, object, nullptr,  true, [this](JSONObject object, IStateListener<IWorldEditorTool*>*     listener) -> IWorldEditorTool*     {return nullptr;});}
   IZoneObjectTypeTrait* Spindizzy::getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType& owner)                                             {return cZoneObjectTypeTraits.get(user, owner, object, nullptr,  true, [this](JSONObject object, IStateListener<IZoneObjectTypeTrait*>* listener) -> IZoneObjectTypeTrait* {return nullptr;});}
   IZoneViewType*        Spindizzy::getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView&      owner)                                             {return cZoneViewTypes.get(       user, owner, object, nullptr,  true, [this](JSONObject object, IStateListener<IZoneViewType*>*        listener) -> IZoneViewType*        {return nullptr;});}
-
-  void Spindizzy::release(IAssetUser<IBoundaryType>*        user, IBoundaryType*        asset) {cBoundaryTypes.release(       user, asset);}
-  void Spindizzy::release(IAssetUser<ICamera>*              user, ICamera*              asset) {cCameras.release(             user, asset);}
-  void Spindizzy::release(IAssetUser<IPhysicalObjectType>*  user, IPhysicalObjectType*  asset) {cPhysicalObjectTypes.release( user, asset);}
-  void Spindizzy::release(IAssetUser<ISurfacePattern>*      user, ISurfacePattern*      asset) {cSurfacePatterns.release(     user, asset);}
-  void Spindizzy::release(IAssetUser<IWallPattern>*         user, IWallPattern*         asset) {cWallPatterns.release(        user, asset);}
-  void Spindizzy::release(IAssetUser<IWorldEditorTool>*     user, IWorldEditorTool*     asset) {cWorldEditorTools.release(    user, asset);}
-  void Spindizzy::release(IAssetUser<IZoneObjectTypeTrait>* user, IZoneObjectTypeTrait* asset) {cZoneObjectTypeTraits.release(user, asset);}
-  void Spindizzy::release(IAssetUser<IZoneViewType>*        user, IZoneViewType*        asset) {cZoneViewTypes.release(       user, asset);}
-
-  void Spindizzy::save(JSONObject object, IBoundaryType*        asset) const {cBoundaryTypes.save(       object, asset);}
-  void Spindizzy::save(JSONObject object, ICamera*              asset) const {cCameras.save(             object, asset);}
-  void Spindizzy::save(JSONObject object, IPhysicalObjectType*  asset) const {cPhysicalObjectTypes.save( object, asset);}
-  void Spindizzy::save(JSONObject object, ISurfacePattern*      asset) const {cSurfacePatterns.save(     object, asset);}
-  void Spindizzy::save(JSONObject object, IWallPattern*         asset) const {cWallPatterns.save(        object, asset);}
-  void Spindizzy::save(JSONObject object, IWorldEditorTool*     asset) const {cWorldEditorTools.save(    object, asset);}
-  void Spindizzy::save(JSONObject object, IZoneObjectTypeTrait* asset) const {cZoneObjectTypeTraits.save(object, asset);}
-  void Spindizzy::save(JSONObject object, IZoneViewType*        asset) const {cZoneViewTypes.save(       object, asset);}
 
   std::vector<IBoundaryType*> Spindizzy::getAllBoundaryTypeObjects() {
     std::vector<IBoundaryType*> mTypes;
@@ -580,6 +564,30 @@ namespace IsoRealms::Spindizzy {
     return mProperties;
   }
 
+  void Spindizzy::updateRuntime(unsigned int milliseconds) {
+    updateRuntime2(cResourceWorld,     milliseconds);
+    updateRuntime2(cResourceWorldView, milliseconds);
+  }
+  
+  void Spindizzy::updateEditing(unsigned int milliseconds) {
+    updateEditing2(cResourceDebrisChunk, milliseconds);
+    updateEditing2(cResourceGyroscope,   milliseconds);
+    updateEditing2(cResourceJewel,       milliseconds);
+    updateEditing2(cResourceModelCycler, milliseconds);
+    updateEditing2(cResourceThemeSet,    milliseconds);
+    updateEditing2(cResourceTop,         milliseconds);
+    updateEditing2(cResourceWorld,       milliseconds);
+  }
+  
+  void Spindizzy::reset() {
+    reset2(cResourceAlien);
+    reset2(cResourcePlayer);
+    reset2(cResourceModelCycler);
+    reset2(cResourceTerrainState);
+    reset2(cResourceWorld);
+    reset2(cResourceWorldView);
+  }  
+  
   void Spindizzy::add(IBoundaryType*       asset, const std::string& id) {cBoundaryTypes.add(      asset, id);}
   void Spindizzy::add(IPhysicalObjectType* asset, const std::string& id) {cPhysicalObjectTypes.add(asset, id);}
   void Spindizzy::add(IWorldEditorTool*    asset, const std::string& id) {cWorldEditorTools.add(   asset, id);}
@@ -594,42 +602,6 @@ namespace IsoRealms::Spindizzy {
     cRuntimeZoneBindings1[id] = binding1;
     cRuntimeZoneBindings2[id] = binding2;
   }
-
-  std::vector<std::string> Spindizzy::getAllBoundaryTypes()        {return cBoundaryTypes.getAll();}
-  std::vector<std::string> Spindizzy::getAllCameras()              {return cCameras.getAll();}
-  std::vector<std::string> Spindizzy::getAllPhysicalObjectTypes()  {return cPhysicalObjectTypes.getAll();}
-  std::vector<std::string> Spindizzy::getAllSurfacePatterns()      {return cSurfacePatterns.getAll();}
-  std::vector<std::string> Spindizzy::getAllWallPatterns()         {return cWallPatterns.getAll();}
-  std::vector<std::string> Spindizzy::getAllWorldEditorTools()     {return cWorldEditorTools.getAll();}
-  std::vector<std::string> Spindizzy::getAllZoneObjectTypeTraits() {return cZoneObjectTypeTraits.getAll();}
-  std::vector<std::string> Spindizzy::getAllZoneViewTypes()        {return cZoneViewTypes.getAll();}
-
-  std::string Spindizzy::getID(const IBoundaryType*        asset) const {return cBoundaryTypes.getID(asset);}
-  std::string Spindizzy::getID(const ICamera*              asset) const {return cCameras.getID(asset);}
-  std::string Spindizzy::getID(const IPhysicalObjectType*  asset) const {return cPhysicalObjectTypes.getID(asset);}
-  std::string Spindizzy::getID(const ISurfacePattern*      asset) const {return cSurfacePatterns.getID(asset);}
-  std::string Spindizzy::getID(const IWallPattern*         asset) const {return cWallPatterns.getID(asset);}
-  std::string Spindizzy::getID(const IWorldEditorTool*     asset) const {return cWorldEditorTools.getID(asset);}
-  std::string Spindizzy::getID(const IZoneObjectTypeTrait* asset) const {return cZoneObjectTypeTraits.getID(asset);}
-  std::string Spindizzy::getID(const IZoneViewType*        asset) const {return cZoneViewTypes.getID(asset);}
-
-  bool Spindizzy::renderBoundaryTypeIcon(       const std::string& id) const {return cBoundaryTypes.renderIcon(id);}
-  bool Spindizzy::renderCameraIcon(             const std::string& id) const {return cCameras.renderIcon(id);}
-  bool Spindizzy::renderPhysicalObjectTypeIcon( const std::string& id) const {return cPhysicalObjectTypes.renderIcon(id);}
-  bool Spindizzy::renderSurfacePatternIcon(     const std::string& id) const {return cSurfacePatterns.renderIcon(id);}
-  bool Spindizzy::renderWallPatternIcon(        const std::string& id) const {return cWallPatterns.renderIcon(id);}
-  bool Spindizzy::renderWorldEditorToolIcon(    const std::string& id) const {return cWorldEditorTools.renderIcon(id);}
-  bool Spindizzy::renderZoneObjectTypeTraitIcon(const std::string& id) const {return cZoneObjectTypeTraits.renderIcon(id);}
-  bool Spindizzy::renderZoneViewTypeIcon(       const std::string& id) const {return cZoneViewTypes.renderIcon(id);}
-
-  bool Spindizzy::isBoundaryTypeConfigurable(       const std::string& id) const {return cBoundaryTypes.hasConfiguration(id);}
-  bool Spindizzy::isCameraConfigurable(             const std::string& id) const {return cCameras.hasConfiguration(id);}
-  bool Spindizzy::isPhysicalObjectTypeConfigurable( const std::string& id) const {return cPhysicalObjectTypes.hasConfiguration(id);}
-  bool Spindizzy::isSurfacePatternConfigurable(     const std::string& id) const {return cSurfacePatterns.hasConfiguration(id);}
-  bool Spindizzy::isWallPatternConfigurable(        const std::string& id) const {return cWallPatterns.hasConfiguration(id);}
-  bool Spindizzy::isWorldEditorToolConfigurable(    const std::string& id) const {return cWorldEditorTools.hasConfiguration(id);}
-  bool Spindizzy::isZoneObjectTypeTraitConfigurable(const std::string& id) const {return cZoneObjectTypeTraits.hasConfiguration(id);}
-  bool Spindizzy::isZoneViewTypeConfigurable(       const std::string& id) const {return cZoneViewTypes.hasConfiguration(id);}
 
   IBinding* Spindizzy::getZoneBinding(const std::string& id) {
     std::size_t mSplit = id.find('/');

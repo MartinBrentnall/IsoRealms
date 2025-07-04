@@ -19,6 +19,7 @@
 #include "SequenceTrackFloatEvent.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms::Basics {
   SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade) :

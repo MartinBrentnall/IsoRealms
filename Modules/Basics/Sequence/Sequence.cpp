@@ -34,7 +34,6 @@ namespace IsoRealms::Basics {
   const std::string Sequence::JSON_TYPE      = "type";
 
   Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cBasics(basics),
             cResourceData(data),
             cDefPlaying(false),
@@ -42,22 +41,6 @@ namespace IsoRealms::Basics {
             cDefSpeed(data, 1.0f),
             cExposedLength(*this),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      process(milliseconds);
-    });
-    
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      if (cDefLoop && cDefPlaying) {
-        process(milliseconds);
-      }
-      for (const std::pair<IEditableScreen* const, std::unique_ptr<SequenceEditor>>& mEditor : cEditors) {
-        mEditor.second->updateScreen(milliseconds);
-      }
-    });
-
-    cProjectCallbackManager.reset([this]() {
-      resetSequence();
-    });
   }
   
   Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -138,6 +121,23 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void Sequence::updateRuntime(unsigned int milliseconds) {
+    process(milliseconds);
+  }
+  
+  void Sequence::updateEditing(unsigned int milliseconds) {
+    if (cDefLoop && cDefPlaying) {
+      process(milliseconds);
+    }
+    for (const std::pair<IEditableScreen* const, std::unique_ptr<SequenceEditor>>& mEditor : cEditors) {
+      mEditor.second->updateScreen(milliseconds);
+    }
+  }
+
+  void Sequence::reset() {
+    resetSequence();
+  }
+  
   bool Sequence::isPlaying() const {
     return cDefPlaying;
   }

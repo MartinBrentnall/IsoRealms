@@ -20,6 +20,7 @@
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Spindizzy {
@@ -50,6 +51,20 @@ namespace IsoRealms::Spindizzy {
     cDefZoom->registerAssets(    mZoomRegistry);
   }
     
+  void CameraVariant::updateRuntime(unsigned int milliseconds) {
+    cDefYaw->updateRuntime(milliseconds);
+    cDefPitch->updateRuntime(milliseconds);
+    cDefLocation->updateRuntime(milliseconds);
+    cDefZoom->updateRuntime(milliseconds);
+  }
+  
+  void CameraVariant::reset() {
+    cDefYaw->reset();
+    cDefPitch->reset();
+    cDefLocation->reset();
+    cDefZoom->reset();
+  }
+  
   const IFloat* CameraVariant::getYaw() const {
     return cDefYaw->getYaw();
   }  

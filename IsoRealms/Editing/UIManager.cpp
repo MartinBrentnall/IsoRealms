@@ -18,6 +18,11 @@
  */
 #include "UIManager.h"
 
+#include <GL/glew.h>
+
+#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   UIManager::UIManager(IProject& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback) :
             cProject(project),

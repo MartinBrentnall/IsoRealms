@@ -21,36 +21,25 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   String::String(IResourceData& owner) :
-            Asset<String, IString, IResourceData>(owner, owner.getAssetManager().createLiteralString(this, owner)) {
+            Asset<String, IString, IResourceData>(owner, owner.getAssetManager().createLiteralString(this, owner, "")) {
   }
 
   IString* String::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createLiteralString(this, owner);
+    return owner.getAssetManager().createLiteralString(this, owner, "");
   }
   
   IString* String::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getString(this, object, owner);
+    return owner.getAssetManager().getString(this, object, owner, nullptr);
   }
   
   IString* String::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getString(this, id, owner);
+    return owner.getAssetManager().getString(this, id, owner, nullptr);
   }
   
-  std::vector<std::string> String::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllStrings();
-  }  
-
-  bool String::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderStringIcon(id);
-  }
-
-  bool String::hasConfiguration() const {
-    return cManager.getAssetManager().isStringConfigurable(getID());
-  }
-
   bool String::isDefaultConfiguration() const {
     return true;
   }

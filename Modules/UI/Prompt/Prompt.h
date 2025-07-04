@@ -51,9 +51,9 @@ namespace IsoRealms::UI {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
-    /***********************\
-     * Scripting Interface *
-    \***********************/
+    /*********************\
+     * Module interfaces *
+    \*********************/
     void reset();
 
     /****************************\
@@ -90,9 +90,6 @@ namespace IsoRealms::UI {
 
     static const float DEFAULT_SHADOW_OFFSET;
     static const float DEFAULT_TEXT_SIZE;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     HatHandler& cHatHandler;

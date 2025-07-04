@@ -22,7 +22,6 @@
 #include <optional>
 
 #include "IsoRealms/Common/IVisualElement.h"
-#include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Types.h"
 

@@ -20,6 +20,7 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Input.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/UI/Menu/Menu.h"
 
@@ -33,7 +34,6 @@ namespace IsoRealms::UI {
   const std::string MenuItemFileList::BINDING_TYPE = "FileList";
   
   MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu) :
-            cProjectCallbackManager(project),
             cProject(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
@@ -41,14 +41,9 @@ namespace IsoRealms::UI {
             cDefUser(false),
             cDefAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      refresh();
-      cRuntimeSelectedFile = 0;
-    });
   }
 
   MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu, JSONObject object) :
-            cProjectCallbackManager(project),
             cProject(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
@@ -57,10 +52,6 @@ namespace IsoRealms::UI {
             cDefAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
-    cProjectCallbackManager.reset([this]() {
-      refresh();
-      cRuntimeSelectedFile = 0;
-    });
   }
 
   void MenuItemFileList::refresh() {
@@ -74,15 +65,15 @@ namespace IsoRealms::UI {
     }
     cRuntimeSelectedFile = std::clamp(cRuntimeSelectedFile, 0, std::max(0, static_cast<int>(cRuntimeFiles.size() - 1)));
   }
+
+  void MenuItemFileList::registerAssets(IAssetRegistry& assets) {
+    assets.add(this, cDefID, "System");
+    assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  }
   
   void MenuItemFileList::reset() {
     refresh();
     cRuntimeSelectedFile = 0;
-  }
-  
-  void MenuItemFileList::registerAssets(IAssetRegistry& assets) {
-    assets.add(this, cDefID, "System");
-    assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
   bool MenuItemFileList::input(sf::Event& event) {

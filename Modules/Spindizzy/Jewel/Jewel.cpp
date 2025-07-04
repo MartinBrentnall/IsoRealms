@@ -18,6 +18,8 @@
  */
 #include "Jewel.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
@@ -27,14 +29,9 @@ namespace IsoRealms::Spindizzy {
   const std::string Jewel::JSON_FRAME         = "frame";
 
   Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cProject(project),
             cColourFrame(data, 1.0f, 1.0f, 0.0f) {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
-
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      cSampleModel->update(milliseconds);
-    });
     cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data));
   }
   
@@ -55,6 +52,10 @@ namespace IsoRealms::Spindizzy {
     }
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", "TODO", cColourFrame));
     return mProperties;
+  }
+
+  void Jewel::updateEditing(unsigned int milliseconds) {
+    cSampleModel->update(milliseconds);
   }
   
   void Jewel::save(JSONObject object) const {

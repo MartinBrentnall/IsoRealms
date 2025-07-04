@@ -18,6 +18,8 @@
  */
 #include "DebrisGenerator.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Spindizzy {
   const std::string DebrisGenerator::JSON_APPEARANCE = "appearance";
   const std::string DebrisGenerator::JSON_HEIGHT     = "height";

@@ -36,9 +36,6 @@ namespace IsoRealms {
     IEditable* createLiteralAsset(IResourceData& owner);
     IEditable* getAsset(IResourceData& owner, JSONObject object);
     IEditable* getAsset(IResourceData& owner, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
   };
 }

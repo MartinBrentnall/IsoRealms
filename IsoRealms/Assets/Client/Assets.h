@@ -35,9 +35,6 @@ namespace IsoRealms {
     IAssets* createLiteralAsset(IResourceData& owner);
     IAssets* getAsset(IResourceData& owner, JSONObject object);
     IAssets* getAsset(IResourceData& owner, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
   };
 }

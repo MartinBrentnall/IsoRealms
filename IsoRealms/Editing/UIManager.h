@@ -26,7 +26,6 @@
 #include "IsoRealms/IModule.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/Options/LocalOptions.h"
-#include "IsoRealms/Project.h"
 #include "IsoRealms/ResourceDefinition.h"
 
 #include "IUIScreen.h"

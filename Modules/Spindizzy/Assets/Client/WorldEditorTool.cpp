@@ -19,6 +19,7 @@
 #include "WorldEditorTool.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -39,18 +40,6 @@ namespace IsoRealms::Spindizzy {
     return spindizzy.getWorldEditorTool(this, id);
   }
   
-  std::vector<std::string> WorldEditorTool::getAvailableProviders() const {
-    return cManager.getAllWorldEditorTools();
-  }  
-
-  bool WorldEditorTool::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderWorldEditorToolIcon(id);
-  }
-
-  bool WorldEditorTool::hasConfiguration() const {
-    return cManager.isWorldEditorToolConfigurable(getID());
-  }  
-
   bool WorldEditorTool::isDefaultConfiguration() const {
     return true;
   }

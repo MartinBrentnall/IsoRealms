@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   BindingType::BindingType(IResourceData& owner, std::function<void()> listener) :
@@ -38,18 +39,6 @@ namespace IsoRealms {
 
   IBindingType* BindingType::getAsset(IResourceData& owner, const std::string& id) {
     return owner.getAssetManager().getBindingType(this, id, owner);
-  }
-
-  std::vector<std::string> BindingType::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllBindingTypes();
-  }
-
-  bool BindingType::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderBindingTypeIcon(id);
-  }
-
-  bool BindingType::hasConfiguration() const {
-    return cManager.getAssetManager().isBindingTypeConfigurable(getID());
   }
 
   bool BindingType::isDefaultConfiguration() const {

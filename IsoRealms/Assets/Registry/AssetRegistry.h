@@ -93,7 +93,7 @@ namespace IsoRealms {
       return "";
     }
     
-    std::vector<std::string> getAll() {
+    std::vector<std::string> getAll() const {
       std::vector<std::string> mAllIDs;
       for (std::pair<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>> mPair : cProviders) {
         mAllIDs.emplace_back(mPair.first);

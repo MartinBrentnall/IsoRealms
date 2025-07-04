@@ -31,6 +31,8 @@
 #include "Property.h"
 
 namespace IsoRealms {
+  class Project;
+
   template<class TYPE> class PropertyOptional : public Property {
     public:
     PropertyOptional(const std::string& name, const std::string& tooltip, std::function<void(const std::string&)> choiceCallback, Project& project, IApplication& application) :

@@ -19,6 +19,7 @@
 #include "MenuItemSlider.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/UI/Menu/Menu.h"
 
@@ -38,7 +39,6 @@ namespace IsoRealms::UI {
   const int   MenuItemSlider::DEFAULT_STEPS   = 20;
 
   MenuItemSlider::MenuItemSlider(IProject& project, Menu& menu) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
@@ -47,13 +47,9 @@ namespace IsoRealms::UI {
             cDefSteps(DEFAULT_STEPS),
             cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = cDefMinimum;
-    });
   }
 
   MenuItemSlider::MenuItemSlider(IProject& project, Menu& menu, JSONObject object) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
@@ -63,9 +59,6 @@ namespace IsoRealms::UI {
             cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
             cLuaBinding(project, this) {
     cDefValueChangedAction.init(object, JSON_ON_CHANGE);
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = cDefMinimum;
-    });
   }
 
   void MenuItemSlider::setValue(float value) {
@@ -78,6 +71,10 @@ namespace IsoRealms::UI {
 
   void MenuItemSlider::registerAssets(IAssetRegistry& assets) {
     assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  }
+  
+  void MenuItemSlider::reset() {
+    cRuntimeValue = cDefMinimum;
   }
   
   bool MenuItemSlider::input(sf::Event& event) {

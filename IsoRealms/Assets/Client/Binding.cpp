@@ -22,6 +22,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/IProject.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Binding::Binding(IActionClient& owner) :
@@ -81,10 +82,10 @@ namespace IsoRealms {
     return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
   }
   
-  std::vector<std::string> Binding::getAvailableProviders() const {
+  std::vector<std::string> Binding::getAvailableClientProviders() const {
 
     // Case where any type is allowed.
-    std::vector<std::string> mProviders = cManager.getAssetManager().getAllBindings();
+    std::vector<std::string> mProviders = cManager.getAssetManager().getAll<IBinding>();
     if (cDefType.empty()) {
       return mProviders;
     }
@@ -108,22 +109,22 @@ namespace IsoRealms {
     return mProvidersOfType;
   }  
 
-  bool Binding::renderOtherProviderIcon(const std::string& id) const {
+  bool Binding::renderOtherClientProviderIcon(const std::string& id) const {
     std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
     if (cDefType == mRawID) {
       return cAsset->renderProviderIcon(id);
     }
 
-    return cManager.getAssetManager().renderBindingIcon(cDefType.empty() || id == "None" ? id : cDefType + "/" + id);
+    return cManager.getAssetManager().renderIcon<IBinding>(cDefType.empty() || id == "None" ? id : cDefType + "/" + id);
   }
 
-  bool Binding::hasConfiguration() const {
+  bool Binding::hasClientConfiguration() const {
     std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
     if (cDefType == mRawID) {
       return cAsset->isConfigurable();
     }
 
-    return cManager.getAssetManager().isBindingConfigurable(Asset<Binding, IBinding, IResourceData>::getID());
+    return cManager.getAssetManager().isConfigurable<IBinding>(Asset<Binding, IBinding, IResourceData>::getID());
   }  
 
   bool Binding::isDefaultConfiguration() const {

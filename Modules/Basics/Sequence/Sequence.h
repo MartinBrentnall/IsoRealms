@@ -48,6 +48,13 @@ namespace IsoRealms::Basics {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void updateEditing(unsigned int milliseconds);
+    void reset();
+
     Basics& getBasics() const;
     IResourceData& getResourceData();
     bool isPlaying() const;
@@ -109,7 +116,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_TYPE;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     Basics& cBasics;
     IResourceData& cResourceData;
 

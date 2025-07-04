@@ -18,6 +18,8 @@
  */
 #include "LocalSpindizzyRegistry.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Spindizzy {
   LocalSpindizzyRegistry::LocalSpindizzyRegistry(ISpindizzyRegistry* registry, const std::string& prefix) :
             cRegistry(registry),

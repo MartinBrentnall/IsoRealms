@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Font::Font(IResourceData& owner) :
@@ -39,18 +40,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getFont(this, id, owner);
   }
   
-  std::vector<std::string> Font::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllFonts();
-  }  
-
-  bool Font::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderFontIcon(id);
-  }
-
-  bool Font::hasConfiguration() const {
-    return cManager.getAssetManager().isFontConfigurable(getID());
-  }  
-
   bool Font::isDefaultConfiguration() const {
     return true;
   }

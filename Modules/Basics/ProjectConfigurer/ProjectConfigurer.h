@@ -21,6 +21,7 @@
 #include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/UIManager.h"
 #include "IsoRealms/Editing/ProjectMenu.h"
+#include "IsoRealms/Lua.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/Types.h"
 
@@ -48,6 +49,11 @@ namespace IsoRealms::Basics {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
 
     /**********************\
      * Implements IScreen *
@@ -133,9 +139,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_MAPPING;
     static const std::string JSON_ON_EDITOR;
     static const std::string JSON_ON_EXIT;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Action client.
     ActionClient cActionClient;

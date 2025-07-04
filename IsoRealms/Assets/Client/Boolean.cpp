@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Boolean::Boolean(IResourceData& owner, bool defaultValue, std::function<void(bool)> listener) :
@@ -41,18 +42,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getBoolean(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
-  std::vector<std::string> Boolean::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllBooleans();
-  }
-
-  bool Boolean::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderBooleanIcon(id);
-  }
-
-  bool Boolean::hasConfiguration() const {
-    return cManager.getAssetManager().isBooleanConfigurable(getID());
-  }
-
   bool Boolean::isDefaultConfiguration() const {
     return true;
   }

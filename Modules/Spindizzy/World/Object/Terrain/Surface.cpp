@@ -18,6 +18,8 @@
  */
 #include "Surface.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"
 
 #include "Terrain.h"

@@ -29,27 +29,15 @@ namespace IsoRealms::UI {
   const std::string MenuItemDigitalInput::BINDING_TYPE = "DigitalInput";
   
   MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeSelectedMapping = 0;
-      cRuntimeAddingMapping = false;
-      clear();
-    });
   }
 
   MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu, JSONObject object) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeSelectedMapping = 0;
-      cRuntimeAddingMapping = false;
-      clear();
-    });
   }
 
   void MenuItemDigitalInput::addMapping(std::shared_ptr<IDigitalInputMapping> input) {
@@ -70,6 +58,12 @@ namespace IsoRealms::UI {
   
   void MenuItemDigitalInput::registerAssets(IAssetRegistry& assets) {
     assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  }
+  
+  void MenuItemDigitalInput::reset() {
+    cRuntimeSelectedMapping = 0;
+    cRuntimeAddingMapping = false;
+    clear();
   }
   
   bool MenuItemDigitalInput::input(sf::Event& event) {

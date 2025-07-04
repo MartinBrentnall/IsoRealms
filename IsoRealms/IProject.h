@@ -22,7 +22,7 @@
 #include <functional>
 #include <string>
 
-#include "IAssetBrowser.h"
+#include "IAssets.h"
 
 namespace IsoRealms {
   template<class TYPE> class IStateListener;
@@ -31,18 +31,16 @@ namespace IsoRealms {
   class File;
   class IApplication;
   class IAssets;
-  class ICallbackHandle;
   class IEditable;
   class IFloat;
   class IScreen;
   class IScreenListener;
   class LuaState;
-  class ProjectCallbackManager;
-
+  
   /**
    * Project interface made available to modules and their resources.
    */
-  class IProject : public IAssetBrowser {
+  class IProject : public IAssets {
     public:
     virtual bool isLoading() const = 0;
       
@@ -78,31 +76,6 @@ namespace IsoRealms {
     virtual void init(std::function<void(IAssets&)> initialiser) = 0;
     
     /**
-     * Create a callback to be called on a Project reset.  This callback
-     * function should reset the object back to the state it was in when
-     * the object was loaded.
-     * 
-     * @param resetter The reset function.
-     */
-    virtual ICallbackHandle* reset(ProjectCallbackManager& manager, std::function<void()> resetter) = 0;
-
-    /**
-     * Create a callback to be called once at each update cycle during runtime.
-     * This allows objects to behave dynamically over time.
-     * 
-     * @param dynamic The runtime update function.
-     */
-    virtual ICallbackHandle* updateRuntime(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) = 0;
-    
-    /**
-     * Create a callback to be called once at each update cycle during editing.
-     * This allows objects to behave dynamically over time.
-     * 
-     * @param dynamic The editing update function.
-     */
-    virtual ICallbackHandle* updateEditing(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) = 0;
-    
-    /**
      * Defer the specified function to be performed following completion of the
      * current update cycle.  This may be useful in situations where a task
      * is to be performed in response to an event, and it is not known if more
@@ -113,13 +86,6 @@ namespace IsoRealms {
      */
     virtual void updateLater(std::function<void()> task) = 0;    
 
-    /**
-     * Remove the specified callback handle from the project.
-     * 
-     * @param callbackHandle Callback handle to remove.
-     */
-    virtual void removeCallback(ICallbackHandle* callbackHandle) = 0;
-    
     /**
      * Retrieve the engine Lua state object.
      * 

@@ -25,13 +25,14 @@ namespace IsoRealms {
   class IResourceData;
   class IProject;
   class File;
+  class Project;
 
   class IActionClient {
     public:
     virtual bool isReadOnly() const = 0;
     virtual void setOwner(File* owner) = 0;
-    virtual IProject& getProject() = 0;
-    virtual IProject& getAssetManager() = 0;
+    virtual Project& getProject() = 0;
+    virtual Project& getAssetManager() = 0;
     virtual IResourceData& getResourceData() = 0;
     virtual IBindingRegistry* getBindingRegistry() = 0;
   };

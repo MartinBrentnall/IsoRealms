@@ -38,6 +38,9 @@ namespace IsoRealms::Hue {
     void save(JSONObject object) override;
     void registerAssets(IAssetRegistry& assets) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void updateRuntime(unsigned int milliseconds) override;
+    void updateEditing(unsigned int milliseconds) override;
+    void reset() override;
     
     private:
     ResourceTypeDefinition<Hue, HueManager> cResourceTypeHueManager;

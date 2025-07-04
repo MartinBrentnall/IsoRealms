@@ -22,7 +22,6 @@
 
 namespace IsoRealms::HighScore {
   ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data) :
-            cProjectCallbackManager(project),
             cParentProject(project),
             cScriptQuit(data.getDummyActionClient()),
             cScriptOnHighScoreAchieved(data.getDummyActionClient()),
@@ -32,15 +31,6 @@ namespace IsoRealms::HighScore {
             cLuaBinding(project, this) {
     project.mainThreadInit([this]() {
       cProject->initMainThread();      
-    });
-    
-    cProjectCallbackManager.reset([this]() {
-      cProject->reset();
-    });
-    
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      cProject->updateRuntime(milliseconds);
-      cProject->updateRuntimeComplete();
     });
   }
   
@@ -97,7 +87,16 @@ namespace IsoRealms::HighScore {
   void ScoreTracker::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
+  
+  void ScoreTracker::updateRuntime(unsigned int milliseconds) {
+    cProject->updateRuntime(milliseconds);
+    cProject->updateRuntimeComplete();
+  }
 
+  void ScoreTracker::reset() {
+    cProject->reset();
+  }
+  
   std::vector<std::unique_ptr<IProperty>> ScoreTracker::getAssetProperties() {
     return std::vector<std::unique_ptr<IProperty>>();
   }

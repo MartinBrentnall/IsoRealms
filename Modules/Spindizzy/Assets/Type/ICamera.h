@@ -29,7 +29,9 @@ namespace IsoRealms::Spindizzy {
 
   class ICamera : public IAsset {
     public:
-    virtual void registerAssets(IAssetRegistry& assets) = 0; 
+    virtual void registerAssets(IAssetRegistry& assets) = 0;
+    virtual void updateRuntime(unsigned int milliseconds) = 0;
+    virtual void reset() = 0;
     virtual const IFloat* getYaw() const = 0;
     virtual const IFloat* getPitch() const = 0;
     virtual float getXLocation() const = 0;

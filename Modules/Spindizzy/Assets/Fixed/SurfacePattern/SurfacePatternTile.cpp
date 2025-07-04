@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "SurfacePatternTile.h"
+
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"

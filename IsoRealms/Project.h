@@ -49,7 +49,6 @@
 #include "Assets/Providers/AssetLiteralVertex.h"
 #include "Assets/Providers/AssetLocalBinding.h"
 #include "Editing.h"
-#include "ICallbackHandle.h"
 #include "IResourceData.h"
 #include "Lua.h"
 #include "Module.h"
@@ -58,6 +57,8 @@
 #include "Types.h"
 
 namespace IsoRealms {
+  template<class TYPE> struct AssetContainerTraits;
+  
   class IAssetOverride;
   class IScreenListener;
 
@@ -163,34 +164,6 @@ namespace IsoRealms {
       bool isDefaultConfiguration() const override;
     };
 
-    class ResetCallbackHandle : public ICallbackHandle {
-      private:
-      std::function<void()> cFunction;      
-        
-      public:
-      ResetCallbackHandle(std::function<void()> function) :
-                cFunction(function) {
-      }
-        
-      void call() {
-        cFunction();
-      }
-    };
-    
-    class UpdateCallbackHandle : public ICallbackHandle {
-      private:
-      std::function<void(unsigned int)> cFunction;      
-        
-      public:
-      UpdateCallbackHandle(std::function<void(unsigned int)> function) :
-                cFunction(function) {
-      }
-        
-      void call(unsigned int milliseconds) {
-        cFunction(milliseconds);
-      }
-    };
-
     class QuitAction : public IAction {
       public:
       QuitAction(Project& parent);
@@ -265,9 +238,6 @@ namespace IsoRealms {
     std::queue<std::function<void()>> cMainThreadAllocTasks;         /// Allocation tasks to be perfomed on the main thread during initialisation.
     std::queue<std::function<void()>> cMainThreadInitTasks;          /// initialisation tasks to be performed on the main thread.
     std::vector<std::function<void(IAssets&)>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.
-    std::vector<std::unique_ptr<ResetCallbackHandle>> cResetters;                     /// Reset functions.  Called at the end of a project.
-    std::vector<std::unique_ptr<UpdateCallbackHandle>> cRuntimeDynamics;              /// Runtime update functions.  Called at each runtime update cycle.
-    std::vector<std::unique_ptr<UpdateCallbackHandle>> cEditingDynamics;              /// Editor update functions.  Called at each editor update cycle.
     std::queue<std::function<void()>> cUpdateTasks;                  /// Postponed update functions.  Called after other update functions.
 
     // Action execution control
@@ -401,7 +371,6 @@ namespace IsoRealms {
     void loadModules(JSONObject object);
     bool isModuleLoaded(const std::string& name) const;
     std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions& options, ProjectFile& file);
-    bool isLoading() const override;
     Module* getModule(const std::string& name);
     void saveFile(ProjectFile& file);
     
@@ -428,11 +397,7 @@ namespace IsoRealms {
     void mainThreadInit(std::function<void()> function) override;
     void mainThreadCleanUp(std::function<void()> function) override;
     void init(std::function<void(IAssets&)> initialiser) override;
-    ICallbackHandle* reset(ProjectCallbackManager& manager, std::function<void()> resetter) override;
-    ICallbackHandle* updateRuntime(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) override;
-    ICallbackHandle* updateEditing(ProjectCallbackManager& manager, std::function<void(unsigned int)> dynamic) override;
     void updateLater(std::function<void()> task) override;
-    void removeCallback(ICallbackHandle* callbackHandle) override;
     LuaState* const getLuaState() override;
 
     void setTime(int time);
@@ -477,116 +442,41 @@ namespace IsoRealms {
     IStateNotifier<ITexture>* add(ITexture*        asset, const std::string& id, const std::string& category) override;
     IStateNotifier<IVertex>*  add(IVertex*         asset, const std::string& id, const std::string& category) override;
 
-    /****************************\
-     * Implements IAssetRemover * 
-    \****************************/
-    void remove(IAssetProvider<IActionClient, IAction>*         provider) override;
-    void remove(IAssetProvider<IResourceData, IBinding>*        provider) override;
-    void remove(IAssetProvider<IResourceData, IBindingType>*    provider) override;
-    void remove(IAssetProvider<IResourceData, IBoolean>*        provider) override;
-    void remove(IAssetProvider<IResourceData, IColour>*         provider) override;
-    void remove(IAssetProvider<IResourceData, IEditable>*       provider) override;
-    void remove(IAssetProvider<IResourceData, IFloat>*          provider) override;
-    void remove(IAssetProvider<IResourceData, IFont>*           provider) override;
-    void remove(IAssetProvider<IResourceData, IInputHandler>*   provider) override;
-    void remove(IAssetProvider<IResourceData, IInteger>*        provider) override;
-    void remove(IAssetProvider<IResourceData, IModel>*          provider) override;
-    void remove(IAssetProvider<IResourceData, IScreen>*         provider) override;
-    void remove(IAssetProvider<IResourceData, IString>*         provider) override;
-    void remove(IAssetProvider<IResourceData, IProjectOptions>* provider) override;
-    void remove(IAssetProvider<IResourceData, IAssets>*         provider) override;
-    void remove(IAssetProvider<IResourceData, ITexture>*        provider) override;
-    void remove(IAssetProvider<IResourceData, IVertex>*         provider) override;
-
-    void remove(IAction*         asset) override;
-    void remove(IAssets*         asset) override;
-    void remove(IBinding*        asset) override;
-    void remove(IBindingType*    asset) override;
-    void remove(IBoolean*        asset) override;
-    void remove(IColour*         asset) override;
-    void remove(IEditable*       asset) override;
-    void remove(IFloat*          asset) override;
-    void remove(IFont*           asset) override;
-    void remove(IInputHandler*   asset) override;
-    void remove(IInteger*        asset) override;
-    void remove(IModel*          asset) override;
-    void remove(IScreen*         asset) override;
-    void remove(IProjectOptions* asset) override;
-    void remove(IString*         asset) override;
-    void remove(ITexture*        asset) override;
-    void remove(IVertex*         asset) override;
+    template <typename TYPE, typename THING> void remove(THING* asset) {
+      AssetContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(asset);
+    }
     
-    bool hasReadOnlyReferences(IAssetProvider<IActionClient, IAction>*         provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IColour>*         provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IEditable>*       provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IFloat>*          provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IFont>*           provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IInputHandler>*   provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IInteger>*        provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IModel>*          provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IScreen>*         provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IString>*         provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IProjectOptions>* provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IAssets>*         provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) override;
-    bool hasReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) override;
-
-    bool hasReadOnlyReferences(IAction*         asset) override;
-    bool hasReadOnlyReferences(IBinding*        asset) override;
-    bool hasReadOnlyReferences(IBindingType*    asset) override;
-    bool hasReadOnlyReferences(IBoolean*        asset) override;
-    bool hasReadOnlyReferences(IColour*         asset) override;
-    bool hasReadOnlyReferences(IEditable*       asset) override;
-    bool hasReadOnlyReferences(IFloat*          asset) override;
-    bool hasReadOnlyReferences(IFont*           asset) override;
-    bool hasReadOnlyReferences(IInputHandler*   asset) override;
-    bool hasReadOnlyReferences(IInteger*        asset) override;
-    bool hasReadOnlyReferences(IModel*          asset) override;
-    bool hasReadOnlyReferences(IScreen*         asset) override;
-    bool hasReadOnlyReferences(IProjectOptions* asset) override;
-    bool hasReadOnlyReferences(IAssets*         asset) override;
-    bool hasReadOnlyReferences(IString*         asset) override;
-    bool hasReadOnlyReferences(ITexture*        asset) override;
-    bool hasReadOnlyReferences(IVertex*         asset) override;
+    template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(asset);
+    }
    
-    void overrideReadOnlyReferences(IAssetProvider<IActionClient, IAction>*         provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBinding>*        provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBindingType>*    provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IBoolean>*        provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IColour>*         provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IEditable>*       provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IFloat>*          provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IFont>*           provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IInputHandler>*   provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IInteger>*        provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IModel>*          provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IScreen>*         provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IString>*         provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IProjectOptions>* provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IAssets>*         provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, ITexture>*        provider) override;
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IVertex>*         provider) override;
+    template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* asset) {
+      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, &cProjectFile.cFile);
+    }
+    
+    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
+      AssetContainerTraits<TYPE>::get(*this).release(user, asset);
+    }
 
-    void overrideReadOnlyReferences(IAction*         asset) override;
-    void overrideReadOnlyReferences(IBinding*        asset) override;
-    void overrideReadOnlyReferences(IBindingType*    asset) override;
-    void overrideReadOnlyReferences(IBoolean*        asset) override;
-    void overrideReadOnlyReferences(IColour*         asset) override;
-    void overrideReadOnlyReferences(IEditable*       asset) override;
-    void overrideReadOnlyReferences(IFloat*          asset) override;
-    void overrideReadOnlyReferences(IFont*           asset) override;
-    void overrideReadOnlyReferences(IInputHandler*   asset) override;
-    void overrideReadOnlyReferences(IInteger*        asset) override;
-    void overrideReadOnlyReferences(IModel*          asset) override;
-    void overrideReadOnlyReferences(IScreen*         asset) override;
-    void overrideReadOnlyReferences(IProjectOptions* asset) override;
-    void overrideReadOnlyReferences(IAssets*         asset) override;
-    void overrideReadOnlyReferences(IString*         asset) override;
-    void overrideReadOnlyReferences(ITexture*        asset) override;
-    void overrideReadOnlyReferences(IVertex*         asset) override;
+    template <typename TYPE> std::string getID(const TYPE* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).getID(asset);
+    }
+
+    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
+      AssetContainerTraits<TYPE>::get(*this).save(object, asset);
+    }
+
+    template <typename TYPE> std::vector<std::string> getAll() const {
+      return AssetContainerTraits<TYPE>::get(*this).getAll();
+    }
+    
+    template <typename TYPE> bool renderIcon(const std::string& id) const {
+      return AssetContainerTraits<TYPE>::get(*this).renderIcon(id);
+    }
+
+    template <typename TYPE> bool isConfigurable(const std::string& id) const {
+      return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+    }
     
     
     
@@ -627,12 +517,11 @@ namespace IsoRealms {
     void save(ProjectFile& file);
     void save();
     void save(const std::string& file);
+    bool isLoading() const override;
     bool isUserProject() override;
 
-    IAssetBrowser& getResourceManager();
-
     std::string getFilename();
-    IProject& getAssetManager() override;
+    Project& getAssetManager() override;
     IActionClient& getDummyActionClient() override;
     bool isReadOnly() const override;
     void setOwner(File* file) override;
@@ -716,130 +605,12 @@ namespace IsoRealms {
     ITexture*        createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) override;
     IVertex*         createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) override;
 
-    void release(IAssetUser<IAction>*             user, IAction*         asset) override;
-    void release(IAssetUser<IAssets>*             user, IAssets*         asset) override;
-    void release(IAssetUser<IBinding>*            user, IBinding*        asset) override;
-    void release(IAssetUser<IBindingType>*        user, IBindingType*    asset) override;
-    void release(IAssetUser<IBoolean>*            user, IBoolean*        asset) override;
-    void release(IAssetUser<IColour>*             user, IColour*         asset) override;
-    void release(IAssetUser<IEditable>*           user, IEditable*       asset) override;
-    void release(IAssetUser<IFloat>*              user, IFloat*          asset) override;
-    void release(IAssetUser<IFont>*               user, IFont*           asset) override;
-    void release(IAssetUser<IInputHandler>*       user, IInputHandler*   asset) override;
-    void release(IAssetUser<IInteger>*            user, IInteger*        asset) override;
-    void release(IAssetUser<IModel>*              user, IModel*          asset) override;
-    void release(IAssetUser<IProjectOptions>*     user, IProjectOptions* asset) override;
-    void release(IAssetUser<IScreen>*             user, IScreen*         asset) override;
-    void release(IAssetUser<IString>*             user, IString*         asset) override;
-    void release(IAssetUser<ITexture>*            user, ITexture*        asset) override;
-    void release(IAssetUser<IVertex>*             user, IVertex*         asset) override;
-
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
     bool isDefaultConfiguration() const override;
 
-    /*******************************\
-     * Implements IAssetIdentifier *
-    \*******************************/
-    std::string getID(const IAction*         asset) const override;
-    std::string getID(const IAssets*         asset) const override;
-    std::string getID(const IBinding*        asset) const override;
-    std::string getID(const IBindingType*    asset) const override;
-    std::string getID(const IBoolean*        asset) const override;
-    std::string getID(const IColour*         asset) const override;
-    std::string getID(const IEditable*       asset) const override;
-    std::string getID(const IFloat*          asset) const override;
-    std::string getID(const IFont*           asset) const override;
-    std::string getID(const IInputHandler*   asset) const override;
-    std::string getID(const IInteger*        asset) const override;
-    std::string getID(const IModel*          asset) const override;
-    std::string getID(const IScreen*         asset) const override;
-    std::string getID(const IProjectOptions* asset) const override;
-    std::string getID(const IString*         asset) const override;
-    std::string getID(const ITexture*        asset) const override;
-    std::string getID(const IVertex*         asset) const override;
-
-    void save(JSONObject object, const IAction*         asset) const override;
-    void save(JSONObject object, const IAssets*         asset) const override;
-    void save(JSONObject object, const IBinding*        asset) const override;
-    void save(JSONObject object, const IBindingType*    asset) const override;
-    void save(JSONObject object, const IBoolean*        asset) const override;
-    void save(JSONObject object, const IColour*         asset) const override;
-    void save(JSONObject object, const IEditable*       asset) const override;
-    void save(JSONObject object, const IFloat*          asset) const override;
-    void save(JSONObject object, const IFont*           asset) const override;
-    void save(JSONObject object, const IInputHandler*   asset) const override;
-    void save(JSONObject object, const IInteger*        asset) const override;
-    void save(JSONObject object, const IModel*          asset) const override;
-    void save(JSONObject object, const IScreen*         asset) const override;
-    void save(JSONObject object, const IProjectOptions* asset) const override;
-    void save(JSONObject object, const IString*         asset) const override;
-    void save(JSONObject object, const ITexture*        asset) const override;
-    void save(JSONObject object, const IVertex*         asset) const override;
-
-    /****************************\
-     * Implements IAssetBrowser *
-    \****************************/
-    std::vector<std::string> getAllActions() override;
-    std::vector<std::string> getAllBindings() override;
-    std::vector<std::string> getAllBindingTypes() override;
-    std::vector<std::string> getAllBooleans() override;
-    std::vector<std::string> getAllColours() override;
-    std::vector<std::string> getAllEditables() override;
-    std::vector<std::string> getAllFloats() override;
-    std::vector<std::string> getAllFonts() override;
-    std::vector<std::string> getAllInputHandlers() override;
-    std::vector<std::string> getAllIntegers() override;
-    std::vector<std::string> getAllModels() override;
-    std::vector<std::string> getAllScreens() override;
-    std::vector<std::string> getAllStrings() override;
-    std::vector<std::string> getAllTextures() override;
-    std::vector<std::string> getAllVertices() override;
-    
-    void addListener(IAssetListener<IResourceData, IBoolean>*     listener) override;
-    void addListener(IAssetListener<IResourceData, IColour>*      listener) override;
-    void addListener(IAssetListener<IResourceData, IEditable>*    listener) override;
-    void addListener(IAssetListener<IResourceData, IFloat>*       listener) override;
-    void addListener(IAssetListener<IResourceData, IFont>*        listener) override;
-    void addListener(IAssetListener<IResourceData, IInteger>*     listener) override;
-    void addListener(IAssetListener<IResourceData, IModel>*       listener) override;
-    void addListener(IAssetListener<IResourceData, IScreen>*      listener) override;
-    void addListener(IAssetListener<IResourceData, IString>*      listener) override;
-    void addListener(IAssetListener<IResourceData, ITexture>*     listener) override;
-    void addListener(IAssetListener<IResourceData, IVertex>*      listener) override;
-    
-    bool renderActionIcon(      const std::string& id) const override;
-    bool renderBindingIcon(     const std::string& id) const override;
-    bool renderBindingTypeIcon( const std::string& id) const override;
-    bool renderBooleanIcon(     const std::string& id) const override;
-    bool renderColourIcon(      const std::string& id) const override;
-    bool renderFloatIcon(       const std::string& id) const override;
-    bool renderFontIcon(        const std::string& id) const override;
-    bool renderInputHandlerIcon(const std::string& id) const override;
-    bool renderIntegerIcon(     const std::string& id) const override;
-    bool renderModelIcon(       const std::string& id) const override;
-    bool renderScreenIcon(      const std::string& id) const override;
-    bool renderStringIcon(      const std::string& id) const override;
-    bool renderTextureIcon(     const std::string& id) const override;
-    bool renderVertexIcon(      const std::string& id) const override;
-    
-    bool isActionConfigurable(      const std::string& id) const override;
-    bool isBindingConfigurable(     const std::string& id) const override;
-    bool isBindingTypeConfigurable( const std::string& id) const override;
-    bool isBooleanConfigurable(     const std::string& id) const override;
-    bool isColourConfigurable(      const std::string& id) const override;
-    bool isFloatConfigurable(       const std::string& id) const override;
-    bool isFontConfigurable(        const std::string& id) const override;
-    bool isInputHandlerConfigurable(const std::string& id) const override;
-    bool isIntegerConfigurable(     const std::string& id) const override;
-    bool isModelConfigurable(       const std::string& id) const override;
-    bool isScreenConfigurable(      const std::string& id) const override;
-    bool isStringConfigurable(      const std::string& id) const override;
-    bool isTextureConfigurable(     const std::string& id) const override;
-    bool isVertexConfigurable(      const std::string& id) const override;
-    
-    IProject& getProject() override;
+    Project& getProject() override;
     
     void addScreenListener(IScreenListener* listener) override;
     void removeScreenListener(IScreenListener* listener) override;
@@ -875,5 +646,25 @@ namespace IsoRealms {
     LocalLuaBinding<IString> cPropertyValueBinding;
 
     virtual ~Project();
+    
+    template <class TYPE> friend struct AssetContainerTraits;
   };
+
+  template<> struct AssetContainerTraits<IAction>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};
+  template<> struct AssetContainerTraits<IBinding>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindings;      }};
+  template<> struct AssetContainerTraits<IBindingType>    {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes;  }};
+  template<> struct AssetContainerTraits<IBoolean>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;      }};
+  template<> struct AssetContainerTraits<IColour>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cColours;       }};
+  template<> struct AssetContainerTraits<IEditable>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cEditables;     }};
+  template<> struct AssetContainerTraits<IFloat>          {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFloats;        }};
+  template<> struct AssetContainerTraits<IFont>           {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFonts;         }};
+  template<> struct AssetContainerTraits<IInputHandler>   {template<class PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers; }};
+  template<> struct AssetContainerTraits<IInteger>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;      }};
+  template<> struct AssetContainerTraits<IModel>          {template<class PROJECT> static auto& get(PROJECT& project) {return project.cModels;        }};
+  template<> struct AssetContainerTraits<IScreen>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cScreens;       }};
+  template<> struct AssetContainerTraits<IProjectOptions> {template<class PROJECT> static auto& get(PROJECT& project) {return project.cProjectOptions;}};
+  template<> struct AssetContainerTraits<IAssets>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cAssets;        }};
+  template<> struct AssetContainerTraits<IString>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cStrings;       }};
+  template<> struct AssetContainerTraits<ITexture>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cTextures;      }};
+  template<> struct AssetContainerTraits<IVertex>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cVertices;      }};
 }

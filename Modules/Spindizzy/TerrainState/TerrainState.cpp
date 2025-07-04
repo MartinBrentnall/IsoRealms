@@ -18,6 +18,8 @@
  */
 #include "TerrainState.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Spindizzy {
   const std::string TerrainState::JSON_HINT       = "hint";
   const std::string TerrainState::JSON_ICON       = "icon";
@@ -69,6 +71,10 @@ namespace IsoRealms::Spindizzy {
     }));
     return mProperties;
   }
+  
+  void TerrainState::reset() {
+    cRuntimeValue = cDefValue;
+  }
 
   ConditionElement& TerrainState::getConditionElement() {
     return cDefConditionElement;
@@ -110,7 +116,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   TerrainState::TerrainState(IProject& project, IResourceData& owner, const std::string& name, bool state, float iconScale) :
-            cProjectCallbackManager(project),
             cDefConditionElement(name, *this, this),
             cDefValue(state),
             cDefHintAction(owner.getDummyActionClient()),
@@ -118,8 +123,5 @@ namespace IsoRealms::Spindizzy {
             cDefIconScale(iconScale),
             cRuntimeValue(state),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = cDefValue;
-    });
   }
 }

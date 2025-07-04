@@ -18,6 +18,7 @@
  */
 #include "CameraGameplay.h"
 
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
@@ -39,43 +40,12 @@ namespace IsoRealms::Spindizzy {
   const int CameraGameplay::VALUE_INVALID    =    0;
   
   CameraGameplay::CameraGameplay(IProject& project, WorldView& view) :
-            cProjectCallbackManager(project),
             cParent(view),
             cPitch(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH),
             cDefAngle(VALUE_NORTH_WEST),
             cDefRollDuration(DEFAULT_DURATION),
             cListener(nullptr),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      if (cRuntimeRollTimeRemaining > 0) {
-        cStateNotifier->stateChanged(this);
-        if (cListener != nullptr) {
-          cListener->yawChanged(this);
-        }
-      }
-      if (static_cast<int>(milliseconds) > cRuntimeRollTimeRemaining) {
-        cRuntimeRollTimeRemaining = 0;
-      } else {
-        cRuntimeRollTimeRemaining -= milliseconds;
-      }
-    });    
-    
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeCurrentValue = cDefAngle;
-      cRuntimePreviousValue = cDefAngle;
-      cRuntimeRollTimeRemaining = 0U;
-
-      // Sensible defaults.
-      World* mWorld = cParent.getWorld();
-      float mXSize = mWorld->getEndX() - mWorld->getStartX() + 1;
-      float mYSize = mWorld->getEndY() - mWorld->getStartY() + 1;
-      float mZSize = (mWorld->getEndZ() - mWorld->getStartZ() + 3) / 2.0f;
-      cCachedXLocation = (mWorld->getStartX() - 0.5f) + mXSize / 2.0f;
-      cCachedYLocation = (mWorld->getStartY() - 0.5f) + mYSize / 2.0f;
-      cCachedZLocation = (mWorld->getStartZ() / 2.0f - 0.5f) + mZSize / 2.0f;
-      cCachedXZoom = (std::abs(std::sin(Spindizzy::DEFAULT_VIEW_ANGLE_YAW * (M_PI / 180.0f)) * mXSize) + std::abs(std::cos(Spindizzy::DEFAULT_VIEW_ANGLE_YAW * (M_PI / 180.0f)) * mYSize)) / 2.0f;
-      cCachedYZoom = (std::abs(std::sin(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH * (M_PI / 180.0f)) * (mZSize / 2.0f)) + std::abs(std::cos(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH * (M_PI / 180.0f)) * cCachedXZoom));
-    });
   }
   
   CameraGameplay::CameraGameplay(IProject& project, WorldView& view, JSONObject object) :
@@ -87,7 +57,7 @@ namespace IsoRealms::Spindizzy {
       cDefAngle = VALUE_NORTH_WEST;
     }
   }
-
+  
   void CameraGameplay::faceNorthWest() {
     rollTo(VALUE_NORTH_WEST);
   }
@@ -134,6 +104,37 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
+  void CameraGameplay::updateRuntime(unsigned int milliseconds) {
+    if (cRuntimeRollTimeRemaining > 0) {
+      cStateNotifier->stateChanged(this);
+      if (cListener != nullptr) {
+        cListener->yawChanged(this);
+      }
+    }
+    if (static_cast<int>(milliseconds) > cRuntimeRollTimeRemaining) {
+      cRuntimeRollTimeRemaining = 0;
+    } else {
+      cRuntimeRollTimeRemaining -= milliseconds;
+    }
+  }
+  
+  void CameraGameplay::reset() {
+    cRuntimeCurrentValue = cDefAngle;
+    cRuntimePreviousValue = cDefAngle;
+    cRuntimeRollTimeRemaining = 0U;
+
+    // Sensible defaults.
+    World* mWorld = cParent.getWorld();
+    float mXSize = mWorld->getEndX() - mWorld->getStartX() + 1;
+    float mYSize = mWorld->getEndY() - mWorld->getStartY() + 1;
+    float mZSize = (mWorld->getEndZ() - mWorld->getStartZ() + 3) / 2.0f;
+    cCachedXLocation = (mWorld->getStartX() - 0.5f) + mXSize / 2.0f;
+    cCachedYLocation = (mWorld->getStartY() - 0.5f) + mYSize / 2.0f;
+    cCachedZLocation = (mWorld->getStartZ() / 2.0f - 0.5f) + mZSize / 2.0f;
+    cCachedXZoom = (std::abs(std::sin(Spindizzy::DEFAULT_VIEW_ANGLE_YAW * (M_PI / 180.0f)) * mXSize) + std::abs(std::cos(Spindizzy::DEFAULT_VIEW_ANGLE_YAW * (M_PI / 180.0f)) * mYSize)) / 2.0f;
+    cCachedYZoom = (std::abs(std::sin(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH * (M_PI / 180.0f)) * (mZSize / 2.0f)) + std::abs(std::cos(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH * (M_PI / 180.0f)) * cCachedXZoom));
+  }
+
   void CameraGameplay::registerAssets(IAssetRegistry& assets) {
     cStateNotifier = assets.add(this, "ViewYaw", "Gameplay Cameras");
     assets.add(&cPitch, "ViewPitch", "Gameplay Cameras");

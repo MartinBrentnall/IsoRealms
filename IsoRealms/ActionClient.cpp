@@ -20,6 +20,7 @@
 
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   ActionClient::ActionClient(IResourceData& resource, IBindingRegistry& bindingRegistry) :
@@ -35,12 +36,12 @@ namespace IsoRealms {
     cResource.setOwner(owner);
   }
   
-  IProject& ActionClient::getProject() {
+  Project& ActionClient::getProject() {
     return cResource.getProject();
   }
   
-  IProject& ActionClient::getAssetManager() {
-    return cResource.getProject();
+  Project& ActionClient::getAssetManager() {
+    return cResource.getAssetManager();
   }
 
   IResourceData& ActionClient::getResourceData() {

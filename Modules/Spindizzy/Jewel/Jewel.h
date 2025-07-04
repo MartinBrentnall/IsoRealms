@@ -46,6 +46,11 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
     /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateEditing(unsigned int milliseconds);
+
+    /*********************\
      * Implements IModel *
     \*********************/
     IModelInstance* createModel() override;
@@ -113,7 +118,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_FRAME;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject; // Required for pre-rendering.
 
     // Definition data.

@@ -18,6 +18,8 @@
  */
 #include "Function.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   const std::string Function::JSON_ARGUMENT      = "argument";
   const std::string Function::JSON_ARGUMENTS     = "arguments";

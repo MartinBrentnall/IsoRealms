@@ -32,7 +32,6 @@ namespace IsoRealms::Replay {
   const std::string Recorder::TYPE_DIGITAL  = "Digital";
 
   Recorder::Recorder(IProject& project, Replay& replay, IResourceData& data) :
-            cProjectCallbackManager(project),
             cParentProject(project),
             cFilenameString(""),
             cQuitAction(data.getDummyActionClient()),
@@ -68,47 +67,6 @@ namespace IsoRealms::Replay {
       }
       mInputID++;
     }
-
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      if (cElapsedTime == 0) {
-
-        // Construct date and time string for filename
-        time_t mCurrentTime = time(0);
-        struct tm* mNow = localtime(&mCurrentTime);
-        std::stringstream mDateTimeReader;
-        mDateTimeReader << std::setfill('0') << std::setw(2) << (mNow->tm_year - 100)
-                                            << std::setw(2) << (mNow->tm_mon + 1)
-                                            << std::setw(2) <<  mNow->tm_mday << "-"
-                                            << std::setw(2) <<  mNow->tm_hour
-                                            << std::setw(2) <<  mNow->tm_min
-                                            << std::setw(2) <<  mNow->tm_sec;
-        cFilenameString.setValue("Recordings/" + mDateTimeReader.str());
-        cOutput = System::openOutputStream(cFilenameString.getValue());
-
-        // Write the Project name first
-        std::string mProjectName = cProject->getFilename();
-        size_t mLength = mProjectName.length();
-        cOutput.write(reinterpret_cast<const char*>(&mLength),         sizeof(mLength));
-        cOutput.write(reinterpret_cast<const char*>(&mProjectName[0]), mLength);
-
-        // Write the configuration file used next.
-        mLength = cInputConfiguration.length();
-        cOutput.write(reinterpret_cast<const char*>(&mLength),                sizeof(mLength));
-        cOutput.write(reinterpret_cast<const char*>(&cInputConfiguration[0]), mLength);
-      }
-      cElapsedTime += milliseconds;
-      cProject->updateRuntime(milliseconds);
-      cProject->updateRuntimeComplete();
-    });
-
-    cProjectCallbackManager.reset([this]() {
-      cProject->reset();
-      cElapsedTime = 0;
-
-      if (cOutput.is_open()) {
-        cOutput.close();
-      }
-    });
 
     // Do main thread init stuff
     project.mainThreadInit([this]() {
@@ -151,6 +109,47 @@ namespace IsoRealms::Replay {
   
   std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  void Recorder::updateRuntime(unsigned int milliseconds) {
+    if (cElapsedTime == 0) {
+
+      // Construct date and time string for filename
+      time_t mCurrentTime = time(0);
+      struct tm* mNow = localtime(&mCurrentTime);
+      std::stringstream mDateTimeReader;
+      mDateTimeReader << std::setfill('0') << std::setw(2) << (mNow->tm_year - 100)
+                                          << std::setw(2) << (mNow->tm_mon + 1)
+                                          << std::setw(2) <<  mNow->tm_mday << "-"
+                                          << std::setw(2) <<  mNow->tm_hour
+                                          << std::setw(2) <<  mNow->tm_min
+                                          << std::setw(2) <<  mNow->tm_sec;
+      cFilenameString.setValue("Recordings/" + mDateTimeReader.str());
+      cOutput = System::openOutputStream(cFilenameString.getValue());
+
+      // Write the Project name first
+      std::string mProjectName = cProject->getFilename();
+      size_t mLength = mProjectName.length();
+      cOutput.write(reinterpret_cast<const char*>(&mLength),         sizeof(mLength));
+      cOutput.write(reinterpret_cast<const char*>(&mProjectName[0]), mLength);
+
+      // Write the configuration file used next.
+      mLength = cInputConfiguration.length();
+      cOutput.write(reinterpret_cast<const char*>(&mLength),                sizeof(mLength));
+      cOutput.write(reinterpret_cast<const char*>(&cInputConfiguration[0]), mLength);
+    }
+    cElapsedTime += milliseconds;
+    cProject->updateRuntime(milliseconds);
+    cProject->updateRuntimeComplete();
+  }
+
+  void Recorder::reset() {
+    cProject->reset();
+    cElapsedTime = 0;
+
+    if (cOutput.is_open()) {
+      cOutput.close();
+    }
   }
 
   void Recorder::writeInput(unsigned int id, bool state) {

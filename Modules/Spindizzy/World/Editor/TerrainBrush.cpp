@@ -18,6 +18,8 @@
  */
 #include "TerrainBrush.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 #include "Modules/Spindizzy/World/Object/Terrain/SplitSurface.h"
 #include "Modules/Spindizzy/Spindizzy.h"

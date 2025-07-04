@@ -18,6 +18,8 @@
  */
 #include "HueManager.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Hue {
   const std::string HueManager::JSON_BRIDGE = "bridge";
   const std::string HueManager::JSON_BULBS  = "bulbs";
@@ -92,23 +94,7 @@ namespace IsoRealms::Hue {
   const int HueManager::DEBUG_LEVEL = HUE_MSG_ERR;
   
   HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data) :
-            cProjectCallbackManager(project),
             cResourceData(data) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-        mBulb->sync();
-      }
-    });
-
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-        mBulb->sync();
-      }
-    });
-
-    cProjectCallbackManager.reset([this]() {
-      // FIXME:TripPlayer: Implement this
-    });
   }
   
   HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data, JSONObject object, IOptions& options) :
@@ -218,6 +204,29 @@ namespace IsoRealms::Hue {
     return mProperties;
   }
 
+  HueManager::~HueManager() {
+    cREST.cleanup();
+    RESTCleanup();
+    cDTLS.cleanup();
+    cEntertainment.cleanup();
+  }
+
+  void HueManager::updateRuntime(unsigned int milliseconds) {
+    for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
+      mBulb->sync();
+    }
+  }
+
+  void HueManager::updateEditing(unsigned int milliseconds) {
+    for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
+      mBulb->sync();
+    }
+  }
+
+  void HueManager::reset() {
+    // FIXME:TripPlayer: Implement this
+  }
+  
   HueManager::Bulb::Bulb(HueManager& parent, IResourceData& data, int id) :
             cParent(parent),
             cDefID(id),

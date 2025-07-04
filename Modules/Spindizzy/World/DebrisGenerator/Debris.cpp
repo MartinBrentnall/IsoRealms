@@ -18,6 +18,8 @@
  */
 #include "Debris.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 #include "Modules/Spindizzy/World/World.h"
 

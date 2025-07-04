@@ -43,9 +43,7 @@ namespace IsoRealms {
     IModel* createLiteralAsset(IResourceData& owner);
     IModel* getAsset(IResourceData& owner, JSONObject object);
     IModel* getAsset(IResourceData& owner, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
+    bool hasClientConfiguration() const;
     bool isDefaultConfiguration() const;
 
     void loadClientConfiguration(JSONObject object) override;

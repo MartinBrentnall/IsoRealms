@@ -61,9 +61,15 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void updateEditing(unsigned int milliseconds);
+    void reset();
     
     // General functions.
-    void reset();
     void renderRuntime();
     Spindizzy& getSpindizzy() const;
     std::vector<std::unique_ptr<Zone>>& getZones();
@@ -147,7 +153,6 @@ namespace IsoRealms::Spindizzy {
 
     // General editing functions.
     bool isBasicProperties() const;
-    void updateEditing(unsigned int milliseconds);
     void renderEditing(const IScreen* screen) const;
     Zone* getZone(const WorldEditorCursorCell& cell);
     bool intersectsZone(int xA, int yA, int zA, int xB, int yB, int zB) const;
@@ -192,7 +197,6 @@ namespace IsoRealms::Spindizzy {
     };
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;        /// Spindizzy module reference.
     IResourceData& cResourceData; /// Access to world surface cache on disk.
 

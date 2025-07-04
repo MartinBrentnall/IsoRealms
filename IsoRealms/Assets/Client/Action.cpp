@@ -47,18 +47,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getAction(this, id, owner);
   }
   
-  std::vector<std::string> Action::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllActions();
-  }  
-
-  bool Action::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderActionIcon(id);
-  }
-
-  bool Action::hasConfiguration() const {
-    return cManager.getAssetManager().isActionConfigurable(getID());
-  }  
-
   bool Action::isDefaultConfiguration() const {
     return true;
   }

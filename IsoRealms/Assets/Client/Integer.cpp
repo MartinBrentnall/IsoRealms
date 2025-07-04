@@ -21,36 +21,25 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Integer::Integer(IResourceData& owner) :
-            Asset<Integer, IInteger, IResourceData>(owner, owner.getAssetManager().createLiteralInteger(this, owner)) {
+            Asset<Integer, IInteger, IResourceData>(owner, owner.getAssetManager().createLiteralInteger(this, owner, 0)) {
   }
 
   IInteger* Integer::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createLiteralInteger(this, owner);
+    return owner.getAssetManager().createLiteralInteger(this, owner, 0);
   }
   
   IInteger* Integer::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getInteger(this, object, owner);
+    return owner.getAssetManager().getInteger(this, object, owner, nullptr);
   }
   
   IInteger* Integer::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getInteger(this, id, owner);
+    return owner.getAssetManager().getInteger(this, id, owner, nullptr);
   }
   
-  std::vector<std::string> Integer::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllIntegers();
-  }  
-
-  bool Integer::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderIntegerIcon(id);
-  }
-
-  bool Integer::hasConfiguration() const {
-    return cManager.getAssetManager().isIntegerConfigurable(getID());
-  }
-
   bool Integer::isDefaultConfiguration() const {
     return true;
   }

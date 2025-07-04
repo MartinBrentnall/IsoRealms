@@ -18,6 +18,9 @@
  */
 #include "SequenceTrackFloat.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence) :
             SequenceTrackBase(project, sequence),

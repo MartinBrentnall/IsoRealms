@@ -18,6 +18,8 @@
  */
 #include "InterruptHandler.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   const std::string InterruptHandler::JSON_CONSUME  = "consume";
   const std::string InterruptHandler::JSON_ON_INPUT = "onInput";

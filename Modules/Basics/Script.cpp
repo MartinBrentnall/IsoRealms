@@ -18,6 +18,8 @@
  */
 #include "Script.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   Script::Script() {
     // Nothing to do

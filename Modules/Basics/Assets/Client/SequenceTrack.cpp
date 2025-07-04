@@ -23,35 +23,23 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrack::SequenceTrack(IBasics& basics, Sequence& sequence) :
-            Asset<SequenceTrack, ISequenceTrack, IBasics>(basics, basics.getSequenceTrack(this, "Colour", sequence)),
+  SequenceTrack::SequenceTrack(Basics& basics, Sequence& sequence) :
+            Asset<SequenceTrack, ISequenceTrack, Basics>(basics, basics.getSequenceTrack(this, "Colour", sequence)),
             cOwner(sequence) {
   }
 
-  ISequenceTrack* SequenceTrack::createLiteralAsset(IBasics& basics) {
+  ISequenceTrack* SequenceTrack::createLiteralAsset(Basics& basics) {
     return basics.createLiteralSequenceTrack(this, cOwner);
   }
   
-  ISequenceTrack* SequenceTrack::getAsset(IBasics& basics, JSONObject object) {
+  ISequenceTrack* SequenceTrack::getAsset(Basics& basics, JSONObject object) {
     return basics.getSequenceTrack(this, object, cOwner);
   }
   
-  ISequenceTrack* SequenceTrack::getAsset(IBasics& basics, const std::string& id) {
+  ISequenceTrack* SequenceTrack::getAsset(Basics& basics, const std::string& id) {
     return basics.getSequenceTrack(this, id, cOwner);
   }
   
-  std::vector<std::string> SequenceTrack::getAvailableProviders() const {
-    return cManager.getAllSequenceTracks();
-  }  
-
-  bool SequenceTrack::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderSequenceTrackIcon(id);
-  }
-
-  bool SequenceTrack::hasConfiguration() const {
-    return cManager.isSequenceTrackConfigurable(getID());
-  }
-
   bool SequenceTrack::isDefaultConfiguration() const {
     return true;
   }

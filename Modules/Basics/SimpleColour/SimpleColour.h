@@ -48,6 +48,11 @@ namespace IsoRealms::Basics {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void reset();
+
     /**********************\
      * Implements IColour *
     \**********************/
@@ -84,9 +89,6 @@ namespace IsoRealms::Basics {
     static const std::string PROPERTY_HUE;
     static const std::string PROPERTY_SATURATION;
     static const std::string PROPERTY_LIGHTNESS;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     float cDefRed;   /// Initial red intensity.

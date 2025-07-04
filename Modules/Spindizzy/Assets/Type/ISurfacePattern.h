@@ -20,7 +20,6 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Common/IVisualElement.h"
-#include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/ISurface.h"

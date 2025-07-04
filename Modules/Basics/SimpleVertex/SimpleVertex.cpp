@@ -30,7 +30,6 @@ namespace IsoRealms::Basics {
   const std::string SimpleVertex::PROPERTY_Z = "Z";
 
   SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cDefX(0.0),
             cDefY(0.0),
             cDefZ(0.0),
@@ -39,11 +38,6 @@ namespace IsoRealms::Basics {
             cRuntimeZ(0.0),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeX = cDefX;
-      cRuntimeY = cDefY;
-      cRuntimeZ = cDefZ;
-    });
   }
 
   SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -84,6 +78,12 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void SimpleVertex::reset() {
+    cRuntimeX = cDefX;
+    cRuntimeY = cDefY;
+    cRuntimeZ = cDefZ;
+  }
+  
   double SimpleVertex::getX() const {
     return cRuntimeX;
   }

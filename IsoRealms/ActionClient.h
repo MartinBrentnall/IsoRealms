@@ -32,8 +32,8 @@ namespace IsoRealms {
     \****************************/
     bool isReadOnly() const override;
     void setOwner(File* owner) override;
-    IProject& getProject() override;
-    IProject& getAssetManager() override;
+    Project& getProject() override;
+    Project& getAssetManager() override;
     IResourceData& getResourceData() override;
     IBindingRegistry* getBindingRegistry() override;
     

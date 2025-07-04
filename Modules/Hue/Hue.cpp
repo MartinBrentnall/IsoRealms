@@ -40,6 +40,18 @@ namespace IsoRealms::Hue {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
+  void Hue::updateRuntime(unsigned int milliseconds) {
+    updateRuntime2(cResourceTypeHueManager, milliseconds);
+  }
+  
+  void Hue::updateEditing(unsigned int milliseconds) {
+    updateEditing2(cResourceTypeHueManager, milliseconds);
+  }
+  
+  void Hue::reset() {
+    // Nothing to do.
+  }  
+  
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<Hue>> ModuleInstances;
 }

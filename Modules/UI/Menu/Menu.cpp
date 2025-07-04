@@ -20,6 +20,7 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Input.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms::UI {
   const std::string Menu::JSON_COLOUR        = "colour";
@@ -35,7 +36,6 @@ namespace IsoRealms::UI {
   const float Menu::DEFAULT_SHADOW_OFFSET = 0.008f;
 
   Menu::Menu(IProject& project, UI& ui, IResourceData& data) :
-            cProjectCallbackManager(project),
             cResourceData(data),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefExitAction(data.getDummyActionClient()),
@@ -45,23 +45,6 @@ namespace IsoRealms::UI {
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cRuntimeSelectedItem(996),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      float mPositionY = 0.0f;
-      for (unsigned int i = 0; i < cRuntimeSelectedItem; i++) {
-        mPositionY -= (*cDefItems[i].get())->getHeight(*this);
-      }
-      mPositionY -= (*cDefItems[cRuntimeSelectedItem].get())->getSelectedY(*this);
-      if (mPositionY < cRuntimeScroll - 0.6f) {
-        cRuntimeScroll += (mPositionY - (cRuntimeScroll - 0.6f)) * 0.1f;    
-      } else if (mPositionY > cRuntimeScroll) {
-        cRuntimeScroll += (mPositionY - cRuntimeScroll) * 0.1f;    
-      }
-    });
-    
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeSelectedItem = 0;
-      cRuntimeScroll = 0.0f;
-    });
   }
   
   Menu::Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
@@ -121,6 +104,24 @@ namespace IsoRealms::UI {
     return mProperties;
   }
   
+  void Menu::updateRuntime(unsigned int milliseconds) {
+    float mPositionY = 0.0f;
+    for (unsigned int i = 0; i < cRuntimeSelectedItem; i++) {
+      mPositionY -= (*cDefItems[i].get())->getHeight(*this);
+    }
+    mPositionY -= (*cDefItems[cRuntimeSelectedItem].get())->getSelectedY(*this);
+    if (mPositionY < cRuntimeScroll - 0.6f) {
+      cRuntimeScroll += (mPositionY - (cRuntimeScroll - 0.6f)) * 0.1f;    
+    } else if (mPositionY > cRuntimeScroll) {
+      cRuntimeScroll += (mPositionY - cRuntimeScroll) * 0.1f;    
+    }
+  }
+  
+  void Menu::reset() {
+    cRuntimeSelectedItem = 0;
+    cRuntimeScroll = 0.0f;
+  }
+
   IResourceData& Menu::getResourceData() {
     return cResourceData;
   }
@@ -139,11 +140,6 @@ namespace IsoRealms::UI {
 
   const Colour& Menu::getSelectionColour() const {
     return cDefColour;
-  }
-
-  void Menu::reset() {
-    cRuntimeSelectedItem = 0;
-    cRuntimeScroll = 0.0f;
   }
 
   bool Menu::input(sf::Event& event) {

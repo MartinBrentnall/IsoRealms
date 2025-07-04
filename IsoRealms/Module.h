@@ -37,7 +37,6 @@
 #include "ResourceAssetRegistry.h"
 
 namespace IsoRealms {
-  class IAssetRemover;
   class IModuleHandle;
   class IProject;
   class IProperty;
@@ -58,6 +57,9 @@ namespace IsoRealms {
     bool needsSaving(File* savingProject) const;
     void save(JSONObject object, File* savingProject) const;
     std::vector<std::unique_ptr<IProperty>> getProperties();
+    void updateRuntime(unsigned int milliseconds);
+    void updateEditing(unsigned int milliseconds);
+    void reset();
 
     /************************************\
      * Implements IResourceTypeRegistry *
@@ -75,10 +77,9 @@ namespace IsoRealms {
     \******************************/
     IProject& getProjectRuntime() override;
     std::string getName(ResourceType* resourceType) override;
-    IAssetRemover& getAssetRemover() override;
     IAssetRegistry& getAssetRegistry() override;
     IAssets& getAssets() override;
-    IProject& getProject() override;
+    Project& getProject() override;
     std::string getPath() override;
     std::string getDataPath(bool user) override;
     File* getProjectFile() override;

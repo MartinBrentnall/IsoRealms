@@ -18,6 +18,8 @@
  */
 #include "ArgumentDefinition.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Function.h"
 
 namespace IsoRealms::Basics {

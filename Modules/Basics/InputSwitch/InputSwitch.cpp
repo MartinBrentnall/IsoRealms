@@ -19,18 +19,15 @@
 #include "InputSwitch.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms::Basics {
   const std::string InputSwitch::JSON_VALUE = "value";
 
   InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cDefInputHandler(data),
             cRuntimeInputHandler(*cDefInputHandler),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this] {
-      cRuntimeInputHandler = *cDefInputHandler;
-    });
   }
   
   InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -64,6 +61,10 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void InputSwitch::reset() {
+    cRuntimeInputHandler = *cDefInputHandler;
+  }
+    
   bool InputSwitch::input(sf::Event& event) {
     if (cRuntimeInputHandler != nullptr) {
       return cRuntimeInputHandler->input(event);

@@ -19,6 +19,7 @@
 #include "DebrisChunk.h"
 
 #include "IsoRealms/IApplication.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string DebrisChunk::JSON_OUTLINE       = "outline";
@@ -31,7 +32,6 @@ namespace IsoRealms::Spindizzy {
   const float DebrisChunk::DEFAULT_OUTLINE_WIDTH = 0.18f;
 
   DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cProject(project),
             cDefSide{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                      Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -45,9 +45,6 @@ namespace IsoRealms::Spindizzy {
                       {project, 128, 128}},
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      cEditingIconRotation += 0.1f * milliseconds;
-    });
     setNeedsRedrawing();
   }
 
@@ -98,6 +95,10 @@ namespace IsoRealms::Spindizzy {
     return mProperties;
   }
 
+  void DebrisChunk::updateEditing(unsigned int milliseconds) {
+    cEditingIconRotation += 0.1f * milliseconds;
+  }
+  
   IModelInstance* DebrisChunk::createModel() {
     return this;
   }

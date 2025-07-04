@@ -18,6 +18,8 @@
  */
 #include <cmath>
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Editor/WorldEditor.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/CellLocation/CellLocation.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"

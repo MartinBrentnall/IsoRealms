@@ -45,6 +45,12 @@ namespace IsoRealms::HighScore {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void reset();
       
     /***********************\
      * Scripting Interface *
@@ -91,9 +97,8 @@ namespace IsoRealms::HighScore {
     static const std::string TYPE_STRING;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
-
     IProject& cParentProject;
+    
     std::unique_ptr<Project> cProject;
     Action cScriptQuit;
     Action cScriptOnHighScoreAchieved;

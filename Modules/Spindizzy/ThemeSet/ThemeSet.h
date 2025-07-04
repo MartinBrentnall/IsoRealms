@@ -36,6 +36,11 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     void save(JSONObject object) const;
     void registerAssets(IAssetRegistry& assets);
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateEditing(unsigned int milliseconds);
     
     ThemeTexture* createTexture(const std::string& type);
     ThemeColour* createColour(IProject& project, const std::string& type);
@@ -76,7 +81,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_THEMES;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     Spindizzy& cSpindizzy;
     IResourceData& cResourceData;
 

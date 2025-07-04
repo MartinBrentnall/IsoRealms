@@ -18,9 +18,11 @@
  */
 #include "Theme.h"
 
-#include "ThemeSet.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
+
+#include "ThemeSet.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string Theme::JSON_COLOUR   = "colour";

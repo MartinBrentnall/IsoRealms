@@ -18,6 +18,8 @@
  */
 #include "ZoneType.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/World.h"
 

@@ -18,6 +18,8 @@
  */
 #include "ScoreTable.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::HighScore {
   const std::string ScoreTable::JSON_COMPARE          = "compare";
   const std::string ScoreTable::JSON_FIELD            = "field";

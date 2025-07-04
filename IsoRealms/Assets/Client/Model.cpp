@@ -22,6 +22,7 @@
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -68,15 +69,7 @@ namespace IsoRealms {
     return owner.getAssetManager().getModel(this, id, owner);
   }
   
-  std::vector<std::string> Model::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllModels();
-  }  
-
-  bool Model::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderModelIcon(id);
-  }
-
-  bool Model::hasConfiguration() const {
+  bool Model::hasClientConfiguration() const {
     return true;
   }
 

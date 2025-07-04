@@ -20,6 +20,7 @@
 
 #include "Modules/UI/Layout/Layout.h"
 #include "Modules/UI/Layout/LayoutComponent.h"
+#include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
   const std::string LayoutOffsetLinked::JSON_LINKED = "linked";

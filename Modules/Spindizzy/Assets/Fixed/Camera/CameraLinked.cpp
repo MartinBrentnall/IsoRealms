@@ -18,6 +18,7 @@
  */
 #include "CameraLinked.h"
 
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
@@ -40,6 +41,14 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
     
+  void CameraLinked::updateRuntime(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
+  void CameraLinked::reset() {
+    // Nothing to do.
+  }
+  
   const IFloat* CameraLinked::getYaw() const {
     return cDefLinkedView->getYaw();
   }  

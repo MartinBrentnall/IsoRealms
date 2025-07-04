@@ -43,6 +43,11 @@ namespace IsoRealms::Basics {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void reset();
+
     /**********************\
      * Implements IString *
     \**********************/
@@ -64,9 +69,6 @@ namespace IsoRealms::Basics {
 
     // Property names.
     static const std::string PROPERTY_VALUE;
-
-    // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
 
     // Definition data.
     std::string cDefValue;     /// Initial configured value.

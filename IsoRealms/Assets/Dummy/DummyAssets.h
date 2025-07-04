@@ -86,24 +86,6 @@ namespace IsoRealms {
     ITexture*        getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) override;
     IVertex*         getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner) override;
 
-    void release(IAssetUser<IAction>*         user, IAction*         asset) override;
-    void release(IAssetUser<IAssets>*         user, IAssets*         asset) override;
-    void release(IAssetUser<IBinding>*        user, IBinding*        asset) override;
-    void release(IAssetUser<IBindingType>*    user, IBindingType*    asset) override;
-    void release(IAssetUser<IBoolean>*        user, IBoolean*        asset) override;
-    void release(IAssetUser<IColour>*         user, IColour*         asset) override;
-    void release(IAssetUser<IEditable>*       user, IEditable*       asset) override;
-    void release(IAssetUser<IFloat>*          user, IFloat*          asset) override;
-    void release(IAssetUser<IFont>*           user, IFont*           asset) override;
-    void release(IAssetUser<IInputHandler>*   user, IInputHandler*   asset) override;
-    void release(IAssetUser<IInteger>*        user, IInteger*        asset) override;
-    void release(IAssetUser<IModel>*          user, IModel*          asset) override;
-    void release(IAssetUser<IProjectOptions>* user, IProjectOptions* asset) override;
-    void release(IAssetUser<IScreen>*         user, IScreen*         asset) override;
-    void release(IAssetUser<IString>*         user, IString*         asset) override;
-    void release(IAssetUser<ITexture>*        user, ITexture*        asset) override;
-    void release(IAssetUser<IVertex>*         user, IVertex*         asset) override;
-
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;

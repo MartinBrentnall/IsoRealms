@@ -50,7 +50,7 @@ namespace IsoRealms::Basics {
                                                                  "setEditing",                 &Project::setEditing,
                                                                  "prepare",                    &Project::prepare,
                                                                  "isReady",                    &Project::isReady,
-                                                                 "reset",                      &Project::reset,
+                                                                 "reset",                      &Project::resetProject,
                                                                  "getDefaultEditor",           &Project::getDefaultEditor,
                                                                  "getProject",                 &Project::getProject,
                                                                  "canSave",                    &Project::canSave,

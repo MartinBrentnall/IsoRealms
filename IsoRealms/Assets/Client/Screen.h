@@ -37,9 +37,6 @@ namespace IsoRealms {
     IScreen* createLiteralAsset(IResourceData& owner);
     IScreen* getAsset(IResourceData& owner, JSONObject object);
     IScreen* getAsset(IResourceData& owner, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
   };
 }

@@ -18,6 +18,8 @@
  */
 #include "SequenceTrackAction.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence) :
             SequenceTrackBase(project, sequence) {

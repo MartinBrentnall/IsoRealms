@@ -18,6 +18,9 @@
  */
 #include "SequenceTrackAudio.h"
 
+#include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
+
 #include "Modules/Basics/Sequence/Sequence.h"
 #include "Modules/Basics/Sequence/Sequence.h"
 

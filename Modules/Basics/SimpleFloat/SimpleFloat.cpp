@@ -26,14 +26,10 @@ namespace IsoRealms::Basics {
   const std::string SimpleFloat::PROPERTY_VALUE  = "Initial Value";
   
   SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cDefValue(0.0f),
             cRuntimeValue(0.0f),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = cDefValue;
-    });
   }
   
   SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -66,6 +62,10 @@ namespace IsoRealms::Basics {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Value", "TODO", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
     return mProperties;
+  }
+  
+  void SimpleFloat::reset() {
+    cRuntimeValue = cDefValue;
   }
 
   float SimpleFloat::getValue() const {

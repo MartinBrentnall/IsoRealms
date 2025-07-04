@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Screen::Screen(IResourceData& owner) : 
@@ -45,18 +46,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getScreen(this, id, owner);
   }
   
-  std::vector<std::string> Screen::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllScreens();
-  }  
-
-  bool Screen::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderScreenIcon(id);
-  }
-
-  bool Screen::hasConfiguration() const {
-    return cManager.getAssetManager().isScreenConfigurable(getID());
-  }  
-
   bool Screen::isDefaultConfiguration() const {
     return true;
   }

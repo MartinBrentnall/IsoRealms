@@ -18,6 +18,8 @@
  */
 #include "ModelInstance.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Model.h"
 
 namespace IsoRealms {

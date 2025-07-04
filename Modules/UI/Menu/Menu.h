@@ -52,17 +52,18 @@ namespace IsoRealms::UI {
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
 
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void reset();
+
     // Interface to be used by menu items.
     IResourceData& getResourceData();
     const Font& getFont() const;
     float getFontSize() const;
     float getShadowOffset() const;
     const Colour& getSelectionColour() const;
-    
-    /*********************\
-     * Scripting Support *
-    \*********************/
-    void reset();
 
     /****************************\
      * Implements IInputHandler *
@@ -99,7 +100,6 @@ namespace IsoRealms::UI {
     static const float DEFAULT_SHADOW_OFFSET;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     IResourceData& cResourceData;
 
     // Definition data.

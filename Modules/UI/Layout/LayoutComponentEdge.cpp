@@ -18,6 +18,10 @@
  */
 #include "LayoutComponentEdge.h"
 
+#include "IsoRealms/Project.h"
+
+#include "Modules/UI/UI.h"
+
 #include "LayoutComponent.h"
 #include "Layout.h"
 

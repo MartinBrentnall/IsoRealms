@@ -18,6 +18,8 @@
  */
 #include "ZoneObjectTypeTraitChaser.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Chaser/Chaser.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 

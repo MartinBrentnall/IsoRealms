@@ -24,24 +24,21 @@
 #include "IsoRealms/Persistence.h"
 
 #include "Modules/Basics/Assets/Type/ISequenceTrack.h"
-#include "Modules/Basics/IBasics.h"
 
 namespace IsoRealms::Basics {
+  class Basics;
   class Sequence;
 
-  class SequenceTrack : public Asset<SequenceTrack, ISequenceTrack, IBasics> {
+  class SequenceTrack : public Asset<SequenceTrack, ISequenceTrack, Basics> {
     public:
-    SequenceTrack(IBasics& basics, Sequence& owner);
+    SequenceTrack(Basics& basics, Sequence& owner);
 
-    /*********************************************\
-     * Implements Asset<ISequenceTrack, IBasics> *
-    \*********************************************/
-    ISequenceTrack* createLiteralAsset(IBasics& basics);
-    ISequenceTrack* getAsset(IBasics& basics, JSONObject object);
-    ISequenceTrack* getAsset(IBasics& basics, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
+    /********************************************\
+     * Implements Asset<ISequenceTrack, Basics> *
+    \********************************************/
+    ISequenceTrack* createLiteralAsset(Basics& basics);
+    ISequenceTrack* getAsset(Basics& basics, JSONObject object);
+    ISequenceTrack* getAsset(Basics& basics, const std::string& id);
     bool isDefaultConfiguration() const;
 
     private:

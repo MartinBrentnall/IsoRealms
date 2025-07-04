@@ -112,8 +112,8 @@ namespace IsoRealms {
       return Iterator(this, cResources.end());
     }
     
-    void deleteResource(IAssetRemover& assets, IAssets& releaser, IResource* resource) override {
-      resource->unregisterAssets(assets, releaser);
+    void deleteResource(Project& project, IAssets& releaser, IResource* resource) override {
+      resource->unregisterAssets(project, releaser);
       for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResourceType : cResources) {
         if (mResourceType.second.get() == resource) {
           cResources.erase(mResourceType.first);

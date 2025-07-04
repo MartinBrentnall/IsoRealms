@@ -18,6 +18,8 @@
  */
 #include "Gyroscope.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
@@ -33,7 +35,6 @@ namespace IsoRealms::Spindizzy {
   const float Gyroscope::HEIGHT            = 0.9f;
 
   Gyroscope::Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cProject(project),
             cDefQuadrant{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -43,9 +44,6 @@ namespace IsoRealms::Spindizzy {
             cTexture(project, 128, 128),
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      cEditingIconRotation -= 0.5f * milliseconds;
-    });
     setNeedsRedrawing();
   }
 
@@ -90,6 +88,10 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Quadrant 4 Colour", "TODO", cDefQuadrant[3]));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour",    "TODO", cDefOutline));
     return mProperties;
+  }
+  
+  void Gyroscope::updateEditing(unsigned int milliseconds) {
+    cEditingIconRotation -= 0.5f * milliseconds;
   }
 
   IModelInstance* Gyroscope::createModel() {

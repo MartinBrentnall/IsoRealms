@@ -46,7 +46,6 @@
 #include "Assets/Fixed/Screen/ScreenPanel.h"
 #include "Assets/Fixed/Screen/ScreenText.h"
 #include "Assets/Fixed/String/StringTime.h"
-#include "IUI.h"
 #include "Layout/Layout.h"
 #include "Menu/Menu.h"
 #include "Prompt/Prompt.h"
@@ -55,17 +54,18 @@
 #include "VirtualKeyboard/VirtualKeyboard.h"
 
 namespace IsoRealms::UI {
-  class UI : public IModuleHandle,
-             public IUI {
+  template<class TYPE> struct AssetContainerTraits;
+
+  class UI : public IModuleHandle {
     public:
     UI(IProject& project, IResourceTypeRegistry* registry);
 
     // Interface access (used by all).
-    IUI& getAssetManager() override;
-    IProject& getProject() const override;
+    UI& getAssetManager();
+    IProject& getProject() const;
     
-    bool isReadOnly() const override; // TODO: Probably shouldn't be here.
-    void setOwner(File* owner) override; // TODO: Probably shouldn't be here.
+    bool isReadOnly() const; // TODO: Probably shouldn't be here.
+    void setOwner(File* owner); // TODO: Probably shouldn't be here.
 
     /****************************\
      * Implements IModuleHandle *
@@ -74,42 +74,45 @@ namespace IsoRealms::UI {
     void save(JSONObject object) override;
     void registerAssets(IAssetRegistry& assets) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void updateRuntime(unsigned int milliseconds) override;
+    void updateEditing(unsigned int milliseconds) override;
+    void reset() override;
     
-    std::vector<std::string> getAllLayoutLocations() override;
-    std::vector<std::string> getAllLayoutOffsets() override;
-    std::vector<std::string> getAllMenuItems() override;
+    ILayoutLocation* createLiteralLayoutLocation(IAssetUser<ILayoutLocation>* user, LayoutComponentEdge& owner);
+    ILayoutOffset*   createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner);
+    IMenuItem*       createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner);
 
-    std::string getID(const ILayoutLocation* asset) const override;
-    std::string getID(const ILayoutOffset*   asset) const override;
-    std::string getID(const IMenuItem*       asset) const override;
+    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, JSONObject object, LayoutComponentEdge& owner);
+    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, JSONObject object, LayoutComponentEdge& owner);
+    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, JSONObject object, Menu&                owner);
 
-    bool renderLayoutLocationIcon(const std::string& id) const override;
-    bool renderLayoutOffsetIcon(  const std::string& id) const override;
-    bool renderMenuItemIcon(      const std::string& id) const override;
+    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, const std::string& id, LayoutComponentEdge& owner);
+    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, const std::string& id, LayoutComponentEdge& owner);
+    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, const std::string& id, Menu&                owner);
 
-    bool isLayoutLocationConfigurable(const std::string& id) const override;
-    bool isLayoutOffsetConfigurable(  const std::string& id) const override;
-    bool isMenuItemConfigurable(      const std::string& id) const override;
+    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
+      AssetContainerTraits<TYPE>::get(*this).release(user, asset);
+    }
 
-    ILayoutLocation* createLiteralLayoutLocation(IAssetUser<ILayoutLocation>* user, LayoutComponentEdge& owner) override;
-    ILayoutOffset*   createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner) override;
-    IMenuItem*       createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner) override;
+    template <typename TYPE> std::string getID(const TYPE* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).getID(asset);
+    }
 
-    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, JSONObject object, LayoutComponentEdge& owner) override;
-    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, JSONObject object, LayoutComponentEdge& owner) override;
-    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, JSONObject object, Menu&                owner) override;
+    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
+      AssetContainerTraits<TYPE>::get(*this).save(object, asset);
+    }
 
-    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, const std::string& id, LayoutComponentEdge& owner) override;
-    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, const std::string& id, LayoutComponentEdge& owner) override;
-    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, const std::string& id, Menu&                owner) override;
+    template <typename TYPE> std::vector<std::string> getAll() const {
+      return AssetContainerTraits<TYPE>::get(*this).getAll();
+    }
 
-    void release(IAssetUser<ILayoutLocation>* user, ILayoutLocation* asset) override;
-    void release(IAssetUser<ILayoutOffset>*   user, ILayoutOffset*   asset) override;
-    void release(IAssetUser<IMenuItem>*       user, IMenuItem*       asset) override;
+    template <typename TYPE> bool renderIcon(const std::string& id) const {
+      return AssetContainerTraits<TYPE>::get(*this).renderIcon(id);
+    }
 
-    void save(JSONObject object, ILayoutLocation* asset) const override;
-    void save(JSONObject object, ILayoutOffset*   asset) const override;
-    void save(JSONObject object, IMenuItem*       asset) const override;
+    template <typename TYPE> bool isConfigurable(const std::string& id) const {
+      return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+    }
 
     private:
     static const std::string ID_RESOURCE_LAYOUT;
@@ -175,5 +178,11 @@ namespace IsoRealms::UI {
     ResourceTypeDefinition<UI, ScreenFader>     cResourceTypeScreenFader;
     ResourceTypeDefinition<UI, Throbber>        cResourceTypeThrobber;
     ResourceTypeDefinition<UI, VirtualKeyboard> cResourceTypeVirtualKeyboard;
+
+    template <class TYPE> friend struct AssetContainerTraits;
   };
+
+  template<> struct AssetContainerTraits<ILayoutLocation> {template<class UI> static auto& get(UI& ui) {return ui.cLayoutLocations;}};
+  template<> struct AssetContainerTraits<ILayoutOffset>   {template<class UI> static auto& get(UI& ui) {return ui.cLayoutOffsets;  }};
+  template<> struct AssetContainerTraits<IMenuItem>       {template<class UI> static auto& get(UI& ui) {return ui.cMenuItems;      }};
 }

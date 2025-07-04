@@ -18,6 +18,8 @@
  */
 #include "Player.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/PlayerType/PlayerType.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"

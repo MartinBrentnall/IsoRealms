@@ -47,9 +47,8 @@ namespace IsoRealms::Replay {
     static const std::string TYPE_DIGITAL;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
-
     IProject& cParentProject;
+    
     std::vector<std::unique_ptr<Boolean>> cDefDigitalInputs;
     std::vector<std::unique_ptr<Float>> cDefAnalogueInputs;
     LiteralString cFilenameString;
@@ -70,6 +69,12 @@ namespace IsoRealms::Replay {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+
+    /*********************\
+     * Module interfaces *
+    \*********************/
+    void updateRuntime(unsigned int milliseconds);
+    void reset();
 
     void writeInput(unsigned int id, bool state);
     void writeInput(unsigned int id, float state);

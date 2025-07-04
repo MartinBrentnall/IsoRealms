@@ -18,6 +18,8 @@
  */
 #include "AlienType.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/World.h"
 
@@ -39,7 +41,6 @@ namespace IsoRealms::Spindizzy {
   const float AlienType::DEFAULT_SPIN_SPEED   = 0.0f;
 
   AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cSpindizzy(spindizzy),
             cDefModel(data),
             cDefTarget(data),
@@ -51,10 +52,6 @@ namespace IsoRealms::Spindizzy {
             cDefHugMomentum(DEFAULT_HUG_MOMENTUM),
             cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
-
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeSpinSpeed = cDefSpinSpeed;
-    });
   }
   
   AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
@@ -104,6 +101,10 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Radius",                 "TODO", [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Hug Momentum Threshold", "TODO", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
     return mProperties;
+  }
+
+  void AlienType::reset() {
+    cRuntimeSpinSpeed = cDefSpinSpeed;
   }
 
   AlienType::~AlienType() {

@@ -18,6 +18,8 @@
  */
 #include "SequenceTrackAudioEvent.h"
 
+#include "IsoRealms/Editing.h"
+
 #include "SequenceTrackAudio.h"
 
 namespace IsoRealms::Basics {

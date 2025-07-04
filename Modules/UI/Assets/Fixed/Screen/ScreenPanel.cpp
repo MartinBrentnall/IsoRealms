@@ -89,7 +89,7 @@ namespace IsoRealms::UI {
 
   void ScreenPanel::initTextures(IProject& project) {
     if (cGlobalInstanceCount++ == 0) {
-      cGlobalCornerTexture = std::make_unique<LiteralTexture>(project, true, true);
+      cGlobalCornerTexture = std::make_unique<LiteralTexture>(project, 128, 128, true, true);
       project.mainThreadInit([&project]() {
         glPushAttrib(GL_TRANSFORM_BIT);
         glMatrixMode(GL_PROJECTION);

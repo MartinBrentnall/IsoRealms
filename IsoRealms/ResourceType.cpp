@@ -32,11 +32,11 @@ namespace IsoRealms {
 
 
   ResourceType::~ResourceType() {
-    IAssetRemover& mRemover = cParent.getAssetRemover();
+    Project& mProject = cParent.getProject();
     IAssets& mAssets = cParent.getAssets();
     for (IResource* mResource : cResources) {
       try {
-        cResourceType->deleteResource(mRemover, mAssets, mResource);
+        cResourceType->deleteResource(mProject, mAssets, mResource);
       } catch (...) {
         std::exception_ptr eptr = std::current_exception();
         try {
@@ -110,10 +110,10 @@ namespace IsoRealms {
   void ResourceType::deleteResource(IResource* resource) {
     for (IResource* mResource : cResources) {
       if (resource == mResource) {
-        IAssetRemover& mRemover = cParent.getAssetRemover();
+        Project& mProject = cParent.getProject();
         IAssets& mAssets = cParent.getAssets();
         cResources.erase(mResource);
-        cResourceType->deleteResource(mRemover, mAssets, mResource);
+        cResourceType->deleteResource(mProject, mAssets, mResource);
         return;
       }
     }
@@ -148,10 +148,6 @@ namespace IsoRealms {
     return cCategory;
   }
   
-  IAssetRemover& ResourceType::getAssetRemover() {
-    return cParent.getAssetRemover();
-  }
-  
   IAssetRegistry& ResourceType::getAssetRegistry() {
     return cParent.getAssetRegistry();
   }
@@ -160,7 +156,7 @@ namespace IsoRealms {
     return cParent.getAssets();
   }
 
-  IProject& ResourceType::getProject() {
+  Project& ResourceType::getProject() {
     return cParent.getProject();
   }
 }

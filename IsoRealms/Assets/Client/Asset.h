@@ -29,6 +29,18 @@ namespace IsoRealms {
   class IApplication;
   class IAssets;
   
+  template<class TYPE> concept HasClientConfigurationExists = requires(const TYPE& type) {
+    {type.hasClientConfiguration()} -> std::same_as<bool>;
+  };
+  
+  template<class TYPE> concept RenderOtherClientProviderIconExists = requires(const TYPE& type, const std::string& id) {
+    {type.renderOtherClientProviderIcon(id)} -> std::same_as<bool>;
+  };
+  
+  template<class TYPE> concept GetAvailableClientProvidersExists = requires(const TYPE& type) {
+    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<std::string>>;
+  };
+  
   template<class DERIVED, class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
     Asset(MANAGER& manager, TYPE* asset) :
@@ -120,14 +132,36 @@ namespace IsoRealms {
     }
 
     bool renderProviderIcon(const std::string& id) const {
-      return id == getID() ? renderAssetIcon() : static_cast<const DERIVED*>(this)->renderOtherProviderIcon(id);
+      if (id == getID()) {
+        return renderAssetIcon();
+      }
+      
+      if constexpr (RenderOtherClientProviderIconExists<DERIVED>) {
+        return static_cast<const DERIVED*>(this)->renderOtherClientProviderIcon(id);
+      }
+      return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
+    std::vector<std::string> getAvailableProviders() const {
+      if constexpr (GetAvailableClientProvidersExists<DERIVED>) {
+        return static_cast<const DERIVED*>(this)->getAvailableClientProviders();
+      }
+      return cManager.getAssetManager().template getAll<TYPE>();
+    }
+    
+    bool hasConfiguration() const {
+      if constexpr (HasClientConfigurationExists<DERIVED>) {
+        if (static_cast<const DERIVED*>(this)->hasClientConfiguration()) {
+          return true;
+        }
+      }
+      return cManager.getAssetManager().template isConfigurable<TYPE>(getID());
+    }  
+    
     protected:
     MANAGER& cManager;
     TYPE* cAsset;
 
-//    virtual std::vector<std::string> getAvailableProviders() const = 0;
 //    virtual bool hasConfiguration() const = 0;
 //    virtual bool isDefaultConfiguration() const = 0;
     virtual void stateChanged(TYPE* asset) {

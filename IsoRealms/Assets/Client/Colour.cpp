@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Colour::Colour(IResourceData& owner, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
@@ -44,18 +45,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getColour(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
-  std::vector<std::string> Colour::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllColours();
-  }  
-
-  bool Colour::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderColourIcon(id);
-  }
-
-  bool Colour::hasConfiguration() const {
-    return cManager.getAssetManager().isColourConfigurable(getID());
-  }
-
   bool Colour::isDefaultConfiguration() const {
     return true;
   }

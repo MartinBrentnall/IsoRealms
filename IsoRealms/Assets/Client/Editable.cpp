@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Editable::Editable(IResourceData& owner) :
@@ -39,18 +40,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getEditable(this, id, owner);
   }
   
-  std::vector<std::string> Editable::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllEditables();
-  }  
-
-  bool Editable::renderOtherProviderIcon(const std::string& id) const {
-    return false; // TODO
-  }
-
-  bool Editable::hasConfiguration() const {
-    return false; // TODO cManager.isEditableConfigurable(getID());
-  }  
-
   bool Editable::isDefaultConfiguration() const {
     return true;
   }

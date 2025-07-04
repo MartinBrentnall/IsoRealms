@@ -63,7 +63,6 @@ add_library(IsoRealms
   Assets/Literal/LiteralTexture.cpp
   Assets/Literal/LiteralVertex.cpp
   Assets/Registry/AssetIDException.cpp
-  ProjectCallbackManager.cpp
   Collision/CollisionData.cpp
   Collision/CollisionUtils.cpp
   Common/ScreenArea.cpp

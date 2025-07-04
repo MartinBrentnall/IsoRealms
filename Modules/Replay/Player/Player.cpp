@@ -34,7 +34,6 @@ namespace IsoRealms::Replay {
   const std::string Player::TYPE_DIGITAL  = "Digital";
 
   Player::Player(IProject& project, Replay& replay, IResourceData& data) :
-            cProjectCallbackManager(project),
             cParentProject(project),
             cFilename(""),
             cQuitAction(data.getDummyActionClient()) {
@@ -89,51 +88,6 @@ namespace IsoRealms::Replay {
       cQuitAction.execute();
     }, this); // TODO: 'user' flag shouldn't always be false
 
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      while (!cFinished && cNextEvent.cTime == cElapsedTime) {
-        if (cNextEvent.cID < cDigitalInputs.size()) {
-          cDigitalInputs[cNextEvent.cID]->setValue(cNextEvent.cState.cDigital);
-        } else {
-          cAnalogueInputs[cNextEvent.cID - cDigitalInputs.size()]->setValue(cNextEvent.cState.cAnalogue);
-        }
-        readNextEvent();
-      }
-      cElapsedTime += milliseconds;
-      cProject->updateRuntime(milliseconds);
-      cProject->updateRuntimeComplete();
-    });
-
-    cProjectCallbackManager.reset([this]() {
-      cProject->reset();
-      cElapsedTime = 0;
-      cRecording   = std::ifstream(cFilename, std::ios::binary);
-      cFinished    = false;
-
-      // Obtain project file.
-      std::string mProjectFile;
-      size_t mLength;
-      cRecording.read(reinterpret_cast<char*>(&mLength), sizeof(mLength));
-      mProjectFile.resize(mLength);
-      cRecording.read(&mProjectFile[0], mLength);
-
-      // Obtain configuration file.
-      std::string mConfigurationFile;
-      cRecording.read(reinterpret_cast<char*>(&mLength), sizeof(mLength));
-      mConfigurationFile.resize(mLength);
-      cRecording.read(&mConfigurationFile[0], mLength);
-
-      // Reset inputs.
-      for (std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
-        mInput->setValue(false);
-      }
-      for (std::unique_ptr<AnalogueInput>& mInput : cAnalogueInputs) {
-        mInput->setValue(0.0f);
-      }
-
-      // Read first event.
-      readNextEvent();
-    });
-
     project.mainThreadInit([this]() {
       cProject->initMainThread();
     });
@@ -173,6 +127,51 @@ namespace IsoRealms::Replay {
   
   std::vector<std::unique_ptr<IProperty>> Player::getProperties(IResourceData& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
+  }
+
+  void Player::updateRuntime(unsigned int milliseconds) {
+    while (!cFinished && cNextEvent.cTime == cElapsedTime) {
+      if (cNextEvent.cID < cDigitalInputs.size()) {
+        cDigitalInputs[cNextEvent.cID]->setValue(cNextEvent.cState.cDigital);
+      } else {
+        cAnalogueInputs[cNextEvent.cID - cDigitalInputs.size()]->setValue(cNextEvent.cState.cAnalogue);
+      }
+      readNextEvent();
+    }
+    cElapsedTime += milliseconds;
+    cProject->updateRuntime(milliseconds);
+    cProject->updateRuntimeComplete();
+  }
+
+  void Player::reset() {
+    cProject->reset();
+    cElapsedTime = 0;
+    cRecording   = std::ifstream(cFilename, std::ios::binary);
+    cFinished    = false;
+
+    // Obtain project file.
+    std::string mProjectFile;
+    size_t mLength;
+    cRecording.read(reinterpret_cast<char*>(&mLength), sizeof(mLength));
+    mProjectFile.resize(mLength);
+    cRecording.read(&mProjectFile[0], mLength);
+
+    // Obtain configuration file.
+    std::string mConfigurationFile;
+    cRecording.read(reinterpret_cast<char*>(&mLength), sizeof(mLength));
+    mConfigurationFile.resize(mLength);
+    cRecording.read(&mConfigurationFile[0], mLength);
+
+    // Reset inputs.
+    for (std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
+      mInput->setValue(false);
+    }
+    for (std::unique_ptr<AnalogueInput>& mInput : cAnalogueInputs) {
+      mInput->setValue(0.0f);
+    }
+
+    // Read first event.
+    readNextEvent();
   }
 
   void Player::finish() {

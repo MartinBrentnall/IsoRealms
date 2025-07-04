@@ -18,10 +18,11 @@
  */
 #include "ResourceTypeMenu.h"
 
+#include "Property/IPropertyEditor.h"
+
 namespace IsoRealms {
-  ResourceTypeMenu::ResourceTypeMenu(UIManager& manager, IUIStyle& style, IAssetBrowser& browser, IResourceType& resourceType) : Menu(manager, style, resourceType.getPlural(), 1.0f, 1.0f, 1.0f),
+  ResourceTypeMenu::ResourceTypeMenu(UIManager& manager, IUIStyle& style, IResourceType& resourceType) : Menu(manager, style, resourceType.getPlural(), 1.0f, 1.0f, 1.0f),
             cResourceType(resourceType),
-            cBrowser(browser),
             cRemoveButtonOffset(0.0f),
             cDeleteSelected(false) {
     refresh();
@@ -155,7 +156,7 @@ namespace IsoRealms {
     IUIStyle& mStyle = getStyle();
     std::string mResourceName = resource->getName();
     mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, [this, resource]() {
-      return resource->getProperties(cBrowser);
+      return resource->getProperties();
     }, mResourceName, 1.0f, 1.0f, 0.5f));
   }
 }

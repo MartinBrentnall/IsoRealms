@@ -19,6 +19,7 @@
 #include "SimpleBoolean.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms::Basics {
   const std::string SimpleBoolean::JSON_VALUE = "value";
@@ -26,14 +27,10 @@ namespace IsoRealms::Basics {
   const std::string SimpleBoolean::PROPERTY_VALUE = "Initial Value";
   
   SimpleBoolean::SimpleBoolean(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cDefValue(false),
             cRuntimeValue(false),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = cDefValue;
-    });
   }
   
   SimpleBoolean::SimpleBoolean(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -68,6 +65,10 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void SimpleBoolean::reset() {
+    cRuntimeValue = cDefValue;
+  }
+    
   bool SimpleBoolean::getValue() const {
     return cRuntimeValue;
   }

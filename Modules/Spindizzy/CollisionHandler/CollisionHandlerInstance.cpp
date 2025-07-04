@@ -18,6 +18,8 @@
  */
 #include "CollisionHandlerInstance.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/CollisionHandler/CollisionHandler.h"
 #include "Modules/Spindizzy/World/World.h"
 

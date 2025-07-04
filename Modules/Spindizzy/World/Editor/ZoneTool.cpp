@@ -18,6 +18,7 @@
  */
 #include "ZoneTool.h"
 
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"

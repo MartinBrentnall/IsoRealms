@@ -18,6 +18,8 @@
  */
 #include "SequenceTrackActionEvent.h"
 
+#include "IsoRealms/Project.h"
+
 #include "SequenceTrackAction.h"
 
 namespace IsoRealms::Basics {

@@ -45,6 +45,20 @@ namespace IsoRealms::Replay {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
+  void Replay::updateRuntime(unsigned int milliseconds) {
+    updateRuntime2(cResourceTypePlayer,   milliseconds);
+    updateRuntime2(cResourceTypeRecorder, milliseconds);
+  }
+  
+  void Replay::updateEditing(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
+  void Replay::reset() {
+    reset2(cResourceTypePlayer);
+    reset2(cResourceTypeRecorder);
+  }  
+  
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<Replay>> ModuleInstances;
 }

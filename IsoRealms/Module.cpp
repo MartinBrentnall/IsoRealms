@@ -136,6 +136,18 @@ namespace IsoRealms {
     return cModule->getProperties();
   }
   
+  void Module::updateRuntime(unsigned int milliseconds) {
+    cModule->updateRuntime(milliseconds);
+  }
+  
+  void Module::updateEditing(unsigned int milliseconds) {
+    cModule->updateEditing(milliseconds);
+  }
+  
+  void Module::reset() {
+    cModule->reset();
+  }
+  
   ResourceType* Module::getResourceType(const std::string& id) {
     std::map<std::string, std::unique_ptr<ResourceType>>::iterator mResourceType = cResourceTypes.find(id);
     if (mResourceType == cResourceTypes.end()) {
@@ -177,10 +189,6 @@ namespace IsoRealms {
     throw ArgumentException("ERROR: Module::getName: Specified resource type not found in this module.");
   }
 
-  IAssetRemover& Module::getAssetRemover() {
-    return cProject;
-  }
-
   IAssetRegistry& Module::getAssetRegistry() {
     return cProject;
   }
@@ -189,7 +197,7 @@ namespace IsoRealms {
     return cProject;
   }
 
-  IProject& Module::getProject() {
+  Project& Module::getProject() {
     return cProject;
   }
 

@@ -24,7 +24,6 @@
 #include "Assets/Client/File.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
-#include "IAssetBrowser.h"
 #include "IAssetRegistry.h"
 #include "IProject.h"
 #include "IResource.h"
@@ -81,7 +80,7 @@ namespace IsoRealms {
       return cName;
     }
     
-    std::vector<std::unique_ptr<IProperty>> getProperties(IAssetBrowser& browser) override {
+    std::vector<std::unique_ptr<IProperty>> getProperties() override {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", "A name to identify this resource. The name is unique relative to other resources of the same type.", [this]() {return cName;}, [this](const std::string& value) {
         std::set<IResource*> mAllResources = cParent.getResources();
@@ -136,7 +135,7 @@ namespace IsoRealms {
       cResourceHandle.registerAssets(cAssetRegistry);
     }
 
-    void unregisterAssets(IAssetRemover& assets, IAssets& releaser) override {
+    void unregisterAssets(Project& assets, IAssets& releaser) override {
       cAssetRegistry.unregisterAssets(assets);
     }
 
@@ -172,11 +171,11 @@ namespace IsoRealms {
       cOwnerProject = owner;
     }
 
-    IProject& getProject() override {
+    Project& getProject() override {
       return cParent.getProject();
     }
 
-    IProject& getAssetManager() override {
+    Project& getAssetManager() override {
       return cParent.getProject();
     }
 

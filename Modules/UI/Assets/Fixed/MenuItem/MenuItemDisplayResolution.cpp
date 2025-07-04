@@ -30,31 +30,19 @@ namespace IsoRealms::UI {
   const std::string MenuItemDisplayResolution::BINDING_TYPE = "DisplayResolution";
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu) :
-            cProjectCallbackManager(project),
+            cProject(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this, &project]() {
-      IApplication& mApplication = project.getApplication();
-      cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
-      DisplayResolution mResolution = mApplication.getDisplayResolution();
-      cRuntimeSelectedResolution = getIndex(mResolution);
-    });
   }
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu, JSONObject object) :
-            cProjectCallbackManager(project),
+            cProject(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this, &project]() {
-      IApplication& mApplication = project.getApplication();
-      cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
-      DisplayResolution mResolution = mApplication.getDisplayResolution();
-      cRuntimeSelectedResolution = getIndex(mResolution);
-    });
   }
 
   void MenuItemDisplayResolution::setValue(DisplayResolution resolution) {
@@ -67,6 +55,13 @@ namespace IsoRealms::UI {
 
   void MenuItemDisplayResolution::registerAssets(IAssetRegistry& assets) {
     assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  }
+  
+  void MenuItemDisplayResolution::reset() {
+    IApplication& mApplication = cProject.getApplication();
+    cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
+    DisplayResolution mResolution = mApplication.getDisplayResolution();
+    cRuntimeSelectedResolution = getIndex(mResolution);
   }
   
   bool MenuItemDisplayResolution::input(sf::Event& event) {

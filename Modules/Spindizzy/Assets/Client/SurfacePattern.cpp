@@ -19,6 +19,7 @@
 #include "SurfacePattern.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -40,18 +41,6 @@ namespace IsoRealms::Spindizzy {
     return owner.getSpindizzy().getSurfacePattern(this, id, owner, this);
   }
   
-  std::vector<std::string> SurfacePattern::getAvailableProviders() const {
-    return cManager.getSpindizzy().getAllSurfacePatterns();
-  }  
-
-  bool SurfacePattern::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getSpindizzy().renderSurfacePatternIcon(id);
-  }
-
-  bool SurfacePattern::hasConfiguration() const {
-    return cManager.getSpindizzy().isSurfacePatternConfigurable(getID());
-  }
-
   bool SurfacePattern::isDefaultConfiguration() const {
     return true;
   }

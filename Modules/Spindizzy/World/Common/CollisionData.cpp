@@ -18,6 +18,8 @@
  */
 #include "CollisionData.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 
 namespace IsoRealms::Spindizzy {

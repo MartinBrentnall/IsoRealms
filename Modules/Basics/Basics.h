@@ -37,7 +37,6 @@
 #include "FileSound/FileSound.h"
 #include "FileTexture/FileTexture.h"
 #include "Function/Function.h"
-#include "IBasics.h"
 #include "InputGroup/InputGroup.h"
 #include "InputSwitch/InputSwitch.h"
 #include "InterruptHandler/InterruptHandler.h"
@@ -55,8 +54,7 @@
 #include "Script.h"
 
 namespace IsoRealms::Basics {
-  class Basics : public IModuleHandle,
-                 public IBasics {
+  class Basics : public IModuleHandle {
     public:
     Basics(IProject& project, IResourceTypeRegistry* registry);
 
@@ -69,25 +67,43 @@ namespace IsoRealms::Basics {
     void save(JSONObject object) override;
     void registerAssets(IAssetRegistry& assets) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void updateRuntime(unsigned int milliseconds) override;
+    void updateEditing(unsigned int milliseconds) override;
+    void reset() override;
 
-    /**********************\
-     * Implements IBasics *
-    \**********************/
-    IBasics& getAssetManager() override;
-    IProject& getProject() const override;
+    Basics& getAssetManager();
+    IProject& getProject() const;
 
-    bool isReadOnly() const override; // TODO: Probably shouldn't be here.
-    void setOwner(File* owner) override; // TODO: Probably shouldn't be here.
+    bool isReadOnly() const; // TODO: Probably shouldn't be here.
+    void setOwner(File* owner); // TODO: Probably shouldn't be here.
 
-    std::vector<std::string> getAllSequenceTracks() override;
-    std::string getID(const ISequenceTrack* asset) const override;
-    bool renderSequenceTrackIcon(const std::string& id) const override;
-    bool isSequenceTrackConfigurable(const std::string& id) const override;
-    ISequenceTrack* createLiteralSequenceTrack(IAssetUser<ISequenceTrack>* user, Sequence& owner) override;
-    ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner) override;
-    ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner) override;
-    void release(IAssetUser<ISequenceTrack>* user, ISequenceTrack* asset) override;
-    void save(JSONObject object, ISequenceTrack* asset) const override;
+    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
+      cSequenceTracks.release(user, asset);
+    }
+
+    template <typename TYPE> std::string getID(const TYPE* asset) const {
+      return cSequenceTracks.getID(asset);
+    }
+
+    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
+      cSequenceTracks.save(object, asset);
+    }
+
+    template <typename TYPE> std::vector<std::string> getAll() const {
+      return cSequenceTracks.getAll();
+    }
+
+    template <typename TYPE> bool renderIcon(const std::string& id) const {
+      return cSequenceTracks.renderIcon(id);
+    }
+
+    template <typename TYPE> bool isConfigurable(const std::string& id) const {
+      return cSequenceTracks.hasConfiguration(id);
+    }
+
+    ISequenceTrack* createLiteralSequenceTrack(IAssetUser<ISequenceTrack>* user, Sequence& owner);
+    ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner);
+    ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner);
 
     /***********************\
      * Scripting Interface *

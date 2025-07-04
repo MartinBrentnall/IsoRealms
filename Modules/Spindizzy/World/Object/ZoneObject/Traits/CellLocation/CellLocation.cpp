@@ -18,6 +18,8 @@
  */
 #include "CellLocation.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/ZoneObject/ZoneObject.h"
 
 namespace IsoRealms::Spindizzy {

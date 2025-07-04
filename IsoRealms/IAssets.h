@@ -110,24 +110,6 @@ namespace IsoRealms {
     virtual ITexture*        getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener = nullptr) = 0;
     virtual IVertex*         getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner) = 0;
 
-    virtual void release(IAssetUser<IAction>*         user, IAction*         asset) = 0;
-    virtual void release(IAssetUser<IAssets>*         user, IAssets*         asset) = 0;
-    virtual void release(IAssetUser<IBinding>*        user, IBinding*        asset) = 0;
-    virtual void release(IAssetUser<IBindingType>*    user, IBindingType*    asset) = 0;
-    virtual void release(IAssetUser<IBoolean>*        user, IBoolean*        asset) = 0;
-    virtual void release(IAssetUser<IColour>*         user, IColour*         asset) = 0;
-    virtual void release(IAssetUser<IEditable>*       user, IEditable*       asset) = 0;
-    virtual void release(IAssetUser<IFloat>*          user, IFloat*          asset) = 0;
-    virtual void release(IAssetUser<IFont>*           user, IFont*           asset) = 0;
-    virtual void release(IAssetUser<IInputHandler>*   user, IInputHandler*   asset) = 0;
-    virtual void release(IAssetUser<IInteger>*        user, IInteger*        asset) = 0;
-    virtual void release(IAssetUser<IModel>*          user, IModel*          asset) = 0;
-    virtual void release(IAssetUser<IProjectOptions>* user, IProjectOptions* asset) = 0;
-    virtual void release(IAssetUser<IScreen>*         user, IScreen*         asset) = 0;
-    virtual void release(IAssetUser<IString>*         user, IString*         asset) = 0;
-    virtual void release(IAssetUser<ITexture>*        user, ITexture*        asset) = 0;
-    virtual void release(IAssetUser<IVertex>*         user, IVertex*         asset) = 0;
-
     virtual void setProperty(const std::string& id, const std::string& value) = 0;
   };
 }

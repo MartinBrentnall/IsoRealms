@@ -24,22 +24,21 @@
 #include "IsoRealms/Persistence.h"
 
 #include "Modules/UI/Assets/Type/ILayoutOffset.h"
-#include "Modules/UI/IUI.h"
 
 namespace IsoRealms::UI {
-  class LayoutOffset : public Asset<LayoutOffset, ILayoutOffset, IUI> {
+  class LayoutComponentEdge;
+  class UI;
+
+  class LayoutOffset : public Asset<LayoutOffset, ILayoutOffset, UI> {
     public:
-    LayoutOffset(IUI& ui, LayoutComponentEdge& owner);
+    LayoutOffset(UI& ui, LayoutComponentEdge& owner);
 
     /****************************************\
      * Implements Asset<ILayoutOffset, IUI> *
     \****************************************/
-    ILayoutOffset* createLiteralAsset(IUI& ui);
-    ILayoutOffset* getAsset(IUI& ui, JSONObject object);
-    ILayoutOffset* getAsset(IUI& ui, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
+    ILayoutOffset* createLiteralAsset(UI& ui);
+    ILayoutOffset* getAsset(UI& ui, JSONObject object);
+    ILayoutOffset* getAsset(UI& ui, const std::string& id);
     bool isDefaultConfiguration() const;
 
     private:

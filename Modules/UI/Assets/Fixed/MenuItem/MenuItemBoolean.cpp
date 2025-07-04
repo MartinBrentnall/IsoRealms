@@ -32,29 +32,21 @@ namespace IsoRealms::UI {
   const std::string MenuItemBoolean::BINDING_TYPE = "Boolean";
 
   MenuItemBoolean::MenuItemBoolean(IProject& project, Menu& menu) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
             cDefLabelFalse(""),
             cDefLabelTrue(""),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = false;
-    });
   }
 
   MenuItemBoolean::MenuItemBoolean(IProject& project, Menu& menu, JSONObject object) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefLabelFalse(object.getString(JSON_FALSE_LABEL)),
             cDefLabelTrue(object.getString(JSON_TRUE_LABEL)),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = false;
-    });
   }
 
   void MenuItemBoolean::setValue(bool value) {
@@ -67,6 +59,10 @@ namespace IsoRealms::UI {
 
   void MenuItemBoolean::registerAssets(IAssetRegistry& assets) {
     assets.add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  }
+  
+  void MenuItemBoolean::reset() {
+    cRuntimeValue = false;
   }
   
   bool MenuItemBoolean::input(sf::Event& event) {

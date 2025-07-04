@@ -329,7 +329,6 @@ namespace IsoRealms::Spindizzy {
     }
 
     cPaletteSelectionX.update(milliseconds);
-    cWorld.updateEditing(milliseconds);
     cTerrainBrush.update(milliseconds, cScreenYaw.getValue(), cXSpeed.get(), cYSpeed.get());
   }
 

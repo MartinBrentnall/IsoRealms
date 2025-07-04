@@ -18,6 +18,8 @@
  */
 #include "CategoryMenu.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms {
   CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, const std::string& category) : ActionMenu(manager, style, category) {
     std::set<IModule*> mModules = project.getModules();
@@ -26,8 +28,8 @@ namespace IsoRealms {
       for (IResourceType* mResourceType : mResourceTypes) {
         if (category == mResourceType->getCategory()) {
           std::string mResourceTypeName = mResourceType->getPlural();
-          addItem(std::make_unique<MenuItemAction>(mResourceTypeName, [this, &project, &manager, &style, mResourceType]() {
-            manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, project, *mResourceType));
+          addItem(std::make_unique<MenuItemAction>(mResourceTypeName, [this, &manager, &style, mResourceType]() {
+            manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, *mResourceType));
           }));
         }
       }

@@ -86,8 +86,8 @@ namespace IsoRealms {
       cRegistry.remove(provider);
     }
     
-    bool hasReadOnlyReferences(TYPE* asset) {
-      typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
+    bool hasReadOnlyReferences(TYPE* asset) const {
+      typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::const_iterator mIterator = cAssetSingletons.find(asset);
       if (mIterator == cAssetSingletons.end()) {
         std::cout << "WARNING: AssetClientManager::hasReadOnlyReferences: Specified asset has no singleton in this registry." << std::endl;
       } else {
@@ -96,8 +96,8 @@ namespace IsoRealms {
       return false;
     }
     
-    bool hasReadOnlyReferences(IAssetProvider<OWNER, TYPE>* provider) {
-      typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
+    bool hasReadOnlyReferences(IAssetProvider<OWNER, TYPE>* provider) const {
+      typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::const_iterator mIterator = cClients.find(provider);
       if (mIterator != cClients.end()) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPair : mIterator->second) {
           for (IAssetUser<TYPE>* mClient : mPair.second) {
@@ -193,7 +193,7 @@ namespace IsoRealms {
       }
     }
     
-    std::vector<std::string> getAll() {
+    std::vector<std::string> getAll() const {
       return cRegistry.getAll();
     }
     

@@ -22,6 +22,7 @@
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -53,15 +54,7 @@ namespace IsoRealms {
     return owner.getAssetManager().getTexture(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
-  std::vector<std::string> Texture::getAvailableProviders() const {
-    return cManager.getAssetManager().getAllTextures();
-  }  
-
-  bool Texture::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.getAssetManager().renderTextureIcon(id);
-  }
-
-  bool Texture::hasConfiguration() const {
+  bool Texture::hasClientConfiguration() const {
     return true;
   }
   

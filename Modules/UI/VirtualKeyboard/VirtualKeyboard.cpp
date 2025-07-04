@@ -19,6 +19,7 @@
 #include "VirtualKeyboard.h"
 
 #include "IsoRealms/Input.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms::UI {
   const std::string VirtualKeyboard::JSON_FONT             = "font";
@@ -30,27 +31,12 @@ namespace IsoRealms::UI {
   const unsigned int VirtualKeyboard::CARET_BLINK_DELAY = 200;
 
   VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefConfirmAction(data.getDummyActionClient()),
             cDefSelectionColour(data, 1.0f, 0.0f, 1.0f),
             cDefFont(data),
             cRuntimeControllerCaps(false),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.updateRuntime([this](unsigned int milliseconds) {
-      cRuntimeCaretBlinkDelay -= milliseconds;
-      if (cRuntimeCaretBlinkDelay <= 0) {
-        cRuntimeCaretBlinkDelay += CARET_BLINK_DELAY;
-        cRuntimeCaretVisible = !cRuntimeCaretVisible;
-      }
-    });
-
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeSelected = 0;
-      cRuntimeValue = "";
-      cRuntimeCaretVisible = true;
-      cRuntimeCaretBlinkDelay = CARET_BLINK_DELAY;
-    });
   }
   
   VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
@@ -85,11 +71,21 @@ namespace IsoRealms::UI {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
+  void VirtualKeyboard::updateRuntime(unsigned int milliseconds) {
+    cRuntimeCaretBlinkDelay -= milliseconds;
+    if (cRuntimeCaretBlinkDelay <= 0) {
+      cRuntimeCaretBlinkDelay += CARET_BLINK_DELAY;
+      cRuntimeCaretVisible = !cRuntimeCaretVisible;
+    }
+  }
+
   void VirtualKeyboard::reset() {
     cRuntimeSelected = 0;
     cRuntimeValue = "";
+    cRuntimeCaretVisible = true;
+    cRuntimeCaretBlinkDelay = CARET_BLINK_DELAY;
   }
-
+  
   bool VirtualKeyboard::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::JoystickMoved: {

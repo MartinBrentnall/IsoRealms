@@ -23,6 +23,7 @@
 #include "IsoRealms/IResourceType.h"
 #include "IsoRealms/IResource.h"
 
+#include "Choice.h"
 #include "Menu.h"
 #include "MenuItemResource.h"
 #include "PropertiesMenu.h"
@@ -30,7 +31,7 @@
 namespace IsoRealms {
   class ResourceTypeMenu : public Menu<MenuItemResource> {
     public:
-    ResourceTypeMenu(UIManager& manager, IUIStyle& style, IAssetBrowser& browser, IResourceType& resourceType);
+    ResourceTypeMenu(UIManager& manager, IUIStyle& style, IResourceType& resourceType);
 
     /*************************************\
      * Implements Menu<MenuItemResource> *
@@ -48,7 +49,6 @@ namespace IsoRealms {
 
     private:
     IResourceType& cResourceType;
-    IAssetBrowser& cBrowser;
     float cRemoveButtonOffset;
     bool cDeleteSelected;
 

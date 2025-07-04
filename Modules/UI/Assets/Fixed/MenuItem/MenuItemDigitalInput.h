@@ -30,7 +30,6 @@
 #include "IsoRealms/Input/KeyMapping.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
@@ -58,6 +57,7 @@ namespace IsoRealms::UI {
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry& assets) override;
+    void reset() override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -83,10 +83,9 @@ namespace IsoRealms::UI {
     static const std::string BINDING_TYPE;
 
     // External interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
+    HatHandler& cHatHandler;
 
     // Definition data.
-    HatHandler& cHatHandler;
     std::string cDefID; /// ID of this menu item for binding.
     
     // Runtime data.

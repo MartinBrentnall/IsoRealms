@@ -24,14 +24,10 @@ namespace IsoRealms::Basics {
   const std::string SimpleInteger::PROPERTY_VALUE = "Initial Value";
 
   SimpleInteger::SimpleInteger(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cDefValue(0),
             cRuntimeValue(0),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimeValue = cDefValue;
-    });
   }
   
   SimpleInteger::SimpleInteger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -66,6 +62,10 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void SimpleInteger::reset() {
+    cRuntimeValue = cDefValue;
+  }
+  
   int SimpleInteger::getValue() const {
     return cRuntimeValue;
   }

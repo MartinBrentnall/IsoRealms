@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   ProjectOptions::ProjectOptions(IResourceData& owner) :
@@ -39,19 +40,6 @@ namespace IsoRealms {
     return owner.getAssetManager().getProjectOptions(this, id, owner);
   }
   
-  std::vector<std::string> ProjectOptions::getAvailableProviders() const {
-    return std::vector<std::string>();
-    // TODO return cManager.getAllProjectOptionss();
-  }  
-
-  bool ProjectOptions::renderOtherProviderIcon(const std::string& id) const {
-    return false; // TODO
-  }
-
-  bool ProjectOptions::hasConfiguration() const {
-    return false; // TODO cManager.isProjectOptionsConfigurable(getID());
-  }  
-
   bool ProjectOptions::isDefaultConfiguration() const {
     return true;
   }

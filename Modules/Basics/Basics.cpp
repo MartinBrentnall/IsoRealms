@@ -18,6 +18,8 @@
  */
 #include "Basics.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   const std::string Basics::ID_RESOURCE_ANALOGUE_INPUT     = "AnalogueInput";
   const std::string Basics::ID_RESOURCE_BOOLEAN_TRIGGER    = "BooleanTrigger";
@@ -139,7 +141,30 @@ namespace IsoRealms::Basics {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   
-  IBasics& Basics::getAssetManager() {
+  void Basics::updateRuntime(unsigned int milliseconds) {
+    updateRuntime2(cResourceTypeProject,           milliseconds);
+    updateRuntime2(cResourceTypeProjectConfigurer, milliseconds);
+    updateRuntime2(cResourceTypeSequence,          milliseconds);
+  }
+  
+  void Basics::updateEditing(unsigned int milliseconds) {
+    updateEditing2(cResourceTypeSequence, milliseconds);
+  }
+  
+  void Basics::reset() {
+    reset2(cResourceTypeDigitalInput);
+    reset2(cResourceTypeInputSwitch);
+    reset2(cResourceTypeProject);
+    reset2(cResourceTypeSequence);
+    reset2(cResourceTypeSimpleBoolean);
+    reset2(cResourceTypeSimpleColour);
+    reset2(cResourceTypeSimpleFloat);
+    reset2(cResourceTypeSimpleInteger);
+    reset2(cResourceTypeSimpleString);
+    reset2(cResourceTypeSimpleVertex);
+  }  
+  
+  Basics& Basics::getAssetManager() {
     return *this;
   }
 
@@ -154,23 +179,11 @@ namespace IsoRealms::Basics {
   void Basics::setOwner(File* owner) {
   }; // TODO: Probably shouldn't be here.
 
-  std::vector<std::string> Basics::getAllSequenceTracks() {return cSequenceTracks.getAll();}
-
-  std::string Basics::getID(const ISequenceTrack* asset) const {return cSequenceTracks.getID(asset);}
-
-  bool Basics::renderSequenceTrackIcon(const std::string& id) const {return cSequenceTracks.renderIcon(id);}
-
-  bool Basics::isSequenceTrackConfigurable(const std::string& id) const {return cSequenceTracks.hasConfiguration(id);}
-
   ISequenceTrack* Basics::createLiteralSequenceTrack(IAssetUser<ISequenceTrack>* user, Sequence& owner) {return cSequenceTracks.literal(user, owner, "");}
 
   ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner) {return cSequenceTracks.get(user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ISequenceTrack*>* listener) -> ISequenceTrack* {return nullptr;});}
 
   ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner) {return cSequenceTracks.get(user, owner, id, nullptr);}
-
-  void Basics::release(IAssetUser<ISequenceTrack>* user, ISequenceTrack* asset) {cSequenceTracks.release(user, asset);}
-
-  void Basics::save(JSONObject object, ISequenceTrack* asset) const {cSequenceTracks.save(object, asset);}
 
   void Basics::reloadGlobalConfiguration() {
     if (System::fileExists(GLOBAL_CONFIGURATION_FILE, true)) {

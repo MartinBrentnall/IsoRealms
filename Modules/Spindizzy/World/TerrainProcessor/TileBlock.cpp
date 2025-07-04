@@ -18,6 +18,8 @@
  */
 #include "TileBlock.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/World/Object/Terrain/Terrain.h"
 
 namespace IsoRealms::Spindizzy {

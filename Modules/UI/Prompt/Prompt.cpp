@@ -20,6 +20,7 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Input.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::UI {
@@ -37,16 +38,12 @@ namespace IsoRealms::UI {
   const float Prompt::DEFAULT_TEXT_SIZE     = 0.05f;
 
   Prompt::Prompt(IProject& project, UI& ui, IResourceData& data) :
-            cProjectCallbackManager(project),
             cHatHandler(project.getApplication().getHatHandler()),
             cDefFont(data),
             cDefSelectionColour(data, 1.0f, 1.0f, 1.0f),
             cDefNegativeAction(data.getDummyActionClient()),
             cDefPositiveAction(data.getDummyActionClient()),
             cLuaBinding(project, this) {
-    cProjectCallbackManager.reset([this]() {
-      cRuntimePositiveHighlighted = false;
-    });
   }
   
   Prompt::Prompt(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :

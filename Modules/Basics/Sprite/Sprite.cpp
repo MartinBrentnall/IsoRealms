@@ -18,6 +18,8 @@
  */
 #include "Sprite.h"
 
+#include "IsoRealms/Project.h"
+
 namespace IsoRealms::Basics {
   const std::string Sprite::JSON_BILLBOARD_PITCH = "billboardPitch";
   const std::string Sprite::JSON_BILLBOARD_YAW   = "billboardYaw";

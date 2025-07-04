@@ -24,7 +24,6 @@
 
 #include "IsoRealms/Collision/CollisionUtils.h"
 #include "IsoRealms/Common/IVisualElement.h"
-#include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Types.h"
 #include "IsoRealms/Utils.h"

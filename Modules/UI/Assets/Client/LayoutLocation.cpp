@@ -23,35 +23,23 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  LayoutLocation::LayoutLocation(IUI& ui, LayoutComponentEdge& owner) :
-            Asset<LayoutLocation, ILayoutLocation, IUI>(ui, ui.getLayoutLocation(this, "Absolute", owner)),
+  LayoutLocation::LayoutLocation(UI& ui, LayoutComponentEdge& owner) :
+            Asset<LayoutLocation, ILayoutLocation, UI>(ui, ui.getLayoutLocation(this, "Absolute", owner)),
             cOwner(owner) {
   }
 
-  ILayoutLocation* LayoutLocation::createLiteralAsset(IUI& ui) {
+  ILayoutLocation* LayoutLocation::createLiteralAsset(UI& ui) {
     return ui.createLiteralLayoutLocation(this, cOwner);
   }
   
-  ILayoutLocation* LayoutLocation::getAsset(IUI& ui, JSONObject object) {
+  ILayoutLocation* LayoutLocation::getAsset(UI& ui, JSONObject object) {
     return ui.getLayoutLocation(this, object, cOwner);
   }
   
-  ILayoutLocation* LayoutLocation::getAsset(IUI& ui, const std::string& id) {
+  ILayoutLocation* LayoutLocation::getAsset(UI& ui, const std::string& id) {
     return ui.getLayoutLocation(this, id, cOwner);
   }
   
-  std::vector<std::string> LayoutLocation::getAvailableProviders() const {
-    return cManager.getAllLayoutLocations();
-  }  
-
-  bool LayoutLocation::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderLayoutLocationIcon(id);
-  }
-
-  bool LayoutLocation::hasConfiguration() const {
-    return cManager.isLayoutLocationConfigurable(getID());
-  }
-
   bool LayoutLocation::isDefaultConfiguration() const {
     return true;
   }

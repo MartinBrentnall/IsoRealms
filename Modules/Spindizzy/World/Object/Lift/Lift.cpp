@@ -18,6 +18,8 @@
  */
 #include "Lift.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/LiftType/LiftType.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/World.h"

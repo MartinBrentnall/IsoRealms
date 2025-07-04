@@ -36,9 +36,6 @@ namespace IsoRealms {
     IBindingType* createLiteralAsset(IResourceData& owner);
     IBindingType* getAsset(IResourceData& owner, JSONObject object);
     IBindingType* getAsset(IResourceData& owner, const std::string& id);
-    std::vector<std::string> getAvailableProviders() const;
-    bool renderOtherProviderIcon(const std::string& id) const;
-    bool hasConfiguration() const;
     bool isDefaultConfiguration() const;
 
     void stateChanged(IBindingType* asset) override;

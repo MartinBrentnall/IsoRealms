@@ -27,7 +27,6 @@
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/ProjectCallbackManager.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
@@ -48,12 +47,12 @@ namespace IsoRealms::UI {
      * Scripting Interface *
     \***********************/
     void refresh();
-    void reset();
     
     /************************\
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry& assets) override;
+    void reset() override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -103,7 +102,6 @@ namespace IsoRealms::UI {
     };
 
     // External Interfaces.
-    ProjectCallbackManager cProjectCallbackManager;
     IProject& cProject;
     HatHandler& cHatHandler;
 

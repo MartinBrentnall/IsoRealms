@@ -18,6 +18,8 @@
  */
 #include "Top.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
@@ -32,7 +34,6 @@ namespace IsoRealms::Spindizzy {
   const float Top::HEIGHT         = 0.75f;
 
   Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProjectCallbackManager(project),
             cProject(project),
             cDefColourTop(    data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourSide(   data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -41,9 +42,6 @@ namespace IsoRealms::Spindizzy {
             cRuntimeTextureSide(project, 128, 128),
             cNeedsRedrawing(false),
             cEditingIconAngle(0.0f) {
-    cProjectCallbackManager.updateEditing([this](unsigned int milliseconds) {
-      cEditingIconAngle -= 0.25f * milliseconds;
-    });
     setNeedsRedrawing();
   }
             
@@ -85,6 +83,10 @@ namespace IsoRealms::Spindizzy {
     return mProperties;
   }
 
+  void Top::updateEditing(unsigned int milliseconds) {
+    cEditingIconAngle -= 0.25f * milliseconds;
+  }
+  
   IModelInstance* Top::createModel() {
     return this;
   }

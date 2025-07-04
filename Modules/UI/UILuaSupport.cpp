@@ -18,6 +18,10 @@
  */
 #include "UILuaSupport.h"
 
+#include "IsoRealms/Project.h"
+
+#include "UI.h"
+
 namespace IsoRealms::UI {
   bool operator==(const Menu& a, const Menu& b) {
     return &a == &b;

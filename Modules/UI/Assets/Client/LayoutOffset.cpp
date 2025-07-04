@@ -20,36 +20,26 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 
+#include "Modules/UI/UI.h"
+
 namespace IsoRealms::UI {
-  LayoutOffset::LayoutOffset(IUI& ui, LayoutComponentEdge& owner) :
-            Asset<LayoutOffset, ILayoutOffset, IUI>(ui, ui.getLayoutOffset(this, "Absolute", owner)),
+  LayoutOffset::LayoutOffset(UI& ui, LayoutComponentEdge& owner) :
+            Asset<LayoutOffset, ILayoutOffset, UI>(ui, ui.getLayoutOffset(this, "Absolute", owner)),
             cOwner(owner) {
   }
 
-  ILayoutOffset* LayoutOffset::createLiteralAsset(IUI& ui) {
+  ILayoutOffset* LayoutOffset::createLiteralAsset(UI& ui) {
     return ui.createLiteralLayoutOffset(this, cOwner);
   }
   
-  ILayoutOffset* LayoutOffset::getAsset(IUI& ui, JSONObject object) {
+  ILayoutOffset* LayoutOffset::getAsset(UI& ui, JSONObject object) {
     return ui.getLayoutOffset(this, object, cOwner);
   }
   
-  ILayoutOffset* LayoutOffset::getAsset(IUI& ui, const std::string& id) {
+  ILayoutOffset* LayoutOffset::getAsset(UI& ui, const std::string& id) {
     return ui.getLayoutOffset(this, id, cOwner);
   }
   
-  std::vector<std::string> LayoutOffset::getAvailableProviders() const {
-    return cManager.getAllLayoutOffsets();
-  }  
-
-  bool LayoutOffset::renderOtherProviderIcon(const std::string& id) const {
-    return cManager.renderLayoutOffsetIcon(id);
-  }
-
-  bool LayoutOffset::hasConfiguration() const {
-    return cManager.isLayoutOffsetConfigurable(getID());
-  }
-
   bool LayoutOffset::isDefaultConfiguration() const {
     return true;
   }

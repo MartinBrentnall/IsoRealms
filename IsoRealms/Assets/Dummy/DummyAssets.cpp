@@ -80,24 +80,6 @@ namespace IsoRealms {
   ITexture*        DummyAssets::getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener = nullptr) {return nullptr;}
   IVertex*         DummyAssets::getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
 
-  void DummyAssets::release(IAssetUser<IAction>*         user, IAction*         asset) {}
-  void DummyAssets::release(IAssetUser<IAssets>*         user, IAssets*         asset) {}
-  void DummyAssets::release(IAssetUser<IBinding>*        user, IBinding*        asset) {}
-  void DummyAssets::release(IAssetUser<IBindingType>*    user, IBindingType*    asset) {}
-  void DummyAssets::release(IAssetUser<IBoolean>*        user, IBoolean*        asset) {}
-  void DummyAssets::release(IAssetUser<IColour>*         user, IColour*         asset) {}
-  void DummyAssets::release(IAssetUser<IEditable>*       user, IEditable*       asset) {}
-  void DummyAssets::release(IAssetUser<IFloat>*          user, IFloat*          asset) {}
-  void DummyAssets::release(IAssetUser<IFont>*           user, IFont*           asset) {}
-  void DummyAssets::release(IAssetUser<IInputHandler>*   user, IInputHandler*   asset) {}
-  void DummyAssets::release(IAssetUser<IInteger>*        user, IInteger*        asset) {}
-  void DummyAssets::release(IAssetUser<IModel>*          user, IModel*          asset) {}
-  void DummyAssets::release(IAssetUser<IProjectOptions>* user, IProjectOptions* asset) {}
-  void DummyAssets::release(IAssetUser<IScreen>*         user, IScreen*         asset) {}
-  void DummyAssets::release(IAssetUser<IString>*         user, IString*         asset) {}
-  void DummyAssets::release(IAssetUser<ITexture>*        user, ITexture*        asset) {}
-  void DummyAssets::release(IAssetUser<IVertex>*         user, IVertex*         asset) {}
-
   void DummyAssets::setProperty(const std::string& id, const std::string& value) {
     // TODO: Shouldn't be here.
   }

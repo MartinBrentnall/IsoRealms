@@ -20,20 +20,19 @@
 
 namespace IsoRealms {
   class File;
-  class IAssetRemover;
   class IAssets;
   class IProject;
   class LocalAssetRegistry;
+  class Project;
   class ResourceType;
 
   class IModuleInternal {
     public:
     virtual IProject& getProjectRuntime() = 0;
     virtual std::string getName(ResourceType* resourceType) = 0;
-    virtual IAssetRemover& getAssetRemover() = 0;
     virtual IAssetRegistry& getAssetRegistry() = 0;
     virtual IAssets& getAssets() = 0;
-    virtual IProject& getProject() = 0;
+    virtual Project& getProject() = 0;
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
     virtual File* getProjectFile() = 0;

@@ -18,6 +18,8 @@
  */
 #include "Alien.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Modules/Spindizzy/AlienType/AlienType.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"

@@ -33,7 +33,6 @@ namespace IsoRealms::Basics {
   const std::string SimpleColour::PROPERTY_LIGHTNESS  = "Lightness";
   
   SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data) :
-            cProjectCallbackManager(project),
             cDefRed(0.0f),
             cDefGreen(0.0f),
             cDefBlue(0.0f),
@@ -47,9 +46,6 @@ namespace IsoRealms::Basics {
             cEditingLastKnownLightness(Utils::getLightness(cDefRed, cDefGreen, cDefBlue)),
             cLuaBinding(project, this),
             cStateNotifier(nullptr) {
-    cProjectCallbackManager.reset([this]() {
-      resetColour();
-    });
   }
   
   SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -133,6 +129,10 @@ namespace IsoRealms::Basics {
     return mProperties;
   }
 
+  void SimpleColour::reset() {
+    resetColour();
+  }
+  
   void SimpleColour::set() const {
     glColor4f(cRuntimeRed, cRuntimeGreen, cRuntimeBlue, cRuntimeAlpha);
   }

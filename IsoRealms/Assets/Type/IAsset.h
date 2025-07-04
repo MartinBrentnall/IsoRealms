@@ -24,7 +24,6 @@
 #include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
-  class IAssetBrowser;
   class IProperty;
 
   /**
