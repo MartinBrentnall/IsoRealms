@@ -77,7 +77,7 @@ namespace IsoRealms::UI {
       glScalef(mScale, mScale, mScale);
       
       // TODO: Consider making "renderScreen" only callable from "Screen" or "ScreenReference" in order to enforce pre/post calls.
-      IProject& mProject = cLayout.getUI().getProject();
+      Project& mProject = cLayout.getUI().getProject();
       mProject.screenPreRender(cRuntimeScreen);
       cRuntimeScreen->renderScreen(mScale * scale, mAspectRatio);
       mProject.screenPreRender(cRuntimeScreen);

@@ -51,7 +51,7 @@
 namespace IsoRealms::Basics {
   class Basics : public IModuleHandle {
     public:
-    Basics(IProject& project, IResourceTypeRegistry* registry);
+    Basics(IsoRealms::Project& project, IResourceTypeRegistry* registry);
 
     void refreshAssetRegistration(Sequence& sequence);
 
@@ -67,7 +67,7 @@ namespace IsoRealms::Basics {
     void reset() override;
 
     Basics& getAssetManager();
-    IProject& getProject() const;
+    IsoRealms::Project& getProject() const;
 
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
     void setOwner(File* owner); // TODO: Probably shouldn't be here.
@@ -149,7 +149,7 @@ namespace IsoRealms::Basics {
     static const std::string GLOBAL_CONFIGURATION_FILE;
 
     // External interfaces.
-    IProject& cProject;
+    IsoRealms::Project& cProject;
     
     // Asset registries
     AssetClientManager<Sequence, ISequenceTrack> cSequenceTracks;

@@ -22,7 +22,7 @@ namespace IsoRealms::Spindizzy {
   const double Spindizzy::DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
   const double Spindizzy::DEFAULT_VIEW_ANGLE_YAW = -45.0;
 
-  Spindizzy::Spindizzy(IProject& project, IResourceTypeRegistry* registry) :
+  Spindizzy::Spindizzy(Project& project, IResourceTypeRegistry* registry) :
                     cProject(project),
                     cBoundaryTypes(&cDummyProviderBoundaryType),
                     cPhysicalObjectTypes(&cDummyProviderPhysicalObjectType),
@@ -151,7 +151,7 @@ namespace IsoRealms::Spindizzy {
     cProject.init(initialiser);
   }
   
-  IProject& Spindizzy::getProject() const {
+  Project& Spindizzy::getProject() const {
     return cProject;
   }
 
@@ -808,9 +808,9 @@ namespace IsoRealms::Spindizzy {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Spindizzy::Spindizzy> mModule = std::make_unique<IsoRealms::Spindizzy::Spindizzy>(*project, registry);
   {

@@ -25,7 +25,7 @@
 namespace IsoRealms::Hue {
   class Hue : public IModuleHandle {
     public:
-    Hue(IProject& project, IResourceTypeRegistry* registry);
+    Hue(Project& project, IResourceTypeRegistry* registry);
 
     /****************************\
      * Implements IModuleHandle *

@@ -47,7 +47,7 @@ namespace IsoRealms::UI {
 
   const std::string UI::STRING_TIME = "Time";
 
-  UI::UI(IProject& project, IResourceTypeRegistry* registry):
+  UI::UI(Project& project, IResourceTypeRegistry* registry):
                     cProject(project),
                     cProviderLayoutLocationAbsolute(project),
                     cProviderLayoutLocationRelative(project),
@@ -96,7 +96,7 @@ namespace IsoRealms::UI {
     return *this;
   }
 
-  IProject& UI::getProject() const {
+  Project& UI::getProject() const {
     return cProject;
   }
 
@@ -167,9 +167,9 @@ namespace IsoRealms::UI {
 }
  
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::UI::UI> mModule = std::make_unique<IsoRealms::UI::UI>(*project, registry);
   {

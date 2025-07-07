@@ -22,11 +22,11 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  class IProject;
+  class Project;
 
   template <class OWNER, class BASE, class TYPE> class AssetInstanced : public IAssetProvider<OWNER, BASE> {
     public:
-    AssetInstanced(IProject& project) :
+    AssetInstanced(Project& project) :
               cProject(project) {
     }
     
@@ -79,7 +79,7 @@ namespace IsoRealms {
     }
     
     private:
-    IProject& cProject;
+    Project& cProject;
     mutable std::vector<std::unique_ptr<TYPE>> cInstances;
   };
 }

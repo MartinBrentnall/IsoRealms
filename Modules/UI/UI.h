@@ -53,11 +53,11 @@ namespace IsoRealms::UI {
 
   class UI : public IModuleHandle {
     public:
-    UI(IProject& project, IResourceTypeRegistry* registry);
+    UI(Project& project, IResourceTypeRegistry* registry);
 
     // Interface access (used by all).
     UI& getAssetManager();
-    IProject& getProject() const;
+    Project& getProject() const;
     
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
     void setOwner(File* owner); // TODO: Probably shouldn't be here.
@@ -138,7 +138,7 @@ namespace IsoRealms::UI {
     static const std::string STRING_TIME;
 
     // External interfaces.
-    IProject& cProject;
+    Project& cProject;
     
     // Asset registries
     AssetClientManager<LayoutComponentEdge, ILayoutLocation> cLayoutLocations;

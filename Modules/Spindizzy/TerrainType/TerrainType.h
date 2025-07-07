@@ -69,7 +69,7 @@ namespace IsoRealms::Spindizzy {
     IWallPattern* getSouthWallPattern() const;
     IWallPattern* getNorthWallPattern() const;
     
-    IProject& getProject();
+    Project& getProject();
     Spindizzy& getSpindizzy() const;
     Spindizzy& getAssetManager();
     IResourceData& getResourceData();

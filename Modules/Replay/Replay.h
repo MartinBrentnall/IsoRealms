@@ -29,7 +29,7 @@
 namespace IsoRealms::Replay {
   class Replay : public IModuleHandle {
     public:
-    Replay(IProject& project, IResourceTypeRegistry* registry);
+    Replay(Project& project, IResourceTypeRegistry* registry);
 
     /****************************\
      * Implements IModuleHandle *

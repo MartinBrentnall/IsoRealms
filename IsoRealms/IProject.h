@@ -42,7 +42,6 @@ namespace IsoRealms {
    */
   class IProject : public IAssets {
     public:
-    virtual bool isLoading() const = 0;
       
     /**
      * Perform the specified allocation task function on the main thread.
@@ -100,8 +99,6 @@ namespace IsoRealms {
     virtual bool isUserProject() = 0;
     virtual void addScreenListener(IScreenListener* listener) = 0;
     virtual void removeScreenListener(IScreenListener* listener) = 0;
-    virtual void screenPreRender(IScreen* screen) = 0;
-    virtual void screenPostRender(IScreen* screen) = 0;
     virtual bool isProcessingInput() = 0;
     virtual void postponeAction(IAction* action) = 0;
 

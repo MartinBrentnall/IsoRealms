@@ -95,12 +95,12 @@ namespace IsoRealms::Spindizzy {
     }
 
     // Module constructor.
-    Spindizzy(IProject& project, IResourceTypeRegistry* registry);
+    Spindizzy(Project& project, IResourceTypeRegistry* registry);
   
     void init(std::function<void(IAssets&)> initialiser);
   
     // Interface access (used by all).
-    IProject& getProject() const;
+    Project& getProject() const;
     Spindizzy& getAssetManager();
 
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
@@ -397,7 +397,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string BIND_TO_ZONE;
 
     // External interfaces.
-    IProject& cProject;
+    Project& cProject;
 
     // Spindizzy Assets.
     AssetClientManager<Spindizzy,      IBoundaryType>        cBoundaryTypes;

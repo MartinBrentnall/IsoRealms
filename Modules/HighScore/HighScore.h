@@ -30,7 +30,7 @@
 namespace IsoRealms::HighScore {
   class HighScore : public IModuleHandle {
     public:
-    HighScore(IProject& project, IResourceTypeRegistry* registry);
+    HighScore(Project& project, IResourceTypeRegistry* registry);
 
     /****************************\
      * Implements IModuleHandle *

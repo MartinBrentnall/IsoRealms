@@ -19,7 +19,7 @@
 #include "Hue.h"
 
 namespace IsoRealms::Hue {
-  Hue::Hue(IProject& project, IResourceTypeRegistry* registry) :
+  Hue::Hue(Project& project, IResourceTypeRegistry* registry) :
                     cResourceTypeHueManager(*this) {
     registry->add(&cResourceTypeHueManager, "HueManager", "Entertainment Connection", "Entertainment Connections", "Philips Hue");
   }
@@ -57,9 +57,9 @@ namespace IsoRealms::Hue {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Hue::Hue> mModule = std::make_unique<IsoRealms::Hue::Hue>(*project, registry);
   {

@@ -169,7 +169,7 @@ namespace IsoRealms::Spindizzy {
     return *cDefNorthWallPattern;
   }
 
-  IProject& TerrainType::getProject() {
+  Project& TerrainType::getProject() {
     return cSpindizzy.getProject();
   }
 

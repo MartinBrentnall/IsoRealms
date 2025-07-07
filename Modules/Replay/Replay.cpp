@@ -22,7 +22,7 @@ namespace IsoRealms::Replay {
   const std::string Replay::ID_RESOURCE_PLAYBACK  = "Player";
   const std::string Replay::ID_RESOURCE_RECORDER  = "Recorder";
       
-  Replay::Replay(IProject& project, IResourceTypeRegistry* registry):
+  Replay::Replay(Project& project, IResourceTypeRegistry* registry):
                     cResourceTypePlayer(*this),
                     cResourceTypeRecorder(*this) {
     registry->add(&cResourceTypePlayer,   ID_RESOURCE_PLAYBACK, "Player",   "Players",   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
@@ -64,9 +64,9 @@ namespace IsoRealms::Replay {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Replay::Replay> mModule = std::make_unique<IsoRealms::Replay::Replay>(*project, registry);
   {

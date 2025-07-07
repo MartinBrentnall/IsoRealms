@@ -22,7 +22,7 @@ namespace IsoRealms::HighScore {
   const std::string HighScore::ID_RESOURCE_SCORE_TRACKER  = "ScoreTracker";
   const std::string HighScore::ID_RESOURCE_SCORE_TABLE    = "ScoreTable";
       
-  HighScore::HighScore(IProject& project, IResourceTypeRegistry* registry):
+  HighScore::HighScore(Project& project, IResourceTypeRegistry* registry):
                     cResourceTypeScoreTable(*this),
                     cResourceTypeScoreTracker(*this) {
     registry->add(&cResourceTypeScoreTable,   ID_RESOURCE_SCORE_TABLE,   "Score Table",   "Score Tables",   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
@@ -62,9 +62,9 @@ namespace IsoRealms::HighScore {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::HighScore::HighScore> mModule = std::make_unique<IsoRealms::HighScore::HighScore>(*project, registry);
   {

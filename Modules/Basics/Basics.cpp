@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
   float Basics::cSoundVolume = 1.0f;
   float Basics::cMusicVolume = 1.0f;
 
-  Basics::Basics(IProject& project, IResourceTypeRegistry* registry):
+  Basics::Basics(IsoRealms::Project& project, IResourceTypeRegistry* registry):
                     cProject(project),
                     cProviderSequenceTrackAction(project),
                     cProviderSequenceTrackAudio(project),
@@ -166,7 +166,7 @@ namespace IsoRealms::Basics {
     return *this;
   }
 
-  IProject& Basics::getProject() const {
+  IsoRealms::Project& Basics::getProject() const {
     return cProject;
   }
 
@@ -252,9 +252,9 @@ namespace IsoRealms::Basics {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Basics::Basics> mModule = std::make_unique<IsoRealms::Basics::Basics>(*project, registry);
   {

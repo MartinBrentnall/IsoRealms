@@ -493,7 +493,7 @@ namespace IsoRealms {
     void save(ProjectFile& file);
     void save();
     void save(const std::string& file);
-    bool isLoading() const override;
+    bool isLoading() const;
     bool isUserProject() override;
 
     std::string getFilename();
@@ -572,8 +572,8 @@ namespace IsoRealms {
     
     void addScreenListener(IScreenListener* listener) override;
     void removeScreenListener(IScreenListener* listener) override;
-    void screenPreRender(IScreen* screen) override;
-    void screenPostRender(IScreen* screen) override;
+    void screenPreRender(IScreen* screen);
+    void screenPostRender(IScreen* screen);
 
     void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) override;
 
