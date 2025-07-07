@@ -25,12 +25,12 @@
 
 namespace IsoRealms {
   BindingType::BindingType(IResourceData& owner, std::function<void()> listener) :
-            Asset<BindingType, IBindingType, IResourceData>(owner, owner.getAssetManager().createLiteralBindingType(this, owner)),
+            Asset<BindingType, IBindingType, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)),
             cListener(listener) {
   }
 
   IBindingType* BindingType::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createLiteralBindingType(this, owner);
+    return owner.getAssetManager().createDefault(this, owner);
   }
 
   IBindingType* BindingType::getAsset(IResourceData& owner, JSONObject object) {

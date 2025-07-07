@@ -27,7 +27,7 @@
 
 namespace IsoRealms {
   Model::Model(IResourceData& owner) :
-            Asset<Model, IModel, IResourceData>(owner, owner.getAssetManager().createLiteralModel(this, owner)) {
+            Asset<Model, IModel, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)) {
   }
 
   std::unique_ptr<ModelInstance> Model::createInstance() {
@@ -58,7 +58,7 @@ namespace IsoRealms {
   }
 
   IModel* Model::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createLiteralModel(this, owner);
+    return owner.getAssetManager().createDefault(this, owner);
   }
   
   IModel* Model::getAsset(IResourceData& owner, JSONObject object) {

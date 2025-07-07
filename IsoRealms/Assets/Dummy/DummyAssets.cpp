@@ -26,23 +26,12 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  IAction*         DummyAssets::createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) {return nullptr;}
-  IAssets*         DummyAssets::createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) {return nullptr;}
-  IBinding*        DummyAssets::createLiteralBinding(       IAssetUser<IBinding>*        user, IActionClient& owner) {return nullptr;}
-  IBindingType*    DummyAssets::createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) {return nullptr;}
-  IBoolean*        DummyAssets::createLiteralBoolean(       IAssetUser<IBoolean>*        user, IResourceData& owner, const bool value) {return nullptr;}
-  IColour*         DummyAssets::createLiteralColour(        IAssetUser<IColour>*         user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return nullptr;}
-  IEditable*       DummyAssets::createLiteralEditable(      IAssetUser<IEditable>*       user, IResourceData& owner) {return nullptr;}
-  IFloat*          DummyAssets::createLiteralFloat(         IAssetUser<IFloat>*          user, IResourceData& owner, const float value) {return nullptr;}
-  IFont*           DummyAssets::createLiteralFont(          IAssetUser<IFont>*           user, IResourceData& owner) {return nullptr;}
-  IInputHandler*   DummyAssets::createLiteralInputHandler(  IAssetUser<IInputHandler>*   user, IResourceData& owner) {return nullptr;}
-  IInteger*        DummyAssets::createLiteralInteger(       IAssetUser<IInteger>*        user, IResourceData& owner, const int value) {return nullptr;}
-  IModel*          DummyAssets::createLiteralModel(         IAssetUser<IModel>*          user, IResourceData& owner) {return nullptr;}
-  IProjectOptions* DummyAssets::createLiteralProjectOptions(IAssetUser<IProjectOptions>* user, IResourceData& owner) {return nullptr;}
-  IScreen*         DummyAssets::createLiteralScreen(        IAssetUser<IScreen>*         user, IResourceData& owner) {return nullptr;}
-  IString*         DummyAssets::createLiteralString(        IAssetUser<IString>*         user, IResourceData& owner, const std::string& value) {return nullptr;}
-  ITexture*        DummyAssets::createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) {return nullptr;}
-  IVertex*         DummyAssets::createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) {return nullptr;}
+  IBoolean* DummyAssets::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value) {return nullptr;}
+  IColour*  DummyAssets::createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return nullptr;}
+  IFloat*   DummyAssets::createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value) {return nullptr;}
+  IInteger* DummyAssets::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value) {return nullptr;}
+  IString*  DummyAssets::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value) {return nullptr;}
+  IVertex*  DummyAssets::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z) {return nullptr;}
 
   IAction*         DummyAssets::getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return nullptr;}
   IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}

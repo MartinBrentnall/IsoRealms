@@ -25,11 +25,11 @@
 
 namespace IsoRealms {
   Font::Font(IResourceData& owner) :
-            Asset<Font, IFont, IResourceData>(owner, owner.getAssetManager().createLiteralFont(this, owner)) {
+            Asset<Font, IFont, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)) {
   }
 
   IFont* Font::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createLiteralFont(this, owner);
+    return owner.getAssetManager().createDefault(this, owner);
   }
   
   IFont* Font::getAsset(IResourceData& owner, JSONObject object) {

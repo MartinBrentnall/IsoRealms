@@ -29,7 +29,7 @@ namespace IsoRealms {
   }
 
   Binding::Binding(IActionClient& owner, const std::string& type) :
-            Asset<Binding, IBinding, IActionClient>(owner, owner.getAssetManager().createLiteralBinding(this, owner)),
+            Asset<Binding, IBinding, IActionClient>(owner, owner.getAssetManager().createDefault(this, owner)),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
     std::vector<std::string> mProviders = getAvailableProviders();
@@ -70,7 +70,7 @@ namespace IsoRealms {
   }
 
   IBinding* Binding::createLiteralAsset(IActionClient& owner) {
-    return owner.getAssetManager().createLiteralBinding(this, owner);
+    return owner.getAssetManager().createDefault(this, owner);
   }
   
   IBinding* Binding::getAsset(IActionClient& owner, JSONObject object) {

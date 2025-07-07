@@ -24,7 +24,7 @@
 
 namespace IsoRealms {
   Action::Action(IActionClient& owner) :
-            Asset<Action, IAction, IActionClient>(owner, owner.getAssetManager().createLiteralAction(this, owner)) {
+            Asset<Action, IAction, IActionClient>(owner, owner.getAssetManager().createDefault(this, owner)) {
   }
 
   void Action::execute() {
@@ -36,7 +36,7 @@ namespace IsoRealms {
   }
 
   IAction* Action::createLiteralAsset(IActionClient& owner) {
-    return owner.getAssetManager().createLiteralAction(this, owner);
+    return owner.getAssetManager().createDefault(this, owner);
   }
   
   IAction* Action::getAsset(IActionClient& owner, JSONObject object) {

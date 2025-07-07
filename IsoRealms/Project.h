@@ -443,23 +443,16 @@ namespace IsoRealms {
       return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
     }
     
-    IAction*         createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) override;
-    IAssets*         createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) override;
-    IBinding*        createLiteralBinding(       IAssetUser<IBinding>*        user, IActionClient& owner) override;
-    IBindingType*    createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) override;
-    IBoolean*        createLiteralBoolean(       IAssetUser<IBoolean>*        user, IResourceData& owner, const bool value) override;
-    IColour*         createLiteralColour(        IAssetUser<IColour>*         user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) override;
-    IEditable*       createLiteralEditable(      IAssetUser<IEditable>*       user, IResourceData& owner) override;
-    IFloat*          createLiteralFloat(         IAssetUser<IFloat>*          user, IResourceData& owner, const float value) override;
-    IFont*           createLiteralFont(          IAssetUser<IFont>*           user, IResourceData& owner) override;
-    IInputHandler*   createLiteralInputHandler(  IAssetUser<IInputHandler>*   user, IResourceData& owner) override;
-    IInteger*        createLiteralInteger(       IAssetUser<IInteger>*        user, IResourceData& owner, const int value) override;
-    IModel*          createLiteralModel(         IAssetUser<IModel>*          user, IResourceData& owner) override;
-    IProjectOptions* createLiteralProjectOptions(IAssetUser<IProjectOptions>* user, IResourceData& owner) override;
-    IScreen*         createLiteralScreen(        IAssetUser<IScreen>*         user, IResourceData& owner) override;
-    IString*         createLiteralString(        IAssetUser<IString>*         user, IResourceData& owner, const std::string& value) override;
-    ITexture*        createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) override;
-    IVertex*         createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) override;
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
+      return AssetContainerTraits<TYPE>::get(*this).literal(user, owner, "");
+    }
+
+    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value) override;
+    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) override;
+    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value) override;
+    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value) override;
+    IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value) override;
+    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z) override;
 
 
     

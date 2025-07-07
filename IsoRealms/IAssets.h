@@ -56,23 +56,12 @@ namespace IsoRealms {
 
   class IAssets : public IAsset {
     public:
-    virtual IAction*         createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) = 0;
-    virtual IAssets*         createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) = 0;
-    virtual IBinding*        createLiteralBinding(       IAssetUser<IBinding>*        user, IActionClient& owner) = 0;
-    virtual IBindingType*    createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) = 0;
-    virtual IBoolean*        createLiteralBoolean(       IAssetUser<IBoolean>*        user, IResourceData& owner, const bool value) = 0;
-    virtual IColour*         createLiteralColour(        IAssetUser<IColour>*         user, IResourceData& owner, const float red, const float green, const float blue, const float alpha = 0.0f) = 0;
-    virtual IEditable*       createLiteralEditable(      IAssetUser<IEditable>*       user, IResourceData& owner) = 0;
-    virtual IFloat*          createLiteralFloat(         IAssetUser<IFloat>*          user, IResourceData& owner, const float value = 0.0f) = 0;
-    virtual IFont*           createLiteralFont(          IAssetUser<IFont>*           user, IResourceData& owner) = 0;
-    virtual IInputHandler*   createLiteralInputHandler(  IAssetUser<IInputHandler>*   user, IResourceData& owner) = 0;
-    virtual IInteger*        createLiteralInteger(       IAssetUser<IInteger>*        user, IResourceData& owner, const int value = 0) = 0;
-    virtual IModel*          createLiteralModel(         IAssetUser<IModel>*          user, IResourceData& owner) = 0;
-    virtual IProjectOptions* createLiteralProjectOptions(IAssetUser<IProjectOptions>* user, IResourceData& owner) = 0;
-    virtual IScreen*         createLiteralScreen(        IAssetUser<IScreen>*         user, IResourceData& owner) = 0;
-    virtual IString*         createLiteralString(        IAssetUser<IString>*         user, IResourceData& owner, const std::string& value = "") = 0;
-    virtual ITexture*        createLiteralTexture(       IAssetUser<ITexture>*        user, IResourceData& owner) = 0;
-    virtual IVertex*         createLiteralVertex(        IAssetUser<IVertex>*         user, IResourceData& owner, const float x, const float y, const float z) = 0;
+    virtual IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value) = 0;
+    virtual IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha = 0.0f) = 0;
+    virtual IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value = 0.0f) = 0;
+    virtual IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value = 0) = 0;
+    virtual IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value = "") = 0;
+    virtual IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z) = 0;
 
     virtual IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                                bool required = true) = 0;
     virtual IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                                bool required = true) = 0;
