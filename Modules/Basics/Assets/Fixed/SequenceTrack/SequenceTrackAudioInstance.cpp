@@ -92,12 +92,12 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudioInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
     std::string mPath = parentID + "/" + cParent.getName();
-    assets.add<IBinding>(&cLuaBinding,      mPath,                            "Sequences");
-    assets.add<IString>(&cExposedName,      mPath + "Audio Name",             "SequenceTrackAudio");
-    assets.add<IInteger>(&cExposedCount,    mPath + "Audio Count",            "SequenceTrackAudio");
-    assets.add<IInteger>(&cExposedCurrent,  mPath + "Current Audio",          "SequenceTrackAudio");
-    assets.add<IInteger>(&cExposedLength,   mPath + "Current Audio Length",   "SequenceTrackAudio");
-    assets.add<IInteger>(&cExposedPosition, mPath + "Current Audio Position", "SequenceTrackAudio");
+    assets.add<IBinding>(&cLuaBinding,      mPath,                             "Sequences");
+    assets.add<IString>(&cExposedName,      mPath + "/Audio Name",             "SequenceTrackAudio");
+    assets.add<IInteger>(&cExposedCount,    mPath + "/Audio Count",            "SequenceTrackAudio");
+    assets.add<IInteger>(&cExposedCurrent,  mPath + "/Current Audio",          "SequenceTrackAudio");
+    assets.add<IInteger>(&cExposedLength,   mPath + "/Current Audio Length",   "SequenceTrackAudio");
+    assets.add<IInteger>(&cExposedPosition, mPath + "/Current Audio Position", "SequenceTrackAudio");
   }
 
   SequenceTrackAudioInstance::Name::Name(SequenceTrackAudioInstance& parent) :
