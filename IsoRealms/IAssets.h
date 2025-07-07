@@ -58,7 +58,7 @@ namespace IsoRealms {
     public:
     virtual IAction*         createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) = 0;
     virtual IAssets*         createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) = 0;
-    virtual IBinding*        createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner) = 0;
+    virtual IBinding*        createLiteralBinding(       IAssetUser<IBinding>*        user, IActionClient& owner) = 0;
     virtual IBindingType*    createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) = 0;
     virtual IBoolean*        createLiteralBoolean(       IAssetUser<IBoolean>*        user, IResourceData& owner, const bool value) = 0;
     virtual IColour*         createLiteralColour(        IAssetUser<IColour>*         user, IResourceData& owner, const float red, const float green, const float blue, const float alpha = 0.0f) = 0;
@@ -76,7 +76,7 @@ namespace IsoRealms {
 
     virtual IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                                bool required = true) = 0;
     virtual IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                                bool required = true) = 0;
-    virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals = nullptr,            bool required = true) = 0;
+    virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                                bool required = true) = 0;
     virtual IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                                bool required = true) = 0;
     virtual IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener = nullptr, bool required = true) = 0;
     virtual IColour*         getColour(        IAssetUser<IColour>*         user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener = nullptr, bool required = true) = 0;
@@ -94,7 +94,7 @@ namespace IsoRealms {
 
     virtual IAction*         getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner) = 0;
     virtual IAssets*         getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner) = 0;
-    virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner) = 0;
+    virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IActionClient& owner) = 0;
     virtual IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner) = 0;
     virtual IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener = nullptr) = 0;
     virtual IColour*         getColour(        IAssetUser<IColour>*         user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener = nullptr) = 0;

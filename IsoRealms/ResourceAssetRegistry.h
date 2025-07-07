@@ -60,7 +60,7 @@ namespace IsoRealms {
     std::string getModule();
 
     using AssetVariant = std::variant<IAssetProvider<IActionClient, IAction>*,
-                                      IAssetProvider<IResourceData, IBinding>*,
+                                      IAssetProvider<IActionClient, IBinding>*,
                                       IAssetProvider<IResourceData, IBindingType>*,
                                       IAssetProvider<IResourceData, IBoolean>*,
                                       IAssetProvider<IResourceData, IColour>*,

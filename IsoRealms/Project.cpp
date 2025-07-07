@@ -589,8 +589,8 @@ namespace IsoRealms {
 
   IAction*         Project::getAction(          IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return cActions.get(          user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IAction*>*         listener) -> IAction*         {return cAssetOverride != nullptr ? cAssetOverride->getAction(          object, listener) : nullptr;});}
   IAssets*         Project::getAssets(          IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cAssets.get(           user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IAssets*>*         listener) -> IAssets*         {return cAssetOverride != nullptr ? cAssetOverride->getAssets(          object, listener) : nullptr;});}
-  IBinding*        Project::getBinding(         IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals,            bool required) {
-    cLocalProviderBinding.setLocalBindings(locals);
+  IBinding*        Project::getBinding(         IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required) {
+    cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
     IBinding* mBinding = cBindings.get(user, owner, object, nullptr, required, [this](JSONObject object, IStateListener<IBinding*>* listener) -> IBinding*    {return cAssetOverride != nullptr ? cAssetOverride->getBinding(       object, listener) : nullptr;});
     cLocalProviderBinding.setLocalBindings(nullptr);
     return mBinding;
@@ -612,7 +612,7 @@ namespace IsoRealms {
 
   IAction*         Project::getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner)                                      {return cActions.get(       user, owner, id, nullptr);}
   IAssets*         Project::getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner)                                      {return cAssets.get(        user, owner, id, nullptr);}
-  IBinding*        Project::getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner)                                      {return cBindings.get(      user, owner, id, nullptr);}
+  IBinding*        Project::getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IActionClient& owner)                                      {return cBindings.get(      user, owner, id, nullptr);}
   IBindingType*    Project::getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner)                                      {return cBindingTypes.get(  user, owner, id, nullptr);}
   IBoolean*        Project::getBoolean(       IAssetUser<IBoolean>*        user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) {return cBooleans.get(      user, owner, id, listener);}
   IColour*         Project::getColour(        IAssetUser<IColour>*         user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener) {return cColours.get(       user, owner, id, listener);}
@@ -630,7 +630,7 @@ namespace IsoRealms {
 
   IAction*         Project::createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner)                                                                          {return cActions.literal(       user, owner, "");}
   IAssets*         Project::createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner)                                                                          {return cAssets.literal(        user, owner, "");}
-  IBinding*        Project::createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner)                                                                          {return cBindings.literal(      user, owner, "");}
+  IBinding*        Project::createLiteralBinding(       IAssetUser<IBinding>*        user, IActionClient& owner)                                                                          {return cBindings.literal(      user, owner, "");}
   IBindingType*    Project::createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner)                                                                          {return cBindingTypes.literal(  user, owner, "");}
   IBoolean*        Project::createLiteralBoolean(       IAssetUser<IBoolean>*        user, IResourceData& owner, const bool value)                                                        {return cBooleans.literal(      user, owner, value ? std::string("true") : std::string("false"));}
   IColour*         Project::createLiteralColour(        IAssetUser<IColour>*         user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return cColours.literal(       user, owner, Utils::toString(red) + " " + Utils::toString(green) + " " + Utils::toString(blue) + " " + Utils::toString(alpha));}

@@ -21,14 +21,13 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/IResourceData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
   class IActionClient;
 
-  class Binding : public Asset<Binding, IBinding, IResourceData> {
+  class Binding : public Asset<Binding, IBinding, IActionClient> {
     public:
     Binding(IActionClient& owner);
     Binding(IActionClient& owner, const std::string& type);
@@ -39,11 +38,11 @@ namespace IsoRealms {
     bool renderAssetIcon() const override;
 
     /*********************************************\
-     * Implements Asset<IBinding, IResourceData> *
+     * Implements Asset<IBinding, IActionClient> *
     \*********************************************/
-    IBinding* createLiteralAsset(IResourceData& owner);
-    IBinding* getAsset(IResourceData& owner, JSONObject object);
-    IBinding* getAsset(IResourceData& owner, const std::string& id);
+    IBinding* createLiteralAsset(IActionClient& owner);
+    IBinding* getAsset(IActionClient& owner, JSONObject object);
+    IBinding* getAsset(IActionClient& owner, const std::string& id);
     std::vector<std::string> getAvailableClientProviders() const;
     bool renderOtherClientProviderIcon(const std::string& id) const;
     bool hasClientConfiguration() const;

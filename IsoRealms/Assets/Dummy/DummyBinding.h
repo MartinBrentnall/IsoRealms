@@ -21,11 +21,11 @@
 #include "IsoRealms/Assets/Type/IBinding.h"
 
 namespace IsoRealms {
-  class IResourceData;
+  class IActionClient;
 
   class DummyBinding : public IBinding {
     public:
-    DummyBinding(IResourceData& owner);
+    DummyBinding(IActionClient& owner);
 
     /***********************\
      * Implements IBinding *

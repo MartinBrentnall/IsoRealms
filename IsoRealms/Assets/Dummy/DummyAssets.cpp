@@ -28,7 +28,7 @@ namespace IsoRealms {
 
   IAction*         DummyAssets::createLiteralAction(        IAssetUser<IAction>*         user, IActionClient& owner) {return nullptr;}
   IAssets*         DummyAssets::createLiteralAssets(        IAssetUser<IAssets>*         user, IResourceData& owner) {return nullptr;}
-  IBinding*        DummyAssets::createLiteralBinding(       IAssetUser<IBinding>*        user, IResourceData& owner) {return nullptr;}
+  IBinding*        DummyAssets::createLiteralBinding(       IAssetUser<IBinding>*        user, IActionClient& owner) {return nullptr;}
   IBindingType*    DummyAssets::createLiteralBindingType(   IAssetUser<IBindingType>*    user, IResourceData& owner) {return nullptr;}
   IBoolean*        DummyAssets::createLiteralBoolean(       IAssetUser<IBoolean>*        user, IResourceData& owner, const bool value) {return nullptr;}
   IColour*         DummyAssets::createLiteralColour(        IAssetUser<IColour>*         user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return nullptr;}
@@ -46,7 +46,7 @@ namespace IsoRealms {
 
   IAction*         DummyAssets::getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return nullptr;}
   IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
-  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IResourceData& owner, IBindingRegistry* locals,            bool required) {return nullptr;}
+  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required) {return nullptr;}
   IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
   IBoolean*        DummyAssets::getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required) {return nullptr;}
   IColour*         DummyAssets::getColour(        IAssetUser<IColour>*         user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required) {return nullptr;}
@@ -64,7 +64,7 @@ namespace IsoRealms {
 
   IAction*         DummyAssets::getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner)                                                {return nullptr;}
   IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
-  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
+  IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IActionClient& owner)                                                {return nullptr;}
   IBindingType*    DummyAssets::getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner)                                                {return nullptr;}
   IBoolean*        DummyAssets::getBoolean(       IAssetUser<IBoolean>*        user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener = nullptr) {return nullptr;}
   IColour*         DummyAssets::getColour(        IAssetUser<IColour>*         user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener = nullptr) {return nullptr;}

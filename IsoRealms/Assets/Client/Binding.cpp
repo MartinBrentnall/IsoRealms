@@ -20,7 +20,6 @@
 
 #include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Project.h"
 
@@ -30,14 +29,14 @@ namespace IsoRealms {
   }
 
   Binding::Binding(IActionClient& owner, const std::string& type) :
-            Asset<Binding, IBinding, IResourceData>(owner.getResourceData(), owner.getAssetManager().createLiteralBinding(this, owner.getResourceData())),
+            Asset<Binding, IBinding, IActionClient>(owner, owner.getAssetManager().createLiteralBinding(this, owner)),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
     std::vector<std::string> mProviders = getAvailableProviders();
     for (std::string mProvider : mProviders) {
       if (mProvider == cDefType) {
         cManager.getAssetManager().release(this, cAsset);
-        cAsset = cManager.getAssetManager().getBinding(this, mProvider, owner.getResourceData());
+        cAsset = cManager.getAssetManager().getBinding(this, mProvider, owner);
         break;
       }
     }
@@ -48,16 +47,16 @@ namespace IsoRealms {
   }
 
   void Binding::setID(const std::string& id) {
-    std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
+    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     if (cDefType == mRawID) {
       cAsset->set(id);
     } else {
-      Asset<Binding, IBinding, IResourceData>::setID(id);
+      Asset<Binding, IBinding, IActionClient>::setID(id);
     }
   }
 
   std::string Binding::getID() const {
-    std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
+    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     if (cDefType == mRawID) {
       return cAsset->getID();
     }
@@ -66,19 +65,19 @@ namespace IsoRealms {
   }
 
   bool Binding::renderAssetIcon() const {
-    std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
+    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     return cDefType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
   }
 
-  IBinding* Binding::createLiteralAsset(IResourceData& owner) {
+  IBinding* Binding::createLiteralAsset(IActionClient& owner) {
     return owner.getAssetManager().createLiteralBinding(this, owner);
   }
   
-  IBinding* Binding::getAsset(IResourceData& owner, JSONObject object) {
+  IBinding* Binding::getAsset(IActionClient& owner, JSONObject object) {
     return owner.getAssetManager().getBinding(this, object, owner, cDefRegistry);
   }
   
-  IBinding* Binding::getAsset(IResourceData& owner, const std::string& id) {
+  IBinding* Binding::getAsset(IActionClient& owner, const std::string& id) {
     return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
   }
   
@@ -91,7 +90,7 @@ namespace IsoRealms {
     }
 
     // Case where a conversion type is allowed.
-    std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
+    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     if (cDefType == mRawID) {
       return cAsset->getAvailableProviders();
     }
@@ -110,7 +109,7 @@ namespace IsoRealms {
   }  
 
   bool Binding::renderOtherClientProviderIcon(const std::string& id) const {
-    std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
+    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     if (cDefType == mRawID) {
       return cAsset->renderProviderIcon(id);
     }
@@ -119,12 +118,12 @@ namespace IsoRealms {
   }
 
   bool Binding::hasClientConfiguration() const {
-    std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
+    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     if (cDefType == mRawID) {
       return cAsset->isConfigurable();
     }
 
-    return cManager.getAssetManager().isConfigurable<IBinding>(Asset<Binding, IBinding, IResourceData>::getID());
+    return cManager.getAssetManager().isConfigurable<IBinding>(Asset<Binding, IBinding, IActionClient>::getID());
   }  
 
   bool Binding::isDefaultConfiguration() const {
@@ -132,7 +131,7 @@ namespace IsoRealms {
   }
 
   std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset) {
-    std::string mRawID = Asset<Binding, IBinding, IResourceData>::getID();
+    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     return cDefType == mRawID ? asset->getWrappedProperties() : asset->getAssetProperties();
   }
 }
