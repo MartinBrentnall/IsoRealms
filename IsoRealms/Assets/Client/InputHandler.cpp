@@ -25,13 +25,9 @@
 
 namespace IsoRealms {
   InputHandler::InputHandler(IResourceData& owner) :
-            Asset<InputHandler, IInputHandler, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)) {
+            Asset<InputHandler, IInputHandler, IResourceData>(owner) {
   }
 
-  IInputHandler* InputHandler::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createDefault(this, owner);
-  }
-  
   IInputHandler* InputHandler::getAsset(IResourceData& owner, JSONObject object) {
     return owner.getAssetManager().getInputHandler(this, object, owner);
   }

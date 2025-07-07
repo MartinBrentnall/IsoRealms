@@ -37,7 +37,6 @@ namespace IsoRealms::Spindizzy {
     /****************************************************\
      * Implements Asset<IPhysicalObjectType, Spindizzy> *
     \****************************************************/
-    IPhysicalObjectType* createLiteralAsset(Spindizzy& spindizzy);
     IPhysicalObjectType* getAsset(Spindizzy& spindizzy, JSONObject object);
     IPhysicalObjectType* getAsset(Spindizzy& spindizzy, const std::string& id);
     bool isDefaultConfiguration() const;

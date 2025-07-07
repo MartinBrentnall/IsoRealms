@@ -27,7 +27,7 @@
 
 namespace IsoRealms {
   Model::Model(IResourceData& owner) :
-            Asset<Model, IModel, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)) {
+            Asset<Model, IModel, IResourceData>(owner) {
   }
 
   std::unique_ptr<ModelInstance> Model::createInstance() {
@@ -57,10 +57,6 @@ namespace IsoRealms {
     glScalef(cDefScaleX, cDefScaleY, cDefScaleZ);
   }
 
-  IModel* Model::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createDefault(this, owner);
-  }
-  
   IModel* Model::getAsset(IResourceData& owner, JSONObject object) {
     return owner.getAssetManager().getModel(this, object, owner);
   }

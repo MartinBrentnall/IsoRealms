@@ -24,20 +24,19 @@
 namespace IsoRealms::Spindizzy {
   ZoneViewType::ZoneViewType(Spindizzy& spindizzy, WorldView& owner) :
             Asset<ZoneViewType, IZoneViewType, Spindizzy>(spindizzy, spindizzy.getZoneViewType(this, "Actual", owner)),
-            cSpindizzy(spindizzy),
             cOwner(owner) {
   }
 
   IZoneViewType* ZoneViewType::createLiteralAsset(Spindizzy& spindizzy) {
-    return cSpindizzy.createLiteralZoneViewType(this, cOwner);
+    return spindizzy.getZoneViewType(this, "Actual", cOwner);
   }
 
   IZoneViewType* ZoneViewType::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return cSpindizzy.getZoneViewType(this, object, cOwner);
+    return spindizzy.getZoneViewType(this, object, cOwner);
   }
 
   IZoneViewType* ZoneViewType::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return cSpindizzy.getZoneViewType(this, id, cOwner);
+    return spindizzy.getZoneViewType(this, id, cOwner);
   }
 
   bool ZoneViewType::isDefaultConfiguration() const {

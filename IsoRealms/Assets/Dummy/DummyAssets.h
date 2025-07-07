@@ -32,13 +32,6 @@ namespace IsoRealms {
     /**********************\
      * Implements IAssets *
     \**********************/
-    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value) override;
-    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha = 0.0f) override;
-    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value = 0.0f) override;
-    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value = 0) override;
-    IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value = "") override;
-    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z) override;
-
     IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
     IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
     IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required = true) override;

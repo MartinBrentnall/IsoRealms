@@ -24,20 +24,19 @@
 namespace IsoRealms::Spindizzy {
   Camera::Camera(Spindizzy& spindizzy, WorldView& owner) :
             Asset<Camera, ICamera, Spindizzy>(spindizzy, spindizzy.getCamera(this, "Gameplay", owner)),
-            cSpindizzy(spindizzy),
             cOwner(owner) {
   }
 
   ICamera* Camera::createLiteralAsset(Spindizzy& spindizzy) {
-    return cSpindizzy.createLiteralCamera(this, cOwner);
+    return spindizzy.getCamera(this, "Gameplay", cOwner);
   }
 
   ICamera* Camera::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return cSpindizzy.getCamera(this, object, cOwner);
+    return spindizzy.getCamera(this, object, cOwner);
   }
 
   ICamera* Camera::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return cSpindizzy.getCamera(this, id, cOwner);
+    return spindizzy.getCamera(this, id, cOwner);
   }
 
   bool Camera::isDefaultConfiguration() const {

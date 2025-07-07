@@ -96,7 +96,6 @@ namespace IsoRealms::Basics {
       return cSequenceTracks.hasConfiguration(id);
     }
 
-    ISequenceTrack* createLiteralSequenceTrack(IAssetUser<ISequenceTrack>* user, Sequence& owner);
     ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner);
     ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner);
 

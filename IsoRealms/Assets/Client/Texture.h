@@ -37,7 +37,6 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<ITexture, IResourceData> *
     \*********************************************/
-    ITexture* createLiteralAsset(IResourceData& owner);
     ITexture* getAsset(IResourceData& owner, JSONObject object);
     ITexture* getAsset(IResourceData& owner, const std::string& id);
     bool hasClientConfiguration() const;

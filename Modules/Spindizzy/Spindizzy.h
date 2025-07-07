@@ -143,15 +143,6 @@ namespace IsoRealms::Spindizzy {
     void removeAll(ZoneType*       type);
 
     // Module type removal.
-    IBoundaryType*        createLiteralBoundaryType(       IAssetUser<IBoundaryType>*        user);
-    ICamera*              createLiteralCamera(             IAssetUser<ICamera>*              user, WorldView&      owner);
-    IPhysicalObjectType*  createLiteralPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user);
-    ISurfacePattern*      createLiteralSurfacePattern(     IAssetUser<ISurfacePattern>*      user, TerrainType&    owner);
-    IWallPattern*         createLiteralWallPattern(        IAssetUser<IWallPattern>*         user, TerrainType&    owner);
-    IWorldEditorTool*     createLiteralWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user);
-    IZoneObjectTypeTrait* createLiteralZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, ZoneObjectType& owner);
-    IZoneViewType*        createLiteralZoneViewType(       IAssetUser<IZoneViewType>*        user, WorldView&      owner);
-
     IBoundaryType*        getBoundaryType(       IAssetUser<IBoundaryType>*        user, const std::string& id);
     ICamera*              getCamera(             IAssetUser<ICamera>*              user, const std::string& id, WorldView&      owner);
     IPhysicalObjectType*  getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, const std::string& id);
@@ -192,6 +183,10 @@ namespace IsoRealms::Spindizzy {
 
     template <typename TYPE> bool isConfigurable(const std::string& id) const {
       return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+    }
+
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
+      return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
     // Event handling.

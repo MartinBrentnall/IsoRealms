@@ -33,7 +33,6 @@ namespace IsoRealms {
     /**************************************************\
      * Implements Asset<IInputHandler, IResourceData> *
     \**************************************************/
-    IInputHandler* createLiteralAsset(IResourceData& owner);
     IInputHandler* getAsset(IResourceData& owner, JSONObject object);
     IInputHandler* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;

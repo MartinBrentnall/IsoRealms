@@ -444,15 +444,15 @@ namespace IsoRealms {
     }
     
     template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
-      return AssetContainerTraits<TYPE>::get(*this).literal(user, owner, "");
+      return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
-    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value) override;
-    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) override;
-    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value) override;
-    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value) override;
-    IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value) override;
-    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z) override;
+    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value);
+    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha);
+    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value);
+    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value);
+    IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value);
+    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z);
 
 
     

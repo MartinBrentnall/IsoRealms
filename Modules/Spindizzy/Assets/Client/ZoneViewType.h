@@ -41,7 +41,6 @@ namespace IsoRealms::Spindizzy {
     bool isDefaultConfiguration() const;
 
     private:
-    Spindizzy& cSpindizzy;
     WorldView& cOwner;
   };
 }

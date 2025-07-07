@@ -27,7 +27,7 @@
 
 namespace IsoRealms {
   Texture::Texture(IResourceData& owner, std::function<void()> listener) :
-            Asset<Texture, ITexture, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)),
+            Asset<Texture, ITexture, IResourceData>(owner),
             cListener(listener),
             cDefScaleX(1.0f),
             cDefScaleY(1.0f),
@@ -42,10 +42,6 @@ namespace IsoRealms {
     cAsset->coord(mX / cDefScaleX, mY / cDefScaleY);
   }
 
-  ITexture* Texture::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createDefault(this, owner);
-  }
-  
   ITexture* Texture::getAsset(IResourceData& owner, JSONObject object) {
     return owner.getAssetManager().getTexture(this, object, owner, cListener != nullptr ? this : nullptr);
   }

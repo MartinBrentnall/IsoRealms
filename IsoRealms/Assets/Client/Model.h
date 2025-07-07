@@ -40,7 +40,6 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IInteger, IResourceData> *
     \*********************************************/
-    IModel* createLiteralAsset(IResourceData& owner);
     IModel* getAsset(IResourceData& owner, JSONObject object);
     IModel* getAsset(IResourceData& owner, const std::string& id);
     bool hasClientConfiguration() const;

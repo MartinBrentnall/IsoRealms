@@ -25,13 +25,9 @@
 
 namespace IsoRealms {
   Assets::Assets(IResourceData& owner) :
-            Asset<Assets, IAssets, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)) {
+            Asset<Assets, IAssets, IResourceData>(owner) {
   }
 
-  IAssets* Assets::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createDefault(this, owner);
-  }
-  
   IAssets* Assets::getAsset(IResourceData& owner, JSONObject object) {
     return owner.getAssetManager().getAssets(this, object, owner);
   }

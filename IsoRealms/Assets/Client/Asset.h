@@ -29,6 +29,10 @@ namespace IsoRealms {
   class IApplication;
   class IAssets;
   
+  template<class TYPE, class OWNER, class RETURN> concept CreateLiteralAssetExists = requires(TYPE& type, OWNER& owner) {
+    {type.createLiteralAsset(owner)} -> std::convertible_to<RETURN*>;
+  };
+
   template<class TYPE> concept HasClientConfigurationExists = requires(const TYPE& type) {
     {type.hasClientConfiguration()} -> std::same_as<bool>;
   };
@@ -43,10 +47,16 @@ namespace IsoRealms {
   
   template<class DERIVED, class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
+    Asset(MANAGER& manager) :
+              cManager(manager),
+              cAsset(manager.getAssetManager().createDefault(this, manager)) {
+    }
+
+
     Asset(MANAGER& manager, TYPE* asset) :
               cManager(manager),
               cAsset(asset) {
-    };
+    }
 
     virtual ~Asset() {
       if (cAsset != nullptr) {
@@ -119,7 +129,11 @@ namespace IsoRealms {
     \*******************************/
     void relinquish(TYPE* asset) override {
       if (cAsset == asset) {
-        cAsset = static_cast<DERIVED*>(this)->createLiteralAsset(cManager);
+        if constexpr (CreateLiteralAssetExists<DERIVED, MANAGER, TYPE>) {
+          cAsset = static_cast<DERIVED*>(this)->createLiteralAsset(cManager);
+        } else  {
+          cAsset = cManager.getAssetManager().createDefault(this, cManager);
+        }
       }
     }
 
@@ -136,21 +150,21 @@ namespace IsoRealms {
         return renderAssetIcon();
       }
       
-      if constexpr (RenderOtherClientProviderIconExists<DERIVED>) {
+      if constexpr (RenderOtherClientProviderIconExists<TYPE>) {
         return static_cast<const DERIVED*>(this)->renderOtherClientProviderIcon(id);
       }
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
     std::vector<std::string> getAvailableProviders() const {
-      if constexpr (GetAvailableClientProvidersExists<DERIVED>) {
+      if constexpr (GetAvailableClientProvidersExists<TYPE>) {
         return static_cast<const DERIVED*>(this)->getAvailableClientProviders();
       }
       return cManager.getAssetManager().template getAll<TYPE>();
     }
     
     bool hasConfiguration() const {
-      if constexpr (HasClientConfigurationExists<DERIVED>) {
+      if constexpr (HasClientConfigurationExists<TYPE>) {
         if (static_cast<const DERIVED*>(this)->hasClientConfiguration()) {
           return true;
         }

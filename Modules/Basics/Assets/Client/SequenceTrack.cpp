@@ -27,7 +27,7 @@ namespace IsoRealms::Basics {
   }
 
   ISequenceTrack* SequenceTrack::createLiteralAsset(Basics& basics) {
-    return basics.createLiteralSequenceTrack(this, cOwner);
+    return basics.getSequenceTrack(this, "Colour", cOwner);
   }
   
   ISequenceTrack* SequenceTrack::getAsset(Basics& basics, JSONObject object) {

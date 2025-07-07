@@ -25,13 +25,9 @@
 
 namespace IsoRealms {
   Editable::Editable(IResourceData& owner) :
-            Asset<Editable, IEditable, IResourceData>(owner, owner.getAssetManager().createDefault(this, owner)) {
+            Asset<Editable, IEditable, IResourceData>(owner) {
   }
 
-  IEditable* Editable::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createDefault(this, owner);
-  }
-  
   IEditable* Editable::getAsset(IResourceData& owner, JSONObject object) {
     return owner.getAssetManager().getEditable(this, object, owner);
   }

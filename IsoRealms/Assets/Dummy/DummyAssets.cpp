@@ -26,13 +26,6 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  IBoolean* DummyAssets::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value) {return nullptr;}
-  IColour*  DummyAssets::createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return nullptr;}
-  IFloat*   DummyAssets::createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value) {return nullptr;}
-  IInteger* DummyAssets::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value) {return nullptr;}
-  IString*  DummyAssets::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value) {return nullptr;}
-  IVertex*  DummyAssets::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z) {return nullptr;}
-
   IAction*         DummyAssets::getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return nullptr;}
   IAssets*         DummyAssets::getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return nullptr;}
   IBinding*        DummyAssets::getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required) {return nullptr;}

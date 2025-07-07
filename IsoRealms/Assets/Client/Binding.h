@@ -40,7 +40,6 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IBinding, IActionClient> *
     \*********************************************/
-    IBinding* createLiteralAsset(IActionClient& owner);
     IBinding* getAsset(IActionClient& owner, JSONObject object);
     IBinding* getAsset(IActionClient& owner, const std::string& id);
     std::vector<std::string> getAvailableClientProviders() const;

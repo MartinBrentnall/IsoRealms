@@ -33,7 +33,6 @@ namespace IsoRealms {
     /******************************************\
      * Implements Asset<IFont, IResourceData> *
     \******************************************/
-    IFont* createLiteralAsset(IResourceData& owner);
     IFont* getAsset(IResourceData& owner, JSONObject object);
     IFont* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;

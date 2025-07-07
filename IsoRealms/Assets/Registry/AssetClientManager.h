@@ -34,8 +34,9 @@ namespace IsoRealms {
               AssetClientManager(nullptr) {
     }
 
-    AssetClientManager(ILiteralAssetProvider<OWNER, TYPE>* provider, const std::string& label = "None") :
-              cLiteralProvider(provider) {
+    AssetClientManager(ILiteralAssetProvider<OWNER, TYPE>* provider, const std::string& label = "None", const std::string& defaultValue = "") :
+              cLiteralProvider(provider),
+              cDefaultValue(defaultValue) {
       if (cLiteralProvider != nullptr) {
         add(provider, label, "Literals");
       }
@@ -133,6 +134,10 @@ namespace IsoRealms {
       }
     }
     
+    TYPE* getDefault(IAssetUser<TYPE>* client, OWNER& owner) {
+      return literal(client, owner, cDefaultValue);
+    }
+
     TYPE* literal(IAssetUser<TYPE>* client, OWNER& owner, const std::string& value) {
       TYPE* mAsset = cLiteralProvider != nullptr ? cLiteralProvider->getLiteralAsset(owner, value) : nullptr;
       if (mAsset != nullptr) {
@@ -331,5 +336,6 @@ namespace IsoRealms {
     std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> cClients;
     std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>> cAssetSingletons;
     ILiteralAssetProvider<OWNER, TYPE>* cLiteralProvider;
+    const std::string cDefaultValue;
   };
 }

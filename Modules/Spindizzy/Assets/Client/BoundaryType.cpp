@@ -22,7 +22,7 @@
 
 namespace IsoRealms::Spindizzy {
   BoundaryType::BoundaryType(Spindizzy& spindizzy) : 
-            Asset<BoundaryType, IBoundaryType, Spindizzy>(spindizzy, spindizzy.createLiteralBoundaryType(this)) {
+            Asset<BoundaryType, IBoundaryType, Spindizzy>(spindizzy) {
   }
 
   IBinding* BoundaryType::getBoundaryBinding(const std::string& id) const {
@@ -33,10 +33,6 @@ namespace IsoRealms::Spindizzy {
     return cAsset->getBindingID(binding);
   }
 
-  IBoundaryType* BoundaryType::createLiteralAsset(Spindizzy& spindizzy) {
-    return spindizzy.createLiteralBoundaryType(this);
-  }
-  
   IBoundaryType* BoundaryType::getAsset(Spindizzy& spindizzy, JSONObject object) {
     return spindizzy.getBoundaryType(this, object);
   }

@@ -22,7 +22,7 @@
 
 namespace IsoRealms::Spindizzy {
   PhysicalObjectType::PhysicalObjectType(Spindizzy& spindizzy) : 
-            Asset<PhysicalObjectType, IPhysicalObjectType, Spindizzy>(spindizzy, spindizzy.createLiteralPhysicalObjectType(this)) {
+            Asset<PhysicalObjectType, IPhysicalObjectType, Spindizzy>(spindizzy) {
   }
 
   IBinding* PhysicalObjectType::getBinding(const std::string& id) const {
@@ -33,10 +33,6 @@ namespace IsoRealms::Spindizzy {
     return cAsset->getBindingID(binding);
   }
 
-  IPhysicalObjectType* PhysicalObjectType::createLiteralAsset(Spindizzy& spindizzy) {
-    return spindizzy.createLiteralPhysicalObjectType(this);
-  }
-  
   IPhysicalObjectType* PhysicalObjectType::getAsset(Spindizzy& spindizzy, JSONObject object) {
     return spindizzy.getPhysicalObjectType(this, object);
   }

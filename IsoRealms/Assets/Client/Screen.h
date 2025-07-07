@@ -34,7 +34,6 @@ namespace IsoRealms {
     /********************************************\
      * Implements Asset<IScreen, IResourceData> *
     \********************************************/
-    IScreen* createLiteralAsset(IResourceData& owner);
     IScreen* getAsset(IResourceData& owner, JSONObject object);
     IScreen* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;

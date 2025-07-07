@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   IWallPattern* WallPattern::createLiteralAsset(TerrainType& owner) {
-    return owner.getSpindizzy().createLiteralWallPattern(this, owner);
+    return owner.getSpindizzy().getWallPattern(this, "Tile", owner, this);
   }
   
   IWallPattern* WallPattern::getAsset(TerrainType& owner, JSONObject object) {

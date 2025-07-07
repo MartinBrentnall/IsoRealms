@@ -177,8 +177,6 @@ namespace IsoRealms::Basics {
   void Basics::setOwner(File* owner) {
   }; // TODO: Probably shouldn't be here.
 
-  ISequenceTrack* Basics::createLiteralSequenceTrack(IAssetUser<ISequenceTrack>* user, Sequence& owner) {return cSequenceTracks.literal(user, owner, "");}
-
   ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner) {return cSequenceTracks.get(user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ISequenceTrack*>* listener) -> ISequenceTrack* {return nullptr;});}
 
   ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner) {return cSequenceTracks.get(user, owner, id, nullptr);}

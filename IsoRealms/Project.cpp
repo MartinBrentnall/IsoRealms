@@ -59,20 +59,20 @@ namespace IsoRealms {
           cActions(&cLiteralProviderAction),
           cBindings(&cLiteralProviderBinding),
           cBindingTypes(&cLiteralProviderBindingType, "Any"),
-          cBooleans(&cLiteralProviderBoolean, "Literal"),
-          cColours(&cLiteralProviderColour, "Literal"),
+          cBooleans(&cLiteralProviderBoolean, "Literal", "false"),
+          cColours(&cLiteralProviderColour, "Literal", "0.0 0.0 0.0 1.0"),
           cEditables(&cLiteralProviderEditable),
-          cFloats(&cLiteralProviderFloat, "Literal"),
+          cFloats(&cLiteralProviderFloat, "Literal", "0.0"),
           cFonts(&cLiteralProviderFont),
           cInputHandlers(&cLiteralProviderInputHandler),
-          cIntegers(&cLiteralProviderInteger, "Literal"),
+          cIntegers(&cLiteralProviderInteger, "Literal", "0"),
           cModels(&cLiteralProviderModel),
           cScreens(&cLiteralProviderScreen),
           cProjectOptions(&cLiteralProviderProjectOptions),
           cAssets(&cLiteralProviderAssets),
           cStrings(&cLiteralProviderString, "Literal"),
           cTextures(&cLiteralProviderTexture),
-          cVertices(&cLiteralProviderVertex, "Literal"),
+          cVertices(&cLiteralProviderVertex, "Literal", "0.0 0.0 0.0"),
           cLiteralProviderBoolean(*this),
           cBindingTypeAction(":Action"),
           cBindingTypeBoolean(":Boolean"),
@@ -587,6 +587,13 @@ namespace IsoRealms {
     return mDataPath.substr(0, mDataPath.find_last_of('.')) + "/" + file;
   }
 
+  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value)                                                        {return cBooleans.literal(user, owner, value ? std::string("true") : std::string("false"));}
+  IColour*  Project::createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return cColours.literal( user, owner, Utils::toString(red) + " " + Utils::toString(green) + " " + Utils::toString(blue) + " " + Utils::toString(alpha));}
+  IFloat*   Project::createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value)                                                       {return cFloats.literal(  user, owner, Utils::toString(value));}
+  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value)                                                         {return cIntegers.literal(user, owner, Utils::toString(value));}
+  IString*  Project::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value)                                                {return cStrings.literal( user, owner, value);}
+  IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z)                             {return cVertices.literal(user, owner, Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));}
+
   IAction*         Project::getAction(          IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return cActions.get(          user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IAction*>*         listener) -> IAction*         {return cAssetOverride != nullptr ? cAssetOverride->getAction(          object, listener) : nullptr;});}
   IAssets*         Project::getAssets(          IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cAssets.get(           user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IAssets*>*         listener) -> IAssets*         {return cAssetOverride != nullptr ? cAssetOverride->getAssets(          object, listener) : nullptr;});}
   IBinding*        Project::getBinding(         IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required) {
@@ -628,13 +635,6 @@ namespace IsoRealms {
   ITexture*        Project::getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) {return cTextures.get(      user, owner, id, listener);}
   IVertex*         Project::getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner)                                      {return cVertices.get(      user, owner, id, nullptr);}
 
-  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value)                                                        {return cBooleans.literal(user, owner, value ? std::string("true") : std::string("false"));}
-  IColour*  Project::createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha) {return cColours.literal( user, owner, Utils::toString(red) + " " + Utils::toString(green) + " " + Utils::toString(blue) + " " + Utils::toString(alpha));}
-  IFloat*   Project::createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value)                                                       {return cFloats.literal(  user, owner, Utils::toString(value));}
-  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value)                                                         {return cIntegers.literal(user, owner, Utils::toString(value));}
-  IString*  Project::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value)                                                {return cStrings.literal( user, owner, value);}
-  IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z)                             {return cVertices.literal(user, owner, Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));}
-    
   bool Project::renderAssetIcon() const {
     return false;
   }

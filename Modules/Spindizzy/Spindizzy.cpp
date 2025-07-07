@@ -242,15 +242,6 @@ namespace IsoRealms::Spindizzy {
 //   void Spindizzy::remove(IAssetProvider<IZoneObjectTypeTrait>* provider) {cZoneObjectTypeTraits.remove(provider);}
 //   void Spindizzy::remove(IAssetProvider<IZoneViewType>*        provider) {cZoneViewTypes.remove(       provider);}
 
-  IBoundaryType*        Spindizzy::createLiteralBoundaryType(       IAssetUser<IBoundaryType>*        user)                        {return cBoundaryTypes.literal(       user, *this, "");}
-  ICamera*              Spindizzy::createLiteralCamera(             IAssetUser<ICamera>*              user, WorldView&      owner) {return cCameras.literal(             user, owner, "");}
-  IPhysicalObjectType*  Spindizzy::createLiteralPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user)                        {return cPhysicalObjectTypes.literal( user, *this, "");}
-  ISurfacePattern*      Spindizzy::createLiteralSurfacePattern(     IAssetUser<ISurfacePattern>*      user, TerrainType&    owner) {return cSurfacePatterns.literal(     user, owner, "");}
-  IWallPattern*         Spindizzy::createLiteralWallPattern(        IAssetUser<IWallPattern>*         user, TerrainType&    owner) {return cWallPatterns.literal(        user, owner, "");}
-  IWorldEditorTool*     Spindizzy::createLiteralWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user)                        {return cWorldEditorTools.literal(    user, *this, "");}
-  IZoneObjectTypeTrait* Spindizzy::createLiteralZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, ZoneObjectType& owner) {return cZoneObjectTypeTraits.literal(user, owner, "");}
-  IZoneViewType*        Spindizzy::createLiteralZoneViewType(       IAssetUser<IZoneViewType>*        user, WorldView&      owner) {return cZoneViewTypes.literal(       user, owner, "");}
-
   IBoundaryType*        Spindizzy::getBoundaryType(       IAssetUser<IBoundaryType>*        user, const std::string& id)                                                                    {return cBoundaryTypes.get(       user, *this, id, nullptr);}
   ICamera*              Spindizzy::getCamera(             IAssetUser<ICamera>*              user, const std::string& id, WorldView&      owner)                                             {return cCameras.get(             user, owner, id, nullptr);}
   IPhysicalObjectType*  Spindizzy::getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, const std::string& id)                                                                    {return cPhysicalObjectTypes.get( user, *this, id, nullptr);}

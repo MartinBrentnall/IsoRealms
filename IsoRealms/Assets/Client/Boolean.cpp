@@ -31,9 +31,9 @@ namespace IsoRealms {
   }
 
   IBoolean* Boolean::createLiteralAsset(IResourceData& owner) {
-    return owner.getAssetManager().createLiteralBoolean(this, owner, false);
+    return owner.getAssetManager().createLiteralBoolean(this, owner, cDefaultValue);
   }
-  
+
   IBoolean* Boolean::getAsset(IResourceData& owner, JSONObject object) {
     return owner.getAssetManager().getBoolean(this, object, owner, cListener != nullptr ? this : nullptr);
   }
