@@ -150,7 +150,6 @@ namespace IsoRealms {
 
     cIntegers.add(&cConversionProviderProjectToInteger, ":Project", CATEGORY_CONVERSIONS);
     
-
     // Support locals
     cBindings.add(&cLocalProviderBinding, "~", CATEGORY_LOCAL);
 
@@ -210,6 +209,52 @@ namespace IsoRealms {
       cResourcesLoaded = true;
     }
     cLoading = false;
+  }
+
+  Project::~Project() {
+    // remove(&cLuaBinding);
+    // remove(&cFilenameString);
+    // remove(&cFileUserBoolean);
+    // remove(&cQuitAction);
+    //
+    // cBindings.remove(&cConversionProviderActionToBinding);
+    // cBindings.remove(&cConversionProviderBooleanToBinding);
+    // cBindings.remove(&cConversionProviderColourToBinding);
+    // cBindings.remove(&cConversionProviderFloatToBinding);
+    // cBindings.remove(&cConversionProviderFontToBinding);
+    // cBindings.remove(&cConversionProviderInputHandlerToBinding);
+    // cBindings.remove(&cConversionProviderIntegerToBinding);
+    // cBindings.remove(&cConversionProviderProjectOptionsToBinding);
+    // cBindings.remove(&cConversionProviderProjectToBinding);
+    // cBindings.remove(&cConversionProviderScreenToBinding);
+    // cBindings.remove(&cConversionProviderStringToBinding);
+    // cBindings.remove(&cConversionProviderVertexToBinding);
+    //
+    // cStrings.remove(&cConversionProviderIntegerToString);
+    // cStrings.remove(&cConversionProviderFloatToString);
+    // cStrings.remove(&cConversionProviderProjectToString);
+    //
+    // cIntegers.remove(&cConversionProviderProjectToInteger);
+    //
+    // cBindings.remove(&cLocalProviderBinding);
+
+
+//     cActions.checkClean("Action Types");
+//     cBindings.checkClean("Bindings");
+//     cBooleans.checkClean("Booleans");
+//     cColours.checkClean("Colours");
+//     cEditables.checkClean("Editables");
+//     cFloats.checkClean("Floats");
+//     cFonts.checkClean("Fonts");
+//     cInputHandlers.checkClean("Input Handlers");
+//     cIntegers.checkClean("Integers");
+//     cModels.checkClean("Models");
+//     cScreens.checkClean("Screens");
+//     cProjectOptions.checkClean("Project Options");
+//     cAssets.checkClean("Asset Collections");
+//     cStrings.checkClean("Strings");
+//     cTextures.checkClean("Textures");
+//     cVertices.checkClean("Vertices");
   }
 
   bool Project::isLoading() const {
@@ -878,51 +923,5 @@ namespace IsoRealms {
   
   bool Project::QuitAction::isDefaultConfiguration() const {
     return true;
-  }
-
-  Project::~Project() {
-    // remove(&cLuaBinding);
-    // remove(&cFilenameString);
-    // remove(&cFileUserBoolean);
-    // remove(&cQuitAction);
-    //
-    // cBindings.remove(&cConversionProviderActionToBinding);
-    // cBindings.remove(&cConversionProviderBooleanToBinding);
-    // cBindings.remove(&cConversionProviderColourToBinding);
-    // cBindings.remove(&cConversionProviderFloatToBinding);
-    // cBindings.remove(&cConversionProviderFontToBinding);
-    // cBindings.remove(&cConversionProviderInputHandlerToBinding);
-    // cBindings.remove(&cConversionProviderIntegerToBinding);
-    // cBindings.remove(&cConversionProviderProjectOptionsToBinding);
-    // cBindings.remove(&cConversionProviderProjectToBinding);
-    // cBindings.remove(&cConversionProviderScreenToBinding);
-    // cBindings.remove(&cConversionProviderStringToBinding);
-    // cBindings.remove(&cConversionProviderVertexToBinding);
-    //
-    // cStrings.remove(&cConversionProviderIntegerToString);
-    // cStrings.remove(&cConversionProviderFloatToString);
-    // cStrings.remove(&cConversionProviderProjectToString);
-    //
-    // cIntegers.remove(&cConversionProviderProjectToInteger);
-    //
-    // cBindings.remove(&cLocalProviderBinding);
-
-
-//     cActions.checkClean("Action Types");
-//     cBindings.checkClean("Bindings");
-//     cBooleans.checkClean("Booleans");
-//     cColours.checkClean("Colours");
-//     cEditables.checkClean("Editables");
-//     cFloats.checkClean("Floats");
-//     cFonts.checkClean("Fonts");
-//     cInputHandlers.checkClean("Input Handlers");
-//     cIntegers.checkClean("Integers");
-//     cModels.checkClean("Models");
-//     cScreens.checkClean("Screens");
-//     cProjectOptions.checkClean("Project Options");
-//     cAssets.checkClean("Asset Collections");
-//     cStrings.checkClean("Strings");
-//     cTextures.checkClean("Textures");
-//     cVertices.checkClean("Vertices");
   }
 }

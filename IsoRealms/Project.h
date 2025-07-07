@@ -53,6 +53,7 @@
 #include "Lua.h"
 #include "Options/LocalOptions.h"
 #include "Options/Options.h"
+#include "ProjectFile.h"
 #include "Types.h"
 
 namespace IsoRealms {
@@ -72,308 +73,6 @@ namespace IsoRealms {
                   public IBindingRegistry,
                   public IResourceData,
                   public IActionClient {
-    private:
-    static const std::string JSON_ACTION;
-    static const std::string JSON_EDITOR;
-    static const std::string JSON_FILENAME;
-    static const std::string JSON_ID;
-    static const std::string JSON_INCLUDE;
-    static const std::string JSON_INITIALISATION;
-    static const std::string JSON_INPUT;
-    static const std::string JSON_LOCAL;
-    static const std::string JSON_MODULES;
-    static const std::string JSON_NAME;
-    static const std::string JSON_PROJECT;
-    static const std::string JSON_PROPERTIES;
-    static const std::string JSON_QUIT;
-    static const std::string JSON_RESET;
-    static const std::string JSON_SCREEN;
-    static const std::string JSON_START;
-    static const std::string JSON_USER;
-
-    static const std::string CATEGORY_CONVERSIONS;
-    static const std::string CATEGORY_FIXED;
-    static const std::string CATEGORY_LOCAL;
-
-    struct ProjectFile {
-      ProjectFile(Project& project) :
-                  cFile(project) {
-      }
-      
-      ProjectFile(Project& project, const std::string& filename, bool user) :
-                  ProjectFile(project) {
-        cFile.setPath(filename, user);
-      }
-
-      std::vector<std::unique_ptr<IProperty>> getProperties(Project& project) {
-        std::vector<std::unique_ptr<IProperty>> mProperties;
-        mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cFile));
-        for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-          mProperties.emplace_back(std::make_unique<PropertyStruct>("Inclusion \"" + mInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mInclusion, &project]() {
-            return mInclusion->getProperties(project);
-          }, [this, &mInclusion]() {
-            Utils::removeElementUnique(cInclusions, mInclusion.get());
-          }));
-        }
-        mProperties.emplace_back(std::make_unique<PropertyAdd>("Inclusion", "TODO", "Add...", [this, &project]() {
-          ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-          return std::make_unique<PropertyStruct>("Inclusion \"" + mNewInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mNewInclusion, &project]() {
-            return mNewInclusion->getProperties(project);
-          }, [this, &mNewInclusion]() {
-            Utils::removeElementUnique(cInclusions, mNewInclusion);
-          });
-        }));
-        return mProperties;
-      }
-
-      File cFile;
-      std::vector<std::unique_ptr<ProjectFile>> cInclusions;
-    };
-
-    class Filename : public IString {
-      public:
-      Filename(Project& parent);
-
-      private:
-      Project& cParent;
-
-      /**********************\
-       * Implements IString *
-      \**********************/
-      std::string getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-    };
-
-    class FileUser : public IBoolean {
-      public:
-      FileUser(Project& parent);
-
-      private:
-      Project& cParent;
-
-      /***********************\
-       * Implements IBoolean *
-      \***********************/
-      bool getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-    };
-
-    class QuitAction : public IAction {
-      public:
-      QuitAction(Project& parent);
-
-      /**********************\
-       * Implements IAction *
-      \**********************/
-      void execute() override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
-      bool isDefaultConfiguration() const override;
-
-      private:
-      Project& cParent;
-    };
-
-    class ProjectProperty {
-      public:
-      ProjectProperty(Project& parent, JSONObject object, File* ownerProject);
-      void setValue(const std::string& value);
-      void save(JSONArray& object, File* savingProject, const std::string& id) const;
-      bool isOwnedBy(File* project);
-
-      private:
-      Action cChangeAction;
-      File* cOwnerProject;
-    };
-
-    template <class OWNER, class TYPE> class ProjectAsset {
-      public:
-      ProjectAsset(OWNER& owner) :
-                cAsset(owner),
-                cOwnerProject(nullptr) {
-      }
-
-      void init(JSONObject object, const std::string& tag, File* ownerProject) {
-        if (object.hasMember(tag) && cOwnerProject == nullptr) {
-          cAsset.init(object, tag);
-          cOwnerProject = ownerProject;
-        }
-      }
-
-      TYPE* operator*() {
-        return &cAsset;
-      }
-
-      void save(JSONObject object, const std::string& tag, File* savingProject) {
-//        if (cOwnerProject == savingProject) {
-          cAsset.save(object, tag);
-//        }
-      }
-      
-      std::unique_ptr<IProperty> getProperty(const std::string& name) {
-        return std::make_unique<PropertyAsset<TYPE>>(name, "TODO", cAsset);
-      }
-
-      private:
-      TYPE cAsset;
-      File* cOwnerProject;
-    };
-
-    IApplication& cApplication; /// Host application of this project.
-    
-    const IAssetOverride* const cAssetOverride; /// External asset override for this project.
-    LuaState cLuaState;                         /// Lua State for this project.
-    LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
-    bool cResourcesLoaded;                    /// Indicates that resource loading from modules has completed.
-    bool cLoading;
-
-    // Callbacks
-    std::queue<std::function<void()>> cMainThreadAllocTasks;         /// Allocation tasks to be perfomed on the main thread during initialisation.
-    std::queue<std::function<void()>> cMainThreadInitTasks;          /// initialisation tasks to be performed on the main thread.
-    std::vector<std::function<void(IAssets&)>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.
-    std::queue<std::function<void()>> cUpdateTasks;                  /// Postponed update functions.  Called after other update functions.
-
-    // Action execution control
-    bool cProcessingInput;                   /// Flag is set when processing input to indicate that actions should be postponed.
-    std::vector<IAction*> cPostponedActions; /// List of postponed actions to be executed at next update cycle.
-    bool cRuntimeUpdatingRuntime;            /// Flag is set when update cycle is being performed.
-    bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
-
-    std::vector<IScreenListener*> cScreenListeners;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    std::map<std::string, std::vector<IModelInstance*>> cInstantiatedModels;
-
-    // Asset registries.
-    AssetClientManager<IActionClient, IAction>         cActions;
-    AssetClientManager<IActionClient, IBinding>        cBindings;
-    AssetClientManager<IResourceData, IBindingType>    cBindingTypes; // Note: Contents of this module is set by modules (i.e. NOT configurable!)
-    AssetClientManager<IResourceData, IBoolean>        cBooleans;
-    AssetClientManager<IResourceData, IColour>         cColours;
-    AssetClientManager<IResourceData, IEditable>       cEditables;
-    AssetClientManager<IResourceData, IFloat>          cFloats;
-    AssetClientManager<IResourceData, IFont>           cFonts;
-    AssetClientManager<IResourceData, IInputHandler>   cInputHandlers;
-    AssetClientManager<IResourceData, IInteger>        cIntegers;
-    AssetClientManager<IResourceData, IModel>          cModels;
-    AssetClientManager<IResourceData, IScreen>         cScreens;
-    AssetClientManager<IResourceData, IProjectOptions> cProjectOptions;
-    AssetClientManager<IResourceData, IAssets>         cAssets;
-    AssetClientManager<IResourceData, IString>         cStrings;
-    AssetClientManager<IResourceData, ITexture>        cTextures;
-    AssetClientManager<IResourceData, IVertex>         cVertices;
-
-    // Literal and dummy asset providers.
-    AssetLiteralDummy<IActionClient, IAction,         DummyAction>         cLiteralProviderAction;
-    AssetLiteralDummy<IActionClient, IBinding,        DummyBinding>        cLiteralProviderBinding;
-    AssetLiteralDummy<IResourceData, IBindingType,    DummyBindingType>    cLiteralProviderBindingType;
-    AssetLiteralBoolean                                                    cLiteralProviderBoolean;
-    AssetLiteralColour                                                     cLiteralProviderColour;
-    AssetLiteralDummy<IResourceData, IEditable,       DummyEditable>       cLiteralProviderEditable;
-    AssetLiteralFloat                                                      cLiteralProviderFloat;
-    AssetLiteralDummy<IResourceData, IFont,           DummyFont>           cLiteralProviderFont;
-    AssetLiteralDummy<IResourceData, IInputHandler,   DummyInputHandler>   cLiteralProviderInputHandler;
-    AssetLiteralInteger                                                    cLiteralProviderInteger;
-    AssetLiteralDummy<IResourceData, IModel,          DummyModel>          cLiteralProviderModel;
-    AssetLiteralDummy<IResourceData, IScreen,         DummyScreen>         cLiteralProviderScreen;
-    AssetLiteralDummy<IResourceData, IProjectOptions, DummyProjectOptions> cLiteralProviderProjectOptions;
-    AssetLiteralDummy<IResourceData, IAssets,         DummyAssets>         cLiteralProviderAssets;
-    AssetLiteralString                                                     cLiteralProviderString;
-    AssetLiteralDummy<IResourceData, ITexture,        DummyTexture>        cLiteralProviderTexture;
-    AssetLiteralVertex                                                     cLiteralProviderVertex;
-
-    // Built-in binding types.
-    LiteralBindingType cBindingTypeAction;
-    LiteralBindingType cBindingTypeBoolean;
-    LiteralBindingType cBindingTypeColour;
-    LiteralBindingType cBindingTypeFloat;
-    LiteralBindingType cBindingTypeFont;
-    LiteralBindingType cBindingTypeInputHandler;
-    LiteralBindingType cBindingTypeInteger;
-    LiteralBindingType cBindingTypeProject;
-    LiteralBindingType cBindingTypeProjectOptions;
-    LiteralBindingType cBindingTypeScreen;
-    LiteralBindingType cBindingTypeString;
-    LiteralBindingType cBindingTypeVertex;
-
-    // Conversion asset providers.
-    AssetConvertedBinding<IActionClient, Action>         cConversionProviderActionToBinding;
-    AssetConvertedBinding<IResourceData, Boolean>        cConversionProviderBooleanToBinding;
-    AssetConvertedBinding<IResourceData, Colour>         cConversionProviderColourToBinding;
-    AssetConvertedBinding<IResourceData, Float>          cConversionProviderFloatToBinding;
-    AssetConvertedBinding<IResourceData, Font>           cConversionProviderFontToBinding;
-    AssetConvertedBinding<IResourceData, InputHandler>   cConversionProviderInputHandlerToBinding;
-    AssetConvertedBinding<IResourceData, Integer>        cConversionProviderIntegerToBinding;
-    AssetConvertedBinding<IResourceData, ProjectOptions> cConversionProviderProjectOptionsToBinding;
-    AssetConvertedBinding<IResourceData, Assets>         cConversionProviderProjectToBinding;
-    AssetConvertedBinding<IResourceData, Screen>         cConversionProviderScreenToBinding;
-    AssetConvertedBinding<IResourceData, String>         cConversionProviderStringToBinding;
-    AssetConvertedBinding<IResourceData, Vertex>         cConversionProviderVertexToBinding;
-    
-    AssetConvertedString<Integer>         cConversionProviderIntegerToString;
-    AssetConvertedString<Float>           cConversionProviderFloatToString;
-    AssetConvertedProjectToString         cConversionProviderProjectToString;
-    
-    AssetConvertedProjectToInteger        cConversionProviderProjectToInteger;
-
-    // Local binding support.
-    AssetLocalBinding cLocalProviderBinding;
-
-    std::function<void(bool)> cFunctionNotifyComplete;
-    ProjectFile cProjectFile;
-    Filename cFilenameString;
-    FileUser cFileUserBoolean;
-    QuitAction cQuitAction;
-
-    std::map<std::string, std::unique_ptr<ProjectProperty>> cProperties;
-
-    int cTime;
-
-    // Project definition
-    ProjectAsset<IResourceData, InputHandler> cDefInputHandler;  /// Input handler of this project.
-    ProjectAsset<IResourceData, Screen>       cDefScreen;        /// Screen of this project.
-    ProjectAsset<IResourceData, Editable>     cDefDefaultEditor; /// Default editor of this project.
-    ProjectAsset<IActionClient, Action>       cDefInitAction;    /// Action to execute after project has loaded.
-    ProjectAsset<IActionClient, Action>       cDefResetAction;   /// Action to execute after project has completed.
-    ProjectAsset<IActionClient, Action>       cDefStartAction;   /// Action to execute upon starting project (following reset)
-    ProjectAsset<IActionClient, Action>       cDefQuitAction;    /// Action to execute upon project quit.
-
-    std::vector<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
-
-    void loadModules(JSONObject object);
-    bool isModuleLoaded(const std::string& name) const;
-    std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions& options, ProjectFile& file);
-    Module* getModule(const std::string& name);
-    void saveFile(ProjectFile& file);
-    
     public:
 
     // TODO: Constructor for creating new projects
@@ -476,7 +175,7 @@ namespace IsoRealms {
     std::filesystem::file_time_type getLastWriteTime() override;
     void initMainThread() override;
     void requestQuit();
-    bool input(sf::Event&);
+    bool input(sf::Event& event);
     void render(float aspectRatio);
     void updateRuntime(unsigned int milliseconds);
     void updateRuntimeComplete();
@@ -600,12 +299,279 @@ namespace IsoRealms {
     bool isProcessingInput() override;
     void postponeAction(IAction* action) override;
 
-    LiteralString cPropertyValue;
-    LocalLuaBinding<IString> cPropertyValueBinding;
-
     virtual ~Project();
     
     template <class TYPE> friend struct AssetContainerTraits;
+
+    private:
+    static const std::string JSON_ACTION;
+    static const std::string JSON_EDITOR;
+    static const std::string JSON_FILENAME;
+    static const std::string JSON_ID;
+    static const std::string JSON_INCLUDE;
+    static const std::string JSON_INITIALISATION;
+    static const std::string JSON_INPUT;
+    static const std::string JSON_LOCAL;
+    static const std::string JSON_MODULES;
+    static const std::string JSON_NAME;
+    static const std::string JSON_PROJECT;
+    static const std::string JSON_PROPERTIES;
+    static const std::string JSON_QUIT;
+    static const std::string JSON_RESET;
+    static const std::string JSON_SCREEN;
+    static const std::string JSON_START;
+    static const std::string JSON_USER;
+
+    static const std::string CATEGORY_CONVERSIONS;
+    static const std::string CATEGORY_FIXED;
+    static const std::string CATEGORY_LOCAL;
+
+    class Filename : public IString {
+      public:
+      Filename(Project& parent);
+
+      private:
+      Project& cParent;
+
+      /**********************\
+       * Implements IString *
+      \**********************/
+      std::string getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+    };
+
+    class FileUser : public IBoolean {
+      public:
+      FileUser(Project& parent);
+
+      private:
+      Project& cParent;
+
+      /***********************\
+       * Implements IBoolean *
+      \***********************/
+      bool getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+    };
+
+    class QuitAction : public IAction {
+      public:
+      QuitAction(Project& parent);
+
+      /**********************\
+       * Implements IAction *
+      \**********************/
+      void execute() override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+      Project& cParent;
+    };
+
+    class ProjectProperty {
+      public:
+      ProjectProperty(Project& parent, JSONObject object, File* ownerProject);
+      void setValue(const std::string& value);
+      void save(JSONArray& object, File* savingProject, const std::string& id) const;
+      bool isOwnedBy(File* project);
+
+      private:
+      Action cChangeAction;
+      File* cOwnerProject;
+    };
+
+    template <class OWNER, class TYPE> class ProjectAsset {
+      public:
+      ProjectAsset(OWNER& owner) :
+                cAsset(owner),
+                cOwnerProject(nullptr) {
+      }
+
+      void init(JSONObject object, const std::string& tag, File* ownerProject) {
+        if (object.hasMember(tag) && cOwnerProject == nullptr) {
+          cAsset.init(object, tag);
+          cOwnerProject = ownerProject;
+        }
+      }
+
+      TYPE* operator*() {
+        return &cAsset;
+      }
+
+      void save(JSONObject object, const std::string& tag, File* savingProject) {
+//        if (cOwnerProject == savingProject) {
+          cAsset.save(object, tag);
+//        }
+      }
+
+      std::unique_ptr<IProperty> getProperty(const std::string& name) {
+        return std::make_unique<PropertyAsset<TYPE>>(name, "TODO", cAsset);
+      }
+
+      private:
+      TYPE cAsset;
+      File* cOwnerProject;
+    };
+
+    IApplication& cApplication; /// Host application of this project.
+
+    const IAssetOverride* const cAssetOverride; /// External asset override for this project.
+    LuaState cLuaState;                         /// Lua State for this project.
+    LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
+    bool cResourcesLoaded;                    /// Indicates that resource loading from modules has completed.
+    bool cLoading;
+
+    // Callbacks
+    std::queue<std::function<void()>> cMainThreadAllocTasks;         /// Allocation tasks to be perfomed on the main thread during initialisation.
+    std::queue<std::function<void()>> cMainThreadInitTasks;          /// initialisation tasks to be performed on the main thread.
+    std::vector<std::function<void(IAssets&)>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.
+    std::queue<std::function<void()>> cUpdateTasks;                  /// Postponed update functions.  Called after other update functions.
+
+    // Action execution control
+    bool cProcessingInput;                   /// Flag is set when processing input to indicate that actions should be postponed.
+    std::vector<IAction*> cPostponedActions; /// List of postponed actions to be executed at next update cycle.
+    bool cRuntimeUpdatingRuntime;            /// Flag is set when update cycle is being performed.
+    bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
+
+    std::vector<IScreenListener*> cScreenListeners;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    std::map<std::string, std::vector<IModelInstance*>> cInstantiatedModels;
+
+    // Asset registries.
+    AssetClientManager<IActionClient, IAction>         cActions;
+    AssetClientManager<IActionClient, IBinding>        cBindings;
+    AssetClientManager<IResourceData, IBindingType>    cBindingTypes; // Note: Contents of this module is set by modules (i.e. NOT configurable!)
+    AssetClientManager<IResourceData, IBoolean>        cBooleans;
+    AssetClientManager<IResourceData, IColour>         cColours;
+    AssetClientManager<IResourceData, IEditable>       cEditables;
+    AssetClientManager<IResourceData, IFloat>          cFloats;
+    AssetClientManager<IResourceData, IFont>           cFonts;
+    AssetClientManager<IResourceData, IInputHandler>   cInputHandlers;
+    AssetClientManager<IResourceData, IInteger>        cIntegers;
+    AssetClientManager<IResourceData, IModel>          cModels;
+    AssetClientManager<IResourceData, IScreen>         cScreens;
+    AssetClientManager<IResourceData, IProjectOptions> cProjectOptions;
+    AssetClientManager<IResourceData, IAssets>         cAssets;
+    AssetClientManager<IResourceData, IString>         cStrings;
+    AssetClientManager<IResourceData, ITexture>        cTextures;
+    AssetClientManager<IResourceData, IVertex>         cVertices;
+
+    // Literal and dummy asset providers.
+    AssetLiteralDummy<IActionClient, IAction,         DummyAction>         cLiteralProviderAction;
+    AssetLiteralDummy<IActionClient, IBinding,        DummyBinding>        cLiteralProviderBinding;
+    AssetLiteralDummy<IResourceData, IBindingType,    DummyBindingType>    cLiteralProviderBindingType;
+    AssetLiteralBoolean                                                    cLiteralProviderBoolean;
+    AssetLiteralColour                                                     cLiteralProviderColour;
+    AssetLiteralDummy<IResourceData, IEditable,       DummyEditable>       cLiteralProviderEditable;
+    AssetLiteralFloat                                                      cLiteralProviderFloat;
+    AssetLiteralDummy<IResourceData, IFont,           DummyFont>           cLiteralProviderFont;
+    AssetLiteralDummy<IResourceData, IInputHandler,   DummyInputHandler>   cLiteralProviderInputHandler;
+    AssetLiteralInteger                                                    cLiteralProviderInteger;
+    AssetLiteralDummy<IResourceData, IModel,          DummyModel>          cLiteralProviderModel;
+    AssetLiteralDummy<IResourceData, IScreen,         DummyScreen>         cLiteralProviderScreen;
+    AssetLiteralDummy<IResourceData, IProjectOptions, DummyProjectOptions> cLiteralProviderProjectOptions;
+    AssetLiteralDummy<IResourceData, IAssets,         DummyAssets>         cLiteralProviderAssets;
+    AssetLiteralString                                                     cLiteralProviderString;
+    AssetLiteralDummy<IResourceData, ITexture,        DummyTexture>        cLiteralProviderTexture;
+    AssetLiteralVertex                                                     cLiteralProviderVertex;
+
+    // Built-in binding types.
+    LiteralBindingType cBindingTypeAction;
+    LiteralBindingType cBindingTypeBoolean;
+    LiteralBindingType cBindingTypeColour;
+    LiteralBindingType cBindingTypeFloat;
+    LiteralBindingType cBindingTypeFont;
+    LiteralBindingType cBindingTypeInputHandler;
+    LiteralBindingType cBindingTypeInteger;
+    LiteralBindingType cBindingTypeProject;
+    LiteralBindingType cBindingTypeProjectOptions;
+    LiteralBindingType cBindingTypeScreen;
+    LiteralBindingType cBindingTypeString;
+    LiteralBindingType cBindingTypeVertex;
+
+    // Conversion asset providers.
+    AssetConvertedBinding<IActionClient, Action>         cConversionProviderActionToBinding;
+    AssetConvertedBinding<IResourceData, Boolean>        cConversionProviderBooleanToBinding;
+    AssetConvertedBinding<IResourceData, Colour>         cConversionProviderColourToBinding;
+    AssetConvertedBinding<IResourceData, Float>          cConversionProviderFloatToBinding;
+    AssetConvertedBinding<IResourceData, Font>           cConversionProviderFontToBinding;
+    AssetConvertedBinding<IResourceData, InputHandler>   cConversionProviderInputHandlerToBinding;
+    AssetConvertedBinding<IResourceData, Integer>        cConversionProviderIntegerToBinding;
+    AssetConvertedBinding<IResourceData, ProjectOptions> cConversionProviderProjectOptionsToBinding;
+    AssetConvertedBinding<IResourceData, Assets>         cConversionProviderProjectToBinding;
+    AssetConvertedBinding<IResourceData, Screen>         cConversionProviderScreenToBinding;
+    AssetConvertedBinding<IResourceData, String>         cConversionProviderStringToBinding;
+    AssetConvertedBinding<IResourceData, Vertex>         cConversionProviderVertexToBinding;
+
+    AssetConvertedString<Integer>         cConversionProviderIntegerToString;
+    AssetConvertedString<Float>           cConversionProviderFloatToString;
+    AssetConvertedProjectToString         cConversionProviderProjectToString;
+
+    AssetConvertedProjectToInteger        cConversionProviderProjectToInteger;
+
+    // Local binding support.
+    AssetLocalBinding cLocalProviderBinding;
+
+    std::function<void(bool)> cFunctionNotifyComplete;
+    ProjectFile cProjectFile;
+    Filename cFilenameString;
+    FileUser cFileUserBoolean;
+    QuitAction cQuitAction;
+
+    std::map<std::string, std::unique_ptr<ProjectProperty>> cProperties;
+
+    int cTime;
+
+    // Project definition
+    ProjectAsset<IResourceData, InputHandler> cDefInputHandler;  /// Input handler of this project.
+    ProjectAsset<IResourceData, Screen>       cDefScreen;        /// Screen of this project.
+    ProjectAsset<IResourceData, Editable>     cDefDefaultEditor; /// Default editor of this project.
+    ProjectAsset<IActionClient, Action>       cDefInitAction;    /// Action to execute after project has loaded.
+    ProjectAsset<IActionClient, Action>       cDefResetAction;   /// Action to execute after project has completed.
+    ProjectAsset<IActionClient, Action>       cDefStartAction;   /// Action to execute upon starting project (following reset)
+    ProjectAsset<IActionClient, Action>       cDefQuitAction;    /// Action to execute upon project quit.
+
+    LiteralString cPropertyValue;
+    LocalLuaBinding<IString> cPropertyValueBinding;
+
+    std::vector<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
+
+    void loadModules(JSONObject object);
+    bool isModuleLoaded(const std::string& name) const;
+    std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions& options, ProjectFile& file);
+    Module* getModule(const std::string& name);
+    void saveFile(ProjectFile& file);
   };
 
   template<> struct AssetContainerTraits<IAction>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};
