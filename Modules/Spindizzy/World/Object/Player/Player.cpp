@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Player.h"
-
-#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/PlayerType/PlayerType.h"
 #include "Modules/Spindizzy/Spindizzy.h"
@@ -37,7 +35,6 @@ namespace IsoRealms::Spindizzy {
             cDefType(&type),
             cDefMovementHandler(cDefWorld.getMovementHandler(cDefType)),
             cDefModel(cDefType->createModel()),
-            cDefID(""),
             cDefX(Utils::round(x, 0.5, 0.0)),
             cDefY(Utils::round(y, 0.5, 0.0)),
             cDefZ(Utils::round(z, 0.5, 0.0)),
@@ -51,7 +48,6 @@ namespace IsoRealms::Spindizzy {
             cDefType(nullptr),
             cDefMovementHandler(nullptr),
             cDefModel(nullptr),
-            cDefID(object.getString(JSON_ID)),
             cDefX(object.getFloat(JSON_X)),
             cDefY(object.getFloat(JSON_Y)),
             cDefZ(object.getFloat(JSON_Z)),
@@ -65,9 +61,9 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void Player::registerAssets(IAssetRegistry& assets) {
-    assets.add(&cRuntimePhysicsObject.cLocation, cDefID, "Spindizzy Players");
-    assets.add(&cLuaBinding, cDefID, "Spindizzy Players");
+  void Player::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+    assets.add<IVertex>(&cRuntimePhysicsObject.cLocation, parentID, "Spindizzy Players");
+    assets.add<IBinding>(&cLuaBinding,                    parentID, "Spindizzy Players");
   }
   
   void Player::reset() {
@@ -89,7 +85,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Player::save(JSONObject object) const {
-    object.addString(JSON_ID, cDefID);
     object.addString(JSON_TYPE, cDefWorld.getSpindizzy().getID(cDefType));
     object.addFloat(JSON_X, cDefX);
     object.addFloat(JSON_Y, cDefY);

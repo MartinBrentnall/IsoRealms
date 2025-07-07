@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ScoreTable.h"
-
-#include "IsoRealms/Project.h"
 
 namespace IsoRealms::HighScore {
   const std::string ScoreTable::JSON_COMPARE          = "compare";
@@ -97,14 +95,14 @@ namespace IsoRealms::HighScore {
     }
   }
 
-  void ScoreTable::registerAssets(IAssetRegistry& assets) {
+  void ScoreTable::registerAssets(ResourceAssetRegistry& assets) {
     // TODO: This is dangerous!  Exposing IStrings from inside a map/vector... Addresses could change without warning.
     for (std::map<const std::string, std::vector<LiteralString>>::iterator mValue = cValues.begin(); mValue != cValues.end(); mValue++) {
       for (unsigned int i = 0; i < mValue->second.size(); i++) {
-        assets.add(&mValue->second[i], mValue->first + "_" + std::to_string(i), "System");
+        assets.add<IString>(&mValue->second[i], mValue->first + "_" + std::to_string(i), "System");
       }
     }
-    assets.add(&cLuaBinding, "", "Score Tables");
+    assets.add<IBinding>(&cLuaBinding, "", "Score Tables");
   }
   
   void ScoreTable::readRecords(JSONObject object) {

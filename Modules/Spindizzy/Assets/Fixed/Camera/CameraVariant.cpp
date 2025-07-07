@@ -1,27 +1,24 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "CameraVariant.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
-
-#include "IsoRealms/Project.h"
-#include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Spindizzy {
   CameraVariant::CameraVariant(IProject& project, WorldView& view) :
@@ -40,17 +37,13 @@ namespace IsoRealms::Spindizzy {
     cDefZoom.set(object, JSON_ZOOM);
   }
 
-  void CameraVariant::registerAssets(IAssetRegistry& assets) {
-    LocalAssetRegistry mYawRegistry(     assets, "Yaw");
-    LocalAssetRegistry mPitchRegistry(   assets, "Pitch");
-    LocalAssetRegistry mLocationRegistry(assets, "Location");
-    LocalAssetRegistry mZoomRegistry(    assets, "Zoom");
-    cDefYaw->registerAssets(     mYawRegistry);
-    cDefPitch->registerAssets(   mPitchRegistry);
-    cDefLocation->registerAssets(mLocationRegistry);
-    cDefZoom->registerAssets(    mZoomRegistry);
+  void CameraVariant::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+    cDefYaw->registerAssets(     assets, parentID + "/Yaw");
+    cDefPitch->registerAssets(   assets, parentID + "/Pitch");
+    cDefLocation->registerAssets(assets, parentID + "/Location");
+    cDefZoom->registerAssets(    assets, parentID + "/Zoom");
   }
-    
+
   void CameraVariant::updateRuntime(unsigned int milliseconds) {
     cDefYaw->updateRuntime(milliseconds);
     cDefPitch->updateRuntime(milliseconds);

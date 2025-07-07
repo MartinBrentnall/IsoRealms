@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ThemeSet.h"
-
-#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -114,8 +112,8 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void ThemeSet::registerAssets(IAssetRegistry& assets) {
-    assets.add(&cLuaBinding, "", "Spindizzy Theme Sets");
+  void ThemeSet::registerAssets(ResourceAssetRegistry& assets) {
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Theme Sets");
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
       mPair.second->registerAssets(assets, mPair.first);
     }
@@ -147,7 +145,7 @@ namespace IsoRealms::Spindizzy {
   ThemeTexture* ThemeSet::createTexture(const std::string& type) {
     std::map<std::string, std::unique_ptr<ThemeTexture>>::iterator i = cTextures.find(type);
     if (i == cTextures.end()) {
-      ThemeTexture* mNewTexture = cTextures.emplace(type, std::make_unique<ThemeTexture>(this)).first->second.get();
+      ThemeTexture* mNewTexture = cTextures.emplace(type, std::make_unique<ThemeTexture>(*this)).first->second.get();
       for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
         mTheme.second->themeTextureAdded(mNewTexture);
       }
@@ -159,7 +157,7 @@ namespace IsoRealms::Spindizzy {
   ThemeColour* ThemeSet::createColour(IProject& project, const std::string& type) {
     std::map<std::string, std::unique_ptr<ThemeColour>>::iterator i = cColours.find(type);
     if (i == cColours.end()) {
-      ThemeColour* mNewColour = cColours.emplace(type, std::make_unique<ThemeColour>(project, this)).first->second.get();
+      ThemeColour* mNewColour = cColours.emplace(type, std::make_unique<ThemeColour>(project, *this)).first->second.get();
       for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
         mTheme.second->themeColourAdded(mNewColour);
       }

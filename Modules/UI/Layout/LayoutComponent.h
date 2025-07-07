@@ -1,30 +1,27 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
 
 #include <map>
 #include <string>
 
-#include "IsoRealms/Collision/CollisionUtils.h"
-#include "IsoRealms/Lua.h"
-#include "IsoRealms/System.h"
-#include "IsoRealms/Types.h"
+#include "IsoRealms.h"
 
 #include "LayoutComponentEdge.h"
 
@@ -36,7 +33,7 @@ namespace IsoRealms::UI {
     LayoutComponent(IProject& project, Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio);
     LayoutComponent(IProject& project, Layout& layout, JSONObject object);
     void reset();
-    void registerAssets(IAssetRegistry& assets, const std::string& name);
+    void registerAssets(ResourceAssetRegistry& assets, const std::string& name);
     void render(float scale, float aspectRatio);
     void renderEditor(float scale, float aspectRatio);
     void save(JSONObject object) const;

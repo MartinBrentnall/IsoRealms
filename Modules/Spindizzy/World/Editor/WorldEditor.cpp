@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "WorldEditor.h"
-
-#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/Zone/Zone.h"
@@ -36,7 +34,7 @@ namespace IsoRealms::Spindizzy {
   const float WorldEditor::BOTTOM_BORDER = -1.0f + BORDER_SPACING;
   const float WorldEditor::ICON_SPACING = 0.02f;
   
-  WorldEditor::WorldEditor(IAssetRegistry& assets, World& world) :
+  WorldEditor::WorldEditor(Project& assets, World& world) :
             cAnalogueInputsByName({
               {"MoveViewIn",      &cDistanceInSpeed},
               {"MoveViewOut",     &cDistanceOutSpeed},
@@ -113,9 +111,9 @@ namespace IsoRealms::Spindizzy {
     cToolbar.selectInstance(mDefaultTool);
 
     // TODO: I think 'assets' is wrong... should be local assets, not the whole project.
-    cScreenYawNotifier   = assets.add(&cScreenYaw,   "EditorYaw",   "System");
-    cScreenPitchNotifier = assets.add(&cScreenPitch, "EditorPitch", "System");
-    assets.add(static_cast<IScreen*>(this), "Editor", "External"); // TODO: Should have a unique name in case multple instances
+    cScreenYawNotifier   = assets.add<IFloat>(&cScreenYaw,   "EditorYaw",   "System");
+    cScreenPitchNotifier = assets.add<IFloat>(&cScreenPitch, "EditorPitch", "System");
+    assets.add<IScreen>(this, "Editor", "External"); // TODO: Should have a unique name in case multple instances
   }
 
   bool WorldEditor::isMovingNorth() {

@@ -1,20 +1,20 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
 
@@ -23,16 +23,7 @@
 #include <set>
 #include <stack>
 
-#include "IsoRealms/Common/IVisualElement.h"
-#include "IsoRealms/Collision/CollisionUtils.h"
-#include "IsoRealms/Editing/EditorToolbar.h"
-#include "IsoRealms/Input/EditorAnalogueInput.h"
-#include "IsoRealms/Input/EditorDigitalInput.h"
-#include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/Struct/SpatialContainer2D.h"
-#include "IsoRealms/System.h"
-#include "IsoRealms/Types.h"
-#include "IsoRealms/Utils.h"
+#include "IsoRealms.h"
 
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 #include "Modules/Spindizzy/World/World.h"
@@ -44,7 +35,7 @@
 namespace IsoRealms::Spindizzy {
   class WorldEditor : public IEditableScreen {
     public:
-    WorldEditor(IAssetRegistry& assets, World& world);
+    WorldEditor(Project& assets, World& world);
     void updateScreen(unsigned int milliseconds);
     World& getWorld() const;
     TerrainBrush& getTerrainBrush();

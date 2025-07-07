@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "C64TerrainGraphics.h"
-
-#include "IsoRealms/Project.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -180,12 +178,12 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void C64TerrainGraphics::registerAssets(IAssetRegistry& assets) {
+  void C64TerrainGraphics::registerAssets(ResourceAssetRegistry& assets) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
-      assets.add(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
+      assets.add<ITexture>(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
     }
     for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      assets.add(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
+      assets.add<ITexture>(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
     }
   }
     

@@ -1,20 +1,20 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "AnalogueInput.h"
 
@@ -40,10 +40,10 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueInput::registerAssets(IAssetRegistry& assets) {
-    cStateNotifier = assets.add(static_cast<IFloat*>(this), "", "Analogue Inputs");
-    assets.add(static_cast<IInputHandler*>(this), "", "Analogue Inputs");
-    assets.add(&cLuaBinding, "", "Analogue Inputs");
+  void AnalogueInput::registerAssets(ResourceAssetRegistry& assets) {
+    cStateNotifier = assets.add<IFloat>(static_cast<IFloat*>(this), "", "Analogue Inputs");
+    assets.add<IInputHandler>(static_cast<IInputHandler*>(this), "", "Analogue Inputs");
+    assets.add<IBinding>(&cLuaBinding, "", "Analogue Inputs");
     for (std::unique_ptr<InputMapping>& mInput : cDefMapping) {
       mInput->registerAssets(assets);
     }
@@ -204,9 +204,8 @@ namespace IsoRealms::Basics {
     cPhysicalInput->loadCustomMapping(object);
   }
 
-  void AnalogueInput::InputMapping::registerAssets(IAssetRegistry& assets) {
-    LocalAssetRegistry mLocalRegistry(assets, cName);
-    cPhysicalInput->registerAssets(mLocalRegistry);
+  void AnalogueInput::InputMapping::registerAssets(ResourceAssetRegistry& assets) {
+    cPhysicalInput->registerAssets(assets, cName);
   }
   
   std::string AnalogueInput::InputMapping::getShortName() const {

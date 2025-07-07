@@ -1,25 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "CameraGameplay.h"
-
-#include "IsoRealms/Project.h"
-#include "IsoRealms/Utils.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -104,6 +101,12 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
+  void CameraGameplay::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+    cStateNotifier = assets.add<IFloat>(this,         parentID + "/ViewYaw",   "Gameplay Cameras");
+    assets.add<IFloat>(                 &cPitch,      parentID + "/ViewPitch", "Gameplay Cameras");
+    assets.add<IBinding>(               &cLuaBinding, parentID,                "Gameplay Cameras");
+  }
+
   void CameraGameplay::updateRuntime(unsigned int milliseconds) {
     if (cRuntimeRollTimeRemaining > 0) {
       cStateNotifier->stateChanged(this);
@@ -135,12 +138,6 @@ namespace IsoRealms::Spindizzy {
     cCachedYZoom = (std::abs(std::sin(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH * (M_PI / 180.0f)) * (mZSize / 2.0f)) + std::abs(std::cos(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH * (M_PI / 180.0f)) * cCachedXZoom));
   }
 
-  void CameraGameplay::registerAssets(IAssetRegistry& assets) {
-    cStateNotifier = assets.add(this, "ViewYaw", "Gameplay Cameras");
-    assets.add(&cPitch, "ViewPitch", "Gameplay Cameras");
-    assets.add(&cLuaBinding, "", "Gameplay Cameras");
-  }
-    
   const IFloat* CameraGameplay::getYaw() const {
     return this;
   }  

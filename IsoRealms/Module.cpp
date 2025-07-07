@@ -1,20 +1,20 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Module.h"
 
@@ -22,8 +22,6 @@
 #include "Exception/InitException.h"
 #include "Exception/ResourceInitException.h"
 #include "ResourceType.h"
-
-#include "Project.h"
 
 namespace IsoRealms {
   const std::string Module::JSON_CONFIGURATION = "configuration";
@@ -161,7 +159,7 @@ namespace IsoRealms {
     if (mResourceType != nullptr) {
       throw ArgumentException("ERROR: Module::add: Cannot add resource type definition because there is already a resource type definition of ID \"" + id + "\".");
     }
-    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, *this, cModuleAssetRegistry, id, singular, plural, category);
+    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, *this, id, singular, plural, category);
   }
 
   std::string Module::getName() {
@@ -189,10 +187,6 @@ namespace IsoRealms {
     throw ArgumentException("ERROR: Module::getName: Specified resource type not found in this module.");
   }
 
-  IAssetRegistry& Module::getAssetRegistry() {
-    return cProject;
-  }
-  
   IAssets& Module::getAssets() {
     return cProject;
   }

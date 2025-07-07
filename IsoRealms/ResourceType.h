@@ -1,40 +1,38 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
 
 #include <set>
 #include <string>
 
-#include "IAssetRegistry.h"
 #include "IModuleInternal.h"
 #include "IProject.h"
 #include "IResource.h"
 #include "IResourceType.h"
 #include "IResourceTypeDefinition.h"
-#include "LocalAssetRegistry.h"
 #include "Options/LocalOptions.h"
 #include "Resource.h"
 
 namespace IsoRealms {
   class ResourceType : public IResourceType {
     public:
-    ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent, IAssetRegistry& assetRegistry, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category);
+    ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category);
     virtual ~ResourceType();
     void loadResource(JSONObject object, IProject& project, IOptions& options, File* ownerProject, const std::string& resourceDataPath);
     bool needsSaving(File* savingProject) const;
@@ -56,7 +54,6 @@ namespace IsoRealms {
     void renameUserDataDirectory(const std::string& oldName, const std::string& newName) override;
     std::string getProjectPathPrefix(bool user) override;
     std::string getCategory() override;
-    IAssetRegistry& getAssetRegistry() override;
     IAssets& getAssets() override;
     Project& getProject() override;
 
@@ -69,6 +66,5 @@ namespace IsoRealms {
     std::string cSingular;
     std::string cPlural;
     std::string cCategory;
-    LocalAssetRegistry cResourceTypeAssetRegistry;
   };
 }

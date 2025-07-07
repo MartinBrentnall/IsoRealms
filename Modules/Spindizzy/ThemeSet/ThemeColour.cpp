@@ -1,33 +1,35 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ThemeColour.h" 
 
+#include "ThemeSet.h"
+
 namespace IsoRealms::Spindizzy {
-  ThemeColour::ThemeColour(IProject& project, IIconAnimator* animator) :
+  ThemeColour::ThemeColour(IProject& project, ThemeSet& parent) :
+            cParent(parent),
+            cColour(nullptr),
             cLuaBinding(project, this) {
-    cAnimator = animator;
-    cColour = nullptr;
   }
 
-  void ThemeColour::registerAssets(IAssetRegistry& assets, const std::string& id) {
-    assets.add(this, id, "Spindizzy Themes");
-    assets.add(&cLuaBinding, "ThemeColour/" + id, "Spindizzy Themes");
+  void ThemeColour::registerAssets(ResourceAssetRegistry& assets, const std::string& id) {
+    assets.add<IColour>(this, id, "Spindizzy Themes");
+    assets.add<IBinding>(&cLuaBinding, "ThemeColour/" + id, "Spindizzy Themes");
   }
   
   void ThemeColour::set(IColour* colour) {

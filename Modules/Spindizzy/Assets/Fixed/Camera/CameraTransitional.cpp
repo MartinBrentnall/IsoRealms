@@ -1,25 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "CameraTransitional.h"
-
-#include "IsoRealms/Project.h"
-#include "IsoRealms/Utils.h"
 
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -61,19 +58,17 @@ namespace IsoRealms::Spindizzy {
     cRuntimeEnd = true;
   }
     
-  void CameraTransitional::registerAssets(IAssetRegistry& assets) {
-    cRuntimeYawStateNotifier = assets.add(&cYaw, "Yaw", "Cameras");
-    assets.add(&cPitch, "Pitch", "Cameras");
-    assets.add(&cTransition, "Transition", "Cameras");
-    assets.add(&cLuaBinding, "", "Cameras");
-    LocalAssetRegistry mStartRegistry(assets, "Start");
-    cDefStart->registerAssets(mStartRegistry);
-    LocalAssetRegistry mEndRegistry(assets, "End");
-    cDefEnd->registerAssets(mEndRegistry);
+  void CameraTransitional::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+    cRuntimeYawStateNotifier = assets.add<IFloat>(&cYaw, parentID + "/Yaw", "Cameras");
+    assets.add<IFloat>(&cPitch, parentID + "/Pitch", "Cameras");
+    assets.add<IFloat>(&cTransition, parentID + "/Transition", "Cameras");
+    assets.add<IBinding>(&cLuaBinding, parentID, "/Cameras");
+    cDefStart->registerAssets(assets, parentID + "/Start");
+    cDefEnd->registerAssets(assets, parentID + "/End");
     cDefStart->addListener(this);
     cDefEnd->addListener(this);
   }
-    
+
   void CameraTransitional::updateRuntime(unsigned int milliseconds) {
     cDefStart->updateRuntime(milliseconds);
     cDefEnd->updateRuntime(milliseconds);

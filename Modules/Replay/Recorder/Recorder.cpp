@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Recorder.h"
-
-#include "IsoRealms/System.h"
 
 namespace IsoRealms::Replay {
   const std::string Recorder::JSON_INPUT               = "input";
@@ -99,12 +97,12 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
   
-  void Recorder::registerAssets(IAssetRegistry& assets) {
-    assets.add(&cLuaBinding, "", "Gameplay Recorders");
-    assets.add(static_cast<IScreen*>(this), "", "Gameplay Recorders");
-    assets.add(static_cast<IInputHandler*>(this), "", "Gameplay Recorders");
-    assets.add(&cFilenameString, "Filename", "Gameplay Recorders");
-    assets.add(cProject.get(), "Project", "Gameplay Recorders");
+  void Recorder::registerAssets(ResourceAssetRegistry& assets) {
+    assets.add<IBinding>(&cLuaBinding, "", "Gameplay Recorders");
+    assets.add<IScreen>(this, "", "Gameplay Recorders");
+    assets.add<IInputHandler>(this, "", "Gameplay Recorders");
+    assets.add<IString>(&cFilenameString, "Filename", "Gameplay Recorders");
+    assets.add<IAssets>(cProject.get(), "Project", "Gameplay Recorders");
   }
   
   std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IResourceData& owner) {

@@ -1,34 +1,24 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
 
-#include "IsoRealms/Assets/Registry/AssetClientManager.h"
-#include "IsoRealms/Assets/Providers/AssetInstanced.h"
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/IModuleHandle.h"
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/IResourceTypeRegistry.h"
-#include "IsoRealms/IsoRealmsConstants.h"
-#include "IsoRealms/Literals.h"
-#include "IsoRealms/Lua.h"
-#include "IsoRealms/Options/IOptions.h"
-#include "IsoRealms/ResourceTypeDefinition.h"
+#include "IsoRealms.h"
 
 #include "Assets/Client/WorldEditorTool.h"
 #include "Assets/Fixed/BoundaryType/BoundaryTypeDummy.h"
@@ -64,7 +54,6 @@
 #include "DebrisChunk/DebrisChunk.h"
 #include "Gyroscope/Gyroscope.h"
 #include "IBindingIdentifier.h"
-#include "IIconAnimator.h"
 #include "ISpindizzyRegistry.h"
 #include "Jewel/Jewel.h"
 #include "LiftType/LiftType.h"
@@ -262,7 +251,7 @@ namespace IsoRealms::Spindizzy {
     \****************************/
     void load(IProject& project, JSONObject object) override;
     void save(JSONObject object) override;
-    void registerAssets(IAssetRegistry& assets) override;
+    void registerAssets(ResourceAssetRegistry& assets) override;
     std::vector<std::unique_ptr<IProperty>> getProperties() override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;

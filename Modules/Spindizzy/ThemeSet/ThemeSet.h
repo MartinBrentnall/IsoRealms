@@ -1,33 +1,33 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
 
 #include <map>
 
-#include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms.h"
 
 #include "Theme.h"
 
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
-  class ThemeSet : public IIconAnimator {
+  class ThemeSet {
     public:
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
@@ -35,7 +35,7 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon();
     void hintInUse(bool inUse);
     void save(JSONObject object) const;
-    void registerAssets(IAssetRegistry& assets);
+    void registerAssets(ResourceAssetRegistry& assets);
 
     /*********************\
      * Module interfaces *
@@ -63,14 +63,11 @@ namespace IsoRealms::Spindizzy {
     void setNextTheme();
     void setPreviousTheme();
 
-    /****************************\
-     * Implements IIconAnimator *
-    \****************************/
-    float getAnimation() override;
-    ITexture* getPreviousTexture(ThemeTexture*) override;
-    ITexture* getCurrentTexture(ThemeTexture*) override;
-    IColour* getPreviousColour(ThemeColour*) override;
-    IColour* getCurrentColour(ThemeColour*) override;
+    float getAnimation();
+    ITexture* getPreviousTexture(ThemeTexture* texture);
+    ITexture* getCurrentTexture(ThemeTexture* texture);
+    IColour* getPreviousColour(ThemeColour* colour);
+    IColour* getCurrentColour(ThemeColour* colour);
 
     private:
     static const unsigned int ICON_TRANSITION_TIME;

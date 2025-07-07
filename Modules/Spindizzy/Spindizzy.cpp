@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Spindizzy.h"
-
-#include "IsoRealms/Project.h"
 
 namespace IsoRealms::Spindizzy {
   const double Spindizzy::DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
@@ -490,18 +488,18 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Spindizzy::registerAssets(IAssetRegistry& assets) {
-    assets.add(&cBindingTypeTerrainState, "Terrain State", "Spindizzy");
+  void Spindizzy::registerAssets(ResourceAssetRegistry& assets) {
+    assets.add<IBindingType>(&cBindingTypeTerrainState, "Terrain State", "Spindizzy");
 
     // TODO: The following things should not be needed!!!
-    assets.add(&cRuntimeParameterAlien,          "Alien",          "Spindizzy");
-    assets.add(&cRuntimeParameterFallDistance,   "FallDistance",   "Spindizzy");
-    assets.add(&cRuntimeParameterLaunchLocation, "LaunchLocation", "Spindizzy");
-    assets.add(&cRuntimeParameterLaunchMomentum, "LaunchMomentum", "Spindizzy");
-    assets.add(&cRuntimeParameterPlayer,         "Player",         "Spindizzy");
-    assets.add(&cRuntimeParameterWall,           "Wall",           "Spindizzy");
-    assets.add(&cRuntimeParameterZone,           "Zone",           "Spindizzy");
-    assets.add(&cLuaBinding,                     "",               "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterAlien,          "Alien",          "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterFallDistance,   "FallDistance",   "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterLaunchLocation, "LaunchLocation", "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterLaunchMomentum, "LaunchMomentum", "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterPlayer,         "Player",         "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterWall,           "Wall",           "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterZone,           "Zone",           "Spindizzy");
+    assets.add<IBinding>(&cLuaBinding,                     "",               "Spindizzy");
     
     for (AlienType* mResource : cResourceAlien) {
       LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_ALIEN + "/" + getID(mResource));

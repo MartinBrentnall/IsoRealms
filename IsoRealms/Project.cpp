@@ -1,20 +1,20 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Project.h"
 
@@ -22,6 +22,7 @@
 #include "Assets/Type/IScreenListener.h"
 #include "DisplayResolution.h"
 #include "IAssetOverride.h"
+#include "Module.h"
 
 namespace IsoRealms {
   const std::string Project::JSON_ACTION         = "action";
@@ -154,10 +155,10 @@ namespace IsoRealms {
     cBindings.add(&cLocalProviderBinding, "~", CATEGORY_LOCAL);
 
     // Project singletons.
-    add(&cLuaBinding,      "Project",         "System");
-    add(&cFilenameString,  "ProjectFilename", "System");
-    add(&cFileUserBoolean, "ProjectUser",     "System");
-    add(&cQuitAction,      "Quit",            "System");
+    add<IBinding, IBinding>(&cLuaBinding,      "Project",         "System");
+    add<IString,  IString> (&cFilenameString,  "ProjectFilename", "System");
+    add<IBoolean, IBoolean>(&cFileUserBoolean, "ProjectUser",     "System");
+    add<IAction,  IAction> (&cQuitAction,      "Quit",            "System");
   }
 
   Project::Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish, IAssetOverride* override) :
@@ -665,42 +666,6 @@ namespace IsoRealms {
     return *this;
   }
   
-  void Project::add(IAssetProvider<IActionClient, IAction>*         provider, const std::string& id, const std::string& category) {cActions.add(       provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IBinding>*        provider, const std::string& id, const std::string& category) {cBindings.add(      provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IBindingType>*    provider, const std::string& id, const std::string& category) {cBindingTypes.add(  provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IBoolean>*        provider, const std::string& id, const std::string& category) {cBooleans.add(      provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IColour>*         provider, const std::string& id, const std::string& category) {cColours.add(       provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IEditable>*       provider, const std::string& id, const std::string& category) {cEditables.add(     provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IFloat>*          provider, const std::string& id, const std::string& category) {cFloats.add(        provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IFont>*           provider, const std::string& id, const std::string& category) {cFonts.add(         provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IInputHandler>*   provider, const std::string& id, const std::string& category) {cInputHandlers.add( provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IInteger>*        provider, const std::string& id, const std::string& category) {cIntegers.add(      provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IModel>*          provider, const std::string& id, const std::string& category) {cModels.add(        provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IScreen>*         provider, const std::string& id, const std::string& category) {cScreens.add(       provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IString>*         provider, const std::string& id, const std::string& category) {cStrings.add(       provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IProjectOptions>* provider, const std::string& id, const std::string& category) {cProjectOptions.add(provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IAssets>*         provider, const std::string& id, const std::string& category) {cAssets.add(        provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, ITexture>*        provider, const std::string& id, const std::string& category) {cTextures.add(      provider, id, category);}
-  void Project::add(IAssetProvider<IResourceData, IVertex>*         provider, const std::string& id, const std::string& category) {cVertices.add(      provider, id, category);}
-
-  void                      Project::add(IAction*         asset, const std::string& id, const std::string& category) {       cActions.add(       asset, id, category      );}
-  void                      Project::add(IBinding*        asset, const std::string& id, const std::string& category) {       cBindings.add(      asset, id, category      );}
-  void                      Project::add(IBindingType*    asset, const std::string& id, const std::string& category) {       cBindingTypes.add(  asset, id, category      );}
-  IStateNotifier<IBoolean>* Project::add(IBoolean*        asset, const std::string& id, const std::string& category) {return cBooleans.add(      asset, id, category, true);}
-  IStateNotifier<IColour>*  Project::add(IColour*         asset, const std::string& id, const std::string& category) {return cColours.add(       asset, id, category, true);}
-  void                      Project::add(IEditable*       asset, const std::string& id, const std::string& category) {       cEditables.add(     asset, id, category      );}
-  IStateNotifier<IFloat>*   Project::add(IFloat*          asset, const std::string& id, const std::string& category) {return cFloats.add(        asset, id, category, true);}
-  void                      Project::add(IFont*           asset, const std::string& id, const std::string& category) {       cFonts.add(         asset, id, category      );}
-  void                      Project::add(IInputHandler*   asset, const std::string& id, const std::string& category) {       cInputHandlers.add( asset, id, category      );}
-  IStateNotifier<IInteger>* Project::add(IInteger*        asset, const std::string& id, const std::string& category) {return cIntegers.add(      asset, id, category, true);}
-  void                      Project::add(IModel*          asset, const std::string& id, const std::string& category) {       cModels.add(        asset, id, category      );}
-  void                      Project::add(IScreen*         asset, const std::string& id, const std::string& category) {       cScreens.add(       asset, id, category      );}
-  void                      Project::add(IProjectOptions* asset, const std::string& id, const std::string& category) {       cProjectOptions.add(asset, id, category      );}
-  void                      Project::add(IAssets*         asset, const std::string& id, const std::string& category) {       cAssets.add(        asset, id, category      );}
-  IStateNotifier<IString>*  Project::add(IString*         asset, const std::string& id, const std::string& category) {return cStrings.add(       asset, id, category, true);}
-  IStateNotifier<ITexture>* Project::add(ITexture*        asset, const std::string& id, const std::string& category) {return cTextures.add(      asset, id, category, true);}
-  IStateNotifier<IVertex>*  Project::add(IVertex*         asset, const std::string& id, const std::string& category) {return cVertices.add(      asset, id, category, true);}
-
   void Project::init(std::function<void(IAssets&)> initialiser) {
 //    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
 //     if (cInitialisers.size() == 833) {

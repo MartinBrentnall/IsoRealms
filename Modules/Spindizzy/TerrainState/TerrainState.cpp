@@ -1,24 +1,22 @@
 /*
- * Copyright 2023 Martin Brentnall
+ * Copyright 2025 Martin Brentnall
  *
- * This file is part of Iso-Realms.
+ * This file is part of IsoRealms.
  *
- * Iso-Realms is free software: you can redistribute it and/or modify
+ * IsoRealms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * Iso-Realms is distributed in the hope that it will be useful,
+ * IsoRealms is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "TerrainState.h"
-
-#include "IsoRealms/Project.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string TerrainState::JSON_HINT       = "hint";
@@ -37,9 +35,9 @@ namespace IsoRealms::Spindizzy {
     cDefHintAction.init(object, JSON_HINT);
   }
 
-  void TerrainState::registerAssets(IAssetRegistry& assets) {
-    assets.add(static_cast<IBoolean*>(this), "", "Spindizzy Terrain States");
-    assets.add(&cLuaBinding, "", "Spindizzy Terrain States");
+  void TerrainState::registerAssets(ResourceAssetRegistry& assets) {
+    assets.add<IBoolean>(this, "", "Spindizzy Terrain States");
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Terrain States");
   }
 
   void TerrainState::save(JSONObject object) const {
