@@ -67,7 +67,7 @@ namespace IsoRealms {
           cInputHandlers(&cLiteralProviderInputHandler),
           cIntegers(&cLiteralProviderInteger, "Literal", "0"),
           cModels(&cLiteralProviderModel),
-          cScreens(&cLiteralProviderScreen),
+          cScreens(&cLiteralProviderScreen, *this),
           cProjectOptions(&cLiteralProviderProjectOptions),
           cAssets(&cLiteralProviderAssets),
           cStrings(&cLiteralProviderString, "Literal"),
@@ -729,24 +729,16 @@ namespace IsoRealms {
     cApplication.mainThreadCleanUp(function);
   }
 
+  IScreen* Project::getScreenProxy(IScreen* screen) {
+    return cScreens.getProxy(screen);
+  }
+
   void Project::addScreenListener(IScreenListener* listener) {
-    cScreenListeners.emplace_back(listener);
+    cScreens.addScreenListener(listener);
   }
 
   void Project::removeScreenListener(IScreenListener* listener) {
-    Utils::removeElement(cScreenListeners, listener);
-  }
-
-  void Project::screenPreRender(IScreen* screen) {
-    for (IScreenListener* mListener : cScreenListeners) {
-      mListener->screenPreRender(screen);
-    }
-  } 
-  
-  void Project::screenPostRender(IScreen* screen) {
-    for (IScreenListener* mListener : cScreenListeners) {
-      mListener->screenPostRender(screen);
-    }
+    cScreens.removeScreenListener(listener);
   }
 
   void Project::addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) {

@@ -102,7 +102,8 @@ namespace IsoRealms::Spindizzy {
               cSelectedTool->processCursorMovement(nullptr, &cLocation);
             }, [this](IWorldEditorToolInstance* tool) {
               tool->renderIcon(cScreenYaw.getValue());
-            }) {
+            }),
+            cProxyScreen(nullptr) {
     cDefAnalogueSensitivity = 10;
     cPaletteSelectionX.init(0.0f);
     resetEditingView();
@@ -114,6 +115,7 @@ namespace IsoRealms::Spindizzy {
     cScreenYawNotifier   = assets.add<IFloat>(&cScreenYaw,   "EditorYaw",   "System");
     cScreenPitchNotifier = assets.add<IFloat>(&cScreenPitch, "EditorPitch", "System");
     assets.add<IScreen>(this, "Editor", "External"); // TODO: Should have a unique name in case multple instances
+    cProxyScreen = world.getSpindizzy().getProject().getScreenProxy(this);
   }
 
   bool WorldEditor::isMovingNorth() {
@@ -600,6 +602,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   IScreen* WorldEditor::screen() {
-    return this;
+    return cProxyScreen;
   }
 }

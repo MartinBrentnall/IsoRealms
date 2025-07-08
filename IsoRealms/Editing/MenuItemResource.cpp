@@ -57,6 +57,7 @@ namespace IsoRealms {
     if (!cIcon(cResource)) {
       Utils::renderIconBranch();
     }
+    glColor3f(1.0f, 1.0f, 1.0f);
   }
 
   bool MenuItemResource::input(UISignalID id) {

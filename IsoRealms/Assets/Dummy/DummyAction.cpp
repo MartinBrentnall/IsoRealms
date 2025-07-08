@@ -31,7 +31,8 @@ namespace IsoRealms {
   }
   
   bool DummyAction::renderAssetIcon() const {
-    return false;
+    Utils::renderIconNone();
+    return true;
   }
 
   void DummyAction::saveAsset(JSONObject object) const {

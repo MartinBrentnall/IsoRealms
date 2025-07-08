@@ -35,7 +35,7 @@
 namespace IsoRealms::Spindizzy {
   class WorldEditor : public IEditableScreen {
     public:
-    WorldEditor(Project& assets, World& world);
+    WorldEditor(Project& project, World& world);
     void updateScreen(unsigned int milliseconds);
     World& getWorld() const;
     TerrainBrush& getTerrainBrush();
@@ -170,6 +170,8 @@ namespace IsoRealms::Spindizzy {
     EditorToolbar<IWorldEditorTool*, IWorldEditorToolInstance*> cToolbar;
     std::set<IVisualElement*> cEditingVisuals;
 
+    IScreen* cProxyScreen;
+
     IFont* cFont;
     float cFontSize;
 
@@ -184,7 +186,7 @@ namespace IsoRealms::Spindizzy {
     void move(float amount);
     void rotate(float yaw, float pitch);
     void move(float x, float y, float z);
-    
+
     void selectToolRelative(int amount);
     void setPreviousTheme();
     void setNextTheme();

@@ -25,6 +25,7 @@
 
 #include "Assets/Literal/LiteralBindingType.h"
 #include "Assets/Registry/AssetClientManager.h"
+#include "Assets/Registry/ScreenClientManager.h"
 #include "Assets/Dummy/DummyAction.h"
 #include "Assets/Dummy/DummyAssets.h"
 #include "Assets/Dummy/DummyBinding.h"
@@ -268,11 +269,10 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     Project& getProject() override;
-    
+
+    IScreen* getScreenProxy(IScreen* screen);
     void addScreenListener(IScreenListener* listener) override;
     void removeScreenListener(IScreenListener* listener) override;
-    void screenPreRender(IScreen* screen);
-    void screenPostRender(IScreen* screen);
 
     void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) override;
 
@@ -442,8 +442,6 @@ namespace IsoRealms {
     bool cRuntimeUpdatingRuntime;            /// Flag is set when update cycle is being performed.
     bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
 
-    std::vector<IScreenListener*> cScreenListeners;
-
 
 
 
@@ -480,7 +478,7 @@ namespace IsoRealms {
     AssetClientManager<IResourceData, IInputHandler>   cInputHandlers;
     AssetClientManager<IResourceData, IInteger>        cIntegers;
     AssetClientManager<IResourceData, IModel>          cModels;
-    AssetClientManager<IResourceData, IScreen>         cScreens;
+    ScreenClientManager                                cScreens;
     AssetClientManager<IResourceData, IProjectOptions> cProjectOptions;
     AssetClientManager<IResourceData, IAssets>         cAssets;
     AssetClientManager<IResourceData, IString>         cStrings;

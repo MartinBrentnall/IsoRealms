@@ -28,12 +28,6 @@ namespace IsoRealms {
             Asset<Screen, IScreen, IResourceData>(owner) {
   }
 
-  void Screen::render(float scale, float aspectRatio) const {
-    cManager.getProject().screenPreRender(cAsset);
-    cAsset->renderScreen(scale, aspectRatio);
-    cManager.getProject().screenPostRender(cAsset);
-  }
-
   IScreen* Screen::getAsset(IResourceData& owner, JSONObject object) {
     return owner.getAssetManager().getScreen(this, object, owner);
   }

@@ -52,7 +52,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool TerrainState::renderIcon() const {
-    cDefIcon.render(1.0f, 1.0f);
+    cDefIcon->renderScreen(1.0f, 1.0f);
     return true;
   }
 
@@ -89,7 +89,7 @@ namespace IsoRealms::Spindizzy {
   void TerrainState::renderScreen(float scale, float aspectRatio) const {
     glPushMatrix();
     glScalef(cDefIconScale, cDefIconScale, 0.0f);
-    cDefIcon.render(scale, aspectRatio);
+    cDefIcon->renderScreen(scale, aspectRatio);
     glPopMatrix();
   }
 
