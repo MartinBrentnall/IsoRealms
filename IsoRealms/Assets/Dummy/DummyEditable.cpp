@@ -81,7 +81,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void DummyEditable::EditableScreen::setExitAction(Action* action) {
+  void DummyEditable::EditableScreen::setExitAction(IAction* action) {
     // Nothing to do.
   }
 

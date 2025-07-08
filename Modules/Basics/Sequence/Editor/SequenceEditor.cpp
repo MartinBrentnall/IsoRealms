@@ -793,7 +793,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceEditor::setExitAction(Action* action) {
+  void SequenceEditor::setExitAction(IAction* action) {
     cExitAction = action;
   }
 

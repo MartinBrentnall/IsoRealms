@@ -274,22 +274,26 @@ namespace IsoRealms::Basics {
     // if (cParent.cDefName[0] != '_') {
     //   std::cout << "Executing Function \"" << cParent.cDefName << "\"..." << std::endl;
     // } else {
-      std::cout << "\n\n\n\nExecuting \"" << cParent.cDefName  << "\": ===============================================================================" << std::endl << cParent.cDefCode << std::endl;
+    //  std::cout << "\n\n\n\nExecuting \"" << cParent.cDefName  << "\": ===============================================================================" << std::endl << cParent.cDefCode << std::endl;
     // }
-    try {
-      for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
-        std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(i);
-        IBinding* mBinding = cParent.cDefBindings[i]->getValue();
-        mBinding->bind(mBindFunctionName);
-      }
-      for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
-        std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(static_cast<int>(i + cParent.cDefBindings.size()));
-        (**cDefArguments[i])->bind(mBindFunctionName);
-      }
-      (*cParent.cDefLuaState)[cParent.cDefName]();
-    } catch (sol::error& e) {
-      std::cout << "Error in Script: " << e.what() << std::endl;
-      throw e;
+    for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
+      std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(i);
+      IBinding* mBinding = cParent.cDefBindings[i]->getValue();
+      mBinding->bind(mBindFunctionName);
+    }
+    for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
+      std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(static_cast<int>(i + cParent.cDefBindings.size()));
+      (**cDefArguments[i])->bind(mBindFunctionName);
+    }
+
+    sol::protected_function mFunction = (*cParent.cDefLuaState)[cParent.cDefName];
+    sol::protected_function_result mResult = mFunction();
+
+    // We have to check for errors manually because Sol2 exception handling is broken.
+    if (!mResult.valid()) {
+      sol::error mError = mResult;
+      std::cout << std::endl;
+      std::cout << "Function \"" << cParent.cDefName << "\" failed: " << mError.what() << std::endl;
     }
   }
 

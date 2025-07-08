@@ -51,7 +51,6 @@ namespace IsoRealms {
     }
     
     IStateNotifier<TYPE>* add(IAssetProvider<OWNER, TYPE>* provider, const std::string& id, const std::string& category, bool stateChanges = false) {
-      std::cout << "Registering: " << id << std::endl;
       cRegistry.add(provider, id, category);
       if (stateChanges) {
         typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(provider);

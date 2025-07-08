@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IAction.h"
 #include "IBoolean.h"
 #include "IFont.h"
 #include "IInputHandler.h"
@@ -38,7 +39,7 @@ namespace IsoRealms {
     virtual std::vector<std::string> getAnalogueInputs() const = 0;
     virtual void setDigitalInput(const std::string& name, IBoolean* input) = 0;
     virtual void setAnalogueInput(const std::string& name, IFloat* input) = 0;
-    virtual void setExitAction(Action* action) = 0;
+    virtual void setExitAction(IAction* action) = 0;
 
     virtual void setAppearance(IFont* font, float scale) = 0;
     virtual IScreen* screen() = 0;

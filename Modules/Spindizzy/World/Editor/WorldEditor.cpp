@@ -482,7 +482,7 @@ namespace IsoRealms::Spindizzy {
     cAnalogueInputsByName.find(name)->second->set(input);
   }
 
-  void WorldEditor::setExitAction(Action* action) {
+  void WorldEditor::setExitAction(IAction* action) {
     cExitAction = action;
   }
 
