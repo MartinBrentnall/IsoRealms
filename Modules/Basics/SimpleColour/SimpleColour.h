@@ -77,15 +77,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_BLUE;
     static const std::string JSON_ALPHA;
 
-    // Property names.
-    static const std::string PROPERTY_RED;
-    static const std::string PROPERTY_GREEN;
-    static const std::string PROPERTY_BLUE;
-    static const std::string PROPERTY_ALPHA;
-    static const std::string PROPERTY_HUE;
-    static const std::string PROPERTY_SATURATION;
-    static const std::string PROPERTY_LIGHTNESS;
-
     // Definition data.
     float cDefRed;   /// Initial red intensity.
     float cDefGreen; /// Initial green intensity.

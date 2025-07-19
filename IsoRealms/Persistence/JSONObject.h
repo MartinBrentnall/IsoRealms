@@ -27,9 +27,25 @@
 namespace IsoRealms {
   class JSONDocument;
   class JSONArray;
+  class JSONThing;
 
   class JSONObject {
     public:
+    class Iterator {
+      private:
+      JSONObject& cParent;
+      rapidjson::Value::MemberIterator cMember;
+
+      public:
+      Iterator(JSONObject& object, rapidjson::Value::MemberIterator member);
+
+      Iterator& operator++();
+      bool operator!=(const Iterator&);
+      JSONThing operator*();
+    };
+
+    Iterator begin();
+    Iterator end();
     JSONObject(JSONDocument& parent, rapidjson::Value& object);
     JSONArray addArray(const std::string& name);
     JSONObject addObject(const std::string& name);

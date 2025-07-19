@@ -48,7 +48,7 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> LiteralBoolean::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Value", "TODO", [this]() {return cValue;}, [this](bool value) {cValue = value;}, cProject));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](bool value) {cValue = value;}, cProject));
     return mProperties;
   }
 

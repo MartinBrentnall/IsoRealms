@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Initial Value", "TODO", cDefInputHandler));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>(owner.getPropertyData("Value"), cDefInputHandler));
     return mProperties;
   }
 

@@ -104,12 +104,12 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Regular Font",      "TODO", cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Regular Font Size", "TODO", [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  "Code Font",         "TODO", cDefCodeFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Code Font Size",    "TODO", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Exit",    "TODO", cDefExitAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Editor",  "TODO", cDefEditorAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner.getPropertyData("Font"),         cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner.getPropertyData("CodeFont"),     cDefCodeFont));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("CodeFontSize"), [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnExit"),       cDefExitAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnEditor"),     cDefEditorAction));
     // TODO: Input configuration
     return mProperties;
   }

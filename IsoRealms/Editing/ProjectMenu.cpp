@@ -31,7 +31,7 @@ namespace IsoRealms {
     std::set<std::string> mCategories;
     std::set<IModule*> mModules = cProject.getModules();
 
-    addItem(std::make_unique<MenuItemAction>("Project Configuration", [this]() {
+    addItem(std::make_unique<MenuItemAction>("Project Configuration", "TODO: Description", [this]() {
       UIManager& mManager = getUIManager();
       IUIStyle& mStyle = getStyle();
       mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, [this]() {
@@ -49,7 +49,7 @@ namespace IsoRealms {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
     for (std::string mCategory : mCategories) {
-      addItem(std::make_unique<MenuItemAction>(mCategory, [this, mCategory, &mUIManager, &mStyle]() {
+      addItem(std::make_unique<MenuItemAction>(mCategory, "TODO: Category description.", [this, mCategory, &mUIManager, &mStyle]() {
         openUI(std::make_unique<CategoryMenu>(mUIManager, mStyle, cProject, mCategory));
       }));
     }

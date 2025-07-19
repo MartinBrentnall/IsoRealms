@@ -121,9 +121,11 @@ add_library(IsoRealms
   Persistence/JSONArray.cpp
   Persistence/JSONDocument.cpp
   Persistence/JSONObject.cpp
+  Persistence/JSONThing.cpp
   Persistence/ParseException.cpp
   Project.cpp
   ProjectFile.cpp
+  PropertyData.cpp
   ResourceAssetRegistry.cpp
   ResourceType.cpp
   System.cpp

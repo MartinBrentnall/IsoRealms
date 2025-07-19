@@ -20,6 +20,7 @@
 
 #include "JSONArray.h"
 #include "JSONDocument.h"
+#include "JSONThing.h"
 
 namespace IsoRealms {
   JSONObject::JSONObject(JSONDocument& parent, rapidjson::Value& object) :
@@ -97,5 +98,33 @@ namespace IsoRealms {
 
   float JSONObject::getFloat(const std::string& name, float defaultValue) const {
     return cObject.HasMember(name) ? cObject[name].GetFloat() : defaultValue;
+  }
+
+  JSONObject::Iterator JSONObject::begin() {
+    return Iterator(*this, cObject.MemberBegin());
+  }
+
+  JSONObject::Iterator JSONObject::end() {
+    return Iterator(*this, cObject.MemberEnd());
+  }
+
+  JSONObject::Iterator::Iterator(JSONObject& parent, rapidjson::Value::MemberIterator member) :
+            cParent(parent),
+            cMember(member) {
+  }
+
+  JSONObject::Iterator& JSONObject::Iterator::operator++() {
+    do {
+      ++cMember;
+    } while (cMember != cParent.cObject.MemberEnd() && !cMember->value.IsObject());
+    return *this;
+  }
+
+  bool JSONObject::Iterator::operator!=(const JSONObject::Iterator& node) {
+    return &cParent != &node.cParent || cMember != node.cMember;
+  }
+
+  JSONThing JSONObject::Iterator::operator*() {
+    return JSONThing(cParent.cParent, cMember);
   }
 }

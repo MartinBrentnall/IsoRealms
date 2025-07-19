@@ -24,8 +24,8 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyKey::PropertyKey(const std::string& name, const std::string& tooltip, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) :
-            Property(name, tooltip, removeFunction),
+  PropertyKey::PropertyKey(const PropertyData& data, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) :
+            Property(data, removeFunction),
             cGetter(getter),
             cSetter(setter) {
   }

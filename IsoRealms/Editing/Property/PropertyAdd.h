@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class PropertyAdd : public Property {
     public:
-    PropertyAdd(const std::string& name, const std::string& tooltip, const std::string& value, std::function<std::unique_ptr<IProperty>()> addPropertyFunction);
+    PropertyAdd(const PropertyData& data, const std::string& value, std::function<std::unique_ptr<IProperty>()> addPropertyFunction);
     
     /************************\
      * Implements IProperty *

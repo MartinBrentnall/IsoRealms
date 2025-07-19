@@ -184,18 +184,18 @@ namespace IsoRealms::Hue {
   
   std::vector<std::unique_ptr<IProperty>> HueManager::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("Address", "TODO", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("User",    "TODO", [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>("PSK",     "TODO", [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("Address"), [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("User"),    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("PSK"),     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;}));
     for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Bulb", "TODO", mBulb->getColour(), [this, &mBulb]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Bulb"), mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Bulb", "TODO", "Add...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Bulb"), "Add...", [this, &owner]() {
       cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cResourceData, cDefBulbs.size()));
       std::unique_ptr<Bulb>& mBulb  = cDefBulbs.back();
-      return std::make_unique<PropertyAsset<Colour>>("Bulb", "TODO", mBulb->getColour(), [this, &mBulb]() {
+      return std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Bulb"), mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       });
     }));

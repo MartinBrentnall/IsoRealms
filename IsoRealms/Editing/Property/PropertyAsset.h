@@ -39,12 +39,12 @@
 namespace IsoRealms {
   template<class TYPE> class PropertyAsset : public Property {
     public:
-    PropertyAsset(const std::string& name, const std::string& tooltip, TYPE& asset, std::function<void()> removeFunction = nullptr) :
-              Property(name, tooltip, removeFunction),
+    PropertyAsset(const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
+              Property(data, removeFunction),
               cAsset(asset),
               cValueLabel(getValue()) {
     }
-    
+
     std::string getValue() {
       std::string mID = cAsset.getID();
       return mID.substr(mID.find_last_of('/') + 1);

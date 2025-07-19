@@ -66,8 +66,8 @@ namespace IsoRealms::UI {
   
   std::vector<std::unique_ptr<IProperty>> LayoutLocationRelative::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>( "Value", "TODO", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyList>(cParent.getComponent().getLayout().getUI().getProject(), "Relative", "TODO", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(                                                  PropertyData("Value",    "TODO"), [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyList>(cParent.getComponent().getLayout().getUI().getProject(), PropertyData("Relative", "TODO"), cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;}));
     return mProperties;
   }
 

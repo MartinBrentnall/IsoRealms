@@ -103,7 +103,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceTrackColour::getEventProperties(IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Start Colour", "The starting output colour of this track", cDefInitColour));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(PropertyData("TODO: Start Colour", "The starting output colour of this track"), cDefInitColour));
     return mProperties;
   }
 

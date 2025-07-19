@@ -27,7 +27,7 @@
 namespace IsoRealms {
   class PropertyNativeFloat : public PropertyInputField {
     public:
-    PropertyNativeFloat(const std::string& name, const std::string& tooltip, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyNativeFloat(const PropertyData& data, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr);
 
     protected:
     

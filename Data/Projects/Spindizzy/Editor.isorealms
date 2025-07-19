@@ -2,7 +2,9 @@
   "project": {
     "include": [
       {
-        "filename": "Projects/Spindizzy/Options.isorealms"
+        "filename": {
+          "path": "Projects/Spindizzy/Options.isorealms"
+        }
       }
     ],
     "screen": {

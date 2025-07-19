@@ -1,0 +1,226 @@
+{
+  "description": "Basic functionality for use in any application",
+  "resources": {
+    "AnalogueInput": {
+      "singular": "Analogue Input",
+      "plural": "Analogue Inputs",
+      "description": "Inputs for analogue devices such as analogue sticks and trigger buttons.",
+      "category": "Input",
+      "properties": {
+      }
+    },
+    "BooleanTrigger": {
+      "singular": "Boolean Trigger",
+      "plural": "Boolean Triggers",
+      "description": "Trigger actions upon changes of boolean values.",
+      "category": "Logic",
+      "properties": {
+        "Value": {"name": "Value", "description": "Boolean value on which changes will trigger actions."},
+        "OnTrue": {"name": "Action on True", "description": "Action to perform on value becoming TRUE."},
+        "OnFalse": {"name": "Action on False", "description": "Action to perform on value becoming FALSE."}
+      }
+    },
+    "DigitalInput": {
+      "singular": "Digital Input",
+      "plural": "Digital Inputs",
+      "description": "Inputs for digital devices such as face buttons, mouse buttons, and keyboard keys.",
+      "category": "Input",
+      "properties": {
+      }
+    },
+    "Font": {
+      "singular": "Font",
+      "plural": "Fonts",
+      "description": "Fonts loaded from TrueType (*.ttf) files.",
+      "category": "Primitives",
+      "properties": {
+        "File": {"name": "File", "description": "TrueType (*.ttf) file from which to load the font."},
+        "Detail": {"name": "Detail", "description": "Resolution of the font, higher being more detailed.  TODO: Explain this better."},
+        "Scale": {"name": "Scale", "description": "Scaling of the font.  TODO: Explain the purpose of this."},
+        "XOffset": {"name": "X Offset", "description": "Tune the horizontal position of all text using this font."},
+        "YOffset": {"name": "Y Offset", "description": "Tune the vertical position of all text using this font."},
+        "LineSpacing": {"name": "Line Spacing", "description": "Tune the amount of space between lines of all text using this font."}
+      }
+    },
+    "Sound": {
+      "singular": "Sound",
+      "plural": "Sounds",
+      "description": "Sounds loaded from supported audio files.",
+      "category": "Primitives",
+      "properties": {
+        "File": {"name": "File", "description": "Supported audio file from which to load the sound."}
+      }
+    },
+    "Texture": {
+      "singular": "Texture",
+      "plural": "Textures",
+      "description": "Textures loaded from supported image files.",
+      "category": "Primitives",
+      "properties": {
+        "File": {"name": "File", "description": "Supported image file from which to load the texture."}
+      }
+    },
+    "Function": {
+      "singular": "Function",
+      "plural": "Functions",
+      "description": "Reusable parameterized functions written in Lua.",
+      "category": "Logic",
+      "properties": {
+        "Bindings": {"name": "Bindings", "description": "Bind IsoRealms objects to Lua variables for use in this function."},
+        "BindingValue": {"name": "What", "description": "The IsoRealms object to bind."},
+        "BindingName": {"name": "Name", "description": "Lua variable name for the bound object."},
+        "BindingAdd": {"name": "Binding", "description": "Add a binding to this function."},
+        "Arguments": {"name": "Arguments", "description": "Bind IsoRealms objects to Lua variables for use in this function.  Each object to bind is selected by when calling the function."},
+        "ArgumentType": {"name": "Type", "description": "The type of IsoRealms object to be bound to this argument."},
+        "ArgumentName": {"name": "Name", "description": "Lua variable name for the bound object."},
+        "ArgumentAdd": {"name": "Argument", "description": "Add an argument to this function."},
+        "Code": {"name": "Code", "description": "The Lua code of this function."}
+      }
+    },
+    "InputGroup": {
+      "singular": "Input Group",
+      "plural": "Input Groups",
+      "description": "Combine many input handlers into a single group.",
+      "category": "Input",
+      "properties": {
+        "InputHandler": {"name": "Input Handler", "description": "This input handler will handle inputs as part of this group."},
+        "InputHandlerAdd": {"name": "Input Handler", "description": "Add an input handler to this group."}
+      }
+    },
+    "InputSwitch": {
+      "singular": "Input Switch",
+      "plural": "Input Switches",
+      "description": "Swap between different input handlers.",
+      "category": "Input",
+      "properties": {
+        "Value": {"name": "Initial Value", "description": "Default input handler for this switch."}
+      }
+    },
+    "InterruptHandler": {
+      "singular": "Interrupt Handler",
+      "plural": "Interrupt Handlers",
+      "description": "Trigger actions when the user performs any active input, such as clicking a mouse button or pressing any key.  This can be useful for interrupting demos or splash screens.",
+      "category": "Input",
+      "properties": {
+        "Action": {"name": "Action", "description": "Action to be performed upon triggering of this interrupt handler."}
+      }
+    },
+    "Project": {
+      "singular": "Project",
+      "plural": "Projects",
+      "description": "Nest other projects within the current one.",
+      "category": "System",
+      "properties": {
+      }
+    },
+    "ProjectConfigurer": {
+      "singular": "Project Configurer",
+      "plural": "Project Configurers",
+      "description": "Utility for editing a project.",
+      "category": "System",
+      "properties": {
+        "NormalFont": {"name": "Normal Font", "description": "Font used for menus, labels, values, etc."},
+        "NormalFontSize": {"name": "Normal Font Size", "description": "Size of the font used for menus, labels, values, etc."},
+        "CodeFont": {"name": "Code Font", "description": "Font used for code (functions, scripts, etc.)"},
+        "CodeFontSize": {"name": "Code Font Size", "description": "Size of the font used for code."},
+        "OnExit": {"name": "Action on Exit", "description": "Action to perform upon leaving the project configurer."},
+        "OnEditor": {"name": "Action on Editor", "description": "Action to perform upon starting an editor."}
+      }
+    },
+    "ProjectOptions": {
+      "singular": "Project Options",
+      "plural": "Project Options",
+      "description": "Define sets of values to be passed as options when opening a project.",
+      "category": "System",
+      "properties": {
+      }
+    },
+    "Sequence": {
+      "singular": "Sequence",
+      "plural": "Sequences",
+      "description": "Enables values to be changed and actions to be triggered over a timeline.",
+      "category": "Logic",
+      "properties": {
+        "Content": {"name": "Content", "description": "The content of this sequence."},
+        "Playing": {"name": "Playing", "description": "Determines whether the sequence is already playing when the app is started."},
+        "Loop": {"name": "Loop", "description": "Determines whether the sequence starts again from the beginning when reaching the end.  If a sequence does not loop, then it stops when reaching the end."},
+        "Speed": {"name": "Speed", "description": "The speed factor at which this sequence plays, where 1.0 is normal speed."},
+        "InstanceAdd": {"name": "Instance", "description": "Create an instance of this sequence.  At least one instance is required to use the sequence."},
+        "Action": {"name": "Action", "description": "Action to perform upon reaching this event in the sequence."},
+        "AudioVolume": {"name": "Volume", "description": "The volume at which to play audio within this track."},
+        "AudioFile": {"name": "Audio File", "description": "Supported audio file from which to play audio from this position in the sequence."},
+        "ColourStart": {"name": "Start Colour", "description": "The colour output from this track at the start of this sequence."},
+        "ColourValue": {"name": "Colour", "description": "The colour output from this track upon reaching this event in the sequence."},
+        "ColourFade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous colour into this one, or just change immediately."},
+        "FloatStart": {"name": "Start Value", "description": "The value output from this track at the start of this sequence."},
+        "FloatValue": {"name": "Value", "description": "The value output from this track upon reaching this event in the sequence."},
+        "FloatFade": {"name": "Gradual Change", "description": "Determines whether to change gradually from the previous value to this one, or just change immediately."}
+      }
+    },
+    "Boolean": {
+      "singular": "Boolean",
+      "plural": "Booleans",
+      "description": "Boolean variables.",
+      "category": "Primitives",
+      "properties": {
+        "Value": {"name": "Value", "description": "Initial value of this boolean variable."}
+      }
+    },
+    "Colour": {
+      "singular": "Colour",
+      "plural": "Colours",
+      "description": "Colour variables and constants.",
+      "category": "Primitives",
+      "properties": {
+        "Value": {"name": "Value", "description": "Initial value of this colour variable."}
+      }
+    },
+    "Float": {
+      "singular": "Float",
+      "plural": "Floats",
+      "description": "Decimal number variables and constants.",
+      "category": "Primitives",
+      "properties": {
+        "Value": {"name": "Value", "description": "Initial value of this decimal number variable."}
+      }
+    },
+    "Integer": {
+      "singular": "Integer",
+      "plural": "Integers",
+      "description": "Whole number variables and constants.",
+      "category": "Primitives",
+      "properties": {
+        "Value": {"name": "Value", "description": "Initial value of this whole number variable."}
+      }
+    },
+    "String": {
+      "singular": "String",
+      "plural": "Strings",
+      "description": "Text string variables and constants.",
+      "category": "Primitives",
+      "properties": {
+        "Value": {"name": "Value", "description": "Initial value of this text string variable."}
+      }
+    },
+    "Vertex": {
+      "singular": "Vertex",
+      "plural": "Vertices",
+      "description": "Vertex variables and constants.",
+      "category": "Primitives",
+      "properties": {
+        "Value": {"name": "Value", "description": "Initial value of this vertex variable."}
+      }
+    },
+    "Sprite": {
+      "singular": "Sprite",
+      "plural": "Sprites",
+      "description": "2D sprite models in various forms.",
+      "category": "Primitives",
+      "properties": {
+        "Appearance": {"name": "Appearance", "description": "Texture to be used for this sprite."},
+        "BillboardAngle": {"name": "Billboard Angle", "description": "Sprite rotates to face the opposite direction of the camera.  This is useful for sprites in 3D environments that need to look the same from all sides, such as trees."},
+        "BillboardTilt": {"name": "Billboard Tilt", "description": "Sprite tilts to face the opposite direction of the camera.  This is useful for sprite in 3D environments that need to look the same from above and below, such as balls."}
+      }
+    }
+  }
+}

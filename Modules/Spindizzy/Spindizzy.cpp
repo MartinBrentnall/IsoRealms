@@ -69,7 +69,7 @@ namespace IsoRealms::Spindizzy {
                     cResourceZone(*this),
                     cResourceZoneObject(*this),
                     cRuntimePaused(false),
-                    cBindingTypeTerrainState(ID_RESOURCE_TERRAIN_STATE),
+                    cBindingTypeTerrainState("TerrainState"),
                     cRuntimeParameterAlien(project, nullptr),
                     cRuntimeParameterFallDistance(project, nullptr),
                     cRuntimeParameterLaunchLocation(project, nullptr),
@@ -98,27 +98,27 @@ namespace IsoRealms::Spindizzy {
                     cRuntimeParameterZone1(project, nullptr),
                     cRuntimeParameterZone2(project, nullptr),
                     cRuntimeLocalBindingIdentifier(nullptr) {
-    registry->add(&cResourceAlien,              ID_RESOURCE_ALIEN,                "Alien",               "Aliens",               RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceBall,               ID_RESOURCE_BALL,                 "Ball Texture",        "Ball Textures",        RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceBoundaryHandler,    ID_RESOURCE_BOUNDARY_HANDLER,     "Boundary Handler",    "Boundary Handlers",    RESOURCE_CATEGORY_SPINDIZZY_LOGIC);
-    registry->add(&cResourceC64LiftGraphics,    ID_RESOURCE_C64_LIFT_GRAPHICS,    "Lift Textures",       "Lift Textures",        RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceC64TerrainGraphics, ID_RESOURCE_C64_TERRAIN_GRAPHICS, "Terrain Textures",    "Terrain Textures",     RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceCollisionHandler,   ID_RESOURCE_COLLISION_HANDLER,    "Collision Handler",   "Collision Handlers",   RESOURCE_CATEGORY_SPINDIZZY_LOGIC);
-    registry->add(&cResourceDebrisChunk,        ID_RESOURCE_DEBRIS_CHUNK,         "Debris Chunk Model",  "Debris Chunk Models",  RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceGyroscope,          ID_RESOURCE_GYROSCOPE,            "Gyroscope Model",     "Gyroscope Models",     RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourcePickUp,             ID_RESOURCE_PICK_UP,              "Pick Up",             "Pick Ups",             RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourcePlayer,             ID_RESOURCE_PLAYER,               "Player",              "Players",              RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceTop,                ID_RESOURCE_TOP,                  "Top Model",           "Top Models",           RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceJewel,              ID_RESOURCE_JEWEL,                "Jewel Model",         "Jewel Models",         RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceLift,               ID_RESOURCE_LIFT,                 "Lift",                "Lifts",                RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceModelCycler,        ID_RESOURCE_MODEL_CYCLER,         "Model Cycler",        "Model Cyclers",        RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceTerrain,            ID_RESOURCE_TERRAIN,              "Terrain",             "Terrain",              RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceTerrainState,       ID_RESOURCE_TERRAIN_STATE,        "Terrain State",       "Terrain States",       RESOURCE_CATEGORY_SPINDIZZY_LOGIC);
-    registry->add(&cResourceThemeSet,           ID_RESOURCE_THEME_SET,            "Theme Set",           "Theme Sets",           RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceWorld,              ID_RESOURCE_WORLD,                "World",               "Worlds",               RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceWorldView,          ID_RESOURCE_WORLD_VIEW,           "World View",          "World Views",          RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceZone,               ID_RESOURCE_ZONE,                 "Zone Type",           "Zone Types",           RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceZoneObject,         ID_RESOURCE_ZONE_OBJECT,          "Entity",              "Entities",             RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceAlien,              "Alien");
+    registry->add(&cResourceBall,               "Ball");
+    registry->add(&cResourceBoundaryHandler,    "BoundaryHandler");
+    registry->add(&cResourceC64LiftGraphics,    "C64LiftGraphics");
+    registry->add(&cResourceC64TerrainGraphics, "C64TerrainGraphics");
+    registry->add(&cResourceCollisionHandler,   "CollisionHandler");
+    registry->add(&cResourceDebrisChunk,        "DebrisChunk");
+    registry->add(&cResourceGyroscope,          "Gyroscope");
+    registry->add(&cResourceJewel,              "Jewel");
+    registry->add(&cResourceLift,               "Lift");
+    registry->add(&cResourceModelCycler,        "ModelCycler");
+    registry->add(&cResourcePickUp,             "PickUp");
+    registry->add(&cResourcePlayer,             "Player");
+    registry->add(&cResourceTerrain,            "Terrain");
+    registry->add(&cResourceTerrainState,       "TerrainState");
+    registry->add(&cResourceThemeSet,           "ThemeSet");
+    registry->add(&cResourceTop,                "Top");
+    registry->add(&cResourceWorld,              "World");
+    registry->add(&cResourceWorldView,          "WorldView");
+    registry->add(&cResourceZone,               "Zone");
+    registry->add(&cResourceZoneObject,         "ZoneObject");
         
     // Register Spindizzy built-in asset providers.
     cCameras.add(&cProviderCameraGameplay,     CAMERA_GAMEPLAY,     "Spindizzy");
@@ -530,23 +530,23 @@ namespace IsoRealms::Spindizzy {
     add(&cToolMoveZone,   TOOL_MOVE_ZONE);
     add(&cToolDeleteZone, TOOL_DELETE_ZONE);
   }
-  
+
   std::vector<std::unique_ptr<IProperty>> Spindizzy::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Width",    "TODO", [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Length",   "TODO", [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "Default Zone Height",   "TODO", [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("Default Zone Width",    "TODO"), [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("Default Zone Length",   "TODO"), [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("Default Zone Height",   "TODO"), [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value; return true;}));
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneType>>("Default Zone Type", *cAutomaticZoneManagementType));
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<ThemeSet>>("Default Zone Theme", *cDefaultThemeSet));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>(  "Default Editor Tool",   "TODO", cDefaultWorldEditorTool));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World West Boundary",   "TODO", [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World East Boundary",   "TODO", [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World South Boundary",  "TODO", [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World North Boundary",  "TODO", [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World Depth Boundary",  "TODO", [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           "World Height Boundary", "TODO", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>(  PropertyData("Default Editor Tool",   "TODO"), cDefaultWorldEditorTool));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("World West Boundary",   "TODO"), [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("World East Boundary",   "TODO"), [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("World South Boundary",  "TODO"), [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("World North Boundary",  "TODO"), [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("World Depth Boundary",  "TODO"), [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(           PropertyData("World Height Boundary", "TODO"), [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value; return true;}));
     for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>("World Editing Tool " + Utils::toString(i + 1), "TODO", *cAvailableWorldEditorTools[i].get(), [this, i]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>(PropertyData("World Editing Tool " + Utils::toString(i + 1), "TODO"), *cAvailableWorldEditorTools[i].get(), [this, i]() {
         cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
       }));
     }
@@ -709,28 +709,6 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  const std::string Spindizzy::ID_RESOURCE_ALIEN                = "Alien";
-  const std::string Spindizzy::ID_RESOURCE_BALL                 = "Ball";
-  const std::string Spindizzy::ID_RESOURCE_BOUNDARY_HANDLER     = "BoundaryHandler";
-  const std::string Spindizzy::ID_RESOURCE_C64_LIFT_GRAPHICS    = "C64LiftGraphics";
-  const std::string Spindizzy::ID_RESOURCE_C64_TERRAIN_GRAPHICS = "C64TerrainGraphics";
-  const std::string Spindizzy::ID_RESOURCE_COLLISION_HANDLER    = "CollisionHandler";
-  const std::string Spindizzy::ID_RESOURCE_DEBRIS_CHUNK         = "DebrisChunk";
-  const std::string Spindizzy::ID_RESOURCE_GYROSCOPE            = "Gyroscope";
-  const std::string Spindizzy::ID_RESOURCE_JEWEL                = "Jewel";
-  const std::string Spindizzy::ID_RESOURCE_LIFT                 = "Lift";
-  const std::string Spindizzy::ID_RESOURCE_MODEL_CYCLER         = "ModelCycler";
-  const std::string Spindizzy::ID_RESOURCE_PICK_UP              = "PickUp";
-  const std::string Spindizzy::ID_RESOURCE_PLAYER               = "Player";
-  const std::string Spindizzy::ID_RESOURCE_TERRAIN              = "Terrain";
-  const std::string Spindizzy::ID_RESOURCE_TERRAIN_STATE        = "TerrainState";
-  const std::string Spindizzy::ID_RESOURCE_THEME_SET            = "ThemeSet";
-  const std::string Spindizzy::ID_RESOURCE_TOP                  = "Top";
-  const std::string Spindizzy::ID_RESOURCE_WORLD                = "World";
-  const std::string Spindizzy::ID_RESOURCE_WORLD_VIEW           = "WorldView";
-  const std::string Spindizzy::ID_RESOURCE_ZONE                 = "Zone";
-  const std::string Spindizzy::ID_RESOURCE_ZONE_OBJECT          = "ZoneObject";
-    
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS = "Spindizzy Elements";
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS = "Spindizzy Graphics";
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_LOGIC    = "Spindizzy Logic";

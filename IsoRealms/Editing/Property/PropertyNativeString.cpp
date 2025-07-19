@@ -19,8 +19,8 @@
 #include "PropertyNativeString.h"
 
 namespace IsoRealms {
-  PropertyNativeString::PropertyNativeString(const std::string& name, const std::string& tooltip, std::function<std::string()> getter, std::function<bool(const std::string&)> setter, std::function<void()> removeFunction) :
-            PropertyInputField(name, tooltip, getter(), removeFunction),
+  PropertyNativeString::PropertyNativeString(const PropertyData& data, std::function<std::string()> getter, std::function<bool(const std::string&)> setter, std::function<void()> removeFunction) :
+            PropertyInputField(data, getter(), removeFunction),
             cSetter(setter) {
   }
   

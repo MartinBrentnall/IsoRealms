@@ -19,14 +19,11 @@
 #include "Replay.h"
 
 namespace IsoRealms::Replay {
-  const std::string Replay::ID_RESOURCE_PLAYBACK  = "Player";
-  const std::string Replay::ID_RESOURCE_RECORDER  = "Recorder";
-      
   Replay::Replay(Project& project, IResourceTypeRegistry* registry):
                     cResourceTypePlayer(*this),
                     cResourceTypeRecorder(*this) {
-    registry->add(&cResourceTypePlayer,   ID_RESOURCE_PLAYBACK, "Player",   "Players",   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeRecorder, ID_RESOURCE_RECORDER, "Recorder", "Recorders", IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypePlayer,   "Player");
+    registry->add(&cResourceTypeRecorder, "Recorder");
   }
 
   void Replay::load(IProject& project, JSONObject object) {

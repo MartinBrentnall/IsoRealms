@@ -27,14 +27,16 @@
 #include "IResourceType.h"
 #include "IResourceTypeDefinition.h"
 #include "Options/LocalOptions.h"
+#include "Persistence/JSONThing.h"
 #include "Resource.h"
 
 namespace IsoRealms {
   class ResourceType : public IResourceType {
     public:
-    ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category);
+    ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent);
     virtual ~ResourceType();
     void loadResource(JSONObject object, IProject& project, IOptions& options, File* ownerProject, const std::string& resourceDataPath);
+    void loadMetadata(JSONObject object);
     bool needsSaving(File* savingProject) const;
     void save(JSONArray& array, const std::string& tag, File* savingProject);
 
@@ -54,11 +56,21 @@ namespace IsoRealms {
     void renameUserDataDirectory(const std::string& oldName, const std::string& newName) override;
     std::string getProjectPathPrefix(bool user) override;
     std::string getCategory() override;
+    std::string getDescription() const override;
     IAssets& getAssets() override;
     Project& getProject() override;
+    const PropertyData& getPropertyData(const std::string& key) const override;
+    std::string getPropertyName(const std::string& key) const override;
+    std::string getPropertyDescription(const std::string& key) const override;    
 
     private:
+    static const std::string JSON_CATEGORY;
+    static const std::string JSON_DESCRIPTION;
     static const std::string JSON_ID;
+    static const std::string JSON_NAME;
+    static const std::string JSON_PLURAL;
+    static const std::string JSON_PROPERTIES;
+    static const std::string JSON_SINGULAR;
 
     IResourceTypeDefinition* cResourceType;
     std::set<IResource*> cResources;
@@ -66,5 +78,8 @@ namespace IsoRealms {
     std::string cSingular;
     std::string cPlural;
     std::string cCategory;
+    std::string cDescription;
+    std::map<std::string, std::unique_ptr<PropertyData>> cPropertyHelp;
+    PropertyData cPropertyMissing;
   };
 }

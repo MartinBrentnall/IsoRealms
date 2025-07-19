@@ -206,7 +206,7 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> KeyMapping::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyKey>("Key", "TODO", [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;}));
+    mProperties.emplace_back(std::make_unique<PropertyKey>(PropertyData("Key", "TODO"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;}));
     return mProperties;
   }
 

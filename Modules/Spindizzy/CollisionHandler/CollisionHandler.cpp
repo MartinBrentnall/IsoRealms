@@ -67,10 +67,10 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type A", "TODO", cDefPhysicalObjectTypeA));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>("Entity Type B", "TODO", cDefPhysicalObjectTypeB));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Contact", "TODO", cDefEnteredAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on Departure", "TODO", cDefExitedAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>(owner.getPropertyData("EntityTypeA"),       cDefPhysicalObjectTypeA));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>(owner.getPropertyData("EntityTypeB"),       cDefPhysicalObjectTypeB));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(            owner.getPropertyData("ActionOnContact"),   cDefEnteredAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(            owner.getPropertyData("ActionOnDeparture"), cDefExitedAction));
     return mProperties;
   }
 

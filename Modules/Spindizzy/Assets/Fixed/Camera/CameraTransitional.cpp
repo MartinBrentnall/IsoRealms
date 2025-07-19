@@ -167,13 +167,13 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> CameraTransitional::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        "Start",                   "TODO", cDefStart));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        "End",                     "TODO", cDefEnd));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Duration",                "TODO", [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Departure from Start", "TODO", cDefStartDepartureAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Arrival at End",       "TODO", cDefEndArrivalAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Departure from End",   "TODO", cDefEndDepartureAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        "On Arrival at Start",     "TODO", cDefStartArrivalAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        PropertyData("Start",                   "TODO"), cDefStart));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        PropertyData("End",                     "TODO"), cDefEnd));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(PropertyData("Duration",                "TODO"), [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Departure from Start", "TODO"), cDefStartDepartureAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Arrival at End",       "TODO"), cDefEndArrivalAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Departure from End",   "TODO"), cDefEndDepartureAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Arrival at Start",     "TODO"), cDefStartArrivalAction));
     return mProperties;
   }
 

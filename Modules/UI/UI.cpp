@@ -20,13 +20,6 @@
 #include "UI.h"
 
 namespace IsoRealms::UI {
-  const std::string UI::ID_RESOURCE_LAYOUT           = "Layout";
-  const std::string UI::ID_RESOURCE_MENU             = "Menu";
-  const std::string UI::ID_RESOURCE_PROMPT           = "Prompt";
-  const std::string UI::ID_RESOURCE_SCREEN_FADER     = "ScreenFader";
-  const std::string UI::ID_RESOURCE_THROBBER         = "Throbber";
-  const std::string UI::ID_RESOURCE_VIRTUAL_KEYBOARD = "VirtualKeyboard";
-
   const std::string UI::MENU_ITEM_ACTION             = "Action";
   const std::string UI::MENU_ITEM_BOOLEAN            = "Boolean";
   const std::string UI::MENU_ITEM_DIGITAL_INPUT      = "DigitalInput";
@@ -70,12 +63,12 @@ namespace IsoRealms::UI {
                     cResourceTypeScreenFader(*this),
                     cResourceTypeThrobber(*this),
                     cResourceTypeVirtualKeyboard(*this) {
-    registry->add(&cResourceTypeLayout,          ID_RESOURCE_LAYOUT,           "Layout",           "Layouts",           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeMenu,            ID_RESOURCE_MENU,             "Menu",             "Menus",             IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypePrompt,          ID_RESOURCE_PROMPT,           "Prompt",           "Prompts",           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeScreenFader,     ID_RESOURCE_SCREEN_FADER,     "Screen Fader",     "Screen Faders",     IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeThrobber,        ID_RESOURCE_THROBBER,         "Throbber",         "Throbbers",         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeVirtualKeyboard, ID_RESOURCE_VIRTUAL_KEYBOARD, "Virtual Keyboard", "Virtual Keyboards", IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeLayout,          "Layout");
+    registry->add(&cResourceTypeMenu,            "Menu");
+    registry->add(&cResourceTypePrompt,          "Prompt");
+    registry->add(&cResourceTypeScreenFader,     "ScreenFader");
+    registry->add(&cResourceTypeThrobber,        "Throbber");
+    registry->add(&cResourceTypeVirtualKeyboard, "VirtualKeyboard");
 
     // Register UI built-in asset providers.
     cLayoutLocations.add(&cProviderLayoutLocationAbsolute, LAYOUT_LOCATION_ABSOLUTE, "UI");

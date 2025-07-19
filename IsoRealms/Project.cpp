@@ -23,6 +23,7 @@
 #include "DisplayResolution.h"
 #include "IAssetOverride.h"
 #include "Module.h"
+#include "PropertyData.h"
 
 namespace IsoRealms {
   const std::string Project::JSON_ACTION         = "action";
@@ -115,7 +116,8 @@ namespace IsoRealms {
           cDefStartAction(*this),
           cDefQuitAction(*this),
           cPropertyValue(""),
-          cPropertyValueBinding(*this, &cPropertyValue, this) {
+          cPropertyValueBinding(*this, &cPropertyValue, this),
+          cMissingData("TODO: Name", "TODO: Description") {
 
     // Support conversions.
     cBindings.add(&cConversionProviderActionToBinding,         ":Action",         CATEGORY_CONVERSIONS);
@@ -169,15 +171,10 @@ namespace IsoRealms {
 
 //       std::cout << "TYPE: " << options.getOption("type") << std::endl;
       bool mUser = options.getOption("type") == "user";
-      cProjectFile.cFile.setPath(mFile, mUser);
-
-      // Open Project File and Node
-      JSONDocument mProjectDocument(mFile, mUser);
-      JSONObject mProjectObject = mProjectDocument.getObject(JSON_PROJECT);
+      cProjectFile.rename(mFile, mUser);
 
       // Load modules and any resources declared within them
-      loadModules(mProjectObject);
-      std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(mProjectObject, options, cProjectFile);
+      std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(options, cProjectFile);
       for (const std::unique_ptr<Module>& mModule : cModules) {
         mModule->registerAssets();
       }
@@ -270,21 +267,6 @@ namespace IsoRealms {
     return loadModule(name);
   }
 
-  void Project::loadModules(JSONObject object) {
-    for (JSONObject mModuleObject : object.getArray(JSON_MODULES)) {
-      std::string mModuleName = mModuleObject.getString(JSON_NAME);
-      getModule(mModuleName);
-    }
-
-    for (JSONObject mIncludeObject : object.getArray(JSON_INCLUDE)) {
-      std::string mName = mIncludeObject.getString(JSON_FILENAME);
-      bool mUser = mIncludeObject.getBoolean(JSON_USER);
-      std::unique_ptr<JSONDocument> mProjectDocument = std::make_unique<JSONDocument>(mName, mUser);
-      JSONObject mProjectObject = mProjectDocument->getObject(JSON_PROJECT);
-      loadModules(mProjectObject);
-    }
-  }
-
   bool Project::isModuleLoaded(const std::string& name) const {
     for (const std::unique_ptr<Module>& mModule : cModules) {
       if (mModule->getName() == name) {
@@ -294,17 +276,27 @@ namespace IsoRealms {
     return false;
   }
   
-  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(JSONObject object, IOptions& options, ProjectFile& file) {
-    cDefScreen.init(object, JSON_SCREEN, &file.cFile);
-    cDefInputHandler.init(object, JSON_INPUT, &file.cFile);
-    cDefInitAction.init(object, JSON_INITIALISATION, &file.cFile);
-    cDefResetAction.init(object, JSON_RESET, &file.cFile);
-    cDefStartAction.init(object, JSON_START, &file.cFile);
-    cDefQuitAction.init(object, JSON_QUIT, &file.cFile);
-    cDefDefaultEditor.init(object, JSON_EDITOR, &file.cFile);
+  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(IOptions& options, ProjectFile& file) {
+    std::unique_ptr<JSONDocument> mProjectDocument = std::make_unique<JSONDocument>(file.cFile);
+    JSONObject mProjectObject = mProjectDocument->getObject(JSON_PROJECT);
+    std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
+    mOpenedDocuments.emplace_back(std::move(mProjectDocument));
 
-    if (object.hasMember(JSON_PROPERTIES)) {
-      for (JSONObject mPropertyObject : object.getArray(JSON_PROPERTIES)) {
+    cDefScreen.init(mProjectObject, JSON_SCREEN, &file.cFile);
+    cDefInputHandler.init(mProjectObject, JSON_INPUT, &file.cFile);
+    cDefInitAction.init(mProjectObject, JSON_INITIALISATION, &file.cFile);
+    cDefResetAction.init(mProjectObject, JSON_RESET, &file.cFile);
+    cDefStartAction.init(mProjectObject, JSON_START, &file.cFile);
+    cDefQuitAction.init(mProjectObject, JSON_QUIT, &file.cFile);
+    cDefDefaultEditor.init(mProjectObject, JSON_EDITOR, &file.cFile);
+
+    for (JSONObject mModuleObject : mProjectObject.getArray(JSON_MODULES)) {
+      std::string mModuleName = mModuleObject.getString(JSON_NAME);
+      getModule(mModuleName);
+    }
+
+    if (mProjectObject.hasMember(JSON_PROPERTIES)) {
+      for (JSONObject mPropertyObject : mProjectObject.getArray(JSON_PROPERTIES)) {
         std::string mPropertyID = mPropertyObject.getString(JSON_ID);
         if (cProperties.find(mPropertyID) == cProperties.end()) {
           cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(*this, mPropertyObject, &file.cFile));
@@ -312,24 +304,17 @@ namespace IsoRealms {
       }
     }
 
-    for (JSONObject mModuleObject : object.getArray(JSON_MODULES)) {
+    for (JSONObject mModuleObject : mProjectObject.getArray(JSON_MODULES)) {
       std::string mModuleName = mModuleObject.getString(JSON_NAME);
       Module* mModule = getModule(mModuleName);
       LocalOptions mModuleOptions(mModuleName, options);
       mModule->loadResources(mModuleObject, mModuleOptions, &file.cFile);
     }
 
-    std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
-    for (JSONObject mIncludeObject : object.getArray(JSON_INCLUDE)) {
-      std::string mName = mIncludeObject.getString(JSON_FILENAME);
-      bool mUser = mIncludeObject.getBoolean(JSON_USER);
-      ProjectFile* mIncludedProject = file.cInclusions.emplace_back(std::make_unique<ProjectFile>(*this, mName, mUser)).get();
-      
-      std::unique_ptr<JSONDocument> mProjectDocument = std::make_unique<JSONDocument>(mName, mUser);
-      JSONObject mProjectObject = mProjectDocument->getObject(JSON_PROJECT);
-      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(mProjectObject, options, *mIncludedProject);
+    for (JSONObject mIncludeObject : mProjectObject.getArray(JSON_INCLUDE)) {
+      ProjectFile* mIncludedProject = file.cInclusions.emplace_back(std::make_unique<ProjectFile>(*this, mIncludeObject)).get();
+      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(options, *mIncludedProject);
       mOpenedDocuments.insert(mOpenedDocuments.end(), std::make_move_iterator(mMoreOpenedDocuments.begin()), std::make_move_iterator(mMoreOpenedDocuments.end()));
-      mOpenedDocuments.emplace_back(std::move(mProjectDocument));
     }
     return mOpenedDocuments;
   }
@@ -458,7 +443,7 @@ namespace IsoRealms {
   }
 
   void Project::saveFile(ProjectFile& file) {
-    if (cProjectFile.cFile.isSet() && cProjectFile.cFile.isUser()) {
+    if (file.cFile.isSet() && file.cFile.isUser()) {
       JSONDocument mJSONDocument;
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
       JSONArray mIncludeArray = mProjectObject.addArray(JSON_INCLUDE);
@@ -500,14 +485,14 @@ namespace IsoRealms {
         }
       }
 
-      mJSONDocument.save(cProjectFile.cFile.getRelativePath());
+      mJSONDocument.save(file.cFile.getRelativePath());
     }
   }
 
   void Project::save(ProjectFile& file) {
     saveFile(file);
     for (std::unique_ptr<ProjectFile>& mIncludedProject : file.cInclusions) {
-      saveFile(*mIncludedProject.get());
+      save(*mIncludedProject.get());
     }
   }
 
@@ -536,6 +521,18 @@ namespace IsoRealms {
     return *this;
   }
 
+  const PropertyData& Project::getPropertyData(const std::string& key) const {
+    return cMissingData;
+  }
+
+  std::string Project::getPropertyName(const std::string& key) const {
+    return cMissingData.getName();
+  }
+
+  std::string Project::getPropertyDescription(const std::string& key) const {
+    return cMissingData.getTooltip();
+  }
+
   bool Project::isReadOnly() const {
     return false;
   }
@@ -549,7 +546,7 @@ namespace IsoRealms {
   }
 
   IBindingRegistry* Project::getBindingRegistry() {
-    return nullptr;
+    return this;
   }
 
   File* Project::getFile() {
@@ -702,7 +699,7 @@ namespace IsoRealms {
   
   void Project::init(std::function<void(IAssets&)> initialiser) {
 //    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
-//     if (cInitialisers.size() == 833) {
+//     if (cInitialisers.size() == 241) {
 //       std::cout << "DEBUG!" << std::endl;
 //     }
 
@@ -773,23 +770,23 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> Project::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("App Modules", "View or change the modules used by this app", "Edit...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData("TODO: App Modules", "View or change the modules used by this app"), "Edit...", [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       unsigned int mIndex = 1;
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        mProperties.emplace_back(std::make_unique<PropertyStruct>("Module \"" + mModule->getName() + "\"", "TODO", "Edit...", [this, &mModule]() {
+        mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData("Module \"" + mModule->getName() + "\"", "TODO"), "Edit...", [this, &mModule]() {
           return mModule->getProperties();
         }, [this, &mModule]() {
           Utils::removeElementUnique(cModules, mModule.get());
         }));
         mIndex++;
       }
-      mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO", [this](const std::string& value) {
+      mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>(PropertyData("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO"), [this](const std::string& value) {
         loadModule(value);
       }, *this, cApplication));
       return mProperties;
     }));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>("App File Structure", "View or configure the files that make up this app", "Edit...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData("TODO: App File Structure", "View or configure the files that make up this app"), "Edit...", [this]() {
       return cProjectFile.getProperties(*this);
     }));
     mProperties.emplace_back(cDefInitAction.getProperty("On Initialisation"));

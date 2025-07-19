@@ -43,9 +43,6 @@ namespace IsoRealms::Replay {
     void reset() override;
         
     private:
-    static const std::string ID_RESOURCE_PLAYBACK;
-    static const std::string ID_RESOURCE_RECORDER;
-      
     ResourceTypeDefinition<Replay, Player>   cResourceTypePlayer;
     ResourceTypeDefinition<Replay, Recorder> cResourceTypeRecorder;
   };

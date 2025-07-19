@@ -91,36 +91,36 @@ namespace IsoRealms {
     cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
 
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>("Red", "TODO", [this]() {return cRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PropertyData("Red", "TODO"), [this]() {return cRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, [this](const float value) {
       cRed = value;
       cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
       cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>("Green", "TODO", [this]() {return cGreen;}, &cRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cBlue, &cAlpha, &cRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cBlue, &cAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PropertyData("Green", "TODO"), [this]() {return cGreen;}, &cRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cBlue, &cAlpha, &cRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cBlue, &cAlpha, [this](const float value) {
       cGreen = value;
       cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
       cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>("Blue", "TODO", [this]() {return cBlue;}, &cRed, &cGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cAlpha, &cRed, &cGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PropertyData("Blue", "TODO"), [this]() {return cBlue;}, &cRed, &cGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cAlpha, &cRed, &cGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cAlpha, [this](const float value) {
       cBlue = value;
       cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
       cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>("Alpha", "TODO", [this]() {return cAlpha;}, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(PropertyData("Alpha", "TODO"), [this]() {return cAlpha;}, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
       cAlpha = value;
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourHue>("Hue", "TODO", [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourHue>(PropertyData("Hue", "TODO"), [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
       cEditingLastKnownHue = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cRed, cGreen, cBlue);
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourSaturation>("Saturation", "TODO", [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourSaturation>(PropertyData("Saturation", "TODO"), [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
       cEditingLastKnownSaturation = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cRed, cGreen, cBlue);
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourLightness>("Lightness", "TODO", [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourLightness>(PropertyData("Lightness", "TODO"), [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cAlpha, [this](const float value) {
       cEditingLastKnownLightness = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cRed, cGreen, cBlue);
     }));

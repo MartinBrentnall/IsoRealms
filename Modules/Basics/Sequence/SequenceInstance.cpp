@@ -131,9 +131,9 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceInstance::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( "Instance Name", "TODO", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Start Time",    "TODO", [this]() {return cDefStartTime;}, [this](int value)   {cDefStartTime = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Speed",         "TODO", [this]() {return cDefSpeed;},     [this](float value) {cDefSpeed     = value; std::cout << "SPEED IS " << cDefSpeed << std::endl; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeString>( owner.getPropertyData("InstanceName"), [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("StartTime"),    [this]() {return cDefStartTime;}, [this](int value)   {cDefStartTime = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Speed"),        [this]() {return cDefSpeed;},     [this](float value) {cDefSpeed     = value; std::cout << "SPEED IS " << cDefSpeed << std::endl; return true;}));
     return mProperties;
   }
 

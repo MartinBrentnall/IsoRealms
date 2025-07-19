@@ -23,8 +23,9 @@
 #include "IUIStyle.h"
 
 namespace IsoRealms {
-  MenuItemAction::MenuItemAction(const std::string& label, std::function<void()> action) :
+  MenuItemAction::MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action) :
             cLabel(label),
+            cTooltip(tooltip),
             cAction(action) {
   }
 
@@ -54,7 +55,7 @@ namespace IsoRealms {
   }
 
   std::string MenuItemAction::getTooltip() const {
-    return "Menu Item Action";
+    return cTooltip;
   }
 
   std::string MenuItemAction::getLabel() const {

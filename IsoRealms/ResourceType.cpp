@@ -17,18 +17,24 @@
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Project.h"
+#include "PropertyData.h"
 
 #include "ResourceType.h"
 
 namespace IsoRealms {
-  const std::string ResourceType::JSON_ID = "id";
+  const std::string ResourceType::JSON_CATEGORY    = "category";
+  const std::string ResourceType::JSON_DESCRIPTION = "description";
+  const std::string ResourceType::JSON_ID          = "id";
+  const std::string ResourceType::JSON_NAME        = "name";
+  const std::string ResourceType::JSON_PLURAL      = "plural";
+  const std::string ResourceType::JSON_PROPERTIES  = "properties";
+  const std::string ResourceType::JSON_SINGULAR    = "singular";
 
-  ResourceType::ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category) :
+  ResourceType::ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent) :
             cResourceType(resourceType),
             cParent(parent),
-            cSingular(singular),
-            cPlural(plural),
-            cCategory(category) {
+            cCategory("None"),
+            cPropertyMissing("Missing property name", "Missing property description") {
   }
 
 
@@ -65,6 +71,19 @@ namespace IsoRealms {
     cResources.insert(mResource);
   }
 
+  void ResourceType::loadMetadata(JSONObject object) {
+    cSingular    = object.getString(JSON_SINGULAR);
+    cPlural      = object.getString(JSON_PLURAL);
+    cCategory    = object.getString(JSON_CATEGORY);
+    cDescription = object.getString(JSON_DESCRIPTION);
+    JSONObject mPropertiesObject = object.getObject(JSON_PROPERTIES);
+    for (JSONThing mPropertiesThing : mPropertiesObject) {
+      std::string mPropertyID = mPropertiesThing.getName();
+      JSONObject mPropertyObject = mPropertiesThing.getValue();
+      cPropertyHelp.emplace(mPropertyID, std::make_unique<PropertyData>(mPropertyObject));
+    }
+  }
+
   bool ResourceType::needsSaving(File* savingProject) const {
     for (IResource* mResource : cResources) {
       if (mResource->needsSaving(savingProject)) {
@@ -85,11 +104,11 @@ namespace IsoRealms {
   }
 
   std::string const ResourceType::getPlural() const {
-    return cPlural;
+    return cPlural == "" ? "TODO: " + cParent.getName(this) + "'s" : cPlural;
   }
 
   std::string const ResourceType::getSingular() const {
-    return cSingular;
+    return cSingular == "" ? "TODO: " + cParent.getName(this) : cSingular;
   }
 
   std::set<IResource*> ResourceType::getResources() {
@@ -146,14 +165,33 @@ namespace IsoRealms {
   }
 
   std::string ResourceType::getCategory() {
-    return cCategory;
+    return cCategory.empty() ? "TODO: Category" : cCategory;
   }
   
+  std::string ResourceType::getDescription() const {
+    return cDescription.empty() ? "No description available for this resource type." : cDescription;
+  }
+
   IAssets& ResourceType::getAssets() {
     return cParent.getAssets();
   }
 
   Project& ResourceType::getProject() {
     return cParent.getProject();
+  }
+  
+  const PropertyData& ResourceType::getPropertyData(const std::string& key) const {
+    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
+    return mIterator == cPropertyHelp.end() ? cPropertyMissing : *mIterator->second;
+  }
+
+  std::string ResourceType::getPropertyName(const std::string& key) const {
+    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
+    return mIterator == cPropertyHelp.end() ? cPropertyMissing.getName() : mIterator->second->getName();
+  }
+  
+  std::string ResourceType::getPropertyDescription(const std::string& key) const {
+    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
+    return mIterator == cPropertyHelp.end() ? cPropertyMissing.getTooltip() : mIterator->second->getTooltip();
   }
 }

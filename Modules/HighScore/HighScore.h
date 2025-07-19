@@ -44,9 +44,6 @@ namespace IsoRealms::HighScore {
     void reset() override;
       
     private:
-    static const std::string ID_RESOURCE_SCORE_TABLE;
-    static const std::string ID_RESOURCE_SCORE_TRACKER;
-      
     ResourceTypeDefinition<HighScore, ScoreTable>   cResourceTypeScoreTable;
     ResourceTypeDefinition<HighScore, ScoreTracker> cResourceTypeScoreTracker;
   };

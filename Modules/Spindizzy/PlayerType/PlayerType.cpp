@@ -136,33 +136,33 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 
     // Dimensions
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Radius",                 "TODO", [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Height",                 "TODO", [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Radius"),               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Height"),               [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
 
     // Physics
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Acceleration",           "TODO", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Wall Bounce",            "TODO", [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Step Reach",             "TODO", [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Hug Momentum Threshold", "TODO", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Acceleration"),         [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("WallBounce"),           [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("StepReach"),            [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("HugMomentumThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
 
     // appearance
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Appearance",            "TODO", cDefModel));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Spin Speed",             "TODO", [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner.getPropertyData("Appearance"),          cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("SpinSpeed"),            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
 
     // Input
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Input X Movement",      "TODO", cDefInputX));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Input Y Movement",      "TODO", cDefInputY));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("Input Thrust",        "TODO", cDefInputThrust));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner.getPropertyData("InputXMovement"),      cDefInputX));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner.getPropertyData("InputYMovement"),      cDefInputY));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>(owner.getPropertyData("InputThrust"),       cDefInputThrust));
 
     // Actions
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Respawn",           "TODO", cDefRespawnAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Impact",            "TODO", cDefFallImpactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Bounce",            "TODO", cDefFallBounceAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("On Wall Bounce",       "TODO", cDefWallBounceAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnRespawn"),          cDefRespawnAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnImpact"),           cDefFallImpactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnBounce"),           cDefFallBounceAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnWallBounce"),       cDefWallBounceAction));
 
     // Misc
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Respawn Delay",        "TODO", [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("View Orientation",      "TODO", cDefOrientation));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("RespawnDelay"),       [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner.getPropertyData("ViewOrientation"),     cDefOrientation));
     return mProperties;
   }
 

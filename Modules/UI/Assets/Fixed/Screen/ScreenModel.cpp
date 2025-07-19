@@ -51,7 +51,7 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> ScreenModel::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>("Model", "TODO", cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(PropertyData("Model", "TODO"), cDefModel));
     return mProperties;
   }
   

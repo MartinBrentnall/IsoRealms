@@ -29,6 +29,7 @@
 #include "IResourceData.h"
 #include "IResourceType.h"
 #include "Options/IOptions.h"
+#include "PropertyData.h"
 #include "ResourceAssetRegistry.h"
 #include "System.h"
 #include "Utils.h"
@@ -80,7 +81,7 @@ namespace IsoRealms {
     
     std::vector<std::unique_ptr<IProperty>> getProperties() override {
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyNativeString>("Name", "A name to identify this resource. The name is unique relative to other resources of the same type.", [this]() {return cName;}, [this](const std::string& value) {
+      mProperties.emplace_back(std::make_unique<PropertyNativeString>(PropertyData("TODO: Name", "A name to identify this resource. The name is unique relative to other resources of the same type."), [this]() {return cName;}, [this](const std::string& value) {
         std::set<IResource*> mAllResources = cParent.getResources();
         for (IResource* mResource : mAllResources) {
           if (mResource->getName() == value) {
@@ -188,6 +189,18 @@ namespace IsoRealms {
     IBindingRegistry* getBindingRegistry() override {
       return nullptr;
     }
+    
+    const PropertyData& getPropertyData(const std::string& key) const override {
+      return cParent.getPropertyData(key);
+    }
+
+    std::string getPropertyName(const std::string& key) const override {
+      return cParent.getPropertyName(key);
+    }
+
+    std::string getPropertyDescription(const std::string& key) const override {
+      return cParent.getPropertyDescription(key);
+    }
 
     private:
     static const std::string JSON_ID;
@@ -198,6 +211,7 @@ namespace IsoRealms {
     std::string cResourceDataPath;
     RESOURCE cResourceHandle;
     ResourceAssetRegistry cAssetRegistry;
+    std::map<std::string, std::string> cPropertyHelp;
   };
 
   template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";

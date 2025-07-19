@@ -125,10 +125,10 @@ namespace IsoRealms::Spindizzy {
   
   std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Floor Colour",     "TODO", cDefFloor));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Wall Colour",      "TODO", cDefWall));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Grid Colour",      "TODO", cDefGrid));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("highlight Colour", "TODO", cDefHighlight));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Floor"),     cDefFloor));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Wall"),      cDefWall));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Grid"),      cDefGrid));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("highlight"), cDefHighlight));
     return mProperties;
   }
   

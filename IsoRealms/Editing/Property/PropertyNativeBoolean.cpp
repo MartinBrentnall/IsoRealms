@@ -21,10 +21,10 @@
 #include "IsoRealms/IProject.h"
 
 namespace IsoRealms {
-  PropertyNativeBoolean::PropertyNativeBoolean(const std::string& name, const std::string& tooltip, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
-            Property(name, tooltip, removeFunction),
+  PropertyNativeBoolean::PropertyNativeBoolean(const PropertyData& data, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
+            Property(data, removeFunction),
             cInternalSelection(setter, project, getter()),
-            cInternalProperty(name, tooltip, cInternalSelection, removeFunction) {
+            cInternalProperty(data, cInternalSelection, removeFunction) {
   }
 
   void PropertyNativeBoolean::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {

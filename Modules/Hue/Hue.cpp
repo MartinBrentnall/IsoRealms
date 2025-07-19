@@ -21,7 +21,7 @@
 namespace IsoRealms::Hue {
   Hue::Hue(Project& project, IResourceTypeRegistry* registry) :
                     cResourceTypeHueManager(*this) {
-    registry->add(&cResourceTypeHueManager, "HueManager", "Entertainment Connection", "Entertainment Connections", "Philips Hue");
+    registry->add(&cResourceTypeHueManager, "HueManager");
   }
 
   void Hue::load(IProject& project, JSONObject object) {

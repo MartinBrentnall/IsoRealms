@@ -172,11 +172,11 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> World::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Gravity",             "TODO", [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  "Slope Effect",        "TODO", [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>("Bounce Time",         "TODO", [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>("Advanced Properties", "TODO", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;}, cSpindizzy.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyEditor>(       "World Layout",        "TODO", this));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Gravity"),            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("SlopeEffect"),        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("BounceTime"),         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner.getPropertyData("AdvancedProperties"), [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;}, cSpindizzy.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyEditor>(       owner.getPropertyData("WorldLayout"),        this));
     return mProperties;
   }
 

@@ -28,7 +28,7 @@ namespace IsoRealms {
   class IModuleInternal {
     public:
     virtual IProject& getProjectRuntime() = 0;
-    virtual std::string getName(ResourceType* resourceType) = 0;
+    virtual std::string getName(const ResourceType* resourceType) const = 0;
     virtual IAssets& getAssets() = 0;
     virtual Project& getProject() = 0;
     virtual std::string getPath() = 0;

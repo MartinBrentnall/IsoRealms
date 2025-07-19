@@ -19,14 +19,11 @@
 #include "HighScore.h"
 
 namespace IsoRealms::HighScore {
-  const std::string HighScore::ID_RESOURCE_SCORE_TRACKER  = "ScoreTracker";
-  const std::string HighScore::ID_RESOURCE_SCORE_TABLE    = "ScoreTable";
-      
   HighScore::HighScore(Project& project, IResourceTypeRegistry* registry):
                     cResourceTypeScoreTable(*this),
                     cResourceTypeScoreTracker(*this) {
-    registry->add(&cResourceTypeScoreTable,   ID_RESOURCE_SCORE_TABLE,   "Score Table",   "Score Tables",   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeScoreTracker, ID_RESOURCE_SCORE_TRACKER, "Score Tracker", "Score Trackers", IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypeScoreTable,   "ScoreTable");
+    registry->add(&cResourceTypeScoreTracker, "ScoreTracker");
   }
 
   void HighScore::load(IProject& project, JSONObject object) {

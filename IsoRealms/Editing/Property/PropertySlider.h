@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class PropertySlider : public Property {
     public:
-    PropertySlider(const std::string& name, const std::string& tooltip, std::function<float()> valueFunction, float min, float max, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction);
+    PropertySlider(const PropertyData& data, std::function<float()> valueFunction, float min, float max, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction);
     
     /************************\
      * Implements IProperty *

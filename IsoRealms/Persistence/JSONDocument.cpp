@@ -18,6 +18,7 @@
  */
 #include "JSONDocument.h"
 
+#include "IsoRealms/Assets/Client/File.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Utils.h"
 
@@ -39,6 +40,10 @@ namespace IsoRealms {
     }
   }
 
+  JSONDocument::JSONDocument(File& file) :
+            JSONDocument(file.getRelativePath(), file.isUser()) {
+  }
+
   JSONObject JSONDocument::addObject(const std::string& name) {
     rapidjson::Value mObject(rapidjson::kObjectType);
     cDocument.AddMember(rapidjson::StringRef(name), mObject, cDocument.GetAllocator());
@@ -47,6 +52,10 @@ namespace IsoRealms {
 
   JSONObject JSONDocument::getObject(const std::string& name) {
     return JSONObject(*this, cDocument[name]);
+  }
+
+  std::string JSONDocument::getString(const std::string& name, const std::string& defaultValue) const {
+    return cDocument.HasMember(name) ? cDocument[name].GetString() : defaultValue;
   }
 
   void JSONDocument::save(const std::string& filename) {

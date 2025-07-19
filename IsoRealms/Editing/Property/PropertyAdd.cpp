@@ -24,8 +24,8 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyAdd::PropertyAdd(const std::string& name, const std::string& tooltip, const std::string& value, std::function<std::unique_ptr<IProperty>()> addPropertyFunction) :
-            Property(name, tooltip, nullptr),
+  PropertyAdd::PropertyAdd(const PropertyData& data, const std::string& value, std::function<std::unique_ptr<IProperty>()> addPropertyFunction) :
+            Property(data, nullptr),
             cValue(value),
             cAddPropertyFunction(addPropertyFunction) {
   }

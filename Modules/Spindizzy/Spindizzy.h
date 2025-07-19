@@ -296,29 +296,6 @@ namespace IsoRealms::Spindizzy {
     private:
     
     // Resource strings.
-    static const std::string ID_RESOURCE_ALIEN;
-    static const std::string ID_RESOURCE_BALL;
-    static const std::string ID_RESOURCE_BOUNDARY_HANDLER;
-    static const std::string ID_RESOURCE_C64_LIFT_GRAPHICS;
-    static const std::string ID_RESOURCE_C64_TERRAIN_GRAPHICS;
-    static const std::string ID_RESOURCE_COLLISION_HANDLER;
-    static const std::string ID_RESOURCE_DAMAGE_INDICATOR;
-    static const std::string ID_RESOURCE_DEBRIS_CHUNK;
-    static const std::string ID_RESOURCE_GYROSCOPE;
-    static const std::string ID_RESOURCE_JEWEL;
-    static const std::string ID_RESOURCE_LIFT;
-    static const std::string ID_RESOURCE_MODEL_CYCLER;
-    static const std::string ID_RESOURCE_PICK_UP;
-    static const std::string ID_RESOURCE_PLAYER;
-    static const std::string ID_RESOURCE_TERRAIN;
-    static const std::string ID_RESOURCE_TERRAIN_STATE;
-    static const std::string ID_RESOURCE_THEME_SET;
-    static const std::string ID_RESOURCE_TOP;
-    static const std::string ID_RESOURCE_WORLD;
-    static const std::string ID_RESOURCE_WORLD_VIEW;
-    static const std::string ID_RESOURCE_ZONE;
-    static const std::string ID_RESOURCE_ZONE_OBJECT;
-    
     static const std::string RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS;
     static const std::string RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS;
     static const std::string RESOURCE_CATEGORY_SPINDIZZY_LOGIC;

@@ -63,9 +63,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Fill Colour",    "TODO", cDefFill));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Shine Colour",   "TODO", cDefShine));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>("Outline Colour", "TODO", cDefOutline));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("FillColour"),    cDefFill));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("ShineColour"),   cDefShine));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("OutlineColour"), cDefOutline));
     return mProperties;
   }
 

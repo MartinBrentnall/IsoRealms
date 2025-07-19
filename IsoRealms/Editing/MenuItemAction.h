@@ -28,7 +28,7 @@
 namespace IsoRealms {
   class MenuItemAction {
     public:
-    MenuItemAction(const std::string& label, std::function<void()> action);
+    MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action);
     
     /************************\
      * Implements IMenuItem *
@@ -44,6 +44,7 @@ namespace IsoRealms {
 
     private:
     std::string cLabel;
+    std::string cTooltip;
     std::function<void()> cAction;
   };
 }

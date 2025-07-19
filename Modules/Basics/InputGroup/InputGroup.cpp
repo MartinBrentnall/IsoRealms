@@ -56,18 +56,16 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    unsigned int i = 1;
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>("Input Handler " + Utils::toString(i), "TODO", *mInputHandler.get(), [this, &mInputHandler]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>(owner.getPropertyData("InputHandler"), *mInputHandler.get(), [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
       }));
-      i++;
     }
 
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Input Handler " + Utils::toString(i), "TODO", "Add...", [this, &owner]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("InputHandlerAdd"), "Add...", [this, &owner]() {
       cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(owner));
       std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
-      return std::make_unique<PropertyAsset<InputHandler>>("Input Handler", "TODO", *mInputHandler, [this, &mInputHandler]() {
+      return std::make_unique<PropertyAsset<InputHandler>>(owner.getPropertyData("InputHandler"), *mInputHandler, [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
       });
     }));

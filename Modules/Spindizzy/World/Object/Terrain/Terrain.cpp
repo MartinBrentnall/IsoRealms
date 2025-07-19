@@ -685,14 +685,14 @@ namespace IsoRealms::Spindizzy {
   std::vector<std::unique_ptr<IProperty>> Terrain::getProperties() {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyCondition>("Condition", "TODO", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    mProperties.emplace_back(std::make_unique<PropertyCondition>(PropertyData("Condition", "TODO"), mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cZone.updateDisplayList();
     }));
     if (!cZone.getWorld().isBasicProperties()) {
       mProperties.emplace_back(std::make_unique<PropertyList>(cZone.getWorld().getSpindizzy().getProject(),
-                               "Behaviour", "TODO",
+                               PropertyData("Behaviour", "TODO"),
                                std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                         BEHAVIOUR_INVISIBLE,
                                                         BEHAVIOUR_GHOST,

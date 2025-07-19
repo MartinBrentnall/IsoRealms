@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
       void save(JSONObject object) const;
       const Colour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
-      void getProperties(const std::string& name, std::vector<std::unique_ptr<IProperty>>& properties);
+      void getProperties(IResourceData& owner, std::vector<std::unique_ptr<IProperty>>& properties);
       
       private:
       

@@ -21,8 +21,8 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyColourHue::PropertyColourHue(const std::string& name, const std::string& tooltip, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) :
-            PropertySlider(name, tooltip, valueFunction, 0.0f, 1.0f, confirmationCallback, nullptr),
+  PropertyColourHue::PropertyColourHue(const PropertyData& data, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) :
+            PropertySlider(data, valueFunction, 0.0f, 1.0f, confirmationCallback, nullptr),
             cAlpha(alpha),
             cSaturation(saturation),
             cLightness(lightness) {

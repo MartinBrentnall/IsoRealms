@@ -22,13 +22,15 @@
 #include <iostream>
 #include <string>
 
+#include "IsoRealms/PropertyData.h"
+
 #include "IProperty.h"
 
 namespace IsoRealms {
   class Property : public IProperty {
     public:
-    Property(const std::string& name, const std::string& tooltip, std::function<void()> removeFunction);
-      
+    Property(const PropertyData& data, std::function<void()> removeFunction);
+
     /************************\
      * Implements IProperty *
     \************************/
@@ -38,8 +40,7 @@ namespace IsoRealms {
     std::string getTooltip() const override;
 
     private:
-    const std::string cName;
-    const std::string cTooltip;
+    PropertyData cData;
     const std::function<void()> cRemoveFunction;
   };
 }

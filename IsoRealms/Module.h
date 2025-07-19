@@ -26,6 +26,7 @@
 #include <windows.h>
 #endif
 
+#include <locale>
 #include <map>
 #include <memory>
 #include <string>
@@ -65,7 +66,7 @@ namespace IsoRealms {
     /************************************\
      * Implements IResourceTypeRegistry *
     \************************************/
-    void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category) override;
+    void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id) override;
     
     /**********************\
      * Implements IModule *
@@ -77,7 +78,7 @@ namespace IsoRealms {
      * Implements IModuleInternal *
     \******************************/
     IProject& getProjectRuntime() override;
-    std::string getName(ResourceType* resourceType) override;
+    std::string getName(const ResourceType* resourceType) const override;
     IAssets& getAssets() override;
     Project& getProject() override;
     std::string getPath() override;
@@ -91,12 +92,14 @@ namespace IsoRealms {
 
     private:
     static const std::string JSON_CONFIGURATION;
+    static const std::string JSON_DESCRIPTION;
     static const std::string JSON_INSTANCES;
     static const std::string JSON_NAME;
     static const std::string JSON_RESOURCES;
     static const std::string JSON_TYPE;
 
     std::string cName;
+    std::string cDescription;
     IModuleHandle* cModule;
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
     Project& cProject;

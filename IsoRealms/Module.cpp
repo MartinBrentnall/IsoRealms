@@ -25,6 +25,7 @@
 
 namespace IsoRealms {
   const std::string Module::JSON_CONFIGURATION = "configuration";
+  const std::string Module::JSON_DESCRIPTION   = "description";
   const std::string Module::JSON_INSTANCES     = "instances";
   const std::string Module::JSON_NAME          = "name";
   const std::string Module::JSON_RESOURCES     = "resources";
@@ -70,6 +71,34 @@ namespace IsoRealms {
       mInitLuaInterfacesFunction(luaState);
     }
     cModule = mCreateFunction(&project, this);
+    
+    // Load resource type metadata.
+    std::locale mLocale("");
+    std::string mMetadataPath = "Metadata/" + cName + "/" + cName + "." + mLocale.name();
+    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
+    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                                               ? mLastExtensionIndex
+                                               : mLastDashIndex;
+    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
+      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
+      mLastExtensionIndex = mMetadataPath.find_last_of('.');
+      mLastDashIndex = mMetadataPath.find_last_of('_');
+      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                          ? mLastExtensionIndex
+                          : mLastDashIndex;
+    }
+
+    if (!System::fileExists(mMetadataPath + ".json", false)) {
+      mMetadataPath = "Metadata/" + cName + "/" + cName + ".en";
+    }
+    JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+    cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
+    JSONObject mResourceTypesObject = mMetadataDocument.getObject(JSON_RESOURCES);
+    for (std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
+      JSONObject mResourceTypeObject = mResourceTypesObject.getObject(mResourceType.first);
+      mResourceType.second->loadMetadata(mResourceTypeObject);
+    }
   }
 
   void Module::loadResources(JSONObject object, IOptions& options, File* ownerProject) {
@@ -154,12 +183,12 @@ namespace IsoRealms {
     return mResourceType->second.get();
   }
 
-  void Module::add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& singular, const std::string& plural, const std::string& category) {
+  void Module::add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id) {
     ResourceType* mResourceType = getResourceType(id);
     if (mResourceType != nullptr) {
       throw ArgumentException("ERROR: Module::add: Cannot add resource type definition because there is already a resource type definition of ID \"" + id + "\".");
     }
-    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, *this, id, singular, plural, category);
+    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, *this);
   }
 
   std::string Module::getName() {
@@ -178,7 +207,7 @@ namespace IsoRealms {
     return cProject;
   }
 
-  std::string Module::getName(ResourceType* resourceType) {
+  std::string Module::getName(const ResourceType* resourceType) const {
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
       if (mResourceType.second.get() == resourceType) {
         return mResourceType.first;

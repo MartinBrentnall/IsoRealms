@@ -22,7 +22,9 @@
 
 namespace IsoRealms {
   ProjectFile::ProjectFile(Project& project) :
-              cFile(project) {
+              cProject(project),
+              cFile(project),
+              cAllowModifications(true) {
   }
 
   ProjectFile::ProjectFile(Project& project, const std::string& filename, bool user) :
@@ -30,19 +32,29 @@ namespace IsoRealms {
     cFile.setPath(filename, user);
   }
 
+  ProjectFile::ProjectFile(Project& project, JSONObject object) :
+              ProjectFile(project) {
+    cFile.load(JSON_FILENAME, object);
+  }
+
+  void ProjectFile::rename(const std::string name, bool user) {
+    cFile.setPath(name, user);
+  }
+
   std::vector<std::unique_ptr<IProperty>> ProjectFile::getProperties(Project& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>("File", "TODO", cFile));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(PropertyData("File", "TODO"), cFile));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Allow Modifications", "TODO"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, cProject));
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>("Inclusion \"" + mInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mInclusion, &project]() {
+      mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData("Inclusion", "TODO"), mInclusion->cFile.getRelativePath(), [this, &mInclusion, &project]() {
         return mInclusion->getProperties(project);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Inclusion", "TODO", "Add...", [this, &project]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Inclusion", "TODO"), "Add...", [this, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      return std::make_unique<PropertyStruct>("Inclusion \"" + mNewInclusion->cFile.getRelativePath() + "\"", "TODO", "Edit...", [this, &mNewInclusion, &project]() {
+      return std::make_unique<PropertyStruct>(PropertyData("Inclusion", "TODO"), mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &project]() {
         return mNewInclusion->getProperties(project);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);
@@ -50,5 +62,7 @@ namespace IsoRealms {
     }));
     return mProperties;
   }
+
+  const std::string ProjectFile::JSON_FILENAME = "filename";
 }
 

@@ -77,8 +77,8 @@ namespace IsoRealms::UI {
   
   std::vector<std::unique_ptr<IProperty>> LayoutComponentEdge::getProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutLocation>>("Location", "TODO", cDefLocation));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutOffset>>(  "Offset",   "TODO", cDefOffset));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutLocation>>(PropertyData("Location", "TODO"), cDefLocation));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutOffset>>(  PropertyData("Offset",   "TODO"), cDefOffset));
     return mProperties;
   }
 

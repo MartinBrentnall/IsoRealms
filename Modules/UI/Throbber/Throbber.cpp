@@ -85,14 +85,14 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Animation Duration (ms)",    "TODO", [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spots",                      "TODO", [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spot Sides",                 "TODO", [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Spot Size",                  "TODO", [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Spot Shadow Offset",         "TODO", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(        "Spot Colour",                "TODO", cDefColour));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          "Ring Size",                  "TODO", [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>("Spot Animation Repetitions", "TODO", [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Duration"),     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Spots"),        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("SpotSides"),    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SpotSize"),     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(        owner.getPropertyData("Colour"),       cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("RingSize"),     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Repetitions"),  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;}));
     return mProperties;
   }
 

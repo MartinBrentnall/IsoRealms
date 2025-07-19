@@ -2,7 +2,9 @@
     "project": {
         "include": [
             {
-                "filename": "Projects/Spindizzy/Worlds/Hangworld.isorealms"
+                "filename": {
+                    "path": "Projects/Spindizzy/Worlds/Hangworld.isorealms"
+                }
             }
         ],
         "reset": {

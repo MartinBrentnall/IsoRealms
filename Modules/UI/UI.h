@@ -110,13 +110,6 @@ namespace IsoRealms::UI {
     }
 
     private:
-    static const std::string ID_RESOURCE_LAYOUT;
-    static const std::string ID_RESOURCE_MENU;
-    static const std::string ID_RESOURCE_PROMPT;
-    static const std::string ID_RESOURCE_SCREEN_FADER;
-    static const std::string ID_RESOURCE_THROBBER;
-    static const std::string ID_RESOURCE_VIRTUAL_KEYBOARD;
-
     static const std::string MENU_ITEM_ACTION;
     static const std::string MENU_ITEM_BOOLEAN;
     static const std::string MENU_ITEM_DIGITAL_INPUT;

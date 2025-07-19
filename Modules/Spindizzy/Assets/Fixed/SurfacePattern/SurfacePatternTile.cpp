@@ -139,7 +139,7 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> SurfacePatternTile::getAssetProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>("Texture", "TODO", cDefTexture));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(PropertyData("Texture", "TODO"), cDefTexture));
     return mProperties;
   }
 

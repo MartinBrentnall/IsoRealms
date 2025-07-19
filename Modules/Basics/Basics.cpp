@@ -19,28 +19,6 @@
 #include "Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string Basics::ID_RESOURCE_ANALOGUE_INPUT     = "AnalogueInput";
-  const std::string Basics::ID_RESOURCE_BOOLEAN_TRIGGER    = "BooleanTrigger";
-  const std::string Basics::ID_RESOURCE_DIGITAL_INPUT      = "DigitalInput";
-  const std::string Basics::ID_RESOURCE_FILE_FONT          = "Font";
-  const std::string Basics::ID_RESOURCE_FILE_SOUND         = "Sound";
-  const std::string Basics::ID_RESOURCE_FILE_TEXTURE       = "Texture";
-  const std::string Basics::ID_RESOURCE_FUNCTION           = "Function";
-  const std::string Basics::ID_RESOURCE_INPUT_GROUP        = "InputGroup";
-  const std::string Basics::ID_RESOURCE_INPUT_SWITCH       = "InputSwitch";
-  const std::string Basics::ID_RESOURCE_INTERRUPT_HANDLER  = "InterruptHandler";
-  const std::string Basics::ID_RESOURCE_PROJECT            = "Project";
-  const std::string Basics::ID_RESOURCE_PROJECT_CONFIGURER = "ProjectConfigurer";
-  const std::string Basics::ID_RESOURCE_PROJECT_OPTIONS    = "ProjectOptions";
-  const std::string Basics::ID_RESOURCE_SEQUENCE           = "Sequence";
-  const std::string Basics::ID_RESOURCE_SIMPLE_BOOLEAN     = "Boolean";
-  const std::string Basics::ID_RESOURCE_SIMPLE_COLOUR      = "Colour";
-  const std::string Basics::ID_RESOURCE_SIMPLE_FLOAT       = "Float";
-  const std::string Basics::ID_RESOURCE_SIMPLE_INTEGER     = "Integer";
-  const std::string Basics::ID_RESOURCE_SIMPLE_STRING      = "String";
-  const std::string Basics::ID_RESOURCE_SIMPLE_VERTEX      = "Vertex";
-  const std::string Basics::ID_RESOURCE_SPRITE             = "Sprite";
-
   const std::string Basics::SEQUENCE_TRACK_ACTION = "Action";
   const std::string Basics::SEQUENCE_TRACK_AUDIO  = "Audio";
   const std::string Basics::SEQUENCE_TRACK_COLOUR = "Colour";
@@ -89,27 +67,27 @@ namespace IsoRealms::Basics {
                     cResourceTypeSprite(*this),
                     cActionScript(),
                     cLuaBinding(project, this) {
-    registry->add(&cResourceTypeAnalogueInput,     ID_RESOURCE_ANALOGUE_INPUT,     "Input (Analogue)",   "Inputs (Analogue)",    "Input");
-    registry->add(&cResourceTypeBooleanTrigger,    ID_RESOURCE_BOOLEAN_TRIGGER,    "Boolean Trigger",    "Boolean Triggers",     "Logic");
-    registry->add(&cResourceTypeDigitalInput,      ID_RESOURCE_DIGITAL_INPUT,      "Input (Digital)",    "Inputs (Digital)",     "Input");
-    registry->add(&cResourceTypeFileFont,          ID_RESOURCE_FILE_FONT,          "Font",               "Fonts",                IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeFileSound,         ID_RESOURCE_FILE_SOUND,         "Sound",              "Sounds",               IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeFileTexture,       ID_RESOURCE_FILE_TEXTURE,       "Image",              "Images",               IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeFunction,          ID_RESOURCE_FUNCTION,           "Function",           "Functions",            "Logic");
-    registry->add(&cResourceTypeInputGroup,        ID_RESOURCE_INPUT_GROUP,        "Input Group",        "Input Groups",         "Input");
-    registry->add(&cResourceTypeInputSwitch,       ID_RESOURCE_INPUT_SWITCH,       "Input Switch",       "Input Switches",       "Input");
-    registry->add(&cResourceTypeInterruptHandler,  ID_RESOURCE_INTERRUPT_HANDLER,  "Interrupt Handler",  "Interrupt Handlers",   "Input");
-    registry->add(&cResourceTypeProject,           ID_RESOURCE_PROJECT,            "Project",            "Projects",             IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeProjectConfigurer, ID_RESOURCE_PROJECT_CONFIGURER, "Project Configurer", "Project Configurers",  IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeProjectOptions,    ID_RESOURCE_PROJECT_OPTIONS,    "Project Option Set", "Project Options Sets", IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeSequence,          ID_RESOURCE_SEQUENCE,           "Sequence",           "Sequences",            "Logic");
-    registry->add(&cResourceTypeSimpleBoolean,     ID_RESOURCE_SIMPLE_BOOLEAN,     "Boolean",            "Booleans",             IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleColour,      ID_RESOURCE_SIMPLE_COLOUR,      "Colour",             "Colours",              IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleFloat,       ID_RESOURCE_SIMPLE_FLOAT,       "Float",              "Floats",               IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleInteger,     ID_RESOURCE_SIMPLE_INTEGER,     "Integer",            "Integers",             IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleString,      ID_RESOURCE_SIMPLE_STRING,      "String",             "Strings",              IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleVertex,      ID_RESOURCE_SIMPLE_VERTEX,      "Vertex",             "Vertices",             IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSprite,            ID_RESOURCE_SPRITE,             "Sprite",             "Sprites",              IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeAnalogueInput,     "AnalogueInput");
+    registry->add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
+    registry->add(&cResourceTypeDigitalInput,      "DigitalInput");
+    registry->add(&cResourceTypeFileFont,          "Font");
+    registry->add(&cResourceTypeFileSound,         "Sound");
+    registry->add(&cResourceTypeFileTexture,       "Texture");
+    registry->add(&cResourceTypeFunction,          "Function");
+    registry->add(&cResourceTypeInputGroup,        "InputGroup");
+    registry->add(&cResourceTypeInputSwitch,       "InputSwitch");
+    registry->add(&cResourceTypeInterruptHandler,  "InterruptHandler");
+    registry->add(&cResourceTypeProject,           "Project");
+    registry->add(&cResourceTypeProjectConfigurer, "ProjectConfigurer");
+    registry->add(&cResourceTypeProjectOptions,    "ProjectOptions");
+    registry->add(&cResourceTypeSequence,          "Sequence");
+    registry->add(&cResourceTypeSimpleBoolean,     "Boolean");
+    registry->add(&cResourceTypeSimpleColour,      "Colour");
+    registry->add(&cResourceTypeSimpleFloat,       "Float");
+    registry->add(&cResourceTypeSimpleInteger,     "Integer");
+    registry->add(&cResourceTypeSimpleString,      "String");
+    registry->add(&cResourceTypeSimpleVertex,      "Vertex");
+    registry->add(&cResourceTypeSprite,            "Sprite");
 
     // Register Basics built-in asset providers.
     cSequenceTracks.add(&cProviderSequenceTrackAction, SEQUENCE_TRACK_ACTION, "Basics");

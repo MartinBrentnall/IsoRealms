@@ -72,9 +72,9 @@ namespace IsoRealms {
   
   std::vector<std::unique_ptr<IProperty>> Texture::getClientProperties() {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale X", "TODO", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged(cAsset); return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Scale Y", "TODO", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged(cAsset); return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>("Angle",   "TODO", [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged(cAsset); return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Scale X", "TODO"), [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged(cAsset); return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Scale Y", "TODO"), [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged(cAsset); return true;}));
+    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Angle",   "TODO"), [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged(cAsset); return true;}));
     return mProperties;
   }
   

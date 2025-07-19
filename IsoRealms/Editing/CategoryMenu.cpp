@@ -28,7 +28,8 @@ namespace IsoRealms {
       for (IResourceType* mResourceType : mResourceTypes) {
         if (category == mResourceType->getCategory()) {
           std::string mResourceTypeName = mResourceType->getPlural();
-          addItem(std::make_unique<MenuItemAction>(mResourceTypeName, [this, &manager, &style, mResourceType]() {
+          std::string mResourceTypeTooltip = mResourceType->getDescription();
+          addItem(std::make_unique<MenuItemAction>(mResourceTypeName, mResourceTypeTooltip, [this, &manager, &style, mResourceType]() {
             manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, *mResourceType));
           }));
         }

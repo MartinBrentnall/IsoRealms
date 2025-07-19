@@ -62,9 +62,9 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>("Monitored Value", "Boolean to monitor for value changes.", cDefValue));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on True",   "Action to execute when the monitored boolean changes value from FALSE to TRUE", cDefTrueAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>("Action on False",  "Action to execute when the monitored boolean changes value from TRUE to FALSE", cDefFalseAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>(owner.getPropertyData("Value"),   cDefValue));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>( owner.getPropertyData("OnTrue"),  cDefTrueAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>( owner.getPropertyData("OnFalse"), cDefFalseAction));
     return mProperties;
   }
 }

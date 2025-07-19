@@ -19,14 +19,13 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  Property::Property(const std::string& name, const std::string& tooltip, std::function<void()> removeFunction) :
-            cName(name),
-            cTooltip(tooltip),
+  Property::Property(const PropertyData& data, std::function<void()> removeFunction) :
+            cData(data),
             cRemoveFunction(removeFunction) {
   }
-  
+
   std::string Property::getPropertyName() const {
-    return cName;
+    return cData.getName();
   }
   
   bool Property::isRemovable() const {
@@ -38,6 +37,6 @@ namespace IsoRealms {
   }
 
   std::string Property::getTooltip() const {
-    return cTooltip;
+    return cData.getTooltip();
   }
 }

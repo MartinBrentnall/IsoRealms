@@ -199,6 +199,9 @@ namespace IsoRealms {
     std::string getFilename();
     Project& getAssetManager() override;
     IActionClient& getDummyActionClient() override;
+    const PropertyData& getPropertyData(const std::string& key) const override;
+    std::string getPropertyName(const std::string& key) const override;
+    std::string getPropertyDescription(const std::string& key) const override;
     bool isReadOnly() const override;
     void setOwner(File* file) override;
     IResourceData& getResourceData() override;
@@ -408,13 +411,13 @@ namespace IsoRealms {
       }
 
       void save(JSONObject object, const std::string& tag, File* savingProject) {
-//        if (cOwnerProject == savingProject) {
+        if (cOwnerProject == savingProject) {
           cAsset.save(object, tag);
-//        }
+        }
       }
 
       std::unique_ptr<IProperty> getProperty(const std::string& name) {
-        return std::make_unique<PropertyAsset<TYPE>>(name, "TODO", cAsset);
+        return std::make_unique<PropertyAsset<TYPE>>(PropertyData(name, "TODO"), cAsset);
       }
 
       private:
@@ -565,9 +568,10 @@ namespace IsoRealms {
 
     std::vector<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
 
-    void loadModules(JSONObject object);
+    PropertyData cMissingData;
+
     bool isModuleLoaded(const std::string& name) const;
-    std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions& options, ProjectFile& file);
+    std::vector<std::unique_ptr<JSONDocument>> loadResources(IOptions& options, ProjectFile& file);
     Module* getModule(const std::string& name);
     void saveFile(ProjectFile& file);
   };

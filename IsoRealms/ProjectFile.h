@@ -32,9 +32,16 @@ namespace IsoRealms {
     public:
     ProjectFile(Project& project);
     ProjectFile(Project& project, const std::string& filename, bool user);
+    ProjectFile(Project& project, JSONObject object);
     std::vector<std::unique_ptr<IProperty>> getProperties(Project& project);
+    void rename(const std::string name, bool user);
 
+//    private:
+    static const std::string JSON_FILENAME;
+
+    Project& cProject;
     File cFile;
+    bool cAllowModifications;
     std::vector<std::unique_ptr<ProjectFile>> cInclusions;
   };
 }

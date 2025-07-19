@@ -96,7 +96,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::getEventProperties(IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>("Start Value", "TODO", cDefStartValue));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(PropertyData("Start Value", "TODO"), cDefStartValue));
     return mProperties;
   }
 

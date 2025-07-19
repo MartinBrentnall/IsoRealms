@@ -1,0 +1,115 @@
+{
+  "description": "Functionality for supporting user-interfaces and presentation.",
+  "resources": {
+    "Layout": {
+      "singular": "Layout",
+      "plural": "Layouts",
+      "description": "Combine and arrange multiple visual elements on a single screen.  Each visual element of the layout can be switched programmatically.",
+      "category": "User Interfaces",
+      "properties": {
+        "Content": {"name": "Content", "description": "Edit the content of this layout."},
+        "ComponentName": {"name": "Name", "description": "Name of this component.  The name is only used when interacting with this component programmatically."},
+        "ComponentType": {"name": "Content", "description": "Content of this component."},
+        "ComponentLeft": {"name": "Left", "description": "Position for the left edge of this component.  Note this can also be adjusted in the editor."},
+        "ComponentRight": {"name": "Right", "description": "Position for the right edge of this component.  Note this can also be adjusted in the editor."},
+        "ComponentTop": {"name": "Top", "description": "Position for the top edge of this component.  Note this can also be adjusted in the editor."},
+        "ComponentBottom": {"name": "Bottom", "description": "Position for the bottom edge of this component.  Note this can also be adjusted in the editor."},
+        "ComponentEdgeLocation": {"name": "Location", "description": "Location of this component edge."},
+        "ComponentEdgeOffset": {"name": "Offset", "description": "Offset of this component edge from its location."},
+        "LayoutLocationAbsoluteValue": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."},
+        "LayoutLocationRelativeValue": {"name": "Value", "description": "Location of this component edge from to the selected relative component."},
+        "LayoutLocationRelativeRelative": {"name": "Relative", "description": "Component to which this edge is connected."},
+        "LayoutOffsetAbsoluteValue": {"name": "Value", "description": "Value of this component edge as an offset from the edge of the screen, from -1.0 to +1.0 on the vertical axis, and values depending on screen aspect ratio on the horizontal axis."},
+        "LayoutOffsetLinkedOrientation": {"name": "Orientation", "description": "Specifies the orintation of the linked component to which the offset of this component edge applies.  This can be used for ensuring that a component maintains a specific aspect ratio when it is resized by linking the bottom edge offset of a component to the width of the same component."},
+        "LayoutOffsetLinkedLinkedTo": {"name": "Linked To", "description": "The component to which this component edge offset is linked."},
+        "LayoutOffsetLinkedValue": {"name": "Value", "description": "The value of this component edge offset, where -1.0 is the top or left of the linked component, and +1.0 is the bottom or right of the linked component."}
+      }
+    },
+    "Menu": {
+      "singular": "Menu",
+      "plural": "Menus",
+      "description": "Menus supporting items of various types, including actions, booleans, multiple-choice, sliders, etc.",
+      "category": "User Interfaces",
+      "properties": {
+        "Colour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
+        "Font": {"name": "Font", "description": "Font to use for rendering the menu."},
+        "FontSize": {"name": "Font Size", "description": "Size of text when rendering the menu."},
+        "ShadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text of the menu."},
+        "OnExit": {"name": "Action on Exit", "description": "Action to perform leaving or dismissing the menu.  This is intended as a kind of \"default\" action, such as returning to the game from a pause menu"},
+        "MenuItem": {"name": "Menu Item", "description": "An item within this menu."},
+        "MenuItemActionName": {"name": "Name", "description": "Unique name of this menu item."},
+        "MenuItemActionLabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemActionOnSelect": {"name": "On Selection", "description": "Action to perform upon selecting this action menu item."},
+        "MenuItemBooleanName": {"name": "Name", "description": "Unique name of this menu item."},
+        "MenuItemBooleanLabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemBooleanFalseLabel": {"name": "False Label", "description": "Label to be shown as the value of this boolean menu item when set to false."},
+        "MenuItemBooleanTrueLabel": {"name": "True Label", "description": "Label to be shown as the value of this boolean menu item when set to true."},
+        "MenuItemDigitalInputName": {"name": "Name", "description": "Unique name of this menu item."},
+        "MenuItemDisplayResolutionName": {"name": "Name", "description": "Unique name of this menu item."},
+        "MenuItemDisplayResolutionLabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemFileListName": {"name": "Name", "description": "Unique name of this menu item."},
+        "MenuItemFileListFolder": {"name": "Folder", "description": "Folder from which to list files in this menu."},
+        "MenuItemFileListUser": {"name": "User", "description": "Determine whether the folder is relative to program data or user data."},
+        "MenuItemFileListOnSelection": {"name": "", "description": "Action to perform upon selecting a file."},
+        "MenuItemSliderName": {"name": "Name", "description": "Unique name of this menu item."},
+        "MenuItemSliderLabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemSliderMinimum": {"name": "Minimum", "description": "The minimum value of this slider."},
+        "MenuItemSliderMaximum": {"name": "Maximum", "description": "The maximum value of this slider."},
+        "MenuItemSliderSteps": {"name": "Steps", "description": "The number of steps it takes to traverse from the minimum value of this slider to the maximum value."},
+        "MenuItemSliderOnChange": {"name": "On Change", "description": "Action to perform upon changing the value of this slider."}
+      }
+    },
+    "Prompt": {
+      "singular": "Prompt",
+      "plural": "Prompts",
+      "description": "Prompts that display a message and allow the user to choose between two options, such as cancelling or confirming an action.",
+      "category": "User Interfaces",
+      "properties": {
+        "Colour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
+        "Font": {"name": "Font", "description": "Font to use for rendering the menu."},
+        "FontSize": {"name": "Font Size", "description": "Size of text when rendering the menu."},
+        "ShadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text of the menu."},
+        "Message": {"name": "Message", "description": "Message to be displayed by this prompt informing the user of its purpose."},
+        "LabelReject": {"name": "Reject Label", "description": "Text to be displayed to indicate the choice to reject this prompt.  Note:  Good practice is to prefer more descriptive texts should as \"Don't Save\" rather than \"Cancel\""},
+        "LabelAccept": {"name": "Accept Label", "description": "Text to be displayed to indicate the choice to accept this prompt.  Note:  Good practice is to prefer more descriptive texts should as \"Save Project\" rather than \"OK\""},
+        "OnRejection": {"name": "On Rejection", "description": "Action to perform upon user selecting the rejection choice."},
+        "OnAcceptance": {"name": "On Acceptance", "description": "Action to perform upon user selecting the acceptance choice."}
+      }
+    },
+    "ScreenFader": {
+      "singular": "Screen Fader",
+      "plural": "Screen Faders",
+      "description": "Visual elements that fade between two different different visual elements.  This can be used to create nice visual transitions between gameplay and a pause menu, for example.",
+      "category": "User Interfaces",
+      "properties": {
+        "ScreenA": {"name": "Screen A", "description": "First screen of this screen fader."},
+        "ScreenB": {"name": "Screen B", "description": "Second screen of this screen fader."},
+        "Transition": {"name": "Transition", "description": "Transition value of this screen fader, from 0 to 1, where 0 only shows screen A and 1 only shows screen B."}
+      }
+    },
+    "Throbber": {
+      "singular": "Throbber",
+      "plural": "Throbbers",
+      "description": "Animated visual elements to indicate that the application is busy.",
+      "category": "User Interfaces",
+      "properties": {
+        "Duration": {"name": "Animation Duration", "description": "Total duration of the Throbber animation before it loops in milliseconds."},
+        "Spots": {"name": "Spots", "description": "Number of spots to animate in this Throbber."},
+        "SpotSides": {"name": "Spot Sides", "description": "Number of sides on each spot in this throbber.  You can create different spot shapes by specifying different numbers, e.g. 3 for triangles, 4 for squares, etc."},
+        "SpotSize": {"name": "Spot Size", "description": "Maximum size of each spot in this throbber."},
+        "ShadowOffset": {"name": "Spot Shadow Offset", "description": "Offset of the shadow rendered behind the spots of this throbber."},
+        "Colour": {"name": "Spot Colour", "description": "Colour of spots in this throbber."},
+        "RingSize": {"name": "Ring Size", "description": "Size of the ring of spots in this throbber, where a value of +1.0 will place spots at the top edge of the screen."},
+        "Repetitions": {"name": "Spot Animation Repetitions", "description": "Number of repeating animated patterns in around the throbber ring."}
+      }
+    },
+    "VirtualKeyboard": {
+      "singular": "Virtual Keyboard",
+      "plural": "Virtual Keyboards",
+      "description": "On-screen keyboards that allow the user to enter text without a real keyboard.",
+      "category": "User Interfaces",
+      "properties": {
+      }
+    }
+  }
+}

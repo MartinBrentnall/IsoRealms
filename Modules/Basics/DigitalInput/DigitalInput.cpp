@@ -86,17 +86,17 @@ namespace IsoRealms::Basics {
   std::vector<std::unique_ptr<IProperty>> DigitalInput::getProperties(IResourceData& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>(mInput->getShortName(), "TODO", "Edit...", [&mInput]() {
+      mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData(mInput->getShortName(), "TODO"), "Edit...", [&mInput]() {
         return mInput->getProperties();
       }, [this, &mInput]() {
         Utils::removeElementUnique(cDefMapping, mInput.get());
       }));
     }
     
-    mProperties.emplace_back(std::make_unique<PropertyAdd>("Mapping", "TODO", "Add...", [this]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Mapping", "TODO"), "Add...", [this]() {
       cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
       std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
-      return std::make_unique<PropertyStruct>(mInput->getShortName(), "TODO", "Edit...", [&mInput]() {
+      return std::make_unique<PropertyStruct>(PropertyData(mInput->getShortName(), "TODO"), "Edit...", [&mInput]() {
         return mInput->getProperties();
       }, [this, &mInput]() {
         Utils::removeElementUnique(cDefMapping, mInput.get());
