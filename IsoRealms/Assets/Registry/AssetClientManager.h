@@ -111,7 +111,7 @@ namespace IsoRealms {
       return false;
     }
     
-    void overrideReadOnlyReferences(TYPE* asset, File* owner) {
+    void overrideReadOnlyReferences(TYPE* asset, ProjectFile* owner) {
       typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
       if (mIterator == cAssetSingletons.end()) {
         std::cout << "WARNING: AssetClientManager::overrideReadOnlyReferences: Specified asset has no singleton in this registry." << std::endl;
@@ -120,7 +120,7 @@ namespace IsoRealms {
       }
     }
     
-    void overrideReadOnlyReferences(IAssetProvider<OWNER, TYPE>* provider, File* owner) {
+    void overrideReadOnlyReferences(IAssetProvider<OWNER, TYPE>* provider, ProjectFile* owner) {
       typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
       if (mIterator != cClients.end()) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPair : mIterator->second) {

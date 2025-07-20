@@ -97,7 +97,7 @@ namespace IsoRealms::UI {
     return false;
   } // TODO: Probably shouldn't be here.
 
-  void UI::setOwner(File* owner) {
+  void UI::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
   void UI::load(IProject& project, JSONObject object) {

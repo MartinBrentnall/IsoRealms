@@ -60,7 +60,7 @@ namespace IsoRealms::UI {
     Project& getProject() const;
     
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
-    void setOwner(File* owner); // TODO: Probably shouldn't be here.
+    void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
 
     /****************************\
      * Implements IModuleHandle *

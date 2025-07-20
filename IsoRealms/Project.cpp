@@ -308,7 +308,7 @@ namespace IsoRealms {
       std::string mModuleName = mModuleObject.getString(JSON_NAME);
       Module* mModule = getModule(mModuleName);
       LocalOptions mModuleOptions(mModuleName, options);
-      mModule->loadResources(mModuleObject, mModuleOptions, &file.cFile);
+      mModule->loadResources(mModuleObject, mModuleOptions, &file);
     }
 
     for (JSONObject mIncludeObject : mProjectObject.getArray(JSON_INCLUDE)) {
@@ -476,9 +476,9 @@ namespace IsoRealms {
       // Save modules
       JSONArray mModulesArray = mProjectObject.addArray(JSON_MODULES);
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        if (mModule->needsSaving(&file.cFile)) {
+        if (mModule->needsSaving(&file)) {
           JSONObject mModuleObject = mModulesArray.addObject();
-          mModule->save(mModuleObject, &file.cFile);
+          mModule->save(mModuleObject, &file);
         }
       }
 
@@ -530,11 +530,15 @@ namespace IsoRealms {
     return cMissingData.getTooltip();
   }
 
+  std::unique_ptr<IProperty> Project::createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) {
+    return nullptr; // TODO
+  }
+
   bool Project::isReadOnly() const {
     return false;
   }
   
-  void Project::setOwner(File* owner) {
+  void Project::setOwner(ProjectFile* owner) {
     // Should never be called.
   }
 
@@ -546,8 +550,8 @@ namespace IsoRealms {
     return this;
   }
 
-  File* Project::getFile() {
-    return &cProjectFile.cFile;
+  ProjectFile* Project::getFile() {
+    return &cProjectFile;
   }
 
   Module* Project::loadModule(const std::string& moduleName) {

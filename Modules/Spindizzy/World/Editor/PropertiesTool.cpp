@@ -87,7 +87,7 @@ namespace IsoRealms::Spindizzy {
 
   void PropertiesTool::Modifier::showProperties() {
     if (!cHoverObjects.empty() && !cEditingProperties) {
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, [this]() {
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, [this](IDialogManager& dialogManager) {
         return cHoverObjects[cSelectedObject]->getProperties();
       }, cHoverObjects[cSelectedObject]->getTypeName() + " Configuration:", 1.0f, 1.0f, 1.0f));
       cEditingProperties = true;

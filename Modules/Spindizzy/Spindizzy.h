@@ -104,7 +104,7 @@ namespace IsoRealms::Spindizzy {
     Spindizzy& getAssetManager();
 
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
-    void setOwner(File* owner); // TODO: Probably shouldn't be here.
+    void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
 
     // Resource retrieval.
     AlienType*        getAlienType(      const std::string& id) const;

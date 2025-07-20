@@ -23,6 +23,8 @@
 #include "IActionClient.h"
 
 namespace IsoRealms {
+  class ProjectFile;
+
   class ActionClient : public IActionClient {
     public:
     ActionClient(IResourceData& resource, IBindingRegistry& bindingRegistry);
@@ -31,7 +33,7 @@ namespace IsoRealms {
      * Implements IActionClient *
     \****************************/
     bool isReadOnly() const override;
-    void setOwner(File* owner) override;
+    void setOwner(ProjectFile* owner) override;
     Project& getProject() override;
     Project& getAssetManager() override;
     IResourceData& getResourceData() override;

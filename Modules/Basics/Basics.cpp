@@ -152,7 +152,7 @@ namespace IsoRealms::Basics {
     return false;
   } // TODO: Probably shouldn't be here.
 
-  void Basics::setOwner(File* owner) {
+  void Basics::setOwner(ProjectFile* owner) {
   }; // TODO: Probably shouldn't be here.
 
   ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner) {return cSequenceTracks.get(user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ISequenceTrack*>* listener) -> ISequenceTrack* {return nullptr;});}

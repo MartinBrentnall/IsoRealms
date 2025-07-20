@@ -433,7 +433,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   } // TODO: Probably shouldn't be here.
 
-  void TerrainType::setOwner(File* owner) {
+  void TerrainType::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
   void TerrainType::registerAssets(ISpindizzyRegistry* registry) {

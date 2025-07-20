@@ -618,7 +618,7 @@ namespace IsoRealms::UI {
 
   void LayoutEditor::openProperties() {
     if (cSelectedComponent != nullptr) {
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, [this]() {
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, [this](IDialogManager& dialogManager) {
         return cSelectedComponent->getProperties();
       }, cSelectedComponent->getName() + " Configuration:", 1.0f, 1.0f, 1.0f));
       cEditingProperties = true;

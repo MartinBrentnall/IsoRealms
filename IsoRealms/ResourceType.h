@@ -35,10 +35,10 @@ namespace IsoRealms {
     public:
     ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent);
     virtual ~ResourceType();
-    void loadResource(JSONObject object, IProject& project, IOptions& options, File* ownerProject, const std::string& resourceDataPath);
+    void loadResource(JSONObject object, IProject& project, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath);
     void loadMetadata(JSONObject object);
-    bool needsSaving(File* savingProject) const;
-    void save(JSONArray& array, const std::string& tag, File* savingProject);
+    bool needsSaving(ProjectFile* savingProject) const;
+    void save(JSONArray& array, const std::string& tag, ProjectFile* savingProject);
 
     /****************************\
      * Implements IResourceType *
@@ -51,7 +51,7 @@ namespace IsoRealms {
     void deleteResource(IResource* resource) override;
     std::string getPath() override;
     std::string getDataPath(bool user) override;
-    File* getProjectFile() override;
+    ProjectFile* getProjectFile() override;
     void makeUserDataDirectory(const std::string& resourceName) override;
     void renameUserDataDirectory(const std::string& oldName, const std::string& newName) override;
     std::string getProjectPathPrefix(bool user) override;

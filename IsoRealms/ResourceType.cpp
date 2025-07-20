@@ -58,7 +58,7 @@ namespace IsoRealms {
     cResources.clear();
   }
 
-  void ResourceType::loadResource(JSONObject object, IProject& project, IOptions& options, File* ownerProject, const std::string& resourceDataPath) {
+  void ResourceType::loadResource(JSONObject object, IProject& project, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath) {
     std::string mResourceName = object.getString(JSON_ID);
     for (IResource* mResource : cResources) {
       if (mResource->getName() == mResourceName) {
@@ -84,7 +84,7 @@ namespace IsoRealms {
     }
   }
 
-  bool ResourceType::needsSaving(File* savingProject) const {
+  bool ResourceType::needsSaving(ProjectFile* savingProject) const {
     for (IResource* mResource : cResources) {
       if (mResource->needsSaving(savingProject)) {
         return true;
@@ -93,7 +93,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void ResourceType::save(JSONArray& array, const std::string& tag, File* savingProject) {
+  void ResourceType::save(JSONArray& array, const std::string& tag, ProjectFile* savingProject) {
     for (IResource* mResource : cResources) {
       if (mResource->needsSaving(savingProject)) {
         JSONObject mResourceObject = array.addObject();
@@ -117,7 +117,7 @@ namespace IsoRealms {
 
   IResource* ResourceType::createResource() {
     IProject& mProject = cParent.getProjectRuntime();
-    File* mOwnerProject = mProject.getFile();
+    ProjectFile* mOwnerProject = mProject.getFile();
     IResource* mResource = cResourceType->createResource(*this, mProject, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
     cResources.insert(mResource);
     return mResource;
@@ -148,7 +148,7 @@ namespace IsoRealms {
     return cParent.getDataPath(user) + "/" + cParent.getName(this);
   }
   
-  File* ResourceType::getProjectFile() {
+  ProjectFile* ResourceType::getProjectFile() {
     return cParent.getProjectFile();
   }
   

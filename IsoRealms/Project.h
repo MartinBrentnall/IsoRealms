@@ -116,7 +116,7 @@ namespace IsoRealms {
     }
    
     template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* asset) {
-      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, &cProjectFile.cFile);
+      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, &cProjectFile);
     }
     
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
@@ -202,11 +202,12 @@ namespace IsoRealms {
     const PropertyData& getPropertyData(const std::string& key) const override;
     std::string getPropertyName(const std::string& key) const override;
     std::string getPropertyDescription(const std::string& key) const override;
+    std::unique_ptr<IProperty> createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr) override;
     bool isReadOnly() const override;
-    void setOwner(File* file) override;
+    void setOwner(ProjectFile* file) override;
     IResourceData& getResourceData() override;
     IBindingRegistry* getBindingRegistry() override;
-    File* getFile() override;
+    ProjectFile* getFile() override;
     
     Module* loadModule(const std::string& name);
     void unloadModule(const std::string& name);

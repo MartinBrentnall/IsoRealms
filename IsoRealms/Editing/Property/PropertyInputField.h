@@ -41,8 +41,12 @@ namespace IsoRealms {
     bool hasConfiguration() const override;
     void configure(IPropertyManager& manager) override;
 
+    void cancel();
+    void confirm();
+
     protected:
     std::string cValue;
+    std::string cOldValue;
 
     virtual bool isKeyAllowed(char character, unsigned int caret) = 0;
     virtual bool confirmValue() = 0;
@@ -67,7 +71,6 @@ namespace IsoRealms {
       PropertyInputField& cParent;
       unsigned int cCaret;
       float cErrorAnimation;
-      std::string cRuntimeOldValue;
 
       void moveCaretLeft();
       void moveCaretRight();

@@ -29,7 +29,8 @@ namespace IsoRealms {
   
   PropertyInputField::PropertyInputField(const PropertyData& data, const std::string& value, std::function<void()> removeFunction) :
             Property(data, removeFunction),
-            cValue(value) {
+            cValue(value),
+            cOldValue(value) {
   }
 
   void PropertyInputField::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {
@@ -55,12 +56,19 @@ namespace IsoRealms {
   void PropertyInputField::configure(IPropertyManager& manager) {
     // Nothing to do.
   }
-  
+
+  void PropertyInputField::cancel() {
+    cValue = cOldValue;
+  }
+
+  void PropertyInputField::confirm() {
+    cOldValue = cValue;
+  }
+
   PropertyInputField::Editor::Editor(PropertyInputField& parent) :
             cParent(parent),
             cCaret(cParent.cValue.length()),
-            cErrorAnimation(1.0f),
-            cRuntimeOldValue(cParent.cValue) {
+            cErrorAnimation(1.0f) {
   }
 
   void PropertyInputField::Editor::render(IUIStyle& style, float y, float x, float aspectRatio) const {
@@ -158,7 +166,7 @@ namespace IsoRealms {
           }
 
           case sf::Keyboard::Escape: {
-            cParent.cValue = cRuntimeOldValue;
+            cParent.cValue = cParent.cOldValue;
             return true;
           }
 

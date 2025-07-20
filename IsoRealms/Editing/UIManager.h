@@ -28,14 +28,22 @@
 #include "IsoRealms/Options/LocalOptions.h"
 #include "IsoRealms/ResourceDefinition.h"
 
+#include "IDialogManager.h"
 #include "IUIScreen.h"
 #include "IUIStyle.h"
 #include "UISignalID.h"
 
 namespace IsoRealms {
-  class UIManager final {
+  class Choice;
+
+  class UIManager final : public IDialogManager {
     public:
     UIManager(IProject& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback);
+
+    /*****************************\
+     * Implements IDialogManager *
+    \*****************************/
+    bool confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) override;
 
     void render(float aspectRatio) const;
     void update(unsigned int milliseconds);
@@ -78,5 +86,8 @@ namespace IsoRealms {
     
     bool cHidden;
     int cHideAnimation;
+
+    std::unique_ptr<Choice> cConfirmationSelection;
+    std::unique_ptr<Choice> cClosedConfirmationSelection;
   };
 }

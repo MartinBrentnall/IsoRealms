@@ -62,12 +62,12 @@ namespace IsoRealms {
               cModule(module) {
     }
       
-    IResource* createResource(IResourceType& parent, IProject& project, const std::string& name, File* ownerProject, const std::string& resourceDataPath) override {
+    IResource* createResource(IResourceType& parent, IProject& project, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) override {
       std::string mAvailableName = Utils::getAvailableKey(cResources, name);
       return cResources.emplace(mAvailableName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, mAvailableName, ownerProject, resourceDataPath)).first->second.get();
     }
     
-    IResource* loadResource(IResourceType& parent, IProject& project, JSONObject object, IOptions& options, File* ownerProject, const std::string& resourceDataPath) override {
+    IResource* loadResource(IResourceType& parent, IProject& project, JSONObject object, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath) override {
       std::string mResourceName = object.getString(JSON_ID);
       IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, object, options, ownerProject, resourceDataPath)).first->second.get();
       mResource->registerAssets();

@@ -163,7 +163,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   } // TODO: Probably shouldn't be here.
 
-  void Spindizzy::setOwner(File* owner) {
+  void Spindizzy::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
   AlienType*      Spindizzy::getAlienType(     const std::string& id) const {return cResourceAlien.getResource(     id);}

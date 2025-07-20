@@ -28,13 +28,13 @@ namespace IsoRealms {
   template<class TYPE> class IStateListener;
 
   class Application;
-  class File;
   class IApplication;
   class IAssets;
   class IEditable;
   class IFloat;
   class IScreen;
   class IScreenListener;
+  class ProjectFile;
   class LuaState;
   
   /**
@@ -112,7 +112,7 @@ namespace IsoRealms {
 
     virtual IProject& getAssetManager() = 0; // TODO: Remove this (used for prototyping)
     virtual bool isReadOnly() const = 0;     // TODO: Remove this (used for prototyping)
-    virtual File* getFile() = 0;
+    virtual ProjectFile* getFile() = 0;
     virtual IApplication& getApplication() = 0;
   };
 }

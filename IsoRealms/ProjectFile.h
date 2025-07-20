@@ -38,6 +38,7 @@ namespace IsoRealms {
     void rename(const std::string name, bool user);
     void save(JSONArray array) const;
     void saveInclusion(JSONObject object) const;
+    bool isModifiable() const;
 
 //    private:
     static const std::string JSON_ALLOW_MODIFICATION;

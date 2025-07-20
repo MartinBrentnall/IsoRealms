@@ -29,7 +29,7 @@ namespace IsoRealms {
   class PropertiesMenu : public Menu<MenuItemProperty>,
                          public IPropertyManager {
     public:
-    PropertiesMenu(UIManager& manager, IUIStyle& style, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, std::function<std::vector<std::unique_ptr<IProperty>>(IDialogManager& dialogManager)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue);
 
     /*************************************\
      * Implements Menu<MenuItemProperty> *
@@ -62,7 +62,7 @@ namespace IsoRealms {
       REMOVE
     };
 
-    std::function<std::vector<std::unique_ptr<IProperty>>()> cPropertyFetcher;
+    std::function<std::vector<std::unique_ptr<IProperty>>(IDialogManager& dialogManager)> cPropertyFetcher;
     
     std::unique_ptr<IPropertyEditor> cEditingProperty;
     std::unique_ptr<IPropertyEditor> cClosingProperty;

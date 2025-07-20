@@ -141,7 +141,7 @@ namespace IsoRealms {
       return cManager.isReadOnly();
     }
 
-    void setOwner(File* owner) override {
+    void setOwner(ProjectFile* owner) override {
       return cManager.setOwner(owner);
     }
 

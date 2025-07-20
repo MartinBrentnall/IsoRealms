@@ -18,9 +18,9 @@
  */
 #include "ActionClient.h"
 
-#include "IsoRealms/IProject.h"
-#include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Project.h"
+#include "IProject.h"
+#include "IResourceData.h"
+#include "Project.h"
 
 namespace IsoRealms {
   ActionClient::ActionClient(IResourceData& resource, IBindingRegistry& bindingRegistry) :
@@ -32,7 +32,7 @@ namespace IsoRealms {
     return cResource.isReadOnly();
   }
   
-  void ActionClient::setOwner(File* owner) {
+  void ActionClient::setOwner(ProjectFile* owner) {
     cResource.setOwner(owner);
   }
   

@@ -51,7 +51,7 @@ namespace IsoRealms::Spindizzy {
     ~TerrainType();
     
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
-    void setOwner(File* owner); // TODO: Probably shouldn't be here.
+    void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
 
     // Interface to be used by module.
     void registerAssets(ISpindizzyRegistry* registry);

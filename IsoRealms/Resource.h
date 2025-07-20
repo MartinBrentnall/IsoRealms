@@ -21,7 +21,8 @@
 #include <string>
 
 #include "Assets/Registry/AssetIDException.h"
-#include "Assets/Client/File.h"
+#include "Editing/IConfirmationManager.h"
+#include "Editing/IDialogManager.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
 #include "IProject.h"
@@ -30,6 +31,7 @@
 #include "IResourceType.h"
 #include "Options/IOptions.h"
 #include "PropertyData.h"
+#include "ProjectFile.h"
 #include "ResourceAssetRegistry.h"
 #include "System.h"
 #include "Utils.h"
@@ -37,9 +39,10 @@
 namespace IsoRealms {
   template <class MODULE, class RESOURCE> class Resource : public IResource,
                                                            public IResourceData,
-                                                           public IActionClient {
+                                                           public IActionClient,
+                                                           public IConfirmationManager {
     public:
-    Resource(IResourceType& parent, IProject& project, MODULE& module, const std::string& name, File* ownerProject, const std::string& resourceDataPath) :
+    Resource(IResourceType& parent, IProject& project, MODULE& module, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
               cName(name),
               cOwnerProject(ownerProject),
@@ -59,7 +62,7 @@ namespace IsoRealms {
       } while (!mSuccess);
     }
     
-    Resource(IResourceType& parent, IProject& project, MODULE& module, JSONObject object, IOptions& options, File* ownerProject, const std::string& resourceDataPath) :
+    Resource(IResourceType& parent, IProject& project, MODULE& module, JSONObject object, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
               cName(object.getString(JSON_ID)),
               cOwnerProject(ownerProject),
@@ -79,7 +82,8 @@ namespace IsoRealms {
       return cName;
     }
     
-    std::vector<std::unique_ptr<IProperty>> getProperties() override {
+    std::vector<std::unique_ptr<IProperty>> getProperties(IDialogManager& dialogManager) override {
+      cDialogManager = &dialogManager;
       std::vector<std::unique_ptr<IProperty>> mProperties;
       mProperties.emplace_back(std::make_unique<PropertyNativeString>(PropertyData("TODO: Name", "A name to identify this resource. The name is unique relative to other resources of the same type."), [this]() {return cName;}, [this](const std::string& value) {
         std::set<IResource*> mAllResources = cParent.getResources();
@@ -107,7 +111,7 @@ namespace IsoRealms {
       if (!cResourceHandle.renderIcon()) {
         Utils::renderIconLeaf();
       }
-      if (!cOwnerProject->isUser()) {
+      if (!cOwnerProject->isModifiable()) {
         glPushMatrix();
         float mHeight = 0.08f;
         glTranslatef(-1.0f + mHeight * 0.75f, 1.0f - mHeight * 0.75f, 0.0f);
@@ -139,11 +143,11 @@ namespace IsoRealms {
     }
 
     std::string getResourceDataPath() const override {
-      std::string mRelativePath = cOwnerProject->getRelativePath();
+      std::string mRelativePath = cOwnerProject->cFile.getRelativePath();
       return mRelativePath.substr(0, mRelativePath.find_last_of('.')) + "/" + cResourceDataPath;
     }
     
-    bool needsSaving(File* savingProject) override {
+    bool needsSaving(ProjectFile* savingProject) override {
       return savingProject == cOwnerProject;
     }
     
@@ -163,10 +167,10 @@ namespace IsoRealms {
     }
 
     bool isReadOnly() const override {
-      return !cOwnerProject->isUser();
+      return !cOwnerProject->isModifiable();
     }
 
-    void setOwner(File* owner) override {
+    void setOwner(ProjectFile* owner) override {
       cOwnerProject = owner;
     }
 
@@ -202,16 +206,36 @@ namespace IsoRealms {
       return cParent.getPropertyDescription(key);
     }
 
+    std::unique_ptr<IProperty> createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr) override {
+      return make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), this, getter, setter, removeFunction);
+    }
+
+    /***********************************\
+     * Implements IConfirmationManager *
+    \***********************************/
+    bool confirm(std::function<void()> confirm, std::function<void()> cancel) override {
+      if (!cOwnerProject->isModifiable()) {
+        cDialogManager->confirm("TODO: The resource you're modifying is read-only.  In order to modify this resource, it will need to be promoted to the main project file.", confirm, cancel);
+        return true;
+      }
+      return false;
+    }
+
+    void promoteResourceToProject() override {
+      cOwnerProject = cParent.getProjectFile();
+    }
+
     private:
     static const std::string JSON_ID;
 
     IResourceType& cParent;
     std::string cName;
-    File* cOwnerProject;
+    ProjectFile* cOwnerProject;
     std::string cResourceDataPath;
     RESOURCE cResourceHandle;
     ResourceAssetRegistry cAssetRegistry;
     std::map<std::string, std::string> cPropertyHelp;
+    IDialogManager* cDialogManager; // TODO: This shouldn't be here.'
   };
 
   template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";

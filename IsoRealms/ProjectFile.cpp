@@ -50,6 +50,10 @@ namespace IsoRealms {
     object.addBoolean(JSON_ALLOW_MODIFICATION, cAllowModifications, true);
   }
 
+  bool ProjectFile::isModifiable() const {
+    return cAllowModifications && cFile.isUser();
+  }
+
   void ProjectFile::rename(const std::string name, bool user) {
     cFile.setPath(name, user);
   }

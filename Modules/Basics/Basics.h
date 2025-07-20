@@ -70,7 +70,7 @@ namespace IsoRealms::Basics {
     IsoRealms::Project& getProject() const;
 
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
-    void setOwner(File* owner); // TODO: Probably shouldn't be here.
+    void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
 
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
       cSequenceTracks.release(user, asset);

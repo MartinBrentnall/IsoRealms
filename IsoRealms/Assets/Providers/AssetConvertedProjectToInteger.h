@@ -71,7 +71,7 @@ namespace IsoRealms {
         return false; // TODO: Implement this.
       }
 
-      void setOwner(File* owner) override {
+      void setOwner(ProjectFile* owner) override {
         // TODO: Implement this.
       }
     };

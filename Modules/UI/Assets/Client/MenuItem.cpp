@@ -90,7 +90,7 @@ namespace IsoRealms::UI {
     return false; // TODO: Implement this.
   }
 
-  void MenuItem::setOwner(File* owner) {
+  void MenuItem::setOwner(ProjectFile* owner) {
     // TODO: Implement this.
   }
 

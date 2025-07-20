@@ -18,22 +18,13 @@
  */
 #pragma once
 
+#include <functional>
 #include <string>
 
 namespace IsoRealms {
-  class IBindingRegistry;
-  class IResourceData;
-  class IProject;
-  class Project;
-  class ProjectFile;
-
-  class IActionClient {
+  class IDialogManager {
     public:
-    virtual bool isReadOnly() const = 0;
-    virtual void setOwner(ProjectFile* owner) = 0;
-    virtual Project& getProject() = 0;
-    virtual Project& getAssetManager() = 0;
-    virtual IResourceData& getResourceData() = 0;
-    virtual IBindingRegistry* getBindingRegistry() = 0;
+    virtual bool confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) = 0;
   };
 }
+

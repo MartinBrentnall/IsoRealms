@@ -23,6 +23,8 @@
 #include "IsoRealms/Assets/Type/IFont.h"
 #include "IsoRealms/Utils.h"
 
+#include "Choice.h"
+
 namespace IsoRealms {
   UIManager::UIManager(IProject& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback) :
             cProject(project),
@@ -31,6 +33,21 @@ namespace IsoRealms {
             cEditorCallback(editorCallback),
             cHidden(false),
             cHideAnimation(0) {
+  }
+
+  bool UIManager::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
+    cConfirmationSelection = std::make_unique<Choice>(cStyle, message, std::vector<std::string>{"Yes", "No"}, [this, confirm, cancel](const std::string& choice)->bool {
+      cClosedConfirmationSelection = std::move(cConfirmationSelection);
+      cConfirmationSelection = nullptr;
+      if (choice == "Yes") {
+        confirm();
+        return true;
+      } else {
+        cancel();
+        return false;
+      }
+    });
+    return true; // TODO: I think this function should not return.
   }
 
   void UIManager::render(float aspectRatio) const {
@@ -193,6 +210,14 @@ namespace IsoRealms {
     }
     
     glDisable(GL_BLEND);
+
+    // Render confirmation choice.
+    if (cConfirmationSelection != nullptr) {
+      cConfirmationSelection->render(cStyle);
+    }
+    if (cClosedConfirmationSelection != nullptr) {
+      cClosedConfirmationSelection->render(cStyle);
+    }
   }
 
   void UIManager::update(unsigned int milliseconds) {
@@ -226,16 +251,29 @@ namespace IsoRealms {
       cRuntimeClosedUIs.erase(cRuntimeClosedUIs.begin() + mClosedIndex);
       mClosedIndices.pop();
     }
+
+    if (cConfirmationSelection != nullptr) {
+      cConfirmationSelection->update(milliseconds);
+    }
+    if (cClosedConfirmationSelection != nullptr) {
+      if (cClosedConfirmationSelection->update(milliseconds)) {
+        cClosedConfirmationSelection = nullptr;
+      }
+    }
   }
 
   void UIManager::input(UISignalID id) {
-    if (!cRuntimeUIs.empty()) {
+    if (cConfirmationSelection != nullptr) {
+      cConfirmationSelection->input(id);
+    } else if (!cRuntimeUIs.empty()) {
       cRuntimeUIs.back()->cScreen->input(id);
     }
   }
 
   bool UIManager::input(sf::Event& event) {
-    if (!cRuntimeUIs.empty()) {
+    if (cConfirmationSelection != nullptr) {
+      // Nothing to do.
+    } else if (!cRuntimeUIs.empty()) {
       return cRuntimeUIs.back()->cScreen->input(event);
     }
     return false;

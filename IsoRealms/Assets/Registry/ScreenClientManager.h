@@ -151,7 +151,7 @@ namespace IsoRealms {
       return cScreens.hasReadOnlyReferences(provider);
     }
 
-    void overrideReadOnlyReferences(IScreen* asset, File* owner) {
+    void overrideReadOnlyReferences(IScreen* asset, ProjectFile* owner) {
       std::map<IScreen*, std::unique_ptr<ScreenProxy>>::iterator mProxy = cScreenProxyMapping.find(asset);
       if (mProxy == cScreenProxyMapping.end()) {
         throw ArgumentException("ERROR: Project::remove: Proxy for specified screen asset not found.");
@@ -159,7 +159,7 @@ namespace IsoRealms {
       cScreens.overrideReadOnlyReferences(mProxy->second.get(), owner);
     }
 
-    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IScreen>* provider, File* owner) {
+    void overrideReadOnlyReferences(IAssetProvider<IResourceData, IScreen>* provider, ProjectFile* owner) {
       cScreens.overrideReadOnlyReferences(provider, owner);
     }
 

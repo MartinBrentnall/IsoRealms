@@ -18,11 +18,17 @@
  */
 #include "PropertyNativeFloat.h"
 
+#include "IsoRealms/Editing/IConfirmationManager.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
   PropertyNativeFloat::PropertyNativeFloat(const PropertyData& data, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) :
+            PropertyNativeFloat(data, nullptr, getter, setter, removeFunction) {
+  }
+
+  PropertyNativeFloat::PropertyNativeFloat(const PropertyData& data, IConfirmationManager* confirmationManager, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) :
             PropertyInputField(data, Utils::toString(getter()), removeFunction),
+            cConfirmationManager(confirmationManager),
             cSetter(setter) {
     while (cValue.length() > 3 && cValue[cValue.length() - 1] == '0' && cValue[cValue.length() - 2] != '.') {
       cValue = cValue.substr(0, cValue.length() - 1);
@@ -42,9 +48,19 @@ namespace IsoRealms {
     } catch (std::invalid_argument& e) {
       return false;
     }
-    std::cout << "SETTER 1" << std::endl;
+    if (cConfirmationManager != nullptr) {
+      cConfirmationManager->confirm([this, mFloatValue]() {
+        std::cout << "TODO: Accepted" << std::endl;
+        cConfirmationManager->promoteResourceToProject();
+        confirm();
+        cSetter(mFloatValue);
+      }, [this]() {
+        std::cout << "TODO: Declined" << std::endl;
+        cancel();
+      });
+      return true;
+    }
     bool mResult = cSetter(mFloatValue);
-    std::cout << "SETTER 2" << std::endl;
     return mResult;
   }
 }
