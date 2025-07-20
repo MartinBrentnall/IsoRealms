@@ -35,19 +35,34 @@ namespace IsoRealms {
   ProjectFile::ProjectFile(Project& project, JSONObject object) :
               ProjectFile(project) {
     cFile.load(JSON_FILENAME, object);
+    cAllowModifications = object.getBoolean(JSON_ALLOW_MODIFICATION, true);
+  }
+
+  void ProjectFile::save(JSONArray array) const {
+    for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
+      JSONObject mIncludeObject = array.addObject();
+      mInclusion->saveInclusion(mIncludeObject);
+    }
+  }
+
+  void ProjectFile::saveInclusion(JSONObject object) const {
+    cFile.save(JSON_FILENAME, object);
+    object.addBoolean(JSON_ALLOW_MODIFICATION, cAllowModifications, true);
   }
 
   void ProjectFile::rename(const std::string name, bool user) {
     cFile.setPath(name, user);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectFile::getProperties(Project& project) {
+  std::vector<std::unique_ptr<IProperty>> ProjectFile::getProperties(Project& project, bool inclusion) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(PropertyData("File", "TODO"), cFile));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Allow Modifications", "TODO"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, cProject));
+    if (inclusion && cFile.isUser()) {
+      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Allow Modifications", "TODO"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, cProject));
+    }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
       mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData("Inclusion", "TODO"), mInclusion->cFile.getRelativePath(), [this, &mInclusion, &project]() {
-        return mInclusion->getProperties(project);
+        return mInclusion->getProperties(project, true);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
       }));
@@ -55,7 +70,7 @@ namespace IsoRealms {
     mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Inclusion", "TODO"), "Add...", [this, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
       return std::make_unique<PropertyStruct>(PropertyData("Inclusion", "TODO"), mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &project]() {
-        return mNewInclusion->getProperties(project);
+        return mNewInclusion->getProperties(project, true);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);
       });
@@ -63,6 +78,7 @@ namespace IsoRealms {
     return mProperties;
   }
 
-  const std::string ProjectFile::JSON_FILENAME = "filename";
+  const std::string ProjectFile::JSON_ALLOW_MODIFICATION = "allowModifications";
+  const std::string ProjectFile::JSON_FILENAME           = "filename";
 }
 

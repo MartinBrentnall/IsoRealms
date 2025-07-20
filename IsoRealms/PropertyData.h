@@ -18,34 +18,25 @@
  */
 #pragma once
 
-#include <functional>
-#include <queue>
-#include <set>
 #include <string>
 
-#include "Assets/Client/File.h"
-
 namespace IsoRealms {
-  class JSONArray;
-  class Project;
+  class JSONObject;
 
-  class ProjectFile {
+  class PropertyData {
     public:
-    ProjectFile(Project& project);
-    ProjectFile(Project& project, const std::string& filename, bool user);
-    ProjectFile(Project& project, JSONObject object);
-    std::vector<std::unique_ptr<IProperty>> getProperties(Project& project, bool topFile);
-    void rename(const std::string name, bool user);
-    void save(JSONArray array) const;
-    void saveInclusion(JSONObject object) const;
+    PropertyData(const std::string& name, const std::string& tooltip);
+    PropertyData(JSONObject object);
+    PropertyData(const PropertyData& other);
 
-//    private:
-    static const std::string JSON_ALLOW_MODIFICATION;
-    static const std::string JSON_FILENAME;
+    std::string getName() const;
+    std::string getTooltip() const;
 
-    Project& cProject;
-    File cFile;
-    bool cAllowModifications;
-    std::vector<std::unique_ptr<ProjectFile>> cInclusions;
+    private:
+    static const std::string JSON_DESCRIPTION;
+    static const std::string JSON_NAME;
+
+    const std::string cName;
+    const std::string cTooltip;
   };
 }

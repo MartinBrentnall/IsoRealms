@@ -447,10 +447,7 @@ namespace IsoRealms {
       JSONDocument mJSONDocument;
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
       JSONArray mIncludeArray = mProjectObject.addArray(JSON_INCLUDE);
-      for (std::unique_ptr<ProjectFile>& mInclusion : file.cInclusions) {
-        JSONObject mIncludeObject = mIncludeArray.addObject();
-        mInclusion->cFile.save(JSON_FILENAME, mIncludeObject);
-      }
+      file.save(mIncludeArray);
 
       // Save project used assets
       cDefScreen.save(mProjectObject, JSON_SCREEN, &file.cFile);
@@ -787,7 +784,7 @@ namespace IsoRealms {
       return mProperties;
     }));
     mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData("TODO: App File Structure", "View or configure the files that make up this app"), "Edit...", [this]() {
-      return cProjectFile.getProperties(*this);
+      return cProjectFile.getProperties(*this, false);
     }));
     mProperties.emplace_back(cDefInitAction.getProperty("On Initialisation"));
     mProperties.emplace_back(cDefResetAction.getProperty("On Reset"));
