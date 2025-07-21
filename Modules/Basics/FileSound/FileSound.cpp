@@ -52,7 +52,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner.getPropertyData("File"), cDefFile));
     return mProperties;

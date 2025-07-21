@@ -182,7 +182,7 @@ namespace IsoRealms::Hue {
     return false;
   }
   
-  std::vector<std::unique_ptr<IProperty>> HueManager::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> HueManager::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("Address"), [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("User"),    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));

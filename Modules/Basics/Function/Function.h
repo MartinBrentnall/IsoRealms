@@ -49,7 +49,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
 
     // Constructors for use by scripts (in-line functions).
     Function(IProject& project, const std::string& name, IActionClient& owner);

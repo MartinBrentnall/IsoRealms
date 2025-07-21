@@ -65,7 +65,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>(owner.getPropertyData("EntityTypeA"),       cDefPhysicalObjectTypeA));
     mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>(owner.getPropertyData("EntityTypeB"),       cDefPhysicalObjectTypeB));

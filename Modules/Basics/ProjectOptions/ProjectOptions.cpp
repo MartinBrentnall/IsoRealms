@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

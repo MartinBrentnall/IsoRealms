@@ -88,7 +88,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>( owner.getPropertyData("Appearance"),   cDefModel));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>(owner.getPropertyData("Target"),       cDefTarget));

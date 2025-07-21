@@ -73,7 +73,7 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Top"),     cDefColourTop));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Side"),    cDefColourSide));

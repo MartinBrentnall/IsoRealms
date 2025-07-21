@@ -24,7 +24,8 @@ namespace IsoRealms::Basics {
 
   const std::string InputGroup::PROPERTY_INPUT_HANDLER = "Input";
   
-  InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data) {
+  InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data) :
+            cResource(data) {
   }
   
   InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
@@ -54,7 +55,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
       mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>(owner.getPropertyData("InputHandler"), *mInputHandler.get(), [this, &mInputHandler]() {
@@ -63,7 +64,7 @@ namespace IsoRealms::Basics {
     }
 
     mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("InputHandlerAdd"), "Add...", [this, &owner]() {
-      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(owner));
+      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cResource));
       std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
       return std::make_unique<PropertyAsset<InputHandler>>(owner.getPropertyData("InputHandler"), *mInputHandler, [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());

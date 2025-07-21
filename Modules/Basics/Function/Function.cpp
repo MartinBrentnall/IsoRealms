@@ -66,7 +66,7 @@ namespace IsoRealms::Basics {
     return renderAssetProviderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Function::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Function::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyStruct>(owner.getPropertyData("Bindings"), "Edit...", [this, &owner]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;

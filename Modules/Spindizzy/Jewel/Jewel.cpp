@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
       cColoursCycle[i]->getProperties(owner, mProperties);
@@ -149,7 +149,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void Jewel::CycleColour::getProperties(IResourceData& owner, std::vector<std::unique_ptr<IProperty>>& properties) {
+  void Jewel::CycleColour::getProperties(IPropertyOwner& owner, std::vector<std::unique_ptr<IProperty>>& properties) {
     properties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Colour"), cDefColour));
   }
 

@@ -56,7 +56,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner.getPropertyData("InitialState"), [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, owner.getProject()));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("HintAction"),   cDefHintAction));

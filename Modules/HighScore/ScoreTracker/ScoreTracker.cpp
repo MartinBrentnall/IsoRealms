@@ -74,7 +74,7 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

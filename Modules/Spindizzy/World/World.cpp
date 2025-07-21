@@ -170,7 +170,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> World::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> World::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Gravity"),            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("SlopeEffect"),        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));

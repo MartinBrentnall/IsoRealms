@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
     return mProperties;

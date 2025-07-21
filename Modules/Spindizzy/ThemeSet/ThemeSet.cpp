@@ -48,7 +48,7 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  std::vector<std::unique_ptr<IProperty>> ThemeSet::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> ThemeSet::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     
     // Texture elements of each theme in this set.

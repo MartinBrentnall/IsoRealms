@@ -42,7 +42,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
 
     /****************************\
      * Implements IInputHandler *
@@ -62,6 +62,9 @@ namespace IsoRealms::Basics {
 
     // Property names.
     static const std::string PROPERTY_INPUT_HANDLER;
+
+    // External interfaces.
+    IResourceData& cResource;
 
     // Definition data.
     std::vector<std::unique_ptr<InputHandler>> cDefInputHandlers; /// Collection of input handlers.

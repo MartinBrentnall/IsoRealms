@@ -25,6 +25,7 @@
 
 namespace IsoRealms {
   class IProperty;
+  class IResourceData;
 
   /**
    * Base interface for assets.

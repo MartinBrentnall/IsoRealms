@@ -126,6 +126,7 @@ add_library(IsoRealms
   Project.cpp
   ProjectFile.cpp
   PropertyData.cpp
+  PropertyMaker.cpp
   ResourceAssetRegistry.cpp
   ResourceType.cpp
   System.cpp

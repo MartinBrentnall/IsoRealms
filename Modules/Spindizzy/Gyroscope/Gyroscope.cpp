@@ -78,7 +78,7 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Quadrant1"), cDefQuadrant[0]));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Quadrant2"), cDefQuadrant[1]));

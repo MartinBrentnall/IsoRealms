@@ -83,7 +83,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> DigitalInput::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> DigitalInput::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
       mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData(mInput->getShortName(), "TODO"), "Edit...", [&mInput]() {

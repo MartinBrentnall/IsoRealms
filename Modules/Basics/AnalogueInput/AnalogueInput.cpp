@@ -65,7 +65,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -18,28 +18,25 @@
  */
 #pragma once
 
+#include <functional>
+#include <memory>
 #include <string>
 
 namespace IsoRealms {
   class IActionClient;
-  class IProject;
+  class IProperty;
   class Project;
-  class ProjectFile;
   class PropertyData;
 
-  class IResourceData {
+  class IPropertyOwner {
     public:
-    virtual std::string getPath(const std::string& file, bool user) const = 0;
-    virtual void makeUserDataDirectory() = 0;
-    virtual bool isIncluded() const = 0;
-    virtual bool isReadOnly() const = 0;
-    virtual void setOwner(ProjectFile* owner) = 0;
     virtual Project& getProject() = 0;
-    virtual Project& getAssetManager() = 0;
     virtual IActionClient& getDummyActionClient() = 0;
-
     virtual const PropertyData& getPropertyData(const std::string& key) const = 0;
     virtual std::string getPropertyName(const std::string& key) const = 0;
     virtual std::string getPropertyDescription(const std::string& key) const = 0;
+
+    virtual std::unique_ptr<IProperty> createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr) = 0;
   };
 }
+

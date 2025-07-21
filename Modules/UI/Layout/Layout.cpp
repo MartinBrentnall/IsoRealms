@@ -68,7 +68,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyEditor>(owner.getPropertyData("Content"), this));
     return mProperties;

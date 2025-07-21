@@ -82,7 +82,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Side1"),   cDefSide[0]));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Side2"),   cDefSide[1]));

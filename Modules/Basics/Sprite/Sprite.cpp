@@ -76,7 +76,7 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner.getPropertyData("Appearance"),      cDefTexture));
     mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( owner.getPropertyData("BillboardYaw"),   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, owner.getProject()));

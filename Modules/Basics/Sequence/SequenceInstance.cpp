@@ -129,7 +129,7 @@ namespace IsoRealms::Basics {
     object.addFloat(JSON_SPEED, cDefSpeed, 1.0f);
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceInstance::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> SequenceInstance::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( owner.getPropertyData("InstanceName"), [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);}));
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("StartTime"),    [this]() {return cDefStartTime;}, [this](int value)   {cDefStartTime = value; return true;}));

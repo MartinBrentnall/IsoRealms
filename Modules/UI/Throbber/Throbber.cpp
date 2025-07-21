@@ -83,7 +83,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Duration"),     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Spots"),        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;}));

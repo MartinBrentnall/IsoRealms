@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
     return cTexture.renderAssetIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("FillColour"),    cDefFill));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("ShineColour"),   cDefShine));

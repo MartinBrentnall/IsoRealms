@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
     public:
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
     bool renderIcon();
     void hintInUse(bool inUse);
     void save(JSONObject object) const;

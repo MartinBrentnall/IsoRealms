@@ -26,12 +26,14 @@
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
 #include "IProject.h"
+#include "IPropertyOwner.h"
 #include "IResource.h"
 #include "IResourceData.h"
 #include "IResourceType.h"
 #include "Options/IOptions.h"
-#include "PropertyData.h"
 #include "ProjectFile.h"
+#include "PropertyData.h"
+#include "PropertyMaker.h"
 #include "ResourceAssetRegistry.h"
 #include "System.h"
 #include "Utils.h"
@@ -102,7 +104,8 @@ namespace IsoRealms {
         registerAssets();
         return true;
       }));
-      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(*this);
+      PropertyMaker mPropertyMaker(*this, *this);
+      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(mPropertyMaker);
       mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mResourceProperties)), std::make_move_iterator(std::end(mResourceProperties)));
       return mProperties;
     }
@@ -204,10 +207,6 @@ namespace IsoRealms {
 
     std::string getPropertyDescription(const std::string& key) const override {
       return cParent.getPropertyDescription(key);
-    }
-
-    std::unique_ptr<IProperty> createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr) override {
-      return make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), this, getter, setter, removeFunction);
     }
 
     /***********************************\

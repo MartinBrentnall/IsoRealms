@@ -102,7 +102,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner.getPropertyData("Font"),         cDefFont));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));

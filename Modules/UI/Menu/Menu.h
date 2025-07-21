@@ -45,7 +45,7 @@ namespace IsoRealms::UI {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
 
     /*********************\
      * Module interfaces *

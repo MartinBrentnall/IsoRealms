@@ -131,7 +131,7 @@ namespace IsoRealms::Spindizzy {
   
   
   
-  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SurfaceFriction"),     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SurfaceGrip"),         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));

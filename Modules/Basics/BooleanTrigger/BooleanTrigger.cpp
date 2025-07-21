@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> BooleanTrigger::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>(owner.getPropertyData("Value"),   cDefValue));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>( owner.getPropertyData("OnTrue"),  cDefTrueAction));

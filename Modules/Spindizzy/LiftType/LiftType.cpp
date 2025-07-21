@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiftType::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> LiftType::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(  owner.getPropertyData("Appearance"), cDefModel));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>(owner.getPropertyData("State"),      cDefActive));

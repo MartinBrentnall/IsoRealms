@@ -123,7 +123,7 @@ namespace IsoRealms::Replay {
     assets.add(static_cast<IInputHandler*>(this), "", "System");
   }
   
-  std::vector<std::unique_ptr<IProperty>> Player::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Player::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

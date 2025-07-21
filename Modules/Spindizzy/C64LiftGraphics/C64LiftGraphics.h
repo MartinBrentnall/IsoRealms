@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) const;
     bool renderIcon();
     void hintInUse(bool inUse);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
 
     private:
     

@@ -40,7 +40,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IResourceData& owner);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
 
     /*********************\
      * Module interfaces *
@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
       void save(JSONObject object) const;
       const Colour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
-      void getProperties(IResourceData& owner, std::vector<std::unique_ptr<IProperty>>& properties);
+      void getProperties(IPropertyOwner& owner, std::vector<std::unique_ptr<IProperty>>& properties);
       
       private:
       

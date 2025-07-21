@@ -105,7 +105,7 @@ namespace IsoRealms::Replay {
     assets.add<IAssets>(cProject.get(), "Project", "Gameplay Recorders");
   }
   
-  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

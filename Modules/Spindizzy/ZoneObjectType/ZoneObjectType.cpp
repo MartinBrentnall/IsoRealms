@@ -78,7 +78,7 @@ namespace IsoRealms::Spindizzy {
     return false; // TODO
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

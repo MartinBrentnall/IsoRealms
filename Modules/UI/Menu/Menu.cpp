@@ -85,7 +85,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Colour"),       cDefColour));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner.getPropertyData("Font"),         cDefFont));

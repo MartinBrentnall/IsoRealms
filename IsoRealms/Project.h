@@ -50,6 +50,7 @@
 #include "Assets/Providers/AssetLiteralVertex.h"
 #include "Assets/Providers/AssetLocalBinding.h"
 #include "Editing.h"
+#include "IPropertyOwner.h"
 #include "IResourceData.h"
 #include "Lua.h"
 #include "Options/LocalOptions.h"
@@ -73,6 +74,7 @@ namespace IsoRealms {
   class Project : public IProject,
                   public IBindingRegistry,
                   public IResourceData,
+                  public IPropertyOwner,
                   public IActionClient {
     public:
 

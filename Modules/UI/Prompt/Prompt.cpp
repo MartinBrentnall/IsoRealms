@@ -80,7 +80,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner.getPropertyData("Font"),            cDefFont));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("FontSize"),        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));

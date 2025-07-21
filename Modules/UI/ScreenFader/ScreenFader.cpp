@@ -53,7 +53,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScreenFader::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> ScreenFader::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner.getPropertyData("ScreenA"),    cDefScreenA));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner.getPropertyData("ScreenB"),    cDefScreenB));

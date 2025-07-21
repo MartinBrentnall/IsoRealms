@@ -132,7 +132,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> PlayerType::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> PlayerType::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 
     // Dimensions

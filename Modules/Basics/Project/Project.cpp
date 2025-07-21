@@ -69,7 +69,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   

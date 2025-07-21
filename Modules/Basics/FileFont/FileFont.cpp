@@ -161,7 +161,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IResourceData& owner) {
+  std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  owner.getPropertyData("File"),         cDefFilename));
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("Detail"),       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;}));
