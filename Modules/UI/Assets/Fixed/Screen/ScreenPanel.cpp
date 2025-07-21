@@ -75,7 +75,7 @@ namespace IsoRealms::UI {
   std::vector<std::unique_ptr<IProperty>> ScreenPanel::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, PropertyData("Colour", "TODO"), cDefColour));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Corner Size", "TODO"), [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Corner Size", [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value; return true;}));
     return mProperties;
   }
   

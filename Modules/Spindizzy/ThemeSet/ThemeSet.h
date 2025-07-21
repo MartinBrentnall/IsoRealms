@@ -94,7 +94,7 @@ namespace IsoRealms::Spindizzy {
 
     LuaBinding<ThemeSet> cLuaBinding;
     
-    std::unique_ptr<IProperty> createTextureElementProperty(ThemeTexture* element);
-    std::unique_ptr<IProperty> createColourElementProperty(ThemeColour* element);
+    std::unique_ptr<IProperty> createTextureElementProperty(IPropertyOwner& owner, ThemeTexture* element);
+    std::unique_ptr<IProperty> createColourElementProperty(IPropertyOwner& owner, ThemeColour* element);
   };
 }

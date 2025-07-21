@@ -92,12 +92,12 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>( owner, owner.getPropertyData("Appearance"),   cDefModel));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>(owner, owner.getPropertyData("Target"),       cDefTarget));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Acceleration"), [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Friction"),     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("SpinSpeed"),    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Height"),       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Radius"),       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("HugThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
     return mProperties;
   }
 

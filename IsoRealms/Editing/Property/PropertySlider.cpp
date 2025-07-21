@@ -20,6 +20,7 @@
 
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Editing/UISignalID.h"
+#include "IsoRealms/IPropertyOwner.h"
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyManager.h"
@@ -64,7 +65,7 @@ namespace IsoRealms {
   void PropertySlider::configure(IPropertyManager& manager) {
     manager.openProperties(cPropertyOwner, getPropertyName(), [this]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData(getPropertyName(), "TODO"), [this]() {
+      mProperties.emplace_back(cPropertyOwner.createPropertyNativeFloat(getPropertyName(), [this]() {
         return cValueFunction();
       }, [this](float value) {
         cConfirmationCallback(value);

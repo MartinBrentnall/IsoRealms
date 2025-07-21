@@ -133,12 +133,12 @@ namespace IsoRealms::Spindizzy {
   
   std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SurfaceFriction"),     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SurfaceGrip"),         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SurfaceBounce"),       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("WallBounce"),          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        owner, owner.getPropertyData("AllowRespawn"),        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              owner.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        owner, owner.getPropertyData("Solid"),               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              owner.getProject()));
+    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SurfaceFriction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SurfaceGrip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SurfaceBounce",       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat(  "WallBounce",          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("AllowRespawn",        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;}));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("Solid",               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, owner.getPropertyData("OnTouch"),             cDefContactAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, owner.getPropertyData("OnImpact"),            cDefImpactAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(owner, owner.getPropertyData("SurfaceAppearance"),   cDefSurfacePattern));

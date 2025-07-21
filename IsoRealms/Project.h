@@ -206,7 +206,10 @@ namespace IsoRealms {
     const PropertyData& getPropertyData(const std::string& key) const override;
     std::string getPropertyName(const std::string& key) const override;
     std::string getPropertyDescription(const std::string& key) const override;
-    std::unique_ptr<IProperty> createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr) override;
+    std::unique_ptr<IProperty> createPropertyNativeBoolean(const std::string& metadataKey, std::function<bool()>        getter, std::function<void(bool               value)> setter, std::function<void()> removeFunction = nullptr) override;
+    std::unique_ptr<IProperty> createPropertyNativeFloat(  const std::string& metadataKey, std::function<float()>       getter, std::function<bool(float              value)> setter, std::function<void()> removeFunction = nullptr) override;
+    std::unique_ptr<IProperty> createPropertyNativeInteger(const std::string& metadataKey, std::function<int()>         getter, std::function<bool(int                value)> setter, std::function<void()> removeFunction = nullptr) override;
+    std::unique_ptr<IProperty> createPropertyNativeString( const std::string& metadataKey, std::function<std::string()> getter, std::function<bool(const std::string& value)> setter, std::function<void()> removeFunction = nullptr) override;
     bool isReadOnly() const override;
     void setOwner(ProjectFile* file) override;
     IResourceData& getResourceData() override;

@@ -172,10 +172,10 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> World::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Gravity"),            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("SlopeEffect"),        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("BounceTime"),         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, owner.getPropertyData("AdvancedProperties"), [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;}, cSpindizzy.getProject()));
+    mProperties.emplace_back(owner.createPropertyNativeFloat(  "Gravity",            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SlopeEffect",        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeInteger("BounceTime",         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("AdvancedProperties", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;}));
     mProperties.emplace_back(std::make_unique<PropertyEditor>(       owner.getPropertyData("WorldLayout"),        this));
     return mProperties;
   }

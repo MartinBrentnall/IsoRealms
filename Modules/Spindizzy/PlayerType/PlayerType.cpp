@@ -136,18 +136,18 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 
     // Dimensions
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Radius"),               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Height"),               [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Radius",               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Height",               [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
 
     // Physics
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Acceleration"),         [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("WallBounce"),           [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("StepReach"),            [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("HugMomentumThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Acceleration",         [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("WallBounce",           [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("StepReach",            [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("HugMomentumThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
 
     // appearance
     mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner, owner.getPropertyData("Appearance"),          cDefModel));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("SpinSpeed"),            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("SpinSpeed",            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
 
     // Input
     mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner, owner.getPropertyData("InputXMovement"),      cDefInputX));
@@ -161,7 +161,7 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnWallBounce"),       cDefWallBounceAction));
 
     // Misc
-    mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("RespawnDelay"),       [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeInteger("RespawnDelay",       [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner, owner.getPropertyData("ViewOrientation"),     cDefOrientation));
     return mProperties;
   }

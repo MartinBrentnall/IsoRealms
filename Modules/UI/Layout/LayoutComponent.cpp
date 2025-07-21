@@ -298,7 +298,7 @@ namespace IsoRealms::UI {
     
   std::vector<std::unique_ptr<IProperty>> LayoutComponent::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( PropertyData("Name",      "TODO"), [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("Name", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner, PropertyData("Component", "TODO"), cDefScreen));
     mProperties.emplace_back(std::make_unique<PropertyStruct>(       owner, PropertyData("Left",      "TODO"), "Edit...", [this, &owner]() {return cDefLeftEdge.getProperties(owner);}));
     mProperties.emplace_back(std::make_unique<PropertyStruct>(       owner, PropertyData("Right",     "TODO"), "Edit...", [this, &owner]() {return cDefRightEdge.getProperties(owner);}));

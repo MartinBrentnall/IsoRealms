@@ -76,7 +76,7 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> Theme::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>(PropertyData("Name", "TODO"), [this]() {return getName();}, [this](const std::string& value) {return cThemeSet.setName(*this, value);}));
+    mProperties.emplace_back(owner.createPropertyNativeString("Name", [this]() {return getName();}, [this](const std::string& value) {return cThemeSet.setName(*this, value);}));
     for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
       mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, PropertyData(cThemeSet.getElement(mTexture.first), "TODO"), mTexture.second));
     }

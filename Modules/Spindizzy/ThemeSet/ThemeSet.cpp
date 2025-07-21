@@ -55,11 +55,11 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, owner.getPropertyData("TextureElements"), "Edit...", [this, &owner]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
-        mProperties.emplace_back(createTextureElementProperty(mTexture.second.get()));
+        mProperties.emplace_back(createTextureElementProperty(owner, mTexture.second.get()));
       }
       
-      mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Element"), "Add...",  [this]() {
-        return createTextureElementProperty(createTexture(Utils::getAvailableKey(cTextures, "New Texture")));
+      mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Element"), "Add...",  [this, &owner]() {
+        return createTextureElementProperty(owner, createTexture(Utils::getAvailableKey(cTextures, "New Texture")));
       }));
       return mProperties;
     }));
@@ -68,11 +68,11 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, owner.getPropertyData("ColourElements"), "Edit...", [this, &owner]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
-        mProperties.emplace_back(createColourElementProperty(mColour.second.get()));
+        mProperties.emplace_back(createColourElementProperty(owner, mColour.second.get()));
       }
       
-      mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Element"), "Add...",  [this]() {
-        return createColourElementProperty(createColour(cSpindizzy.getProject(), Utils::getAvailableKey(cColours, "New Colour")));
+      mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Element"), "Add...",  [this, &owner]() {
+        return createColourElementProperty(owner, createColour(cSpindizzy.getProject(), Utils::getAvailableKey(cColours, "New Colour")));
       }));
       return mProperties;
     }));
@@ -359,7 +359,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  std::unique_ptr<IProperty> ThemeSet::createTextureElementProperty(ThemeTexture* element) {
+  std::unique_ptr<IProperty> ThemeSet::createTextureElementProperty(IPropertyOwner& owner, ThemeTexture* element) {
     return std::make_unique<PropertyNativeString>(PropertyData("Element", "TODO"), [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
@@ -381,8 +381,8 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  std::unique_ptr<IProperty> ThemeSet::createColourElementProperty(ThemeColour* element) {
-    return std::make_unique<PropertyNativeString>(PropertyData("Element", "TODO"), [this, element]() {
+  std::unique_ptr<IProperty> ThemeSet::createColourElementProperty(IPropertyOwner& owner, ThemeColour* element) {
+    return owner.createPropertyNativeString("Element", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

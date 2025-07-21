@@ -25,13 +25,8 @@
 #include "AssetLiteral.h"
 
 namespace IsoRealms {
-  class Project;
-
   class AssetLiteralBoolean : public AssetLiteral<IResourceData, IBoolean> {
     public:
-    AssetLiteralBoolean(Project& project) :
-              cProject(project) {
-    }
 
     /*************************************\
      * Implements AssetLiteral<IBoolean> *
@@ -41,12 +36,12 @@ namespace IsoRealms {
     }
 
     std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner) const override {
-      return std::make_unique<LiteralBoolean>(cProject, false);
+      return std::make_unique<LiteralBoolean>(false);
     }
 
     std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
-      return expression == VALUE_TRUE  ? std::make_unique<LiteralBoolean>(cProject, true)
-           : expression == VALUE_FALSE ? std::make_unique<LiteralBoolean>(cProject, false)
+      return expression == VALUE_TRUE  ? std::make_unique<LiteralBoolean>(true)
+           : expression == VALUE_FALSE ? std::make_unique<LiteralBoolean>(false)
            :                             nullptr;
     }
 
@@ -57,7 +52,7 @@ namespace IsoRealms {
     private:
 
     std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
-      return object.getBoolean(JSON_VALUE) ? std::make_unique<LiteralBoolean>(cProject, true) : std::make_unique<LiteralBoolean>(cProject, false);
+      return object.getBoolean(JSON_VALUE) ? std::make_unique<LiteralBoolean>(true) : std::make_unique<LiteralBoolean>(false);
     }
 
     private:
@@ -66,7 +61,5 @@ namespace IsoRealms {
     // Recognized values.
     inline static const std::string VALUE_FALSE = "false"; /// String value for literal false
     inline static const std::string VALUE_TRUE  = "true";  /// String value for literal true
-
-    Project& cProject;
   };
 }

@@ -83,12 +83,12 @@ namespace IsoRealms::UI {
   std::vector<std::unique_ptr<IProperty>> Prompt::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("Font"),            cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("FontSize"),        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("ShadowOffset"),    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat( "FontSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat( "ShadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("SelectionColour"), cDefSelectionColour));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( owner.getPropertyData("Message"),         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( owner.getPropertyData("RejectLabel"),     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>( owner.getPropertyData("AcceptLabel"),     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("Message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("RejectLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("AcceptLabel",     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnRejection"),     cDefNegativeAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnAcceptance"),    cDefPositiveAction));
     return mProperties;

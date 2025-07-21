@@ -70,11 +70,11 @@ namespace IsoRealms {
     object.addFloat(JSON_SCALE_Y, cDefScaleY, 1.0f);
   }
   
-  std::vector<std::unique_ptr<IProperty>> Texture::getClientProperties() {
+  std::vector<std::unique_ptr<IProperty>> Texture::getClientProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Scale X", "TODO"), [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged(cAsset); return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Scale Y", "TODO"), [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged(cAsset); return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Angle",   "TODO"), [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged(cAsset); return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("ScaleX", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged(cAsset); return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("ScaleY", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged(cAsset); return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Angle",  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged(cAsset); return true;}));
     return mProperties;
   }
   

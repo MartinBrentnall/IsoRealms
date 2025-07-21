@@ -21,11 +21,11 @@
 #include "IsoRealms/Editing/Property/PropertyNativeBoolean.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
+#include "IsoRealms/IPropertyOwner.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  LiteralBoolean::LiteralBoolean(IProject& project, bool value) :
-            cProject(project),
+  LiteralBoolean::LiteralBoolean(bool value) :
             cValue(value) {
   }
 
@@ -48,7 +48,7 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> LiteralBoolean::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](bool value) {cValue = value;}, cProject));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("Value", [this]() {return cValue;}, [this](bool value) {cValue = value;}));
     return mProperties;
   }
 

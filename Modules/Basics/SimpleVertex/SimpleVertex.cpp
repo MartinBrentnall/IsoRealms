@@ -70,9 +70,9 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SimpleVertex::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("X"), [this]() {return cDefX;}, [this](float value) {cDefX = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Y"), [this]() {return cDefY;}, [this](float value) {cDefY = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("Z"), [this]() {return cDefZ;}, [this](float value) {cDefZ = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("X", [this]() {return cDefX;}, [this](float value) {cDefX = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Y", [this]() {return cDefY;}, [this](float value) {cDefY = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value; return true;}));
     return mProperties;
   }
 

@@ -19,6 +19,7 @@
 #include "LiteralString.h"
 
 #include "IsoRealms/Editing/Property/PropertyNativeString.h"
+#include "IsoRealms/IPropertyOwner.h"
 
 namespace IsoRealms {
   LiteralString::LiteralString(const std::string& value) {
@@ -39,7 +40,7 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> LiteralString::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>(PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](const std::string& value) {cValue = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("Value", [this]() {return cValue;}, [this](const std::string& value) {cValue = value; return true;}));
     return mProperties;
   }
 

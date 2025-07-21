@@ -22,7 +22,6 @@
 
 namespace IsoRealms {
   ProjectFile::ProjectFile(Project& project) :
-              cProject(project),
               cFile(project),
               cAllowModifications(true) {
   }
@@ -62,7 +61,7 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, PropertyData("File", "TODO"), cFile));
     if (inclusion && cFile.isUser()) {
-      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Allow Modifications", "TODO"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, cProject));
+      mProperties.emplace_back(owner.createPropertyNativeBoolean("AllowModifications", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}));
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
       mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData("Inclusion", "TODO"), mInclusion->cFile.getRelativePath(), [this, &owner, &mInclusion, &project]() {

@@ -34,7 +34,7 @@ namespace IsoRealms {
      * 
      * @param value Value of the Boolean.
      */
-    LiteralBoolean(IProject& project, bool value);
+    LiteralBoolean(bool value);
       
     /***********************\
      * Implements IBoolean *
@@ -51,8 +51,6 @@ namespace IsoRealms {
 
     private:
     static const std::string JSON_VALUE;
-
-    IProject& cProject;
 
     bool cValue; /// The value of this Boolean.
   };

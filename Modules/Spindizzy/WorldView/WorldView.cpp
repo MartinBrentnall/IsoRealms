@@ -80,7 +80,7 @@ namespace IsoRealms::Spindizzy {
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          "TODO", cDefWorld)); // TODO:
     mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      owner, owner.getPropertyData("Camera"),       cDefCamera));
     mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneViewType>>(owner, owner.getPropertyData("ZoneViewType"), cDefZoneViewType));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(        owner.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) { // TODO: Should this be part of the camera???  e.g. CameraZoom
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Zoom",         [this]() {return cDefZoom;}, [this](float value) { // TODO: Should this be part of the camera???  e.g. CameraZoom
       if (value > 0.0f) {
         cDefZoom = value;
         return true;

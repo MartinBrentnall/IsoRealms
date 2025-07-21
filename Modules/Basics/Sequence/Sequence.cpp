@@ -96,8 +96,8 @@ namespace IsoRealms::Basics {
     mProperties.emplace_back(std::make_unique<PropertyEditor>(owner.getPropertyData("Content"), this));
 
 
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, owner.getPropertyData("Playing"), [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;}, cBasics.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, owner.getPropertyData("Loop"),    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop = value;}, cBasics.getProject()));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("Playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;}));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("Loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>( owner, owner.getPropertyData("Speed"),   cDefSpeed));
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData(mEntry.first, "TODO"), "Edit...", [this, &owner, &mEntry]() {

@@ -586,15 +586,15 @@ namespace IsoRealms::Spindizzy {
   std::vector<std::unique_ptr<IProperty>> Lift::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     if (cZone.getWorld().isBasicProperties()) {
-      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Pause", "TODO"), [this]() {return cDefTopPause > 0;}, [this](bool value) {
+      mProperties.emplace_back(owner.createPropertyNativeBoolean("Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
         cDefTopPause = value ? 1500 : 0;
         cDefBottomPause = value ? 1500 : 0;
-      }, cZone.getWorld().getSpindizzy().getProject()));
+      }));
     } else {
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(PropertyData("Bottom Pause", "TODO"), [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value; return true;}));
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(PropertyData("Top Pause",    "TODO"), [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value; return true;}));
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(PropertyData("Up Speed",     "TODO"), [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value; return true;}));
-      mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(PropertyData("Down Speed",   "TODO"), [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value; return true;}));
+      mProperties.emplace_back(owner.createPropertyNativeInteger("BottomPause", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value; return true;}));
+      mProperties.emplace_back(owner.createPropertyNativeInteger("TopPause",    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value; return true;}));
+      mProperties.emplace_back(owner.createPropertyNativeInteger("UpSpeed",     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value; return true;}));
+      mProperties.emplace_back(owner.createPropertyNativeInteger("DownSpeed",   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value; return true;}));
     }
     return mProperties;
   }

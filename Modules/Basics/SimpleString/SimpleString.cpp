@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SimpleString::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("Value"), [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("Value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value; return true;}));
     return mProperties;
   }
 

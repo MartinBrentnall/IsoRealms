@@ -105,9 +105,9 @@ namespace IsoRealms::Basics {
   std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("Font"),         cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("CodeFont"),     cDefCodeFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("CodeFontSize"), [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnExit"),       cDefExitAction));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnEditor"),     cDefEditorAction));
     // TODO: Input configuration

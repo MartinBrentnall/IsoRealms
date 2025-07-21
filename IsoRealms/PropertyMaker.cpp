@@ -22,6 +22,7 @@
 #include "Assets/Type/IStateNotifier.h"
 #include "Editing.h"
 #include "IResourceData.h"
+#include "Project.h"
 
 namespace IsoRealms {
   PropertyMaker::PropertyMaker(IResourceData& parent, IConfirmationManager& confirmationManager) :
@@ -49,8 +50,20 @@ namespace IsoRealms {
     return cParent.getPropertyDescription(key);
   }
 
+  std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeBoolean(const std::string& metadataKey, std::function<bool()>  getter, std::function<void(bool)>  setter, std::function<void()> removeFunction) {
+    return make_unique<PropertyNativeBoolean>(*this, cParent.getPropertyData(metadataKey), getter, setter, cParent.getProject(), removeFunction);
+  }
+
   std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) {
     return make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), &cConfirmationManager, getter, setter, removeFunction);
+  }
+
+  std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeInteger(const std::string& metadataKey, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) {
+    return make_unique<PropertyNativeInteger>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction);
+  }
+
+  std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeString(const std::string& metadataKey, std::function<std::string()> getter, std::function<bool(const std::string&)> setter, std::function<void()> removeFunction) {
+    return make_unique<PropertyNativeString>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction);
   }
 }
 

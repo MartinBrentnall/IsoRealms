@@ -645,7 +645,7 @@ namespace IsoRealms::Basics {
                 cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cPropertyMaker, [this](IPropertyOwner& owner, IDialogManager& dialogManager) {
                   std::vector<std::unique_ptr<IProperty>> mTrackProperties;
                   mTrackProperties.emplace_back(std::make_unique<PropertyAsset<SequenceTrack>>(owner, PropertyData("Type", "TODO"), cSequence.getTrack(cCursorTrack.value())));
-                  mTrackProperties.emplace_back(std::make_unique<PropertyNativeString>(        PropertyData("Name", "TODO"), [this]() {
+                  mTrackProperties.emplace_back(owner.createPropertyNativeString("Name", [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     for (int i = 0; i < static_cast<int>(cSequence.getTrackCount()); i++) {

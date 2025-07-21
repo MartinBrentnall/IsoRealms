@@ -19,6 +19,7 @@
 #include "LiteralFloat.h"
 
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
+#include "IsoRealms/IPropertyOwner.h"
 
 namespace IsoRealms {
   LiteralFloat::LiteralFloat(const float value) :
@@ -35,7 +36,7 @@ namespace IsoRealms {
 
   std::vector<std::unique_ptr<IProperty>> LiteralFloat::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](float value) {cValue = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value; return true;}));
     return mProperties;
   }
 

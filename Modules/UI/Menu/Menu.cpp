@@ -89,8 +89,8 @@ namespace IsoRealms::UI {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Colour"),       cDefColour));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("Font"),         cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnExit"),       cDefExitAction));
     unsigned int mItemCount = 1;
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {

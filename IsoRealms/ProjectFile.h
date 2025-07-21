@@ -44,7 +44,6 @@ namespace IsoRealms {
     static const std::string JSON_ALLOW_MODIFICATION;
     static const std::string JSON_FILENAME;
 
-    Project& cProject;
     File cFile;
     bool cAllowModifications;
     std::vector<std::unique_ptr<ProjectFile>> cInclusions;

@@ -79,8 +79,8 @@ namespace IsoRealms::Basics {
   std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, owner.getPropertyData("Appearance"),      cDefTexture));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( owner, owner.getPropertyData("BillboardYaw"),   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}, owner.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>( owner, owner.getPropertyData("BillboardPitch"), [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}, owner.getProject()));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("BillboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("BillboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}));
     return mProperties;
   }
 

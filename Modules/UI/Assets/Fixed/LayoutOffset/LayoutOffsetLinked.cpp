@@ -74,7 +74,7 @@ namespace IsoRealms::UI {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 //    mProperties.emplace_back(std::make_unique<PropertyList>(cParent.getComponent().getLayout().getProject(), "Orientation", {VALUE_WIDTH, VALUE_HEIGHT}, [this]() {return cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT;}, [this](const std::string& value) {cDefHorizontal = value == VALUE_WIDTH;}));
     mProperties.emplace_back(std::make_unique<PropertyList>(owner, cParent.getComponent().getLayout().getUI().getProject(), PropertyData("Linked to", "TODO"), cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {std::cout << "TODO: Support setting linked component!" << std::endl;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(                                                  PropertyData("Ratio", "TODO"), [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeFloat("Ratio", [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value; return true;}));
     return mProperties;
   }
 

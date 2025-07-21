@@ -47,7 +47,7 @@ namespace IsoRealms::Basics {
   std::vector<std::unique_ptr<IProperty>> SequenceTrackFloatEvent::getEventProperties(IPropertyOwner& owner, IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>( owner, PropertyData("Value", "TODO"), cDefValue));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Fade",  "TODO"), [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;}, project));
+    mProperties.emplace_back(owner.createPropertyNativeBoolean("Fade", [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;}));
     return mProperties;
   }
 

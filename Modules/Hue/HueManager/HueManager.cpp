@@ -184,9 +184,9 @@ namespace IsoRealms::Hue {
   
   std::vector<std::unique_ptr<IProperty>> HueManager::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("Address"), [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("User"),    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("PSK"),     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("Address", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("User",    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
+    mProperties.emplace_back(owner.createPropertyNativeString("PSK",     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;}));
     for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
       mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Bulb"), mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
