@@ -34,7 +34,7 @@ namespace IsoRealms {
     ProjectFile(Project& project);
     ProjectFile(Project& project, const std::string& filename, bool user);
     ProjectFile(Project& project, JSONObject object);
-    std::vector<std::unique_ptr<IProperty>> getProperties(Project& project, bool topFile);
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner, Project& project, bool topFile);
     void rename(const std::string name, bool user);
     void save(JSONArray array) const;
     void saveInclusion(JSONObject object) const;

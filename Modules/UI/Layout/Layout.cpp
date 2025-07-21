@@ -100,7 +100,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Layout::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Layout::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -109,7 +109,7 @@ namespace IsoRealms::UI {
   }
 
   IEditableScreen* Layout::createEditableScreen(IsoRealms::Project* project) {
-    std::unique_ptr<LayoutEditor> mScreen = std::make_unique<LayoutEditor>(*this);
+    std::unique_ptr<LayoutEditor> mScreen = std::make_unique<LayoutEditor>(*this, cResourceData.getPropertyMaker());
     IEditableScreen* mReturnValue = mScreen.get();
     cEditors[mReturnValue] = std::move(mScreen);
     return mReturnValue;

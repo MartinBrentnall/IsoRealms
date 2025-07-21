@@ -159,9 +159,9 @@ namespace IsoRealms::UI {
     object.addString(JSON_FORMAT, format, DEFAULT_FORMAT);
   }
 
-  std::vector<std::unique_ptr<IProperty>> StringTime::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> StringTime::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Integer>>(PropertyData("Value",         "TODO"), cDefValue));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Integer>>(owner, PropertyData("Value",         "TODO"), cDefValue));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(  PropertyData("Format String", "TODO"), [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString(); return true;}));
     return mProperties;
   }

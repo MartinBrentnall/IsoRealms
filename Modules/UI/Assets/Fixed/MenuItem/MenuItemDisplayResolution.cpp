@@ -118,7 +118,7 @@ namespace IsoRealms::UI {
     object.addString(JSON_LABEL, cDefLabel);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemDisplayResolution::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> MenuItemDisplayResolution::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(PropertyData("ID",    "TODO"), [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(PropertyData("Label", "TODO"), [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;}));

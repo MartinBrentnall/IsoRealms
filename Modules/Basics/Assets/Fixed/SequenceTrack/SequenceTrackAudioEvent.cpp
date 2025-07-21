@@ -88,9 +88,9 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioEvent::getEventProperties(IProject& project) {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioEvent::getEventProperties(IPropertyOwner& owner, IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(PropertyData("Audio File", "TODO"), cDefFile));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, PropertyData("Audio File", "TODO"), cDefFile));
     return mProperties;
   }
 
@@ -110,7 +110,7 @@ namespace IsoRealms::Basics {
     // Not supported.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioEvent::End::getEventProperties(IProject& project) {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioEvent::End::getEventProperties(IPropertyOwner& owner, IProject& project) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

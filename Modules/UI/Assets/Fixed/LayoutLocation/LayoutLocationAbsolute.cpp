@@ -53,7 +53,7 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_VALUE, cDefValue, cParent.isPositiveEdge() ? 1.0f : -1.0f);
   }
   
-  std::vector<std::unique_ptr<IProperty>> LayoutLocationAbsolute::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> LayoutLocationAbsolute::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Value", "TODO"), [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
     return mProperties;

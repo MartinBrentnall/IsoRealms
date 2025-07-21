@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner.getPropertyData("Value"), [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, owner.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, owner.getPropertyData("Value"), [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, owner.getProject()));
     return mProperties;
   }
 
@@ -78,7 +78,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -188,14 +188,14 @@ namespace IsoRealms::Hue {
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("User"),    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(owner.getPropertyData("PSK"),     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;}));
     for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Bulb"), mBulb->getColour(), [this, &mBulb]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Bulb"), mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       }));
     }
     mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Bulb"), "Add...", [this, &owner]() {
       cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cResourceData, cDefBulbs.size()));
       std::unique_ptr<Bulb>& mBulb  = cDefBulbs.back();
-      return std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Bulb"), mBulb->getColour(), [this, &mBulb]() {
+      return std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Bulb"), mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       });
     }));

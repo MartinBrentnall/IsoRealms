@@ -78,7 +78,7 @@ namespace IsoRealms {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> File::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> File::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   

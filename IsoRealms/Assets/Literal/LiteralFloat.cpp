@@ -33,7 +33,7 @@ namespace IsoRealms {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralFloat::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> LiteralFloat::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](float value) {cValue = value; return true;}));
     return mProperties;

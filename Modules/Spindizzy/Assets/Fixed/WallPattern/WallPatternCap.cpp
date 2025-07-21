@@ -184,11 +184,11 @@ namespace IsoRealms::Spindizzy {
     cDefTextureTop.save(object, JSON_TOP);
   }
 
-  std::vector<std::unique_ptr<IProperty>> WallPatternCap::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> WallPatternCap::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(PropertyData("Top",    "TODO"), cDefTextureTop));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(PropertyData("Middle", "TODO"), cDefTextureMiddle));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(PropertyData("Bottom", "TODO"), cDefTextureBottom));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, PropertyData("Top",    "TODO"), cDefTextureTop));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, PropertyData("Middle", "TODO"), cDefTextureMiddle));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, PropertyData("Bottom", "TODO"), cDefTextureBottom));
     return mProperties;
   }
 

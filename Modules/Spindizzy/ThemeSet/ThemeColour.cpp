@@ -56,7 +56,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ThemeColour::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> ThemeColour::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

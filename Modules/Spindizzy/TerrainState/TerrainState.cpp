@@ -58,9 +58,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner.getPropertyData("InitialState"), [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, owner.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("HintAction"),   cDefHintAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner.getPropertyData("Icon"),         cDefIcon));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, owner.getPropertyData("InitialState"), [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}, owner.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("HintAction"),   cDefHintAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner, owner.getPropertyData("Icon"),         cDefIcon));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("IconScale"),    [this]() {return cDefIconScale;}, [this](float value) {if (value > 0.0f) {
       cDefIconScale = value;
       return true;
@@ -101,7 +101,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainState::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> TerrainState::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

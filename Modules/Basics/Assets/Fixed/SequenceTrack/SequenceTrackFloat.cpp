@@ -82,7 +82,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -94,9 +94,9 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::getEventProperties(IProject& project) {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackFloat::getEventProperties(IPropertyOwner& owner, IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(PropertyData("Start Value", "TODO"), cDefStartValue));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner, PropertyData("Start Value", "TODO"), cDefStartValue));
     return mProperties;
   }
 

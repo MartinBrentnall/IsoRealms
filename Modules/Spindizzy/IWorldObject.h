@@ -28,7 +28,7 @@ namespace IsoRealms::Spindizzy {
     virtual bool contains(const LiteralVertex& location) const = 0;
     virtual void renderSelectionHighlight() const = 0;
     virtual void remove() = 0;
-    virtual std::vector<std::unique_ptr<IProperty>> getProperties() = 0;
+    virtual std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner) = 0;
     virtual std::string getTypeName() const = 0;
     virtual Zone& getObjectZone() = 0;
 

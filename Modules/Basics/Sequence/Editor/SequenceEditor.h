@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
   class SequenceEditor : public IEditableScreen,
                          public IUIStyle {
     public:
-    SequenceEditor(Sequence& sequence);
+    SequenceEditor(Sequence& sequence, PropertyMaker propertyMaker);
     void updateScreen(unsigned int milliseconds);
 
     /******************************\
@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
     bool isDefaultConfiguration() const override;
     void notifyVisible() override;
     void notifyHidden() override;
@@ -100,6 +100,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     HatHandler& cHatHandler;
+    PropertyMaker cPropertyMaker;
 
     IAction* cExitAction;
 

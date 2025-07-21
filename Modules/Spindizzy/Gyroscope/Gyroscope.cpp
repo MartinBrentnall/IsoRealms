@@ -80,11 +80,11 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Quadrant1"), cDefQuadrant[0]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Quadrant2"), cDefQuadrant[1]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Quadrant3"), cDefQuadrant[2]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Quadrant4"), cDefQuadrant[3]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Outline"),   cDefOutline));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant1"), cDefQuadrant[0]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant2"), cDefQuadrant[1]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant3"), cDefQuadrant[2]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant4"), cDefQuadrant[3]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Outline"),   cDefOutline));
     return mProperties;
   }
   
@@ -109,7 +109,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Gyroscope::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Gyroscope::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

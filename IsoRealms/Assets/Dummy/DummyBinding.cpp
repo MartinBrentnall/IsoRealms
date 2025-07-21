@@ -54,7 +54,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyBinding::getWrappedProperties() {
+  std::vector<std::unique_ptr<IProperty>> DummyBinding::getWrappedProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -67,7 +67,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyBinding::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> DummyBinding::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

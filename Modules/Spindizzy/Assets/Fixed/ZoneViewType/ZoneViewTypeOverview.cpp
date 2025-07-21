@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
     cDefColour.save(object, JSON_COLOUR);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneViewTypeOverview::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> ZoneViewTypeOverview::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

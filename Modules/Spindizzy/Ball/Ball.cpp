@@ -63,9 +63,9 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("FillColour"),    cDefFill));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("ShineColour"),   cDefShine));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("OutlineColour"), cDefOutline));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("FillColour"),    cDefFill));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("ShineColour"),   cDefShine));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("OutlineColour"), cDefOutline));
     return mProperties;
   }
 
@@ -89,7 +89,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Ball::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Ball::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

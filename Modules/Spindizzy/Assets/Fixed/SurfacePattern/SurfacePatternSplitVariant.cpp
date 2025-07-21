@@ -75,11 +75,11 @@ namespace IsoRealms::Spindizzy {
     cDefSplitBPattern.save(object, JSON_SPLIT_B);
   }
 
-  std::vector<std::unique_ptr<IProperty>> SurfacePatternSplitVariant::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SurfacePatternSplitVariant::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(PropertyData("Regular", "TODO"), cDefRegularPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(PropertyData("Split A", "TODO"), cDefSplitAPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(PropertyData("Split B", "TODO"), cDefSplitBPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(owner, PropertyData("Regular", "TODO"), cDefRegularPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(owner, PropertyData("Split A", "TODO"), cDefSplitAPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(owner, PropertyData("Split B", "TODO"), cDefSplitBPattern));
     return mProperties;
   }
 

@@ -160,14 +160,14 @@ namespace IsoRealms::UI {
     cDefValueChangedAction.save(object, JSON_ON_CHANGE);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemSlider::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> MenuItemSlider::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( PropertyData("ID",        "TODO"), [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( PropertyData("Label",     "TODO"), [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  PropertyData("Minimum",   "TODO"), [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  PropertyData("Maximum",   "TODO"), [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(PropertyData("Steps",     "TODO"), [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(PropertyData("On Change", "TODO"), cDefValueChangedAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, PropertyData("On Change", "TODO"), cDefValueChangedAction));
     return mProperties;
   }
 

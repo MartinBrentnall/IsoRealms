@@ -134,13 +134,13 @@ namespace IsoRealms::UI {
     cDefAction.save(object, JSON_ON_SELECTION);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemFileList::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> MenuItemFileList::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     // TODO: Change this so it uses "File" client asset.
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( PropertyData("ID",           "TODO"), [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( PropertyData("Folder",       "TODO"), [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("User Data",    "TODO"), [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;},              cProject));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(PropertyData("On Selection", "TODO"), cDefAction));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("User Data",    "TODO"), [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;},              cProject));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, PropertyData("On Selection", "TODO"), cDefAction));
     return mProperties;
   }
 

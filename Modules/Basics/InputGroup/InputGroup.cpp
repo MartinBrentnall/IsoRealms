@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
   std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>(owner.getPropertyData("InputHandler"), *mInputHandler.get(), [this, &mInputHandler]() {
+      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>(owner, owner.getPropertyData("InputHandler"), *mInputHandler.get(), [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
       }));
     }
@@ -66,7 +66,7 @@ namespace IsoRealms::Basics {
     mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("InputHandlerAdd"), "Add...", [this, &owner]() {
       cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cResource));
       std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
-      return std::make_unique<PropertyAsset<InputHandler>>(owner.getPropertyData("InputHandler"), *mInputHandler, [this, &mInputHandler]() {
+      return std::make_unique<PropertyAsset<InputHandler>>(owner, owner.getPropertyData("InputHandler"), *mInputHandler, [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
       });
     }));
@@ -96,7 +96,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputGroup::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> InputGroup::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -58,7 +58,7 @@ namespace IsoRealms {
       cDefLocalBindingRegistry->saveBinding(object, this);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override {
       return std::vector<std::unique_ptr<IProperty>>();
     }
 
@@ -94,7 +94,7 @@ namespace IsoRealms {
       // Nothing to do.
     }
 
-    std::vector<std::unique_ptr<IProperty>> getWrappedProperties() override {
+    std::vector<std::unique_ptr<IProperty>> getWrappedProperties(IPropertyOwner& owner) override {
       return std::vector<std::unique_ptr<IProperty>>();
     }
 

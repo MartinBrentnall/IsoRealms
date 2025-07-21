@@ -26,8 +26,8 @@ namespace IsoRealms::Spindizzy {
   const LiteralColour PropertiesTool::SELECTION_COLOUR(1.0f, 0.0f, 0.2f, 1.0f);
   const LiteralColour PropertiesTool::LOCKED_COLOUR(0.0f, 0.0f, 0.0f, 1.0f);
 
-  IWorldEditorToolInstance* PropertiesTool::createToolInstance(WorldEditor& editor) {
-    return cEditingModifiers.emplace_back(std::make_unique<Modifier>(*this, editor)).get();
+  IWorldEditorToolInstance* PropertiesTool::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
+    return cEditingModifiers.emplace_back(std::make_unique<Modifier>(*this, owner, editor)).get();
   }
 
   bool PropertiesTool::renderAssetIcon() const {
@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> PropertiesTool::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> PropertiesTool::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -47,8 +47,9 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  PropertiesTool::Modifier::Modifier(PropertiesTool& parent, WorldEditor& editor) :
+  PropertiesTool::Modifier::Modifier(PropertiesTool& parent, IPropertyOwner& owner, WorldEditor& editor) :
             cParent(parent),
+            cPropertyOwner(owner),
             cEditor(editor),
             cSelectedObject(0),
             cEditingProperties(false),
@@ -87,8 +88,8 @@ namespace IsoRealms::Spindizzy {
 
   void PropertiesTool::Modifier::showProperties() {
     if (!cHoverObjects.empty() && !cEditingProperties) {
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, [this](IDialogManager& dialogManager) {
-        return cHoverObjects[cSelectedObject]->getProperties();
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cPropertyOwner, [this](IPropertyOwner& owner, IDialogManager& dialogManager) {
+        return cHoverObjects[cSelectedObject]->getProperties(owner);
       }, cHoverObjects[cSelectedObject]->getTypeName() + " Configuration:", 1.0f, 1.0f, 1.0f));
       cEditingProperties = true;
     }
@@ -99,7 +100,7 @@ namespace IsoRealms::Spindizzy {
       cEditor.getWorld().selectObjects(start, *end, [this](IWorldObject* object) {
         return true;
       }, [this](IWorldObject* object) {
-        if (!object->getProperties().empty()) {
+        if (!object->getProperties(cPropertyOwner).empty()) {
           cHoverObjects.push_back(object);
           cSelectedObject = cHoverObjects.size() - 1;
         }

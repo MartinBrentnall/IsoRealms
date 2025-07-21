@@ -21,7 +21,8 @@
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, std::function<std::vector<std::unique_ptr<IProperty>>(IDialogManager& dialogManager)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue) : Menu(manager, style, breadCrumb, red, green, blue),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IPropertyOwner& owner, std::function<std::vector<std::unique_ptr<IProperty>>(IPropertyOwner& owner, IDialogManager& dialogManager)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue) : Menu(manager, style, breadCrumb, red, green, blue),
+            cPropertyOwner(owner),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
             cClosingProperty(nullptr),
@@ -234,11 +235,11 @@ namespace IsoRealms {
     addItemAfter(mCurrentItem, std::move(mMenuItem));
   }
   
-  void PropertiesMenu::openProperties(const std::string& name, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher) {
+  void PropertiesMenu::openProperties(IPropertyOwner& owner, const std::string& name, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher) {
     if (!propertyFetcher().empty()) {
       UIManager& mUIManager = getUIManager();
       IUIStyle& mStyle = getStyle();
-      mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, [this, &propertyFetcher](IDialogManager& dialogManager) {
+      mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, &propertyFetcher](IPropertyOwner& owner, IDialogManager& dialogManager) {
         return propertyFetcher();
       }, name, 0.75f, 0.5f, 1.0f));
     }
@@ -257,7 +258,7 @@ namespace IsoRealms {
     cEditingProperty = nullptr;
     cClosingProperty = nullptr;
     UIManager& mUIManager = getUIManager();
-    std::vector<std::unique_ptr<IProperty>> mProperties = cPropertyFetcher(mUIManager);
+    std::vector<std::unique_ptr<IProperty>> mProperties = cPropertyFetcher(cPropertyOwner, mUIManager);
     for (std::unique_ptr<IProperty>& mProperty : mProperties) {
       std::string mPropertyName = mProperty->getPropertyName();
       std::unique_ptr<MenuItemProperty> mMenuItem = std::make_unique<MenuItemProperty>(mPropertyName, std::move(mProperty));

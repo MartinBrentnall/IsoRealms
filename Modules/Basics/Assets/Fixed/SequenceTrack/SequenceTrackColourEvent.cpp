@@ -44,10 +44,10 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackColourEvent::getEventProperties(IProject& project) {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackColourEvent::getEventProperties(IPropertyOwner& owner, IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(PropertyData("Colour", "TODO"), cDefTarget));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Fade",   "TODO"), [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;}, project));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, PropertyData("Colour", "TODO"), cDefTarget));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Fade",   "TODO"), [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;}, project));
     return mProperties;
   }
 

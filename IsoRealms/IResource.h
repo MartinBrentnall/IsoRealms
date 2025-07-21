@@ -31,9 +31,11 @@ namespace IsoRealms {
   class IProperty;
   class Project;
   class ProjectFile;
+  class PropertyMaker;
 
   class IResource {
     public:
+    virtual PropertyMaker getPropertyMaker() = 0;
     virtual std::vector<std::unique_ptr<IProperty>> getProperties(IDialogManager& dialogManager) = 0;
     virtual std::string getName() = 0;
     virtual bool renderIcon() = 0;

@@ -68,8 +68,8 @@ namespace IsoRealms {
       cDefValue.setID(id);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getWrappedProperties() override {
-      return cDefValue.getAssetProperties();
+    std::vector<std::unique_ptr<IProperty>> getWrappedProperties(IPropertyOwner& owner) override {
+      return cDefValue.getAssetProperties(owner);
     }
 
     bool renderAssetIcon() const override {
@@ -80,9 +80,9 @@ namespace IsoRealms {
       cDefValue.save(object, JSON_ASSET);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override {
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyAsset<TYPE>>(PropertyData("Asset", "TODO"), cDefValue));
+      mProperties.emplace_back(std::make_unique<PropertyAsset<TYPE>>(owner, PropertyData("Asset", "TODO"), cDefValue));
       return mProperties;
     }
 

@@ -63,9 +63,9 @@ namespace IsoRealms::Basics {
     return cDefType->getBindingTypeID();
   }
 
-  std::vector<std::unique_ptr<IProperty>> ArgumentDefinition::getProperties(Function& parent) {
+  std::vector<std::unique_ptr<IProperty>> ArgumentDefinition::getProperties(IPropertyOwner& owner, Function& parent) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<BindingType>>(PropertyData("Type", "TODO"), cDefType));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<BindingType>>(owner, PropertyData("Type", "TODO"), cDefType));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>(      PropertyData("Name", "TODO"), [this]() {return cDefName;}, [this, &parent](const std::string& value) {return parent.setArgumentDefinitionName(*this, value);}));
     return mProperties;
   }

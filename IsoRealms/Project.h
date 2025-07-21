@@ -50,6 +50,7 @@
 #include "Assets/Providers/AssetLiteralVertex.h"
 #include "Assets/Providers/AssetLocalBinding.h"
 #include "Editing.h"
+#include "Editing/IConfirmationManager.h"
 #include "IPropertyOwner.h"
 #include "IResourceData.h"
 #include "Lua.h"
@@ -75,7 +76,8 @@ namespace IsoRealms {
                   public IBindingRegistry,
                   public IResourceData,
                   public IPropertyOwner,
-                  public IActionClient {
+                  public IActionClient,
+                  public IConfirmationManager {
     public:
 
     // TODO: Constructor for creating new projects
@@ -271,7 +273,7 @@ namespace IsoRealms {
 
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
     bool isDefaultConfiguration() const override;
 
     Project& getProject() override;
@@ -298,6 +300,7 @@ namespace IsoRealms {
     /****************************\
      * Implements IResourceData * TODO: Should these be here???
     \****************************/
+    PropertyMaker getPropertyMaker() override;
     std::string getPath(const std::string& file, bool user) const override;
     void makeUserDataDirectory() override;
     bool isIncluded() const override;
@@ -308,6 +311,17 @@ namespace IsoRealms {
     virtual ~Project();
     
     template <class TYPE> friend struct AssetContainerTraits;
+
+    /***********************************\
+     * Implements IConfirmationManager * TODO: Should these be here???
+    \***********************************/
+    bool confirm(std::function<void()> confirm, std::function<void()> cancel) override {
+      return false;
+    }
+
+    void promoteResourceToProject() override {
+      // Nothing to do.
+    }
 
     private:
     static const std::string JSON_ACTION;
@@ -345,7 +359,7 @@ namespace IsoRealms {
       std::string getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
       bool isDefaultConfiguration() const override;
     };
 
@@ -362,7 +376,7 @@ namespace IsoRealms {
       bool getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
       bool isDefaultConfiguration() const override;
     };
 
@@ -376,7 +390,7 @@ namespace IsoRealms {
       void execute() override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:
@@ -419,8 +433,8 @@ namespace IsoRealms {
         }
       }
 
-      std::unique_ptr<IProperty> getProperty(const std::string& name) {
-        return std::make_unique<PropertyAsset<TYPE>>(PropertyData(name, "TODO"), cAsset);
+      std::unique_ptr<IProperty> getProperty(IPropertyOwner& owner, const std::string& name) {
+        return std::make_unique<PropertyAsset<TYPE>>(owner, PropertyData(name, "TODO"), cAsset);
       }
 
       private:

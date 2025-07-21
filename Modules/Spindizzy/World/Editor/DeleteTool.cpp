@@ -22,7 +22,7 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  IWorldEditorToolInstance* DeleteTool::createToolInstance(WorldEditor& editor) {
+  IWorldEditorToolInstance* DeleteTool::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
     return cEditingErasers.emplace_back(std::make_unique<Eraser>(*this, editor)).get();
   }
 
@@ -35,7 +35,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DeleteTool::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> DeleteTool::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -78,42 +78,42 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> SimpleColour::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner.getPropertyData("Red"), [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner, owner.getPropertyData("Red"), [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
       cDefRed = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner.getPropertyData("Green"), [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner, owner.getPropertyData("Green"), [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
       cDefGreen = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner.getPropertyData("Blue"), [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner, owner.getPropertyData("Blue"), [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
       cDefBlue = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner.getPropertyData("Alpha"), [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourChannel>(owner, owner.getPropertyData("Alpha"), [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
       cDefAlpha = value;
       resetColour();
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourHue>(owner.getPropertyData("Hue"), [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourHue>(owner, owner.getPropertyData("Hue"), [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
       cEditingLastKnownHue = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
       resetColour();
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourSaturation>(owner.getPropertyData("Saturation"), [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourSaturation>(owner, owner.getPropertyData("Saturation"), [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
       cEditingLastKnownSaturation = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
       resetColour();
     }));
-    mProperties.emplace_back(std::make_unique<PropertyColourLightness>(owner.getPropertyData("Lightness"), [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cDefAlpha, [this](const float value) {
+    mProperties.emplace_back(std::make_unique<PropertyColourLightness>(owner, owner.getPropertyData("Lightness"), [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cDefAlpha, [this](const float value) {
       cEditingLastKnownLightness = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
       resetColour();
@@ -149,7 +149,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleColour::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SimpleColour::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

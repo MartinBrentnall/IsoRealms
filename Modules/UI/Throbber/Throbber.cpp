@@ -90,7 +90,7 @@ namespace IsoRealms::UI {
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("SpotSides"),    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SpotSize"),     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(        owner.getPropertyData("Colour"),       cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(        owner, owner.getPropertyData("Colour"),       cDefColour));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("RingSize"),     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Repetitions"),  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;}));
     return mProperties;
@@ -121,7 +121,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Throbber::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Throbber::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

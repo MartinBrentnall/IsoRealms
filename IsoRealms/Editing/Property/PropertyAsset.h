@@ -39,8 +39,9 @@
 namespace IsoRealms {
   template<class TYPE> class PropertyAsset : public Property {
     public:
-    PropertyAsset(const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
+    PropertyAsset(IPropertyOwner& owner, const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
               Property(data, removeFunction),
+              cPropertyOwner(owner),
               cAsset(asset),
               cValueLabel(getValue()) {
     }
@@ -82,8 +83,8 @@ namespace IsoRealms {
     }
     
     void configure(IPropertyManager& manager) override {
-      manager.openProperties(getPropertyName(), [this]() {
-        return cAsset.getAssetProperties();
+      manager.openProperties(cPropertyOwner, getPropertyName(), [this]() {
+        return cAsset.getAssetProperties(cPropertyOwner);
       });
     }
   
@@ -641,6 +642,7 @@ namespace IsoRealms {
       AnimatedFloat cPathBarWidth;
     };
 
+    IPropertyOwner& cPropertyOwner;
     TYPE& cAsset;
     std::string cValueLabel;
   };

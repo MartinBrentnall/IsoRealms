@@ -97,9 +97,9 @@ namespace IsoRealms {
       return cManager.getAssetManager().getID(cAsset);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() {
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) {
       std::vector<std::unique_ptr<IProperty>> mProperties = getClientProperties();
-      std::vector<std::unique_ptr<IProperty>> mAssetProperties = getTheAssetProperties(cAsset);
+      std::vector<std::unique_ptr<IProperty>> mAssetProperties = getTheAssetProperties(cAsset, owner);
       mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mAssetProperties)), std::make_move_iterator(std::end(mAssetProperties)));
       return mProperties;
     }
@@ -190,8 +190,8 @@ namespace IsoRealms {
     virtual std::vector<std::unique_ptr<IProperty>> getClientProperties() {
       return std::vector<std::unique_ptr<IProperty>>();
     }
-    virtual std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(TYPE* asset) {
-      return asset->getAssetProperties();
+    virtual std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(TYPE* asset, IPropertyOwner& owner) {
+      return asset->getAssetProperties(owner);
     }
 
     private:

@@ -34,7 +34,7 @@ namespace IsoRealms::Spindizzy {
   const float WorldEditor::BOTTOM_BORDER = -1.0f + BORDER_SPACING;
   const float WorldEditor::ICON_SPACING = 0.02f;
   
-  WorldEditor::WorldEditor(Project& assets, World& world) :
+  WorldEditor::WorldEditor(Project& assets, World& world, PropertyMaker propertyMaker) :
             cAnalogueInputsByName({
               {"MoveViewIn",      &cDistanceInSpeed},
               {"MoveViewOut",     &cDistanceOutSpeed},
@@ -90,11 +90,12 @@ namespace IsoRealms::Spindizzy {
             cScreenYaw(&cRotation),
             cScreenPitch(&cTilt),
             cHatHandler(world.getSpindizzy().getProject().getApplication().getHatHandler()),
+            cPropertyMaker(propertyMaker),
             cSelectedTool(nullptr),
             cPreviousX(0),
             cPreviousY(0),
             cWorld(world),
-            cToolbar(world.getSpindizzy().createToolSet(*this), [this](IWorldEditorToolInstance* tool) {
+            cToolbar(world.getSpindizzy().createToolSet(*this, cPropertyMaker), [this](IWorldEditorToolInstance* tool) {
               if (cSelectedTool != nullptr) {
                 cSelectedTool->processCursorMovement(&cLocation, nullptr);
               }
@@ -436,7 +437,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> WorldEditor::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> WorldEditor::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -593,7 +594,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> WorldEditor::ScreenFloat::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> WorldEditor::ScreenFloat::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

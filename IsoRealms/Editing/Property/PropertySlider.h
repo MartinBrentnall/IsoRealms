@@ -28,9 +28,11 @@
 #include "Property.h"
 
 namespace IsoRealms {
+  class IPropertyOwner;
+
   class PropertySlider : public Property {
     public:
-    PropertySlider(const PropertyData& data, std::function<float()> valueFunction, float min, float max, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction);
+    PropertySlider(IPropertyOwner& owner, const PropertyData& data, std::function<float()> valueFunction, float min, float max, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction);
     
     /************************\
      * Implements IProperty *
@@ -60,6 +62,8 @@ namespace IsoRealms {
     };
 
     static const float WIDTH;
+
+    IPropertyOwner& cPropertyOwner;
 
     std::function<void(const float)> cConfirmationCallback;
     std::function<float()> cValueFunction;

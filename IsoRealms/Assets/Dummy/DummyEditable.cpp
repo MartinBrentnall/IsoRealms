@@ -41,7 +41,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyEditable::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> DummyEditable::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -121,7 +121,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyEditable::EditableScreen::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> DummyEditable::EditableScreen::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

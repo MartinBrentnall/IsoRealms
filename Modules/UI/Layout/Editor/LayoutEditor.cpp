@@ -22,8 +22,9 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  LayoutEditor::LayoutEditor(Layout& layout) :
+  LayoutEditor::LayoutEditor(Layout& layout, PropertyMaker propertyMaker) :
             cHatHandler(layout.getUI().getProject().getApplication().getHatHandler()),
+            cPropertyMaker(propertyMaker),
             cAnalogueInputsByName({
               {"MoveViewIn",      &cDistanceInSpeed},
               {"MoveViewOut",     &cDistanceOutSpeed},
@@ -241,7 +242,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> LayoutEditor::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> LayoutEditor::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -618,8 +619,8 @@ namespace IsoRealms::UI {
 
   void LayoutEditor::openProperties() {
     if (cSelectedComponent != nullptr) {
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, [this](IDialogManager& dialogManager) {
-        return cSelectedComponent->getProperties();
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cPropertyMaker, [this](IPropertyOwner& owner, IDialogManager& dialogManager) {
+        return cSelectedComponent->getProperties(owner);
       }, cSelectedComponent->getName() + " Configuration:", 1.0f, 1.0f, 1.0f));
       cEditingProperties = true;
     }

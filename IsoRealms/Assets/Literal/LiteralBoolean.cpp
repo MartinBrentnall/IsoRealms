@@ -46,9 +46,9 @@ namespace IsoRealms {
     object.addBoolean(JSON_VALUE, cValue);
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralBoolean::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> LiteralBoolean::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](bool value) {cValue = value;}, cProject));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](bool value) {cValue = value;}, cProject));
     return mProperties;
   }
 

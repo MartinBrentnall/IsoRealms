@@ -32,7 +32,7 @@ namespace IsoRealms {
     static float MIN_CHANNEL_VALUE;
     static float MAX_CHANNEL_VALUE;
     
-    PropertyColourChannel(const PropertyData& data, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback);
+    PropertyColourChannel(IPropertyOwner& owner, const PropertyData& data, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback);
       
     /*****************************\
      * Implements PropertySlider *

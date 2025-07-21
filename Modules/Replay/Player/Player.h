@@ -69,7 +69,7 @@ namespace IsoRealms::Replay {
       bool getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
       bool isDefaultConfiguration() const override;
     };
 
@@ -88,7 +88,7 @@ namespace IsoRealms::Replay {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
       bool isDefaultConfiguration() const override;
     };
 
@@ -141,7 +141,7 @@ namespace IsoRealms::Replay {
     \*********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
     bool isDefaultConfiguration() const override;
 
     /*****************************\

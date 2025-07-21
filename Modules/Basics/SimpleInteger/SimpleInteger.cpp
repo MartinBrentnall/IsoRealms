@@ -78,7 +78,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleInteger::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SimpleInteger::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

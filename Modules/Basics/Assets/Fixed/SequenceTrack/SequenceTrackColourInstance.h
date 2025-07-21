@@ -53,7 +53,7 @@ namespace IsoRealms::Basics {
     float getBlue() const override;
     float getAlpha() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:

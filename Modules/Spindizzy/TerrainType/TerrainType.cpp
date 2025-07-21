@@ -137,15 +137,15 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SurfaceGrip"),         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("SurfaceBounce"),       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(          owner.getPropertyData("WallBounce"),          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        owner.getPropertyData("AllowRespawn"),        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              owner.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        owner.getPropertyData("Solid"),               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              owner.getProject()));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner.getPropertyData("OnTouch"),             cDefContactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner.getPropertyData("OnImpact"),            cDefImpactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(owner.getPropertyData("SurfaceAppearance"),   cDefSurfacePattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner.getPropertyData("NorthWallAppearance"), cDefNorthWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner.getPropertyData("SouthWallAppearance"), cDefSouthWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner.getPropertyData("WestWallAppearance"),  cDefWestWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner.getPropertyData("EastWallAppearance"),  cDefEastWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        owner, owner.getPropertyData("AllowRespawn"),        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;},              owner.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(        owner, owner.getPropertyData("Solid"),               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;},              owner.getProject()));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, owner.getPropertyData("OnTouch"),             cDefContactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, owner.getPropertyData("OnImpact"),            cDefImpactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(owner, owner.getPropertyData("SurfaceAppearance"),   cDefSurfacePattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("NorthWallAppearance"), cDefNorthWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("SouthWallAppearance"), cDefSouthWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("WestWallAppearance"),  cDefWestWallPattern));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("EastWallAppearance"),  cDefEastWallPattern));
     return mProperties;
   }
   
@@ -244,7 +244,7 @@ namespace IsoRealms::Spindizzy {
 
 
 
-  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor) {
+  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -256,7 +256,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainType::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> TerrainType::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

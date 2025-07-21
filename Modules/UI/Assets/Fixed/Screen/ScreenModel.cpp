@@ -49,9 +49,9 @@ namespace IsoRealms::UI {
     cDefModel.save(object, JSON_MODEL);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScreenModel::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> ScreenModel::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(PropertyData("Model", "TODO"), cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner, PropertyData("Model", "TODO"), cDefModel));
     return mProperties;
   }
   

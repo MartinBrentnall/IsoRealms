@@ -78,9 +78,9 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudio::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(PropertyData("TODO: Volume", "The volume at which audio from this track will be played."), cDefVolume));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner, PropertyData("TODO: Volume", "The volume at which audio from this track will be played."), cDefVolume));
     return mProperties;
   }
 

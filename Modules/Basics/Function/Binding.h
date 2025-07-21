@@ -37,7 +37,7 @@ namespace IsoRealms::Basics {
     void saveCall(JSONObject object, const std::string& attributeName) const;
     IBinding* getValue() const;
     void release(IAssets& releaser);
-    std::vector<std::unique_ptr<IProperty>> getProperties();
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
 
     private:
 

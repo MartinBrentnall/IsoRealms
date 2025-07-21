@@ -138,7 +138,7 @@ namespace IsoRealms::Spindizzy {
     // TODO: Implement this.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SurfacePatternOutline::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SurfacePatternOutline::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     return mProperties;
   }

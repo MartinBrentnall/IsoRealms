@@ -26,9 +26,11 @@ namespace IsoRealms {
   class Project;
   class ProjectFile;
   class PropertyData;
+  class PropertyMaker;
 
   class IResourceData {
     public:
+    virtual PropertyMaker getPropertyMaker() = 0;
     virtual std::string getPath(const std::string& file, bool user) const = 0;
     virtual void makeUserDataDirectory() = 0;
     virtual bool isIncluded() const = 0;

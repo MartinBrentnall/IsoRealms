@@ -25,6 +25,7 @@
 namespace IsoRealms {
   class IApplication;
   class IProperty;
+  class IPropertyOwner;
   class Project;
   
   class ModuleChooser {
@@ -37,7 +38,7 @@ namespace IsoRealms {
     std::string getID() const;
     bool renderAssetIcon() const;
     bool hasConfiguration() const;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties();
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner);
     IApplication& getApplication() const;
     std::vector<std::string> getAvailableProviders() const;
     bool renderProviderIcon(const std::string& id) const;

@@ -37,7 +37,7 @@ namespace IsoRealms {
     return false;
   }
   
-  std::vector<std::unique_ptr<IProperty>> ModuleChooser::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> ModuleChooser::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   

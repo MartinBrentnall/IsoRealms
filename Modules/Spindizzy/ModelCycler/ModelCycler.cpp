@@ -64,7 +64,7 @@ namespace IsoRealms::Spindizzy {
   std::vector<std::unique_ptr<IProperty>> ModelCycler::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner.getPropertyData("Model"), *mModel.get()));
+      mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner, owner.getPropertyData("Model"), *mModel.get()));
     }
     return mProperties;
   }
@@ -117,7 +117,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ModelCycler::Offset::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> ModelCycler::Offset::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

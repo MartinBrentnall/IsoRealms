@@ -23,7 +23,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  IWorldEditorToolInstance* WorldEditorToolDummy::createToolInstance(WorldEditor& editor) {
+  IWorldEditorToolInstance* WorldEditorToolDummy::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
     return nullptr;
   }
 
@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> WorldEditorToolDummy::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> WorldEditorToolDummy::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

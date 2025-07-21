@@ -34,7 +34,7 @@ namespace IsoRealms {
     float* cLightness;
 
     public:
-    PropertyColourSaturation(const PropertyData& data, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback);
+    PropertyColourSaturation(IPropertyOwner& owner, const PropertyData& data, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback);
       
     /*****************************\
      * Implements PropertySlider *

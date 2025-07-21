@@ -181,7 +181,7 @@ namespace IsoRealms::Spindizzy {
     cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> PickUp::getProperties() {
+  std::vector<std::unique_ptr<IProperty>> PickUp::getProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

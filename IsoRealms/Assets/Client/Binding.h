@@ -47,7 +47,7 @@ namespace IsoRealms {
     bool hasClientConfiguration() const;
     bool isDefaultConfiguration() const;
 
-    std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(IBinding* asset) override;
+    std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(IBinding* asset, IPropertyOwner& owner) override;
 
     private:
     std::string cDefType;

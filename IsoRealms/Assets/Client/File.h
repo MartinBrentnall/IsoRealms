@@ -28,6 +28,7 @@ namespace IsoRealms {
   class IApplication;
   class IProject;
   class IProperty;
+  class IPropertyOwner;
 
   class File {
     public:
@@ -47,7 +48,7 @@ namespace IsoRealms {
     bool renderAssetIcon() const;
     bool hasConfiguration() const;
     bool isDefaultConfigured() const;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties();
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner);
     IApplication& getApplication() const;
     std::vector<std::string> getAvailableProviders() const;
     bool renderProviderIcon(const std::string& id) const;

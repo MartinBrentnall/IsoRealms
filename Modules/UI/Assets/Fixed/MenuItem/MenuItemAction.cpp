@@ -118,11 +118,11 @@ namespace IsoRealms::UI {
     cDefAction.save(object, JSON_ON_SELECTION);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemAction::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> MenuItemAction::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( PropertyData("ID",        "TODO"), [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeString>( PropertyData("Label",     "TODO"), [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(PropertyData("On Select", "TODO"), cDefAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, PropertyData("On Select", "TODO"), cDefAction));
     return mProperties;
   }
 

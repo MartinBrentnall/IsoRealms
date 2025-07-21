@@ -51,7 +51,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyFont::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> DummyFont::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -78,8 +78,8 @@ namespace IsoRealms::Spindizzy {
   std::vector<std::unique_ptr<IProperty>> WorldView::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
 //    mProperties.emplace_back(std::make_unique<PropertyAsset<World>>(       "World",          "TODO", cDefWorld)); // TODO:
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      owner.getPropertyData("Camera"),       cDefCamera));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneViewType>>(owner.getPropertyData("ZoneViewType"), cDefZoneViewType));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(      owner, owner.getPropertyData("Camera"),       cDefCamera));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneViewType>>(owner, owner.getPropertyData("ZoneViewType"), cDefZoneViewType));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(        owner.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) { // TODO: Should this be part of the camera???  e.g. CameraZoom
       if (value > 0.0f) {
         cDefZoom = value;
@@ -183,7 +183,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> WorldView::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> WorldView::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

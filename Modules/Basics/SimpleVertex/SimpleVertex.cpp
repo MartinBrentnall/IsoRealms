@@ -102,7 +102,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

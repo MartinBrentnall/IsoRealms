@@ -189,7 +189,7 @@ namespace IsoRealms {
         // Nothing to do.
       }
 
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties() override {
+      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override {
         return std::vector<std::unique_ptr<IProperty>>();
       }
 

@@ -101,7 +101,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Player::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Player::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -323,7 +323,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Player::DigitalInput::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Player::DigitalInput::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -351,7 +351,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Player::AnalogueInput::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Player::AnalogueInput::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

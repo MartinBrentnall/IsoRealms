@@ -40,7 +40,7 @@ namespace IsoRealms::Spindizzy {
     void hintTextureInUse(bool) override;
     void coord(float x, float y) const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:

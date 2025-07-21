@@ -116,7 +116,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Name::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Name::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -140,7 +140,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Count::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Count::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -164,7 +164,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Current::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Current::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -188,7 +188,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Length::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Length::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -212,7 +212,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Position::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Position::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

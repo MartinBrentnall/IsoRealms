@@ -24,8 +24,9 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyStruct::PropertyStruct(const PropertyData& data, const std::string& value, std::function<std::vector<std::unique_ptr<IProperty>>()> subProperties, std::function<void()> removeFunction) :
+  PropertyStruct::PropertyStruct(IPropertyOwner& owner, const PropertyData& data, const std::string& value, std::function<std::vector<std::unique_ptr<IProperty>>()> subProperties, std::function<void()> removeFunction) :
             Property(data, removeFunction),
+            cPropertyOwner(owner),
             cSubProperties(subProperties),
             cValue(value) {
   }
@@ -48,7 +49,7 @@ namespace IsoRealms {
   }
   
   void PropertyStruct::confirm(IPropertyManager& manager, float y) {
-    manager.openProperties(getPropertyName(), [this]() {
+    manager.openProperties(cPropertyOwner, getPropertyName(), [this]() {
       return cSubProperties();
     });
   }

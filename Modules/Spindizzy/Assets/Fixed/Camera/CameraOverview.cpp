@@ -102,7 +102,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraOverview::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> CameraOverview::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

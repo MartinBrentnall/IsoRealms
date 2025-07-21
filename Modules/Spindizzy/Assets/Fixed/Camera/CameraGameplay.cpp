@@ -200,9 +200,9 @@ namespace IsoRealms::Spindizzy {
     object.addInteger(JSON_ROTATE_DURATION, cDefRollDuration);
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraGameplay::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> CameraGameplay::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyList>(cParent.getWorld()->getSpindizzy().getProject(),
+    mProperties.emplace_back(std::make_unique<PropertyList>(owner, cParent.getWorld()->getSpindizzy().getProject(),
                              PropertyData("Initial Angle", "TODO"),
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},

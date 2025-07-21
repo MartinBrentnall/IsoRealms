@@ -39,9 +39,9 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackActionEvent::getEventProperties(IProject& project) {
+  std::vector<std::unique_ptr<IProperty>> SequenceTrackActionEvent::getEventProperties(IPropertyOwner& owner, IProject& project) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(PropertyData("TODO: Action", "Action to be performed upon reaching this event"), cDefAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, PropertyData("TODO: Action", "Action to be performed upon reaching this event"), cDefAction));
     return mProperties;
   }
 

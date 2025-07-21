@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    std::vector<std::unique_ptr<IProperty>> getEventProperties(IProject& project) override;
+    std::vector<std::unique_ptr<IProperty>> getEventProperties(IPropertyOwner& owner, IProject& project) override;
 
     private:
 

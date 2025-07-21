@@ -37,10 +37,10 @@ namespace IsoRealms {
     bool isConfigurable() const override;
     std::string getID() const override;
     void set(const std::string& id) override;
-    std::vector<std::unique_ptr<IProperty>> getWrappedProperties() override;
+    std::vector<std::unique_ptr<IProperty>> getWrappedProperties(IPropertyOwner& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties() override;
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
     bool isDefaultConfiguration() const override;
   };
 }

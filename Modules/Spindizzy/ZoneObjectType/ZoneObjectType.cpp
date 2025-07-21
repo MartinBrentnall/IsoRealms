@@ -153,7 +153,7 @@ namespace IsoRealms::Spindizzy {
     return cDefEditingProcessorID;
   }
 
-  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor) {
+  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -165,7 +165,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

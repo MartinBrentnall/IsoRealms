@@ -84,11 +84,11 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> DebrisChunk::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Side1"),   cDefSide[0]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Side2"),   cDefSide[1]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Side3"),   cDefSide[2]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Side4"),   cDefSide[3]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Outline"), cDefOutline));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Side1"),   cDefSide[0]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Side2"),   cDefSide[1]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Side3"),   cDefSide[2]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Side4"),   cDefSide[3]));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Outline"), cDefOutline));
     return mProperties;
   }
 
@@ -112,7 +112,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> DebrisChunk::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

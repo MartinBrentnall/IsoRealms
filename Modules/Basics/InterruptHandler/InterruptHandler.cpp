@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> InterruptHandler::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("Action"), cDefAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("Action"), cDefAction));
     return mProperties;
   }
 
@@ -84,7 +84,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> InterruptHandler::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

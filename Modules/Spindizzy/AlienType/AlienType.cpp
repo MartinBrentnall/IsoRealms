@@ -90,8 +90,8 @@ namespace IsoRealms::Spindizzy {
 
   std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>( owner.getPropertyData("Appearance"),   cDefModel));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>(owner.getPropertyData("Target"),       cDefTarget));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>( owner, owner.getPropertyData("Appearance"),   cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>(owner, owner.getPropertyData("Target"),       cDefTarget));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Acceleration"), [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Friction"),     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("SpinSpeed"),    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
@@ -167,7 +167,7 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor) {
+  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -179,7 +179,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> AlienType::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> AlienType::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

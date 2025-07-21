@@ -84,7 +84,7 @@ namespace IsoRealms {
     object.addFloat(JSON_Z, z);
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralVertex::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> LiteralVertex::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

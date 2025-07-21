@@ -87,14 +87,14 @@ namespace IsoRealms::UI {
 
   std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner.getPropertyData("Colour"),       cDefColour));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner.getPropertyData("Font"),         cDefFont));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Colour"),       cDefColour));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("Font"),         cDefFont));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnExit"),       cDefExitAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnExit"),       cDefExitAction));
     unsigned int mItemCount = 1;
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<MenuItem>>(owner.getPropertyData("MenuItem"), *mItem.get()));
+      mProperties.emplace_back(std::make_unique<PropertyAsset<MenuItem>>(owner, owner.getPropertyData("MenuItem"), *mItem.get()));
       mItemCount++;
     }
     return mProperties;
@@ -195,7 +195,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Menu::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Menu::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -38,7 +38,7 @@ namespace IsoRealms {
     object.addInteger(JSON_VALUE, cValue);
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralInteger::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> LiteralInteger::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(PropertyData("Value", "TODO"), [this]() {return cValue;}, [this](int value) {cValue = value; return true;}));
     return mProperties;

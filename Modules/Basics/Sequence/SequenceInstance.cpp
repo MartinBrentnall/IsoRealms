@@ -170,7 +170,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceInstance::Position::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceInstance::Position::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -194,7 +194,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceInstance::Remaining::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> SequenceInstance::Remaining::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

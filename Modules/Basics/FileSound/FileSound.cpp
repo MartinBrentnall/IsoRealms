@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner.getPropertyData("File"), cDefFile));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, owner.getPropertyData("File"), cDefFile));
     return mProperties;
   }
 
@@ -83,7 +83,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileSound::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> FileSound::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

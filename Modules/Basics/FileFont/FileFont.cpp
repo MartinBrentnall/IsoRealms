@@ -163,7 +163,7 @@ namespace IsoRealms::Basics {
 
   std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  owner.getPropertyData("File"),         cDefFilename));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  owner, owner.getPropertyData("File"),         cDefFilename));
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("Detail"),       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("Scale"),        [this]() {return cDefScale;},       [this](float value) {cDefScale       = value; return true;}));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(  owner.getPropertyData("X Offset"),     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value; return true;}));
@@ -272,7 +272,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileFont::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> FileFont::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

@@ -25,6 +25,7 @@
 
 namespace IsoRealms {
   class IProperty;
+  class IPropertyOwner;
   class IResourceData;
 
   /**
@@ -34,7 +35,7 @@ namespace IsoRealms {
     public:
     virtual bool renderAssetIcon() const = 0;
     virtual void saveAsset(JSONObject object) const = 0;
-    virtual std::vector<std::unique_ptr<IProperty>> getAssetProperties() = 0;
+    virtual std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) = 0;
     virtual bool isDefaultConfiguration() const = 0;
 
     virtual ~IAsset() {}

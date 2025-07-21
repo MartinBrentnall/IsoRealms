@@ -21,10 +21,10 @@
 #include "IsoRealms/IProject.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+  PropertyList::PropertyList(IPropertyOwner& owner, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
             Property(data, removeFunction),
             cInternalSelection(project, options, getter, setter),
-            cInternalProperty(data, cInternalSelection, removeFunction) {
+            cInternalProperty(owner, data, cInternalSelection, removeFunction) {
   }
   
   void PropertyList::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {
@@ -70,7 +70,7 @@ namespace IsoRealms {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> PropertyList::ListSelection::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> PropertyList::ListSelection::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
   

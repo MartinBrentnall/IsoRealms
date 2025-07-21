@@ -83,7 +83,11 @@ namespace IsoRealms {
     std::string getName() override {
       return cName;
     }
-    
+
+    PropertyMaker getPropertyMaker() override {
+      return PropertyMaker(*this, *this);
+    }
+
     std::vector<std::unique_ptr<IProperty>> getProperties(IDialogManager& dialogManager) override {
       cDialogManager = &dialogManager;
       std::vector<std::unique_ptr<IProperty>> mProperties;

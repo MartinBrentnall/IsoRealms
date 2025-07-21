@@ -85,7 +85,7 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Recorder::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> Recorder::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

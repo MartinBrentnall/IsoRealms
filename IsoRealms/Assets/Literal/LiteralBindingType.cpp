@@ -38,7 +38,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralBindingType::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> LiteralBindingType::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

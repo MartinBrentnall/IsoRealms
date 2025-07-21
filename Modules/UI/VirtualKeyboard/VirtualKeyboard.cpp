@@ -187,7 +187,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

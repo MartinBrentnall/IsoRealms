@@ -583,10 +583,10 @@ namespace IsoRealms::Spindizzy {
     cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Lift::getProperties() {
+  std::vector<std::unique_ptr<IProperty>> Lift::getProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
     if (cZone.getWorld().isBasicProperties()) {
-      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Pause", "TODO"), [this]() {return cDefTopPause > 0;}, [this](bool value) {
+      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Pause", "TODO"), [this]() {return cDefTopPause > 0;}, [this](bool value) {
         cDefTopPause = value ? 1500 : 0;
         cDefBottomPause = value ? 1500 : 0;
       }, cZone.getWorld().getSpindizzy().getProject()));

@@ -60,7 +60,6 @@ namespace IsoRealms {
     if (cDefType == mRawID) {
       return cAsset->getID();
     }
-    std::cout << "Type: " << cDefType << "     ID: " << mRawID << std::endl;
     return cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
   }
 
@@ -126,8 +125,8 @@ namespace IsoRealms {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset) {
+  std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset, IPropertyOwner& owner) {
     std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
-    return cDefType == mRawID ? asset->getWrappedProperties() : asset->getAssetProperties();
+    return cDefType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);
   }
 }

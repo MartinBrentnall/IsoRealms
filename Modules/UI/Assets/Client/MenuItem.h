@@ -39,7 +39,7 @@ namespace IsoRealms::UI {
     bool renderProviderIcon(const std::string& id) const;
     bool hasConfiguration() const;
     bool isDefaultConfigured() const;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties();
+    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner);
     bool renderAssetIcon() const;
     IApplication& getApplication();
 

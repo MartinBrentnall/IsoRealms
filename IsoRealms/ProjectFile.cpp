@@ -58,23 +58,23 @@ namespace IsoRealms {
     cFile.setPath(name, user);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectFile::getProperties(Project& project, bool inclusion) {
+  std::vector<std::unique_ptr<IProperty>> ProjectFile::getProperties(IPropertyOwner& owner, Project& project, bool inclusion) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(PropertyData("File", "TODO"), cFile));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, PropertyData("File", "TODO"), cFile));
     if (inclusion && cFile.isUser()) {
-      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(PropertyData("Allow Modifications", "TODO"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, cProject));
+      mProperties.emplace_back(std::make_unique<PropertyNativeBoolean>(owner, PropertyData("Allow Modifications", "TODO"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}, cProject));
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>(PropertyData("Inclusion", "TODO"), mInclusion->cFile.getRelativePath(), [this, &mInclusion, &project]() {
-        return mInclusion->getProperties(project, true);
+      mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData("Inclusion", "TODO"), mInclusion->cFile.getRelativePath(), [this, &owner, &mInclusion, &project]() {
+        return mInclusion->getProperties(owner, project, true);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
       }));
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Inclusion", "TODO"), "Add...", [this, &project]() {
+    mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Inclusion", "TODO"), "Add...", [this, &owner, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      return std::make_unique<PropertyStruct>(PropertyData("Inclusion", "TODO"), mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &project]() {
-        return mNewInclusion->getProperties(project, true);
+      return std::make_unique<PropertyStruct>(owner, PropertyData("Inclusion", "TODO"), mNewInclusion->cFile.getRelativePath(), [this, &owner, &mNewInclusion, &project]() {
+        return mNewInclusion->getProperties(owner, project, true);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);
       });

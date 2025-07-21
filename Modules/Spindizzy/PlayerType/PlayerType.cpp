@@ -146,23 +146,23 @@ namespace IsoRealms::Spindizzy {
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("HugMomentumThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
 
     // appearance
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner.getPropertyData("Appearance"),          cDefModel));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner, owner.getPropertyData("Appearance"),          cDefModel));
     mProperties.emplace_back(std::make_unique<PropertyNativeFloat>(owner.getPropertyData("SpinSpeed"),            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
 
     // Input
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner.getPropertyData("InputXMovement"),      cDefInputX));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner.getPropertyData("InputYMovement"),      cDefInputY));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>(owner.getPropertyData("InputThrust"),       cDefInputThrust));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner, owner.getPropertyData("InputXMovement"),      cDefInputX));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner, owner.getPropertyData("InputYMovement"),      cDefInputY));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>(owner, owner.getPropertyData("InputThrust"),       cDefInputThrust));
 
     // Actions
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnRespawn"),          cDefRespawnAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnImpact"),           cDefFallImpactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnBounce"),           cDefFallBounceAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner.getPropertyData("OnWallBounce"),       cDefWallBounceAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnRespawn"),          cDefRespawnAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnImpact"),           cDefFallImpactAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnBounce"),           cDefFallBounceAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnWallBounce"),       cDefWallBounceAction));
 
     // Misc
     mProperties.emplace_back(std::make_unique<PropertyNativeInteger>(owner.getPropertyData("RespawnDelay"),       [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner.getPropertyData("ViewOrientation"),     cDefOrientation));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>(owner, owner.getPropertyData("ViewOrientation"),     cDefOrientation));
     return mProperties;
   }
 
@@ -280,7 +280,7 @@ namespace IsoRealms::Spindizzy {
     return BIND_TO_PLAYER + "/" + cSpindizzy.getZoneBindingID1(binding);
   }
 
-  IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor& editor) {
+  IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -292,7 +292,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> PlayerType::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> PlayerType::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

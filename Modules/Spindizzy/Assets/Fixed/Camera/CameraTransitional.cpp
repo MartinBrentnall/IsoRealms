@@ -165,15 +165,15 @@ namespace IsoRealms::Spindizzy {
     cDefEndArrivalAction.save(object, JSON_ON_END_ARRIVAL);
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::getAssetProperties(IPropertyOwner& owner) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        PropertyData("Start",                   "TODO"), cDefStart));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        PropertyData("End",                     "TODO"), cDefEnd));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        owner, PropertyData("Start",                   "TODO"), cDefStart));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        owner, PropertyData("End",                     "TODO"), cDefEnd));
     mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(PropertyData("Duration",                "TODO"), [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Departure from Start", "TODO"), cDefStartDepartureAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Arrival at End",       "TODO"), cDefEndArrivalAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Departure from End",   "TODO"), cDefEndDepartureAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        PropertyData("On Arrival at Start",     "TODO"), cDefStartArrivalAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Departure from Start", "TODO"), cDefStartDepartureAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Arrival at End",       "TODO"), cDefEndArrivalAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Departure from End",   "TODO"), cDefEndDepartureAction));
+    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Arrival at Start",     "TODO"), cDefStartArrivalAction));
     return mProperties;
   }
 
@@ -206,7 +206,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Yaw::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Yaw::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -231,7 +231,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Pitch::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Pitch::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 
@@ -255,7 +255,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Transition::getAssetProperties() {
+  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Transition::getAssetProperties(IPropertyOwner& owner) {
     return std::vector<std::unique_ptr<IProperty>>();
   }
 

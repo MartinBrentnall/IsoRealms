@@ -64,7 +64,7 @@ namespace IsoRealms::UI {
     Layout& getLayout();
     std::string getName() const;
     std::vector<std::string> getAvailableComponentNames();
-    std::vector<std::unique_ptr<IProperty>> getProperties();
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
 
     /***********************\
      * Scripting Interface *
