@@ -88,11 +88,10 @@ namespace IsoRealms {
       return PropertyMaker(*this, *this);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getProperties(IDialogManager& dialogManager) override {
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& propertyMaker, IDialogManager& dialogManager) override {
       cDialogManager = &dialogManager;
       std::vector<std::unique_ptr<IProperty>> mProperties;
-      PropertyMaker mPropertyMaker(*this, *this);
-      mProperties.emplace_back(mPropertyMaker.createPropertyNativeString("Name", [this]() {return cName;}, [this](const std::string& value) {
+      mProperties.emplace_back(propertyMaker.createPropertyNativeString("Name", [this]() {return cName;}, [this](const std::string& value) {
         std::set<IResource*> mAllResources = cParent.getResources();
         for (IResource* mResource : mAllResources) {
           if (mResource->getName() == value) {
@@ -109,7 +108,7 @@ namespace IsoRealms {
         registerAssets();
         return true;
       }));
-      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(mPropertyMaker);
+      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(propertyMaker);
       mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mResourceProperties)), std::make_move_iterator(std::end(mResourceProperties)));
       return mProperties;
     }

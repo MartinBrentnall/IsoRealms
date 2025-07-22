@@ -765,35 +765,34 @@ namespace IsoRealms {
     return project == cOwnerProject;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::getProperties() {
-    PropertyMaker mPropertyMaker(*this, *this);
+  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IPropertyOwner& propertyMaker) {
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyStruct>(mPropertyMaker, PropertyData("TODO: App Modules", "View or change the modules used by this app"), "Edit...", [this, &mPropertyMaker]() {
+    mProperties.emplace_back(std::make_unique<PropertyStruct>(propertyMaker, PropertyData("TODO: App Modules", "View or change the modules used by this app"), "Edit...", [this, &propertyMaker]() {
       std::vector<std::unique_ptr<IProperty>> mProperties;
       unsigned int mIndex = 1;
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        mProperties.emplace_back(std::make_unique<PropertyStruct>(mPropertyMaker, PropertyData("Module \"" + mModule->getName() + "\"", "TODO"), "Edit...", [this, &mModule]() {
+        mProperties.emplace_back(std::make_unique<PropertyStruct>(propertyMaker, PropertyData("Module \"" + mModule->getName() + "\"", "TODO"), "Edit...", [this, &mModule]() {
           return mModule->getProperties();
         }, [this, &mModule]() {
           Utils::removeElementUnique(cModules, mModule.get());
         }));
         mIndex++;
       }
-      mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>(mPropertyMaker, PropertyData("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO"), [this](const std::string& value) {
+      mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>(propertyMaker, PropertyData("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO"), [this](const std::string& value) {
         loadModule(value);
       }, *this, cApplication));
       return mProperties;
     }));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>(mPropertyMaker, PropertyData("TODO: App File Structure", "View or configure the files that make up this app"), "Edit...", [this, &mPropertyMaker]() {
-      return cProjectFile.getProperties(mPropertyMaker, *this, false);
+    mProperties.emplace_back(std::make_unique<PropertyStruct>(propertyMaker, PropertyData("TODO: App File Structure", "View or configure the files that make up this app"), "Edit...", [this, &propertyMaker]() {
+      return cProjectFile.getProperties(propertyMaker, *this, false);
     }));
-    mProperties.emplace_back(cDefInitAction.getProperty(mPropertyMaker, "On Initialisation"));
-    mProperties.emplace_back(cDefResetAction.getProperty(mPropertyMaker, "On Reset"));
-    mProperties.emplace_back(cDefStartAction.getProperty(mPropertyMaker, "On Start"));
-    mProperties.emplace_back(cDefQuitAction.getProperty(mPropertyMaker, "On Quit"));
-    mProperties.emplace_back(cDefInputHandler.getProperty(mPropertyMaker, "Input Handler"));
-    mProperties.emplace_back(cDefScreen.getProperty(mPropertyMaker, "Display"));
-    mProperties.emplace_back(cDefDefaultEditor.getProperty(mPropertyMaker, "Default Editor"));
+    mProperties.emplace_back(cDefInitAction.getProperty(propertyMaker, "On Initialisation"));
+    mProperties.emplace_back(cDefResetAction.getProperty(propertyMaker, "On Reset"));
+    mProperties.emplace_back(cDefStartAction.getProperty(propertyMaker, "On Start"));
+    mProperties.emplace_back(cDefQuitAction.getProperty(propertyMaker, "On Quit"));
+    mProperties.emplace_back(cDefInputHandler.getProperty(propertyMaker, "Input Handler"));
+    mProperties.emplace_back(cDefScreen.getProperty(propertyMaker, "Display"));
+    mProperties.emplace_back(cDefDefaultEditor.getProperty(propertyMaker, "Default Editor"));
     return mProperties;
   }
   

@@ -284,7 +284,7 @@ namespace IsoRealms {
 
     IApplication& getApplication() override;
 
-    std::vector<std::unique_ptr<IProperty>> getProperties();
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& propertyMaker);
 
     void setProperty(const std::string& property, const std::string& value) override;
 

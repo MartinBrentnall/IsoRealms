@@ -159,7 +159,7 @@ namespace IsoRealms {
     std::string mResourceName = resource->getName();
     PropertyMaker mPropertyMaker = resource->getPropertyMaker();
     mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, mPropertyMaker, [this, resource](IPropertyOwner& owner, IDialogManager& dialogManager) {
-      return resource->getProperties(dialogManager);
+      return resource->getProperties(owner, dialogManager);
     }, mResourceName, 1.0f, 1.0f, 0.5f));
   }
 }
