@@ -530,22 +530,6 @@ namespace IsoRealms {
     return cMissingData.getTooltip();
   }
 
-  std::unique_ptr<IProperty> Project::createPropertyNativeBoolean(const std::string& metadataKey, std::function<bool()>  getter, std::function<void(bool)>  setter, std::function<void()> removeFunction) {
-    return nullptr; // TODO
-  }
-
-  std::unique_ptr<IProperty> Project::createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) {
-    return nullptr; // TODO
-  }
-
-  std::unique_ptr<IProperty> Project::createPropertyNativeInteger(const std::string& metadataKey, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) {
-    return nullptr; // TODO
-  }
-
-  std::unique_ptr<IProperty> Project::createPropertyNativeString(const std::string& metadataKey, std::function<std::string()> getter, std::function<bool(const std::string&)> setter, std::function<void()> removeFunction) {
-    return nullptr; // TODO
-  }
-
   bool Project::isReadOnly() const {
     return false;
   }
