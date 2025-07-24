@@ -116,8 +116,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Name::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackAudioInstance::Name::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceTrackAudioInstance::Name::isDefaultConfiguration() const {
@@ -140,8 +140,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Count::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackAudioInstance::Count::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceTrackAudioInstance::Count::isDefaultConfiguration() const {
@@ -164,8 +164,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Current::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackAudioInstance::Current::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceTrackAudioInstance::Current::isDefaultConfiguration() const {
@@ -188,8 +188,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Length::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackAudioInstance::Length::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceTrackAudioInstance::Length::isDefaultConfiguration() const {
@@ -212,8 +212,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioInstance::Position::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackAudioInstance::Position::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceTrackAudioInstance::Position::isDefaultConfiguration() const {

@@ -18,8 +18,10 @@
  */
 #include "LiteralInteger.h"
 
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Editing/Property/PropertyNativeInteger.h"
-#include "IsoRealms/IPropertyOwner.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   LiteralInteger::LiteralInteger(const int value):
@@ -39,10 +41,8 @@ namespace IsoRealms {
     object.addInteger(JSON_VALUE, cValue);
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralInteger::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeInteger("Value", [this]() {return cValue;}, [this](int value) {cValue = value; return true;}));
-    return mProperties;
+  void LiteralInteger::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeInteger("Value", [this]() {return cValue;}, [this](int value) {cValue = value; return true;});
   }
 
   bool LiteralInteger::isDefaultConfiguration() const {

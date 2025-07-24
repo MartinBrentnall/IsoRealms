@@ -63,7 +63,8 @@ namespace IsoRealms::Basics {
     mLua->new_usertype<ProjectConfigurer>("ProjectConfigurer",   "setProject",                 &ProjectConfigurer::setProject,
                                                                  "hide",                       &ProjectConfigurer::hide,
                                                                  "show",                       &ProjectConfigurer::show,
-                                                                 "isHidden",                   &ProjectConfigurer::isHidden);
+                                                                 "isHidden",                   &ProjectConfigurer::isHidden,
+                                                                 "getDialogManager",           &ProjectConfigurer::getDialogManager);
     mLua->new_usertype<SequenceInstance>("Sequence",             "play",                       &SequenceInstance::play,
                                                                  "pause",                      &SequenceInstance::pause,
                                                                  "reset",                      &SequenceInstance::reset,

@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
     public:
     C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data);
     C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
+    void getProperties(PropertyMaker& owner);
     void save(JSONObject object) const;
     bool renderIcon();
     void hintInUse(bool inUse);
@@ -115,7 +115,7 @@ namespace IsoRealms::Spindizzy {
       void hintTextureInUse(bool inUse) override;
       void coord(float x, float y) const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+      void getAssetProperties(PropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

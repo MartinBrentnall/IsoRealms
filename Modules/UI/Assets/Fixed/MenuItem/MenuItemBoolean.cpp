@@ -122,13 +122,11 @@ namespace IsoRealms::UI {
     object.addString(JSON_FALSE_LABEL, cDefLabelFalse);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemBoolean::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeString("ID",         [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeString("Label",      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeString("TrueLabel",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeString("FalseLabel", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value; return true;}));
-    return mProperties;
+  void MenuItemBoolean::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeString("ID",         [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value; return true;});
+    owner.createPropertyNativeString("Label",      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value; return true;});
+    owner.createPropertyNativeString("TrueLabel",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value; return true;});
+    owner.createPropertyNativeString("FalseLabel", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value; return true;});
   }
 
   bool MenuItemBoolean::isDefaultConfiguration() const {

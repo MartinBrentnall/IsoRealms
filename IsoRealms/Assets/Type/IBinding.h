@@ -35,7 +35,7 @@ namespace IsoRealms {
     virtual bool isConfigurable() const = 0;
     virtual std::string getID() const = 0;
     virtual void set(const std::string& id) = 0;
-    virtual std::vector<std::unique_ptr<IProperty>> getWrappedProperties(IPropertyOwner& owner) = 0;
+    virtual void getWrappedProperties(PropertyMaker& owner) = 0;
 
     virtual ~IBinding() {}
   };

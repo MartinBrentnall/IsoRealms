@@ -39,7 +39,7 @@ namespace IsoRealms::HighScore {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
+    void getProperties(PropertyMaker& owner);
     
     /***********************\
      * Scripting Interface *

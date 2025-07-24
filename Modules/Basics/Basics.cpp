@@ -113,8 +113,8 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding,   "",            "Basics");
   }
   
-  std::vector<std::unique_ptr<IProperty>> Basics::getProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Basics::getProperties() {
+    // Nothing to do.
   }
   
   void Basics::updateRuntime(unsigned int milliseconds) {

@@ -47,14 +47,14 @@ namespace IsoRealms::Basics {
     \*****************************/
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+    void getAssetProperties(PropertyMaker& owner) override;
 
     /**********************************\
       * Implements ISequenceTrackEvent *
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    std::vector<std::unique_ptr<IProperty>> getEventProperties(IPropertyOwner& owner, IProject& project) override;
+    void getEventProperties(PropertyMaker& owner, IProject& project) override;
 
     private:
 

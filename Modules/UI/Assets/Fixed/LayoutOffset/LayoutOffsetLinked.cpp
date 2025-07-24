@@ -70,12 +70,10 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_RATIO,   cDefRatio, cParent.isPositiveEdge() ? 1.0f : -1.0f);   
   }
   
-  std::vector<std::unique_ptr<IProperty>> LayoutOffsetLinked::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-//    mProperties.emplace_back(std::make_unique<PropertyList>(cParent.getComponent().getLayout().getProject(), "Orientation", {VALUE_WIDTH, VALUE_HEIGHT}, [this]() {return cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT;}, [this](const std::string& value) {cDefHorizontal = value == VALUE_WIDTH;}));
-    mProperties.emplace_back(std::make_unique<PropertyList>(owner, cParent.getComponent().getLayout().getUI().getProject(), PropertyData("Linked to", "TODO"), cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {std::cout << "TODO: Support setting linked component!" << std::endl;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Ratio", [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value; return true;}));
-    return mProperties;
+  void LayoutOffsetLinked::getAssetProperties(PropertyMaker& owner) {
+//    owner.createPropertyList("Orientation", {VALUE_WIDTH, VALUE_HEIGHT}, [this]() {return cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT;}, [this](const std::string& value) {cDefHorizontal = value == VALUE_WIDTH;}));
+    owner.createPropertyList("Linkedto", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {std::cout << "TODO: Support setting linked component!" << std::endl;});
+    owner.createPropertyNativeFloat("Ratio", [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value; return true;});
   }
 
   bool LayoutOffsetLinked::isDefaultConfiguration() const {

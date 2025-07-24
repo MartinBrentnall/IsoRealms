@@ -74,8 +74,8 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ScoreTracker::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ScoreTracker::renderAssetIcon() const {
@@ -95,8 +95,8 @@ namespace IsoRealms::HighScore {
     cProject->reset();
   }
   
-  std::vector<std::unique_ptr<IProperty>> ScoreTracker::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ScoreTracker::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ScoreTracker::isDefaultConfiguration() const {

@@ -85,19 +85,15 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Menu::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Colour"),       cDefColour));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("Font"),         cDefFont));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnExit"),       cDefExitAction));
-    unsigned int mItemCount = 1;
+  void Menu::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>("Colour",       cDefColour);
+    owner.createPropertyAsset<Font>(  "Font",         cDefFont);
+    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;});
+    owner.createPropertyNativeFloat(  "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;});
+    owner.createPropertyAsset<Action>("OnExit",       cDefExitAction);
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<MenuItem>>(owner, owner.getPropertyData("MenuItem"), *mItem.get()));
-      mItemCount++;
+      owner.createPropertyAsset<MenuItem>("MenuItem", *mItem.get());
     }
-    return mProperties;
   }
   
   void Menu::updateRuntime(unsigned int milliseconds) {
@@ -195,8 +191,8 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Menu::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Menu::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Menu::isDefaultConfiguration() const {

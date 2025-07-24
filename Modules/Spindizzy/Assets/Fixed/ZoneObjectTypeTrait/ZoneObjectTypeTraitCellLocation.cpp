@@ -54,8 +54,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitCellLocation::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ZoneObjectTypeTraitCellLocation::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ZoneObjectTypeTraitCellLocation::isDefaultConfiguration() const {

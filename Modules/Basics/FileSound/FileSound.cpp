@@ -52,10 +52,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileSound::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, owner.getPropertyData("File"), cDefFile));
-    return mProperties;
+  void FileSound::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<File>("File", cDefFile);
   }
 
   void FileSound::setVolume(float volume) {
@@ -83,8 +81,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileSound::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void FileSound::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool FileSound::isDefaultConfiguration() const {

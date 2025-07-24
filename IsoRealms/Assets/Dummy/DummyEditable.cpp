@@ -28,7 +28,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  IEditableScreen* DummyEditable::createEditableScreen(Project* project) {
+  IEditableScreen* DummyEditable::createEditableScreen(Project* project, IDialogManager& dialogManager) {
     return &DUMMY;
   }
 
@@ -41,8 +41,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyEditable::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyEditable::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyEditable::isDefaultConfiguration() const {
@@ -121,8 +121,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyEditable::EditableScreen::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyEditable::EditableScreen::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyEditable::EditableScreen::isDefaultConfiguration() const {

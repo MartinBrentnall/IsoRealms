@@ -200,15 +200,12 @@ namespace IsoRealms::Spindizzy {
     object.addInteger(JSON_ROTATE_DURATION, cDefRollDuration);
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraGameplay::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyList>(owner, cParent.getWorld()->getSpindizzy().getProject(),
-                             PropertyData("Initial Angle", "TODO"),
+  void CameraGameplay::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyList("InitialAngle",
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},
-                             [this](const std::string& value) {cDefAngle = getDirectionValue(value);}));
-    mProperties.emplace_back(owner.createPropertyNativeInteger("RotateDuration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value; return true;}));
-    return mProperties;
+                             [this](const std::string& value) {cDefAngle = getDirectionValue(value);});
+    owner.createPropertyNativeInteger("RotateDuration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value; return true;});
   }
 
   bool CameraGameplay::isDefaultConfiguration() const {

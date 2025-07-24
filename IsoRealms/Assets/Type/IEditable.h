@@ -24,6 +24,7 @@
 #include "IEditableScreen.h"
 
 namespace IsoRealms {
+  class IDialogManager;
   class Project;
 
   /**
@@ -37,7 +38,7 @@ namespace IsoRealms {
      * 
      * @return Screen to edit this editable.
      */
-    virtual IEditableScreen* createEditableScreen(Project* project) = 0;
+    virtual IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) = 0;
     
     virtual ~IEditable() {}
   };

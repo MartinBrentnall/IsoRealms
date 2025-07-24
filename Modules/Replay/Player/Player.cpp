@@ -101,8 +101,8 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Player::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Player::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Player::isDefaultConfiguration() const {
@@ -123,8 +123,8 @@ namespace IsoRealms::Replay {
     assets.add(static_cast<IInputHandler*>(this), "", "System");
   }
   
-  std::vector<std::unique_ptr<IProperty>> Player::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Player::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   void Player::updateRuntime(unsigned int milliseconds) {
@@ -323,8 +323,8 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Player::DigitalInput::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Player::DigitalInput::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Player::DigitalInput::isDefaultConfiguration() const {
@@ -351,8 +351,8 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Player::AnalogueInput::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Player::AnalogueInput::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Player::AnalogueInput::isDefaultConfiguration() const {

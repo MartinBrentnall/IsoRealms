@@ -29,18 +29,20 @@
 
 #include "IPropertyManager.h"
 #include "Property.h"
+#include "PropertyAsset.h"
 
 namespace IsoRealms {
   class Project;
 
   template<class TYPE> class PropertyOptional : public Property {
     public:
-    PropertyOptional(IPropertyOwner& owner, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, IApplication& application) :
+    PropertyOptional(PropertyMaker& owner, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, IApplication& application) :
             Property(data, nullptr),
             cSimulatedType(project),
             cWrapperType(*this),
-            cSubProperty(owner, data, cWrapperType),
+            cSubProperty(owner, resourceData, data, cWrapperType),
             cChoiceCallback(choiceCallback),
+            cProject(project),
             cApplication(application) {
     }
 
@@ -104,8 +106,8 @@ namespace IsoRealms {
         return true;
       }
 
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) {
-        return std::vector<std::unique_ptr<IProperty>>();
+      void getAssetProperties(PropertyMaker& owner) {
+        // Nothing to do.
       }
 
       IApplication& getApplication() const {
@@ -139,6 +141,7 @@ namespace IsoRealms {
     PropertyAsset<OptionWrapper> cSubProperty;
     std::function<void(const std::string&)> cChoiceCallback;
     IPropertyManager* cPropertyManager;
+    Project& cProject;
     IApplication& cApplication;
   };
 }

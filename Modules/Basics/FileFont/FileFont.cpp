@@ -161,15 +161,13 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileFont::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(  owner, owner.getPropertyData("File"),         cDefFilename));
-    mProperties.emplace_back(owner.createPropertyNativeInteger("Detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "Scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "XOffset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "YOffset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "Line pacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value; return true;}));
-    return mProperties;
+  void FileFont::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<File>(  "File",        cDefFilename);
+    owner.createPropertyNativeInteger("Detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;});
+    owner.createPropertyNativeFloat(  "Scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value; return true;});
+    owner.createPropertyNativeFloat(  "XOffset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value; return true;});
+    owner.createPropertyNativeFloat(  "YOffset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value; return true;});
+    owner.createPropertyNativeFloat(  "Line pacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value; return true;});
   }
   
   FileFont::~FileFont() {
@@ -272,8 +270,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileFont::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void FileFont::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool FileFont::isDefaultConfiguration() const {

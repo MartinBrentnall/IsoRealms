@@ -165,16 +165,14 @@ namespace IsoRealms::Spindizzy {
     cDefEndArrivalAction.save(object, JSON_ON_END_ARRIVAL);
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        owner, PropertyData("Start",                   "TODO"), cDefStart));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(        owner, PropertyData("End",                     "TODO"), cDefEnd));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(PropertyData("Duration",                "TODO"), [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Departure from Start", "TODO"), cDefStartDepartureAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Arrival at End",       "TODO"), cDefEndArrivalAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Departure from End",   "TODO"), cDefEndDepartureAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, PropertyData("On Arrival at Start",     "TODO"), cDefStartArrivalAction));
-    return mProperties;
+  void CameraTransitional::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Camera>(        "Start",                   cDefStart);
+    owner.createPropertyAsset<Camera>(        "End",                     cDefEnd);
+    owner.createPropertyNativeUnsignedInteger("Duration",                [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value; return true;});
+    owner.createPropertyAsset<Action>(        "On Departure from Start", cDefStartDepartureAction);
+    owner.createPropertyAsset<Action>(        "On Arrival at End",       cDefEndArrivalAction);
+    owner.createPropertyAsset<Action>(        "On Departure from End",   cDefEndDepartureAction);
+    owner.createPropertyAsset<Action>(        "On Arrival at Start",     cDefStartArrivalAction);
   }
 
   bool CameraTransitional::isDefaultConfiguration() const {
@@ -206,8 +204,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Yaw::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void CameraTransitional::Yaw::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool CameraTransitional::Yaw::isDefaultConfiguration() const {
@@ -231,8 +229,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Pitch::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void CameraTransitional::Pitch::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool CameraTransitional::Pitch::isDefaultConfiguration() const {
@@ -255,8 +253,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraTransitional::Transition::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void CameraTransitional::Transition::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool CameraTransitional::Transition::isDefaultConfiguration() const {

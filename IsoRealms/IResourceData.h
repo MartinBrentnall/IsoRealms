@@ -26,11 +26,9 @@ namespace IsoRealms {
   class Project;
   class ProjectFile;
   class PropertyData;
-  class PropertyMaker;
 
   class IResourceData {
     public:
-    virtual PropertyMaker getPropertyMaker() = 0;
     virtual std::string getPath(const std::string& file, bool user) const = 0;
     virtual void makeUserDataDirectory() = 0;
     virtual bool isIncluded() const = 0;
@@ -41,7 +39,5 @@ namespace IsoRealms {
     virtual IActionClient& getDummyActionClient() = 0;
 
     virtual const PropertyData& getPropertyData(const std::string& key) const = 0;
-    virtual std::string getPropertyName(const std::string& key) const = 0;
-    virtual std::string getPropertyDescription(const std::string& key) const = 0;
   };
 }

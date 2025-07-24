@@ -36,8 +36,8 @@ namespace IsoRealms::Hue {
     // Nothing to do.
   }
   
-  std::vector<std::unique_ptr<IProperty>> Hue::getProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Hue::getProperties() {
+    // Nothing to do.
   }
 
   void Hue::updateRuntime(unsigned int milliseconds) {

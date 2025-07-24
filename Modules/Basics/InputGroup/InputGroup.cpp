@@ -55,22 +55,20 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputGroup::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
+  void InputGroup::getProperties(PropertyMaker& owner) {
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>(owner, owner.getPropertyData("InputHandler"), *mInputHandler.get(), [this, &mInputHandler]() {
-        Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
-      }));
-    }
-
-    mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("InputHandlerAdd"), "Add...", [this, &owner]() {
-      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cResource));
-      std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
-      return std::make_unique<PropertyAsset<InputHandler>>(owner, owner.getPropertyData("InputHandler"), *mInputHandler, [this, &mInputHandler]() {
+      owner.createPropertyAsset<InputHandler>("InputHandler", *mInputHandler.get(), [this, &mInputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
       });
-    }));
-    return mProperties;
+    }
+
+    owner.createPropertyAdd("InputHandlerAdd", "Add...", [this, &owner]() {
+      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cResource));
+      std::unique_ptr<InputHandler>& mInputHandler = cDefInputHandlers.back();
+      return owner.createPropertyAsset<InputHandler>("InputHandler", *mInputHandler, [this, &mInputHandler]() {
+        Utils::removeElementUnique(cDefInputHandlers, mInputHandler.get());
+      });
+    });
   }
 
   bool InputGroup::input(sf::Event& event) {
@@ -96,8 +94,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputGroup::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void InputGroup::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool InputGroup::isDefaultConfiguration() const {

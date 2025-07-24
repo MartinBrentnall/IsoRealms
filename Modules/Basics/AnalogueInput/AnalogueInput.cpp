@@ -65,8 +65,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void AnalogueInput::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   float AnalogueInput::getValue() const {
@@ -109,8 +109,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> AnalogueInput::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void AnalogueInput::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool AnalogueInput::isDefaultConfiguration() const {

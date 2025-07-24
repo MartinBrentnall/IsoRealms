@@ -21,19 +21,15 @@
 #include <string>
 
 #include "Assets/Registry/AssetIDException.h"
-#include "Editing/IConfirmationManager.h"
-#include "Editing/IDialogManager.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
 #include "IProject.h"
-#include "IPropertyOwner.h"
 #include "IResource.h"
 #include "IResourceData.h"
 #include "IResourceType.h"
 #include "Options/IOptions.h"
 #include "ProjectFile.h"
 #include "PropertyData.h"
-#include "PropertyMaker.h"
 #include "ResourceAssetRegistry.h"
 #include "System.h"
 #include "Utils.h"
@@ -41,8 +37,7 @@
 namespace IsoRealms {
   template <class MODULE, class RESOURCE> class Resource : public IResource,
                                                            public IResourceData,
-                                                           public IActionClient,
-                                                           public IConfirmationManager {
+                                                           public IActionClient {
     public:
     Resource(IResourceType& parent, IProject& project, MODULE& module, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
@@ -84,14 +79,8 @@ namespace IsoRealms {
       return cName;
     }
 
-    PropertyMaker getPropertyMaker() override {
-      return PropertyMaker(*this, *this);
-    }
-
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& propertyMaker, IDialogManager& dialogManager) override {
-      cDialogManager = &dialogManager;
-      std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(propertyMaker.createPropertyNativeString("Name", [this]() {return cName;}, [this](const std::string& value) {
+    void getProperties(PropertyMaker& propertyMaker) override {
+      propertyMaker.createPropertyNativeString("Name", [this]() {return cName;}, [this](const std::string& value) {
         std::set<IResource*> mAllResources = cParent.getResources();
         for (IResource* mResource : mAllResources) {
           if (mResource->getName() == value) {
@@ -107,10 +96,8 @@ namespace IsoRealms {
         cAssetRegistry.setLocalPath(cName);
         registerAssets();
         return true;
-      }));
-      std::vector<std::unique_ptr<IProperty>> mResourceProperties = cResourceHandle.getProperties(propertyMaker);
-      mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mResourceProperties)), std::make_move_iterator(std::end(mResourceProperties)));
-      return mProperties;
+      });
+      cResourceHandle.getProperties(propertyMaker);
     }
     
     bool renderIcon() override {
@@ -157,6 +144,10 @@ namespace IsoRealms {
       return savingProject == cOwnerProject;
     }
     
+    IResourceData& getResourceData() override {
+      return *this;
+    }
+
     /****************************\
      * Implements IResourceData *
     \****************************/
@@ -192,39 +183,12 @@ namespace IsoRealms {
       return *this;
     }
 
-    IResourceData& getResourceData() override {
-      return *this;
-    }
-
     IBindingRegistry* getBindingRegistry() override {
       return nullptr;
     }
     
     const PropertyData& getPropertyData(const std::string& key) const override {
       return cParent.getPropertyData(key);
-    }
-
-    std::string getPropertyName(const std::string& key) const override {
-      return cParent.getPropertyName(key);
-    }
-
-    std::string getPropertyDescription(const std::string& key) const override {
-      return cParent.getPropertyDescription(key);
-    }
-
-    /***********************************\
-     * Implements IConfirmationManager *
-    \***********************************/
-    bool confirm(std::function<void()> confirm, std::function<void()> cancel) override {
-      if (!cOwnerProject->isModifiable()) {
-        cDialogManager->confirm("TODO: The resource you're modifying is read-only.  In order to modify this resource, it will need to be promoted to the main project file.", confirm, cancel);
-        return true;
-      }
-      return false;
-    }
-
-    void promoteResourceToProject() override {
-      cOwnerProject = cParent.getProjectFile();
     }
 
     private:
@@ -237,7 +201,6 @@ namespace IsoRealms {
     RESOURCE cResourceHandle;
     ResourceAssetRegistry cAssetRegistry;
     std::map<std::string, std::string> cPropertyHelp;
-    IDialogManager* cDialogManager; // TODO: This shouldn't be here.'
   };
 
   template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";

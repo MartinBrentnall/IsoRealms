@@ -184,14 +184,4 @@ namespace IsoRealms {
     std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
     return mIterator == cPropertyHelp.end() ? cPropertyMissing : *mIterator->second;
   }
-
-  std::string ResourceType::getPropertyName(const std::string& key) const {
-    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
-    return mIterator == cPropertyHelp.end() ? cPropertyMissing.getName() : mIterator->second->getName();
-  }
-  
-  std::string ResourceType::getPropertyDescription(const std::string& key) const {
-    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
-    return mIterator == cPropertyHelp.end() ? cPropertyMissing.getTooltip() : mIterator->second->getTooltip();
-  }
 }

@@ -83,17 +83,15 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Throbber::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Duration"),     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Spots"),        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("SpotSides"),    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("SpotSize",     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(        owner, owner.getPropertyData("Colour"),       cDefColour));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("RingSize",     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyNativeUnsignedInteger>(owner.getPropertyData("Repetitions"),  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;}));
-    return mProperties;
+  void Throbber::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeUnsignedInteger("Duration" ,    [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;});
+    owner.createPropertyNativeUnsignedInteger("Spots" ,       [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;});
+    owner.createPropertyNativeUnsignedInteger("SpotSides" ,   [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value; return true;});
+    owner.createPropertyNativeFloat(          "SpotSize",     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value; return true;});
+    owner.createPropertyNativeFloat(          "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value; return true;});
+    owner.createPropertyAsset<Colour>(        "Colour",       cDefColour);
+    owner.createPropertyNativeFloat(          "RingSize",     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;});
+    owner.createPropertyNativeUnsignedInteger("Repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;});
   }
 
   void Throbber::updateRuntime(unsigned int milliseconds) {
@@ -121,8 +119,8 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Throbber::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Throbber::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Throbber::isDefaultConfiguration() const {

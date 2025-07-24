@@ -62,8 +62,8 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScoreTable::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ScoreTable::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   void ScoreTable::hintInUse(bool inUse) {

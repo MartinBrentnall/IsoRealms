@@ -160,15 +160,13 @@ namespace IsoRealms::UI {
     cDefValueChangedAction.save(object, JSON_ON_CHANGE);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemSlider::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeString( "ID",      [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeString( "Label",   [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "Minimum", [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "Maximum", [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeInteger("Steps",   [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, PropertyData("On Change", "TODO"), cDefValueChangedAction));
-    return mProperties;
+  void MenuItemSlider::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value; return true;});
+    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value; return true;});
+    owner.createPropertyNativeFloat(  "Minimum",  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value; return true;});
+    owner.createPropertyNativeFloat(  "Maximum",  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value; return true;});
+    owner.createPropertyNativeInteger("Steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value; return true;});
+    owner.createPropertyAsset<Action>("OnChange", cDefValueChangedAction);
   }
 
   bool MenuItemSlider::isDefaultConfiguration() const {

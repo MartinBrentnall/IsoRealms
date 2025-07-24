@@ -16,10 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "Editable.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 

@@ -74,16 +74,14 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  std::vector<std::unique_ptr<IProperty>> Theme::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeString("Name", [this]() {return getName();}, [this](const std::string& value) {return cThemeSet.setName(*this, value);}));
+  void Theme::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeString("Name", [this]() {return getName();}, [this](const std::string& value) {return cThemeSet.setName(*this, value);});
     for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, PropertyData(cThemeSet.getElement(mTexture.first), "TODO"), mTexture.second));
+      owner.createPropertyAsset<Texture>(cThemeSet.getElement(mTexture.first), mTexture.second);
     }
     for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, PropertyData(cThemeSet.getElement(mColour.first), "TODO"), mColour.second));
+      owner.createPropertyAsset<Colour>(cThemeSet.getElement(mColour.first), mColour.second);
     }
-    return mProperties;
   }
 
   void Theme::themeTextureAdded(ThemeTexture* texture) {

@@ -233,7 +233,7 @@ namespace IsoRealms::Spindizzy {
     int getEditorMaxZ() const;
     
     // TODO: Move this to World (Editing).
-    std::vector<IWorldEditorToolInstance*> createToolSet(WorldEditor& editor, IPropertyOwner& owner);
+    std::vector<IWorldEditorToolInstance*> createToolSet(WorldEditor& editor, IResourceData& owner);
     
     /***********************\
      * Scripting Interface *
@@ -247,7 +247,7 @@ namespace IsoRealms::Spindizzy {
     void load(IProject& project, JSONObject object) override;
     void save(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
-    std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void getProperties() override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
@@ -453,7 +453,7 @@ namespace IsoRealms::Spindizzy {
       std::string getBindingTypeID() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+      void getAssetProperties(PropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

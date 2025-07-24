@@ -64,11 +64,9 @@ namespace IsoRealms::UI {
     object.addString(JSON_RELATIVE, cParent.getComponent().getLayout().getName(cDefRelative));
   }
   
-  std::vector<std::unique_ptr<IProperty>> LayoutLocationRelative::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyList>(owner, cParent.getComponent().getLayout().getUI().getProject(), PropertyData("Relative", "TODO"), cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;}));
-    return mProperties;
+  void LayoutLocationRelative::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat("Value",    [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;});
+    owner.createPropertyList(       "Relative", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;});
   }
 
   bool LayoutLocationRelative::isDefaultConfiguration() const {

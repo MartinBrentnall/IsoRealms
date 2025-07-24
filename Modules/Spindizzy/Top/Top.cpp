@@ -73,12 +73,10 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Top::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Top"),     cDefColourTop));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Side"),    cDefColourSide));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Outline"), cDefColourOutline));
-    return mProperties;
+  void Top::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>("Top",     cDefColourTop);
+    owner.createPropertyAsset<Colour>("Side",    cDefColourSide);
+    owner.createPropertyAsset<Colour>("Outline", cDefColourOutline);
   }
 
   void Top::updateEditing(unsigned int milliseconds) {
@@ -102,8 +100,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Top::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Top::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Top::isDefaultConfiguration() const {

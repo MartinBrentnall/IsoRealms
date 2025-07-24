@@ -63,11 +63,9 @@ namespace IsoRealms::Basics {
     return cDefType->getBindingTypeID();
   }
 
-  std::vector<std::unique_ptr<IProperty>> ArgumentDefinition::getProperties(IPropertyOwner& owner, Function& parent) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<BindingType>>(owner, PropertyData("Type", "TODO"), cDefType));
-    mProperties.emplace_back(owner.createPropertyNativeString("Name", [this]() {return cDefName;}, [this, &parent](const std::string& value) {return parent.setArgumentDefinitionName(*this, value);}));
-    return mProperties;
+  void ArgumentDefinition::getProperties(PropertyMaker& owner, Function& parent) {
+    owner.createPropertyAsset<BindingType>("Type", cDefType);
+    owner.createPropertyNativeString(      "Name", [this]() {return cDefName;}, [this, &parent](const std::string& value) {return parent.setArgumentDefinitionName(*this, value);});
   }
 
   void ArgumentDefinition::saveCall(JSONObject object, const std::string& attributeName) const {

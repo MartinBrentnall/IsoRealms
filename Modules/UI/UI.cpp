@@ -116,8 +116,8 @@ namespace IsoRealms::UI {
     assets.addProvider(&cProviderStringTime,     STRING_TIME,     "");
   }
   
-  std::vector<std::unique_ptr<IProperty>> UI::getProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void UI::getProperties() {
+    // Nothing to do.
   }  
 
   void UI::updateRuntime(unsigned int milliseconds) {

@@ -43,13 +43,11 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  std::vector<std::unique_ptr<IProperty>> Jewel::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
+  void Jewel::getProperties(PropertyMaker& owner) {
     for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
-      cColoursCycle[i]->getProperties(owner, mProperties);
+      cColoursCycle[i]->getProperties(owner);
     }
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Outline"), cColourFrame));
-    return mProperties;
+    owner.createPropertyAsset<Colour>("Outline", cColourFrame);
   }
 
   void Jewel::updateEditing(unsigned int milliseconds) {
@@ -91,8 +89,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Jewel::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Jewel::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Jewel::isDefaultConfiguration() const {
@@ -149,8 +147,8 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void Jewel::CycleColour::getProperties(IPropertyOwner& owner, std::vector<std::unique_ptr<IProperty>>& properties) {
-    properties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Colour"), cDefColour));
+  void Jewel::CycleColour::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>("Colour", cDefColour);
   }
 
   unsigned int Jewel::Instance::cReferenceCount = 0;

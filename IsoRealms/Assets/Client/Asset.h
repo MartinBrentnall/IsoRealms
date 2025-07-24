@@ -97,11 +97,9 @@ namespace IsoRealms {
       return cManager.getAssetManager().getID(cAsset);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) {
-      std::vector<std::unique_ptr<IProperty>> mProperties = getClientProperties(owner);
-      std::vector<std::unique_ptr<IProperty>> mAssetProperties = getTheAssetProperties(cAsset, owner);
-      mProperties.insert(std::end(mProperties), std::make_move_iterator(std::begin(mAssetProperties)), std::make_move_iterator(std::end(mAssetProperties)));
-      return mProperties;
+    void getAssetProperties(PropertyMaker& owner) {
+      getClientProperties(owner);
+      getTheAssetProperties(cAsset, owner);
     }
 
     virtual bool renderAssetIcon() const {
@@ -187,11 +185,11 @@ namespace IsoRealms {
     virtual void saveClientConfiguration(JSONObject object) const {
       // Nothing to do.
     }
-    virtual std::vector<std::unique_ptr<IProperty>> getClientProperties(IPropertyOwner& owner) {
-      return std::vector<std::unique_ptr<IProperty>>();
+    virtual void getClientProperties(PropertyMaker& owner) {
+      // Nothing to do.
     }
-    virtual std::vector<std::unique_ptr<IProperty>> getTheAssetProperties(TYPE* asset, IPropertyOwner& owner) {
-      return asset->getAssetProperties(owner);
+    virtual void getTheAssetProperties(TYPE* asset, PropertyMaker& owner) {
+      asset->getAssetProperties(owner);
     }
 
     private:

@@ -103,8 +103,8 @@ namespace IsoRealms::Basics {
     cDefFunction.save(object, true);
   }
   
-  std::vector<std::unique_ptr<IProperty>> Script::ScriptAction::getAssetProperties(IPropertyOwner& owner) {
-    return cDefFunction.getScriptProperties(owner);
+  void Script::ScriptAction::getAssetProperties(PropertyMaker& owner) {
+    cDefFunction.getScriptProperties(owner);
   }  
 
   bool Script::ScriptAction::isDefaultConfiguration() const {

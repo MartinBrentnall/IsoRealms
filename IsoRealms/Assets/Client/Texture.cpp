@@ -19,8 +19,8 @@
 #include "Texture.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
@@ -70,12 +70,10 @@ namespace IsoRealms {
     object.addFloat(JSON_SCALE_Y, cDefScaleY, 1.0f);
   }
   
-  std::vector<std::unique_ptr<IProperty>> Texture::getClientProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ScaleX", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged(cAsset); return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ScaleY", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged(cAsset); return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Angle",  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged(cAsset); return true;}));
-    return mProperties;
+  void Texture::getClientProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat("ScaleX", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged(cAsset); return true;});
+    owner.createPropertyNativeFloat("ScaleY", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged(cAsset); return true;});
+    owner.createPropertyNativeFloat("Angle",  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged(cAsset); return true;});
   }
   
   void Texture::stateChanged(ITexture* asset) {

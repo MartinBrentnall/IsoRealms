@@ -55,10 +55,8 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileTexture::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, owner.getPropertyData("File"), cDefFile));
-    return mProperties;
+  void FileTexture::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<File>("File", cDefFile);
   }
 
   void FileTexture::set() const {
@@ -82,8 +80,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> FileTexture::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void FileTexture::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool FileTexture::isDefaultConfiguration() const {

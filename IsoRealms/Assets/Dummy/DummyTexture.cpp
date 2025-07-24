@@ -95,8 +95,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
   
-  std::vector<std::unique_ptr<IProperty>> DummyTexture::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyTexture::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyTexture::isDefaultConfiguration() const {

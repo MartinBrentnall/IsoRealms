@@ -88,10 +88,8 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioEvent::getEventProperties(IPropertyOwner& owner, IProject& project) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, PropertyData("Audio File", "TODO"), cDefFile));
-    return mProperties;
+  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner, IProject& project) {
+    owner.createPropertyAsset<File>("AudioFile", cDefFile);
   }
 
   SequenceTrackAudioEvent::End* SequenceTrackAudioEvent::getEndEvent() {
@@ -110,8 +108,8 @@ namespace IsoRealms::Basics {
     // Not supported.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAudioEvent::End::getEventProperties(IPropertyOwner& owner, IProject& project) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner, IProject& project) {
+    // Nothing to do.
   }
 
   const std::string SequenceTrackAudioEvent::JSON_FILE = "value";

@@ -56,8 +56,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ThemeColour::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ThemeColour::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ThemeColour::isDefaultConfiguration() const {

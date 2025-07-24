@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "Model.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
@@ -98,17 +98,15 @@ namespace IsoRealms {
     object.addFloat(JSON_YAW,      cDefYaw);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Model::getClientProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat("OffsetX", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("OffsetY", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("OffsetZ", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ScaleX",  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ScaleY",  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ScaleZ",  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Angle",   [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Tilt",    [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value; return true;}));
-    return mProperties;
+  void Model::getClientProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat("OffsetX", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value; return true;});
+    owner.createPropertyNativeFloat("OffsetY", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value; return true;});
+    owner.createPropertyNativeFloat("OffsetZ", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value; return true;});
+    owner.createPropertyNativeFloat("ScaleX",  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value; return true;});
+    owner.createPropertyNativeFloat("ScaleY",  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value; return true;});
+    owner.createPropertyNativeFloat("ScaleZ",  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value; return true;});
+    owner.createPropertyNativeFloat("Angle",   [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value; return true;});
+    owner.createPropertyNativeFloat("Tilt",    [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value; return true;});
   }
   
   const std::string Model::JSON_OFFSET_X = "offsetX";

@@ -60,8 +60,6 @@ namespace IsoRealms {
     IAssets& getAssets() override;
     Project& getProject() override;
     const PropertyData& getPropertyData(const std::string& key) const override;
-    std::string getPropertyName(const std::string& key) const override;
-    std::string getPropertyDescription(const std::string& key) const override;    
 
     private:
     static const std::string JSON_CATEGORY;

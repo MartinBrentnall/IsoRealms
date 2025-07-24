@@ -102,16 +102,14 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("Font"),         cDefFont));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(  owner, owner.getPropertyData("CodeFont"),     cDefCodeFont));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnExit"),       cDefExitAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("OnEditor"),     cDefEditorAction));
+  void ProjectConfigurer::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Font>(  "Font",         cDefFont);
+    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;});
+    owner.createPropertyAsset<Font>(  "CodeFont",     cDefCodeFont);
+    owner.createPropertyNativeFloat(  "CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;});
+    owner.createPropertyAsset<Action>("OnExit",       cDefExitAction);
+    owner.createPropertyAsset<Action>("OnEditor",     cDefEditorAction);
     // TODO: Input configuration
-    return mProperties;
   }
 
   void ProjectConfigurer::updateRuntime(unsigned int milliseconds) {
@@ -130,8 +128,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectConfigurer::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ProjectConfigurer::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ProjectConfigurer::isDefaultConfiguration() const {
@@ -140,6 +138,10 @@ namespace IsoRealms::Basics {
 
   bool ProjectConfigurer::input(sf::Event& event) {
     return isHidden() ? false : cProjectConfigurationUI.input(event);
+  }
+  
+  IDialogManager& ProjectConfigurer::getDialogManager() {
+    return cProjectConfigurationUI;
   }
   
   void ProjectConfigurer::resetInput() {

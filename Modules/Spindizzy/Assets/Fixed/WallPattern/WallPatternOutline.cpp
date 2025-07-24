@@ -107,10 +107,8 @@ namespace IsoRealms::Spindizzy {
     // TODO: Implement this.
   }
 
-  std::vector<std::unique_ptr<IProperty>> WallPatternOutline::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
+  void WallPatternOutline::getAssetProperties(PropertyMaker& owner) {
     // TODO: Implement this.
-    return mProperties;
   }
 
   bool WallPatternOutline::isDefaultConfiguration() const {

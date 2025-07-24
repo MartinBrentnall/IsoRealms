@@ -18,6 +18,8 @@
  */
 #include "ModuleChooser.h"
 
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
+#include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 
 namespace IsoRealms {
@@ -37,8 +39,8 @@ namespace IsoRealms {
     return false;
   }
   
-  std::vector<std::unique_ptr<IProperty>> ModuleChooser::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ModuleChooser::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
   
   IApplication& ModuleChooser::getApplication() const {

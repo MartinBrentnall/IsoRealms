@@ -67,18 +67,16 @@ namespace IsoRealms::UI {
     object.addString(JSON_ORIENTATION, cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScreenGradient::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>( owner, PropertyData("Colour A",    "TODO"), cDefColourA));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>( owner, PropertyData("Colour B",    "TODO"), cDefColourB));
-    mProperties.emplace_back(std::make_unique<PropertyList>(owner, cProject, PropertyData("Orientation", "TODO"), std::vector<std::string>{
+  void ScreenGradient::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>( "ColourA", cDefColourA);
+    owner.createPropertyAsset<Colour>( "ColourB", cDefColourB);
+    owner.createPropertyList("Orientation", std::vector<std::string>{
       VALUE_HORIZONTAL, VALUE_VERTICAL
     }, [this]() {
       return cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL;
     }, [this](const std::string& value) {
       cDefVertical = value == VALUE_VERTICAL; return true;
-    }));
-    return mProperties;
+    });
   }
 
   bool ScreenGradient::isDefaultConfiguration() const {

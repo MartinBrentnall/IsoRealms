@@ -19,12 +19,13 @@
 #include "PropertyList.h"
 
 #include "IsoRealms/IProject.h"
+#include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(IPropertyOwner& owner, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+  PropertyList::PropertyList(PropertyMaker& owner, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
             Property(data, removeFunction),
             cInternalSelection(project, options, getter, setter),
-            cInternalProperty(owner, data, cInternalSelection, removeFunction) {
+            cInternalProperty(owner, owner.getResourceData(), data, cInternalSelection, removeFunction) {
   }
   
   void PropertyList::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {
@@ -70,8 +71,8 @@ namespace IsoRealms {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> PropertyList::ListSelection::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void PropertyList::ListSelection::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
   
   IApplication& PropertyList::ListSelection::getApplication() const {

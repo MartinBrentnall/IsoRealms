@@ -49,7 +49,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
+    void getProperties(PropertyMaker& owner);
 
     // Destructor.    
     virtual ~LiftType();
@@ -65,10 +65,10 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IPropertyOwner& owner) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+    void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:  

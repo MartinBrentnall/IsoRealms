@@ -69,8 +69,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectTypeTraitSpinner::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ZoneObjectTypeTraitSpinner::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ZoneObjectTypeTraitSpinner::isDefaultConfiguration() const {

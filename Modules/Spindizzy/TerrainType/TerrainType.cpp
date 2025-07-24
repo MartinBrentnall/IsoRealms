@@ -131,22 +131,20 @@ namespace IsoRealms::Spindizzy {
   
   
   
-  std::vector<std::unique_ptr<IProperty>> TerrainType::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SurfaceFriction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SurfaceGrip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SurfaceBounce",       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "WallBounce",          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("AllowRespawn",        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;}));
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("Solid",               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, owner.getPropertyData("OnTouch"),             cDefContactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(        owner, owner.getPropertyData("OnImpact"),            cDefImpactAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<SurfacePattern>>(owner, owner.getPropertyData("SurfaceAppearance"),   cDefSurfacePattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("NorthWallAppearance"), cDefNorthWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("SouthWallAppearance"), cDefSouthWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("WestWallAppearance"),  cDefWestWallPattern));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<WallPattern>>(   owner, owner.getPropertyData("EastWallAppearance"),  cDefEastWallPattern));
-    return mProperties;
+  void TerrainType::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat(          "SurfaceFriction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;});
+    owner.createPropertyNativeFloat(          "SurfaceGrip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;});
+    owner.createPropertyNativeFloat(          "SurfaceBounce",       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;});
+    owner.createPropertyNativeFloat(          "WallBounce",          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;});
+    owner.createPropertyNativeBoolean(        "AllowRespawn",        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
+    owner.createPropertyNativeBoolean(        "Solid",               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
+    owner.createPropertyAsset<Action>(        "OnTouch",             cDefContactAction);
+    owner.createPropertyAsset<Action>(        "OnImpact",            cDefImpactAction);
+    owner.createPropertyAsset<SurfacePattern>("SurfaceAppearance",   cDefSurfacePattern);
+    owner.createPropertyAsset<WallPattern>(   "NorthWallAppearance", cDefNorthWallPattern);
+    owner.createPropertyAsset<WallPattern>(   "SouthWallAppearance", cDefSouthWallPattern);
+    owner.createPropertyAsset<WallPattern>(   "WestWallAppearance",  cDefWestWallPattern);
+    owner.createPropertyAsset<WallPattern>(   "EastWallAppearance",  cDefEastWallPattern);
   }
   
   ISurfacePattern* TerrainType::getSurfacePattern() const {
@@ -244,7 +242,7 @@ namespace IsoRealms::Spindizzy {
 
 
 
-  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
+  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -256,8 +254,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void TerrainType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool TerrainType::isDefaultConfiguration() const {

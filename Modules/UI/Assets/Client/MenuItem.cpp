@@ -68,8 +68,8 @@ namespace IsoRealms::UI {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItem::getAssetProperties(IPropertyOwner& owner) {
-    return cMenuItem->getAssetProperties(owner);
+  void MenuItem::getAssetProperties(PropertyMaker& owner) {
+    cMenuItem->getAssetProperties(owner);
   }
 
   bool MenuItem::renderAssetIcon() const {

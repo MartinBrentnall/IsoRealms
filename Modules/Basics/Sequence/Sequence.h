@@ -43,7 +43,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
+    void getProperties(PropertyMaker& owner);
 
     /*********************\
      * Module interfaces *
@@ -62,10 +62,10 @@ namespace IsoRealms::Basics {
     /************************\
      * Implements IEditable *
     \************************/
-    IEditableScreen* createEditableScreen(IsoRealms::Project* project) override;
+    IEditableScreen* createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+    void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     void resetSequence();
@@ -95,7 +95,7 @@ namespace IsoRealms::Basics {
       int getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+      void getAssetProperties(PropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

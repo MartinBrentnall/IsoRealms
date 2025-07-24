@@ -51,10 +51,8 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> PickUpType::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner, owner.getPropertyData("Appearance"), cDefModel));
-    return mProperties;
+  void PickUpType::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Model>("Appearance", cDefModel);
   }
 
   PickUpType::~PickUpType() {
@@ -84,7 +82,7 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
+  IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -96,8 +94,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> PickUpType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void PickUpType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool PickUpType::isDefaultConfiguration() const {

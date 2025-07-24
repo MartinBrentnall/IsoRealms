@@ -78,8 +78,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackColourInstance::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackColourInstance::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceTrackColourInstance::isDefaultConfiguration() const {

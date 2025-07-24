@@ -30,10 +30,10 @@ namespace IsoRealms {
     /************************\
      * Implements IEditable *
     \************************/
-    IEditableScreen* createEditableScreen(Project* project) override;
+    IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+    void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:
@@ -61,7 +61,7 @@ namespace IsoRealms {
       void resetInput() override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+      void getAssetProperties(PropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
     };
     static EditableScreen DUMMY; /// Dummy editable screen.

@@ -88,17 +88,15 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> AlienType::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>( owner, owner.getPropertyData("Appearance"),   cDefModel));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Vertex>>(owner, owner.getPropertyData("Target"),       cDefTarget));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;}));
-    return mProperties;
+  void AlienType::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Model>( "Appearance",   cDefModel);
+    owner.createPropertyAsset<Vertex>("Target",       cDefTarget);
+    owner.createPropertyNativeFloat(  "Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;});
+    owner.createPropertyNativeFloat(  "Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;});
+    owner.createPropertyNativeFloat(  "SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;});
+    owner.createPropertyNativeFloat(  "Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;});
+    owner.createPropertyNativeFloat(  "Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;});
+    owner.createPropertyNativeFloat(  "HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;});
   }
 
   void AlienType::reset() {
@@ -167,7 +165,7 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
+  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -179,8 +177,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> AlienType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void AlienType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool AlienType::isDefaultConfiguration() const {

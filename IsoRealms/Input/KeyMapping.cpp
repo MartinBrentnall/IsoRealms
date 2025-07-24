@@ -19,6 +19,7 @@
 #include "KeyMapping.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -204,10 +205,8 @@ namespace IsoRealms {
     object.addString(JSON_KEY, getShortName());
   }
 
-  std::vector<std::unique_ptr<IProperty>> KeyMapping::getProperties() {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyKey>(PropertyData("Key", "TODO"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;}));
-    return mProperties;
+  void KeyMapping::getProperties(PropertyMaker& owner) {
+    owner.createPropertyKey("Key", [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
   }
 
   std::string KeyMapping::getShortName() const {

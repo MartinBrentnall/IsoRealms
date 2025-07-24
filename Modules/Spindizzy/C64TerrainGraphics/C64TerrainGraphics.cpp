@@ -123,13 +123,11 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Floor"),     cDefFloor));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Wall"),      cDefWall));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Grid"),      cDefGrid));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("highlight"), cDefHighlight));
-    return mProperties;
+  void C64TerrainGraphics::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>("Floor",     cDefFloor);
+    owner.createPropertyAsset<Colour>("Wall",      cDefWall);
+    owner.createPropertyAsset<Colour>("Grid",      cDefGrid);
+    owner.createPropertyAsset<Colour>("highlight", cDefHighlight);
   }
   
   bool C64TerrainGraphics::renderIcon() {
@@ -580,8 +578,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> C64TerrainGraphics::OrientedTexture::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void C64TerrainGraphics::OrientedTexture::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool C64TerrainGraphics::OrientedTexture::isDefaultConfiguration() const {

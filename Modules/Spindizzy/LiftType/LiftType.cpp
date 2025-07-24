@@ -62,12 +62,10 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiftType::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(  owner, owner.getPropertyData("Appearance"), cDefModel));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Boolean>>(owner, owner.getPropertyData("State"),      cDefActive));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>( owner, owner.getPropertyData("TickAction"), cDefTickAction));
-    return mProperties;
+  void LiftType::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Model>(  "Appearance", cDefModel);
+    owner.createPropertyAsset<Boolean>("State",      cDefActive);
+    owner.createPropertyAsset<Action>( "TickAction", cDefTickAction);
   }
 
   LiftType::~LiftType() {
@@ -90,7 +88,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.createInstance();
   }
 
-  IWorldEditorToolInstance* LiftType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
+  IWorldEditorToolInstance* LiftType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -102,8 +100,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiftType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void LiftType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool LiftType::isDefaultConfiguration() const {

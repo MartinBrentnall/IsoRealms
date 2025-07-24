@@ -189,8 +189,8 @@ namespace IsoRealms {
         // Nothing to do.
       }
 
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override {
-        return std::vector<std::unique_ptr<IProperty>>();
+      void getAssetProperties(PropertyMaker& owner) override {
+        // Nothing to do.
       }
 
       bool isDefaultConfiguration() const override {

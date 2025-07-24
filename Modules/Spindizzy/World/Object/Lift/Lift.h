@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner) override;
+    void getProperties(PropertyMaker& owner) override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 

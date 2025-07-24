@@ -19,12 +19,13 @@
 #include "PropertyStruct.h"
 
 #include "IsoRealms/Editing/IUIStyle.h"
+#include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyStruct::PropertyStruct(IPropertyOwner& owner, const PropertyData& data, const std::string& value, std::function<std::vector<std::unique_ptr<IProperty>>()> subProperties, std::function<void()> removeFunction) :
+  PropertyStruct::PropertyStruct(PropertyMaker& owner, const PropertyData& data, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction) :
             Property(data, removeFunction),
             cPropertyOwner(owner),
             cSubProperties(subProperties),
@@ -49,8 +50,8 @@ namespace IsoRealms {
   }
   
   void PropertyStruct::confirm(IPropertyManager& manager, float y) {
-    manager.openProperties(cPropertyOwner, getPropertyName(), [this]() {
-      return cSubProperties();
+    manager.openProperties(cPropertyOwner.getResourceData(), getPropertyName(), [this]() {
+      cSubProperties();
     });
   }
   

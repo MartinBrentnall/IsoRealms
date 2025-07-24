@@ -207,6 +207,10 @@ namespace IsoRealms {
       cItems.clear();
     }
 
+    bool isEmpty() {
+      return cItems.empty();
+    }
+
     UIManager& getUIManager() {
       return cUIManager;
     }

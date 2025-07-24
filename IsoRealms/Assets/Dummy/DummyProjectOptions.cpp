@@ -39,8 +39,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyProjectOptions::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyProjectOptions::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyProjectOptions::isDefaultConfiguration() const {

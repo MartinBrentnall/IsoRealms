@@ -37,7 +37,7 @@ namespace IsoRealms::Replay {
     void load(IProject& project, JSONObject object) override;
     void save(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
-    std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void getProperties() override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;

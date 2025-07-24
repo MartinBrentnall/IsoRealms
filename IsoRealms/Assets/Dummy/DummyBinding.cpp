@@ -19,6 +19,9 @@
 #include "DummyBinding.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -54,8 +57,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyBinding::getWrappedProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyBinding::getWrappedProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyBinding::renderAssetIcon() const {
@@ -67,8 +70,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyBinding::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyBinding::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyBinding::isDefaultConfiguration() const {

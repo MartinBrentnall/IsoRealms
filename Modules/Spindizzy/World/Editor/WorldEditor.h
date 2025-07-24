@@ -35,7 +35,7 @@
 namespace IsoRealms::Spindizzy {
   class WorldEditor : public IEditableScreen {
     public:
-    WorldEditor(Project& project, World& world, PropertyMaker propertyMaker);
+    WorldEditor(Project& project, World& world, IDialogManager& dialogManager);
     void updateScreen(unsigned int milliseconds);
     World& getWorld() const;
     TerrainBrush& getTerrainBrush();
@@ -57,7 +57,7 @@ namespace IsoRealms::Spindizzy {
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+    void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
     void notifyVisible() override;
     void notifyHidden() override;
@@ -89,7 +89,7 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+      void getAssetProperties(PropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
     };
 
@@ -157,7 +157,6 @@ namespace IsoRealms::Spindizzy {
     IStateNotifier<IFloat>* cScreenPitchNotifier;
 
     HatHandler& cHatHandler;
-    PropertyMaker cPropertyMaker;
 
     LiteralVertex cLocation;
     LiteralVertex cMomentum;

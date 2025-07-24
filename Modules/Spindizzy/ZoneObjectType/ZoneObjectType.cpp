@@ -78,8 +78,8 @@ namespace IsoRealms::Spindizzy {
     return false; // TODO
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ZoneObjectType::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   ZoneObjectType::~ZoneObjectType() {
@@ -153,7 +153,7 @@ namespace IsoRealms::Spindizzy {
     return cDefEditingProcessorID;
   }
 
-  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor, IPropertyOwner& owner) {
+  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
@@ -165,8 +165,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObjectType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ZoneObjectType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ZoneObjectType::isDefaultConfiguration() const {

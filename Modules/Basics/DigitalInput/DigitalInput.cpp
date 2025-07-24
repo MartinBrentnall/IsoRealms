@@ -83,26 +83,24 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> DigitalInput::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
+  void DigitalInput::getProperties(PropertyMaker& owner) {
     for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData(mInput->getShortName(), "TODO"), "Edit...", [&mInput]() {
-        return mInput->getProperties();
-      }, [this, &mInput]() {
-        Utils::removeElementUnique(cDefMapping, mInput.get());
-      }));
-    }
-    
-    mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Mapping", "TODO"), "Add...", [this, &owner]() {
-      cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
-      std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
-      return std::make_unique<PropertyStruct>(owner, PropertyData(mInput->getShortName(), "TODO"), "Edit...", [&mInput]() {
-        return mInput->getProperties();
+      owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput, &owner]() {
+        return mInput->getProperties(owner);
       }, [this, &mInput]() {
         Utils::removeElementUnique(cDefMapping, mInput.get());
       });
-    }));
-    return mProperties;
+    }
+    
+    owner.createPropertyAdd("Mapping", "Add...", [this, &owner]() {
+      cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
+      std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
+      return owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput, &owner]() {
+        return mInput->getProperties(owner);
+      }, [this, &mInput]() {
+        Utils::removeElementUnique(cDefMapping, mInput.get());
+      });
+    });
   }
 
   void DigitalInput::reset() {
@@ -156,8 +154,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DigitalInput::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DigitalInput::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DigitalInput::isDefaultConfiguration() const {
@@ -228,8 +226,8 @@ namespace IsoRealms::Basics {
     cPhysicalInput->save(object);
   }
 
-  std::vector<std::unique_ptr<IProperty>> DigitalInput::PhysicalInputMapping::getProperties() {
-    return cPhysicalInput->getProperties();
+  void DigitalInput::PhysicalInputMapping::getProperties(PropertyMaker& owner) {
+    cPhysicalInput->getProperties(owner);
   }
 
   void DigitalInput::loadCustomMapping(JSONObject object) {

@@ -240,8 +240,8 @@ namespace IsoRealms::Spindizzy {
     cZone.remove(this);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ZoneObject::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ZoneObject::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   std::string ZoneObject::getTypeName() const {

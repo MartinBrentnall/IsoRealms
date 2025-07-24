@@ -22,7 +22,7 @@
 #include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {
-  SequenceEditor::SequenceEditor(Sequence& sequence, PropertyMaker propertyMaker) :
+  SequenceEditor::SequenceEditor(Sequence& sequence, IDialogManager& dialogManager) :
             cTimeFormatMillisecondExact([](long duration) {
               long mDays = duration / DURATION_DAY;
               duration %= DURATION_DAY;
@@ -147,7 +147,6 @@ namespace IsoRealms::Basics {
               return mStringStream.str();
             }),
             cHatHandler(sequence.getProject().getApplication().getHatHandler()),
-            cPropertyMaker(propertyMaker),
             cSequence(sequence),
             cTimelinePan(0.0f),
             cTimelineZoomSpeed(0.0f),
@@ -404,8 +403,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceEditor::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceEditor::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceEditor::isDefaultConfiguration() const {
@@ -642,10 +641,9 @@ namespace IsoRealms::Basics {
               }
 
               if (cCursorTrackProperties) {
-                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cPropertyMaker, [this](IPropertyOwner& owner, IDialogManager& dialogManager) {
-                  std::vector<std::unique_ptr<IProperty>> mTrackProperties;
-                  mTrackProperties.emplace_back(std::make_unique<PropertyAsset<SequenceTrack>>(owner, PropertyData("Type", "TODO"), cSequence.getTrack(cCursorTrack.value())));
-                  mTrackProperties.emplace_back(owner.createPropertyNativeString("Name", [this]() {
+                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
+                  owner.createPropertyAsset<SequenceTrack>("Type", cSequence.getTrack(cCursorTrack.value()));
+                  owner.createPropertyNativeString(        "Name", [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     for (int i = 0; i < static_cast<int>(cSequence.getTrackCount()); i++) {
@@ -655,8 +653,7 @@ namespace IsoRealms::Basics {
                     }
                     cSequence.getTrack(cCursorTrack.value())->setName(name);
                     return true;
-                  }));
-                  return mTrackProperties;
+                  });
                 }, "Track Configuration:", 1.0f, 1.0f, 1.0f));
                 cEditingProperties = true;
               } else {
@@ -665,7 +662,7 @@ namespace IsoRealms::Basics {
                 }
 
                 if (cCursorEvent != nullptr) {
-                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cPropertyMaker, [this](IPropertyOwner& owner, IDialogManager& dialogManager) {
+                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
                     return cCursorEvent->getEventProperties(owner, cSequence.getProject());
                   }, "Event Configuration:", 1.0f, 1.0f, 1.0f));
                   cEditingProperties = true;

@@ -78,14 +78,12 @@ namespace IsoRealms::Spindizzy {
     return renderPreview();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Gyroscope::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant1"), cDefQuadrant[0]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant2"), cDefQuadrant[1]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant3"), cDefQuadrant[2]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Quadrant4"), cDefQuadrant[3]));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("Outline"),   cDefOutline));
-    return mProperties;
+  void Gyroscope::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>("Quadrant1", cDefQuadrant[0]);
+    owner.createPropertyAsset<Colour>("Quadrant2", cDefQuadrant[1]);
+    owner.createPropertyAsset<Colour>("Quadrant3", cDefQuadrant[2]);
+    owner.createPropertyAsset<Colour>("Quadrant4", cDefQuadrant[3]);
+    owner.createPropertyAsset<Colour>("Outline",   cDefOutline);
   }
   
   void Gyroscope::updateEditing(unsigned int milliseconds) {
@@ -109,8 +107,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Gyroscope::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Gyroscope::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Gyroscope::isDefaultConfiguration() const {

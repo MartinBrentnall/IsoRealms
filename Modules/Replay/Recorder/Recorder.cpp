@@ -85,8 +85,8 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Recorder::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Recorder::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Recorder::isDefaultConfiguration() const {
@@ -105,8 +105,8 @@ namespace IsoRealms::Replay {
     assets.add<IAssets>(cProject.get(), "Project", "Gameplay Recorders");
   }
   
-  std::vector<std::unique_ptr<IProperty>> Recorder::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Recorder::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   void Recorder::updateRuntime(unsigned int milliseconds) {

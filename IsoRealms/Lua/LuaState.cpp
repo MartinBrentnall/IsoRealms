@@ -20,6 +20,7 @@
 
 #include "LuaState.h"
 
+#include "IsoRealms/Editing/IDialogManager.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Types.h"
 
@@ -45,6 +46,7 @@ namespace IsoRealms {
     cLua.new_usertype<IAssets>("Assets",                 "setProperty",          &IAssets::setProperty);
     cLua.new_usertype<IBoolean>("Boolean",               "getValue",             &IBoolean::getValue);
     cLua.new_usertype<IColour>("Colour");
+    cLua.new_usertype<IDialogManager>("DialogManager");
     cLua.new_usertype<IEditable>("Editable",             "createEditableScreen", &IEditable::createEditableScreen);
     cLua.new_usertype<IEditableScreen>("EditableScreen", "screen",               &IEditableScreen::screen,
                                                          "inputHandler",         &IEditableScreen::inputHandler,

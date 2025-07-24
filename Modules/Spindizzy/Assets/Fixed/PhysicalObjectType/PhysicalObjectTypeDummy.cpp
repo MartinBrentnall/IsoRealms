@@ -44,8 +44,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> PhysicalObjectTypeDummy::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void PhysicalObjectTypeDummy::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool PhysicalObjectTypeDummy::isDefaultConfiguration() const {

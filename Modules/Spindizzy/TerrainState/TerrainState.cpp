@@ -56,18 +56,17 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainState::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("InitialState", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, owner.getPropertyData("HintAction"),   cDefHintAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner, owner.getPropertyData("Icon"),         cDefIcon));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("IconScale",    [this]() {return cDefIconScale;}, [this](float value) {if (value > 0.0f) {
-      cDefIconScale = value;
-      return true;
-    }
-    return false;
-    }));
-    return mProperties;
+  void TerrainState::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeBoolean("InitialState", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    owner.createPropertyAsset<Action>("HintAction",   cDefHintAction);
+    owner.createPropertyAsset<Screen>("Icon",         cDefIcon);
+    owner.createPropertyNativeFloat(  "IconScale",    [this]() {return cDefIconScale;}, [this](float value) {
+      if (value > 0.0f) {
+        cDefIconScale = value;
+        return true;
+      }
+      return false;
+    });
   }
   
   void TerrainState::reset() {
@@ -101,8 +100,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> TerrainState::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void TerrainState::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool TerrainState::isDefaultConfiguration() const {

@@ -64,8 +64,8 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void VirtualKeyboard::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   void VirtualKeyboard::updateRuntime(unsigned int milliseconds) {
@@ -187,8 +187,8 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> VirtualKeyboard::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void VirtualKeyboard::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool VirtualKeyboard::isDefaultConfiguration() const {

@@ -37,7 +37,7 @@ namespace IsoRealms {
     virtual void load(IProject& project, JSONObject object) = 0;
     virtual void save(JSONObject object) = 0;
     virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
-    virtual std::vector<std::unique_ptr<IProperty>> getProperties() = 0;
+    virtual void getProperties() = 0;
     virtual void updateRuntime(unsigned int milliseconds) = 0;
     virtual void updateEditing(unsigned int milliseconds) = 0;
     virtual void reset() = 0;

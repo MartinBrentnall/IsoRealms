@@ -61,12 +61,10 @@ namespace IsoRealms::Spindizzy {
     return cTexture.renderAssetIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Ball::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("FillColour"),    cDefFill));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("ShineColour"),   cDefShine));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, owner.getPropertyData("OutlineColour"), cDefOutline));
-    return mProperties;
+  void Ball::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>("FillColour",    cDefFill);
+    owner.createPropertyAsset<Colour>("ShineColour",   cDefShine);
+    owner.createPropertyAsset<Colour>("OutlineColour", cDefOutline);
   }
 
   void Ball::set() const {
@@ -89,8 +87,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Ball::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Ball::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Ball::isDefaultConfiguration() const {

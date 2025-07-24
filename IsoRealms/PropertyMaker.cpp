@@ -21,49 +21,93 @@
 #include "Assets/Registry/IAssetProvider.h"
 #include "Assets/Type/IStateNotifier.h"
 #include "Editing.h"
+#include "Editing/IDialogManager.h"
+#include "Editing/Property/IPropertyManager.h"
 #include "IResourceData.h"
 #include "Project.h"
 
 namespace IsoRealms {
-  PropertyMaker::PropertyMaker(IResourceData& parent, IConfirmationManager& confirmationManager) :
+  PropertyMaker::PropertyMaker(IApplication& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager) :
+            cApplication(application),
             cParent(parent),
-            cConfirmationManager(confirmationManager) {
+            cProperties(properties),
+            cDialogManager(dialogManager) {
   }
 
-  Project& PropertyMaker::getProject() {
-    return cParent.getProject();
+  void PropertyMaker::createPropertyAdd(const std::string& metadataKey, const std::string& value, std::function<void()> addPropertyFunction) {
+    cProperties.addProperty(std::make_unique<PropertyAdd>(cParent.getPropertyData(metadataKey), value, addPropertyFunction));
   }
 
-  IActionClient& PropertyMaker::getDummyActionClient() {
-    return cParent.getDummyActionClient();
+  void PropertyMaker::createPropertyCode(const std::string& metadataKey, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyCode>(cParent.getProject(), cParent.getPropertyData(metadataKey), getter, setter, removeFunction));
+  }
+  
+  void PropertyMaker::createPropertyColourChannel(const std::string& metadataKey, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) {
+    cProperties.addProperty(std::make_unique<PropertyColourChannel>(*this, cParent.getPropertyData(metadataKey), valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
+  }
+  
+  void PropertyMaker::createPropertyColourHue(const std::string& metadataKey, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
+    cProperties.addProperty(std::make_unique<PropertyColourHue>(*this, cParent.getPropertyData(metadataKey), valueFunction, saturation, lightness, alpha, confirmationCallback));
+  }
+  
+  void PropertyMaker::createPropertyColourLightness(const std::string& metadataKey, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) {
+    cProperties.addProperty(std::make_unique<PropertyColourLightness>(*this, cParent.getPropertyData(metadataKey), valueFunction, hue, saturation, alpha, confirmationCallback));
+  }
+  
+  void PropertyMaker::createPropertyColourSaturation(const std::string& metadataKey, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
+    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(*this, cParent.getPropertyData(metadataKey), valueFunction, hue, lightness, alpha, confirmationCallback));
   }
 
-  const PropertyData& PropertyMaker::getPropertyData(const std::string& key) const {
-    return cParent.getPropertyData(key);
+  void PropertyMaker::createPropertyCondition(const std::string& metadataKey, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) {
+    cProperties.addProperty(std::make_unique<PropertyCondition>(cParent.getPropertyData(metadataKey), availableElements, getter, setter));
   }
 
-  std::string PropertyMaker::getPropertyName(const std::string& key) const {
-    return cParent.getPropertyName(key);
+  void PropertyMaker::createPropertyEditor(const std::string& metadataKey, IEditable* editable) {
+    cProperties.addProperty(std::make_unique<PropertyEditor>(cParent.getPropertyData(metadataKey), editable));
   }
 
-  std::string PropertyMaker::getPropertyDescription(const std::string& key) const {
-    return cParent.getPropertyDescription(key);
+  void PropertyMaker::createPropertyKey(const std::string& metadataKey, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)>  setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyKey>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction));
+  }
+  
+  void PropertyMaker::createPropertyList(const std::string& metadataKey, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyList>(*this, cParent.getProject(), cParent.getPropertyData(metadataKey), options, getter, setter, removeFunction));
+  }
+  
+  void PropertyMaker::createPropertyNativeBoolean(const std::string& metadataKey, std::function<bool()>  getter, std::function<void(bool)>  setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(*this, cParent.getPropertyData(metadataKey), getter, setter, cParent.getProject(), removeFunction));
   }
 
-  std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeBoolean(const std::string& metadataKey, std::function<bool()>  getter, std::function<void(bool)>  setter, std::function<void()> removeFunction) {
-    return make_unique<PropertyNativeBoolean>(*this, cParent.getPropertyData(metadataKey), getter, setter, cParent.getProject(), removeFunction);
+  void PropertyMaker::createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), this, getter, setter, removeFunction));
   }
 
-  std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) {
-    return make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), &cConfirmationManager, getter, setter, removeFunction);
+  void PropertyMaker::createPropertyNativeInteger(const std::string& metadataKey, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeInteger>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction));
   }
 
-  std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeInteger(const std::string& metadataKey, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) {
-    return make_unique<PropertyNativeInteger>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction);
+  void PropertyMaker::createPropertyNativeString(const std::string& metadataKey, std::function<std::string()> getter, std::function<bool(const std::string&)> setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeString>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction));
+  }
+  
+  void PropertyMaker::createPropertyNativeUnsignedInteger(const std::string& metadataKey, std::function<unsigned int()> getter, std::function<bool(unsigned int)> setter, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction));
+  }
+  
+  void PropertyMaker::createPropertyStruct(const std::string& metadataKey, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyStruct>(*this, cParent.getPropertyData(metadataKey), value, subProperties, removeFunction));
+  }
+  
+  bool PropertyMaker::confirm(std::function<void()> confirm, std::function<void()> cancel) {
+    if (cParent.isReadOnly()) {
+      cDialogManager.confirm("TODO: The resource you're modifying is read-only.  In order to modify this resource, it will need to be promoted to the main project file.", confirm, cancel);
+      return true;
+    }
+    return false;
   }
 
-  std::unique_ptr<IProperty> PropertyMaker::createPropertyNativeString(const std::string& metadataKey, std::function<std::string()> getter, std::function<bool(const std::string&)> setter, std::function<void()> removeFunction) {
-    return make_unique<PropertyNativeString>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction);
+  void PropertyMaker::promoteResourceToProject() {
+    cParent.setOwner(cParent.getProject().getFile());
   }
 }
 

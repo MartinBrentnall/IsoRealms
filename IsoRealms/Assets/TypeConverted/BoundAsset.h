@@ -21,7 +21,6 @@
 #include <sol.hpp>
 
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/Editing/Property/PropertyAsset.h"
 #include "IsoRealms/Lua/LuaState.h"
 
 namespace IsoRealms {
@@ -68,7 +67,7 @@ namespace IsoRealms {
       cDefValue.setID(id);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getWrappedProperties(IPropertyOwner& owner) override {
+    void getWrappedProperties(PropertyMaker& owner) override {
       return cDefValue.getAssetProperties(owner);
     }
 
@@ -80,10 +79,8 @@ namespace IsoRealms {
       cDefValue.save(object, JSON_ASSET);
     }
 
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override {
-      std::vector<std::unique_ptr<IProperty>> mProperties;
-      mProperties.emplace_back(std::make_unique<PropertyAsset<TYPE>>(owner, PropertyData("Asset", "TODO"), cDefValue));
-      return mProperties;
+    void getAssetProperties(PropertyMaker& owner) override {
+      owner.createPropertyAsset<TYPE>("Asset", cDefValue);
     }
 
     bool isDefaultConfiguration() const override {

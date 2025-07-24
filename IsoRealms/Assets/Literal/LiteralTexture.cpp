@@ -94,8 +94,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralTexture::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void LiteralTexture::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool LiteralTexture::isDefaultConfiguration() const {

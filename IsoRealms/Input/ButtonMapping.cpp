@@ -61,9 +61,8 @@ namespace IsoRealms {
     object.addInteger(JSON_BUTTON, cButton);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ButtonMapping::getProperties() {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    return mProperties;
+  void ButtonMapping::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   std::string ButtonMapping::getShortName() const {

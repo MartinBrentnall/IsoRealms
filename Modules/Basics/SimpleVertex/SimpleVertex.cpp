@@ -68,12 +68,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat("X", [this]() {return cDefX;}, [this](float value) {cDefX = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Y", [this]() {return cDefY;}, [this](float value) {cDefY = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value; return true;}));
-    return mProperties;
+  void SimpleVertex::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat("X", [this]() {return cDefX;}, [this](float value) {cDefX = value; return true;});
+    owner.createPropertyNativeFloat("Y", [this]() {return cDefY;}, [this](float value) {cDefY = value; return true;});
+    owner.createPropertyNativeFloat("Z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value; return true;});
   }
 
   void SimpleVertex::reset() {
@@ -102,8 +100,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleVertex::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SimpleVertex::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SimpleVertex::isDefaultConfiguration() const {

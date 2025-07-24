@@ -18,11 +18,13 @@
  */
 #include "PropertiesMenu.h"
 
+#include "IsoRealms/Project.h"
+
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IPropertyOwner& owner, std::function<std::vector<std::unique_ptr<IProperty>>(IPropertyOwner& owner, IDialogManager& dialogManager)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue) : Menu(manager, style, breadCrumb, red, green, blue),
-            cPropertyOwner(owner),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue) : Menu(manager, style, breadCrumb, red, green, blue),
+            cPropertyMaker(owner.getProject().getApplication(), owner, *this, manager),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
             cClosingProperty(nullptr),
@@ -30,7 +32,8 @@ namespace IsoRealms {
             cColumnWidthValue(0.0f),
             cHasConfigureColumn(false),
             cHasRemoveColumn(false),
-            cAction(Action::SELECT) {
+            cAction(Action::SELECT),
+            cFetching(false) {
     refreshProperties();
   }
 
@@ -229,20 +232,22 @@ namespace IsoRealms {
   }
 
   void PropertiesMenu::addProperty(std::unique_ptr<IProperty> property) {
-    MenuItemProperty& mCurrentItem = getCurrentItem();
     std::string mPropertyName = property->getPropertyName();
     std::unique_ptr<MenuItemProperty> mMenuItem = std::make_unique<MenuItemProperty>(mPropertyName, std::move(property));
-    addItemAfter(mCurrentItem, std::move(mMenuItem));
-  }
-  
-  void PropertiesMenu::openProperties(IPropertyOwner& owner, const std::string& name, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher) {
-    if (!propertyFetcher().empty()) {
-      UIManager& mUIManager = getUIManager();
-      IUIStyle& mStyle = getStyle();
-      mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, &propertyFetcher](IPropertyOwner& owner, IDialogManager& dialogManager) {
-        return propertyFetcher();
-      }, name, 0.75f, 0.5f, 1.0f));
+    if (cFetching) {
+      addItem(std::move(mMenuItem));
+    } else {
+      MenuItemProperty& mCurrentItem = getCurrentItem();
+      addItemAfter(mCurrentItem, std::move(mMenuItem));
     }
+  }
+
+  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void()> propertyFetcher) {
+    UIManager& mUIManager = getUIManager();
+    IUIStyle& mStyle = getStyle();
+    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, &propertyFetcher](PropertyMaker& owner) {
+      propertyFetcher();
+    }, name, 0.75f, 0.5f, 1.0f));
   }
   
   void PropertiesMenu::edit(std::unique_ptr<IPropertyEditor> editor) {
@@ -257,13 +262,9 @@ namespace IsoRealms {
     clear();
     cEditingProperty = nullptr;
     cClosingProperty = nullptr;
-    UIManager& mUIManager = getUIManager();
-    std::vector<std::unique_ptr<IProperty>> mProperties = cPropertyFetcher(cPropertyOwner, mUIManager);
-    for (std::unique_ptr<IProperty>& mProperty : mProperties) {
-      std::string mPropertyName = mProperty->getPropertyName();
-      std::unique_ptr<MenuItemProperty> mMenuItem = std::make_unique<MenuItemProperty>(mPropertyName, std::move(mProperty));
-      addItem(std::move(mMenuItem));
-    }
+    cFetching = true;
+    cPropertyFetcher(cPropertyMaker);
+    cFetching = false;
     recalculateColumnWidths();
   }
   

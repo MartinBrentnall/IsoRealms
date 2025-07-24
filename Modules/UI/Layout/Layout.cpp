@@ -68,10 +68,8 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Layout::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyEditor>(owner.getPropertyData("Content"), this));
-    return mProperties;
+  void Layout::getProperties(PropertyMaker& owner) {
+    owner.createPropertyEditor("Content", this);
   }
 
   void Layout::updateEditing(unsigned int milliseconds) {
@@ -100,16 +98,16 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Layout::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Layout::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Layout::isDefaultConfiguration() const {
     return true;
   }
 
-  IEditableScreen* Layout::createEditableScreen(IsoRealms::Project* project) {
-    std::unique_ptr<LayoutEditor> mScreen = std::make_unique<LayoutEditor>(*this, cResourceData.getPropertyMaker());
+  IEditableScreen* Layout::createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) {
+    std::unique_ptr<LayoutEditor> mScreen = std::make_unique<LayoutEditor>(*this, dialogManager);
     IEditableScreen* mReturnValue = mScreen.get();
     cEditors[mReturnValue] = std::move(mScreen);
     return mReturnValue;

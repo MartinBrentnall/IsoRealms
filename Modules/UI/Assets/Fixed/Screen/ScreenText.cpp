@@ -58,14 +58,12 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScreenText::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<String>>( owner, PropertyData("Value",         "TODO"), cDefString));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Font>>(   owner, PropertyData("Font",          "TODO"), cDefFont));
-    mProperties.emplace_back(std::make_unique<PropertyList>(owner, cProject, PropertyData("Alignment",     "TODO"), std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>( owner, PropertyData("Colour",        "TODO"), cDefColour));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;}));
-    return mProperties;
+  void ScreenText::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<String>("Value",        cDefString);
+    owner.createPropertyAsset<Font>(  "Font",         cDefFont);
+    owner.createPropertyList(         "Alignment",    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
+    owner.createPropertyAsset<Colour>("Colour",       cDefColour);
+    owner.createPropertyNativeFloat(  "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;});
   }
   
   bool ScreenText::isDefaultConfiguration() const {

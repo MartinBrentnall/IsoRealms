@@ -38,8 +38,8 @@ namespace IsoRealms::HighScore {
     // Nothing to do.
   }
   
-  std::vector<std::unique_ptr<IProperty>> HighScore::getProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void HighScore::getProperties() {
+    // Nothing to do.
   }
 
   void HighScore::updateRuntime(unsigned int milliseconds) {

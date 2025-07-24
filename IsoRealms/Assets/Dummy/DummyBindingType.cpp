@@ -38,8 +38,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyBindingType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyBindingType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyBindingType::isDefaultConfiguration() const {

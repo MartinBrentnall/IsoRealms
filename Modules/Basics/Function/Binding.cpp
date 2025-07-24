@@ -106,10 +106,8 @@ namespace IsoRealms::Basics {
 //     }
   }
   
-  std::vector<std::unique_ptr<IProperty>> Binding::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<IsoRealms::Binding>>(owner, PropertyData("What", "TODO"), cDefValue));
-    mProperties.emplace_back(owner.createPropertyNativeString("Name", [this]() {return cDefName;}, [this](const std::string& value) {return cParent.setBindingName(*this, value);}));
-    return mProperties;
+  void Binding::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<IsoRealms::Binding>("What", cDefValue);
+    owner.createPropertyNativeString(             "Name", [this]() {return cDefName;}, [this](const std::string& value) {return cParent.setBindingName(*this, value);});
   }
 }

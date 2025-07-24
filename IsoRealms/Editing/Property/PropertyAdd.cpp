@@ -24,7 +24,7 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyAdd::PropertyAdd(const PropertyData& data, const std::string& value, std::function<std::unique_ptr<IProperty>()> addPropertyFunction) :
+  PropertyAdd::PropertyAdd(const PropertyData& data, const std::string& value, std::function<void()> addPropertyFunction) :
             Property(data, nullptr),
             cValue(value),
             cAddPropertyFunction(addPropertyFunction) {
@@ -43,9 +43,9 @@ namespace IsoRealms {
   }
   
   void PropertyAdd::confirm(IPropertyManager& manager, float y) {
-    std::unique_ptr<IProperty> mProperty = cAddPropertyFunction();
+    cAddPropertyFunction();
 //    IProperty* mRawProperty = mProperty.get();
-    manager.addProperty(std::move(mProperty));
+//    manager.addProperty(std::move(mProperty));
 //    mRawProperty->confirm(manager, y);
   }
 

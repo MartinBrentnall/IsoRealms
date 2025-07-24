@@ -56,10 +56,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("Value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;}));
-    return mProperties;
+  void SimpleBoolean::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeBoolean("Value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
   }
 
   void SimpleBoolean::reset() {
@@ -78,8 +76,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleBoolean::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SimpleBoolean::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SimpleBoolean::isDefaultConfiguration() const {

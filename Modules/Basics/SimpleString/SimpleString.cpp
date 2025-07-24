@@ -56,10 +56,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleString::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeString("Value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value; return true;}));
-    return mProperties;
+  void SimpleString::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeString("Value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value; return true;});
   }
 
   void SimpleString::reset() {
@@ -78,8 +76,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleString::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SimpleString::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SimpleString::isDefaultConfiguration() const {

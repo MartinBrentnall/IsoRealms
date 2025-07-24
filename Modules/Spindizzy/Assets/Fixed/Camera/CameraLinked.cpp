@@ -94,10 +94,8 @@ namespace IsoRealms::Spindizzy {
     object.addString(JSON_VIEW, cParent.getWorld()->getSpindizzy().getID(cDefLinkedView));
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraLinked::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-// TODO    mProperties.emplace_back(std::make_unique<PropertyAsset<WorldView>>("Linked View", cDefLinkedView));
-    return mProperties;
+  void CameraLinked::getAssetProperties(PropertyMaker& owner) {
+// TODO    owner.createPropertyAsset<WorldView>("Linked View", cDefLinkedView);
   }
 
   bool CameraLinked::isDefaultConfiguration() const {

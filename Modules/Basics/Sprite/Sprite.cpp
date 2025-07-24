@@ -76,12 +76,10 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sprite::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, owner.getPropertyData("Appearance"),      cDefTexture));
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("BillboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;}));
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("BillboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;}));
-    return mProperties;
+  void Sprite::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Texture>("Appearance",     cDefTexture);
+    owner.createPropertyNativeBoolean( "BillboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
+    owner.createPropertyNativeBoolean( "BillboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
   }
 
   IModelInstance* Sprite::createModel() {
@@ -104,8 +102,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sprite::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Sprite::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Sprite::isDefaultConfiguration() const {

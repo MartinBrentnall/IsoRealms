@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackAction::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackAction::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 }

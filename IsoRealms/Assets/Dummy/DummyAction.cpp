@@ -19,6 +19,8 @@
 #include "DummyAction.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -39,10 +41,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyAction::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    // TODO: Implement this.
-    return mProperties;
+  void DummyAction::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyAction::isDefaultConfiguration() const {

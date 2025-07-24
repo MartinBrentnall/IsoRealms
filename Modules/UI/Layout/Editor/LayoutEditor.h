@@ -31,7 +31,7 @@ namespace IsoRealms::UI {
   class LayoutEditor : public IEditableScreen,
                        public IUIStyle {
     public:
-    LayoutEditor(Layout& layout, PropertyMaker propertyMaker);
+    LayoutEditor(Layout& layout, IDialogManager& dialogManager);
     void updateScreen(unsigned int milliseconds);
 
     bool signal(SignalInputID id);
@@ -44,7 +44,7 @@ namespace IsoRealms::UI {
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+    void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
     void notifyVisible() override;
     void notifyHidden() override;
@@ -221,7 +221,6 @@ namespace IsoRealms::UI {
     static const float EDIT_HANDLE_RADIUS;
 
     HatHandler& cHatHandler;
-    PropertyMaker cPropertyMaker;
 
     const std::map<std::string, EditorAnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
     const std::map<std::string, EditorDigitalInput<LayoutEditor, SignalInputID>*> cDigitalInputsByName; /// Mapping of digital inputs by name.

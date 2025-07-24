@@ -56,10 +56,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;}));
-    return mProperties;
+  void SimpleFloat::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;});
   }
   
   void SimpleFloat::reset() {
@@ -78,8 +76,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SimpleFloat::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SimpleFloat::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SimpleFloat::isDefaultConfiguration() const {

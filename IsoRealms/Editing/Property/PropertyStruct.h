@@ -29,11 +29,11 @@
 
 namespace IsoRealms {
   class IPropertyManager;
-  class IPropertyOwner;
+  class PropertyMaker;
   
   class PropertyStruct : public Property {
     public:
-    PropertyStruct(IPropertyOwner& owner, const PropertyData& data, const std::string& value, std::function<std::vector<std::unique_ptr<IProperty>>()> subProperties, std::function<void()> removeFunction = nullptr);
+    PropertyStruct(PropertyMaker& owner, const PropertyData& data, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr);
     
     /************************\
      * Implements IProperty *
@@ -45,8 +45,8 @@ namespace IsoRealms {
     void configure(IPropertyManager& manager) override;
 
     private:
-    IPropertyOwner& cPropertyOwner;
-    std::function<std::vector<std::unique_ptr<IProperty>>()> cSubProperties;
+    PropertyMaker& cPropertyOwner;
+    std::function<void()> cSubProperties;
     std::string cValue;
   };
 }

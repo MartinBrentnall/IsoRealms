@@ -91,32 +91,29 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sequence::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyEditor>(owner.getPropertyData("Content"), this));
+  void Sequence::getProperties(PropertyMaker& owner) {
+    owner.createPropertyEditor("Content", this);
 
-
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("Playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;}));
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("Loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>( owner, owner.getPropertyData("Speed"),   cDefSpeed));
+    owner.createPropertyNativeBoolean("Playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
+    owner.createPropertyNativeBoolean("Loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
+    owner.createPropertyAsset<Float>( "Speed",   cDefSpeed);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData(mEntry.first, "TODO"), "Edit...", [this, &owner, &mEntry]() {
+      owner.createPropertyStruct("Instance", mEntry.first, [this, &owner, &mEntry]() {
         return mEntry.second->getProperties(owner);
       }, [this, &mEntry]() {
         cDefInstances.erase(mEntry.first);
-      }));
+      });
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Instance"), "Add...", [this, &owner]() {
+    owner.createPropertyAdd("Instance", "Add...", [this, &owner]() {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       // mInstance->registerAssets(assets, mKey);
-      return std::make_unique<PropertyStruct>(owner, owner.getPropertyData("Instance"), "Edit...", [this, &owner, &mInstance]() {
+      return owner.createPropertyStruct("Instance", "Edit...", [this, &owner, &mInstance]() {
         return mInstance->getProperties(owner);
       }, [this, mKey]() {
         cDefInstances.erase(mKey);
       });
-    }));
-    return mProperties;
+    });
   }
 
   void Sequence::updateRuntime(unsigned int milliseconds) {
@@ -170,8 +167,8 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  IEditableScreen* Sequence::createEditableScreen(IsoRealms::Project* project) {
-    std::unique_ptr<SequenceEditor> mScreen = std::make_unique<SequenceEditor>(*this, cResourceData.getPropertyMaker());
+  IEditableScreen* Sequence::createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) {
+    std::unique_ptr<SequenceEditor> mScreen = std::make_unique<SequenceEditor>(*this, dialogManager);
     IEditableScreen* mReturnValue = mScreen.get();
     cEditors[mReturnValue] = std::move(mScreen);
     return mReturnValue;
@@ -185,8 +182,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sequence::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Sequence::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Sequence::isDefaultConfiguration() const {
@@ -267,8 +264,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Sequence::Length::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Sequence::Length::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Sequence::Length::isDefaultConfiguration() const {

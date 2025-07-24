@@ -19,6 +19,8 @@
 #include "DummyAssets.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -75,8 +77,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyAssets::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyAssets::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyAssets::isDefaultConfiguration() const {

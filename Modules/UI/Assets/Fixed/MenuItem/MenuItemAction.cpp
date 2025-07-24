@@ -118,12 +118,10 @@ namespace IsoRealms::UI {
     cDefAction.save(object, JSON_ON_SELECTION);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemAction::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeString("ID",    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeString("Label", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;}));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(owner, PropertyData("On Select", "TODO"), cDefAction));
-    return mProperties;
+  void MenuItemAction::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value; return true;});
+    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value; return true;});
+    owner.createPropertyAsset<Action>("OnSelect", cDefAction);
   }
 
   bool MenuItemAction::isDefaultConfiguration() const {

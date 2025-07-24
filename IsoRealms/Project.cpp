@@ -24,7 +24,6 @@
 #include "IAssetOverride.h"
 #include "Module.h"
 #include "PropertyData.h"
-#include "PropertyMaker.h"
 
 namespace IsoRealms {
   const std::string Project::JSON_ACTION         = "action";
@@ -522,14 +521,6 @@ namespace IsoRealms {
     return cMissingData;
   }
 
-  std::string Project::getPropertyName(const std::string& key) const {
-    return cMissingData.getName();
-  }
-
-  std::string Project::getPropertyDescription(const std::string& key) const {
-    return cMissingData.getTooltip();
-  }
-
   bool Project::isReadOnly() const {
     return false;
   }
@@ -682,8 +673,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Project::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Project::isDefaultConfiguration() const {
@@ -765,35 +756,31 @@ namespace IsoRealms {
     return project == cOwnerProject;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::getProperties(IPropertyOwner& propertyMaker) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyStruct>(propertyMaker, PropertyData("TODO: App Modules", "View or change the modules used by this app"), "Edit...", [this, &propertyMaker]() {
-      std::vector<std::unique_ptr<IProperty>> mProperties;
+  void Project::getProperties(PropertyMaker& propertyMaker) {
+    propertyMaker.createPropertyStruct("AppModules", "Edit...", [this, &propertyMaker]() {
       unsigned int mIndex = 1;
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        mProperties.emplace_back(std::make_unique<PropertyStruct>(propertyMaker, PropertyData("Module \"" + mModule->getName() + "\"", "TODO"), "Edit...", [this, &mModule]() {
+        propertyMaker.createPropertyStruct("Module", mModule->getName(), [this, &mModule]() {
           return mModule->getProperties();
         }, [this, &mModule]() {
           Utils::removeElementUnique(cModules, mModule.get());
-        }));
+        });
         mIndex++;
       }
-      mProperties.emplace_back(std::make_unique<PropertyOptional<ModuleChooser>>(propertyMaker, PropertyData("Module " + Utils::toString(static_cast<int>(cModules.size() + 1)), "TODO"), [this](const std::string& value) {
+      propertyMaker.createPropertyOptional<ModuleChooser>("Module ", [this](const std::string& value) {
         loadModule(value);
-      }, *this, cApplication));
-      return mProperties;
-    }));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>(propertyMaker, PropertyData("TODO: App File Structure", "View or configure the files that make up this app"), "Edit...", [this, &propertyMaker]() {
-      return cProjectFile.getProperties(propertyMaker, *this, false);
-    }));
-    mProperties.emplace_back(cDefInitAction.getProperty(propertyMaker, "On Initialisation"));
-    mProperties.emplace_back(cDefResetAction.getProperty(propertyMaker, "On Reset"));
-    mProperties.emplace_back(cDefStartAction.getProperty(propertyMaker, "On Start"));
-    mProperties.emplace_back(cDefQuitAction.getProperty(propertyMaker, "On Quit"));
-    mProperties.emplace_back(cDefInputHandler.getProperty(propertyMaker, "Input Handler"));
-    mProperties.emplace_back(cDefScreen.getProperty(propertyMaker, "Display"));
-    mProperties.emplace_back(cDefDefaultEditor.getProperty(propertyMaker, "Default Editor"));
-    return mProperties;
+      });
+    });
+    propertyMaker.createPropertyStruct("AppFileStructure", "Edit...", [this, &propertyMaker]() {
+      cProjectFile.getProperties(propertyMaker, *this, false);
+    });
+    cDefInitAction.getProperty(propertyMaker, "On Initialisation");
+    cDefResetAction.getProperty(propertyMaker, "On Reset");
+    cDefStartAction.getProperty(propertyMaker, "On Start");
+    cDefQuitAction.getProperty(propertyMaker, "On Quit");
+    cDefInputHandler.getProperty(propertyMaker, "Input Handler");
+    cDefScreen.getProperty(propertyMaker, "Display");
+    cDefDefaultEditor.getProperty(propertyMaker, "Default Editor");
   }
   
   void Project::setProperty(const std::string& property, const std::string& value) {
@@ -816,10 +803,6 @@ namespace IsoRealms {
 
   void Project::releaseBinding(const IBinding* asset) {
     // Nothing to do.
-  }
-
-  PropertyMaker Project::getPropertyMaker() {
-    return PropertyMaker(*this, *this);
   }
 
   std::string Project::getPath(const std::string& file, bool user) const {
@@ -858,8 +841,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::Filename::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Project::Filename::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Project::Filename::isDefaultConfiguration() const {
@@ -882,8 +865,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::FileUser::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Project::FileUser::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Project::FileUser::isDefaultConfiguration() const {
@@ -906,9 +889,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Project::QuitAction::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    return mProperties;
+  void Project::QuitAction::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
   
   bool Project::QuitAction::isDefaultConfiguration() const {

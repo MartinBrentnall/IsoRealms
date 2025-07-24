@@ -44,8 +44,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> BoundaryTypeDummy::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void BoundaryTypeDummy::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool BoundaryTypeDummy::isDefaultConfiguration() const {

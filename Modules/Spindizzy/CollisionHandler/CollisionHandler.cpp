@@ -65,13 +65,11 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> CollisionHandler::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>(owner, owner.getPropertyData("EntityTypeA"),       cDefPhysicalObjectTypeA));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<PhysicalObjectType>>(owner, owner.getPropertyData("EntityTypeB"),       cDefPhysicalObjectTypeB));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(            owner, owner.getPropertyData("ActionOnContact"),   cDefEnteredAction));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Action>>(            owner, owner.getPropertyData("ActionOnDeparture"), cDefExitedAction));
-    return mProperties;
+  void CollisionHandler::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<PhysicalObjectType>("EntityTypeA",       cDefPhysicalObjectTypeA);
+    owner.createPropertyAsset<PhysicalObjectType>("EntityTypeB",       cDefPhysicalObjectTypeB);
+    owner.createPropertyAsset<Action>(            "ActionOnContact",   cDefEnteredAction);
+    owner.createPropertyAsset<Action>(            "ActionOnDeparture", cDefExitedAction);
   }
 
   const PhysicalObjectType* CollisionHandler::getPhysicalObjectTypeA() const {

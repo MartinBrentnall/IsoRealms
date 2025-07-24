@@ -28,7 +28,7 @@
 namespace IsoRealms {
   class PropertyList : public Property {
     public:
-    PropertyList(IPropertyOwner& owner, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyList(PropertyMaker& owner, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -51,7 +51,7 @@ namespace IsoRealms {
       bool renderAssetIcon() const;
       bool hasConfiguration() const;
       bool isDefaultConfigured() const;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner);
+      void getAssetProperties(PropertyMaker& owner);
       IApplication& getApplication() const;
       std::vector<std::string> getAvailableProviders() const;
       bool renderProviderIcon(const std::string& id) const;

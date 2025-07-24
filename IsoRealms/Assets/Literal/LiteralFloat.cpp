@@ -18,8 +18,10 @@
  */
 #include "LiteralFloat.h"
 
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
-#include "IsoRealms/IPropertyOwner.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   LiteralFloat::LiteralFloat(const float value) :
@@ -34,10 +36,8 @@ namespace IsoRealms {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralFloat::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value; return true;}));
-    return mProperties;
+  void LiteralFloat::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value; return true;});
   }
 
   bool LiteralFloat::isDefaultConfiguration() const {

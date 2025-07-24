@@ -75,11 +75,9 @@ namespace IsoRealms::UI {
     cDefOffset.save(mEdgeObject, JSON_OFFSET);
   }
   
-  std::vector<std::unique_ptr<IProperty>> LayoutComponentEdge::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutLocation>>(owner, PropertyData("Location", "TODO"), cDefLocation));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<LayoutOffset>>(  owner, PropertyData("Offset",   "TODO"), cDefOffset));
-    return mProperties;
+  void LayoutComponentEdge::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<LayoutLocation>("Location", cDefLocation);
+    owner.createPropertyAsset<LayoutOffset>(  "Offset",   cDefOffset);
   }
 
   void LayoutComponentEdge::renderRelation(float aspectRatio) const {

@@ -72,11 +72,9 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_CORNER_SIZE, cDefCornerSize);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScreenPanel::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, PropertyData("Colour", "TODO"), cDefColour));
-    mProperties.emplace_back(owner.createPropertyNativeFloat("Corner Size", [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value; return true;}));
-    return mProperties;
+  void ScreenPanel::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>("Colour",      cDefColour);
+    owner.createPropertyNativeFloat(  "Corner Size", [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value; return true;});
   }
   
   bool ScreenPanel::isDefaultConfiguration() const {

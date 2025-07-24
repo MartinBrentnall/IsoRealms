@@ -38,8 +38,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralBindingType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void LiteralBindingType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool LiteralBindingType::isDefaultConfiguration() const {

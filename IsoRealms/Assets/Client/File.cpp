@@ -19,8 +19,9 @@
 #include "File.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Persistence.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/System.h"
 
 namespace IsoRealms {
@@ -78,8 +79,8 @@ namespace IsoRealms {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> File::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void File::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
   
   IApplication& File::getApplication() const {

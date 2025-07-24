@@ -18,9 +18,10 @@
  */
 #include "Action.h"
 
-#include "IsoRealms/Project.h"
 #include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
+#include "IsoRealms/Project.h"
 
 namespace IsoRealms {
   Action::Action(IActionClient& owner) :

@@ -159,8 +159,8 @@ namespace IsoRealms {
     }
   }
 
-  std::vector<std::unique_ptr<IProperty>> Module::getProperties() {
-    return cModule->getProperties();
+  void Module::getProperties() {
+    cModule->getProperties();
   }
   
   void Module::updateRuntime(unsigned int milliseconds) {

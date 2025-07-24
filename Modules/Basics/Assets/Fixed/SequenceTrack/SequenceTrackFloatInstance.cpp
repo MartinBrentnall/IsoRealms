@@ -66,8 +66,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackFloatInstance::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackFloatInstance::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceTrackFloatInstance::isDefaultConfiguration() const {

@@ -170,14 +170,12 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> World::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "Gravity",            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "SlopeEffect",        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeInteger("BounceTime",         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("AdvancedProperties", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;}));
-    mProperties.emplace_back(std::make_unique<PropertyEditor>(       owner.getPropertyData("WorldLayout"),        this));
-    return mProperties;
+  void World::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeFloat(  "Gravity",            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;});
+    owner.createPropertyNativeFloat(  "SlopeEffect",        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;});
+    owner.createPropertyNativeInteger("BounceTime",         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;});
+    owner.createPropertyNativeBoolean("AdvancedProperties", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
+    owner.createPropertyEditor(       "WorldLayout",        this);
   }
 
   void World::updateRuntime(unsigned int milliseconds) {
@@ -211,6 +209,10 @@ namespace IsoRealms::Spindizzy {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->reset();
     }
+  }
+
+  IResourceData& World::getResourceData() {
+    return cResourceData;
   }
 
   void World::renderRuntime() {
@@ -702,8 +704,8 @@ namespace IsoRealms::Spindizzy {
     return mCount;
   }
 
-  IEditableScreen* World::createEditableScreen(Project* project) {
-    std::unique_ptr<WorldEditor> mScreen = std::make_unique<WorldEditor>(*project, *this, cResourceData.getPropertyMaker());
+  IEditableScreen* World::createEditableScreen(Project* project, IDialogManager& dialogManager) {
+    std::unique_ptr<WorldEditor> mScreen = std::make_unique<WorldEditor>(*project, *this, dialogManager);
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->registerView(*mScreen.get());
     }
@@ -720,8 +722,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> World::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void World::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool World::isDefaultConfiguration() const {

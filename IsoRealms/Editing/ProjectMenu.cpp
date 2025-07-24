@@ -19,7 +19,6 @@
 #include "ProjectMenu.h"
 
 #include "IsoRealms/Project.h"
-#include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style, ""),
@@ -35,9 +34,8 @@ namespace IsoRealms {
     addItem(std::make_unique<MenuItemAction>("Project Configuration", "TODO: Description", [this]() {
       UIManager& mManager = getUIManager();
       IUIStyle& mStyle = getStyle();
-      PropertyMaker mPropertyMaker = cProject.getPropertyMaker();
-      mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, mPropertyMaker, [this](IPropertyOwner& owner, IDialogManager& dialogManager) {
-        return cProject.getProperties(owner);
+      mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](PropertyMaker& owner) {
+        cProject.getProperties(owner);
       }, "Project Configuration", 1.0f, 1.0f, 1.0f));
     }));
 

@@ -137,10 +137,8 @@ namespace IsoRealms::Spindizzy {
     cDefTexture.save(object, JSON_TEXTURE);
   }
 
-  std::vector<std::unique_ptr<IProperty>> SurfacePatternTile::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Texture>>(owner, PropertyData("Texture", "TODO"), cDefTexture));
-    return mProperties;
+  void SurfacePatternTile::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Texture>("Texture", cDefTexture);
   }
 
   bool SurfacePatternTile::isDefaultConfiguration() const {

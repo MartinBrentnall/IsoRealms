@@ -43,8 +43,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyInputHandler::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyInputHandler::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyInputHandler::isDefaultConfiguration() const {

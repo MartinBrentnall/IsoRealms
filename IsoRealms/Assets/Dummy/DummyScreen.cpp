@@ -39,8 +39,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> DummyScreen::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void DummyScreen::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool DummyScreen::isDefaultConfiguration() const {

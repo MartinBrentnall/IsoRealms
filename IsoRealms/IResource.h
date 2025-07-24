@@ -24,20 +24,18 @@
 
 namespace IsoRealms {
   class JSONObject;
-  class IDialogManager;
   class IEditingContext;
   class IAssets;
   class IFont;
   class IProperty;
-  class IPropertyOwner;
+  class IResourceData;
   class Project;
   class ProjectFile;
   class PropertyMaker;
 
   class IResource {
     public:
-    virtual PropertyMaker getPropertyMaker() = 0;
-    virtual std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& propertyMaker, IDialogManager& dialogManager) = 0;
+    virtual void getProperties(PropertyMaker& propertyMaker) = 0;
     virtual std::string getName() = 0;
     virtual bool renderIcon() = 0;
     virtual void hintInUse(bool inUse) = 0;
@@ -46,6 +44,7 @@ namespace IsoRealms {
     virtual void unregisterAssets(Project& project, IAssets& releaser) = 0;
     virtual std::string getResourceDataPath() const = 0;    
     virtual bool needsSaving(ProjectFile* savingProject) = 0;
+    virtual IResourceData& getResourceData() = 0;
     
     virtual ~IResource() {}
   };

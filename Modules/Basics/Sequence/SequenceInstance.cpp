@@ -129,12 +129,10 @@ namespace IsoRealms::Basics {
     object.addFloat(JSON_SPEED, cDefSpeed, 1.0f);
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceInstance::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeString( "InstanceName", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);}));
-    mProperties.emplace_back(owner.createPropertyNativeInteger("StartTime",    [this]() {return cDefStartTime;}, [this](int value)   {cDefStartTime = value; return true;}));
-    mProperties.emplace_back(owner.createPropertyNativeFloat(  "Speed",        [this]() {return cDefSpeed;},     [this](float value) {cDefSpeed     = value; std::cout << "SPEED IS " << cDefSpeed << std::endl; return true;}));
-    return mProperties;
+  void SequenceInstance::getProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeString( "InstanceName", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);});
+    owner.createPropertyNativeInteger("StartTime",    [this]() {return cDefStartTime;}, [this](int value)   {cDefStartTime = value; return true;});
+    owner.createPropertyNativeFloat(  "Speed",        [this]() {return cDefSpeed;},     [this](float value) {cDefSpeed     = value; std::cout << "SPEED IS " << cDefSpeed << std::endl; return true;});
   }
 
   void SequenceInstance::play() {
@@ -170,8 +168,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceInstance::Position::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceInstance::Position::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceInstance::Position::isDefaultConfiguration() const {
@@ -194,8 +192,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceInstance::Remaining::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceInstance::Remaining::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool SequenceInstance::Remaining::isDefaultConfiguration() const {

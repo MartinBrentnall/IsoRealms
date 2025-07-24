@@ -54,8 +54,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ProjectOptions::getProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   Options ProjectOptions::getFixedOptions() {
@@ -74,8 +74,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectOptions::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ProjectOptions::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ProjectOptions::isDefaultConfiguration() const {

@@ -38,8 +38,8 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
   
-  std::vector<std::unique_ptr<IProperty>> Replay::getProperties() {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Replay::getProperties() {
+    // Nothing to do.
   }
 
   void Replay::updateRuntime(unsigned int milliseconds) {

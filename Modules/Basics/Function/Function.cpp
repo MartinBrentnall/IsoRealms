@@ -66,48 +66,42 @@ namespace IsoRealms::Basics {
     return renderAssetProviderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Function::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, owner.getPropertyData("Bindings"), "Edit...", [this, &owner]() {
-      std::vector<std::unique_ptr<IProperty>> mProperties;
+  void Function::getProperties(PropertyMaker& owner) {
+    owner.createPropertyStruct("Bindings", "Edit...", [this, &owner]() {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData(mBinding->getName(), "TODO"), "Edit...", [&mBinding, &owner]() {
+        owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding, &owner]() {
           return mBinding->getProperties(owner);
         }, [this, &mBinding]() {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
-        }));
+        });
       }
-      mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Binding"), "New...", [this, &owner]() {
-        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, owner.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
-        return std::make_unique<PropertyStruct>(owner, PropertyData(mNewBinding->getName(), "TODO"), "Edit...", [mNewBinding, &owner]() {
+      owner.createPropertyAdd("Binding", "New...", [this, &owner]() {
+        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
+        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding, &owner]() {
           return mNewBinding->getProperties(owner);
         }, [this, mNewBinding]() {
           Utils::removeElementUnique(cDefBindings, mNewBinding);
         });
-      }));
-      return mProperties;
-    }));
-    mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, owner.getPropertyData("Arguments"), "Edit...", [this, &owner]() {
-      std::vector<std::unique_ptr<IProperty>> mProperties;
+      });
+    });
+    owner.createPropertyStruct("Arguments", "Edit...", [this, &owner]() {
       for (std::unique_ptr<ArgumentDefinition>& mArgumentDefinition : cDefArgumentDefinitions) {
-        mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData(mArgumentDefinition->getName(), "TODO"), "Edit...", [this, &owner, &mArgumentDefinition]() {
+        owner.createPropertyStruct("Argument", mArgumentDefinition->getName(), [this, &owner, &mArgumentDefinition]() {
           return mArgumentDefinition->getProperties(owner, *this);
         }, [this, &mArgumentDefinition]() {
           Utils::removeElementUnique(cDefArgumentDefinitions, mArgumentDefinition.get());
-        }));
+        });
       }
-      mProperties.emplace_back(std::make_unique<PropertyAdd>(owner.getPropertyData("Argument"), "New...", [this, &owner]() {
+      owner.createPropertyAdd("Argument", "New...", [this, &owner]() {
         ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(cProject, *this, getNextAvailableName("newArgument"))).get();
-        return std::make_unique<PropertyStruct>(owner, PropertyData(mNewArgumentDefinition->getName(), "TODO"), "Edit...", [this, &owner, mNewArgumentDefinition]() {
+        return owner.createPropertyStruct("Argument", mNewArgumentDefinition->getName(), [this, &owner, mNewArgumentDefinition]() {
           return mNewArgumentDefinition->getProperties(owner, *this);
         }, [this, mNewArgumentDefinition]() {
           Utils::removeElementUnique(cDefArgumentDefinitions, mNewArgumentDefinition);
         });
-      }));
-      return mProperties;
-    }));
-    mProperties.emplace_back(std::make_unique<PropertyCode>(cProject, owner.getPropertyData("Code"), [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;}));
-    return mProperties;
+      });
+    });
+    owner.createPropertyCode("Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
   
   Function::Function(IProject& project, const std::string& name, IActionClient& owner) :
@@ -131,29 +125,25 @@ namespace IsoRealms::Basics {
     declare();
   }
 
-  std::vector<std::unique_ptr<IProperty>> Function::getScriptProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData("Bindings", "TODO"), "Edit...", [this, &owner]() {
-      std::vector<std::unique_ptr<IProperty>> mProperties;
+  void Function::getScriptProperties(PropertyMaker& owner) {
+    owner.createPropertyStruct("Bindings", "Edit...", [this, &owner]() {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData(mBinding->getName(), "TODO"), "Edit...", [&owner, &mBinding]() {
+        owner.createPropertyStruct("Binding", mBinding->getName(), [&owner, &mBinding]() {
           return mBinding->getProperties(owner);
         }, [this, &mBinding]() {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
-        }));
+        });
       }
-      mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Binding", "TODO"), "New...", [this, &owner]() {
+      owner.createPropertyAdd("Binding", "New...", [this, &owner]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
-        return std::make_unique<PropertyStruct>(owner, PropertyData(mNewBinding->getName(), "TODO"), "Edit...", [&owner, mNewBinding]() {
+        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [&owner, mNewBinding]() {
           return mNewBinding->getProperties(owner);
         }, [this, mNewBinding]() {
           Utils::removeElementUnique(cDefBindings, mNewBinding);
         });
-      }));
-      return mProperties;
-    }));
-    mProperties.emplace_back(std::make_unique<PropertyCode>(cProject, PropertyData("Code", "TODO"), [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;}));
-    return mProperties;
+      });
+    });
+    owner.createPropertyCode("Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
 
   IProject& Function::getProject() const {
@@ -310,14 +300,12 @@ namespace IsoRealms::Basics {
     }
   }
 
-  std::vector<std::unique_ptr<IProperty>> Function::Call::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
+  void Function::Call::getAssetProperties(PropertyMaker& owner) {
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
       std::string mArgumentName = cParent.cDefArgumentDefinitions[i]->getName();
       std::unique_ptr<IsoRealms::Binding>& mBinding = cDefArguments[i];
-      mProperties.emplace_back(std::make_unique<PropertyAsset<IsoRealms::Binding>>(owner, PropertyData(mArgumentName, "TODO"), *mBinding));
+      owner.createPropertyAsset<IsoRealms::Binding>("Argument", *mBinding);
     }
-    return mProperties;
   }
 
   bool Function::Call::isDefaultConfiguration() const {

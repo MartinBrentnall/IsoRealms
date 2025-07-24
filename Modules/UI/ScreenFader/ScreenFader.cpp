@@ -53,12 +53,10 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScreenFader::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner, owner.getPropertyData("ScreenA"),    cDefScreenA));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Screen>>(owner, owner.getPropertyData("ScreenB"),    cDefScreenB));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Float>>( owner, owner.getPropertyData("Transition"), cDefTransition));
-    return mProperties;
+  void ScreenFader::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Screen>("ScreenA",    cDefScreenA);
+    owner.createPropertyAsset<Screen>("ScreenB",    cDefScreenB);
+    owner.createPropertyAsset<Float>( "Transition", cDefTransition);
   }
 
   void ScreenFader::renderScreen(float scale, float aspectRatio) const {
@@ -128,8 +126,8 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ScreenFader::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ScreenFader::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ScreenFader::isDefaultConfiguration() const {

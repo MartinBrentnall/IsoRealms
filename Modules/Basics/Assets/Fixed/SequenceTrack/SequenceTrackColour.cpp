@@ -89,8 +89,8 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackColour::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void SequenceTrackColour::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   unsigned int SequenceTrackColour::getTime() const {
@@ -101,10 +101,8 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  std::vector<std::unique_ptr<IProperty>> SequenceTrackColour::getEventProperties(IPropertyOwner& owner, IProject& project) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Colour>>(owner, PropertyData("TODO: Start Colour", "The starting output colour of this track"), cDefInitColour));
-    return mProperties;
+  void SequenceTrackColour::getEventProperties(PropertyMaker& owner, IProject& project) {
+    owner.createPropertyAsset<Colour>("StartColour", cDefInitColour);
   }
 
   void SequenceTrackColour::stateChanged(IColour* colour) {

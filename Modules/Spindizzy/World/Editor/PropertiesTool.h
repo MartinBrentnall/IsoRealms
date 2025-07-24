@@ -34,10 +34,10 @@ namespace IsoRealms::Spindizzy {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IPropertyOwner& owner) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+    void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:
@@ -48,7 +48,7 @@ namespace IsoRealms::Spindizzy {
     class Modifier : public IWorldEditorToolInstance,
                      public IUIStyle {
       public:
-      Modifier(PropertiesTool& parent, IPropertyOwner& owner, WorldEditor& editor);
+      Modifier(PropertiesTool& parent, IResourceData& owner, WorldEditor& editor);
 
       /***************************************\
        * Implements IWorldEditorToolInstance *
@@ -74,7 +74,7 @@ namespace IsoRealms::Spindizzy {
       
       private:
       PropertiesTool& cParent;
-      IPropertyOwner& cPropertyOwner;
+      IResourceData& cWorldResourceOwner;
       WorldEditor& cEditor;
       std::vector<IWorldObject*> cHoverObjects;
       int cSelectedObject;

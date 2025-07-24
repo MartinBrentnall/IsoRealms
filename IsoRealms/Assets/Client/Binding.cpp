@@ -20,7 +20,7 @@
 
 #include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Project.h"
 
 namespace IsoRealms {
@@ -125,8 +125,8 @@ namespace IsoRealms {
     return true;
   }
 
-  std::vector<std::unique_ptr<IProperty>> Binding::getTheAssetProperties(IBinding* asset, IPropertyOwner& owner) {
+  void Binding::getTheAssetProperties(IBinding* asset, PropertyMaker& owner) {
     std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
-    return cDefType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);
+    cDefType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);
   }
 }

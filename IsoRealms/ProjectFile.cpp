@@ -57,28 +57,26 @@ namespace IsoRealms {
     cFile.setPath(name, user);
   }
 
-  std::vector<std::unique_ptr<IProperty>> ProjectFile::getProperties(IPropertyOwner& owner, Project& project, bool inclusion) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<File>>(owner, PropertyData("File", "TODO"), cFile));
+  void ProjectFile::getProperties(PropertyMaker& owner, Project& project, bool inclusion) {
+    owner.createPropertyAsset<File>("File", cFile);
     if (inclusion && cFile.isUser()) {
-      mProperties.emplace_back(owner.createPropertyNativeBoolean("AllowModifications", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;}));
+      owner.createPropertyNativeBoolean("AllowModifications", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;});
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      mProperties.emplace_back(std::make_unique<PropertyStruct>(owner, PropertyData("Inclusion", "TODO"), mInclusion->cFile.getRelativePath(), [this, &owner, &mInclusion, &project]() {
+      owner.createPropertyStruct("Inclusion", mInclusion->cFile.getRelativePath(), [this, &owner, &mInclusion, &project]() {
         return mInclusion->getProperties(owner, project, true);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
-      }));
+      });
     }
-    mProperties.emplace_back(std::make_unique<PropertyAdd>(PropertyData("Inclusion", "TODO"), "Add...", [this, &owner, &project]() {
+    owner.createPropertyAdd("Inclusion", "Add...", [this, &owner, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      return std::make_unique<PropertyStruct>(owner, PropertyData("Inclusion", "TODO"), mNewInclusion->cFile.getRelativePath(), [this, &owner, &mNewInclusion, &project]() {
+      owner.createPropertyStruct("Inclusion", mNewInclusion->cFile.getRelativePath(), [this, &owner, &mNewInclusion, &project]() {
         return mNewInclusion->getProperties(owner, project, true);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);
       });
-    }));
-    return mProperties;
+    });
   }
 
   const std::string ProjectFile::JSON_ALLOW_MODIFICATION = "allowModifications";

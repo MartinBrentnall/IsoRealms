@@ -21,7 +21,8 @@
 #include "IsoRealms/Editing/Property/PropertyNativeBoolean.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IProject.h"
-#include "IsoRealms/IPropertyOwner.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -46,10 +47,8 @@ namespace IsoRealms {
     object.addBoolean(JSON_VALUE, cValue);
   }
 
-  std::vector<std::unique_ptr<IProperty>> LiteralBoolean::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeBoolean("Value", [this]() {return cValue;}, [this](bool value) {cValue = value;}));
-    return mProperties;
+  void LiteralBoolean::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeBoolean("Value", [this]() {return cValue;}, [this](bool value) {cValue = value;});
   }
 
   bool LiteralBoolean::isDefaultConfiguration() const {

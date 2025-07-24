@@ -52,10 +52,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputSwitch::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<InputHandler>>(owner, owner.getPropertyData("Value"), cDefInputHandler));
-    return mProperties;
+  void InputSwitch::getProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<InputHandler>("Value", cDefInputHandler);
   }
 
   void InputSwitch::reset() {
@@ -83,8 +81,8 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> InputSwitch::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void InputSwitch::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool InputSwitch::isDefaultConfiguration() const {

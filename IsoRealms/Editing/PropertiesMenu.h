@@ -20,6 +20,7 @@
 
 #include "IsoRealms/IResourceType.h"
 #include "IsoRealms/IResource.h"
+#include "IsoRealms/PropertyMaker.h"
 
 #include "Menu.h"
 #include "MenuItemProperty.h"
@@ -29,7 +30,7 @@ namespace IsoRealms {
   class PropertiesMenu : public Menu<MenuItemProperty>,
                          public IPropertyManager {
     public:
-    PropertiesMenu(UIManager& manager, IUIStyle& style, IPropertyOwner& owner, std::function<std::vector<std::unique_ptr<IProperty>>(IPropertyOwner& owner, IDialogManager& dialogManager)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue);
 
     /*************************************\
      * Implements Menu<MenuItemProperty> *
@@ -49,7 +50,7 @@ namespace IsoRealms {
      * Implements IPropertyManager *
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
-    void openProperties(IPropertyOwner& owner, const std::string& name, std::function<std::vector<std::unique_ptr<IProperty>>()> propertyFetcher) override;
+    void openProperties(IResourceData& owner, const std::string& name, std::function<void()> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
     void refreshProperties() override;
@@ -62,8 +63,8 @@ namespace IsoRealms {
       REMOVE
     };
 
-    IPropertyOwner& cPropertyOwner;
-    std::function<std::vector<std::unique_ptr<IProperty>>(IPropertyOwner& owner, IDialogManager& dialogManager)> cPropertyFetcher;
+    PropertyMaker cPropertyMaker;
+    std::function<void(PropertyMaker& owner)> cPropertyFetcher;
     
     std::unique_ptr<IPropertyEditor> cEditingProperty;
     std::unique_ptr<IPropertyEditor> cClosingProperty;
@@ -73,6 +74,8 @@ namespace IsoRealms {
     bool cHasRemoveColumn;
     
     Action cAction;
+
+    bool cFetching;
     
     void openSubProperties(MenuItemProperty& item);
     void recalculateColumnWidths();

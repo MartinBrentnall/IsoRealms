@@ -61,12 +61,10 @@ namespace IsoRealms::Spindizzy {
     return cDefModels[mIndex]->renderIcon();
   }
 
-  std::vector<std::unique_ptr<IProperty>> ModelCycler::getProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
+  void ModelCycler::getProperties(PropertyMaker& owner) {
     for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      mProperties.emplace_back(std::make_unique<PropertyAsset<Model>>(owner, owner.getPropertyData("Model"), *mModel.get()));
+      owner.createPropertyAsset<Model>("Model", *mModel.get());
     }
-    return mProperties;
   }
   
   void ModelCycler::updateEditing(unsigned int milliseconds) {
@@ -117,8 +115,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> ModelCycler::Offset::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void ModelCycler::Offset::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool ModelCycler::Offset::isDefaultConfiguration() const {

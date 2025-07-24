@@ -80,7 +80,7 @@ namespace IsoRealms {
     bool getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
     void save(JSONObject object) const override;
-    std::vector<std::unique_ptr<IProperty>> getProperties() override;
+    void getProperties(PropertyMaker& owner) override;
     std::string getShortName() const override;
     std::string getLongName() const override;
 

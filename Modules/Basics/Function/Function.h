@@ -49,12 +49,12 @@ namespace IsoRealms::Basics {
     void save(JSONObject object, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyOwner& owner);
+    void getProperties(PropertyMaker& owner);
 
     // Constructors for use by scripts (in-line functions).
     Function(IProject& project, const std::string& name, IActionClient& owner);
     Function(IProject& project, const std::string& name, IActionClient& owner, JSONObject object, bool init);
-    std::vector<std::unique_ptr<IProperty>> getScriptProperties(IPropertyOwner& owner);
+    void getScriptProperties(PropertyMaker& owner);
     IProject& getProject() const;
     IResourceData& getResourceData() const;
     bool setBindingName(Binding& binding, const std::string& name);
@@ -97,7 +97,7 @@ namespace IsoRealms::Basics {
       void execute() override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      std::vector<std::unique_ptr<IProperty>> getAssetProperties(IPropertyOwner& owner) override;
+      void getAssetProperties(PropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

@@ -112,13 +112,11 @@ namespace IsoRealms::Spindizzy {
     cDefZoom.save(object, JSON_ZOOM);
   }
 
-  std::vector<std::unique_ptr<IProperty>> CameraVariant::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(owner, PropertyData("Location", "TODO"), cDefLocation));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(owner, PropertyData("Angle",    "TODO"), cDefYaw));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(owner, PropertyData("Tilt",     "TODO"), cDefPitch));
-    mProperties.emplace_back(std::make_unique<PropertyAsset<Camera>>(owner, PropertyData("Zoom",     "TODO"), cDefZoom));
-    return mProperties;
+  void CameraVariant::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Camera>("Location", cDefLocation);
+    owner.createPropertyAsset<Camera>("Angle",    cDefYaw);
+    owner.createPropertyAsset<Camera>("Tilt",     cDefPitch);
+    owner.createPropertyAsset<Camera>("Zoom",     cDefZoom);
   }
 
   bool CameraVariant::isDefaultConfiguration() const {

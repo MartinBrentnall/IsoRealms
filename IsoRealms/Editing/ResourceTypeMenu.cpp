@@ -18,8 +18,6 @@
  */
 #include "ResourceTypeMenu.h"
 
-#include "IsoRealms/PropertyMaker.h"
-
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
@@ -157,9 +155,8 @@ namespace IsoRealms {
     UIManager& mManager = getUIManager();
     IUIStyle& mStyle = getStyle();
     std::string mResourceName = resource->getName();
-    PropertyMaker mPropertyMaker = resource->getPropertyMaker();
-    mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, mPropertyMaker, [this, resource](IPropertyOwner& owner, IDialogManager& dialogManager) {
-      return resource->getProperties(owner, dialogManager);
+    mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, resource->getResourceData(), [this, resource](PropertyMaker& owner) {
+      resource->getProperties(owner);
     }, mResourceName, 1.0f, 1.0f, 0.5f));
   }
 }

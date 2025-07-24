@@ -154,10 +154,8 @@ namespace IsoRealms::UI {
     object.addString(JSON_ID, cDefID);
   }
 
-  std::vector<std::unique_ptr<IProperty>> MenuItemDigitalInput::getAssetProperties(IPropertyOwner& owner) {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(owner.createPropertyNativeString("ID", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value; return true;}));
-    return mProperties;
+  void MenuItemDigitalInput::getAssetProperties(PropertyMaker& owner) {
+    owner.createPropertyNativeString("ID", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value; return true;});
   }
 
   bool MenuItemDigitalInput::isDefaultConfiguration() const {

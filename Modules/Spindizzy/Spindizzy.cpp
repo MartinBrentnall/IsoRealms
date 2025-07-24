@@ -424,7 +424,7 @@ namespace IsoRealms::Spindizzy {
     return cEditorMaxZ;
   }
   
-  std::vector<IWorldEditorToolInstance*> Spindizzy::createToolSet(WorldEditor& editor, IPropertyOwner& owner) {
+  std::vector<IWorldEditorToolInstance*> Spindizzy::createToolSet(WorldEditor& editor, IResourceData& owner) {
     std::vector<IWorldEditorToolInstance*> mTools;
     for (std::unique_ptr<WorldEditorTool>& mTool : cAvailableWorldEditorTools) {
       mTools.emplace_back((*mTool)->createToolInstance(editor, owner));
@@ -531,26 +531,24 @@ namespace IsoRealms::Spindizzy {
     add(&cToolDeleteZone, TOOL_DELETE_ZONE);
   }
 
-  std::vector<std::unique_ptr<IProperty>> Spindizzy::getProperties() {
-    std::vector<std::unique_ptr<IProperty>> mProperties;
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("DefaultZoneWidth",    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;}));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("DefaultZoneLength",   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value; return true;}));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("DefaultZoneHeight",   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value; return true;}));
-// //    mProperties.emplace_back(std::make_unique<PropertyAsset<ZoneType>>("Default Zone Type", *cAutomaticZoneManagementType));
-// //    mProperties.emplace_back(std::make_unique<PropertyAsset<ThemeSet>>("Default Zone Theme", *cDefaultThemeSet));
-//     mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>(  PropertyData("Default Editor Tool",   "TODO"), cDefaultWorldEditorTool));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("WorldWestBoundary",   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value; return true;}));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("WorldEastBoundary",   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value; return true;}));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("WorldSouthBoundary",  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value; return true;}));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("WorldNorthBoundary",  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value; return true;}));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("WorldDepthBoundary",  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value; return true;}));
-//     mProperties.emplace_back(owner.createPropertyNativeInteger("WorldHeightBoundary", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value; return true;}));
+  void Spindizzy::getProperties() {
+//     owner.createPropertyNativeInteger("DefaultZoneWidth",    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;});
+//     owner.createPropertyNativeInteger("DefaultZoneLength",   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value; return true;});
+//     owner.createPropertyNativeInteger("DefaultZoneHeight",   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value; return true;});
+// //    owner.createPropertyAsset<ZoneType>("DefaultZoneType", *cAutomaticZoneManagementType);
+// //    owner.createPropertyAsset<ThemeSet>("DefaultZoneTheme", *cDefaultThemeSet);
+//     owner.createPropertyAsset<WorldEditorTool>("DefaultEditorTool", cDefaultWorldEditorTool);
+//     owner.createPropertyNativeInteger("WorldWestBoundary",   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value; return true;});
+//     owner.createPropertyNativeInteger("WorldEastBoundary",   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value; return true;});
+//     owner.createPropertyNativeInteger("WorldSouthBoundary",  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value; return true;});
+//     owner.createPropertyNativeInteger("WorldNorthBoundary",  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value; return true;});
+//     owner.createPropertyNativeInteger("WorldDepthBoundary",  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value; return true;});
+//     owner.createPropertyNativeInteger("WorldHeightBoundary", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value; return true;});
 //     for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-//       mProperties.emplace_back(std::make_unique<PropertyAsset<WorldEditorTool>>(PropertyData("World Editing Tool " + Utils::toString(i + 1), "TODO"), *cAvailableWorldEditorTools[i].get(), [this, i]() {
+//       owner.createPropertyAsset<WorldEditorTool>("WorldEditingTool", *cAvailableWorldEditorTools[i].get(), [this, i]() {
 //         cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
-//       }));
+//       });
 //     }
-    return mProperties;
   }
 
   void Spindizzy::updateRuntime(unsigned int milliseconds) {
@@ -701,8 +699,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  std::vector<std::unique_ptr<IProperty>> Spindizzy::SpindizzyBindingType::getAssetProperties(IPropertyOwner& owner) {
-    return std::vector<std::unique_ptr<IProperty>>();
+  void Spindizzy::SpindizzyBindingType::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
   }
 
   bool Spindizzy::SpindizzyBindingType::isDefaultConfiguration() const {
