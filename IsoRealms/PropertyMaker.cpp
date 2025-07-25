@@ -71,15 +71,15 @@ namespace IsoRealms {
   }
   
   void PropertyMaker::createPropertyList(const std::string& metadataKey, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyList>(*this, cParent.getProject(), cParent.getPropertyData(metadataKey), options, getter, setter, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyList>(*this, *this, cParent.getProject(), cParent.getPropertyData(metadataKey), options, getter, setter, removeFunction));
   }
   
   void PropertyMaker::createPropertyNativeBoolean(const std::string& metadataKey, std::function<bool()>  getter, std::function<void(bool)>  setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(*this, cParent.getPropertyData(metadataKey), getter, setter, cParent.getProject(), removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(*this, *this, cParent.getPropertyData(metadataKey), getter, setter, cParent.getProject(), removeFunction));
   }
 
   void PropertyMaker::createPropertyNativeFloat(const std::string& metadataKey, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), this, getter, setter, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), *this, getter, setter, removeFunction));
   }
 
   void PropertyMaker::createPropertyNativeInteger(const std::string& metadataKey, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) {

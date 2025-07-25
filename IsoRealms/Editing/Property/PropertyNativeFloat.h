@@ -29,8 +29,7 @@ namespace IsoRealms {
 
   class PropertyNativeFloat : public PropertyInputField {
     public:
-    PropertyNativeFloat(const PropertyData& data, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr);
-    PropertyNativeFloat(const PropertyData& data, IConfirmationManager* confirmationManager, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyNativeFloat(const PropertyData& data, IConfirmationManager& confirmationManager, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr);
 
     protected:
     
@@ -41,7 +40,7 @@ namespace IsoRealms {
     bool confirmValue() override;
 
     private:
-    IConfirmationManager* cConfirmationManager; // TODO: Change to reference.
+    IConfirmationManager& cConfirmationManager;
     std::function<bool(float)> cSetter;
   };
 }

@@ -36,11 +36,11 @@ namespace IsoRealms {
 
   template<class TYPE> class PropertyOptional : public Property {
     public:
-    PropertyOptional(PropertyMaker& owner, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, IApplication& application) :
+    PropertyOptional(PropertyMaker& owner, IConfirmationManager& confirmationManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, IApplication& application) :
             Property(data, nullptr),
             cSimulatedType(project),
             cWrapperType(*this),
-            cSubProperty(owner, resourceData, data, cWrapperType),
+            cSubProperty(owner, confirmationManager, resourceData, data, cWrapperType),
             cChoiceCallback(choiceCallback),
             cProject(project),
             cApplication(application) {

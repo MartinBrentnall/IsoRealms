@@ -72,11 +72,11 @@ namespace IsoRealms {
     }
 
     template <typename ASSET_TYPE> void createPropertyAsset(const std::string& metadataKey, ASSET_TYPE& asset, std::function<void()> removeFunction = nullptr) {
-      cProperties.addProperty(std::make_unique<PropertyAsset<ASSET_TYPE>>(*this, cParent, cParent.getPropertyData(metadataKey), asset, removeFunction));
+      cProperties.addProperty(std::make_unique<PropertyAsset<ASSET_TYPE>>(*this, *this, cParent, cParent.getPropertyData(metadataKey), asset, removeFunction));
     }
 
     template <typename OPTIONAL_TYPE> void createPropertyOptional(const std::string& metadataKey, std::function<void(const std::string&)> choiceCallback) {
-      cProperties.addProperty(std::make_unique<PropertyOptional<OPTIONAL_TYPE>>(*this, cParent, cParent.getPropertyData(metadataKey), choiceCallback, cParent.getProject(), cApplication));
+      cProperties.addProperty(std::make_unique<PropertyOptional<OPTIONAL_TYPE>>(*this, *this, cParent, cParent.getPropertyData(metadataKey), choiceCallback, cParent.getProject(), cApplication));
     }
     
     /***********************************\

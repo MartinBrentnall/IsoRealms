@@ -27,6 +27,7 @@
 #include "IsoRealms/AnimatedFloat.h"
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Editing/Choice.h"
+#include "IsoRealms/Editing/IConfirmationManager.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Editing/UISignalID.h"
 #include "IsoRealms/IApplication.h"
@@ -41,9 +42,10 @@ namespace IsoRealms {
 
   template<class TYPE> class PropertyAsset : public Property {
     public:
-    PropertyAsset(PropertyMaker& owner, IResourceData& resourceData, const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
+    PropertyAsset(PropertyMaker& owner, IConfirmationManager& confirmationManager, IResourceData& resourceData, const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
               Property(data, removeFunction),
               cPropertyOwner(owner),
+              cConfirmationManager(confirmationManager),
               cResourceData(resourceData),
               cAsset(asset),
               cValueLabel(getValue()) {
@@ -524,18 +526,14 @@ namespace IsoRealms {
               if (cParent.cParent.cParent.cAsset.hasConfiguration() && !cParent.cParent.cParent.cAsset.isDefaultConfigured()) {
                 cParent.cParent.cConfirmSelection = std::make_unique<Choice>(style, "You will lose the configuration of \"" + cParent.cParent.cParent.cValueLabel + "\" if you select a new one", std::vector<std::string>{"Keep \"" + cParent.cParent.cParent.cValueLabel + "\"", "Choose new asset"}, [this](const std::string& choice)->bool {
                   if (choice == "Choose new asset") {
-                    cParent.cParent.cParent.cAsset.setID(cAssetID);
-                    cParent.cParent.cParent.cValueLabel = cParent.cParent.cParent.getValue();
-                    cParent.cParent.cClosing = true;
+                    cParent.applyChange(cAssetID);
                   }
                   cParent.cParent.cClosedConfirmSelection = std::move(cParent.cParent.cConfirmSelection);
                   cParent.cParent.cConfirmSelection = nullptr;
                   return cParent.cParent.cClosing;
                 });
               } else {
-                cParent.cParent.cParent.cAsset.setID(cAssetID);
-                cParent.cParent.cParent.cValueLabel = cParent.cParent.cParent.getValue();
-                cParent.cParent.cClosing = true;
+                cParent.applyChange(cAssetID);
               }
             } else {
               cParent.cParent.cClosing = true;
@@ -561,6 +559,17 @@ namespace IsoRealms {
             return mLastSeparator == std::string::npos ? id : id.substr(mLastSeparator + 1);
           }
         };
+
+        void applyChange(const std::string id) {
+          cParent.cParent.cConfirmationManager.confirm([this, &id]() {
+            cParent.cParent.cAsset.setID(id);
+            cParent.cParent.cValueLabel = cParent.cParent.getValue();
+            cParent.cClosing = true;
+            cParent.cParent.cConfirmationManager.promoteResourceToProject();
+          }, [this]() {
+            // Nothing to do.
+          });
+        }
 
         Editor& cParent;
         std::string cPath;
@@ -646,6 +655,7 @@ namespace IsoRealms {
     };
 
     PropertyMaker& cPropertyOwner;
+    IConfirmationManager& cConfirmationManager;
     IResourceData& cResourceData;
     TYPE& cAsset;
     std::string cValueLabel;
