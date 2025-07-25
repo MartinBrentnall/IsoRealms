@@ -115,8 +115,7 @@ namespace IsoRealms {
           cDefStartAction(*this),
           cDefQuitAction(*this),
           cPropertyValue(""),
-          cPropertyValueBinding(*this, &cPropertyValue, this),
-          cMissingData("TODO: Name", "TODO: Description") {
+          cPropertyValueBinding(*this, &cPropertyValue, this) {
 
     // Support conversions.
     cBindings.add(&cConversionProviderActionToBinding,         ":Action",         CATEGORY_CONVERSIONS);
@@ -518,7 +517,7 @@ namespace IsoRealms {
   }
 
   const PropertyData& Project::getPropertyData(const std::string& key) const {
-    return cMissingData;
+    return cApplication.getPropertyData(key);
   }
 
   bool Project::isReadOnly() const {
@@ -767,20 +766,20 @@ namespace IsoRealms {
         });
         mIndex++;
       }
-      propertyMaker.createPropertyOptional<ModuleChooser>("Module ", [this](const std::string& value) {
+      propertyMaker.createPropertyOptional<ModuleChooser>("Module", [this](const std::string& value) {
         loadModule(value);
       });
     });
     propertyMaker.createPropertyStruct("AppFileStructure", "Edit...", [this](PropertyMaker& propertyMaker) {
       cProjectFile.getProperties(propertyMaker, *this, false);
     });
-    cDefInitAction.getProperty(propertyMaker, "On Initialisation");
-    cDefResetAction.getProperty(propertyMaker, "On Reset");
-    cDefStartAction.getProperty(propertyMaker, "On Start");
-    cDefQuitAction.getProperty(propertyMaker, "On Quit");
-    cDefInputHandler.getProperty(propertyMaker, "Input Handler");
+    cDefInitAction.getProperty(propertyMaker, "OnInitialisation");
+    cDefResetAction.getProperty(propertyMaker, "OnReset");
+    cDefStartAction.getProperty(propertyMaker, "OnStart");
+    cDefQuitAction.getProperty(propertyMaker, "OnQuit");
+    cDefInputHandler.getProperty(propertyMaker, "InputHandler");
     cDefScreen.getProperty(propertyMaker, "Display");
-    cDefDefaultEditor.getProperty(propertyMaker, "Default Editor");
+    cDefDefaultEditor.getProperty(propertyMaker, "DefaultEditor");
   }
   
   void Project::setProperty(const std::string& property, const std::string& value) {

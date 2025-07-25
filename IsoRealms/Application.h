@@ -21,6 +21,7 @@
 #include <condition_variable>
 #include <iostream>
 #include <functional>
+#include <map>
 #include <mutex>
 #include <queue>
 #include <sstream>
@@ -37,6 +38,7 @@
 #include "IApplication.h"
 #include "Input/HatHandler.h"
 #include "Persistence.h"
+#include "PropertyData.h"
 #include "System.h"
  
 namespace IsoRealms {
@@ -51,6 +53,7 @@ namespace IsoRealms {
     private:
     static const std::string JSON_FULL_SCREEN;
     static const std::string JSON_HEIGHT;
+    static const std::string JSON_PROPERTIES;
     static const std::string JSON_SETTINGS;
     static const std::string JSON_WIDTH;
 
@@ -159,6 +162,10 @@ namespace IsoRealms {
     std::mutex cCleanUpTaskMutex;
     std::queue<std::function<void()>> cMainThreadCleanUpTasks; /// Clean-up tasks to be performed on the main thread.
 
+    // Application strings.
+    std::map<std::string, std::unique_ptr<PropertyData>> cPropertyHelp;
+    PropertyData cPropertyMissing;
+
     /**
      * Set the application window and OpenGL view port dimensions according to
      * the current screen mode.
@@ -214,5 +221,6 @@ namespace IsoRealms {
     void executeAndReturn(const std::function<void()> task) override;
     HatHandler& getHatHandler() override;
     void mainThreadCleanUp(std::function<void()> function) override;
+    const PropertyData& getPropertyData(const std::string& key) const override;
   };
 }

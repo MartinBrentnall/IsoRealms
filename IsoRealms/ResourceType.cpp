@@ -34,7 +34,7 @@ namespace IsoRealms {
             cResourceType(resourceType),
             cParent(parent),
             cCategory("None"),
-            cPropertyMissing("Missing property name", "Missing property description") {
+            cPropertyMissing("TODO: Missing resource property name", "TODO: Missing resource property description") {
   }
 
 

@@ -30,6 +30,7 @@
  
 namespace IsoRealms {
   class HatHandler;
+  class PropertyData;
   
   /**
    * The application interface provides several application-level
@@ -166,5 +167,6 @@ namespace IsoRealms {
     virtual HatHandler& getHatHandler() = 0;
 
     virtual void mainThreadCleanUp(std::function<void()> function) = 0;
+    virtual const PropertyData& getPropertyData(const std::string& key) const = 0;
   };
 }

@@ -569,8 +569,6 @@ namespace IsoRealms {
 
     std::vector<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
 
-    PropertyData cMissingData;
-
     bool isModuleLoaded(const std::string& name) const;
     std::vector<std::unique_ptr<JSONDocument>> loadResources(IOptions& options, ProjectFile& file);
     Module* getModule(const std::string& name);

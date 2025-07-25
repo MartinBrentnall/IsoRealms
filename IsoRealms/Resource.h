@@ -200,7 +200,6 @@ namespace IsoRealms {
     std::string cResourceDataPath;
     RESOURCE cResourceHandle;
     ResourceAssetRegistry cAssetRegistry;
-    std::map<std::string, std::string> cPropertyHelp;
   };
 
   template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";

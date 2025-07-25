@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "AppModules": {"name": "App Modules", "description": "View and manage modules used by this application.  Modules are the building blocks of IsoRealms; they provide the engine with functionality that allows it to do useful things."},
+    "Module": {"name": "Module", "description": "A module"},
+    "AppFileStructure": {"name": "App File Structure", "description": "View and manage the file structure of this application.  IsoRealms Applications can be spread across multiple files in order to facilitate reusable functionality."},
+    "OnInitialisation": {"name": "On Initialisation", "description": "Action to perform when the application is loaded."},
+    "OnReset": {"name": "On Reset", "description": "Action to perform when the application is reset."},
+    "OnStart": {"name": "On Start", "description": "Action to perform when the application is started."},
+    "OnQuit": {"name": "On Quit", "description": "Action to perform when the application is quit."},
+    "InputHandler": {"name": "Input Handler", "description": "The specified input handler will handle input for this application."},
+    "Display": {"name": "Display", "description": "The specified display will be shown by this application."},
+    "DefaultEditor": {"name": "Default Editor", "description": "The specified default editor will be loaded when editing this application.  Note that this property has no impact on the runtime of the application."},
+    "File": {"name": "File", "description": "A file in which to data is stored for this application."},
+    "Description": {"name": "Description", "description": "Here you can describe the purpose of this file."},
+    "AllowModifications": {"name": "Allow Modifications", "description": "Specifies whether modifications are allowed to this file.  If modifications are not allowed, then resources owned by this file cannot be edited without being overridden (copied to the main application file)"},
+    "Inclusion": {"name": "Inclusion", "description": "Another file that's included within this one."}
+  }
+}

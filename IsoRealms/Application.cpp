@@ -23,13 +23,15 @@
 namespace IsoRealms {
   const std::string Application::JSON_FULL_SCREEN = "fullScreen";
   const std::string Application::JSON_HEIGHT      = "height";
+  const std::string Application::JSON_PROPERTIES  = "properties";
   const std::string Application::JSON_SETTINGS    = "settings";
   const std::string Application::JSON_WIDTH       = "width";
 
   const std::string Application::FILENAME_SETTINGS     = "settings.json";
 
   Application::Application() :
-            cReleaseThreads(false) {
+            cReleaseThreads(false),
+            cPropertyMissing("TODO: Missing application property name", "TODO: Missing application property description") {
 
     // Enable game controller support
 //     SDL_JoystickEventState(SDL_ENABLE);
@@ -83,6 +85,34 @@ namespace IsoRealms {
       cSelectedResolution = 0;
     }
 
+
+    // Load application metadata.
+    std::locale mLocale("");
+    std::string mMetadataPath = "Metadata/IsoRealms." + mLocale.name();
+    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
+    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                                               ? mLastExtensionIndex
+                                               : mLastDashIndex;
+    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
+      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
+      mLastExtensionIndex = mMetadataPath.find_last_of('.');
+      mLastDashIndex = mMetadataPath.find_last_of('_');
+      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                          ? mLastExtensionIndex
+                          : mLastDashIndex;
+    }
+
+    if (!System::fileExists(mMetadataPath + ".json", false)) {
+      mMetadataPath = "Metadata/IsoRealms.en";
+    }
+    JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+    JSONObject mPropertiesObject = mMetadataDocument.getObject(JSON_PROPERTIES);
+    for (JSONThing mPropertiesThing : mPropertiesObject) {
+      std::string mPropertyID = mPropertiesThing.getName();
+      JSONObject mPropertyObject = mPropertiesThing.getValue();
+      cPropertyHelp.emplace(mPropertyID, std::make_unique<PropertyData>(mPropertyObject));
+    }
     resizeScreen();
   }
 
@@ -379,5 +409,10 @@ namespace IsoRealms {
   void Application::mainThreadCleanUp(std::function<void()> function) {
     std::lock_guard<std::mutex> mLockGuard(cCleanUpTaskMutex);
     cMainThreadCleanUpTasks.push(function);
+  }
+
+  const PropertyData& Application::getPropertyData(const std::string& key) const {
+    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
+    return mIterator == cPropertyHelp.end() ? cPropertyMissing : *mIterator->second;
   }
 }
