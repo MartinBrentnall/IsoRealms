@@ -60,7 +60,7 @@ namespace IsoRealms {
     void createPropertyNativeInteger(        const std::string& metadataKey, std::function<int()>          getter, std::function<bool(int)>                setter,             std::function<void()> removeFunction = nullptr);
     void createPropertyNativeString(         const std::string& metadataKey, std::function<std::string()>  getter, std::function<bool(const std::string&)> setter,             std::function<void()> removeFunction = nullptr);
     void createPropertyNativeUnsignedInteger(const std::string& metadataKey, std::function<unsigned int()> getter, std::function<bool(unsigned int)>       setter,             std::function<void()> removeFunction = nullptr);
-    void createPropertyStruct(               const std::string& metadataKey, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr);
+    void createPropertyStruct(               const std::string& metadataKey, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr);
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC> void createPropertyArray(const std::string& metadataKey, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
       for (const auto& mElement : container) {

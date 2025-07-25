@@ -310,6 +310,7 @@ namespace IsoRealms {
       mModule->loadResources(mModuleObject, mModuleOptions, &file);
     }
 
+    file.setDescription(mProjectObject);
     for (JSONObject mIncludeObject : mProjectObject.getArray(JSON_INCLUDE)) {
       ProjectFile* mIncludedProject = file.cInclusions.emplace_back(std::make_unique<ProjectFile>(*this, mIncludeObject)).get();
       std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(options, *mIncludedProject);
@@ -445,8 +446,7 @@ namespace IsoRealms {
     if (file.cFile.isSet() && file.cFile.isUser()) {
       JSONDocument mJSONDocument;
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
-      JSONArray mIncludeArray = mProjectObject.addArray(JSON_INCLUDE);
-      file.save(mIncludeArray);
+      file.save(mProjectObject);
 
       // Save project used assets
       cDefScreen.save(mProjectObject, JSON_SCREEN, &file.cFile);
@@ -757,10 +757,10 @@ namespace IsoRealms {
   }
 
   void Project::getProperties(PropertyMaker& propertyMaker) {
-    propertyMaker.createPropertyStruct("AppModules", "Edit...", [this, &propertyMaker]() {
+    propertyMaker.createPropertyStruct("AppModules", "Edit...", [this](PropertyMaker& propertyMaker) {
       unsigned int mIndex = 1;
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        propertyMaker.createPropertyStruct("Module", mModule->getName(), [this, &mModule]() {
+        propertyMaker.createPropertyStruct("Module", mModule->getName(), [this, &mModule](PropertyMaker& propertyMaker) {
           return mModule->getProperties();
         }, [this, &mModule]() {
           Utils::removeElementUnique(cModules, mModule.get());
@@ -771,7 +771,7 @@ namespace IsoRealms {
         loadModule(value);
       });
     });
-    propertyMaker.createPropertyStruct("AppFileStructure", "Edit...", [this, &propertyMaker]() {
+    propertyMaker.createPropertyStruct("AppFileStructure", "Edit...", [this](PropertyMaker& propertyMaker) {
       cProjectFile.getProperties(propertyMaker, *this, false);
     });
     cDefInitAction.getProperty(propertyMaker, "On Initialisation");

@@ -67,9 +67,9 @@ namespace IsoRealms::Basics {
   }
 
   void Function::getProperties(PropertyMaker& owner) {
-    owner.createPropertyStruct("Bindings", "Edit...", [this, &owner]() {
+    owner.createPropertyStruct("Bindings", "Edit...", [this](PropertyMaker& owner) {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding, &owner]() {
+        owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding](PropertyMaker& owner) {
           return mBinding->getProperties(owner);
         }, [this, &mBinding]() {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
@@ -77,16 +77,16 @@ namespace IsoRealms::Basics {
       }
       owner.createPropertyAdd("Binding", "New...", [this, &owner]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
-        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding, &owner]() {
+        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding](PropertyMaker& owner) {
           return mNewBinding->getProperties(owner);
         }, [this, mNewBinding]() {
           Utils::removeElementUnique(cDefBindings, mNewBinding);
         });
       });
     });
-    owner.createPropertyStruct("Arguments", "Edit...", [this, &owner]() {
+    owner.createPropertyStruct("Arguments", "Edit...", [this](PropertyMaker& owner) {
       for (std::unique_ptr<ArgumentDefinition>& mArgumentDefinition : cDefArgumentDefinitions) {
-        owner.createPropertyStruct("Argument", mArgumentDefinition->getName(), [this, &owner, &mArgumentDefinition]() {
+        owner.createPropertyStruct("Argument", mArgumentDefinition->getName(), [this, &mArgumentDefinition](PropertyMaker& owner) {
           return mArgumentDefinition->getProperties(owner, *this);
         }, [this, &mArgumentDefinition]() {
           Utils::removeElementUnique(cDefArgumentDefinitions, mArgumentDefinition.get());
@@ -94,7 +94,7 @@ namespace IsoRealms::Basics {
       }
       owner.createPropertyAdd("Argument", "New...", [this, &owner]() {
         ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(cProject, *this, getNextAvailableName("newArgument"))).get();
-        return owner.createPropertyStruct("Argument", mNewArgumentDefinition->getName(), [this, &owner, mNewArgumentDefinition]() {
+        return owner.createPropertyStruct("Argument", mNewArgumentDefinition->getName(), [this, mNewArgumentDefinition](PropertyMaker& owner) {
           return mNewArgumentDefinition->getProperties(owner, *this);
         }, [this, mNewArgumentDefinition]() {
           Utils::removeElementUnique(cDefArgumentDefinitions, mNewArgumentDefinition);
@@ -126,9 +126,9 @@ namespace IsoRealms::Basics {
   }
 
   void Function::getScriptProperties(PropertyMaker& owner) {
-    owner.createPropertyStruct("Bindings", "Edit...", [this, &owner]() {
+    owner.createPropertyStruct("Bindings", "Edit...", [this](PropertyMaker& owner) {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        owner.createPropertyStruct("Binding", mBinding->getName(), [&owner, &mBinding]() {
+        owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding](PropertyMaker& owner) {
           return mBinding->getProperties(owner);
         }, [this, &mBinding]() {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
@@ -136,7 +136,7 @@ namespace IsoRealms::Basics {
       }
       owner.createPropertyAdd("Binding", "New...", [this, &owner]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
-        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [&owner, mNewBinding]() {
+        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding](PropertyMaker& owner) {
           return mNewBinding->getProperties(owner);
         }, [this, mNewBinding]() {
           Utils::removeElementUnique(cDefBindings, mNewBinding);

@@ -98,7 +98,7 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeBoolean("Loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
     owner.createPropertyAsset<Float>( "Speed",   cDefSpeed);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      owner.createPropertyStruct("Instance", mEntry.first, [this, &owner, &mEntry]() {
+      owner.createPropertyStruct("Instance", mEntry.first, [this, &mEntry](PropertyMaker& owner) {
         return mEntry.second->getProperties(owner);
       }, [this, &mEntry]() {
         cDefInstances.erase(mEntry.first);
@@ -108,7 +108,7 @@ namespace IsoRealms::Basics {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       // mInstance->registerAssets(assets, mKey);
-      return owner.createPropertyStruct("Instance", "Edit...", [this, &owner, &mInstance]() {
+      return owner.createPropertyStruct("Instance", "Edit...", [this, &mInstance](PropertyMaker& owner) {
         return mInstance->getProperties(owner);
       }, [this, mKey]() {
         cDefInstances.erase(mKey);

@@ -85,7 +85,7 @@ namespace IsoRealms::Basics {
 
   void DigitalInput::getProperties(PropertyMaker& owner) {
     for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
-      owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput, &owner]() {
+      owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput](PropertyMaker& owner) {
         return mInput->getProperties(owner);
       }, [this, &mInput]() {
         Utils::removeElementUnique(cDefMapping, mInput.get());
@@ -95,7 +95,7 @@ namespace IsoRealms::Basics {
     owner.createPropertyAdd("Mapping", "Add...", [this, &owner]() {
       cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
       std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
-      return owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput, &owner]() {
+      return owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput](PropertyMaker& owner) {
         return mInput->getProperties(owner);
       }, [this, &mInput]() {
         Utils::removeElementUnique(cDefMapping, mInput.get());

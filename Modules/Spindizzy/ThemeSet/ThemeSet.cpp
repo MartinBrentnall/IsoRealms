@@ -51,7 +51,7 @@ namespace IsoRealms::Spindizzy {
   void ThemeSet::getProperties(PropertyMaker& owner) {
     
     // Texture elements of each theme in this set.
-    owner.createPropertyStruct("TextureElements", "Edit...", [this, &owner]() {
+    owner.createPropertyStruct("TextureElements", "Edit...", [this](PropertyMaker& owner) {
       for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
         createTextureElementProperty(owner, mTexture.second.get());
       }
@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     });
     
     // Colour elements of each theme in this set.
-    owner.createPropertyStruct("ColourElements", "Edit...", [this, &owner]() {
+    owner.createPropertyStruct("ColourElements", "Edit...", [this](PropertyMaker& owner) {
       for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
         createColourElementProperty(owner, mColour.second.get());
       }
@@ -73,10 +73,10 @@ namespace IsoRealms::Spindizzy {
     });
     
     // Actual themes in this set.
-    owner.createPropertyStruct("Themes", "Edit...", [this, &owner]() {
+    owner.createPropertyStruct("Themes", "Edit...", [this](PropertyMaker& owner) {
       for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
         Theme* mExistingTheme = mTheme.second.get();
-        owner.createPropertyStruct("Theme", mTheme.first, [this, &owner, mExistingTheme]() {
+        owner.createPropertyStruct("Theme", mTheme.first, [this, mExistingTheme](PropertyMaker& owner) {
           return mExistingTheme->getProperties(owner);
         });
       }
@@ -84,7 +84,7 @@ namespace IsoRealms::Spindizzy {
       owner.createPropertyAdd("Theme", "Add...",  [this, &owner]() {
         std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
         Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(cSpindizzy.getProject(), *this)).first->second.get();
-        return owner.createPropertyStruct("Theme", mNewThemeName, [this, &owner, mNewTheme]() {
+        return owner.createPropertyStruct("Theme", mNewThemeName, [this, mNewTheme](PropertyMaker& owner) {
           return mNewTheme->getProperties(owner);
         });
       });

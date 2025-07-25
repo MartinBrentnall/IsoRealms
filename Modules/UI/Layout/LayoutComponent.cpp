@@ -299,10 +299,10 @@ namespace IsoRealms::UI {
   void LayoutComponent::getProperties(PropertyMaker& owner) {
     owner.createPropertyNativeString( "Name",      [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl; return true;});
     owner.createPropertyAsset<Screen>("Component", cDefScreen);
-    owner.createPropertyStruct(       "Left",      "Edit...", [this, &owner]() {return cDefLeftEdge.getProperties(owner);});
-    owner.createPropertyStruct(       "Right",     "Edit...", [this, &owner]() {return cDefRightEdge.getProperties(owner);});
-    owner.createPropertyStruct(       "Top",       "Edit...", [this, &owner]() {return cDefTopEdge.getProperties(owner);});
-    owner.createPropertyStruct(       "Bottom",    "Edit...", [this, &owner]() {return cDefBottomEdge.getProperties(owner);});
+    owner.createPropertyStruct(       "Left",      "Edit...", [this](PropertyMaker& owner) {return cDefLeftEdge.getProperties(owner);});
+    owner.createPropertyStruct(       "Right",     "Edit...", [this](PropertyMaker& owner) {return cDefRightEdge.getProperties(owner);});
+    owner.createPropertyStruct(       "Top",       "Edit...", [this](PropertyMaker& owner) {return cDefTopEdge.getProperties(owner);});
+    owner.createPropertyStruct(       "Bottom",    "Edit...", [this](PropertyMaker& owner) {return cDefBottomEdge.getProperties(owner);});
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {

@@ -242,11 +242,11 @@ namespace IsoRealms {
     }
   }
 
-  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void()> propertyFetcher) {
+  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(PropertyMaker&)> propertyFetcher) {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, &propertyFetcher](PropertyMaker& owner) {
-      propertyFetcher();
+    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](PropertyMaker& owner) {
+      propertyFetcher(owner);
     }, name, 0.75f, 0.5f, 1.0f));
   }
   

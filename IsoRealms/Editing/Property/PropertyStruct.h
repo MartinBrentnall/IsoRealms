@@ -33,7 +33,7 @@ namespace IsoRealms {
   
   class PropertyStruct : public Property {
     public:
-    PropertyStruct(PropertyMaker& owner, const PropertyData& data, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction = nullptr);
+    PropertyStruct(PropertyMaker& owner, const PropertyData& data, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr);
     
     /************************\
      * Implements IProperty *
@@ -46,7 +46,7 @@ namespace IsoRealms {
 
     private:
     PropertyMaker& cPropertyOwner;
-    std::function<void()> cSubProperties;
+    std::function<void(PropertyMaker&)> cSubProperties;
     std::string cValue;
   };
 }

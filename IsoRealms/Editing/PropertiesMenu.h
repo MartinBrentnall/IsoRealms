@@ -50,7 +50,7 @@ namespace IsoRealms {
      * Implements IPropertyManager *
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
-    void openProperties(IResourceData& owner, const std::string& name, std::function<void()> propertyFetcher) override;
+    void openProperties(IResourceData& owner, const std::string& name, std::function<void(PropertyMaker&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
     void refreshProperties() override;
@@ -64,7 +64,7 @@ namespace IsoRealms {
     };
 
     PropertyMaker cPropertyMaker;
-    std::function<void(PropertyMaker& owner)> cPropertyFetcher;
+    std::function<void(PropertyMaker&)> cPropertyFetcher;
     
     std::unique_ptr<IPropertyEditor> cEditingProperty;
     std::unique_ptr<IPropertyEditor> cClosingProperty;

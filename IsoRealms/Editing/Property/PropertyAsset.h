@@ -88,8 +88,8 @@ namespace IsoRealms {
     }
     
     void configure(IPropertyManager& manager) override {
-      manager.openProperties(cResourceData, getPropertyName(), [this]() {
-        cAsset.getAssetProperties(cPropertyOwner);
+      manager.openProperties(cResourceData, getPropertyName(), [this](PropertyMaker& owner) {
+        cAsset.getAssetProperties(owner);
       });
     }
   

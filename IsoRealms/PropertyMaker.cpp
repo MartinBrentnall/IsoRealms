@@ -94,7 +94,7 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cParent.getPropertyData(metadataKey), getter, setter, removeFunction));
   }
   
-  void PropertyMaker::createPropertyStruct(const std::string& metadataKey, const std::string& value, std::function<void()> subProperties, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyStruct(const std::string& metadataKey, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction) {
     cProperties.addProperty(std::make_unique<PropertyStruct>(*this, cParent.getPropertyData(metadataKey), value, subProperties, removeFunction));
   }
   
