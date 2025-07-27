@@ -49,7 +49,8 @@ namespace IsoRealms::Spindizzy {
     std::string getElement(ThemeTexture* themeTexture);
     std::string getElement(ThemeColour* themeColour);
     std::string getName(Theme* theme);
-    bool setName(Theme& theme, const std::string& name);
+    void setName(Theme& theme, const std::string& name);
+    bool isNameAllowed(Theme& theme, const std::string& name);
     ThemeTexture* getTexture(const std::string& type);
     ThemeColour* getColour(const std::string& type);
     Theme* getTheme(const std::string& name);

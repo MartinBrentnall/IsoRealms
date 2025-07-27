@@ -532,18 +532,18 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Spindizzy::getProperties() {
-//     owner.createPropertyNativeInteger("DefaultZoneWidth",    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value; return true;});
-//     owner.createPropertyNativeInteger("DefaultZoneLength",   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value; return true;});
-//     owner.createPropertyNativeInteger("DefaultZoneHeight",   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value; return true;});
+//     owner.createPropertyNativeInteger("DefaultZoneWidth",    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value;});
+//     owner.createPropertyNativeInteger("DefaultZoneLength",   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value;});
+//     owner.createPropertyNativeInteger("DefaultZoneHeight",   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value;});
 // //    owner.createPropertyAsset<ZoneType>("DefaultZoneType", *cAutomaticZoneManagementType);
 // //    owner.createPropertyAsset<ThemeSet>("DefaultZoneTheme", *cDefaultThemeSet);
 //     owner.createPropertyAsset<WorldEditorTool>("DefaultEditorTool", cDefaultWorldEditorTool);
-//     owner.createPropertyNativeInteger("WorldWestBoundary",   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value; return true;});
-//     owner.createPropertyNativeInteger("WorldEastBoundary",   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value; return true;});
-//     owner.createPropertyNativeInteger("WorldSouthBoundary",  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value; return true;});
-//     owner.createPropertyNativeInteger("WorldNorthBoundary",  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value; return true;});
-//     owner.createPropertyNativeInteger("WorldDepthBoundary",  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value; return true;});
-//     owner.createPropertyNativeInteger("WorldHeightBoundary", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value; return true;});
+//     owner.createPropertyNativeInteger("WorldWestBoundary",   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value;});
+//     owner.createPropertyNativeInteger("WorldEastBoundary",   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value;});
+//     owner.createPropertyNativeInteger("WorldSouthBoundary",  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value;});
+//     owner.createPropertyNativeInteger("WorldNorthBoundary",  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value;});
+//     owner.createPropertyNativeInteger("WorldDepthBoundary",  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value;});
+//     owner.createPropertyNativeInteger("WorldHeightBoundary", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value;});
 //     for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
 //       owner.createPropertyAsset<WorldEditorTool>("WorldEditingTool", *cAvailableWorldEditorTools[i].get(), [this, i]() {
 //         cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);

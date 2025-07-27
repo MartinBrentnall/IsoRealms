@@ -161,7 +161,7 @@ namespace IsoRealms::UI {
 
   void StringTime::getAssetProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Integer>("Value",        cDefValue);
-    owner.createPropertyNativeString(  "FormatString", [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString(); return true;});
+    owner.createPropertyNativeString(  "FormatString", [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();});
   }
 
   bool StringTime::isDefaultConfiguration() const {

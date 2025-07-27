@@ -161,11 +161,11 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemSlider::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value; return true;});
-    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value; return true;});
+    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
+    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
     owner.createPropertyNativeFloat(  "Minimum",  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
     owner.createPropertyNativeFloat(  "Maximum",  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;});
-    owner.createPropertyNativeInteger("Steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value; return true;});
+    owner.createPropertyNativeInteger("Steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;});
     owner.createPropertyAsset<Action>("OnChange", cDefValueChangedAction);
   }
 

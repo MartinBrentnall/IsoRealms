@@ -85,9 +85,9 @@ namespace IsoRealms::UI {
     owner.createPropertyNativeFloat(  "FontSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
     owner.createPropertyNativeFloat(  "ShadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
     owner.createPropertyAsset<Colour>("SelectionColour", cDefSelectionColour);
-    owner.createPropertyNativeString( "Message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value; return true;});
-    owner.createPropertyNativeString( "RejectLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value; return true;});
-    owner.createPropertyNativeString( "AcceptLabel",     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value; return true;});
+    owner.createPropertyNativeString( "Message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
+    owner.createPropertyNativeString( "RejectLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
+    owner.createPropertyNativeString( "AcceptLabel",     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
     owner.createPropertyAsset<Action>("OnRejection",     cDefNegativeAction);
     owner.createPropertyAsset<Action>("OnAcceptance",    cDefPositiveAction);
   }

@@ -65,7 +65,7 @@ namespace IsoRealms {
 
   void ProjectFile::getProperties(PropertyMaker& owner, Project& project, bool inclusion) {
     owner.createPropertyAsset<File>("File", cFile);
-    owner.createPropertyNativeString("Description", [this]() {return cDefDescription;}, [this](const std::string& value) {cDefDescription = value; return true;});
+    owner.createPropertyNativeString("Description", [this]() {return cDefDescription;}, [this](const std::string& value) {cDefDescription = value;});
     if (inclusion && cFile.isUser()) {
       owner.createPropertyNativeBoolean("AllowModifications", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;});
     }

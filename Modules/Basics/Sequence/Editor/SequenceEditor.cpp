@@ -646,12 +646,13 @@ namespace IsoRealms::Basics {
                   owner.createPropertyNativeString(        "Name", [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
+                    cSequence.getTrack(cCursorTrack.value())->setName(name);
+                  }, [this](const std::string& name) {
                     for (int i = 0; i < static_cast<int>(cSequence.getTrackCount()); i++) {
                       if (i != cCursorTrack.value() && name == cSequence.getTrack(i)->getName()) {
                         return false;
                       }
                     }
-                    cSequence.getTrack(cCursorTrack.value())->setName(name);
                     return true;
                   });
                 }, "Track Configuration:", 1.0f, 1.0f, 1.0f));

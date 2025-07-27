@@ -153,7 +153,14 @@ namespace IsoRealms::Basics {
     return Utils::reverseLookupUnique(cDefInstances, instance);
   }
 
-  bool Sequence::setInstanceName(SequenceInstance& instance, const std::string& name) {
+  void Sequence::setInstanceName(SequenceInstance& instance, const std::string& name) {
+    std::string mOldName = getInstanceName(instance);
+    cDefInstances.emplace(name, std::move(cDefInstances[mOldName]));
+    cDefInstances.erase(mOldName);
+    refreshAssetRegistration();
+  }
+
+  bool Sequence::isInstanceNameAllowed(SequenceInstance& instance, const std::string& name) {
     std::string mOldName = getInstanceName(instance);
     if (mOldName == name) {
       return true;
@@ -161,9 +168,6 @@ namespace IsoRealms::Basics {
     if (cDefInstances.find(name) != cDefInstances.end()) {
       return false;
     }
-    cDefInstances.emplace(name, std::move(cDefInstances[mOldName]));
-    cDefInstances.erase(mOldName);
-    refreshAssetRegistration();
     return true;
   }
 

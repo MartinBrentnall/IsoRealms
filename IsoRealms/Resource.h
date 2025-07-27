@@ -81,20 +81,19 @@ namespace IsoRealms {
 
     void getProperties(PropertyMaker& propertyMaker) override {
       propertyMaker.createPropertyNativeString("Name", [this]() {return cName;}, [this](const std::string& value) {
+        // TODO: If the resource belongs to a read-only project file, it should be changed to the main one and an omission should be created in place of the original name.
+        cParent.renameResource(this, value);
+        cParent.renameUserDataDirectory(cName, value);
+        cName = value;
+        cAssetRegistry.setLocalPath(cName);
+        registerAssets();
+      }, [this](const std::string& value) {
         std::set<IResource*> mAllResources = cParent.getResources();
         for (IResource* mResource : mAllResources) {
           if (mResource->getName() == value) {
             return mResource == this;
           }
         }
-
-        // TODO: If the resource belongs to a read-only project file, it should be changed to the main one and an omission should be created in place of the original name.
-
-        cParent.renameResource(this, value);
-        cParent.renameUserDataDirectory(cName, value);
-        cName = value;
-        cAssetRegistry.setLocalPath(cName);
-        registerAssets();
         return true;
       });
       cResourceHandle.getProperties(propertyMaker);

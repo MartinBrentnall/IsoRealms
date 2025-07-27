@@ -82,16 +82,16 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyNativeFloat>(cParent.getPropertyData(metadataKey), *this, getter, validityChecker, setter, removeFunction));
   }
 
-  void PropertyMaker::createPropertyNativeInteger(const std::string& metadataKey, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeInteger>(cParent.getPropertyData(metadataKey), *this, getter, setter, removeFunction));
+  void PropertyMaker::createPropertyNativeInteger(const std::string& metadataKey, std::function<int()> getter, std::function<void(int)> setter, std::function<bool(int)> validityChecker, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeInteger>(cParent.getPropertyData(metadataKey), *this, getter, setter, validityChecker, removeFunction));
   }
 
-  void PropertyMaker::createPropertyNativeString(const std::string& metadataKey, std::function<std::string()> getter, std::function<bool(const std::string&)> setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeString>(cParent.getPropertyData(metadataKey), *this, getter, setter, removeFunction));
+  void PropertyMaker::createPropertyNativeString(const std::string& metadataKey, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeString>(cParent.getPropertyData(metadataKey), *this, getter, setter, validityChecker, removeFunction));
   }
   
-  void PropertyMaker::createPropertyNativeUnsignedInteger(const std::string& metadataKey, std::function<unsigned int()> getter, std::function<bool(unsigned int)> setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cParent.getPropertyData(metadataKey), *this, getter, setter, removeFunction));
+  void PropertyMaker::createPropertyNativeUnsignedInteger(const std::string& metadataKey, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cParent.getPropertyData(metadataKey), *this, getter, setter, validityChecker, removeFunction));
   }
   
   void PropertyMaker::createPropertyStruct(const std::string& metadataKey, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction) {

@@ -168,7 +168,7 @@ namespace IsoRealms::Spindizzy {
   void CameraTransitional::getAssetProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Camera>(        "Start",                   cDefStart);
     owner.createPropertyAsset<Camera>(        "End",                     cDefEnd);
-    owner.createPropertyNativeUnsignedInteger("Duration",                [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value; return true;});
+    owner.createPropertyNativeUnsignedInteger("Duration",                [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
     owner.createPropertyAsset<Action>(        "On Departure from Start", cDefStartDepartureAction);
     owner.createPropertyAsset<Action>(        "On Arrival at End",       cDefEndArrivalAction);
     owner.createPropertyAsset<Action>(        "On Departure from End",   cDefEndDepartureAction);

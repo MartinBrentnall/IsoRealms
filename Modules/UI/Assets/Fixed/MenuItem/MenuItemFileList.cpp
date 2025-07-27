@@ -136,8 +136,8 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::getAssetProperties(PropertyMaker& owner) {
     // TODO: Change this so it uses "File" client asset.
-    owner.createPropertyNativeString( "ID",          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value; return true;});
-    owner.createPropertyNativeString( "Folder",      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value; return true;});
+    owner.createPropertyNativeString( "ID",          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
+    owner.createPropertyNativeString( "Folder",      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
     owner.createPropertyNativeBoolean("UserData",    [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
     owner.createPropertyAsset<Action>("OnSelection", cDefAction);
   }

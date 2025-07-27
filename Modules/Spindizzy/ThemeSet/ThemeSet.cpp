@@ -201,15 +201,17 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  bool ThemeSet::setName(Theme& theme, const std::string& name) {
+  void ThemeSet::setName(Theme& theme, const std::string& name) {
+    std::string mOldName = getName(&theme);
+    cThemes.emplace(name, std::move(cThemes[mOldName]));
+    cThemes.erase(mOldName);
+  }
+
+  bool ThemeSet::isNameAllowed(Theme& theme, const std::string& name) {
     std::map<std::string, std::unique_ptr<Theme>>::iterator i = cThemes.find(name);
     if (i != cThemes.end()) {
       return i->second.get() == &theme;
     }
-
-    std::string mOldName = getName(&theme);
-    cThemes.emplace(name, std::move(cThemes[mOldName]));
-    cThemes.erase(mOldName);
     return true;
   }
   
@@ -356,17 +358,18 @@ namespace IsoRealms::Spindizzy {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
+      // Find existing element and move it.
+      std::string mOldName = getElement(element);
+      cTextures.emplace(value, std::move(cTextures[mOldName]));
+      cTextures.erase(mOldName);
+    }, [this, element](const std::string& value) {
+
       // Check the element name is not already in use.
       for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
         if (mTexture.first == value) {
           return mTexture.second.get() == element;
         }
-      }          
-      
-      // Find existing element and move it.
-      std::string mOldName = getElement(element);
-      cTextures.emplace(value, std::move(cTextures[mOldName]));
-      cTextures.erase(mOldName);
+      }
       return true;
     }, [this, element](){
       cTextures.erase(getElement(element));
@@ -378,19 +381,20 @@ namespace IsoRealms::Spindizzy {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
-      // Check the element name is not already in use.
-      for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
-        if (mColour.first == value) {
-          return mColour.second.get() == element;
-        }
-      }          
-      
       // Find existing element and move it.
       std::string mOldName = getElement(element);
       cColours.emplace(value, std::move(cColours[mOldName]));
       cColours.erase(mOldName);
+    }, [this, element](const std::string& value) {
+      for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
+        if (mColour.first == value) {
+          return mColour.second.get() == element;
+        }
+      }
       return true;
     }, [this, element](){
+
+      // Check the element name is not already in use.
       cColours.erase(getElement(element));
     });
   }

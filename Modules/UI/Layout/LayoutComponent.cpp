@@ -297,7 +297,7 @@ namespace IsoRealms::UI {
   }
     
   void LayoutComponent::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString( "Name",      [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl; return true;});
+    owner.createPropertyNativeString( "Name",      [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl;});
     owner.createPropertyAsset<Screen>("Component", cDefScreen);
     owner.createPropertyStruct(       "Left",      "Edit...", [this](PropertyMaker& owner) {return cDefLeftEdge.getProperties(owner);});
     owner.createPropertyStruct(       "Right",     "Edit...", [this](PropertyMaker& owner) {return cDefRightEdge.getProperties(owner);});

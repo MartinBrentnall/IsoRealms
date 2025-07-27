@@ -590,10 +590,10 @@ namespace IsoRealms::Spindizzy {
         cDefBottomPause = value ? 1500 : 0;
       });
     } else {
-      owner.createPropertyNativeInteger("BottomPause", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value; return true;});
-      owner.createPropertyNativeInteger("TopPause",    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value; return true;});
-      owner.createPropertyNativeInteger("UpSpeed",     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value; return true;});
-      owner.createPropertyNativeInteger("DownSpeed",   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value; return true;});
+      owner.createPropertyNativeInteger("BottomPause", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value;});
+      owner.createPropertyNativeInteger("TopPause",    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value;});
+      owner.createPropertyNativeInteger("UpSpeed",     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value;});
+      owner.createPropertyNativeInteger("DownSpeed",   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value;});
     }
   }
 

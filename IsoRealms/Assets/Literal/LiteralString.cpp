@@ -39,7 +39,7 @@ namespace IsoRealms {
   }
 
   void LiteralString::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("Value", [this]() {return cValue;}, [this](const std::string& value) {cValue = value; return true;});
+    owner.createPropertyNativeString("Value", [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
   }
 
   bool LiteralString::isDefaultConfiguration() const {

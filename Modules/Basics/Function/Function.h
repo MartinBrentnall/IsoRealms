@@ -57,8 +57,10 @@ namespace IsoRealms::Basics {
     void getScriptProperties(PropertyMaker& owner);
     IProject& getProject() const;
     IResourceData& getResourceData() const;
-    bool setBindingName(Binding& binding, const std::string& name);
-    bool setArgumentDefinitionName(ArgumentDefinition& argumentDefinition, const std::string& name);
+    void setBindingName(Binding& binding, const std::string& name);
+    bool isBindingNameAllowed(Binding& binding, const std::string& name);
+    void setArgumentDefinitionName(ArgumentDefinition& argumentDefinition, const std::string& name);
+    bool isArgumentDefinitionNameAllowed(ArgumentDefinition& argumentDefinition, const std::string& name);
     Binding* getBinding(const std::string& name);
     ArgumentDefinition* getArgumentDefinition(const std::string& name);
     std::string getNextAvailableName(const std::string& name);

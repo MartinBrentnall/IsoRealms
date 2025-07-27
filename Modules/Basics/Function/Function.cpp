@@ -154,22 +154,22 @@ namespace IsoRealms::Basics {
     return cResourceData;
   }
 
-  bool Function::setBindingName(Binding& binding, const std::string& name) {
-    Binding* mBinding = getBinding(name);
-    if (mBinding != nullptr && mBinding != &binding) {
-      return false;
-    }
+  void Function::setBindingName(Binding& binding, const std::string& name) {
     binding.setName(name);
-    return true;
   }
 
-  bool Function::setArgumentDefinitionName(ArgumentDefinition& argumentDefinition, const std::string& name) {
-    ArgumentDefinition* mArgumentDefinition = getArgumentDefinition(name);
-    if (mArgumentDefinition != nullptr && mArgumentDefinition != &argumentDefinition) {
-      return false;
-    }
+  bool Function::isBindingNameAllowed(Binding& binding, const std::string& name) {
+    Binding* mBinding = getBinding(name);
+    return mBinding == nullptr || mBinding == &binding;
+  }
+
+  void Function::setArgumentDefinitionName(ArgumentDefinition& argumentDefinition, const std::string& name) {
     argumentDefinition.setName(name);
-    return true;
+  }
+
+  bool Function::isArgumentDefinitionNameAllowed(ArgumentDefinition& argumentDefinition, const std::string& name) {
+    ArgumentDefinition* mArgumentDefinition = getArgumentDefinition(name);
+    return mArgumentDefinition == nullptr || mArgumentDefinition == &argumentDefinition;
   }
 
   Binding* Function::getBinding(const std::string& name) {

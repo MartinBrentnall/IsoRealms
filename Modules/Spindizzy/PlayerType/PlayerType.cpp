@@ -160,7 +160,7 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Action>( "OnWallBounce",         cDefWallBounceAction);
 
     // Misc
-    owner.createPropertyNativeInteger( "RespawnDelay",         [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value; return true;});
+    owner.createPropertyNativeInteger( "RespawnDelay",         [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;});
     owner.createPropertyAsset<Float>(  "ViewOrientation",      cDefOrientation);
   }
 

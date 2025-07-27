@@ -108,6 +108,6 @@ namespace IsoRealms::Basics {
   
   void Binding::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<IsoRealms::Binding>("What", cDefValue);
-    owner.createPropertyNativeString(             "Name", [this]() {return cDefName;}, [this](const std::string& value) {return cParent.setBindingName(*this, value);});
+    owner.createPropertyNativeString(             "Name", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
   }
 }

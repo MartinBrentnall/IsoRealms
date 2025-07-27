@@ -183,9 +183,9 @@ namespace IsoRealms::Hue {
   }
   
   void HueManager::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("Address", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value; return true;});
-    owner.createPropertyNativeString("User",    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value; return true;});
-    owner.createPropertyNativeString("PSK",     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value; return true;});
+    owner.createPropertyNativeString("Address", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
+    owner.createPropertyNativeString("User",    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
+    owner.createPropertyNativeString("PSK",     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
     for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
       owner.createPropertyAsset<Colour>("Bulb", mBulb->getColour(), [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());

@@ -57,7 +57,8 @@ namespace IsoRealms::Basics {
     bool isPlaying() const;
     bool isLooped() const;
     std::string getInstanceName(SequenceInstance& instance) const;
-    bool setInstanceName(SequenceInstance& instance, const std::string& name);
+    void setInstanceName(SequenceInstance& instance, const std::string& name);
+    bool isInstanceNameAllowed(SequenceInstance& instance, const std::string& name);
 
     /************************\
      * Implements IEditable *

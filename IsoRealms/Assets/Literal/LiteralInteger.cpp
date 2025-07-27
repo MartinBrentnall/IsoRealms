@@ -42,7 +42,7 @@ namespace IsoRealms {
   }
 
   void LiteralInteger::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeInteger("Value", [this]() {return cValue;}, [this](int value) {cValue = value; return true;});
+    owner.createPropertyNativeInteger("Value", [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 
   bool LiteralInteger::isDefaultConfiguration() const {

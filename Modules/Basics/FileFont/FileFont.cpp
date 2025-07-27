@@ -163,7 +163,7 @@ namespace IsoRealms::Basics {
 
   void FileFont::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<File>(  "File",        cDefFilename);
-    owner.createPropertyNativeInteger("Detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;});
+    owner.createPropertyNativeInteger("Detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;});
     owner.createPropertyNativeFloat(  "Scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
     owner.createPropertyNativeFloat(  "XOffset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
     owner.createPropertyNativeFloat(  "YOffset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
