@@ -50,7 +50,7 @@ namespace IsoRealms::UI {
   }
   
   void LayoutOffsetAbsolute::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;});
+    owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 
   bool LayoutOffsetAbsolute::isDefaultConfiguration() const {

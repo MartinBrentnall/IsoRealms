@@ -104,9 +104,9 @@ namespace IsoRealms::Basics {
 
   void ProjectConfigurer::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Font>(  "Font",         cDefFont);
-    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;});
+    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
     owner.createPropertyAsset<Font>(  "CodeFont",     cDefCodeFont);
-    owner.createPropertyNativeFloat(  "CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value; return true;});
+    owner.createPropertyNativeFloat(  "CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
     owner.createPropertyAsset<Action>("OnExit",       cDefExitAction);
     owner.createPropertyAsset<Action>("OnEditor",     cDefEditorAction);
     // TODO: Input configuration

@@ -63,7 +63,7 @@ namespace IsoRealms::UI {
     owner.createPropertyAsset<Font>(  "Font",         cDefFont);
     owner.createPropertyList(         "Alignment",    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
     owner.createPropertyAsset<Colour>("Colour",       cDefColour);
-    owner.createPropertyNativeFloat(  "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;});
+    owner.createPropertyNativeFloat(  "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
   }
   
   bool ScreenText::isDefaultConfiguration() const {

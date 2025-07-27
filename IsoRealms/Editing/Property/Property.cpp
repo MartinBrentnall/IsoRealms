@@ -19,15 +19,29 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  Property::Property(const PropertyData& data, std::function<void()> removeFunction) :
+  Property::Property(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<void()> removeFunction) :
             cData(data),
+            cConfirmationManager(resourceAccessManager),
             cRemoveFunction(removeFunction) {
   }
 
   std::string Property::getPropertyName() const {
     return cData.getName();
   }
-  
+
+  void Property::confirmAccess(std::function<void()> confirm, std::function<void()> cancel) {
+    if (cConfirmationManager.isResourceReadOnly()) {
+      cConfirmationManager.confirm([this, confirm]() {
+        cConfirmationManager.promoteResourceToProject();
+        confirm();
+      }, [this, cancel]() {
+        cancel();
+      });
+    } else {
+      confirm();
+    }
+  }
+
   bool Property::isRemovable() const {
     return cRemoveFunction != nullptr;
   }

@@ -21,8 +21,8 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyNativeInteger::PropertyNativeInteger(const PropertyData& data, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) :
-            PropertyInputField(data, Utils::toString(getter()), removeFunction),
+  PropertyNativeInteger::PropertyNativeInteger(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<int()> getter, std::function<bool(int)> setter, std::function<void()> removeFunction) :
+            PropertyInputField(data, resourceAccessManager, Utils::toString(getter()), removeFunction),
             cSetter(setter) {
   }
   

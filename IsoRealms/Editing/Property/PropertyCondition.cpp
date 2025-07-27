@@ -30,8 +30,8 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyCondition::PropertyCondition(const PropertyData& data, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) :
-            Property(data, nullptr),
+  PropertyCondition::PropertyCondition(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) :
+            Property(data, resourceAccessManager, nullptr),
             cGetter(getter),
             cSetter(setter),
             cAvailableElements(availableElements) {

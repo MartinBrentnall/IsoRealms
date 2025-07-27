@@ -38,7 +38,7 @@ namespace IsoRealms {
 
   class PropertyCondition : public Property {
     public:
-    PropertyCondition(const PropertyData& data, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);
+    PropertyCondition(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);
 
     /***********************\
      * Implements Property *

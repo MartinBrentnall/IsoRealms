@@ -18,13 +18,13 @@
  */
 #include "PropertyNativeFloat.h"
 
-#include "IsoRealms/Editing/IConfirmationManager.h"
+#include "IsoRealms/Editing/IResourceAccessManager.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyNativeFloat::PropertyNativeFloat(const PropertyData& data, IConfirmationManager& confirmationManager, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction) :
-            PropertyInputField(data, Utils::toString(getter()), removeFunction),
-            cConfirmationManager(confirmationManager),
+  PropertyNativeFloat::PropertyNativeFloat(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<float()> getter, std::function<bool(float)> validityChecker, std::function<void(float)> setter, std::function<void()> removeFunction) :
+            PropertyInputField(data, resourceAccessManager, Utils::toString(getter()), removeFunction),
+            cValidityChecker(validityChecker),
             cSetter(setter) {
     while (cValue.length() > 3 && cValue[cValue.length() - 1] == '0' && cValue[cValue.length() - 2] != '.') {
       cValue = cValue.substr(0, cValue.length() - 1);
@@ -44,8 +44,12 @@ namespace IsoRealms {
     } catch (std::invalid_argument& e) {
       return false;
     }
-    cConfirmationManager.confirm([this, mFloatValue]() {
-      cConfirmationManager.promoteResourceToProject();
+
+    if (!cValidityChecker) {
+      return false;
+    }
+
+    confirmAccess([this, mFloatValue]() {
       confirm();
       cSetter(mFloatValue);
     }, [this]() {

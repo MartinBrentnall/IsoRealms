@@ -79,13 +79,7 @@ namespace IsoRealms::Spindizzy {
 //    owner.createPropertyAsset<World>(       "World",        cDefWorld); // TODO:
     owner.createPropertyAsset<Camera>(      "Camera",       cDefCamera);
     owner.createPropertyAsset<ZoneViewType>("ZoneViewType", cDefZoneViewType);
-    owner.createPropertyNativeFloat(        "Zoom",         [this]() {return cDefZoom;}, [this](float value) { // TODO: Should this be part of the camera???  e.g. CameraZoom
-      if (value > 0.0f) {
-        cDefZoom = value;
-        return true;
-      }
-      return false;
-    });
+    owner.createPropertyNativeFloat(        "Zoom",         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
   }
   
   void WorldView::updateRuntime(unsigned int milliseconds) {

@@ -132,7 +132,7 @@ namespace IsoRealms::Basics {
   void SequenceInstance::getProperties(PropertyMaker& owner) {
     owner.createPropertyNativeString( "InstanceName", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {return cParent.setInstanceName(*this, value);});
     owner.createPropertyNativeInteger("StartTime",    [this]() {return cDefStartTime;}, [this](int value)   {cDefStartTime = value; return true;});
-    owner.createPropertyNativeFloat(  "Speed",        [this]() {return cDefSpeed;},     [this](float value) {cDefSpeed     = value; std::cout << "SPEED IS " << cDefSpeed << std::endl; return true;});
+    owner.createPropertyNativeFloat(  "Speed",        [this]() {return cDefSpeed;},     [this](float value) {cDefSpeed     = value; std::cout << "SPEED IS " << cDefSpeed << std::endl;});
   }
 
   void SequenceInstance::play() {

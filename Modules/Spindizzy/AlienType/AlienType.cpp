@@ -91,12 +91,12 @@ namespace IsoRealms::Spindizzy {
   void AlienType::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Model>( "Appearance",   cDefModel);
     owner.createPropertyAsset<Vertex>("Target",       cDefTarget);
-    owner.createPropertyNativeFloat(  "Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;});
-    owner.createPropertyNativeFloat(  "Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value; return true;});
-    owner.createPropertyNativeFloat(  "SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;});
-    owner.createPropertyNativeFloat(  "Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;});
-    owner.createPropertyNativeFloat(  "Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;});
-    owner.createPropertyNativeFloat(  "HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;});
+    owner.createPropertyNativeFloat(  "Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
+    owner.createPropertyNativeFloat(  "Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
+    owner.createPropertyNativeFloat(  "SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    owner.createPropertyNativeFloat(  "Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
+    owner.createPropertyNativeFloat(  "Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
+    owner.createPropertyNativeFloat(  "HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
   }
 
   void AlienType::reset() {

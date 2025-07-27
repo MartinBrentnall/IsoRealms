@@ -135,18 +135,18 @@ namespace IsoRealms::Spindizzy {
   void PlayerType::getProperties(PropertyMaker& owner) {
 
     // Dimensions
-    owner.createPropertyNativeFloat(   "Radius",               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value; return true;});
-    owner.createPropertyNativeFloat(   "Height",               [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value; return true;});
+    owner.createPropertyNativeFloat(   "Radius",               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
+    owner.createPropertyNativeFloat(   "Height",               [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
 
     // Physics
-    owner.createPropertyNativeFloat(   "Acceleration",         [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value; return true;});
-    owner.createPropertyNativeFloat(   "WallBounce",           [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value; return true;});
-    owner.createPropertyNativeFloat(   "StepReach",            [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value; return true;});
-    owner.createPropertyNativeFloat(   "HugMomentumThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value; return true;});
+    owner.createPropertyNativeFloat(   "Acceleration",         [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
+    owner.createPropertyNativeFloat(   "WallBounce",           [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;});
+    owner.createPropertyNativeFloat(   "StepReach",            [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;});
+    owner.createPropertyNativeFloat(   "HugMomentumThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
 
     // appearance
     owner.createPropertyAsset<Model>(  "Appearance",           cDefModel);
-    owner.createPropertyNativeFloat(   "SpinSpeed",            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value; return true;});
+    owner.createPropertyNativeFloat(   "SpinSpeed",            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
 
     // Input
     owner.createPropertyAsset<Float>(  "InputXMovement",       cDefInputX);

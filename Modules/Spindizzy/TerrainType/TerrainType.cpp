@@ -132,10 +132,10 @@ namespace IsoRealms::Spindizzy {
   
   
   void TerrainType::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat(          "SurfaceFriction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value; return true;});
-    owner.createPropertyNativeFloat(          "SurfaceGrip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value; return true;});
-    owner.createPropertyNativeFloat(          "SurfaceBounce",       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value; return true;});
-    owner.createPropertyNativeFloat(          "WallBounce",          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value; return true;});
+    owner.createPropertyNativeFloat(          "SurfaceFriction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
+    owner.createPropertyNativeFloat(          "SurfaceGrip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
+    owner.createPropertyNativeFloat(          "SurfaceBounce",       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
+    owner.createPropertyNativeFloat(          "WallBounce",          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;});
     owner.createPropertyNativeBoolean(        "AllowRespawn",        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
     owner.createPropertyNativeBoolean(        "Solid",               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
     owner.createPropertyAsset<Action>(        "OnTouch",             cDefContactAction);

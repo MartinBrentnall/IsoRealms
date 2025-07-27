@@ -22,10 +22,10 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(PropertyMaker& owner, IConfirmationManager& confirmationManager, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
-            Property(data, removeFunction),
+  PropertyList::PropertyList(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+            Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(project, options, getter, setter),
-            cInternalProperty(owner, confirmationManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
+            cInternalProperty(owner, resourceAccessManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
   }
   
   void PropertyList::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {

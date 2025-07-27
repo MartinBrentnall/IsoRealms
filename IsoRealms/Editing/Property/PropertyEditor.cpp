@@ -25,8 +25,8 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyEditor::PropertyEditor(const PropertyData& data, IEditable* editable) :
-            Property(data, nullptr),
+  PropertyEditor::PropertyEditor(const PropertyData& data, IResourceAccessManager& resourceAccessManager, IEditable* editable) :
+            Property(data, resourceAccessManager, nullptr),
             cEditable(editable) {
   }
       

@@ -87,10 +87,10 @@ namespace IsoRealms::UI {
     owner.createPropertyNativeUnsignedInteger("Duration" ,    [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value; return true;});
     owner.createPropertyNativeUnsignedInteger("Spots" ,       [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value; return true;});
     owner.createPropertyNativeUnsignedInteger("SpotSides" ,   [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value; return true;});
-    owner.createPropertyNativeFloat(          "SpotSize",     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value; return true;});
-    owner.createPropertyNativeFloat(          "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value; return true;});
+    owner.createPropertyNativeFloat(          "SpotSize",     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;});
+    owner.createPropertyNativeFloat(          "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;});
     owner.createPropertyAsset<Colour>(        "Colour",       cDefColour);
-    owner.createPropertyNativeFloat(          "RingSize",     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value; return true;});
+    owner.createPropertyNativeFloat(          "RingSize",     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;});
     owner.createPropertyNativeUnsignedInteger("Repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value; return true;});
   }
 

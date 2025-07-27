@@ -99,14 +99,14 @@ namespace IsoRealms {
   }
 
   void Model::getClientProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat("OffsetX", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value; return true;});
-    owner.createPropertyNativeFloat("OffsetY", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value; return true;});
-    owner.createPropertyNativeFloat("OffsetZ", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value; return true;});
-    owner.createPropertyNativeFloat("ScaleX",  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value; return true;});
-    owner.createPropertyNativeFloat("ScaleY",  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value; return true;});
-    owner.createPropertyNativeFloat("ScaleZ",  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value; return true;});
-    owner.createPropertyNativeFloat("Angle",   [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value; return true;});
-    owner.createPropertyNativeFloat("Tilt",    [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value; return true;});
+    owner.createPropertyNativeFloat("OffsetX", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
+    owner.createPropertyNativeFloat("OffsetY", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});
+    owner.createPropertyNativeFloat("OffsetZ", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value;});
+    owner.createPropertyNativeFloat("ScaleX",  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value;});
+    owner.createPropertyNativeFloat("ScaleY",  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value;});
+    owner.createPropertyNativeFloat("ScaleZ",  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value;});
+    owner.createPropertyNativeFloat("Angle",   [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value;});
+    owner.createPropertyNativeFloat("Tilt",    [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value;});
   }
   
   const std::string Model::JSON_OFFSET_X = "offsetX";

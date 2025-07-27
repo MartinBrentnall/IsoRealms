@@ -24,7 +24,7 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "Editing/IConfirmationManager.h"
+#include "Editing/IResourceAccessManager.h"
 #include "Editing/Property/PropertyAsset.h"
 #include "Editing/Property/PropertyOptional.h"
 
@@ -37,7 +37,7 @@ namespace IsoRealms {
   class IPropertyManager;
   class IResourceData;
 
-  class PropertyMaker : public IConfirmationManager {
+  class PropertyMaker : public IResourceAccessManager {
     public:
     PropertyMaker(IApplication& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
 
@@ -56,7 +56,7 @@ namespace IsoRealms {
     void createPropertyKey(                  const std::string& metadataKey, std::function<std::string()>  getter, std::function<void(sf::Keyboard::Key)>  setter,             std::function<void()> removeFunction = nullptr);
     void createPropertyList(                 const std::string& metadataKey, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
     void createPropertyNativeBoolean(        const std::string& metadataKey, std::function<bool()>         getter, std::function<void(bool)>               setter,             std::function<void()> removeFunction = nullptr);
-    void createPropertyNativeFloat(          const std::string& metadataKey, std::function<float()>        getter, std::function<bool(float)>              setter,             std::function<void()> removeFunction = nullptr);
+    void createPropertyNativeFloat(          const std::string& metadataKey, std::function<float()>        getter, std::function<void(float)>              setter,             std::function<bool(float)> validityChecker = [](float) {return true;}, std::function<void()> removeFunction = nullptr);
     void createPropertyNativeInteger(        const std::string& metadataKey, std::function<int()>          getter, std::function<bool(int)>                setter,             std::function<void()> removeFunction = nullptr);
     void createPropertyNativeString(         const std::string& metadataKey, std::function<std::string()>  getter, std::function<bool(const std::string&)> setter,             std::function<void()> removeFunction = nullptr);
     void createPropertyNativeUnsignedInteger(const std::string& metadataKey, std::function<unsigned int()> getter, std::function<bool(unsigned int)>       setter,             std::function<void()> removeFunction = nullptr);
@@ -80,9 +80,10 @@ namespace IsoRealms {
     }
     
     /***********************************\
-     * Implements IConfirmationManager *
+     * Implements IResourceAccessManager *
     \***********************************/
-    bool confirm(std::function<void()> confirm, std::function<void()> cancel) override;
+    void confirm(std::function<void()> confirm, std::function<void()> cancel) override;
+    bool isResourceReadOnly() const override;
     void promoteResourceToProject() override;
 
     private:

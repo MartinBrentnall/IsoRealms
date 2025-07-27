@@ -171,8 +171,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat(  "Gravity",            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value; return true;});
-    owner.createPropertyNativeFloat(  "SlopeEffect",        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value; return true;});
+    owner.createPropertyNativeFloat(  "Gravity",            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
+    owner.createPropertyNativeFloat(  "SlopeEffect",        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
     owner.createPropertyNativeInteger("BounceTime",         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value; return true;});
     owner.createPropertyNativeBoolean("AdvancedProperties", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
     owner.createPropertyEditor(       "WorldLayout",        this);

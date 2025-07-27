@@ -25,11 +25,11 @@
 #include "PropertyInputField.h"
 
 namespace IsoRealms {
-  class IConfirmationManager;
+  class IResourceAccessManager;
 
   class PropertyNativeFloat : public PropertyInputField {
     public:
-    PropertyNativeFloat(const PropertyData& data, IConfirmationManager& confirmationManager, std::function<float()> getter, std::function<bool(float)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyNativeFloat(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<float()> getter, std::function<bool(float)> validityChecker, std::function<void(float)> setter, std::function<void()> removeFunction = nullptr);
 
     protected:
     
@@ -40,7 +40,7 @@ namespace IsoRealms {
     bool confirmValue() override;
 
     private:
-    IConfirmationManager& cConfirmationManager;
-    std::function<bool(float)> cSetter;
+    std::function<bool(float)> cValidityChecker;
+    std::function<void(float)> cSetter;
   };
 }

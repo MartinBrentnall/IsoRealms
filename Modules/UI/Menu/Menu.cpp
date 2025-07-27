@@ -88,8 +88,8 @@ namespace IsoRealms::UI {
   void Menu::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Colour>("Colour",       cDefColour);
     owner.createPropertyAsset<Font>(  "Font",         cDefFont);
-    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value; return true;});
-    owner.createPropertyNativeFloat(  "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value; return true;});
+    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    owner.createPropertyNativeFloat(  "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
     owner.createPropertyAsset<Action>("OnExit",       cDefExitAction);
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
       owner.createPropertyAsset<MenuItem>("MenuItem", *mItem.get());

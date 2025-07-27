@@ -27,7 +27,7 @@ namespace IsoRealms {
 
   class PropertyEditor : public Property {
     public:
-    PropertyEditor(const PropertyData& data, IEditable* editable);
+    PropertyEditor(const PropertyData& data, IResourceAccessManager& resourceAccessManager, IEditable* editable);
       
     /************************\
      * Implements IProperty *

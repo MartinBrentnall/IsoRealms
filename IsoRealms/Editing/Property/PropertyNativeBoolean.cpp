@@ -22,10 +22,10 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyNativeBoolean::PropertyNativeBoolean(PropertyMaker& owner, IConfirmationManager& confirmationManager, const PropertyData& data, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
-            Property(data, removeFunction),
+  PropertyNativeBoolean::PropertyNativeBoolean(PropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
+            Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(setter, project, getter()),
-            cInternalProperty(owner, confirmationManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
+            cInternalProperty(owner, resourceAccessManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
   }
 
   void PropertyNativeBoolean::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {

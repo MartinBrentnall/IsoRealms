@@ -82,8 +82,8 @@ namespace IsoRealms::UI {
 
   void Prompt::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Font>(  "Font",            cDefFont);
-    owner.createPropertyNativeFloat(  "FontSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value; return true;});
-    owner.createPropertyNativeFloat(  "ShadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value; return true;});
+    owner.createPropertyNativeFloat(  "FontSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
+    owner.createPropertyNativeFloat(  "ShadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
     owner.createPropertyAsset<Colour>("SelectionColour", cDefSelectionColour);
     owner.createPropertyNativeString( "Message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value; return true;});
     owner.createPropertyNativeString( "RejectLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value; return true;});

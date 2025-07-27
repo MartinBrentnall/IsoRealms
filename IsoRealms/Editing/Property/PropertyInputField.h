@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class PropertyInputField : public Property {
     public:
-    PropertyInputField(const PropertyData& data, const std::string& value, std::function<void()> removeFunction);
+    PropertyInputField(const PropertyData& data, IResourceAccessManager& resourceAccessManager, const std::string& value, std::function<void()> removeFunction);
       
     /************************\
      * Implements IProperty *

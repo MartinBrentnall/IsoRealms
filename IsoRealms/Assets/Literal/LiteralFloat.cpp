@@ -37,7 +37,7 @@ namespace IsoRealms {
   }
 
   void LiteralFloat::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value; return true;});
+    owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value;});
   }
 
   bool LiteralFloat::isDefaultConfiguration() const {

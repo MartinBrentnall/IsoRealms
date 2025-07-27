@@ -27,7 +27,7 @@
 #include "IsoRealms/AnimatedFloat.h"
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Editing/Choice.h"
-#include "IsoRealms/Editing/IConfirmationManager.h"
+#include "IsoRealms/Editing/IResourceAccessManager.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Editing/UISignalID.h"
 #include "IsoRealms/IApplication.h"
@@ -42,10 +42,9 @@ namespace IsoRealms {
 
   template<class TYPE> class PropertyAsset : public Property {
     public:
-    PropertyAsset(PropertyMaker& owner, IConfirmationManager& confirmationManager, IResourceData& resourceData, const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
-              Property(data, removeFunction),
+    PropertyAsset(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
+              Property(data, resourceAccessManager, removeFunction),
               cPropertyOwner(owner),
-              cConfirmationManager(confirmationManager),
               cResourceData(resourceData),
               cAsset(asset),
               cValueLabel(getValue()) {
@@ -561,11 +560,10 @@ namespace IsoRealms {
         };
 
         void applyChange(const std::string id) {
-          cParent.cParent.cConfirmationManager.confirm([this, &id]() {
+          cParent.cParent.confirmAccess([this, &id]() {
             cParent.cParent.cAsset.setID(id);
             cParent.cParent.cValueLabel = cParent.cParent.getValue();
             cParent.cClosing = true;
-            cParent.cParent.cConfirmationManager.promoteResourceToProject();
           }, [this]() {
             // Nothing to do.
           });
@@ -655,7 +653,6 @@ namespace IsoRealms {
     };
 
     PropertyMaker& cPropertyOwner;
-    IConfirmationManager& cConfirmationManager;
     IResourceData& cResourceData;
     TYPE& cAsset;
     std::string cValueLabel;

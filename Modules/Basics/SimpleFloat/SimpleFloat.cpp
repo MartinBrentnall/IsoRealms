@@ -57,7 +57,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleFloat::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value; return true;});
+    owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
   
   void SimpleFloat::reset() {

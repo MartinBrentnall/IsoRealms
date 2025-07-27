@@ -27,7 +27,7 @@
 namespace IsoRealms {
   class PropertyNativeUnsignedInteger : public PropertyInputField {
     public:
-    PropertyNativeUnsignedInteger(const PropertyData& data, std::function<unsigned int()> getter, std::function<bool(unsigned int)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyNativeUnsignedInteger(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<unsigned int()> getter, std::function<bool(unsigned int)> setter, std::function<void()> removeFunction = nullptr);
 
     protected:
 

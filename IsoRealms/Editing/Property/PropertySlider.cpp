@@ -29,8 +29,8 @@
 namespace IsoRealms {
   const float PropertySlider::WIDTH = 0.7f;
   
-  PropertySlider::PropertySlider(PropertyMaker& owner, const PropertyData& data, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
-            Property(data, removeFunction),
+  PropertySlider::PropertySlider(PropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
+            Property(data, resourceAccessManager, removeFunction),
             cPropertyOwner(owner),
             cConfirmationCallback(confirmationCallback),
             cValueFunction(valueFunction),
@@ -68,7 +68,6 @@ namespace IsoRealms {
         return cValueFunction();
       }, [this](float value) {
         cConfirmationCallback(value);
-        return true;
       });
     });      
   }

@@ -164,10 +164,10 @@ namespace IsoRealms::Basics {
   void FileFont::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<File>(  "File",        cDefFilename);
     owner.createPropertyNativeInteger("Detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value; return true;});
-    owner.createPropertyNativeFloat(  "Scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value; return true;});
-    owner.createPropertyNativeFloat(  "XOffset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value; return true;});
-    owner.createPropertyNativeFloat(  "YOffset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value; return true;});
-    owner.createPropertyNativeFloat(  "Line pacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value; return true;});
+    owner.createPropertyNativeFloat(  "Scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
+    owner.createPropertyNativeFloat(  "XOffset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
+    owner.createPropertyNativeFloat(  "YOffset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
+    owner.createPropertyNativeFloat(  "Line pacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
   }
   
   FileFont::~FileFont() {

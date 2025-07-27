@@ -21,9 +21,10 @@
 #include <functional>
 
 namespace IsoRealms {
-  class IConfirmationManager {
+  class IResourceAccessManager {
     public:
-    virtual bool confirm(std::function<void()> confirm, std::function<void()> cancel) = 0;
+    virtual void confirm(std::function<void()> confirm, std::function<void()> cancel) = 0;
+    virtual bool isResourceReadOnly() const = 0;
     virtual void promoteResourceToProject() = 0;
   };
 }
