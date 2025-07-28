@@ -138,7 +138,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void SurfacePatternTile::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Texture>("Texture", cDefTexture);
+    owner.createPropertyAsset<Texture>("SurfacePatternTileTexture", cDefTexture);
   }
 
   bool SurfacePatternTile::isDefaultConfiguration() const {

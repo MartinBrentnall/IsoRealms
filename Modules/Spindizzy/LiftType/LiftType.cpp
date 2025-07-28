@@ -65,7 +65,7 @@ namespace IsoRealms::Spindizzy {
   void LiftType::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Model>(  "Appearance", cDefModel);
     owner.createPropertyAsset<Boolean>("State",      cDefActive);
-    owner.createPropertyAsset<Action>( "TickAction", cDefTickAction);
+    owner.createPropertyAsset<Action>( "OnMove",     cDefTickAction);
   }
 
   LiftType::~LiftType() {

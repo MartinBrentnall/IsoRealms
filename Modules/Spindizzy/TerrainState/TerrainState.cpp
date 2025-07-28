@@ -57,10 +57,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainState::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeBoolean("InitialState", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
-    owner.createPropertyAsset<Action>("HintAction",   cDefHintAction);
-    owner.createPropertyAsset<Screen>("Icon",         cDefIcon);
-    owner.createPropertyNativeFloat(  "IconScale",    [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, [](float value) {return value > 0.0f;});
+    owner.createPropertyNativeBoolean("State",     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    owner.createPropertyAsset<Action>("Hint",      cDefHintAction);
+    owner.createPropertyAsset<Screen>("Icon",      cDefIcon);
+    owner.createPropertyNativeFloat(  "IconScale", [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, [](float value) {return value > 0.0f;});
   }
   
   void TerrainState::reset() {

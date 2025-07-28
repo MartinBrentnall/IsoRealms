@@ -140,11 +140,11 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyNativeBoolean(        "Solid",               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
     owner.createPropertyAsset<Action>(        "OnTouch",             cDefContactAction);
     owner.createPropertyAsset<Action>(        "OnImpact",            cDefImpactAction);
-    owner.createPropertyAsset<SurfacePattern>("SurfaceAppearance",   cDefSurfacePattern);
-    owner.createPropertyAsset<WallPattern>(   "NorthWallAppearance", cDefNorthWallPattern);
-    owner.createPropertyAsset<WallPattern>(   "SouthWallAppearance", cDefSouthWallPattern);
-    owner.createPropertyAsset<WallPattern>(   "WestWallAppearance",  cDefWestWallPattern);
-    owner.createPropertyAsset<WallPattern>(   "EastWallAppearance",  cDefEastWallPattern);
+    owner.createPropertyAsset<SurfacePattern>("AppearanceSurface",   cDefSurfacePattern);
+    owner.createPropertyAsset<WallPattern>(   "AppearanceWallNorth", cDefNorthWallPattern);
+    owner.createPropertyAsset<WallPattern>(   "AppearanceWallSouth", cDefSouthWallPattern);
+    owner.createPropertyAsset<WallPattern>(   "AppearanceWallWest",  cDefWestWallPattern);
+    owner.createPropertyAsset<WallPattern>(   "AppearanceWallEast",  cDefEastWallPattern);
   }
   
   ISurfacePattern* TerrainType::getSurfacePattern() const {

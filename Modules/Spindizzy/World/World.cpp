@@ -171,11 +171,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat(  "Gravity",            [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
-    owner.createPropertyNativeFloat(  "SlopeEffect",        [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
-    owner.createPropertyNativeInteger("BounceTime",         [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;});
-    owner.createPropertyNativeBoolean("AdvancedProperties", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
-    owner.createPropertyEditor(       "WorldLayout",        this);
+    owner.createPropertyNativeFloat(  "Gravity",                   [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
+    owner.createPropertyNativeFloat(  "SlopeEffect",               [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
+    owner.createPropertyNativeInteger("BounceTime",                [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;});
+    owner.createPropertyEditor(       "Content",                   this);
+    owner.createPropertyNativeBoolean("EditingAdvancedProperties", [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
   }
 
   void World::updateRuntime(unsigned int milliseconds) {

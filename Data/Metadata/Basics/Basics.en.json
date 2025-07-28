@@ -26,6 +26,7 @@
       "description": "Inputs for digital devices such as face buttons, mouse buttons, and keyboard keys.",
       "category": "Input",
       "properties": {
+        "Input": {"name": "Input", "description": "Maps a physical input that triggers this digital input."}
       }
     },
     "Font": {
@@ -67,10 +68,12 @@
       "category": "Logic",
       "properties": {
         "Bindings": {"name": "Bindings", "description": "Bind IsoRealms objects to Lua variables for use in this function."},
+        "Binding": {"name": "Binding", "description": "Binds an IsoRealms objects to a Lua variable for use in this function."},
         "BindingValue": {"name": "What", "description": "The IsoRealms object to bind."},
         "BindingName": {"name": "Name", "description": "Lua variable name for the bound object."},
         "BindingAdd": {"name": "Binding", "description": "Add a binding to this function."},
-        "Arguments": {"name": "Arguments", "description": "Bind IsoRealms objects to Lua variables for use in this function.  Each object to bind is selected by when calling the function."},
+        "Arguments": {"name": "Arguments", "description": "Bind IsoRealms objects to Lua variables for use in this function.  Each object to bind is selected when calling the function."},
+        "Argument": {"name": "Argument", "description": "Binds an IsoRealms object to a Lua variables for use in this function.  The object to bind is selected when calling the function."},
         "ArgumentType": {"name": "Type", "description": "The type of IsoRealms object to be bound to this argument."},
         "ArgumentName": {"name": "Name", "description": "Lua variable name for the bound object."},
         "ArgumentAdd": {"name": "Argument", "description": "Add an argument to this function."},
@@ -145,7 +148,11 @@
         "Playing": {"name": "Playing", "description": "Determines whether the sequence is already playing when the app is started."},
         "Loop": {"name": "Loop", "description": "Determines whether the sequence starts again from the beginning when reaching the end.  If a sequence does not loop, then it stops when reaching the end."},
         "Speed": {"name": "Speed", "description": "The speed factor at which this sequence plays, where 1.0 is normal speed."},
-        "InstanceAdd": {"name": "Instance", "description": "Create an instance of this sequence.  At least one instance is required to use the sequence."},
+        "Instance": {"name": "Instance", "description": "An instance of the sequence."},
+        "InstanceAdd": {"name": "Instance", "description": "Create an instance of this sequence."},
+        "InstanceName": {"name": "Name", "description": "The name of this sequence instance."},
+        "InstanceStartTime": {"name": "Start Time", "description": "The starting point within the sequence of this instance."},
+        "InstanceSpeed": {"name": "Speed", "description": "The speed at which this instance of the sequence plays."},
         "Action": {"name": "Action", "description": "Action to perform upon reaching this event in the sequence."},
         "AudioVolume": {"name": "Volume", "description": "The volume at which to play audio within this track."},
         "AudioFile": {"name": "Audio File", "description": "Supported audio file from which to play audio from this position in the sequence."},
@@ -172,7 +179,13 @@
       "description": "Colour variables and constants.",
       "category": "Primitives",
       "properties": {
-        "Value": {"name": "Value", "description": "Initial value of this colour variable."}
+        "Red": {"name": "Red", "description": "Initial red value of this colour."},
+        "Green": {"name": "Green", "description": "Initial green value of this colour."},
+        "Blue": {"name": "Blue", "description": "Initial blue value of this colour."},
+        "Alpha": {"name": "Alpha", "description": "Initial alpha value of this colour."},
+        "Hue": {"name": "Hue", "description": "Initial hue value of this colour."},
+        "Saturation": {"name": "Saturation", "description": "Initial saturation value of this colour."},
+        "Lightness": {"name": "Lightness", "description": "Initial lightness value of this colour."}
       }
     },
     "Float": {
@@ -208,7 +221,9 @@
       "description": "Vertex variables and constants.",
       "category": "Primitives",
       "properties": {
-        "Value": {"name": "Value", "description": "Initial value of this vertex variable."}
+        "X": {"name": "X", "description": "Initial X value of this vertex variable."},
+        "Y": {"name": "Y", "description": "Initial Y value of this vertex variable."},
+        "Z": {"name": "Z", "description": "Initial Z value of this vertex variable."}
       }
     },
     "Sprite": {

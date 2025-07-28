@@ -104,7 +104,7 @@ namespace IsoRealms::Basics {
         cDefInstances.erase(mEntry.first);
       });
     }
-    owner.createPropertyAdd("Instance", "Add...", [this, &owner]() {
+    owner.createPropertyAdd("InstanceAdd", "Add...", [this, &owner]() {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       // mInstance->registerAssets(assets, mKey);

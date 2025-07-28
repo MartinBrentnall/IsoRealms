@@ -130,9 +130,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceInstance::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString( "InstanceName", [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
-    owner.createPropertyNativeInteger("StartTime",    [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
-    owner.createPropertyNativeFloat(  "Speed",        [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;});
+    owner.createPropertyNativeString( "InstanceName",      [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
+    owner.createPropertyNativeInteger("InstanceStartTime", [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
+    owner.createPropertyNativeFloat(  "InstanceSpeed",     [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;});
   }
 
   void SequenceInstance::play() {

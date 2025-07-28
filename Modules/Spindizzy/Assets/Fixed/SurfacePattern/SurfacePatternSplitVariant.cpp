@@ -76,9 +76,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void SurfacePatternSplitVariant::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<SurfacePattern>("Regular", cDefRegularPattern);
-    owner.createPropertyAsset<SurfacePattern>("SplitA",  cDefSplitAPattern);
-    owner.createPropertyAsset<SurfacePattern>("SplitB",  cDefSplitBPattern);
+    owner.createPropertyAsset<SurfacePattern>("SurfacePatternSplitVariantRegular", cDefRegularPattern);
+    owner.createPropertyAsset<SurfacePattern>("SurfacePatternSplitVariantSplitA",  cDefSplitAPattern);
+    owner.createPropertyAsset<SurfacePattern>("SurfacePatternSplitVariantSplitB",  cDefSplitBPattern);
   }
 
   bool SurfacePatternSplitVariant::isDefaultConfiguration() const {

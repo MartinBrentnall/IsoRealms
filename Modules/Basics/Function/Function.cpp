@@ -75,7 +75,7 @@ namespace IsoRealms::Basics {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
         });
       }
-      owner.createPropertyAdd("Binding", "New...", [this, &owner]() {
+      owner.createPropertyAdd("BindingAdd", "New...", [this, &owner]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
         return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding](PropertyMaker& owner) {
           return mNewBinding->getProperties(owner);
@@ -92,7 +92,7 @@ namespace IsoRealms::Basics {
           Utils::removeElementUnique(cDefArgumentDefinitions, mArgumentDefinition.get());
         });
       }
-      owner.createPropertyAdd("Argument", "New...", [this, &owner]() {
+      owner.createPropertyAdd("ArgumentAdd", "New...", [this, &owner]() {
         ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(cProject, *this, getNextAvailableName("newArgument"))).get();
         return owner.createPropertyStruct("Argument", mNewArgumentDefinition->getName(), [this, mNewArgumentDefinition](PropertyMaker& owner) {
           return mNewArgumentDefinition->getProperties(owner, *this);

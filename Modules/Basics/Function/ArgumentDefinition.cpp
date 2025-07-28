@@ -64,8 +64,8 @@ namespace IsoRealms::Basics {
   }
 
   void ArgumentDefinition::getProperties(PropertyMaker& owner, Function& parent) {
-    owner.createPropertyAsset<BindingType>("Type", cDefType);
-    owner.createPropertyNativeString(      "Name", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    owner.createPropertyAsset<BindingType>("ArgumentType", cDefType);
+    owner.createPropertyNativeString(      "ArgumentName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
   }
 
   void ArgumentDefinition::saveCall(JSONObject object, const std::string& attributeName) const {

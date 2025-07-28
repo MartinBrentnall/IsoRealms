@@ -148,7 +148,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Jewel::CycleColour::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>("Colour", cDefColour);
+    owner.createPropertyAsset<Colour>("PanelPhase", cDefColour);
   }
 
   unsigned int Jewel::Instance::cReferenceCount = 0;

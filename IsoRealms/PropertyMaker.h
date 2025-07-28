@@ -66,10 +66,10 @@ namespace IsoRealms {
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC> void createPropertyArray(const std::string& metadataKey, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
       for (const auto& mElement : container) {
-        createProperty(metadataKey, value(mElement));
+        createProperty(value(mElement));
       }
-      createPropertyAdd(metadataKey, "Add...", [metadataKey, createProperty, add]() {
-        createProperty(metadataKey, add());
+      createPropertyAdd(metadataKey, "Add...", [createProperty, add]() {
+        createProperty(add());
       });
     }
 

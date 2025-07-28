@@ -36,7 +36,7 @@
       "properties": {
         "Entity": {"name": "Entity Type", "description": "Type of entity to react upon boundary entry and exit."},
         "Boundary": {"name": "Boundary Type", "description": "Type of boundary to test entry and exit of."},
-        "OnEnter": {"name": "Action on Entry", "description": "Action to perform each time an entity of the selected type enters a boundary of the selected type."},
+        "OnEntry": {"name": "Action on Entry", "description": "Action to perform each time an entity of the selected type enters a boundary of the selected type."},
         "OnExit": {"name": "Action on Exit", "description": "Action to perform each time an entity of the selected type leaving a boundary of the selected type."}
       }
     },
@@ -113,8 +113,8 @@
       }
     },
     "Lift": {
-      "singular": "Lift Type",
-      "plural": "Lift Types",
+      "singular": "Lift",
+      "plural": "Lifts",
       "description": "Vertically moving platforms that enable players and other objects to reach higher places.",
       "category": "Spindizzy Elements",
       "properties": {
@@ -143,8 +143,8 @@
       }
     },
     "Player": {
-      "singular": "Player Craft Type",
-      "plural": "Player Craft Types",
+      "singular": "Player Craft",
+      "plural": "Player Crafts",
       "description": "Crafts whose movements are controlled through external inputs.",
       "category": "Spindizzy Elements",
       "properties": {
@@ -168,9 +168,9 @@
       }
     },
     "Terrain": {
-      "singular": "Terrain Type",
-      "plural": "Terrain Types",
-      "description": "Terrain to be used for constructing fixed platforms, walls, water, and other shapes that objects can traverse.",
+      "singular": "Terrain",
+      "plural": "Terrain",
+      "description": "Terrain is used for constructing fixed platforms, walls, water, and other shapes that the player and other objects can traverse.",
       "category": "Spindizzy Elements",
       "properties": {
         "SurfaceFriction": {"name": "Surface Friction", "description": "Rate at which objects moving along surfaces of this terrain type lose speed."},
@@ -215,8 +215,14 @@
       "category": "Spindizzy Graphics",
       "properties": {
         "TextureElements": {"name": "Texture Elements", "description": "Texture elements of each theme in this set."},
+        "TextureElement": {"name": "Texture Element", "description": "A texture elements of each theme in this set."},
+        "TextureElementAdd": {"name": "Texture Element", "description": "Add a texture element for each theme in this set."},
         "ColourElements": {"name": "Colour Elements", "description": "Colour elements of each theme in this set."},
+        "ColourElement": {"name": "Colour Element", "description": "A colour elements of each theme in this set."},
+        "ColourElementAdd": {"name": "Colour Element", "description": "Add a colour elements for each theme in this set."},
         "Themes": {"name": "Themes", "description": "Available themes within this set."},
+        "Theme": {"name": "Themes", "description": "An available themes within this set."},
+        "ThemeAdd": {"name": "Themes", "description": "Add a themes to this set."},
         "ThemeName": {"name": "Name", "description": "Name of the theme within this set."}
       }
     },
@@ -272,8 +278,8 @@
       }
     },
     "Zone": {
-      "singular": "Zone Type",
-      "plural": "Zone Types",
+      "singular": "Zone",
+      "plural": "Zones",
       "description": "Different types of rooms that can be used within a world.",
       "category": "Spindizzy Elements",
       "properties": {

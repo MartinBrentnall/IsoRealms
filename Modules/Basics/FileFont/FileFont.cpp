@@ -167,7 +167,7 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeFloat(  "Scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
     owner.createPropertyNativeFloat(  "XOffset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
     owner.createPropertyNativeFloat(  "YOffset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
-    owner.createPropertyNativeFloat(  "Line pacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
+    owner.createPropertyNativeFloat(  "LineSpacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
   }
   
   FileFont::~FileFont() {

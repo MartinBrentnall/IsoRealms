@@ -185,9 +185,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WallPatternCap::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Texture>("Top",    cDefTextureTop);
-    owner.createPropertyAsset<Texture>("Middle", cDefTextureMiddle);
-    owner.createPropertyAsset<Texture>("Bottom", cDefTextureBottom);
+    owner.createPropertyAsset<Texture>("WallPatternCapTop",    cDefTextureTop);
+    owner.createPropertyAsset<Texture>("WallPatternCapMiddle", cDefTextureMiddle);
+    owner.createPropertyAsset<Texture>("WallPatternCapBottom", cDefTextureBottom);
   }
 
   bool WallPatternCap::isDefaultConfiguration() const {

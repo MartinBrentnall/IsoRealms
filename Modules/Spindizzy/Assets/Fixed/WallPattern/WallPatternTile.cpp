@@ -112,7 +112,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WallPatternTile::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Texture>("Texture", cDefTexture);
+    owner.createPropertyAsset<Texture>("WallPatternTileTexture", cDefTexture);
   }
 
   bool WallPatternTile::isDefaultConfiguration() const {

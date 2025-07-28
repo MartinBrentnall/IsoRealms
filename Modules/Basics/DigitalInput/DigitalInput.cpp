@@ -92,7 +92,7 @@ namespace IsoRealms::Basics {
       });
     }
     
-    owner.createPropertyAdd("Mapping", "Add...", [this, &owner]() {
+    owner.createPropertyAdd("Input", "Add...", [this, &owner]() {
       cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
       std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
       return owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput](PropertyMaker& owner) {

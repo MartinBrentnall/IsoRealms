@@ -78,8 +78,8 @@ namespace IsoRealms::Basics {
 
   void Sprite::getProperties(PropertyMaker& owner) {
     owner.createPropertyAsset<Texture>("Appearance",     cDefTexture);
-    owner.createPropertyNativeBoolean( "BillboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
-    owner.createPropertyNativeBoolean( "BillboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
+    owner.createPropertyNativeBoolean( "BillboardAngle", [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
+    owner.createPropertyNativeBoolean( "BillboardTilt",  [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
   }
 
   IModelInstance* Sprite::createModel() {

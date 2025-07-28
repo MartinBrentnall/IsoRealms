@@ -56,7 +56,7 @@ namespace IsoRealms::Spindizzy {
         createTextureElementProperty(owner, mTexture.second.get());
       }
       
-      owner.createPropertyAdd("Element", "Add...",  [this, &owner]() {
+      owner.createPropertyAdd("TextureElementAdd", "Add...",  [this, &owner]() {
         return createTextureElementProperty(owner, createTexture(Utils::getAvailableKey(cTextures, "New Texture")));
       });
     });
@@ -67,7 +67,7 @@ namespace IsoRealms::Spindizzy {
         createColourElementProperty(owner, mColour.second.get());
       }
       
-      owner.createPropertyAdd("Element", "Add...",  [this, &owner]() {
+      owner.createPropertyAdd("ColourElementAdd", "Add...",  [this, &owner]() {
         return createColourElementProperty(owner, createColour(cSpindizzy.getProject(), Utils::getAvailableKey(cColours, "New Colour")));
       });
     });
@@ -81,7 +81,7 @@ namespace IsoRealms::Spindizzy {
         });
       }
 
-      owner.createPropertyAdd("Theme", "Add...",  [this, &owner]() {
+      owner.createPropertyAdd("ThemeAdd", "Add...",  [this, &owner]() {
         std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
         Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(cSpindizzy.getProject(), *this)).first->second.get();
         return owner.createPropertyStruct("Theme", mNewThemeName, [this, mNewTheme](PropertyMaker& owner) {
@@ -354,7 +354,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void ThemeSet::createTextureElementProperty(PropertyMaker& owner, ThemeTexture* element) {
-    owner.createPropertyNativeString("Element", [this, element]() {
+    owner.createPropertyNativeString("TextureElement", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
@@ -377,7 +377,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void ThemeSet::createColourElementProperty(PropertyMaker& owner, ThemeColour* element) {
-    owner.createPropertyNativeString("Element", [this, element]() {
+    owner.createPropertyNativeString("ColourElement", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

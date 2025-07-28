@@ -72,10 +72,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void BoundaryHandler::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<PhysicalObjectType>("EntityType",   cDefObjectType);
-    owner.createPropertyAsset<BoundaryType>(      "BoundaryType", cDefBoundaryType);
-    owner.createPropertyAsset<Action>(            "OoEntry",      cDefEnteredAction);
-    owner.createPropertyAsset<Action>(            "OnExit",       cDefExitedAction);
+    owner.createPropertyAsset<PhysicalObjectType>("Entity",   cDefObjectType);
+    owner.createPropertyAsset<BoundaryType>(      "Boundary", cDefBoundaryType);
+    owner.createPropertyAsset<Action>(            "OnEntry",  cDefEnteredAction);
+    owner.createPropertyAsset<Action>(            "OnExit",   cDefExitedAction);
   }
 
   const BoundaryType* BoundaryHandler::getBoundaryType() const {

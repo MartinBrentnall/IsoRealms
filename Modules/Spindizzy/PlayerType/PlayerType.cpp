@@ -149,8 +149,8 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyNativeFloat(   "SpinSpeed",            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
 
     // Input
-    owner.createPropertyAsset<Float>(  "InputXMovement",       cDefInputX);
-    owner.createPropertyAsset<Float>(  "InputYMovement",       cDefInputY);
+    owner.createPropertyAsset<Float>(  "InputX",               cDefInputX);
+    owner.createPropertyAsset<Float>(  "InputY",               cDefInputY);
     owner.createPropertyAsset<Boolean>("InputThrust",          cDefInputThrust);
 
     // Actions

@@ -127,7 +127,7 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Colour>("Floor",     cDefFloor);
     owner.createPropertyAsset<Colour>("Wall",      cDefWall);
     owner.createPropertyAsset<Colour>("Grid",      cDefGrid);
-    owner.createPropertyAsset<Colour>("highlight", cDefHighlight);
+    owner.createPropertyAsset<Colour>("Highlight", cDefHighlight);
   }
   
   bool C64TerrainGraphics::renderIcon() {
