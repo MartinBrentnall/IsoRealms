@@ -824,6 +824,16 @@ namespace IsoRealms {
     cPostponedActions.emplace_back(action);
   }
 
+  std::vector<std::string> Project::getProjectFileNames() const {
+    std::vector<std::string> mNames;
+    cProjectFile.getNames(mNames);
+    return mNames;
+  }
+
+  ProjectFile* Project::getProjectFile(const std::string& id) {
+    return cProjectFile.getFile(id);
+  }
+
   Project::Filename::Filename(Project& parent) :
             cParent(parent) {
   }

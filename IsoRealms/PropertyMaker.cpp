@@ -31,7 +31,16 @@ namespace IsoRealms {
             cApplication(application),
             cParent(parent),
             cProperties(properties),
-            cDialogManager(dialogManager) {
+            cDialogManager(dialogManager),
+            cApplicationPropertyMaker(nullptr) {
+    Project& mProject = parent.getProject();
+    if (&mProject != &parent) {
+      cApplicationPropertyMaker = std::make_unique<PropertyMaker>(application, mProject, properties, dialogManager);
+    }
+  }
+
+  PropertyMaker& PropertyMaker::getApplicationPropertyMaker() {
+    return cApplicationPropertyMaker != nullptr ? *cApplicationPropertyMaker : *this;
   }
 
   void PropertyMaker::createPropertyAdd(const std::string& metadataKey, const std::string& value, std::function<void()> addPropertyFunction) {

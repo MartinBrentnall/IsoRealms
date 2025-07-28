@@ -303,6 +303,9 @@ namespace IsoRealms {
     bool isProcessingInput() override;
     void postponeAction(IAction* action) override;
 
+    std::vector<std::string> getProjectFileNames() const;
+    ProjectFile* getProjectFile(const std::string& id);
+
     virtual ~Project();
     
     template <class TYPE> friend struct AssetContainerTraits;

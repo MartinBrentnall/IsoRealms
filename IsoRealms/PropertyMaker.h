@@ -41,6 +41,8 @@ namespace IsoRealms {
     public:
     PropertyMaker(IApplication& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
 
+    PropertyMaker& getApplicationPropertyMaker();
+
     IResourceData& getResourceData() {
       return cParent;
     }
@@ -91,5 +93,6 @@ namespace IsoRealms {
     IResourceData& cParent;
     IPropertyManager& cProperties;
     IDialogManager& cDialogManager;
+    std::unique_ptr<PropertyMaker> cApplicationPropertyMaker;
   };
 }

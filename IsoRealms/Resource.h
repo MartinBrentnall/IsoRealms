@@ -20,6 +20,7 @@
 
 #include <string>
 
+#include "Assets/Client/ResourceOwner.h"
 #include "Assets/Registry/AssetIDException.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
@@ -28,7 +29,6 @@
 #include "IResourceData.h"
 #include "IResourceType.h"
 #include "Options/IOptions.h"
-#include "ProjectFile.h"
 #include "PropertyData.h"
 #include "ResourceAssetRegistry.h"
 #include "System.h"
@@ -42,7 +42,7 @@ namespace IsoRealms {
     Resource(IResourceType& parent, IProject& project, MODULE& module, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
               cName(name),
-              cOwnerProject(ownerProject),
+              cOwnerProject(parent.getProject(), ownerProject),
               cResourceDataPath(resourceDataPath),
               cResourceHandle(project, module, *this),
               cAssetRegistry(parent.getProject(), parent.getPath() + "/" + name) {
@@ -62,7 +62,7 @@ namespace IsoRealms {
     Resource(IResourceType& parent, IProject& project, MODULE& module, JSONObject object, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
               cName(object.getString(JSON_ID)),
-              cOwnerProject(ownerProject),
+              cOwnerProject(parent.getProject(), ownerProject),
               cResourceDataPath(resourceDataPath),
               cResourceHandle(project, module, *this, object, options),
               cAssetRegistry(parent.getProject(), parent.getPath() + "/" + cName) {
@@ -80,7 +80,7 @@ namespace IsoRealms {
     }
 
     void getProperties(PropertyMaker& propertyMaker) override {
-      propertyMaker.createPropertyNativeString("Name", [this]() {return cName;}, [this](const std::string& value) {
+      propertyMaker.getApplicationPropertyMaker().createPropertyNativeString("ResourceName", [this]() {return cName;}, [this](const std::string& value) {
         // TODO: If the resource belongs to a read-only project file, it should be changed to the main one and an omission should be created in place of the original name.
         cParent.renameResource(this, value);
         cParent.renameUserDataDirectory(cName, value);
@@ -96,6 +96,7 @@ namespace IsoRealms {
         }
         return true;
       });
+      propertyMaker.getApplicationPropertyMaker().createPropertyAsset("ResourceOwner", cOwnerProject);
       cResourceHandle.getProperties(propertyMaker);
     }
     
@@ -103,7 +104,7 @@ namespace IsoRealms {
       if (!cResourceHandle.renderIcon()) {
         Utils::renderIconLeaf();
       }
-      if (!cOwnerProject->isModifiable()) {
+      if (!cOwnerProject.getProjectFile()->isModifiable()) {
         glPushMatrix();
         float mHeight = 0.08f;
         glTranslatef(-1.0f + mHeight * 0.75f, 1.0f - mHeight * 0.75f, 0.0f);
@@ -135,12 +136,12 @@ namespace IsoRealms {
     }
 
     std::string getResourceDataPath() const override {
-      std::string mRelativePath = cOwnerProject->cFile.getRelativePath();
+      std::string mRelativePath = cOwnerProject.getProjectFile()->cFile.getRelativePath();
       return mRelativePath.substr(0, mRelativePath.find_last_of('.')) + "/" + cResourceDataPath;
     }
     
     bool needsSaving(ProjectFile* savingProject) override {
-      return savingProject == cOwnerProject;
+      return savingProject == cOwnerProject.getProjectFile();
     }
     
     IResourceData& getResourceData() override {
@@ -159,15 +160,15 @@ namespace IsoRealms {
     }
 
     bool isIncluded() const override {
-      return cParent.getProjectFile() != cOwnerProject;
+      return cParent.getProjectFile() != cOwnerProject.getProjectFile();
     }
 
     bool isReadOnly() const override {
-      return !cOwnerProject->isModifiable();
+      return !cOwnerProject.getProjectFile()->isModifiable();
     }
 
     void setOwner(ProjectFile* owner) override {
-      cOwnerProject = owner;
+      cOwnerProject.setProjectFile(owner);
     }
 
     Project& getProject() override {
@@ -195,7 +196,7 @@ namespace IsoRealms {
 
     IResourceType& cParent;
     std::string cName;
-    ProjectFile* cOwnerProject;
+    ResourceOwner cOwnerProject;
     std::string cResourceDataPath;
     RESOURCE cResourceHandle;
     ResourceAssetRegistry cAssetRegistry;

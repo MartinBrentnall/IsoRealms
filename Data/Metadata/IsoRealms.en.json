@@ -1,5 +1,8 @@
 {
   "properties": {
+    "ResourceName": {"name": "Name", "description": "A unique name to identify this resource.  The name is only unique to resources of the same type."},
+    "ResourceOwner": {"name": "Owner", "description": "Owning application file of this resource."},
+
     "AppModules": {"name": "App Modules", "description": "View and manage modules used by this application.  Modules are the building blocks of IsoRealms; they provide the engine with functionality that allows it to do useful things."},
     "Module": {"name": "Module", "description": "A module"},
     "AppFileStructure": {"name": "App File Structure", "description": "View and manage the file structure of this application.  IsoRealms Applications can be spread across multiple files in order to facilitate reusable functionality."},

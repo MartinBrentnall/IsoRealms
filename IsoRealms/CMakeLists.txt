@@ -39,6 +39,7 @@ add_library(IsoRealms
   Assets/Client/ModelInstance.cpp
   Assets/Client/ModuleChooser.cpp
   Assets/Client/ProjectOptions.cpp
+  Assets/Client/ResourceOwner.cpp
   Assets/Client/Screen.cpp
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp

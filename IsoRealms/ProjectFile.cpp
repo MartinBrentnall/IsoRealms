@@ -41,6 +41,30 @@ namespace IsoRealms {
     cDefDescription = object.getString(JSON_DESCRIPTION);
   }
 
+  std::string ProjectFile::getName() const {
+    return cDefDescription;
+  }
+
+  void ProjectFile::getNames(std::vector<std::string>& names) const {
+    names.emplace_back(cDefDescription);
+    for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
+      mInclusion->getNames(names);
+    }
+  }
+
+  ProjectFile* ProjectFile::getFile(const std::string& id) {
+    if (id == cDefDescription) {
+      return this;
+    }
+    for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
+      ProjectFile* mFile = mInclusion->getFile(id);
+      if (mFile != nullptr) {
+        return mFile;
+      }
+    }
+    return nullptr; // TODO: Throw?
+  }
+
   void ProjectFile::save(JSONObject object) const {
     object.addString(JSON_DESCRIPTION, cDefDescription);
     JSONArray mIncludeArray = object.addArray(JSON_INCLUDE);
