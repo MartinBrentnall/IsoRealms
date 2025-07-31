@@ -117,7 +117,7 @@ namespace IsoRealms::Replay {
     void save(JSONObject object) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    void getProperties(PropertyMaker& owner);
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *

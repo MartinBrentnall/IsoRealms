@@ -18,6 +18,7 @@
  */
 #include "Application.h"
 
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
@@ -30,8 +31,7 @@ namespace IsoRealms {
   const std::string Application::FILENAME_SETTINGS     = "settings.json";
 
   Application::Application() :
-            cReleaseThreads(false),
-            cPropertyMissing("TODO: Missing application property name", "TODO: Missing application property description") {
+            cReleaseThreads(false) {
 
     // Enable game controller support
 //     SDL_JoystickEventState(SDL_ENABLE);
@@ -108,11 +108,7 @@ namespace IsoRealms {
     }
     JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
     JSONObject mPropertiesObject = mMetadataDocument.getObject(JSON_PROPERTIES);
-    for (JSONThing mPropertiesThing : mPropertiesObject) {
-      std::string mPropertyID = mPropertiesThing.getName();
-      JSONObject mPropertyObject = mPropertiesThing.getValue();
-      cPropertyHelp.emplace(mPropertyID, std::make_unique<PropertyData>(mPropertyObject));
-    }
+    cMetadata.load(mPropertiesObject);
     resizeScreen();
   }
 
@@ -411,8 +407,7 @@ namespace IsoRealms {
     cMainThreadCleanUpTasks.push(function);
   }
 
-  const PropertyData& Application::getPropertyData(const std::string& key) const {
-    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
-    return mIterator == cPropertyHelp.end() ? cPropertyMissing : *mIterator->second;
+  const Metadata& Application::getMetadata(const std::string& key) const {
+    return cMetadata;
   }
 }

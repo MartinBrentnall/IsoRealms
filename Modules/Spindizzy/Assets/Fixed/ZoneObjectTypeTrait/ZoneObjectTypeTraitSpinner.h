@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitSpinner : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type);
-    ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type, JSONObject object);
+    ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
 
     // Interface to be used by instances.    
     std::unique_ptr<ModelInstance> createModel();

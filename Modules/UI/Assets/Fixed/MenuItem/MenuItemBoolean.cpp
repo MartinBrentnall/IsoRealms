@@ -29,22 +29,24 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemBoolean::BINDING_TYPE = "Boolean";
 
-  MenuItemBoolean::MenuItemBoolean(IProject& project, Menu& menu) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
             cDefLabelFalse(""),
             cDefLabelTrue(""),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
-  MenuItemBoolean::MenuItemBoolean(IProject& project, Menu& menu, JSONObject object) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu, JSONObject object) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefLabelFalse(object.getString(JSON_FALSE_LABEL)),
             cDefLabelTrue(object.getString(JSON_TRUE_LABEL)),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
   void MenuItemBoolean::setValue(bool value) {
@@ -96,7 +98,7 @@ namespace IsoRealms::UI {
     const Font& mFont = menu.getFont();
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
-    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
+    LocalColour mWhite(1.0f, 1.0f, 1.0f);
     const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     Utils::shadowPrint(-aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::LEFT,  cDefLabel);
@@ -123,10 +125,10 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemBoolean::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("ID",         [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value;});
-    owner.createPropertyNativeString("Label",      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
-    owner.createPropertyNativeString("TrueLabel",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});
-    owner.createPropertyNativeString("FalseLabel", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),         [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("Label"),      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("TrueLabel"),  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("FalseLabel"), [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value;});
   }
 
   bool MenuItemBoolean::isDefaultConfiguration() const {

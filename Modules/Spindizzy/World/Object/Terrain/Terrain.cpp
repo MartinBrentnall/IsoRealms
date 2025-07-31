@@ -683,14 +683,15 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Terrain::getProperties(PropertyMaker& owner) {
+    const Metadata& mMetadata = cZone.getWorld().getSpindizzy().getMetadata("Terrain");
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
-    owner.createPropertyCondition("Condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    owner.createPropertyCondition(mMetadata.getPropertyData("Condition"), mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cZone.updateDisplayList();
     });
     if (!cZone.getWorld().isBasicProperties()) {
-      owner.createPropertyList("Behaviour",
+      owner.createPropertyList(mMetadata.getPropertyData("Behaviour"),
                                std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                         BEHAVIOUR_INVISIBLE,
                                                         BEHAVIOUR_GHOST,

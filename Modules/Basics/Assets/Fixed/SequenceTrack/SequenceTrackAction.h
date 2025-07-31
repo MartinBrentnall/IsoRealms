@@ -32,8 +32,8 @@ namespace IsoRealms::Basics {
    */
   class SequenceTrackAction final : public SequenceTrackBase<SequenceTrackAction, SequenceTrackActionEvent, SequenceTrackActionInstance> {
     public:
-    SequenceTrackAction(IProject& project, Sequence& sequence);
-    SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object);
+    SequenceTrackAction(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackAction(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     ISequenceTrackEvent* getEvent(unsigned int time);
     void saveAssetTrack(JSONObject object) const;

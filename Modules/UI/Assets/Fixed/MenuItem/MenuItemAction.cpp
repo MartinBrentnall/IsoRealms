@@ -26,18 +26,20 @@ namespace IsoRealms::UI {
   const std::string MenuItemAction::JSON_ON_SELECTION = "onSelection";
   const std::string MenuItemAction::BINDING_TYPE = "Action";
     
-  MenuItemAction::MenuItemAction(IProject& project, Menu& menu) :
+  MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu) :
+            cMetadata(metadata),
             cDefID(""),
             cDefLabel(""),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
-  MenuItemAction::MenuItemAction(IProject& project, Menu& menu, JSONObject object) :
+  MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu, JSONObject object) :
+            cMetadata(metadata),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 
@@ -87,7 +89,7 @@ namespace IsoRealms::UI {
     const Font& mFont = menu.getFont();
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
-    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
+    LocalColour mWhite(1.0f, 1.0f, 1.0f);
 
 
     const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
@@ -119,9 +121,9 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemAction::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
-    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
-    owner.createPropertyAsset<Action>("OnSelect", cDefAction);
+    owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),       [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
+    owner.createPropertyNativeString( cMetadata.getPropertyData("Label"),    [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
+    owner.createPropertyAsset<Action>(cMetadata.getPropertyData("OnSelect"), cDefAction);
   }
 
   bool MenuItemAction::isDefaultConfiguration() const {

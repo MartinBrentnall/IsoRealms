@@ -23,7 +23,8 @@
 namespace IsoRealms::Spindizzy {
   const unsigned int CameraTransitional::DEFAULT_DURATION = 500U;
 
-  CameraTransitional::CameraTransitional(IProject& project, WorldView& view) :
+  CameraTransitional::CameraTransitional(const Metadata& metadata, WorldView& view) :
+            cMetadata(metadata),
             cParent(view),
             cYaw(*this),
             cPitch(*this),
@@ -36,11 +37,11 @@ namespace IsoRealms::Spindizzy {
             cDefEndDepartureAction(view.getResourceData().getDummyActionClient()),
             cDefEndArrivalAction(view.getResourceData().getDummyActionClient()),
             cRuntimeYawStateNotifier(nullptr),
-            cLuaBinding(project, this) {
+            cLuaBinding(view.getSpindizzy().getProject(), this) {
   }
   
-  CameraTransitional::CameraTransitional(IProject& project, WorldView& view, JSONObject object) :
-            CameraTransitional(project, view) {
+  CameraTransitional::CameraTransitional(const Metadata& metadata, WorldView& view, JSONObject object) :
+            CameraTransitional(metadata, view) {
     cDefStart.set(object, JSON_START);
     cDefEnd.set(object, JSON_END);
     cDefStartDepartureAction.init(object, JSON_ON_START_DEPARTURE);
@@ -166,13 +167,13 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CameraTransitional::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Camera>(        "Start",                   cDefStart);
-    owner.createPropertyAsset<Camera>(        "End",                     cDefEnd);
-    owner.createPropertyNativeUnsignedInteger("Duration",                [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
-    owner.createPropertyAsset<Action>(        "On Departure from Start", cDefStartDepartureAction);
-    owner.createPropertyAsset<Action>(        "On Arrival at End",       cDefEndArrivalAction);
-    owner.createPropertyAsset<Action>(        "On Departure from End",   cDefEndDepartureAction);
-    owner.createPropertyAsset<Action>(        "On Arrival at Start",     cDefStartArrivalAction);
+    owner.createPropertyAsset<Camera>(        cMetadata.getPropertyData("Start"),                cDefStart);
+    owner.createPropertyAsset<Camera>(        cMetadata.getPropertyData("End"),                  cDefEnd);
+    owner.createPropertyNativeUnsignedInteger(cMetadata.getPropertyData("Duration"),             [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
+    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnDepartureFromStart"), cDefStartDepartureAction);
+    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnArrivalAtEnd"),       cDefEndArrivalAction);
+    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnDepartureFromEnd"),   cDefEndDepartureAction);
+    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnArrivalAtStart"),     cDefStartArrivalAction);
   }
 
   bool CameraTransitional::isDefaultConfiguration() const {

@@ -21,7 +21,8 @@
 #include "IsoRealms/Assets/Type/IBoolean.h"
 
 namespace IsoRealms {
-  class IProject;
+  class Metadata;
+  class Project;
 
   /**
    * A simple fixed Boolean asset implementation.
@@ -34,7 +35,7 @@ namespace IsoRealms {
      * 
      * @param value Value of the Boolean.
      */
-    LiteralBoolean(bool value);
+    LiteralBoolean(Project& project, bool value);
       
     /***********************\
      * Implements IBoolean *
@@ -51,6 +52,9 @@ namespace IsoRealms {
 
     private:
     static const std::string JSON_VALUE;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     bool cValue; /// The value of this Boolean.
   };

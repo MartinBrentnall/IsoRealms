@@ -22,12 +22,12 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPatternOutline::WallPatternOutline(IProject& project, TerrainType& owner) {
+  WallPatternOutline::WallPatternOutline(const Metadata& metadata, TerrainType& owner) {
     // Nothing to do.
   }
 
-  WallPatternOutline::WallPatternOutline(IProject& project, TerrainType& owner, JSONObject object) :
-            WallPatternOutline(project, owner) {
+  WallPatternOutline::WallPatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object) :
+            WallPatternOutline(metadata, owner) {
     // Nothing to do.
   }
 

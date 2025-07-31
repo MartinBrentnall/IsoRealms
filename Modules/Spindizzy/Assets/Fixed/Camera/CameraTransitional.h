@@ -35,8 +35,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    CameraTransitional(IProject& project, WorldView& view);
-    CameraTransitional(IProject& project, WorldView& view, JSONObject object);
+    CameraTransitional(const Metadata& metadata, WorldView& view);
+    CameraTransitional(const Metadata& metadata, WorldView& view, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -141,6 +141,7 @@ namespace IsoRealms::Spindizzy {
     };
 
     // External interfaces.
+    const Metadata& cMetadata;
     WorldView& cParent; /// Parent view.
     Yaw cYaw;
     Pitch cPitch;

@@ -18,12 +18,15 @@
  */
 #include "SequenceTrackColourInstance.h"
 
+#include "Modules/Basics/Basics.h"
+
 #include "SequenceTrackColour.h"
 
 namespace IsoRealms::Basics {
   SequenceTrackColourInstance::SequenceTrackColourInstance(SequenceTrackColour& parent, SequenceInstance& sequenceInstance) :
             SequenceTrackInstanceBase(parent.getRealEvents()),
             cParent(parent),
+            cRuntimeColour(),
             cStateNotifier(nullptr) {
   }
 
@@ -88,7 +91,7 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackColourInstance::updateColour() {
     const IColour* mPreviousEventColour = getPreviousColour();
-    LiteralColour mPreviousColour = cRuntimeColour;
+    LocalColour mPreviousColour = cRuntimeColour;
     const std::vector<std::unique_ptr<SequenceTrackColourEvent>>& mEvents = cParent.getRealEvents();
     unsigned int mRuntimeEvent = getRuntimeEvent();
     int mRuntimeEventPosition = getRuntimeEventPosition();
@@ -97,11 +100,11 @@ namespace IsoRealms::Basics {
       int mEventDuration = mEvents[mRuntimeEvent]->getTime() - (mRuntimeEvent == 0 ? 0 : mEvents[mRuntimeEvent - 1]->getTime());
       int mEventPosition = mRuntimeEventPosition             - (mRuntimeEvent == 0 ? 0 : mEvents[mRuntimeEvent - 1]->getTime());
       float mRelativePosition = mEventPosition / static_cast<float>(mEventDuration);
-      cRuntimeColour = LiteralColour(*mPreviousEventColour, *mCurrentColour, mRelativePosition);
+      cRuntimeColour = LocalColour(*mPreviousEventColour, *mCurrentColour, mRelativePosition);
     } else if (mPreviousEventColour != nullptr) {
-      cRuntimeColour = LiteralColour(*mPreviousEventColour);
+      cRuntimeColour = LocalColour(*mPreviousEventColour);
     } else {
-      cRuntimeColour = LiteralColour(1.0f, 0.0f, 0.0f);
+      cRuntimeColour = LocalColour(1.0f, 0.0f, 0.0f);
     }
 
     if (cRuntimeColour != mPreviousColour && cStateNotifier != nullptr) { // TODO: State notifier should never be nullptr!!!  Need to make sure "registerAssets" is called after adding a track in editor.

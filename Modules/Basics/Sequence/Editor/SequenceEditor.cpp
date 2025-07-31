@@ -642,8 +642,8 @@ namespace IsoRealms::Basics {
 
               if (cCursorTrackProperties) {
                 cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
-                  owner.createPropertyAsset<SequenceTrack>("Type", cSequence.getTrack(cCursorTrack.value()));
-                  owner.createPropertyNativeString(        "Name", [this]() {
+                  owner.createPropertyAsset<SequenceTrack>(PropertyData("TODO: Type Name", "TODO: Type Description"), cSequence.getTrack(cCursorTrack.value()));
+                  owner.createPropertyNativeString(        PropertyData("TODO: Name Name", "TODO: Name Description"), [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     cSequence.getTrack(cCursorTrack.value())->setName(name);
@@ -664,7 +664,7 @@ namespace IsoRealms::Basics {
 
                 if (cCursorEvent != nullptr) {
                   cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
-                    return cCursorEvent->getEventProperties(owner, cSequence.getProject());
+                    return cCursorEvent->getEventProperties(owner, cSequence.getBasics().getMetadata("SequenceEditor"), cSequence.getProject());
                   }, "Event Configuration:", 1.0f, 1.0f, 1.0f));
                   cEditingProperties = true;
                 }

@@ -44,9 +44,9 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackFloatEvent::getEventProperties(PropertyMaker& owner, IProject& project) {
-    owner.createPropertyAsset<Float>( "Value", cDefValue);
-    owner.createPropertyNativeBoolean("Fade",  [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
+  void SequenceTrackFloatEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+    owner.createPropertyAsset<Float>( metadata.getPropertyData("Value"), cDefValue);
+    owner.createPropertyNativeBoolean(metadata.getPropertyData("Fade"),  [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
   }
 
   IFloat* SequenceTrackFloatEvent::getValue() const {

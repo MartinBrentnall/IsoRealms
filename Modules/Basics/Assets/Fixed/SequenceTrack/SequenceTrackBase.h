@@ -29,16 +29,16 @@ namespace IsoRealms::Basics {
 
   template<class DERIVED, class EVENT, class INSTANCE> class SequenceTrackBase : public ISequenceTrack {
     public:
-    SequenceTrackBase(IProject& project, Sequence& sequence) :
+    SequenceTrackBase(Sequence& sequence) :
               cSequence(sequence),
               cDefName("Unnamed Track") {
     }
 
-    SequenceTrackBase(IProject& project, IResourceData& owner, Sequence& sequence, JSONObject object) :
+    SequenceTrackBase(IResourceData& owner, Sequence& sequence, JSONObject object) :
               cSequence(sequence),
               cDefName(object.getString(JSON_NAME)) {
       for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
-        cDefEvents.push_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, project, mEventObject));
+        cDefEvents.push_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, owner.getProject(), mEventObject));
       }
     }
 

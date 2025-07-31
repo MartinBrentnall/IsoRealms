@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
    */
   class LayoutLocationAbsolute : public ILayoutLocation {
     public:
-    LayoutLocationAbsolute(IProject& project, LayoutComponentEdge& owner);
-    LayoutLocationAbsolute(IProject& project, LayoutComponentEdge& owner, JSONObject object);
+    LayoutLocationAbsolute(const Metadata& metadata, LayoutComponentEdge& owner);
+    LayoutLocationAbsolute(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object);
 
     /******************************\
      * Implements ILayoutLocation *
@@ -52,6 +52,7 @@ namespace IsoRealms::UI {
     static const std::string JSON_VALUE;
 
     // External interface.
+    const Metadata& cMetadata;
     LayoutComponentEdge& cParent;
 
     // Definition data.

@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenText(IProject& project, IResourceData& owner);
-    ScreenText(IProject& project, IResourceData& owner, JSONObject object);
+    ScreenText(const Metadata& metadata, IResourceData& owner);
+    ScreenText(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *
@@ -61,7 +61,7 @@ namespace IsoRealms::UI {
     static const float DEFAULT_SHADOW_OFFSET;
 
     // External interfaces.
-    IProject& cProject;
+    const Metadata& cMetadata;
 
     // Definition data.
     String cDefString;              /// String to be shown.

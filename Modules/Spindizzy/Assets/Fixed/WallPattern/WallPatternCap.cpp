@@ -23,14 +23,15 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPatternCap::WallPatternCap(IProject& project, TerrainType& owner) :
+  WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner) :
+            cMetadata(metadata),
             cDefTextureBottom(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}),
             cDefTextureMiddle(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}),
             cDefTextureTop(   owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}) {
   }
 
-  WallPatternCap::WallPatternCap(IProject& project, TerrainType& owner, JSONObject object) :
-            WallPatternCap(project, owner) {
+  WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner, JSONObject object) :
+            WallPatternCap(metadata, owner) {
     cDefTextureBottom.set(object, JSON_BOTTOM);
     cDefTextureMiddle.set(object, JSON_MIDDLE);
     cDefTextureTop.set(object, JSON_TOP);
@@ -185,9 +186,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WallPatternCap::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Texture>("WallPatternCapTop",    cDefTextureTop);
-    owner.createPropertyAsset<Texture>("WallPatternCapMiddle", cDefTextureMiddle);
-    owner.createPropertyAsset<Texture>("WallPatternCapBottom", cDefTextureBottom);
+    owner.createPropertyAsset<Texture>(cMetadata.getPropertyData("Top"),    cDefTextureTop);
+    owner.createPropertyAsset<Texture>(cMetadata.getPropertyData("Middle"), cDefTextureMiddle);
+    owner.createPropertyAsset<Texture>(cMetadata.getPropertyData("Bottom"), cDefTextureBottom);
   }
 
   bool WallPatternCap::isDefaultConfiguration() const {

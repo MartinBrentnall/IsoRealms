@@ -25,12 +25,12 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitChaser::JSON_OBJECT = "object";
   const std::string ZoneObjectTypeTraitChaser::JSON_TARGET = "target";
 
-  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(IProject& project, ZoneObjectType& type) :
+  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type) :
             cDefTarget(type.getResourceData()) {
   }
 
-  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(IProject& project, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitChaser(project, type) {
+  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitChaser(metadata, type) {
     cDefTarget.init(object, JSON_TARGET);
     cDefObjectID = object.getString(JSON_OBJECT);
   }

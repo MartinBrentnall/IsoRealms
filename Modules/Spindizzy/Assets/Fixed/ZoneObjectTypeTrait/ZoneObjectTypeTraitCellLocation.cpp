@@ -25,13 +25,13 @@
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type) :
+  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type) :
             cDefType(type) {
     cDefType.registerEditor(this);
   }
 
-  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitCellLocation(project, type) {
+  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitCellLocation(metadata, type) {
   }
 
   void ZoneObjectTypeTraitCellLocation::save(JSONObject object) const {

@@ -69,7 +69,7 @@ namespace IsoRealms::Spindizzy {
     cLaunched = false;
     cSurface = surface;
     setPhysicalState(state);
-    LiteralFloat mFallDistance(fallHeight);
+    LocalFloat mFallDistance(fallHeight);
     cSpindizzy.bindFallDistance(&mFallDistance);
     cSpindizzy.bindLaunchLocation(&cLaunchLocation);
     cSpindizzy.bindLaunchMomentum(&cLaunchMomentum);
@@ -87,7 +87,7 @@ namespace IsoRealms::Spindizzy {
   void PhysicsObject::bounceSurface(ISurface* surface, PhysicalState& state, float fallHeight) {
     cSurface = surface;
     cSurface->notifyImpact();
-    LiteralFloat mFallDistance(fallHeight);
+    LocalFloat mFallDistance(fallHeight);
     cSpindizzy.bindFallDistance(&mFallDistance);
     cObject->bounceSurface();
     setPhysicalState(state);

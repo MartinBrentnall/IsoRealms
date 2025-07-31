@@ -30,8 +30,8 @@ namespace IsoRealms::UI {
    */
   class LayoutOffsetAbsolute : public ILayoutOffset {
     public:
-    LayoutOffsetAbsolute(IProject& project, LayoutComponentEdge& owner);
-    LayoutOffsetAbsolute(IProject& project, LayoutComponentEdge& owner, JSONObject object);
+    LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner);
+    LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object);
 
     /****************************\
      * Implements ILayoutOffset *
@@ -52,6 +52,9 @@ namespace IsoRealms::UI {
 
     // JSON members.
     static const std::string JSON_VALUE;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // Definition data.
     float cDefValue; // The offset value.

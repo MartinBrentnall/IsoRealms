@@ -21,13 +21,13 @@
 #include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence) :
-            SequenceTrackBase(project, sequence),
+  SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence) :
+            SequenceTrackBase(sequence),
             cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
 
-  SequenceTrackColour::SequenceTrackColour(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence.getResourceData(), sequence, object),
+  SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence, JSONObject object) :
+            SequenceTrackBase(sequence.getResourceData(), sequence, object),
             cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
     cDefInitColour.init(object, JSON_START);
   }
@@ -101,8 +101,8 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackColour::getEventProperties(PropertyMaker& owner, IProject& project) {
-    owner.createPropertyAsset<Colour>("StartColour", cDefInitColour);
+  void SequenceTrackColour::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("StartColour"), cDefInitColour);
   }
 
   void SequenceTrackColour::stateChanged(IColour* colour) {

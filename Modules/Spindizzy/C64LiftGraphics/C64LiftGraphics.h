@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) const;
     bool renderIcon();
     void hintInUse(bool inUse);
-    void getProperties(PropertyMaker& owner);
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     private:
     

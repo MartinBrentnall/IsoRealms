@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, IProject& project) override;
+    void getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) override;
 
     private:
     static const std::string JSON_DURATION;

@@ -19,15 +19,15 @@
 #include "StringTime.h"
 
 namespace IsoRealms::UI {
-  StringTime::StringTime(IProject& project, IResourceData& owner) :
-            cProject(project),
+  StringTime::StringTime(const Metadata& metadata, IResourceData& owner) :
+            cMetadata(metadata),
             cDefValue(owner),
             format(DEFAULT_FORMAT) {
     parseFormatString();
   }
 
-  StringTime::StringTime(IProject& project, IResourceData& owner, JSONObject object) :
-            StringTime(project, owner) {
+  StringTime::StringTime(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+            StringTime(metadata, owner) {
     cDefValue.set(object, JSON_VALUE);
     format = object.getString(JSON_FORMAT, DEFAULT_FORMAT);
     parseFormatString();
@@ -160,8 +160,8 @@ namespace IsoRealms::UI {
   }
 
   void StringTime::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Integer>("Value",        cDefValue);
-    owner.createPropertyNativeString(  "FormatString", [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();});
+    owner.createPropertyAsset<Integer>(cMetadata.getPropertyData("Value"),        cDefValue);
+    owner.createPropertyNativeString(  cMetadata.getPropertyData("FormatString"), [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();});
   }
 
   bool StringTime::isDefaultConfiguration() const {

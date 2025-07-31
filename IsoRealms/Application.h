@@ -37,6 +37,7 @@
 #include "Exception/ApplicationException.h"
 #include "IApplication.h"
 #include "Input/HatHandler.h"
+#include "Metadata.h"
 #include "Persistence.h"
 #include "PropertyData.h"
 #include "System.h"
@@ -162,9 +163,7 @@ namespace IsoRealms {
     std::mutex cCleanUpTaskMutex;
     std::queue<std::function<void()>> cMainThreadCleanUpTasks; /// Clean-up tasks to be performed on the main thread.
 
-    // Application strings.
-    std::map<std::string, std::unique_ptr<PropertyData>> cPropertyHelp;
-    PropertyData cPropertyMissing;
+    Metadata cMetadata;
 
     /**
      * Set the application window and OpenGL view port dimensions according to
@@ -221,6 +220,6 @@ namespace IsoRealms {
     void executeAndReturn(const std::function<void()> task) override;
     HatHandler& getHatHandler() override;
     void mainThreadCleanUp(std::function<void()> function) override;
-    const PropertyData& getPropertyData(const std::string& key) const override;
+    const Metadata& getMetadata(const std::string& key) const override;
   };
 }

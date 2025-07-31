@@ -30,6 +30,7 @@
  
 namespace IsoRealms {
   class HatHandler;
+  class Metadata;
   class PropertyData;
   
   /**
@@ -167,6 +168,7 @@ namespace IsoRealms {
     virtual HatHandler& getHatHandler() = 0;
 
     virtual void mainThreadCleanUp(std::function<void()> function) = 0;
-    virtual const PropertyData& getPropertyData(const std::string& key) const = 0;
+
+    virtual const Metadata& getMetadata(const std::string& key) const = 0;
   };
 }

@@ -25,12 +25,12 @@
 namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitMovable::JSON_LOCATION = "location";
 
-  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(IProject& project, ZoneObjectType& type) {
+  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type) {
     // Nothing to do.
   }
 
-  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(IProject& project, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitMovable(project, type) {
+  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitMovable(metadata, type) {
     cDefInitialLocationID = object.getString(JSON_LOCATION);
   }
 

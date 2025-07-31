@@ -41,8 +41,6 @@ namespace IsoRealms::Spindizzy {
     bool isDefaultConfiguration() const override;
 
     private:
-    static const LiteralColour SELECTION_COLOUR;
-    static const LiteralColour LOCKED_COLOUR;
 
     // Internal classes.
     class Modifier : public IWorldEditorToolInstance,

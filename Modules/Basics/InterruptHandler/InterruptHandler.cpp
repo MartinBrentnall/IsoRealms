@@ -49,8 +49,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void InterruptHandler::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Action>("Action", cDefAction);
+  void InterruptHandler::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Action>(metadata.getPropertyData("Action"), cDefAction);
   }
 
   bool InterruptHandler::input(sf::Event& event) {

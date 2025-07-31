@@ -44,7 +44,7 @@ namespace IsoRealms::UI {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(PropertyMaker& owner);
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *
@@ -86,8 +86,10 @@ namespace IsoRealms::UI {
     static const float DEFAULT_SHADOW_OFFSET;
     static const float DEFAULT_TEXT_SIZE;
 
-    // Definition data.
+    // External interfaces.
     HatHandler& cHatHandler;
+
+    // Definition data.
     Font cDefFont;                /// Font for the prompt to be displayed in.
     float cDefTextSize;           /// Size of the text.
     Colour cDefSelectionColour;   /// Colour applied to the highlighted option.

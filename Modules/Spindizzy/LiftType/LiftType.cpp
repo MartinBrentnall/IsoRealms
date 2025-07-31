@@ -62,10 +62,10 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void LiftType::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Model>(  "Appearance", cDefModel);
-    owner.createPropertyAsset<Boolean>("State",      cDefActive);
-    owner.createPropertyAsset<Action>( "OnMove",     cDefTickAction);
+  void LiftType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Model>(  metadata.getPropertyData("Appearance"), cDefModel);
+    owner.createPropertyAsset<Boolean>(metadata.getPropertyData("State"),      cDefActive);
+    owner.createPropertyAsset<Action>( metadata.getPropertyData("OnMove"),     cDefTickAction);
   }
 
   LiftType::~LiftType() {

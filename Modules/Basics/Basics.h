@@ -51,9 +51,11 @@
 namespace IsoRealms::Basics {
   class Basics : public IModuleHandle {
     public:
-    Basics(IsoRealms::Project& project, IResourceTypeRegistry* registry);
+    Basics(IsoRealms::Project& project, IResourceTypeRegistry& registry);
 
     void refreshAssetRegistration(Sequence& sequence);
+
+    const Metadata& getMetadata(const std::string& key) const;
 
     /****************************\
      * Implements IModuleHandle *
@@ -128,6 +130,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     IsoRealms::Project& cProject;
+    IResourceTypeRegistry& cModule;
     
     // Asset registries
     AssetClientManager<Sequence, ISequenceTrack> cSequenceTracks;

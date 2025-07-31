@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternCap : public IWallPattern {
     public:
-    WallPatternCap(IProject& project, TerrainType& owner);
-    WallPatternCap(IProject& project, TerrainType& owner, JSONObject object);
+    WallPatternCap(const Metadata& metadata, TerrainType& owner);
+    WallPatternCap(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *
@@ -103,6 +103,9 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_BOTTOM;
     static const std::string JSON_MIDDLE;
     static const std::string JSON_TOP;
+ 
+    // External interfaces.
+    const Metadata& cMetadata;
  
     // Definition data.
     Texture cDefTextureBottom;

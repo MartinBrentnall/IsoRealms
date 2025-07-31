@@ -18,9 +18,11 @@
  */
 #include "Script.h"
 
+#include "Modules/Basics/Basics.h"
+
 namespace IsoRealms::Basics {
-  Script::Script() {
-    // Nothing to do
+  Script::Script(Basics& basics) :
+            cBasics(basics) {
   }
 
   unsigned int Script::getNextAvailableIndex() const {
@@ -39,14 +41,14 @@ namespace IsoRealms::Basics {
   }
 
   IAction* Script::getAsset(IActionClient& owner, JSONObject object) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(owner, getNextAvailableIndex(), object);
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex(), object);
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
 
   IAction* Script::getAsset(IActionClient& owner) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(owner, getNextAvailableIndex());
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
@@ -70,14 +72,16 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  Script::ScriptAction::ScriptAction(IActionClient& owner, unsigned int index, JSONObject object) :
-            cDefFunction(owner.getProject(), "_t" + Utils::toString(index), owner, object, false),
+  Script::ScriptAction::ScriptAction(Script& parent, IActionClient& owner, unsigned int index, JSONObject object) :
+            cParent(parent),
+            cDefFunction(owner.getProject(), cParent.cBasics, "_t" + Utils::toString(index), owner, object, false),
             cDefAction(cDefFunction.getAsset(owner, object)),
             cDefIndex(index) {
   }
 
-  Script::ScriptAction::ScriptAction(IActionClient& owner, unsigned int index) :
-            cDefFunction(owner.getProject(), "_t" + Utils::toString(index), owner),
+  Script::ScriptAction::ScriptAction(Script& parent, IActionClient& owner, unsigned int index) :
+            cParent(parent),
+            cDefFunction(owner.getProject(), cParent.cBasics, "_t" + Utils::toString(index), owner),
             cDefAction(cDefFunction.getAsset(owner)),
             cDefIndex(index) {
   }
@@ -104,7 +108,8 @@ namespace IsoRealms::Basics {
   }
   
   void Script::ScriptAction::getAssetProperties(PropertyMaker& owner) {
-    cDefFunction.getScriptProperties(owner);
+    const Metadata& mMetadata = cParent.cBasics.getMetadata("Script");
+    cDefFunction.getScriptProperties(owner, mMetadata);
   }  
 
   bool Script::ScriptAction::isDefaultConfiguration() const {

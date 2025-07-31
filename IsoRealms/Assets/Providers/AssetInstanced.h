@@ -22,22 +22,23 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
+  class Metadata;
   class Project;
 
   template <class OWNER, class BASE, class TYPE> class AssetInstanced : public IAssetProvider<OWNER, BASE> {
     public:
-    AssetInstanced(Project& project) :
-              cProject(project) {
+    AssetInstanced(const Metadata& metadata) :
+              cMetadata(metadata) {
     }
     
     BASE* getAsset(OWNER& owner, JSONObject object) override {
-      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cProject, owner, object);
+      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cMetadata, owner, object);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
 
     BASE* getAsset(OWNER& owner) override {
-      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cProject, owner);
+      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cMetadata, owner);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
@@ -79,7 +80,7 @@ namespace IsoRealms {
     }
     
     private:
-    Project& cProject;
+    const Metadata& cMetadata;
     mutable std::vector<std::unique_ptr<TYPE>> cInstances;
   };
 }

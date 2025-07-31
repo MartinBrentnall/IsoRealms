@@ -36,8 +36,8 @@ namespace IsoRealms::Basics {
    */
   class SequenceTrackAudio final : public SequenceTrackBase<SequenceTrackAudio, SequenceTrackAudioEvent, SequenceTrackAudioInstance> {
     public:
-    SequenceTrackAudio(IProject& project, Sequence& sequence);
-    SequenceTrackAudio(IProject& project, Sequence& sequence, JSONObject object);
+    SequenceTrackAudio(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackAudio(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     float getVolume() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
@@ -60,6 +60,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_VOLUME;
 
     // Definition data.
-    Float cDefVolume;
+    Float cDefVolume; // TODO: Should be moved to instance?
   };
 }

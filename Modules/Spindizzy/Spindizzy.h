@@ -95,8 +95,9 @@ namespace IsoRealms::Spindizzy {
     }
 
     // Module constructor.
-    Spindizzy(Project& project, IResourceTypeRegistry* registry);
-  
+    Spindizzy(Project& project, IResourceTypeRegistry& registry);
+    const Metadata& getMetadata(const std::string& key) const;
+
     void init(std::function<void(IAssets&)> initialiser);
   
     // Interface access (used by all).
@@ -375,6 +376,7 @@ namespace IsoRealms::Spindizzy {
 
     // External interfaces.
     Project& cProject;
+    IResourceTypeRegistry& cModule;
 
     // Spindizzy Assets.
     AssetClientManager<Spindizzy,      IBoundaryType>        cBoundaryTypes;

@@ -49,12 +49,12 @@ namespace IsoRealms::Basics {
     void save(JSONObject object, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    void getProperties(PropertyMaker& owner);
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     // Constructors for use by scripts (in-line functions).
-    Function(IProject& project, const std::string& name, IActionClient& owner);
-    Function(IProject& project, const std::string& name, IActionClient& owner, JSONObject object, bool init);
-    void getScriptProperties(PropertyMaker& owner);
+    Function(IProject& project, Basics& basics, const std::string& name, IActionClient& owner);
+    Function(IProject& project, Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init);
+    void getScriptProperties(PropertyMaker& owner, const Metadata& metadata);
     IProject& getProject() const;
     IResourceData& getResourceData() const;
     void setBindingName(Binding& binding, const std::string& name);
@@ -114,6 +114,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     IProject& cProject;
+    Basics& cBasics;
     IResourceData& cResourceData;
     sol::state* const cDefLuaState; /// The Lua state machine.
     

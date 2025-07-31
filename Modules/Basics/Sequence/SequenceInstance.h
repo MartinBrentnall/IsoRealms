@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     void update(unsigned int milliseconds);
     void updatePreview(unsigned int milliseconds);
     void save(JSONObject object) const;
-    void getProperties(PropertyMaker& owner);
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     /***********************\
       * Scripting Interface *

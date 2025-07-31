@@ -1,5 +1,97 @@
 {
   "description": "Functionality for supporting user-interfaces and presentation.",
+  "assets": {
+    "LayoutLocationAbsolute": {
+      "description": "Positions a component edge on the screen at a location from -1.0 to +1.0.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "LayoutLocationRelative": {
+      "description": "Positions a component edge on the screen at a location relative to another component.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "LayoutOffsetAbsolute": {
+      "description": "Offset a component edge using an absolute value, where the screen height is 2.0 (-1.0 to +1.0).",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "LayoutLocationLinked": {
+      "description": "Offset a component edge by an amount proportional to the dimension of another component.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "MenuItemAction": {
+      "description": "A menu item that shows a label and performs an action when selected.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "MenuItemBoolean": {
+      "description": "A menu item that can be toggled between two states.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "MenuItemDigitalInput": {
+      "description": "A menu item that allows a digital input to be configured.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "MenuItemDisplayResolution": {
+      "description": "A menu item that allows a display configuration to be selected.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "MenuItemFileList": {
+      "description": "A menu item that allows a file to be selected from a list.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "MenuItemSlider": {
+      "description": "A menu item that allows a value to be adjusted by a slider.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "ScreenGradient": {
+      "description": "A visual component that renders a rectangle that fades from a colour on one side to another colour on the other side.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "ScreenModel": {
+      "description": "A visual component that renders a model.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "ScreenPanel": {
+      "description": "A visual component that renders a rounded rectangle.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "ScreenText": {
+      "description": "A visual component that renders text.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    },
+    "StringTime": {
+      "description": "Converts a millisecond value into a formatted time string.",
+      "properties": {
+        "": {"name": "", "description": ""}
+      }
+    }
+  },
   "resources": {
     "Layout": {
       "singular": "Layout",

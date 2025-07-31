@@ -87,23 +87,23 @@ namespace IsoRealms {
     cFile.setPath(name, user);
   }
 
-  void ProjectFile::getProperties(PropertyMaker& owner, Project& project, bool inclusion) {
-    owner.createPropertyAsset<File>("File", cFile);
-    owner.createPropertyNativeString("Description", [this]() {return cDefDescription;}, [this](const std::string& value) {cDefDescription = value;});
+  void ProjectFile::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project, bool inclusion) {
+    owner.createPropertyAsset<File>(metadata.getPropertyData("File"), cFile);
+    owner.createPropertyNativeString(metadata.getPropertyData("Description"), [this]() {return cDefDescription;}, [this](const std::string& value) {cDefDescription = value;});
     if (inclusion && cFile.isUser()) {
-      owner.createPropertyNativeBoolean("AllowModifications", [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;});
+      owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowModifications"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;});
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      owner.createPropertyStruct("Inclusion", mInclusion->cFile.getRelativePath(), [this, &mInclusion, &project](PropertyMaker& owner) {
-        mInclusion->getProperties(owner, project, true);
+      owner.createPropertyStruct(metadata.getPropertyData("Inclusion"), mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](PropertyMaker& owner) {
+        mInclusion->getProperties(owner, metadata, project, true);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
       });
     }
-    owner.createPropertyAdd("Inclusion", "Add...", [this, &owner, &project]() {
+    owner.createPropertyAdd(metadata.getPropertyData("Inclusion"), "Add...", [this, &owner, &metadata, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      owner.createPropertyStruct("Inclusion", mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &project](PropertyMaker& owner) {
-        mNewInclusion->getProperties(owner, project, true);
+      owner.createPropertyStruct(metadata.getPropertyData("Inclusion"), mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &metadata, &project](PropertyMaker& owner) {
+        mNewInclusion->getProperties(owner, metadata, project, true);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);
       });

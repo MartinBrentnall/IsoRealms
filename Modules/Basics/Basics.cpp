@@ -33,17 +33,18 @@ namespace IsoRealms::Basics {
   const std::string Basics::JSON_MUSIC_VOLUME            = "musicVolume";
   const std::string Basics::JSON_SOUND_VOLUME            = "soundVolume";
 
-  const std::string Basics::GLOBAL_CONFIGURATION_FILE         = "Module_IsoRealms.json";
+  const std::string Basics::GLOBAL_CONFIGURATION_FILE = "Module_IsoRealms.json";
 
   float Basics::cSoundVolume = 1.0f;
   float Basics::cMusicVolume = 1.0f;
 
-  Basics::Basics(IsoRealms::Project& project, IResourceTypeRegistry* registry):
+  Basics::Basics(IsoRealms::Project& project, IResourceTypeRegistry& registry):
                     cProject(project),
-                    cProviderSequenceTrackAction(project),
-                    cProviderSequenceTrackAudio(project),
-                    cProviderSequenceTrackColour(project),
-                    cProviderSequenceTrackFloat(project),
+                    cModule(registry),
+                    cProviderSequenceTrackAction(registry.getAssetMetadata("SequenceTrackAction")),
+                    cProviderSequenceTrackAudio(registry.getAssetMetadata("SequenceTrackAudio")),
+                    cProviderSequenceTrackColour(registry.getAssetMetadata("SequenceTrackColour")),
+                    cProviderSequenceTrackFloat(registry.getAssetMetadata("SequenceTrackFloat")),
                     cResourceTypeAnalogueInput(*this),
                     cResourceTypeBooleanTrigger(*this),
                     cResourceTypeDigitalInput(*this),
@@ -65,29 +66,29 @@ namespace IsoRealms::Basics {
                     cResourceTypeSimpleString(*this),
                     cResourceTypeSimpleVertex(*this),
                     cResourceTypeSprite(*this),
-                    cActionScript(),
+                    cActionScript(*this),
                     cLuaBinding(project, this) {
-    registry->add(&cResourceTypeAnalogueInput,     "AnalogueInput");
-    registry->add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
-    registry->add(&cResourceTypeDigitalInput,      "DigitalInput");
-    registry->add(&cResourceTypeFileFont,          "Font");
-    registry->add(&cResourceTypeFileSound,         "Sound");
-    registry->add(&cResourceTypeFileTexture,       "Texture");
-    registry->add(&cResourceTypeFunction,          "Function");
-    registry->add(&cResourceTypeInputGroup,        "InputGroup");
-    registry->add(&cResourceTypeInputSwitch,       "InputSwitch");
-    registry->add(&cResourceTypeInterruptHandler,  "InterruptHandler");
-    registry->add(&cResourceTypeProject,           "Project");
-    registry->add(&cResourceTypeProjectConfigurer, "ProjectConfigurer");
-    registry->add(&cResourceTypeProjectOptions,    "ProjectOptions");
-    registry->add(&cResourceTypeSequence,          "Sequence");
-    registry->add(&cResourceTypeSimpleBoolean,     "Boolean");
-    registry->add(&cResourceTypeSimpleColour,      "Colour");
-    registry->add(&cResourceTypeSimpleFloat,       "Float");
-    registry->add(&cResourceTypeSimpleInteger,     "Integer");
-    registry->add(&cResourceTypeSimpleString,      "String");
-    registry->add(&cResourceTypeSimpleVertex,      "Vertex");
-    registry->add(&cResourceTypeSprite,            "Sprite");
+    registry.add(&cResourceTypeAnalogueInput,     "AnalogueInput");
+    registry.add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
+    registry.add(&cResourceTypeDigitalInput,      "DigitalInput");
+    registry.add(&cResourceTypeFileFont,          "Font");
+    registry.add(&cResourceTypeFileSound,         "Sound");
+    registry.add(&cResourceTypeFileTexture,       "Texture");
+    registry.add(&cResourceTypeFunction,          "Function");
+    registry.add(&cResourceTypeInputGroup,        "InputGroup");
+    registry.add(&cResourceTypeInputSwitch,       "InputSwitch");
+    registry.add(&cResourceTypeInterruptHandler,  "InterruptHandler");
+    registry.add(&cResourceTypeProject,           "Project");
+    registry.add(&cResourceTypeProjectConfigurer, "ProjectConfigurer");
+    registry.add(&cResourceTypeProjectOptions,    "ProjectOptions");
+    registry.add(&cResourceTypeSequence,          "Sequence");
+    registry.add(&cResourceTypeSimpleBoolean,     "Boolean");
+    registry.add(&cResourceTypeSimpleColour,      "Colour");
+    registry.add(&cResourceTypeSimpleFloat,       "Float");
+    registry.add(&cResourceTypeSimpleInteger,     "Integer");
+    registry.add(&cResourceTypeSimpleString,      "String");
+    registry.add(&cResourceTypeSimpleVertex,      "Vertex");
+    registry.add(&cResourceTypeSprite,            "Sprite");
 
     // Register Basics built-in asset providers.
     cSequenceTracks.add(&cProviderSequenceTrackAction, SEQUENCE_TRACK_ACTION, "Basics");
@@ -98,6 +99,10 @@ namespace IsoRealms::Basics {
 
   void Basics::refreshAssetRegistration(Sequence& sequence) {
     cResourceTypeSequence.refreshAssetRegistration(sequence);
+  }
+
+  const Metadata& Basics::getMetadata(const std::string& key) const {
+    return cModule.getAssetMetadata(key);
   }
 
   void Basics::load(IProject& project, JSONObject object) {
@@ -234,7 +239,7 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoReal
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
-  std::unique_ptr<IsoRealms::Basics::Basics> mModule = std::make_unique<IsoRealms::Basics::Basics>(*project, registry);
+  std::unique_ptr<IsoRealms::Basics::Basics> mModule = std::make_unique<IsoRealms::Basics::Basics>(*project, *registry);
   {
     std::lock_guard<std::mutex> mLockGuard(IsoRealms::Basics::cModuleInstantiationMutex);
     return IsoRealms::Basics::ModuleInstances.emplace_back(std::move(mModule)).get();

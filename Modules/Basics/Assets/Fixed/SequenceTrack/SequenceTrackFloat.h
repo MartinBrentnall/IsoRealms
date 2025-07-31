@@ -35,8 +35,8 @@ namespace IsoRealms::Basics {
   class SequenceTrackFloat final : public SequenceTrackBase<SequenceTrackFloat, SequenceTrackFloatEvent, SequenceTrackFloatInstance>,
                                    public ISequenceTrackEvent {
     public:
-    SequenceTrackFloat(IProject& project, Sequence& sequence);
-    SequenceTrackFloat(IProject& project, Sequence& sequence, JSONObject object);
+    SequenceTrackFloat(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackFloat(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     const Float& getStartValue() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, IProject& project) override;
+    void getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) override;
 
     private:
 

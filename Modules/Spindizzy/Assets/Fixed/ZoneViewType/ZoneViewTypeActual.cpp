@@ -21,12 +21,12 @@
 #include "ZoneViewActual.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewTypeActual::ZoneViewTypeActual(IProject& project, WorldView& worldView) {
+  ZoneViewTypeActual::ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView) {
     // Nothing to do.
   }
 
-  ZoneViewTypeActual::ZoneViewTypeActual(IProject& project, WorldView& worldView, JSONObject object) :
-            ZoneViewTypeActual(project, worldView) {
+  ZoneViewTypeActual::ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView, JSONObject object) :
+            ZoneViewTypeActual(metadata, worldView) {
     // Nothing to do.
   }
 

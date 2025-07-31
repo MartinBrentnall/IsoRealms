@@ -82,12 +82,12 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void DebrisChunk::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>("Side1",   cDefSide[0]);
-    owner.createPropertyAsset<Colour>("Side2",   cDefSide[1]);
-    owner.createPropertyAsset<Colour>("Side3",   cDefSide[2]);
-    owner.createPropertyAsset<Colour>("Side4",   cDefSide[3]);
-    owner.createPropertyAsset<Colour>("Outline", cDefOutline);
+  void DebrisChunk::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Side1"),   cDefSide[0]);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Side2"),   cDefSide[1]);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Side3"),   cDefSide[2]);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Side4"),   cDefSide[3]);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Outline"), cDefOutline);
   }
 
   void DebrisChunk::updateEditing(unsigned int milliseconds) {

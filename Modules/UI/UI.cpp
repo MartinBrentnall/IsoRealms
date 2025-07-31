@@ -40,35 +40,36 @@ namespace IsoRealms::UI {
 
   const std::string UI::STRING_TIME = "Time";
 
-  UI::UI(Project& project, IResourceTypeRegistry* registry):
+  UI::UI(Project& project, IResourceTypeRegistry& registry):
                     cProject(project),
-                    cProviderLayoutLocationAbsolute(project),
-                    cProviderLayoutLocationRelative(project),
-                    cProviderLayoutOffsetAbsolute(project),
-                    cProviderLayoutOffsetLinked(project),
-                    cProviderMenuItemAction(project),
-                    cProviderMenuItemBoolean(project),
-                    cProviderMenuItemDigitalInput(project),
-                    cProviderMenuItemDisplayResolution(project),
-                    cProviderMenuItemFileList(project),
-                    cProviderMenuItemSlider(project),
-                    cProviderScreenGradient(project),
-                    cProviderScreenModel(project),
-                    cProviderScreenPanel(project),
-                    cProviderScreenText(project),
-                    cProviderStringTime(project),
+                    cModule(registry),
+                    cProviderLayoutLocationAbsolute(registry.getAssetMetadata("LayoutLocationAbsolute")),
+                    cProviderLayoutLocationRelative(registry.getAssetMetadata("LayoutLocationRelative")),
+                    cProviderLayoutOffsetAbsolute(registry.getAssetMetadata("LayoutOffsetAbsolute")),
+                    cProviderLayoutOffsetLinked(registry.getAssetMetadata("LayoutOffsetLinked")),
+                    cProviderMenuItemAction(registry.getAssetMetadata("MenuItemAction")),
+                    cProviderMenuItemBoolean(registry.getAssetMetadata("MenuItemBoolean")),
+                    cProviderMenuItemDigitalInput(registry.getAssetMetadata("MenuItemDigitalInput")),
+                    cProviderMenuItemDisplayResolution(registry.getAssetMetadata("MenuItemDisplayResolution")),
+                    cProviderMenuItemFileList(registry.getAssetMetadata("MenuItemFileList")),
+                    cProviderMenuItemSlider(registry.getAssetMetadata("MenuItemSlider")),
+                    cProviderScreenGradient(registry.getAssetMetadata("ScreenGradient")),
+                    cProviderScreenModel(registry.getAssetMetadata("ScreenModel")),
+                    cProviderScreenPanel(registry.getAssetMetadata("ScreenPanel")),
+                    cProviderScreenText(registry.getAssetMetadata("ScreenText")),
+                    cProviderStringTime(registry.getAssetMetadata("ScreenTime")),
                     cResourceTypeLayout(*this),
                     cResourceTypeMenu(*this),
                     cResourceTypePrompt(*this),
                     cResourceTypeScreenFader(*this),
                     cResourceTypeThrobber(*this),
                     cResourceTypeVirtualKeyboard(*this) {
-    registry->add(&cResourceTypeLayout,          "Layout");
-    registry->add(&cResourceTypeMenu,            "Menu");
-    registry->add(&cResourceTypePrompt,          "Prompt");
-    registry->add(&cResourceTypeScreenFader,     "ScreenFader");
-    registry->add(&cResourceTypeThrobber,        "Throbber");
-    registry->add(&cResourceTypeVirtualKeyboard, "VirtualKeyboard");
+    registry.add(&cResourceTypeLayout,          "Layout");
+    registry.add(&cResourceTypeMenu,            "Menu");
+    registry.add(&cResourceTypePrompt,          "Prompt");
+    registry.add(&cResourceTypeScreenFader,     "ScreenFader");
+    registry.add(&cResourceTypeThrobber,        "Throbber");
+    registry.add(&cResourceTypeVirtualKeyboard, "VirtualKeyboard");
 
     // Register UI built-in asset providers.
     cLayoutLocations.add(&cProviderLayoutLocationAbsolute, LAYOUT_LOCATION_ABSOLUTE, "UI");
@@ -83,6 +84,10 @@ namespace IsoRealms::UI {
     cMenuItems.add(&cProviderMenuItemDisplayResolution, MENU_ITEM_DISPLAY_RESOLUTION, "UI");
     cMenuItems.add(&cProviderMenuItemFileList,          MENU_ITEM_FILE_LIST,          "UI");
     cMenuItems.add(&cProviderMenuItemSlider,            MENU_ITEM_SLIDER,             "UI");
+  }
+
+  const Metadata& UI::getMetadata(const std::string& key) const {
+    return cModule.getAssetMetadata(key);
   }
 
   UI& UI::getAssetManager() {
@@ -164,7 +169,7 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoReal
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
-  std::unique_ptr<IsoRealms::UI::UI> mModule = std::make_unique<IsoRealms::UI::UI>(*project, registry);
+  std::unique_ptr<IsoRealms::UI::UI> mModule = std::make_unique<IsoRealms::UI::UI>(*project, *registry);
   {
     std::lock_guard<std::mutex> mLockGuard(IsoRealms::UI::cModuleInstantiationMutex);
     return IsoRealms::UI::ModuleInstances.emplace_back(std::move(mModule)).get();

@@ -21,6 +21,7 @@
 #include <string>
 
 #include "IsoRealms/Assets/Literal/LiteralColour.h"
+#include "IsoRealms/IResourceData.h"
 
 #include "AssetLiteral.h"
 
@@ -38,7 +39,7 @@ namespace IsoRealms {
     }
 
     std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner) const override {
-      return std::make_unique<LiteralColour>();
+      return std::make_unique<LiteralColour>(owner.getProject());
     }
 
     std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
@@ -49,13 +50,13 @@ namespace IsoRealms {
         float mGreen = static_cast<float>(std::atof(mSections[1].c_str()));
         float mBlue  = static_cast<float>(std::atof(mSections[2].c_str()));
         float mAlpha = mSections.size() == 4 ? static_cast<float>(atof(mSections[3].c_str())) : 0.0f;
-        return std::make_unique<LiteralColour>(mRed, mGreen, mBlue, mAlpha);
+        return std::make_unique<LiteralColour>(owner.getProject(), mRed, mGreen, mBlue, mAlpha);
       }
       return nullptr;
     }
 
     std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
-      return std::make_unique<LiteralColour>(object.getFloat(JSON_RED), object.getFloat(JSON_GREEN), object.getFloat(JSON_BLUE), object.getFloat(JSON_ALPHA));
+      return std::make_unique<LiteralColour>(owner.getProject(), object.getFloat(JSON_RED), object.getFloat(JSON_GREEN), object.getFloat(JSON_BLUE), object.getFloat(JSON_ALPHA));
     }
 
     bool renderAssetProviderIcon() const override {

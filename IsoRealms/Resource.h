@@ -80,7 +80,8 @@ namespace IsoRealms {
     }
 
     void getProperties(PropertyMaker& propertyMaker) override {
-      propertyMaker.getApplicationPropertyMaker().createPropertyNativeString("ResourceName", [this]() {return cName;}, [this](const std::string& value) {
+      const Metadata& mMetadata = cParent.getProject().getApplication().getMetadata("Resource");
+      propertyMaker.createPropertyNativeString(mMetadata.getPropertyData("ResourceName"), [this]() {return cName;}, [this](const std::string& value) {
         // TODO: If the resource belongs to a read-only project file, it should be changed to the main one and an omission should be created in place of the original name.
         cParent.renameResource(this, value);
         cParent.renameUserDataDirectory(cName, value);
@@ -96,8 +97,8 @@ namespace IsoRealms {
         }
         return true;
       });
-      propertyMaker.getApplicationPropertyMaker().createPropertyAsset("ResourceOwner", cOwnerProject);
-      cResourceHandle.getProperties(propertyMaker);
+      propertyMaker.createPropertyAsset<ResourceOwner>(mMetadata.getPropertyData("ResourceOwner"), cOwnerProject);
+      cResourceHandle.getProperties(propertyMaker, cParent.getMetadata());
     }
     
     bool renderIcon() override {
@@ -175,6 +176,10 @@ namespace IsoRealms {
       return cParent.getProject();
     }
 
+    const Project& getProject() const override {
+      return cParent.getProject();
+    }
+
     Project& getAssetManager() override {
       return cParent.getProject();
     }
@@ -187,10 +192,6 @@ namespace IsoRealms {
       return nullptr;
     }
     
-    const PropertyData& getPropertyData(const std::string& key) const override {
-      return cParent.getPropertyData(key);
-    }
-
     private:
     static const std::string JSON_ID;
 

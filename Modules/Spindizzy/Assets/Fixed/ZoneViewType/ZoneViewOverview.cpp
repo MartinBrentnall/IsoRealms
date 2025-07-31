@@ -18,13 +18,15 @@
  */
 #include "ZoneViewOverview.h"
 
-#include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 #include "Modules/Spindizzy/Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.h"
+#include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/World/Object/Zone/Zone.h"
+#include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewOverview::ZoneViewOverview(IProject& project, WorldView& worldView, ZoneViewTypeOverview& type, Zone* zone) :
+  ZoneViewOverview::ZoneViewOverview(WorldView& worldView, ZoneViewTypeOverview& type, Zone* zone) :
             cDefType(type),
-            cLuaBinding(project, this) {
+            cLuaBinding(worldView.getSpindizzy().getProject(), this) {
     zone->addProperty(this);
   }
 

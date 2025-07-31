@@ -34,8 +34,8 @@ namespace IsoRealms::UI {
   class MenuItemFileList final : public IMenuItem,
                                  public IString {
     public:
-    MenuItemFileList(IProject& project, Menu& menu);
-    MenuItemFileList(IProject& project, Menu& menu, JSONObject object);
+    MenuItemFileList(const Metadata& metadata, Menu& menu);
+    MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -96,7 +96,7 @@ namespace IsoRealms::UI {
     };
 
     // External Interfaces.
-    IProject& cProject;
+    const Metadata& cMetadata;
     HatHandler& cHatHandler;
 
     // Definition data.

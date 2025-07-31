@@ -114,7 +114,10 @@ add_library(IsoRealms
   Input/KeyMapping.cpp
   Input/MouseButtonMapping.cpp
   IsoRealmsConstants.cpp
+  LocalColour.cpp
+  LocalFloat.cpp
   Lua/LuaState.cpp
+  Metadata.cpp
   Module.cpp
   Options/LocalOptions.cpp
   Options/Options.cpp

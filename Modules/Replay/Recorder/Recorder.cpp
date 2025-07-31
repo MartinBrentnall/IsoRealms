@@ -31,7 +31,7 @@ namespace IsoRealms::Replay {
 
   Recorder::Recorder(IProject& project, Replay& replay, IResourceData& data) :
             cParentProject(project),
-            cFilenameString(""),
+            cFilenameString(data.getProject(), ""),
             cQuitAction(data.getDummyActionClient()),
             cLuaBinding(project, this) {
     cElapsedTime = 0;
@@ -105,7 +105,7 @@ namespace IsoRealms::Replay {
     assets.add<IAssets>(cProject.get(), "Project", "Gameplay Recorders");
   }
   
-  void Recorder::getProperties(PropertyMaker& owner) {
+  void Recorder::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 

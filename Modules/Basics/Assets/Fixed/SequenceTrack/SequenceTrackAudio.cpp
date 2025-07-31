@@ -22,13 +22,13 @@
 #include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence) :
-            SequenceTrackBase(project, sequence),
+  SequenceTrackAudio::SequenceTrackAudio(const Metadata& metadata, Sequence& sequence) :
+            SequenceTrackBase(sequence),
             cDefVolume(sequence.getResourceData(), 1.0f) {
   }
 
-  SequenceTrackAudio::SequenceTrackAudio(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence.getResourceData(), sequence, object),
+  SequenceTrackAudio::SequenceTrackAudio(const Metadata& metadata, Sequence& sequence, JSONObject object) :
+            SequenceTrackBase(sequence.getResourceData(), sequence, object),
             cDefVolume(sequence.getResourceData(), 1.0f) {
     cDefVolume.init(object, JSON_VOLUME);
   }
@@ -79,7 +79,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Float>("Volume", cDefVolume);
+    owner.createPropertyAsset<Float>(PropertyData("TODO: Volume should be in instance, not track!", "TODO: Description"), cDefVolume);
   }
 
   const std::string SequenceTrackAudio::JSON_VOLUME = "volume";

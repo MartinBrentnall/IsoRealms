@@ -123,11 +123,11 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void C64TerrainGraphics::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>("Floor",     cDefFloor);
-    owner.createPropertyAsset<Colour>("Wall",      cDefWall);
-    owner.createPropertyAsset<Colour>("Grid",      cDefGrid);
-    owner.createPropertyAsset<Colour>("Highlight", cDefHighlight);
+  void C64TerrainGraphics::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Floor"),     cDefFloor);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Wall"),      cDefWall);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Grid"),      cDefGrid);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Highlight"), cDefHighlight);
   }
   
   bool C64TerrainGraphics::renderIcon() {
@@ -370,15 +370,15 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::renderWallMiddle(float interpolation) {
-    LiteralColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
-    LiteralColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
+    LocalColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+    LocalColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
     clear(mGridColour);
     renderRectangle(-TILE_SIZE, -1.0f, TILE_SIZE, 1.0f, mWallFloorMix);
   }
 
   void C64TerrainGraphics::renderWallCap(float interpolation) {
-    LiteralColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
-    LiteralColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
+    LocalColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+    LocalColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
     clear(mGridColour);
     renderRectangle(-TILE_SIZE, -TILE_SIZE / 2.0f, TILE_SIZE, 1.0f, mWallFloorMix);
   }

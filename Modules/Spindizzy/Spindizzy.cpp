@@ -22,31 +22,32 @@ namespace IsoRealms::Spindizzy {
   const double Spindizzy::DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
   const double Spindizzy::DEFAULT_VIEW_ANGLE_YAW = -45.0;
 
-  Spindizzy::Spindizzy(Project& project, IResourceTypeRegistry* registry) :
+  Spindizzy::Spindizzy(Project& project, IResourceTypeRegistry& registry) :
                     cProject(project),
+                    cModule(registry),
                     cBoundaryTypes(&cDummyProviderBoundaryType),
                     cPhysicalObjectTypes(&cDummyProviderPhysicalObjectType),
                     cWorldEditorTools(&cDummyProviderWorldEditorTool),
-                    cProviderCameraGameplay(project),
-                    cProviderCameraLinked(project),
-                    cProviderCameraOverview(project),
-                    cProviderCameraTransitional(project),
-                    cProviderCameraVariant(project),
-                    cProviderSurfacePatternOutline(project),
-                    cProviderSurfacePatternSplitVariant(project),
-                    cProviderSurfacePatternTile(project),
-                    cProviderWallPatternCap(project),
-                    cProviderWallPatternOutline(project),
-                    cProviderWallPatternTile(project),
-                    cProviderZoneViewTypeActual(project),
-                    cProviderZoneViewTypeOverview(project),
-                    cProviderZoneObjectTypeTraitBoundary(project),
-                    cProviderZoneObjectTypeTraitCellLocation(project),
-                    cProviderZoneObjectTypeTraitChaser(project),
-                    cProviderZoneObjectTypeTraitModel(project),
-                    cProviderZoneObjectTypeTraitMovable(project),
-                    cProviderZoneObjectTypeTraitPhysics(project),
-                    cProviderZoneObjectTypeTraitSpinner(project),
+                    cProviderCameraGameplay(registry.getAssetMetadata("CameraGameplay")),
+                    cProviderCameraLinked(registry.getAssetMetadata("CameraLinked")),
+                    cProviderCameraOverview(registry.getAssetMetadata("CameraOverview")),
+                    cProviderCameraTransitional(registry.getAssetMetadata("CameraTransitional")),
+                    cProviderCameraVariant(registry.getAssetMetadata("CameraVariant")),
+                    cProviderSurfacePatternOutline(registry.getAssetMetadata("SurfacePatternOutline")),
+                    cProviderSurfacePatternSplitVariant(registry.getAssetMetadata("SurfacePatternSplitVariant")),
+                    cProviderSurfacePatternTile(registry.getAssetMetadata("SurfacePatternTile")),
+                    cProviderWallPatternCap(registry.getAssetMetadata("WallPatternCap")),
+                    cProviderWallPatternOutline(registry.getAssetMetadata("WallPatternOutline")),
+                    cProviderWallPatternTile(registry.getAssetMetadata("WallPatternTile")),
+                    cProviderZoneViewTypeActual(registry.getAssetMetadata("ZoneViewTypeActual")),
+                    cProviderZoneViewTypeOverview(registry.getAssetMetadata("ZoneViewTypeOverview")),
+                    cProviderZoneObjectTypeTraitBoundary(registry.getAssetMetadata("ZoneObjectTypeTraitBoundary")),
+                    cProviderZoneObjectTypeTraitCellLocation(registry.getAssetMetadata("ZoneObjectTypeTraitCellLocation")),
+                    cProviderZoneObjectTypeTraitChaser(registry.getAssetMetadata("ZoneObjectTypeTraitChaser")),
+                    cProviderZoneObjectTypeTraitModel(registry.getAssetMetadata("ZoneObjectTypeTraitModel")),
+                    cProviderZoneObjectTypeTraitMovable(registry.getAssetMetadata("ZoneObjectTypeTraitMovable")),
+                    cProviderZoneObjectTypeTraitPhysics(registry.getAssetMetadata("ZoneObjectTypeTraitPhysics")),
+                    cProviderZoneObjectTypeTraitSpinner(registry.getAssetMetadata("ZoneObjectTypeTraitSpinner")),
                     cResourceAlien(*this),
                     cResourceBall(*this),
                     cResourceBoundaryHandler(*this),
@@ -98,27 +99,27 @@ namespace IsoRealms::Spindizzy {
                     cRuntimeParameterZone1(project, nullptr),
                     cRuntimeParameterZone2(project, nullptr),
                     cRuntimeLocalBindingIdentifier(nullptr) {
-    registry->add(&cResourceAlien,              "Alien");
-    registry->add(&cResourceBall,               "Ball");
-    registry->add(&cResourceBoundaryHandler,    "BoundaryHandler");
-    registry->add(&cResourceC64LiftGraphics,    "C64LiftGraphics");
-    registry->add(&cResourceC64TerrainGraphics, "C64TerrainGraphics");
-    registry->add(&cResourceCollisionHandler,   "CollisionHandler");
-    registry->add(&cResourceDebrisChunk,        "DebrisChunk");
-    registry->add(&cResourceGyroscope,          "Gyroscope");
-    registry->add(&cResourceJewel,              "Jewel");
-    registry->add(&cResourceLift,               "Lift");
-    registry->add(&cResourceModelCycler,        "ModelCycler");
-    registry->add(&cResourcePickUp,             "PickUp");
-    registry->add(&cResourcePlayer,             "Player");
-    registry->add(&cResourceTerrain,            "Terrain");
-    registry->add(&cResourceTerrainState,       "TerrainState");
-    registry->add(&cResourceThemeSet,           "ThemeSet");
-    registry->add(&cResourceTop,                "Top");
-    registry->add(&cResourceWorld,              "World");
-    registry->add(&cResourceWorldView,          "WorldView");
-    registry->add(&cResourceZone,               "Zone");
-    registry->add(&cResourceZoneObject,         "ZoneObject");
+    registry.add(&cResourceAlien,              "Alien");
+    registry.add(&cResourceBall,               "Ball");
+    registry.add(&cResourceBoundaryHandler,    "BoundaryHandler");
+    registry.add(&cResourceC64LiftGraphics,    "C64LiftGraphics");
+    registry.add(&cResourceC64TerrainGraphics, "C64TerrainGraphics");
+    registry.add(&cResourceCollisionHandler,   "CollisionHandler");
+    registry.add(&cResourceDebrisChunk,        "DebrisChunk");
+    registry.add(&cResourceGyroscope,          "Gyroscope");
+    registry.add(&cResourceJewel,              "Jewel");
+    registry.add(&cResourceLift,               "Lift");
+    registry.add(&cResourceModelCycler,        "ModelCycler");
+    registry.add(&cResourcePickUp,             "PickUp");
+    registry.add(&cResourcePlayer,             "Player");
+    registry.add(&cResourceTerrain,            "Terrain");
+    registry.add(&cResourceTerrainState,       "TerrainState");
+    registry.add(&cResourceThemeSet,           "ThemeSet");
+    registry.add(&cResourceTop,                "Top");
+    registry.add(&cResourceWorld,              "World");
+    registry.add(&cResourceWorldView,          "WorldView");
+    registry.add(&cResourceZone,               "Zone");
+    registry.add(&cResourceZoneObject,         "ZoneObject");
         
     // Register Spindizzy built-in asset providers.
     cCameras.add(&cProviderCameraGameplay,     CAMERA_GAMEPLAY,     "Spindizzy");
@@ -145,6 +146,10 @@ namespace IsoRealms::Spindizzy {
 
     cZoneViewTypes.add(&cProviderZoneViewTypeActual,   ZONE_VIEW_TYPE_ACTUAL,   "Spindizzy");
     cZoneViewTypes.add(&cProviderZoneViewTypeOverview, ZONE_VIEW_TYPE_OVERVIEW, "Spindizzy");
+  }
+
+  const Metadata& Spindizzy::getMetadata(const std::string& key) const {
+    return cModule.getAssetMetadata(key);
   }
 
   void Spindizzy::init(std::function<void(IAssets&)> initialiser) {
@@ -532,20 +537,20 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Spindizzy::getProperties() {
-//     owner.createPropertyNativeInteger("DefaultZoneWidth",    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value;});
-//     owner.createPropertyNativeInteger("DefaultZoneLength",   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value;});
-//     owner.createPropertyNativeInteger("DefaultZoneHeight",   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value;});
-// //    owner.createPropertyAsset<ZoneType>("DefaultZoneType", *cAutomaticZoneManagementType);
-// //    owner.createPropertyAsset<ThemeSet>("DefaultZoneTheme", *cDefaultThemeSet);
-//     owner.createPropertyAsset<WorldEditorTool>("DefaultEditorTool", cDefaultWorldEditorTool);
-//     owner.createPropertyNativeInteger("WorldWestBoundary",   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value;});
-//     owner.createPropertyNativeInteger("WorldEastBoundary",   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value;});
-//     owner.createPropertyNativeInteger("WorldSouthBoundary",  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value;});
-//     owner.createPropertyNativeInteger("WorldNorthBoundary",  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value;});
-//     owner.createPropertyNativeInteger("WorldDepthBoundary",  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value;});
-//     owner.createPropertyNativeInteger("WorldHeightBoundary", [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("DefaultZoneWidth"),    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("DefaultZoneLength"),   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("DefaultZoneHeight"),   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value;});
+// //    owner.createPropertyAsset<ZoneType>(metadata.getPropertyData("DefaultZoneType"), *cAutomaticZoneManagementType);
+// //    owner.createPropertyAsset<ThemeSet>(metadata.getPropertyData("DefaultZoneTheme"), *cDefaultThemeSet);
+//     owner.createPropertyAsset<WorldEditorTool>(metadata.getPropertyData("DefaultEditorTool"), cDefaultWorldEditorTool);
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldWestBoundary"),   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldEastBoundary"),   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldSouthBoundary"),  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldNorthBoundary"),  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldDepthBoundary"),  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value;});
+//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldHeightBoundary"), [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value;});
 //     for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-//       owner.createPropertyAsset<WorldEditorTool>("WorldEditingTool", *cAvailableWorldEditorTools[i].get(), [this, i]() {
+//       owner.createPropertyAsset<WorldEditorTool>(metadata.getPropertyData("WorldEditingTool"), *cAvailableWorldEditorTools[i].get(), [this, i]() {
 //         cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
 //       });
 //     }
@@ -788,7 +793,7 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoReal
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
-  std::unique_ptr<IsoRealms::Spindizzy::Spindizzy> mModule = std::make_unique<IsoRealms::Spindizzy::Spindizzy>(*project, registry);
+  std::unique_ptr<IsoRealms::Spindizzy::Spindizzy> mModule = std::make_unique<IsoRealms::Spindizzy::Spindizzy>(*project, *registry);
   {
     std::lock_guard<std::mutex> mLockGuard(IsoRealms::Spindizzy::cModuleInstantiationMutex);
     return IsoRealms::Spindizzy::ModuleInstances.emplace_back(std::move(mModule)).get();

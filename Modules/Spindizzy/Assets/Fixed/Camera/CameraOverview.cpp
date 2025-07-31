@@ -22,12 +22,12 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  CameraOverview::CameraOverview(IProject& project, WorldView& view) :
+  CameraOverview::CameraOverview(const Metadata& metadata, WorldView& view) :
             cParent(view) {
   }
   
-  CameraOverview::CameraOverview(IProject& project, WorldView& view, JSONObject object) :
-            CameraOverview(project, view) {
+  CameraOverview::CameraOverview(const Metadata& metadata, WorldView& view, JSONObject object) :
+            CameraOverview(metadata, view) {
   }
 
   void CameraOverview::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {

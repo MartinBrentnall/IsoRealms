@@ -74,13 +74,13 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Theme::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("ThemeName", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
+  void Theme::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyNativeString(metadata.getPropertyData("ThemeName"), [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
     for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
-      owner.createPropertyAsset<Texture>(cThemeSet.getElement(mTexture.first), mTexture.second);
+      owner.createPropertyAsset<Texture>(PropertyData(cThemeSet.getElement(mTexture.first), "TODO: Theme Texture Description"), mTexture.second);
     }
     for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
-      owner.createPropertyAsset<Colour>(cThemeSet.getElement(mColour.first), mColour.second);
+      owner.createPropertyAsset<Colour>(PropertyData(cThemeSet.getElement(mColour.first), "TODO: Theme Colour Description"), mColour.second);
     }
   }
 

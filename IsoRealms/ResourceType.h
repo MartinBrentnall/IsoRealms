@@ -59,7 +59,7 @@ namespace IsoRealms {
     std::string getDescription() const override;
     IAssets& getAssets() override;
     Project& getProject() override;
-    const PropertyData& getPropertyData(const std::string& key) const override;
+    const Metadata& getMetadata() const override;
 
     private:
     static const std::string JSON_CATEGORY;
@@ -77,7 +77,6 @@ namespace IsoRealms {
     std::string cPlural;
     std::string cCategory;
     std::string cDescription;
-    std::map<std::string, std::unique_ptr<PropertyData>> cPropertyHelp;
-    PropertyData cPropertyMissing;
+    Metadata cMetadata;
   };
 }

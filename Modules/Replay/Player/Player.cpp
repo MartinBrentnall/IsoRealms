@@ -123,7 +123,7 @@ namespace IsoRealms::Replay {
     assets.add(static_cast<IInputHandler*>(this), "", "System");
   }
   
-  void Player::getProperties(PropertyMaker& owner) {
+  void Player::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 

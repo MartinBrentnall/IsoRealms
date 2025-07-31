@@ -19,11 +19,13 @@
 #include "LiteralString.h"
 
 #include "IsoRealms/Editing/Property/PropertyNativeString.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  LiteralString::LiteralString(const std::string& value) {
-    setValue(value);
+  LiteralString::LiteralString(Project& project, const std::string& value) :
+            cMetadata(project.getApplication().getMetadata("LiteralString")),
+            cValue(value) {
   }
 
   void LiteralString::setValue(const std::string& value) {
@@ -39,7 +41,7 @@ namespace IsoRealms {
   }
 
   void LiteralString::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("Value", [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
   }
 
   bool LiteralString::isDefaultConfiguration() const {

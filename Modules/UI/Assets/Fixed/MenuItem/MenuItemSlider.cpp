@@ -35,26 +35,28 @@ namespace IsoRealms::UI {
   const float MenuItemSlider::DEFAULT_MINIMUM = 0.0f;
   const int   MenuItemSlider::DEFAULT_STEPS   = 20;
 
-  MenuItemSlider::MenuItemSlider(IProject& project, Menu& menu) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
             cDefMinimum(DEFAULT_MINIMUM),
             cDefMaximum(DEFAULT_MAXIMUM),
             cDefSteps(DEFAULT_STEPS),
             cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
-  MenuItemSlider::MenuItemSlider(IProject& project, Menu& menu, JSONObject object) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu, JSONObject object) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefMinimum(object.getFloat(JSON_MINIMUM, DEFAULT_MINIMUM)),
             cDefMaximum(object.getFloat(JSON_MAXIMUM, DEFAULT_MAXIMUM)),
             cDefSteps(object.getInteger(JSON_STEPS, DEFAULT_STEPS)),
             cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
     cDefValueChangedAction.init(object, JSON_ON_CHANGE);
   }
 
@@ -107,7 +109,7 @@ namespace IsoRealms::UI {
     const Font& mFont = menu.getFont();
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
-    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
+    LocalColour mWhite(1.0f, 1.0f, 1.0f);
     const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     Utils::shadowPrint(-aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::LEFT,  cDefLabel);
@@ -161,12 +163,12 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemSlider::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
-    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
-    owner.createPropertyNativeFloat(  "Minimum",  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
-    owner.createPropertyNativeFloat(  "Maximum",  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;});
-    owner.createPropertyNativeInteger("Steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;});
-    owner.createPropertyAsset<Action>("OnChange", cDefValueChangedAction);
+    owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
+    owner.createPropertyNativeString( cMetadata.getPropertyData("Label"),    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
+    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("Minimum"),  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
+    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("Maximum"),  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;});
+    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Steps"),    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;});
+    owner.createPropertyAsset<Action>(cMetadata.getPropertyData("OnChange"), cDefValueChangedAction);
   }
 
   bool MenuItemSlider::isDefaultConfiguration() const {

@@ -52,8 +52,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void FileSound::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<File>("File", cDefFile);
+  void FileSound::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<File>(metadata.getPropertyData("File"), cDefFile);
   }
 
   void FileSound::setVolume(float volume) {

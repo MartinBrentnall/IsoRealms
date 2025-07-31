@@ -53,10 +53,10 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void ScreenFader::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Screen>("ScreenA",    cDefScreenA);
-    owner.createPropertyAsset<Screen>("ScreenB",    cDefScreenB);
-    owner.createPropertyAsset<Float>( "Transition", cDefTransition);
+  void ScreenFader::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Screen>(metadata.getPropertyData("ScreenA"),    cDefScreenA);
+    owner.createPropertyAsset<Screen>(metadata.getPropertyData("ScreenB"),    cDefScreenB);
+    owner.createPropertyAsset<Float>( metadata.getPropertyData("Transition"), cDefTransition);
   }
 
   void ScreenFader::renderScreen(float scale, float aspectRatio) const {

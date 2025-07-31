@@ -43,11 +43,11 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Jewel::getProperties(PropertyMaker& owner) {
+  void Jewel::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
-      cColoursCycle[i]->getProperties(owner);
+      cColoursCycle[i]->getProperties(owner, metadata);
     }
-    owner.createPropertyAsset<Colour>("Outline", cColourFrame);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Outline"), cColourFrame);
   }
 
   void Jewel::updateEditing(unsigned int milliseconds) {
@@ -147,8 +147,8 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void Jewel::CycleColour::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>("PanelPhase", cDefColour);
+  void Jewel::CycleColour::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("PanelPhase"), cDefColour);
   }
 
   unsigned int Jewel::Instance::cReferenceCount = 0;
@@ -227,7 +227,7 @@ namespace IsoRealms::Spindizzy {
     unsigned int mPrevious = cProgress;
     unsigned int mNext     = mPrevious != cDefParent.cColoursCycle.size() - 1 ? cProgress + 1 : 0;
     float mCurrent         = cProgress - mPrevious;
-    LiteralColour mColourPanel(***cDefParent.cColoursCycle[mPrevious]->getColour(), ***cDefParent.cColoursCycle[mNext]->getColour(), mCurrent);
+    LocalColour mColourPanel(***cDefParent.cColoursCycle[mPrevious]->getColour(), ***cDefParent.cColoursCycle[mNext]->getColour(), mCurrent);
     mColourPanel.set();
     glCallList(cPanelDisplayList);
     glColor3f(1.0, 1.0, 1.0);

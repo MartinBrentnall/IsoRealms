@@ -19,13 +19,13 @@
 #include "SequenceTrackFloat.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence) :
-            SequenceTrackBase(project, sequence),
+  SequenceTrackFloat::SequenceTrackFloat(const Metadata& metadata, Sequence& sequence) :
+            SequenceTrackBase(sequence),
             cDefStartValue(sequence.getResourceData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
 
-  SequenceTrackFloat::SequenceTrackFloat(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence.getResourceData(), sequence, object),
+  SequenceTrackFloat::SequenceTrackFloat(const Metadata& metadata, Sequence& sequence, JSONObject object) :
+            SequenceTrackBase(sequence.getResourceData(), sequence, object),
             cDefStartValue(sequence.getResourceData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
     cDefStartValue.init(object, JSON_START);
   }
@@ -94,8 +94,8 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackFloat::getEventProperties(PropertyMaker& owner, IProject& project) {
-    owner.createPropertyAsset<Float>("StartValue", cDefStartValue);
+  void SequenceTrackFloat::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+    owner.createPropertyAsset<Float>(metadata.getPropertyData("StartValue"), cDefStartValue);
   }
 
   void SequenceTrackFloat::stateChanged(IFloat* value) {

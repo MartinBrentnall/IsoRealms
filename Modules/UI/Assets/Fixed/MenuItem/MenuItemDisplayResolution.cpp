@@ -27,20 +27,22 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemDisplayResolution::BINDING_TYPE = "DisplayResolution";
 
-  MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu) :
-            cProject(project),
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu) :
+            cMetadata(metadata),
+            cProject(menu.getResourceData().getProject()),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
-  MenuItemDisplayResolution::MenuItemDisplayResolution(IProject& project, Menu& menu, JSONObject object) :
-            cProject(project),
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object) :
+            cMetadata(metadata),
+            cProject(menu.getResourceData().getProject()),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
   void MenuItemDisplayResolution::setValue(DisplayResolution resolution) {
@@ -93,7 +95,7 @@ namespace IsoRealms::UI {
     const Font& mFont = menu.getFont();
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
-    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
+    LocalColour mWhite(1.0f, 1.0f, 1.0f);
     const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     std::string mValue = cRuntimeResolutions[cRuntimeSelectedResolution].toString();
@@ -119,8 +121,8 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDisplayResolution::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("ID",    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
-    owner.createPropertyNativeString("Label", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("Label"), [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
   }
 
   bool MenuItemDisplayResolution::isDefaultConfiguration() const {

@@ -29,24 +29,24 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemFileList::BINDING_TYPE = "FileList";
   
-  MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu) :
-            cProject(project),
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefFolder(""),
             cDefUser(false),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
-  MenuItemFileList::MenuItemFileList(IProject& project, Menu& menu, JSONObject object) :
-            cProject(project),
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefFolder(object.getString(JSON_FOLDER)),
             cDefUser(object.getBoolean(JSON_USER)),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 
@@ -136,10 +136,10 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::getAssetProperties(PropertyMaker& owner) {
     // TODO: Change this so it uses "File" client asset.
-    owner.createPropertyNativeString( "ID",          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
-    owner.createPropertyNativeString( "Folder",      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
-    owner.createPropertyNativeBoolean("UserData",    [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
-    owner.createPropertyAsset<Action>("OnSelection", cDefAction);
+    owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
+    owner.createPropertyNativeString( cMetadata.getPropertyData("Folder"),      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
+    owner.createPropertyNativeBoolean(cMetadata.getPropertyData("UserData"),    [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
+    owner.createPropertyAsset<Action>(cMetadata.getPropertyData("OnSelection"), cDefAction);
   }
 
   bool MenuItemFileList::isDefaultConfiguration() const {
@@ -158,7 +158,7 @@ namespace IsoRealms::UI {
   void MenuItemFileList::File::render(float y, bool selected, const Menu& menu) const {
     float mShadowOffset = menu.getShadowOffset();
     float mFontSize = menu.getFontSize();
-    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
+    LocalColour mWhite(1.0f, 1.0f, 1.0f);
     const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     Utils::shadowPrint(0.0, y, **menu.getFont(), mFontSize, mColour, mShadowOffset, IFont::Alignment::CENTER,  cDefLabel);

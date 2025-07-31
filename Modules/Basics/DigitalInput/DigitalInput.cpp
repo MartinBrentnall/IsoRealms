@@ -83,19 +83,19 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void DigitalInput::getProperties(PropertyMaker& owner) {
+  void DigitalInput::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
-      owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput](PropertyMaker& owner) {
+      owner.createPropertyStruct(metadata.getPropertyData("Input"), mInput->getShortName(), [&mInput](PropertyMaker& owner) {
         return mInput->getProperties(owner);
       }, [this, &mInput]() {
         Utils::removeElementUnique(cDefMapping, mInput.get());
       });
     }
     
-    owner.createPropertyAdd("Input", "Add...", [this, &owner]() {
+    owner.createPropertyAdd(metadata.getPropertyData("Input"), "Add...", [this, &owner, &metadata]() {
       cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
       std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
-      return owner.createPropertyStruct("Input", mInput->getShortName(), [&mInput](PropertyMaker& owner) {
+      return owner.createPropertyStruct(metadata.getPropertyData("Input"), mInput->getShortName(), [&mInput](PropertyMaker& owner) {
         return mInput->getProperties(owner);
       }, [this, &mInput]() {
         Utils::removeElementUnique(cDefMapping, mInput.get());

@@ -29,13 +29,13 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitBoundary::JSON_END     = "end";
   const std::string ZoneObjectTypeTraitBoundary::JSON_START   = "start";
 
-  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type) :
+  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type) :
             cDefType(type) {
     cDefType.getSpindizzy().added(this);
   }
 
-  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitBoundary(project, type) {
+  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitBoundary(metadata, type) {
     cDefInitiallyEnabled = object.getBoolean(JSON_ENABLED, true);
     cDefStartID = object.getString(JSON_START);
     cDefEndID = object.getString(JSON_END, cDefStartID);

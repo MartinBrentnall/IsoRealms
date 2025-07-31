@@ -1,5 +1,7 @@
 {
   "description": "Basic functionality for use in any application",
+  "assets": {
+  },
   "resources": {
     "AnalogueInput": {
       "singular": "Analogue Input",

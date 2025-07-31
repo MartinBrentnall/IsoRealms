@@ -24,12 +24,13 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternTile::SurfacePatternTile(IProject& project, TerrainType& owner) :
+  SurfacePatternTile::SurfacePatternTile(const Metadata& metadata, TerrainType& owner) :
+            cMetadata(metadata),
             cDefTexture(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}) {
   }
 
-  SurfacePatternTile::SurfacePatternTile(IProject& project, TerrainType& owner, JSONObject object) :
-            SurfacePatternTile(project, owner) {
+  SurfacePatternTile::SurfacePatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object) :
+            SurfacePatternTile(metadata, owner) {
     cDefTexture.set(object, JSON_TEXTURE);
   }
 
@@ -138,7 +139,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void SurfacePatternTile::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Texture>("SurfacePatternTileTexture", cDefTexture);
+    owner.createPropertyAsset<Texture>(cMetadata.getPropertyData("Texture"), cDefTexture);
   }
 
   bool SurfacePatternTile::isDefaultConfiguration() const {

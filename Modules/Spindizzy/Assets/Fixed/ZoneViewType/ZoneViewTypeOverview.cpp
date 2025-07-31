@@ -25,16 +25,15 @@
 #include "ZoneViewOverview.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewTypeOverview::ZoneViewTypeOverview(IProject& project, WorldView& worldView) :
-            cProject(project),
+  ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView) :
             cWorldView(worldView),
             cDefColour(worldView.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f),
-            cRuntimeParameterView1(project, nullptr, &worldView.getSpindizzy()),
-            cRuntimeParameterView2(project, nullptr, &worldView.getSpindizzy()) {
+            cRuntimeParameterView1(worldView.getSpindizzy().getProject(), nullptr, &worldView.getSpindizzy()),
+            cRuntimeParameterView2(worldView.getSpindizzy().getProject(), nullptr, &worldView.getSpindizzy()) {
   }
 
-  ZoneViewTypeOverview::ZoneViewTypeOverview(IProject& project, WorldView& worldView, JSONObject object) :
-            ZoneViewTypeOverview(project, worldView) {
+  ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView, JSONObject object) :
+            ZoneViewTypeOverview(metadata, worldView) {
     cDefColour.init(object, JSON_COLOUR);
   }
 
@@ -51,7 +50,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   std::unique_ptr<IZoneView> ZoneViewTypeOverview::createZoneView(Zone* zone) {
-    return std::make_unique<ZoneViewOverview>(cProject, cWorldView, *this, zone);
+    return std::make_unique<ZoneViewOverview>(cWorldView, *this, zone);
   }
 
   void ZoneViewTypeOverview::registerAssets(ISpindizzyRegistry* registry) {

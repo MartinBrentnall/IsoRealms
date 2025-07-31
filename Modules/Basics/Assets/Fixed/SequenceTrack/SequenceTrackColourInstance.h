@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     SequenceTrackColour& cParent;
 
     // Runtime data.
-    LiteralColour cRuntimeColour;
+    LocalColour cRuntimeColour;
 
     // Misc.
     IStateNotifier<IColour>* cStateNotifier;

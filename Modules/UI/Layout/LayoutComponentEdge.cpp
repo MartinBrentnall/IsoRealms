@@ -75,9 +75,9 @@ namespace IsoRealms::UI {
     cDefOffset.save(mEdgeObject, JSON_OFFSET);
   }
   
-  void LayoutComponentEdge::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<LayoutLocation>("Location", cDefLocation);
-    owner.createPropertyAsset<LayoutOffset>(  "Offset",   cDefOffset);
+  void LayoutComponentEdge::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<LayoutLocation>(metadata.getPropertyData("Location"), cDefLocation);
+    owner.createPropertyAsset<LayoutOffset>(  metadata.getPropertyData("Offset"),   cDefOffset);
   }
 
   void LayoutComponentEdge::renderRelation(float aspectRatio) const {

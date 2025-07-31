@@ -32,8 +32,8 @@ namespace IsoRealms::UI {
    */
   class MenuItemAction final : public IMenuItem {
     public:
-    MenuItemAction(IProject& project, Menu& menu);
-    MenuItemAction(IProject& project, Menu& menu, JSONObject object);
+    MenuItemAction(const Metadata& metadata, Menu& menu);
+    MenuItemAction(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -69,6 +69,9 @@ namespace IsoRealms::UI {
 
     // Constants.
     static const std::string BINDING_TYPE;
+    
+    // External interfaces.
+    const Metadata& cMetadata;
     
     // Definition data.
     std::string cDefID;    /// ID of this menu item for binding.

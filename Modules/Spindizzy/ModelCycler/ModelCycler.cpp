@@ -61,9 +61,9 @@ namespace IsoRealms::Spindizzy {
     return cDefModels[mIndex]->renderIcon();
   }
 
-  void ModelCycler::getProperties(PropertyMaker& owner) {
+  void ModelCycler::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      owner.createPropertyAsset<Model>("Model", *mModel.get());
+      owner.createPropertyAsset<Model>(metadata.getPropertyData("Model"), *mModel.get());
     }
   }
   

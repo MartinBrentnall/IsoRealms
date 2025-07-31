@@ -27,8 +27,8 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitMovable : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitMovable(IProject& project, ZoneObjectType& type);
-    ZoneObjectTypeTraitMovable(IProject& project, ZoneObjectType& type, JSONObject object);
+    ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getInitialLocationID() const;

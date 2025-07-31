@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
   class ZoneObjectTypeTraitBoundary : public IZoneObjectTypeTrait,
                                       public IBoundaryType {
     public:
-    ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type);
-    ZoneObjectTypeTraitBoundary(IProject& project, ZoneObjectType& type, JSONObject object);
+    ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getStartID() const;

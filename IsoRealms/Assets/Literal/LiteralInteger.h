@@ -21,25 +21,22 @@
 #include "IsoRealms/Assets/Type/IInteger.h"
 
 namespace IsoRealms {
-  
+  class Metadata;
+  class Project;
+
   /**
    * Simple general immutable integer asset implementation.
    */
   class LiteralInteger : public IInteger {
-    private:
-    static const std::string JSON_VALUE;
-
-    int cValue; /// Integer value.
-    
     public:
-      
+
     /**
      * Construct an integer with the specified value.
-     * 
+     *
      * @param value Value of this integer.
      */
-    LiteralInteger(const int value = 0);
-      
+    LiteralInteger(Project& project, const int value = 0);
+
     /***********************\
      * Implements IInteger *
     \***********************/
@@ -52,5 +49,13 @@ namespace IsoRealms {
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
+    
+    private:
+    static const std::string JSON_VALUE;
+
+    // External interfaces.
+    const Metadata& cMetadata;
+
+    int cValue; /// Integer value.
   };
 }

@@ -88,15 +88,15 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  void AlienType::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Model>( "Appearance",   cDefModel);
-    owner.createPropertyAsset<Vertex>("Target",       cDefTarget);
-    owner.createPropertyNativeFloat(  "Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
-    owner.createPropertyNativeFloat(  "Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
-    owner.createPropertyNativeFloat(  "SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-    owner.createPropertyNativeFloat(  "Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
-    owner.createPropertyNativeFloat(  "Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
-    owner.createPropertyNativeFloat(  "HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
+  void AlienType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Model>( metadata.getPropertyData("Appearance"),   cDefModel);
+    owner.createPropertyAsset<Vertex>(metadata.getPropertyData("Target"),       cDefTarget);
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("Acceleration"), [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("Friction"),     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("SpinSpeed"),    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("Height"),       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("Radius"),       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("HugThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
   }
 
   void AlienType::reset() {

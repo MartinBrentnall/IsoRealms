@@ -41,44 +41,42 @@ namespace IsoRealms {
     public:
     PropertyMaker(IApplication& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
 
-    PropertyMaker& getApplicationPropertyMaker();
-
     IResourceData& getResourceData() {
       return cParent;
     }
 
-    void createPropertyAdd(                  const std::string& metadataKey, const std::string& value, std::function<void()> addPropertyFunction);
-    void createPropertyCode(                 const std::string& metadataKey, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr);
-    void createPropertyColourChannel(        const std::string& metadataKey, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback);
-    void createPropertyColourHue(            const std::string& metadataKey, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback);
-    void createPropertyColourLightness(      const std::string& metadataKey, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback);
-    void createPropertyColourSaturation(     const std::string& metadataKey, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback);
-    void createPropertyCondition(            const std::string& metadataKey, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);
-    void createPropertyEditor(               const std::string& metadataKey, IEditable* editable);
-    void createPropertyKey(                  const std::string& metadataKey, std::function<std::string()>  getter, std::function<void(sf::Keyboard::Key)>  setter,             std::function<void()> removeFunction = nullptr);
-    void createPropertyList(                 const std::string& metadataKey, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
-    void createPropertyNativeBoolean(        const std::string& metadataKey, std::function<bool()>         getter, std::function<void(bool)>               setter,                                                                                                              std::function<void()> removeFunction = nullptr);
-    void createPropertyNativeFloat(          const std::string& metadataKey, std::function<float()>        getter, std::function<void(float)>              setter,             std::function<bool(float)>              validityChecker = [](float)              {return true;}, std::function<void()> removeFunction = nullptr);
-    void createPropertyNativeInteger(        const std::string& metadataKey, std::function<int()>          getter, std::function<void(int)>                setter,             std::function<bool(int)>                validityChecker = [](int)                {return true;}, std::function<void()> removeFunction = nullptr);
-    void createPropertyNativeString(         const std::string& metadataKey, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr);
-    void createPropertyNativeUnsignedInteger(const std::string& metadataKey, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr);
-    void createPropertyStruct(               const std::string& metadataKey, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr);
+    void createPropertyAdd(                  const PropertyData& metadata, const std::string& value, std::function<void()> addPropertyFunction);
+    void createPropertyCode(                 const PropertyData& metadata, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr);
+    void createPropertyColourChannel(        const PropertyData& metadata, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback);
+    void createPropertyColourHue(            const PropertyData& metadata, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback);
+    void createPropertyColourLightness(      const PropertyData& metadata, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback);
+    void createPropertyColourSaturation(     const PropertyData& metadata, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback);
+    void createPropertyCondition(            const PropertyData& metadata, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);
+    void createPropertyEditor(               const PropertyData& metadata, IEditable* editable);
+    void createPropertyKey(                  const PropertyData& metadata, std::function<std::string()>  getter, std::function<void(sf::Keyboard::Key)>  setter,             std::function<void()> removeFunction = nullptr);
+    void createPropertyList(                 const PropertyData& metadata, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
+    void createPropertyNativeBoolean(        const PropertyData& metadata, std::function<bool()>         getter, std::function<void(bool)>               setter,                                                                                                              std::function<void()> removeFunction = nullptr);
+    void createPropertyNativeFloat(          const PropertyData& metadata, std::function<float()>        getter, std::function<void(float)>              setter,             std::function<bool(float)>              validityChecker = [](float)              {return true;}, std::function<void()> removeFunction = nullptr);
+    void createPropertyNativeInteger(        const PropertyData& metadata, std::function<int()>          getter, std::function<void(int)>                setter,             std::function<bool(int)>                validityChecker = [](int)                {return true;}, std::function<void()> removeFunction = nullptr);
+    void createPropertyNativeString(         const PropertyData& metadata, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr);
+    void createPropertyNativeUnsignedInteger(const PropertyData& metadata, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr);
+    void createPropertyStruct(               const PropertyData& metadata, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr);
 
-    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC> void createPropertyArray(const std::string& metadataKey, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
+    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC> void createPropertyArray(const PropertyData& metadata, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
       for (const auto& mElement : container) {
         createProperty(value(mElement));
       }
-      createPropertyAdd(metadataKey, "Add...", [createProperty, add]() {
+      createPropertyAdd(metadata, "Add...", [createProperty, add]() {
         createProperty(add());
       });
     }
 
-    template <typename ASSET_TYPE> void createPropertyAsset(const std::string& metadataKey, ASSET_TYPE& asset, std::function<void()> removeFunction = nullptr) {
-      cProperties.addProperty(std::make_unique<PropertyAsset<ASSET_TYPE>>(*this, *this, cParent, cParent.getPropertyData(metadataKey), asset, removeFunction));
+    template <typename ASSET_TYPE> void createPropertyAsset(const PropertyData& metadata, ASSET_TYPE& asset, std::function<void()> removeFunction = nullptr) {
+      cProperties.addProperty(std::make_unique<PropertyAsset<ASSET_TYPE>>(*this, *this, cParent, metadata, asset, removeFunction));
     }
 
-    template <typename OPTIONAL_TYPE> void createPropertyOptional(const std::string& metadataKey, std::function<void(const std::string&)> choiceCallback) {
-      cProperties.addProperty(std::make_unique<PropertyOptional<OPTIONAL_TYPE>>(*this, *this, cParent, cParent.getPropertyData(metadataKey), choiceCallback, cParent.getProject(), cApplication));
+    template <typename OPTIONAL_TYPE> void createPropertyOptional(const PropertyData& metadata, std::function<void(const std::string&)> choiceCallback) {
+      cProperties.addProperty(std::make_unique<PropertyOptional<OPTIONAL_TYPE>>(*this, *this, cParent, metadata, choiceCallback, cParent.getProject(), cApplication));
     }
     
     /***********************************\
@@ -93,6 +91,5 @@ namespace IsoRealms {
     IResourceData& cParent;
     IPropertyManager& cProperties;
     IDialogManager& cDialogManager;
-    std::unique_ptr<PropertyMaker> cApplicationPropertyMaker;
   };
 }

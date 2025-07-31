@@ -114,5 +114,6 @@ namespace IsoRealms {
     virtual bool isReadOnly() const = 0;     // TODO: Remove this (used for prototyping)
     virtual ProjectFile* getFile() = 0;
     virtual IApplication& getApplication() = 0;
+    virtual const IApplication& getApplication() const = 0;
   };
 }

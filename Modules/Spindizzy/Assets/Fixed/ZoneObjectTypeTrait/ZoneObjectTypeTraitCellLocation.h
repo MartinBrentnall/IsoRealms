@@ -28,8 +28,8 @@ namespace IsoRealms::Spindizzy {
   class ZoneObjectTypeTraitCellLocation : public IZoneObjectTypeTrait,
                                           public IZoneObjectTraitEditor {
     public:
-    ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type);
-    ZoneObjectTypeTraitCellLocation(IProject& project, ZoneObjectType& type, JSONObject object);
+    ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
     
     /************************************\
      * Implements  IZoneObjectTypeTrait *

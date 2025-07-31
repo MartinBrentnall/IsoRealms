@@ -102,13 +102,13 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void ProjectConfigurer::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Font>(  "Font",         cDefFont);
-    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyAsset<Font>(  "CodeFont",     cDefCodeFont);
-    owner.createPropertyNativeFloat(  "CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
-    owner.createPropertyAsset<Action>("OnExit",       cDefExitAction);
-    owner.createPropertyAsset<Action>("OnEditor",     cDefEditorAction);
+  void ProjectConfigurer::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Font>(  metadata.getPropertyData("Font"),         cDefFont);
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    owner.createPropertyAsset<Font>(  metadata.getPropertyData("CodeFont"),     cDefCodeFont);
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("CodeFontSize"), [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
+    owner.createPropertyAsset<Action>(metadata.getPropertyData("OnExit"),       cDefExitAction);
+    owner.createPropertyAsset<Action>(metadata.getPropertyData("OnEditor"),     cDefEditorAction);
     // TODO: Input configuration
   }
 

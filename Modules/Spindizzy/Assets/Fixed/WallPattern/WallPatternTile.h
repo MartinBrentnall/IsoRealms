@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternTile : public IWallPattern {
     public:
-    WallPatternTile(IProject& project, TerrainType& owner);
-    WallPatternTile(IProject& project, TerrainType& owner, JSONObject object);
+    WallPatternTile(const Metadata& metadata, TerrainType& owner);
+    WallPatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *
@@ -69,6 +69,9 @@ namespace IsoRealms::Spindizzy {
     
     // JSON members.
     static const std::string JSON_TEXTURE;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // Definition data.  
     Texture cDefTexture;

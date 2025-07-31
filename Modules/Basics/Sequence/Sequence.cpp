@@ -91,25 +91,25 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void Sequence::getProperties(PropertyMaker& owner) {
-    owner.createPropertyEditor("Content", this);
+  void Sequence::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyEditor(metadata.getPropertyData("Content"), this);
 
-    owner.createPropertyNativeBoolean("Playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
-    owner.createPropertyNativeBoolean("Loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
-    owner.createPropertyAsset<Float>( "Speed",   cDefSpeed);
+    owner.createPropertyNativeBoolean(metadata.getPropertyData("Playing"), [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
+    owner.createPropertyNativeBoolean(metadata.getPropertyData("Loop"),    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
+    owner.createPropertyAsset<Float>( metadata.getPropertyData("Speed"),   cDefSpeed);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      owner.createPropertyStruct("Instance", mEntry.first, [this, &mEntry](PropertyMaker& owner) {
-        return mEntry.second->getProperties(owner);
+      owner.createPropertyStruct(metadata.getPropertyData("Instance"), mEntry.first, [this, &mEntry, &metadata](PropertyMaker& owner) {
+        return mEntry.second->getProperties(owner, metadata);
       }, [this, &mEntry]() {
         cDefInstances.erase(mEntry.first);
       });
     }
-    owner.createPropertyAdd("InstanceAdd", "Add...", [this, &owner]() {
+    owner.createPropertyAdd(metadata.getPropertyData("InstanceAdd"), "Add...", [this, &owner, &metadata]() {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       // mInstance->registerAssets(assets, mKey);
-      return owner.createPropertyStruct("Instance", "Edit...", [this, &mInstance](PropertyMaker& owner) {
-        return mInstance->getProperties(owner);
+      return owner.createPropertyStruct(metadata.getPropertyData("Instance"), "Edit...", [this, &mInstance, &metadata](PropertyMaker& owner) {
+        return mInstance->getProperties(owner, metadata);
       }, [this, mKey]() {
         cDefInstances.erase(mKey);
       });

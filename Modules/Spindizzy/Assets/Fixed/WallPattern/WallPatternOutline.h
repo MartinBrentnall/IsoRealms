@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternOutline : public IWallPattern {
     public:
-    WallPatternOutline(IProject& project, TerrainType& owner);
-    WallPatternOutline(IProject& project, TerrainType& owner, JSONObject object);
+    WallPatternOutline(const Metadata& metadata, TerrainType& owner);
+    WallPatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *

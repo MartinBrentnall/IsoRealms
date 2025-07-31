@@ -44,7 +44,7 @@ namespace IsoRealms::UI {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(PropertyMaker& owner);
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *

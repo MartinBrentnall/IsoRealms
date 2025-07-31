@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
    */
   class Script : public IAssetProvider<IActionClient, IAction> {
     public:
-    Script();
+    Script(Basics& basics);
 
     /*****************************************************\
      * Implements IAssetProvider<IActionClient, IAction> *
@@ -43,8 +43,8 @@ namespace IsoRealms::Basics {
     private:
     class ScriptAction : public IAction {
       public:
-      ScriptAction(IActionClient& owner, unsigned int index, JSONObject object);
-      ScriptAction(IActionClient& owner, unsigned int index);
+      ScriptAction(Script& parent, IActionClient& owner, unsigned int index, JSONObject object);
+      ScriptAction(Script& parent, IActionClient& owner, unsigned int index);
 
       void destroyInternalAction();
       unsigned int getIndex() const;
@@ -61,11 +61,15 @@ namespace IsoRealms::Basics {
       private:
       
       // Definition data.
+      Script& cParent;
       Function cDefFunction;  /// Function of this action.
       IAction* cDefAction;    /// Script action call.
       unsigned int cDefIndex; /// Index number of the function call.
     };
       
+    // External interfaces.
+    Basics& cBasics;
+
     // Functions and actions created by scripting.
     mutable std::map<const IAction*, std::unique_ptr<ScriptAction>> cDefScriptActions;
     

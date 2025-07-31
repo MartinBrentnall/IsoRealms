@@ -56,8 +56,8 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void SimpleString::getProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("Value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
+  void SimpleString::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyNativeString(metadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
   }
 
   void SimpleString::reset() {

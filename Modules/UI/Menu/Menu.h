@@ -45,7 +45,7 @@ namespace IsoRealms::UI {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(PropertyMaker& owner);
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *
@@ -55,6 +55,7 @@ namespace IsoRealms::UI {
 
     // Interface to be used by menu items.
     IResourceData& getResourceData();
+    const IResourceData& getResourceData() const;
     const Font& getFont() const;
     float getFontSize() const;
     float getShadowOffset() const;

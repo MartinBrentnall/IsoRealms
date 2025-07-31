@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
 
   class SurfacePatternOutline : public ISurfacePattern {
     public:
-    SurfacePatternOutline(IProject& project, TerrainType& owner);
-    SurfacePatternOutline(IProject& project, TerrainType& owner, JSONObject object);
+    SurfacePatternOutline(const Metadata& metadata, TerrainType& owner);
+    SurfacePatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *

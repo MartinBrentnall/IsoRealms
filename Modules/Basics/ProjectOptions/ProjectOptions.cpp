@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void ProjectOptions::getProperties(PropertyMaker& owner) {
+  void ProjectOptions::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 

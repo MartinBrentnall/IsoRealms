@@ -23,12 +23,13 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPatternTile::WallPatternTile(IProject& project, TerrainType& owner) :
+  WallPatternTile::WallPatternTile(const Metadata& metadata, TerrainType& owner) :
+            cMetadata(metadata),
             cDefTexture(owner.getResourceData(), [&owner]() {owner.getSpindizzy().stateChanged(nullptr);}) {
   }
 
-  WallPatternTile::WallPatternTile(IProject& project, TerrainType& owner, JSONObject object) :
-            WallPatternTile(project, owner) {
+  WallPatternTile::WallPatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object) :
+            WallPatternTile(metadata, owner) {
     cDefTexture.set(object, JSON_TEXTURE);
   }
 
@@ -112,7 +113,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WallPatternTile::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Texture>("WallPatternTileTexture", cDefTexture);
+    owner.createPropertyAsset<Texture>(cMetadata.getPropertyData("Texture"), cDefTexture);
   }
 
   bool WallPatternTile::isDefaultConfiguration() const {

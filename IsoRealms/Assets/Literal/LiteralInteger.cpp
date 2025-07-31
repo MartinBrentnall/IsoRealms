@@ -24,7 +24,8 @@
 #include "IsoRealms/Project.h"
 
 namespace IsoRealms {
-  LiteralInteger::LiteralInteger(const int value):
+  LiteralInteger::LiteralInteger(Project& project, const int value):
+          cMetadata(project.getApplication().getMetadata("LiteralInteger")),
           cValue(value) {
     // Nothing to do.
   }  
@@ -42,7 +43,7 @@ namespace IsoRealms {
   }
 
   void LiteralInteger::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeInteger("Value", [this]() {return cValue;}, [this](int value) {cValue = value;});
+    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 
   bool LiteralInteger::isDefaultConfiguration() const {

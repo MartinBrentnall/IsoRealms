@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
 
   class SurfacePatternTile : public ISurfacePattern {
     public:
-    SurfacePatternTile(IProject& project, TerrainType& owner);
-    SurfacePatternTile(IProject& project, TerrainType& owner, JSONObject object);
+    SurfacePatternTile(const Metadata& metadata, TerrainType& owner);
+    SurfacePatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *
@@ -89,6 +89,9 @@ namespace IsoRealms::Spindizzy {
     
     // JSON members.
     static const std::string JSON_TEXTURE;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // Definition data.
     Texture cDefTexture;

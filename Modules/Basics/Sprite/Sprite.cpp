@@ -76,10 +76,10 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  void Sprite::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Texture>("Appearance",     cDefTexture);
-    owner.createPropertyNativeBoolean( "BillboardAngle", [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
-    owner.createPropertyNativeBoolean( "BillboardTilt",  [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
+  void Sprite::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Texture>(metadata.getPropertyData("Appearance"),     cDefTexture);
+    owner.createPropertyNativeBoolean( metadata.getPropertyData("BillboardAngle"), [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
+    owner.createPropertyNativeBoolean( metadata.getPropertyData("BillboardTilt"),  [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
   }
 
   IModelInstance* Sprite::createModel() {

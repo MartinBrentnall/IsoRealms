@@ -21,27 +21,24 @@
 #include "IsoRealms/Assets/Type/IString.h"
 
 namespace IsoRealms {
+  class Metadata;
+  class Project;
   
   /**
    * A simple fixed String asset implementation.
    */
   class LiteralString : public IString {
-    private:
-    static const std::string JSON_VALUE;
-
-    std::string cValue; /// The value of this String.
-    
     public:
-      
+
     /**
      * Construct the String with the specified value.
-     * 
+     *
      * @param value Value of the String.
      */
-    LiteralString(const std::string&);
-      
+    LiteralString(Project& project, const std::string&);
+
     void setValue(const std::string&);
-    
+
     /**********************\
      * Implements IString *
     \**********************/
@@ -54,5 +51,13 @@ namespace IsoRealms {
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
+
+    private:
+    static const std::string JSON_VALUE;
+
+    // External interfaces.
+    const Metadata& cMetadata;
+
+    std::string cValue; /// The value of this String.
   };
 }

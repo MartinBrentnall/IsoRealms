@@ -35,8 +35,8 @@ namespace IsoRealms::UI {
    */
   class MenuItemDisplayResolution final : public IMenuItem {
     public:
-    MenuItemDisplayResolution(IProject& project, Menu& menu);
-    MenuItemDisplayResolution(IProject& project, Menu& menu, JSONObject object);
+    MenuItemDisplayResolution(const Metadata& metadata, Menu& menu);
+    MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -75,6 +75,7 @@ namespace IsoRealms::UI {
     static const std::string BINDING_TYPE;
 
     // External interfaces.
+    const Metadata& cMetadata;
     IProject& cProject;
     HatHandler& cHatHandler;
     

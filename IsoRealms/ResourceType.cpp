@@ -33,8 +33,7 @@ namespace IsoRealms {
   ResourceType::ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent) :
             cResourceType(resourceType),
             cParent(parent),
-            cCategory("None"),
-            cPropertyMissing("TODO: Missing resource property name", "TODO: Missing resource property description") {
+            cCategory("None") {
   }
 
 
@@ -77,11 +76,7 @@ namespace IsoRealms {
     cCategory    = object.getString(JSON_CATEGORY);
     cDescription = object.getString(JSON_DESCRIPTION);
     JSONObject mPropertiesObject = object.getObject(JSON_PROPERTIES);
-    for (JSONThing mPropertiesThing : mPropertiesObject) {
-      std::string mPropertyID = mPropertiesThing.getName();
-      JSONObject mPropertyObject = mPropertiesThing.getValue();
-      cPropertyHelp.emplace(mPropertyID, std::make_unique<PropertyData>(mPropertyObject));
-    }
+    cMetadata.load(mPropertiesObject);
   }
 
   bool ResourceType::needsSaving(ProjectFile* savingProject) const {
@@ -180,8 +175,7 @@ namespace IsoRealms {
     return cParent.getProject();
   }
   
-  const PropertyData& ResourceType::getPropertyData(const std::string& key) const {
-    std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
-    return mIterator == cPropertyHelp.end() ? cPropertyMissing : *mIterator->second;
-  }
+  const Metadata& ResourceType::getMetadata() const {
+    return cMetadata;
+  }  
 }

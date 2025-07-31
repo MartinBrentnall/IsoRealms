@@ -33,8 +33,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    CameraOverview(IProject& project, WorldView& view);
-    CameraOverview(IProject& project, WorldView& view, JSONObject object);
+    CameraOverview(const Metadata& metadata, WorldView& view);
+    CameraOverview(const Metadata& metadata, WorldView& view, JSONObject object);
 
     /**********************\
      * Implements ICamera *

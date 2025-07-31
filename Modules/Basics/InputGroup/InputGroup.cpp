@@ -55,9 +55,9 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void InputGroup::getProperties(PropertyMaker& owner) {
-    owner.createPropertyArray("InputHandlerAdd", cDefInputHandlers, [](const std::unique_ptr<InputHandler>& i)->InputHandler& {return *i;}, [this, &owner](InputHandler& inputHandler) {
-      owner.createPropertyAsset<InputHandler>("InputHandler", inputHandler, [this, &inputHandler]() {
+  void InputGroup::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyArray(metadata.getPropertyData("InputHandlerAdd"), cDefInputHandlers, [](const std::unique_ptr<InputHandler>& i)->InputHandler& {return *i;}, [this, &owner, &metadata](InputHandler& inputHandler) {
+      owner.createPropertyAsset<InputHandler>(metadata.getPropertyData("InputHandler"), inputHandler, [this, &inputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, &inputHandler);
       });
     }, [this]()->InputHandler& {

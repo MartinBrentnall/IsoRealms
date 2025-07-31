@@ -80,16 +80,16 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void Prompt::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Font>(  "Font",            cDefFont);
-    owner.createPropertyNativeFloat(  "FontSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
-    owner.createPropertyNativeFloat(  "ShadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
-    owner.createPropertyAsset<Colour>("SelectionColour", cDefSelectionColour);
-    owner.createPropertyNativeString( "Message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
-    owner.createPropertyNativeString( "RejectLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
-    owner.createPropertyNativeString( "AcceptLabel",     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
-    owner.createPropertyAsset<Action>("OnRejection",     cDefNegativeAction);
-    owner.createPropertyAsset<Action>("OnAcceptance",    cDefPositiveAction);
+  void Prompt::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Font>(  metadata.getPropertyData("Font"),            cDefFont);
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("FontSize"),        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("ShadowOffset"),    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("SelectionColour"), cDefSelectionColour);
+    owner.createPropertyNativeString( metadata.getPropertyData("Message"),         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
+    owner.createPropertyNativeString( metadata.getPropertyData("RejectLabel"),     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
+    owner.createPropertyNativeString( metadata.getPropertyData("AcceptLabel"),     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
+    owner.createPropertyAsset<Action>(metadata.getPropertyData("OnRejection"),     cDefNegativeAction);
+    owner.createPropertyAsset<Action>(metadata.getPropertyData("OnAcceptance"),    cDefPositiveAction);
   }
   
   void Prompt::reset() {
@@ -131,7 +131,7 @@ namespace IsoRealms::UI {
   }
 
   void Prompt::renderScreen(float scale, float aspectRatio) const {
-    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
+    LocalColour mWhite(1.0f, 1.0f, 1.0f);
     Utils::shadowPrint( 0.0f,                 0.0f, **cDefFont, cDefTextSize,                                                        mWhite, cDefShadowOffset, IFont::Alignment::CENTER, cDefMessage);
     Utils::shadowPrint(-0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize, !cRuntimePositiveHighlighted ? **cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::LEFT,   cDefNegativeText);
     Utils::shadowPrint( 0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize,  cRuntimePositiveHighlighted ? **cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::RIGHT,  cDefPositiveText);

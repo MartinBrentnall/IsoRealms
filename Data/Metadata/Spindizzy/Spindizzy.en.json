@@ -1,5 +1,128 @@
 {
   "description": "Graphics, elements, and functionality designed for supporting the IsoRealms Spindizzy remake.",
+  "assets": {
+    "CameraGameplay": {
+      "description": "A camera shows a single zone at a time, with ability to view the zone from different isometric angles.",
+      "properties": {
+        "InitialAngle": {"name": "Initial Angle", "description": "Angle at which this camera is initially set."},
+        "RotateDuration": {"name": "Rotate Duration", "description": "The time it takes to rotate the camera from one angle to another (in ms)."}
+      }
+    },
+    "CameraLinked": {
+      "description": "A camera copies the state of another view's camera.",
+      "properties": {
+      }
+    },
+    "CameraOverview": {
+      "description": "A camera that shows an entire world from above.",
+      "properties": {
+      }
+    },
+    "CameraTransitional": {
+      "description": "A camera that transitions between two other configured cameras.",
+      "properties": {
+        "Start": {"name": "State A", "description": "State A of this camera."},
+        "End": {"name": "State B", "description": "State B of this camera."},
+        "Duration": {"name": "Duration", "description": "The time it takes to transition between the two states (in ms)."},
+        "OnDepartureFromStart": {"name": "On Departure from State A", "description": "Action to perform when this camera leaves state A."},
+        "OnArriveAtEnd": {"name": "On Arrival at State B", "description": "Action to perform when this camera reaches state B."},
+        "OnDepartureFromEnd": {"name": "On Departure from State B", "description": "Action to perform when this camera leaves state B."},
+        "OnArrivalFromStart": {"name": "On Arrival at State A", "description": "Action to perform when this camera reaches state A."}
+      }
+    },
+    "CameraVariant": {
+      "description": "A camera that combines the states of other cameras.",
+      "properties": {
+        "Location": {"name": "Location", "description": "Use the location of the specified camera to position this camera."},
+        "Angle": {"name": "Angle", "description": "Use the angle of the specified camera to rotate this camera."},
+        "Tilt": {"name": "Tilt", "description": "Use the tilt of the specified camera to tilt this camera."},
+        "Zoom": {"name": "Zoom", "description": "Use the zoom of the specified camera to zoom this camera."}
+      }
+    },
+    "SurfacePatternOutline": {
+      "description": "Renders outlines around surfacess to give them a cartoonish appearance.",
+      "properties": {
+      }
+    },
+    "SurfacePatternSplitVariant": {
+      "description": "Renders surfaces using different styles depending on whether the tiles are split into triangles.",
+      "properties": {
+        "Regular": {"name": "Regular Pattern", "description": "Pattern to use for tiles without a split."},
+        "SplitA": {"name": "Split A Pattern", "description": "Pattern to use for one half of split tiles."},
+        "SplitB": {"name": "Split B Pattern", "description": "Pattern to use for other half of split tiles."}
+      }
+    },
+    "SurfacePatternTile": {
+      "description": "Renders surfaces using a single texture.",
+      "properties": {
+        "Texture": {"name": "Texture", "description": "Texture to apply to surfaces."}
+      }
+    },
+    "WallPatternCap": {
+      "description": "Renders walls with using different textures at the top, bottom, and middle sections.",
+      "properties": {
+        "Top": {"name": "Top", "description": "Texture applied to top part of walls."},
+        "Middle": {"name": "Middle", "description": "Texture applied between top and bottom part of walls."},
+        "Bottom": {"name": "Bottom", "description": "Texture applied to bottom part of walls."}
+      }
+    },
+    "WallPatternOutline": {
+      "description": "Renders outlines around walls to give them a cartoonish appearance.",
+      "properties": {
+      }
+    },
+    "WallPatternTile": {
+      "description": "Renders walls using a single texture.",
+      "properties": {
+        "Texture": {"name": "Texture", "description": "Texture to apply to walls."}
+      }
+    },
+    "ZoneViewTypeActual": {
+      "description": "Renders actual contents of zones.",
+      "properties": {
+      }
+    },
+    "ZoneViewTypeOverview": {
+      "description": "Renders coloured squares to represent zones.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitBoundary": {
+      "description": "Applies a boundary to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitCellLocation": {
+      "description": "Applies a cell location to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitChaser": {
+      "description": "Applies a chase behaviour to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitModel": {
+      "description": "Applies a visual representation to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitMovable": {
+      "description": "Applies the ability to move to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitPhysics": {
+      "description": "Applies physics to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitSpinner": {
+      "description": "Applies a visual representation to this entity that spins as it moves.",
+      "properties": {
+      }
+    }
+  },
   "resources": {
     "Alien": {
       "singular": "Alien",
@@ -185,15 +308,7 @@
         "AppearanceWallNorth": {"name": "North Wall Appearance", "description": "Pattern to visually represent north-facing walls of this terrain type."},
         "AppearanceWallSouth": {"name": "South Wall Appearance", "description": "Pattern to visually represent south-facing walls of this terrain type."},
         "AppearanceWallWest": {"name": "West Wall Appearance", "description": "Pattern to visually represent west-facing walls of this terrain type."},
-        "AppearanceWallEast": {"name": "East Wall Appearance", "description": "Pattern to visually represent east-facing walls of this terrain type."},
-        "SurfacePatternSplitVariantRegular": {"name": "Regular", "description": "Pattern applied to surface when the surface tile is not split."},
-        "SurfacePatternSplitVariantSplitA": {"name": "Split Segment A", "description": "Pattern applied to segment A of the surface tile when it is split diagonally."},
-        "SurfacePatternSplitVariantSplitB": {"name": "Split Segment B", "description": "Pattern applied to segment B of the surface tile when it is split diagonally."},
-        "SurfacePatternTileTexture": {"name": "Texture", "description": "Texture to apply."},
-        "WallPatternCapTop": {"name": "Top", "description": "Texture applied to the top part of this wall pattern."},
-        "WallPatternCapMiddle": {"name": "Middle", "description": "Texture applied to the middle part of this wall pattern."},
-        "WallPatternCapBottom": {"name": "Bottom", "description": "Texture applied to the bottom part of this wall pattern."},
-        "WallPatternTileTexture": {"name": "Texture", "description": "Texture applied to the wall."}
+        "AppearanceWallEast": {"name": "East Wall Appearance", "description": "Pattern to visually represent east-facing walls of this terrain type."}
       }
     },
     "TerrainState": {

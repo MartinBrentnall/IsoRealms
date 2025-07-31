@@ -23,9 +23,6 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const LiteralColour PropertiesTool::SELECTION_COLOUR(1.0f, 0.0f, 0.2f, 1.0f);
-  const LiteralColour PropertiesTool::LOCKED_COLOUR(0.0f, 0.0f, 0.0f, 1.0f);
-
   IWorldEditorToolInstance* PropertiesTool::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return cEditingModifiers.emplace_back(std::make_unique<Modifier>(*this, owner, editor)).get();
   }

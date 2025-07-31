@@ -33,8 +33,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    CameraVariant(IProject& project, WorldView& view);
-    CameraVariant(IProject& project, WorldView& view, JSONObject object);
+    CameraVariant(const Metadata& metadata, WorldView& view);
+    CameraVariant(const Metadata& metadata, WorldView& view, JSONObject object);
 
     /**********************\
      * Implements ICamera *
@@ -69,6 +69,8 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_YAW;
     static const std::string JSON_ZOOM;
     
+    // External interfaces.
+    const Metadata& cMetadata;
     WorldView& cParent;
     
     Camera cDefYaw;

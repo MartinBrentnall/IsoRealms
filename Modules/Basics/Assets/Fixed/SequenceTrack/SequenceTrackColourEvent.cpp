@@ -44,9 +44,9 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackColourEvent::getEventProperties(PropertyMaker& owner, IProject& project) {
-    owner.createPropertyAsset<Colour>("Colour", cDefTarget);
-    owner.createPropertyNativeBoolean("Fade",   [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
+  void SequenceTrackColourEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Colour"), cDefTarget);
+    owner.createPropertyNativeBoolean(metadata.getPropertyData("Fade"),   [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
   }
 
   const IColour* SequenceTrackColourEvent::getColour() const {

@@ -31,8 +31,8 @@ namespace IsoRealms::UI {
    */
   class LayoutOffsetLinked : public ILayoutOffset {
     public:
-    LayoutOffsetLinked(IProject& project, LayoutComponentEdge& owner);
-    LayoutOffsetLinked(IProject& project, LayoutComponentEdge& owner, JSONObject object);
+    LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner);
+    LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object);
 
     /****************************\
      * Implements ILayoutOffset *
@@ -60,6 +60,7 @@ namespace IsoRealms::UI {
     static const std::string VALUE_WIDTH;
 
     // External interfaces.
+    const Metadata& cMetadata;
     LayoutComponentEdge& cParent;
 
     // Definition data.

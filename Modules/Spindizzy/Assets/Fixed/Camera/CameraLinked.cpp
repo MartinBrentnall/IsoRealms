@@ -22,14 +22,14 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  CameraLinked::CameraLinked(IProject& project, WorldView& view) :
+  CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view) :
             cParent(view),
             cDefLinkedView(nullptr) {
   }
   
-  CameraLinked::CameraLinked(IProject& project, WorldView& view, JSONObject object) :
-            CameraLinked(project, view) {
-    project.init([this, object](IAssets& assets) {
+  CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view, JSONObject object) :
+            CameraLinked(metadata, view) {
+    view.getSpindizzy().getProject().init([this, object](IAssets& assets) {
       cDefLinkedView = cParent.getSpindizzy().getWorldView(object.getString(JSON_VIEW));
     });
   }

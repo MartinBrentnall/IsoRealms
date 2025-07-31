@@ -21,7 +21,8 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  CameraVariant::CameraVariant(IProject& project, WorldView& view) :
+  CameraVariant::CameraVariant(const Metadata& metadata, WorldView& view) :
+            cMetadata(metadata),
             cParent(view),
             cDefYaw(cParent.getSpindizzy(), view),
             cDefPitch(cParent.getSpindizzy(), view),
@@ -29,8 +30,8 @@ namespace IsoRealms::Spindizzy {
             cDefZoom(cParent.getSpindizzy(), view) {
   }
   
-  CameraVariant::CameraVariant(IProject& project, WorldView& view, JSONObject object) :
-            CameraVariant(project, view) {
+  CameraVariant::CameraVariant(const Metadata& metadata, WorldView& view, JSONObject object) :
+            CameraVariant(metadata, view) {
     cDefYaw.set(object, JSON_YAW);
     cDefPitch.set(object, JSON_PITCH);
     cDefLocation.set(object, JSON_LOCATION);
@@ -113,10 +114,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CameraVariant::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Camera>("Location", cDefLocation);
-    owner.createPropertyAsset<Camera>("Angle",    cDefYaw);
-    owner.createPropertyAsset<Camera>("Tilt",     cDefPitch);
-    owner.createPropertyAsset<Camera>("Zoom",     cDefZoom);
+    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Location"), cDefLocation);
+    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Angle"),    cDefYaw);
+    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Tilt"),     cDefPitch);
+    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Zoom"),     cDefZoom);
   }
 
   bool CameraVariant::isDefaultConfiguration() const {

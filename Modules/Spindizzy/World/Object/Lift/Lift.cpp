@@ -584,16 +584,17 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Lift::getProperties(PropertyMaker& owner) {
+    const Metadata& mMetadata = cZone.getWorld().getSpindizzy().getMetadata("Lift");
     if (cZone.getWorld().isBasicProperties()) {
-      owner.createPropertyNativeBoolean("Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
+      owner.createPropertyNativeBoolean(mMetadata.getPropertyData("Pause"), [this]() {return cDefTopPause > 0;}, [this](bool value) {
         cDefTopPause = value ? 1500 : 0;
         cDefBottomPause = value ? 1500 : 0;
       });
     } else {
-      owner.createPropertyNativeInteger("BottomPause", [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value;});
-      owner.createPropertyNativeInteger("TopPause",    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value;});
-      owner.createPropertyNativeInteger("UpSpeed",     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value;});
-      owner.createPropertyNativeInteger("DownSpeed",   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value;});
+      owner.createPropertyNativeInteger(mMetadata.getPropertyData("BottomPause"), [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value;});
+      owner.createPropertyNativeInteger(mMetadata.getPropertyData("TopPause"),    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value;});
+      owner.createPropertyNativeInteger(mMetadata.getPropertyData("UpSpeed"),     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value;});
+      owner.createPropertyNativeInteger(mMetadata.getPropertyData("DownSpeed"),   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value;});
     }
   }
 

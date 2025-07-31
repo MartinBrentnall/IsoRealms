@@ -27,6 +27,7 @@
 
 namespace IsoRealms {
   class JSONArray;
+  class Metadata;
   class Project;
 
   class ProjectFile {
@@ -38,7 +39,7 @@ namespace IsoRealms {
     std::string getName() const;
     void getNames(std::vector<std::string>& names) const;
     ProjectFile* getFile(const std::string& id);
-    void getProperties(PropertyMaker& owner, Project& project, bool topFile);
+    void getProperties(PropertyMaker& owner, const Metadata& Metadata, Project& project, bool topFile);
     void rename(const std::string name, bool user);
     void save(JSONObject object) const;
     void saveInclusion(JSONObject object) const;

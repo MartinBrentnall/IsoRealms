@@ -36,17 +36,18 @@ namespace IsoRealms::Spindizzy {
   const int CameraGameplay::VALUE_SOUTH_WEST = -135;
   const int CameraGameplay::VALUE_INVALID    =    0;
   
-  CameraGameplay::CameraGameplay(IProject& project, WorldView& view) :
+  CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view) :
+            cMetadata(metadata),
             cParent(view),
             cPitch(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH),
             cDefAngle(VALUE_NORTH_WEST),
             cDefRollDuration(DEFAULT_DURATION),
             cListener(nullptr),
-            cLuaBinding(project, this) {
+            cLuaBinding(view.getSpindizzy().getProject(), this) {
   }
   
-  CameraGameplay::CameraGameplay(IProject& project, WorldView& view, JSONObject object) :
-            CameraGameplay(project, view) {
+  CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view, JSONObject object) :
+            CameraGameplay(metadata, view) {
     cDefAngle = getDirectionValue(object.getString(JSON_DIRECTION));
     cDefRollDuration = object.getInteger(JSON_ROTATE_DURATION, DEFAULT_DURATION);
     if (cDefAngle == VALUE_INVALID) {
@@ -201,11 +202,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CameraGameplay::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyList("InitialAngle",
+    owner.createPropertyList(cMetadata.getPropertyData("InitialAngle"),
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},
                              [this](const std::string& value) {cDefAngle = getDirectionValue(value);});
-    owner.createPropertyNativeInteger("RotateDuration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
+    owner.createPropertyNativeInteger(cMetadata.getPropertyData("RotateDuration"), [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
   }
 
   bool CameraGameplay::isDefaultConfiguration() const {

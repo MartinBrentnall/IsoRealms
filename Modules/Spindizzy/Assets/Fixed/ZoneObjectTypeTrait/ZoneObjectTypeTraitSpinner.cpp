@@ -26,12 +26,12 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitSpinner::JSON_MODEL      = "model";
   const std::string ZoneObjectTypeTraitSpinner::JSON_SPIN_SPEED = "spinSpeed";
   
-  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type) :
+  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type) :
             cDefModel(type.getResourceData()) {
   }
 
-  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject& project, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitSpinner(project, type) {
+  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitSpinner(metadata, type) {
     cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED);
     cDefLocationID = object.getString(JSON_LOCATION);
     cDefModel.init(object, JSON_MODEL);

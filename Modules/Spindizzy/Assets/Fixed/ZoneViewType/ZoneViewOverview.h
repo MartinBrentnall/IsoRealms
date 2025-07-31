@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
   class ZoneViewOverview final : public IZoneView,
                                  public IZoneProperty {
     public:
-    ZoneViewOverview(IProject& project, WorldView& worldView, ZoneViewTypeOverview& type, Zone* zone);
+    ZoneViewOverview(WorldView& worldView, ZoneViewTypeOverview& type, Zone* zone);
 
     // Scripting interface.
     void setColour(IColour* colour);

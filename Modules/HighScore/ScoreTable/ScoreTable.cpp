@@ -47,7 +47,7 @@ namespace IsoRealms::HighScore {
       std::string mFieldName = mRecordObject.getString(JSON_NAME);
       std::vector<LiteralString> mValues;
       for (int i = 0; i < mRecordCount; i++) {
-        mValues.emplace_back(LiteralString(""));
+        mValues.emplace_back(LiteralString(data.getProject(), ""));
       }
       cValues.emplace(mFieldName, std::move(mValues));
     }
@@ -62,7 +62,7 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  void ScoreTable::getProperties(PropertyMaker& owner) {
+  void ScoreTable::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 

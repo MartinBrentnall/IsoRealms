@@ -35,9 +35,8 @@ namespace IsoRealms {
     virtual bool isReadOnly() const = 0;
     virtual void setOwner(ProjectFile* owner) = 0;
     virtual Project& getProject() = 0;
+    virtual const Project& getProject() const = 0;
     virtual Project& getAssetManager() = 0;
     virtual IActionClient& getDummyActionClient() = 0;
-
-    virtual const PropertyData& getPropertyData(const std::string& key) const = 0;
   };
 }

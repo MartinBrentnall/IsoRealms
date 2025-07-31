@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenPanel(IProject& project, IResourceData& owner);
-    ScreenPanel(IProject& project, IResourceData& owner, JSONObject object);
+    ScreenPanel(const Metadata& metadata, IResourceData& owner);
+    ScreenPanel(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *
@@ -63,6 +63,9 @@ namespace IsoRealms::UI {
     static void renderCorner(float xStart, float xEnd, bool xFlip, float yStart, float yEnd, bool yFlip);
     static void renderRectangle(float xStart, float xEnd, float yStart, float yEnd);
     
+    // External interfaces.
+    const Metadata& cMetadata;
+
     // Definition data.
     Colour cDefColour;    /// Colour of the panel.
     float cDefCornerSize; /// Size of the panel corner.

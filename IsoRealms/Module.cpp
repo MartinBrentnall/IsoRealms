@@ -191,6 +191,10 @@ namespace IsoRealms {
     cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, *this);
   }
 
+  const Metadata& Module::getAssetMetadata(const std::string& key) const {
+    return cAssetMetadata;
+  }
+
   std::string Module::getName() {
     return cName;
   }

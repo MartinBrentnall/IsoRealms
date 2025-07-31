@@ -40,6 +40,8 @@
 #include "IsoRealms/IResourceTypeRegistry.h"
 #include "IsoRealms/IsoRealmsConstants.h"
 #include "IsoRealms/Literals.h"
+#include "IsoRealms/LocalColour.h"
+#include "IsoRealms/LocalFloat.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/Options/WrappedOptions.h"
 #include "IsoRealms/Project.h"

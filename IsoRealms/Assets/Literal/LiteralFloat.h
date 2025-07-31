@@ -21,25 +21,22 @@
 #include "IsoRealms/Assets/Type/IFloat.h"
 
 namespace IsoRealms {
+  class Metadata;
+  class Project;
   
   /**
    * A simple Float asset implementation.
    */
   class LiteralFloat : public IFloat {
-    private:
-    static const std::string JSON_VALUE;
-
-    float cValue; /// The value of this Float.
-    
     public:
-      
+
     /**
      * Construct the Float with the specified value.
-     * 
+     *
      * @param value Value of the Float.
      */
-    LiteralFloat(const float value);
-      
+    LiteralFloat(Project& project, const float value);
+
     /*********************\
      * Implements IFloat *
     \*********************/
@@ -52,5 +49,13 @@ namespace IsoRealms {
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
+
+    private:
+    static const std::string JSON_VALUE;
+
+    // External interfaces.
+    const Metadata& cMetadata;
+
+    float cValue; /// The value of this Float.
   };
 }

@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
 
     // Constructors.
-    StringTime(IProject& project, IResourceData& owner);
-    StringTime(IProject& project, IResourceData& owner, JSONObject object);
+    StringTime(const Metadata& metadata, IResourceData& owner);
+    StringTime(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /**********************\
      * Implements IString *
@@ -83,7 +83,7 @@ namespace IsoRealms::UI {
     static const std::string DEFAULT_FORMAT;
 
     // External interfaces.
-    IProject& cProject;
+    const Metadata& cMetadata;
 
     // Definition data.
     Integer cDefValue;              /// Value in milliseconds to convert to string format.

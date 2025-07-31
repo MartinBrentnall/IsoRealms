@@ -19,13 +19,14 @@
 #include "ScreenModel.h"
 
 namespace IsoRealms::UI {
-  ScreenModel::ScreenModel(IProject& project, IResourceData& owner) :
+  ScreenModel::ScreenModel(const Metadata& metadata, IResourceData& owner) :
+            cMetadata(metadata),
             cDefModel(owner),
             cDefModelInstance(cDefModel.createInstance()) {
   }
   
-  ScreenModel::ScreenModel(IProject& project, IResourceData& owner, JSONObject object) :
-            ScreenModel(project, owner) {
+  ScreenModel::ScreenModel(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+            ScreenModel(metadata, owner) {
     cDefModel.set(object, JSON_MODEL);
   }
 
@@ -50,7 +51,7 @@ namespace IsoRealms::UI {
   }
 
   void ScreenModel::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Model>("Model", cDefModel);
+    owner.createPropertyAsset<Model>(cMetadata.getPropertyData("Model"), cDefModel);
   }
   
   bool ScreenModel::isDefaultConfiguration() const {

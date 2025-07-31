@@ -19,12 +19,12 @@
 #include "SequenceTrackAction.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence) :
-            SequenceTrackBase(project, sequence) {
+  SequenceTrackAction::SequenceTrackAction(const Metadata& metadata, Sequence& sequence) :
+            SequenceTrackBase(sequence) {
   }
   
-  SequenceTrackAction::SequenceTrackAction(IProject& project, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(project, sequence.getResourceData(), sequence, object) {
+  SequenceTrackAction::SequenceTrackAction(const Metadata& metadata, Sequence& sequence, JSONObject object) :
+            SequenceTrackBase(sequence.getResourceData(), sequence, object) {
   }
 
   ISequenceTrackEvent* SequenceTrackAction::getEvent(unsigned int time) {

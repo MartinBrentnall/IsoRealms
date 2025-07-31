@@ -67,6 +67,7 @@ namespace IsoRealms {
      * Implements IResourceTypeRegistry *
     \************************************/
     void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id) override;
+    const Metadata& getAssetMetadata(const std::string& key) const override;
     
     /**********************\
      * Implements IModule *
@@ -102,6 +103,7 @@ namespace IsoRealms {
     std::string cDescription;
     IModuleHandle* cModule;
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
+    Metadata cAssetMetadata;
     Project& cProject;
     ResourceAssetRegistry cModuleAssetRegistry;
     ProjectFile* cOwnerProject;

@@ -26,16 +26,18 @@ namespace IsoRealms::UI {
   
   const std::string MenuItemDigitalInput::BINDING_TYPE = "DigitalInput";
   
-  MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
-  MenuItemDigitalInput::MenuItemDigitalInput(IProject& project, Menu& menu, JSONObject object) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu, JSONObject object) :
+            cMetadata(metadata),
+            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
-            cLuaBinding(project, this) {
+            cLuaBinding(menu.getResourceData().getProject(), this) {
   }
 
   void MenuItemDigitalInput::addMapping(std::shared_ptr<IDigitalInputMapping> input) {
@@ -129,7 +131,7 @@ namespace IsoRealms::UI {
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
     const IColour& mSelectionColour = **menu.getSelectionColour();
-    const IColour& mRegularColour = LiteralColour(1.0f, 1.0f, 1.0f);
+    const IColour& mRegularColour = LocalColour(1.0f, 1.0f, 1.0f);
     for (unsigned int i = 0; i < cRuntimeMappings.size(); i++) {
       float mY = y - i * mFontSize * 2.0f;
       bool mSelected = selected && cRuntimeSelectedMapping == i;
@@ -155,7 +157,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDigitalInput::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString("ID", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
+    owner.createPropertyNativeString(cMetadata.getPropertyData("ID"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
   }
 
   bool MenuItemDigitalInput::isDefaultConfiguration() const {

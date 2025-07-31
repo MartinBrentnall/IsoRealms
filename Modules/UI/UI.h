@@ -53,9 +53,10 @@ namespace IsoRealms::UI {
 
   class UI : public IModuleHandle {
     public:
-    UI(Project& project, IResourceTypeRegistry* registry);
+    UI(Project& project, IResourceTypeRegistry& registry);
 
     // Interface access (used by all).
+    const Metadata& getMetadata(const std::string& key) const;
     UI& getAssetManager();
     Project& getProject() const;
     
@@ -132,7 +133,8 @@ namespace IsoRealms::UI {
 
     // External interfaces.
     Project& cProject;
-    
+    IResourceTypeRegistry& cModule;
+
     // Asset registries
     AssetClientManager<LayoutComponentEdge, ILayoutLocation> cLayoutLocations;
     AssetClientManager<LayoutComponentEdge, ILayoutOffset>   cLayoutOffsets;

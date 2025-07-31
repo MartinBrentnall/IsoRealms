@@ -85,14 +85,14 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void Menu::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>("Colour",       cDefColour);
-    owner.createPropertyAsset<Font>(  "Font",         cDefFont);
-    owner.createPropertyNativeFloat(  "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyNativeFloat(  "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
-    owner.createPropertyAsset<Action>("OnExit",       cDefExitAction);
+  void Menu::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Colour"),       cDefColour);
+    owner.createPropertyAsset<Font>(  metadata.getPropertyData("Font"),         cDefFont);
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    owner.createPropertyNativeFloat(  metadata.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
+    owner.createPropertyAsset<Action>(metadata.getPropertyData("OnExit"),       cDefExitAction);
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      owner.createPropertyAsset<MenuItem>("MenuItem", *mItem.get());
+      owner.createPropertyAsset<MenuItem>(metadata.getPropertyData("MenuItem"), *mItem.get());
     }
   }
   
@@ -118,6 +118,10 @@ namespace IsoRealms::UI {
   }
 
   IResourceData& Menu::getResourceData() {
+    return cResourceData;
+  }
+
+  const IResourceData& Menu::getResourceData() const {
     return cResourceData;
   }
 

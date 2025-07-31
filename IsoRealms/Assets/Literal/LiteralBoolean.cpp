@@ -26,7 +26,8 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  LiteralBoolean::LiteralBoolean(bool value) :
+  LiteralBoolean::LiteralBoolean(Project& project, bool value) :
+            cMetadata(project.getApplication().getMetadata("LiteralBoolean")),
             cValue(value) {
   }
 
@@ -48,7 +49,7 @@ namespace IsoRealms {
   }
 
   void LiteralBoolean::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeBoolean("Value", [this]() {return cValue;}, [this](bool value) {cValue = value;});
+    owner.createPropertyNativeBoolean(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](bool value) {cValue = value;});
   }
 
   bool LiteralBoolean::isDefaultConfiguration() const {

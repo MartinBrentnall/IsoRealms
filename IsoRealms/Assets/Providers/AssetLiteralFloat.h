@@ -21,6 +21,7 @@
 #include <string>
 
 #include "IsoRealms/Assets/Literal/LiteralFloat.h"
+#include "IsoRealms/IResourceData.h"
 
 #include "AssetLiteral.h"
 
@@ -36,15 +37,15 @@ namespace IsoRealms {
     }
 
     std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner) const override {
-      return std::make_unique<LiteralFloat>(0.0f);
+      return std::make_unique<LiteralFloat>(owner.getProject(), 0.0f);
     }
 
     std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
-      return std::make_unique<LiteralFloat>(static_cast<float>(atof(expression.c_str())));
+      return std::make_unique<LiteralFloat>(owner.getProject(), static_cast<float>(atof(expression.c_str())));
     }
 
     std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
-      return std::make_unique<LiteralFloat>(object.getFloat(JSON_VALUE));
+      return std::make_unique<LiteralFloat>(owner.getProject(), object.getFloat(JSON_VALUE));
     }
 
     bool renderAssetProviderIcon() const override {

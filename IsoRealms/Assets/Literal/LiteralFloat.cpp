@@ -24,7 +24,8 @@
 #include "IsoRealms/Project.h"
 
 namespace IsoRealms {
-  LiteralFloat::LiteralFloat(const float value) :
+  LiteralFloat::LiteralFloat(Project& project, const float value) :
+            cMetadata(project.getApplication().getMetadata("LiteralFloat")),
             cValue(value) {
   }
 
@@ -37,7 +38,7 @@ namespace IsoRealms {
   }
 
   void LiteralFloat::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value;});
+    owner.createPropertyNativeFloat(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](float value) {cValue = value;});
   }
 
   bool LiteralFloat::isDefaultConfiguration() const {

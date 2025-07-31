@@ -21,11 +21,13 @@
 namespace IsoRealms::UI {
   const std::string LayoutOffsetAbsolute::JSON_VALUE = "value";
 
-  LayoutOffsetAbsolute::LayoutOffsetAbsolute(IProject& project, LayoutComponentEdge& owner) :
+  LayoutOffsetAbsolute::LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner) :
+            cMetadata(metadata),
             cDefValue(0.0f) {
   }
 
-  LayoutOffsetAbsolute::LayoutOffsetAbsolute(IProject& project, LayoutComponentEdge& owner, JSONObject object) :
+  LayoutOffsetAbsolute::LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
+            cMetadata(metadata),
             cDefValue(object.getFloat(JSON_VALUE)) {
   }
 
@@ -50,7 +52,7 @@ namespace IsoRealms::UI {
   }
   
   void LayoutOffsetAbsolute::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+    owner.createPropertyNativeFloat(cMetadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 
   bool LayoutOffsetAbsolute::isDefaultConfiguration() const {

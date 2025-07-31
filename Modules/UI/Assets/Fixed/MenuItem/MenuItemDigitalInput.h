@@ -32,8 +32,8 @@ namespace IsoRealms::UI {
    */
   class MenuItemDigitalInput final : public IMenuItem {
     public:
-    MenuItemDigitalInput(IProject& project, Menu& menu);
-    MenuItemDigitalInput(IProject& project, Menu& menu, JSONObject object);
+    MenuItemDigitalInput(const Metadata& metadata, Menu& menu);
+    MenuItemDigitalInput(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -73,6 +73,7 @@ namespace IsoRealms::UI {
     static const std::string BINDING_TYPE;
 
     // External interfaces.
+    const Metadata& cMetadata;
     HatHandler& cHatHandler;
 
     // Definition data.

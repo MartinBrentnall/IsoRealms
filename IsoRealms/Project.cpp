@@ -114,7 +114,7 @@ namespace IsoRealms {
           cDefResetAction(*this),
           cDefStartAction(*this),
           cDefQuitAction(*this),
-          cPropertyValue(""),
+          cPropertyValue(*this, ""),
           cPropertyValueBinding(*this, &cPropertyValue, this) {
 
     // Support conversions.
@@ -516,10 +516,6 @@ namespace IsoRealms {
     return *this;
   }
 
-  const PropertyData& Project::getPropertyData(const std::string& key) const {
-    return cApplication.getPropertyData(key);
-  }
-
   bool Project::isReadOnly() const {
     return false;
   }
@@ -684,6 +680,10 @@ namespace IsoRealms {
     return *this;
   }
   
+  const Project& Project::getProject() const {
+    return *this;
+  }
+
   void Project::init(std::function<void(IAssets&)> initialiser) {
 //    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
 //     if (cInitialisers.size() == 241) {
@@ -733,6 +733,10 @@ namespace IsoRealms {
     return cApplication;
   }
 
+  const IApplication& Project::getApplication() const {
+    return cApplication;
+  }
+
   Project::ProjectProperty::ProjectProperty(Project& parent, JSONObject object, File* ownerProject) :
             cChangeAction(parent),
             cOwnerProject(ownerProject) {
@@ -756,30 +760,31 @@ namespace IsoRealms {
   }
 
   void Project::getProperties(PropertyMaker& propertyMaker) {
-    propertyMaker.createPropertyStruct("AppModules", "Edit...", [this](PropertyMaker& propertyMaker) {
+    const Metadata& mMetadata = cApplication.getMetadata("Application");
+    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("AppModules"), "Edit...", [this, &mMetadata](PropertyMaker& propertyMaker) {
       unsigned int mIndex = 1;
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        propertyMaker.createPropertyStruct("Module", mModule->getName(), [this, &mModule](PropertyMaker& propertyMaker) {
+        propertyMaker.createPropertyStruct(mMetadata.getPropertyData("Module"), mModule->getName(), [this, &mModule](PropertyMaker& propertyMaker) {
           return mModule->getProperties();
         }, [this, &mModule]() {
           Utils::removeElementUnique(cModules, mModule.get());
         });
         mIndex++;
       }
-      propertyMaker.createPropertyOptional<ModuleChooser>("Module", [this](const std::string& value) {
+      propertyMaker.createPropertyOptional<ModuleChooser>(mMetadata.getPropertyData("Module"), [this](const std::string& value) {
         loadModule(value);
       });
     });
-    propertyMaker.createPropertyStruct("AppFileStructure", "Edit...", [this](PropertyMaker& propertyMaker) {
-      cProjectFile.getProperties(propertyMaker, *this, false);
+    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("AppFileStructure"), "Edit...", [this, &mMetadata](PropertyMaker& propertyMaker) {
+      cProjectFile.getProperties(propertyMaker, mMetadata, *this, false);
     });
-    cDefInitAction.getProperty(propertyMaker, "OnInitialisation");
-    cDefResetAction.getProperty(propertyMaker, "OnReset");
-    cDefStartAction.getProperty(propertyMaker, "OnStart");
-    cDefQuitAction.getProperty(propertyMaker, "OnQuit");
-    cDefInputHandler.getProperty(propertyMaker, "InputHandler");
-    cDefScreen.getProperty(propertyMaker, "Display");
-    cDefDefaultEditor.getProperty(propertyMaker, "DefaultEditor");
+    cDefInitAction.getProperty(propertyMaker, mMetadata.getPropertyData("OnInitialisation"));
+    cDefResetAction.getProperty(propertyMaker, mMetadata.getPropertyData("OnReset"));
+    cDefStartAction.getProperty(propertyMaker, mMetadata.getPropertyData("OnStart"));
+    cDefQuitAction.getProperty(propertyMaker, mMetadata.getPropertyData("OnQuit"));
+    cDefInputHandler.getProperty(propertyMaker, mMetadata.getPropertyData("InputHandler"));
+    cDefScreen.getProperty(propertyMaker, mMetadata.getPropertyData("Display"));
+    cDefDefaultEditor.getProperty(propertyMaker, mMetadata.getPropertyData("DefaultEditor"));
   }
   
   void Project::setProperty(const std::string& property, const std::string& value) {

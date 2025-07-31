@@ -31,8 +31,8 @@ namespace IsoRealms::UI {
    */
   class LayoutLocationRelative : public ILayoutLocation {
     public:
-    LayoutLocationRelative(IProject& project, LayoutComponentEdge& owner);
-    LayoutLocationRelative(IProject& project, LayoutComponentEdge& owner, JSONObject object);
+    LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner);
+    LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object);
     
     /******************************\
      * Implements ILayoutLocation *
@@ -56,6 +56,7 @@ namespace IsoRealms::UI {
     static const std::string JSON_VALUE;
 
     // External interfaces.
+    const Metadata& cMetadata;
     LayoutComponentEdge& cParent;
     
     // Definition data.

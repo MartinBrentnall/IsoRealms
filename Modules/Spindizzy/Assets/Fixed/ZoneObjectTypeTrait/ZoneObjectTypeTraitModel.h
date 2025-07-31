@@ -30,8 +30,8 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitModel : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type);
-    ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type, JSONObject object);
+    ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
 
     // Interface to be used by instances.    
     bool isInitiallyEnabled() const;

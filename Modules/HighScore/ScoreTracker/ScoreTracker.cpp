@@ -74,7 +74,7 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
-  void ScoreTracker::getProperties(PropertyMaker& owner) {
+  void ScoreTracker::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 

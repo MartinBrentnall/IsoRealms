@@ -32,8 +32,8 @@ namespace IsoRealms::UI {
    */
   class MenuItemBoolean final : public IMenuItem {
     public:
-    MenuItemBoolean(IProject& project, Menu& menu);
-    MenuItemBoolean(IProject& project, Menu& menu, JSONObject object);
+    MenuItemBoolean(const Metadata& metadata, Menu& menu);
+    MenuItemBoolean(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -74,6 +74,7 @@ namespace IsoRealms::UI {
     static const std::string BINDING_TYPE;
 
     // External interfaces.
+    const Metadata& cMetadata;
     HatHandler& cHatHandler;
 
     // Definition data.

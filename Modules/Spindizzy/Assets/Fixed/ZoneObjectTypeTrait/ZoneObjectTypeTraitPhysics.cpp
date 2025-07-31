@@ -36,12 +36,12 @@ namespace IsoRealms::Spindizzy {
   const float ZoneObjectTypeTraitPhysics::DEFAULT_STEP_REACH    = 0.5f;
   const bool  ZoneObjectTypeTraitPhysics::DEFAULT_USE_NON_SOLID = false;
   
-  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(IProject& project, ZoneObjectType& type) {
+  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(const Metadata& metadata, ZoneObjectType& type) {
     // Nothing to do.
   }
 
-  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(IProject& project, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitPhysics(project, type) {
+  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitPhysics(metadata, type) {
     cDefMovableID = object.getString(JSON_CONTROLS);
     cDefStepReach = object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH);
     cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);

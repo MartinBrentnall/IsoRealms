@@ -25,12 +25,12 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectTypeTraitModel::JSON_LOCATION = "location";
   const std::string ZoneObjectTypeTraitModel::JSON_MODEL    = "model";
 
-  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type) :
+  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type) :
             cDefModel(type.getResourceData()) {
   }
 
-  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject& project, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitModel(project, type) {
+  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
+            ZoneObjectTypeTraitModel(metadata, type) {
     cDefLocationID = object.getString(JSON_LOCATION);
     cDefModel.init(object, JSON_MODEL);
   }

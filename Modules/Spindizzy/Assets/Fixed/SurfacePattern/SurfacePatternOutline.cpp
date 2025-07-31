@@ -23,12 +23,12 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternOutline::SurfacePatternOutline(IProject& project, TerrainType& owner) {
+  SurfacePatternOutline::SurfacePatternOutline(const Metadata& metadata, TerrainType& owner) {
     // Nothing to do.
   }
 
-  SurfacePatternOutline::SurfacePatternOutline(IProject& project, TerrainType& owner, JSONObject object) :
-            SurfacePatternOutline(project, owner) {
+  SurfacePatternOutline::SurfacePatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object) :
+            SurfacePatternOutline(metadata, owner) {
     // Nothing to do.
   }
 

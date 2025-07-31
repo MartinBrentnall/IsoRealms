@@ -32,8 +32,8 @@ namespace IsoRealms::UI {
    */
   class MenuItemSlider final : public IMenuItem {
     public:
-    MenuItemSlider(IProject& project, Menu& menu);
-    MenuItemSlider(IProject& project, Menu& menu, JSONObject object);
+    MenuItemSlider(const Metadata& metadata, Menu& menu);
+    MenuItemSlider(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -80,6 +80,7 @@ namespace IsoRealms::UI {
     static const int DEFAULT_STEPS;
 
     // External interfaces.
+    const Metadata& cMetadata;
     HatHandler& cHatHandler;
 
     // Definition data.

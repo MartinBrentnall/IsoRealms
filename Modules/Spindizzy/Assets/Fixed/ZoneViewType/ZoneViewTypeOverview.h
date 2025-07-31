@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    ZoneViewTypeOverview(IProject& project, WorldView& worldView);
-    ZoneViewTypeOverview(IProject& project, WorldView& worldView, JSONObject object);
+    ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView);
+    ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView, JSONObject object);
 
     void bind1(ZoneViewOverview* zoneViewOverview);
     void bind2(ZoneViewOverview* zoneViewOverview);
@@ -59,7 +59,6 @@ namespace IsoRealms::Spindizzy {
     // JSON members.
     static const std::string JSON_COLOUR;
     
-    IProject& cProject;
     WorldView& cWorldView;
 
     // Definition data.

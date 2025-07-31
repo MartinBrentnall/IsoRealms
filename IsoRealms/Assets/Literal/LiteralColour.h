@@ -22,31 +22,18 @@
 #include <iostream>
 
 #include "IsoRealms/Assets/Type/IColour.h"
+#include "IsoRealms/Metadata.h"
 
 namespace IsoRealms {
+  class Project;
+
   class LiteralColour : public IColour {
-    private:
-    static const std::string JSON_ALPHA;
-    static const std::string JSON_BLUE;
-    static const std::string JSON_GREEN;
-    static const std::string JSON_RED;
-
-    float cRed;   /// Red intensity
-    float cGreen; /// Green intensity
-    float cBlue;  /// Blue intensity
-    float cAlpha; /// Alpha intensity
-
-    // Editing data.
-    float cEditingLastKnownHue;        /// Last known hue value.
-    float cEditingLastKnownSaturation; /// Last known saturation value.
-    float cEditingLastKnownLightness;  /// Last known lightness value.
-
     public:
       
     /**
      * Construct a fixed colour of black.
      */
-    LiteralColour();
+    LiteralColour(const Project& project);
 
     /**
     * Create a fixed copy of the specified colour.  An relative intensity may
@@ -57,7 +44,7 @@ namespace IsoRealms {
     * @param colour Colour to copy.
     * @param intensity The relatively intensity of the new colour.
     */
-    LiteralColour(const IColour& colour, const float intensity = 1.0f);
+    LiteralColour(const Project& project, const IColour& colour, const float intensity = 1.0f);
       
     /**
     * Construct an colour of the specified intensity values, from 0 to 1.
@@ -67,7 +54,7 @@ namespace IsoRealms {
     * @param blue Blue intensity.
     * @param alpha Alpha intensity.
     */
-    LiteralColour(const float red, const float green, const float blue, const float alpha = 1.0f);
+    LiteralColour(const Project& project, const float red, const float green, const float blue, const float alpha = 1.0f);
 
     /**
     * Construct a colour resulting from weighted mixtures of the two specified colours.
@@ -76,7 +63,7 @@ namespace IsoRealms {
     * @param b Second colour.
     * @param weight 0.0 weighs fully towards a, 1.0 weighs fully towards b.
     */
-    LiteralColour(const IColour& a, const IColour& b, const float weight = 0.5f);
+    LiteralColour(const Project& project, const IColour& a, const IColour& b, const float weight = 0.5f);
 
 
     bool operator==(const LiteralColour& colour) const;
@@ -97,5 +84,24 @@ namespace IsoRealms {
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
+
+    private:
+    static const std::string JSON_ALPHA;
+    static const std::string JSON_BLUE;
+    static const std::string JSON_GREEN;
+    static const std::string JSON_RED;
+
+    // External interfaces.
+    const Metadata& cMetadata;
+
+    float cRed;   /// Red intensity
+    float cGreen; /// Green intensity
+    float cBlue;  /// Blue intensity
+    float cAlpha; /// Alpha intensity
+
+    // Editing data.
+    float cEditingLastKnownHue;        /// Last known hue value.
+    float cEditingLastKnownSaturation; /// Last known saturation value.
+    float cEditingLastKnownLightness;  /// Last known lightness value.
   };
 }

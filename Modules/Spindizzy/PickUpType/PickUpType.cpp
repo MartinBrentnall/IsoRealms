@@ -51,8 +51,8 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  void PickUpType::getProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Model>("Appearance", cDefModel);
+  void PickUpType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Model>(metadata.getPropertyData("Appearance"), cDefModel);
   }
 
   PickUpType::~PickUpType() {

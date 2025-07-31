@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    ZoneViewTypeActual(IProject& project, WorldView& worldView);
-    ZoneViewTypeActual(IProject& project, WorldView& worldView, JSONObject object);
+    ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView);
+    ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView, JSONObject object);
     
     /****************************\
      * Implements IZoneViewType *

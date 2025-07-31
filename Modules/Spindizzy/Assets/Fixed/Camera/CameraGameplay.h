@@ -34,8 +34,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    CameraGameplay(IProject& project, WorldView& view);
-    CameraGameplay(IProject& project, WorldView& view, JSONObject object);
+    CameraGameplay(const Metadata& metadata, WorldView& view);
+    CameraGameplay(const Metadata& metadata, WorldView& view, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -102,9 +102,10 @@ namespace IsoRealms::Spindizzy {
     
 
     // External interfaces.
+    const Metadata& cMetadata;
     WorldView& cParent; /// Parent view.
 
-    LiteralFloat cPitch;
+    LocalFloat cPitch;
 
     // Definition data.
     float cDefAngle;          /// Initial angle value.

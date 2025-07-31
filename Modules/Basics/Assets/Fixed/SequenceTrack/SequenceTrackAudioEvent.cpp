@@ -88,8 +88,8 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner, IProject& project) {
-    owner.createPropertyAsset<File>("AudioFile", cDefFile);
+  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+    owner.createPropertyAsset<File>(metadata.getPropertyData("AudioFile"), cDefFile);
   }
 
   SequenceTrackAudioEvent::End* SequenceTrackAudioEvent::getEndEvent() {
@@ -108,7 +108,7 @@ namespace IsoRealms::Basics {
     // Not supported.
   }
 
-  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner, IProject& project) {
+  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
     // Nothing to do.
   }
 

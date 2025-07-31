@@ -51,7 +51,7 @@ namespace IsoRealms {
     }
 
     void getAssetProperties(PropertyMaker& owner) override {
-      owner.createPropertyAsset<T>("Asset", cDefValue);
+      owner.createPropertyAsset<T>(PropertyData("TODO: Asset", "TODO: Description"), cDefValue);
     }
 
     bool isDefaultConfiguration() const override {

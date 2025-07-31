@@ -206,7 +206,7 @@ namespace IsoRealms {
   }
 
   void KeyMapping::getProperties(PropertyMaker& owner) {
-    owner.createPropertyKey("Key", [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
+    owner.createPropertyKey(PropertyData("TODO: Key", "TODO: Description"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
   }
 
   std::string KeyMapping::getShortName() const {

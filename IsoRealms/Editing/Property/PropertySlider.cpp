@@ -64,7 +64,7 @@ namespace IsoRealms {
   
   void PropertySlider::configure(IPropertyManager& manager) {
     manager.openProperties(cPropertyOwner.getResourceData(), getPropertyName(), [this](PropertyMaker& owner) {
-      owner.createPropertyNativeFloat(getPropertyName(), [this]() {
+      owner.createPropertyNativeFloat(PropertyData("TODO: " + getPropertyName(), "TODO: Description"), [this]() {
         return cValueFunction();
       }, [this](float value) {
         cConfirmationCallback(value);

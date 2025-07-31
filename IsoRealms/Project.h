@@ -202,7 +202,6 @@ namespace IsoRealms {
     std::string getFilename();
     Project& getAssetManager() override;
     IActionClient& getDummyActionClient() override;
-    const PropertyData& getPropertyData(const std::string& key) const override;
     bool isReadOnly() const override;
     void setOwner(ProjectFile* file) override;
     IResourceData& getResourceData() override;
@@ -273,6 +272,7 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     Project& getProject() override;
+    const Project& getProject() const override;
 
     IScreen* getScreenProxy(IScreen* screen);
     void addScreenListener(IScreenListener* listener) override;
@@ -281,6 +281,7 @@ namespace IsoRealms {
     void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) override;
 
     IApplication& getApplication() override;
+    const IApplication& getApplication() const override;
 
     void getProperties(PropertyMaker& propertyMaker);
 
@@ -420,8 +421,8 @@ namespace IsoRealms {
         }
       }
 
-      void getProperty(PropertyMaker& owner, const std::string& name) {
-        owner.createPropertyAsset<TYPE>(name, cAsset);
+      void getProperty(PropertyMaker& owner, const PropertyData& data) {
+        owner.createPropertyAsset<TYPE>(data, cAsset);
       }
 
       private:

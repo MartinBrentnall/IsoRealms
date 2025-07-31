@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
 
   class SurfacePatternSplitVariant : public ISurfacePattern {
     public:
-    SurfacePatternSplitVariant(IProject& project, TerrainType& owner);
-    SurfacePatternSplitVariant(IProject& project, TerrainType& owner, JSONObject object);
+    SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner);
+    SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *
@@ -58,6 +58,9 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_REGULAR;
     static const std::string JSON_SPLIT_A;
     static const std::string JSON_SPLIT_B;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // Definition data.
     SurfacePattern cDefRegularPattern;

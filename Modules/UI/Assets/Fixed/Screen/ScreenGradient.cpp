@@ -19,15 +19,15 @@
 #include "ScreenGradient.h"
 
 namespace IsoRealms::UI {
-  ScreenGradient::ScreenGradient(IProject& project, IResourceData& owner) :
-            cProject(project),
+  ScreenGradient::ScreenGradient(const Metadata& metadata, IResourceData& owner) :
+            cMetadata(metadata),
             cDefColourA(owner, 0.0f, 0.0f, 1.0f),
             cDefColourB(owner, 0.0f, 1.0f, 0.0f),
             cDefVertical(false) {
   }
 
-  ScreenGradient::ScreenGradient(IProject& project, IResourceData& owner, JSONObject object) :
-            ScreenGradient(project, owner) {
+  ScreenGradient::ScreenGradient(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+            ScreenGradient(metadata, owner) {
     cDefColourA.set(object, JSON_COLOUR_A);
     cDefColourB.set(object, JSON_COLOUR_B);
     cDefVertical = object.getString(JSON_ORIENTATION) == VALUE_VERTICAL;
@@ -68,9 +68,9 @@ namespace IsoRealms::UI {
   }
 
   void ScreenGradient::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>( "ColourA", cDefColourA);
-    owner.createPropertyAsset<Colour>( "ColourB", cDefColourB);
-    owner.createPropertyList("Orientation", std::vector<std::string>{
+    owner.createPropertyAsset<Colour>( cMetadata.getPropertyData("ColourA"), cDefColourA);
+    owner.createPropertyAsset<Colour>( cMetadata.getPropertyData("ColourB"), cDefColourB);
+    owner.createPropertyList(          cMetadata.getPropertyData("Orientation"), std::vector<std::string>{
       VALUE_HORIZONTAL, VALUE_VERTICAL
     }, [this]() {
       return cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL;

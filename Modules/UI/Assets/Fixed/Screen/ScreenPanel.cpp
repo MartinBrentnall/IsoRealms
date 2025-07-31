@@ -19,14 +19,15 @@
 #include "ScreenPanel.h"
 
 namespace IsoRealms::UI {
-  ScreenPanel::ScreenPanel(IProject& project, IResourceData& owner) :
+  ScreenPanel::ScreenPanel(const Metadata& metadata, IResourceData& owner) :
+            cMetadata(metadata),
             cDefColour(owner, 0.0f, 0.0f, 1.0f),
             cDefCornerSize(0.0f) {
-    initTextures(project);
+    initTextures(owner.getProject());
   }
   
-  ScreenPanel::ScreenPanel(IProject& project, IResourceData& owner, JSONObject object) :
-            ScreenPanel(project, owner) {
+  ScreenPanel::ScreenPanel(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+            ScreenPanel(metadata, owner) {
     cDefColour.set(object, JSON_COLOUR);
     cDefCornerSize = object.getFloat(JSON_CORNER_SIZE);
   }
@@ -73,8 +74,8 @@ namespace IsoRealms::UI {
   }
 
   void ScreenPanel::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>("Colour",      cDefColour);
-    owner.createPropertyNativeFloat(  "Corner Size", [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
+    owner.createPropertyAsset<Colour>(cMetadata.getPropertyData("Colour"),     cDefColour);
+    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("CornerSize"), [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
   }
   
   bool ScreenPanel::isDefaultConfiguration() const {

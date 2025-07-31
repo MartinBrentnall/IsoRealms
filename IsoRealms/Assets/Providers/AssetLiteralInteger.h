@@ -36,15 +36,15 @@ namespace IsoRealms {
     }
 
     std::unique_ptr<IInteger> createLiteralAsset(IResourceData& owner) const override {
-      return std::make_unique<LiteralInteger>(0);
+      return std::make_unique<LiteralInteger>(owner.getProject(), 0);
     }
 
     std::unique_ptr<IInteger> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
-      return std::make_unique<LiteralInteger>(std::atoi(expression.c_str()));
+      return std::make_unique<LiteralInteger>(owner.getProject(), std::atoi(expression.c_str()));
     }
 
     std::unique_ptr<IInteger> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
-      return std::make_unique<LiteralInteger>(object.getInteger(JSON_VALUE));
+      return std::make_unique<LiteralInteger>(owner.getProject(), object.getInteger(JSON_VALUE));
     }
 
     bool renderAssetProviderIcon() const override {

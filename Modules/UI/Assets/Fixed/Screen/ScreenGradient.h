@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
 
     // Constructors.
-    ScreenGradient(IProject& project, IResourceData& owner);
-    ScreenGradient(IProject& project, IResourceData& owner, JSONObject object);
+    ScreenGradient(const Metadata& metadata, IResourceData& owner);
+    ScreenGradient(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *
@@ -55,7 +55,7 @@ namespace IsoRealms::UI {
     static const std::string VALUE_VERTICAL;
 
     // External interfaces.
-    IProject& cProject;
+    const Metadata& cMetadata;
 
     // Definition data.
     Colour cDefColourA;

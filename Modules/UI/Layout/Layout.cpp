@@ -68,8 +68,8 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void Layout::getProperties(PropertyMaker& owner) {
-    owner.createPropertyEditor("Content", this);
+  void Layout::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyEditor(metadata.getPropertyData("Content"), this);
   }
 
   void Layout::updateEditing(unsigned int milliseconds) {
