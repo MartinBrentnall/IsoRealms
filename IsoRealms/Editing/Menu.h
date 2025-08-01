@@ -57,7 +57,7 @@ namespace IsoRealms {
       float mBottom = std::max(-1.0f + mFontSize, 1.0f - ((cItems.size() + 2.0f) * mFontSize * 2.0f));
       updateRight(aspectRatio, minimumWidth);
 
-      glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
+      glColor3f(0.0f, 0.0f, 0.0f);
       Utils::renderRoundedRectangle(mLeft, mBottom, cPanelRight, mTop, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
     }

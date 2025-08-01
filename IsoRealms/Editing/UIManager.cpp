@@ -147,7 +147,7 @@ namespace IsoRealms {
       float mRight = mLeft + mWidestLineWidth;
       float mTop = cHighlightTop.animation();// + mLineHeight;
       float mBottom = mTop - mFont->getHeight(mFontSize, mWrappedText);
-      glColor4f(0.2f, 0.0f, 0.0f, 0.75f);
+      glColor3f(0.2f, 0.0f, 0.0f);
       Utils::renderRoundedRectangle(mLeft - mFontSize, mBottom - mFontSize, mRight + mFontSize, mTop + mFontSize, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
       mFont->print(mLeft, cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mWrappedText);
@@ -156,7 +156,7 @@ namespace IsoRealms {
       glColor3f(1.0f, 0.0f, 0.3f);
       glVertex2f(cHighlightRight.animation(), cHighlightTop.animation()    - mLineHeight / 3.0f);
       glVertex2f(cHighlightRight.animation(), cHighlightBottom.animation() + mLineHeight / 3.0f);
-      glColor4f(0.2f, 0.0f, 0.0f, 0.75f);
+      glColor3f(0.2f, 0.0f, 0.0f);
       glVertex2f(mLeft - mFontSize, cHighlightBottom.animation() + mLineHeight / 3.0f);
       glVertex2f(mLeft - mFontSize, cHighlightTop.animation()    - mLineHeight / 3.0f);
       glEnd();
