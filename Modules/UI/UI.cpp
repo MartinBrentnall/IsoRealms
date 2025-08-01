@@ -125,6 +125,10 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }  
 
+  void UI::updateInputs(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
   void UI::updateRuntime(unsigned int milliseconds) {
     updateRuntime2(cResourceTypeMenu,            milliseconds);
     updateRuntime2(cResourceTypeThrobber,        milliseconds);
@@ -152,9 +156,9 @@ namespace IsoRealms::UI {
   ILayoutOffset*   UI::createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner) {return cLayoutOffsets.literal(  user, owner, "");}
   IMenuItem*       UI::createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner) {return cMenuItems.literal(      user, owner, "");}
 
-  ILayoutLocation* UI::getLayoutLocation(IAssetUser<ILayoutLocation>* user, JSONObject object, LayoutComponentEdge& owner) {return cLayoutLocations.get(user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ILayoutLocation*>* listener) -> ILayoutLocation* {return nullptr;});}
-  ILayoutOffset*   UI::getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, JSONObject object, LayoutComponentEdge& owner) {return cLayoutOffsets.get(  user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ILayoutOffset*>*   listener) -> ILayoutOffset*   {return nullptr;});}
-  IMenuItem*       UI::getMenuItem(      IAssetUser<IMenuItem>*       user, JSONObject object, Menu&                owner) {return cMenuItems.get(      user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<IMenuItem*>*       listener) -> IMenuItem*       {return nullptr;});}
+  ILayoutLocation* UI::getLayoutLocation(IAssetUser<ILayoutLocation>* user, JSONObject object, LayoutComponentEdge& owner) {return cLayoutLocations.get(user, owner, object, nullptr, true);}
+  ILayoutOffset*   UI::getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, JSONObject object, LayoutComponentEdge& owner) {return cLayoutOffsets.get(  user, owner, object, nullptr, true);}
+  IMenuItem*       UI::getMenuItem(      IAssetUser<IMenuItem>*       user, JSONObject object, Menu&                owner) {return cMenuItems.get(      user, owner, object, nullptr, true);}
 
   ILayoutLocation* UI::getLayoutLocation(IAssetUser<ILayoutLocation>* user, const std::string& id, LayoutComponentEdge& owner) {return cLayoutLocations.get(user, owner, id, nullptr);}
   ILayoutOffset*   UI::getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, const std::string& id, LayoutComponentEdge& owner) {return cLayoutOffsets.get(  user, owner, id, nullptr);}

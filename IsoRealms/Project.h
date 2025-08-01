@@ -62,7 +62,6 @@
 namespace IsoRealms {
   template<class TYPE> struct AssetContainerTraits;
   
-  class IAssetOverride;
   class IModule;
   class IScreenListener;
   class Module;
@@ -80,7 +79,7 @@ namespace IsoRealms {
     public:
 
     // TODO: Constructor for creating new projects
-    Project(IApplication& application, std::function<void(bool)> onFinish, IAssetOverride* override = nullptr);
+    Project(IApplication& application, std::function<void(bool)> onFinish);
 
     /**
      * Constructor for loading an IsoRealms Project from an IsoRealms Project
@@ -91,7 +90,7 @@ namespace IsoRealms {
      * @param onFinish Function to callback when the Project finishes.
      * @param override Specify to override assets of a Project with external ones.
      */
-    Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish, IAssetOverride* override = nullptr);
+    Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish);
 
     /***********************\
      * Implements IProject *
@@ -432,7 +431,6 @@ namespace IsoRealms {
 
     IApplication& cApplication; /// Host application of this project.
 
-    const IAssetOverride* const cAssetOverride; /// External asset override for this project.
     LuaState cLuaState;                         /// Lua State for this project.
     LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
     bool cResourcesLoaded;                    /// Indicates that resource loading from modules has completed.

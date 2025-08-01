@@ -24,8 +24,7 @@ else(LUA_FOUND)
 endif(LUA_FOUND)
 
 add_library(Replay MODULE 
-  Player/Player.cpp
-  Recorder/Recorder.cpp
+  Replayer/Replayer.cpp
   Replay.cpp
   ReplayLuaSupport.cpp
 )

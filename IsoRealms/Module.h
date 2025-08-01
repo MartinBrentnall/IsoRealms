@@ -59,6 +59,7 @@ namespace IsoRealms {
     bool needsSaving(ProjectFile* savingProject) const;
     void save(JSONObject object, ProjectFile* savingProject) const;
     void getProperties();
+    void updateInputs(unsigned int milliseconds);
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
     void reset();

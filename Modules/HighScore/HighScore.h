@@ -39,6 +39,7 @@ namespace IsoRealms::HighScore {
     void save(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
     void getProperties() override;
+    void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;

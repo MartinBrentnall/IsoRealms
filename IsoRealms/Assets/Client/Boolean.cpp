@@ -42,14 +42,14 @@ namespace IsoRealms {
   IBoolean* Boolean::getAsset(IResourceData& owner, const std::string& id) {
     return owner.getAssetManager().getBoolean(this, id, owner, cListener != nullptr ? this : nullptr);
   }
-  
-  bool Boolean::isDefaultConfiguration() const {
-    return true;
-  }
 
   void Boolean::stateChanged(IBoolean* value) {
-    if (value == cAsset) {
+    if (value == cAsset && cListener != nullptr) {
       cListener(cAsset->getValue());
     }
+  }
+
+  bool Boolean::isDefaultConfiguration() const {
+    return true;
   }
 }

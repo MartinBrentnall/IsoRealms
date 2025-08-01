@@ -19,11 +19,9 @@
 #include "Replay.h"
 
 namespace IsoRealms::Replay {
-  Replay::Replay(Project& project, IResourceTypeRegistry* registry):
-                    cResourceTypePlayer(*this),
-                    cResourceTypeRecorder(*this) {
-    registry->add(&cResourceTypePlayer,   "Player");
-    registry->add(&cResourceTypeRecorder, "Recorder");
+  Replay::Replay(Project& project, IResourceTypeRegistry& registry):
+                    cResourceTypeReplayer(*this) {
+    registry.add(&cResourceTypeReplayer, "Replayer");
   }
 
   void Replay::load(IProject& project, JSONObject object) {
@@ -42,9 +40,12 @@ namespace IsoRealms::Replay {
     // Nothing to do.
   }
 
+  void Replay::updateInputs(unsigned int milliseconds) {
+    updateInputs2(cResourceTypeReplayer, milliseconds);
+  }
+  
   void Replay::updateRuntime(unsigned int milliseconds) {
-    updateRuntime2(cResourceTypePlayer,   milliseconds);
-    updateRuntime2(cResourceTypeRecorder, milliseconds);
+    updateRuntime2(cResourceTypeReplayer, milliseconds);
   }
   
   void Replay::updateEditing(unsigned int milliseconds) {
@@ -52,8 +53,7 @@ namespace IsoRealms::Replay {
   }
   
   void Replay::reset() {
-    reset2(cResourceTypePlayer);
-    reset2(cResourceTypeRecorder);
+    reset2(cResourceTypeReplayer);
   }  
   
   std::mutex cModuleInstantiationMutex;
@@ -65,7 +65,7 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoReal
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
-  std::unique_ptr<IsoRealms::Replay::Replay> mModule = std::make_unique<IsoRealms::Replay::Replay>(*project, registry);
+  std::unique_ptr<IsoRealms::Replay::Replay> mModule = std::make_unique<IsoRealms::Replay::Replay>(*project, *registry);
   {
     std::lock_guard<std::mutex> mLockGuard(IsoRealms::Replay::cModuleInstantiationMutex);
     return IsoRealms::Replay::ModuleInstances.emplace_back(std::move(mModule)).get();

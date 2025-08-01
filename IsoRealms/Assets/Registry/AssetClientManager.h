@@ -145,26 +145,24 @@ namespace IsoRealms {
       return mAsset;
     }
 
-    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, JSONObject object, IStateListener<TYPE*>* listener, bool required, std::function<TYPE*(JSONObject object, IStateListener<TYPE*>* listener)> override) {
+    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, JSONObject object, IStateListener<TYPE*>* listener, bool required) {
       if (client == nullptr) {
         throw std::invalid_argument("Client cannot be null");
       }
 
-      TYPE* mAsset = override(object, listener);
-      if (mAsset == nullptr) {
-        IAssetProvider<OWNER, TYPE>* mProvider = cRegistry.getProvider(object.getString(JSON_KEY), required);
-        if (mProvider != nullptr) {
-          mAsset = mProvider->getAsset(owner, object);
-        }
+      TYPE* mAsset = nullptr;
+      IAssetProvider<OWNER, TYPE>* mProvider = cRegistry.getProvider(object.getString(JSON_KEY), required);
+      if (mProvider != nullptr) {
+        mAsset = mProvider->getAsset(owner, object);
+      }
 
-        if (mAsset != nullptr) {
-          cClients[mProvider][mAsset].emplace_back(client);
+      if (mAsset != nullptr) {
+        cClients[mProvider][mAsset].emplace_back(client);
 
-          if (listener != nullptr) {
-            typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(mProvider);
-            if (mNotifier != cStateNotifiers.end()) {
-              mNotifier->second->addListener(listener);
-            }
+        if (listener != nullptr) {
+          typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(mProvider);
+          if (mNotifier != cStateNotifiers.end()) {
+            mNotifier->second->addListener(listener);
           }
         }
       }

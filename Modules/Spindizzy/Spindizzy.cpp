@@ -256,14 +256,14 @@ namespace IsoRealms::Spindizzy {
   IZoneObjectTypeTrait* Spindizzy::getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, const std::string& id, ZoneObjectType& owner)                                             {return cZoneObjectTypeTraits.get(user, owner, id, nullptr);}
   IZoneViewType*        Spindizzy::getZoneViewType(       IAssetUser<IZoneViewType>*        user, const std::string& id, WorldView&      owner)                                             {return cZoneViewTypes.get(       user, owner, id, nullptr);}
 
-  IBoundaryType*        Spindizzy::getBoundaryType(       IAssetUser<IBoundaryType>*        user, JSONObject object)                                                                    {return cBoundaryTypes.get(       user, *this, object, nullptr,  true, [this](JSONObject object, IStateListener<IBoundaryType*>*        listener) -> IBoundaryType*        {return nullptr;});}
-  ICamera*              Spindizzy::getCamera(             IAssetUser<ICamera>*              user, JSONObject object, WorldView&      owner)                                             {return cCameras.get(             user, owner, object, nullptr,  true, [this](JSONObject object, IStateListener<ICamera*>*              listener) -> ICamera*              {return nullptr;});}
-  IPhysicalObjectType*  Spindizzy::getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, JSONObject object)                                                                    {return cPhysicalObjectTypes.get( user, *this, object, nullptr,  true, [this](JSONObject object, IStateListener<IPhysicalObjectType*>*  listener) -> IPhysicalObjectType*  {return nullptr;});}
-  ISurfacePattern*      Spindizzy::getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, JSONObject object, TerrainType&    owner, IStateListener<ISurfacePattern*>* listener) {return cSurfacePatterns.get(     user, owner, object, listener, true, [this](JSONObject object, IStateListener<ISurfacePattern*>*      listener) -> ISurfacePattern*      {return nullptr;});}
-  IWallPattern*         Spindizzy::getWallPattern(        IAssetUser<IWallPattern>*         user, JSONObject object, TerrainType&    owner, IStateListener<IWallPattern*>*    listener) {return cWallPatterns.get(        user, owner, object, listener, true, [this](JSONObject object, IStateListener<IWallPattern*>*         listener) -> IWallPattern*         {return nullptr;});}
-  IWorldEditorTool*     Spindizzy::getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, JSONObject object)                                                                    {return cWorldEditorTools.get(    user, *this, object, nullptr,  true, [this](JSONObject object, IStateListener<IWorldEditorTool*>*     listener) -> IWorldEditorTool*     {return nullptr;});}
-  IZoneObjectTypeTrait* Spindizzy::getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType& owner)                                             {return cZoneObjectTypeTraits.get(user, owner, object, nullptr,  true, [this](JSONObject object, IStateListener<IZoneObjectTypeTrait*>* listener) -> IZoneObjectTypeTrait* {return nullptr;});}
-  IZoneViewType*        Spindizzy::getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView&      owner)                                             {return cZoneViewTypes.get(       user, owner, object, nullptr,  true, [this](JSONObject object, IStateListener<IZoneViewType*>*        listener) -> IZoneViewType*        {return nullptr;});}
+  IBoundaryType*        Spindizzy::getBoundaryType(       IAssetUser<IBoundaryType>*        user, JSONObject object)                                                                    {return cBoundaryTypes.get(       user, *this, object, nullptr,  true);}
+  ICamera*              Spindizzy::getCamera(             IAssetUser<ICamera>*              user, JSONObject object, WorldView&      owner)                                             {return cCameras.get(             user, owner, object, nullptr,  true);}
+  IPhysicalObjectType*  Spindizzy::getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, JSONObject object)                                                                    {return cPhysicalObjectTypes.get( user, *this, object, nullptr,  true);}
+  ISurfacePattern*      Spindizzy::getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, JSONObject object, TerrainType&    owner, IStateListener<ISurfacePattern*>* listener) {return cSurfacePatterns.get(     user, owner, object, listener, true);}
+  IWallPattern*         Spindizzy::getWallPattern(        IAssetUser<IWallPattern>*         user, JSONObject object, TerrainType&    owner, IStateListener<IWallPattern*>*    listener) {return cWallPatterns.get(        user, owner, object, listener, true);}
+  IWorldEditorTool*     Spindizzy::getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, JSONObject object)                                                                    {return cWorldEditorTools.get(    user, *this, object, nullptr,  true);}
+  IZoneObjectTypeTrait* Spindizzy::getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType& owner)                                             {return cZoneObjectTypeTraits.get(user, owner, object, nullptr,  true);}
+  IZoneViewType*        Spindizzy::getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView&      owner)                                             {return cZoneViewTypes.get(       user, owner, object, nullptr,  true);}
 
   std::vector<IBoundaryType*> Spindizzy::getAllBoundaryTypeObjects() {
     std::vector<IBoundaryType*> mTypes;
@@ -556,6 +556,10 @@ namespace IsoRealms::Spindizzy {
 //     }
   }
 
+  void Spindizzy::updateInputs(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
   void Spindizzy::updateRuntime(unsigned int milliseconds) {
     updateRuntime2(cResourceWorld,     milliseconds);
     updateRuntime2(cResourceWorldView, milliseconds);

@@ -34,7 +34,6 @@
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Exception/ActionException.h"
 #include "IsoRealms/Exception/IllegalStateException.h"
-#include "IsoRealms/IAssetOverride.h"
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/Input.h"
 #include "IsoRealms/IResourceTypeRegistry.h"

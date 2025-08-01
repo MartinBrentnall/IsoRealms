@@ -103,8 +103,8 @@ namespace IsoRealms {
       return cScreens.literal(client, owner, value);
     }
 
-    IScreen* get(IAssetUser<IScreen>* client, IResourceData& owner, JSONObject object, IStateListener<IScreen*>* listener, bool required, std::function<IScreen*(JSONObject object, IStateListener<IScreen*>* listener)> override) {
-      return cScreens.get(client, owner, object, listener, required, override);
+    IScreen* get(IAssetUser<IScreen>* client, IResourceData& owner, JSONObject object, IStateListener<IScreen*>* listener, bool required) {
+      return cScreens.get(client, owner, object, listener, required);
     }
 
     IScreen* get(IAssetUser<IScreen>* client, IResourceData& owner, const std::string& id, IStateListener<IScreen*>* listener) {

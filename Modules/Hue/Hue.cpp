@@ -40,6 +40,10 @@ namespace IsoRealms::Hue {
     // Nothing to do.
   }
 
+  void Hue::updateInputs(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
   void Hue::updateRuntime(unsigned int milliseconds) {
     updateRuntime2(cResourceTypeHueManager, milliseconds);
   }

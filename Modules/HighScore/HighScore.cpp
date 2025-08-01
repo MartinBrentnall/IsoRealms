@@ -42,6 +42,10 @@ namespace IsoRealms::HighScore {
     // Nothing to do.
   }
 
+  void HighScore::updateInputs(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
   void HighScore::updateRuntime(unsigned int milliseconds) {
     updateRuntime2(cResourceTypeScoreTracker, milliseconds);
   }

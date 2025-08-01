@@ -21,7 +21,6 @@
 #include "Application.h"
 #include "Assets/Type/IScreenListener.h"
 #include "DisplayResolution.h"
-#include "IAssetOverride.h"
 #include "Module.h"
 #include "PropertyData.h"
 
@@ -48,9 +47,8 @@ namespace IsoRealms {
   const std::string Project::CATEGORY_FIXED       = "Fixed";
   const std::string Project::CATEGORY_LOCAL       = "Local";
 
-  Project::Project(IApplication& application, std::function<void(bool)> onFinish, IAssetOverride* override) :
+  Project::Project(IApplication& application, std::function<void(bool)> onFinish) :
           cApplication(application),
-          cAssetOverride(override),
           cLuaBinding(*this, this),
           cResourcesLoaded(false),
           cLoading(false),
@@ -160,8 +158,8 @@ namespace IsoRealms {
     add<IAction,  IAction> (&cQuitAction,      "Quit",            "System");
   }
 
-  Project::Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish, IAssetOverride* override) :
-            Project(application, onFinish, override) {
+  Project::Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish) :
+            Project(application, onFinish) {
     cLoading = true;
     std::string mFile = options.getOption("file");
     if (!mFile.empty()) {
@@ -337,6 +335,9 @@ namespace IsoRealms {
     }
     cPostponedActions.clear();
     
+    for (const std::unique_ptr<Module>& mModule : cModules) {
+      mModule->updateInputs(milliseconds);
+    }
     for (const std::unique_ptr<Module>& mModule : cModules) {
       mModule->updateRuntime(milliseconds);
     }
@@ -619,28 +620,28 @@ namespace IsoRealms {
   IString*  Project::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value)                                                {return cStrings.literal( user, owner, value);}
   IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z)                             {return cVertices.literal(user, owner, Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));}
 
-  IAction*         Project::getAction(          IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return cActions.get(          user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IAction*>*         listener) -> IAction*         {return cAssetOverride != nullptr ? cAssetOverride->getAction(          object, listener) : nullptr;});}
-  IAssets*         Project::getAssets(          IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cAssets.get(           user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IAssets*>*         listener) -> IAssets*         {return cAssetOverride != nullptr ? cAssetOverride->getAssets(          object, listener) : nullptr;});}
+  IAction*         Project::getAction(          IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return cActions.get(          user, owner, object, nullptr,  required);}
+  IAssets*         Project::getAssets(          IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cAssets.get(           user, owner, object, nullptr,  required);}
   IBinding*        Project::getBinding(         IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required) {
     cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
-    IBinding* mBinding = cBindings.get(user, owner, object, nullptr, required, [this](JSONObject object, IStateListener<IBinding*>* listener) -> IBinding*    {return cAssetOverride != nullptr ? cAssetOverride->getBinding(       object, listener) : nullptr;});
+    IBinding* mBinding = cBindings.get(user, owner, object, nullptr, required);
     cLocalProviderBinding.setLocalBindings(nullptr);
     return mBinding;
   }
-  IBindingType*    Project::getBindingType(     IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required) {return cBindingTypes.get(     user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IBindingType*>*    listener) -> IBindingType*    {return cAssetOverride != nullptr ? cAssetOverride->getBindingType(     object, listener) : nullptr;});}
-  IBoolean*        Project::getBoolean(         IAssetUser<IBoolean>*        user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required) {return cBooleans.get(         user, owner, object, listener, required, [this](JSONObject object, IStateListener<IBoolean*>*        listener) -> IBoolean*        {return cAssetOverride != nullptr ? cAssetOverride->getBoolean(         object, listener) : nullptr;});}
-  IColour*         Project::getColour(          IAssetUser<IColour>*         user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required) {return cColours.get(          user, owner, object, listener, required, [this](JSONObject object, IStateListener<IColour*>*         listener) -> IColour*         {return cAssetOverride != nullptr ? cAssetOverride->getColour(          object, listener) : nullptr;});}
-  IEditable*       Project::getEditable(        IAssetUser<IEditable>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cEditables.get(        user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IEditable*>*       listener) -> IEditable*       {return cAssetOverride != nullptr ? cAssetOverride->getEditable(        object, listener) : nullptr;});}
-  IFloat*          Project::getFloat(           IAssetUser<IFloat>*          user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required) {return cFloats.get(           user, owner, object, listener, required, [this](JSONObject object, IStateListener<IFloat*>*          listener) -> IFloat*          {return cAssetOverride != nullptr ? cAssetOverride->getFloat(           object, listener) : nullptr;});}
-  IFont*           Project::getFont(            IAssetUser<IFont>*           user, JSONObject object, IResourceData& owner,                                      bool required) {return cFonts.get(            user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IFont*>*           listener) -> IFont*           {return cAssetOverride != nullptr ? cAssetOverride->getFont(            object, listener) : nullptr;});}
-  IInputHandler*   Project::getInputHandler(    IAssetUser<IInputHandler>*   user, JSONObject object, IResourceData& owner,                                      bool required) {return cInputHandlers.get(    user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IInputHandler*>*   listener) -> IInputHandler*   {return cAssetOverride != nullptr ? cAssetOverride->getInputHandler(    object, listener) : nullptr;});}
-  IInteger*        Project::getInteger(         IAssetUser<IInteger>*        user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required) {return cIntegers.get(         user, owner, object, listener, required, [this](JSONObject object, IStateListener<IInteger*>*        listener) -> IInteger*        {return cAssetOverride != nullptr ? cAssetOverride->getInteger(         object, listener) : nullptr;});}
-  IModel*          Project::getModel(           IAssetUser<IModel>*          user, JSONObject object, IResourceData& owner,                                      bool required) {return cModels.get(           user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IModel*>*          listener) -> IModel*          {return cAssetOverride != nullptr ? cAssetOverride->getModel(           object, listener) : nullptr;});}
-  IProjectOptions* Project::getProjectOptions(  IAssetUser<IProjectOptions>* user, JSONObject object, IResourceData& owner,                                      bool required) {return cProjectOptions.get(   user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IProjectOptions*>* listener) -> IProjectOptions* {return cAssetOverride != nullptr ? cAssetOverride->getProjectOptions(  object, listener) : nullptr;});}
-  IScreen*         Project::getScreen(          IAssetUser<IScreen>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cScreens.get(          user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IScreen*>*         listener) -> IScreen*         {return cAssetOverride != nullptr ? cAssetOverride->getScreen(          object, listener) : nullptr;});}
-  IString*         Project::getString(          IAssetUser<IString>*         user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required) {return cStrings.get(          user, owner, object, listener, required, [this](JSONObject object, IStateListener<IString*>*         listener) -> IString*         {return cAssetOverride != nullptr ? cAssetOverride->getString(          object, listener) : nullptr;});}
-  ITexture*        Project::getTexture(         IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required) {return cTextures.get(         user, owner, object, listener, required, [this](JSONObject object, IStateListener<ITexture*>*        listener) -> ITexture*        {return cAssetOverride != nullptr ? cAssetOverride->getTexture(         object, listener) : nullptr;});}
-  IVertex*         Project::getVertex(          IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cVertices.get(         user, owner, object, nullptr,  required, [this](JSONObject object, IStateListener<IVertex*>*         listener) -> IVertex*         {return cAssetOverride != nullptr ? cAssetOverride->getVertex(          object, listener) : nullptr;});}
+  IBindingType*    Project::getBindingType(     IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required) {return cBindingTypes.get(     user, owner, object, nullptr,  required);}
+  IBoolean*        Project::getBoolean(         IAssetUser<IBoolean>*        user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required) {return cBooleans.get(         user, owner, object, listener, required);}
+  IColour*         Project::getColour(          IAssetUser<IColour>*         user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required) {return cColours.get(          user, owner, object, listener, required);}
+  IEditable*       Project::getEditable(        IAssetUser<IEditable>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cEditables.get(        user, owner, object, nullptr,  required);}
+  IFloat*          Project::getFloat(           IAssetUser<IFloat>*          user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required) {return cFloats.get(           user, owner, object, listener, required);}
+  IFont*           Project::getFont(            IAssetUser<IFont>*           user, JSONObject object, IResourceData& owner,                                      bool required) {return cFonts.get(            user, owner, object, nullptr,  required);}
+  IInputHandler*   Project::getInputHandler(    IAssetUser<IInputHandler>*   user, JSONObject object, IResourceData& owner,                                      bool required) {return cInputHandlers.get(    user, owner, object, nullptr,  required);}
+  IInteger*        Project::getInteger(         IAssetUser<IInteger>*        user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required) {return cIntegers.get(         user, owner, object, listener, required);}
+  IModel*          Project::getModel(           IAssetUser<IModel>*          user, JSONObject object, IResourceData& owner,                                      bool required) {return cModels.get(           user, owner, object, nullptr,  required);}
+  IProjectOptions* Project::getProjectOptions(  IAssetUser<IProjectOptions>* user, JSONObject object, IResourceData& owner,                                      bool required) {return cProjectOptions.get(   user, owner, object, nullptr,  required);}
+  IScreen*         Project::getScreen(          IAssetUser<IScreen>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cScreens.get(          user, owner, object, nullptr,  required);}
+  IString*         Project::getString(          IAssetUser<IString>*         user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required) {return cStrings.get(          user, owner, object, listener, required);}
+  ITexture*        Project::getTexture(         IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required) {return cTextures.get(         user, owner, object, listener, required);}
+  IVertex*         Project::getVertex(          IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cVertices.get(         user, owner, object, nullptr,  required);}
 
   IAction*         Project::getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner)                                      {return cActions.get(       user, owner, id, nullptr);}
   IAssets*         Project::getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner)                                      {return cAssets.get(        user, owner, id, nullptr);}

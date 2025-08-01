@@ -163,6 +163,10 @@ namespace IsoRealms {
     cModule->getProperties();
   }
   
+  void Module::updateInputs(unsigned int milliseconds) {
+    cModule->updateInputs(milliseconds);
+  }
+  
   void Module::updateRuntime(unsigned int milliseconds) {
     cModule->updateRuntime(milliseconds);
   }

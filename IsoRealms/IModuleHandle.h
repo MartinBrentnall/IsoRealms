@@ -38,10 +38,17 @@ namespace IsoRealms {
     virtual void save(JSONObject object) = 0;
     virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
     virtual void getProperties() = 0;
+    virtual void updateInputs(unsigned int milliseconds) = 0;
     virtual void updateRuntime(unsigned int milliseconds) = 0;
     virtual void updateEditing(unsigned int milliseconds) = 0;
     virtual void reset() = 0;
 
+    template<class RESOURCE_TYPE_DEFINITION> void updateInputs2(RESOURCE_TYPE_DEFINITION& resources, int milliseconds) {
+      for (auto* mResource : resources) {
+        mResource->updateInputs(milliseconds);
+      }
+    }
+    
     template<class RESOURCE_TYPE_DEFINITION> void updateRuntime2(RESOURCE_TYPE_DEFINITION& resources, int milliseconds) {
       for (auto* mResource : resources) {
         mResource->updateRuntime(milliseconds);

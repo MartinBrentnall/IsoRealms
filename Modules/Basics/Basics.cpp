@@ -122,6 +122,10 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
+  void Basics::updateInputs(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
   void Basics::updateRuntime(unsigned int milliseconds) {
     updateRuntime2(cResourceTypeProject,           milliseconds);
     updateRuntime2(cResourceTypeProjectConfigurer, milliseconds);
@@ -160,7 +164,7 @@ namespace IsoRealms::Basics {
   void Basics::setOwner(ProjectFile* owner) {
   }; // TODO: Probably shouldn't be here.
 
-  ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner) {return cSequenceTracks.get(user, owner, object, nullptr, true, [this](JSONObject object, IStateListener<ISequenceTrack*>* listener) -> ISequenceTrack* {return nullptr;});}
+  ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner) {return cSequenceTracks.get(user, owner, object, nullptr, true);}
 
   ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner) {return cSequenceTracks.get(user, owner, id, nullptr);}
 
