@@ -102,14 +102,15 @@ namespace IsoRealms {
     }
     
     bool renderIcon() override {
+      glPushMatrix();
       if (!cResourceHandle.renderIcon()) {
         Utils::renderIconLeaf();
       }
+      glPopMatrix();
       if (!cOwnerProject.getProjectFile()->isModifiable()) {
         glPushMatrix();
-        float mHeight = 0.08f;
-        glTranslatef(-1.0f + mHeight * 0.75f, 1.0f - mHeight * 0.75f, 0.0f);
-        glScalef(mHeight * 0.25f, mHeight * 0.25f, 0.0f);
+        glTranslatef(0.5f, -0.5f, 0.0f);
+        glScalef(0.5f, 0.5f, 1.0f);
         Utils::renderIconLock();
         glPopMatrix();
       }

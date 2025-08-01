@@ -412,9 +412,9 @@ namespace IsoRealms {
     glColor3f(0.2f, 0.2f, 0.2f);
     renderRing(0.0f, 0.2f, 0.2f, 0.8f);
     renderRoundedRectangle(-1.0f, -1.0f, 1.0f, 0.2f, 0.4f);
-    glColor3f(1.0f, 1.0f, 0.0f);
-    renderRing(0.0f, 0.2f, 0.4f, 0.6f);
-    renderRoundedRectangle(-0.8f, -0.8f, 0.8f, 0.0f, 0.2f);
+    glColor3f(0.8f, 0.9f, 1.0f);
+    renderRing(0.0f, 0.2f, 0.45f, 0.55f);
+    renderRoundedRectangle(-0.75f, -0.75f, 0.75f, -0.05f, 0.2f);
     glColor3f(0.0f, 0.0f, 0.0f);
     renderRectangle(-0.2f, -0.6f, 0.2f, 0.0f);
   }
