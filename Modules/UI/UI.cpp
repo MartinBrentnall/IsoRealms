@@ -105,14 +105,6 @@ namespace IsoRealms::UI {
   void UI::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
-  void UI::load(IProject& project, JSONObject object) {
-    // Nothing to do.
-  }
-
-  void UI::save(JSONObject object) {
-    // Nothing to do.
-  }
-
   void UI::registerAssets(ResourceAssetRegistry& assets) {
     assets.addProvider(&cProviderScreenGradient, SCREEN_GRADIENT, "");
     assets.addProvider(&cProviderScreenModel,    SCREEN_MODEL,    "");
@@ -121,10 +113,6 @@ namespace IsoRealms::UI {
     assets.addProvider(&cProviderStringTime,     STRING_TIME,     "");
   }
   
-  void UI::getProperties() {
-    // Nothing to do.
-  }  
-
   void UI::updateInputs(unsigned int milliseconds) {
     // Nothing to do.
   }

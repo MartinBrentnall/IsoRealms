@@ -20,7 +20,6 @@
 
 #include "IsoRealms.h"
 
-#include "Assets/Client/WorldEditorTool.h"
 #include "Assets/Fixed/BoundaryType/BoundaryTypeDummy.h"
 #include "Assets/Fixed/Camera/CameraGameplay.h"
 #include "Assets/Fixed/Camera/CameraLinked.h"
@@ -208,7 +207,8 @@ namespace IsoRealms::Spindizzy {
     void setAllThemesInUse(bool inUse);
     void setNextTheme();
     void setPreviousTheme();
-    
+    void applyDefaultThemes();
+
     // TODO: Replace with local bindings.
     void bind(Alien* alien);
     void bind(Player* player);
@@ -218,24 +218,6 @@ namespace IsoRealms::Spindizzy {
     void bindLaunchLocation(IVertex* value);
     void bindLaunchMomentum(IVertex* value);
 
-    // World editing (TODO: Move to World).
-    IWorldEditorTool* getDefaultWorldEditorTool();
-    ThemeSet* getDefaultThemeSet();
-    void applyDefaultThemes();
-    ZoneType* getAutomaticZoneManagementType() const;
-    int getAutomaticZoneXSize() const;
-    int getAutomaticZoneYSize() const;
-    int getAutomaticZoneZSize() const;
-    int getEditorMinX() const;
-    int getEditorMaxX() const;
-    int getEditorMinY() const;
-    int getEditorMaxY() const;
-    int getEditorMinZ() const;
-    int getEditorMaxZ() const;
-    
-    // TODO: Move this to World (Editing).
-    std::vector<IWorldEditorToolInstance*> createToolSet(WorldEditor& editor, IResourceData& owner);
-    
     /***********************\
      * Scripting Interface *
     \***********************/
@@ -245,10 +227,7 @@ namespace IsoRealms::Spindizzy {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject& project, JSONObject object) override;
-    void save(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
-    void getProperties() override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
@@ -303,32 +282,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string RESOURCE_CATEGORY_SPINDIZZY_LOGIC;
 
     // JSON members.
-    static const std::string JSON_AUTOMATIC_ZONE_MANAGEMENT;
-    static const std::string JSON_AUTOMATIC_ZONE_X_SIZE;
-    static const std::string JSON_AUTOMATIC_ZONE_Y_SIZE;
-    static const std::string JSON_AUTOMATIC_ZONE_Z_SIZE;
-    static const std::string JSON_DEFAULT_THEME_SET;
-    static const std::string JSON_DEFAULT_WORLD_EDITOR_TOOL;
-    static const std::string JSON_EDITOR_MAX_X;
-    static const std::string JSON_EDITOR_MAX_Y;
-    static const std::string JSON_EDITOR_MAX_Z;
-    static const std::string JSON_EDITOR_MIN_X;
-    static const std::string JSON_EDITOR_MIN_Y;
-    static const std::string JSON_EDITOR_MIN_Z;
-    static const std::string JSON_EDITOR_TOOL;
-    static const std::string JSON_EDITOR_TOOLS;
     static const std::string JSON_LOCAL;
-
-    // Default constants.
-    static const int DEFAULT_AUTOMATIC_ZONE_X_SIZE;
-    static const int DEFAULT_AUTOMATIC_ZONE_Y_SIZE;
-    static const int DEFAULT_AUTOMATIC_ZONE_Z_SIZE;
-    static const int DEFAULT_EDITOR_MAX_X;
-    static const int DEFAULT_EDITOR_MIN_X;
-    static const int DEFAULT_EDITOR_MAX_Y;
-    static const int DEFAULT_EDITOR_MIN_Y;
-    static const int DEFAULT_EDITOR_MAX_Z;
-    static const int DEFAULT_EDITOR_MIN_Z;
 
     // Resource type names.
     static const std::string RESOURCE_TYPE_ALIEN;
@@ -480,21 +434,6 @@ namespace IsoRealms::Spindizzy {
     ZoneTool       cToolCopyZone;
     ZoneTool       cToolMoveZone;
     ZoneTool       cToolDeleteZone;
-
-    // World editor configuration.
-    ThemeSet* cDefaultThemeSet; // TODO: Set to nullptr when the ThemeSet is removed.
-    WorldEditorTool cDefaultWorldEditorTool;
-    ZoneType* cAutomaticZoneManagementType;
-    int cAutomaticZoneXSize;
-    int cAutomaticZoneYSize;
-    int cAutomaticZoneZSize;
-    int cEditorMinX;
-    int cEditorMaxX;
-    int cEditorMinY;
-    int cEditorMaxY;
-    int cEditorMinZ;
-    int cEditorMaxZ;
-    std::vector<std::unique_ptr<WorldEditorTool>> cAvailableWorldEditorTools;
     
     // Scripting support.
     LuaBinding<Spindizzy> cLuaBinding;

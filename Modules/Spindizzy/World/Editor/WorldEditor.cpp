@@ -94,7 +94,7 @@ namespace IsoRealms::Spindizzy {
             cPreviousX(0),
             cPreviousY(0),
             cWorld(world),
-            cToolbar(world.getSpindizzy().createToolSet(*this, cWorld.getResourceData()), [this](IWorldEditorToolInstance* tool) {
+            cToolbar(world.createToolSet(*this, cWorld.getResourceData()), [this](IWorldEditorToolInstance* tool) {
               if (cSelectedTool != nullptr) {
                 cSelectedTool->processCursorMovement(&cLocation, nullptr);
               }
@@ -108,7 +108,7 @@ namespace IsoRealms::Spindizzy {
     cPaletteSelectionX.init(0.0f);
     resetEditingView();
     cLocation.x = -1.0f;
-    IWorldEditorTool* mDefaultTool = world.getSpindizzy().getDefaultWorldEditorTool();
+    IWorldEditorTool* mDefaultTool = world.getDefaultWorldEditorTool();
     cToolbar.selectInstance(mDefaultTool);
 
     // TODO: I think 'assets' is wrong... should be local assets, not the whole project.
@@ -557,9 +557,9 @@ namespace IsoRealms::Spindizzy {
 
   void WorldEditor::move(float x, float y, float z) {
     LiteralVertex mNewLocation;
-    mNewLocation.x = std::clamp(cLocation.x + x, static_cast<double>(cWorld.getSpindizzy().getEditorMinX()), static_cast<double>(cWorld.getSpindizzy().getEditorMaxX()));
-    mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld.getSpindizzy().getEditorMinY()), static_cast<double>(cWorld.getSpindizzy().getEditorMaxY()));
-    mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld.getSpindizzy().getEditorMinZ()), static_cast<double>(cWorld.getSpindizzy().getEditorMaxZ()));
+    mNewLocation.x = std::clamp(cLocation.x + x, static_cast<double>(cWorld.getMinX()), static_cast<double>(cWorld.getMaxX()));
+    mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld.getMinY()), static_cast<double>(cWorld.getMaxY()));
+    mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld.getMinZ()), static_cast<double>(cWorld.getMaxZ()));
     double mSnapInterval = cSelectedTool != nullptr ? cSelectedTool->getSnapInterval() : 1.0;
     if (isCursorLocked() || (std::abs(x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get())) {
       mNewLocation.x = Utils::round(mNewLocation.x, mSnapInterval, cXDirection);

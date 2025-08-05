@@ -102,11 +102,6 @@ namespace IsoRealms {
   }
 
   void Module::loadResources(JSONObject object, IOptions& options, ProjectFile* ownerProject) {
-    if (object.hasMember(JSON_CONFIGURATION) && cOwnerProject == nullptr) {
-      cOwnerProject = ownerProject;
-      cModule->load(cProject, object.getObject(JSON_CONFIGURATION));
-    }
-
     for (JSONObject mResourceObject : object.getArray(JSON_RESOURCES)) {
       std::string mResourceTypeName = mResourceObject.getString(JSON_TYPE);
       ResourceType* mResourceType = getResourceType(mResourceTypeName);
@@ -142,12 +137,6 @@ namespace IsoRealms {
   void Module::save(JSONObject object, ProjectFile* savingProject) const {
     object.addString(JSON_NAME, cName);
 
-    // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
-    if (cOwnerProject == savingProject) {
-      JSONObject mConfigurationObject = object.addObject(JSON_CONFIGURATION);
-      cModule->save(mConfigurationObject);
-    }
-
     JSONArray mResourceTypesArray = object.addArray(JSON_RESOURCES);
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
       if (mResourceType.second->needsSaving(savingProject)) {
@@ -159,10 +148,6 @@ namespace IsoRealms {
     }
   }
 
-  void Module::getProperties() {
-    cModule->getProperties();
-  }
-  
   void Module::updateInputs(unsigned int milliseconds) {
     cModule->updateInputs(milliseconds);
   }

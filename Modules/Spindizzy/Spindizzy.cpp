@@ -83,18 +83,6 @@ namespace IsoRealms::Spindizzy {
                     cToolCopyZone(ZoneTool::Type::COPY),
                     cToolMoveZone(ZoneTool::Type::MOVE),
                     cToolDeleteZone(ZoneTool::Type::DELETE),
-                    cDefaultThemeSet(nullptr),
-                    cDefaultWorldEditorTool(*this),
-                    cAutomaticZoneManagementType(nullptr),
-                    cAutomaticZoneXSize(DEFAULT_AUTOMATIC_ZONE_X_SIZE),
-                    cAutomaticZoneYSize(DEFAULT_AUTOMATIC_ZONE_Y_SIZE),
-                    cAutomaticZoneZSize(DEFAULT_AUTOMATIC_ZONE_Z_SIZE),
-                    cEditorMinX(DEFAULT_EDITOR_MIN_X),
-                    cEditorMaxX(DEFAULT_EDITOR_MAX_X),
-                    cEditorMinY(DEFAULT_EDITOR_MIN_Y),
-                    cEditorMaxY(DEFAULT_EDITOR_MAX_Y),
-                    cEditorMinZ(DEFAULT_EDITOR_MIN_Z),
-                    cEditorMaxZ(DEFAULT_EDITOR_MAX_Z),
                     cLuaBinding(project, this),
                     cRuntimeParameterZone1(project, nullptr),
                     cRuntimeParameterZone2(project, nullptr),
@@ -226,9 +214,6 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::removeAll(ZoneType* type) {
     for (World* mWorld : cResourceWorld) {
       mWorld->removeAll(type);
-    }
-    if (type == cAutomaticZoneManagementType) {
-      cAutomaticZoneManagementType = nullptr;
     }
   }
   
@@ -367,6 +352,12 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
+  void Spindizzy::applyDefaultThemes() {
+    for (ThemeSet* mThemeSet : cResourceThemeSet) {
+      mThemeSet->applyDefaultTheme();
+    }
+  }
+
   void Spindizzy::bind(              Alien*   value) {cRuntimeParameterAlien.setValue(         value);}
   void Spindizzy::bind(              Player*  value) {cRuntimeParameterPlayer.setValue(        value);}
   void Spindizzy::bind(              Zone*    value) {cRuntimeParameterZone.setValue(          value);}
@@ -375,113 +366,12 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::bindLaunchLocation(IVertex* value) {cRuntimeParameterLaunchLocation.setValue(value);}
   void Spindizzy::bindLaunchMomentum(IVertex* value) {cRuntimeParameterLaunchMomentum.setValue(value);}
 
-  IWorldEditorTool* Spindizzy::getDefaultWorldEditorTool() {
-    return *cDefaultWorldEditorTool;
-  }
-
-  ThemeSet* Spindizzy::getDefaultThemeSet() {
-    return cDefaultThemeSet;
-  }
-  
-  void Spindizzy::applyDefaultThemes() {
-    for (ThemeSet* mThemeSet : cResourceThemeSet) {
-      mThemeSet->applyDefaultTheme();
-    }
-  }
-
-  ZoneType* Spindizzy::getAutomaticZoneManagementType() const {
-    return cAutomaticZoneManagementType;
-  }
-  
-  int Spindizzy::getAutomaticZoneXSize() const {
-    return cAutomaticZoneXSize;
-  }
-  
-  int Spindizzy::getAutomaticZoneYSize() const {
-    return cAutomaticZoneYSize;
-  }
-  
-  int Spindizzy::getAutomaticZoneZSize() const {
-    return cAutomaticZoneZSize;
-  }
-  
-  int Spindizzy::getEditorMinX() const {
-    return cEditorMinX;
-  }
-  
-  int Spindizzy::getEditorMaxX() const {
-    return cEditorMaxX;
-  }
-  
-  int Spindizzy::getEditorMinY() const {
-    return cEditorMinY;
-  }
-  
-  int Spindizzy::getEditorMaxY() const {
-    return cEditorMaxY;
-  }
-  
-  int Spindizzy::getEditorMinZ() const {
-    return cEditorMinZ;
-  }
-  
-  int Spindizzy::getEditorMaxZ() const {
-    return cEditorMaxZ;
-  }
-  
-  std::vector<IWorldEditorToolInstance*> Spindizzy::createToolSet(WorldEditor& editor, IResourceData& owner) {
-    std::vector<IWorldEditorToolInstance*> mTools;
-    for (std::unique_ptr<WorldEditorTool>& mTool : cAvailableWorldEditorTools) {
-      mTools.emplace_back((*mTool)->createToolInstance(editor, owner));
-    }
-    return mTools;
-  }
-
   void Spindizzy::setPause(bool pause) {
     cRuntimePaused = pause;
   }
 
   bool Spindizzy::isPaused() {
     return cRuntimePaused;
-  }
-
-  void Spindizzy::load(IProject& project, JSONObject object) {
-    cAutomaticZoneXSize = object.getInteger(JSON_AUTOMATIC_ZONE_X_SIZE, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
-    cAutomaticZoneYSize = object.getInteger(JSON_AUTOMATIC_ZONE_Y_SIZE, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
-    cAutomaticZoneZSize = object.getInteger(JSON_AUTOMATIC_ZONE_Z_SIZE, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
-    cEditorMinX = object.getInteger(JSON_EDITOR_MIN_X, DEFAULT_EDITOR_MIN_X);
-    cEditorMaxX = object.getInteger(JSON_EDITOR_MAX_X, DEFAULT_EDITOR_MAX_X);
-    cEditorMinY = object.getInteger(JSON_EDITOR_MIN_Y, DEFAULT_EDITOR_MIN_Y);
-    cEditorMaxY = object.getInteger(JSON_EDITOR_MAX_Y, DEFAULT_EDITOR_MAX_Y);
-    cEditorMinZ = object.getInteger(JSON_EDITOR_MIN_Z, DEFAULT_EDITOR_MIN_Z);
-    cEditorMaxZ = object.getInteger(JSON_EDITOR_MAX_Z, DEFAULT_EDITOR_MAX_Z);
-    cDefaultWorldEditorTool.init(object, JSON_DEFAULT_WORLD_EDITOR_TOOL);
-    project.init([this, object](IAssets& assets) {
-      cAutomaticZoneManagementType = cResourceZone.getResource(object.getString(JSON_AUTOMATIC_ZONE_MANAGEMENT), false);
-      cDefaultThemeSet             = getThemeSet(object.getString(JSON_DEFAULT_THEME_SET));
-      for (JSONObject mEditingToolObject : object.getArray(JSON_EDITOR_TOOLS)) {
-        cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(*this)).get()->set(mEditingToolObject, JSON_EDITOR_TOOL);
-      }
-    });
-  }
-
-  void Spindizzy::save(JSONObject object) {
-    object.addInteger(JSON_AUTOMATIC_ZONE_X_SIZE,     cAutomaticZoneXSize, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
-    object.addInteger(JSON_AUTOMATIC_ZONE_Y_SIZE,     cAutomaticZoneYSize, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
-    object.addInteger(JSON_AUTOMATIC_ZONE_Z_SIZE,     cAutomaticZoneZSize, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
-    object.addInteger(JSON_EDITOR_MIN_X,              cEditorMinX,         DEFAULT_EDITOR_MIN_X);
-    object.addInteger(JSON_EDITOR_MAX_X,              cEditorMaxX,         DEFAULT_EDITOR_MAX_X);
-    object.addInteger(JSON_EDITOR_MIN_Y,              cEditorMinY,         DEFAULT_EDITOR_MIN_Y);
-    object.addInteger(JSON_EDITOR_MAX_Y,              cEditorMaxY,         DEFAULT_EDITOR_MAX_Y);
-    object.addInteger(JSON_EDITOR_MIN_Z,              cEditorMinZ,         DEFAULT_EDITOR_MIN_Z);
-    object.addInteger(JSON_EDITOR_MAX_Z,              cEditorMaxZ,         DEFAULT_EDITOR_MAX_Z);
-    object.addString(JSON_AUTOMATIC_ZONE_MANAGEMENT, getID(cAutomaticZoneManagementType));
-    object.addString(JSON_DEFAULT_THEME_SET,         getID(cDefaultThemeSet));
-    cDefaultWorldEditorTool.save(object, JSON_DEFAULT_WORLD_EDITOR_TOOL);
-    JSONArray mEditorToolsArray = object.addArray(JSON_EDITOR_TOOLS);
-    for (std::unique_ptr<WorldEditorTool>& mTool : cAvailableWorldEditorTools) {
-      mTool->save(mEditorToolsArray.addObject(), JSON_EDITOR_TOOL);
-    }
   }
 
   void Spindizzy::registerAssets(ResourceAssetRegistry& assets) {
@@ -534,26 +424,6 @@ namespace IsoRealms::Spindizzy {
     add(&cToolCopyZone,   TOOL_COPY_ZONE);
     add(&cToolMoveZone,   TOOL_MOVE_ZONE);
     add(&cToolDeleteZone, TOOL_DELETE_ZONE);
-  }
-
-  void Spindizzy::getProperties() {
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("DefaultZoneWidth"),    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value;});
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("DefaultZoneLength"),   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value;});
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("DefaultZoneHeight"),   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value;});
-// //    owner.createPropertyAsset<ZoneType>(metadata.getPropertyData("DefaultZoneType"), *cAutomaticZoneManagementType);
-// //    owner.createPropertyAsset<ThemeSet>(metadata.getPropertyData("DefaultZoneTheme"), *cDefaultThemeSet);
-//     owner.createPropertyAsset<WorldEditorTool>(metadata.getPropertyData("DefaultEditorTool"), cDefaultWorldEditorTool);
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldWestBoundary"),   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value;});
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldEastBoundary"),   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value;});
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldSouthBoundary"),  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value;});
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldNorthBoundary"),  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value;});
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldDepthBoundary"),  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value;});
-//     owner.createPropertyNativeInteger(metadata.getPropertyData("WorldHeightBoundary"), [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value;});
-//     for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-//       owner.createPropertyAsset<WorldEditorTool>(metadata.getPropertyData("WorldEditingTool"), *cAvailableWorldEditorTools[i].get(), [this, i]() {
-//         cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
-//       });
-//     }
   }
 
   void Spindizzy::updateInputs(unsigned int milliseconds) {
@@ -720,31 +590,7 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS = "Spindizzy Graphics";
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_LOGIC    = "Spindizzy Logic";
 
-  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_MANAGEMENT = "automaticZoneManagement";
-  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_X_SIZE     = "automaticZoneXSize";
-  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_Y_SIZE     = "automaticZoneYSize";
-  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_Z_SIZE     = "automaticZoneZSize";
-  const std::string Spindizzy::JSON_DEFAULT_THEME_SET         = "defaultThemeSet";
-  const std::string Spindizzy::JSON_DEFAULT_WORLD_EDITOR_TOOL = "defaultWorldEditorTool";
-  const std::string Spindizzy::JSON_EDITOR_MAX_X              = "editorMaxX";
-  const std::string Spindizzy::JSON_EDITOR_MAX_Y              = "editorMaxY";
-  const std::string Spindizzy::JSON_EDITOR_MAX_Z              = "editorMaxZ";
-  const std::string Spindizzy::JSON_EDITOR_MIN_X              = "editorMinX";
-  const std::string Spindizzy::JSON_EDITOR_MIN_Y              = "editorMinY";
-  const std::string Spindizzy::JSON_EDITOR_MIN_Z              = "editorMinZ";
-  const std::string Spindizzy::JSON_EDITOR_TOOL               = "editorTool";
-  const std::string Spindizzy::JSON_EDITOR_TOOLS              = "editorTools";
   const std::string Spindizzy::JSON_LOCAL                     = "local";
-
-  const int Spindizzy::DEFAULT_AUTOMATIC_ZONE_X_SIZE =  8;
-  const int Spindizzy::DEFAULT_AUTOMATIC_ZONE_Y_SIZE =  8;
-  const int Spindizzy::DEFAULT_AUTOMATIC_ZONE_Z_SIZE =  8;
-  const int Spindizzy::DEFAULT_EDITOR_MAX_X          =  511;
-  const int Spindizzy::DEFAULT_EDITOR_MIN_X          = -512;
-  const int Spindizzy::DEFAULT_EDITOR_MAX_Y          =  511;
-  const int Spindizzy::DEFAULT_EDITOR_MIN_Y          = -512;
-  const int Spindizzy::DEFAULT_EDITOR_MAX_Z          =  7;
-  const int Spindizzy::DEFAULT_EDITOR_MIN_Z          =  0;
 
   const std::string Spindizzy::RESOURCE_TYPE_ALIEN       = "Alien";
   const std::string Spindizzy::RESOURCE_TYPE_LIFT        = "Lift";

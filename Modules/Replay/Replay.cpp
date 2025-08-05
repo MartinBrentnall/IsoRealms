@@ -24,22 +24,10 @@ namespace IsoRealms::Replay {
     registry.add(&cResourceTypeReplayer, "Replayer");
   }
 
-  void Replay::load(IProject& project, JSONObject object) {
-    // Nothing to do.
-  }
-
-  void Replay::save(JSONObject object) {
-    // Nothing to do.
-  }
-
   void Replay::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
   
-  void Replay::getProperties() {
-    // Nothing to do.
-  }
-
   void Replay::updateInputs(unsigned int milliseconds) {
     updateInputs2(cResourceTypeReplayer, milliseconds);
   }

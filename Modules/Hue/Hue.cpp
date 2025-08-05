@@ -24,22 +24,10 @@ namespace IsoRealms::Hue {
     registry->add(&cResourceTypeHueManager, "HueManager");
   }
 
-  void Hue::load(IProject& project, JSONObject object) {
-    // Nothing to do.
-  }
-
-  void Hue::save(JSONObject object) {
-    // Nothing to do.
-  }
-  
   void Hue::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
   
-  void Hue::getProperties() {
-    // Nothing to do.
-  }
-
   void Hue::updateInputs(unsigned int milliseconds) {
     // Nothing to do.
   }

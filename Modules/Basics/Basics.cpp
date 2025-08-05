@@ -105,21 +105,9 @@ namespace IsoRealms::Basics {
     return cModule.getAssetMetadata(key);
   }
 
-  void Basics::load(IProject& project, JSONObject object) {
-    // Nothing to do.
-  }
-
-  void Basics::save(JSONObject object) {
-    // Nothing to do.
-  }
-
   void Basics::registerAssets(ResourceAssetRegistry& assets) {
     assets.addProvider(&cActionScript, ACTION_SCRIPT, "");
     assets.add<IBinding>(&cLuaBinding,   "",            "Basics");
-  }
-  
-  void Basics::getProperties() {
-    // Nothing to do.
   }
   
   void Basics::updateInputs(unsigned int milliseconds) {

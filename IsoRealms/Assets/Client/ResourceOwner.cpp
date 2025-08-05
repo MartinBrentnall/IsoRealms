@@ -60,11 +60,7 @@ namespace IsoRealms {
   }
 
   std::vector<std::string> ResourceOwner::getAvailableProviders() const {
-    std::vector<std::string> mNames = cProject.getProjectFileNames();
-    for (std::string& mName : mNames) {
-      std::cout << "GOT PROJECT NAME: " << mName << std::endl;
-    }
-    return mNames;
+    return cProject.getProjectFileNames();
   }
 
   bool ResourceOwner::renderProviderIcon(const std::string& id) const {

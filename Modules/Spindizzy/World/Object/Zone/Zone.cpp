@@ -50,7 +50,7 @@ namespace IsoRealms::Spindizzy {
             cDefEndY(  std::max(yStart, yEnd)),
             cDefStartZ(std::min(zStart, zEnd)),
             cDefEndZ(  std::max(zStart, zEnd)),
-            cDefThemeSet(clone != nullptr ? clone->cDefThemeSet : cDefWorld.getSpindizzy().getDefaultThemeSet()),
+            cDefThemeSet(clone != nullptr ? clone->cDefThemeSet : cDefWorld.getDefaultThemeSet()),
             cDefTheme(clone != nullptr ? clone->cDefTheme : cDefThemeSet->getDefaultTheme()),
             cDefVisited(clone != nullptr ? clone->cDefVisited : false) {
     if (clone != nullptr) {

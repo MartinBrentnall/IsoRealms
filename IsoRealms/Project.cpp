@@ -766,7 +766,7 @@ namespace IsoRealms {
       unsigned int mIndex = 1;
       for (const std::unique_ptr<Module>& mModule : cModules) {
         propertyMaker.createPropertyStruct(mMetadata.getPropertyData("Module"), mModule->getName(), [this, &mModule](PropertyMaker& propertyMaker) {
-          return mModule->getProperties();
+          // Nothing to do.
         }, [this, &mModule]() {
           Utils::removeElementUnique(cModules, mModule.get());
         });

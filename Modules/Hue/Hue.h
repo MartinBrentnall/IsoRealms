@@ -30,10 +30,7 @@ namespace IsoRealms::Hue {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject& project, JSONObject object) override;
-    void save(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
-    void getProperties() override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;

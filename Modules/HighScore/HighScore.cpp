@@ -26,22 +26,10 @@ namespace IsoRealms::HighScore {
     registry->add(&cResourceTypeScoreTracker, "ScoreTracker");
   }
 
-  void HighScore::load(IProject& project, JSONObject object) {
-    // Nothing to do.
-  }
-
-  void HighScore::save(JSONObject object) {
-    // Nothing to do.
-  }
-
   void HighScore::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
   
-  void HighScore::getProperties() {
-    // Nothing to do.
-  }
-
   void HighScore::updateInputs(unsigned int milliseconds) {
     // Nothing to do.
   }

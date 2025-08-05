@@ -22,6 +22,7 @@
 
 #include "IsoRealms.h"
 
+#include "Modules/Spindizzy/Assets/Client/WorldEditorTool.h"
 #include "Modules/Spindizzy/Assets/Type/IBoundaryType.h"
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 #include "Modules/Spindizzy/BoundaryHandler/BoundaryHandlerInstance.h"
@@ -121,7 +122,18 @@ namespace IsoRealms::Spindizzy {
     // Misc functions.
     void registerView(IScreen& screen);
     int getMaxZoneHeight(int startX, int endX, int startY, int endY, int startZ, int endZ) const;
-    
+
+    // Editor configuration functions.
+    int getMinX() const;
+    int getMaxX() const;
+    int getMinY() const;
+    int getMaxY() const;
+    int getMinZ() const;
+    int getMaxZ() const;
+    IWorldEditorTool* getDefaultWorldEditorTool();
+    ThemeSet* getDefaultThemeSet();
+    std::vector<IWorldEditorToolInstance*> createToolSet(WorldEditor& editor, IResourceData& owner);
+
     // Object drawing functions (used for editing).
     Alien*      draw(AlienType&      type, const WorldEditorCursorCell& cell, IScreen& screen);
     Lift*       draw(LiftType&       type, const WorldEditorCursorCell& cell, int bottomRange, int topRange, IScreen& screen);
@@ -184,8 +196,33 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_SLOPE_FORCE;
     static const std::string JSON_ZONES;
 
+    static const std::string JSON_AUTOMATIC_ZONE_MANAGEMENT;
+    static const std::string JSON_AUTOMATIC_ZONE_X_SIZE;
+    static const std::string JSON_AUTOMATIC_ZONE_Y_SIZE;
+    static const std::string JSON_AUTOMATIC_ZONE_Z_SIZE;
+    static const std::string JSON_DEFAULT_THEME_SET;
+    static const std::string JSON_DEFAULT_WORLD_EDITOR_TOOL;
+    static const std::string JSON_EDITOR_MAX_X;
+    static const std::string JSON_EDITOR_MAX_Y;
+    static const std::string JSON_EDITOR_MAX_Z;
+    static const std::string JSON_EDITOR_MIN_X;
+    static const std::string JSON_EDITOR_MIN_Y;
+    static const std::string JSON_EDITOR_MIN_Z;
+    static const std::string JSON_EDITOR_TOOL;
+    static const std::string JSON_EDITOR_TOOLS;
+
     static const unsigned int DEFAULT_BOUNCE_CONTROL;
     
+    static const int DEFAULT_AUTOMATIC_ZONE_X_SIZE;
+    static const int DEFAULT_AUTOMATIC_ZONE_Y_SIZE;
+    static const int DEFAULT_AUTOMATIC_ZONE_Z_SIZE;
+    static const int DEFAULT_EDITOR_MAX_X;
+    static const int DEFAULT_EDITOR_MIN_X;
+    static const int DEFAULT_EDITOR_MAX_Y;
+    static const int DEFAULT_EDITOR_MIN_Y;
+    static const int DEFAULT_EDITOR_MAX_Z;
+    static const int DEFAULT_EDITOR_MIN_Z;
+
     // World types.
     class ElementSurfaces {
       public:
@@ -227,6 +264,19 @@ namespace IsoRealms::Spindizzy {
 
     // Editor configuration.
     bool cEditorBasicProperties;
+    ThemeSet* cDefaultThemeSet; // TODO: Set to nullptr when the ThemeSet is removed.
+    WorldEditorTool cDefaultWorldEditorTool;
+    ZoneType* cAutomaticZoneManagementType;
+    int cAutomaticZoneXSize;
+    int cAutomaticZoneYSize;
+    int cAutomaticZoneZSize;
+    int cEditorMinX;
+    int cEditorMaxX;
+    int cEditorMinY;
+    int cEditorMaxY;
+    int cEditorMinZ;
+    int cEditorMaxZ;
+    std::vector<std::unique_ptr<WorldEditorTool>> cAvailableWorldEditorTools;
 
     // Editing data.
     std::map<IEditableScreen*, std::unique_ptr<WorldEditor>> cEditors;
