@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
             cDefExitedAction(cActionClient) {
   }
 
-  BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             BoundaryHandler(project, spindizzy, data) {
     cDefBoundaryType.init(object, JSON_BOUNDARY);
     cDefObjectType.init(object, JSON_OBJECT);

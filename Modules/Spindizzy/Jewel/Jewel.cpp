@@ -33,7 +33,7 @@ namespace IsoRealms::Spindizzy {
     cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data));
   }
   
-  Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             Jewel(project, spindizzy, data) {
     cCycleSpeed = object.getFloat(JSON_CYCLE_SPEED);
     cColourFrame.init(object, JSON_FRAME);

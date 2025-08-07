@@ -158,49 +158,37 @@ namespace IsoRealms {
     add<IAction,  IAction> (&cQuitAction,      "Quit",            "System");
   }
 
-  Project::Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish) :
+  Project::Project(IApplication& application, std::function<void(bool)> onFinish, const std::string& file, bool user) :
             Project(application, onFinish) {
     cLoading = true;
-    std::string mFile = options.getOption("file");
-    if (!mFile.empty()) {
-      cProcessingInput = true;
+    cProcessingInput = true;
+    cProjectFile.rename(file, user);
 
-//       std::cout << "TYPE: " << options.getOption("type") << std::endl;
-      bool mUser = options.getOption("type") == "user";
-      cProjectFile.rename(mFile, mUser);
+    // Load modules and any resources declared within them
+    std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(cProjectFile);
+    for (const std::unique_ptr<Module>& mModule : cModules) {
+      mModule->registerAssets();
+    }
+    cResourcesLoaded = true;
 
-      // Load modules and any resources declared within them
-      std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(options, cProjectFile);
-      for (const std::unique_ptr<Module>& mModule : cModules) {
-        mModule->registerAssets();
-      }
-      cResourcesLoaded = true;
-
-      // Initialise everything
-      for (unsigned int j = 0; j < cInitialisers.size(); j++) {
+    // Initialise everything
+    for (unsigned int j = 0; j < cInitialisers.size(); j++) {
 //        std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
 //         if (j == 833) {
 //           std::cout << "DEBUG!" << std::endl;
 //         }
-        cInitialisers[j](*this);
-      }
-      cInitialisers.clear();
-
-      // Screen listeners cannot notified of screens before initialisation, so we need to do it now.
-      // for (std::pair<IScreen* const, std::unique_ptr<ScreenProxy>>& mPair : cScreenProxyMapping) {
-      //   for (IScreenListener* mListener : cScreenListeners) {
-      //     mListener->screenAdded(project, mPair.second.get());
-      //   }
-      // }
-
-      cProcessingInput = false;
-
-      mainThreadInit([this]() {
-        (*cDefInitAction)->execute();
-      });
-    } else {
-      cResourcesLoaded = true;
+      cInitialisers[j](*this);
     }
+    cInitialisers.clear();
+
+    // Screen listeners cannot notified of screens before initialisation, so we need to do it now.
+    cScreens.notifyAllScreensAdded(*this);
+
+    cProcessingInput = false;
+
+    mainThreadInit([this]() {
+      (*cDefInitAction)->execute();
+    });
     cLoading = false;
   }
 
@@ -272,7 +260,7 @@ namespace IsoRealms {
     return false;
   }
   
-  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(IOptions& options, ProjectFile& file) {
+  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(ProjectFile& file) {
     std::unique_ptr<JSONDocument> mProjectDocument = std::make_unique<JSONDocument>(file.cFile);
     JSONObject mProjectObject = mProjectDocument->getObject(JSON_PROJECT);
     std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
@@ -303,14 +291,13 @@ namespace IsoRealms {
     for (JSONObject mModuleObject : mProjectObject.getArray(JSON_MODULES)) {
       std::string mModuleName = mModuleObject.getString(JSON_NAME);
       Module* mModule = getModule(mModuleName);
-      LocalOptions mModuleOptions(mModuleName, options);
-      mModule->loadResources(mModuleObject, mModuleOptions, &file);
+      mModule->loadResources(mModuleObject, &file);
     }
 
     file.setDescription(mProjectObject);
     for (JSONObject mIncludeObject : mProjectObject.getArray(JSON_INCLUDE)) {
       ProjectFile* mIncludedProject = file.cInclusions.emplace_back(std::make_unique<ProjectFile>(*this, mIncludeObject)).get();
-      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(options, *mIncludedProject);
+      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(*mIncludedProject);
       mOpenedDocuments.insert(mOpenedDocuments.end(), std::make_move_iterator(mMoreOpenedDocuments.begin()), std::make_move_iterator(mMoreOpenedDocuments.end()));
     }
     return mOpenedDocuments;

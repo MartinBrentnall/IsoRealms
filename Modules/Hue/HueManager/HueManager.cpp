@@ -95,7 +95,7 @@ namespace IsoRealms::Hue {
             cResourceData(data) {
   }
   
-  HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data, JSONObject object, IOptions& options) :
+  HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data, JSONObject object) :
             HueManager(project, hue, data) {
     cDefBridgeAddress = object.getString(JSON_BRIDGE);
     cDefBridgeUser    = object.getString(JSON_USER);

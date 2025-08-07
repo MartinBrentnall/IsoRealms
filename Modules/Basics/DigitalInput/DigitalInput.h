@@ -49,7 +49,7 @@ namespace IsoRealms::Basics {
     DigitalInput(IProject& project, Basics& basics);
     DigitalInput(IProject& project, Basics& basics, IResourceData& data);
     DigitalInput(IProject& project, Basics& basics, JSONObject object);
-    DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
     void save(JSONObject object) const;

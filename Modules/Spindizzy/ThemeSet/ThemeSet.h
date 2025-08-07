@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
   class ThemeSet {
     public:
     ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
     bool renderIcon();
     void hintInUse(bool inUse);

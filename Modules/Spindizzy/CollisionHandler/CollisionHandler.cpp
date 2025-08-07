@@ -35,7 +35,7 @@ namespace IsoRealms::Spindizzy {
             cDefExitedAction(data.getDummyActionClient()) {
   }
 
-  CollisionHandler::CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  CollisionHandler::CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             CollisionHandler(project, spindizzy, data) {
     cDefPhysicalObjectTypeA.init(object, JSON_OBJECT_A);
     cDefPhysicalObjectTypeB.init(object, JSON_OBJECT_B);

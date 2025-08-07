@@ -43,7 +43,7 @@ namespace IsoRealms::Basics {
             cLuaBinding(project, this) {
   }
   
-  Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             Sequence(project, basics, data) {
     cDefPlaying = object.getBoolean(JSON_PLAYING);
     cDefLoop = object.getBoolean(JSON_LOOP);

@@ -78,7 +78,7 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.added(this);
   }
 
-  PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             PlayerType(project, spindizzy, data) {
     cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
     cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_ACCELERATION);

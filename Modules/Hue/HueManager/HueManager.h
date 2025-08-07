@@ -47,7 +47,7 @@ namespace IsoRealms::Hue {
      * Resource Interface *
     \**********************/
     HueManager(IProject& project, Hue& hue, IResourceData& data);
-    HueManager(IProject& project, Hue& hue, IResourceData& data, JSONObject object, IOptions& options);
+    HueManager(IProject& project, Hue& hue, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

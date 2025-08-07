@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.added(this);
   }
   
-  ZoneType::ZoneType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  ZoneType::ZoneType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             ZoneType(project, spindizzy, data) {
   }
 

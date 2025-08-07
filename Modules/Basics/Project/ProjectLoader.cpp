@@ -21,20 +21,18 @@
 #include <SFML/System.hpp>
 
 namespace IsoRealms::Basics {
-  ProjectLoader::ProjectLoader(Options options, std::function<void(bool)> endFunction) :
-            cOptions(options) {
-    cOptions     = options;
-    cEndFunction = endFunction;
-    cProject     = nullptr;
-    cFirstUse    = true;
-    cError       = "";
-    cDestructing = false;
-    cDestructed  = false;
+  ProjectLoader::ProjectLoader(const std::string& file, bool user, std::function<void(bool)> endFunction) :
+            cFile(file),
+            cUser(user),
+            cEndFunction(endFunction),
+            cFirstUse(true),
+            cDestructing(false),
+            cDestructed(false) {
   }
 
   void ProjectLoader::loadProject(IApplication& application) {
     try {
-      std::unique_ptr<Project> mProject = std::make_unique<Project>(application, cOptions, cEndFunction);
+      std::unique_ptr<Project> mProject = std::make_unique<Project>(application, cEndFunction, cFile, cUser);
       cMutex.lock();
       cProject = std::move(mProject);
       cMutex.unlock();
@@ -93,7 +91,7 @@ namespace IsoRealms::Basics {
     return cError;
   }
 
-  bool ProjectLoader::matches(const Options& options) {
-    return options == cOptions;
+  bool ProjectLoader::matches(const std::string& file, bool user) {
+    return file == cFile && user == cUser;
   }
 }

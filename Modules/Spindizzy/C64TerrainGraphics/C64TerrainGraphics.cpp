@@ -106,7 +106,7 @@ namespace IsoRealms::Spindizzy {
     project.addScreenListener(this);
   }
   
-  C64TerrainGraphics::C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  C64TerrainGraphics::C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             C64TerrainGraphics(project, spindizzy, data) {
     cDefFloor.init(object, JSON_FLOOR);
     cDefWall.init(object, JSON_WALL);

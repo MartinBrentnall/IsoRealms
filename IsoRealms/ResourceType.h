@@ -26,7 +26,6 @@
 #include "IResource.h"
 #include "IResourceType.h"
 #include "IResourceTypeDefinition.h"
-#include "Options/LocalOptions.h"
 #include "Persistence/JSONThing.h"
 #include "Resource.h"
 
@@ -35,7 +34,7 @@ namespace IsoRealms {
     public:
     ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent);
     virtual ~ResourceType();
-    void loadResource(JSONObject object, IProject& project, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath);
+    void loadResource(JSONObject object, IProject& project, ProjectFile* ownerProject, const std::string& resourceDataPath);
     void loadMetadata(JSONObject object);
     bool needsSaving(ProjectFile* savingProject) const;
     void save(JSONArray& array, const std::string& tag, ProjectFile* savingProject);

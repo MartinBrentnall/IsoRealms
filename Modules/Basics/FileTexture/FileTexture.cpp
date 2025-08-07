@@ -25,7 +25,7 @@ namespace IsoRealms::Basics {
             cDefFile(project) {
   }
 
-  FileTexture::FileTexture(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  FileTexture::FileTexture(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             FileTexture(project, basics, data) {
     cDefFile.load(JSON_FILENAME, object);
     reloadData(project);

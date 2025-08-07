@@ -37,9 +37,9 @@ int main(int argc, char** argv) {
     IsoRealms::Options mOptions(argc, argv);
     IsoRealms::Application mApplication;
     bool mProjectFinished = false;
-    IsoRealms::Project mProject(mApplication, mOptions, [&mProjectFinished](bool forceQuit) {
+    IsoRealms::Project mProject(mApplication, [&mProjectFinished](bool forceQuit) {
       mProjectFinished = true;
-    });
+    }, mOptions.getOption("file"), mOptions.getOption("type") == "user");
     mProject.reset();
     mProject.initMainThread();
 

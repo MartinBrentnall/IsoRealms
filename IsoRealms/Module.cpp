@@ -101,7 +101,7 @@ namespace IsoRealms {
     }
   }
 
-  void Module::loadResources(JSONObject object, IOptions& options, ProjectFile* ownerProject) {
+  void Module::loadResources(JSONObject object, ProjectFile* ownerProject) {
     for (JSONObject mResourceObject : object.getArray(JSON_RESOURCES)) {
       std::string mResourceTypeName = mResourceObject.getString(JSON_TYPE);
       ResourceType* mResourceType = getResourceType(mResourceTypeName);
@@ -114,9 +114,8 @@ namespace IsoRealms {
       }
 
       for (JSONObject mInstanceObject : mResourceObject.getArray(JSON_INSTANCES)) {
-        LocalOptions mModuleOptions(mResourceTypeName, options);
         mInstanceObject.getString(JSON_NAME);
-        mResourceType->loadResource(mInstanceObject, cProject, mModuleOptions, ownerProject, cName + "/" + mResourceTypeName);
+        mResourceType->loadResource(mInstanceObject, cProject, ownerProject, cName + "/" + mResourceTypeName);
       }
     }
   }

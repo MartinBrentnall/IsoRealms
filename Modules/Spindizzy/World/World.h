@@ -52,7 +52,7 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     World(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

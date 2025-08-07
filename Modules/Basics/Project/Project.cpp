@@ -36,14 +36,13 @@ namespace IsoRealms::Basics {
             cLuaBinding(project, this) {
   }
   
-  Project::Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  Project::Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             Project(project, basics, data) {
     cDefRunning = object.getBoolean(JSON_RUNNING);
     cDefEditing = object.getBoolean(JSON_EDITING);
     cDefEndAction.init(object, JSON_ON_FINISH);
     cDefReadyAction.init(object, JSON_ON_READY);
     cDefProjectOptions.init(object, JSON_OPTIONS);
-    cDefProjectOptionsArg = options.getFixedOptions();
   }
 
   void Project::registerAssets(ResourceAssetRegistry& assets) {
@@ -89,14 +88,6 @@ namespace IsoRealms::Basics {
     cRuntimeRunning            = cDefRunning;
     cRuntimeEditing            = cDefEditing;
     cRuntimeQuitRequestGranted = false;
-    
-    // Start loading the project, ready action will be executed when it's done.
-    std::string mFile = cDefProjectOptionsArg.getOption("file");
-    if (mFile != "") {
-      prepareInternal(&cDefProjectOptionsArg, false);
-    } else {
-      prepare(*cDefProjectOptions, false);
-    }
   }
 
   void Project::updateRuntime(unsigned int milliseconds) {
@@ -144,9 +135,48 @@ namespace IsoRealms::Basics {
     cRuntimeEditing = editing;
   }
 
-  void Project::prepare(IProjectOptions* options, bool force) {
-    Options mProjectOptions = options->getFixedOptions();
-    prepareInternal(&mProjectOptions, force);
+  void Project::prepare(const std::string& file, bool user, bool force) {
+
+    // If it's the same as the current project, nothing to do.
+    if (!force && cRuntimeProjectLoader != nullptr && cRuntimeProjectLoader->matches(file, user)) {
+      cRuntimeLoading = true;
+      cRuntimeProject = nullptr;
+      return;
+    }
+
+    // Set any existing project to be destructed.
+    if (cRuntimeProjectLoader != nullptr) {
+      cRuntimeOldProjects.emplace_back(std::move(cRuntimeProjectLoader));
+      cRuntimeProjectLoader = nullptr;
+    }
+
+    // If the requested project matches any awaiting destruction, cancel the destruction and use it.
+    if (!force) {
+      for (unsigned int i = 0; i < cRuntimeOldProjects.size(); i++) {
+        if (cRuntimeOldProjects[i]->matches(file, user)) {
+          cRuntimeProjectLoader = std::move(cRuntimeOldProjects[i]);
+          cRuntimeOldProjects.erase(cRuntimeOldProjects.begin() + i);
+          cRuntimeLoading = true;
+          cRuntimeProject = nullptr;
+          return;
+        }
+      }
+    }
+
+    // No existing project loader match; create a new one.
+    cRuntimeProjectLoader = std::make_unique<ProjectLoader>(file, user, [this](bool quitRequestGranted) {
+      cRuntimeRunning = false;
+      cRuntimeEditing = true; // TODO: Why do we assume a switch to editing mode?
+      cRuntimeQuitRequestGranted = quitRequestGranted;
+      cRuntimeProject->reset(); // TODO: Why do we reset here?
+      cDefEndAction.execute();
+    });
+    IApplication& mApplication = cProject.getApplication();
+    mApplication.executeAndReturn([this, &mApplication]() {
+      cRuntimeProjectLoader->loadProject(mApplication);
+    });
+    cRuntimeLoading = true;
+    cRuntimeProject = nullptr;
   }
 
   bool Project::isReady() {
@@ -231,49 +261,5 @@ namespace IsoRealms::Basics {
 
   bool Project::isDefaultConfiguration() const {
     return true;
-  }
-
-  void Project::prepareInternal(const Options* options, bool force) {
-
-    // If it's the same as the current project, nothing to do.
-    if (!force && cRuntimeProjectLoader != nullptr && cRuntimeProjectLoader->matches(*options)) {
-      cRuntimeLoading = true;
-      cRuntimeProject = nullptr;
-      return;
-    }
-    
-    // Set any existing project to be destructed.
-    if (cRuntimeProjectLoader != nullptr) {
-      cRuntimeOldProjects.emplace_back(std::move(cRuntimeProjectLoader));
-      cRuntimeProjectLoader = nullptr;
-    }
-    
-    // If the requested project matches any awaiting destruction, cancel the destruction and use it.
-    if (!force) {
-      for (unsigned int i = 0; i < cRuntimeOldProjects.size(); i++) {
-        if (cRuntimeOldProjects[i]->matches(*options)) {
-          cRuntimeProjectLoader = std::move(cRuntimeOldProjects[i]);
-          cRuntimeOldProjects.erase(cRuntimeOldProjects.begin() + i);
-          cRuntimeLoading = true;
-          cRuntimeProject = nullptr;
-          return;
-        }
-      }
-    }
-    
-    // No existing project loader match; create a new one.
-    cRuntimeProjectLoader = std::make_unique<ProjectLoader>(*options, [this](bool quitRequestGranted) {
-      cRuntimeRunning = false;
-      cRuntimeEditing = true; // TODO: Why do we assume a switch to editing mode?
-      cRuntimeQuitRequestGranted = quitRequestGranted;
-      cRuntimeProject->reset(); // TODO: Why do we reset here?
-      cDefEndAction.execute();
-    });
-    IApplication& mApplication = cProject.getApplication();
-    mApplication.executeAndReturn([this, &mApplication]() {
-      cRuntimeProjectLoader->loadProject(mApplication);
-    });
-    cRuntimeLoading = true;
-    cRuntimeProject = nullptr;
   }
 }

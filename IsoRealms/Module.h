@@ -54,7 +54,7 @@ namespace IsoRealms {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
-    void loadResources(JSONObject object, IOptions& options, ProjectFile* ownerProject);
+    void loadResources(JSONObject object, ProjectFile* ownerProject);
     void registerAssets();
     bool needsSaving(ProjectFile* savingProject) const;
     void save(JSONObject object, ProjectFile* savingProject) const;

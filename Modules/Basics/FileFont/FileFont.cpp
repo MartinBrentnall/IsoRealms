@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
             cProcessedGLListBase(0) {
   }
   
-  FileFont::FileFont(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  FileFont::FileFont(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             FileFont(project, basics, data) {
     cDefFilename.load(JSON_FILENAME, object);
     cDefDetail = object.getInteger(JSON_DETAIL, DEFAULT_DETAIL);

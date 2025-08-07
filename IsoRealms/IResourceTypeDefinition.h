@@ -32,7 +32,7 @@ namespace IsoRealms {
   class IResourceTypeDefinition {
     public:
     virtual IResource* createResource(IResourceType& parent, IProject& project, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
-    virtual IResource* loadResource(IResourceType& parent, IProject& project, JSONObject object, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
+    virtual IResource* loadResource(IResourceType& parent, IProject& project, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
     virtual void deleteResource(Project& project, IAssets& releaser, IResource* resource) = 0;
     virtual void renameResource(IResource* resource, const std::string& name) = 0;
   };

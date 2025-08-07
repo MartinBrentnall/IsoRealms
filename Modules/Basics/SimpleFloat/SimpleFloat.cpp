@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             SimpleFloat(project, basics, data) {
     cRuntimeValue = cDefValue = object.getFloat(JSON_VALUE);
 

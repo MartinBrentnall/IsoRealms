@@ -34,7 +34,7 @@ namespace IsoRealms::HighScore {
      * Resource interface *
     \**********************/
     ScoreTable(IProject& project, HighScore& highScore, IResourceData& data);
-    ScoreTable(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options);
+    ScoreTable(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

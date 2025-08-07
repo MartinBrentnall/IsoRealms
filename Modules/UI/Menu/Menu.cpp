@@ -43,7 +43,7 @@ namespace IsoRealms::UI {
             cLuaBinding(project, this) {
   }
   
-  Menu::Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+  Menu::Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
             Menu(project, ui, data) {
     for (JSONObject mOptionObject : object.getArray(JSON_OPTIONS)) {
       cDefItems.emplace_back(std::make_unique<MenuItem>(ui, *this)).get()->set(mOptionObject, JSON_ITEM, *this);

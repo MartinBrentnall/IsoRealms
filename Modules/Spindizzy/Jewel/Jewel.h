@@ -35,7 +35,7 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

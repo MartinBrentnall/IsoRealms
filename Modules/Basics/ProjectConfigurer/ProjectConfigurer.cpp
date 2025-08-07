@@ -62,7 +62,7 @@ namespace IsoRealms::Basics {
             cBindingEditor(project, nullptr, this) {
   }
 
-  ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             ProjectConfigurer(project, basics, data) {
     JSONArray mInputArray = object.getArray("inputs");
     for (JSONObject mInput : mInputArray) {

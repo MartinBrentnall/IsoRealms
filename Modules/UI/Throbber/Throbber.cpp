@@ -48,7 +48,7 @@ namespace IsoRealms::UI {
     cRuntimeAnimation = 0U;
   }
 
-  Throbber::Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+  Throbber::Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
             Throbber(project, ui, data) {
     cDefDuration     = object.getInteger(JSON_DURATION,    DEFAULT_DURATION);
     cDefRepetitions  = object.getInteger(JSON_REPETITIONS, DEFAULT_REPETITIONS);

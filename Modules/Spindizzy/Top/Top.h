@@ -33,7 +33,7 @@ namespace IsoRealms::Spindizzy {
                     public IModelInstance {
     public:
     Top(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    Top(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    Top(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

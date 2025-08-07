@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
             TerrainState(project, data, "TODO", true, 1.0f) {
   }
 
-  TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             TerrainState(project, data, object.getString(JSON_ID), object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
     cDefIcon.init(object, JSON_ICON);
     cDefHintAction.init(object, JSON_HINT);

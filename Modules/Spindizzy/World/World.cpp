@@ -96,7 +96,7 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             World(project, spindizzy, data) {
     for (JSONObject mDebrisGeneratorObject : object.getArray(JSON_DEBRIS_GENERATORS)) {
       cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorObject, project, data));

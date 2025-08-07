@@ -29,7 +29,7 @@ namespace IsoRealms::UI {
             cUI(ui) {
   }
   
-  Layout::Layout(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+  Layout::Layout(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
             Layout(project, ui, data) {
     for (JSONObject mComponentObject : object.getArray(JSON_COMPONENTS)) {
       std::string mComponentName = mComponentObject.getString(JSON_ID);

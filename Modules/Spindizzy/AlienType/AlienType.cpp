@@ -52,7 +52,7 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.added(this);
   }
   
-  AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             AlienType(project, spindizzy, data) {
     cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
     cDefFriction = object.getFloat(JSON_FRICTION, DEFAULT_FRICTION);

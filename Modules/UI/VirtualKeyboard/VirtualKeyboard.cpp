@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
             cLuaBinding(project, this) {
   }
   
-  VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+  VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
                    VirtualKeyboard(project, ui, data) {
     cDefSelectionColour.init(object, JSON_SELECTION_COLOUR);
     cDefFont.init(object, JSON_FONT);

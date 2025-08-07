@@ -40,7 +40,7 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Menu(IProject& project, UI& ui, IResourceData& data);
-    Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options);
+    Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

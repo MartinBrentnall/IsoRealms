@@ -73,7 +73,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
   
-  C64LiftGraphics::C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  C64LiftGraphics::C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             C64LiftGraphics(project, spindizzy, data) {
     cDefOutline.init(object, JSON_OUTLINE);
     cDefPrimary.init(object, JSON_PRIMARY);

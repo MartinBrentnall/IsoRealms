@@ -37,7 +37,7 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     Project(IProject& project, Basics& basics, IResourceData& data);
-    Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -55,7 +55,7 @@ namespace IsoRealms::Basics {
     \***********************/
     void setRunning(bool running);
     void setEditing(bool editing);
-    void prepare(IProjectOptions* options, bool force);
+    void prepare(const std::string& file, bool user, bool force);
     bool isReady();
     void resetProject();
     IEditable* getDefaultEditor();
@@ -120,8 +120,5 @@ namespace IsoRealms::Basics {
 
     // Misc.
     LuaBinding<Project> cLuaBinding;
-
-    // Private functions.
-    void prepareInternal(const Options* options, bool force);
   };
 }

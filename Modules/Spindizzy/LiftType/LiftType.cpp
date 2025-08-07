@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
             cDefTickAction(data.getDummyActionClient()) {
   }
   
-  LiftType::LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  LiftType::LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             LiftType(project, spindizzy, data) {
     cDefModel.init(object, JSON_APPEARANCE);
     cDefActive.init(object, JSON_STATE);

@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     FileFont(IProject& project, Basics& basics, IResourceData& data);
-    FileFont(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    FileFont(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

@@ -35,7 +35,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
   
-  Ball::Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  Ball::Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             Ball(project, spindizzy, data) {
     cDefFill.init(object, JSON_FILL);
     cDefOutline.init(object, JSON_OUTLINE);

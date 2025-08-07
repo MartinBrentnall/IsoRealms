@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
             
-  Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             Top(project, spindizzy, data) {
     cDefColourTop.init(object, JSON_TOP);
     cDefColourSide.init(object, JSON_SIDES);

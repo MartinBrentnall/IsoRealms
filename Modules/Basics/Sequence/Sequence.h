@@ -38,7 +38,7 @@ namespace IsoRealms::Basics {
   class Sequence final : public IEditable {
     public:
     Sequence(IProject& project, Basics& basics, IResourceData& data);
-    Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

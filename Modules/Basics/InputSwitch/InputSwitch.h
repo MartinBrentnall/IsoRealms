@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     InputSwitch(IProject& project, Basics& basics, IResourceData& data);
-    InputSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    InputSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

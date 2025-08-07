@@ -119,9 +119,7 @@ add_library(IsoRealms
   Lua/LuaState.cpp
   Metadata.cpp
   Module.cpp
-  Options/LocalOptions.cpp
   Options/Options.cpp
-  Options/WrappedOptions.cpp
   Persistence/JSONArray.cpp
   Persistence/JSONDocument.cpp
   Persistence/JSONObject.cpp

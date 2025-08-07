@@ -41,7 +41,7 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Throbber(IProject& project, UI& ui, IResourceData& data);
-    Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options);
+    Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

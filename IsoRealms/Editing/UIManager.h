@@ -25,7 +25,6 @@
 #include "IsoRealms/AnimatedFloat.h"
 #include "IsoRealms/IModule.h"
 #include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/Options/LocalOptions.h"
 #include "IsoRealms/ResourceDefinition.h"
 
 #include "IDialogManager.h"

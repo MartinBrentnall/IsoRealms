@@ -32,10 +32,9 @@ namespace IsoRealms::HighScore {
     });
   }
   
-  ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options) :
+  ScoreTracker::ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object) :
             ScoreTracker(project, highScore, data) {
-    LocalOptions mLocalOptions("Project", options);
-    cProject = std::make_unique<Project>(cParentProject.getApplication(), mLocalOptions, [this](bool forceQuit) {
+    cProject = std::make_unique<Project>(cParentProject.getApplication(), [this](bool forceQuit) {
       if (forceQuit) {
         cParentProject.finish(true);
       } else {

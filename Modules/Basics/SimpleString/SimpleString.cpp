@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleString::SimpleString(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  SimpleString::SimpleString(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             SimpleString(project, basics, data) {
     cRuntimeValue = cDefValue = object.getString(JSON_VALUE);
 

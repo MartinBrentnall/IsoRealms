@@ -37,7 +37,7 @@ namespace IsoRealms::HighScore {
             cLuaBinding(project, this) {
   }
 
-  ScoreTable::ScoreTable(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options) :
+  ScoreTable::ScoreTable(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object) :
             ScoreTable(project, highScore, data) {
     cProjectUser.init(object, JSON_USER);
     cProjectDataPath.init(object, JSON_PROJECT);

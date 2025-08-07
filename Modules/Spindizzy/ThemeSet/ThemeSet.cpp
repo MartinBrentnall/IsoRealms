@@ -37,7 +37,7 @@ namespace IsoRealms::Spindizzy {
             cLuaBinding(project, this) {
   }
 
-  ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             ThemeSet(project, spindizzy, data) {
     for (JSONObject mThemeObject : object.getArray(JSON_THEMES)) {
       cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(project, *this, mThemeObject);

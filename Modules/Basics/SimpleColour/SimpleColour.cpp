@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             SimpleColour(project, basics, data) {
     cRuntimeRed   = cDefRed   = object.getFloat(JSON_RED);
     cRuntimeGreen = cDefGreen = object.getFloat(JSON_GREEN);

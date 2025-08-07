@@ -54,7 +54,6 @@
 #include "Editing.h"
 #include "IResourceData.h"
 #include "Lua.h"
-#include "Options/LocalOptions.h"
 #include "Options/Options.h"
 #include "ProjectFile.h"
 #include "Types.h"
@@ -90,7 +89,7 @@ namespace IsoRealms {
      * @param onFinish Function to callback when the Project finishes.
      * @param override Specify to override assets of a Project with external ones.
      */
-    Project(IApplication& application, IOptions& options, std::function<void(bool)> onFinish);
+    Project(IApplication& application, std::function<void(bool)> onFinish, const std::string& file, bool user);
 
     /***********************\
      * Implements IProject *
@@ -572,7 +571,7 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
 
     bool isModuleLoaded(const std::string& name) const;
-    std::vector<std::unique_ptr<JSONDocument>> loadResources(IOptions& options, ProjectFile& file);
+    std::vector<std::unique_ptr<JSONDocument>> loadResources(ProjectFile& file);
     Module* getModule(const std::string& name);
     void saveFile(ProjectFile& file);
   };

@@ -27,7 +27,7 @@ namespace IsoRealms::Basics {
             cLuaBinding(project, this) {
   }
   
-  InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             InputSwitch(project, basics, data) {
     cDefInputHandler.init(object, JSON_VALUE);
     project.init([this](IAssets& assets) {

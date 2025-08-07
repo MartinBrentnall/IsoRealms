@@ -32,7 +32,7 @@ namespace IsoRealms::Basics {
     cDefProject.addScreenListener(this);
   }
   
-  Sprite::Sprite(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  Sprite::Sprite(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             Sprite(project, basics, data) {
     cDefTexture.init(object, JSON_TEXTURE);
     cDefBillboardYaw   = object.getBoolean(JSON_BILLBOARD_YAW);

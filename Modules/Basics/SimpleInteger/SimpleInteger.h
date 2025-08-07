@@ -33,7 +33,7 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     SimpleInteger(IProject& project, Basics& basics, IResourceData& data);
-    SimpleInteger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    SimpleInteger(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

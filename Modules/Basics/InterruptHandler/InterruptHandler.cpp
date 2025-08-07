@@ -26,7 +26,7 @@ namespace IsoRealms::Basics {
             cDefAction(data.getDummyActionClient()) {
   }
   
-  InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             InterruptHandler(project, basics, data) {
     cDefAction.init(object, JSON_ON_INPUT);
     cDefConsume = object.getBoolean(JSON_CONSUME, true);

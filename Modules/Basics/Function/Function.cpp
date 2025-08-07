@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
             Function(project, basics, "", data.getDummyActionClient()) {
   }
     
-  Function::Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  Function::Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             Function(project, basics, object.getString(JSON_ID), data.getDummyActionClient(), object, true) {
   }
 
@@ -267,7 +267,7 @@ namespace IsoRealms::Basics {
     // if (cParent.cDefName[0] != '_') {
     //   std::cout << "Executing Function \"" << cParent.cDefName << "\"..." << std::endl;
     // } else {
-    //  std::cout << "\n\n\n\nExecuting \"" << cParent.cDefName  << "\": ===============================================================================" << std::endl << cParent.cDefCode << std::endl;
+    //   std::cout << "\n\n\n\nExecuting \"" << cParent.cDefName  << "\": ===============================================================================" << std::endl << cParent.cDefCode << std::endl;
     // }
     for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
       std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(i);

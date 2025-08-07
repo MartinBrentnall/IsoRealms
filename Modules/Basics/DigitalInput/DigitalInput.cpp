@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  DigitalInput::DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  DigitalInput::DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             DigitalInput(project, basics, object) {
   }
 

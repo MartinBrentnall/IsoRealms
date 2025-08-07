@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     Function(IProject& project, Basics& basics, IResourceData& data);
-    Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object, bool script = false) const;
     bool renderIcon() const;

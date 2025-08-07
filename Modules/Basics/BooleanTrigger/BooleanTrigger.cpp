@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
             cDefFalseAction(data.getDummyActionClient()) {
   }
   
-  BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             BooleanTrigger(project, basics, data) {
     cDefValue.init(object, JSON_VALUE);
     cDefTrueAction.init(object, JSON_ON_BECOMING_TRUE);

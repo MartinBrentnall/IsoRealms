@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.added(this);
   }
   
-  PickUpType::PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  PickUpType::PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             PickUpType(project, spindizzy, data) {
     cDefModel.init(object, JSON_APPEARANCE);
   }

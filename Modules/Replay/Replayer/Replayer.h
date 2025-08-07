@@ -26,7 +26,7 @@ namespace IsoRealms::Replay {
   class Replayer final {
     public:
     Replayer(IProject& project, Replay& replay, IResourceData& data);
-    Replayer(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options);
+    Replayer(IProject& project, Replay& replay, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     bool renderIcon() const;
@@ -39,6 +39,13 @@ namespace IsoRealms::Replay {
     void updateInputs(unsigned int milliseconds);
     void updateRuntime(unsigned int milliseconds);
     void reset();
+
+    /***********************\
+     * Scripting Interface *
+    \***********************/
+    void setRecording();
+    void setReplaying(const std::string& file, bool user);
+    void setInactive();
 
     private:
     union InputType {

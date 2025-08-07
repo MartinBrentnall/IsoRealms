@@ -26,7 +26,7 @@ namespace IsoRealms::Basics {
   ProjectOptions::ProjectOptions(IProject& project, Basics& basics, IResourceData& data) {
   }
   
-  ProjectOptions::ProjectOptions(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  ProjectOptions::ProjectOptions(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             ProjectOptions(project, basics, data) {
     for (JSONObject mOptionsObject : object.getArray(JSON_OPTIONS)) {
       cDefOptions.emplace(std::piecewise_construct, std::forward_as_tuple(mOptionsObject.getString(JSON_ID)), std::forward_as_tuple(data)).first->second.init(mOptionsObject, JSON_VALUE);

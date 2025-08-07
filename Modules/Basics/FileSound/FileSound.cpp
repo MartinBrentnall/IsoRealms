@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
             cDefFile(project) {
   }
   
-  FileSound::FileSound(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  FileSound::FileSound(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             FileSound(project, basics, data) {
     cDefFile.load(JSON_FILENAME, object);
     reloadData();

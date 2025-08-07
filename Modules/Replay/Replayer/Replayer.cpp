@@ -25,7 +25,7 @@ namespace IsoRealms::Replay {
             cFilenameString(data.getProject(), "") {
   }
   
-  Replayer::Replayer(IProject& project, Replay& replay, IResourceData& data, JSONObject object, IOptions& options) :
+  Replayer::Replayer(IProject& project, Replay& replay, IResourceData& data, JSONObject object) :
             Replayer(project, replay, data) {
 
     // Read configuration.
@@ -35,24 +35,8 @@ namespace IsoRealms::Replay {
     for (JSONObject mAnalogueInputObject : object.getArray(JSON_ANALOGUE_INPUTS)) {
       cAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, data, mAnalogueInputObject));
     }
-
-    // First check which state to use.
-    std::string mStateOption = options.getOption("State");
-    if (mStateOption == "Record") {
-      cState = State::RECORDING;
-    } else if (mStateOption == "Replay") {
-      cState = State::REPLAYING;
-      
-      // Open the recording.
-      bool mUserRecording = options.getOption("User") == "true";
-      cFilename  = options.getOption("Recording");
-      cFilename  = System::getPath(cFilename, mUserRecording);
-      cRecording = std::ifstream(cFilename, std::ios::binary);
-    } else {
-      cState = State::INACTIVE;
-    }
   }
-  
+
   void Replayer::registerAssets(ResourceAssetRegistry& assets) {
     for (std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
       mInput->registerAssets(assets);
@@ -214,6 +198,20 @@ namespace IsoRealms::Replay {
     }
   }
   
+  void Replayer::setRecording() {
+    cState = State::RECORDING;
+  }
+
+  void Replayer::setReplaying(const std::string& file, bool user) {
+    cState = State::REPLAYING;
+    cFilename = System::getPath(file, user);
+    cRecording = std::ifstream(cFilename, std::ios::binary);
+  }
+
+  void Replayer::setInactive() {
+    cState = State::INACTIVE;
+  }
+
   Replayer::DigitalInput::DigitalInput(Replayer& parent, IResourceData& data) :
             cParent(parent),
             cDefActualInput(data, false, [this](bool value) {

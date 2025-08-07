@@ -57,7 +57,7 @@ namespace IsoRealms::Spindizzy {
             cDefImpactAction(data.getDummyActionClient()) {
   }
   
-  TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             TerrainType(project, spindizzy, data) {
     cDefSolid = object.getBoolean(JSON_SOLID);
     cDefSurfaceBounce = object.getFloat(JSON_FLOOR_BOUNCE);

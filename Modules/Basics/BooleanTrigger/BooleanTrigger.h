@@ -34,7 +34,7 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     BooleanTrigger(IProject& project, Basics& basics, IResourceData& data);
-    BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options);
+    BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

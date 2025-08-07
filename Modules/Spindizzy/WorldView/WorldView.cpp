@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
             cLuaBinding(project, this) {
   }
     
-  WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             WorldView(project, spindizzy, data) {
     cDefZoom = object.getFloat(JSON_ZOOM, 1.0f);
     cDefCamera.set(object, JSON_CAMERA);

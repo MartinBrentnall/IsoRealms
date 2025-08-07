@@ -28,7 +28,7 @@ namespace IsoRealms::Spindizzy {
             cEditingIconCycle(0) {
   }
   
-  ModelCycler::ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  ModelCycler::ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             ModelCycler(project, spindizzy, data) {
     unsigned int mIndex = 0;
     for (JSONObject mModelObject : object.getArray(JSON_MODELS)) {

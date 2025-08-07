@@ -38,7 +38,7 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
 
-  SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             SimpleVertex(project, basics, data) {
     cRuntimeX = cDefX = object.getFloat(JSON_X);
     cRuntimeY = cDefY = object.getFloat(JSON_Y);

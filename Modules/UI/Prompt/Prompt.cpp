@@ -41,7 +41,7 @@ namespace IsoRealms::UI {
             cLuaBinding(project, this) {
   }
   
-  Prompt::Prompt(IProject& project, UI& ui, IResourceData& data, JSONObject object, IOptions& options) :
+  Prompt::Prompt(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
             Prompt(project, ui, data) {
     cDefTextSize     = object.getFloat(JSON_TEXT_SIZE,     DEFAULT_TEXT_SIZE);
     cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);

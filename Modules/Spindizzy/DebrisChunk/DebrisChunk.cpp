@@ -45,7 +45,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
 
-  DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             DebrisChunk(project, spindizzy, data) {
     cDefOutline.init(object, JSON_OUTLINE);
     cDefOutlineWidth = object.getFloat(JSON_OUTLINE_WIDTH, DEFAULT_OUTLINE_WIDTH);

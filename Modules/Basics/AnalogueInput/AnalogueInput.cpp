@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
              cLuaBinding(project, this) {
   }
 
-  AnalogueInput::AnalogueInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object, IOptions& options) :
+  AnalogueInput::AnalogueInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             AnalogueInput(project, basics, data) {
     for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
       std::string mType = mMappingObject.getString(JSON_TYPE);

@@ -35,7 +35,7 @@ namespace IsoRealms::HighScore {
      * Resource interface *
     \**********************/
     ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data);
-    ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object, IOptions& options);
+    ScoreTracker(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object);
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;

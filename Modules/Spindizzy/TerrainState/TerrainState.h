@@ -37,7 +37,7 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options);
+    TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

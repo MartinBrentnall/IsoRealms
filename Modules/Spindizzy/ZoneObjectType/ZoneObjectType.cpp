@@ -38,7 +38,7 @@ namespace IsoRealms::Spindizzy {
             cResourceData(data) {
   }
   
-  ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object, IOptions& options) :
+  ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             ZoneObjectType(project, spindizzy, data) {
 //     for (OMNode& mNode : node) {
 //       std::string mTag = mNode.getName();

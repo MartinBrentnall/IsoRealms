@@ -57,7 +57,7 @@ namespace IsoRealms {
     cResources.clear();
   }
 
-  void ResourceType::loadResource(JSONObject object, IProject& project, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath) {
+  void ResourceType::loadResource(JSONObject object, IProject& project, ProjectFile* ownerProject, const std::string& resourceDataPath) {
     std::string mResourceName = object.getString(JSON_ID);
     for (IResource* mResource : cResources) {
       if (mResource->getName() == mResourceName) {
@@ -65,8 +65,7 @@ namespace IsoRealms {
         return;
       }
     }
-    LocalOptions mResourceOptions(mResourceName, options);
-    IResource* mResource = cResourceType->loadResource(*this, project, object, mResourceOptions, ownerProject, resourceDataPath + "/" + mResourceName);
+    IResource* mResource = cResourceType->loadResource(*this, project, object, ownerProject, resourceDataPath + "/" + mResourceName);
     cResources.insert(mResource);
   }
 

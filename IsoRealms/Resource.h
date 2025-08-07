@@ -59,12 +59,12 @@ namespace IsoRealms {
       } while (!mSuccess);
     }
     
-    Resource(IResourceType& parent, IProject& project, MODULE& module, JSONObject object, IOptions& options, ProjectFile* ownerProject, const std::string& resourceDataPath) :
+    Resource(IResourceType& parent, IProject& project, MODULE& module, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
               cName(object.getString(JSON_ID)),
               cOwnerProject(parent.getProject(), ownerProject),
               cResourceDataPath(resourceDataPath),
-              cResourceHandle(project, module, *this, object, options),
+              cResourceHandle(project, module, *this, object),
               cAssetRegistry(parent.getProject(), parent.getPath() + "/" + cName) {
     }
 
