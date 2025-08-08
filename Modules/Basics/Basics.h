@@ -37,7 +37,6 @@
 #include "InterruptHandler/InterruptHandler.h"
 #include "Project/Project.h"
 #include "ProjectConfigurer/ProjectConfigurer.h"
-#include "ProjectOptions/ProjectOptions.h"
 #include "Sequence/Sequence.h"
 #include "SimpleBoolean/SimpleBoolean.h"
 #include "SimpleColour/SimpleColour.h"
@@ -151,7 +150,6 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, InterruptHandler>  cResourceTypeInterruptHandler;
     ResourceTypeDefinition<Basics, Project>           cResourceTypeProject;
     ResourceTypeDefinition<Basics, ProjectConfigurer> cResourceTypeProjectConfigurer;
-    ResourceTypeDefinition<Basics, ProjectOptions>    cResourceTypeProjectOptions;
     ResourceTypeDefinition<Basics, Sequence>          cResourceTypeSequence;
     ResourceTypeDefinition<Basics, SimpleBoolean>     cResourceTypeSimpleBoolean;
     ResourceTypeDefinition<Basics, SimpleColour>      cResourceTypeSimpleColour;

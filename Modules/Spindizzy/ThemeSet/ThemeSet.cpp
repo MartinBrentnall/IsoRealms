@@ -39,7 +39,8 @@ namespace IsoRealms::Spindizzy {
 
   ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             ThemeSet(project, spindizzy, data) {
-    for (JSONObject mThemeObject : object.getArray(JSON_THEMES)) {
+    for (JSONValue mThemeValue : object.getArray(JSON_THEMES)) {
+      JSONObject mThemeObject = mThemeValue.getObject();
       cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(project, *this, mThemeObject);
     }
 

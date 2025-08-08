@@ -20,6 +20,7 @@
 
 #include "JSONDocument.h"
 #include "JSONObject.h"
+#include "JSONValue.h"
 
 namespace IsoRealms {
   JSONArray::JSONArray(JSONDocument& parent, rapidjson::Value& array) :
@@ -55,7 +56,7 @@ namespace IsoRealms {
     return &cParent != &node.cParent || cIndex != node.cIndex;
   }
 
-  JSONObject JSONArray::Iterator::operator*() {
-    return JSONObject(cParent.cParent, cParent.cArray[cIndex]);
+  JSONValue JSONArray::Iterator::operator*() {
+    return JSONValue(cParent.cParent, cParent.cArray[cIndex]);
   }
 }

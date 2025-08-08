@@ -16,25 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "TablesLuaSupport.h"
 
-#include <functional>
-
-#include "IsoRealms/Assets/Type/IProjectOptions.h"
-#include "IsoRealms/IResourceData.h"
-
-#include "Asset.h"
-
-namespace IsoRealms {
-  class ProjectOptions : public Asset<ProjectOptions, IProjectOptions, IResourceData> {
-    public:
-    ProjectOptions(IResourceData& owner);
-
-    /****************************************************\
-     * Implements Asset<IProjectOptions, IResourceData> *
-    \****************************************************/
-    IProjectOptions* getAsset(IResourceData& owner, JSONObject object);
-    IProjectOptions* getAsset(IResourceData& owner, const std::string& id);
-    bool isDefaultConfiguration() const;
-  };
+namespace IsoRealms::Tables {
+#ifdef __linux__
+  extern "C" void initLua(LuaState* luaState) {
+#elif _WIN32
+  extern "C" void __declspec(dllexport) __stdcall initLua(LuaState* luaState) {
+#endif
+    sol::state* mLua = luaState->getState();
+    mLua->new_usertype<Table>("Table");
+  }
 }

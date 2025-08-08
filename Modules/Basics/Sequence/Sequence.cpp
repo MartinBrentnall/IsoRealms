@@ -48,11 +48,12 @@ namespace IsoRealms::Basics {
     cDefPlaying = object.getBoolean(JSON_PLAYING);
     cDefLoop = object.getBoolean(JSON_LOOP);
     cDefSpeed.init(object, JSON_SPEED);
-    for (JSONObject mTrackObject : object.getArray(JSON_TRACKS)) {
+    for (JSONValue mTrackValue : object.getArray(JSON_TRACKS)) {
       cDefTracks.emplace_back(std::make_unique<SequenceTrack>(basics, *this));
-      cDefTracks.back()->set(mTrackObject, JSON_TRACK);
+      cDefTracks.back()->set(mTrackValue.getObject(), JSON_TRACK);
     }
-    for (JSONObject mInstanceObject : object.getArray(JSON_INSTANCES)) {
+    for (JSONValue mInstanceValue : object.getArray(JSON_INSTANCES)) {
+      JSONObject mInstanceObject = mInstanceValue.getObject();
       cDefInstances.emplace(mInstanceObject.getString(JSON_NAME), std::make_unique<SequenceInstance>(*this, mInstanceObject));
     }
   }

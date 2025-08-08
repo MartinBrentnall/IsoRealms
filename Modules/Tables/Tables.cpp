@@ -16,38 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "HighScore.h"
+#include "Tables.h"
 
-namespace IsoRealms::HighScore {
-  HighScore::HighScore(Project& project, IResourceTypeRegistry* registry):
-                    cResourceTypeScoreTable(*this),
-                    cResourceTypeScoreTracker(*this) {
-    registry->add(&cResourceTypeScoreTable,   "ScoreTable");
-    registry->add(&cResourceTypeScoreTracker, "ScoreTracker");
+namespace IsoRealms::Tables {
+  Tables::Tables(Project& project, IResourceTypeRegistry& registry):
+                    cResourceTypeTable(*this) {
+    registry.add(&cResourceTypeTable, "Table");
   }
 
-  void HighScore::registerAssets(ResourceAssetRegistry& assets) {
+  void Tables::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
   
-  void HighScore::updateInputs(unsigned int milliseconds) {
+  void Tables::updateInputs(unsigned int milliseconds) {
     // Nothing to do.
   }
   
-  void HighScore::updateRuntime(unsigned int milliseconds) {
-    updateRuntime2(cResourceTypeScoreTracker, milliseconds);
-  }
-  
-  void HighScore::updateEditing(unsigned int milliseconds) {
+  void Tables::updateRuntime(unsigned int milliseconds) {
     // Nothing to do.
   }
   
-  void HighScore::reset() {
-    reset2(cResourceTypeScoreTracker);
+  void Tables::updateEditing(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+  
+  void Tables::reset() {
+    // Nothing to do.
   }  
   
   std::mutex cModuleInstantiationMutex;
-  std::vector<std::unique_ptr<HighScore>> ModuleInstances;
+  std::vector<std::unique_ptr<Tables>> ModuleInstances;
 }
 
 #ifdef __linux__
@@ -55,10 +53,10 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoReal
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
 #endif
-  std::unique_ptr<IsoRealms::HighScore::HighScore> mModule = std::make_unique<IsoRealms::HighScore::HighScore>(*project, registry);
+  std::unique_ptr<IsoRealms::Tables::Tables> mModule = std::make_unique<IsoRealms::Tables::Tables>(*project, *registry);
   {
-    std::lock_guard<std::mutex> mLockGuard(IsoRealms::HighScore::cModuleInstantiationMutex);
-    return IsoRealms::HighScore::ModuleInstances.emplace_back(std::move(mModule)).get();
+    std::lock_guard<std::mutex> mLockGuard(IsoRealms::Tables::cModuleInstantiationMutex);
+    return IsoRealms::Tables::ModuleInstances.emplace_back(std::move(mModule)).get();
   }
 }
 
@@ -67,9 +65,9 @@ extern "C" void destroy(IsoRealms::IModuleHandle* module) {
 #elif _WIN32
 extern "C" void __declspec(dllexport) __stdcall destroy(IsoRealms::IModuleHandle* module) {
 #endif
-  std::unique_ptr<IsoRealms::HighScore::HighScore> mModule;
+  std::unique_ptr<IsoRealms::Tables::Tables> mModule;
   {
-    std::lock_guard<std::mutex> mLockGuard(IsoRealms::HighScore::cModuleInstantiationMutex);
-    mModule = IsoRealms::Utils::removeElementUnique(IsoRealms::HighScore::ModuleInstances, module);
+    std::lock_guard<std::mutex> mLockGuard(IsoRealms::Tables::cModuleInstantiationMutex);
+    mModule = IsoRealms::Utils::removeElementUnique(IsoRealms::Tables::ModuleInstances, module);
   }
 }

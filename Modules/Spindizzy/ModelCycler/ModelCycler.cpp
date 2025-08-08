@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
   ModelCycler::ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             ModelCycler(project, spindizzy, data) {
     unsigned int mIndex = 0;
-    for (JSONObject mModelObject : object.getArray(JSON_MODELS)) {
-      cDefModels.emplace_back(std::make_unique<Model>(data))->init(mModelObject, JSON_MODEL);
+    for (JSONValue mModelValue : object.getArray(JSON_MODELS)) {
+      cDefModels.emplace_back(std::make_unique<Model>(data))->init(mModelValue.getObject(), JSON_MODEL);
       cOffsetModels.emplace_back(std::make_unique<Offset>(*this, mIndex++));
     }
   }

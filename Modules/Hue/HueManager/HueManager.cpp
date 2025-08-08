@@ -101,8 +101,8 @@ namespace IsoRealms::Hue {
     cDefBridgeUser    = object.getString(JSON_USER);
     cDefBridgePSK     = object.getString(JSON_PSK);
 
-    for (JSONObject mBulbObject : object.getArray(JSON_BULBS)) {
-      cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, data, cDefBulbs.size(), mBulbObject));
+    for (JSONValue mBulbValue : object.getArray(JSON_BULBS)) {
+      cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, data, cDefBulbs.size(), mBulbValue.getObject()));
     }
 
     RESTInit();

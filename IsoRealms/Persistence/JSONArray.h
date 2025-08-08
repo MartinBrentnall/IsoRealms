@@ -27,6 +27,7 @@
 namespace IsoRealms {
   class JSONDocument;
   class JSONObject;
+  class JSONValue;
 
   class JSONArray {
     public:
@@ -40,7 +41,7 @@ namespace IsoRealms {
 
       Iterator& operator++();
       bool operator!=(const Iterator&);
-      JSONObject operator*();
+      JSONValue operator*();
     };
 
     JSONArray(JSONDocument& parent, rapidjson::Value& object);

@@ -132,14 +132,6 @@
         "OnEditor": {"name": "Action on Editor", "description": "Action to perform upon starting an editor."}
       }
     },
-    "ProjectOptions": {
-      "singular": "Project Options",
-      "plural": "Project Options",
-      "description": "Define sets of values to be passed as options when opening a project.",
-      "category": "System",
-      "properties": {
-      }
-    },
     "Sequence": {
       "singular": "Sequence",
       "plural": "Sequences",

@@ -37,8 +37,8 @@ namespace IsoRealms::Basics {
     SequenceTrackBase(IResourceData& owner, Sequence& sequence, JSONObject object) :
               cSequence(sequence),
               cDefName(object.getString(JSON_NAME)) {
-      for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
-        cDefEvents.push_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, owner.getProject(), mEventObject));
+      for (JSONValue mEventValue : object.getArray(JSON_EVENTS)) {
+        cDefEvents.push_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, owner.getProject(), mEventValue.getObject()));
       }
     }
 

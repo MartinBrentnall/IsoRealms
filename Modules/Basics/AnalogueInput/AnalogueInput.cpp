@@ -32,7 +32,8 @@ namespace IsoRealms::Basics {
 
   AnalogueInput::AnalogueInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             AnalogueInput(project, basics, data) {
-    for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
+    for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
+      JSONObject mMappingObject = mMappingValue.getObject();
       std::string mType = mMappingObject.getString(JSON_TYPE);
       if      (mType == AxisMapping::TYPE_AXIS)                             {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<AxisMapping>(mMappingObject), "TODO: Remove This"));}
       else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(project, basics, mMappingObject), mMappingObject.getString(JSON_NAME)));}
@@ -151,7 +152,8 @@ namespace IsoRealms::Basics {
 
   void AnalogueInput::loadCustomMapping(JSONObject object) {
     cRuntimeMapping.clear();
-    for (JSONObject mMappingsObject : object.getArray(JSON_MAPPINGS)) {
+    for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
+      JSONObject mMappingsObject = mMappingsValue.getObject();
       std::string mMappingType = mMappingsObject.getString(JSON_TYPE);
       if (mMappingType == JSON_INPUT) {
         std::string mInputID = mMappingsObject.getString(JSON_ID);

@@ -32,7 +32,6 @@
 #include "Assets/Client/Integer.h"
 #include "Assets/Client/Model.h"
 #include "Assets/Client/ModuleChooser.h"
-#include "Assets/Client/ProjectOptions.h"
 #include "Assets/Client/Screen.h"
 #include "Assets/Client/String.h"
 #include "Assets/Client/Texture.h"

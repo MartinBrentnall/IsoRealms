@@ -46,7 +46,6 @@ add_library(Basics MODULE
   Project/Project.cpp
   Project/ProjectLoader.cpp
   ProjectConfigurer/ProjectConfigurer.cpp
-  ProjectOptions/ProjectOptions.cpp
   Sequence/Editor/SequenceEditor.cpp
   Sequence/Sequence.cpp
   Sequence/SequenceInstance.cpp

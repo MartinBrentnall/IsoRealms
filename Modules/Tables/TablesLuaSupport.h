@@ -16,34 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DummyProjectOptions.h"
+#pragma once
 
-#include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/Utils.h"
+#include <iostream>
 
-namespace IsoRealms {
-  DummyProjectOptions::DummyProjectOptions(IResourceData& owner) {
-    // Nothing to do.
-  }
+#include <sol.hpp>
 
-  Options DummyProjectOptions::getFixedOptions() {
-    return Options();
-  }
-
-  bool DummyProjectOptions::renderAssetIcon() const {
-    Utils::renderIconNone();
-    return true;
-  }
-
-  void DummyProjectOptions::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void DummyProjectOptions::getAssetProperties(PropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool DummyProjectOptions::isDefaultConfiguration() const {
-    return true;
-  }
-}
+#include "Table/Table.h"

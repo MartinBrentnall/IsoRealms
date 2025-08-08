@@ -29,11 +29,11 @@ namespace IsoRealms::Replay {
             Replayer(project, replay, data) {
 
     // Read configuration.
-    for (JSONObject mDigitalInputObject : object.getArray(JSON_DIGITAL_INPUTS)) {
-      cDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, data, mDigitalInputObject));
+    for (JSONValue mDigitalInputValue : object.getArray(JSON_DIGITAL_INPUTS)) {
+      cDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, data, mDigitalInputValue.getObject()));
     }
-    for (JSONObject mAnalogueInputObject : object.getArray(JSON_ANALOGUE_INPUTS)) {
-      cAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, data, mAnalogueInputObject));
+    for (JSONValue mAnalogueInputValue : object.getArray(JSON_ANALOGUE_INPUTS)) {
+      cAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, data, mAnalogueInputValue.getObject()));
     }
   }
 

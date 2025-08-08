@@ -38,7 +38,6 @@ add_library(IsoRealms
   Assets/Client/Model.cpp
   Assets/Client/ModelInstance.cpp
   Assets/Client/ModuleChooser.cpp
-  Assets/Client/ProjectOptions.cpp
   Assets/Client/ResourceOwner.cpp
   Assets/Client/Screen.cpp
   Assets/Client/String.cpp
@@ -52,7 +51,6 @@ add_library(IsoRealms
   Assets/Dummy/DummyFont.cpp
   Assets/Dummy/DummyInputHandler.cpp
   Assets/Dummy/DummyModel.cpp
-  Assets/Dummy/DummyProjectOptions.cpp
   Assets/Dummy/DummyScreen.cpp
   Assets/Dummy/DummyTexture.cpp
   Assets/Literal/LiteralBindingType.cpp
@@ -124,6 +122,7 @@ add_library(IsoRealms
   Persistence/JSONDocument.cpp
   Persistence/JSONObject.cpp
   Persistence/JSONThing.cpp
+  Persistence/JSONValue.cpp
   Persistence/ParseException.cpp
   Project.cpp
   ProjectFile.cpp

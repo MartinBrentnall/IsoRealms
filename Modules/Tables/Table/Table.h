@@ -24,17 +24,17 @@
 
 #include "IsoRealms.h"
 
-namespace IsoRealms::HighScore {
-  class HighScore;
+namespace IsoRealms::Tables {
+  class Tables;
   
-  class ScoreTable {
+  class Table {
     public:
     
     /**********************\
      * Resource interface *
     \**********************/
-    ScoreTable(IProject& project, HighScore& highScore, IResourceData& data);
-    ScoreTable(IProject& project, HighScore& highScore, IResourceData& data, JSONObject object);
+    Table(IProject& project, Tables& tables, IResourceData& data);
+    Table(IProject& project, Tables& tables, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -44,29 +44,56 @@ namespace IsoRealms::HighScore {
     /***********************\
      * Scripting Interface *
     \***********************/
-    void reload();
+//    int getRecordCount() const;
+//    Record getRecord(int index) const;
+//    insertRecordAt(Record& record, int index);
     
     private:
-    static const std::string JSON_COMPARE;
-    static const std::string JSON_FIELD;
+    static const std::string JSON_FIELD_NAME;
+    static const std::string JSON_FIELD_TYPE;
     static const std::string JSON_FIELDS;
-    static const std::string JSON_HIGH_SCORE_TABLE;
-    static const std::string JSON_NAME;
-    static const std::string JSON_PROJECT;
-    static const std::string JSON_RECORD_LIMIT;
     static const std::string JSON_RECORDS;
-    static const std::string JSON_USER;
-    static const std::string JSON_VALUE;
-    static const std::string JSON_VALUES;
 
-    String cProjectDataPath;
-    Boolean cProjectUser;
+    static const std::string FIELD_TYPE_INTEGER;
+    static const std::string FIELD_TYPE_STRING;
+
+    enum class FieldType {
+      STRING,
+      INTEGER
+    };
     
-    std::map<std::string, std::vector<LiteralString>> cValues;
+    struct Field {
+      Field(JSONObject object);
+      
+      std::string cName;
+      FieldType cType;
+    };
 
-    LuaBinding<ScoreTable> cLuaBinding;
+    class Record;
+    
+    class Value {
+      public:
+      Value(FieldType type, JSONValue value);
 
-    void writeDefaultTable();
-    void readRecords(JSONObject object);
+      int getInteger() const;
+      std::string getString() const;
+
+      private:
+      std::variant<int, std::string> cValue;
+    };
+
+    class Record {
+      public:
+      Record(Table& parent, JSONArray records);
+      
+      private:
+      std::vector<Value> cValues;
+    };
+    
+    std::vector<Field> cDefFields;
+    std::vector<Record> cDefRecords;
+    std::vector<Record> cRuntimeRecords;
+    
+    LuaBinding<Table> cLuaBinding;
   };
 }

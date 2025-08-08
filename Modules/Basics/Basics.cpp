@@ -57,7 +57,6 @@ namespace IsoRealms::Basics {
                     cResourceTypeInterruptHandler(*this),
                     cResourceTypeProject(*this),
                     cResourceTypeProjectConfigurer(*this),
-                    cResourceTypeProjectOptions(*this),
                     cResourceTypeSequence(*this),
                     cResourceTypeSimpleBoolean(*this),
                     cResourceTypeSimpleColour(*this),
@@ -80,7 +79,6 @@ namespace IsoRealms::Basics {
     registry.add(&cResourceTypeInterruptHandler,  "InterruptHandler");
     registry.add(&cResourceTypeProject,           "Project");
     registry.add(&cResourceTypeProjectConfigurer, "ProjectConfigurer");
-    registry.add(&cResourceTypeProjectOptions,    "ProjectOptions");
     registry.add(&cResourceTypeSequence,          "Sequence");
     registry.add(&cResourceTypeSimpleBoolean,     "Boolean");
     registry.add(&cResourceTypeSimpleColour,      "Colour");
@@ -162,7 +160,8 @@ namespace IsoRealms::Basics {
       JSONObject mModuleSettingsObject = mModuleSettingsDocument.getObject(JSON_MODULE_SETTINGS);
       setSoundVolume(mModuleSettingsObject.getFloat(JSON_SOUND_VOLUME));
       setMusicVolume(mModuleSettingsObject.getFloat(JSON_MUSIC_VOLUME));
-      for (JSONObject mDigitalInputMappingObject : mModuleSettingsObject.getArray(JSON_DIGITAL_INPUT_MAPPINGS)) {
+      for (JSONValue mDigitalInputMappingValue : mModuleSettingsObject.getArray(JSON_DIGITAL_INPUT_MAPPINGS)) {
+        JSONObject mDigitalInputMappingObject = mDigitalInputMappingValue.getObject();
         std::string mInputID = mDigitalInputMappingObject.getString(JSON_ID);
         DigitalInput* mDigitalInput = cResourceTypeDigitalInput.getResource(mInputID);
         if (mDigitalInput == nullptr) {
@@ -170,7 +169,8 @@ namespace IsoRealms::Basics {
         }
         mDigitalInput->loadCustomMapping(mDigitalInputMappingObject);
       }
-      for (JSONObject mAnalogueInputMappingObject : mModuleSettingsObject.getArray(JSON_ANALOGUE_INPUT_MAPPINGS)) {
+      for (JSONValue mAnalogueInputMappingValue : mModuleSettingsObject.getArray(JSON_ANALOGUE_INPUT_MAPPINGS)) {
+        JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingValue.getObject();
         std::string mInputID = mAnalogueInputMappingObject.getString(JSON_ID);
         AnalogueInput* mAnalogueInput = cResourceTypeAnalogueInput.getResource(mInputID);
         if (mAnalogueInput == nullptr) {

@@ -101,10 +101,8 @@ namespace IsoRealms::Basics {
 
     // Definition data
     std::string cDefProjectPath;
-    Options cDefProjectOptionsArg;
     Action cDefReadyAction;
     Action cDefEndAction;
-    ProjectOptions cDefProjectOptions;
     bool cDefRunning;
     bool cDefEditing;
 

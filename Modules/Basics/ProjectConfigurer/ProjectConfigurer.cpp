@@ -24,6 +24,7 @@ namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_FONT             = "font";
   const std::string ProjectConfigurer::JSON_FONT_SIZE        = "fontSize";
   const std::string ProjectConfigurer::JSON_INPUT            = "input";
+  const std::string ProjectConfigurer::JSON_INPUTS           = "inputs";
   const std::string ProjectConfigurer::JSON_LOCAL            = "local";
   const std::string ProjectConfigurer::JSON_ON_EDITOR        = "onEditor";
   const std::string ProjectConfigurer::JSON_ON_EXIT          = "onExit";
@@ -64,10 +65,10 @@ namespace IsoRealms::Basics {
 
   ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             ProjectConfigurer(project, basics, data) {
-    JSONArray mInputArray = object.getArray("inputs");
-    for (JSONObject mInput : mInputArray) {
-      std::string mInputID = mInput.getString(JSON_INPUT);
-      cDigitalInputsByName.find(mInputID)->second->set(mInput);
+    for (JSONValue mInputValue : object.getArray(JSON_INPUTS)) {
+      JSONObject mInputObject = mInputValue.getObject();
+      std::string mInputID = mInputObject.getString(JSON_INPUT);
+      cDigitalInputsByName.find(mInputID)->second->set(mInputObject);
     }
 
     cDefFontSize = object.getFloat(JSON_FONT_SIZE);

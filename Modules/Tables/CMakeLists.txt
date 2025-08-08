@@ -23,16 +23,13 @@ else(LUA_FOUND)
   message(STATUS "Lua not found.")
 endif(LUA_FOUND)
 
-add_library(HighScore MODULE 
-  HighScoreRecord.cpp
-  HighScoreTable.cpp
-  HighScore.cpp
-  HighScoreLuaSupport.cpp
-  ScoreTable/ScoreTable.cpp
-  ScoreTracker/ScoreTracker.cpp
+add_library(Tables MODULE 
+  Tables.cpp
+  TablesLuaSupport.cpp
+  Table/Table.cpp
 )
-set_target_properties(HighScore PROPERTIES OUTPUT_NAME "IsoRealms-HighScore")
-set_target_properties(HighScore PROPERTIES LIBRARY_OUTPUT_DIRECTORY "../../Out")
-set_target_properties(HighScore PROPERTIES PREFIX "")
+set_target_properties(Tables PROPERTIES OUTPUT_NAME "IsoRealms-Tables")
+set_target_properties(Tables PROPERTIES LIBRARY_OUTPUT_DIRECTORY "../../Out")
+set_target_properties(Tables PROPERTIES PREFIX "")
 
-target_link_libraries(HighScore IsoRealms ${LUA_LIBRARIES} sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES})
+target_link_libraries(Tables IsoRealms ${LUA_LIBRARIES} sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES})

@@ -98,16 +98,16 @@ namespace IsoRealms::Spindizzy {
 
   World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             World(project, spindizzy, data) {
-    for (JSONObject mDebrisGeneratorObject : object.getArray(JSON_DEBRIS_GENERATORS)) {
-      cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorObject, project, data));
+    for (JSONValue mDebrisGeneratorValue : object.getArray(JSON_DEBRIS_GENERATORS)) {
+      cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorValue.getObject(), project, data));
     }
 
-    for (JSONObject mPlayerObject : object.getArray(JSON_PLAYERS)) {
-      cDefPlayers.emplace_back(std::make_unique<Player>(project, *this, mPlayerObject));
+    for (JSONValue mPlayerValue : object.getArray(JSON_PLAYERS)) {
+      cDefPlayers.emplace_back(std::make_unique<Player>(project, *this, mPlayerValue.getObject()));
     }
 
-    for (JSONObject mZoneObject : object.getArray(JSON_ZONES)) {
-      cDefZones.emplace_back(std::make_unique<Zone>(*this, mZoneObject));
+    for (JSONValue mZoneValue : object.getArray(JSON_ZONES)) {
+      cDefZones.emplace_back(std::make_unique<Zone>(*this, mZoneValue.getObject()));
     }
 
     cDefSurfaceAccelerationFactor = object.getFloat(JSON_SLOPE_FORCE);
@@ -170,8 +170,8 @@ namespace IsoRealms::Spindizzy {
     project.init([this, object](IAssets& assets) {
       cAutomaticZoneManagementType = cSpindizzy.getZoneType(object.getString(JSON_AUTOMATIC_ZONE_MANAGEMENT));
       cDefaultThemeSet             = cSpindizzy.getThemeSet(object.getString(JSON_DEFAULT_THEME_SET));
-      for (JSONObject mEditingToolObject : object.getArray(JSON_EDITOR_TOOLS)) {
-        cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(cSpindizzy)).get()->set(mEditingToolObject, JSON_EDITOR_TOOL);
+      for (JSONValue mEditingToolValue : object.getArray(JSON_EDITOR_TOOLS)) {
+        cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(cSpindizzy)).get()->set(mEditingToolValue.getObject(), JSON_EDITOR_TOOL);
       }
     });
   }

@@ -36,7 +36,6 @@
 #include "Assets/Dummy/DummyFont.h"
 #include "Assets/Dummy/DummyInputHandler.h"
 #include "Assets/Dummy/DummyModel.h"
-#include "Assets/Dummy/DummyProjectOptions.h"
 #include "Assets/Dummy/DummyScreen.h"
 #include "Assets/Dummy/DummyTexture.h"
 #include "Assets/Providers/AssetConvertedBinding.h"
@@ -228,41 +227,39 @@ namespace IsoRealms {
     /**********************\
      * Implements IAssets *
     \**********************/
-    IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
-    IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
-    IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required = true) override;
-    IColour*         getColour(        IAssetUser<IColour>*         user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required = true) override;
-    IEditable*       getEditable(      IAssetUser<IEditable>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IFloat*          getFloat(         IAssetUser<IFloat>*          user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required = true) override;
-    IFont*           getFont(          IAssetUser<IFont>*           user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IInteger*        getInteger(       IAssetUser<IInteger>*        user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required = true) override;
-    IModel*          getModel(         IAssetUser<IModel>*          user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IScreen*         getScreen(        IAssetUser<IScreen>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IString*         getString(        IAssetUser<IString>*         user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required = true) override;
-    ITexture*        getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required = true) override;
-    IVertex*         getVertex(        IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IAction*       getAction(      IAssetUser<IAction>*       user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
+    IAssets*       getAssets(      IAssetUser<IAssets>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IBinding*      getBinding(     IAssetUser<IBinding>*      user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
+    IBindingType*  getBindingType( IAssetUser<IBindingType>*  user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IBoolean*      getBoolean(     IAssetUser<IBoolean>*      user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required = true) override;
+    IColour*       getColour(      IAssetUser<IColour>*       user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required = true) override;
+    IEditable*     getEditable(    IAssetUser<IEditable>*     user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IFloat*        getFloat(       IAssetUser<IFloat>*        user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required = true) override;
+    IFont*         getFont(        IAssetUser<IFont>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IInputHandler* getInputHandler(IAssetUser<IInputHandler>* user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IInteger*      getInteger(     IAssetUser<IInteger>*      user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required = true) override;
+    IModel*        getModel(       IAssetUser<IModel>*        user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IScreen*       getScreen(      IAssetUser<IScreen>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
+    IString*       getString(      IAssetUser<IString>*       user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required = true) override;
+    ITexture*      getTexture(     IAssetUser<ITexture>*      user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required = true) override;
+    IVertex*       getVertex(      IAssetUser<IVertex>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
 
-    IAction*         getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner) override;
-    IAssets*         getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner) override;
-    IBinding*        getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IActionClient& owner) override;
-    IBindingType*    getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner) override;
-    IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) override;
-    IColour*         getColour(        IAssetUser<IColour>*         user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener) override;
-    IEditable*       getEditable(      IAssetUser<IEditable>*       user, const std::string& id, IResourceData& owner) override;
-    IFloat*          getFloat(         IAssetUser<IFloat>*          user, const std::string& id, IResourceData& owner, IStateListener<IFloat*>*   listener) override;
-    IFont*           getFont(          IAssetUser<IFont>*           user, const std::string& id, IResourceData& owner) override;
-    IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, const std::string& id, IResourceData& owner) override;
-    IInteger*        getInteger(       IAssetUser<IInteger>*        user, const std::string& id, IResourceData& owner, IStateListener<IInteger*>* listener) override;
-    IModel*          getModel(         IAssetUser<IModel>*          user, const std::string& id, IResourceData& owner) override;
-    IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, const std::string& id, IResourceData& owner) override;
-    IScreen*         getScreen(        IAssetUser<IScreen>*         user, const std::string& id, IResourceData& owner) override;
-    IString*         getString(        IAssetUser<IString>*         user, const std::string& id, IResourceData& owner, IStateListener<IString*>*  listener) override;
-    ITexture*        getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) override;
-    IVertex*         getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner) override;
+    IAction*       getAction(      IAssetUser<IAction>*       user, const std::string& id, IActionClient& owner) override;
+    IAssets*       getAssets(      IAssetUser<IAssets>*       user, const std::string& id, IResourceData& owner) override;
+    IBinding*      getBinding(     IAssetUser<IBinding>*      user, const std::string& id, IActionClient& owner) override;
+    IBindingType*  getBindingType( IAssetUser<IBindingType>*  user, const std::string& id, IResourceData& owner) override;
+    IBoolean*      getBoolean(     IAssetUser<IBoolean>*      user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) override;
+    IColour*       getColour(      IAssetUser<IColour>*       user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener) override;
+    IEditable*     getEditable(    IAssetUser<IEditable>*     user, const std::string& id, IResourceData& owner) override;
+    IFloat*        getFloat(       IAssetUser<IFloat>*        user, const std::string& id, IResourceData& owner, IStateListener<IFloat*>*   listener) override;
+    IFont*         getFont(        IAssetUser<IFont>*         user, const std::string& id, IResourceData& owner) override;
+    IInputHandler* getInputHandler(IAssetUser<IInputHandler>* user, const std::string& id, IResourceData& owner) override;
+    IInteger*      getInteger(     IAssetUser<IInteger>*      user, const std::string& id, IResourceData& owner, IStateListener<IInteger*>* listener) override;
+    IModel*        getModel(       IAssetUser<IModel>*        user, const std::string& id, IResourceData& owner) override;
+    IScreen*       getScreen(      IAssetUser<IScreen>*       user, const std::string& id, IResourceData& owner) override;
+    IString*       getString(      IAssetUser<IString>*       user, const std::string& id, IResourceData& owner, IStateListener<IString*>*  listener) override;
+    ITexture*      getTexture(     IAssetUser<ITexture>*      user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) override;
+    IVertex*       getVertex(      IAssetUser<IVertex>*       user, const std::string& id, IResourceData& owner) override;
 
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
@@ -484,7 +481,6 @@ namespace IsoRealms {
     AssetClientManager<IResourceData, IInteger>        cIntegers;
     AssetClientManager<IResourceData, IModel>          cModels;
     ScreenClientManager                                cScreens;
-    AssetClientManager<IResourceData, IProjectOptions> cProjectOptions;
     AssetClientManager<IResourceData, IAssets>         cAssets;
     AssetClientManager<IResourceData, IString>         cStrings;
     AssetClientManager<IResourceData, ITexture>        cTextures;
@@ -503,7 +499,6 @@ namespace IsoRealms {
     AssetLiteralInteger                                                    cLiteralProviderInteger;
     AssetLiteralDummy<IResourceData, IModel,          DummyModel>          cLiteralProviderModel;
     AssetLiteralDummy<IResourceData, IScreen,         DummyScreen>         cLiteralProviderScreen;
-    AssetLiteralDummy<IResourceData, IProjectOptions, DummyProjectOptions> cLiteralProviderProjectOptions;
     AssetLiteralDummy<IResourceData, IAssets,         DummyAssets>         cLiteralProviderAssets;
     AssetLiteralString                                                     cLiteralProviderString;
     AssetLiteralDummy<IResourceData, ITexture,        DummyTexture>        cLiteralProviderTexture;
@@ -518,7 +513,6 @@ namespace IsoRealms {
     LiteralBindingType cBindingTypeInputHandler;
     LiteralBindingType cBindingTypeInteger;
     LiteralBindingType cBindingTypeProject;
-    LiteralBindingType cBindingTypeProjectOptions;
     LiteralBindingType cBindingTypeScreen;
     LiteralBindingType cBindingTypeString;
     LiteralBindingType cBindingTypeVertex;
@@ -531,7 +525,6 @@ namespace IsoRealms {
     AssetConvertedBinding<IResourceData, Font>           cConversionProviderFontToBinding;
     AssetConvertedBinding<IResourceData, InputHandler>   cConversionProviderInputHandlerToBinding;
     AssetConvertedBinding<IResourceData, Integer>        cConversionProviderIntegerToBinding;
-    AssetConvertedBinding<IResourceData, ProjectOptions> cConversionProviderProjectOptionsToBinding;
     AssetConvertedBinding<IResourceData, Assets>         cConversionProviderProjectToBinding;
     AssetConvertedBinding<IResourceData, Screen>         cConversionProviderScreenToBinding;
     AssetConvertedBinding<IResourceData, String>         cConversionProviderStringToBinding;
@@ -588,7 +581,6 @@ namespace IsoRealms {
   template<> struct AssetContainerTraits<IInteger>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;      }};
   template<> struct AssetContainerTraits<IModel>          {template<class PROJECT> static auto& get(PROJECT& project) {return project.cModels;        }};
   template<> struct AssetContainerTraits<IScreen>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cScreens;       }};
-  template<> struct AssetContainerTraits<IProjectOptions> {template<class PROJECT> static auto& get(PROJECT& project) {return project.cProjectOptions;}};
   template<> struct AssetContainerTraits<IAssets>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cAssets;        }};
   template<> struct AssetContainerTraits<IString>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cStrings;       }};
   template<> struct AssetContainerTraits<ITexture>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cTextures;      }};

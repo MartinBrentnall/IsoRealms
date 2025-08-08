@@ -22,4 +22,5 @@
 #include "Persistence/JSONDocument.h"
 #include "Persistence/JSONObject.h"
 #include "Persistence/JSONThing.h"
+#include "Persistence/JSONValue.h"
 #include "Persistence/ParseException.h"

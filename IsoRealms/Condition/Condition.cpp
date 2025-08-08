@@ -57,13 +57,14 @@ namespace IsoRealms {
     cAnd = object.getString(JSON_OPERATOR) == OPERATOR_AND;
 
     if (object.hasMember(JSON_SUB_CONDITIONS)) {
-      for (JSONObject mSubConditionObject : object.getArray(JSON_SUB_CONDITIONS)) {
-        cConditions.emplace_back(Condition(mSubConditionObject, elements)); // TODO: Make constructor pass map instead
+      for (JSONValue mSubConditionValue : object.getArray(JSON_SUB_CONDITIONS)) {
+        cConditions.emplace_back(Condition(mSubConditionValue.getObject(), elements)); // TODO: Make constructor pass map instead
       }
     }
 
     if (object.hasMember(JSON_INPUTS)) {
-      for (JSONObject mCriteriaObject : object.getArray(JSON_INPUTS)) {
+      for (JSONValue mCriteriaValue : object.getArray(JSON_INPUTS)) {
+        JSONObject mCriteriaObject = mCriteriaValue.getObject();
         std::string mName = mCriteriaObject.getString(JSON_INPUT);
         bool mNegated = mCriteriaObject.getBoolean(JSON_NEGATED);
         std::map<std::string, ConditionElement*>::iterator i = mElements.find(mName);

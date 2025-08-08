@@ -30,8 +30,8 @@ namespace IsoRealms::Basics {
   
   InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
             InputGroup(project, basics, data) {
-    for (JSONObject mInputObject : object.getArray(JSON_INPUTS)) {
-      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(data)).get()->init(mInputObject, JSON_INPUT);
+    for (JSONValue mInputValue : object.getArray(JSON_INPUTS)) {
+      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(data)).get()->init(mInputValue.getObject(), JSON_INPUT);
     }
   }
 

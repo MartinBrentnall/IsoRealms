@@ -18,22 +18,28 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Type/IProjectOptions.h"
+#include <iostream>
+#include <mutex>
 
-namespace IsoRealms {
-  class IResourceData;
+#include "IsoRealms.h"
 
-  class DummyProjectOptions : public IProjectOptions {
+#include "Table/Table.h"
+
+namespace IsoRealms::Tables {
+  class Tables : public IModuleHandle {
     public:
-    DummyProjectOptions(IResourceData& owner);
+    Tables(Project& project, IResourceTypeRegistry& registry);
 
-    /******************************\
-     * Implements IProjectOptions *
-    \******************************/
-    Options getFixedOptions() override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    /****************************\
+     * Implements IModuleHandle *
+    \****************************/
+    void registerAssets(ResourceAssetRegistry& assets) override;
+    void updateInputs(unsigned int milliseconds) override;
+    void updateRuntime(unsigned int milliseconds) override;
+    void updateEditing(unsigned int milliseconds) override;
+    void reset() override;
+      
+    private:
+    ResourceTypeDefinition<Tables, Table> cResourceTypeTable;
   };
 }

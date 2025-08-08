@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
             cProject(project),
             cDefReadyAction(data.getDummyActionClient()),
             cDefEndAction(data.getDummyActionClient()),
-            cDefProjectOptions(data),
             cDefRunning(false),
             cDefEditing(false),
             cRuntimeProject(nullptr),
@@ -42,7 +41,6 @@ namespace IsoRealms::Basics {
     cDefEditing = object.getBoolean(JSON_EDITING);
     cDefEndAction.init(object, JSON_ON_FINISH);
     cDefReadyAction.init(object, JSON_ON_READY);
-    cDefProjectOptions.init(object, JSON_OPTIONS);
   }
 
   void Project::registerAssets(ResourceAssetRegistry& assets) {
@@ -56,8 +54,6 @@ namespace IsoRealms::Basics {
     object.addBoolean(JSON_EDITING, cDefEditing);
     cDefEndAction.save(object, JSON_ON_FINISH);
     cDefReadyAction.save(object, JSON_ON_READY);
-    cDefProjectOptions.save(object, JSON_OPTIONS);
-
   }
 
   void Project::hintInUse(bool inUse) {

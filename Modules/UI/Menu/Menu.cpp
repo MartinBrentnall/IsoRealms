@@ -45,8 +45,8 @@ namespace IsoRealms::UI {
   
   Menu::Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
             Menu(project, ui, data) {
-    for (JSONObject mOptionObject : object.getArray(JSON_OPTIONS)) {
-      cDefItems.emplace_back(std::make_unique<MenuItem>(ui, *this)).get()->set(mOptionObject, JSON_ITEM, *this);
+    for (JSONValue mOptionValue : object.getArray(JSON_OPTIONS)) {
+      cDefItems.emplace_back(std::make_unique<MenuItem>(ui, *this)).get()->set(mOptionValue.getObject(), JSON_ITEM, *this);
     }
     cDefColour.init(object, JSON_COLOUR);
     cDefFont.init(object, JSON_FONT);

@@ -67,7 +67,6 @@ namespace IsoRealms {
           cIntegers(&cLiteralProviderInteger, "Literal", "0"),
           cModels(&cLiteralProviderModel),
           cScreens(&cLiteralProviderScreen, *this),
-          cProjectOptions(&cLiteralProviderProjectOptions),
           cAssets(&cLiteralProviderAssets),
           cStrings(&cLiteralProviderString, "Literal"),
           cTextures(&cLiteralProviderTexture),
@@ -80,7 +79,6 @@ namespace IsoRealms {
           cBindingTypeInputHandler(":InputHandler"),
           cBindingTypeInteger(":Integer"),
           cBindingTypeProject(":Project"),
-          cBindingTypeProjectOptions(":ProjectOptions"),
           cBindingTypeScreen(":Screen"),
           cBindingTypeString(":String"),
           cBindingTypeVertex(":Vertex"),
@@ -91,7 +89,6 @@ namespace IsoRealms {
           cConversionProviderFontToBinding(*this, *this),
           cConversionProviderInputHandlerToBinding(*this, *this),
           cConversionProviderIntegerToBinding(*this, *this),
-          cConversionProviderProjectOptionsToBinding(*this, *this),
           cConversionProviderProjectToBinding(*this, *this),
           cConversionProviderScreenToBinding(*this, *this),
           cConversionProviderStringToBinding(*this, *this),
@@ -116,31 +113,29 @@ namespace IsoRealms {
           cPropertyValueBinding(*this, &cPropertyValue, this) {
 
     // Support conversions.
-    cBindings.add(&cConversionProviderActionToBinding,         ":Action",         CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderBooleanToBinding,        ":Boolean",        CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderColourToBinding,         ":Colour",         CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderFloatToBinding,          ":Float",          CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderFontToBinding,           ":Font",           CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderInputHandlerToBinding,   ":InputHandler",   CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderIntegerToBinding,        ":Integer",        CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderProjectOptionsToBinding, ":ProjectOptions", CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderProjectToBinding,        ":Project",        CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderScreenToBinding,         ":Screen",         CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderStringToBinding,         ":String",         CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderVertexToBinding,         ":Vertex",         CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderActionToBinding,       ":Action",       CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderBooleanToBinding,      ":Boolean",      CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderColourToBinding,       ":Colour",       CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderFloatToBinding,        ":Float",        CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderFontToBinding,         ":Font",         CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderInputHandlerToBinding, ":InputHandler", CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderIntegerToBinding,      ":Integer",      CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderProjectToBinding,      ":Project",      CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderScreenToBinding,       ":Screen",       CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderStringToBinding,       ":String",       CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderVertexToBinding,       ":Vertex",       CATEGORY_CONVERSIONS);
 
-    cBindingTypes.add(&cBindingTypeAction,         "Action",          CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeBoolean,        "Boolean",         CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeColour,         "Colour",          CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeFloat,          "Float",           CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeFont,           "Font",            CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeInputHandler,   "Input Handler",   CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeInteger,        "Integer",         CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeProject,        "Project",         CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeProjectOptions, "Project Options", CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeScreen,         "Screen",          CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeString,         "String",          CATEGORY_CONVERSIONS);
-    cBindingTypes.add(&cBindingTypeVertex,         "Vertex",          CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeAction,       "Action",        CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeBoolean,      "Boolean",       CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeColour,       "Colour",        CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeFloat,        "Float",         CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeFont,         "Font",          CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeInputHandler, "Input Handler", CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeInteger,      "Integer",       CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeProject,      "Project",       CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeScreen,       "Screen",        CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeString,       "String",        CATEGORY_CONVERSIONS);
+    cBindingTypes.add(&cBindingTypeVertex,       "Vertex",        CATEGORY_CONVERSIONS);
 
     cStrings.add(&cConversionProviderIntegerToString, ":Integer", CATEGORY_CONVERSIONS);
     cStrings.add(&cConversionProviderFloatToString,   ":Float",   CATEGORY_CONVERSIONS);
@@ -173,10 +168,10 @@ namespace IsoRealms {
 
     // Initialise everything
     for (unsigned int j = 0; j < cInitialisers.size(); j++) {
-//        std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
-//         if (j == 833) {
-//           std::cout << "DEBUG!" << std::endl;
-//         }
+      std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
+      if (j == 96) {
+        std::cout << "DEBUG!" << std::endl;
+      }
       cInitialisers[j](*this);
     }
     cInitialisers.clear();
@@ -205,7 +200,6 @@ namespace IsoRealms {
     // cBindings.remove(&cConversionProviderFontToBinding);
     // cBindings.remove(&cConversionProviderInputHandlerToBinding);
     // cBindings.remove(&cConversionProviderIntegerToBinding);
-    // cBindings.remove(&cConversionProviderProjectOptionsToBinding);
     // cBindings.remove(&cConversionProviderProjectToBinding);
     // cBindings.remove(&cConversionProviderScreenToBinding);
     // cBindings.remove(&cConversionProviderStringToBinding);
@@ -231,7 +225,6 @@ namespace IsoRealms {
 //     cIntegers.checkClean("Integers");
 //     cModels.checkClean("Models");
 //     cScreens.checkClean("Screens");
-//     cProjectOptions.checkClean("Project Options");
 //     cAssets.checkClean("Asset Collections");
 //     cStrings.checkClean("Strings");
 //     cTextures.checkClean("Textures");
@@ -274,13 +267,15 @@ namespace IsoRealms {
     cDefQuitAction.init(mProjectObject, JSON_QUIT, &file.cFile);
     cDefDefaultEditor.init(mProjectObject, JSON_EDITOR, &file.cFile);
 
-    for (JSONObject mModuleObject : mProjectObject.getArray(JSON_MODULES)) {
+    for (JSONValue mModuleValue : mProjectObject.getArray(JSON_MODULES)) {
+      JSONObject mModuleObject = mModuleValue.getObject();
       std::string mModuleName = mModuleObject.getString(JSON_NAME);
       getModule(mModuleName);
     }
 
     if (mProjectObject.hasMember(JSON_PROPERTIES)) {
-      for (JSONObject mPropertyObject : mProjectObject.getArray(JSON_PROPERTIES)) {
+      for (JSONValue mPropertyValue : mProjectObject.getArray(JSON_PROPERTIES)) {
+        JSONObject mPropertyObject = mPropertyValue.getObject();
         std::string mPropertyID = mPropertyObject.getString(JSON_ID);
         if (cProperties.find(mPropertyID) == cProperties.end()) {
           cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(*this, mPropertyObject, &file.cFile));
@@ -288,14 +283,16 @@ namespace IsoRealms {
       }
     }
 
-    for (JSONObject mModuleObject : mProjectObject.getArray(JSON_MODULES)) {
+    for (JSONValue mModuleValue : mProjectObject.getArray(JSON_MODULES)) {
+      JSONObject mModuleObject = mModuleValue.getObject();
       std::string mModuleName = mModuleObject.getString(JSON_NAME);
       Module* mModule = getModule(mModuleName);
       mModule->loadResources(mModuleObject, &file);
     }
 
     file.setDescription(mProjectObject);
-    for (JSONObject mIncludeObject : mProjectObject.getArray(JSON_INCLUDE)) {
+    for (JSONValue mIncludeValue : mProjectObject.getArray(JSON_INCLUDE)) {
+      JSONObject mIncludeObject = mIncludeValue.getObject();
       ProjectFile* mIncludedProject = file.cInclusions.emplace_back(std::make_unique<ProjectFile>(*this, mIncludeObject)).get();
       std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(*mIncludedProject);
       mOpenedDocuments.insert(mOpenedDocuments.end(), std::make_move_iterator(mMoreOpenedDocuments.begin()), std::make_move_iterator(mMoreOpenedDocuments.end()));
@@ -607,46 +604,44 @@ namespace IsoRealms {
   IString*  Project::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value)                                                {return cStrings.literal( user, owner, value);}
   IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z)                             {return cVertices.literal(user, owner, Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));}
 
-  IAction*         Project::getAction(          IAssetUser<IAction>*         user, JSONObject object, IActionClient& owner,                                      bool required) {return cActions.get(          user, owner, object, nullptr,  required);}
-  IAssets*         Project::getAssets(          IAssetUser<IAssets>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cAssets.get(           user, owner, object, nullptr,  required);}
-  IBinding*        Project::getBinding(         IAssetUser<IBinding>*        user, JSONObject object, IActionClient& owner,                                      bool required) {
+  IAction*       Project::getAction(      IAssetUser<IAction>*       user, JSONObject object, IActionClient& owner,                                      bool required) {return cActions.get(          user, owner, object, nullptr,  required);}
+  IAssets*       Project::getAssets(      IAssetUser<IAssets>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cAssets.get(           user, owner, object, nullptr,  required);}
+  IBinding*      Project::getBinding(     IAssetUser<IBinding>*      user, JSONObject object, IActionClient& owner,                                      bool required) {
     cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
     IBinding* mBinding = cBindings.get(user, owner, object, nullptr, required);
     cLocalProviderBinding.setLocalBindings(nullptr);
     return mBinding;
   }
-  IBindingType*    Project::getBindingType(     IAssetUser<IBindingType>*    user, JSONObject object, IResourceData& owner,                                      bool required) {return cBindingTypes.get(     user, owner, object, nullptr,  required);}
-  IBoolean*        Project::getBoolean(         IAssetUser<IBoolean>*        user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required) {return cBooleans.get(         user, owner, object, listener, required);}
-  IColour*         Project::getColour(          IAssetUser<IColour>*         user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required) {return cColours.get(          user, owner, object, listener, required);}
-  IEditable*       Project::getEditable(        IAssetUser<IEditable>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cEditables.get(        user, owner, object, nullptr,  required);}
-  IFloat*          Project::getFloat(           IAssetUser<IFloat>*          user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required) {return cFloats.get(           user, owner, object, listener, required);}
-  IFont*           Project::getFont(            IAssetUser<IFont>*           user, JSONObject object, IResourceData& owner,                                      bool required) {return cFonts.get(            user, owner, object, nullptr,  required);}
-  IInputHandler*   Project::getInputHandler(    IAssetUser<IInputHandler>*   user, JSONObject object, IResourceData& owner,                                      bool required) {return cInputHandlers.get(    user, owner, object, nullptr,  required);}
-  IInteger*        Project::getInteger(         IAssetUser<IInteger>*        user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required) {return cIntegers.get(         user, owner, object, listener, required);}
-  IModel*          Project::getModel(           IAssetUser<IModel>*          user, JSONObject object, IResourceData& owner,                                      bool required) {return cModels.get(           user, owner, object, nullptr,  required);}
-  IProjectOptions* Project::getProjectOptions(  IAssetUser<IProjectOptions>* user, JSONObject object, IResourceData& owner,                                      bool required) {return cProjectOptions.get(   user, owner, object, nullptr,  required);}
-  IScreen*         Project::getScreen(          IAssetUser<IScreen>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cScreens.get(          user, owner, object, nullptr,  required);}
-  IString*         Project::getString(          IAssetUser<IString>*         user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required) {return cStrings.get(          user, owner, object, listener, required);}
-  ITexture*        Project::getTexture(         IAssetUser<ITexture>*        user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required) {return cTextures.get(         user, owner, object, listener, required);}
-  IVertex*         Project::getVertex(          IAssetUser<IVertex>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cVertices.get(         user, owner, object, nullptr,  required);}
+  IBindingType*  Project::getBindingType( IAssetUser<IBindingType>*  user, JSONObject object, IResourceData& owner,                                      bool required) {return cBindingTypes.get(     user, owner, object, nullptr,  required);}
+  IBoolean*      Project::getBoolean(     IAssetUser<IBoolean>*      user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required) {return cBooleans.get(         user, owner, object, listener, required);}
+  IColour*       Project::getColour(      IAssetUser<IColour>*       user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required) {return cColours.get(          user, owner, object, listener, required);}
+  IEditable*     Project::getEditable(    IAssetUser<IEditable>*     user, JSONObject object, IResourceData& owner,                                      bool required) {return cEditables.get(        user, owner, object, nullptr,  required);}
+  IFloat*        Project::getFloat(       IAssetUser<IFloat>*        user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required) {return cFloats.get(           user, owner, object, listener, required);}
+  IFont*         Project::getFont(        IAssetUser<IFont>*         user, JSONObject object, IResourceData& owner,                                      bool required) {return cFonts.get(            user, owner, object, nullptr,  required);}
+  IInputHandler* Project::getInputHandler(IAssetUser<IInputHandler>* user, JSONObject object, IResourceData& owner,                                      bool required) {return cInputHandlers.get(    user, owner, object, nullptr,  required);}
+  IInteger*      Project::getInteger(     IAssetUser<IInteger>*      user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required) {return cIntegers.get(         user, owner, object, listener, required);}
+  IModel*        Project::getModel(       IAssetUser<IModel>*        user, JSONObject object, IResourceData& owner,                                      bool required) {return cModels.get(           user, owner, object, nullptr,  required);}
+  IScreen*       Project::getScreen(      IAssetUser<IScreen>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cScreens.get(          user, owner, object, nullptr,  required);}
+  IString*       Project::getString(      IAssetUser<IString>*       user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required) {return cStrings.get(          user, owner, object, listener, required);}
+  ITexture*      Project::getTexture(     IAssetUser<ITexture>*      user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required) {return cTextures.get(         user, owner, object, listener, required);}
+  IVertex*       Project::getVertex(      IAssetUser<IVertex>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cVertices.get(         user, owner, object, nullptr,  required);}
 
-  IAction*         Project::getAction(        IAssetUser<IAction>*         user, const std::string& id, IActionClient& owner)                                      {return cActions.get(       user, owner, id, nullptr);}
-  IAssets*         Project::getAssets(        IAssetUser<IAssets>*         user, const std::string& id, IResourceData& owner)                                      {return cAssets.get(        user, owner, id, nullptr);}
-  IBinding*        Project::getBinding(       IAssetUser<IBinding>*        user, const std::string& id, IActionClient& owner)                                      {return cBindings.get(      user, owner, id, nullptr);}
-  IBindingType*    Project::getBindingType(   IAssetUser<IBindingType>*    user, const std::string& id, IResourceData& owner)                                      {return cBindingTypes.get(  user, owner, id, nullptr);}
-  IBoolean*        Project::getBoolean(       IAssetUser<IBoolean>*        user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) {return cBooleans.get(      user, owner, id, listener);}
-  IColour*         Project::getColour(        IAssetUser<IColour>*         user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener) {return cColours.get(       user, owner, id, listener);}
-  IEditable*       Project::getEditable(      IAssetUser<IEditable>*       user, const std::string& id, IResourceData& owner)                                      {return cEditables.get(     user, owner, id, nullptr);}
-  IFloat*          Project::getFloat(         IAssetUser<IFloat>*          user, const std::string& id, IResourceData& owner, IStateListener<IFloat*>*   listener) {return cFloats.get(        user, owner, id, listener);}
-  IFont*           Project::getFont(          IAssetUser<IFont>*           user, const std::string& id, IResourceData& owner)                                      {return cFonts.get(         user, owner, id, nullptr);}
-  IInputHandler*   Project::getInputHandler(  IAssetUser<IInputHandler>*   user, const std::string& id, IResourceData& owner)                                      {return cInputHandlers.get( user, owner, id, nullptr);}
-  IInteger*        Project::getInteger(       IAssetUser<IInteger>*        user, const std::string& id, IResourceData& owner, IStateListener<IInteger*>* listener) {return cIntegers.get(      user, owner, id, listener);}
-  IModel*          Project::getModel(         IAssetUser<IModel>*          user, const std::string& id, IResourceData& owner)                                      {return cModels.get(        user, owner, id, nullptr);}
-  IProjectOptions* Project::getProjectOptions(IAssetUser<IProjectOptions>* user, const std::string& id, IResourceData& owner)                                      {return cProjectOptions.get(user, owner, id, nullptr);}
-  IScreen*         Project::getScreen(        IAssetUser<IScreen>*         user, const std::string& id, IResourceData& owner)                                      {return cScreens.get(       user, owner, id, nullptr);}
-  IString*         Project::getString(        IAssetUser<IString>*         user, const std::string& id, IResourceData& owner, IStateListener<IString*>*  listener) {return cStrings.get(       user, owner, id, listener);}
-  ITexture*        Project::getTexture(       IAssetUser<ITexture>*        user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) {return cTextures.get(      user, owner, id, listener);}
-  IVertex*         Project::getVertex(        IAssetUser<IVertex>*         user, const std::string& id, IResourceData& owner)                                      {return cVertices.get(      user, owner, id, nullptr);}
+  IAction*       Project::getAction(      IAssetUser<IAction>*       user, const std::string& id, IActionClient& owner)                                      {return cActions.get(       user, owner, id, nullptr);}
+  IAssets*       Project::getAssets(      IAssetUser<IAssets>*       user, const std::string& id, IResourceData& owner)                                      {return cAssets.get(        user, owner, id, nullptr);}
+  IBinding*      Project::getBinding(     IAssetUser<IBinding>*      user, const std::string& id, IActionClient& owner)                                      {return cBindings.get(      user, owner, id, nullptr);}
+  IBindingType*  Project::getBindingType( IAssetUser<IBindingType>*  user, const std::string& id, IResourceData& owner)                                      {return cBindingTypes.get(  user, owner, id, nullptr);}
+  IBoolean*      Project::getBoolean(     IAssetUser<IBoolean>*      user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) {return cBooleans.get(      user, owner, id, listener);}
+  IColour*       Project::getColour(      IAssetUser<IColour>*       user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener) {return cColours.get(       user, owner, id, listener);}
+  IEditable*     Project::getEditable(    IAssetUser<IEditable>*     user, const std::string& id, IResourceData& owner)                                      {return cEditables.get(     user, owner, id, nullptr);}
+  IFloat*        Project::getFloat(       IAssetUser<IFloat>*        user, const std::string& id, IResourceData& owner, IStateListener<IFloat*>*   listener) {return cFloats.get(        user, owner, id, listener);}
+  IFont*         Project::getFont(        IAssetUser<IFont>*         user, const std::string& id, IResourceData& owner)                                      {return cFonts.get(         user, owner, id, nullptr);}
+  IInputHandler* Project::getInputHandler(IAssetUser<IInputHandler>* user, const std::string& id, IResourceData& owner)                                      {return cInputHandlers.get( user, owner, id, nullptr);}
+  IInteger*      Project::getInteger(     IAssetUser<IInteger>*      user, const std::string& id, IResourceData& owner, IStateListener<IInteger*>* listener) {return cIntegers.get(      user, owner, id, listener);}
+  IModel*        Project::getModel(       IAssetUser<IModel>*        user, const std::string& id, IResourceData& owner)                                      {return cModels.get(        user, owner, id, nullptr);}
+  IScreen*       Project::getScreen(      IAssetUser<IScreen>*       user, const std::string& id, IResourceData& owner)                                      {return cScreens.get(       user, owner, id, nullptr);}
+  IString*       Project::getString(      IAssetUser<IString>*       user, const std::string& id, IResourceData& owner, IStateListener<IString*>*  listener) {return cStrings.get(       user, owner, id, listener);}
+  ITexture*      Project::getTexture(     IAssetUser<ITexture>*      user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) {return cTextures.get(      user, owner, id, listener);}
+  IVertex*       Project::getVertex(      IAssetUser<IVertex>*       user, const std::string& id, IResourceData& owner)                                      {return cVertices.get(      user, owner, id, nullptr);}
 
   bool Project::renderAssetIcon() const {
     return false;
@@ -673,7 +668,7 @@ namespace IsoRealms {
   }
 
   void Project::init(std::function<void(IAssets&)> initialiser) {
-//    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
+    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
 //     if (cInitialisers.size() == 241) {
 //       std::cout << "DEBUG!" << std::endl;
 //     }

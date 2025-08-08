@@ -131,6 +131,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_FONT;
     static const std::string JSON_FONT_SIZE;
     static const std::string JSON_INPUT;
+    static const std::string JSON_INPUTS;
     static const std::string JSON_LOCAL;
     static const std::string JSON_MAPPING;
     static const std::string JSON_ON_EDITOR;

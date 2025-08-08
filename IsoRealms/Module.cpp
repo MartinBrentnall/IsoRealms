@@ -102,7 +102,8 @@ namespace IsoRealms {
   }
 
   void Module::loadResources(JSONObject object, ProjectFile* ownerProject) {
-    for (JSONObject mResourceObject : object.getArray(JSON_RESOURCES)) {
+    for (JSONValue mResourceValue : object.getArray(JSON_RESOURCES)) {
+      JSONObject mResourceObject = mResourceValue.getObject();
       std::string mResourceTypeName = mResourceObject.getString(JSON_TYPE);
       ResourceType* mResourceType = getResourceType(mResourceTypeName);
       if (mResourceType == nullptr) {
@@ -113,7 +114,8 @@ namespace IsoRealms {
         throw ResourceInitException("ERROR: Module::loadResources: Resource type \"" + mResourceTypeName + "\" not known in module \"" + cName + "\".");
       }
 
-      for (JSONObject mInstanceObject : mResourceObject.getArray(JSON_INSTANCES)) {
+      for (JSONValue mInstanceValue : mResourceObject.getArray(JSON_INSTANCES)) {
+        JSONObject mInstanceObject = mInstanceValue.getObject();
         mInstanceObject.getString(JSON_NAME);
         mResourceType->loadResource(mInstanceObject, cProject, ownerProject, cName + "/" + mResourceTypeName);
       }

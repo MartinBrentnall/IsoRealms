@@ -89,28 +89,28 @@ namespace IsoRealms::Spindizzy {
             cDefTheme(nullptr),
             cDefVisited(object.getBoolean(JSON_VISITED)) {
     if (object.hasMember(JSON_ALIENS)) {
-      for (JSONObject mAlienObject : object.getArray(JSON_ALIENS)) {
-        cDefAliens.emplace_back(std::make_unique<Alien>(*this, mAlienObject));
+      for (JSONValue mAlienValue : object.getArray(JSON_ALIENS)) {
+        cDefAliens.emplace_back(std::make_unique<Alien>(*this, mAlienValue.getObject()));
       }
     }
     if (object.hasMember(JSON_LIFTS)) {
-      for (JSONObject mLiftObject : object.getArray(JSON_LIFTS)) {
-        cDefLifts.emplace_back(std::make_unique<Lift>(*this, mLiftObject));
+      for (JSONValue mLiftValue : object.getArray(JSON_LIFTS)) {
+        cDefLifts.emplace_back(std::make_unique<Lift>(*this, mLiftValue.getObject()));
       }
     }
     if (object.hasMember(JSON_OBJECTS)) {
-      for (JSONObject mObjectObject : object.getArray(JSON_OBJECTS)) {
-        cDefObjects.emplace_back(std::make_unique<ZoneObject>(*this, mObjectObject));
+      for (JSONValue mObjectValue : object.getArray(JSON_OBJECTS)) {
+        cDefObjects.emplace_back(std::make_unique<ZoneObject>(*this, mObjectValue.getObject()));
       }
     }
     if (object.hasMember(JSON_PICK_UPS)) {
-      for (JSONObject mPickUpObject : object.getArray(JSON_PICK_UPS)) {
-        cDefPickUps.emplace_back(std::make_unique<PickUp>(*this, mPickUpObject));
+      for (JSONValue mPickUpValue : object.getArray(JSON_PICK_UPS)) {
+        cDefPickUps.emplace_back(std::make_unique<PickUp>(*this, mPickUpValue.getObject()));
       }
     }
     if (object.hasMember(JSON_TERRAIN)) {
-      for (JSONObject mTerrainObject : object.getArray(JSON_TERRAIN)) {
-        addTerrain(std::make_unique<Terrain>(*this, mTerrainObject));
+      for (JSONValue mTerrainValue : object.getArray(JSON_TERRAIN)) {
+        addTerrain(std::make_unique<Terrain>(*this, mTerrainValue.getObject()));
       }
     }
     cDefWorld.getSpindizzy().getProject().init([this, object](IAssets& assets) {

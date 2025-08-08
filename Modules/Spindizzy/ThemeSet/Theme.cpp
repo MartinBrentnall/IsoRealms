@@ -44,12 +44,14 @@ namespace IsoRealms::Spindizzy {
   
   Theme::Theme(IProject& project, ThemeSet& themeSet, JSONObject object) :
             cThemeSet(themeSet) {
-    for (JSONObject mTextureObject : object.getArray(JSON_TEXTURES)) {
+    for (JSONValue mTextureValue : object.getArray(JSON_TEXTURES)) {
+      JSONObject mTextureObject = mTextureValue.getObject();
       ThemeTexture* mThemeTexture = cThemeSet.createTexture(mTextureObject.getString(JSON_ELEMENT));
       cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(themeSet.getResourceData())).first->second.init(mTextureObject, JSON_TEXTURE);
     }
 
-    for (JSONObject mColourObject : object.getArray(JSON_COLOURS)) {
+    for (JSONValue mColourValue : object.getArray(JSON_COLOURS)) {
+      JSONObject mColourObject = mColourValue.getObject();
       ThemeColour* mThemeColour = cThemeSet.createColour(project, mColourObject.getString(JSON_ELEMENT));
       cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(themeSet.getResourceData(), 1.0f, 0.0f, 1.0f)).first->second.init(mColourObject, JSON_COLOUR);
     }

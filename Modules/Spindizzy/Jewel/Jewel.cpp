@@ -38,8 +38,8 @@ namespace IsoRealms::Spindizzy {
     cCycleSpeed = object.getFloat(JSON_CYCLE_SPEED);
     cColourFrame.init(object, JSON_FRAME);
     cColoursCycle.clear();
-    for (JSONObject mCycleColourObject : object.getArray(JSON_CYCLE_COLOURS)) {
-      cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data, mCycleColourObject));
+    for (JSONValue mCycleColourValue : object.getArray(JSON_CYCLE_COLOURS)) {
+      cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data, mCycleColourValue.getObject()));
     }
   }
 

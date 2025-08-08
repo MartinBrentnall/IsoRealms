@@ -44,9 +44,59 @@
               "bindings": []
             }
           }
+        },
+        {
+          "variable": "showMenuFunction",
+          "to": {
+            "key": ":Action",
+            "asset": {
+              "key": "Basics/Function/PushScreen",
+              "bindings": [
+                {
+                  "argument": "menuScreen",
+                  "to": {
+                    "key": ":Screen",
+                    "asset": {
+                      "key": "UI/Menu/Main"
+                    }
+                  }
+                },
+                {
+                  "argument": "menu",
+                  "to": {
+                    "key": "UI/Menu/Main"
+                  }
+                },
+                {
+                  "argument": "menuInput",
+                  "to": {
+                    "key": ":InputHandler",
+                    "asset": {
+                      "key": "UI/Menu/Main"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "variable": "interactiveInput",
+          "to": {
+            "key": "Basics/InputSwitch/Main"
+          }
+        },
+        {
+          "variable": "inputHandlerMenu",
+          "to": {
+            "key": ":InputHandler",
+            "asset": {
+              "key": "Basics/InputSwitch/Options Screen"
+            }
+          }
         }
       ],
-      "code": "closeAllMenusFunction:execute()"
+      "code": "closeAllMenusFunction:execute()\nshowMenuFunction:execute()\ninteractiveInput:setInputHandler(inputHandlerMenu)"
     },
     "quit": {
       "key": "Basics/Script",
@@ -808,47 +858,6 @@
                   ],
                   "code": "projectConfigurer:hide()\ngActiveProjectConfigurer = nil\ngEditorToStart = editor\nstartEditorFunction:execute()\ndirectConfigurerInput:setInputHandler(nil)"
                 }
-              }
-            ]
-          },
-          {
-            "type": "ProjectOptions",
-            "instances": [
-              {
-                "id": "LoadMission",
-                "options": [
-                  {
-                    "id": "file",
-                    "value": {
-                      "key": "Basics/String/MissionToLoad"
-                    }
-                  },
-                  {
-                    "id": "type",
-                    "value": {
-                      "key": "Basics/String/MissionType"
-                    }
-                  }
-                ]
-              },
-              {
-                "id": "Template",
-                "options": [
-                  {
-                    "id": "file",
-                    "value": {
-                      "key": "Literal",
-                      "value": "Projects/Spindizzy/Worlds/Template.isorealms"
-                    }
-                  },
-                  {
-                    "id": "type",
-                    "value": {
-                      "key": "Literal",
-                      "value": "program"
-                    }
-                  }
-                ]
               }
             ]
           },
@@ -1733,15 +1742,6 @@
                       }
                     },
                     {
-                      "variable": "templateOptions",
-                      "to": {
-                        "key": ":ProjectOptions",
-                        "asset": {
-                          "key": "Basics/ProjectOptions/Template"
-                        }
-                      }
-                    },
-                    {
                       "variable": "closeAllMenusFunction",
                       "to": {
                         "key": ":Action",
@@ -1767,7 +1767,7 @@
                       }
                     }
                   ],
-                  "code": "project:prepare(templateOptions, true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
+                  "code": "project:prepare(\"Projects/Spindizzy/Worlds/Template.isorealms\", false, true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
                 },
                 "onCancel": {
                   "key": "Basics/Function/PopScreen",
@@ -1854,11 +1854,20 @@
                       }
                     },
                     {
-                      "variable": "loadMissionOptions",
+                      "variable": "file",
                       "to": {
-                        "key": ":ProjectOptions",
+                        "key": ":String",
                         "asset": {
-                          "key": "Basics/ProjectOptions/LoadMission"
+                          "key": "Basics/String/MissionToLoad"
+                        }
+                      }
+                    },
+                    {
+                      "variable": "type",
+                      "to": {
+                        "key": ":String",
+                        "asset": {
+                          "key": "Basics/String/MissionType"
                         }
                       }
                     },
@@ -1888,7 +1897,7 @@
                       }
                     }
                   ],
-                  "code": "project:prepare(loadMissionOptions, true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
+                  "code": "project:prepare(file:getValue(), type:getValue() == \"user\", true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
                 },
                 "onCancel": {
                   "key": "Basics/Function/PopScreen",

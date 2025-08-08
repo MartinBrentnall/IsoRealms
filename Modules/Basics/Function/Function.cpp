@@ -117,12 +117,12 @@ namespace IsoRealms::Basics {
   Function::Function(IProject& project, Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init) :
             Function(project, basics, name, owner) {
     if (init) {
-      for (JSONObject mArgumentObject : object.getArray(JSON_ARGUMENTS)) {
-        cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(project, *this, mArgumentObject));
+      for (JSONValue mArgumentValue : object.getArray(JSON_ARGUMENTS)) {
+        cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(project, *this, mArgumentValue.getObject()));
       }
     }
-    for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {
-      cDefBindings.emplace_back(std::make_unique<Binding>(*this, owner, init, mBindingObject));
+    for (JSONValue mBindingValue : object.getArray(JSON_BINDINGS)) {
+      cDefBindings.emplace_back(std::make_unique<Binding>(*this, owner, init, mBindingValue.getObject()));
     }
     cDefCode = object.getString(JSON_CODE);
     declare();
@@ -254,7 +254,8 @@ namespace IsoRealms::Basics {
   Function::Call::Call(Function& parent, IActionClient& owner, JSONObject object) :
             Call(parent, owner) {
     if (!cParent.cDefArgumentDefinitions.empty()) {
-      for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {
+      for (JSONValue mBindingValue : object.getArray(JSON_BINDINGS)) {
+        JSONObject mBindingObject = mBindingValue.getObject();
         std::string mArgumentName = mBindingObject.getString(JSON_ARGUMENT);
         unsigned int mBindingIndex = cParent.getDynamicBindingIndex(mArgumentName);
         cDefArguments[mBindingIndex] = std::make_unique<IsoRealms::Binding>(owner, cParent.cDefArgumentDefinitions[mBindingIndex]->getType());

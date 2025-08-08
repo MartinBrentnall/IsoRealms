@@ -31,7 +31,8 @@ namespace IsoRealms::UI {
   
   Layout::Layout(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
             Layout(project, ui, data) {
-    for (JSONObject mComponentObject : object.getArray(JSON_COMPONENTS)) {
+    for (JSONValue mComponentValue : object.getArray(JSON_COMPONENTS)) {
+      JSONObject mComponentObject = mComponentValue.getObject();
       std::string mComponentName = mComponentObject.getString(JSON_ID);
       if (cComponentsByName.find(mComponentName) != cComponentsByName.end()) {
         throw ParseException("Duplicate component name in screen layout: " + mComponentName);

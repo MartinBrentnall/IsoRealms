@@ -41,7 +41,8 @@ namespace IsoRealms::Basics {
             DigitalInput(project, basics) {
     IApplication& mApplication = project.getApplication();
     HatHandler& mHatHandler = mApplication.getHatHandler();
-    for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
+    for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
+      JSONObject mMappingObject = mMappingValue.getObject();
       std::string mType = mMappingObject.getString(JSON_TYPE);
       if      (mType == KeyMapping::TYPE_KEY_DOWN)                  {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingObject)));}
       else if (mType == ButtonMapping::TYPE_BUTTON_DOWN)            {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingObject)));}
@@ -234,7 +235,8 @@ namespace IsoRealms::Basics {
     IApplication& mApplication = cProject.getApplication();
     HatHandler& mHatHandler = mApplication.getHatHandler();
     cRuntimeMapping.clear();
-    for (JSONObject mMappingsObject : object.getArray(JSON_MAPPINGS)) {
+    for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
+      JSONObject mMappingsObject = mMappingsValue.getObject();
       std::string mType = mMappingsObject.getString(JSON_TYPE);
       if      (mType == KeyMapping::TYPE_KEY_DOWN)                  {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingsObject)));}
       else if (mType == ButtonMapping::TYPE_BUTTON_DOWN)            {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingsObject)));}
