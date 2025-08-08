@@ -36,7 +36,6 @@ namespace IsoRealms {
   class IInputHandler;
   class IInteger;
   class IModel;
-  class IAssets;
   class IResourceData;
   class IScreen;
   class IString;
@@ -69,7 +68,6 @@ namespace IsoRealms {
                                       IAssetProvider<IResourceData, IInputHandler>*,
                                       IAssetProvider<IResourceData, IInteger>*,
                                       IAssetProvider<IResourceData, IModel>*,
-                                      IAssetProvider<IResourceData, IAssets>*,
                                       IAssetProvider<IResourceData, IScreen>*,
                                       IAssetProvider<IResourceData, IString>*,
                                       IAssetProvider<IResourceData, ITexture>*,
@@ -85,7 +83,6 @@ namespace IsoRealms {
                                       IInputHandler*,
                                       IInteger*,
                                       IModel*,
-                                      IAssets*,
                                       IScreen*,
                                       IString*,
                                       ITexture*,

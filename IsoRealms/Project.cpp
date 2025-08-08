@@ -67,7 +67,6 @@ namespace IsoRealms {
           cIntegers(&cLiteralProviderInteger, "Literal", "0"),
           cModels(&cLiteralProviderModel),
           cScreens(&cLiteralProviderScreen, *this),
-          cAssets(&cLiteralProviderAssets),
           cStrings(&cLiteralProviderString, "Literal"),
           cTextures(&cLiteralProviderTexture),
           cVertices(&cLiteralProviderVertex, "Literal", "0.0 0.0 0.0"),
@@ -89,14 +88,11 @@ namespace IsoRealms {
           cConversionProviderFontToBinding(*this, *this),
           cConversionProviderInputHandlerToBinding(*this, *this),
           cConversionProviderIntegerToBinding(*this, *this),
-          cConversionProviderProjectToBinding(*this, *this),
           cConversionProviderScreenToBinding(*this, *this),
           cConversionProviderStringToBinding(*this, *this),
           cConversionProviderVertexToBinding(*this, *this),
           cConversionProviderIntegerToString(*this),
           cConversionProviderFloatToString(*this),
-          cConversionProviderProjectToString(*this),
-          cConversionProviderProjectToInteger(*this),
           cFunctionNotifyComplete(onFinish),
           cProjectFile(*this, "", true),
           cFilenameString(*this),
@@ -120,7 +116,6 @@ namespace IsoRealms {
     cBindings.add(&cConversionProviderFontToBinding,         ":Font",         CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderInputHandlerToBinding, ":InputHandler", CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderIntegerToBinding,      ":Integer",      CATEGORY_CONVERSIONS);
-    cBindings.add(&cConversionProviderProjectToBinding,      ":Project",      CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderScreenToBinding,       ":Screen",       CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderStringToBinding,       ":String",       CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderVertexToBinding,       ":Vertex",       CATEGORY_CONVERSIONS);
@@ -139,10 +134,7 @@ namespace IsoRealms {
 
     cStrings.add(&cConversionProviderIntegerToString, ":Integer", CATEGORY_CONVERSIONS);
     cStrings.add(&cConversionProviderFloatToString,   ":Float",   CATEGORY_CONVERSIONS);
-    cStrings.add(&cConversionProviderProjectToString, ":Project", CATEGORY_CONVERSIONS);
 
-    cIntegers.add(&cConversionProviderProjectToInteger, ":Project", CATEGORY_CONVERSIONS);
-    
     // Support locals
     cBindings.add(&cLocalProviderBinding, "~", CATEGORY_LOCAL);
 
@@ -200,16 +192,12 @@ namespace IsoRealms {
     // cBindings.remove(&cConversionProviderFontToBinding);
     // cBindings.remove(&cConversionProviderInputHandlerToBinding);
     // cBindings.remove(&cConversionProviderIntegerToBinding);
-    // cBindings.remove(&cConversionProviderProjectToBinding);
     // cBindings.remove(&cConversionProviderScreenToBinding);
     // cBindings.remove(&cConversionProviderStringToBinding);
     // cBindings.remove(&cConversionProviderVertexToBinding);
     //
     // cStrings.remove(&cConversionProviderIntegerToString);
     // cStrings.remove(&cConversionProviderFloatToString);
-    // cStrings.remove(&cConversionProviderProjectToString);
-    //
-    // cIntegers.remove(&cConversionProviderProjectToInteger);
     //
     // cBindings.remove(&cLocalProviderBinding);
 
@@ -225,7 +213,6 @@ namespace IsoRealms {
 //     cIntegers.checkClean("Integers");
 //     cModels.checkClean("Models");
 //     cScreens.checkClean("Screens");
-//     cAssets.checkClean("Asset Collections");
 //     cStrings.checkClean("Strings");
 //     cTextures.checkClean("Textures");
 //     cVertices.checkClean("Vertices");
@@ -605,7 +592,6 @@ namespace IsoRealms {
   IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z)                             {return cVertices.literal(user, owner, Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));}
 
   IAction*       Project::getAction(      IAssetUser<IAction>*       user, JSONObject object, IActionClient& owner,                                      bool required) {return cActions.get(          user, owner, object, nullptr,  required);}
-  IAssets*       Project::getAssets(      IAssetUser<IAssets>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cAssets.get(           user, owner, object, nullptr,  required);}
   IBinding*      Project::getBinding(     IAssetUser<IBinding>*      user, JSONObject object, IActionClient& owner,                                      bool required) {
     cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
     IBinding* mBinding = cBindings.get(user, owner, object, nullptr, required);
@@ -627,7 +613,6 @@ namespace IsoRealms {
   IVertex*       Project::getVertex(      IAssetUser<IVertex>*       user, JSONObject object, IResourceData& owner,                                      bool required) {return cVertices.get(         user, owner, object, nullptr,  required);}
 
   IAction*       Project::getAction(      IAssetUser<IAction>*       user, const std::string& id, IActionClient& owner)                                      {return cActions.get(       user, owner, id, nullptr);}
-  IAssets*       Project::getAssets(      IAssetUser<IAssets>*       user, const std::string& id, IResourceData& owner)                                      {return cAssets.get(        user, owner, id, nullptr);}
   IBinding*      Project::getBinding(     IAssetUser<IBinding>*      user, const std::string& id, IActionClient& owner)                                      {return cBindings.get(      user, owner, id, nullptr);}
   IBindingType*  Project::getBindingType( IAssetUser<IBindingType>*  user, const std::string& id, IResourceData& owner)                                      {return cBindingTypes.get(  user, owner, id, nullptr);}
   IBoolean*      Project::getBoolean(     IAssetUser<IBoolean>*      user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) {return cBooleans.get(      user, owner, id, listener);}

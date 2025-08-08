@@ -24,7 +24,6 @@ add_library(IsoRealms
   AnimatedInteger.cpp
   Application.cpp
   Assets/Client/Action.cpp
-  Assets/Client/Assets.cpp
   Assets/Client/Binding.cpp
   Assets/Client/BindingType.cpp
   Assets/Client/Boolean.cpp
@@ -44,7 +43,6 @@ add_library(IsoRealms
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
   Assets/Dummy/DummyAction.cpp
-  Assets/Dummy/DummyAssets.cpp
   Assets/Dummy/DummyBinding.cpp
   Assets/Dummy/DummyBindingType.cpp
   Assets/Dummy/DummyEditable.cpp

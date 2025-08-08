@@ -19,7 +19,6 @@
 #pragma once
 
 #include "Assets/Client/Action.h"
-#include "Assets/Client/Assets.h"
 #include "Assets/Client/Binding.h"
 #include "Assets/Client/BindingType.h"
 #include "Assets/Client/Boolean.h"

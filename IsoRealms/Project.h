@@ -29,7 +29,6 @@
 #include "Assets/Registry/AssetClientManager.h"
 #include "Assets/Registry/ScreenClientManager.h"
 #include "Assets/Dummy/DummyAction.h"
-#include "Assets/Dummy/DummyAssets.h"
 #include "Assets/Dummy/DummyBinding.h"
 #include "Assets/Dummy/DummyBindingType.h"
 #include "Assets/Dummy/DummyEditable.h"
@@ -40,8 +39,6 @@
 #include "Assets/Dummy/DummyTexture.h"
 #include "Assets/Providers/AssetConvertedBinding.h"
 #include "Assets/Providers/AssetConvertedString.h"
-#include "Assets/Providers/AssetConvertedProjectToInteger.h"
-#include "Assets/Providers/AssetConvertedProjectToString.h"
 #include "Assets/Providers/AssetLiteralBoolean.h"
 #include "Assets/Providers/AssetLiteralColour.h"
 #include "Assets/Providers/AssetLiteralDummy.h"
@@ -228,7 +225,6 @@ namespace IsoRealms {
      * Implements IAssets *
     \**********************/
     IAction*       getAction(      IAssetUser<IAction>*       user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
-    IAssets*       getAssets(      IAssetUser<IAssets>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
     IBinding*      getBinding(     IAssetUser<IBinding>*      user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
     IBindingType*  getBindingType( IAssetUser<IBindingType>*  user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
     IBoolean*      getBoolean(     IAssetUser<IBoolean>*      user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required = true) override;
@@ -245,7 +241,6 @@ namespace IsoRealms {
     IVertex*       getVertex(      IAssetUser<IVertex>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
 
     IAction*       getAction(      IAssetUser<IAction>*       user, const std::string& id, IActionClient& owner) override;
-    IAssets*       getAssets(      IAssetUser<IAssets>*       user, const std::string& id, IResourceData& owner) override;
     IBinding*      getBinding(     IAssetUser<IBinding>*      user, const std::string& id, IActionClient& owner) override;
     IBindingType*  getBindingType( IAssetUser<IBindingType>*  user, const std::string& id, IResourceData& owner) override;
     IBoolean*      getBoolean(     IAssetUser<IBoolean>*      user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) override;
@@ -481,7 +476,6 @@ namespace IsoRealms {
     AssetClientManager<IResourceData, IInteger>        cIntegers;
     AssetClientManager<IResourceData, IModel>          cModels;
     ScreenClientManager                                cScreens;
-    AssetClientManager<IResourceData, IAssets>         cAssets;
     AssetClientManager<IResourceData, IString>         cStrings;
     AssetClientManager<IResourceData, ITexture>        cTextures;
     AssetClientManager<IResourceData, IVertex>         cVertices;
@@ -499,7 +493,6 @@ namespace IsoRealms {
     AssetLiteralInteger                                                    cLiteralProviderInteger;
     AssetLiteralDummy<IResourceData, IModel,          DummyModel>          cLiteralProviderModel;
     AssetLiteralDummy<IResourceData, IScreen,         DummyScreen>         cLiteralProviderScreen;
-    AssetLiteralDummy<IResourceData, IAssets,         DummyAssets>         cLiteralProviderAssets;
     AssetLiteralString                                                     cLiteralProviderString;
     AssetLiteralDummy<IResourceData, ITexture,        DummyTexture>        cLiteralProviderTexture;
     AssetLiteralVertex                                                     cLiteralProviderVertex;
@@ -525,16 +518,12 @@ namespace IsoRealms {
     AssetConvertedBinding<IResourceData, Font>           cConversionProviderFontToBinding;
     AssetConvertedBinding<IResourceData, InputHandler>   cConversionProviderInputHandlerToBinding;
     AssetConvertedBinding<IResourceData, Integer>        cConversionProviderIntegerToBinding;
-    AssetConvertedBinding<IResourceData, Assets>         cConversionProviderProjectToBinding;
     AssetConvertedBinding<IResourceData, Screen>         cConversionProviderScreenToBinding;
     AssetConvertedBinding<IResourceData, String>         cConversionProviderStringToBinding;
     AssetConvertedBinding<IResourceData, Vertex>         cConversionProviderVertexToBinding;
 
     AssetConvertedString<Integer>         cConversionProviderIntegerToString;
     AssetConvertedString<Float>           cConversionProviderFloatToString;
-    AssetConvertedProjectToString         cConversionProviderProjectToString;
-
-    AssetConvertedProjectToInteger        cConversionProviderProjectToInteger;
 
     // Local binding support.
     AssetLocalBinding cLocalProviderBinding;
@@ -581,7 +570,6 @@ namespace IsoRealms {
   template<> struct AssetContainerTraits<IInteger>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;      }};
   template<> struct AssetContainerTraits<IModel>          {template<class PROJECT> static auto& get(PROJECT& project) {return project.cModels;        }};
   template<> struct AssetContainerTraits<IScreen>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cScreens;       }};
-  template<> struct AssetContainerTraits<IAssets>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cAssets;        }};
   template<> struct AssetContainerTraits<IString>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cStrings;       }};
   template<> struct AssetContainerTraits<ITexture>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cTextures;      }};
   template<> struct AssetContainerTraits<IVertex>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cVertices;      }};
