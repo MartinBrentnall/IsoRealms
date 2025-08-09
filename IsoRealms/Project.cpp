@@ -748,7 +748,7 @@ namespace IsoRealms {
     });
     propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfigurations"), "Edit...", [this, &mMetadata](PropertyMaker& propertyMaker) {
       propertyMaker.createPropertyArray(mMetadata.getPropertyData("LaunchConfigurationAdd"), cDefTestLaunchConfigurations, [](const std::unique_ptr<LaunchConfiguration>& i)->LaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](LaunchConfiguration& launchConfiguration) {
-        propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfiguration"), "Edit...", [this, &mMetadata, &launchConfiguration](PropertyMaker& propertyMaker) {
+        propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfiguration"), launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](PropertyMaker& propertyMaker) {
           launchConfiguration.getProperties(propertyMaker, mMetadata, *this);
         }, [this, &launchConfiguration]() {
           Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
@@ -891,29 +891,77 @@ namespace IsoRealms {
   }
 
   Project::LaunchConfiguration::LaunchConfiguration(Project& parent) :
+            cDefName(parent.makeLaunchConfigurationName()),
             cDefOptionPreparationAction(parent) {
+  }
+
+  std::string Project::LaunchConfiguration::getName() const {
+    return cDefName;
   }
 
   void Project::LaunchConfiguration::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project) {
     owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return true;}); // TODO: Check existing name.
     owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationPreparationAction"), cDefOptionPreparationAction);
     owner.createPropertyArray(metadata.getPropertyData("LaunchConfigurationOptionAdd"), cDefOptions, [](const std::unique_ptr<LaunchOption>& i)->LaunchOption& {return *i;}, [this, &project, &owner, &metadata](LaunchOption& launchOption) {
-      owner.createPropertyStruct(metadata.getPropertyData("LaunchConfigurationOption"), "Edit...", [this, &metadata, &launchOption](PropertyMaker& owner) {
+      owner.createPropertyStruct(metadata.getPropertyData("LaunchConfigurationOption"), launchOption.getName(), [this, &metadata, &launchOption](PropertyMaker& owner) {
         launchOption.getProperties(owner, metadata);
       }, [this, &launchOption]() {
         Utils::removeElementUnique(cDefOptions, &launchOption);
       });
     }, [this, &project]()->LaunchOption& {
-      return *cDefOptions.emplace_back(std::make_unique<LaunchOption>(project));
+      return *cDefOptions.emplace_back(std::make_unique<LaunchOption>(project, *this));
     });
   }
 
-  Project::LaunchConfiguration::LaunchOption::LaunchOption(Project& parent) :
+  bool Project::LaunchConfiguration::isOptionNameUsed(const std::string& name) const {
+    for (const std::unique_ptr<LaunchOption>& mOption : cDefOptions) {
+      if (mOption->getName() == name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  std::string Project::LaunchConfiguration::makeOptionName() const {
+    std::string mDesiredName = "Option";
+    std::string mProposedName = mDesiredName;
+    int mCount = 1;
+    while (isOptionNameUsed(mProposedName)) {
+      mProposedName = mDesiredName + " " + Utils::toString(mCount++);
+    }
+    return mProposedName;
+  }
+
+  Project::LaunchConfiguration::LaunchOption::LaunchOption(Project& parent, LaunchConfiguration& launch) :
+            cDefName(launch.makeOptionName()),
             cDefValue(parent) {
+  }
+
+  std::string Project::LaunchConfiguration::LaunchOption::getName() const {
+    return cDefName;
   }
 
   void Project::LaunchConfiguration::LaunchOption::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationOptionName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return true;}); // TODO: Check existing name.
     owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationOptionValue"), cDefValue);
+  }
+
+  bool Project::isLaunchConfigurationNameUsed(const std::string& name) const {
+    for (const std::unique_ptr<LaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
+      if (mLaunchConfiguration->getName() == name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  std::string Project::makeLaunchConfigurationName() const {
+    std::string mDesiredName = "Launch Configuration";
+    std::string mProposedName = mDesiredName;
+    int mCount = 1;
+    while (isLaunchConfigurationNameUsed(mProposedName)) {
+      mProposedName = mDesiredName + " " + Utils::toString(mCount++);
+    }
+    return mProposedName;
   }
 }

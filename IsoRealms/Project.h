@@ -327,15 +327,14 @@ namespace IsoRealms {
     class LaunchConfiguration {
       public:
       LaunchConfiguration(Project& parent);
-
+      std::string getName() const;
       void getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project);
-
 
       private:
       class LaunchOption {
         public:
-        LaunchOption(Project& parent);
-
+        LaunchOption(Project& parent, LaunchConfiguration& launch);
+        std::string getName() const;
         void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
         private:
@@ -346,6 +345,9 @@ namespace IsoRealms {
       std::string cDefName;
       Action cDefOptionPreparationAction;
       std::vector<std::unique_ptr<LaunchOption>> cDefOptions;
+
+      bool isOptionNameUsed(const std::string& name) const;
+      std::string makeOptionName() const;
     };
 
     std::vector<std::unique_ptr<LaunchConfiguration>> cDefTestLaunchConfigurations;
@@ -582,6 +584,8 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<JSONDocument>> loadResources(ProjectFile& file);
     Module* getModule(const std::string& name);
     void saveFile(ProjectFile& file);
+    bool isLaunchConfigurationNameUsed(const std::string& name) const;
+    std::string makeLaunchConfigurationName() const;
   };
 
   template<> struct AssetContainerTraits<IAction>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};
