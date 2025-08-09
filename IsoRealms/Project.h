@@ -324,6 +324,32 @@ namespace IsoRealms {
     static const std::string CATEGORY_FIXED;
     static const std::string CATEGORY_LOCAL;
 
+    class LaunchConfiguration {
+      public:
+      LaunchConfiguration(Project& parent);
+
+      void getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project);
+
+
+      private:
+      class LaunchOption {
+        public:
+        LaunchOption(Project& parent);
+
+        void getProperties(PropertyMaker& owner, const Metadata& metadata);
+
+        private:
+        std::string cDefName;
+        String cDefValue;
+      };
+
+      std::string cDefName;
+      Action cDefOptionPreparationAction;
+      std::vector<std::unique_ptr<LaunchOption>> cDefOptions;
+    };
+
+    std::vector<std::unique_ptr<LaunchConfiguration>> cDefTestLaunchConfigurations;
+
     class Filename : public IString {
       public:
       Filename(Project& parent);

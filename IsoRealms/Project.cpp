@@ -746,6 +746,17 @@ namespace IsoRealms {
     propertyMaker.createPropertyStruct(mMetadata.getPropertyData("AppFileStructure"), "Edit...", [this, &mMetadata](PropertyMaker& propertyMaker) {
       cProjectFile.getProperties(propertyMaker, mMetadata, *this, false);
     });
+    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfigurations"), "Edit...", [this, &mMetadata](PropertyMaker& propertyMaker) {
+      propertyMaker.createPropertyArray(mMetadata.getPropertyData("LaunchConfigurationAdd"), cDefTestLaunchConfigurations, [](const std::unique_ptr<LaunchConfiguration>& i)->LaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](LaunchConfiguration& launchConfiguration) {
+        propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfiguration"), "Edit...", [this, &mMetadata, &launchConfiguration](PropertyMaker& propertyMaker) {
+          launchConfiguration.getProperties(propertyMaker, mMetadata, *this);
+        }, [this, &launchConfiguration]() {
+          Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
+        });
+      }, [this]()->LaunchConfiguration& {
+        return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<LaunchConfiguration>(*this));
+      });
+    });
     cDefInitAction.getProperty(propertyMaker, mMetadata.getPropertyData("OnInitialisation"));
     cDefResetAction.getProperty(propertyMaker, mMetadata.getPropertyData("OnReset"));
     cDefStartAction.getProperty(propertyMaker, mMetadata.getPropertyData("OnStart"));
@@ -877,5 +888,32 @@ namespace IsoRealms {
   
   bool Project::QuitAction::isDefaultConfiguration() const {
     return true;
+  }
+
+  Project::LaunchConfiguration::LaunchConfiguration(Project& parent) :
+            cDefOptionPreparationAction(parent) {
+  }
+
+  void Project::LaunchConfiguration::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project) {
+    owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return true;}); // TODO: Check existing name.
+    owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationPreparationAction"), cDefOptionPreparationAction);
+    owner.createPropertyArray(metadata.getPropertyData("LaunchConfigurationOptionAdd"), cDefOptions, [](const std::unique_ptr<LaunchOption>& i)->LaunchOption& {return *i;}, [this, &project, &owner, &metadata](LaunchOption& launchOption) {
+      owner.createPropertyStruct(metadata.getPropertyData("LaunchConfigurationOption"), "Edit...", [this, &metadata, &launchOption](PropertyMaker& owner) {
+        launchOption.getProperties(owner, metadata);
+      }, [this, &launchOption]() {
+        Utils::removeElementUnique(cDefOptions, &launchOption);
+      });
+    }, [this, &project]()->LaunchOption& {
+      return *cDefOptions.emplace_back(std::make_unique<LaunchOption>(project));
+    });
+  }
+
+  Project::LaunchConfiguration::LaunchOption::LaunchOption(Project& parent) :
+            cDefValue(parent) {
+  }
+
+  void Project::LaunchConfiguration::LaunchOption::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationOptionName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return true;}); // TODO: Check existing name.
+    owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationOptionValue"), cDefValue);
   }
 }

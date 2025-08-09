@@ -16,6 +16,16 @@
     "File": {"name": "File", "description": "A file in which to data is stored for this application."},
     "Description": {"name": "Description", "description": "Here you can describe the purpose of this file."},
     "AllowModifications": {"name": "Allow Modifications", "description": "Specifies whether modifications are allowed to this file.  If modifications are not allowed, then resources owned by this file cannot be edited without being overridden (copied to the main application file)"},
-    "Inclusion": {"name": "Inclusion", "description": "Another file that's included within this one."}
+    "Inclusion": {"name": "Inclusion", "description": "Another file that's included within this one."},
+
+    "LaunchConfigurations": {"name": "Test Launch Configurations", "description": "Create and manage different launch configurations for testing this application."},
+    "LaunchConfiguration": {"name": "Launch Configuration", "description": "A launch configuration for testing this application."},
+    "LaunchConfigurationAdd": {"name": "Launch Configuration", "description": "Add a launch configuration for testing this application."},
+    "LaunchConfigurationName": {"name": "Name", "description": "Name of this launch configuration."},
+    "LaunchConfigurationPreparationAction": {"name": "On Launch", "description": "Action to perform when starting with this launch configuration.  The action can be used to set the values of options used in this launch configuration."},
+    "LaunchConfigurationOption": {"name": "Option", "description": "Option with which this test configuration will launch."},
+    "LaunchConfigurationOptionAdd": {"name": "Option", "description": "Add an option with which this test configuration will launch."},
+    "LaunchConfigurationOptionName": {"name": "Name", "description": "Unique name of this option."},
+    "LaunchConfigurationOptionValue": {"name": "Value", "description": "Value of this option."}
   }
 }
