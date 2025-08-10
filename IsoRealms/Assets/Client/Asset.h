@@ -64,6 +64,23 @@ namespace IsoRealms {
       }
     }
     
+    void init(JSONThing thing) {
+      if (cManager.getProject().isLoading()) {
+        cManager.getProject().init([this, thing](IAssets& assets) {
+          set(thing);
+        });
+      } else {
+        set(thing);
+      }
+    }
+
+    void set(JSONThing thing) {
+      JSONObject mAssetObject = thing.getValue();
+      cManager.getAssetManager().release(this, cAsset);
+      cAsset = static_cast<DERIVED*>(this)->getAsset(cManager, mAssetObject);
+      loadClientConfiguration(mAssetObject);
+    }
+
     void init(JSONObject object, const std::string& member) {
       if (cManager.getProject().isLoading()) {
         cManager.getProject().init([this, object, member](IAssets& assets) {

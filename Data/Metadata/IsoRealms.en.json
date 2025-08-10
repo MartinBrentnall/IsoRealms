@@ -22,6 +22,7 @@
     "LaunchConfiguration": {"name": "Launch Configuration", "description": "A launch configuration for testing this application."},
     "LaunchConfigurationAdd": {"name": "Launch Configuration", "description": "Add a launch configuration for testing this application."},
     "LaunchConfigurationName": {"name": "Name", "description": "Name of this launch configuration."},
+    "LaunchConfigurationOwner": {"name": "Owner", "description": "The project file that owns this launch configuration."},
     "LaunchConfigurationPreparationAction": {"name": "On Launch", "description": "Action to perform when starting with this launch configuration.  The action can be used to set the values of options used in this launch configuration."},
     "LaunchConfigurationOption": {"name": "Option", "description": "Option with which this test configuration will launch."},
     "LaunchConfigurationOptionAdd": {"name": "Option", "description": "Add an option with which this test configuration will launch."},

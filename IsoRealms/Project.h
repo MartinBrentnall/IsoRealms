@@ -25,6 +25,7 @@
 
 #include "PropertyMaker.h"
 
+#include "Assets/Client/ResourceOwner.h"
 #include "Assets/Literal/LiteralBindingType.h"
 #include "Assets/Registry/AssetClientManager.h"
 #include "Assets/Registry/ScreenClientManager.h"
@@ -309,11 +310,14 @@ namespace IsoRealms {
     static const std::string JSON_INCLUDE;
     static const std::string JSON_INITIALISATION;
     static const std::string JSON_INPUT;
+    static const std::string JSON_LAUNCH_CONFIGURATIONS;
     static const std::string JSON_LOCAL;
     static const std::string JSON_MODULES;
     static const std::string JSON_NAME;
+    static const std::string JSON_PREPARATION_ACTION;
     static const std::string JSON_PROJECT;
     static const std::string JSON_PROPERTIES;
+    static const std::string JSON_OPTIONS;
     static const std::string JSON_QUIT;
     static const std::string JSON_RESET;
     static const std::string JSON_SCREEN;
@@ -327,15 +331,20 @@ namespace IsoRealms {
     class LaunchConfiguration {
       public:
       LaunchConfiguration(Project& parent);
+      LaunchConfiguration(Project& parent, JSONThing thing, ProjectFile& owner);
       std::string getName() const;
       void getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project);
+      void save(JSONObject object, ProjectFile& savingProject) const;
+      bool isOwnedBy(ProjectFile& project);
 
       private:
       class Option {
         public:
         Option(Project& parent, LaunchConfiguration& launch);
+        Option(Project& parent, JSONThing thing);
         std::string getName() const;
         void getProperties(PropertyMaker& owner, const Metadata& metadata, LaunchConfiguration& launch);
+        void save(JSONObject object) const;
 
         private:
         std::string cDefName;
@@ -343,6 +352,7 @@ namespace IsoRealms {
       };
 
       std::string cDefName;
+      ResourceOwner cDefOwner;
       Action cDefOptionPreparationAction;
       std::vector<std::unique_ptr<Option>> cDefOptions;
 

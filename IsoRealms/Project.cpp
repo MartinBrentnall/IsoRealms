@@ -25,23 +25,26 @@
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  const std::string Project::JSON_ACTION         = "action";
-  const std::string Project::JSON_EDITOR         = "editor";
-  const std::string Project::JSON_FILENAME       = "filename";
-  const std::string Project::JSON_ID             = "id";
-  const std::string Project::JSON_INCLUDE        = "include";
-  const std::string Project::JSON_INITIALISATION = "initialisation";
-  const std::string Project::JSON_INPUT          = "input";
-  const std::string Project::JSON_LOCAL          = "local";
-  const std::string Project::JSON_MODULES        = "modules";
-  const std::string Project::JSON_NAME           = "name";
-  const std::string Project::JSON_PROJECT        = "project";
-  const std::string Project::JSON_PROPERTIES     = "properties";
-  const std::string Project::JSON_QUIT           = "quit";
-  const std::string Project::JSON_RESET          = "reset";
-  const std::string Project::JSON_SCREEN         = "screen";
-  const std::string Project::JSON_START          = "start";
-  const std::string Project::JSON_USER           = "user";
+  const std::string Project::JSON_ACTION                = "action";
+  const std::string Project::JSON_EDITOR                = "editor";
+  const std::string Project::JSON_FILENAME              = "filename";
+  const std::string Project::JSON_ID                    = "id";
+  const std::string Project::JSON_INCLUDE               = "include";
+  const std::string Project::JSON_INITIALISATION        = "initialisation";
+  const std::string Project::JSON_INPUT                 = "input";
+  const std::string Project::JSON_LAUNCH_CONFIGURATIONS = "launchConfigurations";
+  const std::string Project::JSON_LOCAL                 = "local";
+  const std::string Project::JSON_MODULES               = "modules";
+  const std::string Project::JSON_NAME                  = "name";
+  const std::string Project::JSON_PREPARATION_ACTION    = "preparationAction";
+  const std::string Project::JSON_PROJECT               = "project";
+  const std::string Project::JSON_PROPERTIES            = "properties";
+  const std::string Project::JSON_OPTIONS               = "options";
+  const std::string Project::JSON_QUIT                  = "quit";
+  const std::string Project::JSON_RESET                 = "reset";
+  const std::string Project::JSON_SCREEN                = "screen";
+  const std::string Project::JSON_START                 = "start";
+  const std::string Project::JSON_USER                  = "user";
 
   const std::string Project::CATEGORY_CONVERSIONS = "Conversions";
   const std::string Project::CATEGORY_FIXED       = "Fixed";
@@ -160,10 +163,10 @@ namespace IsoRealms {
 
     // Initialise everything
     for (unsigned int j = 0; j < cInitialisers.size(); j++) {
-      std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
-      if (j == 96) {
-        std::cout << "DEBUG!" << std::endl;
-      }
+      // std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
+      // if (j == 96) {
+      //   std::cout << "DEBUG!" << std::endl;
+      // }
       cInitialisers[j](*this);
     }
     cInitialisers.clear();
@@ -267,6 +270,12 @@ namespace IsoRealms {
         if (cProperties.find(mPropertyID) == cProperties.end()) {
           cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(*this, mPropertyObject, &file.cFile));
         }
+      }
+    }
+
+    if (mProjectObject.hasMember(JSON_LAUNCH_CONFIGURATIONS)) {
+      for (JSONThing mLaunchConfigurationThing : mProjectObject.getObject(JSON_LAUNCH_CONFIGURATIONS)) {
+        cDefTestLaunchConfigurations.emplace_back(std::make_unique<LaunchConfiguration>(*this, mLaunchConfigurationThing, file));
       }
     }
 
@@ -427,6 +436,21 @@ namespace IsoRealms {
       cDefResetAction.save(mProjectObject, JSON_RESET, &file.cFile);
       cDefStartAction.save(mProjectObject, JSON_START, &file.cFile);
       cDefQuitAction.save(mProjectObject, JSON_QUIT, &file.cFile);
+
+      // Save launch configurations.
+      bool mLaunchConfigurationsNeedSaving = false;
+      for (std::unique_ptr<LaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
+        if (mLaunchConfiguration->isOwnedBy(file)) {
+          mLaunchConfigurationsNeedSaving = true;
+          break;
+        }
+      }
+      if (mLaunchConfigurationsNeedSaving) {
+        JSONObject mLaunchConfigurationsObject = mProjectObject.addObject(JSON_LAUNCH_CONFIGURATIONS);
+        for (std::unique_ptr<LaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
+          mLaunchConfiguration->save(mLaunchConfigurationsObject, file);
+        }
+      }
 
       // Save properties
       bool mPropertiesNeedSaving = false;
@@ -653,7 +677,7 @@ namespace IsoRealms {
   }
 
   void Project::init(std::function<void(IAssets&)> initialiser) {
-    std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
+    // std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
 //     if (cInitialisers.size() == 241) {
 //       std::cout << "DEBUG!" << std::endl;
 //     }
@@ -892,7 +916,19 @@ namespace IsoRealms {
 
   Project::LaunchConfiguration::LaunchConfiguration(Project& parent) :
             cDefName(parent.makeLaunchConfigurationName()),
+            cDefOwner(parent, &parent.cProjectFile),
             cDefOptionPreparationAction(parent) {
+  }
+
+  Project::LaunchConfiguration::LaunchConfiguration(Project& parent, JSONThing thing, ProjectFile& owner) :
+            cDefName(thing.getName()),
+            cDefOwner(parent, &owner),
+            cDefOptionPreparationAction(parent) {
+    JSONObject mLaunchConfigurationObject = thing.getValue();
+    cDefOptionPreparationAction.init(mLaunchConfigurationObject, JSON_PREPARATION_ACTION);
+    for (JSONThing mOptionThing : mLaunchConfigurationObject.getObject(JSON_OPTIONS)) {
+      cDefOptions.emplace_back(std::make_unique<Option>(parent, mOptionThing));
+    }
   }
 
   std::string Project::LaunchConfiguration::getName() const {
@@ -901,6 +937,7 @@ namespace IsoRealms {
 
   void Project::LaunchConfiguration::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project) {
     owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
+    owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationOwner"), cDefOwner);
     owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationPreparationAction"), cDefOptionPreparationAction);
     owner.createPropertyArray(metadata.getPropertyData("LaunchConfigurationOptionAdd"), cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &owner, &metadata](Option& option) {
       owner.createPropertyStruct(metadata.getPropertyData("LaunchConfigurationOption"), option.getName(), [this, &metadata, &option](PropertyMaker& owner) {
@@ -914,15 +951,11 @@ namespace IsoRealms {
   }
 
   bool Project::LaunchConfiguration::isOptionNameUsed(const std::string& name, Option* option) const {
-    std::cout << "Checking " << cDefOptions.size() << " options..." << std::endl;
     for (const std::unique_ptr<Option>& mOption : cDefOptions) {
-      std::cout << "  Is \"" << name << "\" == \"" << mOption->getName() << "\"" << std::endl;
       if (option != mOption.get() && mOption->getName() == name) {
-        std::cout << "YES!" << std::endl;
         return true;
       }
     }
-    std::cout << "None are the same" << std::endl;
     return false;
   }
 
@@ -936,9 +969,30 @@ namespace IsoRealms {
     return mProposedName;
   }
 
+  void Project::LaunchConfiguration::save(JSONObject object, ProjectFile& savingProject) const {
+    if (&savingProject == cDefOwner.getProjectFile()) {
+      JSONObject mLaunchConfigurationObject = object.addObject(cDefName);
+      cDefOptionPreparationAction.save(mLaunchConfigurationObject, JSON_PREPARATION_ACTION);
+      JSONObject mOptionsObject = mLaunchConfigurationObject.addObject(JSON_OPTIONS);
+      for (const std::unique_ptr<Option>& mOption : cDefOptions) {
+        mOption->save(mOptionsObject);
+      }
+    }
+  }
+
+  bool Project::LaunchConfiguration::isOwnedBy(ProjectFile& project) {
+    return &project == cDefOwner.getProjectFile();
+  }
+
   Project::LaunchConfiguration::Option::Option(Project& parent, LaunchConfiguration& launch) :
             cDefName(launch.makeOptionName()),
             cDefValue(parent) {
+  }
+
+  Project::LaunchConfiguration::Option::Option(Project& parent, JSONThing thing) :
+            cDefName(thing.getName()),
+            cDefValue(parent) {
+    cDefValue.init(thing);
   }
 
   std::string Project::LaunchConfiguration::Option::getName() const {
@@ -957,6 +1011,10 @@ namespace IsoRealms {
       }
     }
     return false;
+  }
+
+  void Project::LaunchConfiguration::Option::save(JSONObject object) const {
+    cDefValue.save(object, cDefName);
   }
 
   std::string Project::makeLaunchConfigurationName() const {
