@@ -1299,39 +1299,59 @@
                   {
                     "item": {
                       "key": "Action",
-                      "label": "Run App",
+                      "label": "Test App",
                       "onSelection": {
                         "key": "Basics/Script",
                         "bindings": [
-                          {
-                            "variable": "interactiveDisplay",
-                            "to": {
-                              "key": "UI/Layout/Runtime/Screen"
-                            }
-                          },
-                          {
-                            "variable": "interactiveInput",
-                            "to": {
-                              "key": "Basics/InputSwitch/Main"
-                            }
-                          },
-                          {
-                            "variable": "testInputHandler",
-                            "to": {
-                              "key": ":InputHandler",
-                              "asset": {
-                                "key": "Basics/InputGroup/Test"
-                              }
-                            }
-                          },
                           {
                             "variable": "project",
                             "to": {
                               "key": "Basics/Project/Project"
                             }
+                          },
+                          {
+                            "variable": "launcherMenu",
+                            "to": {
+                              "key": "UI/Menu/Launcher/LauncherList/List"
+                            }
+                          },
+                          {
+                            "variable": "showLauncherMenuFunction",
+                            "to": {
+                              "key": ":Action",
+                              "asset": {
+                                "key": "Basics/Function/PushScreen",
+                                "bindings": [
+                                  {
+                                    "argument": "menuScreen",
+                                    "to": {
+                                      "key": ":Screen",
+                                      "asset": {
+                                        "key": "UI/Menu/Launcher"
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "argument": "menu",
+                                    "to": {
+                                      "key": "UI/Menu/Launcher"
+                                    }
+                                  },
+                                  {
+                                    "argument": "menuInput",
+                                    "to": {
+                                      "key": ":InputHandler",
+                                      "asset": {
+                                        "key": "UI/Menu/Launcher"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
                           }
                         ],
-                        "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)"
+                        "code": "launcherMenu:setProject(project:getProject())\nshowLauncherMenuFunction:execute()"
                       }
                     }
                   },
@@ -1634,6 +1654,99 @@
                             }
                           }
                         ]
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "Launcher",
+                "colour": {
+                  "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
+                },
+                "font": {
+                  "key": "Basics/Font/Menu"
+                },
+                "onExit": {
+                  "key": "Basics/Function/PopScreen",
+                  "bindings": []
+                },
+                "options": [
+                  {
+                    "item": {
+                      "key": "Action",
+                      "label": "Run App (default)",
+                      "onSelection": {
+                        "key": "Basics/Script",
+                        "bindings": [
+                          {
+                            "variable": "interactiveDisplay",
+                            "to": {
+                              "key": "UI/Layout/Runtime/Screen"
+                            }
+                          },
+                          {
+                            "variable": "interactiveInput",
+                            "to": {
+                              "key": "Basics/InputSwitch/Main"
+                            }
+                          },
+                          {
+                            "variable": "testInputHandler",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "Basics/InputGroup/Test"
+                              }
+                            }
+                          },
+                          {
+                            "variable": "project",
+                            "to": {
+                              "key": "Basics/Project/Project"
+                            }
+                          }
+                        ],
+                        "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)"
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "LauncherList",
+                      "id": "List",
+                      "onSelection": {
+                        "key": "Basics/Script",
+                        "bindings": [
+                          {
+                            "variable": "interactiveDisplay",
+                            "to": {
+                              "key": "UI/Layout/Runtime/Screen"
+                            }
+                          },
+                          {
+                            "variable": "interactiveInput",
+                            "to": {
+                              "key": "Basics/InputSwitch/Main"
+                            }
+                          },
+                          {
+                            "variable": "testInputHandler",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "Basics/InputGroup/Test"
+                              }
+                            }
+                          },
+                          {
+                            "variable": "project",
+                            "to": {
+                              "key": "Basics/Project/Project"
+                            }
+                          }
+                        ],
+                        "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)"
                       }
                     }
                   }

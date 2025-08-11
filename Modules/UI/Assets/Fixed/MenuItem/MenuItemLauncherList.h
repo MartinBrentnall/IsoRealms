@@ -27,21 +27,20 @@
 #include "Modules/UI/Assets/Type/IMenuItem.h"
 
 namespace IsoRealms::UI {
-  
+
   /**
-   * Menu item that represents a list of files that can be selected.
+   * Menu item that represents a list of project launchers that can be selected.
    */
-  class MenuItemFileList final : public IMenuItem,
-                                 public IString {
+  class MenuItemLauncherList final : public IMenuItem {
     public:
-    MenuItemFileList(const Metadata& metadata, Menu& menu);
-    MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object);
+    MenuItemLauncherList(const Metadata& metadata, Menu& menu);
+    MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
     \***********************/
-    void refresh();
-    
+    void setProject(Project& project);
+
     /************************\
      * Implements IMenuItem *
     \************************/
@@ -54,11 +53,6 @@ namespace IsoRealms::UI {
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
 
-    /**********************\
-     * Implements IString *
-    \**********************/
-    std::string getValue() const override;
-
     /*******************************************\
      * Implements IAsset via IMenuItem/IString *
     \*******************************************/
@@ -68,30 +62,27 @@ namespace IsoRealms::UI {
     bool isDefaultConfiguration() const override;
 
     private:
-    
+
     // JSON members.
-    static const std::string JSON_FOLDER;
     static const std::string JSON_ID;
     static const std::string JSON_ON_SELECTION;
-    static const std::string JSON_USER;
 
     // Constants.
     static const std::string BINDING_TYPE;
-  
+
     // Private types.
-    class File {
+    class Launcher {
       public:
-      
+
       // Interface to be used by the parent.
-      File(const std::string& label, const std::string& path);
+      Launcher(const ProjectLaunchConfiguration* configuration);
       void render(float y, bool selected, const Menu& menu) const;
-      std::string getPath() const;
-      
+      std::string getName() const;
+
       private:
-      
+
       // Definition data.
-      std::string cDefLabel; /// Label to show for this file.
-      std::string cDefPath;  /// The path of this file (relative to the data folder from which it originates).
+      const ProjectLaunchConfiguration* cDefLaunchConfiguration;
     };
 
     // External Interfaces.
@@ -99,18 +90,16 @@ namespace IsoRealms::UI {
     HatHandler& cHatHandler;
 
     // Definition data.
-    std::string cDefID;     /// ID of this menu item for binding.
-    std::string cDefFolder; /// Path of folder to list files from.
-    bool cDefUser;   /// True: path is relative to user data folder.  False: path is relative to program data folder.
-    Action cDefAction;      /// Action that confirming a file selection will trigger.
-    
+    std::string cDefID; /// ID of this menu item for binding.
+    Action cDefAction;  /// Action that confirming a launcher selection will trigger.
+
     // Runtime data.
-    std::vector<std::unique_ptr<File>> cRuntimeFiles; /// List of files that can be selected.
-    int cRuntimeSelectedFile;                         /// Index of the selected file.
-    
+    std::vector<std::unique_ptr<Launcher>> cRuntimeLaunchers; /// List of launchers that can be selected.
+    int cRuntimeSelectedLauncher;                             /// Index of the selected launchers.
+
     // Scripting support.
-    LuaBinding<MenuItemFileList> cLuaBinding; /// Allows menu file lists to be bound to lua variables.
-    
+    LuaBinding<MenuItemLauncherList> cLuaBinding; /// Allows menu launcher lists to be bound to lua variables.
+
     // Private functions.
     bool up();
     bool down();

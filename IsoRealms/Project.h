@@ -53,6 +53,7 @@
 #include "Lua.h"
 #include "Options/Options.h"
 #include "ProjectFile.h"
+#include "ProjectLaunchConfiguration.h"
 #include "Types.h"
 
 namespace IsoRealms {
@@ -298,6 +299,11 @@ namespace IsoRealms {
     std::vector<std::string> getProjectFileNames() const;
     ProjectFile* getProjectFile(const std::string& id);
 
+    bool isLaunchConfigurationNameUsed(const std::string& name, ProjectLaunchConfiguration* launchConfiguration) const;
+    std::string makeLaunchConfigurationName() const;
+    int getLaunchConfigurationCount() const;
+    const ProjectLaunchConfiguration* getLaunchConfiguration(int index);
+
     virtual ~Project();
     
     template <class TYPE> friend struct AssetContainerTraits;
@@ -314,10 +320,8 @@ namespace IsoRealms {
     static const std::string JSON_LOCAL;
     static const std::string JSON_MODULES;
     static const std::string JSON_NAME;
-    static const std::string JSON_PREPARATION_ACTION;
     static const std::string JSON_PROJECT;
     static const std::string JSON_PROPERTIES;
-    static const std::string JSON_OPTIONS;
     static const std::string JSON_QUIT;
     static const std::string JSON_RESET;
     static const std::string JSON_SCREEN;
@@ -328,39 +332,7 @@ namespace IsoRealms {
     static const std::string CATEGORY_FIXED;
     static const std::string CATEGORY_LOCAL;
 
-    class LaunchConfiguration {
-      public:
-      LaunchConfiguration(Project& parent);
-      LaunchConfiguration(Project& parent, JSONThing thing, ProjectFile& owner);
-      std::string getName() const;
-      void getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project);
-      void save(JSONObject object, ProjectFile& savingProject) const;
-      bool isOwnedBy(ProjectFile& project);
-
-      private:
-      class Option {
-        public:
-        Option(Project& parent, LaunchConfiguration& launch);
-        Option(Project& parent, JSONThing thing);
-        std::string getName() const;
-        void getProperties(PropertyMaker& owner, const Metadata& metadata, LaunchConfiguration& launch);
-        void save(JSONObject object) const;
-
-        private:
-        std::string cDefName;
-        String cDefValue;
-      };
-
-      std::string cDefName;
-      ResourceOwner cDefOwner;
-      Action cDefOptionPreparationAction;
-      std::vector<std::unique_ptr<Option>> cDefOptions;
-
-      bool isOptionNameUsed(const std::string& name, Option* option) const;
-      std::string makeOptionName() const;
-    };
-
-    std::vector<std::unique_ptr<LaunchConfiguration>> cDefTestLaunchConfigurations;
+    std::vector<std::unique_ptr<ProjectLaunchConfiguration>> cDefTestLaunchConfigurations;
 
     class Filename : public IString {
       public:
@@ -594,8 +566,6 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<JSONDocument>> loadResources(ProjectFile& file);
     Module* getModule(const std::string& name);
     void saveFile(ProjectFile& file);
-    bool isLaunchConfigurationNameUsed(const std::string& name, LaunchConfiguration* launchConfiguration) const;
-    std::string makeLaunchConfigurationName() const;
   };
 
   template<> struct AssetContainerTraits<IAction>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};

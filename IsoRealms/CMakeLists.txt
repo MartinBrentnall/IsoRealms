@@ -124,6 +124,7 @@ add_library(IsoRealms
   Persistence/ParseException.cpp
   Project.cpp
   ProjectFile.cpp
+  ProjectLaunchConfiguration.cpp
   PropertyData.cpp
   PropertyMaker.cpp
   ResourceAssetRegistry.cpp

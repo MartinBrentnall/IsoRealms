@@ -24,7 +24,6 @@ namespace IsoRealms::UI {
   const std::string MenuItemFileList::JSON_FOLDER       = "folder";
   const std::string MenuItemFileList::JSON_ID           = "id";
   const std::string MenuItemFileList::JSON_ON_SELECTION = "onSelection";
-  const std::string MenuItemFileList::JSON_TYPE         = "type";
   const std::string MenuItemFileList::JSON_USER         = "user";
 
   const std::string MenuItemFileList::BINDING_TYPE = "FileList";

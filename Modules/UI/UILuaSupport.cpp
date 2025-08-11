@@ -74,6 +74,7 @@ namespace IsoRealms::UI {
                                                                                "getMapping",      &MenuItemDigitalInput::getMapping);
     mLua->new_usertype<MenuItemDisplayResolution>("MenuItemDisplayResolution", "setValue",        &MenuItemDisplayResolution::setValue,
                                                                                "getValue",        &MenuItemDisplayResolution::getValue);
+    mLua->new_usertype<MenuItemLauncherList>("MenuItemLauncherList",           "setProject",      &MenuItemLauncherList::setProject);
     mLua->new_usertype<MenuItemSlider>("MenuItemSlider",                       "setValue",        &MenuItemSlider::setValue,
                                                                                "getValue",        &MenuItemSlider::getValue);
     mLua->new_usertype<Prompt>("Prompt",                                       "reset",           &Prompt::reset);

@@ -25,6 +25,7 @@ namespace IsoRealms::UI {
   const std::string UI::MENU_ITEM_DIGITAL_INPUT      = "DigitalInput";
   const std::string UI::MENU_ITEM_DISPLAY_RESOLUTION = "DisplayResolution";
   const std::string UI::MENU_ITEM_FILE_LIST          = "FileList";
+  const std::string UI::MENU_ITEM_LAUNCHER_LIST      = "LauncherList";
   const std::string UI::MENU_ITEM_SLIDER             = "Slider";
 
   const std::string UI::LAYOUT_LOCATION_ABSOLUTE = "Absolute";
@@ -52,6 +53,7 @@ namespace IsoRealms::UI {
                     cProviderMenuItemDigitalInput(registry.getAssetMetadata("MenuItemDigitalInput")),
                     cProviderMenuItemDisplayResolution(registry.getAssetMetadata("MenuItemDisplayResolution")),
                     cProviderMenuItemFileList(registry.getAssetMetadata("MenuItemFileList")),
+                    cProviderMenuItemLauncherList(registry.getAssetMetadata("MenuItemLauncherList")),
                     cProviderMenuItemSlider(registry.getAssetMetadata("MenuItemSlider")),
                     cProviderScreenGradient(registry.getAssetMetadata("ScreenGradient")),
                     cProviderScreenModel(registry.getAssetMetadata("ScreenModel")),
@@ -83,6 +85,7 @@ namespace IsoRealms::UI {
     cMenuItems.add(&cProviderMenuItemDigitalInput,      MENU_ITEM_DIGITAL_INPUT,      "UI");
     cMenuItems.add(&cProviderMenuItemDisplayResolution, MENU_ITEM_DISPLAY_RESOLUTION, "UI");
     cMenuItems.add(&cProviderMenuItemFileList,          MENU_ITEM_FILE_LIST,          "UI");
+    cMenuItems.add(&cProviderMenuItemLauncherList,      MENU_ITEM_LAUNCHER_LIST,      "UI");
     cMenuItems.add(&cProviderMenuItemSlider,            MENU_ITEM_SLIDER,             "UI");
   }
 

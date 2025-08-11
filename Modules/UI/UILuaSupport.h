@@ -27,6 +27,7 @@
 #include "Assets/Fixed/MenuItem/MenuItemDigitalInput.h"
 #include "Assets/Fixed/MenuItem/MenuItemDisplayResolution.h"
 #include "Assets/Fixed/MenuItem/MenuItemFileList.h"
+#include "Assets/Fixed/MenuItem/MenuItemLauncherList.h"
 #include "Assets/Fixed/MenuItem/MenuItemSlider.h"
 #include "Layout/LayoutComponent.h"
 #include "Menu/Menu.h"

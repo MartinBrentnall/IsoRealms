@@ -36,6 +36,7 @@ add_library(UI MODULE
   Assets/Fixed/MenuItem/MenuItemDigitalInput.cpp
   Assets/Fixed/MenuItem/MenuItemDisplayResolution.cpp
   Assets/Fixed/MenuItem/MenuItemFileList.cpp
+  Assets/Fixed/MenuItem/MenuItemLauncherList.cpp
   Assets/Fixed/MenuItem/MenuItemSlider.cpp
   Assets/Fixed/Screen/ScreenGradient.cpp
   Assets/Fixed/Screen/ScreenModel.cpp
