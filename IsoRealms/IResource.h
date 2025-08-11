@@ -37,6 +37,7 @@ namespace IsoRealms {
     public:
     virtual void getProperties(PropertyMaker& propertyMaker) = 0;
     virtual std::string getName() = 0;
+    virtual bool isReadOnly() const = 0;
     virtual bool renderIcon() = 0;
     virtual void hintInUse(bool inUse) = 0;
     virtual void save(JSONObject object) = 0;
