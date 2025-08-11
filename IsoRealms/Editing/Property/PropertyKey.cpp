@@ -75,7 +75,11 @@ namespace IsoRealms {
   bool PropertyKey::Editor::input(sf::Event& event, IUIStyle& style) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
-        cParent.cSetter(event.key.code);
+        cParent.confirmAccess([this, event]() {
+          cParent.cSetter(event.key.code);
+        }, []() {
+          // Nothing to do.
+        });
         return true;
       }
       

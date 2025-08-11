@@ -38,6 +38,7 @@ namespace IsoRealms {
     bool confirmValue() override;
 
     private:
+    std::function<bool(unsigned int)> cValidityChecker;
     std::function<void(unsigned int)> cSetter;
   };
 }

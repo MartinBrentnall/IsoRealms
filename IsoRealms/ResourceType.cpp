@@ -59,9 +59,15 @@ namespace IsoRealms {
 
   void ResourceType::loadResource(JSONObject object, IProject& project, ProjectFile* ownerProject, const std::string& resourceDataPath) {
     std::string mResourceName = object.getString(JSON_ID);
+    
+    // Ignore resource if name matches an existing one (useful for include overrides and omissions).
     for (IResource* mResource : cResources) {
       if (mResource->getName() == mResourceName) {
-        // Ignore resource if name matches an existing one (useful for include overrides).
+        return;
+      }
+    }
+    for (const std::string& mOmittedResource : cOmittedResources) {
+      if (mOmittedResource == mResourceName) {
         return;
       }
     }
@@ -95,6 +101,10 @@ namespace IsoRealms {
         mResource->save(mResourceObject);
       }
     }
+    for (const std::string& mOmittedResource : cOmittedResources) {
+      JSONObject mOmittedResourceObject = array.addObject();
+      mOmittedResourceObject.addString(JSON_ID, mOmittedResource);      
+    }
   }
 
   std::string const ResourceType::getPlural() const {
@@ -127,6 +137,9 @@ namespace IsoRealms {
         Project& mProject = cParent.getProject();
         IAssets& mAssets = cParent.getAssets();
         cResources.erase(mResource);
+        if (mResource->isReadOnly()) {
+          cOmittedResources.insert(mResource->getName());
+        }
         cResourceType->deleteResource(mProject, mAssets, mResource);
         return;
       }

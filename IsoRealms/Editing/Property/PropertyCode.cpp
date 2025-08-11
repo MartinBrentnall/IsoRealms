@@ -454,7 +454,11 @@ namespace IsoRealms {
             if (cParent.cGetter() != cEditingCode) {
               cConfirmationSelection = std::make_unique<Choice>(style, "Would you like to keep your changes?", std::vector<std::string>{"Continue Editing", "Confirm Changes", "Discard Changes"}, [this](const std::string& choice)->bool {
                 if (choice == "Confirm Changes") {
-                  cParent.cSetter(cEditingCode);
+                  cParent.confirmAccess([this]() {
+                    cParent.cSetter(cEditingCode);
+                  }, [this]() {
+                    // Nothing to do.
+                  });
                 }
                 if (choice != "Continue Editing") {
                   cClosing = true;

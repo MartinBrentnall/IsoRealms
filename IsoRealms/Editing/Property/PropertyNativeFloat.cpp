@@ -45,7 +45,7 @@ namespace IsoRealms {
       return false;
     }
 
-    if (!cValidityChecker) {
+    if (!cValidityChecker(mFloatValue)) {
       return false;
     }
 

@@ -103,6 +103,11 @@ namespace IsoRealms {
       }
 
       case UISignalID::CONFIRM: {
+        cParent.confirmAccess([this]() {
+          // Nothing to do.
+        }, [this]() {
+          // Nothing to do.
+        });
         return true;
       }
 

@@ -23,6 +23,7 @@
 namespace IsoRealms {
   PropertyNativeInteger::PropertyNativeInteger(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<int()> getter, std::function<void(int)> setter, std::function<bool(int)> validityChecker, std::function<void()> removeFunction) :
             PropertyInputField(data, resourceAccessManager, Utils::toString(getter()), removeFunction),
+            cValidityChecker(validityChecker),
             cSetter(setter) {
   }
   
@@ -39,7 +40,17 @@ namespace IsoRealms {
     } catch (std::invalid_argument& e) {
       return false;
     }
-    cSetter(mIntValue);
+    
+    if (!cValidityChecker(mIntValue)) {
+      return false;
+    }
+    
+    confirmAccess([this, mIntValue]() {
+      confirm();
+      cSetter(mIntValue);
+    }, [this]() {
+      cancel();
+    });
     return true;
   }
 }

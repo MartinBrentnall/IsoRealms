@@ -70,6 +70,7 @@ namespace IsoRealms {
     static const std::string JSON_SINGULAR;
 
     IResourceTypeDefinition* cResourceType;
+    std::set<std::string> cOmittedResources;
     std::set<IResource*> cResources;
     IModuleInternal& cParent;
     std::string cSingular;

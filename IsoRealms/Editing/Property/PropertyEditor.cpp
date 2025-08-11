@@ -48,7 +48,11 @@ namespace IsoRealms {
   }
   
   void PropertyEditor::confirm(IPropertyManager& manager, float y) {
-    manager.edit(cEditable);
+    confirmAccess([this, &manager]() {
+      manager.edit(cEditable);
+    }, []() {
+      // Nothing to do.
+    });
   }
   
   bool PropertyEditor::hasConfiguration() const {
