@@ -23,41 +23,41 @@
 
 namespace IsoRealms {
   BindingRegistry::BindingRegistry(Project& project) :
-            AssetClientManager(&cLiteralProvider),
-            cConversionProviderAction(project),
-            cConversionProviderBoolean(project),
-            cConversionProviderColour(project),
-            cConversionProviderFloat(project),
-            cConversionProviderFont(project),
-            cConversionProviderInputHandler(project),
-            cConversionProviderInteger(project),
-            cConversionProviderScreen(project),
-            cConversionProviderString(project),
-            cConversionProviderVertex(project) {
+            AssetClientManager(&cDummy),
+            cActions(project),
+            cBooleans(project),
+            cColours(project),
+            cFloats(project),
+            cFonts(project),
+            cInputHandlers(project),
+            cIntegers(project),
+            cScreens(project),
+            cStrings(project),
+            cVertices(project) {
 
     // Support local bindings.
-    add(&cLocalProviderBinding, "~", "Local");
+    add(&cLocals, "~", "Local");
 
     // Support conversions.
-    add(&cConversionProviderAction,       ":Action",       "Conversions");
-    add(&cConversionProviderBoolean,      ":Boolean",      "Conversions");
-    add(&cConversionProviderColour,       ":Colour",       "Conversions");
-    add(&cConversionProviderFloat,        ":Float",        "Conversions");
-    add(&cConversionProviderFont,         ":Font",         "Conversions");
-    add(&cConversionProviderInputHandler, ":InputHandler", "Conversions");
-    add(&cConversionProviderInteger,      ":Integer",      "Conversions");
-    add(&cConversionProviderScreen,       ":Screen",       "Conversions");
-    add(&cConversionProviderString,       ":String",       "Conversions");
-    add(&cConversionProviderVertex,       ":Vertex",       "Conversions");
+    add(&cActions,       ":Action",       "Conversions");
+    add(&cBooleans,      ":Boolean",      "Conversions");
+    add(&cColours,       ":Colour",       "Conversions");
+    add(&cFloats,        ":Float",        "Conversions");
+    add(&cFonts,         ":Font",         "Conversions");
+    add(&cInputHandlers, ":InputHandler", "Conversions");
+    add(&cIntegers,      ":Integer",      "Conversions");
+    add(&cScreens,       ":Screen",       "Conversions");
+    add(&cStrings,       ":String",       "Conversions");
+    add(&cVertices,      ":Vertex",       "Conversions");
   }
 
   IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener<IBinding*>* listener, bool required) {
-    cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
+    cLocals.setBindings(owner.getBindingRegistry());
     return AssetClientManager::get(client, owner, object, listener, required);
   }
 
   IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener<IBinding*>* listener) {
-    cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
+    cLocals.setBindings(owner.getBindingRegistry());
     return AssetClientManager::get(client, owner, id, listener);
   }
 

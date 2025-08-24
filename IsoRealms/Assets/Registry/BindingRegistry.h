@@ -21,6 +21,8 @@
 #include <functional>
 #include <set>
 
+#include <sol.hpp>
+
 #include "IsoRealms/Assets/Client/Action.h"
 #include "IsoRealms/Assets/Client/Boolean.h"
 #include "IsoRealms/Assets/Client/Colour.h"
@@ -34,7 +36,6 @@
 #include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/Assets/TypeConverted/BoundAsset.h"
 #include "IsoRealms/IActionClient.h"
 #include "IsoRealms/Utils.h"
 
@@ -79,7 +80,7 @@ namespace IsoRealms {
                 cRuntimeLocals(nullptr) {
       }
 
-      void setLocalBindings(IBindingRegistry* locals) {
+      void setBindings(IBindingRegistry* locals) {
         cRuntimeLocals = locals;
       }
 
@@ -128,11 +129,11 @@ namespace IsoRealms {
       }
 
       IBinding* getAsset(IActionClient& owner, JSONObject object) override {
-        return cBoundAssets.emplace(std::make_unique<BoundAsset<OWNER, FROM>>(cOwner, object)).first->get();
+        return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(cOwner, object)).first->get();
       }
 
       IBinding* getAsset(IActionClient& owner) override {
-        return cBoundAssets.emplace(std::make_unique<BoundAsset<OWNER, FROM>>(cOwner)).first->get();
+        return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(cOwner)).first->get();
       }
 
       void releaseAsset(const IBinding* asset) override {
@@ -148,21 +149,91 @@ namespace IsoRealms {
       }
 
       private:
+      template <class OWNER2, class TYPE> class Instance : public IBinding {
+        public:
+        Instance(OWNER2& owner) :
+                  cDefLuaState(owner.getProject().getLuaState().getState()),
+                  cDefValue(owner) {
+        }
+
+        Instance(OWNER2& owner, JSONObject object) :
+                  Instance(owner) {
+          cDefValue.set(object, JSON_ASSET);
+        }
+
+        /***********************\
+        * Implements IBinding *
+        \***********************/
+        void bind(const std::string& bindFunction) const override {
+          (*cDefLuaState)[bindFunction](*cDefValue);
+        }
+
+        std::vector<std::string> getAvailableProviders() const override {
+          return cDefValue.getAvailableProviders();
+        }
+
+        bool renderProviderIcon(const std::string& id) const override {
+          return cDefValue.renderProviderIcon(id);
+        }
+
+        bool renderWrappedIcon() const override {
+          return cDefValue.renderAssetIcon();
+        }
+
+        bool isConfigurable() const override {
+          return cDefValue.hasConfiguration();
+        }
+
+        std::string getID() const override {
+          return cDefValue.getID();
+        }
+
+        void set(const std::string& id) override {
+          cDefValue.setID(id);
+        }
+
+        void getWrappedProperties(PropertyMaker& owner) override {
+          return cDefValue.getAssetProperties(owner);
+        }
+
+        bool renderAssetIcon() const override {
+          return false;
+        }
+
+        void saveAsset(JSONObject object) const override {
+          cDefValue.save(object, JSON_ASSET);
+        }
+
+        void getAssetProperties(PropertyMaker& owner) override {
+          owner.createPropertyAsset<TYPE>(PropertyData("TODO: Asset", "TODO: Description"), cDefValue);
+        }
+
+        bool isDefaultConfiguration() const override {
+          return cDefValue->isDefaultConfiguration();
+        }
+
+        private:
+        inline static const std::string JSON_ASSET = "asset";
+
+        sol::state* cDefLuaState;
+        TYPE cDefValue;
+      };
+
       OWNER& cOwner;
-      mutable std::set<std::unique_ptr<IBinding>> cBoundAssets;
+      mutable std::set<std::unique_ptr<IBinding>> cInstances;
     };
 
-    AssetLiteralDummy<IActionClient, IBinding, Dummy> cLiteralProvider;
-    Local                                             cLocalProviderBinding;
-    Conversion<IActionClient, Action>                 cConversionProviderAction;
-    Conversion<IResourceData, Boolean>                cConversionProviderBoolean;
-    Conversion<IResourceData, Colour>                 cConversionProviderColour;
-    Conversion<IResourceData, Float>                  cConversionProviderFloat;
-    Conversion<IResourceData, Font>                   cConversionProviderFont;
-    Conversion<IResourceData, InputHandler>           cConversionProviderInputHandler;
-    Conversion<IResourceData, Integer>                cConversionProviderInteger;
-    Conversion<IResourceData, Screen>                 cConversionProviderScreen;
-    Conversion<IResourceData, String>                 cConversionProviderString;
-    Conversion<IResourceData, Vertex>                 cConversionProviderVertex;
+    AssetLiteralDummy<IActionClient, IBinding, Dummy> cDummy;
+    Local                                             cLocals;
+    Conversion<IActionClient, Action>                 cActions;
+    Conversion<IResourceData, Boolean>                cBooleans;
+    Conversion<IResourceData, Colour>                 cColours;
+    Conversion<IResourceData, Float>                  cFloats;
+    Conversion<IResourceData, Font>                   cFonts;
+    Conversion<IResourceData, InputHandler>           cInputHandlers;
+    Conversion<IResourceData, Integer>                cIntegers;
+    Conversion<IResourceData, Screen>                 cScreens;
+    Conversion<IResourceData, String>                 cStrings;
+    Conversion<IResourceData, Vertex>                 cVertices;
   };
 }
