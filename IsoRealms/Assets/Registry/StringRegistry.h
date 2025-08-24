@@ -19,11 +19,15 @@
 #pragma once
 
 #include <functional>
+#include <set>
 
+#include "IsoRealms/Assets/Client/Float.h"
+#include "IsoRealms/Assets/Client/Integer.h"
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IString.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Metadata.h"
+#include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
@@ -95,7 +99,74 @@ namespace IsoRealms {
       inline static const std::string JSON_VALUE = "value";
     };
 
-    Literal cLiteral;
+    template <class FROM> class Conversion : public IAssetProvider<IResourceData, IString> {
+      public:
+      IString* getAsset(IResourceData& owner, JSONObject object) override {
+        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(owner, object)).first->get();
+      }
+
+      IString* getAsset(IResourceData& owner) override {
+        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(owner)).first->get();
+      }
+
+      void releaseAsset(const IString* asset) override {
+        // TODO: Implement this.
+      }
+
+      bool hasConfiguration() const override {
+        return true;
+      }
+
+      bool renderAssetProviderIcon() const override {
+        return false;
+      }
+
+      private:
+      template <class TYPE> class Instance : public IString {
+        public:
+        Instance(IResourceData& owner) :
+                  cDefValue(owner) {
+        }
+
+        Instance(IResourceData& owner, JSONObject object) :
+                  Instance(owner) {
+          cDefValue.set(object, JSON_ASSET);
+        }
+
+        /**********************\
+        * Implements IString *
+        \**********************/
+        std::string getValue() const override {
+          return Utils::toString(cDefValue->getValue());
+        }
+
+        bool renderAssetIcon() const override {
+          return false;
+        }
+
+        void saveAsset(JSONObject object) const override {
+          cDefValue.save(object, JSON_ASSET);
+        }
+
+        void getAssetProperties(PropertyMaker& owner) override {
+          owner.createPropertyAsset<TYPE>(PropertyData("TODO: Asset", "TODO: Description"), cDefValue);
+        }
+
+        bool isDefaultConfiguration() const override {
+          return true; // TODO?
+        }
+
+        private:
+        inline static const std::string JSON_ASSET = "asset";
+
+        TYPE cDefValue;
+      };
+      mutable std::set<std::unique_ptr<IString>> cConvertedAssets;
+    };
+
+    Literal             cLiteral;
+    Conversion<Float>   cFloats;
+    Conversion<Integer> cIntegers;
   };
 }
 

@@ -43,7 +43,6 @@
 #include "Assets/Registry/StringRegistry.h"
 #include "Assets/Registry/TextureRegistry.h"
 #include "Assets/Registry/VertexRegistry.h"
-#include "Assets/Providers/AssetConvertedString.h"
 #include "Assets/Providers/AssetLiteralDummy.h"
 #include "Editing.h"
 #include "IResourceData.h"

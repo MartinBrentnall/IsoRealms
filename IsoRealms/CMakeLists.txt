@@ -42,6 +42,7 @@ add_library(IsoRealms
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
+  Assets/Literal/LiteralString.cpp
   Assets/Literal/LiteralTexture.cpp
   Assets/Registry/AssetIDException.cpp
   Assets/Registry/ActionRegistry.cpp
