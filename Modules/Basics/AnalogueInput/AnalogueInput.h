@@ -49,8 +49,8 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    AnalogueInput(IProject& project, Basics& basics, IResourceData& data);
-    AnalogueInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    AnalogueInput(Basics& basics, IResourceData& data);
+    AnalogueInput(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

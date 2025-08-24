@@ -28,7 +28,7 @@ namespace IsoRealms::Spindizzy {
 
   class ThemeColour : public IColour {
     public:
-    ThemeColour(IProject& project, ThemeSet& parent);
+    ThemeColour(ThemeSet& parent);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& idd);
       
     void set(IColour* colour);

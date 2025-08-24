@@ -26,7 +26,7 @@
 #include "Choice.h"
 
 namespace IsoRealms {
-  UIManager::UIManager(IProject& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback) :
+  UIManager::UIManager(Project& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback) :
             cProject(project),
             cStyle(style),
             cFinishCallback(finishCallback),
@@ -309,7 +309,7 @@ namespace IsoRealms {
     return cHidden;
   }
 
-  IProject& UIManager::getProject() const {
+  Project& UIManager::getProject() const {
     return cProject;
   }
 

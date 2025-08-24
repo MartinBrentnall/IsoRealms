@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
             cDefType(type),
             cDefObject(object),
             cRuntimePhysicsObject(cDefObject.getZone().getWorld().getSpindizzy(), this) { //, &cDefMovable) {
-    cDefObject.getZone().getWorld().getSpindizzy().getProject().init([this](IAssets& assets) {
+    cDefObject.getZone().getWorld().getSpindizzy().getProject().init([this]() {
       std::string mMovableID = cDefType.getMovableID();
       cDefMovable = cDefObject.getMovable(mMovableID);
     });

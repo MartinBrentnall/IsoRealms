@@ -18,7 +18,6 @@
  */
 #include "ActionClient.h"
 
-#include "IProject.h"
 #include "IResourceData.h"
 #include "Project.h"
 

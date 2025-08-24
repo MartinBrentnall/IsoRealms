@@ -24,11 +24,11 @@ namespace IsoRealms::UI {
   MenuItem::MenuItem(UI& ui, Menu& owner) :
             cUI(ui),
             cOwner(owner),
-            cMenuItem(ui.getMenuItem(this, "Action", owner)) {
+            cMenuItem(ui.getAsset(this, "Action", owner)) {
   }
 
   void MenuItem::init(JSONObject object, const std::string& member, Menu& owner) {
-    cUI.getProject().init([this, member, object, &owner](IAssets& assets) {
+    cUI.getProject().init([this, member, object, &owner]() {
       set(object, member, owner);
     });
   }
@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
   void MenuItem::set(JSONObject object, const std::string& member, Menu& owner) {
     JSONObject mAssetObject = object.getObject(member);
     cUI.release(this, cMenuItem);
-    cMenuItem = cUI.getMenuItem(this, mAssetObject, owner);
+    cMenuItem = cUI.getAsset(this, mAssetObject, owner);
   }
 
   void MenuItem::setID(const std::string& id) {

@@ -29,8 +29,8 @@ namespace IsoRealms::Basics {
 
   class SequenceTrackFloatEvent : public ISequenceTrackEvent {
     public:
-    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade = true);
-    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, IProject& project, JSONObject object);
+    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, unsigned int time, bool fade = true);
+    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, JSONObject object);
 
     void save(JSONObject object) const;
     IFloat* getValue() const;
@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) override;
+    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
 
     private:
     static const std::string JSON_DURATION;

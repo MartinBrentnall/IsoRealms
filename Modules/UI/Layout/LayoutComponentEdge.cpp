@@ -29,11 +29,27 @@ namespace IsoRealms::UI {
 
   LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, float aspectRatio, float value) :
             cDefParent(parent),
-            cDefLocation(parent.getLayout().getUI(), *this),
-            cDefOffset(parent.getLayout().getUI(), *this) {
+            cDefLocation(*this),
+            cDefOffset(*this) {
     setLocation(aspectRatio, value);
   }
   
+  UI& LayoutComponentEdge::getAssetManager() {
+    return cDefParent.getLayout().getUI();
+  }
+
+  Project& LayoutComponentEdge::getProject() const {
+    return cDefParent.getLayout().getResourceData().getProject();
+  }
+
+  bool LayoutComponentEdge::isReadOnly() const {
+    return cDefParent.getLayout().getResourceData().isReadOnly();
+  }
+
+  void LayoutComponentEdge::setOwner(ProjectFile* owner) {
+    cDefParent.getLayout().getResourceData().setOwner(owner);
+  }
+
   LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag) :
             LayoutComponentEdge(parent, 1.0f, 0.0f) {
     JSONObject mEdgeObject = object.getObject(tag);

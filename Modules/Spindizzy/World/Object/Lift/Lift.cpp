@@ -82,7 +82,7 @@ namespace IsoRealms::Spindizzy {
             cDefSpeedUp(object.getInteger(JSON_UP_SPEED)),
             cDefSpeedDown(object.getInteger(JSON_DOWN_SPEED)),
             cSurface(*this) {
-    cZone.getWorld().getSpindizzy().getProject().init([this, object](IAssets& assets) {
+    cZone.getWorld().getSpindizzy().getProject().init([this, object]() {
       cDefType = cZone.getWorld().getSpindizzy().getLiftType(object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();

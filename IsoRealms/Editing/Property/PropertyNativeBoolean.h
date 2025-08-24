@@ -29,7 +29,7 @@ namespace IsoRealms {
 
   class PropertyNativeBoolean : public Property {
     public:
-    PropertyNativeBoolean(PropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction = nullptr);
+    PropertyNativeBoolean(PropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -43,7 +43,7 @@ namespace IsoRealms {
     private:
     class BooleanSelection {
       public:
-      BooleanSelection(std::function<void(bool)> setter, IProject& project, bool value);
+      BooleanSelection(std::function<void(bool)> setter, Project& project, bool value);
 
       /*******************************\
       * Interface for PropertyAsset *
@@ -62,7 +62,7 @@ namespace IsoRealms {
       static const std::string ID_TRUE;
       static const std::string ID_FALSE;
 
-      IProject& cProject;
+      Project& cProject;
       std::function<void(bool)> cSetter;
       bool cValue;
     };

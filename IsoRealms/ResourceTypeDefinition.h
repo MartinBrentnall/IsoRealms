@@ -21,7 +21,6 @@
 #include <map>
 #include <string>
 
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceTypeDefinition.h"
 #include "IsoRealms/Resource.h"
 
@@ -62,14 +61,14 @@ namespace IsoRealms {
               cModule(module) {
     }
       
-    IResource* createResource(IResourceType& parent, IProject& project, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) override {
+    IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) override {
       std::string mAvailableName = Utils::getAvailableKey(cResources, name);
-      return cResources.emplace(mAvailableName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, mAvailableName, ownerProject, resourceDataPath)).first->second.get();
+      return cResources.emplace(mAvailableName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, mAvailableName, ownerProject, resourceDataPath)).first->second.get();
     }
     
-    IResource* loadResource(IResourceType& parent, IProject& project, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) override {
+    IResource* loadResource(ResourceType& parent, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) override {
       std::string mResourceName = object.getString(JSON_ID);
-      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, object, ownerProject, resourceDataPath)).first->second.get();
+      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, object, ownerProject, resourceDataPath)).first->second.get();
       mResource->registerAssets();
       return mResource;
     }
@@ -112,8 +111,8 @@ namespace IsoRealms {
       return Iterator(this, cResources.end());
     }
     
-    void deleteResource(Project& project, IAssets& releaser, IResource* resource) override {
-      resource->unregisterAssets(project, releaser);
+    void deleteResource(Project& project, IResource* resource) override {
+      resource->unregisterAssets(project);
       for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResourceType : cResources) {
         if (mResourceType.second.get() == resource) {
           cResources.erase(mResourceType.first);

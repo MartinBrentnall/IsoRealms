@@ -34,8 +34,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    Ball(Spindizzy& spindizzy, IResourceData& data);
+    Ball(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool);
@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
     // Resource definition constants.
     static const float CIRCLE_RESOLUTION;
 
-    IProject& cProject;
+    Project& cProject;
 
     // Definition data.
     Colour cDefFill;            /// Colour used for the fill of the ball.

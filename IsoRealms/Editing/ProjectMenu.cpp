@@ -19,6 +19,7 @@
 #include "ProjectMenu.h"
 
 #include "IsoRealms/Project.h"
+#include "IsoRealms/ResourceType.h"
 
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style, ""),
@@ -40,8 +41,8 @@ namespace IsoRealms {
     }));
 
     for (IModule* mModule : mModules) {
-      std::vector<IResourceType*> mResourceTypes = mModule->getResourceTypes();
-      for (IResourceType* mResourceType : mResourceTypes) {
+      std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
+      for (ResourceType* mResourceType : mResourceTypes) {
         mCategories.insert(mResourceType->getCategory());
       }
     }

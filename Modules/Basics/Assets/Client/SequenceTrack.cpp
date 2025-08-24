@@ -21,21 +21,12 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrack::SequenceTrack(Basics& basics, Sequence& sequence) :
-            Asset<SequenceTrack, ISequenceTrack, Basics>(basics, basics.getSequenceTrack(this, "Colour", sequence)),
-            cOwner(sequence) {
+  SequenceTrack::SequenceTrack(Sequence& sequence) :
+            Asset<SequenceTrack, ISequenceTrack, Sequence>(sequence, sequence.getAssetManager().getAsset(this, "Colour", sequence)) {
   }
 
-  ISequenceTrack* SequenceTrack::createLiteralAsset(Basics& basics) {
-    return basics.getSequenceTrack(this, "Colour", cOwner);
-  }
-  
-  ISequenceTrack* SequenceTrack::getAsset(Basics& basics, JSONObject object) {
-    return basics.getSequenceTrack(this, object, cOwner);
-  }
-  
-  ISequenceTrack* SequenceTrack::getAsset(Basics& basics, const std::string& id) {
-    return basics.getSequenceTrack(this, id, cOwner);
+  ISequenceTrack* SequenceTrack::createLiteralAsset(Sequence& sequence) {
+    return sequence.getAssetManager().getAsset(this, "Colour", sequence);
   }
   
   bool SequenceTrack::isDefaultConfiguration() const {

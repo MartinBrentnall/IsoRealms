@@ -32,8 +32,8 @@ namespace IsoRealms::Spindizzy {
   class Top final : public IModel,
                     public IModelInstance {
     public:
-    Top(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    Top(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    Top(Spindizzy& spindizzy, IResourceData& data);
+    Top(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -76,7 +76,7 @@ namespace IsoRealms::Spindizzy {
     static const float HEIGHT;
 
     // External interfaces.
-    IProject& cProject;
+    Project& cProject;
 
     // Definition data.
     Colour cDefColourTop;     /// Colour of the top.

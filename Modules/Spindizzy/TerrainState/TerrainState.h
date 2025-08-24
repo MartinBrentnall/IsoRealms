@@ -36,8 +36,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    TerrainState(Spindizzy& spindizzy, IResourceData& data);
+    TerrainState(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -107,10 +107,9 @@ namespace IsoRealms::Spindizzy {
     /**
      * Construct the terrain state according to specified parameters.
      *
-     * @param project Project to which this terrain state belongs.
      * @param name ID of this terrain state.
      * @param value initial value of this terrain state.
      */
-    TerrainState(IProject& project, IResourceData& owner, const std::string& id, bool value, float iconScale);
+    TerrainState(IResourceData& owner, const std::string& id, bool value, float iconScale);
   };
 }

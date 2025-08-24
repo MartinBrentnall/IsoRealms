@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
             cDefAngle(VALUE_NORTH_WEST),
             cDefRollDuration(DEFAULT_DURATION),
             cListener(nullptr),
-            cLuaBinding(view.getSpindizzy().getProject(), this) {
+            cLuaBinding(view.getSpindizzy().getProject().getLuaState(), this) {
   }
   
   CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view, JSONObject object) :

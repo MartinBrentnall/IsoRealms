@@ -55,26 +55,26 @@ namespace IsoRealms::Spindizzy {
   const std::string C64LiftGraphics::JSON_PRIMARY   = "primary";
   const std::string C64LiftGraphics::JSON_SECONDARY = "secondary";
 
-  C64LiftGraphics::C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProject(project),
+  C64LiftGraphics::C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data) :
+            cProject(data.getProject()),
             cDefPrimary(data, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefSecondary(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cNeedsRedrawing(false) {
-    cTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[SQUARE_NONE]  = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[SQUARE_HALF]  = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[SQUARE_BOTH]  = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(project, 128, 128);
-    cTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(project, 128, 128);
+    cTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[SQUARE_NONE]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[SQUARE_HALF]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[SQUARE_BOTH]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
     setNeedsRedrawing();
   }
   
-  C64LiftGraphics::C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            C64LiftGraphics(project, spindizzy, data) {
+  C64LiftGraphics::C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            C64LiftGraphics(spindizzy, data) {
     cDefOutline.init(object, JSON_OUTLINE);
     cDefPrimary.init(object, JSON_PRIMARY);
     cDefSecondary.init(object, JSON_SECONDARY);

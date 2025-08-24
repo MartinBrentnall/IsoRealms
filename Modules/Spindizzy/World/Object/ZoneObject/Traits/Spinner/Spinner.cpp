@@ -27,8 +27,8 @@
 namespace IsoRealms::Spindizzy {
   Spinner::Spinner(ZoneObject& object, ZoneObjectTypeTraitSpinner& type) :
             cDefType(type),
-            cLuaBinding(object.getZone().getWorld().getSpindizzy().getProject(), this) {
-    object.getZone().getWorld().getSpindizzy().getProject().init([this, &object](IAssets& assets) {
+            cLuaBinding(object.getZone().getWorld().getSpindizzy().getProject().getLuaState(), this) {
+    object.getZone().getWorld().getSpindizzy().getProject().init([this, &object]() {
       std::string mLocationID = cDefType.getLocationID();
       cDefLocation = object.getLocation(mLocationID);
       cDefModel = cDefType.createModel();

@@ -22,6 +22,7 @@
 #include "Exception/InitException.h"
 #include "Exception/ResourceInitException.h"
 #include "ResourceType.h"
+#include "System.h"
 
 namespace IsoRealms {
   const std::string Module::JSON_CONFIGURATION = "configuration";
@@ -117,7 +118,7 @@ namespace IsoRealms {
       for (JSONValue mInstanceValue : mResourceObject.getArray(JSON_INSTANCES)) {
         JSONObject mInstanceObject = mInstanceValue.getObject();
         mInstanceObject.getString(JSON_NAME);
-        mResourceType->loadResource(mInstanceObject, cProject, ownerProject, cName + "/" + mResourceTypeName);
+        mResourceType->loadResource(mInstanceObject, ownerProject, cName + "/" + mResourceTypeName);
       }
     }
   }
@@ -189,16 +190,12 @@ namespace IsoRealms {
     return cName;
   }
 
-  std::vector<IResourceType*> Module::getResourceTypes() {
-    std::vector<IResourceType*> mResourceTypes;
+  std::vector<ResourceType*> Module::getResourceTypes() {
+    std::vector<ResourceType*> mResourceTypes;
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
       mResourceTypes.emplace_back(mResourceType.second.get());
     }
     return mResourceTypes;
-  }
-
-  IProject& Module::getProjectRuntime() {
-    return cProject;
   }
 
   std::string Module::getName(const ResourceType* resourceType) const {
@@ -208,10 +205,6 @@ namespace IsoRealms {
       }
     }
     throw ArgumentException("ERROR: Module::getName: Specified resource type not found in this module.");
-  }
-
-  IAssets& Module::getAssets() {
-    return cProject;
   }
 
   Project& Module::getProject() {

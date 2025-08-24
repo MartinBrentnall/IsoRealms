@@ -26,21 +26,15 @@
 
 namespace IsoRealms::Spindizzy {
   class WorldView;
-  class Spindizzy;
 
-  class ZoneViewType : public Asset<ZoneViewType, IZoneViewType, Spindizzy> {
+  class ZoneViewType : public Asset<ZoneViewType, IZoneViewType, WorldView> {
     public:
-    ZoneViewType(Spindizzy& spindizzy, WorldView& owner);
+    ZoneViewType(WorldView& owner);
 
     /**********************************************\
      * Implements Asset<IZoneViewType, Spindizzy> *
     \**********************************************/
-    IZoneViewType* createLiteralAsset(Spindizzy& spindizzy);
-    IZoneViewType* getAsset(Spindizzy& spindizzy, JSONObject object);
-    IZoneViewType* getAsset(Spindizzy& spindizzy, const std::string& id);
+    IZoneViewType* createLiteralAsset(WorldView& owner);
     bool isDefaultConfiguration() const;
-
-    private:
-    WorldView& cOwner;
   };
 }

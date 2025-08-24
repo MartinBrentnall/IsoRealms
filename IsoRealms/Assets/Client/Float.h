@@ -36,8 +36,6 @@ namespace IsoRealms {
      * Implements Asset<IFloat, IResourceData> *
     \*******************************************/
     IFloat* createLiteralAsset(IResourceData& owner);
-    IFloat* getAsset(IResourceData& owner, JSONObject object);
-    IFloat* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;
 
     /**************************************\

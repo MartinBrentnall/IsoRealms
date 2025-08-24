@@ -18,10 +18,12 @@
  */
 #include "ResourceTypeMenu.h"
 
+#include "IsoRealms/ResourceType.h"
+
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  ResourceTypeMenu::ResourceTypeMenu(UIManager& manager, IUIStyle& style, IResourceType& resourceType) : Menu(manager, style, resourceType.getPlural(), 1.0f, 1.0f, 1.0f),
+  ResourceTypeMenu::ResourceTypeMenu(UIManager& manager, IUIStyle& style, ResourceType& resourceType) : Menu(manager, style, resourceType.getPlural(), 1.0f, 1.0f, 1.0f),
             cResourceType(resourceType),
             cRemoveButtonOffset(0.0f),
             cDeleteSelected(false) {

@@ -21,11 +21,9 @@
 #include "IScreen.h"
 
 namespace IsoRealms {
-  class IProject;
-
   class IScreenListener {
     public:
-    virtual void screenAdded(IProject& project, const IScreen* screen) = 0;
+    virtual void screenAdded(const IScreen* screen) = 0;
     virtual void screenRemoved(const IScreen* screen) = 0;
     virtual void screenPreRender(const IScreen* screen) = 0;
     virtual void screenPostRender(const IScreen* screen) = 0;

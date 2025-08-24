@@ -30,8 +30,8 @@ namespace IsoRealms::Spindizzy {
                              public IScreenListener,
                              public IStateListener<IFloat*> {
     public:
-    C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data);
+    C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
     void save(JSONObject object) const;
     bool renderIcon();
@@ -51,7 +51,7 @@ namespace IsoRealms::Spindizzy {
     /******************************\
      * Implements IScreenListener *
     \******************************/
-    void screenAdded(IProject& project, const IScreen* screen) override;
+    void screenAdded(const IScreen* screen) override;
     void screenRemoved(const IScreen* screen) override;
     void screenPreRender(const IScreen* screen) override;
     void screenPostRender(const IScreen* screen) override;
@@ -100,7 +100,7 @@ namespace IsoRealms::Spindizzy {
       public:
       OrientedTexture();
         
-      void addOrientation(const IFloat* angle, IProject& project, bool clamp);
+      void addOrientation(const IFloat* angle, Project& project, bool clamp);
       
       void setRenderTarget(const IFloat* screen);
       void setScreen(const IFloat* screen);
@@ -124,7 +124,7 @@ namespace IsoRealms::Spindizzy {
       LiteralTexture* cCurrentTexture;
     };
 
-    IProject& cProject;
+    Project& cProject;
 
     std::map<std::string, std::unique_ptr<LiteralTexture>> cTextures;
     std::map<std::string, std::unique_ptr<OrientedTexture>> cOrientedTextures;

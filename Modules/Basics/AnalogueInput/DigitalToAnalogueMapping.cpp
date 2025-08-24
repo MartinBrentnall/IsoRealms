@@ -18,6 +18,8 @@
  */
 #include "DigitalToAnalogueMapping.h"
 
+#include "Modules/Basics/Basics.h"
+
 namespace IsoRealms::Basics {
   const std::string DigitalToAnalogueMapping::JSON_DIGITAL_TO_ANALOGUE = "digitalToAnalogue";
   const std::string DigitalToAnalogueMapping::JSON_NAME                = "name";
@@ -26,8 +28,8 @@ namespace IsoRealms::Basics {
 
   const std::string DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE = "DigitalToAnalogue";
 
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(IProject& project, Basics& basics, JSONObject object) :
-            cDefInput(project, basics, object),
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(Basics& basics, JSONObject object) :
+            cDefInput(basics, object),
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
   }
 

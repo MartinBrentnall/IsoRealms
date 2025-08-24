@@ -42,14 +42,6 @@ namespace IsoRealms {
     cAsset->coord(mX / cDefScaleX, mY / cDefScaleY);
   }
 
-  ITexture* Texture::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getTexture(this, object, owner, cListener != nullptr ? this : nullptr);
-  }
-  
-  ITexture* Texture::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getTexture(this, id, owner, cListener != nullptr ? this : nullptr);
-  }
-  
   bool Texture::hasClientConfiguration() const {
     return true;
   }

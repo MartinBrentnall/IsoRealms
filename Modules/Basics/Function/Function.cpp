@@ -31,12 +31,12 @@ namespace IsoRealms::Basics {
   const std::string Function::JSON_TYPE          = "type";
   const std::string Function::JSON_VARIABLE      = "variable";
 
-  Function::Function(IProject& project, Basics& basics, IResourceData& data) :
-            Function(project, basics, "", data.getDummyActionClient()) {
+  Function::Function(Basics& basics, IResourceData& data) :
+            Function(basics, "", data.getDummyActionClient()) {
   }
     
-  Function::Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            Function(project, basics, object.getString(JSON_ID), data.getDummyActionClient(), object, true) {
+  Function::Function(Basics& basics, IResourceData& data, JSONObject object) :
+            Function(basics, object.getString(JSON_ID), data.getDummyActionClient(), object, true) {
   }
 
   void Function::registerAssets(ResourceAssetRegistry& assets) {
@@ -95,7 +95,7 @@ namespace IsoRealms::Basics {
         });
       }
       owner.createPropertyAdd(metadata.getPropertyData("ArgumentAdd"), "New...", [this, &owner, &metadata]() {
-        ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(cProject, *this, getNextAvailableName("newArgument"))).get();
+        ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, getNextAvailableName("newArgument"))).get();
         return owner.createPropertyStruct(metadata.getPropertyData("Argument"), mNewArgumentDefinition->getName(), [this, mNewArgumentDefinition, &metadata](PropertyMaker& owner) {
           return mNewArgumentDefinition->getProperties(owner, metadata, *this);
         }, [this, mNewArgumentDefinition]() {
@@ -106,19 +106,19 @@ namespace IsoRealms::Basics {
     owner.createPropertyCode(metadata.getPropertyData("Code"), [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
   
-  Function::Function(IProject& project, Basics& basics, const std::string& name, IActionClient& owner) :
-            cProject(project),
+  Function::Function(Basics& basics, const std::string& name, IActionClient& owner) :
+            cProject(basics.getProject()),
             cBasics(basics),
             cResourceData(owner.getResourceData()),
-            cDefLuaState(project.getLuaState()->getState()),
+            cDefLuaState(basics.getProject().getLuaState().getState()),
             cDefName(name) {
   }
 
-  Function::Function(IProject& project, Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init) :
-            Function(project, basics, name, owner) {
+  Function::Function(Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init) :
+            Function(basics, name, owner) {
     if (init) {
       for (JSONValue mArgumentValue : object.getArray(JSON_ARGUMENTS)) {
-        cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(project, *this, mArgumentValue.getObject()));
+        cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mArgumentValue.getObject()));
       }
     }
     for (JSONValue mBindingValue : object.getArray(JSON_BINDINGS)) {
@@ -149,7 +149,7 @@ namespace IsoRealms::Basics {
     owner.createPropertyCode(metadata.getPropertyData("Code"), [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
 
-  IProject& Function::getProject() const {
+  IsoRealms::Project& Function::getProject() const {
     return cProject;
   }
 

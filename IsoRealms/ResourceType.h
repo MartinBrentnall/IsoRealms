@@ -21,44 +21,38 @@
 #include <set>
 #include <string>
 
-#include "IModuleInternal.h"
-#include "IProject.h"
 #include "IResource.h"
-#include "IResourceType.h"
 #include "IResourceTypeDefinition.h"
 #include "Persistence/JSONThing.h"
-#include "Resource.h"
 
 namespace IsoRealms {
-  class ResourceType : public IResourceType {
+  class Module;
+
+  class ResourceType {
     public:
-    ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent);
+    ResourceType(IResourceTypeDefinition* resourceType, Module& parent);
     virtual ~ResourceType();
-    void loadResource(JSONObject object, IProject& project, ProjectFile* ownerProject, const std::string& resourceDataPath);
+    void loadResource(JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath);
     void loadMetadata(JSONObject object);
     bool needsSaving(ProjectFile* savingProject) const;
     void save(JSONArray& array, const std::string& tag, ProjectFile* savingProject);
 
-    /****************************\
-     * Implements IResourceType *
-    \****************************/
-    std::string const getPlural() const override;
-    std::string const getSingular() const override;
-    std::set<IResource*> getResources() override;
-    IResource* createResource() override;
-    void renameResource(IResource* resource, const std::string& name) override;
-    void deleteResource(IResource* resource) override;
-    std::string getPath() override;
-    std::string getDataPath(bool user) override;
-    ProjectFile* getProjectFile() override;
-    void makeUserDataDirectory(const std::string& resourceName) override;
-    void renameUserDataDirectory(const std::string& oldName, const std::string& newName) override;
-    std::string getProjectPathPrefix(bool user) override;
-    std::string getCategory() override;
-    std::string getDescription() const override;
-    IAssets& getAssets() override;
-    Project& getProject() override;
-    const Metadata& getMetadata() const override;
+    std::string const getPlural() const;
+    std::string const getSingular() const;
+    std::set<IResource*> getResources();
+    IResource* createResource();
+    void renameResource(IResource* resource, const std::string& name);
+    void deleteResource(IResource* resource);
+    std::string getPath();
+    std::string getDataPath(bool user);
+    ProjectFile* getProjectFile();
+    void makeUserDataDirectory(const std::string& resourceName);
+    void renameUserDataDirectory(const std::string& oldName, const std::string& newName);
+    std::string getProjectPathPrefix(bool user);
+    std::string getCategory();
+    std::string getDescription() const;
+    Project& getProject();
+    const Metadata& getMetadata() const;
 
     private:
     static const std::string JSON_CATEGORY;
@@ -72,7 +66,7 @@ namespace IsoRealms {
     IResourceTypeDefinition* cResourceType;
     std::set<std::string> cOmittedResources;
     std::set<IResource*> cResources;
-    IModuleInternal& cParent;
+    Module& cParent;
     std::string cSingular;
     std::string cPlural;
     std::string cCategory;

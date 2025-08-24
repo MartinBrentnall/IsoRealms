@@ -37,8 +37,6 @@ namespace IsoRealms::Spindizzy {
      * Implements Asset<ISurfacePattern, TerrainType> *
     \**************************************************/
     ISurfacePattern* createLiteralAsset(TerrainType& owner);
-    ISurfacePattern* getAsset(TerrainType& owner, JSONObject object);
-    ISurfacePattern* getAsset(TerrainType& owner, const std::string& id);
     bool isDefaultConfiguration() const;
 
     /***********************************************\

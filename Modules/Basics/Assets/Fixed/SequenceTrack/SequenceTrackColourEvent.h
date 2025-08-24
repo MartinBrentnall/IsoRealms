@@ -29,8 +29,8 @@ namespace IsoRealms::Basics {
 
   class SequenceTrackColourEvent : public ISequenceTrackEvent {
     public:
-    SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade = true);
-    SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, IProject& project, JSONObject object);
+    SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, unsigned int time, bool fade = true);
+    SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, JSONObject object);
 
     void save(JSONObject object) const;
     const IColour* getColour() const;
@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) override;
+    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
 
     private:
 

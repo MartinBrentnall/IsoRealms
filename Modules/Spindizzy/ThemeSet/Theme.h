@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
   
   class Theme : public IStateListener<ITexture*> {
     public:
-    Theme(IProject& project, ThemeSet& themeSet);
-    Theme(IProject& project, ThemeSet& themeSet, JSONObject object);
+    Theme(ThemeSet& themeSet);
+    Theme(ThemeSet& themeSet, JSONObject object);
 
     void save(JSONObject object) const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
@@ -52,8 +52,6 @@ namespace IsoRealms::Spindizzy {
     std::string getElementName(ThemeColour* colour);
     void hintInUse(bool);
 
-    void releaseAssets(IAssets& releaser);
-    
     /****************************************\
      * Implements IStateListener<ITexture*> *
     \****************************************/

@@ -38,8 +38,8 @@ namespace IsoRealms::UI {
     /**********************\
      * Resource Interface *
     \**********************/    
-    Prompt(IProject& project, UI& ui, IResourceData& data);
-    Prompt(IProject& project, UI& ui, IResourceData& data, JSONObject object);
+    Prompt(UI& ui, IResourceData& data);
+    Prompt(UI& ui, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

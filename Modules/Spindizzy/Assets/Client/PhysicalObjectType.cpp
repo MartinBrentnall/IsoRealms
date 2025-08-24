@@ -33,14 +33,6 @@ namespace IsoRealms::Spindizzy {
     return cAsset->getBindingID(binding);
   }
 
-  IPhysicalObjectType* PhysicalObjectType::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return spindizzy.getPhysicalObjectType(this, object);
-  }
-  
-  IPhysicalObjectType* PhysicalObjectType::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return spindizzy.getPhysicalObjectType(this, id);
-  }
-  
   bool PhysicalObjectType::isDefaultConfiguration() const {
     return true;
   }

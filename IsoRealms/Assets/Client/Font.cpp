@@ -27,14 +27,6 @@ namespace IsoRealms {
             Asset<Font, IFont, IResourceData>(owner) {
   }
 
-  IFont* Font::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getFont(this, object, owner);
-  }
-  
-  IFont* Font::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getFont(this, id, owner);
-  }
-  
   bool Font::isDefaultConfiguration() const {
     return true;
   }

@@ -21,11 +21,11 @@
 #include "SequenceTrackAudio.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, IProject& project, unsigned int time) :
+  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, unsigned int time) :
               cParent(parent),
               cEnd(*this),
               cDefTime(time),
-              cDefFile(project, [this]() {
+              cDefFile(owner.getProject(), [this]() {
                 std::string mResource = cDefFile.getPath();
                 if (!cMusic.openFromFile(mResource)) {
                   std::cout << "WARNING: SequenceTrackAudioEvent::SequenceTrackAudioEvent: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
@@ -33,8 +33,8 @@ namespace IsoRealms::Basics {
               }) {
   }
 
-  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, IProject& project, JSONObject object) :
-            SequenceTrackAudioEvent(parent, owner, project, object.getInteger(JSON_TIME)) {
+  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, JSONObject object) :
+            SequenceTrackAudioEvent(parent, owner, object.getInteger(JSON_TIME)) {
     cDefFile.load(JSON_FILE, object);
     std::string mResource = cDefFile.getPath();
     if (!cMusic.openFromFile(mResource)) {
@@ -88,7 +88,7 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyAsset<File>(metadata.getPropertyData("AudioFile"), cDefFile);
   }
 
@@ -108,7 +108,7 @@ namespace IsoRealms::Basics {
     // Not supported.
   }
 
-  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 

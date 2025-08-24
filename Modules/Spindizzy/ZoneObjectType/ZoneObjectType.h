@@ -37,8 +37,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    ZoneObjectType(Spindizzy& spindizzy, IResourceData& data);
+    ZoneObjectType(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

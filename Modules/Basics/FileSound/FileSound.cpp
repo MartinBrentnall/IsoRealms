@@ -25,13 +25,13 @@ namespace IsoRealms::Basics {
 
   std::mutex FileSound::cRuntimeLoadMutex;
 
-  FileSound::FileSound(IProject& project, Basics& basics, IResourceData& data) :
+  FileSound::FileSound(Basics& basics, IResourceData& data) :
             cDefBasics(basics),
-            cDefFile(project) {
+            cDefFile(data.getProject()) {
   }
   
-  FileSound::FileSound(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            FileSound(project, basics, data) {
+  FileSound::FileSound(Basics& basics, IResourceData& data, JSONObject object) :
+            FileSound(basics, data) {
     cDefFile.load(JSON_FILENAME, object);
     reloadData();
   }

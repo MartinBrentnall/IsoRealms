@@ -18,11 +18,5 @@
  */
 #pragma once
 
-#include "Assets/Literal/LiteralBindingType.h"
-#include "Assets/Literal/LiteralBoolean.h"
-#include "Assets/Literal/LiteralColour.h"
-#include "Assets/Literal/LiteralFloat.h"
-#include "Assets/Literal/LiteralInteger.h"
+#include "LiteralVertex.h"
 #include "Assets/Literal/LiteralString.h"
-#include "Assets/Literal/LiteralTexture.h"
-#include "Assets/Literal/LiteralVertex.h"

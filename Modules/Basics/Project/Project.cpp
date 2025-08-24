@@ -25,18 +25,18 @@ namespace IsoRealms::Basics {
   const std::string Project::JSON_OPTIONS   = "options";
   const std::string Project::JSON_RUNNING   = "running";
 
-  Project::Project(IProject& project, Basics& basics, IResourceData& data) :
-            cProject(project),
+  Project::Project(Basics& basics, IResourceData& data) :
+            cProject(data.getProject()),
             cDefReadyAction(data.getDummyActionClient()),
             cDefEndAction(data.getDummyActionClient()),
             cDefRunning(false),
             cDefEditing(false),
             cRuntimeProject(nullptr),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Project::Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            Project(project, basics, data) {
+  Project::Project(Basics& basics, IResourceData& data, JSONObject object) :
+            Project(basics, data) {
     cDefRunning = object.getBoolean(JSON_RUNNING);
     cDefEditing = object.getBoolean(JSON_EDITING);
     cDefEndAction.init(object, JSON_ON_FINISH);
@@ -217,10 +217,6 @@ namespace IsoRealms::Basics {
 
   bool Project::isQuitRequestGranted() const {
     return cRuntimeQuitRequestGranted;
-  }
-
-  void Project::setProperty(const std::string& id, const std::string& value) {
-    cRuntimeProject->setProperty(id, value);
   }
 
   bool Project::input(sf::Event& event) {

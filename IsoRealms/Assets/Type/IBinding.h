@@ -23,7 +23,6 @@
 #include "IAsset.h"
 
 namespace IsoRealms {
-  class IAssets;
   class IBindingRegistry;
 
   class IBinding : public IAsset {

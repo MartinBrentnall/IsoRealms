@@ -68,7 +68,7 @@ namespace IsoRealms::Spindizzy {
       float getFontSize() const override;
       IFont* getCodeFont() const override;
       float getCodeFontSize() const override;
-      IProject& getProject() const override;
+      Project& getProject() const override;
       
       private:
       PropertiesTool& cParent;

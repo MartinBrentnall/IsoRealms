@@ -46,10 +46,10 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    DigitalInput(IProject& project, Basics& basics);
-    DigitalInput(IProject& project, Basics& basics, IResourceData& data);
-    DigitalInput(IProject& project, Basics& basics, JSONObject object);
-    DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    DigitalInput(Basics& basics);
+    DigitalInput(Basics& basics, IResourceData& data);
+    DigitalInput(Basics& basics, JSONObject object);
+    DigitalInput(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
     void save(JSONObject object) const;
@@ -171,7 +171,7 @@ namespace IsoRealms::Basics {
     };
 
     // External interfaces.
-    IProject& cProject;
+    Project& cProject;
 
     // Definition data.
     std::vector<std::unique_ptr<PhysicalInputMapping>> cDefMapping; /// Default input mapping.

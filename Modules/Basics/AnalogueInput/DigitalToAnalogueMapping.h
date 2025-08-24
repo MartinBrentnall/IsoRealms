@@ -37,7 +37,7 @@ namespace IsoRealms::Basics {
     public:
     static const std::string TYPE_DIGITAL_TO_ANALOGUE;
 
-    DigitalToAnalogueMapping(IProject& project, Basics& basics, JSONObject object);
+    DigitalToAnalogueMapping(Basics& basics, JSONObject object);
 
     /************************************\
      * Implements IAnalogueInputMapping *

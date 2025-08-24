@@ -28,23 +28,23 @@ namespace IsoRealms::Spindizzy {
 
   const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
 
-  WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  WorldView::WorldView(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefWorld(nullptr),
-            cDefCamera(spindizzy, *this),
-            cDefZoneViewType(spindizzy, *this),
+            cDefCamera(*this),
+            cDefZoneViewType(*this),
             cDefZoom(1.0f),
             cRuntimeZone(nullptr),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
     
-  WorldView::WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            WorldView(project, spindizzy, data) {
+  WorldView::WorldView(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            WorldView(spindizzy, data) {
     cDefZoom = object.getFloat(JSON_ZOOM, 1.0f);
     cDefCamera.set(object, JSON_CAMERA);
     cDefZoneViewType.set(object, JSON_TYPE);
-    project.init([this, object](IAssets& resources) {
+    data.getProject().init([this, object]() {
       cDefWorld = cSpindizzy.getWorld(object.getString(JSON_WORLD));
       cDefWorld->registerView(*this);
       std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
@@ -82,6 +82,22 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyNativeFloat(        metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
   }
   
+  Spindizzy& WorldView::getAssetManager() {
+    return cSpindizzy;
+  }
+
+  Project& WorldView::getProject() const {
+    return cResourceData.getProject();
+  }
+
+  bool WorldView::isReadOnly() const {
+    return cResourceData.isReadOnly();
+  }
+
+  void WorldView::setOwner(ProjectFile* owner) {
+    cResourceData.setOwner(owner);
+  }
+
   void WorldView::updateRuntime(unsigned int milliseconds) {
     cDefCamera->updateRuntime(milliseconds);
   }

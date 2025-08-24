@@ -26,21 +26,15 @@
 
 namespace IsoRealms::Spindizzy {
   class WorldView;
-  class Spindizzy;
 
-  class Camera : public Asset<Camera, ICamera, Spindizzy> {
+  class Camera : public Asset<Camera, ICamera, WorldView> {
     public:
-    Camera(Spindizzy& spindizzy, WorldView& owner);
+    Camera(WorldView& owner);
 
     /****************************************\
      * Implements Asset<ICamera, Spindizzy> *
     \****************************************/
-    ICamera* createLiteralAsset(Spindizzy& spindizzy);
-    ICamera* getAsset(Spindizzy& spindizzy, JSONObject object);
-    ICamera* getAsset(Spindizzy& spindizzy, const std::string& id);
+    ICamera* createLiteralAsset(WorldView& owner);
     bool isDefaultConfiguration() const;
-
-    private:
-    WorldView& cOwner;
   };
 }

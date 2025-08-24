@@ -43,8 +43,8 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    Function(IProject& project, Basics& basics, IResourceData& data);
-    Function(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    Function(Basics& basics, IResourceData& data);
+    Function(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object, bool script = false) const;
     bool renderIcon() const;
@@ -52,10 +52,10 @@ namespace IsoRealms::Basics {
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     // Constructors for use by scripts (in-line functions).
-    Function(IProject& project, Basics& basics, const std::string& name, IActionClient& owner);
-    Function(IProject& project, Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init);
+    Function(Basics& basics, const std::string& name, IActionClient& owner);
+    Function(Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init);
     void getScriptProperties(PropertyMaker& owner, const Metadata& metadata);
-    IProject& getProject() const;
+    IsoRealms::Project& getProject() const;
     IResourceData& getResourceData() const;
     void setBindingName(Binding& binding, const std::string& name);
     bool isBindingNameAllowed(Binding& binding, const std::string& name);
@@ -113,7 +113,7 @@ namespace IsoRealms::Basics {
     };
 
     // External interfaces.
-    IProject& cProject;
+    Project& cProject;
     Basics& cBasics;
     IResourceData& cResourceData;
     sol::state* const cDefLuaState; /// The Lua state machine.

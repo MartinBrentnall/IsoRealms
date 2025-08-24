@@ -37,8 +37,8 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data);
-    ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    ProjectConfigurer(Basics& basics, IResourceData& data);
+    ProjectConfigurer(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -72,7 +72,7 @@ namespace IsoRealms::Basics {
     float getFontSize() const override;
     IFont* getCodeFont() const override;
     float getCodeFontSize() const override;
-    IProject& getProject() const override;
+    IsoRealms::Project& getProject() const override;
 
     /*******************************\
      * Implements IBindingRegistry *

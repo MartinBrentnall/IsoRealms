@@ -31,20 +31,20 @@ namespace IsoRealms::UI {
   const float Menu::DEFAULT_FONT_SIZE     = 0.05f;
   const float Menu::DEFAULT_SHADOW_OFFSET = 0.008f;
 
-  Menu::Menu(IProject& project, UI& ui, IResourceData& data) :
+  Menu::Menu(UI& ui, IResourceData& data) :
             cResourceData(data),
-            cHatHandler(project.getApplication().getHatHandler()),
+            cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefExitAction(data.getDummyActionClient()),
             cDefFont(data),
             cDefColour(data, 1.0f, 1.0f, 1.0f),
             cDefFontSize(DEFAULT_FONT_SIZE),
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cRuntimeSelectedItem(996),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Menu::Menu(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
-            Menu(project, ui, data) {
+  Menu::Menu(UI& ui, IResourceData& data, JSONObject object) :
+            Menu(ui, data) {
     for (JSONValue mOptionValue : object.getArray(JSON_OPTIONS)) {
       cDefItems.emplace_back(std::make_unique<MenuItem>(ui, *this)).get()->set(mOptionValue.getObject(), JSON_ITEM, *this);
     }

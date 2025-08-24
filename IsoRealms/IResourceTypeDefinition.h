@@ -21,19 +21,17 @@
 namespace IsoRealms {
   class File;
   class IAssetRegistry;
-  class IAssets;
-  class IProject;
   class IOptions;
   class IResource;
-  class IResourceType;
   class ModuleOptions;
   class Project;
+  class ResourceType;
 
   class IResourceTypeDefinition {
     public:
-    virtual IResource* createResource(IResourceType& parent, IProject& project, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
-    virtual IResource* loadResource(IResourceType& parent, IProject& project, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
-    virtual void deleteResource(Project& project, IAssets& releaser, IResource* resource) = 0;
+    virtual IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
+    virtual IResource* loadResource(ResourceType& parent, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
+    virtual void deleteResource(Project& project, IResource* resource) = 0;
     virtual void renameResource(IResource* resource, const std::string& name) = 0;
   };
 }

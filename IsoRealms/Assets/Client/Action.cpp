@@ -36,14 +36,6 @@ namespace IsoRealms {
     }
   }
 
-  IAction* Action::getAsset(IActionClient& owner, JSONObject object) {
-    return owner.getAssetManager().getAction(this, object, owner);
-  }
-  
-  IAction* Action::getAsset(IActionClient& owner, const std::string& id) {
-    return owner.getAssetManager().getAction(this, id, owner);
-  }
-  
   bool Action::isDefaultConfiguration() const {
     return true;
   }

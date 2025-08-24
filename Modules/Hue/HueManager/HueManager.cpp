@@ -91,12 +91,12 @@ namespace IsoRealms::Hue {
   
   const int HueManager::DEBUG_LEVEL = HUE_MSG_ERR;
   
-  HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data) :
+  HueManager::HueManager(Hue& hue, IResourceData& data) :
             cResourceData(data) {
   }
   
-  HueManager::HueManager(IProject& project, Hue& hue, IResourceData& data, JSONObject object) :
-            HueManager(project, hue, data) {
+  HueManager::HueManager(Hue& hue, IResourceData& data, JSONObject object) :
+            HueManager(hue, data) {
     cDefBridgeAddress = object.getString(JSON_BRIDGE);
     cDefBridgeUser    = object.getString(JSON_USER);
     cDefBridgePSK     = object.getString(JSON_PSK);

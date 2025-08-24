@@ -23,13 +23,12 @@
 
 namespace IsoRealms {
   class JSONObject;
-  class IAssets;
   class IModule;
-  class IProject;
   class IProperty;
   class IResourceTypeRegistry;
   class LuaState;
   class ModuleOptions;
+  class Project;
   class ResourceAssetRegistry;
 
   class IModuleHandle {
@@ -68,11 +67,11 @@ namespace IsoRealms {
   };
 
 #if __linux__
-  typedef IModuleHandle* createModule(IProject* project, IResourceTypeRegistry* resourceTypeRegistry);
+  typedef IModuleHandle* createModule(Project* project, IResourceTypeRegistry* resourceTypeRegistry);
   typedef void destroyModule(IModuleHandle* module);
   typedef void initLuaInterfaces(LuaState* luaState);
 #elif _WIN32
-  typedef IModuleHandle* (__stdcall* createModule)(IProject* project, IResourceTypeRegistry* resourceTypeRegistry);
+  typedef IModuleHandle* (__stdcall* createModule)(Project* project, IResourceTypeRegistry* resourceTypeRegistry);
   typedef void (__stdcall* destroyModule)(IModuleHandle* module);
   typedef void (__stdcall* initLuaInterfaces)(LuaState* luaState);
 #endif

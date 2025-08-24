@@ -22,13 +22,13 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneType::ZoneType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  ZoneType::ZoneType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy) {
     cSpindizzy.added(this);
   }
   
-  ZoneType::ZoneType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            ZoneType(project, spindizzy, data) {
+  ZoneType::ZoneType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            ZoneType(spindizzy, data) {
   }
 
   void ZoneType::registerAssets(ResourceAssetRegistry& assets) {

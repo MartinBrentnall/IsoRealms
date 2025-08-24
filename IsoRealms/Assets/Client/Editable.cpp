@@ -29,14 +29,6 @@ namespace IsoRealms {
             Asset<Editable, IEditable, IResourceData>(owner) {
   }
 
-  IEditable* Editable::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getEditable(this, object, owner);
-  }
-  
-  IEditable* Editable::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getEditable(this, id, owner);
-  }
-  
   bool Editable::isDefaultConfiguration() const {
     return true;
   }

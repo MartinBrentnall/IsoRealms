@@ -76,7 +76,7 @@ namespace IsoRealms::UI {
 
     // External interfaces.
     const Metadata& cMetadata;
-    IProject& cProject;
+    Project& cProject;
     HatHandler& cHatHandler;
     
     // Definition data.

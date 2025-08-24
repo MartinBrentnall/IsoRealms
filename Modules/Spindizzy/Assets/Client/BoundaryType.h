@@ -37,8 +37,6 @@ namespace IsoRealms::Spindizzy {
     /**********************************************\
      * Implements Asset<IBoundaryType, Spindizzy> *
     \**********************************************/
-    IBoundaryType* getAsset(Spindizzy& spindizzy, JSONObject object);
-    IBoundaryType* getAsset(Spindizzy& spindizzy, const std::string& id);
     bool isDefaultConfiguration() const;
   };
 }

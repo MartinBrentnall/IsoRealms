@@ -19,6 +19,7 @@
 #include "PropertiesMenu.h"
 
 #include "IsoRealms/Project.h"
+#include "IsoRealms/ResourceType.h"
 
 #include "Property/IPropertyEditor.h"
 

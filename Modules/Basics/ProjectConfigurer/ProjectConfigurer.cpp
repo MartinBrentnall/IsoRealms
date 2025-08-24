@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_ON_EXIT          = "onExit";
   const std::string ProjectConfigurer::JSON_MAPPING          = "mapping";
 
-  ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data) :
+  ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data) :
             cActionClient(data, *this),
             cDefFont(data),
             cDefCodeFont(data),
@@ -38,7 +38,7 @@ namespace IsoRealms::Basics {
             cDefCodeFontSize(0.02f),
             cDefExitAction(cActionClient),
             cDefEditorAction(cActionClient),
-            cProjectConfigurationUI(project, *this, [this]() {
+            cProjectConfigurationUI(data.getProject(), *this, [this]() {
               cDefExitAction.execute();
             }, [this](IEditable* editor) {
               cBindingEditor.setValue(editor);
@@ -59,12 +59,12 @@ namespace IsoRealms::Basics {
             cConfirm(data, *this, SignalInputID::CONFIRM),
             cPreviousItem(data, *this, SignalInputID::MOVE_CURSOR_UP),
             cNextItem(data, *this, SignalInputID::MOVE_CURSOR_DOWN),
-            cLuaBinding(project, this),
-            cBindingEditor(project, nullptr, this) {
+            cLuaBinding(data.getProject().getLuaState(), this),
+            cBindingEditor(data.getProject().getLuaState(), nullptr, this) {
   }
 
-  ProjectConfigurer::ProjectConfigurer(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            ProjectConfigurer(project, basics, data) {
+  ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data, JSONObject object) :
+            ProjectConfigurer(basics, data) {
     for (JSONValue mInputValue : object.getArray(JSON_INPUTS)) {
       JSONObject mInputObject = mInputValue.getObject();
       std::string mInputID = mInputObject.getString(JSON_INPUT);
@@ -165,7 +165,7 @@ namespace IsoRealms::Basics {
     return cDefCodeFontSize;
   }
   
-  IProject& ProjectConfigurer::getProject() const {
+  IsoRealms::Project& ProjectConfigurer::getProject() const {
     return cProjectConfigurationUI.getProject();
   }  
 

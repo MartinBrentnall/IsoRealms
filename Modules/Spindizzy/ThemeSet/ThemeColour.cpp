@@ -18,13 +18,15 @@
  */
 #include "ThemeColour.h" 
 
+#include "Modules/Spindizzy/Spindizzy.h"
+
 #include "ThemeSet.h"
 
 namespace IsoRealms::Spindizzy {
-  ThemeColour::ThemeColour(IProject& project, ThemeSet& parent) :
+  ThemeColour::ThemeColour(ThemeSet& parent) :
             cParent(parent),
             cColour(nullptr),
-            cLuaBinding(project, this) {
+            cLuaBinding(parent.getSpindizzy().getProject().getLuaState(), this) {
   }
 
   void ThemeColour::registerAssets(ResourceAssetRegistry& assets, const std::string& id) {

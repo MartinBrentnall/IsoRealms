@@ -25,14 +25,6 @@ namespace IsoRealms::Spindizzy {
             Asset<WorldEditorTool, IWorldEditorTool, Spindizzy>(spindizzy) {
   }
 
-  IWorldEditorTool* WorldEditorTool::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return spindizzy.getWorldEditorTool(this, object);
-  }
-  
-  IWorldEditorTool* WorldEditorTool::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return spindizzy.getWorldEditorTool(this, id);
-  }
-  
   bool WorldEditorTool::isDefaultConfiguration() const {
     return true;
   }

@@ -24,10 +24,10 @@ namespace IsoRealms::Spindizzy {
   CameraVariant::CameraVariant(const Metadata& metadata, WorldView& view) :
             cMetadata(metadata),
             cParent(view),
-            cDefYaw(cParent.getSpindizzy(), view),
-            cDefPitch(cParent.getSpindizzy(), view),
-            cDefLocation(cParent.getSpindizzy(), view),
-            cDefZoom(cParent.getSpindizzy(), view) {
+            cDefYaw(view),
+            cDefPitch(view),
+            cDefLocation(view),
+            cDefZoom(view) {
   }
   
   CameraVariant::CameraVariant(const Metadata& metadata, WorldView& view, JSONObject object) :

@@ -27,17 +27,17 @@ namespace IsoRealms::UI {
   const unsigned int VirtualKeyboard::COLUMNS           = 10;
   const unsigned int VirtualKeyboard::CARET_BLINK_DELAY = 200;
 
-  VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  VirtualKeyboard::VirtualKeyboard(UI& ui, IResourceData& data) :
+            cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefConfirmAction(data.getDummyActionClient()),
             cDefSelectionColour(data, 1.0f, 0.0f, 1.0f),
             cDefFont(data),
             cRuntimeControllerCaps(false),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  VirtualKeyboard::VirtualKeyboard(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
-                   VirtualKeyboard(project, ui, data) {
+  VirtualKeyboard::VirtualKeyboard(UI& ui, IResourceData& data, JSONObject object) :
+                   VirtualKeyboard(ui, data) {
     cDefSelectionColour.init(object, JSON_SELECTION_COLOUR);
     cDefFont.init(object, JSON_FONT);
     cDefConfirmAction.init(object, JSON_ON_CONFIRM);

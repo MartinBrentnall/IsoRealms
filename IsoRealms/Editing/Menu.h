@@ -27,6 +27,7 @@
 #include "IsoRealms/IApplication.h"
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/IModule.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "IUIStyle.h"

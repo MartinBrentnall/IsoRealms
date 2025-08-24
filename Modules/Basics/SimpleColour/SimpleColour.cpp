@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   const std::string SimpleColour::JSON_BLUE  = "blue";
   const std::string SimpleColour::JSON_ALPHA = "alpha";
 
-  SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data) :
+  SimpleColour::SimpleColour(Basics& basics, IResourceData& data) :
             cDefRed(0.0f),
             cDefGreen(0.0f),
             cDefBlue(0.0f),
@@ -36,12 +36,12 @@ namespace IsoRealms::Basics {
             cEditingLastKnownHue(Utils::getHue(cDefRed, cDefGreen, cDefBlue)),
             cEditingLastKnownSaturation(Utils::getSaturation(cDefRed, cDefGreen, cDefBlue)),
             cEditingLastKnownLightness(Utils::getLightness(cDefRed, cDefGreen, cDefBlue)),
-            cLuaBinding(project, this),
+            cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  SimpleColour::SimpleColour(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleColour(project, basics, data) {
+  SimpleColour::SimpleColour(Basics& basics, IResourceData& data, JSONObject object) :
+            SimpleColour(basics, data) {
     cRuntimeRed   = cDefRed   = object.getFloat(JSON_RED);
     cRuntimeGreen = cDefGreen = object.getFloat(JSON_GREEN);
     cRuntimeBlue  = cDefBlue  = object.getFloat(JSON_BLUE);
@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
     cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
     cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
 
-    project.init([this](IAssets& resources) {
+    data.getProject().init([this]() {
       cStateNotifier->stateChanged(this);
     });
   }

@@ -26,10 +26,6 @@
 namespace IsoRealms {
   template <class FROM> class AssetConvertedString : public IAssetProvider<IResourceData, IString> {
     public:
-    AssetConvertedString(IProject& project) :
-              cProject(project) {
-    }
-
     IString* getAsset(IResourceData& owner, JSONObject object) override {
       return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<FROM>>(owner, object)).first->get();
     }
@@ -51,7 +47,6 @@ namespace IsoRealms {
     }
 
     private:
-    IProject& cProject;
     mutable std::set<std::unique_ptr<IString>> cConvertedAssets;
   };
 }

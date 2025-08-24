@@ -41,14 +41,14 @@ namespace IsoRealms::Basics {
       \**********************************/
       unsigned int getTime() const override;
       void setTime(unsigned int time) override;
-      void getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) override;
+      void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
 
       private:
       SequenceTrackAudioEvent& cParent;
     };
 
-    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, IProject& project, unsigned int time);
-    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, IProject& project, JSONObject object);
+    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, unsigned int time);
+    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, JSONObject object);
 
     End* getEndEvent();
 
@@ -68,7 +68,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) override;
+    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
 
     private:
     static const std::string JSON_FILE;

@@ -25,7 +25,7 @@
 #include "IsoRealms/System.h"
 
 namespace IsoRealms {
-  File::File(IProject& project, std::function<void()> changeCallback) :
+  File::File(Project& project, std::function<void()> changeCallback) :
             cProject(project),
             cChangeCallback(changeCallback) {
   }

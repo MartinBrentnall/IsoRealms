@@ -32,12 +32,10 @@ namespace IsoRealms {
     public:
     Colour(IResourceData& owner, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 1.0f, std::function<void()> listener = nullptr);
 
-    /***************************************\
-     * Implements Asset<IColour, IProject> *
-    \***************************************/
+    /****************************************************\
+     * Implements Asset<Colour, IColour, IResourceData> *
+    \****************************************************/
     IColour* createLiteralAsset(IResourceData& owner);
-    IColour* getAsset(IResourceData& owner, JSONObject object);
-    IColour* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;
 
     /***************************************\

@@ -38,8 +38,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    DebrisChunk(Spindizzy& spindizzy, IResourceData& data);
+    DebrisChunk(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -80,7 +80,7 @@ namespace IsoRealms::Spindizzy {
     // Default constants.
     static const float DEFAULT_OUTLINE_WIDTH;
 
-    IProject& cProject;
+    Project& cProject;
 
     // Definition data.
     Colour cDefSide[4];               /// Colours used for each side of this debris chunk.

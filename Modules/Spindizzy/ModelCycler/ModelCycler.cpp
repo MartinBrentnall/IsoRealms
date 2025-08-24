@@ -22,14 +22,14 @@ namespace IsoRealms::Spindizzy {
   const std::string ModelCycler::JSON_MODEL  = "model";
   const std::string ModelCycler::JSON_MODELS = "models";
 
-  ModelCycler::ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  ModelCycler::ModelCycler(Spindizzy& spindizzy, IResourceData& data) :
             cRuntimeCycleIndex(0),
-            cLuaBinding(project, this),
+            cLuaBinding(data.getProject().getLuaState(), this),
             cEditingIconCycle(0) {
   }
   
-  ModelCycler::ModelCycler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            ModelCycler(project, spindizzy, data) {
+  ModelCycler::ModelCycler(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            ModelCycler(spindizzy, data) {
     unsigned int mIndex = 0;
     for (JSONValue mModelValue : object.getArray(JSON_MODELS)) {
       cDefModels.emplace_back(std::make_unique<Model>(data))->init(mModelValue.getObject(), JSON_MODEL);

@@ -94,7 +94,7 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackFloat::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+  void SequenceTrackFloat::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyAsset<Float>(metadata.getPropertyData("StartValue"), cDefStartValue);
   }
 

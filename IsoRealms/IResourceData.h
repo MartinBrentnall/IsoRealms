@@ -22,7 +22,6 @@
 
 namespace IsoRealms {
   class IActionClient;
-  class IProject;
   class Project;
   class ProjectFile;
   class PropertyData;

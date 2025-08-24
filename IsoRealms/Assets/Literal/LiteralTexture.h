@@ -26,12 +26,12 @@
 #include "IsoRealms/Assets/Type/ITexture.h"
 
 namespace IsoRealms {
-  class IProject;
   class ITextureUseListener;
+  class Project;
 
   class LiteralTexture : public ITexture {
     public:
-    LiteralTexture(IProject& project, int width, int height, bool clampX = false, bool clampY = false, bool depth = false);
+    LiteralTexture(Project& project, int width, int height, bool clampX = false, bool clampY = false, bool depth = false);
     
     void setRenderTarget() const;
     void addUseListener(ITextureUseListener* listener);
@@ -50,7 +50,7 @@ namespace IsoRealms {
     ~LiteralTexture();
 
     private:
-    IProject& cProject;
+    Project& cProject;
     int cWidth;
     int cHeight;
     GLuint cTexture;

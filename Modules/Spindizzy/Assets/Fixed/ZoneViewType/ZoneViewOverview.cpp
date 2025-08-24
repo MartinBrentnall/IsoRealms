@@ -26,7 +26,7 @@
 namespace IsoRealms::Spindizzy {
   ZoneViewOverview::ZoneViewOverview(WorldView& worldView, ZoneViewTypeOverview& type, Zone* zone) :
             cDefType(type),
-            cLuaBinding(worldView.getSpindizzy().getProject(), this) {
+            cLuaBinding(worldView.getSpindizzy().getProject().getLuaState(), this) {
     zone->addProperty(this);
   }
 

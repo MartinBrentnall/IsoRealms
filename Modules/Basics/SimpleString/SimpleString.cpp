@@ -23,18 +23,18 @@ namespace IsoRealms::Basics {
 
   const std::string SimpleString::PROPERTY_VALUE = "Initial Value";
 
-  SimpleString::SimpleString(IProject& project, Basics& basics, IResourceData& data) :
+  SimpleString::SimpleString(Basics& basics, IResourceData& data) :
             cDefValue(""),
             cRuntimeValue(""),
-            cLuaBinding(project, this),
+            cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  SimpleString::SimpleString(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleString(project, basics, data) {
+  SimpleString::SimpleString(Basics& basics, IResourceData& data, JSONObject object) :
+            SimpleString(basics, data) {
     cRuntimeValue = cDefValue = object.getString(JSON_VALUE);
 
-    project.init([this](IAssets& resources) {
+    data.getProject().init([this]() {
       cStateNotifier->stateChanged(this);
     });
   }

@@ -57,7 +57,7 @@ namespace IsoRealms::Spindizzy {
   const int World::DEFAULT_EDITOR_MAX_Z          =  7;
   const int World::DEFAULT_EDITOR_MIN_Z          =  0;
 
-  World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  World::World(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefPhysicalSurfaceProcessor(true),
@@ -75,7 +75,7 @@ namespace IsoRealms::Spindizzy {
             cEditorMaxY(DEFAULT_EDITOR_MAX_Y),
             cEditorMinZ(DEFAULT_EDITOR_MIN_Z),
             cEditorMaxZ(DEFAULT_EDITOR_MAX_Z),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
     // Physical object types.
     std::vector<IPhysicalObjectType*> mPhysicalObjectTypes = cSpindizzy.getAllPhysicalObjectTypeObjects();
     for (IPhysicalObjectType* mPhysicalObjectType : mPhysicalObjectTypes) {
@@ -88,7 +88,7 @@ namespace IsoRealms::Spindizzy {
       added(mBoundaryType);
     }
 
-    project.mainThreadInit([this]() {
+    data.getProject().mainThreadInit([this]() {
       glColor3f(1.0f, 1.0f, 1.0f);
       for (std::unique_ptr<Zone>& mZone : cDefZones) {
         mZone->updateDisplayList();
@@ -96,14 +96,14 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  World::World(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            World(project, spindizzy, data) {
+  World::World(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            World(spindizzy, data) {
     for (JSONValue mDebrisGeneratorValue : object.getArray(JSON_DEBRIS_GENERATORS)) {
-      cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorValue.getObject(), project, data));
+      cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorValue.getObject(), data));
     }
 
     for (JSONValue mPlayerValue : object.getArray(JSON_PLAYERS)) {
-      cDefPlayers.emplace_back(std::make_unique<Player>(project, *this, mPlayerValue.getObject()));
+      cDefPlayers.emplace_back(std::make_unique<Player>(*this, mPlayerValue.getObject()));
     }
 
     for (JSONValue mZoneValue : object.getArray(JSON_ZONES)) {
@@ -115,10 +115,10 @@ namespace IsoRealms::Spindizzy {
     cDefBounceTime                = object.getInteger(JSON_BOUNCE_CONTROL, DEFAULT_BOUNCE_CONTROL);
     cEditorBasicProperties        = object.getBoolean(JSON_BASIC_PROPERTIES);
 
-    project.init([this, &project](IAssets& resources) {
+    data.getProject().init([this, &data]() {
 
       // Try to open terrain cache
-      std::string mCachePath = cResourceData.getPath("Terrain.cache", project.isUserProject());
+      std::string mCachePath = cResourceData.getPath("Terrain.cache", data.getProject().isUserProject());
 //      std::cout << "Cache path: " << mCachePath << std::endl;
       std::ifstream mCache(mCachePath, std::ios::binary);
       bool mUsingCache = false;
@@ -149,7 +149,7 @@ namespace IsoRealms::Spindizzy {
           mZone->initialiseTerrain();
 //        });
         }
-//         IApplication& mApplication = project->getApplication();
+//         IApplication& mApplication = data.getProject().getApplication();
 //         mApplication.executeAndWait(mTask);
 //         std::cout << "INFO: World::World: Updating cache..." << std::endl;
         updateCache();
@@ -167,7 +167,7 @@ namespace IsoRealms::Spindizzy {
     cEditorMinZ = object.getInteger(JSON_EDITOR_MIN_Z, DEFAULT_EDITOR_MIN_Z);
     cEditorMaxZ = object.getInteger(JSON_EDITOR_MAX_Z, DEFAULT_EDITOR_MAX_Z);
     cDefaultWorldEditorTool.init(object, JSON_DEFAULT_WORLD_EDITOR_TOOL);
-    project.init([this, object](IAssets& assets) {
+    data.getProject().init([this, object]() {
       cAutomaticZoneManagementType = cSpindizzy.getZoneType(object.getString(JSON_AUTOMATIC_ZONE_MANAGEMENT));
       cDefaultThemeSet             = cSpindizzy.getThemeSet(object.getString(JSON_DEFAULT_THEME_SET));
       for (JSONValue mEditingToolValue : object.getArray(JSON_EDITOR_TOOLS)) {
@@ -661,7 +661,7 @@ namespace IsoRealms::Spindizzy {
   
   Player* World::draw(PlayerType& type, const LiteralVertex& location) {
     if (cDefPlayers.empty()) {
-      cDefPlayers.emplace_back(std::make_unique<Player>(cSpindizzy.getProject(), *this, type, location.x, location.y, location.z));
+      cDefPlayers.emplace_back(std::make_unique<Player>(*this, type, location.x, location.y, location.z));
     }
     cDefPlayers[0]->reposition(location.x, location.y, location.z);
     return cDefPlayers[0].get();

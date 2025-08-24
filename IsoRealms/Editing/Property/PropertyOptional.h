@@ -24,7 +24,6 @@
 
 #include <GL/glew.h>
 
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyManager.h"

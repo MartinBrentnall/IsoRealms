@@ -24,12 +24,12 @@ namespace IsoRealms::Basics {
 
   const std::string InputGroup::PROPERTY_INPUT_HANDLER = "Input";
   
-  InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data) :
+  InputGroup::InputGroup(Basics& basics, IResourceData& data) :
             cResource(data) {
   }
   
-  InputGroup::InputGroup(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            InputGroup(project, basics, data) {
+  InputGroup::InputGroup(Basics& basics, IResourceData& data, JSONObject object) :
+            InputGroup(basics, data) {
     for (JSONValue mInputValue : object.getArray(JSON_INPUTS)) {
       cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(data)).get()->init(mInputValue.getObject(), JSON_INPUT);
     }

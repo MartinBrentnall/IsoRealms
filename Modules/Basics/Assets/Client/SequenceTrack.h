@@ -26,19 +26,14 @@ namespace IsoRealms::Basics {
   class Basics;
   class Sequence;
 
-  class SequenceTrack : public Asset<SequenceTrack, ISequenceTrack, Basics> {
+  class SequenceTrack : public Asset<SequenceTrack, ISequenceTrack, Sequence> {
     public:
-    SequenceTrack(Basics& basics, Sequence& owner);
+    SequenceTrack(Sequence& owner);
 
     /********************************************\
      * Implements Asset<ISequenceTrack, Basics> *
     \********************************************/
-    ISequenceTrack* createLiteralAsset(Basics& basics);
-    ISequenceTrack* getAsset(Basics& basics, JSONObject object);
-    ISequenceTrack* getAsset(Basics& basics, const std::string& id);
+    ISequenceTrack* createLiteralAsset(Sequence& sequence);
     bool isDefaultConfiguration() const;
-
-    private:
-    Sequence& cOwner;
   };
 }

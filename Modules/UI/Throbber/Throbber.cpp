@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
   const unsigned int Throbber::DEFAULT_SPOT_SIDES    = 32U;
   const unsigned int Throbber::DEFAULT_SPOTS         = 8U;
 
-  Throbber::Throbber(IProject& project, UI& ui, IResourceData& data) :
+  Throbber::Throbber(UI& ui, IResourceData& data) :
             cDefDuration(DEFAULT_DURATION),
             cDefRepetitions(DEFAULT_REPETITIONS),
             cDefSpots(DEFAULT_SPOTS),
@@ -48,8 +48,8 @@ namespace IsoRealms::UI {
     cRuntimeAnimation = 0U;
   }
 
-  Throbber::Throbber(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
-            Throbber(project, ui, data) {
+  Throbber::Throbber(UI& ui, IResourceData& data, JSONObject object) :
+            Throbber(ui, data) {
     cDefDuration     = object.getInteger(JSON_DURATION,    DEFAULT_DURATION);
     cDefRepetitions  = object.getInteger(JSON_REPETITIONS, DEFAULT_REPETITIONS);
     cDefSpots        = object.getInteger(JSON_SPOTS,       DEFAULT_SPOTS);

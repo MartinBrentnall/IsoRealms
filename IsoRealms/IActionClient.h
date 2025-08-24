@@ -23,7 +23,6 @@
 namespace IsoRealms {
   class IBindingRegistry;
   class IResourceData;
-  class IProject;
   class Project;
   class ProjectFile;
 

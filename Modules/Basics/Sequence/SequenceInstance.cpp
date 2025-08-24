@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
             cDefSpeed(speed),
             cExposedPosition(*this),
             cExposedRemaining(*this),
-            cLuaBinding(parent.getBasics().getProject(), this) {
+            cLuaBinding(parent.getBasics().getProject().getLuaState(), this) {
     for (unsigned int i = 0; i < cParent.getTrackCount(); i++) {
       SequenceTrack& mTrack = cParent.getTrack(i);
       ISequenceTrackInstance* mTrackInstance = mTrack->createTrackInstance(*this);

@@ -23,8 +23,7 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  LiteralString::LiteralString(Project& project, const std::string& value) :
-            cMetadata(project.getApplication().getMetadata("LiteralString")),
+  LiteralString::LiteralString(const std::string& value) :
             cValue(value) {
   }
 
@@ -41,7 +40,7 @@ namespace IsoRealms {
   }
 
   void LiteralString::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
+    // Not supported.
   }
 
   bool LiteralString::isDefaultConfiguration() const {

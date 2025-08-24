@@ -38,8 +38,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource interface *
     \**********************/
-    C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    C64LiftGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data);
+    C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     bool renderIcon();
@@ -85,7 +85,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_PRIMARY;
     static const std::string JSON_SECONDARY;
 
-    IProject& cProject;
+    Project& cProject;
 
     // Definition data.
     Colour cDefPrimary;                                                  /// Primary colour.

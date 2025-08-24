@@ -659,12 +659,12 @@ namespace IsoRealms::Basics {
                 cEditingProperties = true;
               } else {
                 if (cCursorEvent == nullptr) {
-                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getProject(), cSequence.getResourceData(), std::round(cCursorTimeline.animation()));
+                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getResourceData(), std::round(cCursorTimeline.animation()));
                 }
 
                 if (cCursorEvent != nullptr) {
                   cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
-                    return cCursorEvent->getEventProperties(owner, cSequence.getBasics().getMetadata("SequenceEditor"), cSequence.getProject());
+                    return cCursorEvent->getEventProperties(owner, cSequence.getBasics().getMetadata("SequenceEditor"));
                   }, "Event Configuration:", 1.0f, 1.0f, 1.0f));
                   cEditingProperties = true;
                 }
@@ -821,7 +821,7 @@ namespace IsoRealms::Basics {
     return cFontSize;
   }
   
-  IProject& SequenceEditor::getProject() const {
+  IsoRealms::Project& SequenceEditor::getProject() const {
     return cSequence.getProject();
   }
 

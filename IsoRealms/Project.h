@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include <filesystem>
 #include <functional>
 #include <queue>
 #include <set>
@@ -26,32 +27,30 @@
 #include "PropertyMaker.h"
 
 #include "Assets/Client/ResourceOwner.h"
-#include "Assets/Literal/LiteralBindingType.h"
 #include "Assets/Registry/AssetClientManager.h"
-#include "Assets/Registry/ScreenClientManager.h"
-#include "Assets/Dummy/DummyAction.h"
-#include "Assets/Dummy/DummyBinding.h"
-#include "Assets/Dummy/DummyBindingType.h"
-#include "Assets/Dummy/DummyEditable.h"
-#include "Assets/Dummy/DummyFont.h"
-#include "Assets/Dummy/DummyInputHandler.h"
-#include "Assets/Dummy/DummyModel.h"
-#include "Assets/Dummy/DummyScreen.h"
-#include "Assets/Dummy/DummyTexture.h"
-#include "Assets/Providers/AssetConvertedBinding.h"
+#include "Assets/Registry/ActionRegistry.h"
+#include "Assets/Registry/BooleanRegistry.h"
+#include "Assets/Registry/BindingRegistry.h"
+#include "Assets/Registry/BindingTypeRegistry.h"
+#include "Assets/Registry/ColourRegistry.h"
+#include "Assets/Registry/EditableRegistry.h"
+#include "Assets/Registry/FloatRegistry.h"
+#include "Assets/Registry/FontRegistry.h"
+#include "Assets/Registry/InputHandlerRegistry.h"
+#include "Assets/Registry/IntegerRegistry.h"
+#include "Assets/Registry/ModelRegistry.h"
+#include "Assets/Registry/ScreenRegistry.h"
+#include "Assets/Registry/StringRegistry.h"
+#include "Assets/Registry/TextureRegistry.h"
+#include "Assets/Registry/VertexRegistry.h"
 #include "Assets/Providers/AssetConvertedString.h"
-#include "Assets/Providers/AssetLiteralBoolean.h"
-#include "Assets/Providers/AssetLiteralColour.h"
 #include "Assets/Providers/AssetLiteralDummy.h"
-#include "Assets/Providers/AssetLiteralFloat.h"
-#include "Assets/Providers/AssetLiteralInteger.h"
-#include "Assets/Providers/AssetLiteralString.h"
-#include "Assets/Providers/AssetLiteralVertex.h"
-#include "Assets/Providers/AssetLocalBinding.h"
 #include "Editing.h"
 #include "IResourceData.h"
+#include "IStateListener.h"
 #include "Lua.h"
 #include "Options/Options.h"
+#include "OwnedAsset.h"
 #include "ProjectFile.h"
 #include "ProjectLaunchConfiguration.h"
 #include "Types.h"
@@ -69,39 +68,138 @@ namespace IsoRealms {
    * Project acts as a container for the assets of the application, and
    * provides control over execution of the application.
    */
-  class Project : public IProject,
-                  public IBindingRegistry,
+  class Project : public IBindingRegistry,
                   public IResourceData,
                   public IActionClient {
     public:
-
-    // TODO: Constructor for creating new projects
     Project(IApplication& application, std::function<void(bool)> onFinish);
-
-    /**
-     * Constructor for loading an IsoRealms Project from an IsoRealms Project
-     * file.  This is the most common Constructor used for loading games,
-     * menus, tools, and other IsoRealms applications.
-     * 
-     * @param options The options passed to this Project.
-     * @param onFinish Function to callback when the Project finishes.
-     * @param override Specify to override assets of a Project with external ones.
-     */
     Project(IApplication& application, std::function<void(bool)> onFinish, const std::string& file, bool user);
+    virtual ~Project();
 
-    /***********************\
-     * Implements IProject *
-    \***********************/
-    void mainThreadAlloc(std::function<void()> function) override;
-    void mainThreadInit(std::function<void()> function) override;
-    void mainThreadCleanUp(std::function<void()> function) override;
-    void init(std::function<void(IAssets&)> initialiser) override;
-    void updateLater(std::function<void()> task) override;
-    LuaState* const getLuaState() override;
+    // Execution functions are called by the host of the Project.
+    void initMainThread();
+    void reset();
+    void reset(Options& options);
+    void reset(ProjectLaunchConfiguration* configuration);
+    bool input(sf::Event& event);
+    void updateRuntime(unsigned int milliseconds);
+    void updateRuntimeComplete();
+    void updateEditing(unsigned int milliseconds);
+    void render(float aspectRatio);
+    void requestQuit();
 
-    void setTime(int time);
-    int getTime() const;
+    // File management functions are called by a host editor of the Project.
+    bool canSave();
+    void save(ProjectFile& file);
+    void save();
+    void save(const std::string& file);
+    bool isLoading() const;
+    bool isUserProject();
+    std::string getFilename();
+    ProjectFile* getFile();
 
+    // General Project editing function.
+    void getProperties(PropertyMaker& propertyMaker);
+    IEditable* getDefaultEditable();
+
+    // Module configuration interface.
+    Module* loadModule(const std::string& name);
+    void unloadModule(const std::string& name);
+    std::set<IModule*> getModules();
+    std::vector<std::string> getUnusedModuleNames() const;
+
+    // Launch configuration interface.
+    bool isLaunchConfigurationNameUsed(const std::string& name, ProjectLaunchConfiguration* launchConfiguration) const;
+    std::string makeLaunchConfigurationName() const;
+    int getLaunchConfigurationCount() const;
+    const ProjectLaunchConfiguration* getLaunchConfiguration(int index);
+
+    // Project file structure configuration interface.
+    std::vector<std::string> getProjectFileNames() const;
+    ProjectFile* getProjectFile(const std::string& id);
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    std::string getProjectPathPrefix(bool user);
+    
+    // Screen-related functions.
+    IScreen* getScreenProxy(IScreen* screen);
+    void addScreenListener(IScreenListener* listener);
+    void removeScreenListener(IScreenListener* listener);
+    void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener);
+
+    // Access to external interfaces.
+    IApplication& getApplication();
+    const IApplication& getApplication() const;
+
+    // Action execution control.
+    bool isProcessingInput();
+    void postponeAction(IAction* action);
+
+    /*******************************\
+     * Implements IBindingRegistry *
+    \*******************************/
+    IBinding* getBinding(const std::string& id) override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
+    void releaseBinding(const IBinding* asset) override;
+
+    /****************************\
+     * Implements IResourceData * TODO: Should these be here???
+    \****************************/
+    std::string getPath(const std::string& file, bool user) const override;
+    void makeUserDataDirectory() override;
+    bool isIncluded() const override;
+    bool isReadOnly() const override;
+    void setOwner(ProjectFile* file) override;
+    Project& getProject() override;
+    const Project& getProject() const override;
+    Project& getAssetManager() override;
+    IActionClient& getDummyActionClient() override;
+    
+    /****************************\
+     * Implements IActionClient * TODO: Should these be here???
+    \****************************/
+    IResourceData& getResourceData() override;
+    IBindingRegistry* getBindingRegistry() override;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void mainThreadAlloc(std::function<void()> function);
+    void mainThreadInit(std::function<void()> function);
+    void mainThreadCleanUp(std::function<void()> function);
+    void init(std::function<void()> initialiser);
+    void updateLater(std::function<void()> task);
+    LuaState& getLuaState();
+
+    // Project Asset management functions.
     template <typename TYPE, typename THING> IStateNotifier<TYPE>* add(THING* asset, const std::string& id, const std::string& category) {
       return AssetContainerTraits<TYPE>::get(*this).add(asset, id, category, true);
     }
@@ -115,7 +213,7 @@ namespace IsoRealms {
     }
    
     template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* asset) {
-      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, &cProjectFile);
+      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, &cDefProjectFileStructure);
     }
     
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
@@ -146,6 +244,14 @@ namespace IsoRealms {
       return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
+      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
+    }
+
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener<TYPE*>* listener = nullptr, bool required = true) {
+      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
+    }
+
     IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value);
     IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha);
     IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value);
@@ -172,140 +278,21 @@ namespace IsoRealms {
     
     
     
-    std::filesystem::file_time_type getLastWriteTime() override;
-    void initMainThread() override;
-    void requestQuit();
-    bool input(sf::Event& event);
-    void render(float aspectRatio);
-    void updateRuntime(unsigned int milliseconds);
-    void updateRuntimeComplete();
-    void updateEditing(unsigned int milliseconds);
-    void executeCommand(const std::string& command);
-    void finish(bool finishedByQuitRequest) override;
+    std::filesystem::file_time_type getLastWriteTime();
+    void finish(bool finishedByQuitRequest);
+    
+    // Application level scripting functions.  TODO: These should be moved to Application!
+    JSONDocument createDocument();
+    JSONDocument openDocument(const std::string& name);
+    std::string getUserDataPath();
+    std::string getDataPath(bool user);
+    void makeUserDataDirectory(const std::string& path);
+    void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
     bool isApplicationClosing();
     bool isFullScreen();
     DisplayResolution getDisplayResolution();
     void setDisplayResolution(DisplayResolution resolution, bool fullScreen);
-    void reset();
-    
-    bool canSave();
-    void save(ProjectFile& file);
-    void save();
-    void save(const std::string& file);
-    bool isLoading() const;
-    bool isUserProject() override;
-
-    std::string getFilename();
-    Project& getAssetManager() override;
-    IActionClient& getDummyActionClient() override;
-    bool isReadOnly() const override;
-    void setOwner(ProjectFile* file) override;
-    IResourceData& getResourceData() override;
-    IBindingRegistry* getBindingRegistry() override;
-    ProjectFile* getFile() override;
-    
-    Module* loadModule(const std::string& name);
-    void unloadModule(const std::string& name);
-    std::set<IModule*> getModules();
-    std::vector<std::string> getUnusedModuleNames() const;
-
-    // Persistence scripting.  TODO: Maybe shouldn't be in the project
-    JSONDocument createDocument();
-    JSONDocument openDocument(const std::string& name);
-    std::string getUserDataPath();
-    std::string getDataPath(bool user) override;
-    void makeUserDataDirectory(const std::string& path);
-    void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
-  
-    std::string getProjectPathPrefix(bool user);
-    IEditable* getDefaultEditable() override;
-    
-    std::string getProjectResourceDataPath(const std::string& file);
-
-
-    /**********************\
-     * Implements IAssets *
-    \**********************/
-    IAction*       getAction(      IAssetUser<IAction>*       user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
-    IBinding*      getBinding(     IAssetUser<IBinding>*      user, JSONObject object, IActionClient& owner,                                      bool required = true) override;
-    IBindingType*  getBindingType( IAssetUser<IBindingType>*  user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IBoolean*      getBoolean(     IAssetUser<IBoolean>*      user, JSONObject object, IResourceData& owner, IStateListener<IBoolean*>* listener, bool required = true) override;
-    IColour*       getColour(      IAssetUser<IColour>*       user, JSONObject object, IResourceData& owner, IStateListener<IColour*>*  listener, bool required = true) override;
-    IEditable*     getEditable(    IAssetUser<IEditable>*     user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IFloat*        getFloat(       IAssetUser<IFloat>*        user, JSONObject object, IResourceData& owner, IStateListener<IFloat*>*   listener, bool required = true) override;
-    IFont*         getFont(        IAssetUser<IFont>*         user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IInputHandler* getInputHandler(IAssetUser<IInputHandler>* user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IInteger*      getInteger(     IAssetUser<IInteger>*      user, JSONObject object, IResourceData& owner, IStateListener<IInteger*>* listener, bool required = true) override;
-    IModel*        getModel(       IAssetUser<IModel>*        user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IScreen*       getScreen(      IAssetUser<IScreen>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-    IString*       getString(      IAssetUser<IString>*       user, JSONObject object, IResourceData& owner, IStateListener<IString*>*  listener, bool required = true) override;
-    ITexture*      getTexture(     IAssetUser<ITexture>*      user, JSONObject object, IResourceData& owner, IStateListener<ITexture*>* listener, bool required = true) override;
-    IVertex*       getVertex(      IAssetUser<IVertex>*       user, JSONObject object, IResourceData& owner,                                      bool required = true) override;
-
-    IAction*       getAction(      IAssetUser<IAction>*       user, const std::string& id, IActionClient& owner) override;
-    IBinding*      getBinding(     IAssetUser<IBinding>*      user, const std::string& id, IActionClient& owner) override;
-    IBindingType*  getBindingType( IAssetUser<IBindingType>*  user, const std::string& id, IResourceData& owner) override;
-    IBoolean*      getBoolean(     IAssetUser<IBoolean>*      user, const std::string& id, IResourceData& owner, IStateListener<IBoolean*>* listener) override;
-    IColour*       getColour(      IAssetUser<IColour>*       user, const std::string& id, IResourceData& owner, IStateListener<IColour*>*  listener) override;
-    IEditable*     getEditable(    IAssetUser<IEditable>*     user, const std::string& id, IResourceData& owner) override;
-    IFloat*        getFloat(       IAssetUser<IFloat>*        user, const std::string& id, IResourceData& owner, IStateListener<IFloat*>*   listener) override;
-    IFont*         getFont(        IAssetUser<IFont>*         user, const std::string& id, IResourceData& owner) override;
-    IInputHandler* getInputHandler(IAssetUser<IInputHandler>* user, const std::string& id, IResourceData& owner) override;
-    IInteger*      getInteger(     IAssetUser<IInteger>*      user, const std::string& id, IResourceData& owner, IStateListener<IInteger*>* listener) override;
-    IModel*        getModel(       IAssetUser<IModel>*        user, const std::string& id, IResourceData& owner) override;
-    IScreen*       getScreen(      IAssetUser<IScreen>*       user, const std::string& id, IResourceData& owner) override;
-    IString*       getString(      IAssetUser<IString>*       user, const std::string& id, IResourceData& owner, IStateListener<IString*>*  listener) override;
-    ITexture*      getTexture(     IAssetUser<ITexture>*      user, const std::string& id, IResourceData& owner, IStateListener<ITexture*>* listener) override;
-    IVertex*       getVertex(      IAssetUser<IVertex>*       user, const std::string& id, IResourceData& owner) override;
-
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
-    Project& getProject() override;
-    const Project& getProject() const override;
-
-    IScreen* getScreenProxy(IScreen* screen);
-    void addScreenListener(IScreenListener* listener) override;
-    void removeScreenListener(IScreenListener* listener) override;
-
-    void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) override;
-
-    IApplication& getApplication() override;
-    const IApplication& getApplication() const override;
-
-    void getProperties(PropertyMaker& propertyMaker);
-
-    void setProperty(const std::string& property, const std::string& value) override;
-
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
-    IBinding* getBinding(const std::string& id) override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
-    void releaseBinding(const IBinding* asset) override;
-
-    /****************************\
-     * Implements IResourceData * TODO: Should these be here???
-    \****************************/
-    std::string getPath(const std::string& file, bool user) const override;
-    void makeUserDataDirectory() override;
-    bool isIncluded() const override;
-
-    bool isProcessingInput() override;
-    void postponeAction(IAction* action) override;
-
-    std::vector<std::string> getProjectFileNames() const;
-    ProjectFile* getProjectFile(const std::string& id);
-
-    bool isLaunchConfigurationNameUsed(const std::string& name, ProjectLaunchConfiguration* launchConfiguration) const;
-    std::string makeLaunchConfigurationName() const;
-    int getLaunchConfigurationCount() const;
-    const ProjectLaunchConfiguration* getLaunchConfiguration(int index);
-
-    virtual ~Project();
-    
+      
     template <class TYPE> friend struct AssetContainerTraits;
 
     private:
@@ -331,8 +318,6 @@ namespace IsoRealms {
     static const std::string CATEGORY_CONVERSIONS;
     static const std::string CATEGORY_FIXED;
     static const std::string CATEGORY_LOCAL;
-
-    std::vector<std::unique_ptr<ProjectLaunchConfiguration>> cDefTestLaunchConfigurations;
 
     class Filename : public IString {
       public:
@@ -385,202 +370,91 @@ namespace IsoRealms {
       Project& cParent;
     };
 
-    class ProjectProperty {
-      public:
-      ProjectProperty(Project& parent, JSONObject object, File* ownerProject);
-      void setValue(const std::string& value);
-      void save(JSONArray& object, File* savingProject, const std::string& id) const;
-      bool isOwnedBy(File* project);
+    // External interfaces.
+    IApplication& cApplication;                        /// Host application of this Project.
+    std::function<void(bool)> cFunctionNotifyComplete; /// Function to be notified of Project completion.
 
-      private:
-      Action cChangeAction;
-      File* cOwnerProject;
-    };
+    // Asset registries.
+    ActionRegistry       cActions;
+    BindingRegistry      cBindings;
+    BindingTypeRegistry  cBindingTypes; // Note: Contents of this module is set by modules (i.e. NOT configurable!)
+    BooleanRegistry      cBooleans;
+    ColourRegistry       cColours;
+    EditableRegistry     cEditables;
+    FloatRegistry        cFloats;
+    FontRegistry         cFonts;
+    InputHandlerRegistry cInputHandlers;
+    IntegerRegistry      cIntegers;
+    ModelRegistry        cModels;
+    ScreenRegistry       cScreens;
+    StringRegistry       cStrings;
+    TextureRegistry      cTextures;
+    VertexRegistry       cVertices;
 
-    template <class OWNER, class TYPE> class ProjectAsset {
-      public:
-      ProjectAsset(OWNER& owner) :
-                cAsset(owner),
-                cOwnerProject(nullptr) {
-      }
+    // Definition data.
+    std::vector<std::unique_ptr<Module>>                     cDefModules;
+    ProjectFile                                              cDefProjectFileStructure;
+    std::vector<std::unique_ptr<ProjectLaunchConfiguration>> cDefTestLaunchConfigurations;
+    OwnedAsset<IResourceData, InputHandler>                  cDefInputHandler;
+    OwnedAsset<IResourceData, Screen>                        cDefScreen;
+    OwnedAsset<IResourceData, Editable>                      cDefDefaultEditor;
+    OwnedAsset<IActionClient, Action>                        cDefInitAction;
+    OwnedAsset<IActionClient, Action>                        cDefResetAction;
+    OwnedAsset<IActionClient, Action>                        cDefStartAction;
+    OwnedAsset<IActionClient, Action>                        cDefQuitAction;
 
-      void init(JSONObject object, const std::string& tag, File* ownerProject) {
-        if (object.hasMember(tag) && cOwnerProject == nullptr) {
-          cAsset.init(object, tag);
-          cOwnerProject = ownerProject;
-        }
-      }
 
-      TYPE* operator*() {
-        return &cAsset;
-      }
 
-      void save(JSONObject object, const std::string& tag, File* savingProject) {
-        if (cOwnerProject == savingProject) {
-          cAsset.save(object, tag);
-        }
-      }
 
-      void getProperty(PropertyMaker& owner, const PropertyData& data) {
-        owner.createPropertyAsset<TYPE>(data, cAsset);
-      }
 
-      private:
-      TYPE cAsset;
-      File* cOwnerProject;
-    };
 
-    IApplication& cApplication; /// Host application of this project.
 
-    LuaState cLuaState;                         /// Lua State for this project.
+
+
+
+    LuaState cLuaState;                       /// Lua State for this project.
     LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
-    bool cResourcesLoaded;                    /// Indicates that resource loading from modules has completed.
-    bool cLoading;
+    LocalLuaBinding<Options> cOptionsBinding;
 
     // Callbacks
-    std::queue<std::function<void()>> cMainThreadAllocTasks;         /// Allocation tasks to be perfomed on the main thread during initialisation.
-    std::queue<std::function<void()>> cMainThreadInitTasks;          /// initialisation tasks to be performed on the main thread.
-    std::vector<std::function<void(IAssets&)>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.
-    std::queue<std::function<void()>> cUpdateTasks;                  /// Postponed update functions.  Called after other update functions.
+    std::queue<std::function<void()>> cMainThreadAllocTasks; /// Allocation tasks to be perfomed on the main thread during initialisation.
+    std::queue<std::function<void()>> cMainThreadInitTasks;  /// initialisation tasks to be performed on the main thread.
+    std::vector<std::function<void()>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.
+    std::queue<std::function<void()>> cUpdateTasks;          /// Postponed update functions.  Called after other update functions.
 
-    // Action execution control
+    // Runtime state of the Project.
+    bool cResourcesLoaded;                   /// Indicates that resource loading from modules has completed.
+    bool cLoading;                           /// Indicates that loading is in progress.
     bool cProcessingInput;                   /// Flag is set when processing input to indicate that actions should be postponed.
     std::vector<IAction*> cPostponedActions; /// List of postponed actions to be executed at next update cycle.
     bool cRuntimeUpdatingRuntime;            /// Flag is set when update cycle is being performed.
     bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    std::map<std::string, std::vector<IModelInstance*>> cInstantiatedModels;
-
-    // Asset registries.
-    AssetClientManager<IActionClient, IAction>         cActions;
-    AssetClientManager<IActionClient, IBinding>        cBindings;
-    AssetClientManager<IResourceData, IBindingType>    cBindingTypes; // Note: Contents of this module is set by modules (i.e. NOT configurable!)
-    AssetClientManager<IResourceData, IBoolean>        cBooleans;
-    AssetClientManager<IResourceData, IColour>         cColours;
-    AssetClientManager<IResourceData, IEditable>       cEditables;
-    AssetClientManager<IResourceData, IFloat>          cFloats;
-    AssetClientManager<IResourceData, IFont>           cFonts;
-    AssetClientManager<IResourceData, IInputHandler>   cInputHandlers;
-    AssetClientManager<IResourceData, IInteger>        cIntegers;
-    AssetClientManager<IResourceData, IModel>          cModels;
-    ScreenClientManager                                cScreens;
-    AssetClientManager<IResourceData, IString>         cStrings;
-    AssetClientManager<IResourceData, ITexture>        cTextures;
-    AssetClientManager<IResourceData, IVertex>         cVertices;
-
-    // Literal and dummy asset providers.
-    AssetLiteralDummy<IActionClient, IAction,         DummyAction>         cLiteralProviderAction;
-    AssetLiteralDummy<IActionClient, IBinding,        DummyBinding>        cLiteralProviderBinding;
-    AssetLiteralDummy<IResourceData, IBindingType,    DummyBindingType>    cLiteralProviderBindingType;
-    AssetLiteralBoolean                                                    cLiteralProviderBoolean;
-    AssetLiteralColour                                                     cLiteralProviderColour;
-    AssetLiteralDummy<IResourceData, IEditable,       DummyEditable>       cLiteralProviderEditable;
-    AssetLiteralFloat                                                      cLiteralProviderFloat;
-    AssetLiteralDummy<IResourceData, IFont,           DummyFont>           cLiteralProviderFont;
-    AssetLiteralDummy<IResourceData, IInputHandler,   DummyInputHandler>   cLiteralProviderInputHandler;
-    AssetLiteralInteger                                                    cLiteralProviderInteger;
-    AssetLiteralDummy<IResourceData, IModel,          DummyModel>          cLiteralProviderModel;
-    AssetLiteralDummy<IResourceData, IScreen,         DummyScreen>         cLiteralProviderScreen;
-    AssetLiteralString                                                     cLiteralProviderString;
-    AssetLiteralDummy<IResourceData, ITexture,        DummyTexture>        cLiteralProviderTexture;
-    AssetLiteralVertex                                                     cLiteralProviderVertex;
-
-    // Built-in binding types.
-    LiteralBindingType cBindingTypeAction;
-    LiteralBindingType cBindingTypeBoolean;
-    LiteralBindingType cBindingTypeColour;
-    LiteralBindingType cBindingTypeFloat;
-    LiteralBindingType cBindingTypeFont;
-    LiteralBindingType cBindingTypeInputHandler;
-    LiteralBindingType cBindingTypeInteger;
-    LiteralBindingType cBindingTypeProject;
-    LiteralBindingType cBindingTypeScreen;
-    LiteralBindingType cBindingTypeString;
-    LiteralBindingType cBindingTypeVertex;
-
-    // Conversion asset providers.
-    AssetConvertedBinding<IActionClient, Action>         cConversionProviderActionToBinding;
-    AssetConvertedBinding<IResourceData, Boolean>        cConversionProviderBooleanToBinding;
-    AssetConvertedBinding<IResourceData, Colour>         cConversionProviderColourToBinding;
-    AssetConvertedBinding<IResourceData, Float>          cConversionProviderFloatToBinding;
-    AssetConvertedBinding<IResourceData, Font>           cConversionProviderFontToBinding;
-    AssetConvertedBinding<IResourceData, InputHandler>   cConversionProviderInputHandlerToBinding;
-    AssetConvertedBinding<IResourceData, Integer>        cConversionProviderIntegerToBinding;
-    AssetConvertedBinding<IResourceData, Screen>         cConversionProviderScreenToBinding;
-    AssetConvertedBinding<IResourceData, String>         cConversionProviderStringToBinding;
-    AssetConvertedBinding<IResourceData, Vertex>         cConversionProviderVertexToBinding;
-
-    AssetConvertedString<Integer>         cConversionProviderIntegerToString;
-    AssetConvertedString<Float>           cConversionProviderFloatToString;
-
-    // Local binding support.
-    AssetLocalBinding cLocalProviderBinding;
-
-    std::function<void(bool)> cFunctionNotifyComplete;
-    ProjectFile cProjectFile;
+    // Assets to expose Project data.
     Filename cFilenameString;
     FileUser cFileUserBoolean;
     QuitAction cQuitAction;
 
-    std::map<std::string, std::unique_ptr<ProjectProperty>> cProperties;
-
-    int cTime;
-
-    // Project definition
-    ProjectAsset<IResourceData, InputHandler> cDefInputHandler;  /// Input handler of this project.
-    ProjectAsset<IResourceData, Screen>       cDefScreen;        /// Screen of this project.
-    ProjectAsset<IResourceData, Editable>     cDefDefaultEditor; /// Default editor of this project.
-    ProjectAsset<IActionClient, Action>       cDefInitAction;    /// Action to execute after project has loaded.
-    ProjectAsset<IActionClient, Action>       cDefResetAction;   /// Action to execute after project has completed.
-    ProjectAsset<IActionClient, Action>       cDefStartAction;   /// Action to execute upon starting project (following reset)
-    ProjectAsset<IActionClient, Action>       cDefQuitAction;    /// Action to execute upon project quit.
-
-    LiteralString cPropertyValue;
-    LocalLuaBinding<IString> cPropertyValueBinding;
-
-    std::vector<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
-
-    bool isModuleLoaded(const std::string& name) const;
+    // Private functions.
     std::vector<std::unique_ptr<JSONDocument>> loadResources(ProjectFile& file);
+    bool isModuleLoaded(const std::string& name) const;
     Module* getModule(const std::string& name);
     void saveFile(ProjectFile& file);
   };
 
-  template<> struct AssetContainerTraits<IAction>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};
-  template<> struct AssetContainerTraits<IBinding>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindings;      }};
-  template<> struct AssetContainerTraits<IBindingType>    {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes;  }};
-  template<> struct AssetContainerTraits<IBoolean>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;      }};
-  template<> struct AssetContainerTraits<IColour>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cColours;       }};
-  template<> struct AssetContainerTraits<IEditable>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cEditables;     }};
-  template<> struct AssetContainerTraits<IFloat>          {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFloats;        }};
-  template<> struct AssetContainerTraits<IFont>           {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFonts;         }};
-  template<> struct AssetContainerTraits<IInputHandler>   {template<class PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers; }};
-  template<> struct AssetContainerTraits<IInteger>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;      }};
-  template<> struct AssetContainerTraits<IModel>          {template<class PROJECT> static auto& get(PROJECT& project) {return project.cModels;        }};
-  template<> struct AssetContainerTraits<IScreen>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cScreens;       }};
-  template<> struct AssetContainerTraits<IString>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cStrings;       }};
-  template<> struct AssetContainerTraits<ITexture>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cTextures;      }};
-  template<> struct AssetContainerTraits<IVertex>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cVertices;      }};
+  template<> struct AssetContainerTraits<IAction>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;      }};
+  template<> struct AssetContainerTraits<IBinding>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindings;     }};
+  template<> struct AssetContainerTraits<IBindingType>  {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes; }};
+  template<> struct AssetContainerTraits<IBoolean>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;     }};
+  template<> struct AssetContainerTraits<IColour>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cColours;      }};
+  template<> struct AssetContainerTraits<IEditable>     {template<class PROJECT> static auto& get(PROJECT& project) {return project.cEditables;    }};
+  template<> struct AssetContainerTraits<IFloat>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFloats;       }};
+  template<> struct AssetContainerTraits<IFont>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFonts;        }};
+  template<> struct AssetContainerTraits<IInputHandler> {template<class PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers;}};
+  template<> struct AssetContainerTraits<IInteger>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;     }};
+  template<> struct AssetContainerTraits<IModel>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cModels;       }};
+  template<> struct AssetContainerTraits<IScreen>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cScreens;      }};
+  template<> struct AssetContainerTraits<IString>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cStrings;      }};
+  template<> struct AssetContainerTraits<ITexture>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cTextures;     }};
+  template<> struct AssetContainerTraits<IVertex>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cVertices;     }};
 }

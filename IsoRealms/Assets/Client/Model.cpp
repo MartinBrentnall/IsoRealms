@@ -57,14 +57,6 @@ namespace IsoRealms {
     glScalef(cDefScaleX, cDefScaleY, cDefScaleZ);
   }
 
-  IModel* Model::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getModel(this, object, owner);
-  }
-  
-  IModel* Model::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getModel(this, id, owner);
-  }
-  
   bool Model::hasClientConfiguration() const {
     return true;
   }

@@ -28,25 +28,25 @@ namespace IsoRealms::Spindizzy {
 
   const float DebrisChunk::DEFAULT_OUTLINE_WIDTH = 0.18f;
 
-  DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProject(project),
+  DebrisChunk::DebrisChunk(Spindizzy& spindizzy, IResourceData& data) :
+            cProject(data.getProject()),
             cDefSide{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                      Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                      Colour(data, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                      Colour(data, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
             cDefOutline(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutlineWidth(DEFAULT_OUTLINE_WIDTH),
-            cTextures{{project, 128, 128},
-                      {project, 128, 128},
-                      {project, 128, 128},
-                      {project, 128, 128}},
+            cTextures{{data.getProject(), 128, 128},
+                      {data.getProject(), 128, 128},
+                      {data.getProject(), 128, 128},
+                      {data.getProject(), 128, 128}},
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
     setNeedsRedrawing();
   }
 
-  DebrisChunk::DebrisChunk(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            DebrisChunk(project, spindizzy, data) {
+  DebrisChunk::DebrisChunk(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            DebrisChunk(spindizzy, data) {
     cDefOutline.init(object, JSON_OUTLINE);
     cDefOutlineWidth = object.getFloat(JSON_OUTLINE_WIDTH, DEFAULT_OUTLINE_WIDTH);
     cDefSide[0].init(object, JSON_SIDE_1);

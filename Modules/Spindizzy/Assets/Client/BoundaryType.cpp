@@ -33,14 +33,6 @@ namespace IsoRealms::Spindizzy {
     return cAsset->getBindingID(binding);
   }
 
-  IBoundaryType* BoundaryType::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return spindizzy.getBoundaryType(this, object);
-  }
-  
-  IBoundaryType* BoundaryType::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return spindizzy.getBoundaryType(this, id);
-  }
-  
   bool BoundaryType::isDefaultConfiguration() const {
     return true;
   }

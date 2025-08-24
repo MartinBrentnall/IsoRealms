@@ -27,7 +27,6 @@
 
 namespace IsoRealms {
   class IApplication;
-  class IAssets;
   
   template<class TYPE, class OWNER, class RETURN> concept CreateLiteralAssetExists = requires(TYPE& type, OWNER& owner) {
     {type.createLiteralAsset(owner)} -> std::convertible_to<RETURN*>;
@@ -66,7 +65,7 @@ namespace IsoRealms {
     
     void init(JSONThing thing) {
       if (cManager.getProject().isLoading()) {
-        cManager.getProject().init([this, thing](IAssets& assets) {
+        cManager.getProject().init([this, thing]() {
           set(thing);
         });
       } else {
@@ -77,13 +76,13 @@ namespace IsoRealms {
     void set(JSONThing thing) {
       JSONObject mAssetObject = thing.getValue();
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = static_cast<DERIVED*>(this)->getAsset(cManager, mAssetObject);
+      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager);
       loadClientConfiguration(mAssetObject);
     }
 
     void init(JSONObject object, const std::string& member) {
       if (cManager.getProject().isLoading()) {
-        cManager.getProject().init([this, object, member](IAssets& assets) {
+        cManager.getProject().init([this, object, member]() {
           set(object, member);
         });
       } else {
@@ -94,13 +93,13 @@ namespace IsoRealms {
     void set(JSONObject object, const std::string& member) {
       JSONObject mAssetObject = object.getObject(member);
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = static_cast<DERIVED*>(this)->getAsset(cManager, mAssetObject);
+      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager);
       loadClientConfiguration(mAssetObject);
     }
     
     virtual void setID(const std::string& id) {
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = static_cast<DERIVED*>(this)->getAsset(cManager, id);
+      cAsset = cManager.getAssetManager().getAsset(this, id, cManager);
       static_cast<DERIVED*>(this)->stateChanged(cAsset);
     }
     

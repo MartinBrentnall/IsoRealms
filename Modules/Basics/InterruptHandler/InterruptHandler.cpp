@@ -22,12 +22,12 @@ namespace IsoRealms::Basics {
   const std::string InterruptHandler::JSON_CONSUME  = "consume";
   const std::string InterruptHandler::JSON_ON_INPUT = "onInput";
 
-  InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data) :
+  InterruptHandler::InterruptHandler(Basics& basics, IResourceData& data) :
             cDefAction(data.getDummyActionClient()) {
   }
   
-  InterruptHandler::InterruptHandler(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            InterruptHandler(project, basics, data) {
+  InterruptHandler::InterruptHandler(Basics& basics, IResourceData& data, JSONObject object) :
+            InterruptHandler(basics, data) {
     cDefAction.init(object, JSON_ON_INPUT);
     cDefConsume = object.getBoolean(JSON_CONSUME, true);
   }

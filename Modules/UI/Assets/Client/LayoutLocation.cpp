@@ -21,21 +21,12 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  LayoutLocation::LayoutLocation(UI& ui, LayoutComponentEdge& owner) :
-            Asset<LayoutLocation, ILayoutLocation, UI>(ui, ui.getLayoutLocation(this, "Absolute", owner)),
-            cOwner(owner) {
+  LayoutLocation::LayoutLocation(LayoutComponentEdge& owner) :
+            Asset<LayoutLocation, ILayoutLocation, LayoutComponentEdge>(owner, owner.getAssetManager().getAsset(this, "Absolute", owner)) {
   }
 
-  ILayoutLocation* LayoutLocation::createLiteralAsset(UI& ui) {
-    return ui.createLiteralLayoutLocation(this, cOwner);
-  }
-  
-  ILayoutLocation* LayoutLocation::getAsset(UI& ui, JSONObject object) {
-    return ui.getLayoutLocation(this, object, cOwner);
-  }
-  
-  ILayoutLocation* LayoutLocation::getAsset(UI& ui, const std::string& id) {
-    return ui.getLayoutLocation(this, id, cOwner);
+  ILayoutLocation* LayoutLocation::createLiteralAsset(LayoutComponentEdge& edge) {
+    return edge.getAssetManager().getAsset(this, "Absolute", edge);
   }
   
   bool LayoutLocation::isDefaultConfiguration() const {

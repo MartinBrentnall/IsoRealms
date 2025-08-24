@@ -31,7 +31,7 @@ namespace IsoRealms::UI {
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -39,7 +39,7 @@ namespace IsoRealms::UI {
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 

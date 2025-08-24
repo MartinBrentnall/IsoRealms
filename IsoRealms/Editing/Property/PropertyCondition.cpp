@@ -22,7 +22,7 @@
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/IApplication.h"
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "IsoRealms/Editing/UISignalID.h"

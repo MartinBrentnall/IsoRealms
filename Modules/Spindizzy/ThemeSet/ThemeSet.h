@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
 
   class ThemeSet {
     public:
-    ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    ThemeSet(Spindizzy& spindizzy, IResourceData& data);
+    ThemeSet(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
     bool renderIcon();
     void hintInUse(bool inUse);
@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     void updateEditing(unsigned int milliseconds);
     
     ThemeTexture* createTexture(const std::string& type);
-    ThemeColour* createColour(IProject& project, const std::string& type);
+    ThemeColour* createColour(const std::string& type);
     std::vector<ThemeTexture*> getThemeTextures() const;
     std::vector<ThemeColour*> getThemeColours() const;
     std::string getElement(ThemeTexture* themeTexture);

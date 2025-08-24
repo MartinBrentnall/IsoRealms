@@ -42,25 +42,23 @@ add_library(IsoRealms
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
-  Assets/Dummy/DummyAction.cpp
-  Assets/Dummy/DummyBinding.cpp
-  Assets/Dummy/DummyBindingType.cpp
-  Assets/Dummy/DummyEditable.cpp
-  Assets/Dummy/DummyFont.cpp
-  Assets/Dummy/DummyInputHandler.cpp
-  Assets/Dummy/DummyModel.cpp
-  Assets/Dummy/DummyScreen.cpp
-  Assets/Dummy/DummyTexture.cpp
-  Assets/Literal/LiteralBindingType.cpp
-  Assets/Literal/LiteralBoolean.cpp
-  Assets/Literal/LiteralColour.cpp
-  Assets/Literal/LiteralFloat.cpp
-  Assets/Literal/LiteralInteger.cpp
-  Assets/Literal/LiteralString.cpp
   Assets/Literal/LiteralTexture.cpp
-  Assets/Literal/LiteralVertex.cpp
   Assets/Registry/AssetIDException.cpp
-  Assets/Registry/ScreenClientManager.cpp
+  Assets/Registry/ActionRegistry.cpp
+  Assets/Registry/BooleanRegistry.cpp
+  Assets/Registry/BindingRegistry.cpp
+  Assets/Registry/BindingTypeRegistry.cpp
+  Assets/Registry/ColourRegistry.cpp
+  Assets/Registry/EditableRegistry.cpp
+  Assets/Registry/FloatRegistry.cpp
+  Assets/Registry/FontRegistry.cpp
+  Assets/Registry/InputHandlerRegistry.cpp
+  Assets/Registry/IntegerRegistry.cpp
+  Assets/Registry/ModelRegistry.cpp
+  Assets/Registry/ScreenRegistry.cpp
+  Assets/Registry/StringRegistry.cpp
+  Assets/Registry/TextureRegistry.cpp
+  Assets/Registry/VertexRegistry.cpp
   Collision/CollisionData.cpp
   Collision/CollisionUtils.cpp
   Common/ScreenArea.cpp
@@ -110,6 +108,7 @@ add_library(IsoRealms
   Input/KeyMapping.cpp
   Input/MouseButtonMapping.cpp
   IsoRealmsConstants.cpp
+  LiteralVertex.cpp
   LocalColour.cpp
   LocalFloat.cpp
   Lua/LuaState.cpp

@@ -97,7 +97,7 @@ namespace IsoRealms::Spindizzy {
     Spindizzy(Project& project, IResourceTypeRegistry& registry);
     const Metadata& getMetadata(const std::string& key) const;
 
-    void init(std::function<void(IAssets&)> initialiser);
+    void init(std::function<void()> initialiser);
   
     // Interface access (used by all).
     Project& getProject() const;
@@ -143,24 +143,6 @@ namespace IsoRealms::Spindizzy {
     void removeAll(ZoneType*       type);
 
     // Module type removal.
-    IBoundaryType*        getBoundaryType(       IAssetUser<IBoundaryType>*        user, const std::string& id);
-    ICamera*              getCamera(             IAssetUser<ICamera>*              user, const std::string& id, WorldView&      owner);
-    IPhysicalObjectType*  getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, const std::string& id);
-    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, const std::string& id, TerrainType&    owner, IStateListener<ISurfacePattern*>* listener);
-    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, const std::string& id, TerrainType&    owner, IStateListener<IWallPattern*>*    listener);
-    IWorldEditorTool*     getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, const std::string& id);
-    IZoneObjectTypeTrait* getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, const std::string& id, ZoneObjectType& owner);
-    IZoneViewType*        getZoneViewType(       IAssetUser<IZoneViewType>*        user, const std::string& id, WorldView&      owner);
-
-    IBoundaryType*        getBoundaryType(       IAssetUser<IBoundaryType>*        user, JSONObject object);
-    ICamera*              getCamera(             IAssetUser<ICamera>*              user, JSONObject object, WorldView&      owner);
-    IPhysicalObjectType*  getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, JSONObject object);
-    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, JSONObject object, TerrainType&    owner, IStateListener<ISurfacePattern*>* listener);
-    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, JSONObject object, TerrainType&    owner, IStateListener<IWallPattern*>*    listener);
-    IWorldEditorTool*     getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, JSONObject object);
-    IZoneObjectTypeTrait* getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType& owner);
-    IZoneViewType*        getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView&      owner);
-
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
       AssetContainerTraits<TYPE>::get(*this).release(user, asset);
     }
@@ -187,6 +169,14 @@ namespace IsoRealms::Spindizzy {
 
     template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
       return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
+    }
+
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
+      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
+    }
+
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener<TYPE*>* listener = nullptr, bool required = true) {
+      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
     // Event handling.
@@ -334,14 +324,14 @@ namespace IsoRealms::Spindizzy {
     IResourceTypeRegistry& cModule;
 
     // Spindizzy Assets.
-    AssetClientManager<Spindizzy,      IBoundaryType>        cBoundaryTypes;
-    AssetClientManager<WorldView,      ICamera>              cCameras;
-    AssetClientManager<Spindizzy,      IPhysicalObjectType>  cPhysicalObjectTypes;
-    AssetClientManager<TerrainType,    ISurfacePattern>      cSurfacePatterns;
-    AssetClientManager<TerrainType,    IWallPattern>         cWallPatterns;
-    AssetClientManager<Spindizzy,      IWorldEditorTool>     cWorldEditorTools;
-    AssetClientManager<ZoneObjectType, IZoneObjectTypeTrait> cZoneObjectTypeTraits;
-    AssetClientManager<WorldView,      IZoneViewType>        cZoneViewTypes;
+    AssetClientManager<Spindizzy, Spindizzy,      IBoundaryType>        cBoundaryTypes;
+    AssetClientManager<Spindizzy, WorldView,      ICamera>              cCameras;
+    AssetClientManager<Spindizzy, Spindizzy,      IPhysicalObjectType>  cPhysicalObjectTypes;
+    AssetClientManager<Spindizzy, TerrainType,    ISurfacePattern>      cSurfacePatterns;
+    AssetClientManager<Spindizzy, TerrainType,    IWallPattern>         cWallPatterns;
+    AssetClientManager<Spindizzy, Spindizzy,      IWorldEditorTool>     cWorldEditorTools;
+    AssetClientManager<Spindizzy, ZoneObjectType, IZoneObjectTypeTrait> cZoneObjectTypeTraits;
+    AssetClientManager<Spindizzy, WorldView,      IZoneViewType>        cZoneViewTypes;
 
     // Dummy asset providers.
     AssetLiteralDummy<Spindizzy,      IBoundaryType,        BoundaryTypeDummy>        cDummyProviderBoundaryType;

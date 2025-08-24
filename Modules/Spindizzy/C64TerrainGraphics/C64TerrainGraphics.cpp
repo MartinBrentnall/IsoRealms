@@ -63,8 +63,8 @@ namespace IsoRealms::Spindizzy {
   const std::string C64TerrainGraphics::JSON_HIGHLIGHT = "highlight";
   const std::string C64TerrainGraphics::JSON_WALL      = "wall";
 
-  C64TerrainGraphics::C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProject(project),
+  C64TerrainGraphics::C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data) :
+            cProject(data.getProject()),
             cDefaultYaw(data, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),
             cDefFloor(data, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsFullRedraw();}),
             cDefWall(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsFullRedraw();}),
@@ -103,11 +103,11 @@ namespace IsoRealms::Spindizzy {
     // This sets the default texture orientation
     screenPostRender(nullptr);
 
-    project.addScreenListener(this);
+    cProject.addScreenListener(this);
   }
   
-  C64TerrainGraphics::C64TerrainGraphics(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            C64TerrainGraphics(project, spindizzy, data) {
+  C64TerrainGraphics::C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            C64TerrainGraphics(spindizzy, data) {
     cDefFloor.init(object, JSON_FLOOR);
     cDefWall.init(object, JSON_WALL);
     cDefGrid.init(object, JSON_GRID);
@@ -498,10 +498,10 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  void C64TerrainGraphics::screenAdded(IProject& project, const IScreen* screen) {
+  void C64TerrainGraphics::screenAdded(const IScreen* screen) {
     const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat asset!?
     if (mAngle != nullptr) {
-      project.addStateChangeListener(mAngle, this);
+      // TODO: cProject().addStateChangeListener(mAngle, this);
       for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
         bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
         mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);
@@ -531,7 +531,7 @@ namespace IsoRealms::Spindizzy {
     cCurrentTexture = nullptr;
   }
     
-  void C64TerrainGraphics::OrientedTexture::addOrientation(const IFloat* angle, IProject& project, bool clamp) {
+  void C64TerrainGraphics::OrientedTexture::addOrientation(const IFloat* angle, Project& project, bool clamp) {
     if (cTextures.find(angle) == cTextures.end()) {
       cTextures[angle] = std::make_unique<LiteralTexture>(project, 128, 128, false, clamp);
       if (angle == nullptr) {

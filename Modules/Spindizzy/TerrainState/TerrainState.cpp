@@ -25,12 +25,12 @@ namespace IsoRealms::Spindizzy {
   const std::string TerrainState::JSON_ID         = "id";
   const std::string TerrainState::JSON_STATE      = "state";
 
-  TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            TerrainState(project, data, "TODO", true, 1.0f) {
+  TerrainState::TerrainState(Spindizzy& spindizzy, IResourceData& data) :
+            TerrainState(data, "TODO", true, 1.0f) {
   }
 
-  TerrainState::TerrainState(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            TerrainState(project, data, object.getString(JSON_ID), object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
+  TerrainState::TerrainState(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            TerrainState(data, object.getString(JSON_ID), object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
     cDefIcon.init(object, JSON_ICON);
     cDefHintAction.init(object, JSON_HINT);
   }
@@ -106,13 +106,13 @@ namespace IsoRealms::Spindizzy {
     cRuntimeValue = value;
   }
 
-  TerrainState::TerrainState(IProject& project, IResourceData& owner, const std::string& name, bool state, float iconScale) :
+  TerrainState::TerrainState(IResourceData& owner, const std::string& name, bool state, float iconScale) :
             cDefConditionElement(name, *this, this),
             cDefValue(state),
             cDefHintAction(owner.getDummyActionClient()),
             cDefIcon(owner),
             cDefIconScale(iconScale),
             cRuntimeValue(state),
-            cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
+            cLuaBinding(owner.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
   }
 }

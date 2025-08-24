@@ -65,11 +65,7 @@ namespace IsoRealms::Basics {
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
 
-    Basics& getAssetManager();
     IsoRealms::Project& getProject() const;
-
-    bool isReadOnly() const; // TODO: Probably shouldn't be here.
-    void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
 
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
       cSequenceTracks.release(user, asset);
@@ -95,8 +91,13 @@ namespace IsoRealms::Basics {
       return cSequenceTracks.hasConfiguration(id);
     }
 
-    ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner);
-    ISequenceTrack* getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner);
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
+      return cSequenceTracks.get(user, owner, id, listener);
+    }
+
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener<TYPE*>* listener = nullptr, bool required = true) {
+      return cSequenceTracks.get(user, owner, object, listener, required);
+    }
 
     /***********************\
      * Scripting Interface *
@@ -130,7 +131,7 @@ namespace IsoRealms::Basics {
     IResourceTypeRegistry& cModule;
     
     // Asset registries
-    AssetClientManager<Sequence, ISequenceTrack> cSequenceTracks;
+    AssetClientManager<Basics, Sequence, ISequenceTrack> cSequenceTracks;
     
     // Built-in providers for UI asset types.
     AssetInstanced<Sequence, ISequenceTrack, SequenceTrackAction> cProviderSequenceTrackAction;

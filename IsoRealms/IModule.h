@@ -23,11 +23,11 @@
 
 namespace IsoRealms {
   class IAssetRegistry;
-  class IResourceType;
+  class ResourceType;
 
   class IModule {
     public:
     virtual std::string getName() = 0;
-    virtual std::vector<IResourceType*> getResourceTypes() = 0;
+    virtual std::vector<ResourceType*> getResourceTypes() = 0;
   };
 }

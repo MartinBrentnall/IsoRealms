@@ -34,8 +34,6 @@ namespace IsoRealms {
      * Implements Asset<IInteger, IResourceData> *
     \*********************************************/
     IInteger* createLiteralAsset(IResourceData& owner);
-    IInteger* getAsset(IResourceData& owner, JSONObject object);
-    IInteger* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;
   };
 }

@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
 
   const float TerrainType::DEFAULT_WALL_BOUNCE = 0.6f;
 
-  TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  TerrainType::TerrainType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefSurfaceFriction(0.0f),
@@ -57,8 +57,8 @@ namespace IsoRealms::Spindizzy {
             cDefImpactAction(data.getDummyActionClient()) {
   }
   
-  TerrainType::TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            TerrainType(project, spindizzy, data) {
+  TerrainType::TerrainType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            TerrainType(spindizzy, data) {
     cDefSolid = object.getBoolean(JSON_SOLID);
     cDefSurfaceBounce = object.getFloat(JSON_FLOOR_BOUNCE);
     cDefWallBounce = object.getFloat(JSON_WALL_BOUNCE, DEFAULT_WALL_BOUNCE);

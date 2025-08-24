@@ -37,13 +37,21 @@ namespace IsoRealms::Basics {
    */
   class Sequence final : public IEditable {
     public:
-    Sequence(IProject& project, Basics& basics, IResourceData& data);
-    Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    Sequence(Basics& basics, IResourceData& data);
+    Sequence(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+
+    /***************************\
+     * Asset client interfaces *
+    \***************************/
+    Basics& getAssetManager();
+    IsoRealms::Project& getProject() const;
+    bool isReadOnly() const;
+    void setOwner(ProjectFile* owner);
 
     /*********************\
      * Module interfaces *
@@ -77,7 +85,6 @@ namespace IsoRealms::Basics {
     /*********************\
      * Editing Interface *
     \*********************/
-    IProject& getProject() const;
     unsigned int getTrackCount() const;
     SequenceTrack& getTrack(unsigned int track) const;
     unsigned int getDuration() const;

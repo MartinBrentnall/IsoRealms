@@ -29,8 +29,6 @@
 #include "IAssetListener.h"
 #include "IAssetUser.h"
 
-#include "IsoRealms/IAssets.h"
-
 namespace IsoRealms {
   template<class OWNER, class TYPE> class AssetRegistry final {
     public:

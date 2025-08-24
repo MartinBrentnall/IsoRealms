@@ -34,8 +34,6 @@ namespace IsoRealms {
      * Implements Asset<IVertex, IResourceData> *
     \********************************************/
     IVertex* createLiteralAsset(IResourceData& owner);
-    IVertex* getAsset(IResourceData& owner, JSONObject object);
-    IVertex* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;
   };
 }

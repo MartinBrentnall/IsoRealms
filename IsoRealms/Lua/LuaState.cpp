@@ -43,7 +43,6 @@ namespace IsoRealms {
     // Bind IsoRealms library API's.
     cLua.new_usertype<IAction>("Action",                 "execute",              &IAction::execute);
     cLua.new_usertype<Action>("Action"                 , "execute",              &Action::execute);
-    cLua.new_usertype<IAssets>("Assets",                 "setProperty",          &IAssets::setProperty);
     cLua.new_usertype<IBoolean>("Boolean",               "getValue",             &IBoolean::getValue);
     cLua.new_usertype<IColour>("Colour");
     cLua.new_usertype<IDialogManager>("DialogManager");
@@ -78,15 +77,13 @@ namespace IsoRealms {
                                                          "getInteger",           &JSONObject::getInteger,
                                                          "getFloat",             &JSONObject::getFloat,
                                                          "getBoolean",           &JSONObject::getBoolean);
-    cLua.new_usertype<Project>("Project",                "executeCommand",       &Project::executeCommand,
-                                                         "finish",               &Project::finish,
+    cLua.new_usertype<Project>("Project",                "finish",               &Project::finish,
                                                          "getDisplayResolution", &Project::getDisplayResolution,
                                                          "setDisplayResolution", &Project::setDisplayResolution,
                                                          "isFullScreen",         &Project::isFullScreen,
                                                          "createDocument",       &Project::createDocument,
-                                                         "openDocument",         &Project::openDocument,
-                                                         "getUserDataPath",      &Project::getUserDataPath,
-                                                         "getTime",              &Project::getTime); // TODO: Should be a system function? (also the other non-project-specific functions too)
+                                                         "openDocument",         &Project::openDocument,  // TODO: Should be a system function? (also the other non-project-specific functions too)
+                                                         "getUserDataPath",      &Project::getUserDataPath);
     cLua.new_usertype<IString>("String",                 "getValue",             &IString::getValue);
     cLua.new_usertype<IVertex>("Vertex",                 "getX",                 &IVertex::getX,
                                                          "getY",                 &IVertex::getY,

@@ -31,14 +31,14 @@ namespace IsoRealms::Spindizzy {
   const float        DebrisGenerator::DEFAULT_RADIUS     = 0.3f;
   const float        DebrisGenerator::DEFAULT_STEP_REACH = 0.2f;
 
-  DebrisGenerator::DebrisGenerator(JSONObject object, IProject& project, IResourceData& owner) :
+  DebrisGenerator::DebrisGenerator(JSONObject object, IResourceData& owner) :
             cDefID(object.getString(JSON_ID)),
             cDefModel(owner),
             cDefLifeTime(object.getInteger(JSON_LIFE, DEFAULT_LIFE)),
             cDefHeight(object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT)),
             cDefRadius(object.getFloat(JSON_RADIUS, DEFAULT_RADIUS)),
             cDefStepReach(object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH)),
-            cLuaBinding(project, this) {
+            cLuaBinding(owner.getProject().getLuaState(), this) {
     cDefModel.init(object, JSON_APPEARANCE);
   }
 

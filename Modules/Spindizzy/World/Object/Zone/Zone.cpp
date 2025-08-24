@@ -113,7 +113,7 @@ namespace IsoRealms::Spindizzy {
         addTerrain(std::make_unique<Terrain>(*this, mTerrainValue.getObject()));
       }
     }
-    cDefWorld.getSpindizzy().getProject().init([this, object](IAssets& assets) {
+    cDefWorld.getSpindizzy().getProject().init([this, object]() {
       cDefType = cDefWorld.getSpindizzy().getZoneType(object.getString(JSON_TYPE));
       std::string mThemeSet = object.getString(JSON_THEME_SET);
       std::string mThemeName = object.getString(JSON_THEME);

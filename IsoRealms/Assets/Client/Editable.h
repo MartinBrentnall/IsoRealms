@@ -33,8 +33,6 @@ namespace IsoRealms {
     /**********************************************\
      * Implements Asset<IEditable, IResourceData> *
     \**********************************************/
-    IEditable* getAsset(IResourceData& owner, JSONObject object);
-    IEditable* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;
   };
 }

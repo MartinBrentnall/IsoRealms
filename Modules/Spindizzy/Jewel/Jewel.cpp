@@ -26,15 +26,15 @@ namespace IsoRealms::Spindizzy {
   const std::string Jewel::JSON_CYCLE_SPEED   = "cycleSpeed";
   const std::string Jewel::JSON_FRAME         = "frame";
 
-  Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProject(project),
+  Jewel::Jewel(Spindizzy& spindizzy, IResourceData& data) :
+            cProject(data.getProject()),
             cColourFrame(data, 1.0f, 1.0f, 0.0f) {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
     cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data));
   }
   
-  Jewel::Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            Jewel(project, spindizzy, data) {
+  Jewel::Jewel(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            Jewel(spindizzy, data) {
     cCycleSpeed = object.getFloat(JSON_CYCLE_SPEED);
     cColourFrame.init(object, JSON_FRAME);
     cColoursCycle.clear();
@@ -158,7 +158,7 @@ namespace IsoRealms::Spindizzy {
   /****************\
    * Constructors *
   \****************/
-  Jewel::Instance::Instance(Jewel& parent, IProject& project) :
+  Jewel::Instance::Instance(Jewel& parent, Project& project) :
             cDefParent(parent) {
     
     // If this is the first model instance, we need to create some display lists.

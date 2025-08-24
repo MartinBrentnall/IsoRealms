@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
             cDefLabel(""),
             cDefLabelFalse(""),
             cDefLabelTrue(""),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -46,7 +46,7 @@ namespace IsoRealms::UI {
             cDefLabel(object.getString(JSON_LABEL)),
             cDefLabelFalse(object.getString(JSON_FALSE_LABEL)),
             cDefLabelTrue(object.getString(JSON_TRUE_LABEL)),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   void MenuItemBoolean::setValue(bool value) {

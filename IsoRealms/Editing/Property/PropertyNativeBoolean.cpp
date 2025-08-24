@@ -18,11 +18,11 @@
  */
 #include "PropertyNativeBoolean.h"
 
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyNativeBoolean::PropertyNativeBoolean(PropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, IProject& project, std::function<void()> removeFunction) :
+  PropertyNativeBoolean::PropertyNativeBoolean(PropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(setter, project, getter()),
             cInternalProperty(owner, resourceAccessManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
@@ -48,7 +48,7 @@ namespace IsoRealms {
     cInternalProperty.configure(manager);
   }
   
-  PropertyNativeBoolean::BooleanSelection::BooleanSelection(std::function<void(bool)> setter, IProject& project, bool value) :
+  PropertyNativeBoolean::BooleanSelection::BooleanSelection(std::function<void(bool)> setter, Project& project, bool value) :
             cProject(project),
             cSetter(setter),
             cValue(value) {

@@ -31,14 +31,6 @@ namespace IsoRealms {
     return owner.getAssetManager().createLiteralString(this, owner, "");
   }
   
-  IString* String::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getString(this, object, owner, nullptr);
-  }
-  
-  IString* String::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getString(this, id, owner, nullptr);
-  }
-  
   bool String::isDefaultConfiguration() const {
     return true;
   }

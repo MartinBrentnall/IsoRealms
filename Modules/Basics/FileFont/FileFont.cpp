@@ -30,8 +30,8 @@ namespace IsoRealms::Basics {
   const float FileFont::DEFAULT_LINE_SPACING = 2.5f;
   const float FileFont::DEFAULT_SCALE        = 1.0f;
 
-  FileFont::FileFont(IProject& project, Basics& basics, IResourceData& data) :
-            cDefFilename(project),
+  FileFont::FileFont(Basics& basics, IResourceData& data) :
+            cDefFilename(data.getProject()),
             cDefDetail(DEFAULT_DETAIL),
             cDefLineSpacing(DEFAULT_LINE_SPACING),
             cDefScale(DEFAULT_SCALE),
@@ -40,8 +40,8 @@ namespace IsoRealms::Basics {
             cProcessedGLListBase(0) {
   }
   
-  FileFont::FileFont(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            FileFont(project, basics, data) {
+  FileFont::FileFont(Basics& basics, IResourceData& data, JSONObject object) :
+            FileFont(basics, data) {
     cDefFilename.load(JSON_FILENAME, object);
     cDefDetail = object.getInteger(JSON_DETAIL, DEFAULT_DETAIL);
     cDefLineSpacing = object.getFloat(JSON_LINE_SPACING, DEFAULT_LINE_SPACING);
@@ -49,7 +49,7 @@ namespace IsoRealms::Basics {
     cDefOffsetX = object.getFloat(JSON_OFFSET_X);
     cDefOffsetY = object.getFloat(JSON_OFFSET_Y);
 
-    project.mainThreadInit([this]() {
+    data.getProject().mainThreadInit([this]() {
       FT_Library mFTLibrary;
       if (FT_Init_FreeType(&mFTLibrary)) {
         throw std::runtime_error("FT_Init_FreeType failed");

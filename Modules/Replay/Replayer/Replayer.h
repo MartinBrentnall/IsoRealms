@@ -25,8 +25,8 @@ namespace IsoRealms::Replay {
 
   class Replayer final {
     public:
-    Replayer(IProject& project, Replay& replay, IResourceData& data);
-    Replayer(IProject& project, Replay& replay, IResourceData& data, JSONObject object);
+    Replayer(Replay& replay, IResourceData& data);
+    Replayer(Replay& replay, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     bool renderIcon() const;

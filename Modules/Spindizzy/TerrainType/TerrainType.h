@@ -40,8 +40,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource interface *
     \**********************/
-    TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    TerrainType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    TerrainType(Spindizzy& spindizzy, IResourceData& data);
+    TerrainType(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

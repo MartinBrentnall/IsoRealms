@@ -36,8 +36,8 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    Sprite(IProject& project, Basics& basics, IResourceData& data);
-    Sprite(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    Sprite(Basics& basics, IResourceData& data);
+    Sprite(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -63,7 +63,7 @@ namespace IsoRealms::Basics {
     /******************************\
      * Implements IScreenListener *
     \******************************/
-    void screenAdded(IProject& project, const IScreen* screen) override;
+    void screenAdded(const IScreen* screen) override;
     void screenRemoved(const IScreen* screen) override;
     void screenPreRender(const IScreen* screen) override;
     void screenPostRender(const IScreen* screen) override;
@@ -78,7 +78,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_TEXTURE;
 
     // System.
-    IProject& cDefProject;   /// Hosting project.
+    Project& cDefProject;   /// Hosting project.
 
     // Definition data.
     Texture cDefTexture;     /// Texture applied to this sprite.

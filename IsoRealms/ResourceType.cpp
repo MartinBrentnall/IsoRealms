@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "Module.h"
 #include "Project.h"
 #include "PropertyData.h"
 
@@ -30,7 +31,7 @@ namespace IsoRealms {
   const std::string ResourceType::JSON_PROPERTIES  = "properties";
   const std::string ResourceType::JSON_SINGULAR    = "singular";
 
-  ResourceType::ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal& parent) :
+  ResourceType::ResourceType(IResourceTypeDefinition* resourceType, Module& parent) :
             cResourceType(resourceType),
             cParent(parent),
             cCategory("None") {
@@ -39,10 +40,9 @@ namespace IsoRealms {
 
   ResourceType::~ResourceType() {
     Project& mProject = cParent.getProject();
-    IAssets& mAssets = cParent.getAssets();
     for (IResource* mResource : cResources) {
       try {
-        cResourceType->deleteResource(mProject, mAssets, mResource);
+        cResourceType->deleteResource(mProject, mResource);
       } catch (...) {
         std::exception_ptr eptr = std::current_exception();
         try {
@@ -57,7 +57,7 @@ namespace IsoRealms {
     cResources.clear();
   }
 
-  void ResourceType::loadResource(JSONObject object, IProject& project, ProjectFile* ownerProject, const std::string& resourceDataPath) {
+  void ResourceType::loadResource(JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) {
     std::string mResourceName = object.getString(JSON_ID);
     
     // Ignore resource if name matches an existing one (useful for include overrides and omissions).
@@ -71,7 +71,7 @@ namespace IsoRealms {
         return;
       }
     }
-    IResource* mResource = cResourceType->loadResource(*this, project, object, ownerProject, resourceDataPath + "/" + mResourceName);
+    IResource* mResource = cResourceType->loadResource(*this, object, ownerProject, resourceDataPath + "/" + mResourceName);
     cResources.insert(mResource);
   }
 
@@ -120,9 +120,9 @@ namespace IsoRealms {
   }
 
   IResource* ResourceType::createResource() {
-    IProject& mProject = cParent.getProjectRuntime();
+    Project& mProject = cParent.getProject();
     ProjectFile* mOwnerProject = mProject.getFile();
-    IResource* mResource = cResourceType->createResource(*this, mProject, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
+    IResource* mResource = cResourceType->createResource(*this, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
     cResources.insert(mResource);
     return mResource;
   }
@@ -135,12 +135,11 @@ namespace IsoRealms {
     for (IResource* mResource : cResources) {
       if (resource == mResource) {
         Project& mProject = cParent.getProject();
-        IAssets& mAssets = cParent.getAssets();
         cResources.erase(mResource);
         if (mResource->isReadOnly()) {
           cOmittedResources.insert(mResource->getName());
         }
-        cResourceType->deleteResource(mProject, mAssets, mResource);
+        cResourceType->deleteResource(mProject, mResource);
         return;
       }
     }
@@ -177,10 +176,6 @@ namespace IsoRealms {
   
   std::string ResourceType::getDescription() const {
     return cDescription.empty() ? "No description available for this resource type." : cDescription;
-  }
-
-  IAssets& ResourceType::getAssets() {
-    return cParent.getAssets();
   }
 
   Project& ResourceType::getProject() {

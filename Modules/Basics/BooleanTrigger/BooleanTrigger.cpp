@@ -27,7 +27,7 @@ namespace IsoRealms::Basics {
   const std::string BooleanTrigger::PROPERTY_TRUE_ACTION  = "Action on True";
   const std::string BooleanTrigger::PROPERTY_FALSE_ACTION = "Action on False";
   
-  BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data) :
+  BooleanTrigger::BooleanTrigger(Basics& basics, IResourceData& data) :
             cDefValue(data, false, [this](bool value) {
               (value ? cDefTrueAction : cDefFalseAction).execute();
             }),
@@ -35,8 +35,8 @@ namespace IsoRealms::Basics {
             cDefFalseAction(data.getDummyActionClient()) {
   }
   
-  BooleanTrigger::BooleanTrigger(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            BooleanTrigger(project, basics, data) {
+  BooleanTrigger::BooleanTrigger(Basics& basics, IResourceData& data, JSONObject object) :
+            BooleanTrigger(basics, data) {
     cDefValue.init(object, JSON_VALUE);
     cDefTrueAction.init(object, JSON_ON_BECOMING_TRUE);
     cDefFalseAction.init(object, JSON_ON_BECOMING_FALSE);

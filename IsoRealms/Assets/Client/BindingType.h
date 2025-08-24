@@ -33,8 +33,6 @@ namespace IsoRealms {
     /*************************************************\
      * Implements Asset<IBindingType, IResourceData> *
     \*************************************************/
-    IBindingType* getAsset(IResourceData& owner, JSONObject object);
-    IBindingType* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;
 
     void stateChanged(IBindingType* asset) override;

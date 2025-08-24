@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   const std::string Theme::JSON_TEXTURE  = "texture";
   const std::string Theme::JSON_TEXTURES = "textures";
 
-  Theme::Theme(IProject& project, ThemeSet& themeSet) :
+  Theme::Theme(ThemeSet& themeSet) :
             cThemeSet(themeSet) {
     std::vector<ThemeTexture*> mThemeTextures = themeSet.getThemeTextures();
     for (ThemeTexture* mThemeTexture : mThemeTextures) {
@@ -42,7 +42,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  Theme::Theme(IProject& project, ThemeSet& themeSet, JSONObject object) :
+  Theme::Theme(ThemeSet& themeSet, JSONObject object) :
             cThemeSet(themeSet) {
     for (JSONValue mTextureValue : object.getArray(JSON_TEXTURES)) {
       JSONObject mTextureObject = mTextureValue.getObject();
@@ -52,11 +52,11 @@ namespace IsoRealms::Spindizzy {
 
     for (JSONValue mColourValue : object.getArray(JSON_COLOURS)) {
       JSONObject mColourObject = mColourValue.getObject();
-      ThemeColour* mThemeColour = cThemeSet.createColour(project, mColourObject.getString(JSON_ELEMENT));
+      ThemeColour* mThemeColour = cThemeSet.createColour(mColourObject.getString(JSON_ELEMENT));
       cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(themeSet.getResourceData(), 1.0f, 0.0f, 1.0f)).first->second.init(mColourObject, JSON_COLOUR);
     }
 
-    project.init([this](IAssets& assets) {
+    cThemeSet.getSpindizzy().getProject().init([this]() {
       set();
     });
   }
@@ -119,10 +119,6 @@ namespace IsoRealms::Spindizzy {
     for (std::map<ThemeTexture*, Texture>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
       i->second->hintTextureInUse(inUse);
     }
-  }
-
-  void Theme::releaseAssets(IAssets& releaser) {
-    // Nothing to do.
   }
 
   ITexture* Theme::getTexture(ThemeTexture* themeTexture) {

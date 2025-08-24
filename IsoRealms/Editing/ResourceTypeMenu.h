@@ -20,7 +20,6 @@
 
 #include <memory>
 
-#include "IsoRealms/IResourceType.h"
 #include "IsoRealms/IResource.h"
 
 #include "Choice.h"
@@ -29,9 +28,11 @@
 #include "PropertiesMenu.h"
 
 namespace IsoRealms {
+  class ResourceType;
+
   class ResourceTypeMenu : public Menu<MenuItemResource> {
     public:
-    ResourceTypeMenu(UIManager& manager, IUIStyle& style, IResourceType& resourceType);
+    ResourceTypeMenu(UIManager& manager, IUIStyle& style, ResourceType& resourceType);
 
     /*************************************\
      * Implements Menu<MenuItemResource> *
@@ -48,7 +49,7 @@ namespace IsoRealms {
     void refresh() override;
 
     private:
-    IResourceType& cResourceType;
+    ResourceType& cResourceType;
     float cRemoveButtonOffset;
     bool cDeleteSelected;
 

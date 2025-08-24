@@ -19,7 +19,6 @@
 #include "Vertex.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 
@@ -30,14 +29,6 @@ namespace IsoRealms {
 
   IVertex* Vertex::createLiteralAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f);
-  }
-  
-  IVertex* Vertex::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getVertex(this, object, owner);
-  }
-  
-  IVertex* Vertex::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getVertex(this, id, owner);
   }
   
   bool Vertex::isDefaultConfiguration() const {

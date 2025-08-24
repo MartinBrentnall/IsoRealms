@@ -29,7 +29,7 @@
 namespace IsoRealms::Spindizzy {
   class DebrisGenerator final {
     public:
-    DebrisGenerator(JSONObject object, IProject& project, IResourceData& owner);
+    DebrisGenerator(JSONObject object, IResourceData& owner);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
     void updateRuntime(unsigned int milliseconds);
     void renderRuntime();

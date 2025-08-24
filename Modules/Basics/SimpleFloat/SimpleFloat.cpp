@@ -23,18 +23,18 @@ namespace IsoRealms::Basics {
 
   const std::string SimpleFloat::PROPERTY_VALUE  = "Initial Value";
   
-  SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data) :
+  SimpleFloat::SimpleFloat(Basics& basics, IResourceData& data) :
             cDefValue(0.0f),
             cRuntimeValue(0.0f),
-            cLuaBinding(project, this),
+            cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  SimpleFloat::SimpleFloat(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleFloat(project, basics, data) {
+  SimpleFloat::SimpleFloat(Basics& basics, IResourceData& data, JSONObject object) :
+            SimpleFloat(basics, data) {
     cRuntimeValue = cDefValue = object.getFloat(JSON_VALUE);
 
-    project.init([this](IAssets& resources) {
+    data.getProject().init([this]() {
       cStateNotifier->stateChanged(this);
     });
   }

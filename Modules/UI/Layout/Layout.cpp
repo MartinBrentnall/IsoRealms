@@ -24,13 +24,13 @@ namespace IsoRealms::UI {
   const std::string Layout::JSON_COMPONENTS = "components";
   const std::string Layout::JSON_ID         = "id";
 
-  Layout::Layout(IProject& project, UI& ui, IResourceData& data) :
+  Layout::Layout(UI& ui, IResourceData& data) :
             cResourceData(data),
             cUI(ui) {
   }
   
-  Layout::Layout(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
-            Layout(project, ui, data) {
+  Layout::Layout(UI& ui, IResourceData& data, JSONObject object) :
+            Layout(ui, data) {
     for (JSONValue mComponentValue : object.getArray(JSON_COMPONENTS)) {
       JSONObject mComponentObject = mComponentValue.getObject();
       std::string mComponentName = mComponentObject.getString(JSON_ID);
@@ -38,7 +38,7 @@ namespace IsoRealms::UI {
         throw ParseException("Duplicate component name in screen layout: " + mComponentName);
       }
       // TODO: Is this an implicit "new"!!?
-      cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(project, *this, mComponentObject));
+      cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, mComponentObject));
       cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
     }
   }
@@ -180,13 +180,13 @@ namespace IsoRealms::UI {
 
   LayoutComponent* Layout::createComponent(float x1, float y1, float x2, float y2, float aspectRatio) {
     std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
-    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(cUI.getProject(), *this, x1, y1, x2, y2, aspectRatio));
+    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, x1, y1, x2, y2, aspectRatio));
     return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
   }
   
   LayoutComponent* Layout::createComponent(JSONObject& object) {
     std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
-    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(cUI.getProject(), *this, object));
+    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, object));
     return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
   }
 

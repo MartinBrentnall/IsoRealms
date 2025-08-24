@@ -36,7 +36,7 @@ namespace IsoRealms {
     for (std::string mProvider : mProviders) {
       if (mProvider == cDefType) {
         cManager.getAssetManager().release(this, cAsset);
-        cAsset = cManager.getAssetManager().getBinding(this, mProvider, owner);
+        cAsset = cManager.getAssetManager().getAsset(this, mProvider, owner);
         break;
       }
     }
@@ -68,13 +68,13 @@ namespace IsoRealms {
     return cDefType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
   }
 
-  IBinding* Binding::getAsset(IActionClient& owner, JSONObject object) {
-    return owner.getAssetManager().getBinding(this, object, owner, cDefRegistry);
-  }
-  
-  IBinding* Binding::getAsset(IActionClient& owner, const std::string& id) {
-    return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
-  }
+//   IBinding* Binding::getAsset(IActionClient& owner, JSONObject object) {
+//     return owner.getAssetManager().getBinding(this, object, owner, cDefRegistry);
+//   }
+//
+//   IBinding* Binding::getAsset(IActionClient& owner, const std::string& id) {
+//     return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
+//   }
   
   std::vector<std::string> Binding::getAvailableClientProviders() const {
 

@@ -579,7 +579,7 @@ namespace IsoRealms::UI {
     return 0.0f;
   }
   
-  IProject& LayoutEditor::getProject() const {
+  Project& LayoutEditor::getProject() const {
     return cLayout.getUI().getProject();
   }
   

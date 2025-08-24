@@ -36,8 +36,8 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    InputGroup(IProject& project, Basics& basics, IResourceData& data);
-    InputGroup(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    InputGroup(Basics& basics, IResourceData& data);
+    InputGroup(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

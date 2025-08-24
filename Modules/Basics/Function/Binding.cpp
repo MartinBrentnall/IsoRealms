@@ -99,7 +99,7 @@ namespace IsoRealms::Basics {
     return *cDefValue;
   }
 
-  void Binding::release(IAssets& releaser) {
+  void Binding::release() {
     // TODO: Is this necessary?
 //     if (cDefValue != nullptr) {
 //       releaser->release(this, cDefValue);

@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
   const std::string Player::JSON_Y    = "y";
   const std::string Player::JSON_Z    = "z";
 
-  Player::Player(IProject& project, World& world, PlayerType& type, float x, float y, float z) :
+  Player::Player(World& world, PlayerType& type, float x, float y, float z) :
             cDefWorld(world),
             cDefType(&type),
             cDefMovementHandler(cDefWorld.getMovementHandler(cDefType)),
@@ -39,11 +39,11 @@ namespace IsoRealms::Spindizzy {
             cDefY(Utils::round(y, 0.5, 0.0)),
             cDefZ(Utils::round(z, 0.5, 0.0)),
             cRuntimePhysicsObject(cDefWorld.getSpindizzy(), this),
-            cLuaBinding(project, this, [this]() {return cDefType->renderAssetIcon();}) {
+            cLuaBinding(world.getSpindizzy().getProject().getLuaState(), this, [this]() {return cDefType->renderAssetIcon();}) {
     reset();
   }
 
-  Player::Player(IProject& project, World& world, JSONObject object) :
+  Player::Player(World& world, JSONObject object) :
             cDefWorld(world),
             cDefType(nullptr),
             cDefMovementHandler(nullptr),
@@ -52,8 +52,8 @@ namespace IsoRealms::Spindizzy {
             cDefY(object.getFloat(JSON_Y)),
             cDefZ(object.getFloat(JSON_Z)),
             cRuntimePhysicsObject(cDefWorld.getSpindizzy(), this),
-            cLuaBinding(project, this, [this]() {return cDefType->renderAssetIcon();}) {
-    cDefWorld.getSpindizzy().getProject().init([this, object](IAssets& assets) {
+            cLuaBinding(world.getSpindizzy().getProject().getLuaState(), this, [this]() {return cDefType->renderAssetIcon();}) {
+    cDefWorld.getSpindizzy().getProject().init([this, object]() {
       cDefType = cDefWorld.getSpindizzy().getPlayerType(object.getString(JSON_TYPE));
       cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();

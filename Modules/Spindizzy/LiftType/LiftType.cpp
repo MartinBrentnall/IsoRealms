@@ -25,15 +25,15 @@ namespace IsoRealms::Spindizzy {
   const std::string LiftType::JSON_ON_TICK    = "onTick";
   const std::string LiftType::JSON_STATE      = "state";
 
-  LiftType::LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  LiftType::LiftType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cDefModel(data),
             cDefActive(data, true),
             cDefTickAction(data.getDummyActionClient()) {
   }
   
-  LiftType::LiftType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            LiftType(project, spindizzy, data) {
+  LiftType::LiftType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            LiftType(spindizzy, data) {
     cDefModel.init(object, JSON_APPEARANCE);
     cDefActive.init(object, JSON_STATE);
     cDefTickAction.init(object, JSON_ON_TICK);

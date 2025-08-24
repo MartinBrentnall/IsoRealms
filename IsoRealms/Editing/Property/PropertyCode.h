@@ -32,11 +32,11 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  class IProject;
+  class Project;
 
   class PropertyCode : public Property {
     public:
-    PropertyCode(IProject& project, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyCode(Project& project, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -118,7 +118,7 @@ namespace IsoRealms {
 
     static const unsigned int BLINK_DELAY = 200;
 
-    IProject& cProject;
+    Project& cProject;
 
     std::function<std::string()> cGetter;
     std::function<void(const std::string&)> cSetter;

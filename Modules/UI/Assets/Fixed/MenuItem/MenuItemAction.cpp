@@ -31,7 +31,7 @@ namespace IsoRealms::UI {
             cDefID(""),
             cDefLabel(""),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -39,7 +39,7 @@ namespace IsoRealms::UI {
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 

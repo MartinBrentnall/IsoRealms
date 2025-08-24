@@ -32,17 +32,17 @@ namespace IsoRealms::UI {
   const float Prompt::DEFAULT_SHADOW_OFFSET = 0.008f;
   const float Prompt::DEFAULT_TEXT_SIZE     = 0.05f;
 
-  Prompt::Prompt(IProject& project, UI& ui, IResourceData& data) :
-            cHatHandler(project.getApplication().getHatHandler()),
+  Prompt::Prompt(UI& ui, IResourceData& data) :
+            cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefFont(data),
             cDefSelectionColour(data, 1.0f, 1.0f, 1.0f),
             cDefNegativeAction(data.getDummyActionClient()),
             cDefPositiveAction(data.getDummyActionClient()),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Prompt::Prompt(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
-            Prompt(project, ui, data) {
+  Prompt::Prompt(UI& ui, IResourceData& data, JSONObject object) :
+            Prompt(ui, data) {
     cDefTextSize     = object.getFloat(JSON_TEXT_SIZE,     DEFAULT_TEXT_SIZE);
     cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
     cDefMessage      = object.getString(JSON_MESSAGE);

@@ -82,7 +82,7 @@ namespace IsoRealms::UI {
     return cDefColour.isDefaultConfigured() && cDefCornerSize == 0.0f;
   }
 
-  void ScreenPanel::initTextures(IProject& project) {
+  void ScreenPanel::initTextures(Project& project) {
     if (cGlobalInstanceCount++ == 0) {
       cGlobalCornerTexture = std::make_unique<LiteralTexture>(project, 128, 128, true, true);
       project.mainThreadInit([&project]() {

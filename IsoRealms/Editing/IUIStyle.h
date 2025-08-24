@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   class IFont;
-  class IProject;
+  class Project;
 
   class IUIStyle {
     public:
@@ -28,6 +28,6 @@ namespace IsoRealms {
     virtual float getFontSize() const = 0;
     virtual IFont* getCodeFont() const = 0;
     virtual float getCodeFontSize() const = 0;
-    virtual IProject& getProject() const = 0;
+    virtual Project& getProject() const = 0;
   };
 }

@@ -36,8 +36,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    Gyroscope(Spindizzy& spindizzy, IResourceData& data);
+    Gyroscope(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -81,7 +81,7 @@ namespace IsoRealms::Spindizzy {
     static const float HEIGHT;
 
     // External interfaces.
-    IProject& cProject;
+    Project& cProject;
 
     // Definition data.
     Colour cDefQuadrant[4];     /// Colours of the four quadrants.

@@ -30,14 +30,6 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  IBindingType* BindingType::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getBindingType(this, object, owner);
-  }
-
-  IBindingType* BindingType::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getBindingType(this, id, owner);
-  }
-
   bool BindingType::isDefaultConfiguration() const {
     return true;
   }

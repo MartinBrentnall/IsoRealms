@@ -18,7 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/IResourceType.h"
 #include "IsoRealms/IResource.h"
 
 #include "ActionMenu.h"

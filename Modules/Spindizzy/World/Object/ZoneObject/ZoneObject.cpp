@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
             cZone(zone),
             cDefType(nullptr) {
     std::cout << "TODO: ZoneObject::ZoneObject" << std::endl;
-//     cZone.getWorld().getSpindizzy()->getProject()->init([this, &node](IAssets& assets) {
+//     cZone.getWorld().getSpindizzy()->getProject()->init([this, &node]() {
 //       cDefType = cZone.getWorld().getSpindizzy()->getZoneObjectType(node.getAttribute(JSON_TYPE));
 //       cDefTraits = cDefType->createTraits(*this);
 //       registerAssets();

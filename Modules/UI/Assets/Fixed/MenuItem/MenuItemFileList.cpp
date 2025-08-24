@@ -35,7 +35,7 @@ namespace IsoRealms::UI {
             cDefFolder(""),
             cDefUser(false),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -45,7 +45,7 @@ namespace IsoRealms::UI {
             cDefFolder(object.getString(JSON_FOLDER)),
             cDefUser(object.getBoolean(JSON_USER)),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 

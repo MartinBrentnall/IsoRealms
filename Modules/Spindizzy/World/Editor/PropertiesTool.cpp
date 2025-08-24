@@ -168,7 +168,7 @@ namespace IsoRealms::Spindizzy {
     return 0.2f;
   }
 
-  IProject& PropertiesTool::Modifier::getProject() const {
+  Project& PropertiesTool::Modifier::getProject() const {
     return cEditor.getWorld().getSpindizzy().getProject();
   }
   

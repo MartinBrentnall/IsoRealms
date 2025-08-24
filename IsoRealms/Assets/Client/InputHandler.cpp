@@ -27,14 +27,6 @@ namespace IsoRealms {
             Asset<InputHandler, IInputHandler, IResourceData>(owner) {
   }
 
-  IInputHandler* InputHandler::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getInputHandler(this, object, owner);
-  }
-  
-  IInputHandler* InputHandler::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getInputHandler(this, id, owner);
-  }
-  
   bool InputHandler::isDefaultConfiguration() const {
     return true;
   }

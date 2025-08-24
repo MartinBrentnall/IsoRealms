@@ -32,21 +32,21 @@ namespace IsoRealms::Spindizzy {
   const float Gyroscope::WIDTH             = 0.33f;
   const float Gyroscope::HEIGHT            = 0.9f;
 
-  Gyroscope::Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProject(project),
+  Gyroscope::Gyroscope(Spindizzy& spindizzy, IResourceData& data) :
+            cProject(data.getProject()),
             cDefQuadrant{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(data, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
                          Colour(data, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
             cDefOutline(data, 1.0f, 0.0f, 1.0f),
-            cTexture(project, 128, 128),
+            cTexture(data.getProject(), 128, 128),
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
     setNeedsRedrawing();
   }
 
-  Gyroscope::Gyroscope(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            Gyroscope(project, spindizzy, data) {
+  Gyroscope::Gyroscope(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            Gyroscope(spindizzy, data) {
     cDefQuadrant[0].init(object, JSON_COLOUR_1);
     cDefQuadrant[1].init(object, JSON_COLOUR_2);
     cDefQuadrant[2].init(object, JSON_COLOUR_3);

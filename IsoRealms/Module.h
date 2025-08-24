@@ -33,14 +33,12 @@
 #include <set>
 
 #include "IModule.h"
-#include "IModuleInternal.h"
 #include "IResourceTypeRegistry.h"
 #include "Project.h"
 #include "ResourceAssetRegistry.h"
 
 namespace IsoRealms {
   class IModuleHandle;
-  class IProject;
   class IProperty;
   class IOptions;
   class JSONObject;
@@ -49,8 +47,7 @@ namespace IsoRealms {
   class ResourceType;
 
   class Module : public IResourceTypeRegistry,
-                 public IModule,
-                 public IModuleInternal {
+                 public IModule {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
@@ -74,21 +71,16 @@ namespace IsoRealms {
      * Implements IModule *
     \**********************/
     std::string getName() override;
-    std::vector<IResourceType*> getResourceTypes() override;
+    std::vector<ResourceType*> getResourceTypes() override;
     
-    /******************************\
-     * Implements IModuleInternal *
-    \******************************/
-    IProject& getProjectRuntime() override;
-    std::string getName(const ResourceType* resourceType) const override;
-    IAssets& getAssets() override;
-    Project& getProject() override;
-    std::string getPath() override;
-    std::string getDataPath(bool user) override;
-    ProjectFile* getProjectFile() override;
-    void makeUserDataDirectory(const std::string& resourcePath) override;
-    void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) override;
-    std::string getProjectPathPrefix(bool user) override;
+    std::string getName(const ResourceType* resourceType) const;
+    Project& getProject();
+    std::string getPath();
+    std::string getDataPath(bool user);
+    ProjectFile* getProjectFile();
+    void makeUserDataDirectory(const std::string& resourcePath);
+    void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
+    std::string getProjectPathPrefix(bool user);
 
     virtual ~Module();
 

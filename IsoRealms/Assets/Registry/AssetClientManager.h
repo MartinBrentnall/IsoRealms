@@ -21,12 +21,13 @@
 #include "IsoRealms/Assets/Providers/AssetSingleton.h"
 #include "IsoRealms/Assets/Registry/ILiteralAssetProvider.h"
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
+#include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Persistence.h"
 
 #include "AssetRegistry.h"
 
 namespace IsoRealms {
-  template<class OWNER, class TYPE> class AssetClientManager {
+  template<class DERIVED, class OWNER, class TYPE> class AssetClientManager {
     public:
     AssetRegistry<OWNER, TYPE> cRegistry;
 

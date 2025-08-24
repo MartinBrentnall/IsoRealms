@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
   const std::string BoundaryHandler::BIND_TO_BOUNDARY = "Boundary";
   const std::string BoundaryHandler::BIND_TO_OBJECT   = "Object";
 
-  BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  BoundaryHandler::BoundaryHandler(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cActionClient(data, *this),
             cDefBoundaryType(spindizzy),
@@ -39,13 +39,13 @@ namespace IsoRealms::Spindizzy {
             cDefExitedAction(cActionClient) {
   }
 
-  BoundaryHandler::BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            BoundaryHandler(project, spindizzy, data) {
+  BoundaryHandler::BoundaryHandler(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            BoundaryHandler(spindizzy, data) {
     cDefBoundaryType.init(object, JSON_BOUNDARY);
     cDefObjectType.init(object, JSON_OBJECT);
     cDefEnteredAction.init(object, JSON_ON_ENTRY);
     cDefExitedAction.init(object, JSON_ON_EXIT);
-    spindizzy.getProject().init([this, &spindizzy](IAssets& assets) {
+    spindizzy.getProject().init([this, &spindizzy]() {
       spindizzy.added(this);
     });
   }

@@ -25,8 +25,6 @@
 #include "Assets/Type/IScreenListener.h"
 #include "Editing/Property/IProperty.h"
 #include "Exception/ResourceInitException.h"
-#include "IAssets.h"
 #include "IModuleHandle.h"
-#include "IProject.h"
 #include "IResourceData.h"
 #include "Options/IOptions.h"

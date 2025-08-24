@@ -33,23 +33,23 @@ namespace IsoRealms::Basics {
   const std::string Sequence::JSON_TRACK     = "track";
   const std::string Sequence::JSON_TYPE      = "type";
 
-  Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data) :
+  Sequence::Sequence(Basics& basics, IResourceData& data) :
             cBasics(basics),
             cResourceData(data),
             cDefPlaying(false),
             cDefLoop(false),
             cDefSpeed(data, 1.0f),
             cExposedLength(*this),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Sequence::Sequence(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            Sequence(project, basics, data) {
+  Sequence::Sequence(Basics& basics, IResourceData& data, JSONObject object) :
+            Sequence(basics, data) {
     cDefPlaying = object.getBoolean(JSON_PLAYING);
     cDefLoop = object.getBoolean(JSON_LOOP);
     cDefSpeed.init(object, JSON_SPEED);
     for (JSONValue mTrackValue : object.getArray(JSON_TRACKS)) {
-      cDefTracks.emplace_back(std::make_unique<SequenceTrack>(basics, *this));
+      cDefTracks.emplace_back(std::make_unique<SequenceTrack>(*this));
       cDefTracks.back()->set(mTrackValue.getObject(), JSON_TRACK);
     }
     for (JSONValue mInstanceValue : object.getArray(JSON_INSTANCES)) {
@@ -115,6 +115,22 @@ namespace IsoRealms::Basics {
         cDefInstances.erase(mKey);
       });
     });
+  }
+
+  Basics& Sequence::getAssetManager() {
+    return cBasics;
+  }
+
+  IsoRealms::Project& Sequence::getProject() const {
+    return cBasics.getProject();
+  }
+
+  bool Sequence::isReadOnly() const {
+    return cResourceData.isReadOnly();
+  }
+
+  void Sequence::setOwner(ProjectFile* owner) {
+    cResourceData.setOwner(owner);
   }
 
   void Sequence::updateRuntime(unsigned int milliseconds) {
@@ -220,10 +236,6 @@ namespace IsoRealms::Basics {
     }
   }
 
-  IProject& Sequence::getProject() const {
-    return cBasics.getProject();
-  }
-
   unsigned int Sequence::getTrackCount() const {
     return static_cast<unsigned int>(cDefTracks.size());
   }
@@ -241,7 +253,7 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::addTrack() {
-    SequenceTrack* mTrack = cDefTracks.emplace_back(std::make_unique<SequenceTrack>(cBasics, *this)).get();
+    SequenceTrack* mTrack = cDefTracks.emplace_back(std::make_unique<SequenceTrack>(*this)).get();
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance(*mEntry.second.get());
       mEntry.second->addTrackInstance(mTrackInstance);

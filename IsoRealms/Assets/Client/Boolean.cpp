@@ -20,7 +20,6 @@
 #include "Boolean.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 
@@ -33,14 +32,6 @@ namespace IsoRealms {
 
   IBoolean* Boolean::createLiteralAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralBoolean(this, owner, cDefaultValue);
-  }
-
-  IBoolean* Boolean::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getBoolean(this, object, owner, cListener != nullptr ? this : nullptr);
-  }
-  
-  IBoolean* Boolean::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getBoolean(this, id, owner, cListener != nullptr ? this : nullptr);
   }
 
   void Boolean::stateChanged(IBoolean* value) {

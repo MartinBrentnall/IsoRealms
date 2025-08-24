@@ -33,13 +33,13 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectType::BIND_TO_TRAIT = "Trait";
   const std::string ZoneObjectType::BIND_TO_ZONE  = "Zone";
 
-  ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  ZoneObjectType::ZoneObjectType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cResourceData(data) {
   }
   
-  ZoneObjectType::ZoneObjectType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            ZoneObjectType(project, spindizzy, data) {
+  ZoneObjectType::ZoneObjectType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            ZoneObjectType(spindizzy, data) {
 //     for (OMNode& mNode : node) {
 //       std::string mTag = mNode.getName();
 //       if (mTag == AG_TRAIT) {

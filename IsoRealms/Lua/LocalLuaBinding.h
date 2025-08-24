@@ -22,7 +22,6 @@
 
 #include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
 
 namespace IsoRealms {
@@ -33,8 +32,8 @@ namespace IsoRealms {
    */
   template <class T> class LocalLuaBinding : public IBinding {
     public:
-    LocalLuaBinding(IProject& project, T* value, IBindingRegistry* localBindingRegistry) :
-              cDefLuaState(project.getLuaState()->getState()),
+    LocalLuaBinding(LuaState& lua, T* value, IBindingRegistry* localBindingRegistry) :
+              cDefLuaState(lua.getState()),
               cDefValue(value),
               cDefLocalBindingRegistry(localBindingRegistry) {
     }

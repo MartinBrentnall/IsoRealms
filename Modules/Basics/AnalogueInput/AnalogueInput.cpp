@@ -18,6 +18,8 @@
  */
 #include "AnalogueInput.h"
 
+#include "Modules/Basics/Basics.h"
+
 namespace IsoRealms::Basics {
   const std::string AnalogueInput::JSON_ID       = "id";
   const std::string AnalogueInput::JSON_INPUT    = "Input";
@@ -25,18 +27,18 @@ namespace IsoRealms::Basics {
   const std::string AnalogueInput::JSON_NAME     = "name";
   const std::string AnalogueInput::JSON_TYPE     = "type";
 
-  AnalogueInput::AnalogueInput(IProject& project, Basics& basics, IResourceData& data) :
+  AnalogueInput::AnalogueInput(Basics& basics, IResourceData& data) :
              cRuntimeState(false),
-             cLuaBinding(project, this) {
+             cLuaBinding(basics.getProject().getLuaState(), this) {
   }
 
-  AnalogueInput::AnalogueInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            AnalogueInput(project, basics, data) {
+  AnalogueInput::AnalogueInput(Basics& basics, IResourceData& data, JSONObject object) :
+            AnalogueInput(basics, data) {
     for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingValue.getObject();
       std::string mType = mMappingObject.getString(JSON_TYPE);
       if      (mType == AxisMapping::TYPE_AXIS)                             {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<AxisMapping>(mMappingObject), "TODO: Remove This"));}
-      else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(project, basics, mMappingObject), mMappingObject.getString(JSON_NAME)));}
+      else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(basics, mMappingObject), mMappingObject.getString(JSON_NAME)));}
       else                                                                  {throw ParseException("Unknown tag for Basics/AnalogueInput: " + mType);}
     }
   }

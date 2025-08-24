@@ -34,8 +34,6 @@ namespace IsoRealms::Spindizzy {
     /*************************************************\
      * Implements Asset<IWorldEditorTool, Spindizzy> *
     \*************************************************/
-    IWorldEditorTool* getAsset(Spindizzy& spindizzy, JSONObject object);
-    IWorldEditorTool* getAsset(Spindizzy& spindizzy, const std::string& id);
     bool isDefaultConfiguration() const;
   };
 }

@@ -35,8 +35,8 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    FileTexture(IProject& project, Basics& basics, IResourceData& data);
-    FileTexture(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    FileTexture(Basics& basics, IResourceData& data);
+    FileTexture(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -71,6 +71,6 @@ namespace IsoRealms::Basics {
     /**********************\
      * Internal Functions *
     \**********************/
-    void reloadData(IProject& assets);
+    void reloadData(Project& assets);
   };
 }

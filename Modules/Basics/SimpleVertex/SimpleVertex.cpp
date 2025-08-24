@@ -27,24 +27,24 @@ namespace IsoRealms::Basics {
   const std::string SimpleVertex::PROPERTY_Y = "Y";
   const std::string SimpleVertex::PROPERTY_Z = "Z";
 
-  SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data) :
+  SimpleVertex::SimpleVertex(Basics& basics, IResourceData& data) :
             cDefX(0.0),
             cDefY(0.0),
             cDefZ(0.0),
             cRuntimeX(0.0),
             cRuntimeY(0.0),
             cRuntimeZ(0.0),
-            cLuaBinding(project, this),
+            cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
 
-  SimpleVertex::SimpleVertex(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleVertex(project, basics, data) {
+  SimpleVertex::SimpleVertex(Basics& basics, IResourceData& data, JSONObject object) :
+            SimpleVertex(basics, data) {
     cRuntimeX = cDefX = object.getFloat(JSON_X);
     cRuntimeY = cDefY = object.getFloat(JSON_Y);
     cRuntimeZ = cDefZ = object.getFloat(JSON_Z);
 
-    project.init([this](IAssets& resources) {
+    data.getProject().init([this]() {
       cStateNotifier->stateChanged(this);
     });
   }

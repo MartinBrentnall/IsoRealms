@@ -18,52 +18,39 @@
  */
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include "IsoRealms/Assets/Registry/ILiteralAssetProvider.h"
-
-#include "AssetCache.h"
+#include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  template<class OWNER, class TYPE> class AssetLiteral : public AssetCache<OWNER, TYPE>,
-                                                         public ILiteralAssetProvider<OWNER, TYPE> {
+  template<class OWNER, class TYPE> class AssetLiteral : public ILiteralAssetProvider<OWNER, TYPE> {
     public:
 
     /******************************************\
      * Implements ILiteralAssetProvider<TYPE> *
     \******************************************/
     TYPE* getLiteralAsset(OWNER& owner, const std::string& value) override {
-      return this->getCachedAsset(owner, value);
+      return cAssets.emplace_back(createLiteralAsset(owner, value)).get();
     }
 
     TYPE* getAsset(OWNER& owner, JSONObject object) override {
-      return this->getCachedAsset(owner, object);
+      return cAssets.emplace_back(createLiteralAsset(owner, object)).get();
     }
 
     TYPE* getAsset(OWNER& owner) override {
-      return this->getCachedAsset(owner);
+      return cAssets.emplace_back(createLiteralAsset(owner)).get();
     }
     
     void releaseAsset(const TYPE* asset) override {
-      this->releaseCachedAsset(asset);
-    }
-
-    /*******************************\
-     * Implements AssetCache<TYPE> *
-    \*******************************/
-    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, const std::string& value) override {
-      return createLiteralAsset(owner, value);
-    }
-
-    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner, JSONObject object) override {
-      return createLiteralAsset(owner, object);
-    }
-
-    std::unique_ptr<TYPE> getUncachedAsset(OWNER& owner) override {
-      return createLiteralAsset(owner);
+      Utils::removeElementUnique(cAssets, asset);
     }
 
     private:
+    mutable std::vector<std::unique_ptr<TYPE>> cAssets;
+
     virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner) const = 0;
     virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner, const std::string& expression) const = 0;
     virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner, JSONObject object) const = 0;

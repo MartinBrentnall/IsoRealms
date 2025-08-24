@@ -27,7 +27,7 @@ namespace IsoRealms {
   template <class OWNER, class TYPE> class BoundAsset : public IBinding {
     public:
     BoundAsset(OWNER& owner) :
-              cDefLuaState(owner.getProject().getLuaState()->getState()),
+              cDefLuaState(owner.getProject().getLuaState().getState()),
               cDefValue(owner) {
     }
 

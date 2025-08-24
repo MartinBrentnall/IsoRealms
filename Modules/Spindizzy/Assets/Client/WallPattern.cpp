@@ -22,20 +22,12 @@
 
 namespace IsoRealms::Spindizzy {
   WallPattern::WallPattern(Spindizzy& spindizzy, TerrainType& owner, std::function<void()> listener) :
-            Asset<WallPattern, IWallPattern, TerrainType>(owner, spindizzy.getWallPattern(this, "Tile", owner, this)),
+            Asset<WallPattern, IWallPattern, TerrainType>(owner, spindizzy.getAsset(this, "Tile", owner, this)),
             cListener(listener) {
   }
 
   IWallPattern* WallPattern::createLiteralAsset(TerrainType& owner) {
-    return owner.getSpindizzy().getWallPattern(this, "Tile", owner, this);
-  }
-  
-  IWallPattern* WallPattern::getAsset(TerrainType& owner, JSONObject object) {
-    return owner.getSpindizzy().getWallPattern(this, object, owner, this);
-  }
-  
-  IWallPattern* WallPattern::getAsset(TerrainType& owner, const std::string& id) {
-    return owner.getSpindizzy().getWallPattern(this, id, owner, this);
+    return owner.getSpindizzy().getAsset(this, "Tile", owner, this);
   }
   
   bool WallPattern::isDefaultConfiguration() const {

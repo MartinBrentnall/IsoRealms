@@ -65,7 +65,7 @@ namespace IsoRealms::Spindizzy {
             cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
             cDefSurfaceOutsideHomeZone(cZone, cDefZ), // TODO: Is this OK?
             cRuntimePhysicsObject(cZone.getWorld().getSpindizzy(), this) {
-    cZone.getWorld().getSpindizzy().getProject().init([this, object](IAssets& assets) {
+    cZone.getWorld().getSpindizzy().getProject().init([this, object]() {
       cDefType = cZone.getWorld().getSpindizzy().getAlienType(object.getString(JSON_TYPE));
       cDefMovementHandler = cZone.getWorld().getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();

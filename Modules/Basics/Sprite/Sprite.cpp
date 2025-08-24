@@ -23,8 +23,8 @@ namespace IsoRealms::Basics {
   const std::string Sprite::JSON_BILLBOARD_YAW   = "billboardYaw";
   const std::string Sprite::JSON_TEXTURE         = "texture";
 
-  Sprite::Sprite(IProject& project, Basics& basics, IResourceData& data) :
-            cDefProject(project),
+  Sprite::Sprite(Basics& basics, IResourceData& data) :
+            cDefProject(data.getProject()),
             cDefTexture(data),
             cDefBillboardYaw(false),
             cDefBillboardPitch(false),
@@ -32,8 +32,8 @@ namespace IsoRealms::Basics {
     cDefProject.addScreenListener(this);
   }
   
-  Sprite::Sprite(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            Sprite(project, basics, data) {
+  Sprite::Sprite(Basics& basics, IResourceData& data, JSONObject object) :
+            Sprite(basics, data) {
     cDefTexture.init(object, JSON_TEXTURE);
     cDefBillboardYaw   = object.getBoolean(JSON_BILLBOARD_YAW);
     cDefBillboardPitch = object.getBoolean(JSON_BILLBOARD_PITCH);
@@ -120,7 +120,7 @@ namespace IsoRealms::Basics {
     render(0.5f);
   }
 
-  void Sprite::screenAdded(IProject& project, const IScreen* screen) {
+  void Sprite::screenAdded(const IScreen* screen) {
     // Nothing to do.
   }
 

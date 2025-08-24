@@ -26,13 +26,13 @@
 namespace IsoRealms {
   class JSONObject;
   class IApplication;
-  class IProject;
   class IProperty;
+  class Project;
   class PropertyMaker;
 
   class File {
     public:
-    File(IProject& project, std::function<void()> changeCallback = nullptr);
+    File(Project& project, std::function<void()> changeCallback = nullptr);
     void setPath(const std::string& path, bool user);
     std::string getPath() const;
     std::string getRelativePath() const;
@@ -61,7 +61,7 @@ namespace IsoRealms {
     static const std::string JSON_PATH;
     static const std::string JSON_USER;
 
-    IProject& cProject;
+    Project& cProject;
     std::function<void()> cChangeCallback;
     bool cUser;
     std::string cPath;

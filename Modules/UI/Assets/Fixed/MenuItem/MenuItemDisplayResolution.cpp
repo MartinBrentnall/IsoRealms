@@ -33,7 +33,7 @@ namespace IsoRealms::UI {
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -42,7 +42,7 @@ namespace IsoRealms::UI {
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   void MenuItemDisplayResolution::setValue(DisplayResolution resolution) {

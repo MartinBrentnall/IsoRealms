@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
   const std::string CollisionHandler::JSON_ON_COLLISION = "onCollision";
   const std::string CollisionHandler::JSON_ON_PARTING   = "onParting";
 
-  CollisionHandler::CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  CollisionHandler::CollisionHandler(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cDefPhysicalObjectTypeA(spindizzy),
             cDefPhysicalObjectTypeB(spindizzy),
@@ -35,13 +35,13 @@ namespace IsoRealms::Spindizzy {
             cDefExitedAction(data.getDummyActionClient()) {
   }
 
-  CollisionHandler::CollisionHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            CollisionHandler(project, spindizzy, data) {
+  CollisionHandler::CollisionHandler(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            CollisionHandler(spindizzy, data) {
     cDefPhysicalObjectTypeA.init(object, JSON_OBJECT_A);
     cDefPhysicalObjectTypeB.init(object, JSON_OBJECT_B);
     cDefEnteredAction.init(object, JSON_ON_COLLISION);
     cDefExitedAction.init(object, JSON_ON_PARTING);
-    spindizzy.getProject().init([this, &spindizzy](IAssets& assets) {
+    spindizzy.getProject().init([this, &spindizzy]() {
       spindizzy.added(this);
     });
   }

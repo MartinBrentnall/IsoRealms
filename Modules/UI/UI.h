@@ -77,14 +77,6 @@ namespace IsoRealms::UI {
     ILayoutOffset*   createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner);
     IMenuItem*       createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner);
 
-    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, JSONObject object, LayoutComponentEdge& owner);
-    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, JSONObject object, LayoutComponentEdge& owner);
-    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, JSONObject object, Menu&                owner);
-
-    ILayoutLocation* getLayoutLocation(IAssetUser<ILayoutLocation>* user, const std::string& id, LayoutComponentEdge& owner);
-    ILayoutOffset*   getLayoutOffset(  IAssetUser<ILayoutOffset>*   user, const std::string& id, LayoutComponentEdge& owner);
-    IMenuItem*       getMenuItem(      IAssetUser<IMenuItem>*       user, const std::string& id, Menu&                owner);
-
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
       AssetContainerTraits<TYPE>::get(*this).release(user, asset);
     }
@@ -107,6 +99,14 @@ namespace IsoRealms::UI {
 
     template <typename TYPE> bool isConfigurable(const std::string& id) const {
       return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+    }
+
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
+      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
+    }
+
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener<TYPE*>* listener = nullptr, bool required = true) {
+      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
     private:
@@ -136,9 +136,9 @@ namespace IsoRealms::UI {
     IResourceTypeRegistry& cModule;
 
     // Asset registries
-    AssetClientManager<LayoutComponentEdge, ILayoutLocation> cLayoutLocations;
-    AssetClientManager<LayoutComponentEdge, ILayoutOffset>   cLayoutOffsets;
-    AssetClientManager<Menu,                IMenuItem>       cMenuItems;
+    AssetClientManager<UI, LayoutComponentEdge, ILayoutLocation> cLayoutLocations;
+    AssetClientManager<UI, LayoutComponentEdge, ILayoutOffset>   cLayoutOffsets;
+    AssetClientManager<UI, Menu,                IMenuItem>       cMenuItems;
 
     // Built-in providers for UI asset types.
     AssetInstanced<LayoutComponentEdge, ILayoutLocation, LayoutLocationAbsolute> cProviderLayoutLocationAbsolute;

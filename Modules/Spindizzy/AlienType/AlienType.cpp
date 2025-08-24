@@ -38,7 +38,7 @@ namespace IsoRealms::Spindizzy {
   const float AlienType::DEFAULT_RADIUS       = 0.4f;
   const float AlienType::DEFAULT_SPIN_SPEED   = 0.0f;
 
-  AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  AlienType::AlienType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cDefModel(data),
             cDefTarget(data),
@@ -48,12 +48,12 @@ namespace IsoRealms::Spindizzy {
             cDefHeight(DEFAULT_HEIGHT),
             cDefRadius(DEFAULT_RADIUS),
             cDefHugMomentum(DEFAULT_HUG_MOMENTUM),
-            cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
+            cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
   }
   
-  AlienType::AlienType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            AlienType(project, spindizzy, data) {
+  AlienType::AlienType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            AlienType(spindizzy, data) {
     cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
     cDefFriction = object.getFloat(JSON_FRICTION, DEFAULT_FRICTION);
     cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);

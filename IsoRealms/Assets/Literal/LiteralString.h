@@ -35,9 +35,9 @@ namespace IsoRealms {
      *
      * @param value Value of the String.
      */
-    LiteralString(Project& project, const std::string&);
+    LiteralString(const std::string& value = "");
 
-    void setValue(const std::string&);
+    void setValue(const std::string& value);
 
     /**********************\
      * Implements IString *
@@ -54,9 +54,6 @@ namespace IsoRealms {
 
     private:
     static const std::string JSON_VALUE;
-
-    // External interfaces.
-    const Metadata& cMetadata;
 
     std::string cValue; /// The value of this String.
   };

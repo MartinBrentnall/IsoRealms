@@ -34,8 +34,6 @@ namespace IsoRealms {
     /****************************************************\
      * Implements Asset<Action, IAction, IActionClient> *
     \****************************************************/
-    IAction* getAsset(IActionClient& owner, JSONObject object);
-    IAction* getAsset(IActionClient& owner, const std::string& id);
     bool isDefaultConfiguration() const;
   };
 }

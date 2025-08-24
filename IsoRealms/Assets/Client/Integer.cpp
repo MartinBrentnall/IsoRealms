@@ -32,14 +32,6 @@ namespace IsoRealms {
     return owner.getAssetManager().createLiteralInteger(this, owner, 0);
   }
   
-  IInteger* Integer::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getInteger(this, object, owner, nullptr);
-  }
-  
-  IInteger* Integer::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getInteger(this, id, owner, nullptr);
-  }
-  
   bool Integer::isDefaultConfiguration() const {
     return true;
   }

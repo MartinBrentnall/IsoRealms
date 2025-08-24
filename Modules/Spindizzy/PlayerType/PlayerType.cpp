@@ -54,7 +54,7 @@ namespace IsoRealms::Spindizzy {
   const std::string PlayerType::BIND_TO_PLAYER  = "Player";
   const std::string PlayerType::BIND_TO_TERRAIN = "Terrain";
 
-  PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  PlayerType::PlayerType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cActionClient(data, *this),
             cDefAcceleration(DEFAULT_ACCELERATION),
@@ -74,12 +74,12 @@ namespace IsoRealms::Spindizzy {
             cDefFallImpactAction(cActionClient),
             cDefFallBounceAction(cActionClient),
             cDefWallBounceAction(cActionClient),
-            cLuaBinding(project, this, [this]() {return renderAssetIcon();}) {
+            cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
   }
 
-  PlayerType::PlayerType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            PlayerType(project, spindizzy, data) {
+  PlayerType::PlayerType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            PlayerType(spindizzy, data) {
     cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
     cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_ACCELERATION);
     cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);

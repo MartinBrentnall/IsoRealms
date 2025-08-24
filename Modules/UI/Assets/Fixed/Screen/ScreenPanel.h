@@ -59,7 +59,7 @@ namespace IsoRealms::UI {
     static unsigned int cGlobalInstanceCount;                    // Counts panel instances.
 
     // Global private functions.
-    static void initTextures(IProject& project);
+    static void initTextures(Project& project);
     static void renderCorner(float xStart, float xEnd, bool xFlip, float yStart, float yEnd, bool yFlip);
     static void renderRectangle(float xStart, float xEnd, float yStart, float yEnd);
     

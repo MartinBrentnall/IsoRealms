@@ -27,14 +27,6 @@ namespace IsoRealms {
             Asset<Screen, IScreen, IResourceData>(owner) {
   }
 
-  IScreen* Screen::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getScreen(this, object, owner);
-  }
-  
-  IScreen* Screen::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getScreen(this, id, owner);
-  }
-  
   bool Screen::isDefaultConfiguration() const {
     return true;
   }

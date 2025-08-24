@@ -29,11 +29,20 @@
 namespace IsoRealms::UI {
   class Layout;
   class LayoutComponent;
+  class UI;
 
   class LayoutComponentEdge {
     public:
     LayoutComponentEdge(LayoutComponent& parent, float aspectRatio, float value);
     LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag);
+
+    /***************************\
+     * Asset client interfaces *
+    \***************************/
+    UI& getAssetManager();
+    Project& getProject() const;
+    bool isReadOnly() const;
+    void setOwner(ProjectFile* owner);
 
     void setLocation(float aspectRatio, float value);
     void setOffset(float aspectRatio, float value);

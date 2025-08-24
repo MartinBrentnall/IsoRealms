@@ -24,14 +24,14 @@
 namespace IsoRealms::Spindizzy {
   const std::string PickUpType::JSON_APPEARANCE = "appearance";
 
-  PickUpType::PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  PickUpType::PickUpType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cDefModel(data) {
     cSpindizzy.added(this);
   }
   
-  PickUpType::PickUpType(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            PickUpType(project, spindizzy, data) {
+  PickUpType::PickUpType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            PickUpType(spindizzy, data) {
     cDefModel.init(object, JSON_APPEARANCE);
   }
 

@@ -21,16 +21,16 @@
 namespace IsoRealms::Basics {
   const std::string InputSwitch::JSON_VALUE = "value";
 
-  InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data) :
+  InputSwitch::InputSwitch(Basics& basics, IResourceData& data) :
             cDefInputHandler(data),
             cRuntimeInputHandler(*cDefInputHandler),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  InputSwitch::InputSwitch(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            InputSwitch(project, basics, data) {
+  InputSwitch::InputSwitch(Basics& basics, IResourceData& data, JSONObject object) :
+            InputSwitch(basics, data) {
     cDefInputHandler.init(object, JSON_VALUE);
-    project.init([this](IAssets& assets) {
+    data.getProject().init([this]() {
       cRuntimeInputHandler = *cDefInputHandler;
     });
   }

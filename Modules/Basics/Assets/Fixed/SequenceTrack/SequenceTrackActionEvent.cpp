@@ -21,13 +21,13 @@
 #include "SequenceTrackAction.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, IProject& project, unsigned int time) :
+  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, unsigned int time) :
             cDefAction(owner.getDummyActionClient()),
             cDefTime(time) {
   }
 
-  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, IProject& project, JSONObject object) :
-            SequenceTrackActionEvent(parent, owner, project, object.getInteger(JSON_DELAY)) {
+  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, JSONObject object) :
+            SequenceTrackActionEvent(parent, owner, object.getInteger(JSON_DELAY)) {
     cDefAction.init(object, JSON_EXECUTE);
   }
 
@@ -39,7 +39,7 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackActionEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+  void SequenceTrackActionEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyAsset<Action>(metadata.getPropertyData("Action"), cDefAction);
   }
 

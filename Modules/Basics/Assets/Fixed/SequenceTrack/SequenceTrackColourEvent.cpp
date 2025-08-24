@@ -19,14 +19,14 @@
 #include "SequenceTrackColourEvent.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade) :
+  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, unsigned int time, bool fade) :
             cDefTime(time),
             cDefTarget(owner, 1.0f, 0.0f, 0.0f),
             cDefFade(fade) {
   }
 
-  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, IProject& project, JSONObject object) :
-            SequenceTrackColourEvent(parent, owner, project, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
+  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, JSONObject object) :
+            SequenceTrackColourEvent(parent, owner, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
     cDefTarget.init(object, JSON_TARGET);
   }
 
@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackColourEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+  void SequenceTrackColourEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Colour"), cDefTarget);
     owner.createPropertyNativeBoolean(metadata.getPropertyData("Fade"),   [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
   }

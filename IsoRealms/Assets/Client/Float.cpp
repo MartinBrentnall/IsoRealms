@@ -19,7 +19,6 @@
 #include "Float.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 
@@ -32,14 +31,6 @@ namespace IsoRealms {
 
   IFloat* Float::createLiteralAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralFloat(this, owner, cDefaultValue);
-  }
-  
-  IFloat* Float::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getFloat(this, object, owner, cListener != nullptr ? this : nullptr);
-  }
-  
-  IFloat* Float::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getFloat(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
   void Float::stateChanged(IFloat* value) {

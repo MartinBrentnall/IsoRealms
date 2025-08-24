@@ -22,21 +22,12 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewType::ZoneViewType(Spindizzy& spindizzy, WorldView& owner) :
-            Asset<ZoneViewType, IZoneViewType, Spindizzy>(spindizzy, spindizzy.getZoneViewType(this, "Actual", owner)),
-            cOwner(owner) {
+  ZoneViewType::ZoneViewType(WorldView& owner) :
+            Asset<ZoneViewType, IZoneViewType, WorldView>(owner, owner.getAssetManager().getAsset(this, "Actual", owner)) {
   }
 
-  IZoneViewType* ZoneViewType::createLiteralAsset(Spindizzy& spindizzy) {
-    return spindizzy.getZoneViewType(this, "Actual", cOwner);
-  }
-
-  IZoneViewType* ZoneViewType::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return spindizzy.getZoneViewType(this, object, cOwner);
-  }
-
-  IZoneViewType* ZoneViewType::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return spindizzy.getZoneViewType(this, id, cOwner);
+  IZoneViewType* ZoneViewType::createLiteralAsset(WorldView& owner) {
+    return owner.getAssetManager().getAsset(this, "Actual", owner);
   }
 
   bool ZoneViewType::isDefaultConfiguration() const {

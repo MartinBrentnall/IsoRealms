@@ -27,24 +27,24 @@ namespace IsoRealms::Spindizzy {
   const std::string ThemeSet::JSON_ID     = "id";
   const std::string ThemeSet::JSON_THEMES = "themes";
 
-  ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
+  ThemeSet::ThemeSet(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cResourceData(data),
             cDefaultTheme(nullptr),
             cAnimation(0),
             cPause(0),
             cThemeIcon(0),
-            cLuaBinding(project, this) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
 
-  ThemeSet::ThemeSet(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            ThemeSet(project, spindizzy, data) {
+  ThemeSet::ThemeSet(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            ThemeSet(spindizzy, data) {
     for (JSONValue mThemeValue : object.getArray(JSON_THEMES)) {
       JSONObject mThemeObject = mThemeValue.getObject();
-      cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(project, *this, mThemeObject);
+      cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(*this, mThemeObject);
     }
 
-    project.init([this](IAssets& assets) {
+    data.getProject().init([this]() {
       setNextTheme();
     });
   }
@@ -69,7 +69,7 @@ namespace IsoRealms::Spindizzy {
       }
       
       owner.createPropertyAdd(metadata.getPropertyData("ColourElementAdd"), "Add...",  [this, &owner, &metadata]() {
-        return createColourElementProperty(owner, metadata, createColour(cSpindizzy.getProject(), Utils::getAvailableKey(cColours, "New Colour")));
+        return createColourElementProperty(owner, metadata, createColour(Utils::getAvailableKey(cColours, "New Colour")));
       });
     });
     
@@ -84,7 +84,7 @@ namespace IsoRealms::Spindizzy {
 
       owner.createPropertyAdd(metadata.getPropertyData("ThemeAdd"), "Add...",  [this, &owner, &metadata]() {
         std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
-        Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(cSpindizzy.getProject(), *this)).first->second.get();
+        Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(*this)).first->second.get();
         return owner.createPropertyStruct(metadata.getPropertyData("Theme"), mNewThemeName, [this, &metadata, mNewTheme](PropertyMaker& owner) {
           return mNewTheme->getProperties(owner, metadata);
         });
@@ -147,10 +147,10 @@ namespace IsoRealms::Spindizzy {
     return i->second.get();
   }
 
-  ThemeColour* ThemeSet::createColour(IProject& project, const std::string& type) {
+  ThemeColour* ThemeSet::createColour(const std::string& type) {
     std::map<std::string, std::unique_ptr<ThemeColour>>::iterator i = cColours.find(type);
     if (i == cColours.end()) {
-      ThemeColour* mNewColour = cColours.emplace(type, std::make_unique<ThemeColour>(project, *this)).first->second.get();
+      ThemeColour* mNewColour = cColours.emplace(type, std::make_unique<ThemeColour>(*this)).first->second.get();
       for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
         mTheme.second->themeColourAdded(mNewColour);
       }

@@ -22,6 +22,7 @@
 #include <stack>
 #include <vector>
 
+#include "IsoRealms/Assets/Type/IEditable.h"
 #include "IsoRealms/AnimatedFloat.h"
 #include "IsoRealms/IModule.h"
 #include "IsoRealms/Input/HatHandler.h"
@@ -34,10 +35,11 @@
 
 namespace IsoRealms {
   class Choice;
+  class Project;
 
   class UIManager final : public IDialogManager {
     public:
-    UIManager(IProject& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback);
+    UIManager(Project& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback);
 
     /*****************************\
      * Implements IDialogManager *
@@ -55,7 +57,7 @@ namespace IsoRealms {
     void hide();
     void show();
     bool isHidden() const;
-    IProject& getProject() const;
+    Project& getProject() const;
 
     private:
     class UIScreen {
@@ -70,7 +72,7 @@ namespace IsoRealms {
       std::string cBreadcrumb;
     };
 
-    IProject& cProject;
+    Project& cProject;
     IUIStyle& cStyle;
     std::function<void()> cFinishCallback;
     std::function<void(IEditable*)> cEditorCallback;

@@ -33,8 +33,8 @@ namespace IsoRealms::Tables {
     /**********************\
      * Resource interface *
     \**********************/
-    Table(IProject& project, Tables& tables, IResourceData& data);
-    Table(IProject& project, Tables& tables, IResourceData& data, JSONObject object);
+    Table(Tables& tables, IResourceData& data);
+    Table(Tables& tables, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

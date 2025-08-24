@@ -18,6 +18,8 @@
  */
 #include "DigitalInput.h"
 
+#include "Modules/Basics/Basics.h"
+
 namespace IsoRealms::Basics {
   const std::string DigitalInput::JSON_BUTTON_DOWN       = "ButtonDown";
   const std::string DigitalInput::JSON_HAT               = "Hat";
@@ -26,20 +28,20 @@ namespace IsoRealms::Basics {
   const std::string DigitalInput::JSON_MOUSE_BUTTON_DOWN = "MouseButtonDown";
   const std::string DigitalInput::JSON_TYPE              = "type";
 
-  DigitalInput::DigitalInput(IProject& project, Basics& basics) :
-             cProject(project),
+  DigitalInput::DigitalInput(Basics& basics) :
+             cProject(basics.getProject()),
              cRuntimeState(false),
-             cLuaBinding(project, this),
+             cLuaBinding(basics.getProject().getLuaState(), this),
              cStateNotifier(nullptr) {
   }
 
-  DigitalInput::DigitalInput(IProject& project, Basics& basics, IResourceData& data) :
-            DigitalInput(project, basics) {
+  DigitalInput::DigitalInput(Basics& basics, IResourceData& data) :
+            DigitalInput(basics) {
   }
   
-  DigitalInput::DigitalInput(IProject& project, Basics& basics, JSONObject object) :
-            DigitalInput(project, basics) {
-    IApplication& mApplication = project.getApplication();
+  DigitalInput::DigitalInput(Basics& basics, JSONObject object) :
+            DigitalInput(basics) {
+    IApplication& mApplication = basics.getProject().getApplication();
     HatHandler& mHatHandler = mApplication.getHatHandler();
     for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingValue.getObject();
@@ -52,8 +54,8 @@ namespace IsoRealms::Basics {
     }
   }
 
-  DigitalInput::DigitalInput(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            DigitalInput(project, basics, object) {
+  DigitalInput::DigitalInput(Basics& basics, IResourceData& data, JSONObject object) :
+            DigitalInput(basics, object) {
   }
 
   void DigitalInput::registerAssets(ResourceAssetRegistry& assets) {

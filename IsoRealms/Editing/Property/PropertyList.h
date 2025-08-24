@@ -26,9 +26,11 @@
 #include "PropertyAsset.h"
 
 namespace IsoRealms {
+  class Project;
+  
   class PropertyList : public Property {
     public:
-    PropertyList(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyList(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -42,7 +44,7 @@ namespace IsoRealms {
     private:
     class ListSelection {
       public:
-      ListSelection(IProject& project, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter);
+      ListSelection(Project& project, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter);
       
       /*******************************\
        * Interface for PropertyAsset *
@@ -58,7 +60,7 @@ namespace IsoRealms {
       void setID(const std::string& id);
       
       private:
-      IProject& cProject;
+      Project& cProject;
       std::vector<std::string> cOptions;
       std::function<std::string()> cGetter;
       std::function<void(const std::string&)> cSetter;

@@ -22,21 +22,12 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  Camera::Camera(Spindizzy& spindizzy, WorldView& owner) :
-            Asset<Camera, ICamera, Spindizzy>(spindizzy, spindizzy.getCamera(this, "Gameplay", owner)),
-            cOwner(owner) {
+  Camera::Camera(WorldView& owner) :
+            Asset<Camera, ICamera, WorldView>(owner, owner.getAssetManager().getAsset(this, "Gameplay", owner)) {
   }
 
-  ICamera* Camera::createLiteralAsset(Spindizzy& spindizzy) {
-    return spindizzy.getCamera(this, "Gameplay", cOwner);
-  }
-
-  ICamera* Camera::getAsset(Spindizzy& spindizzy, JSONObject object) {
-    return spindizzy.getCamera(this, object, cOwner);
-  }
-
-  ICamera* Camera::getAsset(Spindizzy& spindizzy, const std::string& id) {
-    return spindizzy.getCamera(this, id, cOwner);
+  ICamera* Camera::createLiteralAsset(WorldView& owner) {
+    return owner.getAssetManager().getAsset(this, "Gameplay", owner);
   }
 
   bool Camera::isDefaultConfiguration() const {

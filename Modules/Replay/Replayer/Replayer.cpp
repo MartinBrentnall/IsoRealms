@@ -19,14 +19,13 @@
 #include "Replayer.h"
 
 namespace IsoRealms::Replay {
-  Replayer::Replayer(IProject& project, Replay& replay, IResourceData& data) :
+  Replayer::Replayer(Replay& replay, IResourceData& data) :
             cResource(data),
-            cState(State::INACTIVE),
-            cFilenameString(data.getProject(), "") {
+            cState(State::INACTIVE) {
   }
   
-  Replayer::Replayer(IProject& project, Replay& replay, IResourceData& data, JSONObject object) :
-            Replayer(project, replay, data) {
+  Replayer::Replayer(Replay& replay, IResourceData& data, JSONObject object) :
+            Replayer(replay, data) {
 
     // Read configuration.
     for (JSONValue mDigitalInputValue : object.getArray(JSON_DIGITAL_INPUTS)) {

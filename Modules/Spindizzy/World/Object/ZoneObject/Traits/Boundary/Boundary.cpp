@@ -28,8 +28,8 @@ namespace IsoRealms::Spindizzy {
   Boundary::Boundary(ZoneObjectTypeTraitBoundary& type, ZoneObject& object) :
             cDefType(type),
             cDefObject(object),
-            cLuaBinding(cDefObject.getZone().getWorld().getSpindizzy().getProject(), this) {
-    cDefObject.getZone().getWorld().getSpindizzy().getProject().init([this](IAssets& assets) {
+            cLuaBinding(cDefObject.getZone().getWorld().getSpindizzy().getProject().getLuaState(), this) {
+    cDefObject.getZone().getWorld().getSpindizzy().getProject().init([this]() {
       std::string mStartID = cDefType.getStartID();
       std::string mEndID   = cDefType.getEndID();
       cDefStart = cDefObject.getLocation(mStartID);

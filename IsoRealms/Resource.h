@@ -24,13 +24,12 @@
 #include "Assets/Registry/AssetIDException.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
-#include "IProject.h"
 #include "IResource.h"
 #include "IResourceData.h"
-#include "IResourceType.h"
 #include "Options/IOptions.h"
 #include "PropertyData.h"
 #include "ResourceAssetRegistry.h"
+#include "ResourceType.h"
 #include "System.h"
 #include "Utils.h"
 
@@ -39,12 +38,12 @@ namespace IsoRealms {
                                                            public IResourceData,
                                                            public IActionClient {
     public:
-    Resource(IResourceType& parent, IProject& project, MODULE& module, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) :
+    Resource(ResourceType& parent, MODULE& module, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
               cName(name),
               cOwnerProject(parent.getProject(), ownerProject),
               cResourceDataPath(resourceDataPath),
-              cResourceHandle(project, module, *this),
+              cResourceHandle(module, *this),
               cAssetRegistry(parent.getProject(), parent.getPath() + "/" + name) {
       bool mSuccess = false;
       unsigned int mExistingNameCount = 1;
@@ -59,12 +58,12 @@ namespace IsoRealms {
       } while (!mSuccess);
     }
     
-    Resource(IResourceType& parent, IProject& project, MODULE& module, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) :
+    Resource(ResourceType& parent, MODULE& module, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
               cName(object.getString(JSON_ID)),
               cOwnerProject(parent.getProject(), ownerProject),
               cResourceDataPath(resourceDataPath),
-              cResourceHandle(project, module, *this, object),
+              cResourceHandle(module, *this, object),
               cAssetRegistry(parent.getProject(), parent.getPath() + "/" + cName) {
     }
 
@@ -133,7 +132,7 @@ namespace IsoRealms {
       cResourceHandle.registerAssets(cAssetRegistry);
     }
 
-    void unregisterAssets(Project& assets, IAssets& releaser) override {
+    void unregisterAssets(Project& assets) override {
       cAssetRegistry.unregisterAssets(assets);
     }
 
@@ -196,7 +195,7 @@ namespace IsoRealms {
     private:
     static const std::string JSON_ID;
 
-    IResourceType& cParent;
+    ResourceType& cParent;
     std::string cName;
     ResourceOwner cOwnerProject;
     std::string cResourceDataPath;

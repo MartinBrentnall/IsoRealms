@@ -34,8 +34,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource interface *
     \**********************/
-    Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    Jewel(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    Jewel(Spindizzy& spindizzy, IResourceData& data);
+    Jewel(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -84,7 +84,7 @@ namespace IsoRealms::Spindizzy {
      */
     class Instance : public IModelInstance {
       public:
-      Instance(Jewel& parent, IProject& engine);
+      Instance(Jewel& parent, Project& engine);
       void randomize();
       ~Instance();
       
@@ -115,7 +115,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_FRAME;
 
     // External interfaces.
-    IProject& cProject; // Required for pre-rendering.
+    Project& cProject; // Required for pre-rendering.
 
     // Definition data.
     std::vector<std::unique_ptr<Instance>> cInstances;       /// Model instances.  Each instance has a different position.

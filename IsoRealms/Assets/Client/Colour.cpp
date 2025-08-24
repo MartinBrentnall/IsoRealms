@@ -19,7 +19,6 @@
 #include "Colour.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project.h"
 
@@ -35,14 +34,6 @@ namespace IsoRealms {
 
   IColour* Colour::createLiteralAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralColour(this, owner, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
-  }
-  
-  IColour* Colour::getAsset(IResourceData& owner, JSONObject object) {
-    return owner.getAssetManager().getColour(this, object, owner, cListener != nullptr ? this : nullptr);
-  }
-  
-  IColour* Colour::getAsset(IResourceData& owner, const std::string& id) {
-    return owner.getAssetManager().getColour(this, id, owner, cListener != nullptr ? this : nullptr);
   }
   
   bool Colour::isDefaultConfiguration() const {

@@ -36,8 +36,8 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    Project(IProject& project, Basics& basics, IResourceData& data);
-    Project(IProject& project, Basics& basics, IResourceData& data, JSONObject object);
+    Project(Basics& basics, IResourceData& data);
+    Project(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -66,7 +66,6 @@ namespace IsoRealms::Basics {
     bool exists(const std::string& file);
     void requestQuit();
     bool isQuitRequestGranted() const;
-    void setProperty(const std::string& id, const std::string& value);
     
     /****************************\
      * Implements IInputHandler *
@@ -97,7 +96,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_RUNNING;
 
     // External interfaces.
-    IProject& cProject;
+    IsoRealms::Project& cProject;
 
     // Definition data
     std::string cDefProjectPath;

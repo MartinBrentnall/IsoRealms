@@ -23,18 +23,18 @@ namespace IsoRealms::Basics {
 
   const std::string SimpleBoolean::PROPERTY_VALUE = "Initial Value";
   
-  SimpleBoolean::SimpleBoolean(IProject& project, Basics& basics, IResourceData& data) :
+  SimpleBoolean::SimpleBoolean(Basics& basics, IResourceData& data) :
             cDefValue(false),
             cRuntimeValue(false),
-            cLuaBinding(project, this),
+            cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  SimpleBoolean::SimpleBoolean(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleBoolean(project, basics, data) {
+  SimpleBoolean::SimpleBoolean(Basics& basics, IResourceData& data, JSONObject object) :
+            SimpleBoolean(basics, data) {
     cRuntimeValue = cDefValue = object.getBoolean(JSON_VALUE);
 
-    project.init([this](IAssets& resources) {
+    data.getProject().init([this]() {
       cStateNotifier->stateChanged(this);
     });
   }

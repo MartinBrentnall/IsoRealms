@@ -18,11 +18,11 @@
  */
 #include "PropertyList.h"
 
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IProject& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+  PropertyList::PropertyList(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(project, options, getter, setter),
             cInternalProperty(owner, resourceAccessManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
@@ -48,7 +48,7 @@ namespace IsoRealms {
     cInternalProperty.configure(manager);
   }
 
-  PropertyList::ListSelection::ListSelection(IProject& project, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter) :
+  PropertyList::ListSelection::ListSelection(Project& project, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter) :
             cProject(project),
             cOptions(options),
             cGetter(getter),

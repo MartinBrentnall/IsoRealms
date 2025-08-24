@@ -21,13 +21,13 @@
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/IApplication.h"
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyCode::PropertyCode(IProject& project, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) :
+  PropertyCode::PropertyCode(Project& project, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cProject(project),
             cGetter(getter),

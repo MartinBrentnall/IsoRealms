@@ -58,8 +58,7 @@ namespace IsoRealms::Basics {
                                                                  "saveAs",                     &Project::saveProjectAs,
                                                                  "exists",                     &Project::exists,
                                                                  "requestQuit",                &Project::requestQuit,
-                                                                 "isQuitRequestGranted",       &Project::isQuitRequestGranted,
-                                                                 "setProperty",                &Project::setProperty);
+                                                                 "isQuitRequestGranted",       &Project::isQuitRequestGranted);
     mLua->new_usertype<ProjectConfigurer>("ProjectConfigurer",   "setProject",                 &ProjectConfigurer::setProject,
                                                                  "hide",                       &ProjectConfigurer::hide,
                                                                  "show",                       &ProjectConfigurer::show,

@@ -66,7 +66,6 @@ int main(int argc, char** argv) {
 
     while (!mProjectFinished) {
       int mCurrentTime = mClock.getElapsedTime().asMilliseconds();
-      mProject.setTime(mCurrentTime);
       int mMillisecondsPassed = mCurrentTime - mPreviousTime;
       if (mMillisecondsPassed > 0) {
 

@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   
   CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view, JSONObject object) :
             CameraLinked(metadata, view) {
-    view.getSpindizzy().getProject().init([this, object](IAssets& assets) {
+    view.getSpindizzy().getProject().init([this, object]() {
       cDefLinkedView = cParent.getSpindizzy().getWorldView(object.getString(JSON_VIEW));
     });
   }

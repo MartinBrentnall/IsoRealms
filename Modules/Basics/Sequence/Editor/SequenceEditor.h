@@ -61,7 +61,7 @@ namespace IsoRealms::Basics {
     float getFontSize() const override;
     IFont* getCodeFont() const override;
     float getCodeFontSize() const override;
-    IProject& getProject() const override;
+    IsoRealms::Project& getProject() const override;
       
     private:
     static const float ZOOM_LIMIT_MAXIMUM;

@@ -34,8 +34,8 @@ namespace IsoRealms::UI {
     /**********************\
      * Resource Interface *
     \**********************/
-    ScreenFader(IProject& project, UI& ui, IResourceData& data);
-    ScreenFader(IProject& project, UI& ui, IResourceData& data, JSONObject object);
+    ScreenFader(UI& ui, IResourceData& data);
+    ScreenFader(UI& ui, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -59,7 +59,7 @@ namespace IsoRealms::UI {
     static const std::string JSON_TRANSITION;
 
     // External interfaces.
-    IProject& cProject;
+    Project& cProject;
 
     // Definition data.
     Screen cDefScreenA;

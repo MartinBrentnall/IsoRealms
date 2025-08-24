@@ -19,14 +19,14 @@
 #include "SequenceTrackFloatEvent.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, IProject& project, unsigned int time, bool fade) :
+  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, unsigned int time, bool fade) :
             cDefTime(time),
             cDefValue(owner, 0.0f),
             cDefFade(fade) {
   }
 
-  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, IProject& project, JSONObject object) :
-            SequenceTrackFloatEvent(parent, owner, project, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
+  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, JSONObject object) :
+            SequenceTrackFloatEvent(parent, owner, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
     cDefValue.init(object, JSON_VALUE);
   }
 
@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackFloatEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+  void SequenceTrackFloatEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyAsset<Float>( metadata.getPropertyData("Value"), cDefValue);
     owner.createPropertyNativeBoolean(metadata.getPropertyData("Fade"),  [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
   }

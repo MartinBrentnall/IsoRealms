@@ -41,13 +41,21 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    WorldView(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    WorldView(Spindizzy& spindizzy, IResourceData& data);
+    WorldView(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+
+    /***************************\
+     * Asset client interfaces *
+    \***************************/
+    Spindizzy& getAssetManager();
+    Project& getProject() const;
+    bool isReadOnly() const;
+    void setOwner(ProjectFile* owner);
 
     /*********************\
      * Module interfaces *

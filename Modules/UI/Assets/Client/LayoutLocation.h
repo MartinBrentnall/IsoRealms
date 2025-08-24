@@ -24,21 +24,15 @@
 
 namespace IsoRealms::UI {
   class LayoutComponentEdge;
-  class UI;
 
-  class LayoutLocation : public Asset<LayoutLocation, ILayoutLocation, UI> {
+  class LayoutLocation : public Asset<LayoutLocation, ILayoutLocation, LayoutComponentEdge> {
     public:
-    LayoutLocation(UI& ui, LayoutComponentEdge& owner);
+    LayoutLocation(LayoutComponentEdge& owner);
 
-    /******************************************\
-     * Implements Asset<ILayoutLocation, IUI> *
-    \******************************************/
-    ILayoutLocation* createLiteralAsset(UI& ui);
-    ILayoutLocation* getAsset(UI& ui, JSONObject object);
-    ILayoutLocation* getAsset(UI& ui, const std::string& id);
+    /**************************************************************************\
+     * Implements Asset<LayoutLocation, ILayoutLocation, LayoutComponentEdge> *
+    \**************************************************************************/
+    ILayoutLocation* createLiteralAsset(LayoutComponentEdge& edge);
     bool isDefaultConfiguration() const;
-
-    private:
-    LayoutComponentEdge& cOwner;
   };
 }

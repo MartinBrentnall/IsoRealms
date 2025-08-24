@@ -47,8 +47,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    Player(IProject& project, World& world, PlayerType& type, float x, float y, float z);
-    Player(IProject& project, World& world, JSONObject object);
+    Player(World& world, PlayerType& type, float x, float y, float z);
+    Player(World& world, JSONObject object);
 
     // Interface to be used by parent world.
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);

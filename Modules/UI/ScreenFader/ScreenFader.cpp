@@ -19,17 +19,17 @@
 #include "ScreenFader.h"
 
 namespace IsoRealms::UI {
-  ScreenFader::ScreenFader(IProject& project, UI& ui, IResourceData& data) :
-            cProject(project),
+  ScreenFader::ScreenFader(UI& ui, IResourceData& data) :
+            cProject(data.getProject()),
             cDefScreenA(data),
             cDefScreenB(data),
             cDefTransition(data),
-            cRuntimeScreenA(project, 2560, 1440, true, true, true), // TODO: Resolution shouldn't be hard-coded, and should update based on window size
-            cRuntimeScreenB(project, 2560, 1440, true, true, true) {
+            cRuntimeScreenA(data.getProject(), 2560, 1440, true, true, true), // TODO: Resolution shouldn't be hard-coded, and should update based on window size
+            cRuntimeScreenB(data.getProject(), 2560, 1440, true, true, true) {
   }
   
-  ScreenFader::ScreenFader(IProject& project, UI& ui, IResourceData& data, JSONObject object) :
-            ScreenFader(project, ui, data) {
+  ScreenFader::ScreenFader(UI& ui, IResourceData& data, JSONObject object) :
+            ScreenFader(ui, data) {
     cDefScreenA.init(object, JSON_SCREEN_A);
     cDefScreenB.init(object, JSON_SCREEN_B);
     cDefTransition.init(object, JSON_TRANSITION);

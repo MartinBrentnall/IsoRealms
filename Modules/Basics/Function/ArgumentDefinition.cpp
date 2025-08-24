@@ -21,7 +21,7 @@
 #include "Function.h"
 
 namespace IsoRealms::Basics {
-  ArgumentDefinition::ArgumentDefinition(IProject& project, Function& parent, const std::string& name) :
+  ArgumentDefinition::ArgumentDefinition(Function& parent, const std::string& name) :
             cParent(parent),
             cDefName(name),
             cDefType(parent.getResourceData(), [this]() {
@@ -41,8 +41,8 @@ namespace IsoRealms::Basics {
             }) {
   }
 
-  ArgumentDefinition::ArgumentDefinition(IProject& project, Function& parent, JSONObject object) :
-            ArgumentDefinition(project, parent, object.getString(JSON_NAME)) {
+  ArgumentDefinition::ArgumentDefinition(Function& parent, JSONObject object) :
+            ArgumentDefinition(parent, object.getString(JSON_NAME)) {
     cDefType.init(object, JSON_TYPE);
   }
 

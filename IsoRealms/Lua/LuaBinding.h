@@ -21,7 +21,6 @@
 #include <sol.hpp>
 
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
 
 namespace IsoRealms {
@@ -33,8 +32,8 @@ namespace IsoRealms {
    */
   template <class T> class LuaBinding : public IBinding {
     public:
-    LuaBinding(IProject& project, T* value, std::function<bool()> icon = nullptr) :
-              cDefLuaState(project.getLuaState()->getState()),
+    LuaBinding(LuaState& lua, T* value, std::function<bool()> icon = nullptr) :
+              cDefLuaState(lua.getState()),
               cDefValue(value),
               cIcon(icon) {
     }

@@ -29,15 +29,15 @@ namespace IsoRealms::Spindizzy {
             cYaw(*this),
             cPitch(*this),
             cTransition(*this),
-            cDefStart(cParent.getSpindizzy(), view),
-            cDefEnd(cParent.getSpindizzy(), view),
+            cDefStart(view),
+            cDefEnd(view),
             cDefDuration(DEFAULT_DURATION),
             cDefStartDepartureAction(view.getResourceData().getDummyActionClient()),
             cDefStartArrivalAction(view.getResourceData().getDummyActionClient()),
             cDefEndDepartureAction(view.getResourceData().getDummyActionClient()),
             cDefEndArrivalAction(view.getResourceData().getDummyActionClient()),
             cRuntimeYawStateNotifier(nullptr),
-            cLuaBinding(view.getSpindizzy().getProject(), this) {
+            cLuaBinding(view.getSpindizzy().getProject().getLuaState(), this) {
   }
   
   CameraTransitional::CameraTransitional(const Metadata& metadata, WorldView& view, JSONObject object) :

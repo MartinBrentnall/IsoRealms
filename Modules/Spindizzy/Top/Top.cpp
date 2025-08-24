@@ -31,20 +31,20 @@ namespace IsoRealms::Spindizzy {
   const float Top::WIDTH          = 0.3f;
   const float Top::HEIGHT         = 0.75f;
 
-  Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProject(project),
+  Top::Top(Spindizzy& spindizzy, IResourceData& data) :
+            cProject(data.getProject()),
             cDefColourTop(    data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourSide(   data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cRuntimeTextureTop(project, 128, 128),
-            cRuntimeTextureSide(project, 128, 128),
+            cRuntimeTextureTop(data.getProject(), 128, 128),
+            cRuntimeTextureSide(data.getProject(), 128, 128),
             cNeedsRedrawing(false),
             cEditingIconAngle(0.0f) {
     setNeedsRedrawing();
   }
             
-  Top::Top(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            Top(project, spindizzy, data) {
+  Top::Top(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            Top(spindizzy, data) {
     cDefColourTop.init(object, JSON_TOP);
     cDefColourSide.init(object, JSON_SIDES);
     cDefColourOutline.init(object, JSON_OUTLINE);

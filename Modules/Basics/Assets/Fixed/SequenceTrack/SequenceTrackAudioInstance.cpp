@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
             cExposedCurrent(*this),
             cExposedLength(*this),
             cExposedPosition(*this),
-            cLuaBinding(cSequenceInstance.getSequence().getProject(), this) {
+            cLuaBinding(cSequenceInstance.getSequence().getProject().getLuaState(), this) {
   }
 
   void SequenceTrackAudioInstance::positionChanged() {

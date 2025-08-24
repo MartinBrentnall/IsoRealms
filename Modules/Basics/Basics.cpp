@@ -66,7 +66,7 @@ namespace IsoRealms::Basics {
                     cResourceTypeSimpleVertex(*this),
                     cResourceTypeSprite(*this),
                     cActionScript(*this),
-                    cLuaBinding(project, this) {
+                    cLuaBinding(project.getLuaState(), this) {
     registry.add(&cResourceTypeAnalogueInput,     "AnalogueInput");
     registry.add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
     registry.add(&cResourceTypeDigitalInput,      "DigitalInput");
@@ -135,24 +135,9 @@ namespace IsoRealms::Basics {
     reset2(cResourceTypeSimpleVertex);
   }  
   
-  Basics& Basics::getAssetManager() {
-    return *this;
-  }
-
   IsoRealms::Project& Basics::getProject() const {
     return cProject;
   }
-
-  bool Basics::isReadOnly() const {
-    return false;
-  } // TODO: Probably shouldn't be here.
-
-  void Basics::setOwner(ProjectFile* owner) {
-  }; // TODO: Probably shouldn't be here.
-
-  ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, JSONObject object, Sequence& owner) {return cSequenceTracks.get(user, owner, object, nullptr, true);}
-
-  ISequenceTrack* Basics::getSequenceTrack(IAssetUser<ISequenceTrack>* user, const std::string& id, Sequence& owner) {return cSequenceTracks.get(user, owner, id, nullptr);}
 
   void Basics::reloadGlobalConfiguration() {
     if (System::fileExists(GLOBAL_CONFIGURATION_FILE, true)) {

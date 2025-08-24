@@ -36,8 +36,6 @@ namespace IsoRealms {
      * Implements Asset<IBoolean, IResourceData> *
     \*********************************************/
     IBoolean* createLiteralAsset(IResourceData& owner);
-    IBoolean* getAsset(IResourceData& owner, JSONObject object);
-    IBoolean* getAsset(IResourceData& owner, const std::string& id);
     bool isDefaultConfiguration() const;
 
     /****************************************\

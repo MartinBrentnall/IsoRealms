@@ -21,14 +21,14 @@
 namespace IsoRealms::Basics {
   const std::string FileTexture::JSON_FILENAME = "filename";
 
-  FileTexture::FileTexture(IProject& project, Basics& basics, IResourceData& data) :
-            cDefFile(project) {
+  FileTexture::FileTexture(Basics& basics, IResourceData& data) :
+            cDefFile(data.getProject()) {
   }
 
-  FileTexture::FileTexture(IProject& project, Basics& basics, IResourceData& data, JSONObject object) :
-            FileTexture(project, basics, data) {
+  FileTexture::FileTexture(Basics& basics, IResourceData& data, JSONObject object) :
+            FileTexture(basics, data) {
     cDefFile.load(JSON_FILENAME, object);
-    reloadData(project);
+    reloadData(data.getProject());
   }
 
   void FileTexture::registerAssets(ResourceAssetRegistry& assets) {
@@ -88,7 +88,7 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void FileTexture::reloadData(IProject& project) {
+  void FileTexture::reloadData(Project& project) {
     project.mainThreadInit([this]() {
       std::string mFullPath = cDefFile.getPath();
       cRuntimeTexture.loadFromFile(mFullPath);

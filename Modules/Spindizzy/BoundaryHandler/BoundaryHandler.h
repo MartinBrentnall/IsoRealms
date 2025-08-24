@@ -42,8 +42,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data);
-    BoundaryHandler(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    BoundaryHandler(Spindizzy& spindizzy, IResourceData& data);
+    BoundaryHandler(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

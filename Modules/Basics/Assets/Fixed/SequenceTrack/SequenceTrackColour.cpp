@@ -101,7 +101,7 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackColour::getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) {
+  void SequenceTrackColour::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("StartColour"), cDefInitColour);
   }
 

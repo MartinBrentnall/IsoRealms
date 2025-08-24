@@ -44,7 +44,7 @@ namespace IsoRealms::UI {
             cDefMaximum(DEFAULT_MAXIMUM),
             cDefSteps(DEFAULT_STEPS),
             cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -56,7 +56,7 @@ namespace IsoRealms::UI {
             cDefMaximum(object.getFloat(JSON_MAXIMUM, DEFAULT_MAXIMUM)),
             cDefSteps(object.getInteger(JSON_STEPS, DEFAULT_STEPS)),
             cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
     cDefValueChangedAction.init(object, JSON_ON_CHANGE);
   }
 

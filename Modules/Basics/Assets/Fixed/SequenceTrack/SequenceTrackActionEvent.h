@@ -32,8 +32,8 @@ namespace IsoRealms::Basics {
 
   class SequenceTrackActionEvent final : public ISequenceTrackEvent {
     public:
-    SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, IProject& project, unsigned int time);
-    SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, IProject& project, JSONObject object);
+    SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, unsigned int time);
+    SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, JSONObject object);
 
     void save(JSONObject object) const;
     void execute();
@@ -43,7 +43,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata, IProject& project) override;
+    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
 
     private:
 

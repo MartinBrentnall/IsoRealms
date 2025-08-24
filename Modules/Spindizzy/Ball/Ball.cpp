@@ -25,18 +25,18 @@ namespace IsoRealms::Spindizzy {
 
   const float Ball::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
-  Ball::Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data) :
-            cProject(project),
+  Ball::Ball(Spindizzy& spindizzy, IResourceData& data) :
+            cProject(data.getProject()),
             cDefFill(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefShine(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cTexture(project, 128, 128),
+            cTexture(data.getProject(), 128, 128),
             cNeedsRedrawing(false) {
     setNeedsRedrawing();
   }
   
-  Ball::Ball(IProject& project, Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            Ball(project, spindizzy, data) {
+  Ball::Ball(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
+            Ball(spindizzy, data) {
     cDefFill.init(object, JSON_FILL);
     cDefOutline.init(object, JSON_OUTLINE);
     cDefShine.init(object, JSON_SHINE);
