@@ -29,10 +29,5 @@ namespace IsoRealms {
   class Editable : public Asset<Editable, IEditable, IResourceData> {
     public:
     Editable(IResourceData& owner);
-
-    /**********************************************\
-     * Implements Asset<IEditable, IResourceData> *
-    \**********************************************/
-    bool isDefaultConfiguration() const;
   };
 }

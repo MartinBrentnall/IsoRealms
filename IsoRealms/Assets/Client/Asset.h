@@ -28,8 +28,8 @@
 namespace IsoRealms {
   class IApplication;
   
-  template<class TYPE, class OWNER, class RETURN> concept CreateLiteralAssetExists = requires(TYPE& type, OWNER& owner) {
-    {type.createLiteralAsset(owner)} -> std::convertible_to<RETURN*>;
+  template<class TYPE, class OWNER, class RETURN> concept CreateDefaultAssetExists = requires(TYPE& type, OWNER& owner) {
+    {type.createDefaultAsset(owner)} -> std::convertible_to<RETURN*>;
   };
 
   template<class TYPE> concept HasClientConfigurationExists = requires(const TYPE& type) {
@@ -44,6 +44,10 @@ namespace IsoRealms {
     {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<std::string>>;
   };
   
+  template<class TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
+    {type.isDefaultConfiguration()} -> std::same_as<bool>;
+  };
+
   template<class DERIVED, class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
     Asset(MANAGER& manager) :
@@ -123,7 +127,14 @@ namespace IsoRealms {
     }
 
     bool isDefaultConfigured() const {
-      return cAsset->isDefaultConfiguration() && static_cast<const DERIVED*>(this)->isDefaultConfiguration();
+      if (!cAsset->isDefaultConfiguration()) {
+        return false;
+      }
+
+      if constexpr (IsDefaultConfigurationExists<DERIVED>) {
+        return static_cast<const DERIVED*>(this)->isDefaultConfiguration();
+      }
+      return true;
     }
 
     TYPE* operator->() const {
@@ -143,8 +154,8 @@ namespace IsoRealms {
     \*******************************/
     void relinquish(TYPE* asset) override {
       if (cAsset == asset) {
-        if constexpr (CreateLiteralAssetExists<DERIVED, MANAGER, TYPE>) {
-          cAsset = static_cast<DERIVED*>(this)->createLiteralAsset(cManager);
+        if constexpr (CreateDefaultAssetExists<DERIVED, MANAGER, TYPE>) {
+          cAsset = static_cast<DERIVED*>(this)->createDefaultAsset(cManager);
         } else  {
           cAsset = cManager.getAssetManager().createDefault(this, cManager);
         }
@@ -164,21 +175,21 @@ namespace IsoRealms {
         return renderAssetIcon();
       }
       
-      if constexpr (RenderOtherClientProviderIconExists<TYPE>) {
+      if constexpr (RenderOtherClientProviderIconExists<DERIVED>) {
         return static_cast<const DERIVED*>(this)->renderOtherClientProviderIcon(id);
       }
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
     std::vector<std::string> getAvailableProviders() const {
-      if constexpr (GetAvailableClientProvidersExists<TYPE>) {
+      if constexpr (GetAvailableClientProvidersExists<DERIVED>) {
         return static_cast<const DERIVED*>(this)->getAvailableClientProviders();
       }
       return cManager.getAssetManager().template getAll<TYPE>();
     }
     
     bool hasConfiguration() const {
-      if constexpr (HasClientConfigurationExists<TYPE>) {
+      if constexpr (HasClientConfigurationExists<DERIVED>) {
         if (static_cast<const DERIVED*>(this)->hasClientConfiguration()) {
           return true;
         }
@@ -191,7 +202,6 @@ namespace IsoRealms {
     TYPE* cAsset;
 
 //    virtual bool hasConfiguration() const = 0;
-//    virtual bool isDefaultConfiguration() const = 0;
     virtual void stateChanged(TYPE* asset) {
       // Nothing to do.
     }

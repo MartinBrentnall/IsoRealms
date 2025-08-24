@@ -29,10 +29,5 @@ namespace IsoRealms {
   class InputHandler : public Asset<InputHandler, IInputHandler, IResourceData> {
     public:
     InputHandler(IResourceData& owner);
-
-    /**************************************************\
-     * Implements Asset<IInputHandler, IResourceData> *
-    \**************************************************/
-    bool isDefaultConfiguration() const;
   };
 }

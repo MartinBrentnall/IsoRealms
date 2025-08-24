@@ -35,8 +35,4 @@ namespace IsoRealms {
       cAsset->execute();
     }
   }
-
-  bool Action::isDefaultConfiguration() const {
-    return true;
-  }
 }

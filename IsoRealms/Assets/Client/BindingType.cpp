@@ -30,10 +30,6 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  bool BindingType::isDefaultConfiguration() const {
-    return true;
-  }
-
   void BindingType::stateChanged(IBindingType* value) {
     if (value == cAsset && cListener != nullptr) {
       cListener();

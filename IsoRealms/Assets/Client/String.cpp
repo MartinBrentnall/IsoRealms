@@ -27,11 +27,7 @@ namespace IsoRealms {
             Asset<String, IString, IResourceData>(owner, owner.getAssetManager().createLiteralString(this, owner, "")) {
   }
 
-  IString* String::createLiteralAsset(IResourceData& owner) {
+  IString* String::createDefaultAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralString(this, owner, "");
-  }
-  
-  bool String::isDefaultConfiguration() const {
-    return true;
   }
 }

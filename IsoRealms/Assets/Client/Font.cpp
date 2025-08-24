@@ -26,8 +26,4 @@ namespace IsoRealms {
   Font::Font(IResourceData& owner) :
             Asset<Font, IFont, IResourceData>(owner) {
   }
-
-  bool Font::isDefaultConfiguration() const {
-    return true;
-  }
 }

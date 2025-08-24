@@ -33,7 +33,6 @@ namespace IsoRealms {
     /********************************************\
      * Implements Asset<IString, IResourceData> *
     \********************************************/
-    IString* createLiteralAsset(IResourceData& owner);
-    bool isDefaultConfiguration() const;
+    IString* createDefaultAsset(IResourceData& owner);
   };
 }

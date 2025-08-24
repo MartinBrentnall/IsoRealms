@@ -27,11 +27,7 @@ namespace IsoRealms {
             Asset<Vertex, IVertex, IResourceData>(owner, owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f)) {
   }
 
-  IVertex* Vertex::createLiteralAsset(IResourceData& owner) {
+  IVertex* Vertex::createDefaultAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f);
-  }
-  
-  bool Vertex::isDefaultConfiguration() const {
-    return true;
   }
 }

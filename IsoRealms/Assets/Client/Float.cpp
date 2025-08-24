@@ -29,7 +29,7 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  IFloat* Float::createLiteralAsset(IResourceData& owner) {
+  IFloat* Float::createDefaultAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralFloat(this, owner, cDefaultValue);
   }
   
@@ -37,9 +37,5 @@ namespace IsoRealms {
     if (value == cAsset && cListener != nullptr) {
       cListener(cAsset->getValue());
     }
-  }
-
-  bool Float::isDefaultConfiguration() const {
-    return true;
   }
 }

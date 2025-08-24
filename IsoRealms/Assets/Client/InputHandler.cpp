@@ -26,8 +26,4 @@ namespace IsoRealms {
   InputHandler::InputHandler(IResourceData& owner) :
             Asset<InputHandler, IInputHandler, IResourceData>(owner) {
   }
-
-  bool InputHandler::isDefaultConfiguration() const {
-    return true;
-  }
 }

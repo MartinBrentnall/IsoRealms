@@ -43,7 +43,6 @@ namespace IsoRealms {
     std::vector<std::string> getAvailableClientProviders() const;
     bool renderOtherClientProviderIcon(const std::string& id) const;
     bool hasClientConfiguration() const;
-    bool isDefaultConfiguration() const;
 
     void getTheAssetProperties(IBinding* asset, PropertyMaker& owner) override;
 

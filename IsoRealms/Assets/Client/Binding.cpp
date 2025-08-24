@@ -121,10 +121,6 @@ namespace IsoRealms {
     return cManager.getAssetManager().isConfigurable<IBinding>(Asset<Binding, IBinding, IActionClient>::getID());
   }  
 
-  bool Binding::isDefaultConfiguration() const {
-    return true;
-  }
-
   void Binding::getTheAssetProperties(IBinding* asset, PropertyMaker& owner) {
     std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
     cDefType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);

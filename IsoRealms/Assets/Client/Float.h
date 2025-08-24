@@ -35,8 +35,7 @@ namespace IsoRealms {
     /*******************************************\
      * Implements Asset<IFloat, IResourceData> *
     \*******************************************/
-    IFloat* createLiteralAsset(IResourceData& owner);
-    bool isDefaultConfiguration() const;
+    IFloat* createDefaultAsset(IResourceData& owner);
 
     /**************************************\
      * Implements IStateListener<IFloat*> *

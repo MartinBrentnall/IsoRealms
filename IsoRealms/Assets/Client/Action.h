@@ -30,10 +30,5 @@ namespace IsoRealms {
     public:
     Action(IActionClient& owner);
     void execute();
-
-    /****************************************************\
-     * Implements Asset<Action, IAction, IActionClient> *
-    \****************************************************/
-    bool isDefaultConfiguration() const;
   };
 }

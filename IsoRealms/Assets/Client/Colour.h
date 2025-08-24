@@ -35,8 +35,7 @@ namespace IsoRealms {
     /****************************************************\
      * Implements Asset<Colour, IColour, IResourceData> *
     \****************************************************/
-    IColour* createLiteralAsset(IResourceData& owner);
-    bool isDefaultConfiguration() const;
+    IColour* createDefaultAsset(IResourceData& owner);
 
     /***************************************\
      * Implements IStateListener<IColour*> *

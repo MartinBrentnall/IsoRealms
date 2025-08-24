@@ -28,8 +28,4 @@ namespace IsoRealms {
   Editable::Editable(IResourceData& owner) :
             Asset<Editable, IEditable, IResourceData>(owner) {
   }
-
-  bool Editable::isDefaultConfiguration() const {
-    return true;
-  }
 }

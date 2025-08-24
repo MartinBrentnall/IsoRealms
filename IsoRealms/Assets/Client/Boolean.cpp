@@ -30,7 +30,7 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  IBoolean* Boolean::createLiteralAsset(IResourceData& owner) {
+  IBoolean* Boolean::createDefaultAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralBoolean(this, owner, cDefaultValue);
   }
 
@@ -38,9 +38,5 @@ namespace IsoRealms {
     if (value == cAsset && cListener != nullptr) {
       cListener(cAsset->getValue());
     }
-  }
-
-  bool Boolean::isDefaultConfiguration() const {
-    return true;
   }
 }

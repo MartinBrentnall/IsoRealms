@@ -29,10 +29,5 @@ namespace IsoRealms {
   class Screen : public Asset<Screen, IScreen, IResourceData> {
     public:
     Screen(IResourceData& owner);
-
-    /********************************************\
-     * Implements Asset<IScreen, IResourceData> *
-    \********************************************/
-    bool isDefaultConfiguration() const;
   };
 }

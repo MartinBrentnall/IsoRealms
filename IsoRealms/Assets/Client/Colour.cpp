@@ -32,14 +32,10 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  IColour* Colour::createLiteralAsset(IResourceData& owner) {
+  IColour* Colour::createDefaultAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralColour(this, owner, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
   }
   
-  bool Colour::isDefaultConfiguration() const {
-    return true;
-  }
-
   void Colour::stateChanged(IColour* value) {
     if (value == cAsset && cListener != nullptr) {
       cListener();

@@ -29,10 +29,5 @@ namespace IsoRealms {
   class Font : public Asset<Font, IFont, IResourceData> {
     public:
     Font(IResourceData& owner);
-
-    /******************************************\
-     * Implements Asset<IFont, IResourceData> *
-    \******************************************/
-    bool isDefaultConfiguration() const;
   };
 }

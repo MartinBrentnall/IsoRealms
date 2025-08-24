@@ -33,8 +33,6 @@ namespace IsoRealms {
     /*************************************************\
      * Implements Asset<IBindingType, IResourceData> *
     \*************************************************/
-    bool isDefaultConfiguration() const;
-
     void stateChanged(IBindingType* asset) override;
 
     private:

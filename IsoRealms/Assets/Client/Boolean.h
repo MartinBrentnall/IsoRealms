@@ -35,8 +35,7 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IBoolean, IResourceData> *
     \*********************************************/
-    IBoolean* createLiteralAsset(IResourceData& owner);
-    bool isDefaultConfiguration() const;
+    IBoolean* createDefaultAsset(IResourceData& owner);
 
     /****************************************\
      * Implements IStateListener<IBoolean*> *

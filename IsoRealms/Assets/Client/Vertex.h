@@ -33,7 +33,6 @@ namespace IsoRealms {
     /********************************************\
      * Implements Asset<IVertex, IResourceData> *
     \********************************************/
-    IVertex* createLiteralAsset(IResourceData& owner);
-    bool isDefaultConfiguration() const;
+    IVertex* createDefaultAsset(IResourceData& owner);
   };
 }

@@ -26,8 +26,4 @@ namespace IsoRealms {
   Screen::Screen(IResourceData& owner) : 
             Asset<Screen, IScreen, IResourceData>(owner) {
   }
-
-  bool Screen::isDefaultConfiguration() const {
-    return true;
-  }
 }

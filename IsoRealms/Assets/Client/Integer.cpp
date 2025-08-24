@@ -28,11 +28,7 @@ namespace IsoRealms {
             Asset<Integer, IInteger, IResourceData>(owner, owner.getAssetManager().createLiteralInteger(this, owner, 0)) {
   }
 
-  IInteger* Integer::createLiteralAsset(IResourceData& owner) {
+  IInteger* Integer::createDefaultAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralInteger(this, owner, 0);
-  }
-  
-  bool Integer::isDefaultConfiguration() const {
-    return true;
   }
 }
