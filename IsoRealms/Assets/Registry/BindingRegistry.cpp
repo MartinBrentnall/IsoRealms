@@ -51,12 +51,15 @@ namespace IsoRealms {
     add(&cConversionProviderVertex,       ":Vertex",       "Conversions");
   }
 
-  // IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener<IBinding*>* listener, bool required) {
-  //   cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
-  //   IBinding* mBinding = cBindings.get(client, owner, object, nullptr, required);
-  //   cLocalProviderBinding.setLocalBindings(nullptr);
-  //   return mBinding;
-  // }
+  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener<IBinding*>* listener, bool required) {
+    cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
+    return AssetClientManager::get(client, owner, object, listener, required);
+  }
+
+  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener<IBinding*>* listener) {
+    cLocalProviderBinding.setLocalBindings(owner.getBindingRegistry());
+    return AssetClientManager::get(client, owner, id, listener);
+  }
 
   BindingRegistry::Dummy::Dummy(IActionClient& owner) {
     // Nothing to do.

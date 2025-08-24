@@ -26,8 +26,10 @@
 namespace IsoRealms::Basics {
   class ProjectLoader {
     public:
+    ProjectLoader(std::function<void(bool)> endFunction);
     ProjectLoader(const std::string& file, bool user, std::function<void(bool)> endFunction);
 
+    void newProject(IApplication& application);
     void loadProject(IApplication& application);
     bool isDestructReady();
     void setDestructing();

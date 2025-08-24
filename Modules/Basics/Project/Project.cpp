@@ -33,6 +33,16 @@ namespace IsoRealms::Basics {
             cDefEditing(false),
             cRuntimeProject(nullptr),
             cLuaBinding(data.getProject().getLuaState(), this) {
+    cRuntimeProjectLoader = std::make_unique<ProjectLoader>([this](bool quitRequestGranted) {
+      cRuntimeRunning = false;
+      cRuntimeEditing = true; // TODO: Why do we assume a switch to editing mode?
+      cRuntimeQuitRequestGranted = quitRequestGranted;
+      cRuntimeProject->reset(); // TODO: Why do we reset here?
+      cDefEndAction.execute();
+    });
+    IApplication& mApplication = cProject.getApplication();
+    cRuntimeProjectLoader->newProject(mApplication);
+    cRuntimeProject = cRuntimeProjectLoader->getLoadedProject();
   }
   
   Project::Project(Basics& basics, IResourceData& data, JSONObject object) :

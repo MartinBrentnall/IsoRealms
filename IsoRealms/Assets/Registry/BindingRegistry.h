@@ -48,7 +48,8 @@ namespace IsoRealms {
   class BindingRegistry : public AssetClientManager<BindingRegistry, IActionClient, IBinding> {
     public:
     BindingRegistry(Project& project);
-    // IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener<IBinding*>* listener, bool required);
+    IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener<IBinding*>* listener, bool required);
+    IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener<IBinding*>* listener);
 
     private:
     class Dummy : public IBinding {

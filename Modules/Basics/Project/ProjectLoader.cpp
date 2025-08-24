@@ -21,6 +21,15 @@
 #include <SFML/System.hpp>
 
 namespace IsoRealms::Basics {
+  ProjectLoader::ProjectLoader(std::function<void(bool)> endFunction) :
+            cFile(""),
+            cUser(true),
+            cEndFunction(endFunction),
+            cFirstUse(true),
+            cDestructing(false),
+            cDestructed(false) {
+  }
+
   ProjectLoader::ProjectLoader(const std::string& file, bool user, std::function<void(bool)> endFunction) :
             cFile(file),
             cUser(user),
@@ -28,6 +37,18 @@ namespace IsoRealms::Basics {
             cFirstUse(true),
             cDestructing(false),
             cDestructed(false) {
+  }
+
+  void ProjectLoader::newProject(IApplication& application) {
+    try {
+      std::unique_ptr<Project> mProject = std::make_unique<Project>(application, cEndFunction);
+      cMutex.lock();
+      cProject = std::move(mProject);
+      cMutex.unlock();
+    } catch (ParseException& parseException) {  // TODO: Should be a more appropriate exception here
+      cError = parseException.getMessage();
+      std::cout << "WARNING: ProjectLoader::newProject: Failed to load project due to exception: \"" << cError << "\"." << std::endl;
+    }
   }
 
   void ProjectLoader::loadProject(IApplication& application) {
