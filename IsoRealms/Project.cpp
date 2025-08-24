@@ -760,10 +760,7 @@ namespace IsoRealms {
     return cDefTestLaunchConfigurations[index].get();
   }
   
-  const std::string Project::JSON_ACTION                = "action";
   const std::string Project::JSON_EDITOR                = "editor";
-  const std::string Project::JSON_FILENAME              = "filename";
-  const std::string Project::JSON_ID                    = "id";
   const std::string Project::JSON_INCLUDE               = "include";
   const std::string Project::JSON_INITIALISATION        = "initialisation";
   const std::string Project::JSON_INPUT                 = "input";
@@ -772,14 +769,8 @@ namespace IsoRealms {
   const std::string Project::JSON_MODULES               = "modules";
   const std::string Project::JSON_NAME                  = "name";
   const std::string Project::JSON_PROJECT               = "project";
-  const std::string Project::JSON_PROPERTIES            = "properties";
   const std::string Project::JSON_QUIT                  = "quit";
   const std::string Project::JSON_RESET                 = "reset";
   const std::string Project::JSON_SCREEN                = "screen";
   const std::string Project::JSON_START                 = "start";
-  const std::string Project::JSON_USER                  = "user";
-
-  const std::string Project::CATEGORY_CONVERSIONS = "Conversions";
-  const std::string Project::CATEGORY_FIXED       = "Fixed";
-  const std::string Project::CATEGORY_LOCAL       = "Local";
 }

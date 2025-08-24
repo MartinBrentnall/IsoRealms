@@ -244,10 +244,7 @@ namespace IsoRealms {
     template <class TYPE> friend struct AssetContainerTraits;
 
     private:
-    static const std::string JSON_ACTION;
     static const std::string JSON_EDITOR;
-    static const std::string JSON_FILENAME;
-    static const std::string JSON_ID;
     static const std::string JSON_INCLUDE;
     static const std::string JSON_INITIALISATION;
     static const std::string JSON_INPUT;
@@ -256,16 +253,10 @@ namespace IsoRealms {
     static const std::string JSON_MODULES;
     static const std::string JSON_NAME;
     static const std::string JSON_PROJECT;
-    static const std::string JSON_PROPERTIES;
     static const std::string JSON_QUIT;
     static const std::string JSON_RESET;
     static const std::string JSON_SCREEN;
     static const std::string JSON_START;
-    static const std::string JSON_USER;
-
-    static const std::string CATEGORY_CONVERSIONS;
-    static const std::string CATEGORY_FIXED;
-    static const std::string CATEGORY_LOCAL;
 
     class Filename : public IString {
       public:
