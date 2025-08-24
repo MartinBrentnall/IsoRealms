@@ -117,21 +117,6 @@ namespace IsoRealms {
     std::vector<std::string> getProjectFileNames() const;
     ProjectFile* getProjectFile(const std::string& id);
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     std::string getProjectPathPrefix(bool user);
     
     // Screen-related functions.
@@ -173,23 +158,6 @@ namespace IsoRealms {
     \****************************/
     IResourceData& getResourceData() override;
     IBindingRegistry* getBindingRegistry() override;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     void mainThreadAlloc(std::function<void()> function);
     void mainThreadInit(std::function<void()> function);
@@ -251,32 +219,13 @@ namespace IsoRealms {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
-    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, const bool value);
-    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, const float red, const float green, const float blue, const float alpha);
-    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, const float value);
-    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, const int value);
+    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value);
+    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, float red, float green, float blue, float alpha);
+    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, float value);
+    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, int value);
     IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value);
-    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, const float x, const float y, const float z);
+    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, float x, float y, float z);
 
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     std::filesystem::file_time_type getLastWriteTime();
     void finish(bool finishedByQuitRequest);
     
@@ -402,15 +351,7 @@ namespace IsoRealms {
     OwnedAsset<IActionClient, Action>                        cDefStartAction;
     OwnedAsset<IActionClient, Action>                        cDefQuitAction;
 
-
-
-
-
-
-
-
-
-
+    // Scripting support.
     LuaState cLuaState;                       /// Lua State for this project.
     LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
     LocalLuaBinding<Options> cOptionsBinding;

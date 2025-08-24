@@ -91,6 +91,10 @@ namespace IsoRealms::Basics {
       return cSequenceTracks.hasConfiguration(id);
     }
 
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
+      return cSequenceTracks.getDefault(user, owner);
+    }
+
     template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
       return cSequenceTracks.get(user, owner, id, listener);
     }

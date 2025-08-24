@@ -101,6 +101,10 @@ namespace IsoRealms::UI {
       return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
     }
 
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
+      return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
+    }
+
     template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
