@@ -222,9 +222,9 @@ namespace IsoRealms {
     }
 
     private:
-    constexpr IStateListener<TYPE*>* getStateListener() {
+    IStateListener<TYPE*>* getStateListener() {
       if constexpr (IsStateListener<DERIVED, TYPE>) {
-        return static_cast<IStateListener<TYPE*>*>(static_cast<DERIVED*>(this));
+        return static_cast<DERIVED*>(this);
       } else {
         return nullptr;
       }

@@ -26,15 +26,17 @@
 namespace IsoRealms {
   template <class OWNER, class TYPE> class OwnedAsset {
     public:
-    OwnedAsset(Project& project, OWNER& owner) :
+    OwnedAsset(Project& project, ProjectFile& ownerProject, OWNER& owner) :
               cAsset(owner),
-              cOwner(project, nullptr) {
+              cOwner(project, &ownerProject),
+              cInit(false) {
     }
 
     void init(JSONObject object, const std::string& tag, ProjectFile& owner) {
-      if (object.hasMember(tag) && cOwner.getProjectFile() == nullptr) {
+      if (object.hasMember(tag) && !cInit) {
         cAsset.init(object, tag);
         cOwner.setProjectFile(&owner);
+        cInit = true;
       }
     }
 
@@ -58,5 +60,6 @@ namespace IsoRealms {
     private:
     TYPE cAsset;
     ResourceOwner cOwner;
+    bool cInit; // TODO: I think this should be part of the local loading process, not a field here.
   };
 }
