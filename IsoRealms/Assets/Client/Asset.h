@@ -23,6 +23,7 @@
 
 #include "IsoRealms/Assets/Registry/IAssetUser.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
@@ -47,6 +48,8 @@ namespace IsoRealms {
   template<class TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
     {type.isDefaultConfiguration()} -> std::same_as<bool>;
   };
+
+  template<typename DERIVED, typename TYPE> concept IsStateListener = std::convertible_to<DERIVED*, IStateListener<TYPE*>*>;
 
   template<class DERIVED, class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
@@ -80,7 +83,7 @@ namespace IsoRealms {
     void set(JSONThing thing) {
       JSONObject mAssetObject = thing.getValue();
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager);
+      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener());
       loadClientConfiguration(mAssetObject);
     }
 
@@ -97,13 +100,13 @@ namespace IsoRealms {
     void set(JSONObject object, const std::string& member) {
       JSONObject mAssetObject = object.getObject(member);
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager);
+      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener());
       loadClientConfiguration(mAssetObject);
     }
     
     virtual void setID(const std::string& id) {
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = cManager.getAssetManager().getAsset(this, id, cManager);
+      cAsset = cManager.getAssetManager().getAsset(this, id, cManager, getStateListener());
       static_cast<DERIVED*>(this)->stateChanged(cAsset);
     }
     
@@ -219,6 +222,14 @@ namespace IsoRealms {
     }
 
     private:
+    constexpr IStateListener<TYPE*>* getStateListener() {
+      if constexpr (IsStateListener<DERIVED, TYPE>) {
+        return static_cast<IStateListener<TYPE*>*>(static_cast<DERIVED*>(this));
+      } else {
+        return nullptr;
+      }
+    }
+
     Asset(Asset<DERIVED, TYPE, MANAGER> const& asset) = delete;
     Asset& operator=(Asset<DERIVED, TYPE, MANAGER> const& asset) = delete;
   };
