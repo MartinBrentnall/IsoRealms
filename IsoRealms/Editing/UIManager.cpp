@@ -143,22 +143,23 @@ namespace IsoRealms {
 
 
       float mLineHeight = mFont->getHeight(mFontSize, "A");
-      float mLeft = cRuntimeUIs.back()->cScreen->getTooltipXPosition() + mFontSize * 2.0f;
-      float mRight = mLeft + mWidestLineWidth;
-      float mTop = cHighlightTop.animation();// + mLineHeight;
-      float mBottom = mTop - mFont->getHeight(mFontSize, mWrappedText);
+      cTooltipLeft   = cRuntimeUIs.back()->cScreen->getTooltipXPosition() + mFontSize * 2.0f;
+      cTooltipRight  = cTooltipLeft.value() + mWidestLineWidth;
+      float mTop     = cHighlightTop.animation();// + mLineHeight;
+      cTooltipHeight = mFont->getHeight(mFontSize, mWrappedText);
+      float mBottom  = mTop - cTooltipHeight.animation();
       glColor3f(0.2f, 0.0f, 0.0f);
-      Utils::renderRoundedRectangle(mLeft - mFontSize, mBottom - mFontSize, mRight + mFontSize, mTop + mFontSize, mFontSize);
+      Utils::renderRoundedRectangle(cTooltipLeft.animation() - mFontSize, mBottom - mFontSize, cTooltipRight.animation() + mFontSize, mTop + mFontSize, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
-      mFont->print(mLeft, cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mWrappedText);
+      mFont->print(cTooltipLeft.animation(), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mWrappedText);
 
       glBegin(GL_QUADS);
       glColor3f(1.0f, 0.0f, 0.3f);
       glVertex2f(cHighlightRight.animation(), cHighlightTop.animation()    - mLineHeight / 3.0f);
       glVertex2f(cHighlightRight.animation(), cHighlightBottom.animation() + mLineHeight / 3.0f);
       glColor3f(0.2f, 0.0f, 0.0f);
-      glVertex2f(mLeft - mFontSize, cHighlightBottom.animation() + mLineHeight / 3.0f);
-      glVertex2f(mLeft - mFontSize, cHighlightTop.animation()    - mLineHeight / 3.0f);
+      glVertex2f(cTooltipLeft.animation() - mFontSize, cHighlightBottom.animation() + mLineHeight / 3.0f);
+      glVertex2f(cTooltipLeft.animation() - mFontSize, cHighlightTop.animation()    - mLineHeight / 3.0f);
       glEnd();
     }
 
@@ -226,6 +227,10 @@ namespace IsoRealms {
     cHighlightRight.update(milliseconds);
     cHighlightTop.update(milliseconds);
     
+    cTooltipHeight.update(milliseconds);
+    cTooltipLeft.update(milliseconds);
+    cTooltipRight.update(milliseconds);
+
     cHideAnimation = cHidden ? std::min(250, static_cast<int>(cHideAnimation + milliseconds))
                              : std::max(0,   static_cast<int>(cHideAnimation - milliseconds));
 
