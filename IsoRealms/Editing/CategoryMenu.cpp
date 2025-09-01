@@ -22,7 +22,7 @@
 #include "IsoRealms/ResourceType.h"
 
 namespace IsoRealms {
-  CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, const std::string& category) : ActionMenu(manager, style, category) {
+  CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, const std::string& category) : ActionMenu(manager, style) {
     std::set<IModule*> mModules = project.getModules();
     for (IModule* mModule : mModules) {
       std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
@@ -31,7 +31,7 @@ namespace IsoRealms {
           std::string mResourceTypeName = mResourceType->getPlural();
           std::string mResourceTypeTooltip = mResourceType->getDescription();
           addItem(std::make_unique<MenuItemAction>(mResourceTypeName, mResourceTypeTooltip, [this, &manager, &style, mResourceType]() {
-            manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, *mResourceType));
+            manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, *mResourceType), mResourceType->getPlural());
           }));
         }
       }

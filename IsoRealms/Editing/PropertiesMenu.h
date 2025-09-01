@@ -29,7 +29,7 @@ namespace IsoRealms {
   class PropertiesMenu : public Menu<MenuItemProperty>,
                          public IPropertyManager {
     public:
-    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher);
 
     /*************************************\
      * Implements Menu<MenuItemProperty> *

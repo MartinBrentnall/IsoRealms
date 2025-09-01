@@ -87,7 +87,7 @@ namespace IsoRealms::Spindizzy {
     if (!cHoverObjects.empty() && !cEditingProperties) {
       cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldResourceOwner, [this](PropertyMaker& owner) {
         cHoverObjects[cSelectedObject]->getProperties(owner);
-      }, cHoverObjects[cSelectedObject]->getTypeName() + " Configuration:", 1.0f, 1.0f, 1.0f));
+      }), cHoverObjects[cSelectedObject]->getTypeName() + " Configuration");
       cEditingProperties = true;
     }
   }

@@ -19,7 +19,7 @@
 #include "ActionMenu.h"
 
 namespace IsoRealms {
-  ActionMenu::ActionMenu(UIManager& manager, IUIStyle& style, const std::string& breadCrumb) : Menu<MenuItemAction>(manager, style, breadCrumb, 1.0f, 1.0f, 1.0f) {
+  ActionMenu::ActionMenu(UIManager& manager, IUIStyle& style) : Menu<MenuItemAction>(manager, style) {
   }
 
   float ActionMenu::getWidth(MenuItemAction& item, IUIStyle& style) const {

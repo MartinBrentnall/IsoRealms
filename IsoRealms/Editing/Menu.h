@@ -36,13 +36,9 @@
 namespace IsoRealms {
   template<class MENU_ITEM_TYPE> class Menu : public IUIScreen {
     public:
-    Menu(UIManager& manager, IUIStyle& style, const std::string& breadCrumb, float red, float green, float blue) :
+    Menu(UIManager& manager, IUIStyle& style) :
               cUIManager(manager),
               cStyle(style),
-              cBreadCrumb(breadCrumb),
-              cBreadCrumbRed(red),
-              cBreadCrumbGreen(green),
-              cBreadCrumbBlue(blue),
               cSelectedItem(0),
               cScroll(0.0f) {
     }
@@ -56,7 +52,6 @@ namespace IsoRealms {
       float mTop = 1.0f - mFontSize;
       float mLeft = -1.0 * aspectRatio;
       float mBottom = std::max(-1.0f + mFontSize, 1.0f - ((cItems.size() + 2.0f) * mFontSize * 2.0f));
-      updateRight(aspectRatio, minimumWidth);
 
       glColor3f(0.0f, 0.0f, 0.0f);
       Utils::renderRoundedRectangle(mLeft, mBottom, cPanelRight, mTop, mFontSize);
@@ -80,14 +75,6 @@ namespace IsoRealms {
       if (!cItems.empty()) {
         renderOverlay(*cItems[cSelectedItem], cStyle, (1.0f - (mFontSize * 4.0f + (cSelectedItem + 1) * mFontSize * 2.0f)) - cScroll.animation(), aspectRatio);
       }
-    }
-
-    std::string getBreadCrumb() const override {
-      return cBreadCrumb;
-    }
-
-    void setBreadCrumbColour() const override {
-      glColor3f(cBreadCrumbRed, cBreadCrumbGreen, cBreadCrumbBlue);
     }
 
     float getSelectionHighlightLeft(float aspectRatio) const override {
@@ -129,6 +116,8 @@ namespace IsoRealms {
             cSelectedItem++;
             selectedItemChanged();
             updateScrollPosition();
+            updateRight();
+            cUIManager.setTooltip(getTooltip());
           }
           return true;
         }
@@ -138,6 +127,8 @@ namespace IsoRealms {
             cSelectedItem--;
             selectedItemChanged();
             updateScrollPosition();
+            updateRight();
+            cUIManager.setTooltip(getTooltip());
           }
           return true;
         }
@@ -167,6 +158,17 @@ namespace IsoRealms {
       return cPanelRight;
     }
 
+    float getContentRight() const override {
+      float mAspectRatio = 1.0f / cUIManager.getProject().getApplication().getScreenAspectRatio();
+      float mFontSize = cStyle.getFontSize();
+      float mPanelRight = 0.0f;
+      for (const std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
+        mPanelRight = std::max(mPanelRight, getWidth(*mItem, cStyle));
+      }
+      mPanelRight = std::max(mPanelRight, cUIManager.getBreadCrumbWidth());
+      return std::min(1.0f * mAspectRatio, mPanelRight + mFontSize * 2.0f - mAspectRatio);
+    }
+
     virtual float getWidth(MENU_ITEM_TYPE& item, IUIStyle& style) const = 0;
     virtual void renderMenuItem(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;
     virtual void renderOverlay(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;
@@ -178,8 +180,8 @@ namespace IsoRealms {
     virtual void selectedItemChanged() = 0;
 
     protected:
-    void openUI(std::unique_ptr<IUIScreen> screen) {
-      cUIManager.openUI(std::move(screen));
+    void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LocalColour(1.0f, 1.0f, 1.0f)) {
+      cUIManager.openUI(std::move(screen), breadCrumb, breadCrumbColour);
     }
 
     void addItem(std::unique_ptr<MENU_ITEM_TYPE> item) {
@@ -224,23 +226,15 @@ namespace IsoRealms {
       return cItems;
     }
 
-    void updateRight(float aspectRatio, float minimumWidth) {
+    void updateRight() override {
+      float mAspectRatio = 1.0f / cUIManager.getProject().getApplication().getScreenAspectRatio();
       float mFontSize = cStyle.getFontSize();
-      cPanelRight = 0.0f;
-      for (std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
-        cPanelRight = std::max(cPanelRight, getWidth(*mItem, cStyle));
-      }
-      cPanelRight = std::max(cPanelRight, minimumWidth) + mFontSize * 2.0f - aspectRatio;
-      cPanelRight = std::min(1.0f * aspectRatio, cPanelRight);
+      cPanelRight = std::max(getContentRight(), cUIManager.getBreadCrumbWidth() + mFontSize * 2.0f - mAspectRatio);
     }
 
     private:
     UIManager& cUIManager;
     IUIStyle& cStyle;
-    std::string cBreadCrumb;
-    float cBreadCrumbRed;
-    float cBreadCrumbGreen;
-    float cBreadCrumbBlue;
     std::vector<std::unique_ptr<MENU_ITEM_TYPE>> cItems;
     unsigned int cSelectedItem;
     AnimatedFloat cScroll;

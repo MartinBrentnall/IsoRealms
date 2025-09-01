@@ -66,7 +66,7 @@ namespace IsoRealms {
 
     float mBreadCrumbWidth = 0.0f;
     for (const std::unique_ptr<UIScreen>& mProjectUI : cRuntimeUIs) {
-      std::string mBreadCrumb = mProjectUI->cScreen->getBreadCrumb();
+      std::string mBreadCrumb = mProjectUI->cBreadCrumb;
       if (mBreadCrumbWidth != 0.0f) {
         mBreadCrumbWidth += mFont->getWidth(mFontSize, " > ");
       }
@@ -101,57 +101,13 @@ namespace IsoRealms {
       glColor3f(1.0f, 1.0f, 1.0f);
 
       // Tooltip information.
-      std::string mHelpText = cRuntimeUIs.back()->cScreen->getTooltip();
-      std::string mWrappedText;
-      int mLineBeginning = 0;
-      int mPrevSpace = 0;
-      int mLineCount = 1;
-      float mMaxLineWidth = 0.5f * aspectRatio;
-      float mWidestLineWidth = 0.0f;
-      for (unsigned int i = 0; i < mHelpText.length(); i++) {
-        if (mHelpText[i] == ' ') {
-          float mLineWidth = mFont->getWidth(mFontSize, mHelpText.substr(mLineBeginning, i - mLineBeginning));
-          if (mLineWidth > mMaxLineWidth) {
-            if (mLineBeginning != 0) {
-              mWrappedText += '\n';
-              mLineCount++;
-            }
-            mWrappedText += mHelpText.substr(mLineBeginning, mPrevSpace - mLineBeginning);
-            mLineBeginning = mPrevSpace + 1;
-          } else if (mLineWidth > mWidestLineWidth) {
-            mWidestLineWidth = mLineWidth;
-          }
-          mPrevSpace = i;
-        }
-      }
-      float mLineWidth = mFont->getWidth(mFontSize, mHelpText.substr(mLineBeginning));
-      if (mLineWidth > mMaxLineWidth) {
-        if (mLineBeginning != 0) {
-          mWrappedText += '\n';
-          mLineCount++;
-        }
-        mWrappedText += mHelpText.substr(mLineBeginning, mPrevSpace - mLineBeginning);
-        mLineBeginning = mPrevSpace + 1;
-      } else if (mLineWidth > mWidestLineWidth) {
-        mWidestLineWidth = mLineWidth;
-      }
-      if (mLineBeginning != 0) {
-        mWrappedText += '\n';
-        mLineCount++;
-      }
-      mWrappedText += mHelpText.substr(mLineBeginning);
-
-
       float mLineHeight = mFont->getHeight(mFontSize, "A");
-      cTooltipLeft   = cRuntimeUIs.back()->cScreen->getTooltipXPosition() + mFontSize * 2.0f;
-      cTooltipRight  = cTooltipLeft.value() + mWidestLineWidth;
-      float mTop     = cHighlightTop.animation();// + mLineHeight;
-      cTooltipHeight = mFont->getHeight(mFontSize, mWrappedText);
-      float mBottom  = mTop - cTooltipHeight.animation();
+      float mTop        = cHighlightTop.animation();// + mLineHeight;
+      float mBottom     = mTop - cTooltipHeight.animation();
       glColor3f(0.2f, 0.0f, 0.0f);
       Utils::renderRoundedRectangle(cTooltipLeft.animation() - mFontSize, mBottom - mFontSize, cTooltipRight.animation() + mFontSize, mTop + mFontSize, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
-      mFont->print(cTooltipLeft.animation(), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mWrappedText);
+      mFont->print(cTooltipLeft.animation(), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, cTooltipText);
 
       glBegin(GL_QUADS);
       glColor3f(1.0f, 0.0f, 0.3f);
@@ -168,7 +124,7 @@ namespace IsoRealms {
     mBreadCrumbWidth = 0.0f;
 
     for (const std::unique_ptr<UIScreen>& mProjectUI : cRuntimeUIs) {
-      std::string mBreadCrumb = mProjectUI->cScreen->getBreadCrumb();
+      std::string mBreadCrumb = mProjectUI->cBreadCrumb;
 
       glPushMatrix();
       int mBreadCrumbSlide = std::max(0, mProjectUI->cSlideAnimation);
@@ -178,7 +134,7 @@ namespace IsoRealms {
         mFont->print(-1.0f * aspectRatio + mBreadCrumbWidth + mFontSize, 1.0f - mFontSize * 3.0f, mFontSize, IFont::Alignment::LEFT, " > ");
         mBreadCrumbWidth += mFont->getWidth(mFontSize, " > ");
       }
-      mProjectUI->cScreen->setBreadCrumbColour();
+      mProjectUI->cBreadCrumbColour.set();
       mFont->print(-1.0f * aspectRatio + mBreadCrumbWidth + mFontSize, 1.0f - mFontSize * 3.0f, mFontSize, IFont::Alignment::LEFT, mBreadCrumb);
       mBreadCrumbWidth += mFont->getWidth(mFontSize, mBreadCrumb);
       glColor3f(1.0f, 1.0f, 1.0f);
@@ -192,14 +148,14 @@ namespace IsoRealms {
       glPopMatrix();
     }
     for (const std::unique_ptr<UIScreen>& mProjectUI : cRuntimeClosedUIs) {
-      std::string mBreadCrumb = mProjectUI->cScreen->getBreadCrumb();
+      std::string mBreadCrumb = mProjectUI->cBreadCrumb;
       glPushMatrix();
       glTranslatef(aspectRatio * (mProjectUI->cSlideAnimation / 500.0f), 0.0f, 0.0f);
       if (mBreadCrumbWidth != 0.0f) {
         mFont->print(-1.0f * aspectRatio + mBreadCrumbWidth + mFontSize, (1.0f - mFontSize * 3.0f) + 0.01f, mFontSize, IFont::Alignment::LEFT, " > ");
         mBreadCrumbWidth += mFont->getWidth(mFontSize, " > ");
       }
-      mProjectUI->cScreen->setBreadCrumbColour();
+      mProjectUI->cBreadCrumbColour.set();
       mFont->print(-1.0f * aspectRatio + mBreadCrumbWidth + mFontSize, (1.0f - mFontSize * 3.0f) + 0.01f, mFontSize, IFont::Alignment::LEFT, mBreadCrumb);
       glColor3f(1.0f, 1.0f, 1.0f);
       mProjectUI->cScreen->render(aspectRatio - mFontSize);
@@ -284,8 +240,10 @@ namespace IsoRealms {
     return false;
   }
   
-  void UIManager::openUI(std::unique_ptr<IUIScreen> screen) {
-    cRuntimeUIs.push_back(std::make_unique<UIScreen>(std::move(screen)));
+  void UIManager::openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour) {
+    cRuntimeUIs.push_back(std::make_unique<UIScreen>(std::move(screen), breadCrumb, breadCrumbColour));
+    setTooltip(cRuntimeUIs.back()->cScreen->getTooltip());
+    cRuntimeUIs.back()->cScreen->updateRight();
   }
 
   void UIManager::closeUI() {
@@ -293,6 +251,8 @@ namespace IsoRealms {
     cRuntimeUIs.pop_back();
     if (!cRuntimeUIs.empty()) {
       cRuntimeUIs.back()->cScreen->refresh();
+      setTooltip(cRuntimeUIs.back()->cScreen->getTooltip());
+      cRuntimeClosedUIs.back()->cScreen->updateRight();
     } else {
       cFinishCallback();
     }
@@ -318,9 +278,72 @@ namespace IsoRealms {
     return cProject;
   }
 
-  UIManager::UIScreen::UIScreen(std::unique_ptr<IUIScreen> screen) :
+  void UIManager::setTooltip(const std::string& text) {
+    cTooltipText.clear();
+    int mLineBeginning = 0;
+    int mPrevSpace = 0;
+    int mLineCount = 1;
+    float mMaxLineWidth = 0.8f;
+    float mWidestLineWidth = 0.0f;
+    IFont* mFont = cStyle.getFont();
+    float mFontSize = cStyle.getFontSize();
+    for (unsigned int i = 0; i < text.length(); i++) {
+      if (text[i] == ' ') {
+        float mLineWidth = mFont->getWidth(mFontSize, text.substr(mLineBeginning, i - mLineBeginning));
+        if (mLineWidth > mMaxLineWidth) {
+          if (mLineBeginning != 0) {
+            cTooltipText += '\n';
+            mLineCount++;
+          }
+          cTooltipText += text.substr(mLineBeginning, mPrevSpace - mLineBeginning);
+          mLineBeginning = mPrevSpace + 1;
+        } else if (mLineWidth > mWidestLineWidth) {
+          mWidestLineWidth = mLineWidth;
+        }
+        mPrevSpace = i;
+      }
+    }
+    float mLineWidth = mFont->getWidth(mFontSize, text.substr(mLineBeginning));
+    if (mLineWidth > mMaxLineWidth) {
+      if (mLineBeginning != 0) {
+        cTooltipText += '\n';
+        mLineCount++;
+      }
+      cTooltipText += text.substr(mLineBeginning, mPrevSpace - mLineBeginning);
+      mLineBeginning = mPrevSpace + 1;
+    } else if (mLineWidth > mWidestLineWidth) {
+      mWidestLineWidth = mLineWidth;
+    }
+    if (mLineBeginning != 0) {
+      cTooltipText += '\n';
+      mLineCount++;
+    }
+    cTooltipText += text.substr(mLineBeginning);
+
+    cTooltipLeft   = cRuntimeUIs.back()->cScreen->getContentRight() + mFontSize * 4.0f;
+    cTooltipRight  = cTooltipLeft.value() + mWidestLineWidth;
+    cTooltipHeight = mFont->getHeight(mFontSize, cTooltipText);
+  }
+
+  float UIManager::getBreadCrumbWidth() const {
+    IFont* mFont = cStyle.getFont();
+    float mFontSize = cStyle.getFontSize();
+    float mBreadCrumbWidth = 0.0f;
+    for (const std::unique_ptr<UIScreen>& mProjectUI : cRuntimeUIs) {
+      std::string mBreadCrumb = mProjectUI->cBreadCrumb;
+      if (mBreadCrumbWidth != 0.0f) {
+        mBreadCrumbWidth += mFont->getWidth(mFontSize, " > ");
+      }
+      mBreadCrumbWidth += mFont->getWidth(mFontSize, mBreadCrumb);
+    }
+    return mBreadCrumbWidth;
+  }
+
+  UIManager::UIScreen::UIScreen(std::unique_ptr<IUIScreen> screen, const std::string& breadCrum, const IColour& breadCrumbColour) :
             cScreen(std::move(screen)),
-            cSlideAnimation(1000) {
+            cSlideAnimation(1000),
+            cBreadCrumb(breadCrum),
+            cBreadCrumbColour(breadCrumbColour) {
   }
 
   void UIManager::UIScreen::updateSlideActive(unsigned int milliseconds) {

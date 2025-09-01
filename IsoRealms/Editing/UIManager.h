@@ -26,6 +26,7 @@
 #include "IsoRealms/AnimatedFloat.h"
 #include "IsoRealms/IModule.h"
 #include "IsoRealms/Input/HatHandler.h"
+#include "IsoRealms/LocalColour.h"
 #include "IsoRealms/ResourceDefinition.h"
 
 #include "IDialogManager.h"
@@ -51,25 +52,28 @@ namespace IsoRealms {
     void input(UISignalID id);
     bool input(sf::Event& event);  
 
-    void openUI(std::unique_ptr<IUIScreen> screen);
+    void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LocalColour(1.0f, 1.0f, 1.0f));
     void closeUI();
     void edit(IEditable* editable);
     void hide();
     void show();
     bool isHidden() const;
     Project& getProject() const;
+    void setTooltip(const std::string& text);
+    float getBreadCrumbWidth() const;
 
     private:
     class UIScreen {
       public:
-      UIScreen(std::unique_ptr<IUIScreen> screen);
+      UIScreen(std::unique_ptr<IUIScreen> screen, const std::string& breadCrum, const IColour& breadCrumbColour);
       void updateSlideActive(unsigned int milliseconds);
       bool updateSlideClosing(unsigned int milliseconds);
       void updateSlideInactive(unsigned int milliseconds);
 
       std::unique_ptr<IUIScreen> cScreen;
       int cSlideAnimation;
-      std::string cBreadcrumb;
+      std::string cBreadCrumb;
+      LocalColour cBreadCrumbColour;
     };
 
     Project& cProject;
@@ -85,6 +89,8 @@ namespace IsoRealms {
     mutable AnimatedFloat cHighlightTop;
     mutable AnimatedFloat cHighlightBottom;
 
+    // Tooltip data.
+    std::string cTooltipText;
     mutable AnimatedFloat cTooltipLeft;
     mutable AnimatedFloat cTooltipRight;
     mutable AnimatedFloat cTooltipHeight;

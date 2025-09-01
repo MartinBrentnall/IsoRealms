@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class ActionMenu : public Menu<MenuItemAction> {
     public:
-    ActionMenu(UIManager& manager, IUIStyle& style, const std::string& breadCrumb);
+    ActionMenu(UIManager& manager, IUIStyle& style);
 
     /***********************************\
      * Implements Menu<MenuItemAction> *

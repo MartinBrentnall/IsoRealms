@@ -24,7 +24,7 @@
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher, const std::string& breadCrumb, float red, float green, float blue) : Menu(manager, style, breadCrumb, red, green, blue),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
             cPropertyMaker(owner.getProject().getApplication(), owner, *this, manager),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
@@ -58,7 +58,7 @@ namespace IsoRealms {
   }
 
   float PropertiesMenu::getWidth(MenuItemProperty& item, IUIStyle& style) const {
-    return cColumnWidthLabel.animation() + cColumnWidthValue.animation() + style.getFontSize() * 2.25f * (1.5f + (cHasRemoveColumn ? 1 : 0) + (cHasConfigureColumn ? 1 : 0));
+    return cColumnWidthLabel.value() + cColumnWidthValue.value() + style.getFontSize() * 2.25f * (1.5f + (cHasRemoveColumn ? 1 : 0) + (cHasConfigureColumn ? 1 : 0));
   }
 
   void PropertiesMenu::renderMenuItem(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const {
@@ -248,7 +248,7 @@ namespace IsoRealms {
     IUIStyle& mStyle = getStyle();
     mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](PropertyMaker& owner) {
       propertyFetcher(owner);
-    }, name, 0.75f, 0.5f, 1.0f));
+    }), name, LocalColour(0.75f, 0.5f, 1.0f));
   }
   
   void PropertiesMenu::edit(std::unique_ptr<IPropertyEditor> editor) {

@@ -22,7 +22,7 @@
 #include "IsoRealms/ResourceType.h"
 
 namespace IsoRealms {
-  ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style, ""),
+  ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style),
             cProject(project) {
     refresh();
   }
@@ -37,7 +37,7 @@ namespace IsoRealms {
       IUIStyle& mStyle = getStyle();
       mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](PropertyMaker& owner) {
         cProject.getProperties(owner);
-      }, "Project Configuration", 1.0f, 1.0f, 1.0f));
+      }), "Project Configuration");
     }));
 
     for (IModule* mModule : mModules) {
@@ -51,7 +51,7 @@ namespace IsoRealms {
     IUIStyle& mStyle = getStyle();
     for (std::string mCategory : mCategories) {
       addItem(std::make_unique<MenuItemAction>(mCategory, "TODO: Category description.", [this, mCategory, &mUIManager, &mStyle]() {
-        openUI(std::make_unique<CategoryMenu>(mUIManager, mStyle, cProject, mCategory));
+        openUI(std::make_unique<CategoryMenu>(mUIManager, mStyle, cProject, mCategory), mCategory);
       }));
     }
   }

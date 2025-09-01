@@ -27,8 +27,6 @@ namespace IsoRealms {
     public:
     virtual void renderBackground(float aspectRatio, float minimumWidth) = 0;
     virtual void render(float aspectRatio) = 0;
-    virtual std::string getBreadCrumb() const = 0;
-    virtual void setBreadCrumbColour() const = 0;
     virtual float getSelectionHighlightLeft(float aspectRatio) const = 0;
     virtual float getSelectionHighlightRight(float aspectRatio) const = 0;
     virtual float getSelectionHighlightTop() const = 0;
@@ -39,6 +37,8 @@ namespace IsoRealms {
     virtual void refresh() = 0;
     virtual std::string getTooltip() const = 0;
     virtual float getTooltipXPosition() const = 0;
+    virtual float getContentRight() const = 0;
+    virtual void updateRight() = 0;
 
     virtual ~IUIScreen() {
     }

@@ -23,7 +23,7 @@
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  ResourceTypeMenu::ResourceTypeMenu(UIManager& manager, IUIStyle& style, ResourceType& resourceType) : Menu(manager, style, resourceType.getPlural(), 1.0f, 1.0f, 1.0f),
+  ResourceTypeMenu::ResourceTypeMenu(UIManager& manager, IUIStyle& style, ResourceType& resourceType) : Menu(manager, style),
             cResourceType(resourceType),
             cRemoveButtonOffset(0.0f),
             cDeleteSelected(false) {
@@ -159,6 +159,6 @@ namespace IsoRealms {
     std::string mResourceName = resource->getName();
     mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, resource->getResourceData(), [this, resource](PropertyMaker& owner) {
       resource->getProperties(owner);
-    }, mResourceName, 1.0f, 1.0f, 0.5f));
+    }), mResourceName, LocalColour(1.0f, 1.0f, 0.5f));
   }
 }

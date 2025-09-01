@@ -655,7 +655,7 @@ namespace IsoRealms::Basics {
                     }
                     return true;
                   });
-                }, "Track Configuration:", 1.0f, 1.0f, 1.0f));
+                }), "Track Configuration");
                 cEditingProperties = true;
               } else {
                 if (cCursorEvent == nullptr) {
@@ -665,7 +665,7 @@ namespace IsoRealms::Basics {
                 if (cCursorEvent != nullptr) {
                   cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
                     return cCursorEvent->getEventProperties(owner, cSequence.getBasics().getMetadata("SequenceEditor"));
-                  }, "Event Configuration:", 1.0f, 1.0f, 1.0f));
+                  }), "Event Configuration");
                   cEditingProperties = true;
                 }
               }
