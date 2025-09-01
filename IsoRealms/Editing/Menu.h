@@ -165,7 +165,6 @@ namespace IsoRealms {
       for (const std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
         mPanelRight = std::max(mPanelRight, getWidth(*mItem, cStyle));
       }
-      mPanelRight = std::max(mPanelRight, cUIManager.getBreadCrumbWidth());
       return std::min(1.0f * mAspectRatio, mPanelRight + mFontSize * 2.0f - mAspectRatio);
     }
 
