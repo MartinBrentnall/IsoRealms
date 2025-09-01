@@ -76,6 +76,22 @@ namespace IsoRealms {
       LocalColour cBreadCrumbColour;
     };
 
+    class Tooltip {
+      public:
+      Tooltip() :
+                cText(""),
+                cSlideAnimation(0.0f) {
+      }
+
+      Tooltip(const Tooltip& tooltip) :
+                cText(tooltip.cText),
+                cSlideAnimation(tooltip.cSlideAnimation) {
+      }
+
+      std::string cText;
+      int cSlideAnimation;
+    };
+
     Project& cProject;
     IUIStyle& cStyle;
     std::function<void()> cFinishCallback;
@@ -90,7 +106,8 @@ namespace IsoRealms {
     mutable AnimatedFloat cHighlightBottom;
 
     // Tooltip data.
-    std::string cTooltipText;
+    Tooltip cRuntimeTooltip;
+    std::vector<std::unique_ptr<Tooltip>> cRuntimeClosedTooltips;
     mutable AnimatedFloat cTooltipLeft;
     mutable AnimatedFloat cTooltipRight;
     mutable AnimatedFloat cTooltipHeight;

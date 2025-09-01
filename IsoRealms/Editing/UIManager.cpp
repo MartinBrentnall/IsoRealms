@@ -20,7 +20,9 @@
 
 #include <GL/glew.h>
 
+#include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "Choice.h"
@@ -107,7 +109,12 @@ namespace IsoRealms {
       glColor3f(0.2f, 0.0f, 0.0f);
       Utils::renderRoundedRectangle(cTooltipLeft.animation() - mFontSize, mBottom - mFontSize, cTooltipRight.animation() + mFontSize, mTop + mFontSize, mFontSize);
       glColor3f(1.0f, 1.0f, 1.0f);
-      mFont->print(cTooltipLeft.animation(), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, cTooltipText);
+      ScreenArea mPreviousCrop = cProject.getApplication().crop(ScreenArea(cTooltipLeft.animation(), cTooltipRight.animation(), mBottom - mFontSize, mTop + mFontSize));;
+      mFont->print(cTooltipLeft.animation() + 1.0f * (cRuntimeTooltip.cSlideAnimation / 1000.0f), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, cRuntimeTooltip.cText);
+      for (const std::unique_ptr<Tooltip>& mClosedTooltip : cRuntimeClosedTooltips) {
+        mFont->print(cTooltipLeft.animation() + 1.0f * (mClosedTooltip->cSlideAnimation / 1000.0f), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mClosedTooltip->cText);
+      }
+      cProject.getApplication().crop(mPreviousCrop);
 
       glBegin(GL_QUADS);
       glColor3f(1.0f, 0.0f, 0.3f);
@@ -186,6 +193,15 @@ namespace IsoRealms {
     cTooltipHeight.update(milliseconds);
     cTooltipLeft.update(milliseconds);
     cTooltipRight.update(milliseconds);
+
+
+    cRuntimeTooltip.cSlideAnimation = std::max(0, cRuntimeTooltip.cSlideAnimation - static_cast<int>(milliseconds * 4));
+    for (const std::unique_ptr<Tooltip>& mClosedTooltip : cRuntimeClosedTooltips) {
+      mClosedTooltip->cSlideAnimation = std::max(-1000, mClosedTooltip->cSlideAnimation - static_cast<int>(milliseconds * 4));
+    }
+    while (!cRuntimeClosedTooltips.empty() && (*cRuntimeClosedTooltips.begin())->cSlideAnimation == -1000) {
+      cRuntimeClosedTooltips.erase(cRuntimeClosedTooltips.begin());
+    }
 
     cHideAnimation = cHidden ? std::min(250, static_cast<int>(cHideAnimation + milliseconds))
                              : std::max(0,   static_cast<int>(cHideAnimation - milliseconds));
@@ -279,7 +295,15 @@ namespace IsoRealms {
   }
 
   void UIManager::setTooltip(const std::string& text) {
-    cTooltipText.clear();
+    if (text == cRuntimeTooltip.cText) {
+      return;
+    }
+
+    // Animate out the previous tooltip.
+    cRuntimeClosedTooltips.emplace_back(std::make_unique<Tooltip>(cRuntimeTooltip));
+
+    // Construct the tooltip text.
+    cRuntimeTooltip.cText.clear();
     int mLineBeginning = 0;
     int mPrevSpace = 0;
     int mLineCount = 1;
@@ -292,10 +316,10 @@ namespace IsoRealms {
         float mLineWidth = mFont->getWidth(mFontSize, text.substr(mLineBeginning, i - mLineBeginning));
         if (mLineWidth > mMaxLineWidth) {
           if (mLineBeginning != 0) {
-            cTooltipText += '\n';
+            cRuntimeTooltip.cText += '\n';
             mLineCount++;
           }
-          cTooltipText += text.substr(mLineBeginning, mPrevSpace - mLineBeginning);
+          cRuntimeTooltip.cText += text.substr(mLineBeginning, mPrevSpace - mLineBeginning);
           mLineBeginning = mPrevSpace + 1;
         } else if (mLineWidth > mWidestLineWidth) {
           mWidestLineWidth = mLineWidth;
@@ -306,23 +330,24 @@ namespace IsoRealms {
     float mLineWidth = mFont->getWidth(mFontSize, text.substr(mLineBeginning));
     if (mLineWidth > mMaxLineWidth) {
       if (mLineBeginning != 0) {
-        cTooltipText += '\n';
+        cRuntimeTooltip.cText += '\n';
         mLineCount++;
       }
-      cTooltipText += text.substr(mLineBeginning, mPrevSpace - mLineBeginning);
+      cRuntimeTooltip.cText += text.substr(mLineBeginning, mPrevSpace - mLineBeginning);
       mLineBeginning = mPrevSpace + 1;
     } else if (mLineWidth > mWidestLineWidth) {
       mWidestLineWidth = mLineWidth;
     }
     if (mLineBeginning != 0) {
-      cTooltipText += '\n';
+      cRuntimeTooltip.cText += '\n';
       mLineCount++;
     }
-    cTooltipText += text.substr(mLineBeginning);
+    cRuntimeTooltip.cText += text.substr(mLineBeginning);
+    cRuntimeTooltip.cSlideAnimation = 1000;
 
     cTooltipLeft   = cRuntimeUIs.back()->cScreen->getContentRight() + mFontSize * 4.0f;
     cTooltipRight  = cTooltipLeft.value() + mWidestLineWidth;
-    cTooltipHeight = mFont->getHeight(mFontSize, cTooltipText);
+    cTooltipHeight = mFont->getHeight(mFontSize, cRuntimeTooltip.cText);
   }
 
   float UIManager::getBreadCrumbWidth() const {
