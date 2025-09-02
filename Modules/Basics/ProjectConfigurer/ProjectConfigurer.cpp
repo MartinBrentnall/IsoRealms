@@ -51,7 +51,8 @@ namespace IsoRealms::Basics {
               {"Cancel",       &cCancel},
               {"Confirm",      &cConfirm},
               {"PreviousItem", &cPreviousItem},
-              {"NextItem",     &cNextItem}
+              {"NextItem",     &cNextItem},
+              {"ToggleHelp",   &cToggleHelp}
             }),
             cAdjustLeft(data, *this, SignalInputID::MOVE_CURSOR_LEFT),
             cAdjustRight(data, *this, SignalInputID::MOVE_CURSOR_RIGHT),
@@ -59,6 +60,7 @@ namespace IsoRealms::Basics {
             cConfirm(data, *this, SignalInputID::CONFIRM),
             cPreviousItem(data, *this, SignalInputID::MOVE_CURSOR_UP),
             cNextItem(data, *this, SignalInputID::MOVE_CURSOR_DOWN),
+            cToggleHelp(data, *this, SignalInputID::TOGGLE_HELP),
             cLuaBinding(data.getProject().getLuaState(), this),
             cBindingEditor(data.getProject().getLuaState(), nullptr, this) {
   }
@@ -202,12 +204,13 @@ namespace IsoRealms::Basics {
   bool ProjectConfigurer::signal(SignalInputID id) {
     if (!isHidden()) {
       switch (id) {
-        case SignalInputID::MOVE_CURSOR_DOWN:  cProjectConfigurationUI.input(UISignalID::MOVE_DOWN);  return true;
-        case SignalInputID::MOVE_CURSOR_UP:    cProjectConfigurationUI.input(UISignalID::MOVE_UP);    return true;
-        case SignalInputID::MOVE_CURSOR_LEFT:  cProjectConfigurationUI.input(UISignalID::MOVE_LEFT);  return true;
-        case SignalInputID::MOVE_CURSOR_RIGHT: cProjectConfigurationUI.input(UISignalID::MOVE_RIGHT); return true;
-        case SignalInputID::CANCEL:            cProjectConfigurationUI.input(UISignalID::CANCEL);     return true;
-        case SignalInputID::CONFIRM:           cProjectConfigurationUI.input(UISignalID::CONFIRM);    return true;
+        case SignalInputID::MOVE_CURSOR_DOWN:  cProjectConfigurationUI.input(UISignalID::MOVE_DOWN);   return true;
+        case SignalInputID::MOVE_CURSOR_UP:    cProjectConfigurationUI.input(UISignalID::MOVE_UP);     return true;
+        case SignalInputID::MOVE_CURSOR_LEFT:  cProjectConfigurationUI.input(UISignalID::MOVE_LEFT);   return true;
+        case SignalInputID::MOVE_CURSOR_RIGHT: cProjectConfigurationUI.input(UISignalID::MOVE_RIGHT);  return true;
+        case SignalInputID::CANCEL:            cProjectConfigurationUI.input(UISignalID::CANCEL);      return true;
+        case SignalInputID::CONFIRM:           cProjectConfigurationUI.input(UISignalID::CONFIRM);     return true;
+        case SignalInputID::TOGGLE_HELP:       cProjectConfigurationUI.input(UISignalID::TOGGLE_HELP); return true;
       }
     }
     return false;

@@ -111,6 +111,8 @@ namespace IsoRealms {
     mutable AnimatedFloat cTooltipLeft;
     mutable AnimatedFloat cTooltipRight;
     mutable AnimatedFloat cTooltipHeight;
+    bool cTooltipVisible;
+    int cTooltipAnimation;
 
     bool cHidden;
     int cHideAnimation;

@@ -158,6 +158,7 @@ namespace IsoRealms::Basics {
     DigitalInput cConfirm;
     DigitalInput cPreviousItem;
     DigitalInput cNextItem;
+    DigitalInput cToggleHelp;
 
     // Scripting Interface.
     LuaBinding<ProjectConfigurer> cLuaBinding;

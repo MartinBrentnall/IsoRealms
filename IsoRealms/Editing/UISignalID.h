@@ -26,6 +26,7 @@ namespace IsoRealms {
     MOVE_LEFT,
     MOVE_RIGHT,
     MOVE_UP,
+    TOGGLE_HELP
   };
 }
 

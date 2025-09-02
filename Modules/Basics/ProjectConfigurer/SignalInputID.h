@@ -26,6 +26,7 @@ namespace IsoRealms::Basics {
     MOVE_CURSOR_LEFT,
     MOVE_CURSOR_RIGHT,
     MOVE_CURSOR_UP,
+    TOGGLE_HELP
   };
 }
 

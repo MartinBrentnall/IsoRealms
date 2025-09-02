@@ -33,6 +33,8 @@ namespace IsoRealms {
             cStyle(style),
             cFinishCallback(finishCallback),
             cEditorCallback(editorCallback),
+            cTooltipVisible(false),
+            cTooltipAnimation(0),
             cHidden(false),
             cHideAnimation(0) {
   }
@@ -103,27 +105,36 @@ namespace IsoRealms {
       glColor3f(1.0f, 1.0f, 1.0f);
 
       // Tooltip information.
-      float mLineHeight = mFont->getHeight(mFontSize, "A");
-      float mTop        = cHighlightTop.animation();// + mLineHeight;
-      float mBottom     = mTop - cTooltipHeight.animation();
-      glColor3f(0.2f, 0.0f, 0.0f);
-      Utils::renderRoundedRectangle(cTooltipLeft.animation() - mFontSize, mBottom - mFontSize, cTooltipRight.animation() + mFontSize, mTop + mFontSize, mFontSize);
-      glColor3f(1.0f, 1.0f, 1.0f);
-      ScreenArea mPreviousCrop = cProject.getApplication().crop(ScreenArea(cTooltipLeft.animation(), cTooltipRight.animation(), mBottom - mFontSize, mTop + mFontSize));;
-      mFont->print(cTooltipLeft.animation() + 1.0f * (cRuntimeTooltip.cSlideAnimation / 1000.0f), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, cRuntimeTooltip.cText);
-      for (const std::unique_ptr<Tooltip>& mClosedTooltip : cRuntimeClosedTooltips) {
-        mFont->print(cTooltipLeft.animation() + 1.0f * (mClosedTooltip->cSlideAnimation / 1000.0f), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mClosedTooltip->cText);
-      }
-      cProject.getApplication().crop(mPreviousCrop);
+      if (cTooltipAnimation > 0) {
+        float mLineHeight = mFont->getHeight(mFontSize, "A");
+        float mTop        = cHighlightTop.animation();// + mLineHeight;
+        float mBottom     = mTop - cTooltipHeight.animation();
 
-      glBegin(GL_QUADS);
-      glColor3f(1.0f, 0.0f, 0.3f);
-      glVertex2f(cHighlightRight.animation(), cHighlightTop.animation()    - mLineHeight / 3.0f);
-      glVertex2f(cHighlightRight.animation(), cHighlightBottom.animation() + mLineHeight / 3.0f);
-      glColor3f(0.2f, 0.0f, 0.0f);
-      glVertex2f(cTooltipLeft.animation() - mFontSize, cHighlightBottom.animation() + mLineHeight / 3.0f);
-      glVertex2f(cTooltipLeft.animation() - mFontSize, cHighlightTop.animation()    - mLineHeight / 3.0f);
-      glEnd();
+        float mTooltipLeft   = cHighlightRight.animation()  + ((cTooltipLeft.animation()  - mFontSize) - cHighlightRight.animation())  * (cTooltipAnimation / 250.0f);
+        float mTooltipRight  = cHighlightRight.animation()  + ((cTooltipRight.animation() + mFontSize) - cHighlightRight.animation())  * (cTooltipAnimation / 250.0f);
+        float mTooltipBottom = cHighlightBottom.animation() + ((mBottom                   - mFontSize) - cHighlightBottom.animation()) * (cTooltipAnimation / 250.0f);
+        float mTooltipTop    = cHighlightTop.animation()    + ((mTop                      + mFontSize) - cHighlightTop.animation())    * (cTooltipAnimation / 250.0f);
+
+        glColor3f(0.2f, 0.0f, 0.0f);
+        Utils::renderRoundedRectangle(mTooltipLeft, mTooltipBottom, mTooltipRight, mTooltipTop, mFontSize);
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+        ScreenArea mPreviousCrop = cProject.getApplication().crop(ScreenArea(mTooltipLeft, mTooltipRight, mTooltipBottom, mTooltipTop));;
+        mFont->print(cTooltipLeft.animation() + 1.0f * (cRuntimeTooltip.cSlideAnimation / 1000.0f), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, cRuntimeTooltip.cText);
+        for (const std::unique_ptr<Tooltip>& mClosedTooltip : cRuntimeClosedTooltips) {
+          mFont->print(cTooltipLeft.animation() + 1.0f * (mClosedTooltip->cSlideAnimation / 1000.0f), cHighlightTop.animation() - mLineHeight, mFontSize, IFont::Alignment::LEFT, mClosedTooltip->cText);
+        }
+        cProject.getApplication().crop(mPreviousCrop);
+
+        glBegin(GL_QUADS);
+        glColor3f(1.0f, 0.0f, 0.3f);
+        glVertex2f(cHighlightRight.animation(), cHighlightTop.animation()    - mLineHeight / 3.0f);
+        glVertex2f(cHighlightRight.animation(), cHighlightBottom.animation() + mLineHeight / 3.0f);
+        glColor3f(0.2f, 0.0f, 0.0f);
+        glVertex2f(mTooltipLeft, cHighlightBottom.animation() + mLineHeight / 3.0f);
+        glVertex2f(mTooltipLeft, cHighlightTop.animation()    - mLineHeight / 3.0f);
+        glEnd();
+      }
     }
 
     // Render UI's (menus, etc.).
@@ -194,13 +205,18 @@ namespace IsoRealms {
     cTooltipLeft.update(milliseconds);
     cTooltipRight.update(milliseconds);
 
-
     cRuntimeTooltip.cSlideAnimation = std::max(0, cRuntimeTooltip.cSlideAnimation - static_cast<int>(milliseconds * 4));
     for (const std::unique_ptr<Tooltip>& mClosedTooltip : cRuntimeClosedTooltips) {
       mClosedTooltip->cSlideAnimation = std::max(-1000, mClosedTooltip->cSlideAnimation - static_cast<int>(milliseconds * 4));
     }
     while (!cRuntimeClosedTooltips.empty() && (*cRuntimeClosedTooltips.begin())->cSlideAnimation == -1000) {
       cRuntimeClosedTooltips.erase(cRuntimeClosedTooltips.begin());
+    }
+
+    if (cTooltipVisible) {
+      cTooltipAnimation = std::min(250, cTooltipAnimation + static_cast<int>(milliseconds));
+    } else {
+      cTooltipAnimation = std::max(0,   cTooltipAnimation - static_cast<int>(milliseconds));
     }
 
     cHideAnimation = cHidden ? std::min(250, static_cast<int>(cHideAnimation + milliseconds))
@@ -243,7 +259,17 @@ namespace IsoRealms {
     if (cConfirmationSelection != nullptr) {
       cConfirmationSelection->input(id);
     } else if (!cRuntimeUIs.empty()) {
-      cRuntimeUIs.back()->cScreen->input(id);
+      switch (id) {
+        case UISignalID::TOGGLE_HELP: {
+          cTooltipVisible = !cTooltipVisible;
+          break;
+        }
+
+        default: {
+          cRuntimeUIs.back()->cScreen->input(id);
+          break;
+        }
+      }
     }
   }
 
