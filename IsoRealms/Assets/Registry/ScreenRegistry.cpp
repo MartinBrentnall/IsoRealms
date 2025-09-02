@@ -21,22 +21,26 @@
 #include "IsoRealms/Project.h"
 
 namespace IsoRealms {
-  // IStateNotifier<IScreen>* ScreenRegistry::add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges) {
-  //   std::map<IScreen*, std::unique_ptr<ScreenProxy>>::iterator mExistingProxy = cScreenProxyMapping.find(asset);
-  //   if (mExistingProxy == cScreenProxyMapping.end()) {
-  //     std::unique_ptr<ScreenProxy> mNewProxy = std::make_unique<ScreenProxy>(*this, asset);
-  //     cScreens.add(mNewProxy.get(), id, category);
-  //     if (!cProject.isProcessingInput()) {
-  //       for (IScreenListener* mListener : cListeners) {
-  //         mListener->screenAdded(cProject, mNewProxy.get());
-  //       }
-  //     }
-  //     cScreenProxyMapping.emplace(asset, std::move(mNewProxy)).first->second.get();
-  //     return nullptr;
-  //   }
-  //   cScreens.add(mExistingProxy->second.get(), id, category);
-  //   return nullptr;
-  // }
+  IStateNotifier<IScreen>* ScreenRegistry::add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges) {
+    std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mExistingProxy = cProxyMapping.find(asset);
+    if (mExistingProxy == cProxyMapping.end()) {
+      std::unique_ptr<Proxy> mNewProxy = std::make_unique<Proxy>(*this, asset);
+      AssetClientManager::add(mNewProxy.get(), id, category);
+      if (!cProject.isProcessingInput()) {
+        for (IScreenListener* mListener : cListeners) {
+          mListener->screenAdded(mNewProxy.get());
+        }
+      }
+      cProxyMapping.emplace(asset, std::move(mNewProxy)).first->second.get();
+      return nullptr;
+    }
+    AssetClientManager::add(mExistingProxy->second.get(), id, category);
+    return nullptr;
+  }
+
+  IStateNotifier<IScreen>* ScreenRegistry::add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category, bool stateChanges) {
+    return AssetClientManager::add(provider, id, category, stateChanges);
+  }
 
   ScreenRegistry::Dummy::Dummy(IResourceData& owner) {
     // Nothing to do.

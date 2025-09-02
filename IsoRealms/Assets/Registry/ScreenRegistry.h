@@ -78,7 +78,8 @@ namespace IsoRealms {
       Utils::removeElement(cListeners, listener);
     }
 
-    // IStateNotifier<IScreen>* add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges);
+    IStateNotifier<IScreen>* add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges);
+    IStateNotifier<IScreen>* add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category, bool stateChanges);
 
     // void remove(IScreen* asset) {
     //   std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mProxy = cProxyMapping.find(asset);

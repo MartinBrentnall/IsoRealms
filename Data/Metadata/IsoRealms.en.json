@@ -27,6 +27,9 @@
     "LaunchConfigurationOption": {"name": "Option", "description": "Option with which this test configuration will launch."},
     "LaunchConfigurationOptionAdd": {"name": "Option", "description": "Add an option with which this test configuration will launch."},
     "LaunchConfigurationOptionName": {"name": "Name", "description": "Unique name of this option."},
-    "LaunchConfigurationOptionValue": {"name": "Value", "description": "Value of this option."}
+    "LaunchConfigurationOptionValue": {"name": "Value", "description": "Value of this option."},
+
+    "Value": {"name": "Value", "description": "Value of this asset."},
+    "Owner": {"name": "Owner", "description": "Owner of this asset."}
   }
 }
