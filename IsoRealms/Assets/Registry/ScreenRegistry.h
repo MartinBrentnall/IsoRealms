@@ -29,7 +29,6 @@
 #include "AssetClientManager.h"
 #include "IAssetListener.h"
 #include "IAssetUser.h"
-#include "ILiteralAssetProvider.h"
 
 namespace IsoRealms {
   class Project;

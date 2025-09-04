@@ -82,7 +82,7 @@ namespace IsoRealms::UI {
 
   void MenuItem::relinquish(IMenuItem* asset) {
     if (cMenuItem == asset) {
-      cMenuItem = cUI.createLiteralMenuItem(this, cOwner);
+      cMenuItem = cUI.createDefault(this, cOwner);
     }
   }
 

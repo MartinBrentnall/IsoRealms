@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   IntegerRegistry::IntegerRegistry(Project& project) :
-            AssetClientManager(&cLiteral, "Literal", "0") {
+            AssetClientManager(&cLiteral, "Literal") {
   }
 
   IntegerRegistry::Literal::Instance::Instance(Project& project, const int value):

@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   ColourRegistry::ColourRegistry(Project& project) :
-            AssetClientManager(&cLiteral, "Literal", "0.0 0.0 0.0 1.0") {
+            AssetClientManager(&cLiteral, "Literal") {
   }
 
   ColourRegistry::Literal::Instance::Instance(const Project& project) :

@@ -37,10 +37,6 @@ namespace IsoRealms {
       return std::make_unique<TYPE>(owner);
     }
 
-    std::unique_ptr<BASE> createLiteralAsset(OWNER& owner, const std::string& expression) const override {
-      return expression == "" ? std::make_unique<TYPE>(owner) : nullptr;
-    }
-
     std::unique_ptr<BASE> createLiteralAsset(OWNER& owner, JSONObject object) const override {
       return std::make_unique<TYPE>(owner);
     }

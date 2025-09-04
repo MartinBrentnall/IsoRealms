@@ -73,10 +73,6 @@ namespace IsoRealms::UI {
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
     
-    ILayoutLocation* createLiteralLayoutLocation(IAssetUser<ILayoutLocation>* user, LayoutComponentEdge& owner);
-    ILayoutOffset*   createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner);
-    IMenuItem*       createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner);
-
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
       AssetContainerTraits<TYPE>::get(*this).release(user, asset);
     }

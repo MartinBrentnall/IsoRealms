@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   FloatRegistry::FloatRegistry(Project& project) :
-            AssetClientManager(&cLiteral, "Literal", "0.0") {
+            AssetClientManager(&cLiteral, "Literal") {
   }
 
   FloatRegistry::Literal::Instance::Instance(Project& project, const float value) :

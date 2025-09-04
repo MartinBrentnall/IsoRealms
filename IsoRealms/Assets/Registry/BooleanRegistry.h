@@ -28,7 +28,6 @@
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
-#include "ILiteralAssetProvider.h"
 
 namespace IsoRealms {
   class Project;
@@ -37,9 +36,18 @@ namespace IsoRealms {
     public:
     BooleanRegistry(Project& project);
 
+    IBoolean* literal(IAssetUser<IBoolean>* client, IResourceData& owner, bool value) {
+      IBoolean* mBoolean = cLiteral.createLiteralAsset(owner, value);
+      registerClient(client, &cLiteral, mBoolean);
+      return mBoolean;
+    }
+
     private:
     class Literal : public AssetLiteral<IResourceData, IBoolean> {
       public:
+      IBoolean* createLiteralAsset(IResourceData& owner, bool value) const {
+        return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
+      }
 
       /*************************************\
       * Implements AssetLiteral<IBoolean> *
@@ -50,12 +58,6 @@ namespace IsoRealms {
 
       std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner) const override {
         return std::make_unique<Instance>(owner.getProject(), false);
-      }
-
-      std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
-        return expression == VALUE_TRUE  ? std::make_unique<Instance>(owner.getProject(), true)
-             : expression == VALUE_FALSE ? std::make_unique<Instance>(owner.getProject(), false)
-             :                             nullptr;
       }
 
       bool renderAssetProviderIcon() const override {

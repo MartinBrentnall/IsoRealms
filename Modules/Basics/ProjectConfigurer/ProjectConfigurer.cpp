@@ -19,16 +19,16 @@
 #include "ProjectConfigurer.h"
 
 namespace IsoRealms::Basics {
-  const std::string ProjectConfigurer::JSON_CODE_FONT        = "codeFont";
-  const std::string ProjectConfigurer::JSON_CODE_FONT_SIZE   = "codeFontSize";
-  const std::string ProjectConfigurer::JSON_FONT             = "font";
-  const std::string ProjectConfigurer::JSON_FONT_SIZE        = "fontSize";
-  const std::string ProjectConfigurer::JSON_INPUT            = "input";
-  const std::string ProjectConfigurer::JSON_INPUTS           = "inputs";
-  const std::string ProjectConfigurer::JSON_LOCAL            = "local";
-  const std::string ProjectConfigurer::JSON_ON_EDITOR        = "onEditor";
-  const std::string ProjectConfigurer::JSON_ON_EXIT          = "onExit";
-  const std::string ProjectConfigurer::JSON_MAPPING          = "mapping";
+  const std::string ProjectConfigurer::JSON_CODE_FONT      = "codeFont";
+  const std::string ProjectConfigurer::JSON_CODE_FONT_SIZE = "codeFontSize";
+  const std::string ProjectConfigurer::JSON_FONT           = "font";
+  const std::string ProjectConfigurer::JSON_FONT_SIZE      = "fontSize";
+  const std::string ProjectConfigurer::JSON_INPUT          = "input";
+  const std::string ProjectConfigurer::JSON_INPUTS         = "inputs";
+  const std::string ProjectConfigurer::JSON_LOCAL          = "local";
+  const std::string ProjectConfigurer::JSON_ON_EDITOR      = "onEditor";
+  const std::string ProjectConfigurer::JSON_ON_EXIT        = "onExit";
+  const std::string ProjectConfigurer::JSON_MAPPING        = "mapping";
 
   ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data) :
             cActionClient(data, *this),

@@ -19,7 +19,6 @@
 #pragma once
 
 #include "IsoRealms/Assets/Providers/AssetSingleton.h"
-#include "IsoRealms/Assets/Registry/ILiteralAssetProvider.h"
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Persistence.h"
@@ -35,11 +34,10 @@ namespace IsoRealms {
               AssetClientManager(nullptr) {
     }
 
-    AssetClientManager(ILiteralAssetProvider<OWNER, TYPE>* provider, const std::string& label = "None", const std::string& defaultValue = "") :
-              cLiteralProvider(provider),
-              cDefaultValue(defaultValue) {
-      if (cLiteralProvider != nullptr) {
-        add(provider, label, "Literals");
+    AssetClientManager(IAssetProvider<OWNER, TYPE>* defaultProvider, const std::string& defaultProviderID = "None") :
+              cDefaultProvider(defaultProvider) {
+      if (cDefaultProvider != nullptr) {
+        add(cDefaultProvider, defaultProviderID, "Default");
       }
     }
 
@@ -135,13 +133,9 @@ namespace IsoRealms {
     }
     
     TYPE* getDefault(IAssetUser<TYPE>* client, OWNER& owner) {
-      return literal(client, owner, cDefaultValue);
-    }
-
-    TYPE* literal(IAssetUser<TYPE>* client, OWNER& owner, const std::string& value) {
-      TYPE* mAsset = cLiteralProvider != nullptr ? cLiteralProvider->getLiteralAsset(owner, value) : nullptr;
+      TYPE* mAsset = cDefaultProvider != nullptr ? cDefaultProvider->getAsset(owner) : nullptr;
       if (mAsset != nullptr) {
-        cClients[cLiteralProvider][mAsset].emplace_back(client);
+        cClients[cDefaultProvider][mAsset].emplace_back(client);
       }
       return mAsset;
     }
@@ -156,18 +150,21 @@ namespace IsoRealms {
       if (mProvider != nullptr) {
         mAsset = mProvider->getAsset(owner, object);
       }
+      registerClient(client, mProvider, mAsset, listener);
+      return mAsset;
+    }
 
-      if (mAsset != nullptr) {
-        cClients[mProvider][mAsset].emplace_back(client);
+    void registerClient(IAssetUser<TYPE>* client, IAssetProvider<OWNER, TYPE>* provider, TYPE* asset, IStateListener<TYPE*>* listener = nullptr) {
+      if (asset != nullptr) {
+        cClients[provider][asset].emplace_back(client);
 
         if (listener != nullptr) {
-          typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(mProvider);
+          typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(provider);
           if (mNotifier != cStateNotifiers.end()) {
             mNotifier->second->addListener(listener);
           }
         }
       }
-      return mAsset;
     }
 
     TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, const std::string& id, IStateListener<TYPE*>* listener) {
@@ -177,16 +174,7 @@ namespace IsoRealms {
 
       IAssetProvider<OWNER, TYPE>* mProvider = cRegistry.getProvider(id, true);
       TYPE* mAsset = mProvider->getAsset(owner);
-      if (mAsset != nullptr) {
-        cClients[mProvider][mAsset].emplace_back(client);
-
-        if (listener != nullptr) {
-          typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(mProvider);
-          if (mNotifier != cStateNotifiers.end()) {
-            mNotifier->second->addListener(listener);
-          }
-        }
-      }
+      registerClient(client, mProvider, mAsset, listener);
       return mAsset;
     }
 
@@ -272,7 +260,7 @@ namespace IsoRealms {
     }
     
     ~AssetClientManager() {
-      cLiteralProvider = nullptr;
+      cDefaultProvider = nullptr;
       for (std::pair<const TYPE* const, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>& mPair : cAssetSingletons) {
         remove(mPair.second.get());
       }
@@ -333,7 +321,6 @@ namespace IsoRealms {
     std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>> cStateNotifiers;
     std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> cClients;
     std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>> cAssetSingletons;
-    ILiteralAssetProvider<OWNER, TYPE>* cLiteralProvider;
-    const std::string cDefaultValue;
+    IAssetProvider<OWNER, TYPE>* cDefaultProvider;
   };
 }

@@ -28,7 +28,6 @@
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
-#include "ILiteralAssetProvider.h"
 
 namespace IsoRealms {
   class Project;
@@ -37,9 +36,18 @@ namespace IsoRealms {
     public:
     FloatRegistry(Project& project);
 
+    IFloat* literal(IAssetUser<IFloat>* client, IResourceData& owner, float value) {
+      IFloat* mFloat = cLiteral.createLiteralAsset(owner, value);
+      registerClient(client, &cLiteral, mFloat);
+      return mFloat;
+    }
+
     private:
     class Literal : public AssetLiteral<IResourceData, IFloat> {
       public:
+      IFloat* createLiteralAsset(IResourceData& owner, float value) const {
+        return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
+      }
 
       /***********************************\
       * Implements AssetLiteral<IFloat> *
@@ -50,10 +58,6 @@ namespace IsoRealms {
 
       std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner) const override {
         return std::make_unique<Instance>(owner.getProject(), 0.0f);
-      }
-
-      std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
-        return std::make_unique<Instance>(owner.getProject(), static_cast<float>(atof(expression.c_str())));
       }
 
       std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner, JSONObject object) const override {

@@ -27,7 +27,6 @@
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
-#include "ILiteralAssetProvider.h"
 
 namespace IsoRealms {
   class Project;
@@ -36,9 +35,18 @@ namespace IsoRealms {
     public:
     VertexRegistry(Project& project);
 
+    IVertex* literal(IAssetUser<IVertex>* client, IResourceData& owner, float x, float y, float z) {
+      IVertex* mVertex = cLiteral.createLiteralAsset(owner, x, y, z);
+      registerClient(client, &cLiteral, mVertex);
+      return mVertex;
+    }
+
     private:
     class Literal : public AssetLiteral<IResourceData, IVertex> {
       public:
+      IVertex* createLiteralAsset(IResourceData& owner, float x, float y, float z) const {
+        return addAsset([x, y, z]() {return std::make_unique<Instance>(x, y, z);});
+      }
 
       /************************************\
       * Implements AssetLiteral<IVertex> *
@@ -49,19 +57,6 @@ namespace IsoRealms {
 
       std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner) const override {
         return std::make_unique<Instance>(0.0f, 0.0f, 0.0f);
-      }
-
-      std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
-        std::vector<std::string> mSections = Utils::splitWords(expression, ' ');
-        if (mSections.size() == 3) {
-
-          // TODO: Verify that the components are actually valid numeric?
-          float mX = static_cast<float>(atof(mSections[0].c_str()));
-          float mY = static_cast<float>(atof(mSections[1].c_str()));
-          float mZ = static_cast<float>(atof(mSections[2].c_str()));
-          return std::make_unique<Instance>(mX, mY, mZ);
-        }
-        return nullptr;
       }
 
       bool renderAssetProviderIcon() const override {

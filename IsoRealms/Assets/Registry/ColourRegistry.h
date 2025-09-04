@@ -28,7 +28,6 @@
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
-#include "ILiteralAssetProvider.h"
 
 namespace IsoRealms {
   class IResourceData;
@@ -38,9 +37,18 @@ namespace IsoRealms {
     public:
     ColourRegistry(Project& project);
 
+    IColour* literal(IAssetUser<IColour>* client, IResourceData& owner, float red, float green, float blue, float alpha) {
+      IColour* mColour = cLiteral.createLiteralAsset(owner, red, green, blue, alpha);
+      registerClient(client, &cLiteral, mColour);
+      return mColour;
+    }
+
     private:
     class Literal : public AssetLiteral<IResourceData, IColour> {
       public:
+      IColour* createLiteralAsset(IResourceData& owner, float red, float green, float blue, float alpha) const {
+        return addAsset([&owner, red, green, blue, alpha]() {return std::make_unique<Instance>(owner.getProject(), red, green, blue, alpha);});
+      }
 
       /************************************\
       * Implements AssetLiteral<IColour> *
@@ -51,19 +59,6 @@ namespace IsoRealms {
 
       std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner) const override {
         return std::make_unique<Instance>(owner.getProject());
-      }
-
-      std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner, const std::string& expression) const override {
-        std::vector<std::string> mSections = Utils::splitWords(expression, ' ');
-        if (mSections.size() >= 3 && mSections.size() <= 4) {
-          // TODO: Check that the components are actually numerics
-          float mRed   = static_cast<float>(std::atof(mSections[0].c_str()));
-          float mGreen = static_cast<float>(std::atof(mSections[1].c_str()));
-          float mBlue  = static_cast<float>(std::atof(mSections[2].c_str()));
-          float mAlpha = mSections.size() == 4 ? static_cast<float>(atof(mSections[3].c_str())) : 0.0f;
-          return std::make_unique<Instance>(owner.getProject(), mRed, mGreen, mBlue, mAlpha);
-        }
-        return nullptr;
       }
 
       std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner, JSONObject object) const override {

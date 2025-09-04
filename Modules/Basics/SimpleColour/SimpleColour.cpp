@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
 
   void SimpleColour::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IColour>(this, "", "Simple Colours");
-    assets.add<IBinding>(&cLuaBinding,  "", "Simple Colours");
+    assets.add<IBinding>(&cLuaBinding, "", "Simple Colours");
   }
 
   void SimpleColour::save(JSONObject object) const {

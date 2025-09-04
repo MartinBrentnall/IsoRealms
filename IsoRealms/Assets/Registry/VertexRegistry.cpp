@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   VertexRegistry::VertexRegistry(Project& project) :
-            AssetClientManager(&cLiteral, "Literal", "0.0 0.0 0.0") {
+            AssetClientManager(&cLiteral, "Literal") {
   }
 
   VertexRegistry::Literal::Instance::Instance() :

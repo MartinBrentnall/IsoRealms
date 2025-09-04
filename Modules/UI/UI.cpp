@@ -143,10 +143,6 @@ namespace IsoRealms::UI {
     reset2(cResourceTypeVirtualKeyboard);
   }  
   
-  ILayoutLocation* UI::createLiteralLayoutLocation(IAssetUser<ILayoutLocation>* user, LayoutComponentEdge& owner) {return cLayoutLocations.literal(user, owner, "");}
-  ILayoutOffset*   UI::createLiteralLayoutOffset(  IAssetUser<ILayoutOffset>*   user, LayoutComponentEdge& owner) {return cLayoutOffsets.literal(  user, owner, "");}
-  IMenuItem*       UI::createLiteralMenuItem(      IAssetUser<IMenuItem>*       user, Menu&                owner) {return cMenuItems.literal(      user, owner, "");}
-
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<UI>> ModuleInstances;
 }

@@ -18,24 +18,21 @@
  */
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <string>
 
-#include "IsoRealms/Assets/Registry/ILiteralAssetProvider.h"
+#include "IsoRealms/Assets/Registry/IAssetProvider.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  template<class OWNER, class TYPE> class AssetLiteral : public ILiteralAssetProvider<OWNER, TYPE> {
+  template<class OWNER, class TYPE> class AssetLiteral : public IAssetProvider<OWNER, TYPE> {
     public:
 
-    /******************************************\
-     * Implements ILiteralAssetProvider<TYPE> *
-    \******************************************/
-    TYPE* getLiteralAsset(OWNER& owner, const std::string& value) override {
-      return cAssets.emplace_back(createLiteralAsset(owner, value)).get();
-    }
-
+    /***********************************\
+     * Implements IAssetProvider<TYPE> *
+    \***********************************/
     TYPE* getAsset(OWNER& owner, JSONObject object) override {
       return cAssets.emplace_back(createLiteralAsset(owner, object)).get();
     }
@@ -48,11 +45,15 @@ namespace IsoRealms {
       Utils::removeElementUnique(cAssets, asset);
     }
 
+    protected:
+    TYPE* addAsset(std::function<std::unique_ptr<TYPE>()> createAsset) const {
+      return cAssets.emplace_back(createAsset()).get();
+    }
+
     private:
     mutable std::vector<std::unique_ptr<TYPE>> cAssets;
 
     virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner) const = 0;
-    virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner, const std::string& expression) const = 0;
     virtual std::unique_ptr<TYPE> createLiteralAsset(OWNER& owner, JSONObject object) const = 0;
   };
 }

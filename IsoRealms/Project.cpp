@@ -509,12 +509,12 @@ namespace IsoRealms {
     return cLuaState;
   }
   
-  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value)                                      {return cBooleans.literal(user, owner, value ? std::string("true") : std::string("false"));}
-  IColour*  Project::createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, float red, float green, float blue, float alpha) {return cColours.literal( user, owner, Utils::toString(red) + " " + Utils::toString(green) + " " + Utils::toString(blue) + " " + Utils::toString(alpha));}
-  IFloat*   Project::createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, float value)                                     {return cFloats.literal(  user, owner, Utils::toString(value));}
-  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, int value)                                       {return cIntegers.literal(user, owner, Utils::toString(value));}
+  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value)                                      {return cBooleans.literal(user, owner, value);}
+  IColour*  Project::createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, float red, float green, float blue, float alpha) {return cColours.literal( user, owner, red, green, blue, alpha);}
+  IFloat*   Project::createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, float value)                                     {return cFloats.literal(  user, owner, value);}
+  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, int value)                                       {return cIntegers.literal(user, owner, value);}
   IString*  Project::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value)                        {return cStrings.literal( user, owner, value);}
-  IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, float x, float y, float z)                       {return cVertices.literal(user, owner, Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));}
+  IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, float x, float y, float z)                       {return cVertices.literal(user, owner, x, y, z);}
 
   Project& Project::getProject() {
     return *this;
