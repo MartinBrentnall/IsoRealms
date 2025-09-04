@@ -163,7 +163,7 @@ namespace IsoRealms::Spindizzy {
     
     // If this is the first model instance, we need to create some display lists.
     if (cReferenceCount == 0) {
-      project.mainThreadInit([this]() {
+      project.getApplication().mainThreadInit([this]() {
         float mRadius    = 0.5f;
         float mLineWidth = 0.05f;
         

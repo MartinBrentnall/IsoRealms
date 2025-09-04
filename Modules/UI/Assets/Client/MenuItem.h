@@ -41,7 +41,7 @@ namespace IsoRealms::UI {
     bool isDefaultConfigured() const;
     void getAssetProperties(PropertyMaker& owner);
     bool renderAssetIcon() const;
-    IApplication& getApplication();
+    Application& getApplication();
 
     IMenuItem* operator->() const {
       return cMenuItem;

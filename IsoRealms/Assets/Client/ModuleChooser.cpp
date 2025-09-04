@@ -43,7 +43,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
   
-  IApplication& ModuleChooser::getApplication() const {
+  Application& ModuleChooser::getApplication() const {
     return cProject.getApplication();
   }
   

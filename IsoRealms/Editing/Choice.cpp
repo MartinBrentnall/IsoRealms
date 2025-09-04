@@ -18,7 +18,7 @@
  */
 #include "Choice.h"
 
-#include "IsoRealms/IApplication.h"
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
@@ -72,7 +72,7 @@ namespace IsoRealms {
     Utils::renderRoundedRectangleLines(-mBoxWidth / 2.0f, -mBoxHeight / 2.0f, mBoxWidth / 2.0f, mBoxHeight / 2.0f, std::min(mFontSize, mBoxHeight / 2.0f));
     
     // Only allow content rendering within the panel.
-    IApplication& mApplication = style.getProject().getApplication();
+    Application& mApplication = style.getProject().getApplication();
     ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(-mBoxWidth / 2.0f, mBoxWidth / 2.0f, -mBoxHeight / 2.0f, mBoxHeight / 2.0f));
 
     // Render message.

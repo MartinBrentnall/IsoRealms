@@ -19,7 +19,7 @@
 #include "Utils.h"
 
 #include "IsoRealms/Common/IVisualElement.h"
-#include "IsoRealms/IApplication.h"
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Input.h"
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Types.h"

@@ -191,6 +191,27 @@ namespace IsoRealms {
     }
   }
 
+  void Application::mainThreadAlloc(std::function<void()> task) {
+    cMainThreadAllocTasks.push(task);
+  }
+
+  void Application::mainThreadInit(std::function<void()> task) {
+    cMainThreadInitTasks.push(task);
+  }
+
+  void Application::initMainThread() {
+    while (!cMainThreadAllocTasks.empty()) {
+      std::function<void()> mTask = cMainThreadAllocTasks.front();
+      mTask();
+      cMainThreadAllocTasks.pop();
+    }
+    while (!cMainThreadInitTasks.empty()) {
+      std::function<void()> mTask = cMainThreadInitTasks.front();
+      mTask();
+      cMainThreadInitTasks.pop();
+    }
+  }
+
   std::vector<DisplayResolution> Application::getAvailableDisplayResolutions() const {
     return cAvailableResolutions;
   }

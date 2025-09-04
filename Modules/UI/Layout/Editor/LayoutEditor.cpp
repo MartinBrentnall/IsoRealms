@@ -298,7 +298,7 @@ namespace IsoRealms::UI {
           switch (event.mouseButton.button) {
             case sf::Mouse::Button::Left: {
               if (cDrawComponent) {
-                IApplication& mApplication = cLayout.getUI().getProject().getApplication();
+                Application& mApplication = cLayout.getUI().getProject().getApplication();
                 Point2D mLocation = mApplication.normalise(event.mouseButton.x, event.mouseButton.y);
                 float mX = mLocation.getX() / cZoomFactor.animation() - cPanX.animation();
                 float mY = mLocation.getY() / cZoomFactor.animation() - cPanY.animation();
@@ -307,7 +307,7 @@ namespace IsoRealms::UI {
                 cDrawingStartY = snapY(mY);
                 std::cout << "DRAW: " << cDrawingStartX << " , " << cDrawingStartY << std::endl;
               } else if (!cSelectionOverride) {
-                IApplication& mApplication = cLayout.getUI().getProject().getApplication();
+                Application& mApplication = cLayout.getUI().getProject().getApplication();
                 Point2D mLocation = mApplication.normalise(event.mouseButton.x, event.mouseButton.y);
                 float mX = mLocation.getX() / cZoomFactor.animation() - cPanX.animation();
                 float mY = mLocation.getY() / cZoomFactor.animation() - cPanY.animation();
@@ -352,7 +352,7 @@ namespace IsoRealms::UI {
         case sf::Event::MouseWheelScrolled: {
           switch (event.mouseWheelScroll.wheel) {
             case sf::Mouse::VerticalWheel: {
-              IApplication& mApplication = cLayout.getUI().getProject().getApplication();
+              Application& mApplication = cLayout.getUI().getProject().getApplication();
               Point2D mLocation = mApplication.normalise(event.mouseWheelScroll.x, event.mouseWheelScroll.y);
               Point2D mBeforeLocation = transform(mLocation);
               cZoomFactorStep = std::clamp(std::round(cZoomFactorStep) + static_cast<int>(std::ceil(event.mouseWheelScroll.delta)), ZOOM_LIMIT_MINIMUM, ZOOM_LIMIT_MAXIMUM);
@@ -372,7 +372,7 @@ namespace IsoRealms::UI {
 
         case sf::Event::MouseMoved: {
           if (cDragging) {
-            IApplication& mApplication = cLayout.getUI().getProject().getApplication();
+            Application& mApplication = cLayout.getUI().getProject().getApplication();
             Point2D mLocation = mApplication.normalise(event.mouseMove.x, event.mouseMove.y);
             float mX = mLocation.getX() / cZoomFactor.animation() - cPanX.animation();
             float mY = mLocation.getY() / cZoomFactor.animation() - cPanY.animation();
@@ -384,7 +384,7 @@ namespace IsoRealms::UI {
             } else if (!cSelectionOverride && cSelectedComponent != nullptr) { // TODO && cSelectedComponent->move(mXSnap, mYSnap, cAspectRatio)) {
               // Nothing to do.
             } else {
-              IApplication& mApplication = cLayout.getUI().getProject().getApplication();
+              Application& mApplication = cLayout.getUI().getProject().getApplication();
               float mXPan = mApplication.normalise(event.mouseMove.x - cPreviousMouseX);
               float mYPan = mApplication.normalise(event.mouseMove.y - cPreviousMouseY);
               cPanX = cPanX.value() + mXPan / cZoomFactor.value();

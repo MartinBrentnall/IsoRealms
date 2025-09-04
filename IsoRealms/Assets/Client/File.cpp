@@ -83,7 +83,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
   
-  IApplication& File::getApplication() const {
+  Application& File::getApplication() const {
     return cProject.getApplication();
   }
   

@@ -39,7 +39,7 @@ namespace IsoRealms::Basics {
             cDestructed(false) {
   }
 
-  void ProjectLoader::newProject(IApplication& application) {
+  void ProjectLoader::newProject(Application& application) {
     try {
       std::unique_ptr<Project> mProject = std::make_unique<Project>(application, cEndFunction);
       cMutex.lock();
@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void ProjectLoader::loadProject(IApplication& application) {
+  void ProjectLoader::loadProject(Application& application) {
     try {
       std::unique_ptr<Project> mProject = std::make_unique<Project>(application, cEndFunction, cFile, cUser);
       cMutex.lock();
@@ -99,7 +99,7 @@ namespace IsoRealms::Basics {
     cMutex.unlock();
     if (mProject != nullptr) {
       if (cFirstUse) {
-        mProject->initMainThread();
+        mProject->getApplication().initMainThread();
         cFirstUse = false;
       } else {
         mProject->reset();

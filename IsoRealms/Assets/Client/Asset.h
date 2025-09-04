@@ -27,7 +27,7 @@
 #include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
-  class IApplication;
+  class Application;
   
   template<class TYPE, class OWNER, class RETURN> concept CreateDefaultAssetExists = requires(TYPE& type, OWNER& owner) {
     {type.createDefaultAsset(owner)} -> std::convertible_to<RETURN*>;
@@ -148,7 +148,7 @@ namespace IsoRealms {
       return cAsset;
     }
 
-    IApplication& getApplication() {
+    Application& getApplication() {
       return cManager.getAssetManager().getProject().getApplication();
     }
 

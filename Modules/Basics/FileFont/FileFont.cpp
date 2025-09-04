@@ -49,7 +49,7 @@ namespace IsoRealms::Basics {
     cDefOffsetX = object.getFloat(JSON_OFFSET_X);
     cDefOffsetY = object.getFloat(JSON_OFFSET_Y);
 
-    data.getProject().mainThreadInit([this]() {
+    data.getProject().getApplication().mainThreadInit([this]() {
       FT_Library mFTLibrary;
       if (FT_Init_FreeType(&mFTLibrary)) {
         throw std::runtime_error("FT_Init_FreeType failed");

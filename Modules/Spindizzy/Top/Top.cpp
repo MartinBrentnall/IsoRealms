@@ -168,7 +168,7 @@ namespace IsoRealms::Spindizzy {
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glPopAttrib();
-    IApplication& mApplication = cProject.getApplication();
+    Application& mApplication = cProject.getApplication();
     mApplication.setViewPort();
   }
 

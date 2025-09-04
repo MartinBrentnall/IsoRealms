@@ -82,7 +82,7 @@ namespace IsoRealms::UI {
       glPopMatrix();
       glPopAttrib();
 
-      IApplication& mApplication = cProject.getApplication();
+      Application& mApplication = cProject.getApplication();
       mApplication.setViewPort();
 
       // Draw Scene A

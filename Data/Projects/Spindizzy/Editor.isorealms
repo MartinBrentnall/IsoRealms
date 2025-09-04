@@ -1397,7 +1397,7 @@
                             }
                           }
                         ],
-                        "code": "if project:canSave() then\n  project:save()\n  unpause:execute()\nelse\n  saveAs:execute()\nend"
+                        "code": "if project:isUser() then\n  project:save()\n  unpause:execute()\nelse\n  saveAs:execute()\nend"
                       }
                     }
                   },

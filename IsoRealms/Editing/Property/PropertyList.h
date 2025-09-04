@@ -54,7 +54,7 @@ namespace IsoRealms {
       bool hasConfiguration() const;
       bool isDefaultConfigured() const;
       void getAssetProperties(PropertyMaker& owner);
-      IApplication& getApplication() const;
+      Application& getApplication() const;
       std::vector<std::string> getAvailableProviders() const;
       bool renderProviderIcon(const std::string& id) const;
       void setID(const std::string& id);

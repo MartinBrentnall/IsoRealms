@@ -88,7 +88,7 @@ namespace IsoRealms::Spindizzy {
       added(mBoundaryType);
     }
 
-    data.getProject().mainThreadInit([this]() {
+    data.getProject().getApplication().mainThreadInit([this]() {
       glColor3f(1.0f, 1.0f, 1.0f);
       for (std::unique_ptr<Zone>& mZone : cDefZones) {
         mZone->updateDisplayList();
@@ -118,7 +118,7 @@ namespace IsoRealms::Spindizzy {
     data.getProject().init([this, &data]() {
 
       // Try to open terrain cache
-      std::string mCachePath = cResourceData.getPath("Terrain.cache", data.getProject().isUserProject());
+      std::string mCachePath = cResourceData.getPath("Terrain.cache", data.getProject().isUser());
 //      std::cout << "Cache path: " << mCachePath << std::endl;
       std::ifstream mCache(mCachePath, std::ios::binary);
       bool mUsingCache = false;
@@ -149,7 +149,7 @@ namespace IsoRealms::Spindizzy {
           mZone->initialiseTerrain();
 //        });
         }
-//         IApplication& mApplication = data.getProject().getApplication();
+//         Application& mApplication = data.getProject().getApplication();
 //         mApplication.executeAndWait(mTask);
 //         std::cout << "INFO: World::World: Updating cache..." << std::endl;
         updateCache();
@@ -884,7 +884,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::updateCache() const {
-    if (!cResourceData.isIncluded() && cSpindizzy.getProject().isUserProject()) {
+    if (!cResourceData.isIncluded() && cSpindizzy.getProject().isUser()) {
       cResourceData.makeUserDataDirectory();
       std::string mCachePath = cResourceData.getPath("Terrain.cache", true);
 //      std::cout << "CACHE PATH: " << mCachePath << std::endl;

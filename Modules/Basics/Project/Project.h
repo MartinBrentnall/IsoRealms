@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     void resetProject();
     IEditable* getDefaultEditor();
     IsoRealms::Project* getProject();
-    bool canSave();
+    bool isUser();
     void saveProject();
     void saveProjectAs(const std::string& file);
     bool exists(const std::string& file);

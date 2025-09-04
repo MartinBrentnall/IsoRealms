@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
   
   DigitalInput::DigitalInput(Basics& basics, JSONObject object) :
             DigitalInput(basics) {
-    IApplication& mApplication = basics.getProject().getApplication();
+    Application& mApplication = basics.getProject().getApplication();
     HatHandler& mHatHandler = mApplication.getHatHandler();
     for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingValue.getObject();
@@ -234,7 +234,7 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalInput::loadCustomMapping(JSONObject object) {
-    IApplication& mApplication = cProject.getApplication();
+    Application& mApplication = cProject.getApplication();
     HatHandler& mHatHandler = mApplication.getHatHandler();
     cRuntimeMapping.clear();
     for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {

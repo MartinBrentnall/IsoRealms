@@ -25,7 +25,7 @@
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  Project::Project(IApplication& application, std::function<void(bool)> onFinish) :
+  Project::Project(Application& application, std::function<void(bool)> onFinish) :
           cApplication(application),
           cFunctionNotifyComplete(onFinish),
           cActions(*this),
@@ -69,7 +69,7 @@ namespace IsoRealms {
     add<IAction,  IAction> (&cQuitAction,      "Quit",            "System");
   }
 
-  Project::Project(IApplication& application, std::function<void(bool)> onFinish, const std::string& file, bool user) :
+  Project::Project(Application& application, std::function<void(bool)> onFinish, const std::string& file, bool user) :
             Project(application, onFinish) {
     cLoading = true;
     cProcessingInput = true;
@@ -97,7 +97,7 @@ namespace IsoRealms {
 
     cProcessingInput = false;
 
-    mainThreadInit([this]() {
+    cApplication.mainThreadInit([this]() {
       (*cDefInitAction)->execute();
     });
     cLoading = false;
@@ -151,52 +151,7 @@ namespace IsoRealms {
     // remove(&cFilenameString);
     // remove(&cFileUserBoolean);
     // remove(&cQuitAction);
-
-//     cActions.checkClean("Action Types");
-//     cBindings.checkClean("Bindings");
-//     cBooleans.checkClean("Booleans");
-//     cColours.checkClean("Colours");
-//     cEditables.checkClean("Editables");
-//     cFloats.checkClean("Floats");
-//     cFonts.checkClean("Fonts");
-//     cInputHandlers.checkClean("Input Handlers");
-//     cIntegers.checkClean("Integers");
-//     cModels.checkClean("Models");
-//     cScreens.checkClean("Screens");
-//     cStrings.checkClean("Strings");
-//     cTextures.checkClean("Textures");
-//     cVertices.checkClean("Vertices");
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   bool Project::isLoading() const {
     return cLoading;
@@ -260,7 +215,7 @@ namespace IsoRealms {
      * Texture Set.  TODO: I think there is a more elegant way of
      * handling this situation.
      */
-    initMainThread();
+    cApplication.initMainThread();
 
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
       mModule->updateEditing(milliseconds);
@@ -326,23 +281,6 @@ namespace IsoRealms {
     return std::filesystem::last_write_time(mPath);
   }
 
-  void Project::initMainThread() {
-    while (!cMainThreadAllocTasks.empty()) {
-      std::function<void()> mTask = cMainThreadAllocTasks.front();
-      mTask();
-      cMainThreadAllocTasks.pop();
-    }
-    while (!cMainThreadInitTasks.empty()) {
-      std::function<void()> mTask = cMainThreadInitTasks.front();
-      mTask();
-      cMainThreadInitTasks.pop();
-    }
-  }
-
-  bool Project::canSave() {
-    return cDefProjectFileStructure.cFile.isUser();
-  }
-
   void Project::saveFile(ProjectFile& file) {
     if (file.cFile.isSet() && file.cFile.isUser()) {
       JSONDocument mJSONDocument;
@@ -402,7 +340,7 @@ namespace IsoRealms {
     save();
   }
 
-  bool Project::isUserProject() {
+  bool Project::isUser() {
     return cDefProjectFileStructure.cFile.isUser();
   }
 
@@ -541,18 +479,6 @@ namespace IsoRealms {
     cUpdateTasks.push(task);
   }
   
-  void Project::mainThreadAlloc(std::function<void()> task) {
-    cMainThreadAllocTasks.push(task);
-  }
-
-  void Project::mainThreadInit(std::function<void()> task) {
-    cMainThreadInitTasks.push(task);
-  }
-
-  void Project::mainThreadCleanUp(std::function<void()> function) {
-    cApplication.mainThreadCleanUp(function);
-  }
-
   IScreen* Project::getScreenProxy(IScreen* screen) {
     return cScreens.getProxy(screen);
   }
@@ -569,11 +495,11 @@ namespace IsoRealms {
     cFloats.addStateChangeListener(asset, listener);
   }
 
-  IApplication& Project::getApplication() {
+  Application& Project::getApplication() {
     return cApplication;
   }
 
-  const IApplication& Project::getApplication() const {
+  const Application& Project::getApplication() const {
     return cApplication;
   }
 

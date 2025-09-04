@@ -53,7 +53,7 @@ namespace IsoRealms::Basics {
                                                                  "reset",                      &Project::resetProject,
                                                                  "getDefaultEditor",           &Project::getDefaultEditor,
                                                                  "getProject",                 &Project::getProject,
-                                                                 "canSave",                    &Project::canSave,
+                                                                 "isUser",                     &Project::isUser,
                                                                  "save",                       &Project::saveProject,
                                                                  "saveAs",                     &Project::saveProjectAs,
                                                                  "exists",                     &Project::exists,

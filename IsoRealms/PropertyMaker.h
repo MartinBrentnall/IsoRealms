@@ -39,7 +39,7 @@ namespace IsoRealms {
 
   class PropertyMaker : public IResourceAccessManager {
     public:
-    PropertyMaker(IApplication& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
+    PropertyMaker(Application& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
 
     IResourceData& getResourceData() {
       return cParent;
@@ -87,7 +87,7 @@ namespace IsoRealms {
     void promoteResourceToProject() override;
 
     private:
-    IApplication& cApplication;
+    Application& cApplication;
     IResourceData& cParent;
     IPropertyManager& cProperties;
     IDialogManager& cDialogManager;

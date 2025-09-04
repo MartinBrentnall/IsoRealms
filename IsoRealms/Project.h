@@ -71,12 +71,11 @@ namespace IsoRealms {
                   public IResourceData,
                   public IActionClient {
     public:
-    Project(IApplication& application, std::function<void(bool)> onFinish);
-    Project(IApplication& application, std::function<void(bool)> onFinish, const std::string& file, bool user);
+    Project(Application& application, std::function<void(bool)> onFinish);
+    Project(Application& application, std::function<void(bool)> onFinish, const std::string& file, bool user);
     virtual ~Project();
 
     // Execution functions are called by the host of the Project.
-    void initMainThread();
     void reset();
     void reset(Options& options);
     void reset(ProjectLaunchConfiguration* configuration);
@@ -88,12 +87,11 @@ namespace IsoRealms {
     void requestQuit();
 
     // File management functions are called by a host editor of the Project.
-    bool canSave();
     void save(ProjectFile& file);
     void save();
     void save(const std::string& file);
     bool isLoading() const;
-    bool isUserProject();
+    bool isUser();
     std::string getFilename();
     ProjectFile* getFile();
 
@@ -126,8 +124,8 @@ namespace IsoRealms {
     void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener);
 
     // Access to external interfaces.
-    IApplication& getApplication();
-    const IApplication& getApplication() const;
+    Application& getApplication();
+    const Application& getApplication() const;
 
     // Action execution control.
     bool isProcessingInput();
@@ -159,9 +157,6 @@ namespace IsoRealms {
     IResourceData& getResourceData() override;
     IBindingRegistry* getBindingRegistry() override;
 
-    void mainThreadAlloc(std::function<void()> function);
-    void mainThreadInit(std::function<void()> function);
-    void mainThreadCleanUp(std::function<void()> function);
     void init(std::function<void()> initialiser);
     void updateLater(std::function<void()> task);
     LuaState& getLuaState();
@@ -310,7 +305,7 @@ namespace IsoRealms {
     };
 
     // External interfaces.
-    IApplication& cApplication;                        /// Host application of this Project.
+    Application& cApplication;                        /// Host application of this Project.
     std::function<void(bool)> cFunctionNotifyComplete; /// Function to be notified of Project completion.
 
     // Asset registries.
@@ -348,8 +343,6 @@ namespace IsoRealms {
     LocalLuaBinding<Options> cOptionsBinding;
 
     // Callbacks
-    std::queue<std::function<void()>> cMainThreadAllocTasks; /// Allocation tasks to be perfomed on the main thread during initialisation.
-    std::queue<std::function<void()>> cMainThreadInitTasks;  /// initialisation tasks to be performed on the main thread.
     std::vector<std::function<void()>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.
     std::queue<std::function<void()>> cUpdateTasks;          /// Postponed update functions.  Called after other update functions.
 

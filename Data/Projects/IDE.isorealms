@@ -1478,7 +1478,7 @@
                             }
                           }
                         ],
-                        "code": "if project:canSave() then\n  project:save()\n  resumeEditorFunction:execute()\nelse\n  saveAsFunction:execute()\nend"
+                        "code": "if project:isUser() then\n  project:save()\n  resumeEditorFunction:execute()\nelse\n  saveAsFunction:execute()\nend"
                       }
                     }
                   },

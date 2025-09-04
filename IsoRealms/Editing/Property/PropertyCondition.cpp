@@ -21,7 +21,7 @@
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Editing/IUIStyle.h"
-#include "IsoRealms/IApplication.h"
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
@@ -116,7 +116,7 @@ namespace IsoRealms {
     glColor4f(0.0f, 0.0f, 0.0f, 0.9f);
     glEnable(GL_BLEND);
     Utils::renderRoundedRectangle(mFrameLeft, mFrameBottom, mFrameRight, mFrameTop, mYScale * 2.0f );
-    IApplication& mApplication = style.getProject().getApplication();
+    Application& mApplication = style.getProject().getApplication();
     ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(mFrameLeft, mFrameRight, mFrameBottom, mFrameTop));
     glColor4f(1.0f, 0.0f, 0.2f, 1.0f);
     Utils::renderBar(0.0f, -mYScale * 1.2f, 0.0f, mYScale * 1.2f);

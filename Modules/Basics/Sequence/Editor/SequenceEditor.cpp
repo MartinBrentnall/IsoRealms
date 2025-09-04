@@ -209,7 +209,7 @@ namespace IsoRealms::Basics {
     float mWidth = (aspectRatio * 2.0f - (mHeight + mGap));
     double mVisibleDuration = DEFAULT_VISIBLE_DURATION * cTimelineZoom;
     double mStartDuration = std::max(0.0, cCursorTimeline.animation() - mVisibleDuration / 2.0);
-    IApplication& mApplication = cSequence.getProject().getApplication();
+    Application& mApplication = cSequence.getProject().getApplication();
 
     // Render tracks.
     mY = 1.0f;

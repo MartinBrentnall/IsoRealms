@@ -76,7 +76,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  IApplication& MenuItem::getApplication() {
+  Application& MenuItem::getApplication() {
     return cUI.getProject().getApplication();
   }
 

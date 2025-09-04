@@ -58,7 +58,7 @@ namespace IsoRealms::UI {
   }
   
   void MenuItemDisplayResolution::reset() {
-    IApplication& mApplication = cProject.getApplication();
+    Application& mApplication = cProject.getApplication();
     cRuntimeResolutions = mApplication.getAvailableDisplayResolutions();
     DisplayResolution mResolution = mApplication.getDisplayResolution();
     cRuntimeSelectedResolution = getIndex(mResolution);

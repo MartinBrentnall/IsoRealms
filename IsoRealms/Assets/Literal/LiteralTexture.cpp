@@ -30,11 +30,11 @@ namespace IsoRealms {
             cHeight(height),
             cTexture(0),
             cFrameBuffer(0) {
-    project.mainThreadAlloc([this]() {
+    project.getApplication().mainThreadAlloc([this]() {
       glGenTextures(1, &cTexture);
     });
     
-    project.mainThreadInit([this, clampX, clampY, depth]() {
+    project.getApplication().mainThreadInit([this, clampX, clampY, depth]() {
       glGenFramebuffersEXT(1, &cFrameBuffer);
       glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, cFrameBuffer);
 
@@ -104,7 +104,7 @@ namespace IsoRealms {
 
   LiteralTexture::~LiteralTexture() {
     if (cTexture != 0) {
-      cProject.mainThreadCleanUp([mTexture = cTexture, mFrameBuffer = cFrameBuffer]() {
+      cProject.getApplication().mainThreadCleanUp([mTexture = cTexture, mFrameBuffer = cFrameBuffer]() {
         glDeleteTextures(1, &mTexture);
         glDeleteFramebuffers(1, &mFrameBuffer);
       });

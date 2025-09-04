@@ -145,7 +145,7 @@ namespace IsoRealms {
 //       case sf::Event::MouseButtonPressed: {
 //         switch (event.mouseButton.button) {
 //           case sf::Mouse::Left: {
-//             IApplication& mApplication = cWorld.getSpindizzy()->getProject()->getApplication();
+//             Application& mApplication = cWorld.getSpindizzy()->getProject()->getApplication();
 //             Point2D mLocation = mApplication.normalise(event.mouseButton.x, event.mouseButton.y);
 //             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
 //             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {

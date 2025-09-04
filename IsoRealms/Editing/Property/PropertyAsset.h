@@ -30,7 +30,7 @@
 #include "IsoRealms/Editing/IResourceAccessManager.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Editing/UISignalID.h"
-#include "IsoRealms/IApplication.h"
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyEditor.h"
@@ -179,7 +179,7 @@ namespace IsoRealms {
         glEnd();
 
         // Render menu contents.
-        IApplication& mApplication = cParent.cAsset.getApplication();
+        Application& mApplication = cParent.cAsset.getApplication();
         ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(x, x + mWidth, (mYPosition + mFontSize * 2.0f) - mHeight, mYPosition + mFontSize * 2.0f));
         for (const std::unique_ptr<MenuScroller>& mMenu : cMenus) {
           mMenu->render(cStyle, cY, x, aspectRatio);

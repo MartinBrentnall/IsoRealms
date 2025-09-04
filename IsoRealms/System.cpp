@@ -18,7 +18,7 @@
  */
 #include "System.h"
 
-#include "IApplication.h"
+#include "Application.h"
 #include "Utils.h"
 
 namespace IsoRealms {

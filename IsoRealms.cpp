@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
       mProjectFinished = true;
     }, mOptions.getOption("file"), mOptions.getOption("type") == "user");
     mProject.reset();
-    mProject.initMainThread();
+    mApplication.initMainThread();
 
     // Events might have accumulated during project construction, so lets flush it before starting.
     sf::Event mEvent;
@@ -67,6 +67,7 @@ int main(int argc, char** argv) {
     while (!mProjectFinished) {
       int mCurrentTime = mClock.getElapsedTime().asMilliseconds();
       int mMillisecondsPassed = mCurrentTime - mPreviousTime;
+
       if (mMillisecondsPassed > 0) {
 
         // Process all pending input events.

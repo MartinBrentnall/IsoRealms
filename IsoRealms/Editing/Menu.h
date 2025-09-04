@@ -24,7 +24,7 @@
 
 #include <GL/glew.h>
 
-#include "IsoRealms/IApplication.h"
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/IModule.h"
 #include "IsoRealms/Project.h"
@@ -60,7 +60,7 @@ namespace IsoRealms {
 
     void render(float aspectRatio) override {
       float mFontSize = cStyle.getFontSize();
-      IApplication& mApplication = cUIManager.getProject().getApplication();
+      Application& mApplication = cUIManager.getProject().getApplication();
       
       ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(-aspectRatio, aspectRatio, -1.0f + mFontSize, 1.0f - mFontSize * 4.0f));
       float mYPosition = (1.0f - mFontSize * 4.0f) + cScroll.animation();

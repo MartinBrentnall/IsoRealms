@@ -27,7 +27,7 @@
 #include "Project.h"
 
 namespace IsoRealms {
-  PropertyMaker::PropertyMaker(IApplication& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager) :
+  PropertyMaker::PropertyMaker(Application& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager) :
             cApplication(application),
             cParent(parent),
             cProperties(properties),

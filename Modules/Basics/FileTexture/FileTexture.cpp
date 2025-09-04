@@ -89,7 +89,7 @@ namespace IsoRealms::Basics {
   }
 
   void FileTexture::reloadData(Project& project) {
-    project.mainThreadInit([this]() {
+    project.getApplication().mainThreadInit([this]() {
       std::string mFullPath = cDefFile.getPath();
       cRuntimeTexture.loadFromFile(mFullPath);
     });

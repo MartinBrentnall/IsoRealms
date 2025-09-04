@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Editing/IUIStyle.h"
-#include "IsoRealms/IApplication.h"
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
@@ -117,7 +117,7 @@ namespace IsoRealms {
 
     float mLineHeight = mFont->getHeight(mFontSize, "A");
 
-    IApplication& mApplication = style.getProject().getApplication();
+    Application& mApplication = style.getProject().getApplication();
     ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(mFrameLeft + mFontSize, mFrameRight - mFontSize, mFrameBottom + mFontSize, mFrameTop - mFontSize));
     
     glPushMatrix();
@@ -651,7 +651,7 @@ namespace IsoRealms {
   }
 
   int PropertyCode::Editor::getCaretPosition(IUIStyle& style, int x, int y) {
-    IApplication& mApplication = cParent.cProject.getApplication();
+    Application& mApplication = cParent.cProject.getApplication();
     Point2D mLocation = mApplication.normalise(x, y);
     IFont* mFont = style.getCodeFont();
     float mFontSize = style.getCodeFontSize();

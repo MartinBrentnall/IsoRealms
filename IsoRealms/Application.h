@@ -33,9 +33,10 @@
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
  
+#include "Common/Point2D.h"
+#include "Common/ScreenArea.h"
 #include "DisplayResolution.h"
 #include "Exception/ApplicationException.h"
-#include "IApplication.h"
 #include "Input/HatHandler.h"
 #include "Metadata.h"
 #include "Persistence.h"
@@ -50,7 +51,7 @@ namespace IsoRealms {
    * tasks consists of a vector of functions that take no arguments and return
    * no value, where all functions can be performed simultaneously.
    */ 
-  class Application : public IApplication {
+  class Application {
     private:
     static const std::string JSON_FULL_SCREEN;
     static const std::string JSON_HEIGHT;
@@ -143,6 +144,9 @@ namespace IsoRealms {
       void removeWorker();
     };
     
+    std::queue<std::function<void()>> cMainThreadAllocTasks; /// Allocation tasks to be perfomed on the main thread during initialisation.
+    std::queue<std::function<void()>> cMainThreadInitTasks;  /// initialisation tasks to be performed on the main thread.
+
     // Application window fields.
     sf::Window cWindow;                                   /// The application window.
     std::vector<DisplayResolution> cAvailableResolutions; /// List of available screen resolutions supported by the system.
@@ -200,26 +204,25 @@ namespace IsoRealms {
      */
     void loop(int threadID);
     void cleanUp();
-
-    /***************************\
-     * Implements IApplication * 
-    \***************************/   
-    std::vector<DisplayResolution> getAvailableDisplayResolutions() const override;
-    DisplayResolution getDisplayResolution() const override;
-    bool isFullScreen() const override;
-    void setDisplayResolution(DisplayResolution resolution, bool fullscreen) override;
-    float getScreenAspectRatio() const override;
-    Point2D normalise(const int x, const int y) const override;
-    float normalise(const int pixels) const override;
-    ScreenArea crop(const ScreenArea& area) const override;
-    bool isCropped(const ScreenArea& area) const override;
-    void setViewPort() const override;
-    void saveDefaultSettings() const override;
-    void executeAndWait(const std::vector<std::function<void()>> task) override;
-    void executeAndReturn(const std::vector<std::function<void()>> task) override;
-    void executeAndReturn(const std::function<void()> task) override;
-    HatHandler& getHatHandler() override;
-    void mainThreadCleanUp(std::function<void()> function) override;
-    const Metadata& getMetadata(const std::string& key) const override;
+    void mainThreadAlloc(std::function<void()> task);
+    void mainThreadInit(std::function<void()> task);
+    void initMainThread();
+    std::vector<DisplayResolution> getAvailableDisplayResolutions() const;
+    DisplayResolution getDisplayResolution() const;
+    bool isFullScreen() const;
+    void setDisplayResolution(DisplayResolution resolution, bool fullscreen);
+    float getScreenAspectRatio() const;
+    Point2D normalise(const int x, const int y) const;
+    float normalise(const int pixels) const;
+    ScreenArea crop(const ScreenArea& area) const;
+    bool isCropped(const ScreenArea& area) const;
+    void setViewPort() const;
+    void saveDefaultSettings() const;
+    void executeAndWait(const std::vector<std::function<void()>> task);
+    void executeAndReturn(const std::vector<std::function<void()>> task);
+    void executeAndReturn(const std::function<void()> task);
+    HatHandler& getHatHandler();
+    void mainThreadCleanUp(std::function<void()> function);
+    const Metadata& getMetadata(const std::string& key) const;
   };
 }

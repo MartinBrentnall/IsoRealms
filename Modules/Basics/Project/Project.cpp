@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
       cRuntimeProject->reset(); // TODO: Why do we reset here?
       cDefEndAction.execute();
     });
-    IApplication& mApplication = cProject.getApplication();
+    Application& mApplication = cProject.getApplication();
     cRuntimeProjectLoader->newProject(mApplication);
     cRuntimeProject = cRuntimeProjectLoader->getLoadedProject();
   }
@@ -120,7 +120,7 @@ namespace IsoRealms::Basics {
       for (int i = static_cast<int>(cRuntimeOldProjects.size()) - 1; i >= 0; i--) {
         if (cRuntimeOldProjects[i]->isDestructReady()) {
           cRuntimeOldProjects[i]->setDestructing();
-          IApplication& mApplication = cProject.getApplication();
+          Application& mApplication = cProject.getApplication();
           mApplication.executeAndReturn([this, i, &mApplication]() {
             cRuntimeOldProjects[i]->destruct();
           });
@@ -177,7 +177,7 @@ namespace IsoRealms::Basics {
       cRuntimeProject->reset(); // TODO: Why do we reset here?
       cDefEndAction.execute();
     });
-    IApplication& mApplication = cProject.getApplication();
+    Application& mApplication = cProject.getApplication();
     mApplication.executeAndReturn([this, &mApplication]() {
       cRuntimeProjectLoader->loadProject(mApplication);
     });
@@ -201,8 +201,8 @@ namespace IsoRealms::Basics {
     return cRuntimeProject;
   }
 
-  bool Project::canSave() {
-    return cRuntimeProject != nullptr && cRuntimeProject->canSave();
+  bool Project::isUser() {
+    return cRuntimeProject != nullptr && cRuntimeProject->isUser();
   }
 
   void Project::saveProject() {
