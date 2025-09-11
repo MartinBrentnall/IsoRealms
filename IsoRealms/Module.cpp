@@ -220,7 +220,7 @@ namespace IsoRealms {
   }
   
   ProjectFile* Module::getProjectFile() {
-    return cProject.getFile();
+    return cProject.getProjectFile();
   }
   
   void Module::makeUserDataDirectory(const std::string& resourcePath) {

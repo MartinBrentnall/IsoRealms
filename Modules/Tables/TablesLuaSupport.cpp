@@ -18,13 +18,26 @@
  */
 #include "TablesLuaSupport.h"
 
-namespace IsoRealms::Tables {
+#include <sol.hpp>
+
+#include "Table/Table.h"
+
+namespace IsoRealms {
+  template <typename TYPE> void LuaBinding<TYPE>::bind(const std::string& bindFunction) const {
+    cDefLuaState[bindFunction](cDefValue);
+  }
+  
+  template class LuaBinding<Tables::Table>;
+
+  namespace Tables {
+
 #ifdef __linux__
-  extern "C" void initLua(LuaState* luaState) {
+    extern "C" void initLua(LuaState* luaState) {
 #elif _WIN32
-  extern "C" void __declspec(dllexport) __stdcall initLua(LuaState* luaState) {
+    extern "C" void __declspec(dllexport) __stdcall initLua(LuaState* luaState) {
 #endif
-    sol::state* mLua = luaState->getState();
-    mLua->new_usertype<Table>("Table");
+      sol::state& mLua = luaState->getState();
+      mLua.new_usertype<Table>("Table");
+    }
   }
 }

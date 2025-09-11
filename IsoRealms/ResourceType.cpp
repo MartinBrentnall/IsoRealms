@@ -121,7 +121,7 @@ namespace IsoRealms {
 
   IResource* ResourceType::createResource() {
     Project& mProject = cParent.getProject();
-    ProjectFile* mOwnerProject = mProject.getFile();
+    ProjectFile* mOwnerProject = mProject.getProjectFile();
     IResource* mResource = cResourceType->createResource(*this, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
     cResources.insert(mResource);
     return mResource;

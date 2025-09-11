@@ -51,22 +51,18 @@ namespace IsoRealms {
           cDefResetAction(*this, cDefProjectFileStructure, *this),
           cDefStartAction(*this, cDefProjectFileStructure, *this),
           cDefQuitAction(*this, cDefProjectFileStructure, *this),
-          cLuaBinding(cLuaState, this),
+          cLuaBindingApplication(cLuaState, &application),
+          cLuaBindingProject(cLuaState, this),
           cOptionsBinding(cLuaState, nullptr, this),
           cResourcesLoaded(false),
           cLoading(false),
           cProcessingInput(false),
           cRuntimeUpdatingRuntime(false),
           cRuntimeResetPostponed(false),
-          cFilenameString(*this),
-          cFileUserBoolean(*this),
           cQuitAction(*this) {
-
-    // Project singletons.
-    add<IBinding, IBinding>(&cLuaBinding,      "Project",         "System");
-    add<IString,  IString> (&cFilenameString,  "ProjectFilename", "System");
-    add<IBoolean, IBoolean>(&cFileUserBoolean, "ProjectUser",     "System");
-    add<IAction,  IAction> (&cQuitAction,      "Quit",            "System");
+    add<IBinding, IBinding>(&cLuaBindingApplication, "Application", "System");
+    add<IBinding, IBinding>(&cLuaBindingProject,     "Project",     "System");
+    add<IAction,  IAction> (&cQuitAction,            "Quit",        "System");
   }
 
   Project::Project(Application& application, std::function<void(bool)> onFinish, const std::string& file, bool user) :
@@ -146,17 +142,6 @@ namespace IsoRealms {
     return mOpenedDocuments;
   }
 
-  Project::~Project() {
-    // remove(&cLuaBinding);
-    // remove(&cFilenameString);
-    // remove(&cFileUserBoolean);
-    // remove(&cQuitAction);
-  }
-
-  bool Project::isLoading() const {
-    return cLoading;
-  }
-
   Module* Project::getModule(const std::string& name) {
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
       if (mModule->getName() == name) {
@@ -166,17 +151,38 @@ namespace IsoRealms {
     return loadModule(name);
   }
 
-  bool Project::isModuleLoaded(const std::string& name) const {
-    for (const std::unique_ptr<Module>& mModule : cDefModules) {
-      if (mModule->getName() == name) {
-        return true;
-      }
-    }
-    return false;
+  Project::~Project() {
+    // remove(&cLuaBindingApplication);
+    // remove(&cLuaBindingProject);
+    // remove(&cQuitAction);
   }
   
-  void Project::render(float aspectRatio) {
-    (**cDefScreen)->renderScreen(1.0f, aspectRatio);
+  void Project::reset() {
+    if (cRuntimeUpdatingRuntime) {
+      cRuntimeResetPostponed = true;
+    } else {
+      for (const std::unique_ptr<Module>& mModule : cDefModules) {
+        mModule->reset();
+      }
+      (*cDefResetAction)->execute();
+      cPostponedActions.emplace_back(***cDefStartAction);
+    }
+  }
+  
+  void Project::reset(Options& options) {
+    // TODO: Implement this.
+    reset();
+  }
+
+  void Project::reset(ProjectLaunchConfiguration* configuration) {
+    // TODO: Implement this.
+  }
+
+  bool Project::input(sf::Event& event) {
+    cProcessingInput = true;
+    bool mProcessed = (**cDefInputHandler)->input(event);
+    cProcessingInput = false;
+    return mProcessed;
   }
 
   void Project::updateRuntime(unsigned int milliseconds) {
@@ -192,13 +198,15 @@ namespace IsoRealms {
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
       mModule->updateRuntime(milliseconds);
     }
+    updateTasks();
+    cRuntimeUpdatingRuntime = false;
+  }
 
+  void Project::updateTasks() {
     while (!cUpdateTasks.empty()) {
-      std::function<void()> mTask = cUpdateTasks.front();
-      mTask();
+      cUpdateTasks.front()();
       cUpdateTasks.pop();
     }
-    cRuntimeUpdatingRuntime = false;
   }
 
   void Project::updateRuntimeComplete() {
@@ -208,80 +216,31 @@ namespace IsoRealms {
     }
   }
 
-  void Project::updateEditing(unsigned int milliseconds) {
-    /*
-     * This call is needed when a new editor view is added causing
-     * more view dependent Textures to be created in the C64 Terrain
-     * Texture Set.  TODO: I think there is a more elegant way of
-     * handling this situation.
-     */
-    cApplication.initMainThread();
-
-    for (const std::unique_ptr<Module>& mModule : cDefModules) {
-      mModule->updateEditing(milliseconds);
-    }
-
-    while (!cUpdateTasks.empty()) {
-      std::function<void()> mTask = cUpdateTasks.front();
-      mTask();
-      cUpdateTasks.pop();
-    }
-  }
-
-  void Project::finish(bool finishedByQuitRequest) {
-    cFunctionNotifyComplete(finishedByQuitRequest);
-  }
-
-  bool Project::isFullScreen() {
-    return cApplication.isFullScreen();
-  }
-    
-  DisplayResolution Project::getDisplayResolution() {
-    return cApplication.getDisplayResolution();
-  }
-    
-  void Project::setDisplayResolution(DisplayResolution mode, bool fullScreen) {
-    cApplication.setDisplayResolution(mode, fullScreen);
-  }
-
-  void Project::reset() {
-    if (cRuntimeUpdatingRuntime) {
-      cRuntimeResetPostponed = true;
-    } else {
-      for (const std::unique_ptr<Module>& mModule : cDefModules) {
-        mModule->reset();
-      }
-      (*cDefResetAction)->execute();
-      postponeAction(***cDefStartAction);
-    }
-  }
-  
-  void Project::reset(Options& options) {
-    // TODO: Implement this.
-    reset();
-  }
-
-  void Project::reset(ProjectLaunchConfiguration* configuration) {
-    // TODO: Implement this.
+  void Project::render(float aspectRatio) {
+    (**cDefScreen)->renderScreen(1.0f, aspectRatio);
   }
 
   void Project::requestQuit() {
     (*cDefQuitAction)->execute();
   }
 
-  bool Project::input(sf::Event& event) {
-    cProcessingInput = true;
-    bool mProcessed = (**cDefInputHandler)->input(event);
-    cProcessingInput = false;
-    return mProcessed;
+  void Project::updateEditing(unsigned int milliseconds) {
+    for (const std::unique_ptr<Module>& mModule : cDefModules) {
+      mModule->updateEditing(milliseconds);
+    }
+    updateTasks();
   }
 
-  std::filesystem::file_time_type Project::getLastWriteTime() {
-    std::string mPath = cDefProjectFileStructure.cFile.getPath();
-    return std::filesystem::last_write_time(mPath);
+  void Project::save() {
+    save(cDefProjectFileStructure);
   }
 
-  void Project::saveFile(ProjectFile& file) {
+  void Project::save(const std::string& filename) {
+    cDefProjectFileStructure.cFile.setPath(filename, true);
+    save();
+  }
+
+  void Project::save(ProjectFile& file) {
     if (file.cFile.isSet() && file.cFile.isUser()) {
       JSONDocument mJSONDocument;
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
@@ -322,185 +281,14 @@ namespace IsoRealms {
 
       mJSONDocument.save(file.cFile.getRelativePath());
     }
-  }
 
-  void Project::save(ProjectFile& file) {
-    saveFile(file);
     for (std::unique_ptr<ProjectFile>& mIncludedProject : file.cInclusions) {
       save(*mIncludedProject.get());
     }
   }
-
-  void Project::save() {
-    save(cDefProjectFileStructure);
-  }
-
-  void Project::save(const std::string& filename) {
-    cDefProjectFileStructure.cFile.setPath(filename, true);
-    save();
-  }
-
+  
   bool Project::isUser() {
     return cDefProjectFileStructure.cFile.isUser();
-  }
-
-  std::string Project::getFilename() {
-    return cDefProjectFileStructure.cFile.getPath();
-  }
-  
-  Project& Project::getAssetManager() {
-    return *this;
-  }
-
-  IActionClient& Project::getDummyActionClient() {
-    return *this;
-  }
-
-  bool Project::isReadOnly() const {
-    return false;
-  }
-  
-  void Project::setOwner(ProjectFile* owner) {
-    // Should never be called.
-  }
-
-  IResourceData& Project::getResourceData() {
-    return *this;
-  }
-
-  IBindingRegistry* Project::getBindingRegistry() {
-    return this;
-  }
-
-  ProjectFile* Project::getFile() {
-    return &cDefProjectFileStructure;
-  }
-
-  Module* Project::loadModule(const std::string& moduleName) {
-    return cDefModules.emplace_back(std::make_unique<Module>(moduleName, *this, &cLuaState)).get();
-  }
-
-  void Project::unloadModule(const std::string& moduleName) {
-    // TODO: Implement this
-  }
-
-  std::set<IModule*> Project::getModules() {
-    std::set<IModule*> mModules;
-    for (const std::unique_ptr<Module>& mModule : cDefModules) {
-      mModules.insert(mModule.get());
-    }
-    return mModules;
-  }
-  
-  std::vector<std::string> Project::getUnusedModuleNames() const {
-    std::vector<std::string> mModuleFilenames = System::getFileList("./", true);
-    std::vector<std::string> mModuleNames;
-    for (std::string& mFilename : mModuleFilenames) {
-      if (mFilename.substr(0, 10) == "IsoRealms-" && mFilename.substr(mFilename.length() - System::MODULE_EXTENSION.length()) == System::MODULE_EXTENSION) {
-        std::string mModuleName = mFilename.substr(10, mFilename.length() - (10 + System::MODULE_EXTENSION.length()));
-        if (!isModuleLoaded(mModuleName)) {
-          mModuleNames.emplace_back(mModuleName);
-        }
-      }
-    }
-    return mModuleNames;
-  }
-
-  JSONDocument Project::createDocument() {
-    return JSONDocument();
-  }
-
-  JSONDocument Project::openDocument(const std::string& name) {
-    return JSONDocument(name, true);
-  }
-
-  std::string Project::getUserDataPath() {
-    std::string mDataPath = cDefProjectFileStructure.cFile.getRelativePath();
-    mDataPath = mDataPath.substr(0, mDataPath.find_last_of('.'));
-    return (cDefProjectFileStructure.cFile.isUser() ? "" : "Program/") + mDataPath;
-  }
-
-  std::string Project::getDataPath(bool user) {
-    std::string mDataPath = cDefProjectFileStructure.cFile.getRelativePath();
-    mDataPath = mDataPath.substr(0, mDataPath.find_last_of('.'));
-    return getProjectPathPrefix(user) + mDataPath;
-  }
-
-  void Project::makeUserDataDirectory(const std::string& path) {
-    System::makeUserDataDirectory(getUserDataPath() + "/" + path);
-  }
-
-  void Project::renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) {
-    System::renameUserDataDirectory(getUserDataPath() + "/" + path + "/" + oldName, getUserDataPath() + "/" + path + "/" + newName);
-  }
-  
-  std::string Project::getProjectPathPrefix(bool user) {
-    return user ? (System::USER_DATA_DIRECTORY + (cDefProjectFileStructure.cFile.isUser() ? "" : "/Program/"))
-                : (""                                                                            );
-  }
-
-  IEditable* Project::getDefaultEditable() {
-    return (*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
-  }
-
-  LuaState& Project::getLuaState() {
-    return cLuaState;
-  }
-  
-  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value)                                      {return cBooleans.literal(user, owner, value);}
-  IColour*  Project::createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, float red, float green, float blue, float alpha) {return cColours.literal( user, owner, red, green, blue, alpha);}
-  IFloat*   Project::createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, float value)                                     {return cFloats.literal(  user, owner, value);}
-  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, int value)                                       {return cIntegers.literal(user, owner, value);}
-  IString*  Project::createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value)                        {return cStrings.literal( user, owner, value);}
-  IVertex*  Project::createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, float x, float y, float z)                       {return cVertices.literal(user, owner, x, y, z);}
-
-  Project& Project::getProject() {
-    return *this;
-  }
-  
-  const Project& Project::getProject() const {
-    return *this;
-  }
-
-  void Project::init(std::function<void()> initialiser) {
-    // std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
-//     if (cInitialisers.size() == 241) {
-//       std::cout << "DEBUG!" << std::endl;
-//     }
-
-    if (cResourcesLoaded) {
-      throw ArgumentException("ERROR: Project::init: Resource initialisation is not allowed at this stage");
-    }
-    cInitialisers.push_back(initialiser);
-  }
-
-  // TODO: Rename this!  It's only used for rendering to texture tasks, so should be done during rendering phase.
-  void Project::updateLater(std::function<void()> task) {
-    cUpdateTasks.push(task);
-  }
-  
-  IScreen* Project::getScreenProxy(IScreen* screen) {
-    return cScreens.getProxy(screen);
-  }
-
-  void Project::addScreenListener(IScreenListener* listener) {
-    cScreens.addScreenListener(listener);
-  }
-
-  void Project::removeScreenListener(IScreenListener* listener) {
-    cScreens.removeScreenListener(listener);
-  }
-
-  void Project::addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) {
-    cFloats.addStateChangeListener(asset, listener);
-  }
-
-  Application& Project::getApplication() {
-    return cApplication;
-  }
-
-  const Application& Project::getApplication() const {
-    return cApplication;
   }
 
   void Project::getProperties(PropertyMaker& propertyMaker) {
@@ -542,121 +330,49 @@ namespace IsoRealms {
     cDefDefaultEditor.getProperty(propertyMaker, mMetadata, "DefaultEditor");
   }
   
-  IBinding* Project::getBinding(const std::string& id) {
-    return id == "options" ? &cOptionsBinding
-         :                   nullptr;
+  IEditable* Project::getDefaultEditable() {
+    return (*cDefDefaultEditor)->getID() == "None" ? nullptr : ***cDefDefaultEditor;
   }
 
-  void Project::saveBinding(JSONObject object, const IBinding* binding) const {
-    if (binding == &cOptionsBinding) {
-      object.addString(JSON_LOCAL, "options");
+  IScreen* Project::getScreenProxy(IScreen* screen) {
+    return cScreens.getProxy(screen);
+  }
+
+  Module* Project::loadModule(const std::string& moduleName) {
+    return cDefModules.emplace_back(std::make_unique<Module>(moduleName, *this, &cLuaState)).get();
+  }
+
+  void Project::unloadModule(const std::string& moduleName) {
+    // TODO: Implement this
+  }
+
+  std::set<IModule*> Project::getModules() {
+    std::set<IModule*> mModules;
+    for (const std::unique_ptr<Module>& mModule : cDefModules) {
+      mModules.insert(mModule.get());
     }
-  }
-
-  void Project::releaseBinding(const IBinding* asset) {
-    // Nothing to do.
-  }
-
-  std::string Project::getPath(const std::string& file, bool user) const {
-    return ""; // TODO: Implement this.
-  }
-
-  void Project::makeUserDataDirectory() {
-    // TODO: Implement this.
-  }
-
-  bool Project::isIncluded() const {
-    return false; // TODO: Implement this.
-  }
-
-  bool Project::isProcessingInput() {
-    return cProcessingInput;
-  }
-
-  void Project::postponeAction(IAction* action) {
-    cPostponedActions.emplace_back(action);
-  }
-
-  std::vector<std::string> Project::getProjectFileNames() const {
-    std::vector<std::string> mNames;
-    cDefProjectFileStructure.getNames(mNames);
-    return mNames;
-  }
-
-  ProjectFile* Project::getProjectFile(const std::string& id) {
-    return cDefProjectFileStructure.getFile(id);
-  }
-
-  Project::Filename::Filename(Project& parent) :
-            cParent(parent) {
-  }
-
-  std::string Project::Filename::getValue() const {
-    return cParent.cDefProjectFileStructure.cFile.getRelativePath();
-  }
-
-  bool Project::Filename::renderAssetIcon() const {
-    return false;
-  }
-
-  void Project::Filename::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Project::Filename::getAssetProperties(PropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Project::Filename::isDefaultConfiguration() const {
-    return true;
-  }
-
-  Project::FileUser::FileUser(Project& parent) :
-            cParent(parent) {
-  }
-
-  bool Project::FileUser::getValue() const {
-    return cParent.cDefProjectFileStructure.cFile.isUser();
-  }
-
-  bool Project::FileUser::renderAssetIcon() const {
-    return false;
-  }
-
-  void Project::FileUser::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Project::FileUser::getAssetProperties(PropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Project::FileUser::isDefaultConfiguration() const {
-    return true;
-  }
-
-  Project::QuitAction::QuitAction(Project& parent) :
-            cParent(parent) {
-  }
-
-  void Project::QuitAction::execute() {
-    cParent.finish(true);
-  }
-
-  bool Project::QuitAction::renderAssetIcon() const {
-    return false;
-  }
-
-  void Project::QuitAction::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Project::QuitAction::getAssetProperties(PropertyMaker& owner) {
-    // Nothing to do.
+    return mModules;
   }
   
-  bool Project::QuitAction::isDefaultConfiguration() const {
-    return true;
+  std::vector<std::string> Project::getUnusedModuleNames() const {
+    std::vector<std::string> mModuleFilenames = System::getFileList("./", true);
+    std::vector<std::string> mModuleNames;
+    for (std::string& mFilename : mModuleFilenames) {
+      if (mFilename.substr(0, 10) == "IsoRealms-" && mFilename.substr(mFilename.length() - System::MODULE_EXTENSION.length()) == System::MODULE_EXTENSION) {
+        std::string mModuleName = mFilename.substr(10, mFilename.length() - (10 + System::MODULE_EXTENSION.length()));
+        bool mIsModuleLoaded = false;
+        for (const std::unique_ptr<Module>& mModule : cDefModules) {
+          if (mModule->getName() == mModuleName) {
+            mIsModuleLoaded = true;
+            break;
+          }
+        }
+        if (!mIsModuleLoaded) {
+          mModuleNames.emplace_back(mModuleName);
+        }
+      }
+    }
+    return mModuleNames;
   }
 
   bool Project::isLaunchConfigurationNameUsed(const std::string& name, ProjectLaunchConfiguration* configuration) const {
@@ -686,6 +402,214 @@ namespace IsoRealms {
     return cDefTestLaunchConfigurations[index].get();
   }
   
+  std::vector<std::string> Project::getProjectFileNames() const {
+    std::vector<std::string> mNames;
+    cDefProjectFileStructure.getNames(mNames);
+    return mNames;
+  }
+
+  ProjectFile* Project::getProjectFile() {
+    return &cDefProjectFileStructure;
+  }
+  
+  ProjectFile* Project::getProjectFile(const std::string& id) {
+    return cDefProjectFileStructure.getFile(id);
+  }
+
+  Application& Project::getApplication() {
+    return cApplication;
+  }
+
+  const Application& Project::getApplication() const {
+    return cApplication;
+  }
+
+  LuaState& Project::getLuaState() {
+    return cLuaState;
+  }
+  
+  void Project::init(std::function<void()> initialiser) {
+    // std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
+//     if (cInitialisers.size() == 241) {
+//       std::cout << "DEBUG!" << std::endl;
+//     }
+
+    if (cResourcesLoaded) {
+      throw ArgumentException("ERROR: Project::init: Resource initialisation is not allowed at this stage");
+    }
+    cInitialisers.push_back(initialiser);
+  }
+  
+  // TODO: Rename this!  It's only used for rendering to texture tasks, so should be done during rendering phase.
+  void Project::updateLater(std::function<void()> task) {
+    cUpdateTasks.push(task);
+  }
+  
+  std::string Project::getProjectPathPrefix(bool user) {
+    return user ? (System::USER_DATA_DIRECTORY + (cDefProjectFileStructure.cFile.isUser() ? "" : "/Program/"))
+                : (""                                                                            );
+  }
+
+  std::filesystem::file_time_type Project::getLastWriteTime() {
+    std::string mPath = cDefProjectFileStructure.cFile.getPath();
+    return std::filesystem::last_write_time(mPath);
+  }
+
+  void Project::makeUserDataDirectory(const std::string& path) {
+    System::makeUserDataDirectory(getUserDataPath() + "/" + path);
+  }
+
+  void Project::renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName) {
+    System::renameUserDataDirectory(getUserDataPath() + "/" + path + "/" + oldName, getUserDataPath() + "/" + path + "/" + newName);
+  }
+  
+  void Project::addScreenListener(IScreenListener* listener) {
+    cScreens.addScreenListener(listener);
+  }
+
+  void Project::removeScreenListener(IScreenListener* listener) {
+    cScreens.removeScreenListener(listener);
+  }
+
+  void Project::addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) {
+    cFloats.addStateChangeListener(asset, listener);
+  }
+
+  bool Project::isLoading() const {
+    return cLoading;
+  }
+  
+  void Project::execute(IAction& action) {
+    if (cProcessingInput || cLoading) {
+      cPostponedActions.emplace_back(&action);
+    } else {
+      action.execute();
+    }
+  }
+
+  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value) {
+    return cBooleans.literal(user, owner, value);
+  }
+  
+  IColour* Project::createLiteralColour(IAssetUser<IColour>* user, IResourceData& owner, float red, float green, float blue, float alpha) {
+    return cColours.literal(user, owner, red, green, blue, alpha);
+  }
+  
+  IFloat* Project::createLiteralFloat(IAssetUser<IFloat>* user, IResourceData& owner, float value) {
+    return cFloats.literal(user, owner, value);
+  }
+  
+  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, int value) {
+    return cIntegers.literal(user, owner, value);
+  }
+  
+  IString* Project::createLiteralString(IAssetUser<IString>* user, IResourceData& owner, const std::string& value) {
+    return cStrings.literal(user, owner, value);
+  }
+  
+  IVertex*  Project::createLiteralVertex(IAssetUser<IVertex>* user, IResourceData& owner, float x, float y, float z) {
+    return cVertices.literal(user, owner, x, y, z);
+  }
+
+  void Project::finish(bool finishedByQuitRequest) {
+    cFunctionNotifyComplete(finishedByQuitRequest);
+  }
+
+  std::string Project::getUserDataPath() {
+    std::string mDataPath = cDefProjectFileStructure.cFile.getRelativePath();
+    mDataPath = mDataPath.substr(0, mDataPath.find_last_of('.'));
+    return (cDefProjectFileStructure.cFile.isUser() ? "" : "Program/") + mDataPath;
+  }
+
+  std::string Project::getDataPath(bool user) {
+    std::string mDataPath = cDefProjectFileStructure.cFile.getRelativePath();
+    mDataPath = mDataPath.substr(0, mDataPath.find_last_of('.'));
+    return getProjectPathPrefix(user) + mDataPath;
+  }
+
+  IBinding* Project::getBinding(const std::string& id) {
+    return id == "options" ? &cOptionsBinding
+         :                   nullptr;
+  }
+
+  void Project::saveBinding(JSONObject object, const IBinding* binding) const {
+    if (binding == &cOptionsBinding) {
+      object.addString(JSON_LOCAL, "options");
+    }
+  }
+
+  void Project::releaseBinding(const IBinding* asset) {
+    // Nothing to do.
+  }
+
+  std::string Project::getPath(const std::string& file, bool user) const {
+    return ""; // TODO: Implement this.
+  }
+
+  void Project::makeUserDataDirectory() {
+    // TODO: Implement this.
+  }
+
+  bool Project::isIncluded() const {
+    return false; // TODO: Implement this.
+  }
+
+  bool Project::isReadOnly() const {
+    return false;
+  }
+  
+  void Project::setOwner(ProjectFile* owner) {
+    // Should never be called.
+  }
+
+  Project& Project::getProject() {
+    return *this;
+  }
+  
+  const Project& Project::getProject() const {
+    return *this;
+  }
+
+  Project& Project::getAssetManager() {
+    return *this;
+  }
+
+  IActionClient& Project::getDummyActionClient() {
+    return *this;
+  }
+
+  IResourceData& Project::getResourceData() {
+    return *this;
+  }
+
+  IBindingRegistry* Project::getBindingRegistry() {
+    return this;
+  }
+
+  Project::QuitAction::QuitAction(Project& parent) :
+            cParent(parent) {
+  }
+
+  void Project::QuitAction::execute() {
+    cParent.finish(true);
+  }
+
+  bool Project::QuitAction::renderAssetIcon() const {
+    return false;
+  }
+
+  void Project::QuitAction::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  void Project::QuitAction::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
+  }
+  
+  bool Project::QuitAction::isDefaultConfiguration() const {
+    return true;
+  }
+
   const std::string Project::JSON_EDITOR                = "editor";
   const std::string Project::JSON_INCLUDE               = "include";
   const std::string Project::JSON_INITIALISATION        = "initialisation";

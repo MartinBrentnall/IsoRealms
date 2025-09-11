@@ -26,7 +26,7 @@ namespace IsoRealms {
     if (mExistingProxy == cProxyMapping.end()) {
       std::unique_ptr<Proxy> mNewProxy = std::make_unique<Proxy>(*this, asset);
       AssetClientManager::add(mNewProxy.get(), id, category);
-      if (!cProject.isProcessingInput()) {
+      if (!cProject.isLoading()) {
         for (IScreenListener* mListener : cListeners) {
           mListener->screenAdded(mNewProxy.get());
         }

@@ -18,11 +18,13 @@
  */
 #pragma once
 
-#include <sol.hpp>
-
 #include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/Lua/LuaState.h"
+
+namespace sol {
+  class state;
+}
 
 namespace IsoRealms {
   
@@ -65,9 +67,7 @@ namespace IsoRealms {
       return true; // TODO?
     }
 
-    void bind(const std::string& bindFunction) const override {
-      (*cDefLuaState)[bindFunction](cDefValue);
-    }
+    void bind(const std::string& bindFunction) const override;
     
     std::vector<std::string> getAvailableProviders() const override {
       return std::vector<std::string>();
@@ -98,7 +98,7 @@ namespace IsoRealms {
     }
 
     private:
-    sol::state* cDefLuaState;
+    sol::state& cDefLuaState;
     T* cDefValue;
     IBindingRegistry* cDefLocalBindingRegistry;
   };

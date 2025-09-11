@@ -18,19 +18,4 @@
  */
 #pragma once
 
-#include <iostream>
-
-#include <sol.hpp>
-
-#include "AnalogueInput/AnalogueInput.h"
-#include "InputSwitch/InputSwitch.h"
-#include "Project/Project.h"
-#include "ProjectConfigurer/ProjectConfigurer.h"
-#include "Sequence/SequenceInstance.h"
-#include "SimpleBoolean/SimpleBoolean.h"
-#include "SimpleColour/SimpleColour.h"
-#include "SimpleFloat/SimpleFloat.h"
-#include "SimpleInteger/SimpleInteger.h"
-#include "SimpleString/SimpleString.h"
-#include "SimpleVertex/SimpleVertex.h"
-#include "Basics.h"
+#include "IsoRealms.h"

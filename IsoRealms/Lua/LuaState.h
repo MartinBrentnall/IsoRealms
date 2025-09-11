@@ -33,9 +33,16 @@ namespace IsoRealms {
   class LuaState {
     public:
     LuaState();
-    sol::state* getState();
+    ~LuaState();                           // declare only (define in .cpp)
+
+    LuaState(LuaState&&) = delete;
+    LuaState& operator=(LuaState&&) = delete;
+    LuaState(const LuaState&) = delete;
+    LuaState& operator=(const LuaState&) = delete;
+
+    sol::state& getState();
     
     private:
-    sol::state cLua; /// The Lua state machine.
+    std::unique_ptr<sol::state> cLua; /// The Lua state machine.
   };
 }

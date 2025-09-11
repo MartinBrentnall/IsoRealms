@@ -195,6 +195,9 @@ namespace IsoRealms {
     Application();
     ~Application();
 
+    JSONDocument createDocument();
+    JSONDocument openDocument(const std::string& name);
+
     bool pollEvent(sf::Event& event);
     void display();
 

@@ -107,7 +107,7 @@ namespace IsoRealms {
   }
 
   void PropertyMaker::promoteResourceToProject() {
-    cParent.setOwner(cParent.getProject().getFile());
+    cParent.setOwner(cParent.getProject().getProjectFile());
   }
 }
 

@@ -20,6 +20,4 @@
 
 #include <iostream>
 
-#include <sol.hpp>
-
 #include "IsoRealms.h"

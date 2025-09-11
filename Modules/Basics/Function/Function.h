@@ -22,12 +22,14 @@
 #include <string>
 #include <vector>
 
-#include <sol.hpp>
-
 #include "IsoRealms.h"
 
 #include "ArgumentDefinition.h"
 #include "Binding.h"
+
+namespace sol {
+  class state;
+}
 
 namespace IsoRealms::Basics {
   class Basics;
@@ -116,7 +118,7 @@ namespace IsoRealms::Basics {
     Project& cProject;
     Basics& cBasics;
     IResourceData& cResourceData;
-    sol::state* const cDefLuaState; /// The Lua state machine.
+    sol::state& cDefLuaState; /// The Lua state machine.
     
     // Definition data.
     std::string cDefName;                                      /// Identifier of this function.

@@ -18,10 +18,12 @@
  */
 #pragma once
 
-#include <sol.hpp>
-
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/Lua/LuaState.h"
+
+namespace sol {
+  class state;
+}
 
 namespace IsoRealms {
   class IProperty;
@@ -30,22 +32,18 @@ namespace IsoRealms {
    * Permits the binding of an arbitrary object to a lua variable.  This
    * binding resides in the parent project.
    */
-  template <class T> class LuaBinding : public IBinding {
+  template <class TYPE> class LuaBinding : public IBinding {
     public:
-    LuaBinding(LuaState& lua, T* value, std::function<bool()> icon = nullptr) :
+    LuaBinding(LuaState& lua, TYPE* value, std::function<bool()> icon = nullptr) :
               cDefLuaState(lua.getState()),
               cDefValue(value),
               cIcon(icon) {
     }
     
-    void setValue(T* value) {
+    void setValue(TYPE* value) {
       cDefValue = value;
     }
     
-    T* getValue() {
-      return cDefValue;
-    }
-
     /***********************\
      * Implements IBinding *
     \***********************/    
@@ -65,9 +63,7 @@ namespace IsoRealms {
       return true; // TODO?
     }
 
-    void bind(const std::string& bindFunction) const override {
-      (*cDefLuaState)[bindFunction](cDefValue);
-    }
+    void bind(const std::string& bindFunction) const override;
     
     std::vector<std::string> getAvailableProviders() const override {
       return std::vector<std::string>();
@@ -98,8 +94,8 @@ namespace IsoRealms {
     }
 
     private:
-    sol::state* cDefLuaState;
-    T* cDefValue;
+    sol::state& cDefLuaState;
+    TYPE* cDefValue;
     std::function<bool()> cIcon;
   };
 }

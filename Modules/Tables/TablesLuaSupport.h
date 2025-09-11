@@ -18,8 +18,4 @@
  */
 #pragma once
 
-#include <iostream>
-
-#include <sol.hpp>
-
-#include "Table/Table.h"
+#include "IsoRealms.h"

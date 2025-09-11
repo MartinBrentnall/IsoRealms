@@ -29,10 +29,6 @@ namespace IsoRealms {
   }
 
   void Action::execute() {
-    if (cManager.getProject().isProcessingInput()) {
-      cManager.getProject().postponeAction(cAsset);
-    } else {
-      cAsset->execute();
-    }
+    cManager.getProject().execute(*cAsset);
   }
 }

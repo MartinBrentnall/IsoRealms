@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright 2025 Martin Brentnall
  *
  * This file is part of IsoRealms.
@@ -19,9 +19,28 @@
 #include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Project.h"
 
+#include <sol.hpp>
+
 #include "BindingRegistry.h"
 
 namespace IsoRealms {
+  template <class OWNER, class FROM>
+  template <class OWNER2, class TYPE>
+  void BindingRegistry::Conversion<OWNER, FROM>::Instance<OWNER2, TYPE>::bind(const std::string& bindFunction) const {
+    cDefLuaState[bindFunction](*cDefValue);
+  }
+  
+  template class BindingRegistry::Conversion<IActionClient, Action>::Instance<IActionClient, Action>;
+  template class BindingRegistry::Conversion<IResourceData, Boolean>::Instance<IResourceData, Boolean>;  
+  template class BindingRegistry::Conversion<IResourceData, Colour>::Instance<IResourceData, Colour>;
+  template class BindingRegistry::Conversion<IResourceData, Float>::Instance<IResourceData, Float>;  
+  template class BindingRegistry::Conversion<IResourceData, Font>::Instance<IResourceData, Font>;  
+  template class BindingRegistry::Conversion<IResourceData, InputHandler>::Instance<IResourceData, InputHandler>;  
+  template class BindingRegistry::Conversion<IResourceData, Integer>::Instance<IResourceData, Integer>;  
+  template class BindingRegistry::Conversion<IResourceData, Screen>::Instance<IResourceData, Screen>;  
+  template class BindingRegistry::Conversion<IResourceData, String>::Instance<IResourceData, String>;  
+  template class BindingRegistry::Conversion<IResourceData, Vertex>::Instance<IResourceData, Vertex>;  
+  
   BindingRegistry::BindingRegistry(Project& project) :
             AssetClientManager(&cDummy),
             cActions(project),

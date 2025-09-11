@@ -71,97 +71,62 @@ namespace IsoRealms {
                   public IResourceData,
                   public IActionClient {
     public:
+    
+    // Functions used by a runtime host.
     Project(Application& application, std::function<void(bool)> onFinish);
     Project(Application& application, std::function<void(bool)> onFinish, const std::string& file, bool user);
     virtual ~Project();
-
-    // Execution functions are called by the host of the Project.
     void reset();
     void reset(Options& options);
     void reset(ProjectLaunchConfiguration* configuration);
     bool input(sf::Event& event);
     void updateRuntime(unsigned int milliseconds);
     void updateRuntimeComplete();
-    void updateEditing(unsigned int milliseconds);
     void render(float aspectRatio);
     void requestQuit();
 
-    // File management functions are called by a host editor of the Project.
-    void save(ProjectFile& file);
+    // Functions used by an editor host.
+    void updateEditing(unsigned int milliseconds);
     void save();
     void save(const std::string& file);
-    bool isLoading() const;
     bool isUser();
-    std::string getFilename();
-    ProjectFile* getFile();
-
-    // General Project editing function.
     void getProperties(PropertyMaker& propertyMaker);
     IEditable* getDefaultEditable();
-
-    // Module configuration interface.
+    IScreen* getScreenProxy(IScreen* screen);
+    
+    // Functions used by project members.
     Module* loadModule(const std::string& name);
     void unloadModule(const std::string& name);
     std::set<IModule*> getModules();
     std::vector<std::string> getUnusedModuleNames() const;
-
-    // Launch configuration interface.
     bool isLaunchConfigurationNameUsed(const std::string& name, ProjectLaunchConfiguration* launchConfiguration) const;
     std::string makeLaunchConfigurationName() const;
     int getLaunchConfigurationCount() const;
     const ProjectLaunchConfiguration* getLaunchConfiguration(int index);
-
-    // Project file structure configuration interface.
+    
+    // Functions used for resource ownership.
     std::vector<std::string> getProjectFileNames() const;
+    ProjectFile* getProjectFile();
     ProjectFile* getProjectFile(const std::string& id);
     
+    // Function used by modules.
+    Application& getApplication();
+    const Application& getApplication() const;
+    LuaState& getLuaState();
+    void init(std::function<void()> initialiser);
+    void updateLater(std::function<void()> task);
     std::string getProjectPathPrefix(bool user);
-    
-    // Screen-related functions.
-    IScreen* getScreenProxy(IScreen* screen);
+    std::filesystem::file_time_type getLastWriteTime();
+    void makeUserDataDirectory(const std::string& path);
+    void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
     void addScreenListener(IScreenListener* listener);
     void removeScreenListener(IScreenListener* listener);
     void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener);
-
-    // Access to external interfaces.
-    Application& getApplication();
-    const Application& getApplication() const;
-
-    // Action execution control.
-    bool isProcessingInput();
-    void postponeAction(IAction* action);
-
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
-    IBinding* getBinding(const std::string& id) override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
-    void releaseBinding(const IBinding* asset) override;
-
-    /****************************\
-     * Implements IResourceData * TODO: Should these be here???
-    \****************************/
-    std::string getPath(const std::string& file, bool user) const override;
-    void makeUserDataDirectory() override;
-    bool isIncluded() const override;
-    bool isReadOnly() const override;
-    void setOwner(ProjectFile* file) override;
-    Project& getProject() override;
-    const Project& getProject() const override;
-    Project& getAssetManager() override;
-    IActionClient& getDummyActionClient() override;
     
-    /****************************\
-     * Implements IActionClient * TODO: Should these be here???
-    \****************************/
-    IResourceData& getResourceData() override;
-    IBindingRegistry* getBindingRegistry() override;
-
-    void init(std::function<void()> initialiser);
-    void updateLater(std::function<void()> task);
-    LuaState& getLuaState();
-
-    // Project Asset management functions.
+    // Functions used by module client assets.
+    bool isLoading() const;
+    void execute(IAction& action);
+    
     template <typename TYPE, typename THING> IStateNotifier<TYPE>* add(THING* asset, const std::string& id, const std::string& category) {
       return AssetContainerTraits<TYPE>::get(*this).add(asset, id, category, true);
     }
@@ -221,21 +186,39 @@ namespace IsoRealms {
     IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value);
     IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, float x, float y, float z);
 
-    std::filesystem::file_time_type getLastWriteTime();
+    /***********************\
+     * Scripting interface *
+    \***********************/
     void finish(bool finishedByQuitRequest);
-    
-    // Application level scripting functions.  TODO: These should be moved to Application!
-    JSONDocument createDocument();
-    JSONDocument openDocument(const std::string& name);
     std::string getUserDataPath();
     std::string getDataPath(bool user);
-    void makeUserDataDirectory(const std::string& path);
-    void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
-    bool isApplicationClosing();
-    bool isFullScreen();
-    DisplayResolution getDisplayResolution();
-    void setDisplayResolution(DisplayResolution resolution, bool fullScreen);
-      
+
+    /*******************************\
+     * Implements IBindingRegistry *
+    \*******************************/
+    IBinding* getBinding(const std::string& id) override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
+    void releaseBinding(const IBinding* asset) override;
+
+    /****************************\
+     * Implements IResourceData * TODO: Should these be here???
+    \****************************/
+    std::string getPath(const std::string& file, bool user) const override;
+    void makeUserDataDirectory() override;
+    bool isIncluded() const override;
+    bool isReadOnly() const override;
+    void setOwner(ProjectFile* file) override;
+    Project& getProject() override;
+    const Project& getProject() const override;
+    Project& getAssetManager() override;
+    IActionClient& getDummyActionClient() override;
+    
+    /****************************\
+     * Implements IActionClient * TODO: Should these be here???
+    \****************************/
+    IResourceData& getResourceData() override;
+    IBindingRegistry* getBindingRegistry() override;
+    
     template <class TYPE> friend struct AssetContainerTraits;
 
     private:
@@ -252,40 +235,6 @@ namespace IsoRealms {
     static const std::string JSON_RESET;
     static const std::string JSON_SCREEN;
     static const std::string JSON_START;
-
-    class Filename : public IString {
-      public:
-      Filename(Project& parent);
-
-      private:
-      Project& cParent;
-
-      /**********************\
-       * Implements IString *
-      \**********************/
-      std::string getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-    };
-
-    class FileUser : public IBoolean {
-      public:
-      FileUser(Project& parent);
-
-      private:
-      Project& cParent;
-
-      /***********************\
-       * Implements IBoolean *
-      \***********************/
-      bool getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-    };
 
     class QuitAction : public IAction {
       public:
@@ -339,7 +288,8 @@ namespace IsoRealms {
 
     // Scripting support.
     LuaState cLuaState;                       /// Lua State for this project.
-    LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
+    LuaBinding<Application> cLuaBindingApplication;
+    LuaBinding<Project> cLuaBindingProject;   /// Project interface for actions and scripting.
     LocalLuaBinding<Options> cOptionsBinding;
 
     // Callbacks
@@ -355,15 +305,13 @@ namespace IsoRealms {
     bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
 
     // Assets to expose Project data.
-    Filename cFilenameString;
-    FileUser cFileUserBoolean;
     QuitAction cQuitAction;
 
     // Private functions.
     std::vector<std::unique_ptr<JSONDocument>> loadResources(ProjectFile& file);
-    bool isModuleLoaded(const std::string& name) const;
     Module* getModule(const std::string& name);
-    void saveFile(ProjectFile& file);
+    void updateTasks();
+    void save(ProjectFile& file);
   };
 
   template<> struct AssetContainerTraits<IAction>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;      }};

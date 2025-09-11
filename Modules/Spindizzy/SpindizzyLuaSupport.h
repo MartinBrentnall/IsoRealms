@@ -18,21 +18,4 @@
  */
 #pragma once
 
-#include <iostream>
-
-#include <sol.hpp>
-
-#include "Assets/Fixed/ZoneViewType/ZoneViewOverview.h"
-#include "AlienType/AlienType.h"
-#include "ModelCycler/ModelCycler.h"
-#include "PlayerType/PlayerType.h"
-#include "Spindizzy.h"
-#include "TerrainState/TerrainState.h"
-#include "ThemeSet/ThemeSet.h"
-#include "World/DebrisGenerator/DebrisGenerator.h"
-#include "World/Object/Zone/Zone.h"
-#include "World/Object/ZoneObject/Traits/Boundary/Boundary.h"
-#include "World/Object/ZoneObject/Traits/Model/Model.h"
-#include "World/Object/ZoneObject/Traits/Spinner/Spinner.h"
-#include "World/World.h"
-#include "WorldView/WorldView.h"
+#include "IsoRealms.h"

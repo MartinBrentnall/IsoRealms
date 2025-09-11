@@ -123,6 +123,14 @@ namespace IsoRealms {
     }
   }
 
+  JSONDocument Application::createDocument() {
+    return JSONDocument();
+  }
+
+  JSONDocument Application::openDocument(const std::string& name) {
+    return JSONDocument(name, true);
+  }
+
   bool Application::pollEvent(sf::Event& event) {
     return cWindow.pollEvent(event);
   }

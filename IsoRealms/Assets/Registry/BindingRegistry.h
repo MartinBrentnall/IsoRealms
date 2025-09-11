@@ -21,8 +21,6 @@
 #include <functional>
 #include <set>
 
-#include <sol.hpp>
-
 #include "IsoRealms/Assets/Client/Action.h"
 #include "IsoRealms/Assets/Client/Boolean.h"
 #include "IsoRealms/Assets/Client/Colour.h"
@@ -41,6 +39,10 @@
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
+
+namespace sol {
+  class state;
+}
 
 namespace IsoRealms {
   class Project;
@@ -163,9 +165,7 @@ namespace IsoRealms {
         /***********************\
         * Implements IBinding *
         \***********************/
-        void bind(const std::string& bindFunction) const override {
-          (*cDefLuaState)[bindFunction](*cDefValue);
-        }
+        void bind(const std::string& bindFunction) const override;
 
         std::vector<std::string> getAvailableProviders() const override {
           return cDefValue.getAvailableProviders();
@@ -214,7 +214,7 @@ namespace IsoRealms {
         private:
         inline static const std::string JSON_ASSET = "asset";
 
-        sol::state* cDefLuaState;
+        sol::state& cDefLuaState;
         TYPE cDefValue;
       };
 

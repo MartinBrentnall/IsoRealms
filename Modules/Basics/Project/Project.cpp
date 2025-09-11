@@ -112,6 +112,13 @@ namespace IsoRealms::Basics {
       cRuntimeProject->updateRuntimeComplete();
     }
     if (cRuntimeEditing && cRuntimeProject != nullptr) {
+      /*
+       * This call is needed when a new editor view is added causing
+       * more view dependent Textures to be created in the C64 Terrain
+       * Texture Set.  TODO: I think there is a more elegant way of
+       * handling this situation.
+       */
+      cProject.getApplication().initMainThread();
       cRuntimeProject->updateEditing(milliseconds);
     }
 

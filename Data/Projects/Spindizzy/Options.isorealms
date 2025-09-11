@@ -253,12 +253,6 @@
                 "name": "RestorePrevious",
                 "bindings": [
                   {
-                    "variable": "project",
-                    "to": {
-                      "key": "Project"
-                    }
-                  },
-                  {
                     "variable": "optionResolution",
                     "to": {
                       "key": "UI/Menu/Visual/DisplayResolution/Resolution"
@@ -290,7 +284,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "project:setDisplayResolution(previousMode, previousFullScreen)\noptionResolution:setValue(previousMode)\noptionFullScreen:setValue(previousFullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])\nscreenTestTimer:pause()"
+                "code": "application:setDisplayResolution(previousMode, previousFullScreen)\noptionResolution:setValue(previousMode)\noptionFullScreen:setValue(previousFullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])\nscreenTestTimer:pause()"
               },
               {
                 "id": "PushScreen",
@@ -437,9 +431,15 @@
                     }
                   },
                   {
-                    "variable": "project",
+                    "variable": "application",
                     "to": {
-                      "key": "Project"
+                      "key": "Application"
+                    }
+                  },
+                  {
+                    "variable": "application",
+                    "to": {
+                      "key": "Application"
                     }
                   },
                   {
@@ -624,7 +624,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "fullScreen = project:isFullScreen()\nisoRealms:reloadGlobalConfiguration()\nsoundVolume = isoRealms:getSoundVolume()\n-- musicVolume = isoRealms:getMusicVolume()\noptionFullScreen:setValue(fullScreen)\nsoundVolumeSlider:setValue(soundVolume)\n-- musicVolumeSlider:setValue(musicVolume)\n\noptionLeft:setValue(inputLeft:getInputsString())\noptionRight:setValue(inputRight:getInputsString())\noptionUp:setValue(inputUp:getInputsString())\noptionDown:setValue(inputDown:getInputsString())\noptionThrust:setValue(inputThrust:getInputsString())\noptionBrake:setValue(inputBrake:getInputsString())\noptionRotateViewLeft:setValue(inputRotateViewLeft:getInputsString())\noptionRotateViewRight:setValue(inputRotateViewRight:getInputsString())\noptionReverseView:setValue(inputReverseView:getInputsString())\noptionResetView:setValue(inputResetView:getInputsString())\noptionToggleMap:setValue(inputToggleMap:getInputsString())\noptionToggleCraft:setValue(inputToggleCraft:getInputsString())\noptionTogglePause:setValue(inputTogglePause:getInputsString())\noptionDestruct:setValue(inputDestruct:getInputsString())"
+                "code": "fullScreen = application:isFullScreen()\nisoRealms:reloadGlobalConfiguration()\nsoundVolume = isoRealms:getSoundVolume()\n-- musicVolume = isoRealms:getMusicVolume()\noptionFullScreen:setValue(fullScreen)\nsoundVolumeSlider:setValue(soundVolume)\n-- musicVolumeSlider:setValue(musicVolume)\n\noptionLeft:setValue(inputLeft:getInputsString())\noptionRight:setValue(inputRight:getInputsString())\noptionUp:setValue(inputUp:getInputsString())\noptionDown:setValue(inputDown:getInputsString())\noptionThrust:setValue(inputThrust:getInputsString())\noptionBrake:setValue(inputBrake:getInputsString())\noptionRotateViewLeft:setValue(inputRotateViewLeft:getInputsString())\noptionRotateViewRight:setValue(inputRotateViewRight:getInputsString())\noptionReverseView:setValue(inputReverseView:getInputsString())\noptionResetView:setValue(inputResetView:getInputsString())\noptionToggleMap:setValue(inputToggleMap:getInputsString())\noptionToggleCraft:setValue(inputToggleCraft:getInputsString())\noptionTogglePause:setValue(inputTogglePause:getInputsString())\noptionDestruct:setValue(inputDestruct:getInputsString())"
               }
             ]
           },
@@ -984,9 +984,9 @@
                       }
                     },
                     {
-                      "variable": "project",
+                      "variable": "application",
                       "to": {
-                        "key": "Project"
+                        "key": "Application"
                       }
                     },
                     {
@@ -1002,7 +1002,7 @@
                       }
                     }
                   ],
-                  "code": "displayResolution = project:getDisplayResolution()\nfullScreen = project:isFullScreen()\noptionResolution:setValue(displayResolution)\noptionFullScreen:setValue(fullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])"
+                  "code": "displayResolution = application:getDisplayResolution()\nfullScreen = application:isFullScreen()\noptionResolution:setValue(displayResolution)\noptionFullScreen:setValue(fullScreen)\ntable.remove(gMenuScreenStack)\ntable.remove(gMenuInputStack)\ninput:setInputHandler(gMenuInputStack[#gMenuInputStack])\nscreen:setScreen(gMenuScreenStack[#gMenuScreenStack])"
                 },
                 "options": [
                   {
@@ -1053,12 +1053,6 @@
                             }
                           },
                           {
-                            "variable": "project",
-                            "to": {
-                              "key": "Project"
-                            }
-                          },
-                          {
                             "variable": "promptScreen",
                             "to": {
                               "key": ":Screen",
@@ -1089,7 +1083,7 @@
                             }
                           }
                         ],
-                        "code": "previousMode = project:getDisplayResolution()\npreviousFullScreen = project:isFullScreen()\nmode = optionResolution:getValue()\nfullScreen = optionFullScreen:getValue()\nproject:setDisplayResolution(mode, fullScreen)\nscreen:setScreen(promptScreen)\ninput:setInputHandler(promptInput)\nscreenTestTimer:setTime(0)\nscreenTestTimer:play()\nprompt:reset()"
+                        "code": "previousMode = application:getDisplayResolution()\npreviousFullScreen = application:isFullScreen()\nmode = optionResolution:getValue()\nfullScreen = optionFullScreen:getValue()\napplication:setDisplayResolution(mode, fullScreen)\nscreen:setScreen(promptScreen)\ninput:setInputHandler(promptInput)\nscreenTestTimer:setTime(0)\nscreenTestTimer:play()\nprompt:reset()"
                       }
                     }
                   }

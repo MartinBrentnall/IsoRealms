@@ -18,6 +18,8 @@
  */
 #include "Function.h"
 
+#include <sol.hpp>
+
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
@@ -280,7 +282,7 @@ namespace IsoRealms::Basics {
       (**cDefArguments[i])->bind(mBindFunctionName);
     }
 
-    sol::protected_function mFunction = (*cParent.cDefLuaState)[cParent.cDefName];
+    sol::protected_function mFunction = cParent.cDefLuaState[cParent.cDefName];
     sol::protected_function_result mResult = mFunction();
 
     // We have to check for errors manually because Sol2 exception handling is broken.
@@ -339,7 +341,7 @@ namespace IsoRealms::Basics {
       mFunctionDeclaration += cDefArgumentDefinitions[i]->getCleanup();
     }
     mFunctionDeclaration += "end\n";
-    cDefLuaState->script(mFunctionDeclaration);
+    cDefLuaState.script(mFunctionDeclaration);
   }
   
   void Function::revoke() {
