@@ -609,18 +609,4 @@ namespace IsoRealms {
   bool Project::QuitAction::isDefaultConfiguration() const {
     return true;
   }
-
-  const std::string Project::JSON_EDITOR                = "editor";
-  const std::string Project::JSON_INCLUDE               = "include";
-  const std::string Project::JSON_INITIALISATION        = "initialisation";
-  const std::string Project::JSON_INPUT                 = "input";
-  const std::string Project::JSON_LAUNCH_CONFIGURATIONS = "launchConfigurations";
-  const std::string Project::JSON_LOCAL                 = "local";
-  const std::string Project::JSON_MODULES               = "modules";
-  const std::string Project::JSON_NAME                  = "name";
-  const std::string Project::JSON_PROJECT               = "project";
-  const std::string Project::JSON_QUIT                  = "quit";
-  const std::string Project::JSON_RESET                 = "reset";
-  const std::string Project::JSON_SCREEN                = "screen";
-  const std::string Project::JSON_START                 = "start";
 }

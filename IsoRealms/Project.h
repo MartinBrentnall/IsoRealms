@@ -222,19 +222,19 @@ namespace IsoRealms {
     template <class TYPE> friend struct AssetContainerTraits;
 
     private:
-    static const std::string JSON_EDITOR;
-    static const std::string JSON_INCLUDE;
-    static const std::string JSON_INITIALISATION;
-    static const std::string JSON_INPUT;
-    static const std::string JSON_LAUNCH_CONFIGURATIONS;
-    static const std::string JSON_LOCAL;
-    static const std::string JSON_MODULES;
-    static const std::string JSON_NAME;
-    static const std::string JSON_PROJECT;
-    static const std::string JSON_QUIT;
-    static const std::string JSON_RESET;
-    static const std::string JSON_SCREEN;
-    static const std::string JSON_START;
+    inline static const std::string JSON_EDITOR                = "editor";
+    inline static const std::string JSON_INCLUDE               = "include";
+    inline static const std::string JSON_INITIALISATION        = "initialisation";
+    inline static const std::string JSON_INPUT                 = "input";
+    inline static const std::string JSON_LAUNCH_CONFIGURATIONS = "launchConfigurations";
+    inline static const std::string JSON_LOCAL                 = "local";
+    inline static const std::string JSON_MODULES               = "modules";
+    inline static const std::string JSON_NAME                  = "name";
+    inline static const std::string JSON_PROJECT               = "project";
+    inline static const std::string JSON_QUIT                  = "quit";
+    inline static const std::string JSON_RESET                 = "reset";
+    inline static const std::string JSON_SCREEN                = "screen";
+    inline static const std::string JSON_START                 = "start";
 
     class QuitAction : public IAction {
       public:

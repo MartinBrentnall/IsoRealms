@@ -303,7 +303,8 @@
               {"id": "NextTheme",          "mappings": [{"type": "KeyDown", "key": "End"},         {"type": "Hat","direction": "Up"}]},
               {"id": "EditorMenu",         "mappings": [{"type": "KeyDown", "key": "Escape"},      {"type": "ButtonDown","button": 9}]},
               {"id": "RotateView",         "mappings": [{"type": "MouseButtonDown", "button": "Left"}]},
-              {"id": "MoveView",           "mappings": [{"type": "MouseButtonDown", "button": "Right"}]}
+              {"id": "MoveView",           "mappings": [{"type": "MouseButtonDown", "button": "Right"}]},
+              {"id": "ToggleHelp",         "mappings": [{"type": "KeyDown", "key": "F4"}]}
             ]
           },
           {
@@ -685,6 +686,7 @@
 
                   {"input": {"key": "Basics/InputSwitch/DirectEditorInput"}},
 
+                  {"input": {"key": "Basics/DigitalInput/ToggleHelp"}},
                   {"input": {"key": "Basics/DigitalInput/Cancel"}},
                   {"input": {"key": "Basics/DigitalInput/ConfigureTool"}},
                   {"input": {"key": "Basics/DigitalInput/MoveCursorBackward"}},
@@ -818,7 +820,8 @@
                   {"input": "Cancel",       "mapping": {"key": "Basics/DigitalInput/Cancel"}},
                   {"input": "Confirm",      "mapping": {"key": "Basics/DigitalInput/UseTool"}},
                   {"input": "PreviousItem", "mapping": {"key": "Basics/DigitalInput/MoveCursorForward"}},
-                  {"input": "NextItem",     "mapping": {"key": "Basics/DigitalInput/MoveCursorBackward"}}
+                  {"input": "NextItem",     "mapping": {"key": "Basics/DigitalInput/MoveCursorBackward"}},
+                  {"input": "ToggleHelp",   "mapping": {"key": "Basics/DigitalInput/ToggleHelp"}}
                 ],
                 "onExit": {
                   "key": "Basics/Function/ResumeEditor",
