@@ -18,24 +18,27 @@
  */
 #pragma once
 
+#include <cstring>
+#include <iostream>
+#include <map>
 #include <string>
 
 namespace IsoRealms {
-  class Options;
-
+  
   /**
-   * Interface to be implemented in order to supply options to projects.
+   * A set of fixed options.
    */
-  class IOptions {
+  class Options {
     public:
-      
-    /**
-     * Retrieve the option value for the specified key.
-     * 
-     * @param key The option key.
-     * @return The option value.
-     */
-    virtual std::string getOption(const std::string& key) const = 0;
-    virtual Options getFixedOptions() = 0;
+    Options();
+    Options(int argc, char** argv);
+    Options(std::map<std::string, std::string> options);
+    void addOption(const std::string& key, const std::string& value);
+    bool operator==(const Options& options) const;
+    std::map<std::string, std::string> getAllOptions() const;
+    std::string getOption(const std::string& key) const;
+    
+    private:
+    std::map<std::string, std::string> cOptions; /// Map of options
   };
 }

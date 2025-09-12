@@ -22,8 +22,8 @@
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/Options/Options.h"
 #include "IsoRealms/Persistence/ParseException.h"
+#include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/System.h"
 

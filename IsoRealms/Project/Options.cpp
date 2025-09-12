@@ -81,8 +81,4 @@ namespace IsoRealms {
     }
     return "";
   }
-  
-  Options Options::getFixedOptions() {
-    return *this;
-  }
 }

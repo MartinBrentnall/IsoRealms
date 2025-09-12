@@ -26,5 +26,4 @@
 #include "Exception/ResourceInitException.h"
 #include "IModuleHandle.h"
 #include "IResourceData.h"
-#include "Options/IOptions.h"
 #include "Project/Registry/IAssetUser.h"

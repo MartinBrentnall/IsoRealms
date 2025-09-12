@@ -32,10 +32,10 @@
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Lua/LuaBinding.h"
 #include "IsoRealms/Lua/LocalLuaBinding.h"
-#include "IsoRealms/Options/Options.h"
 #include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Types.h"
 
+#include "Options.h"
 #include "OwnedAsset.h"
 #include "ProjectFile.h"
 #include "ProjectLaunchConfiguration.h"

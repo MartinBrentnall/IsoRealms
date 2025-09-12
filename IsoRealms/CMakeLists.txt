@@ -96,7 +96,6 @@ add_library(IsoRealms
   Input/KeyMapping.cpp
   Input/MouseButtonMapping.cpp
   Metadata.cpp
-  Options/Options.cpp
   Persistence/JSONArray.cpp
   Persistence/JSONDocument.cpp
   Persistence/JSONObject.cpp
@@ -105,6 +104,7 @@ add_library(IsoRealms
   Persistence/ParseException.cpp
   Project/LuaState.cpp
   Project/Module.cpp
+  Project/Options.cpp
   Project/Project.cpp
   Project/ProjectFile.cpp
   Project/ProjectLaunchConfiguration.cpp

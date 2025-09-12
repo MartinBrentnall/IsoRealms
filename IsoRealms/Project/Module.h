@@ -40,7 +40,6 @@
 namespace IsoRealms {
   class IModuleHandle;
   class IProperty;
-  class IOptions;
   class JSONObject;
   class LuaState;
   class Project;
