@@ -25,7 +25,7 @@
 #include "Modules/Basics/Assets/Type/ISequenceTrack.h"
 
 namespace IsoRealms::Basics {
-  template<class DERIVED, class EVENT> class SequenceTrackInstanceBase : public ISequenceTrackInstance {
+  template <typename DERIVED, typename EVENT> class SequenceTrackInstanceBase : public ISequenceTrackInstance {
     public:
     SequenceTrackInstanceBase(const std::vector<std::unique_ptr<EVENT>>& events) :
               cEvents(events),

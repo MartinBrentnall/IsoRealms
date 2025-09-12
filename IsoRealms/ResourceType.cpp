@@ -115,7 +115,7 @@ namespace IsoRealms {
     return cSingular == "" ? "TODO: " + cParent.getName(this) : cSingular;
   }
 
-  std::set<IResource*> ResourceType::getResources() {
+  const std::set<IResource*> ResourceType::getResources() {
     return cResources;
   }
 

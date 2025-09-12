@@ -27,7 +27,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  template <class TOOL, class TOOL_INSTANCE> class EditorToolbar {
+  template <typename TOOL, typename TOOL_INSTANCE> class EditorToolbar {
     public:
     EditorToolbar(std::vector<TOOL_INSTANCE> tools, std::function<void(TOOL_INSTANCE)> selectToolFunction, std::function<void(TOOL_INSTANCE)> renderToolIconFunction) :
               cTools(tools),
@@ -241,9 +241,9 @@ namespace IsoRealms {
   };
   
   
-  template <class TOOL, class TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::BORDER_SPACING = 0.02f;
-  template <class TOOL, class TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::ICON_WIDTH     = 0.12f;
-  template <class TOOL, class TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::ICON_HEIGHT    = 0.12f;
-  template <class TOOL, class TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::BOTTOM_BORDER  = -1.0f + BORDER_SPACING;
-  template <class TOOL, class TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::ICON_SPACING   = 0.02f;
+  template <typename TOOL, typename TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::BORDER_SPACING = 0.02f;
+  template <typename TOOL, typename TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::ICON_WIDTH     = 0.12f;
+  template <typename TOOL, typename TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::ICON_HEIGHT    = 0.12f;
+  template <typename TOOL, typename TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::BOTTOM_BORDER  = -1.0f + BORDER_SPACING;
+  template <typename TOOL, typename TOOL_INSTANCE> const float EditorToolbar<TOOL, TOOL_INSTANCE>::ICON_SPACING   = 0.02f;
 }

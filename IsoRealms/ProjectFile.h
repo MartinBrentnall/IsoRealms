@@ -37,6 +37,7 @@ namespace IsoRealms {
     ProjectFile(Project& project, JSONObject object);
     void setDescription(JSONObject object);
     std::string getName() const;
+    std::vector<std::string> getNames() const;
     void getNames(std::vector<std::string>& names) const;
     ProjectFile* getFile(const std::string& id);
     void getProperties(PropertyMaker& owner, const Metadata& Metadata, Project& project, bool topFile);
@@ -52,7 +53,7 @@ namespace IsoRealms {
     static const std::string JSON_INCLUDE;
 
     File cFile;
-    std::string cDefDescription;
+    std::string cDefID;
     bool cAllowModifications;
     std::vector<std::unique_ptr<ProjectFile>> cInclusions;
   };

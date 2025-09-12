@@ -50,7 +50,7 @@
 #include "VirtualKeyboard/VirtualKeyboard.h"
 
 namespace IsoRealms::UI {
-  template<class TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct AssetContainerTraits;
 
   class UI : public IModuleHandle {
     public:
@@ -173,7 +173,7 @@ namespace IsoRealms::UI {
     template <class TYPE> friend struct AssetContainerTraits;
   };
 
-  template<> struct AssetContainerTraits<ILayoutLocation> {template<class UI> static auto& get(UI& ui) {return ui.cLayoutLocations;}};
-  template<> struct AssetContainerTraits<ILayoutOffset>   {template<class UI> static auto& get(UI& ui) {return ui.cLayoutOffsets;  }};
-  template<> struct AssetContainerTraits<IMenuItem>       {template<class UI> static auto& get(UI& ui) {return ui.cMenuItems;      }};
+  template<> struct AssetContainerTraits<ILayoutLocation> {template <typename UI> static auto& get(UI& ui) {return ui.cLayoutLocations;}};
+  template<> struct AssetContainerTraits<ILayoutOffset>   {template <typename UI> static auto& get(UI& ui) {return ui.cLayoutOffsets;  }};
+  template<> struct AssetContainerTraits<IMenuItem>       {template <typename UI> static auto& get(UI& ui) {return ui.cMenuItems;      }};
 }

@@ -29,29 +29,29 @@
 namespace IsoRealms {
   class Application;
   
-  template<class TYPE, class OWNER, class RETURN> concept CreateDefaultAssetExists = requires(TYPE& type, OWNER& owner) {
+  template <typename TYPE, typename OWNER, typename RETURN> concept CreateDefaultAssetExists = requires(TYPE& type, OWNER& owner) {
     {type.createDefaultAsset(owner)} -> std::convertible_to<RETURN*>;
   };
 
-  template<class TYPE> concept HasClientConfigurationExists = requires(const TYPE& type) {
+  template <typename TYPE> concept HasClientConfigurationExists = requires(const TYPE& type) {
     {type.hasClientConfiguration()} -> std::same_as<bool>;
   };
   
-  template<class TYPE> concept RenderOtherClientProviderIconExists = requires(const TYPE& type, const std::string& id) {
+  template <typename TYPE> concept RenderOtherClientProviderIconExists = requires(const TYPE& type, const std::string& id) {
     {type.renderOtherClientProviderIcon(id)} -> std::same_as<bool>;
   };
   
-  template<class TYPE> concept GetAvailableClientProvidersExists = requires(const TYPE& type) {
+  template <typename TYPE> concept GetAvailableClientProvidersExists = requires(const TYPE& type) {
     {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<std::string>>;
   };
   
-  template<class TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
+  template <typename TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
     {type.isDefaultConfiguration()} -> std::same_as<bool>;
   };
 
-  template<typename DERIVED, typename TYPE> concept IsStateListener = std::convertible_to<DERIVED*, IStateListener<TYPE*>*>;
+  template <typename DERIVED, typename TYPE> concept IsStateListener = std::convertible_to<DERIVED*, IStateListener<TYPE*>*>;
 
-  template<class DERIVED, class TYPE, class MANAGER> class Asset : public IAssetUser<TYPE> {
+  template <typename DERIVED, typename TYPE, typename MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
     Asset(MANAGER& manager) :
               cManager(manager),

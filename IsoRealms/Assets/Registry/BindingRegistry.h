@@ -123,7 +123,7 @@ namespace IsoRealms {
       IBindingRegistry* cRuntimeLocals;
     };
 
-    template <class OWNER, class FROM> class Conversion : public IAssetProvider<IActionClient, IBinding> {
+    template <typename OWNER, typename FROM> class Conversion : public IAssetProvider<IActionClient, IBinding> {
       public:
       Conversion(OWNER& owner) :
                 cOwner(owner) {
@@ -150,7 +150,7 @@ namespace IsoRealms {
       }
 
       private:
-      template <class OWNER2, class TYPE> class Instance : public IBinding {
+      template <typename OWNER2, typename TYPE> class Instance : public IBinding {
         public:
         Instance(OWNER2& owner) :
                   cDefLuaState(owner.getProject().getLuaState().getState()),

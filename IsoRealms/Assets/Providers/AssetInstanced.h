@@ -25,7 +25,7 @@ namespace IsoRealms {
   class Metadata;
   class Project;
 
-  template <class OWNER, class BASE, class TYPE> class AssetInstanced : public IAssetProvider<OWNER, BASE> {
+  template <typename OWNER, typename BASE, typename TYPE> class AssetInstanced : public IAssetProvider<OWNER, BASE> {
     public:
     AssetInstanced(const Metadata& metadata) :
               cMetadata(metadata) {

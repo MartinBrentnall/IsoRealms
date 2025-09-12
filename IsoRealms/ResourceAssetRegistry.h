@@ -43,11 +43,11 @@ namespace IsoRealms {
   class IVertex;
   class Project;
 
-  template<typename TYPE> struct AssetTypeOf {
+  template <typename TYPE> struct AssetTypeOf {
     using type = TYPE;
   };
 
-  template<typename TYPE, typename OWNER> struct AssetTypeOf<IAssetProvider<OWNER, TYPE>> {
+  template <typename TYPE, typename OWNER> struct AssetTypeOf<IAssetProvider<OWNER, TYPE>> {
     using type = TYPE;
   };
 

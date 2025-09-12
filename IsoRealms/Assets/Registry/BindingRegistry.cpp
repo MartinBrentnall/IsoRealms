@@ -24,8 +24,8 @@
 #include "BindingRegistry.h"
 
 namespace IsoRealms {
-  template <class OWNER, class FROM>
-  template <class OWNER2, class TYPE>
+  template <typename OWNER, typename FROM>
+  template <typename OWNER2, typename TYPE>
   void BindingRegistry::Conversion<OWNER, FROM>::Instance<OWNER2, TYPE>::bind(const std::string& bindFunction) const {
     cDefLuaState[bindFunction](*cDefValue);
   }

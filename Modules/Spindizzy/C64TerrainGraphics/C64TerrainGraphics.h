@@ -32,16 +32,16 @@ namespace IsoRealms::Spindizzy {
     public:
     C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data);
     C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
-    void save(JSONObject object) const;
-    bool renderIcon();
-    void hintInUse(bool inUse);
     void registerAssets(ResourceAssetRegistry& assets);
+    void save(JSONObject object) const;
+    void hintInUse(bool inUse);
+    bool renderIcon();
+    void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     /**********************************\
      * Implements ITextureUseListener *
     \**********************************/
-    void hintTextureUsed(ITexture*, bool) override;
+    void hintTextureUsed(ITexture* texture, bool inUse) override;
 
     /**************************************\
      * Implements IStateListener<IFloat*> *

@@ -18,6 +18,7 @@
  */
 #include "ProjectMenu.h"
 
+#include "IsoRealms/Module.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/ResourceType.h"
 
@@ -29,29 +30,26 @@ namespace IsoRealms {
 
   void ProjectMenu::refresh() {
     clear();
-    std::set<std::string> mCategories;
-    std::set<IModule*> mModules = cProject.getModules();
 
-    addItem(std::make_unique<MenuItemAction>("Project Configuration", "TODO: Description", [this]() {
-      UIManager& mManager = getUIManager();
-      IUIStyle& mStyle = getStyle();
+    UIManager& mManager = getUIManager();
+    IUIStyle& mStyle = getStyle();
+    addItem(std::make_unique<MenuItemAction>("Project Configuration", "TODO: Description", [this, &mManager, &mStyle]() {
       mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](PropertyMaker& owner) {
         cProject.getProperties(owner);
       }), "Project Configuration");
     }));
 
-    for (IModule* mModule : mModules) {
+    std::set<std::string> mCategories;
+    for (const std::unique_ptr<Module>& mModule : cProject.getModules()) {
       std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
       for (ResourceType* mResourceType : mResourceTypes) {
         mCategories.insert(mResourceType->getCategory());
       }
     }
 
-    UIManager& mUIManager = getUIManager();
-    IUIStyle& mStyle = getStyle();
     for (std::string mCategory : mCategories) {
-      addItem(std::make_unique<MenuItemAction>(mCategory, "TODO: Category description.", [this, mCategory, &mUIManager, &mStyle]() {
-        openUI(std::make_unique<CategoryMenu>(mUIManager, mStyle, cProject, mCategory), mCategory);
+      addItem(std::make_unique<MenuItemAction>(mCategory, "TODO: Category description.", [this, mCategory, &mManager, &mStyle]() {
+        openUI(std::make_unique<CategoryMenu>(mManager, mStyle, cProject, mCategory), mCategory);
       }));
     }
   }

@@ -23,7 +23,7 @@
 namespace IsoRealms {
   class Project;
 
-  template <class OWNER, class TYPE> class IAssetListener {
+  template <typename OWNER, typename TYPE> class IAssetListener {
     public:
     virtual void assetAdded(IAssetProvider<OWNER, TYPE>*) = 0;
     virtual void assetDeleted(IAssetProvider<OWNER, TYPE>*) = 0;

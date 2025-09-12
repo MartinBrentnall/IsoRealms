@@ -38,22 +38,28 @@ namespace IsoRealms {
   }
 
   void ProjectFile::setDescription(JSONObject object) {
-    cDefDescription = object.getString(JSON_DESCRIPTION);
+    cDefID = object.getString(JSON_DESCRIPTION);
   }
 
   std::string ProjectFile::getName() const {
-    return cDefDescription;
+    return cDefID;
+  }
+
+  std::vector<std::string> ProjectFile::getNames() const {
+    std::vector<std::string> mNames;
+    getNames(mNames);
+    return mNames;
   }
 
   void ProjectFile::getNames(std::vector<std::string>& names) const {
-    names.emplace_back(cDefDescription);
+    names.emplace_back(cDefID);
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
       mInclusion->getNames(names);
     }
   }
 
   ProjectFile* ProjectFile::getFile(const std::string& id) {
-    if (id == cDefDescription) {
+    if (id == cDefID) {
       return this;
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
@@ -66,7 +72,7 @@ namespace IsoRealms {
   }
 
   void ProjectFile::save(JSONObject object) const {
-    object.addString(JSON_DESCRIPTION, cDefDescription);
+    object.addString(JSON_DESCRIPTION, cDefID);
     JSONArray mIncludeArray = object.addArray(JSON_INCLUDE);
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
       JSONObject mIncludeObject = mIncludeArray.addObject();
@@ -89,7 +95,7 @@ namespace IsoRealms {
 
   void ProjectFile::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project, bool inclusion) {
     owner.createPropertyAsset<File>(metadata.getPropertyData("File"), cFile);
-    owner.createPropertyNativeString(metadata.getPropertyData("Description"), [this]() {return cDefDescription;}, [this](const std::string& value) {cDefDescription = value;});
+    owner.createPropertyNativeString(metadata.getPropertyData("Description"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
       owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowModifications"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;});
     }

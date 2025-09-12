@@ -24,8 +24,8 @@
 #include "Assets/Type/IAsset.h"
 
 namespace IsoRealms {
-  template<class TYPE> class IAssetUser;
-  template<class TYPE> class IStateListener;
+  template <typename TYPE> class IAssetUser;
+  template <typename TYPE> class IStateListener;
 
   class IAction;
   class IActionClient;

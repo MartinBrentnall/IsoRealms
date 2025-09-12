@@ -26,7 +26,7 @@
 #include "AssetRegistry.h"
 
 namespace IsoRealms {
-  template<class DERIVED, class OWNER, class TYPE> class AssetClientManager {
+  template <typename DERIVED, typename OWNER, typename TYPE> class AssetClientManager {
     public:
     AssetRegistry<OWNER, TYPE> cRegistry;
 

@@ -346,12 +346,8 @@ namespace IsoRealms {
     // TODO: Implement this
   }
 
-  std::set<IModule*> Project::getModules() {
-    std::set<IModule*> mModules;
-    for (const std::unique_ptr<Module>& mModule : cDefModules) {
-      mModules.insert(mModule.get());
-    }
-    return mModules;
+  const std::vector<std::unique_ptr<Module>>& Project::getModules() const {
+    return cDefModules;
   }
   
   std::vector<std::string> Project::getUnusedModuleNames() const {
@@ -403,9 +399,7 @@ namespace IsoRealms {
   }
   
   std::vector<std::string> Project::getProjectFileNames() const {
-    std::vector<std::string> mNames;
-    cDefProjectFileStructure.getNames(mNames);
-    return mNames;
+    return cDefProjectFileStructure.getNames();
   }
 
   ProjectFile* Project::getProjectFile() {

@@ -24,7 +24,7 @@
 #include "IsoRealms/Persistence.h"
 
 namespace IsoRealms {
-  template<class OWNER, class TYPE> class AssetSingleton : public IAssetProvider<OWNER, TYPE> {
+  template <typename OWNER, typename TYPE> class AssetSingleton : public IAssetProvider<OWNER, TYPE> {
     public:
     AssetSingleton(const std::string& id, TYPE* asset) :
               cID(id),

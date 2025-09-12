@@ -21,7 +21,7 @@
 #include "IsoRealms/Assets/Type/IBoolean.h"
 
 namespace IsoRealms {
-  template<class PARENT, class SIGNAL> class EditorDigitalInput {
+  template <typename PARENT, typename SIGNAL> class EditorDigitalInput {
     public:
     EditorDigitalInput(PARENT& parent, SIGNAL signal) :
               cParent(parent),

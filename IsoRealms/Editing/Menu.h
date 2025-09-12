@@ -26,7 +26,6 @@
 
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Common/ScreenArea.h"
-#include "IsoRealms/IModule.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Utils.h"
 
@@ -34,7 +33,7 @@
 #include "UIManager.h"
 
 namespace IsoRealms {
-  template<class MENU_ITEM_TYPE> class Menu : public IUIScreen {
+  template <typename MENU_ITEM_TYPE> class Menu : public IUIScreen {
     public:
     Menu(UIManager& manager, IUIStyle& style) :
               cUIManager(manager),

@@ -24,7 +24,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  template <class T> class SpatialContainer1D {
+  template <typename T> class SpatialContainer1D {
     private:
     unsigned int cUnit;
     std::vector<std::unique_ptr<T>> cCells;

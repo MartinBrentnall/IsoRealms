@@ -115,19 +115,26 @@ namespace IsoRealms::Spindizzy {
     setNeedsFullRedraw();
   }
 
-  void C64TerrainGraphics::setNeedsFullRedraw() {
-    cNeedsFullRedraw = true;
-    cChangedAngles.clear();
-    if (cTexturesInUseCount > 0) {
-      updateLater();
+  void C64TerrainGraphics::registerAssets(ResourceAssetRegistry& assets) {
+    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
+      assets.add<ITexture>(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
+    }
+    for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
+      assets.add<ITexture>(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
     }
   }
-  
-  void C64TerrainGraphics::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Floor"),     cDefFloor);
-    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Wall"),      cDefWall);
-    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Grid"),      cDefGrid);
-    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Highlight"), cDefHighlight);
+
+  void C64TerrainGraphics::save(JSONObject object) const {
+    cDefFloor.save(object, JSON_FLOOR);
+    cDefWall.save(object, JSON_WALL);
+    cDefGrid.save(object, JSON_GRID);
+    cDefHighlight.save(object, JSON_HIGHLIGHT);
+  }
+
+  void C64TerrainGraphics::hintInUse(bool inUse) {
+    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
+      mTexture.second->hintTextureInUse(inUse);
+    }
   }
   
   bool C64TerrainGraphics::renderIcon() {
@@ -170,21 +177,66 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void C64TerrainGraphics::hintInUse(bool inUse) {
-    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
-      mTexture.second->hintTextureInUse(inUse);
+  void C64TerrainGraphics::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Floor"),     cDefFloor);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Wall"),      cDefWall);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Grid"),      cDefGrid);
+    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Highlight"), cDefHighlight);
+  }
+  
+  void C64TerrainGraphics::hintTextureUsed(ITexture* texture, bool inUse) {
+    if (cTexturesInUseCount == 0 && inUse && (!cChangedAngles.empty() || cNeedsFullRedraw)) {
+      updateLater();
+    }
+    cTexturesInUseCount += inUse ? 1 : -1;
+  }
+
+  void C64TerrainGraphics::stateChanged(IFloat* value) {
+    if (!cNeedsFullRedraw) {
+      cChangedAngles.insert(value);
+      if (cTexturesInUseCount > 0) {
+        updateLater();
+      }
+    }
+  }
+
+  void C64TerrainGraphics::screenAdded(const IScreen* screen) {
+    const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat asset!?
+    if (mAngle != nullptr) {
+      // TODO: cProject().addStateChangeListener(mAngle, this);
+      for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
+        bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
+        mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);
+      }
+      cUniqueViews.insert(mAngle);
+    }
+  }
+
+  void C64TerrainGraphics::screenRemoved(const IScreen* screen) {
+    // TODO: Implement this
+  }
+
+  void C64TerrainGraphics::screenPreRender(const IScreen* screen) {
+    const IFloat* mYaw = screen->getYaw();
+    for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
+      mOrientedTexture.second->setScreen(mYaw);
     }
   }
   
-  void C64TerrainGraphics::registerAssets(ResourceAssetRegistry& assets) {
-    for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
-      assets.add<ITexture>(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
-    }
+  void C64TerrainGraphics::screenPostRender(const IScreen* screen) {
     for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      assets.add<ITexture>(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
+      mOrientedTexture.second->setScreen(*cDefaultYaw);
     }
   }
-    
+
+  void C64TerrainGraphics::setNeedsFullRedraw() {
+    cNeedsFullRedraw = true;
+    cChangedAngles.clear();
+    if (cTexturesInUseCount > 0) {
+      updateLater();
+    }
+  }
+  
   std::unique_ptr<LiteralTexture> C64TerrainGraphics::createTexture(bool clamp) {
     std::unique_ptr<LiteralTexture> mTexture = std::make_unique<LiteralTexture>(cProject, 128, 128, false, clamp);
     mTexture->addUseListener(this);
@@ -447,13 +499,6 @@ namespace IsoRealms::Spindizzy {
 
   // TODO: Redraw on Float relinquish
 
-  void C64TerrainGraphics::save(JSONObject object) const {
-    cDefFloor.save(object, JSON_FLOOR);
-    cDefWall.save(object, JSON_WALL);
-    cDefGrid.save(object, JSON_GRID);
-    cDefHighlight.save(object, JSON_HIGHLIGHT);
-  }
-
   void C64TerrainGraphics::performAngleRedraw(IFloat* angle) {
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -470,22 +515,6 @@ namespace IsoRealms::Spindizzy {
     mApplication.setViewPort();
   }
 
-  void C64TerrainGraphics::hintTextureUsed(ITexture* texture, bool inUse) {
-    if (cTexturesInUseCount == 0 && inUse && (!cChangedAngles.empty() || cNeedsFullRedraw)) {
-      updateLater();
-    }
-    cTexturesInUseCount += inUse ? 1 : -1;
-  }
-
-  void C64TerrainGraphics::stateChanged(IFloat* value) {
-    if (!cNeedsFullRedraw) {
-      cChangedAngles.insert(value);
-      if (cTexturesInUseCount > 0) {
-        updateLater();
-      }
-    }
-  }
-
   void C64TerrainGraphics::updateLater() {
     cProject.updateLater([this]() {
       if (cNeedsFullRedraw) {
@@ -498,35 +527,6 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  void C64TerrainGraphics::screenAdded(const IScreen* screen) {
-    const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat asset!?
-    if (mAngle != nullptr) {
-      // TODO: cProject().addStateChangeListener(mAngle, this);
-      for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-        bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
-        mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);
-      }
-      cUniqueViews.insert(mAngle);
-    }
-  }
-
-  void C64TerrainGraphics::screenRemoved(const IScreen* screen) {
-    // TODO: Implement this
-  }
-
-  void C64TerrainGraphics::screenPreRender(const IScreen* screen) {
-    const IFloat* mYaw = screen->getYaw();
-    for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      mOrientedTexture.second->setScreen(mYaw);
-    }
-  }
-  
-  void C64TerrainGraphics::screenPostRender(const IScreen* screen) {
-    for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      mOrientedTexture.second->setScreen(*cDefaultYaw);
-    }
-  }
-    
   C64TerrainGraphics::OrientedTexture::OrientedTexture() {
     cCurrentTexture = nullptr;
   }

@@ -118,7 +118,7 @@ namespace IsoRealms {
     static void renderRoundedRectangle(float left, float bottom, float right, float top, float curveSize);
     static void renderBezier(const Point2D& start, const Point2D& controlA, const Point2D& controlB, const Point2D& end, int resolution);
 
-    template <class TYPE, class TYPEB> static int getIndex(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
+    template <typename TYPE, typename TYPEB> static int getIndex(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
       for (std::size_t i = 0; i < vector.size(); i++) {
         if (vector[i].get() == element) {
           return i;
@@ -127,7 +127,7 @@ namespace IsoRealms {
       return -1;
     }
 
-    template <class TYPE> static int removeElement(std::vector<TYPE>& vector, const TYPE& element) {
+    template <typename TYPE> static int removeElement(std::vector<TYPE>& vector, const TYPE& element) {
       int mRemoved = 0;
       for (std::size_t i = vector.size(); i > 0; i--) {
         if (vector[i - 1] == element) {
@@ -138,7 +138,7 @@ namespace IsoRealms {
       return mRemoved;
     }
     
-    template <class TYPE, class TYPEB> static std::unique_ptr<TYPE> removeElementUnique(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
+    template <typename TYPE, typename TYPEB> static std::unique_ptr<TYPE> removeElementUnique(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
       for (std::size_t i = vector.size(); i > 0; i--) {
         if (vector[i - 1].get() == element) {
           std::unique_ptr<TYPE> mElement = std::move(vector[i - 1]);
@@ -149,7 +149,7 @@ namespace IsoRealms {
       return nullptr;
     }
 
-    template <class KEY, class VALUE> static int removeByValue(std::map<KEY, VALUE>& map, VALUE& value) {
+    template <typename KEY, typename VALUE> static int removeByValue(std::map<KEY, VALUE>& map, VALUE& value) {
       int mRemoved = 0;
       for (std::pair<const KEY, VALUE>& mPair : map) {
         if (mPair.second == value) {
@@ -160,7 +160,7 @@ namespace IsoRealms {
       return mRemoved;
     }
 
-    template <class KEY, class VALUE> static KEY reverseLookupUnique(const std::map<KEY, std::unique_ptr<VALUE>>& map, const VALUE& value) {
+    template <typename KEY, typename VALUE> static KEY reverseLookupUnique(const std::map<KEY, std::unique_ptr<VALUE>>& map, const VALUE& value) {
       for (const std::pair<const KEY, std::unique_ptr<VALUE>>& mPair : map) {
         if (mPair.second.get() == &value) {
           return mPair.first;
@@ -169,7 +169,7 @@ namespace IsoRealms {
       throw ArgumentException("ERROR: Utils::reverseLookup: Specified value not found in specified map");
     }
 
-    template <class KEY, class VALUE> static KEY reverseLookup(const std::map<KEY, VALUE>& map, const VALUE& value) {
+    template <typename KEY, typename VALUE> static KEY reverseLookup(const std::map<KEY, VALUE>& map, const VALUE& value) {
       for (const std::pair<const KEY, VALUE>& mPair : map) {
         if (mPair.second == value) {
           return mPair.first;
@@ -178,7 +178,7 @@ namespace IsoRealms {
       throw ArgumentException("ERROR: Utils::reverseLookup: Specified value not found in specified map");
     }
 
-    template <class MAP> static std::string getAvailableKey(MAP& map, const std::string proposedName) {
+    template <typename MAP> static std::string getAvailableKey(MAP& map, const std::string proposedName) {
       std::string mProposedName = proposedName;
       int mCount = 1;
       while (map.find(mProposedName) != map.end()) {

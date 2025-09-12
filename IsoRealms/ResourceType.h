@@ -39,7 +39,7 @@ namespace IsoRealms {
 
     std::string const getPlural() const;
     std::string const getSingular() const;
-    std::set<IResource*> getResources();
+    const std::set<IResource*> getResources();
     IResource* createResource();
     void renameResource(IResource* resource, const std::string& name);
     void deleteResource(IResource* resource);

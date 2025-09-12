@@ -129,7 +129,7 @@ namespace IsoRealms::Basics {
     mutable std::map<const IAction*, std::unique_ptr<Call>> cInstances;      /// Calls derived from this function.
 
     // Private functions.
-    template <class VECTOR> std::string generateBindingDeclarations(VECTOR& bindings, unsigned int baseIndex) const {
+    template <typename VECTOR> std::string generateBindingDeclarations(VECTOR& bindings, unsigned int baseIndex) const {
       std::string mFunctionDeclaration;
       for (unsigned int i = 0; i < bindings.size(); i++) {
         mFunctionDeclaration += bindings[i]->getInitCode();

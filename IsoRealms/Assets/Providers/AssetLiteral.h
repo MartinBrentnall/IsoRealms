@@ -27,7 +27,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  template<class OWNER, class TYPE> class AssetLiteral : public IAssetProvider<OWNER, TYPE> {
+  template <typename OWNER, typename TYPE> class AssetLiteral : public IAssetProvider<OWNER, TYPE> {
     public:
 
     /***********************************\

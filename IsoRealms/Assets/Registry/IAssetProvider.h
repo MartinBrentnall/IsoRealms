@@ -21,7 +21,7 @@
 namespace IsoRealms {
   class JSONObject;
 
-  template<class OWNER, class TYPE> class IAssetProvider {
+  template <typename OWNER, typename TYPE> class IAssetProvider {
     public:
     virtual TYPE* getAsset(OWNER& owner, JSONObject object) = 0;
     virtual TYPE* getAsset(OWNER& owner) = 0;

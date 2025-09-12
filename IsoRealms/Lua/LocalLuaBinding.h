@@ -32,7 +32,7 @@ namespace IsoRealms {
    * Permits the binding of an arbitrary object to a lua variable.  This
    * binding resides in the parent project.
    */
-  template <class T> class LocalLuaBinding : public IBinding {
+  template <typename T> class LocalLuaBinding : public IBinding {
     public:
     LocalLuaBinding(LuaState& lua, T* value, IBindingRegistry* localBindingRegistry) :
               cDefLuaState(lua.getState()),

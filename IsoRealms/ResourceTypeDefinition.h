@@ -25,7 +25,7 @@
 #include "IsoRealms/Resource.h"
 
 namespace IsoRealms {
-  template <class MODULE, class TYPE> class ResourceTypeDefinition : public IResourceTypeDefinition {
+  template <typename MODULE, typename TYPE> class ResourceTypeDefinition : public IResourceTypeDefinition {
     public:
     class Iterator {
       private:

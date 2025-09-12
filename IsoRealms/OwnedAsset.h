@@ -24,7 +24,7 @@
 #include "PropertyMaker.h"
 
 namespace IsoRealms {
-  template <class OWNER, class TYPE> class OwnedAsset {
+  template <typename OWNER, typename TYPE> class OwnedAsset {
     public:
     OwnedAsset(Project& project, ProjectFile& ownerProject, OWNER& owner) :
               cAsset(owner),

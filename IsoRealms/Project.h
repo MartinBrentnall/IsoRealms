@@ -55,9 +55,8 @@
 #include "Types.h"
 
 namespace IsoRealms {
-  template<class TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct AssetContainerTraits;
   
-  class IModule;
   class IScreenListener;
   class Module;
   class PropertyMaker;
@@ -97,7 +96,7 @@ namespace IsoRealms {
     // Functions used by project members.
     Module* loadModule(const std::string& name);
     void unloadModule(const std::string& name);
-    std::set<IModule*> getModules();
+    const std::vector<std::unique_ptr<Module>>& getModules() const;
     std::vector<std::string> getUnusedModuleNames() const;
     bool isLaunchConfigurationNameUsed(const std::string& name, ProjectLaunchConfiguration* launchConfiguration) const;
     std::string makeLaunchConfigurationName() const;
@@ -219,7 +218,7 @@ namespace IsoRealms {
     IResourceData& getResourceData() override;
     IBindingRegistry* getBindingRegistry() override;
     
-    template <class TYPE> friend struct AssetContainerTraits;
+    template <typename TYPE> friend struct AssetContainerTraits;
 
     private:
     inline static const std::string JSON_EDITOR                = "editor";
@@ -285,9 +284,9 @@ namespace IsoRealms {
     OwnedAsset<IActionClient, Action>                        cDefResetAction;
     OwnedAsset<IActionClient, Action>                        cDefStartAction;
     OwnedAsset<IActionClient, Action>                        cDefQuitAction;
+    LuaState cLuaState;                       /// Lua State for this project.
 
     // Scripting support.
-    LuaState cLuaState;                       /// Lua State for this project.
     LuaBinding<Application> cLuaBindingApplication;
     LuaBinding<Project> cLuaBindingProject;   /// Project interface for actions and scripting.
     LocalLuaBinding<Options> cOptionsBinding;
@@ -314,19 +313,19 @@ namespace IsoRealms {
     void save(ProjectFile& file);
   };
 
-  template<> struct AssetContainerTraits<IAction>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cActions;      }};
-  template<> struct AssetContainerTraits<IBinding>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindings;     }};
-  template<> struct AssetContainerTraits<IBindingType>  {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes; }};
-  template<> struct AssetContainerTraits<IBoolean>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;     }};
-  template<> struct AssetContainerTraits<IColour>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cColours;      }};
-  template<> struct AssetContainerTraits<IEditable>     {template<class PROJECT> static auto& get(PROJECT& project) {return project.cEditables;    }};
-  template<> struct AssetContainerTraits<IFloat>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFloats;       }};
-  template<> struct AssetContainerTraits<IFont>         {template<class PROJECT> static auto& get(PROJECT& project) {return project.cFonts;        }};
-  template<> struct AssetContainerTraits<IInputHandler> {template<class PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers;}};
-  template<> struct AssetContainerTraits<IInteger>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;     }};
-  template<> struct AssetContainerTraits<IModel>        {template<class PROJECT> static auto& get(PROJECT& project) {return project.cModels;       }};
-  template<> struct AssetContainerTraits<IScreen>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cScreens;      }};
-  template<> struct AssetContainerTraits<IString>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cStrings;      }};
-  template<> struct AssetContainerTraits<ITexture>      {template<class PROJECT> static auto& get(PROJECT& project) {return project.cTextures;     }};
-  template<> struct AssetContainerTraits<IVertex>       {template<class PROJECT> static auto& get(PROJECT& project) {return project.cVertices;     }};
+  template<> struct AssetContainerTraits<IAction>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cActions;      }};
+  template<> struct AssetContainerTraits<IBinding>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindings;     }};
+  template<> struct AssetContainerTraits<IBindingType>  {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes; }};
+  template<> struct AssetContainerTraits<IBoolean>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;     }};
+  template<> struct AssetContainerTraits<IColour>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cColours;      }};
+  template<> struct AssetContainerTraits<IEditable>     {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cEditables;    }};
+  template<> struct AssetContainerTraits<IFloat>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFloats;       }};
+  template<> struct AssetContainerTraits<IFont>         {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFonts;        }};
+  template<> struct AssetContainerTraits<IInputHandler> {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers;}};
+  template<> struct AssetContainerTraits<IInteger>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;     }};
+  template<> struct AssetContainerTraits<IModel>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cModels;       }};
+  template<> struct AssetContainerTraits<IScreen>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cScreens;      }};
+  template<> struct AssetContainerTraits<IString>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cStrings;      }};
+  template<> struct AssetContainerTraits<ITexture>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cTextures;     }};
+  template<> struct AssetContainerTraits<IVertex>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cVertices;     }};
 }

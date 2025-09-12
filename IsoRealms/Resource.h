@@ -34,9 +34,9 @@
 #include "Utils.h"
 
 namespace IsoRealms {
-  template <class MODULE, class RESOURCE> class Resource : public IResource,
-                                                           public IResourceData,
-                                                           public IActionClient {
+  template <typename MODULE, typename RESOURCE> class Resource : public IResource,
+                                                                 public IResourceData,
+                                                                 public IActionClient {
     public:
     Resource(ResourceType& parent, MODULE& module, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) :
               cParent(parent),
@@ -74,7 +74,7 @@ namespace IsoRealms {
     /************************\
      * Implements IResource *
     \************************/
-    std::string getName() override {
+    std::string getName() const override {
       return cName;
     }
 
@@ -88,7 +88,7 @@ namespace IsoRealms {
         cAssetRegistry.setLocalPath(cName);
         registerAssets();
       }, [this](const std::string& value) {
-        std::set<IResource*> mAllResources = cParent.getResources();
+        const std::set<IResource*> mAllResources = cParent.getResources();
         for (IResource* mResource : mAllResources) {
           if (mResource->getName() == value) {
             return mResource == this;
@@ -116,7 +116,7 @@ namespace IsoRealms {
       return true;
     }
     
-    void hintInUse(bool inUse) override {
+    void hintInUse(bool inUse) {
       cResourceHandle.hintInUse(inUse);
     }
 
@@ -136,7 +136,7 @@ namespace IsoRealms {
       cAssetRegistry.unregisterAssets(assets);
     }
 
-    std::string getResourceDataPath() const override {
+    std::string getResourceDataPath() const {
       std::string mRelativePath = cOwnerProject.getProjectFile()->cFile.getRelativePath();
       return mRelativePath.substr(0, mRelativePath.find_last_of('.')) + "/" + cResourceDataPath;
     }
@@ -203,5 +203,5 @@ namespace IsoRealms {
     ResourceAssetRegistry cAssetRegistry;
   };
 
-  template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";
+  template <typename MODULE, typename RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";
 }

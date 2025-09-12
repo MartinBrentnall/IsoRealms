@@ -19,7 +19,7 @@
 #pragma once
 
 namespace IsoRealms {
-  template<class TYPE> class IStateNotifier {
+  template <typename TYPE> class IStateNotifier {
     public:
     virtual void stateChanged(TYPE* asset) = 0;
   };

@@ -28,7 +28,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  template <class TYPE> class SpatialContainerTest {
+  template <typename TYPE> class SpatialContainerTest {
     private:
     class Entry {
       private:

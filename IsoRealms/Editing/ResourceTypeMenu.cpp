@@ -115,7 +115,7 @@ namespace IsoRealms {
 
   void ResourceTypeMenu::refresh() {
     clear();
-    std::set<IResource*> mResources = cResourceType.getResources();
+    const std::set<IResource*> mResources = cResourceType.getResources();
     std::vector<IResource*> mSortedResources;
     IUIStyle& mStyle = getStyle();
     float mFontSize = mStyle.getFontSize();

@@ -72,7 +72,7 @@
 #include "ZoneType/ZoneType.h"
 
 namespace IsoRealms::Spindizzy {
-  template<class TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct AssetContainerTraits;
 
   class Spindizzy : public IModuleHandle,
                     public ISpindizzyRegistry,
@@ -436,12 +436,12 @@ namespace IsoRealms::Spindizzy {
     template <class TYPE> friend struct AssetContainerTraits;
   };
 
-  template<> struct AssetContainerTraits<IBoundaryType>        {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cBoundaryTypes;       }};
-  template<> struct AssetContainerTraits<ICamera>              {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cCameras;             }};
-  template<> struct AssetContainerTraits<IPhysicalObjectType>  {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cPhysicalObjectTypes; }};
-  template<> struct AssetContainerTraits<ISurfacePattern>      {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cSurfacePatterns;     }};
-  template<> struct AssetContainerTraits<IWallPattern>         {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cWallPatterns;        }};
-  template<> struct AssetContainerTraits<IWorldEditorTool>     {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cWorldEditorTools;    }};
-  template<> struct AssetContainerTraits<IZoneObjectTypeTrait> {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneObjectTypeTraits;}};
-  template<> struct AssetContainerTraits<IZoneViewType>        {template<class SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneViewTypes;       }};
+  template<> struct AssetContainerTraits<IBoundaryType>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cBoundaryTypes;       }};
+  template<> struct AssetContainerTraits<ICamera>              {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cCameras;             }};
+  template<> struct AssetContainerTraits<IPhysicalObjectType>  {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cPhysicalObjectTypes; }};
+  template<> struct AssetContainerTraits<ISurfacePattern>      {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cSurfacePatterns;     }};
+  template<> struct AssetContainerTraits<IWallPattern>         {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cWallPatterns;        }};
+  template<> struct AssetContainerTraits<IWorldEditorTool>     {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cWorldEditorTools;    }};
+  template<> struct AssetContainerTraits<IZoneObjectTypeTrait> {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneObjectTypeTraits;}};
+  template<> struct AssetContainerTraits<IZoneViewType>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneViewTypes;       }};
 }

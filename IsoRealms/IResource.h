@@ -24,9 +24,6 @@
 
 namespace IsoRealms {
   class JSONObject;
-  class IEditingContext;
-  class IFont;
-  class IProperty;
   class IResourceData;
   class Project;
   class ProjectFile;
@@ -34,17 +31,16 @@ namespace IsoRealms {
 
   class IResource {
     public:
-    virtual void getProperties(PropertyMaker& propertyMaker) = 0;
-    virtual std::string getName() = 0;
+    virtual std::string getName() const = 0;
     virtual bool isReadOnly() const = 0;
-    virtual bool renderIcon() = 0;
-    virtual void hintInUse(bool inUse) = 0;
+    virtual bool needsSaving(ProjectFile* savingProject) = 0;
     virtual void save(JSONObject object) = 0;
     virtual void registerAssets() = 0;
     virtual void unregisterAssets(Project& project) = 0;
-    virtual std::string getResourceDataPath() const = 0;    
-    virtual bool needsSaving(ProjectFile* savingProject) = 0;
+    virtual bool renderIcon() = 0;
+    virtual void getProperties(PropertyMaker& propertyMaker) = 0;
     virtual IResourceData& getResourceData() = 0;
+//    virtual void hintInUse(bool inUse) = 0;
     
     virtual ~IResource() {}
   };

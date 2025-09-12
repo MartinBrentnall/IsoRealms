@@ -103,7 +103,7 @@ namespace IsoRealms {
       inline static const std::string JSON_VALUE = "value";
     };
 
-    template <class FROM> class Conversion : public IAssetProvider<IResourceData, IString> {
+    template <typename FROM> class Conversion : public IAssetProvider<IResourceData, IString> {
       public:
       IString* getAsset(IResourceData& owner, JSONObject object) override {
         return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(owner, object)).first->get();
@@ -126,7 +126,7 @@ namespace IsoRealms {
       }
 
       private:
-      template <class TYPE> class Instance : public IString {
+      template <typename TYPE> class Instance : public IString {
         public:
         Instance(IResourceData& owner) :
                   cDefValue(owner) {

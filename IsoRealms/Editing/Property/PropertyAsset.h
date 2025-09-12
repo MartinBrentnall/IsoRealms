@@ -40,7 +40,7 @@
 namespace IsoRealms {
   class PropertyMaker;
 
-  template<class TYPE> class PropertyAsset : public Property {
+  template <typename TYPE> class PropertyAsset : public Property {
     public:
     PropertyAsset(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
               Property(data, resourceAccessManager, removeFunction),

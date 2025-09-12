@@ -32,7 +32,6 @@
 #include <string>
 #include <set>
 
-#include "IModule.h"
 #include "IResourceTypeRegistry.h"
 #include "Project.h"
 #include "ResourceAssetRegistry.h"
@@ -46,8 +45,7 @@ namespace IsoRealms {
   class Project;
   class ResourceType;
 
-  class Module : public IResourceTypeRegistry,
-                 public IModule {
+  class Module : public IResourceTypeRegistry {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
@@ -60,18 +58,14 @@ namespace IsoRealms {
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
     void reset();
+    std::string getName();
+    std::vector<ResourceType*> getResourceTypes();
 
     /************************************\
      * Implements IResourceTypeRegistry *
     \************************************/
     void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id) override;
     const Metadata& getAssetMetadata(const std::string& key) const override;
-    
-    /**********************\
-     * Implements IModule *
-    \**********************/
-    std::string getName() override;
-    std::vector<ResourceType*> getResourceTypes() override;
     
     std::string getName(const ResourceType* resourceType) const;
     Project& getProject();
@@ -116,7 +110,7 @@ namespace IsoRealms {
      * @param void* The void pointer to cast to a function pointer.
      * @returns The function pointer.
      */
-    template<typename FUNC> static FUNC voidToFunction(void* pointer) {
+    template <typename FUNC> static FUNC voidToFunction(void* pointer) {
 
       // Check that object pointers and function pointers are the same size
       // - Compare the two ptrs => result = 0 or 1 then *2 -1 => 1 or -1

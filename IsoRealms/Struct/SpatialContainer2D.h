@@ -26,7 +26,7 @@
 #include "SpatialContainer1D.h"
 
 namespace IsoRealms {
-  template <class T> class SpatialContainer2D {
+  template <typename T> class SpatialContainer2D {
     private:
     SpatialContainer1D<SpatialContainer1D<std::vector<T>>> cContainer;
 

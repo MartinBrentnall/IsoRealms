@@ -18,13 +18,13 @@
  */
 #include "CategoryMenu.h"
 
+#include "IsoRealms/Module.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/ResourceType.h"
 
 namespace IsoRealms {
   CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, const std::string& category) : ActionMenu(manager, style) {
-    std::set<IModule*> mModules = project.getModules();
-    for (IModule* mModule : mModules) {
+    for (const std::unique_ptr<Module>& mModule : project.getModules()) {
       std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
       for (ResourceType* mResourceType : mResourceTypes) {
         if (category == mResourceType->getCategory()) {

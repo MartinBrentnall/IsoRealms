@@ -30,7 +30,7 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  template<class OWNER, class TYPE> class AssetRegistry final {
+  template <typename OWNER, typename TYPE> class AssetRegistry final {
     public:
     void add(IAssetProvider<OWNER, TYPE>* provider, const std::string& key, const std::string& category) {
 

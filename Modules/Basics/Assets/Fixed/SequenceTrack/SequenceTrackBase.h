@@ -27,7 +27,7 @@
 namespace IsoRealms::Basics {
   class Sequence;
 
-  template<class DERIVED, class EVENT, class INSTANCE> class SequenceTrackBase : public ISequenceTrack {
+  template <typename DERIVED, typename EVENT, typename INSTANCE> class SequenceTrackBase : public ISequenceTrack {
     public:
     SequenceTrackBase(Sequence& sequence) :
               cSequence(sequence),

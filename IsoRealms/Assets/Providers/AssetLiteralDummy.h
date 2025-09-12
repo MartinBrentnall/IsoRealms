@@ -23,7 +23,7 @@
 #include "AssetLiteral.h"
 
 namespace IsoRealms {
-  template <class OWNER, class BASE, class TYPE> class AssetLiteralDummy : public AssetLiteral<OWNER, BASE> {
+  template <typename OWNER, typename BASE, typename TYPE> class AssetLiteralDummy : public AssetLiteral<OWNER, BASE> {
     public:
     
     /*********************************\

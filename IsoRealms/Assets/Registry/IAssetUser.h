@@ -27,7 +27,7 @@ namespace IsoRealms {
    * Interface to be implemented by resources that use assets, to be notified
    * of changes to the assets that they are using.
    */
-  template <class TYPE> class IAssetUser {
+  template <typename TYPE> class IAssetUser {
     public:
       
     /**
