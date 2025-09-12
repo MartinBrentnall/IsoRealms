@@ -134,7 +134,7 @@ namespace IsoRealms::UI {
   void MenuItemLauncherList::Launcher::render(float y, bool selected, const Menu& menu) const {
     float mShadowOffset = menu.getShadowOffset();
     float mFontSize = menu.getFontSize();
-    LocalColour mWhite(1.0f, 1.0f, 1.0f);
+    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
     const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     Utils::shadowPrint(0.0, y, **menu.getFont(), mFontSize, mColour, mShadowOffset, IFont::Alignment::CENTER,  cDefLaunchConfiguration->getName());

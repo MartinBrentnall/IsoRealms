@@ -25,7 +25,7 @@
 
 #include <GL/glew.h>
 
-#include "IsoRealms/AnimatedFloat.h"
+#include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Editing/Choice.h"
 
 #include "IPropertyEditor.h"

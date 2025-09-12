@@ -19,7 +19,9 @@
 #include "Condition.h"
 
 #include "IsoRealms/Exception/ArgumentException.h"
-#include "IsoRealms/Persistence.h"
+#include "IsoRealms/Persistence/JSONArray.h"
+#include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Persistence/JSONValue.h"
 
 namespace IsoRealms {
   const char Condition::ATTRIB_AND    = 0x1;

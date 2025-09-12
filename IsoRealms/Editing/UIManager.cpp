@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Assets/Type/IFont.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "Choice.h"

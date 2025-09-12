@@ -22,8 +22,8 @@
 #include <memory>
 #include <string>
 
-#include "IsoRealms/Assets/Registry/IAssetProvider.h"
 #include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Project/Registry/IAssetProvider.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {

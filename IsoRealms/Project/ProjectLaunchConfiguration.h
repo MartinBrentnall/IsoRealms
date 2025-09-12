@@ -18,9 +18,9 @@
  */
 #pragma once
 
-#include "Metadata.h"
-#include "Assets/Client/ResourceOwner.h"
-#include "Types.h"
+#include "IsoRealms/Metadata.h"
+#include "IsoRealms/Assets/Client/ResourceOwner.h"
+#include "IsoRealms/Types.h"
 
 namespace IsoRealms {
   class Project;

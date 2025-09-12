@@ -16,29 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "LiteralFloat.h"
 
-#include "IsoRealms/Assets/Type/IFloat.h"
+#include "IsoRealms/Editing/Property/IPropertyManager.h"
+#include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  class LocalFloat : public IFloat {
-    public:
-    LocalFloat(const float value);
+  LiteralFloat::LiteralFloat(const float value) :
+            cValue(value) {
+  }
 
-    /*********************\
-     * Implements IFloat *
-    \*********************/
-    float getValue() const override;
+  float LiteralFloat::getValue() const {
+    return cValue;
+  }
 
-    /*********************************\
-     * Implements IAsset from IFloat *
-    \*********************************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+  bool LiteralFloat::renderAssetIcon() const {
+    return false;
+  }
 
-    private:
-    float cValue; /// The value of this Float.
-  };
+  void LiteralFloat::getAssetProperties(PropertyMaker& owner) {
+    // Not supported.
+  }
+
+  bool LiteralFloat::isDefaultConfiguration() const {
+    return cValue == 0.0f;
+  }
+
+  void LiteralFloat::saveAsset(JSONObject object) const {
+    // Not supported.
+  }
 }

@@ -422,15 +422,15 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::renderWallMiddle(float interpolation) {
-    LocalColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
-    LocalColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
+    LiteralColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+    LiteralColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
     clear(mGridColour);
     renderRectangle(-TILE_SIZE, -1.0f, TILE_SIZE, 1.0f, mWallFloorMix);
   }
 
   void C64TerrainGraphics::renderWallCap(float interpolation) {
-    LocalColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
-    LocalColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
+    LiteralColour mGridColour(**cDefGrid, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+    LiteralColour mWallFloorMix(**cDefWall, **cDefFloor, interpolation * 0.5f);
     clear(mGridColour);
     renderRectangle(-TILE_SIZE, -TILE_SIZE / 2.0f, TILE_SIZE, 1.0f, mWallFloorMix);
   }

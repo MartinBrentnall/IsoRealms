@@ -18,11 +18,13 @@
  */
 #include "Module.h"
 
-#include "IModuleHandle.h"
-#include "Exception/InitException.h"
-#include "Exception/ResourceInitException.h"
+#include "IsoRealms/IModuleHandle.h"
+#include "IsoRealms/Exception/InitException.h"
+#include "IsoRealms/Exception/ResourceInitException.h"
+#include "IsoRealms/Persistence/JSONValue.h"
+#include "IsoRealms/System.h"
+
 #include "ResourceType.h"
-#include "System.h"
 
 namespace IsoRealms {
   const std::string Module::JSON_CONFIGURATION = "configuration";

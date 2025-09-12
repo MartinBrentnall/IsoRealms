@@ -18,7 +18,7 @@
  */
 #include "BooleanRegistry.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   BooleanRegistry::BooleanRegistry(Project& project) :

@@ -26,7 +26,7 @@
 
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Common/ScreenArea.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "IUIStyle.h"
@@ -178,7 +178,7 @@ namespace IsoRealms {
     virtual void selectedItemChanged() = 0;
 
     protected:
-    void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LocalColour(1.0f, 1.0f, 1.0f)) {
+    void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LiteralColour(1.0f, 1.0f, 1.0f)) {
       cUIManager.openUI(std::move(screen), breadCrumb, breadCrumbColour);
     }
 

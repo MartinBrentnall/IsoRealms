@@ -18,7 +18,7 @@
  */
 #include "ResourceTypeMenu.h"
 
-#include "IsoRealms/ResourceType.h"
+#include "IsoRealms/Project/ResourceType.h"
 
 #include "Property/IPropertyEditor.h"
 
@@ -159,6 +159,6 @@ namespace IsoRealms {
     std::string mResourceName = resource->getName();
     mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, resource->getResourceData(), [this, resource](PropertyMaker& owner) {
       resource->getProperties(owner);
-    }), mResourceName, LocalColour(1.0f, 1.0f, 0.5f));
+    }), mResourceName, LiteralColour(1.0f, 1.0f, 0.5f));
   }
 }

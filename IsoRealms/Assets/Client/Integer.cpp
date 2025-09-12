@@ -21,7 +21,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   Integer::Integer(IResourceData& owner) :

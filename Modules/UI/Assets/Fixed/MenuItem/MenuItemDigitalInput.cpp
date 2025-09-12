@@ -131,7 +131,7 @@ namespace IsoRealms::UI {
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
     const IColour& mSelectionColour = **menu.getSelectionColour();
-    const IColour& mRegularColour = LocalColour(1.0f, 1.0f, 1.0f);
+    const IColour& mRegularColour = LiteralColour(1.0f, 1.0f, 1.0f);
     for (unsigned int i = 0; i < cRuntimeMappings.size(); i++) {
       float mY = y - i * mFontSize * 2.0f;
       bool mSelected = selected && cRuntimeSelectedMapping == i;

@@ -23,6 +23,9 @@
 #include <variant>
 #include <vector>
 
+#include "Assets/Type/IStateNotifier.h"
+#include "Project/Registry/IAssetProvider.h"
+
 namespace IsoRealms {
   class IActionClient;
   class IAction;

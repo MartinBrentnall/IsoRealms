@@ -18,13 +18,13 @@
  */
 #include "PropertyMaker.h"
 
-#include "Assets/Registry/IAssetProvider.h"
 #include "Assets/Type/IStateNotifier.h"
 #include "Editing.h"
 #include "Editing/IDialogManager.h"
 #include "Editing/Property/IPropertyManager.h"
 #include "IResourceData.h"
-#include "Project.h"
+#include "Project/Project.h"
+#include "Project/Registry/IAssetProvider.h"
 
 namespace IsoRealms {
   PropertyMaker::PropertyMaker(Application& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager) :

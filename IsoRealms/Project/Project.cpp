@@ -18,11 +18,14 @@
  */
 #include "Project.h"
 
-#include "Application.h"
-#include "Assets/Type/IScreenListener.h"
-#include "DisplayResolution.h"
+#include "IsoRealms/Application.h"
+#include "IsoRealms/Assets/Type/IScreenListener.h"
+#include "IsoRealms/DisplayResolution.h"
+#include "IsoRealms/Persistence/JSONArray.h"
+#include "IsoRealms/Persistence/JSONValue.h"
+#include "IsoRealms/PropertyData.h"
+
 #include "Module.h"
-#include "PropertyData.h"
 
 namespace IsoRealms {
   Project::Project(Application& application, std::function<void(bool)> onFinish) :

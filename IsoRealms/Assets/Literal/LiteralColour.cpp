@@ -16,79 +16,79 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "LocalColour.h"
+#include "LiteralColour.h"
 
 #include "IsoRealms/Editing.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  LocalColour::LocalColour() :
+  LiteralColour::LiteralColour() :
             cRed(  0.0f),
             cGreen(0.0f),
             cBlue( 0.0f),
             cAlpha(1.0f) {
   }
 
-  LocalColour::LocalColour(const IColour& colour, const float intensity) :
+  LiteralColour::LiteralColour(const IColour& colour, const float intensity) :
             cRed(  colour.getRed()   * intensity),
             cGreen(colour.getGreen() * intensity),
             cBlue( colour.getBlue()  * intensity),
             cAlpha(colour.getAlpha()) {
   }
 
-  LocalColour::LocalColour(const float red, const float green, const float blue, const float alpha) :
+  LiteralColour::LiteralColour(const float red, const float green, const float blue, const float alpha) :
             cRed(red),
             cGreen(green),
             cBlue(blue),
             cAlpha(alpha) {
   }
 
-  LocalColour::LocalColour(const IColour& a, const IColour& b, const float weight) :
+  LiteralColour::LiteralColour(const IColour& a, const IColour& b, const float weight) :
             cRed(  a.getRed()   + (b.getRed()   - a.getRed())   * weight),
             cGreen(a.getGreen() + (b.getGreen() - a.getGreen()) * weight),
             cBlue( a.getBlue()  + (b.getBlue()  - a.getBlue())  * weight),
             cAlpha(a.getAlpha() + (b.getAlpha() - a.getAlpha()) * weight) {
   }
 
-  bool LocalColour::operator==(const LocalColour& colour) const {
+  bool LiteralColour::operator==(const LiteralColour& colour) const {
     return cRed == colour.cRed && cGreen == colour.cGreen && cBlue == colour.cBlue && cAlpha == colour.cAlpha;
   }
 
-  bool LocalColour::operator!=(const LocalColour& colour) const {
+  bool LiteralColour::operator!=(const LiteralColour& colour) const {
     return !operator==(colour);
   }
 
-  void LocalColour::set() const {
+  void LiteralColour::set() const {
     glColor4f(cRed, cGreen, cBlue, cAlpha);
   }
 
-  float LocalColour::getRed() const {
+  float LiteralColour::getRed() const {
     return cRed;
   }
 
-  float LocalColour::getGreen() const {
+  float LiteralColour::getGreen() const {
     return cGreen;
   }
 
-  float LocalColour::getBlue() const {
+  float LiteralColour::getBlue() const {
     return cBlue;
   }
 
-  float LocalColour::getAlpha() const {
+  float LiteralColour::getAlpha() const {
     return cAlpha;
   }
 
-  void LocalColour::saveAsset(JSONObject object) const {
+  void LiteralColour::saveAsset(JSONObject object) const {
     // Not supported.
   }
 
-  void LocalColour::getAssetProperties(PropertyMaker& owner) {
+  void LiteralColour::getAssetProperties(PropertyMaker& owner) {
     // Not supported.
   }
 
-  bool LocalColour::isDefaultConfiguration() const {
+  bool LiteralColour::isDefaultConfiguration() const {
     return true;
   }
 }

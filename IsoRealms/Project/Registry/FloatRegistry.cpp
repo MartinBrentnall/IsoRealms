@@ -18,7 +18,7 @@
  */
 #include "FloatRegistry.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   FloatRegistry::FloatRegistry(Project& project) :

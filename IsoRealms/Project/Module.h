@@ -32,9 +32,10 @@
 #include <string>
 #include <set>
 
-#include "IResourceTypeRegistry.h"
 #include "Project.h"
-#include "ResourceAssetRegistry.h"
+
+#include "IsoRealms/IResourceTypeRegistry.h"
+#include "IsoRealms/ResourceAssetRegistry.h"
 
 namespace IsoRealms {
   class IModuleHandle;

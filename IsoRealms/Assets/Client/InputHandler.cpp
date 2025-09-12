@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   InputHandler::InputHandler(IResourceData& owner) :

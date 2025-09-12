@@ -18,7 +18,7 @@
  */
 #include "IntegerRegistry.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   IntegerRegistry::IntegerRegistry(Project& project) :

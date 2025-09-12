@@ -39,7 +39,7 @@
 #include "Exception/ApplicationException.h"
 #include "Input/HatHandler.h"
 #include "Metadata.h"
-#include "Persistence.h"
+#include "Persistence/JSONDocument.h"
 #include "PropertyData.h"
 #include "System.h"
  

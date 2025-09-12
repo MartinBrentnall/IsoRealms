@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Assets/IBindingRegistry.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/Lua/LuaState.h"
+#include "IsoRealms/Project/LuaState.h"
 
 namespace sol {
   class state;

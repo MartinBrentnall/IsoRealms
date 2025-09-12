@@ -18,7 +18,7 @@
  */
 #include "PropertyNativeBoolean.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {

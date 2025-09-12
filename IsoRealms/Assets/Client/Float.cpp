@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   Float::Float(IResourceData& owner, float defaultValue, std::function<void(float)> listener) :

@@ -22,7 +22,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   BindingType::BindingType(IResourceData& owner, std::function<void()> listener) :

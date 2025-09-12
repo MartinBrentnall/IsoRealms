@@ -227,7 +227,7 @@ namespace IsoRealms::Spindizzy {
     unsigned int mPrevious = cProgress;
     unsigned int mNext     = mPrevious != cDefParent.cColoursCycle.size() - 1 ? cProgress + 1 : 0;
     float mCurrent         = cProgress - mPrevious;
-    LocalColour mColourPanel(***cDefParent.cColoursCycle[mPrevious]->getColour(), ***cDefParent.cColoursCycle[mNext]->getColour(), mCurrent);
+    LiteralColour mColourPanel(***cDefParent.cColoursCycle[mPrevious]->getColour(), ***cDefParent.cColoursCycle[mNext]->getColour(), mCurrent);
     mColourPanel.set();
     glCallList(cPanelDisplayList);
     glColor3f(1.0, 1.0, 1.0);

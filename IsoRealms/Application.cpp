@@ -19,7 +19,8 @@
 #include "Application.h"
 
 #include "IsoRealms/Metadata.h"
-#include "IsoRealms/Persistence.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 
 namespace IsoRealms {
   const std::string Application::JSON_FULL_SCREEN = "fullScreen";

@@ -20,8 +20,8 @@
 
 #include <string>
 
-#include "Metadata.h"
-#include "PropertyMaker.h"
+#include "IsoRealms/Metadata.h"
+#include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
   template <typename OWNER, typename TYPE> class OwnedAsset {

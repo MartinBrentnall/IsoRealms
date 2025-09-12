@@ -21,7 +21,7 @@
 #include "IsoRealms/Assets/Providers/AssetSingleton.h"
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
 #include "IsoRealms/IStateListener.h"
-#include "IsoRealms/Persistence.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 
 #include "AssetRegistry.h"
 

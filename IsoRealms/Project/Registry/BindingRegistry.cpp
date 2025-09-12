@@ -17,7 +17,7 @@
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "IsoRealms/PropertyMaker.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 #include <sol.hpp>
 

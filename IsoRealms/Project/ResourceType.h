@@ -21,9 +21,9 @@
 #include <set>
 #include <string>
 
-#include "IResource.h"
-#include "IResourceTypeDefinition.h"
-#include "Persistence/JSONThing.h"
+#include "IsoRealms/IResource.h"
+#include "IsoRealms/IResourceTypeDefinition.h"
+#include "IsoRealms/Persistence/JSONThing.h"
 
 namespace IsoRealms {
   class Module;

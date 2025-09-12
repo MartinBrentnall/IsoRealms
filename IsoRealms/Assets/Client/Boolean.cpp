@@ -21,7 +21,7 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   Boolean::Boolean(IResourceData& owner, bool defaultValue, std::function<void(bool)> listener) :

@@ -18,9 +18,9 @@
  */
 #include "ProjectMenu.h"
 
-#include "IsoRealms/Module.h"
-#include "IsoRealms/Project.h"
-#include "IsoRealms/ResourceType.h"
+#include "IsoRealms/Project/Module.h"
+#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/ResourceType.h"
 
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style),

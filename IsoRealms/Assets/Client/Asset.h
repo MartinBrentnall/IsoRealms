@@ -21,10 +21,11 @@
 #include <functional>
 #include <memory>
 
-#include "IsoRealms/Assets/Registry/IAssetUser.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/IStateListener.h"
-#include "IsoRealms/Persistence.h"
+#include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Persistence/JSONThing.h"
+#include "IsoRealms/Project/Registry/IAssetUser.h"
 
 namespace IsoRealms {
   class Application;

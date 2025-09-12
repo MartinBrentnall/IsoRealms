@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Registry/IAssetProvider.h"
+#include "IsoRealms/Project/Registry/IAssetProvider.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {

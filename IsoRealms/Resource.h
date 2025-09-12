@@ -21,15 +21,15 @@
 #include <string>
 
 #include "Assets/Client/ResourceOwner.h"
-#include "Assets/Registry/AssetIDException.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
 #include "IResource.h"
 #include "IResourceData.h"
 #include "Options/IOptions.h"
+#include "Project/Registry/AssetIDException.h"
+#include "Project/ResourceType.h"
 #include "PropertyData.h"
 #include "ResourceAssetRegistry.h"
-#include "ResourceType.h"
 #include "System.h"
 #include "Utils.h"
 

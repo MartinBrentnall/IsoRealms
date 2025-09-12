@@ -18,7 +18,8 @@
  */
 #include "Module.h"
 #include "Project.h"
-#include "PropertyData.h"
+
+#include "IsoRealms/PropertyData.h"
 
 #include "ResourceType.h"
 

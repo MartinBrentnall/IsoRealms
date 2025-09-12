@@ -23,7 +23,7 @@
 #include <set>
 #include <stack>
 
-#include "IsoRealms/AnimatedFloat.h"
+#include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {

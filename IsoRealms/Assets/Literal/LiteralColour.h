@@ -27,13 +27,13 @@
 namespace IsoRealms {
   class Project;
 
-  class LocalColour : public IColour {
+  class LiteralColour : public IColour {
     public:
 
     /**
      * Construct a fixed colour of black.
      */
-    LocalColour();
+    LiteralColour();
 
     /**
     * Create a fixed copy of the specified colour.  An relative intensity may
@@ -44,7 +44,7 @@ namespace IsoRealms {
     * @param colour Colour to copy.
     * @param intensity The relatively intensity of the new colour.
     */
-    LocalColour(const IColour& colour, const float intensity = 1.0f);
+    LiteralColour(const IColour& colour, const float intensity = 1.0f);
 
     /**
     * Construct an colour of the specified intensity values, from 0 to 1.
@@ -54,7 +54,7 @@ namespace IsoRealms {
     * @param blue Blue intensity.
     * @param alpha Alpha intensity.
     */
-    LocalColour(const float red, const float green, const float blue, const float alpha = 1.0f);
+    LiteralColour(const float red, const float green, const float blue, const float alpha = 1.0f);
 
     /**
     * Construct a colour resulting from weighted mixtures of the two specified colours.
@@ -63,11 +63,11 @@ namespace IsoRealms {
     * @param b Second colour.
     * @param weight 0.0 weighs fully towards a, 1.0 weighs fully towards b.
     */
-    LocalColour(const IColour& a, const IColour& b, const float weight = 0.5f);
+    LiteralColour(const IColour& a, const IColour& b, const float weight = 0.5f);
 
 
-    bool operator==(const LocalColour& colour) const;
-    bool operator!=(const LocalColour& colour) const;
+    bool operator==(const LiteralColour& colour) const;
+    bool operator!=(const LiteralColour& colour) const;
 
     /**********************\
      * Implements IColour *

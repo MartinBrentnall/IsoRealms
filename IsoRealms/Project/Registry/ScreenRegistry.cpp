@@ -18,7 +18,7 @@
  */
 #include "ScreenRegistry.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   IStateNotifier<IScreen>* ScreenRegistry::add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges) {

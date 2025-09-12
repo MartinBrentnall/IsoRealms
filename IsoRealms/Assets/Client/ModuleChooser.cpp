@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   ModuleChooser::ModuleChooser(Project& project) :

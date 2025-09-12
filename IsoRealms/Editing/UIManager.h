@@ -22,10 +22,10 @@
 #include <stack>
 #include <vector>
 
+#include "IsoRealms/Assets/Literal/LiteralColour.h"
 #include "IsoRealms/Assets/Type/IEditable.h"
-#include "IsoRealms/AnimatedFloat.h"
+#include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/LocalColour.h"
 #include "IsoRealms/ResourceDefinition.h"
 
 #include "IDialogManager.h"
@@ -51,7 +51,7 @@ namespace IsoRealms {
     void input(UISignalID id);
     bool input(sf::Event& event);  
 
-    void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LocalColour(1.0f, 1.0f, 1.0f));
+    void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LiteralColour(1.0f, 1.0f, 1.0f));
     void closeUI();
     void edit(IEditable* editable);
     void hide();
@@ -72,7 +72,7 @@ namespace IsoRealms {
       std::unique_ptr<IUIScreen> cScreen;
       int cSlideAnimation;
       std::string cBreadCrumb;
-      LocalColour cBreadCrumbColour;
+      LiteralColour cBreadCrumbColour;
     };
 
     class Tooltip {

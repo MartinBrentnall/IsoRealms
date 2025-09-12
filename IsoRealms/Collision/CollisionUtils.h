@@ -21,8 +21,6 @@
 #include <cmath>
 #include <optional>
 
-#include "IsoRealms/Literals.h"
-
 #include "CollisionData.h"
 
 namespace IsoRealms {

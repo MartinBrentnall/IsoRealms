@@ -20,8 +20,8 @@
 
 #include "IsoRealms/Assets/Type/ITextureUseListener.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/Persistence.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   LiteralTexture::LiteralTexture(Project& project, int width, int height, bool clampX, bool clampY, bool depth) :

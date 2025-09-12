@@ -23,7 +23,8 @@
 #include <set>
 #include <string>
 
-#include "Assets/Client/File.h"
+#include "IsoRealms/Assets/Client/File.h"
+#include "IsoRealms/Persistence/JSONArray.h"
 
 namespace IsoRealms {
   class JSONArray;

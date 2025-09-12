@@ -18,9 +18,9 @@
  */
 #include "CategoryMenu.h"
 
-#include "IsoRealms/Module.h"
-#include "IsoRealms/Project.h"
-#include "IsoRealms/ResourceType.h"
+#include "IsoRealms/Project/Module.h"
+#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/ResourceType.h"
 
 namespace IsoRealms {
   CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, const std::string& category) : ActionMenu(manager, style) {

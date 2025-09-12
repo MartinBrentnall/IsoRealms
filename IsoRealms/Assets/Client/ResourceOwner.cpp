@@ -18,8 +18,8 @@
  */
 #include "ResourceOwner.h"
 
-#include "IsoRealms/Project.h"
-#include "IsoRealms/ProjectFile.h"
+#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/ProjectFile.h"
 
 namespace IsoRealms {
   ResourceOwner::ResourceOwner(Project& project, ProjectFile* owner) :

@@ -19,7 +19,7 @@
 #include "LiteralString.h"
 
 #include "IsoRealms/Editing/Property/PropertyNativeString.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {

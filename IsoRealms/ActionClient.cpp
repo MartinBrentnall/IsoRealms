@@ -19,7 +19,7 @@
 #include "ActionClient.h"
 
 #include "IResourceData.h"
-#include "Project.h"
+#include "Project/Project.h"
 
 namespace IsoRealms {
   ActionClient::ActionClient(IResourceData& resource, IBindingRegistry& bindingRegistry) :

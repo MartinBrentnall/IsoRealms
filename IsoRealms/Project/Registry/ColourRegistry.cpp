@@ -18,7 +18,7 @@
  */
 #include "ColourRegistry.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   ColourRegistry::ColourRegistry(Project& project) :

@@ -16,12 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "IsoRealmsConstants.h"
+#pragma once
+
+#include "IsoRealms/Assets/Type/IFloat.h"
 
 namespace IsoRealms {
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES  = "Basics";
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS   = "Simple Graphics";
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT   = "Dynamics";
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION      = "User Interface";
-  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM            = "System";
+  class LiteralFloat : public IFloat {
+    public:
+    LiteralFloat(const float value);
+
+    /*********************\
+     * Implements IFloat *
+    \*********************/
+    float getValue() const override;
+
+    /*********************************\
+     * Implements IAsset from IFloat *
+    \*********************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    void getAssetProperties(PropertyMaker& owner) override;
+    bool isDefaultConfiguration() const override;
+
+    private:
+    float cValue; /// The value of this Float.
+  };
 }

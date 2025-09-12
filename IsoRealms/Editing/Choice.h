@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include "IsoRealms/AnimatedFloat.h"
+#include "IsoRealms/Common/AnimatedFloat.h"
 
 namespace IsoRealms {
   class IUIStyle;

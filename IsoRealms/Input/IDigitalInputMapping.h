@@ -24,7 +24,7 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "IsoRealms/Persistence.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 
 namespace IsoRealms {
   class PropertyMaker;

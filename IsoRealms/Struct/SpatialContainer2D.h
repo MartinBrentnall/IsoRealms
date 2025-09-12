@@ -21,8 +21,6 @@
 #include <iostream>
 #include <vector>
 
-#include "IsoRealms/Literals.h"
-
 #include "SpatialContainer1D.h"
 
 namespace IsoRealms {

@@ -20,8 +20,6 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(IsoRealms
   ActionClient.cpp
-  AnimatedFloat.cpp
-  AnimatedInteger.cpp
   Application.cpp
   Assets/Client/Action.cpp
   Assets/Client/Binding.cpp
@@ -42,28 +40,17 @@ add_library(IsoRealms
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
+  Assets/Literal/LiteralColour.cpp
+  Assets/Literal/LiteralFloat.cpp
   Assets/Literal/LiteralString.cpp
   Assets/Literal/LiteralTexture.cpp
-  Assets/Registry/AssetIDException.cpp
-  Assets/Registry/ActionRegistry.cpp
-  Assets/Registry/BooleanRegistry.cpp
-  Assets/Registry/BindingRegistry.cpp
-  Assets/Registry/BindingTypeRegistry.cpp
-  Assets/Registry/ColourRegistry.cpp
-  Assets/Registry/EditableRegistry.cpp
-  Assets/Registry/FloatRegistry.cpp
-  Assets/Registry/FontRegistry.cpp
-  Assets/Registry/InputHandlerRegistry.cpp
-  Assets/Registry/IntegerRegistry.cpp
-  Assets/Registry/ModelRegistry.cpp
-  Assets/Registry/ScreenRegistry.cpp
-  Assets/Registry/StringRegistry.cpp
-  Assets/Registry/TextureRegistry.cpp
-  Assets/Registry/VertexRegistry.cpp
+  Assets/Literal/LiteralVertex.cpp
   Collision/CollisionData.cpp
   Collision/CollisionUtils.cpp
-  Common/ScreenArea.cpp
+  Common/AnimatedFloat.cpp
+  Common/AnimatedInteger.cpp
   Common/Point2D.cpp
+  Common/ScreenArea.cpp
   Condition/Condition.cpp
   Condition/ConditionElement.cpp
   DisplayResolution.cpp
@@ -108,13 +95,7 @@ add_library(IsoRealms
   Input/HatMapping.cpp
   Input/KeyMapping.cpp
   Input/MouseButtonMapping.cpp
-  IsoRealmsConstants.cpp
-  LiteralVertex.cpp
-  LocalColour.cpp
-  LocalFloat.cpp
-  Lua/LuaState.cpp
   Metadata.cpp
-  Module.cpp
   Options/Options.cpp
   Persistence/JSONArray.cpp
   Persistence/JSONDocument.cpp
@@ -122,13 +103,31 @@ add_library(IsoRealms
   Persistence/JSONThing.cpp
   Persistence/JSONValue.cpp
   Persistence/ParseException.cpp
-  Project.cpp
-  ProjectFile.cpp
-  ProjectLaunchConfiguration.cpp
+  Project/LuaState.cpp
+  Project/Module.cpp
+  Project/Project.cpp
+  Project/ProjectFile.cpp
+  Project/ProjectLaunchConfiguration.cpp
+  Project/Registry/AssetIDException.cpp
+  Project/Registry/ActionRegistry.cpp
+  Project/Registry/BooleanRegistry.cpp
+  Project/Registry/BindingRegistry.cpp
+  Project/Registry/BindingTypeRegistry.cpp
+  Project/Registry/ColourRegistry.cpp
+  Project/Registry/EditableRegistry.cpp
+  Project/Registry/FloatRegistry.cpp
+  Project/Registry/FontRegistry.cpp
+  Project/Registry/InputHandlerRegistry.cpp
+  Project/Registry/IntegerRegistry.cpp
+  Project/Registry/ModelRegistry.cpp
+  Project/Registry/ScreenRegistry.cpp
+  Project/Registry/StringRegistry.cpp
+  Project/Registry/TextureRegistry.cpp
+  Project/Registry/VertexRegistry.cpp
+  Project/ResourceType.cpp
   PropertyData.cpp
   PropertyMaker.cpp
   ResourceAssetRegistry.cpp
-  ResourceType.cpp
   System.cpp
   Utils.cpp
 )

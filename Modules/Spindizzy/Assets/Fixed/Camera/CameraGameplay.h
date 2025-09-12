@@ -105,7 +105,7 @@ namespace IsoRealms::Spindizzy {
     const Metadata& cMetadata;
     WorldView& cParent; /// Parent view.
 
-    LocalFloat cPitch;
+    LiteralFloat cPitch;
 
     // Definition data.
     float cDefAngle;          /// Initial angle value.

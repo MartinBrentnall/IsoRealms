@@ -18,10 +18,13 @@
  */
 #include "Utils.h"
 
+#include "IsoRealms/Assets/Literal/LiteralVertex.h"
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/Application.h"
-#include "IsoRealms/Input.h"
-#include "IsoRealms/Literals.h"
+#include "IsoRealms/Input/ButtonMapping.h"
+#include "IsoRealms/Input/HatMapping.h"
+#include "IsoRealms/Input/IDigitalInputMapping.h"
+#include "IsoRealms/Input/KeyMapping.h"
 #include "IsoRealms/Types.h"
 #include "IsoRealms/System.h"
 

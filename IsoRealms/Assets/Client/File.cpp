@@ -20,8 +20,8 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
-#include "IsoRealms/Persistence.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/System.h"
 
 namespace IsoRealms {

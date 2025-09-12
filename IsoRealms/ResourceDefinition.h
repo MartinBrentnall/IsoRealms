@@ -21,10 +21,10 @@
 #include <set>
 #include <string>
 
-#include "Assets/Registry/IAssetUser.h"
 #include "Assets/Type/IScreenListener.h"
 #include "Editing/Property/IProperty.h"
 #include "Exception/ResourceInitException.h"
 #include "IModuleHandle.h"
 #include "IResourceData.h"
 #include "Options/IOptions.h"
+#include "Project/Registry/IAssetUser.h"

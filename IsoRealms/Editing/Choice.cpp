@@ -19,7 +19,7 @@
 #include "Choice.h"
 
 #include "IsoRealms/Application.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Utils.h"
 
 #include "IUIStyle.h"

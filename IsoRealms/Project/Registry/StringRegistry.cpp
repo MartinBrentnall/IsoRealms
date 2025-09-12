@@ -18,7 +18,7 @@
  */
 #include "StringRegistry.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   StringRegistry::StringRegistry(Project& project) :

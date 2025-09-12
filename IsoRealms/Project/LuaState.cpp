@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Editing/IDialogManager.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms {

@@ -23,7 +23,8 @@
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/Options/Options.h"
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Persistence/ParseException.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/System.h"
 
 int main(int argc, char** argv) {

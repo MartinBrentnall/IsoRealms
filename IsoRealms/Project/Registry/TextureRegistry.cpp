@@ -18,7 +18,7 @@
  */
 #include "TextureRegistry.h"
 
-#include "IsoRealms/Project.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   TextureRegistry::TextureRegistry(Project& project) :

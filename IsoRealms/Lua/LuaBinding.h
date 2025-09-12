@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/Lua/LuaState.h"
+#include "IsoRealms/Project/LuaState.h"
 
 namespace sol {
   class state;

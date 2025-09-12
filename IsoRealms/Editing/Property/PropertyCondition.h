@@ -27,7 +27,7 @@
 #include <stack>
 #include <GL/glew.h>
 
-#include "IsoRealms/AnimatedFloat.h"
+#include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Condition/ConditionElement.h"
 
 #include "IPropertyEditor.h"

@@ -18,8 +18,8 @@
  */
 #include "PropertiesMenu.h"
 
-#include "IsoRealms/Project.h"
-#include "IsoRealms/ResourceType.h"
+#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/ResourceType.h"
 
 #include "Property/IPropertyEditor.h"
 
@@ -248,7 +248,7 @@ namespace IsoRealms {
     IUIStyle& mStyle = getStyle();
     mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](PropertyMaker& owner) {
       propertyFetcher(owner);
-    }), name, LocalColour(0.75f, 0.5f, 1.0f));
+    }), name, LiteralColour(0.75f, 0.5f, 1.0f));
   }
   
   void PropertiesMenu::edit(std::unique_ptr<IPropertyEditor> editor) {

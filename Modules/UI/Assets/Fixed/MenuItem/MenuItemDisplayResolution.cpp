@@ -95,7 +95,7 @@ namespace IsoRealms::UI {
     const Font& mFont = menu.getFont();
     float mFontSize = menu.getFontSize();
     float mShadowOffset = menu.getShadowOffset();
-    LocalColour mWhite(1.0f, 1.0f, 1.0f);
+    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
     const IColour& mColour = selected ? static_cast<const IColour&>(**menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
     std::string mValue = cRuntimeResolutions[cRuntimeSelectedResolution].toString();
