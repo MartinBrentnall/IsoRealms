@@ -52,7 +52,9 @@ namespace IsoRealms {
   }
 
   void ProjectFile::getNames(std::vector<std::string>& names) const {
-    names.emplace_back(cDefID);
+    if (cAllowModifications) {
+      names.emplace_back(cDefID);
+    }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
       mInclusion->getNames(names);
     }

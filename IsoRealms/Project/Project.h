@@ -105,7 +105,7 @@ namespace IsoRealms {
     const ProjectLaunchConfiguration* getLaunchConfiguration(int index);
     
     // Functions used for resource ownership.
-    std::vector<std::string> getProjectFileNames() const;
+    std::vector<std::string> getWritableProjectFileNames() const;
     ProjectFile* getProjectFile();
     ProjectFile* getProjectFile(const std::string& id);
     

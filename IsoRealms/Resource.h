@@ -95,7 +95,7 @@ namespace IsoRealms {
         }
         return true;
       });
-      propertyMaker.createPropertyAsset<ResourceOwner>(mMetadata.getPropertyData("ResourceOwner"), cOwnerProject);
+      cOwnerProject.createProperty(propertyMaker, mMetadata.getPropertyData("ResourceOwner"));
       cResourceHandle.getProperties(propertyMaker, cParent.getMetadata());
     }
     

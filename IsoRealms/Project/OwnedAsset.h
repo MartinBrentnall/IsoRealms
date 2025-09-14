@@ -51,10 +51,14 @@ namespace IsoRealms {
     }
 
     void getProperty(PropertyMaker& owner, const Metadata& metadata, const std::string& name) {
-      owner.createPropertyStruct(metadata.getPropertyData(name), cAsset.getID(), [this, &metadata, name](PropertyMaker& owner) {
-        owner.createPropertyAsset(metadata.getPropertyData("Value"), cAsset);
-        owner.createPropertyAsset(metadata.getPropertyData("Owner"), cOwner);
-      });
+      if (cOwner.isConfigurable()) {
+        owner.createPropertyStruct(metadata.getPropertyData(name), cAsset.getID(), [this, &metadata, name](PropertyMaker& owner) {
+          owner.createPropertyAsset(metadata.getPropertyData("Value"), cAsset);
+          cOwner.createProperty(owner, metadata.getPropertyData("Owner"));
+        });
+      } else {
+        owner.createPropertyAsset(metadata.getPropertyData(name), cAsset);
+      }
     }
 
     private:

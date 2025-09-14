@@ -25,6 +25,7 @@ namespace IsoRealms {
   class Application;
   class Project;
   class ProjectFile;
+  class PropertyData;
   class PropertyMaker;
 
   class ResourceOwner {
@@ -32,9 +33,11 @@ namespace IsoRealms {
     ResourceOwner(Project& project, ProjectFile* owner);
     ProjectFile* getProjectFile() const;
     void setProjectFile(ProjectFile* owner);
+    bool isConfigurable() const;
+    void createProperty(PropertyMaker& owner, const PropertyData& metadata);
 
     /*******************************\
-      * Interface for PropertyAsset *
+     * Interface for PropertyAsset *
     \*******************************/
     std::string getID() const;
     bool renderAssetIcon() const;

@@ -35,6 +35,16 @@ namespace IsoRealms {
     cOwner = owner;
   }
 
+  bool ResourceOwner::isConfigurable() const {
+    return cProject.getWritableProjectFileNames().size() > 1;
+  }
+
+  void ResourceOwner::createProperty(PropertyMaker& owner, const PropertyData& metadata) {
+    if (cProject.getWritableProjectFileNames().size() > 1) {
+      owner.createPropertyAsset(metadata, *this);
+    }
+  }
+
   std::string ResourceOwner::getID() const {
     return cOwner->getName();
   }
@@ -60,7 +70,19 @@ namespace IsoRealms {
   }
 
   std::vector<std::string> ResourceOwner::getAvailableProviders() const {
-    return cProject.getProjectFileNames();
+    std::vector<std::string> mNames = cProject.getWritableProjectFileNames();
+    std::string mThisName = cOwner->getName();
+    bool mFound = false;
+    for (std::string& mName : mNames) {
+      if (mName == mThisName) {
+        mFound = true;
+        break;
+      }
+    }
+    if (!mFound) {
+      mNames.emplace_back(mThisName);
+    }
+    return mNames;
   }
 
   bool ResourceOwner::renderProviderIcon(const std::string& id) const {

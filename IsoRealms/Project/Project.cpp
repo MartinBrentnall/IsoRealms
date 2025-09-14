@@ -404,7 +404,7 @@ namespace IsoRealms {
     return cDefTestLaunchConfigurations[index].get();
   }
   
-  std::vector<std::string> Project::getProjectFileNames() const {
+  std::vector<std::string> Project::getWritableProjectFileNames() const {
     return cDefProjectFileStructure.getNames();
   }
 
