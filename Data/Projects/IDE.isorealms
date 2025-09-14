@@ -1747,9 +1747,16 @@
                             "to": {
                               "key": "Basics/Project/Project"
                             }
+                          },
+                          {
+                            "variable": "launcher",
+                            "to": {
+                              "key": "~",
+                              "local": "Launcher"
+                            }
                           }
                         ],
-                        "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)"
+                        "code": "gProjectExecuting = true\nif gActiveEditor ~= nil then\n  gActiveEditor:notifyHidden()\nend\ninteractiveDisplay:setScreen(nil)\ninteractiveInput:setInputHandler(testInputHandler)\nproject:resetLauncher(launcher)\nproject:setRunning(true)\nproject:setEditing(false)"
                       }
                     }
                   }

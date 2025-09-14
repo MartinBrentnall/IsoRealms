@@ -56,7 +56,6 @@ namespace IsoRealms {
           cDefQuitAction(*this, cDefProjectFileStructure, *this),
           cLuaBindingApplication(cLuaState, &application),
           cLuaBindingProject(cLuaState, this),
-          cOptionsBinding(cLuaState, nullptr, this),
           cResourcesLoaded(false),
           cLoading(false),
           cProcessingInput(false),
@@ -173,12 +172,15 @@ namespace IsoRealms {
   }
   
   void Project::reset(Options& options) {
-    // TODO: Implement this.
+    for (std::pair<std::string, std::string> mOption : options.getAllOptions()) {
+      std::cout << "Setting option \"" << mOption.first << "\" to \"" << mOption.second << "\"" << std::endl;
+    }
     reset();
   }
 
-  void Project::reset(ProjectLaunchConfiguration* configuration) {
-    // TODO: Implement this.
+  void Project::reset(const ProjectLaunchConfiguration* configuration) {
+    Options mOptions = configuration->getOptions();
+    reset(mOptions);
   }
 
   bool Project::input(sf::Event& event) {
@@ -524,21 +526,6 @@ namespace IsoRealms {
     return getProjectPathPrefix(user) + mDataPath;
   }
 
-  IBinding* Project::getBinding(const std::string& id) {
-    return id == "options" ? &cOptionsBinding
-         :                   nullptr;
-  }
-
-  void Project::saveBinding(JSONObject object, const IBinding* binding) const {
-    if (binding == &cOptionsBinding) {
-      object.addString(JSON_LOCAL, "options");
-    }
-  }
-
-  void Project::releaseBinding(const IBinding* asset) {
-    // Nothing to do.
-  }
-
   std::string Project::getPath(const std::string& file, bool user) const {
     return ""; // TODO: Implement this.
   }
@@ -580,7 +567,7 @@ namespace IsoRealms {
   }
 
   IBindingRegistry* Project::getBindingRegistry() {
-    return this;
+    return nullptr;
   }
 
   Project::QuitAction::QuitAction(Project& parent) :

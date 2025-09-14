@@ -68,8 +68,7 @@ namespace IsoRealms {
    * Project acts as a container for the assets of the application, and
    * provides control over execution of the application.
    */
-  class Project : public IBindingRegistry,
-                  public IResourceData,
+  class Project : public IResourceData,
                   public IActionClient {
     public:
     
@@ -79,7 +78,7 @@ namespace IsoRealms {
     virtual ~Project();
     void reset();
     void reset(Options& options);
-    void reset(ProjectLaunchConfiguration* configuration);
+    void reset(const ProjectLaunchConfiguration* configuration);
     bool input(sf::Event& event);
     void updateRuntime(unsigned int milliseconds);
     void updateRuntimeComplete();
@@ -194,13 +193,6 @@ namespace IsoRealms {
     std::string getUserDataPath();
     std::string getDataPath(bool user);
 
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
-    IBinding* getBinding(const std::string& id) override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
-    void releaseBinding(const IBinding* asset) override;
-
     /****************************\
      * Implements IResourceData * TODO: Should these be here???
     \****************************/
@@ -291,7 +283,6 @@ namespace IsoRealms {
     // Scripting support.
     LuaBinding<Application> cLuaBindingApplication;
     LuaBinding<Project> cLuaBindingProject;   /// Project interface for actions and scripting.
-    LocalLuaBinding<Options> cOptionsBinding;
 
     // Callbacks
     std::vector<std::function<void()>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.

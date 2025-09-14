@@ -29,17 +29,21 @@ namespace IsoRealms::UI {
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cActionClient(menu.getResourceData(), *this),
             cDefID(""),
-            cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            cDefAction(cActionClient),
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
+            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr, this) {
   }
 
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cActionClient(menu.getResourceData(), *this),
             cDefID(object.getString(JSON_ID)),
-            cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            cDefAction(cActionClient),
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
+            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr, this) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 
@@ -64,7 +68,11 @@ namespace IsoRealms::UI {
         switch (event.key.code) {
           case sf::Keyboard::Up:     return up();
           case sf::Keyboard::Down:   return down();
-          case sf::Keyboard::Return: cDefAction.execute(); return true;
+          case sf::Keyboard::Return: {
+            cLauncherBinding.setValue(cRuntimeLaunchers[cRuntimeSelectedLauncher]->getLaunchConfiguration());
+            cDefAction.execute();
+            return true;
+          }
           default:                   break;
         }
         break;
@@ -127,6 +135,20 @@ namespace IsoRealms::UI {
     return false; // TODO: Implement this.
   }
 
+  IBinding* MenuItemLauncherList::getBinding(const std::string& id) {
+    return id == "Launcher" ? &cLauncherBinding : nullptr;
+  }
+
+  void MenuItemLauncherList::saveBinding(JSONObject object, const IBinding* binding) const {
+    if (binding == &cLauncherBinding) {
+      object.addString(JSON_LOCAL, "Launcher");
+    }
+  }
+
+  void MenuItemLauncherList::releaseBinding(const IBinding* asset) {
+    // Nothing to do.
+  }
+
   MenuItemLauncherList::Launcher::Launcher(const ProjectLaunchConfiguration* configuration) :
             cDefLaunchConfiguration(configuration) {
   }
@@ -142,6 +164,10 @@ namespace IsoRealms::UI {
 
   std::string MenuItemLauncherList::Launcher::getName() const {
     return cDefLaunchConfiguration->getName();
+  }
+
+  const ProjectLaunchConfiguration* MenuItemLauncherList::Launcher::getLaunchConfiguration() const {
+    return cDefLaunchConfiguration;
   }
 
   bool MenuItemLauncherList::up() {

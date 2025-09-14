@@ -31,7 +31,8 @@ namespace IsoRealms::UI {
   /**
    * Menu item that represents a list of project launchers that can be selected.
    */
-  class MenuItemLauncherList final : public IMenuItem {
+  class MenuItemLauncherList final : public IMenuItem,
+                                     public IBindingRegistry {
     public:
     MenuItemLauncherList(const Metadata& metadata, Menu& menu);
     MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object);
@@ -61,11 +62,19 @@ namespace IsoRealms::UI {
     void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
+    /*******************************\
+     * Implements IBindingRegistry *
+    \*******************************/
+    IBinding* getBinding(const std::string& id) override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
+    void releaseBinding(const IBinding* asset) override;
+
     private:
 
     // JSON members.
     static const std::string JSON_ID;
     static const std::string JSON_ON_SELECTION;
+    inline static const std::string JSON_LOCAL = "local";
 
     // Constants.
     static const std::string BINDING_TYPE;
@@ -78,6 +87,7 @@ namespace IsoRealms::UI {
       Launcher(const ProjectLaunchConfiguration* configuration);
       void render(float y, bool selected, const Menu& menu) const;
       std::string getName() const;
+      const ProjectLaunchConfiguration* getLaunchConfiguration() const;
 
       private:
 
@@ -89,6 +99,9 @@ namespace IsoRealms::UI {
     const Metadata& cMetadata;
     HatHandler& cHatHandler;
 
+    // Action client.
+    ActionClient cActionClient;
+
     // Definition data.
     std::string cDefID; /// ID of this menu item for binding.
     Action cDefAction;  /// Action that confirming a launcher selection will trigger.
@@ -98,7 +111,8 @@ namespace IsoRealms::UI {
     int cRuntimeSelectedLauncher;                             /// Index of the selected launchers.
 
     // Scripting support.
-    LuaBinding<MenuItemLauncherList> cLuaBinding; /// Allows menu launcher lists to be bound to lua variables.
+    LuaBinding<MenuItemLauncherList> cLuaBinding;                 /// Allows menu launcher lists to be bound to lua variables.
+    LocalLuaBinding<const ProjectLaunchConfiguration> cLauncherBinding; /// The binding to the selected launcher.
 
     // Private functions.
     bool up();

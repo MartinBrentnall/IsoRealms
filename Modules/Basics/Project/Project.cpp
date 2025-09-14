@@ -199,6 +199,10 @@ namespace IsoRealms::Basics {
   void Project::resetProject() {
     cRuntimeProject->reset();
   }
+
+  void Project::resetLauncher(const ProjectLaunchConfiguration* launcher) {
+    cRuntimeProject->reset(launcher);
+  }
   
   IEditable* Project::getDefaultEditor() {
     return cRuntimeProject->getDefaultEditable();

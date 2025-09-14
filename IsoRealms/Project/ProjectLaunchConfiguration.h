@@ -22,6 +22,8 @@
 #include "IsoRealms/Assets/Client/ResourceOwner.h"
 #include "IsoRealms/Types.h"
 
+#include "Options.h"
+
 namespace IsoRealms {
   class Project;
 
@@ -33,6 +35,7 @@ namespace IsoRealms {
     void getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project);
     void save(JSONObject object, ProjectFile& savingProject) const;
     bool isOwnedBy(ProjectFile& project);
+    Options getOptions() const;
 
     private:
     class Option {
@@ -40,6 +43,7 @@ namespace IsoRealms {
       Option(Project& parent, ProjectLaunchConfiguration& launch);
       Option(Project& parent, JSONThing thing);
       std::string getName() const;
+      std::string getValue() const;
       void getProperties(PropertyMaker& owner, const Metadata& metadata, ProjectLaunchConfiguration& launch);
       void save(JSONObject object) const;
 

@@ -50,9 +50,11 @@ namespace IsoRealms {
   template class LuaBinding<JSONDocument>;
   template class LuaBinding<JSONObject>;
   template class LuaBinding<Project>;
+  template class LuaBinding<ProjectLaunchConfiguration>;
 
   template class LocalLuaBinding<IEditable>;
   template class LocalLuaBinding<Options>;
+  template class LocalLuaBinding<const ProjectLaunchConfiguration>;
 
   bool operator==(const IColour& a, const IColour& b) {
     return &a == &b;

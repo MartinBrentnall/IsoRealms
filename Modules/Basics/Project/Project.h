@@ -58,6 +58,7 @@ namespace IsoRealms::Basics {
     void prepare(const std::string& file, bool user, bool force);
     bool isReady();
     void resetProject();
+    void resetLauncher(const ProjectLaunchConfiguration* launcher);
     IEditable* getDefaultEditor();
     IsoRealms::Project* getProject();
     bool isUser();
