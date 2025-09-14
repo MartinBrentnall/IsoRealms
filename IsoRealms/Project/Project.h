@@ -268,6 +268,7 @@ namespace IsoRealms {
     VertexRegistry       cVertices;
 
     // Definition data.
+    Options                                                  cDefOptions;
     std::vector<std::unique_ptr<Module>>                     cDefModules;
     ProjectFile                                              cDefProjectFileStructure;
     std::vector<std::unique_ptr<ProjectLaunchConfiguration>> cDefTestLaunchConfigurations;
@@ -282,7 +283,8 @@ namespace IsoRealms {
 
     // Scripting support.
     LuaBinding<Application> cLuaBindingApplication;
-    LuaBinding<Project> cLuaBindingProject;   /// Project interface for actions and scripting.
+    LuaBinding<Project> cLuaBindingProject;         /// Project interface for actions and scripting.
+    LuaBinding<Options> cLuaBindingOptions;         /// The binding to the selected options.
 
     // Callbacks
     std::vector<std::function<void()>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.

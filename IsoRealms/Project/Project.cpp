@@ -56,6 +56,7 @@ namespace IsoRealms {
           cDefQuitAction(*this, cDefProjectFileStructure, *this),
           cLuaBindingApplication(cLuaState, &application),
           cLuaBindingProject(cLuaState, this),
+          cLuaBindingOptions(cLuaState, &cDefOptions),
           cResourcesLoaded(false),
           cLoading(false),
           cProcessingInput(false),
@@ -64,6 +65,7 @@ namespace IsoRealms {
           cQuitAction(*this) {
     add<IBinding, IBinding>(&cLuaBindingApplication, "Application", "System");
     add<IBinding, IBinding>(&cLuaBindingProject,     "Project",     "System");
+    add<IBinding, IBinding>(&cLuaBindingOptions,     "Options",     "System");
     add<IAction,  IAction> (&cQuitAction,            "Quit",        "System");
   }
 
@@ -156,6 +158,7 @@ namespace IsoRealms {
   Project::~Project() {
     // remove(&cLuaBindingApplication);
     // remove(&cLuaBindingProject);
+    // remove(&cLuaBindingOptions);
     // remove(&cQuitAction);
   }
   
@@ -172,9 +175,7 @@ namespace IsoRealms {
   }
   
   void Project::reset(Options& options) {
-    for (std::pair<std::string, std::string> mOption : options.getAllOptions()) {
-      std::cout << "Setting option \"" << mOption.first << "\" to \"" << mOption.second << "\"" << std::endl;
-    }
+    cDefOptions = options;
     reset();
   }
 
