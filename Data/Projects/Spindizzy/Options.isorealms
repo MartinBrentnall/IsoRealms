@@ -281,6 +281,12 @@
                     "to": {
                       "key": "Basics/InputSwitch/Options Screen"
                     }
+                  },
+                  {
+                    "variable": "application",
+                    "to": {
+                      "key": "Application"
+                    }
                   }
                 ],
                 "arguments": [],
@@ -1080,6 +1086,12 @@
                             "variable": "screenTestTimer",
                             "to": {
                               "key": "Basics/Sequence/Video Mode Test Time/Instance"
+                            }
+                          },
+                          {
+                            "variable": "application",
+                            "to": {
+                              "key": "Application"
                             }
                           }
                         ],
