@@ -532,7 +532,7 @@ namespace IsoRealms {
   }
 
   void Project::makeUserDataDirectory() {
-    // TODO: Implement this.
+    System::makeUserDataDirectory(getUserDataPath());
   }
 
   bool Project::isIncluded() const {

@@ -20,6 +20,8 @@
 
 #include <sol.hpp>
 
+#include "Replayer/Replayer.h"
+
 namespace IsoRealms {
   template <typename TYPE> void LuaBinding<TYPE>::bind(const std::string& bindFunction) const {
     cDefLuaState[bindFunction](cDefValue);
@@ -32,7 +34,10 @@ namespace IsoRealms {
 #elif _WIN32
     extern "C" void __declspec(dllexport) __stdcall initLua(LuaState* luaState) {
 #endif
-      // Nothing to do
+      sol::state& mLua = luaState->getState();
+      mLua.new_usertype<Replayer>("Replayer", "setRecording", &Replayer::setRecording,
+                                              "setReplaying", &Replayer::setReplaying,
+                                              "setInactive",  &Replayer::setInactive);
     }
   }
 }

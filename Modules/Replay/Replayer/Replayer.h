@@ -43,7 +43,7 @@ namespace IsoRealms::Replay {
     /***********************\
      * Scripting Interface *
     \***********************/
-    void setRecording();
+    void setRecording(const std::string& file);
     void setReplaying(const std::string& file, bool user);
     void setInactive();
 
@@ -150,6 +150,8 @@ namespace IsoRealms::Replay {
     std::ofstream cOutput;
     std::vector<std::unique_ptr<DigitalInput>> cDigitalInputs;
     std::vector<std::unique_ptr<AnalogueInput>> cAnalogueInputs;
+
+    LuaBinding<Replayer> cLuaBinding;
     
     void readEvent();
     void writeEvent(unsigned int id, bool state);

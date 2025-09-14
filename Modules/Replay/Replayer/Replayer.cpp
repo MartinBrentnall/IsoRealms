@@ -21,7 +21,8 @@
 namespace IsoRealms::Replay {
   Replayer::Replayer(Replay& replay, IResourceData& data) :
             cResource(data),
-            cState(State::INACTIVE) {
+            cState(State::INACTIVE),
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
   Replayer::Replayer(Replay& replay, IResourceData& data, JSONObject object) :
@@ -37,6 +38,7 @@ namespace IsoRealms::Replay {
   }
 
   void Replayer::registerAssets(ResourceAssetRegistry& assets) {
+    assets.add<IBinding>(&cLuaBinding, "", "Replayer");
     for (std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
       mInput->registerAssets(assets);
     }
@@ -124,17 +126,17 @@ namespace IsoRealms::Replay {
         if (cElapsedTime == 0) {
 
           // Construct date and time string for filename
-          time_t mCurrentTime = time(0);
-          struct tm* mNow = localtime(&mCurrentTime);
-          std::stringstream mDateTimeReader;
-          mDateTimeReader << std::setfill('0') << std::setw(2) << (mNow->tm_year - 100)
-                                               << std::setw(2) << (mNow->tm_mon + 1)
-                                               << std::setw(2) <<  mNow->tm_mday << "-"
-                                               << std::setw(2) <<  mNow->tm_hour
-                                               << std::setw(2) <<  mNow->tm_min
-                                               << std::setw(2) <<  mNow->tm_sec;
-          cFilenameString.setValue("Recordings/" + mDateTimeReader.str());
-          cOutput = System::openOutputStream(cFilenameString.getValue());
+//          time_t mCurrentTime = time(0);
+//          struct tm* mNow = localtime(&mCurrentTime);
+//          std::stringstream mDateTimeReader;
+//          mDateTimeReader << std::setfill('0') << std::setw(2) << (mNow->tm_year - 100)
+//                                               << std::setw(2) << (mNow->tm_mon + 1)
+//                                               << std::setw(2) <<  mNow->tm_mday << "-"
+//                                               << std::setw(2) <<  mNow->tm_hour
+//                                               << std::setw(2) <<  mNow->tm_min
+//                                               << std::setw(2) <<  mNow->tm_sec;
+//          cFilenameString.setValue("Recordings/" + mDateTimeReader.str());
+          cOutput.open(cFilename, std::ios::out | std::ios::binary);
         }
         cElapsedTime += milliseconds;
       }
@@ -197,13 +199,17 @@ namespace IsoRealms::Replay {
     }
   }
   
-  void Replayer::setRecording() {
+  void Replayer::setRecording(const std::string& file) {
     cState = State::RECORDING;
+    Project& mProject = cResource.getProject();
+    mProject.makeUserDataDirectory();
+    cFilename = mProject.getDataPath(true) + "/" + file;
   }
 
   void Replayer::setReplaying(const std::string& file, bool user) {
     cState = State::REPLAYING;
-    cFilename = System::getPath(file, user);
+    Project& mProject = cResource.getProject();
+    cFilename = mProject.getDataPath(user) + "/" + file;
     cRecording = std::ifstream(cFilename, std::ios::binary);
   }
 
@@ -251,7 +257,10 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::DigitalInput::setRecordedState(bool state) {
-    cRuntimeRecordedInput = state;
+    if (cRuntimeRecordedInput != state) {
+      cRuntimeRecordedInput = state;
+      cStateNotifier->stateChanged(this);
+    }
   }
   
   std::string Replayer::DigitalInput::getName() const {
@@ -318,7 +327,10 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::AnalogueInput::setRecordedState(float state) {
-    cRuntimeRecordedInput = state;
+    if (cRuntimeRecordedInput != state) {
+      cRuntimeRecordedInput = state;
+      cStateNotifier->stateChanged(this);
+    }
   }
   
   std::string Replayer::AnalogueInput::getName() const {
