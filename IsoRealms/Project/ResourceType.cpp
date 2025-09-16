@@ -146,6 +146,10 @@ namespace IsoRealms {
     }
     std::cout << "WARNING: ResourceType::deleteResource: Didn't do anything!" << std::endl;
   }
+
+  void ResourceType::registerModuleAssets() {
+    cParent.registerAssets();
+  }
   
   std::string ResourceType::getPath() {
     return cParent.getPath() + "/" + cParent.getName(this);

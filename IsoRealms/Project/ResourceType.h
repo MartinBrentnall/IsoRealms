@@ -43,6 +43,7 @@ namespace IsoRealms {
     IResource* createResource();
     void renameResource(IResource* resource, const std::string& name);
     void deleteResource(IResource* resource);
+    void registerModuleAssets();
     std::string getPath();
     std::string getDataPath(bool user);
     ProjectFile* getProjectFile();

@@ -86,6 +86,7 @@ namespace IsoRealms {
         cName = value;
         cAssetRegistry.setLocalPath(cName);
         registerAssets();
+        cParent.registerModuleAssets();
       }, [this](const std::string& value) {
         const std::set<IResource*> mAllResources = cParent.getResources();
         for (IResource* mResource : mAllResources) {
