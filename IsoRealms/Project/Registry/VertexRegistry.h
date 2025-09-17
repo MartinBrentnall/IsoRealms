@@ -29,11 +29,9 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class Project;
-
   class VertexRegistry : public AssetClientManager<VertexRegistry, IResourceData, IVertex> {
     public:
-    VertexRegistry(Project& project);
+    VertexRegistry();
 
     IVertex* literal(IAssetUser<IVertex>* client, IResourceData& owner, float x, float y, float z) {
       IVertex* mVertex = cLiteral.createLiteralAsset(owner, x, y, z);

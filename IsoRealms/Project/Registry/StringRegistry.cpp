@@ -21,7 +21,7 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  StringRegistry::StringRegistry(Project& project) :
+  StringRegistry::StringRegistry() :
             AssetClientManager(&cLiteral, "Literal") {
 
     // Support conversions.

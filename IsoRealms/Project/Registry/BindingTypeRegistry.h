@@ -29,11 +29,9 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class Project;
-
   class BindingTypeRegistry : public AssetClientManager<BindingTypeRegistry, IResourceData, IBindingType> {
     public:
-    BindingTypeRegistry(Project& project);
+    BindingTypeRegistry();
 
     private:
     class Literal : public IBindingType {
@@ -75,7 +73,6 @@ namespace IsoRealms {
     Literal cFonts;
     Literal cInputHandlers;
     Literal cIntegers;
-    Literal cProjects;
     Literal cScreens;
     Literal cStrings;
     Literal cVertices;

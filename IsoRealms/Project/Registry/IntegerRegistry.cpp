@@ -21,7 +21,7 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  IntegerRegistry::IntegerRegistry(Project& project) :
+  IntegerRegistry::IntegerRegistry() :
             AssetClientManager(&cLiteral, "Literal") {
   }
 

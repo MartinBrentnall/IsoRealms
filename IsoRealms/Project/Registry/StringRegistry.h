@@ -38,7 +38,7 @@ namespace IsoRealms {
 
   class StringRegistry : public AssetClientManager<StringRegistry, IResourceData, IString> {
     public:
-    StringRegistry(Project& project);
+    StringRegistry();
 
     IString* literal(IAssetUser<IString>* client, IResourceData& owner, const std::string& value) {
       IString* mString = cLiteral.createLiteralAsset(owner, value);

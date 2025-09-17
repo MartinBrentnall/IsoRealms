@@ -19,7 +19,7 @@
 #include "ActionRegistry.h"
 
 namespace IsoRealms {
-  ActionRegistry::ActionRegistry(Project& project) :
+  ActionRegistry::ActionRegistry() :
             AssetClientManager(&cLiteral) {
   }
 

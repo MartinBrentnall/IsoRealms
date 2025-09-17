@@ -30,11 +30,9 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class Project;
-
   class TextureRegistry : public AssetClientManager<TextureRegistry, IResourceData, ITexture> {
     public:
-    TextureRegistry(Project& project);
+    TextureRegistry();
 
     private:
     class Dummy : public ITexture {

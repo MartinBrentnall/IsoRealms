@@ -33,7 +33,7 @@ namespace IsoRealms {
 
   class EditableRegistry : public AssetClientManager<EditableRegistry, IResourceData, IEditable> {
     public:
-    EditableRegistry(Project& project);
+    EditableRegistry();
 
     private:
     class Dummy : public IEditable {

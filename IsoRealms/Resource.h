@@ -80,7 +80,6 @@ namespace IsoRealms {
     void getProperties(PropertyMaker& propertyMaker) override {
       const Metadata& mMetadata = cParent.getProject().getApplication().getMetadata("Resource");
       propertyMaker.createPropertyNativeString(mMetadata.getPropertyData("ResourceName"), [this]() {return cName;}, [this](const std::string& value) {
-        // TODO: If the resource belongs to a read-only project file, it should be changed to the main one and an omission should be created in place of the original name.
         cParent.renameResource(this, value);
         cParent.renameUserDataDirectory(cName, value);
         cName = value;

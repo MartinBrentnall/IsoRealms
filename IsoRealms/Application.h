@@ -44,6 +44,7 @@
 #include "System.h"
  
 namespace IsoRealms {
+  class Options;
   
   /**
    * Thread pool allows tasks to be performed in parallel, and/or large tasks to
@@ -194,6 +195,8 @@ namespace IsoRealms {
      */
     Application();
     ~Application();
+
+    int run(Options& options);
 
     JSONDocument createDocument();
     JSONDocument openDocument(const std::string& name);

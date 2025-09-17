@@ -29,11 +29,9 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class Project;
-
   class FontRegistry : public AssetClientManager<FontRegistry, IResourceData, IFont> {
     public:
-    FontRegistry(Project& project);
+    FontRegistry();
 
     private:
     class Dummy : public IFont {

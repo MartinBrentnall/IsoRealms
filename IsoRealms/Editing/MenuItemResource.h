@@ -20,6 +20,7 @@
 
 #include <functional>
 #include <string>
+#include <variant>
 
 #include "IsoRealms/IResource.h"
 #include "IsoRealms/Types.h"
@@ -29,7 +30,7 @@
 namespace IsoRealms {
   class MenuItemResource {
     public:
-    MenuItemResource(const std::string& label, IResource* resource, std::function<void(IResource* resource)> action, std::function<bool(IResource* resource)> icon);
+    MenuItemResource(std::variant<IResource*, std::string> resource, std::function<void(IResource* resource)> action, std::function<bool(IResource* resource)> icon);
 
     IResource* getResource() const;
     float getWidth(IUIStyle& style) const;
@@ -39,10 +40,11 @@ namespace IsoRealms {
     std::string getTooltip() const;
 
     private:
-    std::string cLabel;
-    IResource* cResource;
+    std::variant<IResource*, std::string> cResource;
     std::function<void(IResource*)> cAction;
     std::function<bool(IResource*)> cIcon;
+    
+    std::string getLabel() const;
   };
 }
 

@@ -29,11 +29,9 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class Project;
-
   class ActionRegistry : public AssetClientManager<ActionRegistry, IActionClient, IAction> {
     public:
-    ActionRegistry(Project& project);
+    ActionRegistry();
 
     private:
     class Dummy : public IAction {

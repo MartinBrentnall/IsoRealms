@@ -19,7 +19,7 @@
 #include "EditableRegistry.h"
 
 namespace IsoRealms {
-  EditableRegistry::EditableRegistry(Project& project) :
+  EditableRegistry::EditableRegistry() :
             AssetClientManager(&cLiteral) {
   }
 

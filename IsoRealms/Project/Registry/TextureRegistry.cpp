@@ -21,7 +21,7 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  TextureRegistry::TextureRegistry(Project& project) :
+  TextureRegistry::TextureRegistry() :
             AssetClientManager(&cLiteral) {
   }
 

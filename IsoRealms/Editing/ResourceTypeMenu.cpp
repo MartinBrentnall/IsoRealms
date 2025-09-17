@@ -114,43 +114,99 @@ namespace IsoRealms {
   }
 
   void ResourceTypeMenu::refresh() {
+    
+    // Start fresh.
     clear();
+    
+    // Put all the resources and deleted resources into a single container.
     const std::set<IResource*> mResources = cResourceType.getResources();
-    std::vector<IResource*> mSortedResources;
-    IUIStyle& mStyle = getStyle();
-    float mFontSize = mStyle.getFontSize();
-
+    const std::set<std::string> mDeletedResources = cResourceType.getDeletedResources();
+    std::vector<std::variant<IResource*, std::string>> mSortedResources;
     for (IResource* mResource : mResources) {
       mSortedResources.emplace_back(mResource);
     }
-    std::sort(mSortedResources.begin(), mSortedResources.end(), [](IResource* a, IResource* b) {return a->getName().compare(b->getName()) < 0;});
-
-    for (IResource* mResource : mSortedResources) {
-      addResource(mResource);
+    for (const std::string& mDeletedResource : mDeletedResources) {
+      mSortedResources.emplace_back(mDeletedResource);
     }
 
-    std::unique_ptr<MenuItemResource> mMenuItem = std::make_unique<MenuItemResource>("[New " + cResourceType.getSingular() + "...]", nullptr, [this](IResource* resource) {
+    // Create a function to retrieve the name of a resource (whether a real or deleted one).
+    std::function<std::string(const std::variant<IResource*, std::string>&)> mGetResourceNameFunction = [](const std::variant<IResource*, std::string>& variant) -> std::string {
+      return std::visit([](auto&& val) -> std::string {
+        using TYPE = std::decay_t<decltype(val)>;
+        if constexpr (std::is_same_v<TYPE, IResource*>) {
+          return val->getName();
+        } else {
+          return val;
+        }
+      }, variant);
+    };
+
+    // Sort the container with the resource names.
+    std::sort(mSortedResources.begin(), mSortedResources.end(), [&mGetResourceNameFunction](const std::variant<IResource*, std::string>& a, const std::variant<IResource*, std::string>& b) {
+      return mGetResourceNameFunction(a) < mGetResourceNameFunction(b);
+    });
+
+    // Create menu items for each resource and deleted resource.
+    for (std::variant<IResource*, std::string> const& variant : mSortedResources) {
+      std::visit([this](auto const &val) {
+        using TYPE = std::decay_t<decltype(val)>;
+        if constexpr (std::is_same_v<TYPE, IResource*>) {
+          addResource(val);
+        } else {
+          addDeletedResource(val);
+        }
+      }, variant);
+    }
+
+    // Create a final menu item that allows creation of a new resource.
+    std::unique_ptr<MenuItemResource> mCreateResourceMenuItem = std::make_unique<MenuItemResource>("[New " + cResourceType.getSingular() + "...]", [this](IResource* resource) {
       IResource* mCreatedResource = cResourceType.createResource();
       std::cout << "CREATING RESOURCE..." << mCreatedResource << std::endl;
       openResourcePropertiesMenu(mCreatedResource);
     }, [](IResource* resource) {
       return true;
     });
-    cRemoveButtonOffset = std::max(cRemoveButtonOffset, mMenuItem->getWidth(mStyle) + mFontSize * 2.25f);
-    addItem(std::move(mMenuItem));
+    
+    // Expand the "remove resource" button offset (for all items) if necessary.
+    IUIStyle& mStyle = getStyle();
+    float mFontSize = mStyle.getFontSize();
+    cRemoveButtonOffset = std::max(cRemoveButtonOffset, mCreateResourceMenuItem->getWidth(mStyle) + mFontSize * 2.25f);
+    
+    // Add the final item.
+    addItem(std::move(mCreateResourceMenuItem));
   }
   
   void ResourceTypeMenu::addResource(IResource* resource) {
-    std::string mResourceName = resource->getName();
-    std::unique_ptr<MenuItemResource> mMenuItem = std::make_unique<MenuItemResource>(mResourceName, resource, [this](IResource* resource) {
+    std::unique_ptr<MenuItemResource> mResourceMenuItem = std::make_unique<MenuItemResource>(resource, [this](IResource* resource) {
       openResourcePropertiesMenu(resource);
     }, [](IResource* resource) {
       return resource->renderIcon();
     });
+    
+    // Expand the "remove resource" button offset (for all items) if necessary.
     IUIStyle& mStyle = getStyle();
     float mFontSize = mStyle.getFontSize();
-    cRemoveButtonOffset = std::max(cRemoveButtonOffset, mMenuItem->getWidth(mStyle) + mFontSize * 2.25f);
-    addItem(std::move(mMenuItem));
+    cRemoveButtonOffset = std::max(cRemoveButtonOffset, mResourceMenuItem->getWidth(mStyle) + mFontSize * 2.25f);
+    
+    // Add the resource menu item.
+    addItem(std::move(mResourceMenuItem));
+  }
+  
+  void ResourceTypeMenu::addDeletedResource(const std::string& resource) {
+    std::unique_ptr<MenuItemResource> mDeletedResourceMenuItem = std::make_unique<MenuItemResource>(resource, [this](IResource* resource) {
+      // TODO: Implement this.
+    }, [](IResource* resource) {
+      Utils::renderIconNone();
+      return true;
+    });
+    
+    // Expand the "remove resource" button offset (for all items) if necessary.
+    IUIStyle& mStyle = getStyle();
+    float mFontSize = mStyle.getFontSize();
+    cRemoveButtonOffset = std::max(cRemoveButtonOffset, mDeletedResourceMenuItem->getWidth(mStyle) + mFontSize * 2.25f);
+    
+    // Add the deleted resource menu item.
+    addItem(std::move(mDeletedResourceMenuItem));
   }
   
   void ResourceTypeMenu::openResourcePropertiesMenu(IResource* resource) {

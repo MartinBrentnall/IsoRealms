@@ -19,7 +19,7 @@
 #include "FontRegistry.h"
 
 namespace IsoRealms {
-  FontRegistry::FontRegistry(Project& project) :
+  FontRegistry::FontRegistry() :
             AssetClientManager(&cLiteral) {
   }
 

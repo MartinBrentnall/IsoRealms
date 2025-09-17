@@ -21,7 +21,7 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  ColourRegistry::ColourRegistry(Project& project) :
+  ColourRegistry::ColourRegistry() :
             AssetClientManager(&cLiteral, "Literal") {
   }
 

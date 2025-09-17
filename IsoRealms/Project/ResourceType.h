@@ -40,6 +40,7 @@ namespace IsoRealms {
     std::string const getPlural() const;
     std::string const getSingular() const;
     const std::set<IResource*> getResources();
+    const std::set<std::string> getDeletedResources();
     IResource* createResource();
     void renameResource(IResource* resource, const std::string& name);
     void deleteResource(IResource* resource);
@@ -59,7 +60,6 @@ namespace IsoRealms {
     static const std::string JSON_CATEGORY;
     static const std::string JSON_DESCRIPTION;
     static const std::string JSON_ID;
-    static const std::string JSON_NAME;
     static const std::string JSON_PLURAL;
     static const std::string JSON_PROPERTIES;
     static const std::string JSON_SINGULAR;

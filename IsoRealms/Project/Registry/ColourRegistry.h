@@ -35,7 +35,7 @@ namespace IsoRealms {
 
   class ColourRegistry : public AssetClientManager<ColourRegistry, IResourceData, IColour> {
     public:
-    ColourRegistry(Project& project);
+    ColourRegistry();
 
     IColour* literal(IAssetUser<IColour>* client, IResourceData& owner, float red, float green, float blue, float alpha) {
       IColour* mColour = cLiteral.createLiteralAsset(owner, red, green, blue, alpha);

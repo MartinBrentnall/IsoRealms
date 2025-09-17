@@ -34,7 +34,7 @@ namespace IsoRealms {
 
   class FloatRegistry : public AssetClientManager<FloatRegistry, IResourceData, IFloat> {
     public:
-    FloatRegistry(Project& project);
+    FloatRegistry();
 
     IFloat* literal(IAssetUser<IFloat>* client, IResourceData& owner, float value) {
       IFloat* mFloat = cLiteral.createLiteralAsset(owner, value);

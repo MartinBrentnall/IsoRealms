@@ -21,7 +21,7 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  BooleanRegistry::BooleanRegistry(Project& project) :
+  BooleanRegistry::BooleanRegistry() :
             AssetClientManager(&cLiteral, "Literal") {
   }
 

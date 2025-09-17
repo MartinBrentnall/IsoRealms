@@ -19,7 +19,7 @@
 #include "BindingTypeRegistry.h"
 
 namespace IsoRealms {
-  BindingTypeRegistry::BindingTypeRegistry(Project& project) :
+  BindingTypeRegistry::BindingTypeRegistry() :
             AssetClientManager(&cDummy, "Any"),
             cActions(":Action"),
             cBooleans(":Boolean"),
@@ -28,7 +28,6 @@ namespace IsoRealms {
             cFonts(":Font"),
             cInputHandlers(":InputHandler"),
             cIntegers(":Integer"),
-            cProjects(":Project"),
             cScreens(":Screen"),
             cStrings(":String"),
             cVertices(":Vertex") {
@@ -39,7 +38,6 @@ namespace IsoRealms {
     add(&cFonts,         "Font",          "Conversions");
     add(&cInputHandlers, "Input Handler", "Conversions");
     add(&cIntegers,      "Integer",       "Conversions");
-    add(&cProjects,      "Project",       "Conversions");
     add(&cScreens,       "Screen",        "Conversions");
     add(&cStrings,       "String",        "Conversions");
     add(&cVertices,      "Vertex",        "Conversions");

@@ -27,7 +27,6 @@ namespace IsoRealms {
   const std::string ResourceType::JSON_CATEGORY    = "category";
   const std::string ResourceType::JSON_DESCRIPTION = "description";
   const std::string ResourceType::JSON_ID          = "id";
-  const std::string ResourceType::JSON_NAME        = "name";
   const std::string ResourceType::JSON_PLURAL      = "plural";
   const std::string ResourceType::JSON_PROPERTIES  = "properties";
   const std::string ResourceType::JSON_SINGULAR    = "singular";
@@ -37,7 +36,6 @@ namespace IsoRealms {
             cParent(parent),
             cCategory("None") {
   }
-
 
   ResourceType::~ResourceType() {
     Project& mProject = cParent.getProject();
@@ -55,7 +53,6 @@ namespace IsoRealms {
         }
       }
     }
-    cResources.clear();
   }
 
   void ResourceType::loadResource(JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) {
@@ -120,6 +117,10 @@ namespace IsoRealms {
     return cResources;
   }
 
+  const std::set<std::string> ResourceType::getDeletedResources() {
+    return cOmittedResources;
+  }
+
   IResource* ResourceType::createResource() {
     Project& mProject = cParent.getProject();
     ProjectFile* mOwnerProject = mProject.getProjectFile();
@@ -129,6 +130,9 @@ namespace IsoRealms {
   }
 
   void ResourceType::renameResource(IResource* resource, const std::string& name) {
+    if (resource->isReadOnly()) {
+      cOmittedResources.insert(resource->getName());
+    }
     cResourceType->renameResource(resource, name);
   }
 

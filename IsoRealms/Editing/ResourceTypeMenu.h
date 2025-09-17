@@ -57,6 +57,7 @@ namespace IsoRealms {
     std::unique_ptr<Choice> cClosedConfirmSelection;
 
     void addResource(IResource* resource);
+    void addDeletedResource(const std::string& resource);
     void openResourcePropertiesMenu(IResource* resource);
   };
 }

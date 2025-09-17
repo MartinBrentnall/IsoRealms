@@ -34,7 +34,7 @@ namespace IsoRealms {
 
   class BooleanRegistry : public AssetClientManager<BooleanRegistry, IResourceData, IBoolean> {
     public:
-    BooleanRegistry(Project& project);
+    BooleanRegistry();
 
     IBoolean* literal(IAssetUser<IBoolean>* client, IResourceData& owner, bool value) {
       IBoolean* mBoolean = cLiteral.createLiteralAsset(owner, value);

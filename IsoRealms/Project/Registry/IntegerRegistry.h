@@ -34,7 +34,7 @@ namespace IsoRealms {
 
   class IntegerRegistry : public AssetClientManager<IntegerRegistry, IResourceData, IInteger> {
     public:
-    IntegerRegistry(Project& project);
+    IntegerRegistry();
 
     IInteger* literal(IAssetUser<IInteger>* client, IResourceData& owner, int value) {
       IInteger* mInteger = cLiteral.createLiteralAsset(owner, value);

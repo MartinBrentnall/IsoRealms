@@ -19,7 +19,7 @@
 #include "VertexRegistry.h"
 
 namespace IsoRealms {
-  VertexRegistry::VertexRegistry(Project& project) :
+  VertexRegistry::VertexRegistry() :
             AssetClientManager(&cLiteral, "Literal") {
   }
 

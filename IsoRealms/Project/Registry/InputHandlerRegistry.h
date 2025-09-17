@@ -29,11 +29,9 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class Project;
-
   class InputHandlerRegistry : public AssetClientManager<InputHandlerRegistry, IResourceData, IInputHandler> {
     public:
-    InputHandlerRegistry(Project& project);
+    InputHandlerRegistry();
 
     private:
     class Dummy : public IInputHandler {

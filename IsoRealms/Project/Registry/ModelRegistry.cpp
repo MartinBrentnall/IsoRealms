@@ -19,7 +19,7 @@
 #include "ModelRegistry.h"
 
 namespace IsoRealms {
-  ModelRegistry::ModelRegistry(Project& project) :
+  ModelRegistry::ModelRegistry() :
             AssetClientManager(&cLiteral) {
   }
 

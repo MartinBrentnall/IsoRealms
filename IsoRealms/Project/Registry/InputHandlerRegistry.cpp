@@ -19,7 +19,7 @@
 #include "InputHandlerRegistry.h"
 
 namespace IsoRealms {
-  InputHandlerRegistry::InputHandlerRegistry(Project& project) :
+  InputHandlerRegistry::InputHandlerRegistry() :
             AssetClientManager(&cLiteral) {
   }
 

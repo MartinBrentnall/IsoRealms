@@ -141,10 +141,6 @@ namespace IsoRealms {
       }
     }
 
-    ~ResourceTypeDefinition() {
-      cResources.clear();
-    }
-
     private:
     inline static const std::string JSON_ID = "id";
 
