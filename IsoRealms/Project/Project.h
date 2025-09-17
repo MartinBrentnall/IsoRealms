@@ -132,7 +132,7 @@ namespace IsoRealms {
     }
 
     template <typename TYPE, typename THING> void remove(THING* asset) {
-      AssetContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(asset);
+      AssetContainerTraits<TYPE>::get(*this).remove(asset);
     }
     
     template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* asset) const {
