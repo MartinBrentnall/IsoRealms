@@ -55,6 +55,9 @@ namespace IsoRealms {
   void MenuItemResource::render(IUIStyle& style, float y, float xRemoveOffset, float aspectRatio) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
+    if (!std::holds_alternative<IResource*>(cResource) && getLabel()[0] != '[') { // TODO: This is pretty shitty code.
+      glColor3f(0.4f, 0.4f, 0.4f);
+    }
     mFont->print(-1.0f * aspectRatio + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, getLabel());
     if (getResource() != nullptr) {
       glPushMatrix();
@@ -68,22 +71,6 @@ namespace IsoRealms {
     glScalef(mFontSize, mFontSize, 0.0f);
     if (!cIcon(getResource())) {
       Utils::renderIconBranch();
-    }
-    
-    if (!std::holds_alternative<IResource*>(cResource) && getLabel()[0] != '[') { // TODO: This is pretty shitty code.
-      float mTop = y + mFontSize;
-      float mBottom = y - mFontSize;
-      float mLeft = -1.0f * aspectRatio + mFontSize;
-      float mRight = -1.0f * aspectRatio + mFontSize + xRemoveOffset;
-      glColor4f(1.0f, 0.0f, 1.0f, 0.5f);
-      glEnable(GL_BLEND);
-      glBegin(GL_QUADS);
-      glVertex3f(mLeft,  mTop,    0.0f);
-      glVertex3f(mLeft,  mBottom, 0.0f);
-      glVertex3f(mRight, mBottom, 0.0f);
-      glVertex3f(mRight, mTop,    0.0f);
-      glEnd();
-      glDisable(GL_BLEND);
     }
     
     glColor3f(1.0f, 1.0f, 1.0f);

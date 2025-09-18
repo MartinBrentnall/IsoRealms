@@ -88,7 +88,7 @@ namespace IsoRealms {
             if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
               IResource* mResource = item.getResource();
               cResourceType.deleteResource(mResource);
-              removeItem(item);
+              refresh();
             }
             cClosedConfirmSelection = std::move(cConfirmSelection);
             cConfirmSelection = nullptr;
