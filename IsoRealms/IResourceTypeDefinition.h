@@ -18,6 +18,9 @@
  */
 #pragma once
 
+#include <string>
+#include <functional>
+
 namespace IsoRealms {
   class File;
   class IAssetRegistry;
@@ -25,12 +28,19 @@ namespace IsoRealms {
   class ModuleOptions;
   class Project;
   class ResourceType;
+  class ProjectFile;
+  class JSONObject;
+  class JSONArray;
 
   class IResourceTypeDefinition {
     public:
     virtual IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
     virtual IResource* loadResource(ResourceType& parent, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) = 0;
-    virtual void deleteResource(Project& project, IResource* resource) = 0;
+    virtual void deleteResource(IResource* resource) = 0;
     virtual void renameResource(IResource* resource, const std::string& name) = 0;
+    virtual IResource* getResource2(const std::string& name, bool required = true) const = 0;
+    virtual bool needsSaving(ProjectFile* savingProject) const = 0;
+    virtual void save(JSONArray& array, ProjectFile* savingProject) = 0;
+    virtual bool forEachResource(std::function<bool(IResource*)> func) = 0;
   };
 }

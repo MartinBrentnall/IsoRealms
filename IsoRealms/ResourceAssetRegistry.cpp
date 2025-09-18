@@ -26,22 +26,22 @@ namespace IsoRealms {
             cLocalPath(localPath) {
   }
     
+  ResourceAssetRegistry::~ResourceAssetRegistry() {
+    for (AssetVariant& mAsset : cRegisteredAssets) {
+      std::visit([this](auto* asset) {
+        using RAW = std::decay_t<decltype(*asset)>;
+        using TYPE = typename AssetTypeOf<RAW>::type;
+        cProject.remove<TYPE>(asset);
+      }, mAsset);
+    }
+  }
+
   void ResourceAssetRegistry::setLocalPath(const std::string& path) {
     cLocalPath = path;
   }
 
   std::string ResourceAssetRegistry::getModule() {
     return cLocalPath;
-  }
-
-  void ResourceAssetRegistry::unregisterAssets(Project& project) {
-    for (AssetVariant& mAsset : cRegisteredAssets) {
-      std::visit([this, &project](auto* asset) {
-        using RAW = std::decay_t<decltype(*asset)>;
-        using TYPE = typename AssetTypeOf<RAW>::type;
-        project.remove<TYPE>(asset);
-      }, mAsset);
-    }
   }
 
   bool ResourceAssetRegistry::hasReadOnlyReferences(Project& project) const {

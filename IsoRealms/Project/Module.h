@@ -86,14 +86,14 @@ namespace IsoRealms {
     static const std::string JSON_RESOURCES;
     static const std::string JSON_TYPE;
 
-    std::string cName;
-    std::string cDescription;
-    IModuleHandle* cModule;
-    std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
-    Metadata cAssetMetadata;
     Project& cProject;
     ResourceAssetRegistry cModuleAssetRegistry;
+    std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
+    std::string cName;
     ProjectFile* cOwnerProject;
+    std::string cDescription;
+    Metadata cAssetMetadata;
+    IModuleHandle* cModule;
 #ifdef __linux__
     void* cModuleHandle;
 #elif _WIN32

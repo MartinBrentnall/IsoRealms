@@ -32,45 +32,24 @@ namespace IsoRealms {
   const std::string ResourceType::JSON_SINGULAR    = "singular";
 
   ResourceType::ResourceType(IResourceTypeDefinition* resourceType, Module& parent) :
-            cResourceType(resourceType),
             cParent(parent),
+            cResourceType(resourceType),
             cCategory("None") {
-  }
-
-  ResourceType::~ResourceType() {
-    Project& mProject = cParent.getProject();
-    for (IResource* mResource : cResources) {
-      try {
-        cResourceType->deleteResource(mProject, mResource);
-      } catch (...) {
-        std::exception_ptr eptr = std::current_exception();
-        try {
-          if (eptr) {
-            std::rethrow_exception(eptr);
-          }
-        } catch(const std::exception& e) {
-          std::cout << "WARNING: Exception thrown in ~ResourceType() of \"" << cSingular << "\": \"" << e.what() << "\"" << std::endl;
-        }
-      }
-    }
   }
 
   void ResourceType::loadResource(JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) {
     std::string mResourceName = object.getString(JSON_ID);
     
     // Ignore resource if name matches an existing one (useful for include overrides and omissions).
-    for (IResource* mResource : cResources) {
-      if (mResource->getName() == mResourceName) {
-        return;
-      }
+    if (cResourceType->getResource2(mResourceName, false) != nullptr) {
+      return;
     }
     for (const std::string& mOmittedResource : cOmittedResources) {
       if (mOmittedResource == mResourceName) {
         return;
       }
     }
-    IResource* mResource = cResourceType->loadResource(*this, object, ownerProject, resourceDataPath + "/" + mResourceName);
-    cResources.insert(mResource);
+    cResourceType->loadResource(*this, object, ownerProject, resourceDataPath + "/" + mResourceName);
   }
 
   void ResourceType::loadMetadata(JSONObject object) {
@@ -83,22 +62,11 @@ namespace IsoRealms {
   }
 
   bool ResourceType::needsSaving(ProjectFile* savingProject) const {
-    for (IResource* mResource : cResources) {
-      if (mResource->needsSaving(savingProject)) {
-        return true;
-      }
-    }
-    return false;
+    return cResourceType->needsSaving(savingProject);
   }
 
-  void ResourceType::save(JSONArray& array, const std::string& tag, ProjectFile* savingProject) {
-    for (IResource* mResource : cResources) {
-      if (mResource->needsSaving(savingProject)) {
-        JSONObject mResourceObject = array.addObject();
-        mResourceObject.addString(JSON_ID, mResource->getName());
-        mResource->save(mResourceObject);
-      }
-    }
+  void ResourceType::save(JSONArray& array, ProjectFile* savingProject) {
+    cResourceType->save(array, savingProject);
     for (const std::string& mOmittedResource : cOmittedResources) {
       JSONObject mOmittedResourceObject = array.addObject();
       mOmittedResourceObject.addString(JSON_ID, mOmittedResource);      
@@ -113,8 +81,8 @@ namespace IsoRealms {
     return cSingular == "" ? "TODO: " + cParent.getName(this) : cSingular;
   }
 
-  const std::set<IResource*> ResourceType::getResources() {
-    return cResources;
+  bool ResourceType::forEachResource(std::function<bool(IResource*)> func) {
+    return cResourceType->forEachResource(func);
   }
 
   const std::set<std::string> ResourceType::getDeletedResources() {
@@ -124,9 +92,7 @@ namespace IsoRealms {
   IResource* ResourceType::createResource() {
     Project& mProject = cParent.getProject();
     ProjectFile* mOwnerProject = mProject.getProjectFile();
-    IResource* mResource = cResourceType->createResource(*this, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
-    cResources.insert(mResource);
-    return mResource;
+    return cResourceType->createResource(*this, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
   }
 
   void ResourceType::renameResource(IResource* resource, const std::string& name) {
@@ -137,18 +103,10 @@ namespace IsoRealms {
   }
 
   void ResourceType::deleteResource(IResource* resource) {
-    for (IResource* mResource : cResources) {
-      if (resource == mResource) {
-        Project& mProject = cParent.getProject();
-        cResources.erase(mResource);
-        if (mResource->isReadOnly()) {
-          cOmittedResources.insert(mResource->getName());
-        }
-        cResourceType->deleteResource(mProject, mResource);
-        return;
-      }
+    if (resource->isReadOnly()) {
+      cOmittedResources.insert(resource->getName());
     }
-    std::cout << "WARNING: ResourceType::deleteResource: Didn't do anything!" << std::endl;
+    cResourceType->deleteResource(resource);
   }
 
   void ResourceType::registerModuleAssets() {

@@ -64,6 +64,11 @@ add_library(Spindizzy MODULE
   Assets/Fixed/ZoneViewType/ZoneViewOverview.cpp
   Assets/Fixed/ZoneViewType/ZoneViewTypeActual.cpp
   Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.cpp
+  Assets/Registry/CameraRegistry.cpp
+  Assets/Registry/SurfacePatternRegistry.cpp
+  Assets/Registry/WallPatternRegistry.cpp
+  Assets/Registry/ZoneObjectTypeTraitRegistry.cpp
+  Assets/Registry/ZoneViewTypeRegistry.cpp
   Ball/Ball.cpp
   BoundaryHandler/BoundaryHandler.cpp
   BoundaryHandler/BoundaryHandlerInstance.cpp

@@ -31,15 +31,14 @@ namespace IsoRealms {
   class ResourceType {
     public:
     ResourceType(IResourceTypeDefinition* resourceType, Module& parent);
-    virtual ~ResourceType();
     void loadResource(JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath);
     void loadMetadata(JSONObject object);
     bool needsSaving(ProjectFile* savingProject) const;
-    void save(JSONArray& array, const std::string& tag, ProjectFile* savingProject);
+    void save(JSONArray& array, ProjectFile* savingProject);
 
     std::string const getPlural() const;
     std::string const getSingular() const;
-    const std::set<IResource*> getResources();
+    bool forEachResource(std::function<bool(IResource*)> resourceFunction);
     const std::set<std::string> getDeletedResources();
     IResource* createResource();
     void renameResource(IResource* resource, const std::string& name);
@@ -64,10 +63,9 @@ namespace IsoRealms {
     static const std::string JSON_PROPERTIES;
     static const std::string JSON_SINGULAR;
 
+    Module& cParent;
     IResourceTypeDefinition* cResourceType;
     std::set<std::string> cOmittedResources;
-    std::set<IResource*> cResources;
-    Module& cParent;
     std::string cSingular;
     std::string cPlural;
     std::string cCategory;

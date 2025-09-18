@@ -21,28 +21,13 @@
 #include "IsoRealms.h"
 
 #include "Assets/Fixed/BoundaryType/BoundaryTypeDummy.h"
-#include "Assets/Fixed/Camera/CameraGameplay.h"
-#include "Assets/Fixed/Camera/CameraLinked.h"
-#include "Assets/Fixed/Camera/CameraOverview.h"
-#include "Assets/Fixed/Camera/CameraTransitional.h"
-#include "Assets/Fixed/Camera/CameraVariant.h"
 #include "Assets/Fixed/PhysicalObjectType/PhysicalObjectTypeDummy.h"
-#include "Assets/Fixed/SurfacePattern/SurfacePatternOutline.h"
-#include "Assets/Fixed/SurfacePattern/SurfacePatternTile.h"
-#include "Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.h"
-#include "Assets/Fixed/WallPattern/WallPatternCap.h"
-#include "Assets/Fixed/WallPattern/WallPatternOutline.h"
-#include "Assets/Fixed/WallPattern/WallPatternTile.h"
 #include "Assets/Fixed/WorldEditorTool/WorldEditorToolDummy.h"
-#include "Assets/Fixed/ZoneViewType/ZoneViewTypeActual.h"
-#include "Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitCellLocation.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitModel.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitPhysics.h"
-#include "Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitSpinner.h"
+#include "Assets/Registry/CameraRegistry.h"
+#include "Assets/Registry/SurfacePatternRegistry.h"
+#include "Assets/Registry/WallPatternRegistry.h"
+#include "Assets/Registry/ZoneObjectTypeTraitRegistry.h"
+#include "Assets/Registry/ZoneViewTypeRegistry.h"
 
 #include "AlienType/AlienType.h"
 #include "Ball/Ball.h"
@@ -274,16 +259,6 @@ namespace IsoRealms::Spindizzy {
     // JSON members.
     static const std::string JSON_LOCAL;
 
-    // Resource type names.
-    static const std::string RESOURCE_TYPE_ALIEN;
-    static const std::string RESOURCE_TYPE_LIFT;
-    static const std::string RESOURCE_TYPE_PICK_UP;
-    static const std::string RESOURCE_TYPE_PLAYER;
-    static const std::string RESOURCE_TYPE_TERRAIN;
-    static const std::string RESOURCE_TYPE_WORLD_VIEW;
-    static const std::string RESOURCE_TYPE_ZONE;
-    static const std::string RESOURCE_TYPE_ZONE_OBJECT;
-    
     // Fixed tool names.
     static const std::string TOOL_DELETE;
     static const std::string TOOL_PROPERTIES;
@@ -291,32 +266,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string TOOL_MOVE_ZONE;
     static const std::string TOOL_DELETE_ZONE;
 
-    // Type constants.
-    static const std::string CAMERA_GAMEPLAY;
-    static const std::string CAMERA_LINKED;
-    static const std::string CAMERA_OVERVIEW;
-    static const std::string CAMERA_TRANSITIONAL;
-    static const std::string CAMERA_VARIANT;
-    
-    static const std::string SURFACE_PATTERN_OUTLINE;
-    static const std::string SURFACE_PATTERN_TILE;
-    static const std::string SURFACE_PATTERN_SPLIT_VARIANT;
-
-    static const std::string WALL_PATTERN_CAPPED;
-    static const std::string WALL_PATTERN_OUTLINE;
-    static const std::string WALL_PATTERN_TILE;
-    
-    static const std::string ZONE_OBJECT_TYPE_TRAIT_BOUNDARY;
-    static const std::string ZONE_OBJECT_TYPE_TRAIT_CELL_LOCATION;
-    static const std::string ZONE_OBJECT_TYPE_TRAIT_CHASER;
-    static const std::string ZONE_OBJECT_TYPE_TRAIT_MODEL;
-    static const std::string ZONE_OBJECT_TYPE_TRAIT_MOVABLE;
-    static const std::string ZONE_OBJECT_TYPE_TRAIT_PHYSICS;
-    static const std::string ZONE_OBJECT_TYPE_TRAIT_SPINNER;
-
-    static const std::string ZONE_VIEW_TYPE_ACTUAL;
-    static const std::string ZONE_VIEW_TYPE_OVERVIEW;
-    
     static const std::string BIND_TO_ZONE;
 
     // External interfaces.
@@ -325,44 +274,18 @@ namespace IsoRealms::Spindizzy {
 
     // Spindizzy Assets.
     AssetClientManager<Spindizzy, Spindizzy,      IBoundaryType>        cBoundaryTypes;
-    AssetClientManager<Spindizzy, WorldView,      ICamera>              cCameras;
+    CameraRegistry              cCameras;
     AssetClientManager<Spindizzy, Spindizzy,      IPhysicalObjectType>  cPhysicalObjectTypes;
-    AssetClientManager<Spindizzy, TerrainType,    ISurfacePattern>      cSurfacePatterns;
-    AssetClientManager<Spindizzy, TerrainType,    IWallPattern>         cWallPatterns;
+    SurfacePatternRegistry      cSurfacePatterns;
+    WallPatternRegistry         cWallPatterns;
     AssetClientManager<Spindizzy, Spindizzy,      IWorldEditorTool>     cWorldEditorTools;
-    AssetClientManager<Spindizzy, ZoneObjectType, IZoneObjectTypeTrait> cZoneObjectTypeTraits;
-    AssetClientManager<Spindizzy, WorldView,      IZoneViewType>        cZoneViewTypes;
+    ZoneObjectTypeTraitRegistry cZoneObjectTypeTraits;
+    ZoneViewTypeRegistry        cZoneViewTypes;
 
     // Dummy asset providers.
     AssetLiteralDummy<Spindizzy,      IBoundaryType,        BoundaryTypeDummy>        cDummyProviderBoundaryType;
     AssetLiteralDummy<Spindizzy,      IPhysicalObjectType,  PhysicalObjectTypeDummy>  cDummyProviderPhysicalObjectType;
     AssetLiteralDummy<Spindizzy,      IWorldEditorTool,     WorldEditorToolDummy>     cDummyProviderWorldEditorTool;
-
-    // Built-in providers for Spindizzy asset types.
-    AssetInstanced<WorldView, ICamera, CameraGameplay>     cProviderCameraGameplay;
-    AssetInstanced<WorldView, ICamera, CameraLinked>       cProviderCameraLinked;
-    AssetInstanced<WorldView, ICamera, CameraOverview>     cProviderCameraOverview;
-    AssetInstanced<WorldView, ICamera, CameraTransitional> cProviderCameraTransitional;
-    AssetInstanced<WorldView, ICamera, CameraVariant>      cProviderCameraVariant;
-    
-    AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternOutline>      cProviderSurfacePatternOutline;
-    AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternSplitVariant> cProviderSurfacePatternSplitVariant;
-    AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternTile>         cProviderSurfacePatternTile;
-    
-    AssetInstanced<TerrainType, IWallPattern, WallPatternCap>      cProviderWallPatternCap;
-    AssetInstanced<TerrainType, IWallPattern, WallPatternOutline>  cProviderWallPatternOutline;
-    AssetInstanced<TerrainType, IWallPattern, WallPatternTile>     cProviderWallPatternTile;
-
-    AssetInstanced<WorldView, IZoneViewType, ZoneViewTypeActual>   cProviderZoneViewTypeActual;
-    AssetInstanced<WorldView, IZoneViewType, ZoneViewTypeOverview> cProviderZoneViewTypeOverview;
-
-    AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitBoundary>     cProviderZoneObjectTypeTraitBoundary;
-    AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitCellLocation> cProviderZoneObjectTypeTraitCellLocation;
-    AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitChaser>       cProviderZoneObjectTypeTraitChaser;
-    AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitModel>        cProviderZoneObjectTypeTraitModel;
-    AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitMovable>      cProviderZoneObjectTypeTraitMovable;
-    AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitPhysics>      cProviderZoneObjectTypeTraitPhysics;
-    AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitSpinner>      cProviderZoneObjectTypeTraitSpinner;
 
     // Resource type definitions.
     ResourceTypeDefinition<Spindizzy, AlienType>          cResourceAlien;

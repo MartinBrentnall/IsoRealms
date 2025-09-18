@@ -118,13 +118,15 @@ namespace IsoRealms {
     // Start fresh.
     clear();
     
-    // Put all the resources and deleted resources into a single container.
-    const std::set<IResource*> mResources = cResourceType.getResources();
-    const std::set<std::string> mDeletedResources = cResourceType.getDeletedResources();
+    // Put all the resources a single container.
     std::vector<std::variant<IResource*, std::string>> mSortedResources;
-    for (IResource* mResource : mResources) {
-      mSortedResources.emplace_back(mResource);
-    }
+    cResourceType.forEachResource([&mSortedResources](IResource* resource) {
+      mSortedResources.emplace_back(resource);
+      return true;
+    });
+    
+    // Also add deleted resources to the container.
+    const std::set<std::string> mDeletedResources = cResourceType.getDeletedResources();
     for (const std::string& mDeletedResource : mDeletedResources) {
       mSortedResources.emplace_back(mDeletedResource);
     }

@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2025 Martin Brentnall
  *
  * This file is part of IsoRealms.
@@ -16,31 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "SurfacePatternRegistry.h"
 
-#include <memory>
-#include <string>
-#include <vector>
+#include "Modules/Spindizzy/Spindizzy.h"
 
-namespace IsoRealms {
-  class JSONObject;
-  class IResourceData;
-  class Project;
-  class ProjectFile;
-  class PropertyMaker;
-
-  class IResource {
-    public:
-    virtual std::string getName() const = 0;
-    virtual bool isReadOnly() const = 0;
-    virtual bool needsSaving(ProjectFile* savingProject) = 0;
-    virtual void save(JSONObject object) = 0;
-    virtual void registerAssets() = 0;
-    virtual bool renderIcon() = 0;
-    virtual void getProperties(PropertyMaker& propertyMaker) = 0;
-    virtual IResourceData& getResourceData() = 0;
-//    virtual void hintInUse(bool inUse) = 0;
-    
-    virtual ~IResource() {}
-  };
+namespace IsoRealms::Spindizzy {
+  SurfacePatternRegistry::SurfacePatternRegistry(IResourceTypeRegistry& registry) :
+            cOutline(registry.getAssetMetadata("SurfacePatternOutline")),
+            cSplitVariant(registry.getAssetMetadata("SurfacePatternSplitVariant")),
+            cTile(registry.getAssetMetadata("SurfacePatternTile")) {
+    add(&cOutline,      "Outline",      "Spindizzy");
+    add(&cSplitVariant, "SplitVariant", "Spindizzy");
+    add(&cTile,         "Tile",         "Spindizzy");
+  }
 }

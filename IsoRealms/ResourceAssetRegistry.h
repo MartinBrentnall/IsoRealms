@@ -57,6 +57,8 @@ namespace IsoRealms {
   class ResourceAssetRegistry {
     public:
     ResourceAssetRegistry(Project& project, const std::string& localPath);
+    ~ResourceAssetRegistry();
+
     void setLocalPath(const std::string& path);
     std::string getModule();
 
@@ -100,7 +102,6 @@ namespace IsoRealms {
       cRegisteredAssets.emplace_back(asset);
     }
     
-    void unregisterAssets(Project& project);
     bool hasReadOnlyReferences(Project& project) const;
     void overrideReadOnlyReferences(Project& project);
 

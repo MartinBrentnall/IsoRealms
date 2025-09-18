@@ -35,9 +35,9 @@ namespace IsoRealms {
   const std::string Module::JSON_TYPE          = "type";
 
   Module::Module(const std::string& name, Project& project, LuaState* luaState) :
-            cName(name),
             cProject(project),
-            cModuleAssetRegistry(cProject, cName),
+            cModuleAssetRegistry(project, name),
+            cName(name),
             cOwnerProject(nullptr) {
     std::string mModulePath = "IsoRealms-" + name;
     if (!System::moduleExists(mModulePath, false)) {
@@ -147,7 +147,7 @@ namespace IsoRealms {
         JSONObject mResourceTypeObject = mResourceTypesArray.addObject();
         mResourceTypeObject.addString(JSON_TYPE, mResourceType.first);
         JSONArray mResourceArray = mResourceTypeObject.addArray(JSON_INSTANCES);
-        mResourceType.second->save(mResourceArray, mResourceType.first, savingProject);
+        mResourceType.second->save(mResourceArray, savingProject);
       }
     }
   }
@@ -238,8 +238,6 @@ namespace IsoRealms {
   }
 
   Module::~Module() {
-    cModuleAssetRegistry.unregisterAssets(cProject);
-    cResourceTypes.clear();
 #ifdef __linux__
     destroyModule* mDestroyFunction = voidToFunction<destroyModule*>(dlsym(cModuleHandle, "destroy"));
     mDestroyFunction(cModule);

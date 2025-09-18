@@ -23,6 +23,7 @@
 #include "Modules/Spindizzy/Assets/Type/IZoneObjectTypeTrait.h"
 
 namespace IsoRealms::Spindizzy {
+  class ISurface;
   class ZoneObjectType;
 
   class ZoneObjectTypeTraitPhysics : public IZoneObjectTypeTrait {

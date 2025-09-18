@@ -87,13 +87,9 @@ namespace IsoRealms {
         registerAssets();
         cParent.registerModuleAssets();
       }, [this](const std::string& value) {
-        const std::set<IResource*> mAllResources = cParent.getResources();
-        for (IResource* mResource : mAllResources) {
-          if (mResource->getName() == value) {
-            return mResource == this;
-          }
-        }
-        return true;
+        return cParent.forEachResource([this, &value](IResource* mResource) {
+          return mResource->getName() != value || mResource == this;
+        });
       });
       cOwnerProject.createProperty(propertyMaker, mMetadata.getPropertyData("ResourceOwner"));
       cResourceHandle.getProperties(propertyMaker, cParent.getMetadata());
@@ -129,10 +125,6 @@ namespace IsoRealms {
     
     void registerAssets() override {
       cResourceHandle.registerAssets(cAssetRegistry);
-    }
-
-    void unregisterAssets(Project& assets) override {
-      cAssetRegistry.unregisterAssets(assets);
     }
 
     std::string getResourceDataPath() const {

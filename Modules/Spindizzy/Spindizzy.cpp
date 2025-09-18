@@ -26,28 +26,13 @@ namespace IsoRealms::Spindizzy {
                     cProject(project),
                     cModule(registry),
                     cBoundaryTypes(&cDummyProviderBoundaryType),
+                    cCameras(registry),
                     cPhysicalObjectTypes(&cDummyProviderPhysicalObjectType),
+                    cSurfacePatterns(registry),
+                    cWallPatterns(registry),
                     cWorldEditorTools(&cDummyProviderWorldEditorTool),
-                    cProviderCameraGameplay(registry.getAssetMetadata("CameraGameplay")),
-                    cProviderCameraLinked(registry.getAssetMetadata("CameraLinked")),
-                    cProviderCameraOverview(registry.getAssetMetadata("CameraOverview")),
-                    cProviderCameraTransitional(registry.getAssetMetadata("CameraTransitional")),
-                    cProviderCameraVariant(registry.getAssetMetadata("CameraVariant")),
-                    cProviderSurfacePatternOutline(registry.getAssetMetadata("SurfacePatternOutline")),
-                    cProviderSurfacePatternSplitVariant(registry.getAssetMetadata("SurfacePatternSplitVariant")),
-                    cProviderSurfacePatternTile(registry.getAssetMetadata("SurfacePatternTile")),
-                    cProviderWallPatternCap(registry.getAssetMetadata("WallPatternCap")),
-                    cProviderWallPatternOutline(registry.getAssetMetadata("WallPatternOutline")),
-                    cProviderWallPatternTile(registry.getAssetMetadata("WallPatternTile")),
-                    cProviderZoneViewTypeActual(registry.getAssetMetadata("ZoneViewTypeActual")),
-                    cProviderZoneViewTypeOverview(registry.getAssetMetadata("ZoneViewTypeOverview")),
-                    cProviderZoneObjectTypeTraitBoundary(registry.getAssetMetadata("ZoneObjectTypeTraitBoundary")),
-                    cProviderZoneObjectTypeTraitCellLocation(registry.getAssetMetadata("ZoneObjectTypeTraitCellLocation")),
-                    cProviderZoneObjectTypeTraitChaser(registry.getAssetMetadata("ZoneObjectTypeTraitChaser")),
-                    cProviderZoneObjectTypeTraitModel(registry.getAssetMetadata("ZoneObjectTypeTraitModel")),
-                    cProviderZoneObjectTypeTraitMovable(registry.getAssetMetadata("ZoneObjectTypeTraitMovable")),
-                    cProviderZoneObjectTypeTraitPhysics(registry.getAssetMetadata("ZoneObjectTypeTraitPhysics")),
-                    cProviderZoneObjectTypeTraitSpinner(registry.getAssetMetadata("ZoneObjectTypeTraitSpinner")),
+                    cZoneObjectTypeTraits(registry),
+                    cZoneViewTypes(registry),
                     cResourceAlien(*this),
                     cResourceBall(*this),
                     cResourceBoundaryHandler(*this),
@@ -108,32 +93,6 @@ namespace IsoRealms::Spindizzy {
     registry.add(&cResourceWorldView,          "WorldView");
     registry.add(&cResourceZone,               "Zone");
     registry.add(&cResourceZoneObject,         "ZoneObject");
-        
-    // Register Spindizzy built-in asset providers.
-    cCameras.add(&cProviderCameraGameplay,     CAMERA_GAMEPLAY,     "Spindizzy");
-    cCameras.add(&cProviderCameraLinked,       CAMERA_LINKED,       "Spindizzy");
-    cCameras.add(&cProviderCameraOverview,     CAMERA_OVERVIEW,     "Spindizzy");
-    cCameras.add(&cProviderCameraTransitional, CAMERA_TRANSITIONAL, "Spindizzy");
-    cCameras.add(&cProviderCameraVariant,      CAMERA_VARIANT,      "Spindizzy");
-    
-    cSurfacePatterns.add(&cProviderSurfacePatternOutline,      SURFACE_PATTERN_OUTLINE,       "Spindizzy");
-    cSurfacePatterns.add(&cProviderSurfacePatternSplitVariant, SURFACE_PATTERN_SPLIT_VARIANT, "Spindizzy");
-    cSurfacePatterns.add(&cProviderSurfacePatternTile,         SURFACE_PATTERN_TILE,          "Spindizzy");
-    
-    cWallPatterns.add(&cProviderWallPatternCap,      WALL_PATTERN_CAPPED,  "Spindizzy");
-    cWallPatterns.add(&cProviderWallPatternOutline,  WALL_PATTERN_OUTLINE, "Spindizzy");
-    cWallPatterns.add(&cProviderWallPatternTile,     WALL_PATTERN_TILE,    "Spindizzy");
-    
-    cZoneObjectTypeTraits.add(&cProviderZoneObjectTypeTraitBoundary,     ZONE_OBJECT_TYPE_TRAIT_BOUNDARY,      "Spindizzy");
-    cZoneObjectTypeTraits.add(&cProviderZoneObjectTypeTraitCellLocation, ZONE_OBJECT_TYPE_TRAIT_CELL_LOCATION, "Spindizzy");
-    cZoneObjectTypeTraits.add(&cProviderZoneObjectTypeTraitChaser,       ZONE_OBJECT_TYPE_TRAIT_CHASER,        "Spindizzy");
-    cZoneObjectTypeTraits.add(&cProviderZoneObjectTypeTraitModel,        ZONE_OBJECT_TYPE_TRAIT_MODEL,         "Spindizzy");
-    cZoneObjectTypeTraits.add(&cProviderZoneObjectTypeTraitMovable,      ZONE_OBJECT_TYPE_TRAIT_MOVABLE,       "Spindizzy");
-    cZoneObjectTypeTraits.add(&cProviderZoneObjectTypeTraitPhysics,      ZONE_OBJECT_TYPE_TRAIT_PHYSICS,       "Spindizzy");
-    cZoneObjectTypeTraits.add(&cProviderZoneObjectTypeTraitSpinner,      ZONE_OBJECT_TYPE_TRAIT_SPINNER,       "Spindizzy");
-
-    cZoneViewTypes.add(&cProviderZoneViewTypeActual,   ZONE_VIEW_TYPE_ACTUAL,   "Spindizzy");
-    cZoneViewTypes.add(&cProviderZoneViewTypeOverview, ZONE_VIEW_TYPE_OVERVIEW, "Spindizzy");
   }
 
   const Metadata& Spindizzy::getMetadata(const std::string& key) const {
@@ -370,35 +329,35 @@ namespace IsoRealms::Spindizzy {
     assets.add<IBinding>(&cLuaBinding,                     "",               "Spindizzy");
     
     for (AlienType* mResource : cResourceAlien) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_ALIEN + "/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Alien/" + getID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (LiftType* mResource : cResourceLift) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_LIFT + "/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Lift/" + getID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (PickUpType* mResource : cResourcePickUp) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_PICK_UP + "/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "PickUp/" + getID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (PlayerType* mResource : cResourcePlayer) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_PLAYER + "/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Player/" + getID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (TerrainType* mResource : cResourceTerrain) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_TERRAIN + "/" + getID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
-    }
-    for (ZoneType* mResource : cResourceZone) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_ZONE + "/" + getID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
-    }
-    for (ZoneObjectType* mResource : cResourceZoneObject) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_ZONE_OBJECT + "/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Terrain/" + getID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (WorldView* mResource : cResourceWorldView) {
-      LocalSpindizzyRegistry mLocalRegistry(this, RESOURCE_TYPE_WORLD_VIEW + "/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "WorldView/" + getID(mResource));
+      mResource->registerAssets(&mLocalRegistry);
+    }
+    for (ZoneType* mResource : cResourceZone) {
+      LocalSpindizzyRegistry mLocalRegistry(this, "Zone/" + getID(mResource));
+      mResource->registerAssets(&mLocalRegistry);
+    }
+    for (ZoneObjectType* mResource : cResourceZoneObject) {
+      LocalSpindizzyRegistry mLocalRegistry(this, "ZoneObject/" + getID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     add(&cToolDelete,     TOOL_DELETE);
@@ -572,47 +531,13 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS = "Spindizzy Graphics";
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_LOGIC    = "Spindizzy Logic";
 
-  const std::string Spindizzy::JSON_LOCAL                     = "local";
+  const std::string Spindizzy::JSON_LOCAL = "local";
 
-  const std::string Spindizzy::RESOURCE_TYPE_ALIEN       = "Alien";
-  const std::string Spindizzy::RESOURCE_TYPE_LIFT        = "Lift";
-  const std::string Spindizzy::RESOURCE_TYPE_PICK_UP     = "PickUp";
-  const std::string Spindizzy::RESOURCE_TYPE_PLAYER      = "Player";
-  const std::string Spindizzy::RESOURCE_TYPE_TERRAIN     = "Terrain";
-  const std::string Spindizzy::RESOURCE_TYPE_WORLD_VIEW  = "WorldView";
-  const std::string Spindizzy::RESOURCE_TYPE_ZONE        = "Zone";
-  const std::string Spindizzy::RESOURCE_TYPE_ZONE_OBJECT = "ZoneObject";
-  
   const std::string Spindizzy::TOOL_DELETE      = "DeleteTool";
   const std::string Spindizzy::TOOL_PROPERTIES  = "PropertiesTool";
   const std::string Spindizzy::TOOL_COPY_ZONE   = "ZoneCopyTool";
   const std::string Spindizzy::TOOL_MOVE_ZONE   = "ZoneMoveTool";
   const std::string Spindizzy::TOOL_DELETE_ZONE = "ZoneDeleteTool";
-
-  const std::string Spindizzy::CAMERA_GAMEPLAY     = "Gameplay";
-  const std::string Spindizzy::CAMERA_LINKED       = "Linked";
-  const std::string Spindizzy::CAMERA_OVERVIEW     = "Overview";
-  const std::string Spindizzy::CAMERA_TRANSITIONAL = "Transitional";
-  const std::string Spindizzy::CAMERA_VARIANT      = "Variant";
-
-  const std::string Spindizzy::SURFACE_PATTERN_OUTLINE       = "Outline";
-  const std::string Spindizzy::SURFACE_PATTERN_TILE          = "Tile";
-  const std::string Spindizzy::SURFACE_PATTERN_SPLIT_VARIANT = "SplitVariant";
-    
-  const std::string Spindizzy::WALL_PATTERN_OUTLINE   = "Outline";
-  const std::string Spindizzy::WALL_PATTERN_TILE      = "Tile";
-  const std::string Spindizzy::WALL_PATTERN_CAPPED    = "Capped";
-    
-  const std::string Spindizzy::ZONE_VIEW_TYPE_ACTUAL   = "Actual";
-  const std::string Spindizzy::ZONE_VIEW_TYPE_OVERVIEW = "Overview";
-
-  const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_BOUNDARY      = "Boundary";
-  const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_CELL_LOCATION = "CellLocation";
-  const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_CHASER        = "Chaser";
-  const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_MODEL         = "Model";
-  const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_MOVABLE       = "Movable";
-  const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_PHYSICS       = "Physics";
-  const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_SPINNER       = "Spinner";
 
   const std::string Spindizzy::BIND_TO_ZONE = "Zone";
 

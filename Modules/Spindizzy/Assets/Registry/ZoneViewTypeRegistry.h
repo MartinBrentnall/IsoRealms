@@ -18,29 +18,22 @@
  */
 #pragma once
 
-#include <memory>
-#include <string>
-#include <vector>
+#include <functional>
 
-namespace IsoRealms {
-  class JSONObject;
-  class IResourceData;
-  class Project;
-  class ProjectFile;
-  class PropertyMaker;
+#include "IsoRealms.h"
 
-  class IResource {
+#include "Modules/Spindizzy/Assets/Fixed/ZoneViewType/ZoneViewTypeActual.h"
+#include "Modules/Spindizzy/Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.h"
+#include "Modules/Spindizzy/Assets/Type/IZoneViewType.h"
+#include "Modules/Spindizzy/WorldView/WorldView.h"
+
+namespace IsoRealms::Spindizzy {
+  class ZoneViewTypeRegistry : public AssetClientManager<ZoneViewTypeRegistry, WorldView, IZoneViewType> {
     public:
-    virtual std::string getName() const = 0;
-    virtual bool isReadOnly() const = 0;
-    virtual bool needsSaving(ProjectFile* savingProject) = 0;
-    virtual void save(JSONObject object) = 0;
-    virtual void registerAssets() = 0;
-    virtual bool renderIcon() = 0;
-    virtual void getProperties(PropertyMaker& propertyMaker) = 0;
-    virtual IResourceData& getResourceData() = 0;
-//    virtual void hintInUse(bool inUse) = 0;
-    
-    virtual ~IResource() {}
+    ZoneViewTypeRegistry(IResourceTypeRegistry& registry);
+
+    private:
+    AssetInstanced<WorldView, IZoneViewType, ZoneViewTypeActual>   cActual;
+    AssetInstanced<WorldView, IZoneViewType, ZoneViewTypeOverview> cOverview;
   };
 }
