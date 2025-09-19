@@ -37,7 +37,7 @@ namespace IsoRealms {
             cCategory("None") {
   }
 
-  void ResourceType::loadResource(JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) {
+  void ResourceType::loadResource(JSONObject object, ProjectFile* ownerProject) {
     std::string mResourceName = object.getString(JSON_ID);
     
     // Ignore resource if name matches an existing one (useful for include overrides and omissions).
@@ -49,7 +49,7 @@ namespace IsoRealms {
         return;
       }
     }
-    cResourceType->loadResource(*this, object, ownerProject, resourceDataPath + "/" + mResourceName);
+    cResourceType->loadResource(*this, object, ownerProject);
   }
 
   void ResourceType::loadMetadata(JSONObject object) {
@@ -92,7 +92,7 @@ namespace IsoRealms {
   IResource* ResourceType::createResource() {
     Project& mProject = cParent.getProject();
     ProjectFile* mOwnerProject = mProject.getProjectFile();
-    return cResourceType->createResource(*this, "Unnamed " + cParent.getName(this), mOwnerProject, "TODO");
+    return cResourceType->createResource(*this, "Unnamed " + cParent.getName(this), mOwnerProject);
   }
 
   void ResourceType::renameResource(IResource* resource, const std::string& name) {
@@ -121,6 +121,10 @@ namespace IsoRealms {
     return cParent.getDataPath(user) + "/" + cParent.getName(this);
   }
   
+  std::string ResourceType::getResourcePath() {
+    return cParent.getName() + "/" + cParent.getName(this);
+  }
+
   ProjectFile* ResourceType::getProjectFile() {
     return cParent.getProjectFile();
   }

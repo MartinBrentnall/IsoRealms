@@ -120,7 +120,7 @@ namespace IsoRealms {
       for (JSONValue mInstanceValue : mResourceObject.getArray(JSON_INSTANCES)) {
         JSONObject mInstanceObject = mInstanceValue.getObject();
         mInstanceObject.getString(JSON_NAME);
-        mResourceType->loadResource(mInstanceObject, ownerProject, cName + "/" + mResourceTypeName);
+        mResourceType->loadResource(mInstanceObject, ownerProject);
       }
     }
   }

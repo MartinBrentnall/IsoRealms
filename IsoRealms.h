@@ -59,7 +59,7 @@
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/Persistence/ParseException.h"
 #include "IsoRealms/Project/Project.h"
-#include "IsoRealms/ResourceAssetRegistry.h"
+#include "IsoRealms/Project/ResourceAssetRegistry.h"
 #include "IsoRealms/ResourceDefinition.h"
 #include "IsoRealms/ResourceTypeDefinition.h"
 #include "IsoRealms/Struct/SpatialContainerTest.h"

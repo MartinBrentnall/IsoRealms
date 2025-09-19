@@ -26,10 +26,9 @@
 #include "IResource.h"
 #include "IResourceData.h"
 #include "Project/Registry/AssetIDException.h"
+#include "Project/ResourceAssetRegistry.h"
 #include "Project/ResourceType.h"
 #include "PropertyData.h"
-#include "ResourceAssetRegistry.h"
-#include "System.h"
 #include "Utils.h"
 
 namespace IsoRealms {
@@ -37,11 +36,10 @@ namespace IsoRealms {
                                                                  public IResourceData,
                                                                  public IActionClient {
     public:
-    Resource(ResourceType& parent, MODULE& module, const std::string& name, ProjectFile* ownerProject, const std::string& resourceDataPath) :
+    Resource(ResourceType& parent, MODULE& module, const std::string& name, ProjectFile* ownerProject) :
               cParent(parent),
               cName(name),
               cOwnerProject(parent.getProject(), ownerProject),
-              cResourceDataPath(resourceDataPath),
               cResourceHandle(module, *this),
               cAssetRegistry(parent.getProject(), parent.getPath() + "/" + name) {
       bool mSuccess = false;
@@ -57,11 +55,10 @@ namespace IsoRealms {
       } while (!mSuccess);
     }
     
-    Resource(ResourceType& parent, MODULE& module, JSONObject object, ProjectFile* ownerProject, const std::string& resourceDataPath) :
+    Resource(ResourceType& parent, MODULE& module, JSONObject object, ProjectFile* ownerProject) :
               cParent(parent),
               cName(object.getString(JSON_ID)),
               cOwnerProject(parent.getProject(), ownerProject),
-              cResourceDataPath(resourceDataPath),
               cResourceHandle(module, *this, object),
               cAssetRegistry(parent.getProject(), parent.getPath() + "/" + cName) {
     }
@@ -127,11 +124,6 @@ namespace IsoRealms {
       cResourceHandle.registerAssets(cAssetRegistry);
     }
 
-    std::string getResourceDataPath() const {
-      std::string mRelativePath = cOwnerProject.getProjectFile()->cFile.getRelativePath();
-      return mRelativePath.substr(0, mRelativePath.find_last_of('.')) + "/" + cResourceDataPath;
-    }
-    
     bool needsSaving(ProjectFile* savingProject) override {
       return savingProject == cOwnerProject.getProjectFile();
     }
@@ -144,7 +136,9 @@ namespace IsoRealms {
      * Implements IResourceData *
     \****************************/
     std::string getPath(const std::string& file, bool user) const override {
-      return cParent.getProjectPathPrefix(user) + getResourceDataPath() + "/" + file;
+      std::string mRelativePath = cOwnerProject.getProjectFile()->cFile.getRelativePath();
+      mRelativePath = mRelativePath.substr(0, mRelativePath.find_last_of('.'));
+      return cParent.getProjectPathPrefix(user) + mRelativePath + "/" + cParent.getResourcePath() + "/" + cName + "/" + file;
     }
 
     void makeUserDataDirectory() override {
@@ -189,7 +183,6 @@ namespace IsoRealms {
     ResourceType& cParent;
     std::string cName;
     ResourceOwner cOwnerProject;
-    std::string cResourceDataPath;
     RESOURCE cResourceHandle;
     ResourceAssetRegistry cAssetRegistry;
   };
