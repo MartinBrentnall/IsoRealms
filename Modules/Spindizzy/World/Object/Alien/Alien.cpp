@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
             cDefSurfaceOutsideHomeZone(cZone, cDefZ), // TODO: Is this OK?
             cRuntimePhysicsObject(cZone.getWorld().getSpindizzy(), this) {
     cZone.getWorld().getSpindizzy().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getSpindizzy().getAlienType(object.getString(JSON_TYPE));
+      cDefType = cZone.getWorld().getSpindizzy().get<AlienType>(object.getString(JSON_TYPE));
       cDefMovementHandler = cZone.getWorld().getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();
       reset();
@@ -82,7 +82,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Alien::save(JSONObject object, int x, int y, int z) const {
-    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getResourceID(cDefType));
     object.addInteger(JSON_X,    cDefX - x);
     object.addInteger(JSON_Y,    cDefY - y);
     object.addInteger(JSON_Z,    cDefZ - z);

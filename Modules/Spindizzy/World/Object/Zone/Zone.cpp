@@ -114,10 +114,10 @@ namespace IsoRealms::Spindizzy {
       }
     }
     cDefWorld.getSpindizzy().getProject().init([this, object]() {
-      cDefType = cDefWorld.getSpindizzy().getZoneType(object.getString(JSON_TYPE));
+      cDefType = cDefWorld.getSpindizzy().get<ZoneType>(object.getString(JSON_TYPE));
       std::string mThemeSet = object.getString(JSON_THEME_SET);
       std::string mThemeName = object.getString(JSON_THEME);
-      cDefThemeSet = mThemeSet != "" ? cDefWorld.getSpindizzy().getThemeSet(mThemeSet) : nullptr;
+      cDefThemeSet = mThemeSet != "" ? cDefWorld.getSpindizzy().get<ThemeSet>(mThemeSet) : nullptr;
       cDefTheme = mThemeName != "" ? cDefThemeSet->getTheme(mThemeName) : nullptr;
       reset();
 
@@ -603,9 +603,9 @@ namespace IsoRealms::Spindizzy {
   void Zone::save(JSONObject object) {
     Spindizzy& mSpindizzy = cDefWorld.getSpindizzy();
 
-    object.addString(JSON_TYPE, mSpindizzy.getID(cDefType));
+    object.addString(JSON_TYPE, mSpindizzy.getResourceID(cDefType));
     if (cDefThemeSet != nullptr) {
-      object.addString(JSON_THEME_SET, mSpindizzy.getID(cDefThemeSet));
+      object.addString(JSON_THEME_SET, mSpindizzy.getResourceID(cDefThemeSet));
       object.addString(JSON_THEME,     cDefThemeSet->getName(cDefTheme));
     }
     object.addBoolean(JSON_VISITED, cDefVisited);

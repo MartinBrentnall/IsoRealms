@@ -79,7 +79,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void ZoneObject::save(JSONObject object) const {
-    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getResourceID(cDefType));
     JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       if (mPair.second->hasConfiguration()) {

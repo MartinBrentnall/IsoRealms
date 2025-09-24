@@ -168,8 +168,8 @@ namespace IsoRealms::Spindizzy {
     cEditorMaxZ = object.getInteger(JSON_EDITOR_MAX_Z, DEFAULT_EDITOR_MAX_Z);
     cDefaultWorldEditorTool.init(object, JSON_DEFAULT_WORLD_EDITOR_TOOL);
     data.getProject().init([this, object]() {
-      cAutomaticZoneManagementType = cSpindizzy.getZoneType(object.getString(JSON_AUTOMATIC_ZONE_MANAGEMENT));
-      cDefaultThemeSet             = cSpindizzy.getThemeSet(object.getString(JSON_DEFAULT_THEME_SET));
+      cAutomaticZoneManagementType = cSpindizzy.get<ZoneType>(object.getString(JSON_AUTOMATIC_ZONE_MANAGEMENT));
+      cDefaultThemeSet             = cSpindizzy.get<ThemeSet>(object.getString(JSON_DEFAULT_THEME_SET));
       for (JSONValue mEditingToolValue : object.getArray(JSON_EDITOR_TOOLS)) {
         cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(cSpindizzy)).get()->set(mEditingToolValue.getObject(), JSON_EDITOR_TOOL);
       }
@@ -177,7 +177,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::registerAssets(ResourceAssetRegistry& assets) {
-    LocalSpindizzyRegistry mLocalSpindizzyRegistry(&cSpindizzy, cSpindizzy.getID(this));
+    LocalSpindizzyRegistry mLocalSpindizzyRegistry(&cSpindizzy, cSpindizzy.getResourceID(this));
     
     assets.add<IEditable>(this, "", "Spindizzy Worlds");
     assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Worlds");
@@ -224,8 +224,8 @@ namespace IsoRealms::Spindizzy {
     object.addInteger(JSON_EDITOR_MAX_Y,              cEditorMaxY,         DEFAULT_EDITOR_MAX_Y);
     object.addInteger(JSON_EDITOR_MIN_Z,              cEditorMinZ,         DEFAULT_EDITOR_MIN_Z);
     object.addInteger(JSON_EDITOR_MAX_Z,              cEditorMaxZ,         DEFAULT_EDITOR_MAX_Z);
-    object.addString(JSON_AUTOMATIC_ZONE_MANAGEMENT, cSpindizzy.getID(cAutomaticZoneManagementType));
-    object.addString(JSON_DEFAULT_THEME_SET,         cSpindizzy.getID(cDefaultThemeSet));
+    object.addString(JSON_AUTOMATIC_ZONE_MANAGEMENT, cSpindizzy.getResourceID(cAutomaticZoneManagementType));
+    object.addString(JSON_DEFAULT_THEME_SET,         cSpindizzy.getResourceID(cDefaultThemeSet));
     cDefaultWorldEditorTool.save(object, JSON_DEFAULT_WORLD_EDITOR_TOOL);
     JSONArray mEditorToolsArray = object.addArray(JSON_EDITOR_TOOLS);
     for (const std::unique_ptr<WorldEditorTool>& mTool : cAvailableWorldEditorTools) {

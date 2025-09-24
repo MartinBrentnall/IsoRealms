@@ -45,7 +45,7 @@ namespace IsoRealms::Spindizzy {
     cDefCamera.set(object, JSON_CAMERA);
     cDefZoneViewType.set(object, JSON_TYPE);
     data.getProject().init([this, object]() {
-      cDefWorld = cSpindizzy.getWorld(object.getString(JSON_WORLD));
+      cDefWorld = cSpindizzy.get<World>(object.getString(JSON_WORLD));
       cDefWorld->registerView(*this);
       std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
       for (std::unique_ptr<Zone>& mZone : mZones) {
@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldView::save(JSONObject object) const {
-    object.addString(JSON_WORLD, cSpindizzy.getID(cDefWorld));
+    object.addString(JSON_WORLD, cSpindizzy.getResourceID(cDefWorld));
     object.addFloat(JSON_ZOOM, cDefZoom, 1.0f);
     cDefCamera.save(object, JSON_CAMERA);
     cDefZoneViewType.save(object, JSON_TYPE);

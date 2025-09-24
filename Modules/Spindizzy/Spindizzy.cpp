@@ -118,28 +118,6 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
-  AlienType*      Spindizzy::getAlienType(     const std::string& id) const {return cResourceAlien.getResource(     id);}
-  LiftType*       Spindizzy::getLiftType(      const std::string& id) const {return cResourceLift.getResource(      id);}
-  PickUpType*     Spindizzy::getPickUpType(    const std::string& id) const {return cResourcePickUp.getResource(    id);}
-  PlayerType*     Spindizzy::getPlayerType(    const std::string& id) const {return cResourcePlayer.getResource(    id);}
-  TerrainType*    Spindizzy::getTerrainType(   const std::string& id) const {return cResourceTerrain.getResource(   id);}
-  ThemeSet*       Spindizzy::getThemeSet(      const std::string& id) const {return cResourceThemeSet.getResource(  id);}
-  World*          Spindizzy::getWorld(         const std::string& id) const {return cResourceWorld.getResource(     id);}
-  WorldView*      Spindizzy::getWorldView(     const std::string& id) const {return cResourceWorldView.getResource( id);}
-  ZoneObjectType* Spindizzy::getZoneObjectType(const std::string& id) const {return cResourceZoneObject.getResource(id);}
-  ZoneType*       Spindizzy::getZoneType(      const std::string& id) const {return cResourceZone.getResource(      id);}
-  
-  std::string Spindizzy::getID(const AlienType*      asset) const {return cResourceAlien.getID(     asset);}
-  std::string Spindizzy::getID(const LiftType*       asset) const {return cResourceLift.getID(      asset);}
-  std::string Spindizzy::getID(const PickUpType*     asset) const {return cResourcePickUp.getID(    asset);}
-  std::string Spindizzy::getID(const PlayerType*     asset) const {return cResourcePlayer.getID(    asset);}
-  std::string Spindizzy::getID(const TerrainType*    asset) const {return cResourceTerrain.getID(   asset);}
-  std::string Spindizzy::getID(const ThemeSet*       asset) const {return cResourceThemeSet.getID(  asset);}
-  std::string Spindizzy::getID(const World*          asset) const {return cResourceWorld.getID(     asset);}
-  std::string Spindizzy::getID(const WorldView*      asset) const {return cResourceWorldView.getID( asset);}
-  std::string Spindizzy::getID(const ZoneObjectType* asset) const {return cResourceZoneObject.getID(asset);}
-  std::string Spindizzy::getID(const ZoneType*       asset) const {return cResourceZone.getID(      asset);}
-  
   void Spindizzy::removeAll(AlienType* type) {
     for (World* mWorld : cResourceWorld) {
       mWorld->removeAll(type);
@@ -329,35 +307,35 @@ namespace IsoRealms::Spindizzy {
     assets.add<IBinding>(&cLuaBinding,                     "",               "Spindizzy");
     
     for (AlienType* mResource : cResourceAlien) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Alien/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Alien/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (LiftType* mResource : cResourceLift) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Lift/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Lift/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (PickUpType* mResource : cResourcePickUp) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "PickUp/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "PickUp/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (PlayerType* mResource : cResourcePlayer) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Player/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Player/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (TerrainType* mResource : cResourceTerrain) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Terrain/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Terrain/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (WorldView* mResource : cResourceWorldView) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "WorldView/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "WorldView/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (ZoneType* mResource : cResourceZone) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Zone/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "Zone/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     for (ZoneObjectType* mResource : cResourceZoneObject) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "ZoneObject/" + getID(mResource));
+      LocalSpindizzyRegistry mLocalRegistry(this, "ZoneObject/" + getResourceID(mResource));
       mResource->registerAssets(&mLocalRegistry);
     }
     add(&cToolDelete,     TOOL_DELETE);

@@ -81,7 +81,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   std::string ZoneType::getBoundaryTypeID() const {
-    return "Zone/" + cSpindizzy.getID(this);
+    return "Zone/" + cSpindizzy.getResourceID(this);
   }  
   
   IBinding* ZoneType::getBinding(const std::string& id) const {

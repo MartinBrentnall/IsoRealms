@@ -83,7 +83,7 @@ namespace IsoRealms::Spindizzy {
             cDefSpeedDown(object.getInteger(JSON_DOWN_SPEED)),
             cSurface(*this) {
     cZone.getWorld().getSpindizzy().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getSpindizzy().getLiftType(object.getString(JSON_TYPE));
+      cDefType = cZone.getWorld().getSpindizzy().get<LiftType>(object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();
     });
@@ -99,7 +99,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Lift::save(JSONObject object, int x, int y, int z) {
-    object.addString(JSON_TYPE,          cZone.getWorld().getSpindizzy().getID(cDefType));
+    object.addString(JSON_TYPE,          cZone.getWorld().getSpindizzy().getResourceID(cDefType));
     object.addInteger(JSON_X,            cDefX - x);
     object.addInteger(JSON_Y,            cDefY - y);
     object.addInteger(JSON_Z,            cDefZ - z);

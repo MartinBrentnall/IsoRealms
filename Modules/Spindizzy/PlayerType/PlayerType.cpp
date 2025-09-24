@@ -259,7 +259,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string PlayerType::getPhysicalObjectTypeID() const {
-    return cSpindizzy.getID(this);
+    return cSpindizzy.getResourceID(this);
   }
   
   IBinding* PlayerType::getBinding(const std::string& id) const {

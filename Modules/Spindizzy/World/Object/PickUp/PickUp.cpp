@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
             cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
             cLuaBinding(zone.getWorld().getSpindizzy().getProject().getLuaState(), this) {
     cZone.getWorld().getSpindizzy().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getSpindizzy().getPickUpType(object.getString(JSON_TYPE));
+      cDefType = cZone.getWorld().getSpindizzy().get<PickUpType>(object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();
     });
@@ -80,7 +80,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PickUp::save(JSONObject object, int x, int y, int z) const {
-    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getResourceID(cDefType));
     object.addInteger(JSON_X,    cDefX - x);
     object.addInteger(JSON_Y,    cDefY - y);
     object.addInteger(JSON_Z,    cDefZ - z);

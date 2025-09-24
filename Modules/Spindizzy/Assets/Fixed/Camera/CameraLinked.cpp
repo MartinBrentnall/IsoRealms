@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
   CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view, JSONObject object) :
             CameraLinked(metadata, view) {
     view.getSpindizzy().getProject().init([this, object]() {
-      cDefLinkedView = cParent.getSpindizzy().getWorldView(object.getString(JSON_VIEW));
+      cDefLinkedView = cParent.getSpindizzy().get<WorldView>(object.getString(JSON_VIEW));
     });
   }
 
@@ -91,7 +91,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraLinked::saveAsset(JSONObject object) const {
-    object.addString(JSON_VIEW, cParent.getWorld()->getSpindizzy().getID(cDefLinkedView));
+    object.addString(JSON_VIEW, cParent.getWorld()->getSpindizzy().getResourceID(cDefLinkedView));
   }
 
   void CameraLinked::getAssetProperties(PropertyMaker& owner) {

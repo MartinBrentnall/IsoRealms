@@ -58,6 +58,7 @@
 
 namespace IsoRealms::Spindizzy {
   template <typename TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct ResourceContainerTraits;
 
   class Spindizzy : public IModuleHandle,
                     public ISpindizzyRegistry,
@@ -91,32 +92,16 @@ namespace IsoRealms::Spindizzy {
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
     void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
 
-    // Resource retrieval.
-    AlienType*        getAlienType(      const std::string& id) const;
-    LiftType*         getLiftType(       const std::string& id) const;
-    PickUpType*       getPickUpType(     const std::string& id) const;
-    PlayerType*       getPlayerType(     const std::string& id) const;
-    TerrainType*      getTerrainType(    const std::string& id) const;
-    ThemeSet*         getThemeSet(       const std::string& id) const;
-    World*            getWorld(          const std::string& id) const;
-    WorldView*        getWorldView(      const std::string& id) const;
-    ZoneObjectType*   getZoneObjectType( const std::string& id) const;
-    ZoneType*         getZoneType(       const std::string& id) const;
-
-    // Resource identification.
-    std::string getID(const AlienType*      asset) const;
-    std::string getID(const LiftType*       asset) const;
-    std::string getID(const PickUpType*     asset) const;
-    std::string getID(const PlayerType*     asset) const;
-    std::string getID(const TerrainType*    asset) const;
-    std::string getID(const ThemeSet*       asset) const;
-    std::string getID(const World*          asset) const;
-    std::string getID(const WorldView*      asset) const;
-    std::string getID(const ZoneObjectType* asset) const;
-    std::string getID(const ZoneType*       asset) const;
-
     std::vector<IBoundaryType*>       getAllBoundaryTypeObjects();
     std::vector<IPhysicalObjectType*> getAllPhysicalObjectTypeObjects();
+
+    template <typename TYPE> TYPE* get(const std::string& id) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getResource(id);
+    }
+
+    template <typename TYPE> std::string getResourceID(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getID(resource);
+    }
 
     // Resource removal.
     void removeAll(AlienType*      type);
@@ -357,6 +342,7 @@ namespace IsoRealms::Spindizzy {
     mutable const IBindingIdentifier* cRuntimeLocalBindingIdentifier;
 
     template <class TYPE> friend struct AssetContainerTraits;
+    template <class TYPE> friend struct ResourceContainerTraits;
   };
 
   template<> struct AssetContainerTraits<IBoundaryType>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cBoundaryTypes;       }};
@@ -367,4 +353,26 @@ namespace IsoRealms::Spindizzy {
   template<> struct AssetContainerTraits<IWorldEditorTool>     {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cWorldEditorTools;    }};
   template<> struct AssetContainerTraits<IZoneObjectTypeTrait> {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneObjectTypeTraits;}};
   template<> struct AssetContainerTraits<IZoneViewType>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cZoneViewTypes;       }};
+
+  template<> struct ResourceContainerTraits<AlienType>          {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceAlien;             }};
+  template<> struct ResourceContainerTraits<Ball>               {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceBall;              }};
+  template<> struct ResourceContainerTraits<BoundaryHandler>    {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceBoundaryHandler;   }};
+  template<> struct ResourceContainerTraits<C64LiftGraphics>    {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceC64LiftGraphics;   }};
+  template<> struct ResourceContainerTraits<C64TerrainGraphics> {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceC64TerrainGraphics;}};
+  template<> struct ResourceContainerTraits<CollisionHandler>   {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceCollisionHandler;  }};
+  template<> struct ResourceContainerTraits<DebrisChunk>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceDebrisChunk;       }};
+  template<> struct ResourceContainerTraits<Gyroscope>          {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceGyroscope;         }};
+  template<> struct ResourceContainerTraits<Jewel>              {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceJewel;             }};
+  template<> struct ResourceContainerTraits<LiftType>           {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceLift;              }};
+  template<> struct ResourceContainerTraits<ModelCycler>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceModelCycler;       }};
+  template<> struct ResourceContainerTraits<PickUpType>         {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourcePickUp;            }};
+  template<> struct ResourceContainerTraits<PlayerType>         {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourcePlayer;            }};
+  template<> struct ResourceContainerTraits<TerrainType>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceTerrain;           }};
+  template<> struct ResourceContainerTraits<TerrainState>       {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceTerrainState;      }};
+  template<> struct ResourceContainerTraits<ThemeSet>           {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceThemeSet;          }};
+  template<> struct ResourceContainerTraits<Top>                {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceTop;               }};
+  template<> struct ResourceContainerTraits<World>              {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceWorld;             }};
+  template<> struct ResourceContainerTraits<WorldView>          {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceWorldView;         }};
+  template<> struct ResourceContainerTraits<ZoneType>           {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceZone;              }};
+  template<> struct ResourceContainerTraits<ZoneObjectType>     {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceZoneObject;        }};
 }

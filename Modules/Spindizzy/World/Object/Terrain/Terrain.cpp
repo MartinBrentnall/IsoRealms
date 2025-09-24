@@ -77,7 +77,7 @@ namespace IsoRealms::Spindizzy {
                    | (object.getBoolean(JSON_STEPPED_BOTTOM)    ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)
                    | (object.getBoolean(JSON_ALTERNATIVE_SPLIT) ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)) {
     cZone.getWorld().getSpindizzy().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getSpindizzy().getTerrainType(object.getString(JSON_TYPE));
+      cDefType = cZone.getWorld().getSpindizzy().get<TerrainType>(object.getString(JSON_TYPE));
       if (object.hasMember(JSON_CONDITION)) {
         cDefCondition = std::make_optional<Condition>(object.getObject(JSON_CONDITION), cZone.getWorld().getSpindizzy().getTerrainStateConditionElements());
       }
@@ -120,7 +120,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Terrain::save(JSONObject object, int originX, int originY, int originZ) {
-    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getSpindizzy().getResourceID(cDefType));
     object.addString(JSON_BEHAVIOUR,          getBehaviourString());
     object.addInteger(JSON_X,                 cDefStartX      - originX);
     object.addInteger(JSON_Y,                 cDefStartY      - originY);

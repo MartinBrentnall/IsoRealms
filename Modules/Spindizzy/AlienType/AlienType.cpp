@@ -154,7 +154,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string AlienType::getPhysicalObjectTypeID() const {
-    return cSpindizzy.getID(this);
+    return cSpindizzy.getResourceID(this);
   }
 
   IBinding* AlienType::getBinding(const std::string& id) const {

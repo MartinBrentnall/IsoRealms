@@ -71,7 +71,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string PickUpType::getBoundaryTypeID() const {
-    return "PickUp/" + cSpindizzy.getID(this);
+    return "PickUp/" + cSpindizzy.getResourceID(this);
   }
   
   IBinding* PickUpType::getBinding(const std::string& id) const {
