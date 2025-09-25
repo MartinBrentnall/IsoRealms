@@ -559,8 +559,8 @@ namespace IsoRealms {
           }
         };
 
-        void applyChange(const std::string id) {
-          cParent.cParent.confirmAccess([this, &id]() {
+        void applyChange(const std::string& id) {
+          cParent.cParent.confirmAccess([this, id]() {
             cParent.cParent.cAsset.setID(id);
             cParent.cParent.cValueLabel = cParent.cParent.getValue();
             cParent.cClosing = true;

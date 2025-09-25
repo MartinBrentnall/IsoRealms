@@ -39,6 +39,7 @@ namespace IsoRealms {
     virtual void deleteResource(IResource* resource) = 0;
     virtual void renameResource(IResource* resource, const std::string& name) = 0;
     virtual IResource* getResource2(const std::string& name, bool required = true) const = 0;
+    virtual std::vector<std::string> getAvailableResources() const = 0;
     virtual std::string getResourceID(const IResource& resource) const = 0;
     virtual bool needsSaving(const ProjectFile* savingProject) const = 0;
     virtual void save(JSONArray& array, const ProjectFile* savingProject) = 0;

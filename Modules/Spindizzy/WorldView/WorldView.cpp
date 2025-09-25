@@ -76,7 +76,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldView::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-//    owner.createPropertyAsset<World>(       metadata.getPropertyData("World"),        cDefWorld); // TODO:
+    owner.createPropertyResource<World, Spindizzy>(metadata.getPropertyData("World"),        cSpindizzy, cDefWorld);
     owner.createPropertyAsset<Camera>(      metadata.getPropertyData("Camera"),       cDefCamera);
     owner.createPropertyAsset<ZoneViewType>(metadata.getPropertyData("ZoneViewType"), cDefZoneViewType);
     owner.createPropertyNativeFloat(        metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom

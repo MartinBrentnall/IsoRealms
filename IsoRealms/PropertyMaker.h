@@ -27,6 +27,7 @@
 #include "Editing/IResourceAccessManager.h"
 #include "Editing/Property/PropertyAsset.h"
 #include "Editing/Property/PropertyOptional.h"
+#include "Editing/Property/PropertyResource.h"
 
 namespace IsoRealms {
   class Condition;
@@ -77,6 +78,10 @@ namespace IsoRealms {
 
     template <typename OPTIONAL_TYPE> void createPropertyOptional(const PropertyData& metadata, std::function<void(const std::string&)> choiceCallback) {
       cProperties.addProperty(std::make_unique<PropertyOptional<OPTIONAL_TYPE>>(*this, *this, cParent, metadata, choiceCallback, cParent.getProject(), cApplication));
+    }
+
+    template <typename TYPE, typename MANAGER> void createPropertyResource(const PropertyData& metadata, MANAGER& manager, TYPE*& resource, std::function<void()> removeFunction = nullptr) {
+      cProperties.addProperty(std::make_unique<PropertyResource<TYPE, MANAGER>>(*this, *this, cParent, metadata, manager, resource, cApplication, removeFunction));
     }
 
     void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel);

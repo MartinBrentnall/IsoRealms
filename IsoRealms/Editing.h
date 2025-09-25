@@ -35,4 +35,5 @@
 #include "Editing/Property/PropertyNativeString.h"
 #include "Editing/Property/PropertyNativeUnsignedInteger.h"
 #include "Editing/Property/PropertyOptional.h"
+#include "Editing/Property/PropertyResource.h"
 #include "Editing/Property/PropertyStruct.h"

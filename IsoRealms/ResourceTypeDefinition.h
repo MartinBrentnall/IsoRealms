@@ -136,6 +136,14 @@ namespace IsoRealms {
       return getResource3(name, required)->getResource();
     }
     
+    std::vector<std::string> getAvailableResources() const override {
+      std::vector<std::string> mResources;
+      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
+        mResources.push_back(mResource.first);
+      }
+      return mResources;
+    }
+
     std::string getResourceID(const IResource& resource) const override {
       for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
         if (mResource.second.get() == &resource) {

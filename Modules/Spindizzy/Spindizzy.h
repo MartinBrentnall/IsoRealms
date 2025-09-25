@@ -103,6 +103,10 @@ namespace IsoRealms::Spindizzy {
       return ResourceContainerTraits<TYPE>::get(*this).getID(resource);
     }
 
+    template <typename TYPE> std::vector<std::string> getAvailableResources() const {
+      return ResourceContainerTraits<TYPE>::get(*this).getAvailableResources();
+    }
+
     // Resource removal.
     void removeAll(AlienType*      type);
     void removeAll(LiftType*       type);
