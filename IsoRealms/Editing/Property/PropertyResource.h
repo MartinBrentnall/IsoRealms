@@ -136,7 +136,6 @@ namespace IsoRealms {
       }
 
       void setID(const std::string& id) {
-        std::cout << "setID: " << id << std::endl;
         if (id == "None") {
           cParent.cResource = nullptr;
         } else {

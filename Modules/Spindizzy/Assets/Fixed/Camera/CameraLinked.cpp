@@ -23,6 +23,7 @@
 
 namespace IsoRealms::Spindizzy {
   CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view) :
+            cMetadata(metadata),
             cParent(view),
             cDefLinkedView(nullptr) {
   }
@@ -95,7 +96,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CameraLinked::getAssetProperties(PropertyMaker& owner) {
-// TODO    owner.createPropertyAsset<WorldView>("Linked View", cDefLinkedView);
+    owner.createPropertyResource<WorldView, Spindizzy>(cMetadata.getPropertyData("LinkedView"), cParent.getWorld()->getSpindizzy(), cDefLinkedView);
   }
 
   bool CameraLinked::isDefaultConfiguration() const {

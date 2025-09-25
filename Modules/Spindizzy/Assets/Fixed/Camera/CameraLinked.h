@@ -65,6 +65,7 @@ namespace IsoRealms::Spindizzy {
     // JSON members.
     static const std::string JSON_VIEW;
         
+    const Metadata& cMetadata;
     WorldView& cParent;
     
     WorldView* cDefLinkedView;
