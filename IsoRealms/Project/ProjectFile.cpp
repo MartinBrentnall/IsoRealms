@@ -99,7 +99,12 @@ namespace IsoRealms {
     owner.createPropertyAsset<File>(metadata.getPropertyData("File"), cFile);
     owner.createPropertyNativeString(metadata.getPropertyData("Description"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
-      owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowModifications"), [this]() {return cAllowModifications;}, [this](bool value) {cAllowModifications = value;});
+      owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowModifications"), [this]() {return cAllowModifications;}, [this, &project](bool value) {
+        if (!cAllowModifications) {
+          project.save(*this);
+        }
+        cAllowModifications = value;
+      });
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
       owner.createPropertyStruct(metadata.getPropertyData("Inclusion"), mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](PropertyMaker& owner) {

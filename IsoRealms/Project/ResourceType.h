@@ -33,8 +33,8 @@ namespace IsoRealms {
     ResourceType(IResourceTypeDefinition* resourceType, Module& parent);
     void loadResource(JSONObject object, ProjectFile* ownerProject);
     void loadMetadata(JSONObject object);
-    bool needsSaving(ProjectFile* savingProject) const;
-    void save(JSONArray& array, ProjectFile* savingProject);
+    bool needsSaving(const ProjectFile* savingProject) const;
+    void save(JSONArray& array, const ProjectFile* savingProject);
 
     std::string const getPlural() const;
     std::string const getSingular() const;
@@ -45,6 +45,7 @@ namespace IsoRealms {
     void deleteResource(IResource* resource);
     void registerModuleAssets();
     std::string getPath();
+    std::string getName(const IResource& resource) const;
     std::string getDataPath(bool user);
     std::string getResourcePath();
     ProjectFile* getProjectFile();

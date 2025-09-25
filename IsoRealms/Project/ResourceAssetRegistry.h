@@ -56,10 +56,10 @@ namespace IsoRealms {
                                     IString*,
                                     ITexture*,
                                     IVertex*>;
-  class ResourceAssetRegistry : public AbstractAssetRegistry<AssetVariant, Project> {
+  class ResourceAssetRegistry : public AbstractAssetRegistry<AssetVariant, IResourceData> {
     public:
-    ResourceAssetRegistry(Project& project, const std::string& localPath) :
-              AbstractAssetRegistry<AssetVariant, Project>(project, localPath) {
+    ResourceAssetRegistry(IResourceData& manager) :
+              AbstractAssetRegistry<AssetVariant, IResourceData>(manager) {
     }
   };
 }

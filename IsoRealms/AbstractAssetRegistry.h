@@ -37,9 +37,8 @@ namespace IsoRealms {
 
   template <typename ASSET_VARIANT, typename MANAGER> class AbstractAssetRegistry {
     public:
-    AbstractAssetRegistry(MANAGER& project, const std::string& localPath) :
-              cProject(project),
-              cLocalPath(localPath) {
+    AbstractAssetRegistry(MANAGER& manager) :
+              cManager(manager) {
     }
 
     ~AbstractAssetRegistry() {
@@ -47,17 +46,9 @@ namespace IsoRealms {
         std::visit([this](auto* asset) {
           using RAW = std::decay_t<decltype(*asset)>;
           using TYPE = typename AssetTypeOf<RAW>::type;
-          cProject.template remove<TYPE>(asset);
+          cManager.getAssetManager().template remove<TYPE>(asset);
         }, mAsset);
       }
-    }
-
-    void setLocalPath(const std::string& path) {
-      cLocalPath = path;
-    }
-
-    std::string getModule() {
-      return cLocalPath;
     }
 
     template <typename TYPE> void registerAsset(TYPE* asset) {
@@ -69,39 +60,40 @@ namespace IsoRealms {
       cRegisteredAssets.emplace_back(asset);
     }
     
-    bool hasReadOnlyReferences(MANAGER& project) const {
-      return std::ranges::any_of(cRegisteredAssets, [&project](const ASSET_VARIANT& asset) {
-        return std::visit([&project](auto* asset) {
+    bool hasReadOnlyReferences() const {
+      return std::ranges::any_of(cRegisteredAssets, [this](const ASSET_VARIANT& asset) {
+        return std::visit([this](auto* asset) {
           using RAW = std::decay_t<decltype(*asset)>;
           using TYPE = typename AssetTypeOf<RAW>::type;
-          return project.template hasReadOnlyReferences<TYPE>(asset);
+          return cManager.getAssetManager().template hasReadOnlyReferences<TYPE>(asset);
         }, asset);
       });
     }
 
-    void overrideReadOnlyReferences(MANAGER& project) {
-      std::ranges::for_each(cRegisteredAssets, [&project](const ASSET_VARIANT& asset) {
-        std::visit([&project](auto* asset) {
+    void overrideReadOnlyReferences() {
+      std::ranges::for_each(cRegisteredAssets, [this](const ASSET_VARIANT& asset) {
+        std::visit([this](auto* asset) {
           using RAW = std::decay_t<decltype(*asset)>;
           using TYPE = typename AssetTypeOf<RAW>::type;
-          project.template overrideReadOnlyReferences<TYPE>(asset);
+          cManager.getAssetManager().template overrideReadOnlyReferences<TYPE>(asset);
         }, asset);
       });
     }
 
-    template <typename OWNER, typename TYPE> IStateNotifier<TYPE>* addProvider(IAssetProvider<OWNER, TYPE>* provider, const std::string& id, const std::string& category) {
+    template <typename OWNER, typename TYPE> IStateNotifier<TYPE>* addProvider(IAssetProvider<OWNER, TYPE>* provider, const std::string& assetID, const std::string& category) {
       registerAsset(provider);
-      return cProject.template add<TYPE>(provider, id == "" ? cLocalPath : cLocalPath + "/" + id, category);
+      std::string mResourceID = cManager.getResourceID();
+      return cManager.getAssetManager().template add<TYPE>(provider, assetID == "" ? mResourceID : mResourceID + "/" + assetID, category);
     }
 
-    template <typename TYPE> IStateNotifier<TYPE>* add(TYPE* asset, const std::string& id, const std::string& category) {
+    template <typename TYPE> IStateNotifier<TYPE>* add(TYPE* asset, const std::string& assetID, const std::string& category) {
       registerAsset(asset);
-      return cProject.template add<TYPE>(asset, id == "" ? cLocalPath : cLocalPath + "/" + id, category);
+      std::string mResourceID = cManager.getResourceID();
+      return cManager.getAssetManager().template add<TYPE>(asset, assetID == "" ? mResourceID : mResourceID + "/" + assetID, category);
     }
 
     private:
-    MANAGER& cProject;
-    std::string cLocalPath;
+    MANAGER& cManager;
     std::vector<ASSET_VARIANT> cRegisteredAssets;
   };
 }

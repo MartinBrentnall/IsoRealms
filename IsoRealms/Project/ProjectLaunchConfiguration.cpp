@@ -76,7 +76,7 @@ namespace IsoRealms {
     return mProposedName;
   }
 
-  void ProjectLaunchConfiguration::save(JSONObject object, ProjectFile& savingProject) const {
+  void ProjectLaunchConfiguration::save(JSONObject object, const ProjectFile& savingProject) const {
     if (&savingProject == cDefOwner.getProjectFile()) {
       JSONObject mLaunchConfigurationObject = object.addObject(cDefName);
       cDefOptionPreparationAction.save(mLaunchConfigurationObject, JSON_PREPARATION_ACTION);
@@ -87,7 +87,7 @@ namespace IsoRealms {
     }
   }
 
-  bool ProjectLaunchConfiguration::isOwnedBy(ProjectFile& project) {
+  bool ProjectLaunchConfiguration::isOwnedBy(const ProjectFile& project) const {
     return &project == cDefOwner.getProjectFile();
   }
 

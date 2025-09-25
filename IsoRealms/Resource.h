@@ -36,31 +36,19 @@ namespace IsoRealms {
                                                                  public IResourceData,
                                                                  public IActionClient {
     public:
-    Resource(ResourceType& parent, MODULE& module, const std::string& name, ProjectFile* ownerProject) :
+    Resource(ResourceType& parent, MODULE& module, ProjectFile* ownerProject) :
               cParent(parent),
-              cName(name),
               cOwnerProject(parent.getProject(), ownerProject),
               cResourceHandle(module, *this),
-              cAssetRegistry(parent.getProject(), parent.getPath() + "/" + name) {
-      bool mSuccess = false;
-      unsigned int mExistingNameCount = 1;
-      do {
-        try {
-          cResourceHandle.registerAssets(cAssetRegistry);
-          mSuccess = true;
-        } catch (AssetIDException& e) {
-          std::cout << "WARNING: Resource::Resource: Caught AssetIDException on registering assets: " << e.what() << std::endl;
-          cName = name + " " + Utils::toString(mExistingNameCount++);
-        }
-      } while (!mSuccess);
+              cAssetRegistry(*this) {
+      cResourceHandle.registerAssets(cAssetRegistry);
     }
     
-    Resource(ResourceType& parent, MODULE& module, JSONObject object, ProjectFile* ownerProject) :
+    Resource(ResourceType& parent, MODULE& module, ProjectFile* ownerProject, JSONObject object) :
               cParent(parent),
-              cName(object.getString(JSON_ID)),
               cOwnerProject(parent.getProject(), ownerProject),
               cResourceHandle(module, *this, object),
-              cAssetRegistry(parent.getProject(), parent.getPath() + "/" + cName) {
+              cAssetRegistry(*this) {
     }
 
     RESOURCE* getResource() {
@@ -71,22 +59,31 @@ namespace IsoRealms {
      * Implements IResource *
     \************************/
     std::string getName() const override {
-      return cName;
+      return cParent.getName(*this);
     }
-
+    
     void getProperties(PropertyMaker& propertyMaker) override {
       const Metadata& mMetadata = cParent.getProject().getApplication().getMetadata("Resource");
-      propertyMaker.createPropertyNativeString(mMetadata.getPropertyData("ResourceName"), [this]() {return cName;}, [this](const std::string& value) {
+      propertyMaker.createPropertyNativeString(mMetadata.getPropertyData("ResourceName"), [this]() {return cParent.getName(*this);}, [this](const std::string& value) {
+        cParent.renameUserDataDirectory(cParent.getName(*this), value);
         cParent.renameResource(this, value);
-        cParent.renameUserDataDirectory(cName, value);
-        cName = value;
-        cAssetRegistry.setLocalPath(cName);
+        cAssetRegistry.overrideReadOnlyReferences();
         registerAssets();
         cParent.registerModuleAssets();
       }, [this](const std::string& value) {
         return cParent.forEachResource([this, &value](IResource* mResource) {
           return mResource->getName() != value || mResource == this;
         });
+      }, nullptr, [this, &propertyMaker](std::function<void()> confirm, std::function<void()> cancel) {
+        if (cAssetRegistry.hasReadOnlyReferences()) {
+          propertyMaker.confirm("TODO: This resource is referenced by read-only resources.  Renaming it will promote any read-only resources referencing this one and make them writable.", [this, confirm]() {
+            confirm();
+          }, [this, cancel]() {
+            cancel();
+          });
+        } else {
+          confirm();
+        }
       });
       cOwnerProject.createProperty(propertyMaker, mMetadata.getPropertyData("ResourceOwner"));
       cResourceHandle.getProperties(propertyMaker, cParent.getMetadata());
@@ -124,7 +121,7 @@ namespace IsoRealms {
       cResourceHandle.registerAssets(cAssetRegistry);
     }
 
-    bool needsSaving(ProjectFile* savingProject) override {
+    bool needsSaving(const ProjectFile* savingProject) override {
       return savingProject == cOwnerProject.getProjectFile();
     }
     
@@ -135,14 +132,18 @@ namespace IsoRealms {
     /****************************\
      * Implements IResourceData *
     \****************************/
+    std::string getResourceID() const override {
+      return cParent.getPath() + "/" + cParent.getName(*this);
+    }
+    
     std::string getPath(const std::string& file, bool user) const override {
       std::string mRelativePath = cOwnerProject.getProjectFile()->cFile.getRelativePath();
       mRelativePath = mRelativePath.substr(0, mRelativePath.find_last_of('.'));
-      return cParent.getProjectPathPrefix(user) + mRelativePath + "/" + cParent.getResourcePath() + "/" + cName + "/" + file;
+      return cParent.getProjectPathPrefix(user) + mRelativePath + "/" + cParent.getResourcePath() + "/" + cParent.getName(*this) + "/" + file;
     }
 
     void makeUserDataDirectory() override {
-      cParent.makeUserDataDirectory(cName);
+      cParent.makeUserDataDirectory(cParent.getName(*this));
     }
 
     bool isIncluded() const override {
@@ -178,14 +179,13 @@ namespace IsoRealms {
     }
     
     private:
-    static const std::string JSON_ID;
-
+    
+    // External interfaces.
     ResourceType& cParent;
-    std::string cName;
+    
+    // Structures.
     ResourceOwner cOwnerProject;
     RESOURCE cResourceHandle;
     ResourceAssetRegistry cAssetRegistry;
   };
-
-  template <typename MODULE, typename RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";
 }

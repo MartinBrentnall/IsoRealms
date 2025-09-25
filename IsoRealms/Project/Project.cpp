@@ -224,8 +224,8 @@ namespace IsoRealms {
     updateTasks();
   }
 
-  void Project::save() {
-    save(cDefProjectFileStructure);
+  void Project::save() const {
+    saveRecursive(cDefProjectFileStructure);
   }
 
   void Project::save(const std::string& filename) {
@@ -233,8 +233,8 @@ namespace IsoRealms {
     save();
   }
 
-  void Project::save(ProjectFile& file) {
-    if (file.cFile.isSet() && file.cFile.isUser()) {
+  void Project::save(const ProjectFile& file) const {
+    if (file.cFile.isSet() && file.isModifiable()) {
       JSONDocument mJSONDocument;
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
       file.save(mProjectObject);
@@ -250,7 +250,7 @@ namespace IsoRealms {
 
       // Save launch configurations.
       bool mLaunchConfigurationsNeedSaving = false;
-      for (std::unique_ptr<ProjectLaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
+      for (const std::unique_ptr<ProjectLaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
         if (mLaunchConfiguration->isOwnedBy(file)) {
           mLaunchConfigurationsNeedSaving = true;
           break;
@@ -258,7 +258,7 @@ namespace IsoRealms {
       }
       if (mLaunchConfigurationsNeedSaving) {
         JSONObject mLaunchConfigurationsObject = mProjectObject.addObject(JSON_LAUNCH_CONFIGURATIONS);
-        for (std::unique_ptr<ProjectLaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
+        for (const std::unique_ptr<ProjectLaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
           mLaunchConfiguration->save(mLaunchConfigurationsObject, file);
         }
       }
@@ -274,9 +274,12 @@ namespace IsoRealms {
 
       mJSONDocument.save(file.cFile.getRelativePath());
     }
+  }
 
-    for (std::unique_ptr<ProjectFile>& mIncludedProject : file.cInclusions) {
-      save(*mIncludedProject.get());
+  void Project::saveRecursive(const ProjectFile& file) const {
+    save(file);
+    for (const std::unique_ptr<ProjectFile>& mIncludedProject : file.cInclusions) {
+      saveRecursive(*mIncludedProject.get());
     }
   }
   
@@ -512,6 +515,10 @@ namespace IsoRealms {
     std::string mDataPath = cDefProjectFileStructure.cFile.getRelativePath();
     mDataPath = mDataPath.substr(0, mDataPath.find_last_of('.'));
     return getProjectPathPrefix(user) + mDataPath;
+  }
+
+  std::string Project::getResourceID() const {
+    return ""; // TODO: Implement this.
   }
 
   std::string Project::getPath(const std::string& file, bool user) const {

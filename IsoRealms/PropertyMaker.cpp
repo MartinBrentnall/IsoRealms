@@ -86,8 +86,8 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyNativeInteger>(metadata, *this, getter, setter, validityChecker, removeFunction));
   }
 
-  void PropertyMaker::createPropertyNativeString(const PropertyData& metadata, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeString>(metadata, *this, getter, setter, validityChecker, removeFunction));
+  void PropertyMaker::createPropertyNativeString(const PropertyData& metadata, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
+    cProperties.addProperty(std::make_unique<PropertyNativeString>(metadata, *this, getter, setter, validityChecker, removeFunction, confirmCustom));
   }
   
   void PropertyMaker::createPropertyNativeUnsignedInteger(const PropertyData& metadata, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
@@ -100,6 +100,10 @@ namespace IsoRealms {
 
   bool PropertyMaker::isResourceReadOnly() const {
     return cParent.isReadOnly();
+  }
+
+  void PropertyMaker::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
+    cDialogManager.confirm(message, confirm, cancel);
   }
 
   void PropertyMaker::confirm(std::function<void()> confirm, std::function<void()> cancel) {

@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/IResourceData.h"
 #ifdef __linux__
 #include <dlfcn.h>
 #endif
@@ -45,14 +46,16 @@ namespace IsoRealms {
   class Project;
   class ResourceType;
 
-  class Module : public IResourceTypeRegistry {
+  class Module : public IResourceTypeRegistry,
+                 public IResourceData,
+                 public IActionClient {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
     void loadResources(JSONObject object, ProjectFile* ownerProject);
     void registerAssets();
-    bool needsSaving(ProjectFile* savingProject) const;
-    void save(JSONObject object, ProjectFile* savingProject) const;
+    bool needsSaving(const ProjectFile* savingProject) const;
+    void save(JSONObject object, const ProjectFile* savingProject) const;
     void getProperties();
     void updateInputs(unsigned int milliseconds);
     void updateRuntime(unsigned int milliseconds);
@@ -68,13 +71,32 @@ namespace IsoRealms {
     const Metadata& getAssetMetadata(const std::string& key) const override;
     
     std::string getName(const ResourceType* resourceType) const;
-    Project& getProject();
     std::string getPath();
     std::string getDataPath(bool user);
     ProjectFile* getProjectFile();
     void makeUserDataDirectory(const std::string& resourcePath);
     void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
     std::string getProjectPathPrefix(bool user);
+    
+    /****************************\
+     * Implements IResourceData *
+    \****************************/
+    std::string getResourceID() const override;
+    std::string getPath(const std::string& file, bool user) const override;
+    void makeUserDataDirectory() override;
+    bool isIncluded() const override;
+    bool isReadOnly() const override;
+    void setOwner(ProjectFile* owner) override;
+    Project& getProject() override;
+    const Project& getProject() const override;
+    Project& getAssetManager() override;
+    IActionClient& getDummyActionClient() override;
+
+    /****************************\
+     * Implements IActionClient *
+    \****************************/
+    IResourceData& getResourceData() override;
+    IBindingRegistry* getBindingRegistry() override;
 
     virtual ~Module();
 

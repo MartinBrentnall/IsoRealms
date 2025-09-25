@@ -29,7 +29,7 @@
 namespace IsoRealms {
   class PropertyNativeString : public PropertyInputField {
     public:
-    PropertyNativeString(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction = nullptr);
+    PropertyNativeString(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction = nullptr, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom = nullptr);
       
     protected:
     
@@ -42,5 +42,6 @@ namespace IsoRealms {
     private:
     std::function<bool(const std::string&)> cValidityChecker;
     std::function<void(const std::string&)> cSetter;
+    std::function<void(std::function<void()>, std::function<void()>)> cConfirmCustom;
   };
 }

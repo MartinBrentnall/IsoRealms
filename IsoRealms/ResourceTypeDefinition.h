@@ -77,17 +77,17 @@ namespace IsoRealms {
       
     IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject) override {
       std::string mAvailableName = Utils::getAvailableKey(cResources, name);
-      return cResources.emplace(mAvailableName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, mAvailableName, ownerProject)).first->second.get();
+      return cResources.emplace(mAvailableName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, ownerProject)).first->second.get();
     }
     
     IResource* loadResource(ResourceType& parent, JSONObject object, ProjectFile* ownerProject) override {
       std::string mResourceName = object.getString(JSON_ID);
-      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, object, ownerProject)).first->second.get();
+      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, ownerProject, object)).first->second.get();
       mResource->registerAssets();
       return mResource;
     }
 
-    bool needsSaving(ProjectFile* savingProject) const override {
+    bool needsSaving(const ProjectFile* savingProject) const override {
       for (const std::unique_ptr<Resource<MODULE, TYPE>>& mResource : cResources | std::views::values) {
         if (mResource->needsSaving(savingProject)) {
           return true;
@@ -96,7 +96,7 @@ namespace IsoRealms {
       return false;
     }
   
-    void save(JSONArray& array, ProjectFile* savingProject) override {
+    void save(JSONArray& array, const ProjectFile* savingProject) override {
       for (const std::unique_ptr<Resource<MODULE, TYPE>>& mResource : cResources | std::views::values) {
         if (mResource->needsSaving(savingProject)) {
           JSONObject mResourceObject = array.addObject();
@@ -134,6 +134,15 @@ namespace IsoRealms {
 
     TYPE* getResource(const std::string& name, bool required = true) const {
       return getResource3(name, required)->getResource();
+    }
+    
+    std::string getResourceID(const IResource& resource) const override {
+      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
+        if (mResource.second.get() == &resource) {
+          return mResource.first;
+        }
+      }
+      throw ArgumentException("ERROR: ResourceTypeDefinition::getResourceID: Specified resource not known");
     }
     
     std::string getID(const TYPE* resource) const {

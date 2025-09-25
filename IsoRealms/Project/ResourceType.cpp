@@ -61,11 +61,11 @@ namespace IsoRealms {
     cMetadata.load(mPropertiesObject);
   }
 
-  bool ResourceType::needsSaving(ProjectFile* savingProject) const {
+  bool ResourceType::needsSaving(const ProjectFile* savingProject) const {
     return cResourceType->needsSaving(savingProject);
   }
 
-  void ResourceType::save(JSONArray& array, ProjectFile* savingProject) {
+  void ResourceType::save(JSONArray& array, const ProjectFile* savingProject) {
     cResourceType->save(array, savingProject);
     for (const std::string& mOmittedResource : cOmittedResources) {
       JSONObject mOmittedResourceObject = array.addObject();
@@ -115,6 +115,10 @@ namespace IsoRealms {
   
   std::string ResourceType::getPath() {
     return cParent.getPath() + "/" + cParent.getName(this);
+  }
+  
+  std::string ResourceType::getName(const IResource& resource) const {
+    return cResourceType->getResourceID(resource);
   }
   
   std::string ResourceType::getDataPath(bool user) {

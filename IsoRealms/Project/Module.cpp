@@ -36,7 +36,7 @@ namespace IsoRealms {
 
   Module::Module(const std::string& name, Project& project, LuaState* luaState) :
             cProject(project),
-            cModuleAssetRegistry(project, name),
+            cModuleAssetRegistry(*this),
             cName(name),
             cOwnerProject(nullptr) {
     std::string mModulePath = "IsoRealms-" + name;
@@ -129,7 +129,7 @@ namespace IsoRealms {
     cModule->registerAssets(cModuleAssetRegistry);
   }
 
-  bool Module::needsSaving(ProjectFile* savingProject) const {
+  bool Module::needsSaving(const ProjectFile* savingProject) const {
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
       if (mResourceType.second->needsSaving(savingProject)) {
         return true;
@@ -138,7 +138,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void Module::save(JSONObject object, ProjectFile* savingProject) const {
+  void Module::save(JSONObject object, const ProjectFile* savingProject) const {
     object.addString(JSON_NAME, cName);
 
     JSONArray mResourceTypesArray = object.addArray(JSON_RESOURCES);
@@ -209,10 +209,6 @@ namespace IsoRealms {
     throw ArgumentException("ERROR: Module::getName: Specified resource type not found in this module.");
   }
 
-  Project& Module::getProject() {
-    return cProject;
-  }
-
   std::string Module::getPath() {
     return getName();
   }
@@ -235,6 +231,57 @@ namespace IsoRealms {
   
   std::string Module::getProjectPathPrefix(bool user) {
     return cProject.getProjectPathPrefix(user);
+  }
+
+  /****************************\
+   * Implements IResourceData *
+  \****************************/
+  std::string Module::getResourceID() const {
+    return cName;
+  }
+
+  std::string Module::getPath(const std::string& file, bool user) const {
+    return cProject.getPath(file, user);
+  }
+
+  void Module::makeUserDataDirectory() {
+    cProject.makeUserDataDirectory(getName());
+  }
+
+  bool Module::isIncluded() const {
+    return false;
+  }
+
+  bool Module::isReadOnly() const {
+    return false;
+  }
+
+  void Module::setOwner(ProjectFile* owner) {
+    cProject.setOwner(owner);
+  }
+
+  Project& Module::getProject() {
+    return cProject;
+  }
+
+  const Project& Module::getProject() const {
+    return cProject;
+  }
+
+  Project& Module::getAssetManager() {
+    return cProject;
+  }
+
+  IActionClient& Module::getDummyActionClient() {
+    return *this;
+  }
+
+  IResourceData& Module::getResourceData() {
+    return *this;
+  }
+
+  IBindingRegistry* Module::getBindingRegistry() {
+    return nullptr;
   }
 
   Module::~Module() {

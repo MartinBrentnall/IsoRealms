@@ -87,8 +87,9 @@ namespace IsoRealms {
 
     // Functions used by an editor host.
     void updateEditing(unsigned int milliseconds);
-    void save();
+    void save() const;
     void save(const std::string& file);
+    void save(const ProjectFile& file) const;
     bool isUser();
     void getProperties(PropertyMaker& propertyMaker);
     IEditable* getDefaultEditable();
@@ -196,6 +197,7 @@ namespace IsoRealms {
     /****************************\
      * Implements IResourceData * TODO: Should these be here???
     \****************************/
+    virtual std::string getResourceID() const override;
     std::string getPath(const std::string& file, bool user) const override;
     void makeUserDataDirectory() override;
     bool isIncluded() const override;
@@ -305,7 +307,7 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<JSONDocument>> loadResources(ProjectFile& file);
     Module* getModule(const std::string& name);
     void updateTasks();
-    void save(ProjectFile& file);
+    void saveRecursive(const ProjectFile& file) const;
   };
 
   template<> struct AssetContainerTraits<IAction>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cActions;      }};

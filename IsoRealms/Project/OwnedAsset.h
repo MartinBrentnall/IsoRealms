@@ -44,7 +44,7 @@ namespace IsoRealms {
       return &cAsset;
     }
 
-    void save(JSONObject object, const std::string& tag, ProjectFile& saving) {
+    void save(JSONObject object, const std::string& tag, const ProjectFile& saving) const {
       if (cOwner.getProjectFile() == &saving) {
         cAsset.save(object, tag);
       }

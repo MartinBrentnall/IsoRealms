@@ -19,10 +19,11 @@
 #include "PropertyNativeString.h"
 
 namespace IsoRealms {
-  PropertyNativeString::PropertyNativeString(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction) :
+  PropertyNativeString::PropertyNativeString(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) :
             PropertyInputField(data, resourceAccessManager, getter(), removeFunction),
             cValidityChecker(validityChecker),
-            cSetter(setter) {
+            cSetter(setter),
+            cConfirmCustom(confirmCustom) {
   }
   
   bool PropertyNativeString::isKeyAllowed(char character, unsigned int caret) {
@@ -35,11 +36,20 @@ namespace IsoRealms {
     }
 
     confirmAccess([this]() {
-      confirm();
-      cSetter(cValue);
+      if (cConfirmCustom) {
+        cConfirmCustom([this]() {
+          cSetter(cValue);
+          confirm();
+        }, [this]() {
+          cancel();
+        });
+      } else {
+        cSetter(cValue);
+        confirm();
+      }
     }, [this]() {
       cancel();
-    });
+    }); 
     return true;
   }
 }

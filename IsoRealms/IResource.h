@@ -33,7 +33,7 @@ namespace IsoRealms {
     public:
     virtual std::string getName() const = 0;
     virtual bool isReadOnly() const = 0;
-    virtual bool needsSaving(ProjectFile* savingProject) = 0;
+    virtual bool needsSaving(const ProjectFile* savingProject) = 0;
     virtual void save(JSONObject object) = 0;
     virtual void registerAssets() = 0;
     virtual bool renderIcon() = 0;
