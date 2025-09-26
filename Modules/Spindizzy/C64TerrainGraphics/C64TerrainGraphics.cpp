@@ -192,6 +192,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::stateChanged(IFloat* value) {
+    std::cout << "C64TerrainGraphics::stateChanged" << std::endl;
     if (!cNeedsFullRedraw) {
       cChangedAngles.insert(value);
       if (cTexturesInUseCount > 0) {
@@ -203,7 +204,7 @@ namespace IsoRealms::Spindizzy {
   void C64TerrainGraphics::screenAdded(const IScreen* screen) {
     const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat asset!?
     if (mAngle != nullptr) {
-      // TODO: cProject().addStateChangeListener(mAngle, this);
+      cProject.addStateChangeListener(mAngle, this);
       for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
         bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
         mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);

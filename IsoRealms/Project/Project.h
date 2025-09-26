@@ -122,7 +122,6 @@ namespace IsoRealms {
     void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
     void addScreenListener(IScreenListener* listener);
     void removeScreenListener(IScreenListener* listener);
-    void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener);
     
     // Functions used by module client assets.
     bool isLoading() const;
@@ -180,6 +179,10 @@ namespace IsoRealms {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
+    template <typename TYPE> void addStateChangeListener(const TYPE* asset, IStateListener<TYPE*>* listener) {
+      AssetContainerTraits<TYPE>::get(*this).addStateChangeListener(asset, listener);
+    }  
+  
     IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value);
     IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, float red, float green, float blue, float alpha);
     IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, float value);

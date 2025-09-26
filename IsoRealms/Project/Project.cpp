@@ -461,10 +461,6 @@ namespace IsoRealms {
     cScreens.removeScreenListener(listener);
   }
 
-  void Project::addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) {
-    cFloats.addStateChangeListener(asset, listener);
-  }
-
   bool Project::isLoading() const {
     return cLoading;
   }
