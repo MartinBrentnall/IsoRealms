@@ -191,8 +191,7 @@ namespace IsoRealms::Spindizzy {
     cTexturesInUseCount += inUse ? 1 : -1;
   }
 
-  void C64TerrainGraphics::stateChanged(IFloat* value) {
-    std::cout << "C64TerrainGraphics::stateChanged" << std::endl;
+  void C64TerrainGraphics::stateChanged(const IFloat* value) {
     if (!cNeedsFullRedraw) {
       cChangedAngles.insert(value);
       if (cTexturesInUseCount > 0) {
@@ -204,7 +203,8 @@ namespace IsoRealms::Spindizzy {
   void C64TerrainGraphics::screenAdded(const IScreen* screen) {
     const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat asset!?
     if (mAngle != nullptr) {
-      cProject.addStateChangeListener(mAngle, this);
+      cTextureStateListeners.push_back(std::make_unique<TextureStateListener>(*this, mAngle));
+      cProject.addStateChangeListener(mAngle, cTextureStateListeners.back().get());
       for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
         bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
         mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);
@@ -500,7 +500,7 @@ namespace IsoRealms::Spindizzy {
 
   // TODO: Redraw on Float relinquish
 
-  void C64TerrainGraphics::performAngleRedraw(IFloat* angle) {
+  void C64TerrainGraphics::performAngleRedraw(const IFloat* angle) {
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -520,7 +520,7 @@ namespace IsoRealms::Spindizzy {
     cProject.updateLater([this]() {
       if (cNeedsFullRedraw) {
         generateTextures();
-      } else for (IFloat* mAngle : cChangedAngles) {
+      } else for (const IFloat* mAngle : cChangedAngles) {
         performAngleRedraw(mAngle);
       }
       cNeedsFullRedraw = false;
@@ -585,5 +585,15 @@ namespace IsoRealms::Spindizzy {
 
   bool C64TerrainGraphics::OrientedTexture::isDefaultConfiguration() const {
     return true;
+  }
+
+  C64TerrainGraphics::TextureStateListener::TextureStateListener(C64TerrainGraphics& parent, const IFloat* angle) :
+            cParent(parent),
+            cAngle(angle) {
+  }
+  
+  
+  void C64TerrainGraphics::TextureStateListener::stateChanged() {
+    cParent.stateChanged(cAngle);
   }
 }

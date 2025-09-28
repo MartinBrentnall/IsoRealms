@@ -177,6 +177,6 @@ namespace IsoRealms::Basics {
     LuaBinding<AnalogueInput> cLuaBinding;
 
     // Misc.
-    IStateNotifier<IFloat>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
   };
 }

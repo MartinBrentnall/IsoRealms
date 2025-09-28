@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   class TerrainType;
   
   class WallPattern : public Asset<WallPattern, IWallPattern, TerrainType>,
-                      public IStateListener<IWallPattern*>{
+                      public IStateListener {
     public:
     WallPattern(Spindizzy& spindizzy, TerrainType& owner, std::function<void()> listener);
 
@@ -39,10 +39,10 @@ namespace IsoRealms::Spindizzy {
     IWallPattern* createLiteralAsset(TerrainType& owner);
     bool isDefaultConfiguration() const;
 
-    /********************************************\
-     * Implements IStateListener<IWallPattern*> *
-    \********************************************/
-    void stateChanged(IWallPattern* asset) override;
+    /*****************************\
+     * Implements IStateListener *
+    \*****************************/
+    void stateChanged() override;
 
     private:
     std::function<void()> cListener;

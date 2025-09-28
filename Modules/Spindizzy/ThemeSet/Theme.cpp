@@ -145,19 +145,4 @@ namespace IsoRealms::Spindizzy {
 //       }
 //     }  
 //   }
-
-  void Theme::stateChanged(ITexture* asset) {
-    std::cout << "TEXTURE CHANGED IN THEME!" << std::endl;
-    // TODO: Check asset is actually used
-    // TODO: Users of affected texture(s) need to be notified!
-  }
-  
-  // TODO: Enable this
-//   void Theme::assetChanged(IColour* colour) {
-//     for (std::map<ThemeColour*, IColour*>::iterator i = cColours.begin(); i != cColours.end(); i++) {
-//       if (colour == i->second) {
-//         cResources->notifyChange(i->first);
-//       }
-//     }  
-//   }
 }

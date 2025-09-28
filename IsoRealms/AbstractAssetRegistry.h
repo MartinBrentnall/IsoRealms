@@ -80,13 +80,13 @@ namespace IsoRealms {
       });
     }
 
-    template <typename OWNER, typename TYPE> IStateNotifier<TYPE>* addProvider(IAssetProvider<OWNER, TYPE>* provider, const std::string& assetID, const std::string& category) {
+    template <typename OWNER, typename TYPE> IStateNotifier* addProvider(IAssetProvider<OWNER, TYPE>* provider, const std::string& assetID, const std::string& category) {
       registerAsset(provider);
       std::string mResourceID = cManager.getResourceID();
       return cManager.getAssetManager().template add<TYPE>(provider, assetID == "" ? mResourceID : mResourceID + "/" + assetID, category);
     }
 
-    template <typename TYPE> IStateNotifier<TYPE>* add(TYPE* asset, const std::string& assetID, const std::string& category) {
+    template <typename TYPE> IStateNotifier* add(TYPE* asset, const std::string& assetID, const std::string& category) {
       registerAsset(asset);
       std::string mResourceID = cManager.getResourceID();
       return cManager.getAssetManager().template add<TYPE>(asset, assetID == "" ? mResourceID : mResourceID + "/" + assetID, category);

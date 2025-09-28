@@ -70,12 +70,12 @@ namespace IsoRealms {
     add(&cVertices,      ":Vertex",       "Conversions");
   }
 
-  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener<IBinding*>* listener, bool required) {
+  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener* listener, bool required) {
     cLocals.setBindings(owner.getBindingRegistry());
     return AssetClientManager::get(client, owner, object, listener, required);
   }
 
-  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener<IBinding*>* listener) {
+  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener* listener) {
     cLocals.setBindings(owner.getBindingRegistry());
     return AssetClientManager::get(client, owner, id, listener);
   }

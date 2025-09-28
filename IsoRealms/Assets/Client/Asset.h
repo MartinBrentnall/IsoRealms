@@ -50,7 +50,7 @@ namespace IsoRealms {
     {type.isDefaultConfiguration()} -> std::same_as<bool>;
   };
 
-  template <typename DERIVED, typename TYPE> concept IsStateListener = std::convertible_to<DERIVED*, IStateListener<TYPE*>*>;
+  template <typename DERIVED, typename TYPE> concept IsStateListener = std::convertible_to<DERIVED*, IStateListener*>;
 
   template <typename DERIVED, typename TYPE, typename MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
@@ -108,7 +108,7 @@ namespace IsoRealms {
     virtual void setID(const std::string& id) {
       cManager.getAssetManager().release(this, cAsset);
       cAsset = cManager.getAssetManager().getAsset(this, id, cManager, getStateListener());
-      static_cast<DERIVED*>(this)->stateChanged(cAsset);
+      static_cast<DERIVED*>(this)->stateChanged();
     }
     
     void save(JSONObject object, const std::string& name) const {
@@ -206,7 +206,7 @@ namespace IsoRealms {
     TYPE* cAsset;
 
 //    virtual bool hasConfiguration() const = 0;
-    virtual void stateChanged(TYPE* asset) {
+    virtual void stateChanged() {
       // Nothing to do.
     }
     virtual void loadClientConfiguration(JSONObject object) {
@@ -223,7 +223,7 @@ namespace IsoRealms {
     }
 
     private:
-    IStateListener<TYPE*>* getStateListener() {
+    IStateListener* getStateListener() {
       if constexpr (IsStateListener<DERIVED, TYPE>) {
         return static_cast<DERIVED*>(this);
       } else {

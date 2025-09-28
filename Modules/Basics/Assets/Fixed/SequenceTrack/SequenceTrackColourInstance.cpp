@@ -108,7 +108,7 @@ namespace IsoRealms::Basics {
     }
 
     if (cRuntimeColour != mPreviousColour && cStateNotifier != nullptr) { // TODO: State notifier should never be nullptr!!!  Need to make sure "registerAssets" is called after adding a track in editor.
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     }
   }
 

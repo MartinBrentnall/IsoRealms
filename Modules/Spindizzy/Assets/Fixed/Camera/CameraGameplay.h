@@ -123,7 +123,7 @@ namespace IsoRealms::Spindizzy {
     ICameraListener* cListener;
 
     LuaBinding<CameraGameplay> cLuaBinding;
-    IStateNotifier<IFloat>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
     
     // Private functions.
     void rollTo(float value);

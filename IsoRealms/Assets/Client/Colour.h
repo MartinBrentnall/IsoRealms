@@ -28,7 +28,7 @@
 
 namespace IsoRealms {
   class Colour : public Asset<Colour, IColour, IResourceData>,
-                 public IStateListener<IColour*> {
+                 public IStateListener {
     public:
     Colour(IResourceData& owner, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 1.0f, std::function<void()> listener = nullptr);
 
@@ -40,7 +40,7 @@ namespace IsoRealms {
     /***************************************\
      * Implements IStateListener<IColour*> *
     \***************************************/
-    void stateChanged(IColour* asset) override;
+    void stateChanged() override;
 
     private:
     float cDefaultRed;

@@ -28,7 +28,7 @@
 
 namespace IsoRealms {
   class Boolean : public Asset<Boolean, IBoolean, IResourceData>,
-                  public IStateListener<IBoolean*> {
+                  public IStateListener {
     public:
     Boolean(IResourceData& owner, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
 
@@ -37,10 +37,10 @@ namespace IsoRealms {
     \*********************************************/
     IBoolean* createDefaultAsset(IResourceData& owner);
 
-    /****************************************\
-     * Implements IStateListener<IBoolean*> *
-    \****************************************/
-    void stateChanged(IBoolean* asset) override;
+    /*****************************\
+     * Implements IStateListener *
+    \*****************************/
+    void stateChanged() override;
 
     private:
     bool cDefaultValue;

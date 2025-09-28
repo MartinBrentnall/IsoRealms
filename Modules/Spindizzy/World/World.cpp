@@ -252,8 +252,8 @@ namespace IsoRealms::Spindizzy {
       owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneWidth"),    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value;});
       owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneLength"),   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value;});
       owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneHeight"),   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value;});
-  //    owner.createPropertyAsset<ZoneType>(metadata.getPropertyData("EditingDefaultZoneType"), *cAutomaticZoneManagementType);
-  //    owner.createPropertyAsset<ThemeSet>(metadata.getPropertyData("EditingDefaultZoneTheme"), *cDefaultThemeSet);
+      owner.createPropertyResource<ZoneType, Spindizzy>(metadata.getPropertyData("EditingAutomaticZoneType"), cSpindizzy, cAutomaticZoneManagementType);
+      owner.createPropertyResource<ThemeSet, Spindizzy>(metadata.getPropertyData("EditingDefaultZoneThemeSet"), cSpindizzy, cDefaultThemeSet);
       owner.createPropertyAsset<WorldEditorTool>(metadata.getPropertyData("EditingDefaultEditingTool"), cDefaultWorldEditorTool);
       owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundaryWest"),   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value;});
       owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundaryEast"),   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value;});

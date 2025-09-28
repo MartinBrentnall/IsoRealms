@@ -34,8 +34,8 @@ namespace IsoRealms {
     return owner.getAssetManager().createLiteralBoolean(this, owner, cDefaultValue);
   }
 
-  void Boolean::stateChanged(IBoolean* value) {
-    if (value == cAsset && cListener != nullptr) {
+  void Boolean::stateChanged() {
+    if (cListener != nullptr) {
       cListener(cAsset->getValue());
     }
   }

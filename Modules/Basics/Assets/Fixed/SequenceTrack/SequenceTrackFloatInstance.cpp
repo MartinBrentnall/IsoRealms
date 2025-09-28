@@ -91,7 +91,7 @@ namespace IsoRealms::Basics {
     }
 
     if (cRuntimeValue != mPreviousValue) {
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     }
   }
 

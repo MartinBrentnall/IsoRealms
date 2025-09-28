@@ -115,6 +115,7 @@ namespace IsoRealms::Basics {
     bool cRuntimeEditing;
     bool cRuntimeQuitRequestGranted;
     std::mutex cProjectDestructionMutex;
+    bool cRuntimeIgnoreTasks;
 
     // Misc.
     LuaBinding<Project> cLuaBinding;

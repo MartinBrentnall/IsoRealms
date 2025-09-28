@@ -235,7 +235,7 @@ namespace IsoRealms::Replay {
               if (cParent.cState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
-              cStateNotifier->stateChanged(this);
+              cStateNotifier->stateChanged();
             }),
             cRuntimeID(cParent.cDigitalInputs.size() + cParent.cAnalogueInputs.size()),
             cRuntimeRecordedInput(false) {
@@ -259,7 +259,7 @@ namespace IsoRealms::Replay {
   void Replayer::DigitalInput::setRecordedState(bool state) {
     if (cRuntimeRecordedInput != state) {
       cRuntimeRecordedInput = state;
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     }
   }
   
@@ -305,7 +305,7 @@ namespace IsoRealms::Replay {
               if (cParent.cState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
-              cStateNotifier->stateChanged(this);
+              cStateNotifier->stateChanged();
             }),
             cRuntimeID(cParent.cDigitalInputs.size() + cParent.cAnalogueInputs.size()),
             cRuntimeRecordedInput(0.0f) {
@@ -329,7 +329,7 @@ namespace IsoRealms::Replay {
   void Replayer::AnalogueInput::setRecordedState(float state) {
     if (cRuntimeRecordedInput != state) {
       cRuntimeRecordedInput = state;
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     }
   }
   

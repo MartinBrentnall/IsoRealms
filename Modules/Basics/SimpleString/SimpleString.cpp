@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
     cRuntimeValue = cDefValue = object.getString(JSON_VALUE);
 
     data.getProject().init([this]() {
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     });
   }
 
@@ -86,6 +86,6 @@ namespace IsoRealms::Basics {
 
   void SimpleString::setValue(const std::string& value) {
     cRuntimeValue = value;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 }

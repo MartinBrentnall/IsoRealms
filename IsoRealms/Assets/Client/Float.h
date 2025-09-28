@@ -28,7 +28,7 @@
 
 namespace IsoRealms {
   class Float : public Asset<Float, IFloat, IResourceData>,
-                public IStateListener<IFloat*> {
+                public IStateListener {
     public:
     Float(IResourceData& owner, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
 
@@ -40,7 +40,7 @@ namespace IsoRealms {
     /**************************************\
      * Implements IStateListener<IFloat*> *
     \**************************************/
-    void stateChanged(IFloat* asset) override;
+    void stateChanged() override;
 
     private:
     float cDefaultValue;

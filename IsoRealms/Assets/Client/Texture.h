@@ -28,7 +28,7 @@
 
 namespace IsoRealms {
   class Texture : public Asset<Texture, ITexture, IResourceData>,
-                  public IStateListener<ITexture*> {
+                  public IStateListener {
     public:
     Texture(IResourceData& owner, std::function<void()> listener = nullptr);
 
@@ -47,7 +47,7 @@ namespace IsoRealms {
     /****************************************\
      * Implements IStateListener<ITexture*> *
     \****************************************/
-    void stateChanged(ITexture* asset) override;
+    void stateChanged() override;
 
     private:
     static const std::string JSON_ANGLE;

@@ -33,7 +33,7 @@ namespace IsoRealms {
     /*************************************************\
      * Implements Asset<IBindingType, IResourceData> *
     \*************************************************/
-    void stateChanged(IBindingType* asset) override;
+    void stateChanged() override;
 
     private:
     std::function<void()> cListener;

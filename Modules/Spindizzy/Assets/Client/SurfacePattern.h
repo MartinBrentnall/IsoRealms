@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   class TerrainType;
   
   class SurfacePattern : public Asset<SurfacePattern, ISurfacePattern, TerrainType>,
-                         public IStateListener<ISurfacePattern*> {
+                         public IStateListener {
     public:
     SurfacePattern(Spindizzy& spindizzy, TerrainType& owner, std::function<void()> listener);
 
@@ -42,7 +42,7 @@ namespace IsoRealms::Spindizzy {
     /***********************************************\
      * Implements IStateListener<ISurfacePattern*> *
     \***********************************************/
-    void stateChanged(ISurfacePattern* asset) override;
+    void stateChanged() override;
 
     private:
     std::function<void()> cListener;

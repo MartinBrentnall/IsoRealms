@@ -184,6 +184,6 @@ namespace IsoRealms::Basics {
     LuaBinding<DigitalInput> cLuaBinding;
 
     // Misc.
-    IStateNotifier<IBoolean>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
   };
 }

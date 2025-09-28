@@ -131,7 +131,7 @@ namespace IsoRealms::Basics {
 
     if (mActive != cRuntimeState) {
       cRuntimeState = mActive;
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
       return true;
     }
     return false;
@@ -140,7 +140,7 @@ namespace IsoRealms::Basics {
   void DigitalInput::resetInput() {
     if (cRuntimeState) {
       cRuntimeState = false;
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     }
 
     std::vector<std::unique_ptr<PhysicalInputMapping>>& mMapping = cRuntimeMapping.empty() ? cDefMapping : cRuntimeMapping;

@@ -64,13 +64,13 @@ namespace IsoRealms {
   
   void Texture::getClientProperties(PropertyMaker& owner) {
     const Metadata& mMetadata = cManager.getProject().getApplication().getMetadata("Texture");
-    owner.createPropertyNativeFloat(mMetadata.getPropertyData("ScaleX"), [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged(cAsset);});
-    owner.createPropertyNativeFloat(mMetadata.getPropertyData("ScaleY"), [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged(cAsset);});
-    owner.createPropertyNativeFloat(mMetadata.getPropertyData("Angle"),  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged(cAsset);});
+    owner.createPropertyNativeFloat(mMetadata.getPropertyData("ScaleX"), [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();});
+    owner.createPropertyNativeFloat(mMetadata.getPropertyData("ScaleY"), [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();});
+    owner.createPropertyNativeFloat(mMetadata.getPropertyData("Angle"),  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});
   }
   
-  void Texture::stateChanged(ITexture* asset) {
-    if (asset == cAsset && cListener != nullptr) {
+  void Texture::stateChanged() {
+    if (cListener != nullptr) {
       cListener();
     }
   }

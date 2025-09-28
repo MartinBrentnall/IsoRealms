@@ -86,7 +86,7 @@ namespace IsoRealms::Basics {
 
     if (mValue != cRuntimeState) {
       cRuntimeState = mValue;
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
       return true;
     }
     return false;
@@ -95,7 +95,7 @@ namespace IsoRealms::Basics {
   void AnalogueInput::resetInput() {
     if (cRuntimeState != 0.0f) {
       cRuntimeState = 0.0f;
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     }
 
     std::vector<std::unique_ptr<InputMapping>>& mMapping = cRuntimeMapping.empty() ? cDefMapping : cRuntimeMapping;

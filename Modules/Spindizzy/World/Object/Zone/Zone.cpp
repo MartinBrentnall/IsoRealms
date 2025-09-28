@@ -407,8 +407,10 @@ namespace IsoRealms::Spindizzy {
   void Zone::updateDisplayList() {
     std::vector<const IScreen*> mScreens;
     for (std::pair<const IScreen*, GLuint> mDisplayList : cRuntimeDisplayLists) {
-      glDeleteLists(mDisplayList.second, 1);
-      mScreens.push_back(mDisplayList.first);
+      if (mDisplayList.second != 0) {
+        glDeleteLists(mDisplayList.second, 1);
+        mScreens.push_back(mDisplayList.first);
+      }
     }
     for (const IScreen* mScreen : mScreens) {
       cRuntimeDisplayLists[mScreen] = 0;

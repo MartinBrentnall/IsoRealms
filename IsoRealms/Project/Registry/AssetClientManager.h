@@ -41,7 +41,7 @@ namespace IsoRealms {
       }
     }
 
-    IStateNotifier<TYPE>* add(TYPE* asset, const std::string& id, const std::string& category = "TODO", bool stateChanges = false) {
+    IStateNotifier* add(TYPE* asset, const std::string& id, const std::string& category = "TODO", bool stateChanges = false) {
       typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
       if (mIterator == cAssetSingletons.end()) {
         return add(cAssetSingletons.emplace(asset, std::make_unique<AssetSingleton<OWNER, TYPE>>(id, asset)).first->second.get(), id, category, stateChanges);
@@ -49,7 +49,7 @@ namespace IsoRealms {
       return add(mIterator->second.get(), id, category);
     }
     
-    IStateNotifier<TYPE>* add(IAssetProvider<OWNER, TYPE>* provider, const std::string& id, const std::string& category, bool stateChanges = false) {
+    IStateNotifier* add(IAssetProvider<OWNER, TYPE>* provider, const std::string& id, const std::string& category, bool stateChanges = false) {
       cRegistry.add(provider, id, category);
       if (stateChanges) {
         typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(provider);
@@ -140,7 +140,7 @@ namespace IsoRealms {
       return mAsset;
     }
 
-    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, JSONObject object, IStateListener<TYPE*>* listener, bool required) {
+    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, JSONObject object, IStateListener* listener, bool required) {
       if (client == nullptr) {
         throw std::invalid_argument("Client cannot be null");
       }
@@ -154,7 +154,7 @@ namespace IsoRealms {
       return mAsset;
     }
 
-    void registerClient(IAssetUser<TYPE>* client, IAssetProvider<OWNER, TYPE>* provider, TYPE* asset, IStateListener<TYPE*>* listener = nullptr) {
+    void registerClient(IAssetUser<TYPE>* client, IAssetProvider<OWNER, TYPE>* provider, TYPE* asset, IStateListener* listener = nullptr) {
       if (asset != nullptr) {
         cClients[provider][asset].emplace_back(client);
 
@@ -167,7 +167,7 @@ namespace IsoRealms {
       }
     }
 
-    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, const std::string& id, IStateListener<TYPE*>* listener) {
+    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, const std::string& id, IStateListener* listener) {
       if (client == nullptr) {
         throw std::invalid_argument("Client cannot be null");
       }
@@ -178,7 +178,7 @@ namespace IsoRealms {
       return mAsset;
     }
 
-    void addStateChangeListener(const TYPE* asset, IStateListener<TYPE*>* listener) {
+    void addStateChangeListener(const TYPE* asset, IStateListener* listener) {
       typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(getProvider(asset));
       if (mNotifier != cStateNotifiers.end()) {
         mNotifier->second->addListener(listener);
@@ -276,21 +276,21 @@ namespace IsoRealms {
     private:
     inline static const std::string JSON_KEY = "key";
 
-    class StateNotifier final : public IStateNotifier<TYPE> {
+    class StateNotifier final : public IStateNotifier {
       private:
-      std::vector<IStateListener<TYPE*>*> cListeners;
+      std::vector<IStateListener*> cListeners;
       
       public:
-      void addListener(IStateListener<TYPE*>* listener) {
+      void addListener(IStateListener* listener) {
         cListeners.push_back(listener);
       }
       
       /***********************************\
        * Implements IStateNotifier<TYPE> *
       \***********************************/
-      void stateChanged(TYPE* asset) override {
-        for (IStateListener<TYPE*>* mListener : cListeners) {
-          mListener->stateChanged(asset);
+      void stateChanged() override {
+        for (IStateListener* mListener : cListeners) {
+          mListener->stateChanged();
         }
       }
     };

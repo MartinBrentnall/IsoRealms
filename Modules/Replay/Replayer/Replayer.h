@@ -82,7 +82,7 @@ namespace IsoRealms::Replay {
       
       // External interfaces.
       Replayer& cParent;
-      IStateNotifier<IBoolean>* cStateNotifier;
+      IStateNotifier* cStateNotifier;
 
       // Definition data.
       std::string cDefName;
@@ -116,7 +116,7 @@ namespace IsoRealms::Replay {
       
       // External interfaces.
       Replayer& cParent;
-      IStateNotifier<IFloat>* cStateNotifier;
+      IStateNotifier* cStateNotifier;
       
       // Definition data.
       std::string cDefName;

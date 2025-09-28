@@ -84,7 +84,7 @@ namespace IsoRealms::Spindizzy {
           cDefEndArrivalAction.execute();
         }
       }
-      cRuntimeYawStateNotifier->stateChanged(&cYaw);
+      cRuntimeYawStateNotifier->stateChanged();
     } else {
       if (cRuntimeAnimation > 0U) {
         if (cRuntimeAnimation == cDefDuration) {
@@ -94,7 +94,7 @@ namespace IsoRealms::Spindizzy {
         if (cRuntimeAnimation == 0U) {
           cDefStartArrivalAction.execute();
         }
-        cRuntimeYawStateNotifier->stateChanged(&cYaw);
+        cRuntimeYawStateNotifier->stateChanged();
       }
     }
   }
@@ -181,7 +181,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CameraTransitional::yawChanged(ICamera* camera) {
-    cRuntimeYawStateNotifier->stateChanged(&cYaw);
+    cRuntimeYawStateNotifier->stateChanged();
   }
 
   void CameraTransitional::pitchChanged(ICamera* camera) {

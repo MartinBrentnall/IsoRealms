@@ -77,6 +77,6 @@ namespace IsoRealms::Basics {
     LuaBinding<SimpleString> cLuaBinding;
 
     // Misc.
-    IStateNotifier<IString>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
   };
 }

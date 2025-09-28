@@ -98,7 +98,7 @@ namespace IsoRealms::Basics {
     LuaBinding<SimpleColour> cLuaBinding;
 
     // Misc.
-    IStateNotifier<IColour>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
 
     // Private functions.
     void resetColour();

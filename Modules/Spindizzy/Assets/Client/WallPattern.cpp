@@ -34,9 +34,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void WallPattern::stateChanged(IWallPattern* asset) {
-    if (asset == cAsset) {
-      cListener();
-    }
+  void WallPattern::stateChanged() {
+    cListener();
   }
 }

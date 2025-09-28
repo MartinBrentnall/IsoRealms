@@ -544,10 +544,10 @@ namespace IsoRealms::Spindizzy {
       cTilt = 0.0f;
     }
     if (rotate != 0.0f) {
-      cScreenYawNotifier->stateChanged(&cScreenYaw);
+      cScreenYawNotifier->stateChanged();
     }
     if (tilt != 0.0f) {
-      cScreenPitchNotifier->stateChanged(&cScreenPitch);
+      cScreenPitchNotifier->stateChanged();
     }
   }
 

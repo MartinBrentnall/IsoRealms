@@ -52,7 +52,7 @@ namespace IsoRealms::Basics {
     cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
 
     data.getProject().init([this]() {
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     });
   }
 
@@ -157,22 +157,22 @@ namespace IsoRealms::Basics {
 
   void SimpleColour::setRed(float value) {
     cRuntimeRed = value;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 
   void SimpleColour::setGreen(float value) {
     cRuntimeGreen = value;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 
   void SimpleColour::setBlue(float value) {
     cRuntimeBlue = value;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 
   void SimpleColour::setAlpha(float value) {
     cRuntimeAlpha = value;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 
   void SimpleColour::resetColour() {
@@ -180,6 +180,6 @@ namespace IsoRealms::Basics {
     cRuntimeGreen = cDefGreen;
     cRuntimeBlue  = cDefBlue;
     cRuntimeAlpha = cDefAlpha;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 }

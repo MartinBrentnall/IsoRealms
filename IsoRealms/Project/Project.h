@@ -127,7 +127,7 @@ namespace IsoRealms {
     bool isLoading() const;
     void execute(IAction& action);
     
-    template <typename TYPE, typename THING> IStateNotifier<TYPE>* add(THING* asset, const std::string& id, const std::string& category) {
+    template <typename TYPE, typename THING> IStateNotifier* add(THING* asset, const std::string& id, const std::string& category) {
       return AssetContainerTraits<TYPE>::get(*this).add(asset, id, category, true);
     }
 
@@ -171,15 +171,15 @@ namespace IsoRealms {
       return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener<TYPE*>* listener = nullptr, bool required = true) {
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
-    template <typename TYPE> void addStateChangeListener(const TYPE* asset, IStateListener<TYPE*>* listener) {
+    template <typename TYPE> void addStateChangeListener(const TYPE* asset, IStateListener* listener) {
       AssetContainerTraits<TYPE>::get(*this).addStateChangeListener(asset, listener);
     }  
   

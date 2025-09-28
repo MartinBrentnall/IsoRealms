@@ -101,11 +101,11 @@ namespace IsoRealms::UI {
       return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener<TYPE*>* listener = nullptr) {
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener<TYPE*>* listener = nullptr, bool required = true) {
+    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 

@@ -36,8 +36,8 @@ namespace IsoRealms {
     return owner.getAssetManager().createLiteralColour(this, owner, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
   }
   
-  void Colour::stateChanged(IColour* value) {
-    if (value == cAsset && cListener != nullptr) {
+  void Colour::stateChanged() {
+    if (cListener != nullptr) {
       cListener();
     }
   }

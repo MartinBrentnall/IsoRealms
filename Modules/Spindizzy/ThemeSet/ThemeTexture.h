@@ -46,6 +46,6 @@ namespace IsoRealms::Spindizzy {
     private:
     ThemeSet& cParent;
     ITexture* cTexture;
-    IStateNotifier<ITexture>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
   };
 }

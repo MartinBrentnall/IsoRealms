@@ -89,6 +89,6 @@ namespace IsoRealms::Basics {
     LuaBinding<SimpleVertex> cLuaBinding;
 
     // Misc.
-    IStateNotifier<IVertex>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
   };
 }

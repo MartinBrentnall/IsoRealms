@@ -23,6 +23,6 @@
 namespace IsoRealms {
   class ITextureUseListener {
     public:
-    virtual void hintTextureUsed(ITexture*, bool) = 0;
+    virtual void hintTextureUsed(ITexture* texture, bool inUse) = 0;
   };
 }

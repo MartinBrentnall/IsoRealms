@@ -110,7 +110,7 @@ namespace IsoRealms::Spindizzy {
 
   void CameraGameplay::updateRuntime(unsigned int milliseconds) {
     if (cRuntimeRollTimeRemaining > 0) {
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
       if (cListener != nullptr) {
         cListener->yawChanged(this);
       }

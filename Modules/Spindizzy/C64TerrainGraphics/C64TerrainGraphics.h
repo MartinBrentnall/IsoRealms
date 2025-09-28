@@ -27,8 +27,7 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
   class C64TerrainGraphics : public ITextureUseListener,
-                             public IScreenListener,
-                             public IStateListener<IFloat*> {
+                             public IScreenListener {
     public:
     C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data);
     C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
@@ -46,7 +45,7 @@ namespace IsoRealms::Spindizzy {
     /**************************************\
      * Implements IStateListener<IFloat*> *
     \**************************************/
-    void stateChanged(IFloat* asset) override;
+    void stateChanged(const IFloat* asset);
 
     /******************************\
      * Implements IScreenListener *
@@ -124,11 +123,22 @@ namespace IsoRealms::Spindizzy {
       LiteralTexture* cCurrentTexture;
     };
 
+    class TextureStateListener : public IStateListener {
+      public:
+      TextureStateListener(C64TerrainGraphics& parent, const IFloat* angle);
+      void stateChanged() override;
+
+      private:
+      C64TerrainGraphics& cParent;
+      const IFloat* cAngle;
+    };
+
     Project& cProject;
 
     std::map<std::string, std::unique_ptr<LiteralTexture>> cTextures;
     std::map<std::string, std::unique_ptr<OrientedTexture>> cOrientedTextures;
-    std::set<IFloat*> cChangedAngles;
+    std::vector<std::unique_ptr<TextureStateListener>> cTextureStateListeners;
+    std::set<const IFloat*> cChangedAngles;
     std::set<const IFloat*> cUniqueViews;
     Float cDefaultYaw;
     
@@ -177,7 +187,7 @@ namespace IsoRealms::Spindizzy {
 
     std::unique_ptr<LiteralTexture> createTexture(bool clamp = false);
     std::unique_ptr<OrientedTexture> createOrientedTexture();
-    void performAngleRedraw(IFloat* angle);
+    void performAngleRedraw(const IFloat* angle);
     void updateLater();
   };
 }

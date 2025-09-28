@@ -24,7 +24,7 @@ namespace IsoRealms {
    * Interface to be implemented by those wishing to be notified of changes to
    * the state of an object.
    */
-  template <typename TYPE> class IStateListener {
+  class IStateListener {
     public:
       
     /**
@@ -32,9 +32,7 @@ namespace IsoRealms {
      * listener has been registered changes.  The object whose state has
      * changed is passed to the listener, which is useful in case the listener
      * is registered to multiple objects.
-     * 
-     * @param object The object whose state changed.
      */
-    virtual void stateChanged(TYPE object) = 0;
+    virtual void stateChanged() = 0;
   };
 }

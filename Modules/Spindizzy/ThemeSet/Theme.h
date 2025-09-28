@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
   class ThemeSet;
   
-  class Theme : public IStateListener<ITexture*> {
+  class Theme {
     public:
     Theme(ThemeSet& themeSet);
     Theme(ThemeSet& themeSet, JSONObject object);
@@ -51,14 +51,6 @@ namespace IsoRealms::Spindizzy {
     std::string getElementName(ThemeTexture* texture);
     std::string getElementName(ThemeColour* colour);
     void hintInUse(bool);
-
-    /****************************************\
-     * Implements IStateListener<ITexture*> *
-    \****************************************/
-    void stateChanged(ITexture* asset) override;
-
-    virtual ~Theme() {
-    }
 
     private:
     static const std::string JSON_COLOUR;

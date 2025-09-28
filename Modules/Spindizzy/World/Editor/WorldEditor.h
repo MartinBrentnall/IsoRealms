@@ -153,8 +153,8 @@ namespace IsoRealms::Spindizzy {
     double cRoll;
     ScreenFloat cScreenYaw;
     ScreenFloat cScreenPitch;
-    IStateNotifier<IFloat>* cScreenYawNotifier;
-    IStateNotifier<IFloat>* cScreenPitchNotifier;
+    IStateNotifier* cScreenYawNotifier;
+    IStateNotifier* cScreenPitchNotifier;
 
     HatHandler& cHatHandler;
 

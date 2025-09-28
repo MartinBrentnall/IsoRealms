@@ -45,7 +45,7 @@ namespace IsoRealms::Basics {
     cRuntimeZ = cDefZ = object.getFloat(JSON_Z);
 
     data.getProject().init([this]() {
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     });
   }
 
@@ -110,16 +110,16 @@ namespace IsoRealms::Basics {
 
   void SimpleVertex::setX(double x) {
     cRuntimeX = x;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 
   void SimpleVertex::setY(double y) {
     cRuntimeY = y;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 
   void SimpleVertex::setZ(double z) {
     cRuntimeZ = z;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 }

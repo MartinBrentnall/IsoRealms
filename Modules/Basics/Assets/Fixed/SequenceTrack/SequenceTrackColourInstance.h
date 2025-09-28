@@ -63,7 +63,7 @@ namespace IsoRealms::Basics {
     LiteralColour cRuntimeColour;
 
     // Misc.
-    IStateNotifier<IColour>* cStateNotifier;
+    IStateNotifier* cStateNotifier;
 
     // Internal funcctions.
     void updateColour();

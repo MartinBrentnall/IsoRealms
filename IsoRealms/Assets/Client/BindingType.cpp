@@ -30,8 +30,8 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  void BindingType::stateChanged(IBindingType* value) {
-    if (value == cAsset && cListener != nullptr) {
+  void BindingType::stateChanged() {
+    if (cListener != nullptr) {
       cListener();
     }
   }

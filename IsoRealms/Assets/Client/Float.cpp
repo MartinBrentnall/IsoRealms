@@ -33,8 +33,8 @@ namespace IsoRealms {
     return owner.getAssetManager().createLiteralFloat(this, owner, cDefaultValue);
   }
   
-  void Float::stateChanged(IFloat* value) {
-    if (value == cAsset && cListener != nullptr) {
+  void Float::stateChanged() {
+    if (cListener != nullptr) {
       cListener(cAsset->getValue());
     }
   }

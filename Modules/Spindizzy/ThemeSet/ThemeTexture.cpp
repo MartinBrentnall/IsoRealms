@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void ThemeTexture::notifyChange() {
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
   
   void ThemeTexture::set(ITexture* texture) {

@@ -157,9 +157,9 @@ namespace IsoRealms::Spindizzy {
     Action cDefEndArrivalAction;     /// Action to execute when animation arrives at the end camera.
     
     // Runtime data.
-    bool cRuntimeEnd;                                 /// True when animating towards (or at) end camera, false when animating towards (or at) start camera.
-    unsigned int cRuntimeAnimation;                   /// Animates movement between start and end camera.
-    IStateNotifier<IFloat>* cRuntimeYawStateNotifier; /// Anything interested in knowing when the Yaw changes will be notified via this.
+    bool cRuntimeEnd;                         /// True when animating towards (or at) end camera, false when animating towards (or at) start camera.
+    unsigned int cRuntimeAnimation;           /// Animates movement between start and end camera.
+    IStateNotifier* cRuntimeYawStateNotifier; /// Anything interested in knowing when the Yaw changes will be notified via this.
 
     // Scripting support.
     LuaBinding<CameraTransitional> cLuaBinding; /// Allow transitional cameras to be bound to lua variables.

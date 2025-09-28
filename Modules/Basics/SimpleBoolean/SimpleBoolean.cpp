@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
     cRuntimeValue = cDefValue = object.getBoolean(JSON_VALUE);
 
     data.getProject().init([this]() {
-      cStateNotifier->stateChanged(this);
+      cStateNotifier->stateChanged();
     });
   }
 
@@ -86,6 +86,6 @@ namespace IsoRealms::Basics {
 
   void SimpleBoolean::setValue(bool value) {
     cRuntimeValue = value;
-    cStateNotifier->stateChanged(this);
+    cStateNotifier->stateChanged();
   }
 }
