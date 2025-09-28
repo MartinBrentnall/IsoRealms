@@ -22,6 +22,7 @@
 
 #include "IsoRealms.h"
 
+#include "Modules/Spindizzy/Assets/Fixed/SurfacePattern/SurfacePatternComposite.h"
 #include "Modules/Spindizzy/Assets/Fixed/SurfacePattern/SurfacePatternOutline.h"
 #include "Modules/Spindizzy/Assets/Fixed/SurfacePattern/SurfacePatternTile.h"
 #include "Modules/Spindizzy/Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.h"
@@ -34,6 +35,7 @@ namespace IsoRealms::Spindizzy {
     SurfacePatternRegistry(IResourceTypeRegistry& registry);
 
     private:
+    AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternComposite>    cComposite;
     AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternOutline>      cOutline;
     AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternSplitVariant> cSplitVariant;
     AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternTile>         cTile;

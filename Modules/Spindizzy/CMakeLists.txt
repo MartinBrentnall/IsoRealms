@@ -46,6 +46,7 @@ add_library(Spindizzy MODULE
   Assets/Fixed/Camera/CameraTransitional.cpp
   Assets/Fixed/Camera/CameraVariant.cpp
   Assets/Fixed/PhysicalObjectType/PhysicalObjectTypeDummy.cpp
+  Assets/Fixed/SurfacePattern/SurfacePatternComposite.cpp
   Assets/Fixed/SurfacePattern/SurfacePatternOutline.cpp
   Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.cpp
   Assets/Fixed/SurfacePattern/SurfacePatternTile.cpp

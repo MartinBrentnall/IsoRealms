@@ -22,9 +22,11 @@
 
 namespace IsoRealms::Spindizzy {
   SurfacePatternRegistry::SurfacePatternRegistry(IResourceTypeRegistry& registry) :
+            cComposite(registry.getAssetMetadata("SurfacePatternComposite")), 
             cOutline(registry.getAssetMetadata("SurfacePatternOutline")),
             cSplitVariant(registry.getAssetMetadata("SurfacePatternSplitVariant")),
             cTile(registry.getAssetMetadata("SurfacePatternTile")) {
+    add(&cComposite,    "Composite",    "Spindizzy");
     add(&cOutline,      "Outline",      "Spindizzy");
     add(&cSplitVariant, "SplitVariant", "Spindizzy");
     add(&cTile,         "Tile",         "Spindizzy");

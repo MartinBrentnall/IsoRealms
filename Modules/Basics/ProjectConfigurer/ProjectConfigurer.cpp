@@ -18,19 +18,23 @@
  */
 #include "ProjectConfigurer.h"
 
+#include "Modules/Basics/Basics.h"
+
 namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_CODE_FONT      = "codeFont";
   const std::string ProjectConfigurer::JSON_CODE_FONT_SIZE = "codeFontSize";
   const std::string ProjectConfigurer::JSON_FONT           = "font";
   const std::string ProjectConfigurer::JSON_FONT_SIZE      = "fontSize";
-  const std::string ProjectConfigurer::JSON_INPUT          = "input";
-  const std::string ProjectConfigurer::JSON_INPUTS         = "inputs";
   const std::string ProjectConfigurer::JSON_LOCAL          = "local";
   const std::string ProjectConfigurer::JSON_ON_EDITOR      = "onEditor";
   const std::string ProjectConfigurer::JSON_ON_EXIT        = "onExit";
-  const std::string ProjectConfigurer::JSON_MAPPING        = "mapping";
 
   ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data) :
+            cHatHandler(basics.getProject().getApplication().getHatHandler()),
+            cButtonStateUp([this]() {cProjectConfigurationUI.input(UISignalID::MOVE_UP);}),
+            cButtonStateDown([this]() {cProjectConfigurationUI.input(UISignalID::MOVE_DOWN);}),
+            cButtonStateLeft([this]() {cProjectConfigurationUI.input(UISignalID::MOVE_LEFT);}),
+            cButtonStateRight([this]() {cProjectConfigurationUI.input(UISignalID::MOVE_RIGHT);}),
             cActionClient(data, *this),
             cDefFont(data),
             cDefCodeFont(data),
@@ -45,34 +49,12 @@ namespace IsoRealms::Basics {
               cDefEditorAction.execute();
               cBindingEditor.setValue(nullptr);
             }),
-            cDigitalInputsByName({
-              {"AdjustLeft",   &cAdjustLeft},
-              {"AdjustRight",  &cAdjustRight},
-              {"Cancel",       &cCancel},
-              {"Confirm",      &cConfirm},
-              {"PreviousItem", &cPreviousItem},
-              {"NextItem",     &cNextItem},
-              {"ToggleHelp",   &cToggleHelp}
-            }),
-            cAdjustLeft(data, *this, SignalInputID::MOVE_CURSOR_LEFT),
-            cAdjustRight(data, *this, SignalInputID::MOVE_CURSOR_RIGHT),
-            cCancel(data, *this, SignalInputID::CANCEL),
-            cConfirm(data, *this, SignalInputID::CONFIRM),
-            cPreviousItem(data, *this, SignalInputID::MOVE_CURSOR_UP),
-            cNextItem(data, *this, SignalInputID::MOVE_CURSOR_DOWN),
-            cToggleHelp(data, *this, SignalInputID::TOGGLE_HELP),
             cLuaBinding(data.getProject().getLuaState(), this),
             cBindingEditor(data.getProject().getLuaState(), nullptr, this) {
   }
 
   ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data, JSONObject object) :
             ProjectConfigurer(basics, data) {
-    for (JSONValue mInputValue : object.getArray(JSON_INPUTS)) {
-      JSONObject mInputObject = mInputValue.getObject();
-      std::string mInputID = mInputObject.getString(JSON_INPUT);
-      cDigitalInputsByName.find(mInputID)->second->set(mInputObject);
-    }
-
     cDefFontSize = object.getFloat(JSON_FONT_SIZE);
     cDefCodeFontSize = object.getFloat(JSON_CODE_FONT_SIZE);
     cDefFont.init(object, JSON_FONT);
@@ -117,6 +99,10 @@ namespace IsoRealms::Basics {
 
   void ProjectConfigurer::updateRuntime(unsigned int milliseconds) {
     cProjectConfigurationUI.update(milliseconds);
+    cButtonStateUp.update(milliseconds);
+    cButtonStateDown.update(milliseconds);
+    cButtonStateLeft.update(milliseconds);
+    cButtonStateRight.update(milliseconds);
   }
     
   void ProjectConfigurer::renderScreen(float scale, float aspectRatio) const {
@@ -140,7 +126,48 @@ namespace IsoRealms::Basics {
   }
 
   bool ProjectConfigurer::input(sf::Event& event) {
-    return isHidden() ? false : cProjectConfigurationUI.input(event);
+    if (!isHidden()) {
+      if (cProjectConfigurationUI.input(event)) {
+        return true;
+      } else switch (event.type) {
+        case sf::Event::KeyPressed: {
+          switch (event.key.code) {
+            case sf::Keyboard::BackSpace: // Fall through.
+            case sf::Keyboard::Escape:    cProjectConfigurationUI.input(UISignalID::CANCEL);      return true;
+            case sf::Keyboard::Space:     // Fall through.
+            case sf::Keyboard::Return:    cProjectConfigurationUI.input(UISignalID::CONFIRM);     return true;
+            case sf::Keyboard::Up:        cProjectConfigurationUI.input(UISignalID::MOVE_UP);     return true;
+            case sf::Keyboard::Down:      cProjectConfigurationUI.input(UISignalID::MOVE_DOWN);   return true;
+            case sf::Keyboard::Left:      cProjectConfigurationUI.input(UISignalID::MOVE_LEFT);   return true;
+            case sf::Keyboard::Right:     cProjectConfigurationUI.input(UISignalID::MOVE_RIGHT);  return true;
+            case sf::Keyboard::Tab:       cProjectConfigurationUI.input(UISignalID::TOGGLE_HELP); return true;
+            default: break;
+          }
+        }
+
+        case sf::Event::JoystickMoved: {
+          if (cHatHandler.upPressed())     {cButtonStateUp.setPressed(   true);  return true;}
+          if (cHatHandler.downPressed())   {cButtonStateDown.setPressed( true);  return true;}
+          if (cHatHandler.leftPressed())   {cButtonStateLeft.setPressed( true);  return true;}
+          if (cHatHandler.rightPressed())  {cButtonStateRight.setPressed(true);  return true;}
+          if (cHatHandler.upReleased())    {cButtonStateUp.setPressed(   false); return true;}
+          if (cHatHandler.downReleased())  {cButtonStateDown.setPressed( false); return true;}
+          if (cHatHandler.leftReleased())  {cButtonStateLeft.setPressed( false); return true;}
+          if (cHatHandler.rightReleased()) {cButtonStateRight.setPressed(false); return true;}
+          break;
+        }
+
+        case sf::Event::JoystickButtonPressed: {
+          if (event.joystickButton.button == ButtonMapping::CROSS)  {cProjectConfigurationUI.input(UISignalID::CONFIRM);     return true;}
+          if (event.joystickButton.button == ButtonMapping::CIRCLE) {cProjectConfigurationUI.input(UISignalID::CANCEL);      return true;}
+          if (event.joystickButton.button == ButtonMapping::SQUARE) {cProjectConfigurationUI.input(UISignalID::TOGGLE_HELP); return true;}
+          break;
+        }
+
+        default: break;
+      }
+    }
+    return false;
   }
   
   IDialogManager& ProjectConfigurer::getDialogManager() {
@@ -201,18 +228,33 @@ namespace IsoRealms::Basics {
     return cProjectConfigurationUI.isHidden();
   }
 
-  bool ProjectConfigurer::signal(SignalInputID id) {
-    if (!isHidden()) {
-      switch (id) {
-        case SignalInputID::MOVE_CURSOR_DOWN:  cProjectConfigurationUI.input(UISignalID::MOVE_DOWN);   return true;
-        case SignalInputID::MOVE_CURSOR_UP:    cProjectConfigurationUI.input(UISignalID::MOVE_UP);     return true;
-        case SignalInputID::MOVE_CURSOR_LEFT:  cProjectConfigurationUI.input(UISignalID::MOVE_LEFT);   return true;
-        case SignalInputID::MOVE_CURSOR_RIGHT: cProjectConfigurationUI.input(UISignalID::MOVE_RIGHT);  return true;
-        case SignalInputID::CANCEL:            cProjectConfigurationUI.input(UISignalID::CANCEL);      return true;
-        case SignalInputID::CONFIRM:           cProjectConfigurationUI.input(UISignalID::CONFIRM);     return true;
-        case SignalInputID::TOGGLE_HELP:       cProjectConfigurationUI.input(UISignalID::TOGGLE_HELP); return true;
-      }
+  ProjectConfigurer::ButtonState::ButtonState(std::function<void()> pressAction) :
+            cPressed(false),
+            cTimeUntilTrigger(BUTTON_STATE_PRESS_REPEAT_DELAY),
+            cRepeatInterval(BUTTON_STATE_PRESS_REPEAT_INTERVAL),
+            cPressAction(pressAction) {
+  }
+
+  void ProjectConfigurer::ButtonState::setPressed(bool pressed) {
+    if (pressed) {
+      cPressAction();
     }
-    return false;
+    cPressed = pressed;
+  }
+
+  void ProjectConfigurer::ButtonState::update(unsigned int milliseconds) {
+    if (cPressed) {
+      if (cTimeUntilTrigger < 0) {
+        cPressAction();
+        if (cRepeatInterval > 10) {
+          cRepeatInterval -= 4;
+        }
+        cTimeUntilTrigger = cRepeatInterval + cTimeUntilTrigger;
+      }
+      cTimeUntilTrigger -= milliseconds;
+    } else {
+      cRepeatInterval = BUTTON_STATE_PRESS_REPEAT_INTERVAL;
+      cTimeUntilTrigger = BUTTON_STATE_PRESS_REPEAT_DELAY;
+    }
   }
 }

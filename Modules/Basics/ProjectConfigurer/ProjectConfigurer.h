@@ -91,51 +91,38 @@ namespace IsoRealms::Basics {
     IDialogManager& getDialogManager();
 
     private:
-
-    // TODO: Duplicated from WorldEditor
-    class DigitalInput {
+    class ButtonState {
       public:
-      DigitalInput(IResourceData& owner, ProjectConfigurer& parent, SignalInputID signal) :
-                cParent(parent),
-                cInput(owner, false, [this](bool value) {
-                  if (value && !cValue) {
-                    cParent.signal(cSignal);
-                  }
-                  cValue = value;
-                }),
-                cValue(false),
-                cSignal(signal) {
-      }
-
-      void set(JSONObject object) {
-        cInput.init(object, JSON_MAPPING);
-      }
-
-      bool get() {
-        return cValue;
-      }
+      ButtonState(std::function<void()> pressAction);
+      void setPressed(bool pressed);
+      void update(unsigned int milliseconds);
 
       private:
-      ProjectConfigurer& cParent;
-      Boolean cInput;
-      bool cValue;
-      SignalInputID cSignal;
+      bool cPressed;
+      int cTimeUntilTrigger;
+      int cRepeatInterval;
+      std::function<void()> cPressAction;
     };
-
-    // Private functions.
-    bool signal(SignalInputID id);
 
     // JSON members.
     static const std::string JSON_CODE_FONT;
     static const std::string JSON_CODE_FONT_SIZE;
     static const std::string JSON_FONT;
     static const std::string JSON_FONT_SIZE;
-    static const std::string JSON_INPUT;
-    static const std::string JSON_INPUTS;
     static const std::string JSON_LOCAL;
-    static const std::string JSON_MAPPING;
     static const std::string JSON_ON_EDITOR;
     static const std::string JSON_ON_EXIT;
+
+    static const int BUTTON_STATE_PRESS_REPEAT_DELAY    = 350;
+    static const int BUTTON_STATE_PRESS_REPEAT_INTERVAL = 100;
+
+    // External interfaces.
+    HatHandler& cHatHandler;
+
+    ButtonState cButtonStateUp;
+    ButtonState cButtonStateDown;
+    ButtonState cButtonStateLeft;
+    ButtonState cButtonStateRight;
 
     // Action client.
     ActionClient cActionClient;
@@ -149,16 +136,6 @@ namespace IsoRealms::Basics {
     Action cDefEditorAction;
 
     UIManager cProjectConfigurationUI;
-
-    const std::map<std::string, DigitalInput*> cDigitalInputsByName; /// Mapping of digital inputs by name.
-
-    DigitalInput cAdjustLeft;
-    DigitalInput cAdjustRight;
-    DigitalInput cCancel;
-    DigitalInput cConfirm;
-    DigitalInput cPreviousItem;
-    DigitalInput cNextItem;
-    DigitalInput cToggleHelp;
 
     // Scripting Interface.
     LuaBinding<ProjectConfigurer> cLuaBinding;
