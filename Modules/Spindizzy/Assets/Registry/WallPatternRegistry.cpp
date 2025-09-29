@@ -23,9 +23,11 @@
 namespace IsoRealms::Spindizzy {
   WallPatternRegistry::WallPatternRegistry(IResourceTypeRegistry& registry) :
             cCapped(registry.getAssetMetadata("WallPatternCap")),
+            cComposite(registry.getAssetMetadata("WallPatternComposite")),
             cOutline(registry.getAssetMetadata("WallPatternOutline")),
             cTile(registry.getAssetMetadata("WallPatternTile")) {
     add(&cCapped,  "Capped",  "Spindizzy");
+    add(&cComposite, "Composite", "Spindizzy");
     add(&cOutline, "Outline", "Spindizzy");
     add(&cTile,    "Tile",    "Spindizzy");
   }

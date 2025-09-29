@@ -35,6 +35,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   void SurfacePattern::stateChanged() {
-    cListener();
+    if (cListener) {
+      cListener();
+    }
   }
 }

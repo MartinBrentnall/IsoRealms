@@ -48,19 +48,56 @@ namespace IsoRealms::Spindizzy {
     double mLowStartSlopeZ = z * 0.5f;
     double mLowEndSlopeZ =  (z + bottomSlope * length) * 0.5f;
 
+    mHighEndSlopeZ   += 0.2f;
+    mLowEndSlopeZ    -= 0.2f;
+    mHighStartSlopeZ += 0.2f;
+    mLowStartSlopeZ  -= 0.2f;
+
+    if (facing == Wall::Direction::EAST) {
+      mFromX += 0.2f;
+      mToX   += 0.2f;
+
+      mFromY -= 0.2f;
+      mToY   += 0.2f;
+      glColor3f(1.0f, 0.0f, 0.0f);
+    }
+    if (facing == Wall::Direction::SOUTH) {
+      mFromY -= 0.2f;
+      mToY   -= 0.2f;
+
+      mFromX -= 0.2f;
+      mToX   += 0.2f;
+      glColor3f(0.0f, 1.0f, 0.0f);
+    }
+    if (facing == Wall::Direction::WEST) {
+      mFromX -= 0.2f;
+      mToX   -= 0.2f;
+
+      mFromY -= 0.2f;
+      mToY   += 0.2f;
+      glColor3f(1.0f, 1.0f, 0.0f);
+    }
+    if (facing == Wall::Direction::NORTH) {
+      mFromY += 0.2f;
+      mToY   += 0.2f;
+
+      mFromX -= 0.2f;
+      mToX   += 0.2f;
+      glColor3f(0.0f, 0.0f, 1.0f);
+    }
+
     glBindTexture(GL_TEXTURE_2D, 0);
-    glColor3f(0.0f, 0.0f, 0.0f);
     glBegin(GL_QUADS);
     if (facing == Wall::Direction::EAST || facing == Wall::Direction::SOUTH) {
-      glVertex3f(mFromX, mFromY, mLowStartSlopeZ);
-      glVertex3f(mToX,   mToY,   mLowEndSlopeZ);
-      glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
       glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
+      glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
+      glVertex3f(mToX,   mToY,   mLowEndSlopeZ);
+      glVertex3f(mFromX, mFromY, mLowStartSlopeZ);
     } else {
-      glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
-      glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
-      glVertex3f(mToX,   mToY,   mLowEndSlopeZ);
       glVertex3f(mFromX, mFromY, mLowStartSlopeZ);
+      glVertex3f(mToX,   mToY,   mLowEndSlopeZ);
+      glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
+      glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
     }
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 0);

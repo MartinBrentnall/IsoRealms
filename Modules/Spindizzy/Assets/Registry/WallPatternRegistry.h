@@ -23,6 +23,7 @@
 #include "IsoRealms.h"
 
 #include "Modules/Spindizzy/Assets/Fixed/WallPattern/WallPatternCap.h"
+#include "Modules/Spindizzy/Assets/Fixed/WallPattern/WallPatternComposite.h"
 #include "Modules/Spindizzy/Assets/Fixed/WallPattern/WallPatternOutline.h"
 #include "Modules/Spindizzy/Assets/Fixed/WallPattern/WallPatternTile.h"
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
@@ -34,8 +35,9 @@ namespace IsoRealms::Spindizzy {
     WallPatternRegistry(IResourceTypeRegistry& registry);
 
     private:
-    AssetInstanced<TerrainType, IWallPattern, WallPatternCap>     cCapped;
-    AssetInstanced<TerrainType, IWallPattern, WallPatternOutline> cOutline;
-    AssetInstanced<TerrainType, IWallPattern, WallPatternTile>    cTile;
+    AssetInstanced<TerrainType, IWallPattern, WallPatternCap>       cCapped;
+    AssetInstanced<TerrainType, IWallPattern, WallPatternComposite> cComposite;
+    AssetInstanced<TerrainType, IWallPattern, WallPatternOutline>   cOutline;
+    AssetInstanced<TerrainType, IWallPattern, WallPatternTile>      cTile;
   };
 }

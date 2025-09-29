@@ -51,6 +51,7 @@ add_library(Spindizzy MODULE
   Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.cpp
   Assets/Fixed/SurfacePattern/SurfacePatternTile.cpp
   Assets/Fixed/WallPattern/WallPatternCap.cpp
+  Assets/Fixed/WallPattern/WallPatternComposite.cpp
   Assets/Fixed/WallPattern/WallPatternOutline.cpp
   Assets/Fixed/WallPattern/WallPatternTile.cpp
   Assets/Fixed/WorldEditorTool/WorldEditorToolDummy.cpp

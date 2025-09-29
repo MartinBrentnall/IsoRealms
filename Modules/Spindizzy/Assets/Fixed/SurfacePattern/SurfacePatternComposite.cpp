@@ -82,8 +82,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void SurfacePatternComposite::saveAsset(JSONObject object) const {
+    JSONArray mPatternsArray = object.addArray(JSON_PATTERNS);
     for (const std::unique_ptr<SurfacePattern>& mSurfacePattern : cDefSurfacePatterns) {
-      mSurfacePattern->save(object, JSON_PATTERN);
+      JSONObject mPatternObject = mPatternsArray.addObject();
+      mSurfacePattern->save(mPatternObject, JSON_PATTERN);
     }
   }
  
