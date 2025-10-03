@@ -199,6 +199,24 @@ namespace IsoRealms {
       }
     }
 
+    bool isReadOnly(const TYPE* resource) const {
+      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
+        if (mResource.second->isResource(resource)) {
+          return mResource.second->isReadOnly();
+        }
+      }
+      return false;
+    }
+
+    void setOwner(const TYPE* resource, ProjectFile* owner) {
+      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
+        if (mResource.second->isResource(resource)) {
+          mResource.second->setOwner(owner);
+          return;
+        }
+      }
+    }
+
     private:
     inline static const std::string JSON_ID = "id";
 

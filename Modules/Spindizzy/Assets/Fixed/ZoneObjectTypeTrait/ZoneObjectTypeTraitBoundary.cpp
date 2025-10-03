@@ -63,8 +63,8 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<Boundary>(*this, object);
   }
   
-  void ZoneObjectTypeTraitBoundary::registerAssets(ISpindizzyRegistry* registry) {
-    // TODO: registry->add(this); // Boundary type
+  void ZoneObjectTypeTraitBoundary::registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) {
+    // TODO: assets.add(this); // Boundary type
   }
   
   std::string ZoneObjectTypeTraitBoundary::getBoundaryTypeID() const {

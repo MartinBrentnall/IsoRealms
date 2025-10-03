@@ -84,14 +84,32 @@ namespace IsoRealms {
       
       case UISignalID::CONFIRM: {
         if (cDeleteSelected && !item.isAddResource()) {
-          cConfirmSelection = std::make_unique<Choice>(getStyle(), "Are you sure you want to delete \"" + item.getResource()->getName()  + "\"?", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, &item](const std::string& choice)->bool {
+          cConfirmSelection = std::make_unique<Choice>(getStyle(), "Are you sure you want to delete \"" + item.getResource()->getName()  + "\"?", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, item](const std::string& choice)->bool {
             if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
               IResource* mResource = item.getResource();
-              cResourceType.deleteResource(mResource);
-              refresh();
+              if (mResource->hasReadOnlyReferences()) {
+                cClosedConfirmSelection = std::move(cConfirmSelection);
+                cConfirmSelection = std::make_unique<Choice>(getStyle(), "This resource is referenced by read-only resources.  Deleting it will promote any read-only resources referencing this one and make them writable.", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, item](const std::string& choice)->bool {
+                  if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
+                    IResource* mResource = item.getResource();
+                    mResource->overrideReadOnlyReferences();
+                    cResourceType.deleteResource(mResource);
+                    refresh();
+                  }
+                  cClosedConfirmSelection = std::move(cConfirmSelection);
+                  cConfirmSelection = nullptr;
+                  return true;
+                });
+              } else {
+                cClosedConfirmSelection = std::move(cConfirmSelection);
+                cConfirmSelection = nullptr;
+                cResourceType.deleteResource(mResource);
+                refresh();
+              }
+            } else {
+              cClosedConfirmSelection = std::move(cConfirmSelection);
+              cConfirmSelection = nullptr;
             }
-            cClosedConfirmSelection = std::move(cConfirmSelection);
-            cConfirmSelection = nullptr;
             return true;
           });
           return true;

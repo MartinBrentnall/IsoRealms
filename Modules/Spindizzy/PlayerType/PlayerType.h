@@ -30,6 +30,7 @@
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 #include "Modules/Spindizzy/IBindingIdentifier.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 
 namespace IsoRealms::Spindizzy {
   class ISpindizzyRegistry;
@@ -64,7 +65,7 @@ namespace IsoRealms::Spindizzy {
     ~PlayerType();
 
     // Interface to be used by module.
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
 
     // Internal interface.
     std::unique_ptr<ModelInstance> createModel();
@@ -169,6 +170,9 @@ namespace IsoRealms::Spindizzy {
 
     // External interfaces.
     Spindizzy& cSpindizzy;     /// Spindizzy module reference.
+
+    // Asset registry.
+    SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
 
     // Action client.
     ActionClient cActionClient;

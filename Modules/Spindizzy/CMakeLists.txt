@@ -83,7 +83,6 @@ add_library(Spindizzy MODULE
   InfiniteSurface.cpp
   Jewel/Jewel.cpp
   LiftType/LiftType.cpp
-  LocalSpindizzyRegistry.cpp
   ModelCycler/ModelCycler.cpp
   PickUpType/PickUpType.cpp
   PlayerType/PlayerType.cpp

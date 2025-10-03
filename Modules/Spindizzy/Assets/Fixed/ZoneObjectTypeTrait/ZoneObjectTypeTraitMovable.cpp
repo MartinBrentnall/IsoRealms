@@ -46,7 +46,7 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<Movable>(object, *this);
   }
   
-  void ZoneObjectTypeTraitMovable::registerAssets(ISpindizzyRegistry* registry) {
+  void ZoneObjectTypeTraitMovable::registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
 

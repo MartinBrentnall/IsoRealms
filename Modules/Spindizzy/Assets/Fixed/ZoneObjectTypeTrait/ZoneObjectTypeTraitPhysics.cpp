@@ -97,7 +97,7 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<Physics>(object, *this);
   }
   
-  void ZoneObjectTypeTraitPhysics::registerAssets(ISpindizzyRegistry* registry) {
+  void ZoneObjectTypeTraitPhysics::registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
 

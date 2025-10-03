@@ -27,6 +27,7 @@
 #include "Modules/Spindizzy/Assets/Type/ICamera.h"
 #include "Modules/Spindizzy/Assets/Type/IZoneView.h"
 #include "Modules/Spindizzy/Assets/Type/IZoneViewType.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
@@ -49,6 +50,8 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
+    bool hasReadOnlyReferences(const World* world) const;
+
     /***************************\
      * Asset client interfaces *
     \***************************/
@@ -64,7 +67,7 @@ namespace IsoRealms::Spindizzy {
     void reset();
 
     // Interface to be used by Spindizzy.
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
     void addZoneView(Zone* zone);
     void removeZoneView(Zone* zone);
     World* getWorld() const;

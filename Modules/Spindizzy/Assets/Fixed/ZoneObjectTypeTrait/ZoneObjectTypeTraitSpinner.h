@@ -42,7 +42,7 @@ namespace IsoRealms::Spindizzy {
     \***********************************/   
     void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
-    void registerAssets(ISpindizzyRegistry* registry) override;
+    void registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(PropertyMaker& owner) override;

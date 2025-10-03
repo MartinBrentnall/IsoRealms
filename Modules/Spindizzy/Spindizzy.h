@@ -38,7 +38,6 @@
 #include "DebrisChunk/DebrisChunk.h"
 #include "Gyroscope/Gyroscope.h"
 #include "IBindingIdentifier.h"
-#include "ISpindizzyRegistry.h"
 #include "Jewel/Jewel.h"
 #include "LiftType/LiftType.h"
 #include "ModelCycler/ModelCycler.h"
@@ -61,7 +60,6 @@ namespace IsoRealms::Spindizzy {
   template <typename TYPE> struct ResourceContainerTraits;
 
   class Spindizzy : public IModuleHandle,
-                    public ISpindizzyRegistry,
                     public IBindingRegistry {
     public:
     
@@ -94,6 +92,14 @@ namespace IsoRealms::Spindizzy {
     std::vector<IBoundaryType*>       getAllBoundaryTypeObjects();
     std::vector<IPhysicalObjectType*> getAllPhysicalObjectTypeObjects();
 
+    template <typename TYPE, typename THING> IStateNotifier* add(THING* asset, const std::string& id, const std::string& category = "") {
+      return AssetContainerTraits<TYPE>::get(*this).add(asset, id, category, true);
+    }
+
+    template <typename TYPE, typename THING> void remove(THING* asset) {
+      AssetContainerTraits<TYPE>::get(*this).remove(asset);
+    }
+
     template <typename TYPE> TYPE* get(const std::string& id) const {
       return ResourceContainerTraits<TYPE>::get(*this).getResource(id);
     }
@@ -106,6 +112,27 @@ namespace IsoRealms::Spindizzy {
       return ResourceContainerTraits<TYPE>::get(*this).getAvailableResources();
     }
 
+    // TODO: This is a hack to get around the fact that WorldView has a read only reference to World.
+    template <typename TYPE> bool hasReadOnlyReferences(const TYPE* resource) const {
+      for (WorldView* mWorldView : cResourceWorldView) {
+        if (mWorldView->hasReadOnlyReferences(resource)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // TODO: This is a hack to get around the fact that WorldView has a read only reference to World.
+    template <typename TYPE> void overrideReadOnlyReferences(const TYPE* resource) {
+      for (WorldView* mWorldView : cResourceWorldView) {
+        if (mWorldView->hasReadOnlyReferences(resource)) {
+          cResourceWorldView.setOwner(mWorldView, cProject.getProjectFile());
+        }
+      }
+    }
+
+    std::string getResourceID() const;
+    
     // Resource removal.
     void removeAll(AlienType*      type);
     void removeAll(LiftType*       type);
@@ -152,6 +179,8 @@ namespace IsoRealms::Spindizzy {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
+
+
     // Event handling.
     void added(BoundaryHandler* handler);
     void added(CollisionHandler* handler);
@@ -196,26 +225,11 @@ namespace IsoRealms::Spindizzy {
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
 
-    /*********************************\
-     * Implements ISpindizzyRegistry *
-    \*********************************/
-    void add(IBoundaryType*       asset, const std::string& id) override;
-    void add(IPhysicalObjectType* asset, const std::string& id) override;
-    void add(IWorldEditorTool*    asset, const std::string& id) override;
-
     void remove(IWorldEditorTool* asset);
     
     void remove(WorldEditorTool& asset);
 
-//     void add(IAssetProvider<IBoundaryType>*        provider, const std::string& id) override;
-//     void add(IAssetProvider<ICamera>*              provider, const std::string& id) override;
-//     void add(IAssetProvider<IPhysicalObjectType>*  provider, const std::string& id) override;
-//     void add(IAssetProvider<ISurfacePattern>*      provider, const std::string& id) override;
-//     void add(IAssetProvider<IWallPattern>*         provider, const std::string& id) override;
-//     void add(IAssetProvider<IWorldEditorTool>*     provider, const std::string& id) override;
-//     void add(IAssetProvider<IZoneObjectTypeTrait>* provider, const std::string& id) override;
-//     void add(IAssetProvider<IZoneViewType>*        provider, const std::string& id) override;
-    void addZoneBinding(IBinding* binding1, IBinding* binding2, const std::string& id) override;
+    void addZoneBinding(IBinding* binding1, IBinding* binding2, const std::string& id);
 
     IBinding* getZoneBinding(const std::string& id);
     IBinding* getZoneBinding2(const std::string& id);

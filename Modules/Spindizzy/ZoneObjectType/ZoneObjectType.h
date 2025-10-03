@@ -24,6 +24,7 @@
 
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 #include "Modules/Spindizzy/Assets/Type/IZoneObjectTypeTrait.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 
 #include "IZoneObjectTraitEditor.h"
 
@@ -48,7 +49,7 @@ namespace IsoRealms::Spindizzy {
     ~ZoneObjectType();
     
     // Interface to be used by module.
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
 
     // Interface to be used by trait types.
     Spindizzy& getSpindizzy();
@@ -116,6 +117,9 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     Spindizzy& cSpindizzy; /// Spindizzy module reference.
     IResourceData& cResourceData;
+
+    // Asset registry.
+    SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
 
     // Definition data.
     std::map<std::string, IZoneObjectTypeTrait*> cDefTypeTraits; /// Traits of this object type.

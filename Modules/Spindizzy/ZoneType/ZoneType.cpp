@@ -23,7 +23,8 @@
 
 namespace IsoRealms::Spindizzy {
   ZoneType::ZoneType(Spindizzy& spindizzy, IResourceData& data) :
-            cSpindizzy(spindizzy) {
+            cSpindizzy(spindizzy),
+            cAssets(spindizzy) {
     cSpindizzy.added(this);
   }
   
@@ -67,9 +68,9 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.removed(this);
   }
 
-  void ZoneType::registerAssets(ISpindizzyRegistry* registry) {
-    registry->add(static_cast<IWorldEditorTool*>(this), "");
-    registry->add(static_cast<IBoundaryType*>(   this), "");
+  void ZoneType::registerAssets(const std::string& parentID) {
+    cAssets.add<IWorldEditorTool>(this, parentID, "Zone Types");
+    cAssets.add<IBoundaryType>(   this, parentID, "Zone Types");
   }  
   
   void ZoneType::registerZoneProperty(const std::string& id, IBinding* property) {

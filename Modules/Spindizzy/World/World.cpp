@@ -177,8 +177,6 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::registerAssets(ResourceAssetRegistry& assets) {
-    LocalSpindizzyRegistry mLocalSpindizzyRegistry(&cSpindizzy, cSpindizzy.getResourceID(this));
-    
     assets.add<IEditable>(this, "", "Spindizzy Worlds");
     assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Worlds");
     for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
@@ -268,6 +266,14 @@ namespace IsoRealms::Spindizzy {
       }
     });
     owner.createPropertyEditor(       metadata.getPropertyData("Content"),                   this);
+  }
+
+  bool World::hasReadOnlyReferences() const {
+    return cSpindizzy.hasReadOnlyReferences(this);
+  }
+
+  void World::overrideReadOnlyReferences() {
+    cSpindizzy.overrideReadOnlyReferences(this);
   }
 
   void World::updateRuntime(unsigned int milliseconds) {

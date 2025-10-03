@@ -41,18 +41,8 @@ namespace IsoRealms {
   template class BindingRegistry::Conversion<IResourceData, String>::Instance<IResourceData, String>;  
   template class BindingRegistry::Conversion<IResourceData, Vertex>::Instance<IResourceData, Vertex>;  
   
-  BindingRegistry::BindingRegistry(Project& project) :
-            AssetClientManager(&cDummy),
-            cActions(project),
-            cBooleans(project),
-            cColours(project),
-            cFloats(project),
-            cFonts(project),
-            cInputHandlers(project),
-            cIntegers(project),
-            cScreens(project),
-            cStrings(project),
-            cVertices(project) {
+  BindingRegistry::BindingRegistry() :
+            AssetClientManager(&cDummy) {
 
     // Support local bindings.
     add(&cLocals, "~", "Local");

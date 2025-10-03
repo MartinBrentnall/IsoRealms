@@ -77,11 +77,15 @@ namespace IsoRealms::Spindizzy {
 
   void WorldView::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyResource<World, Spindizzy>(metadata.getPropertyData("World"),        cSpindizzy, cDefWorld);
-    owner.createPropertyAsset<Camera>(      metadata.getPropertyData("Camera"),       cDefCamera);
-    owner.createPropertyAsset<ZoneViewType>(metadata.getPropertyData("ZoneViewType"), cDefZoneViewType);
-    owner.createPropertyNativeFloat(        metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
+    owner.createPropertyAsset<Camera>(             metadata.getPropertyData("Camera"),       cDefCamera);
+    owner.createPropertyAsset<ZoneViewType>(       metadata.getPropertyData("ZoneViewType"), cDefZoneViewType);
+    owner.createPropertyNativeFloat(               metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
   }
-  
+
+  bool WorldView::hasReadOnlyReferences(const World* world) const {
+    return cDefWorld == world;
+  }
+
   Spindizzy& WorldView::getAssetManager() {
     return cSpindizzy;
   }
@@ -110,9 +114,8 @@ namespace IsoRealms::Spindizzy {
     cDefCamera->reset();
   }
   
-  void WorldView::registerAssets(ISpindizzyRegistry* registry) {
-    LocalSpindizzyRegistry mLocalRegistry(registry, TYPE_ZONE_VIEW);
-    cDefZoneViewType->registerAssets(&mLocalRegistry);
+  void WorldView::registerAssets(const std::string& parentID) {
+    cDefZoneViewType->registerAssets(cSpindizzy, parentID + "/" + TYPE_ZONE_VIEW);
   }
 
   void WorldView::addZoneView(Zone* zone) {

@@ -18,6 +18,7 @@
  */
 #include "Surface.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"
 
 #include "Terrain.h"

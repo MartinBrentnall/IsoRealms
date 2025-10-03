@@ -18,6 +18,7 @@
  */
 #include "ZoneObjectTypeTraitModel.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Model/Model.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
@@ -56,7 +57,7 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<Model>(object, *this);
   }
   
-  void ZoneObjectTypeTraitModel::registerAssets(ISpindizzyRegistry* registry) {
+  void ZoneObjectTypeTraitModel::registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
 

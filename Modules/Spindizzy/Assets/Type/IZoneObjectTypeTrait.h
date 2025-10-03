@@ -23,15 +23,15 @@
 #include "IsoRealms.h"
 
 namespace IsoRealms::Spindizzy {
-  class ISpindizzyRegistry;
   class IZoneObjectTrait;
+  class SpindizzyAssetRegistry;
   class ZoneObject;
 
   class IZoneObjectTypeTrait : public IAsset {
     public:
     virtual void save(JSONObject object) const = 0;
     virtual std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) = 0;
-    virtual void registerAssets(ISpindizzyRegistry* registry) = 0;
+    virtual void registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) = 0;
     
 
     virtual ~IZoneObjectTypeTrait() {

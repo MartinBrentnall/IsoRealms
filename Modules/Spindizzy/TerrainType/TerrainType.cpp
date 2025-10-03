@@ -42,6 +42,7 @@ namespace IsoRealms::Spindizzy {
   TerrainType::TerrainType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cResourceData(data),
+            cAssets(spindizzy),
             cDefSurfaceFriction(0.0f),
             cDefSurfaceGrip(0.0f),
             cDefSurfaceBounce(0.0f),
@@ -434,7 +435,7 @@ namespace IsoRealms::Spindizzy {
   void TerrainType::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
-  void TerrainType::registerAssets(ISpindizzyRegistry* registry) {
-    registry->add(this, "");
+  void TerrainType::registerAssets(const std::string& parentID) {
+    cAssets.add(static_cast<IWorldEditorTool*>(this), parentID, "Terrain Types");
   }  
 }

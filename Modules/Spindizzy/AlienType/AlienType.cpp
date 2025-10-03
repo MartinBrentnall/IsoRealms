@@ -40,6 +40,7 @@ namespace IsoRealms::Spindizzy {
 
   AlienType::AlienType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
+            cAssets(spindizzy),
             cDefModel(data),
             cDefTarget(data),
             cDefAcceleration(DEFAULT_ACCELERATION),
@@ -108,9 +109,9 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.removeAll(this);
   }
   
-  void AlienType::registerAssets(ISpindizzyRegistry* registry) {
-    registry->add(static_cast<IWorldEditorTool*>(   this), "");
-    registry->add(static_cast<IPhysicalObjectType*>(this), "");
+  void AlienType::registerAssets(const std::string& parentID) {
+    cAssets.add(static_cast<IWorldEditorTool*>(   this), parentID, "Alien Types");
+    cAssets.add(static_cast<IPhysicalObjectType*>(this), parentID, "Alien Types");
   }  
   
   std::unique_ptr<ModelInstance> AlienType::createModel() {

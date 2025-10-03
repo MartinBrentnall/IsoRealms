@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "IsoRealms/Project/ProjectFile.h"
 #include "Module.h"
 #include "Project.h"
 
@@ -24,13 +25,6 @@
 #include "ResourceType.h"
 
 namespace IsoRealms {
-  const std::string ResourceType::JSON_CATEGORY    = "category";
-  const std::string ResourceType::JSON_DESCRIPTION = "description";
-  const std::string ResourceType::JSON_ID          = "id";
-  const std::string ResourceType::JSON_PLURAL      = "plural";
-  const std::string ResourceType::JSON_PROPERTIES  = "properties";
-  const std::string ResourceType::JSON_SINGULAR    = "singular";
-
   ResourceType::ResourceType(IResourceTypeDefinition* resourceType, Module& parent) :
             cParent(parent),
             cResourceType(resourceType),
@@ -42,14 +36,20 @@ namespace IsoRealms {
     
     // Ignore resource if name matches an existing one (useful for include overrides and omissions).
     if (cResourceType->getResource2(mResourceName, false) != nullptr) {
+      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(mResourceName, *ownerProject));
       return;
     }
-    for (const std::string& mOmittedResource : cOmittedResources) {
-      if (mOmittedResource == mResourceName) {
+    for (const std::unique_ptr<PlaceHolder>& mOmittedResource : cOmittedResources) {
+      if (mOmittedResource->getID() == mResourceName) {
+        cOverriddenResources.push_back(std::make_unique<PlaceHolder>(mResourceName, *ownerProject));
         return;
       }
     }
     cResourceType->loadResource(*this, object, ownerProject);
+  }
+
+  void ResourceType::loadOmission(JSONObject object, ProjectFile* ownerProject) {
+    cOmittedResources.insert(std::make_unique<PlaceHolder>(object, *ownerProject));
   }
 
   void ResourceType::loadMetadata(JSONObject object) {
@@ -62,14 +62,20 @@ namespace IsoRealms {
   }
 
   bool ResourceType::needsSaving(const ProjectFile* savingProject) const {
+    for (const std::unique_ptr<PlaceHolder>& mOmittedResource : cOmittedResources) {
+      if (mOmittedResource->needsSaving(*savingProject)) {
+        return true;
+      }
+    }
     return cResourceType->needsSaving(savingProject);
   }
 
-  void ResourceType::save(JSONArray& array, const ProjectFile* savingProject) {
-    cResourceType->save(array, savingProject);
-    for (const std::string& mOmittedResource : cOmittedResources) {
-      JSONObject mOmittedResourceObject = array.addObject();
-      mOmittedResourceObject.addString(JSON_ID, mOmittedResource);      
+  void ResourceType::save(JSONObject& object, const ProjectFile* savingProject) {
+    JSONArray mInstancesArray = object.addArray(JSON_INSTANCES);
+    cResourceType->save(mInstancesArray, savingProject);
+    JSONArray mOmissionsArray = object.addArray(JSON_OMISSIONS);
+    for (const std::unique_ptr<PlaceHolder>& mOmittedResource : cOmittedResources) {
+      mOmittedResource->save(mOmissionsArray, *savingProject);      
     }
   }
 
@@ -86,7 +92,11 @@ namespace IsoRealms {
   }
 
   const std::set<std::string> ResourceType::getDeletedResources() {
-    return cOmittedResources;
+    std::set<std::string> mDeletedResources;
+    for (const std::unique_ptr<PlaceHolder>& mOmittedResource : cOmittedResources) {
+      mDeletedResources.insert(mOmittedResource->getID());
+    }
+    return mDeletedResources;
   }
 
   IResource* ResourceType::createResource() {
@@ -97,16 +107,33 @@ namespace IsoRealms {
 
   void ResourceType::renameResource(IResource* resource, const std::string& name) {
     if (resource->isReadOnly()) {
-      cOmittedResources.insert(resource->getName());
+
+      // I don't think this branch is ever reached because the resource will be made writable before this is called.
+      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
+      cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), *cParent.getProject().getProjectFile()));
+    } else {
+
+      // If there's an overridden resource under the one to rename, place an omitted resource over it.
+      for (const std::unique_ptr<PlaceHolder>& mOverriddenResource : cOverriddenResources) {
+        if (mOverriddenResource->getID() == resource->getName()) {
+          cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
+          break;
+        }
+      }
     }
     cResourceType->renameResource(resource, name);
   }
 
   void ResourceType::deleteResource(IResource* resource) {
     if (resource->isReadOnly()) {
-      cOmittedResources.insert(resource->getName());
+      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
+      cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), *cParent.getProject().getProjectFile()));
     }
     cResourceType->deleteResource(resource);
+  }
+
+  void ResourceType::createOverriddenResource(IResource* resource) {
+    cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
   }
 
   void ResourceType::registerModuleAssets() {
@@ -160,4 +187,32 @@ namespace IsoRealms {
   const Metadata& ResourceType::getMetadata() const {
     return cMetadata;
   }  
+
+  ResourceType::PlaceHolder::PlaceHolder(const std::string& id, ProjectFile& ownerProject) :
+            cID(id),
+            cOwnerProject(ownerProject) {
+  }
+
+  ResourceType::PlaceHolder::PlaceHolder(JSONObject object, ProjectFile& ownerProject) :
+            PlaceHolder(object.getString(JSON_ID), ownerProject) {
+  }
+
+  std::string ResourceType::PlaceHolder::getID() const {
+    return cID;
+  }
+
+  ProjectFile* ResourceType::PlaceHolder::getProjectFile() const {
+    return &cOwnerProject;
+  }
+
+  bool ResourceType::PlaceHolder::needsSaving(const ProjectFile& savingProject) const {
+    return &cOwnerProject == &savingProject;
+  }
+
+  void ResourceType::PlaceHolder::save(JSONArray& array, const ProjectFile& savingProject) const {
+    if (&cOwnerProject == &savingProject) {
+      JSONObject mOmittedResourceObject = array.addObject();
+      mOmittedResourceObject.addString(JSON_ID, cID);
+    }
+  }
 }

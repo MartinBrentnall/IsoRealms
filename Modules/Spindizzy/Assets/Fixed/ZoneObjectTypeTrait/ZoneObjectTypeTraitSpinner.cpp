@@ -18,6 +18,7 @@
  */
 #include "ZoneObjectTypeTraitSpinner.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Spinner/Spinner.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
@@ -57,7 +58,7 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<Spinner>(object, *this);
   }
   
-  void ZoneObjectTypeTraitSpinner::registerAssets(ISpindizzyRegistry* registry) {
+  void ZoneObjectTypeTraitSpinner::registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
 

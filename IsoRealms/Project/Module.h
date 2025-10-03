@@ -101,12 +101,13 @@ namespace IsoRealms {
     virtual ~Module();
 
     private:
-    static const std::string JSON_CONFIGURATION;
-    static const std::string JSON_DESCRIPTION;
-    static const std::string JSON_INSTANCES;
-    static const std::string JSON_NAME;
-    static const std::string JSON_RESOURCES;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_CONFIGURATION = "configuration";
+    inline static const std::string JSON_DESCRIPTION   = "description";
+    inline static const std::string JSON_INSTANCES     = "instances";
+    inline static const std::string JSON_NAME          = "name";
+    inline static const std::string JSON_OMISSIONS     = "omissions";
+    inline static const std::string JSON_RESOURCES     = "resources";
+    inline static const std::string JSON_TYPE          = "type";
 
     Project& cProject;
     ResourceAssetRegistry cModuleAssetRegistry;

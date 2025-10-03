@@ -18,6 +18,7 @@
  */
 #include "Wall.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"
 

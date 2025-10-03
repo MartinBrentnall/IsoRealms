@@ -56,6 +56,7 @@ namespace IsoRealms::Spindizzy {
 
   PlayerType::PlayerType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
+            cAssets(spindizzy),
             cActionClient(data, *this),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
@@ -173,9 +174,9 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.removeAll(this);
   }
   
-  void PlayerType::registerAssets(ISpindizzyRegistry* registry) {
-    registry->add(static_cast<IWorldEditorTool*>(   this), "");
-    registry->add(static_cast<IPhysicalObjectType*>(this), "");
+  void PlayerType::registerAssets(const std::string& parentID) {
+    cAssets.add<IWorldEditorTool>(   this, parentID, "Player Types");
+    cAssets.add<IPhysicalObjectType>(this, parentID, "Player Types");
   }  
   
   std::unique_ptr<ModelInstance> PlayerType::createModel() {

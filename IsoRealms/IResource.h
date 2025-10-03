@@ -39,6 +39,9 @@ namespace IsoRealms {
     virtual bool renderIcon() = 0;
     virtual void getProperties(PropertyMaker& propertyMaker) = 0;
     virtual IResourceData& getResourceData() = 0;
+    virtual bool hasReadOnlyReferences() const = 0;
+    virtual void overrideReadOnlyReferences() = 0;
+    virtual ProjectFile* getProjectFile() const = 0;
 //    virtual void hintInUse(bool inUse) = 0;
     
     virtual ~IResource() {}

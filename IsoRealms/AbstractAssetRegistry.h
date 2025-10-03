@@ -89,7 +89,9 @@ namespace IsoRealms {
     template <typename TYPE> IStateNotifier* add(TYPE* asset, const std::string& assetID, const std::string& category) {
       registerAsset(asset);
       std::string mResourceID = cManager.getResourceID();
-      return cManager.getAssetManager().template add<TYPE>(asset, assetID == "" ? mResourceID : mResourceID + "/" + assetID, category);
+      return cManager.getAssetManager().template add<TYPE>(asset, mResourceID == "" ? assetID
+                                                                : assetID     == "" ? mResourceID
+                                                                :                     mResourceID + "/" + assetID, category);
     }
 
     private:

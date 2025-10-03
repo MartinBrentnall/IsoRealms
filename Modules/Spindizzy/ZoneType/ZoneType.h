@@ -25,7 +25,7 @@
 
 #include "Modules/Spindizzy/Assets/Type/IBoundaryType.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Spindizzy/ISpindizzyRegistry.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 #include "Modules/Spindizzy/WorldEditorCursorCell.h"
 
 namespace IsoRealms::Spindizzy {
@@ -56,7 +56,7 @@ namespace IsoRealms::Spindizzy {
     virtual ~ZoneType();
 
     // Interface to be used by module.
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
     void registerZoneProperty(const std::string& id, IBinding* property);
     void unregisterZoneProperty(const std::string& id);
     
@@ -106,6 +106,9 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     Spindizzy& cSpindizzy;   /// Spindizzy module reference.
     
+    // Asset registry.
+    SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
+
     // Action parameters.
 //     LuaBinding<Zone> cRuntimeParameterZone;           /// Parameter for a zone itself.
     std::map<std::string, IBinding*> cZoneProperties; /// Parameters for externally defined properties of a zone.

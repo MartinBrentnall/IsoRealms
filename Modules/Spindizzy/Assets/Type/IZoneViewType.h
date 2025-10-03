@@ -23,14 +23,14 @@
 #include "IsoRealms.h"
 
 namespace IsoRealms::Spindizzy {
-  class ISpindizzyRegistry;
   class IZoneView;
+  class Spindizzy;
   class Zone;
 
   class IZoneViewType : public IAsset {
     public:
     virtual std::unique_ptr<IZoneView> createZoneView(Zone* zone) = 0;
-    virtual void registerAssets(ISpindizzyRegistry* registry) = 0;
+    virtual void registerAssets(Spindizzy& assets, const std::string& parentID) = 0;
 
     virtual ~IZoneViewType() {
     }

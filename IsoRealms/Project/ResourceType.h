@@ -32,9 +32,10 @@ namespace IsoRealms {
     public:
     ResourceType(IResourceTypeDefinition* resourceType, Module& parent);
     void loadResource(JSONObject object, ProjectFile* ownerProject);
+    void loadOmission(JSONObject object, ProjectFile* ownerProject);
     void loadMetadata(JSONObject object);
     bool needsSaving(const ProjectFile* savingProject) const;
-    void save(JSONArray& array, const ProjectFile* savingProject);
+    void save(JSONObject& object, const ProjectFile* savingProject);
 
     std::string const getPlural() const;
     std::string const getSingular() const;
@@ -43,6 +44,7 @@ namespace IsoRealms {
     IResource* createResource();
     void renameResource(IResource* resource, const std::string& name);
     void deleteResource(IResource* resource);
+    void createOverriddenResource(IResource* resource);
     void registerModuleAssets();
     std::string getPath();
     std::string getName(const IResource& resource) const;
@@ -58,16 +60,33 @@ namespace IsoRealms {
     const Metadata& getMetadata() const;
 
     private:
-    static const std::string JSON_CATEGORY;
-    static const std::string JSON_DESCRIPTION;
-    static const std::string JSON_ID;
-    static const std::string JSON_PLURAL;
-    static const std::string JSON_PROPERTIES;
-    static const std::string JSON_SINGULAR;
+    class PlaceHolder {
+      public:
+      PlaceHolder(const std::string& id, ProjectFile& ownerProject);
+      PlaceHolder(JSONObject object, ProjectFile& ownerProject);
+      std::string getID() const;
+      ProjectFile* getProjectFile() const;
+      bool needsSaving(const ProjectFile& savingProject) const;
+      void save(JSONArray& array, const ProjectFile& savingProject) const;
+
+      private:
+      std::string cID;
+      ProjectFile& cOwnerProject;
+    };
+
+    inline static const std::string JSON_CATEGORY    = "category";
+    inline static const std::string JSON_DESCRIPTION = "description";
+    inline static const std::string JSON_ID          = "id";
+    inline static const std::string JSON_INSTANCES   = "instances";
+    inline static const std::string JSON_OMISSIONS   = "omissions";
+    inline static const std::string JSON_PLURAL      = "plural";
+    inline static const std::string JSON_PROPERTIES  = "properties";
+    inline static const std::string JSON_SINGULAR    = "singular";
 
     Module& cParent;
     IResourceTypeDefinition* cResourceType;
-    std::set<std::string> cOmittedResources;
+    std::set<std::unique_ptr<PlaceHolder>> cOmittedResources;
+    std::vector<std::unique_ptr<PlaceHolder>> cOverriddenResources;
     std::string cSingular;
     std::string cPlural;
     std::string cCategory;

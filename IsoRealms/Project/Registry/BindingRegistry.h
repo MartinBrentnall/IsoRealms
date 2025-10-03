@@ -49,7 +49,7 @@ namespace IsoRealms {
 
   class BindingRegistry : public AssetClientManager<BindingRegistry, IActionClient, IBinding> {
     public:
-    BindingRegistry(Project& project);
+    BindingRegistry();
     IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener* listener, bool required);
     IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener* listener);
 
@@ -125,16 +125,20 @@ namespace IsoRealms {
 
     template <typename OWNER, typename FROM> class Conversion : public IAssetProvider<IActionClient, IBinding> {
       public:
-      Conversion(OWNER& owner) :
-                cOwner(owner) {
-      }
-
       IBinding* getAsset(IActionClient& owner, JSONObject object) override {
-        return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(cOwner, object)).first->get();
+        if constexpr (std::is_same_v<OWNER, IActionClient>) {
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner, object)).first->get();
+        } else {
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner.getResourceData(), object)).first->get();
+        }
       }
 
       IBinding* getAsset(IActionClient& owner) override {
-        return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(cOwner)).first->get();
+        if constexpr (std::is_same_v<OWNER, IActionClient>) {
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner)).first->get();
+        } else {
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner.getResourceData())).first->get();
+        }
       }
 
       void releaseAsset(const IBinding* asset) override {
@@ -218,7 +222,6 @@ namespace IsoRealms {
         TYPE cDefValue;
       };
 
-      OWNER& cOwner;
       mutable std::set<std::unique_ptr<IBinding>> cInstances;
     };
 

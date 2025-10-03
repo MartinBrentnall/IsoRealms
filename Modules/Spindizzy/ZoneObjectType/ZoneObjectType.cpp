@@ -34,8 +34,9 @@ namespace IsoRealms::Spindizzy {
   const std::string ZoneObjectType::BIND_TO_ZONE  = "Zone";
 
   ZoneObjectType::ZoneObjectType(Spindizzy& spindizzy, IResourceData& data) :
-            cSpindizzy(spindizzy),
-            cResourceData(data) {
+            cSpindizzy(spindizzy),  
+            cResourceData(data),
+            cAssets(spindizzy) {
   }
   
   ZoneObjectType::ZoneObjectType(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
@@ -86,11 +87,10 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.removeAll(this);
   }
   
-  void ZoneObjectType::registerAssets(ISpindizzyRegistry* registry) {
-    registry->add(this, "");
+  void ZoneObjectType::registerAssets(const std::string& parentID) {
+    cAssets.add<IWorldEditorTool>(this, parentID, "Zone Object Types");
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {
-      LocalSpindizzyRegistry mTraitRegistry(registry, mPair.first);
-      mPair.second->registerAssets(&mTraitRegistry);
+      mPair.second->registerAssets(cAssets, parentID + "/" + mPair.first);
     }
   }  
   

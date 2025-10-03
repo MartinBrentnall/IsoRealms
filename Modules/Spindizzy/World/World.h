@@ -28,7 +28,6 @@
 #include "Modules/Spindizzy/BoundaryHandler/BoundaryHandlerInstance.h"
 #include "Modules/Spindizzy/CollisionHandler/CollisionHandlerInstance.h"
 #include "Modules/Spindizzy/IWorldObject.h"
-#include "Modules/Spindizzy/LocalSpindizzyRegistry.h"
 #include "Modules/Spindizzy/WorldEditorCursorCell.h"
 
 #include "Common/MovementHandler.h"
@@ -58,6 +57,9 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+
+    bool hasReadOnlyReferences() const;
+    void overrideReadOnlyReferences();
 
     /*********************\
      * Module interfaces *

@@ -18,6 +18,7 @@
  */
 #include "SurfacePatternOutline.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"
 #include "Modules/Spindizzy/World/Object/Terrain/SplitSurface.h"
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"

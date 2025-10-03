@@ -25,6 +25,7 @@
 #include "IsoRealms.h"
 
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 #include "Modules/Spindizzy/WorldEditorCursorCell.h"
 
 namespace IsoRealms::Spindizzy {
@@ -55,7 +56,7 @@ namespace IsoRealms::Spindizzy {
     virtual ~LiftType();
 
     // Interface to be used by module.    
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
     
     // Interface to be used by lift instances.
     bool isActive();
@@ -112,6 +113,9 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     Spindizzy& cSpindizzy; /// Spindizzy module reference.
     
+    // Asset registry.
+    SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
+
     // Definition data.
     Model cDefModel;          /// Visual representation of this lift type.
     Boolean cDefActive;       /// Lifts of this type are active when true.

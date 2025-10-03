@@ -200,7 +200,7 @@ namespace IsoRealms {
     /****************************\
      * Implements IResourceData * TODO: Should these be here???
     \****************************/
-    virtual std::string getResourceID() const override;
+    std::string getResourceID() const override;
     std::string getPath(const std::string& file, bool user) const override;
     void makeUserDataDirectory() override;
     bool isIncluded() const override;

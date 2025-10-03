@@ -25,6 +25,7 @@
 
 #include "Modules/Spindizzy/Assets/Type/IBoundaryType.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 
 namespace IsoRealms::Spindizzy {
   class ISpindizzyRegistry;
@@ -53,7 +54,7 @@ namespace IsoRealms::Spindizzy {
     ~PickUpType();
 
     // Interface to be used by module.
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
     
     std::unique_ptr<ModelInstance> createModel();
     
@@ -104,6 +105,9 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     Spindizzy& cSpindizzy; /// Spindizzy module reference.
     
+    // Asset registry.
+    SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
+
     // Definition data.
     Model cDefModel;   /// Visual representation of this pick up type.
 

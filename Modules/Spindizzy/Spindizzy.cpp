@@ -118,6 +118,10 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
+  std::string Spindizzy::getResourceID() const {
+    return ""; // TODO: Implement this.
+  }
+
   void Spindizzy::removeAll(AlienType* type) {
     for (World* mWorld : cResourceWorld) {
       mWorld->removeAll(type);
@@ -307,42 +311,34 @@ namespace IsoRealms::Spindizzy {
     assets.add<IBinding>(&cLuaBinding,                     "",               "Spindizzy");
     
     for (AlienType* mResource : cResourceAlien) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Alien/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("Alien/" + getResourceID(mResource));
     }
     for (LiftType* mResource : cResourceLift) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Lift/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("Lift/" + getResourceID(mResource));
     }
     for (PickUpType* mResource : cResourcePickUp) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "PickUp/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("PickUp/" + getResourceID(mResource));
     }
     for (PlayerType* mResource : cResourcePlayer) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Player/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("Player/" + getResourceID(mResource));
     }
     for (TerrainType* mResource : cResourceTerrain) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Terrain/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("Terrain/" + getResourceID(mResource));
     }
     for (WorldView* mResource : cResourceWorldView) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "WorldView/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("WorldView/" + getResourceID(mResource));
     }
     for (ZoneType* mResource : cResourceZone) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "Zone/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("Zone/" + getResourceID(mResource));
     }
     for (ZoneObjectType* mResource : cResourceZoneObject) {
-      LocalSpindizzyRegistry mLocalRegistry(this, "ZoneObject/" + getResourceID(mResource));
-      mResource->registerAssets(&mLocalRegistry);
+      mResource->registerAssets("ZoneObject/" + getResourceID(mResource));
     }
-    add(&cToolDelete,     TOOL_DELETE);
-    add(&cToolProperties, TOOL_PROPERTIES);
-    add(&cToolCopyZone,   TOOL_COPY_ZONE);
-    add(&cToolMoveZone,   TOOL_MOVE_ZONE);
-    add(&cToolDeleteZone, TOOL_DELETE_ZONE);
+    add<IWorldEditorTool>(&cToolDelete,     TOOL_DELETE,      "Spindizzy");
+    add<IWorldEditorTool>(&cToolProperties, TOOL_PROPERTIES,  "Spindizzy");
+    add<IWorldEditorTool>(&cToolCopyZone,   TOOL_COPY_ZONE,   "Spindizzy");
+    add<IWorldEditorTool>(&cToolMoveZone,   TOOL_MOVE_ZONE,   "Spindizzy");
+    add<IWorldEditorTool>(&cToolDeleteZone, TOOL_DELETE_ZONE, "Spindizzy");
   }
 
   void Spindizzy::updateInputs(unsigned int milliseconds) {
@@ -372,10 +368,6 @@ namespace IsoRealms::Spindizzy {
     reset2(cResourceWorld);
     reset2(cResourceWorldView);
   }  
-  
-  void Spindizzy::add(IBoundaryType*       asset, const std::string& id) {cBoundaryTypes.add(      asset, id);}
-  void Spindizzy::add(IPhysicalObjectType* asset, const std::string& id) {cPhysicalObjectTypes.add(asset, id);}
-  void Spindizzy::add(IWorldEditorTool*    asset, const std::string& id) {cWorldEditorTools.add(   asset, id);}
   
   void Spindizzy::remove(IWorldEditorTool*    asset) {cWorldEditorTools.remove(   asset);}
 

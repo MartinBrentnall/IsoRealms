@@ -34,7 +34,7 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<ZoneViewActual>();
   }
 
-  void ZoneViewTypeActual::registerAssets(ISpindizzyRegistry* registry) {
+  void ZoneViewTypeActual::registerAssets(Spindizzy& assets, const std::string& parentID) {
     // Nothing to do.
   }
 

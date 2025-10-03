@@ -27,13 +27,6 @@
 #include "ResourceType.h"
 
 namespace IsoRealms {
-  const std::string Module::JSON_CONFIGURATION = "configuration";
-  const std::string Module::JSON_DESCRIPTION   = "description";
-  const std::string Module::JSON_INSTANCES     = "instances";
-  const std::string Module::JSON_NAME          = "name";
-  const std::string Module::JSON_RESOURCES     = "resources";
-  const std::string Module::JSON_TYPE          = "type";
-
   Module::Module(const std::string& name, Project& project, LuaState* luaState) :
             cProject(project),
             cModuleAssetRegistry(*this),
@@ -119,8 +112,14 @@ namespace IsoRealms {
 
       for (JSONValue mInstanceValue : mResourceObject.getArray(JSON_INSTANCES)) {
         JSONObject mInstanceObject = mInstanceValue.getObject();
-        mInstanceObject.getString(JSON_NAME);
         mResourceType->loadResource(mInstanceObject, ownerProject);
+      }
+
+      if (mResourceObject.hasMember(JSON_OMISSIONS)) {
+        for (JSONValue mOmissionValue : mResourceObject.getArray(JSON_OMISSIONS)) {
+          JSONObject mOmissionObject = mOmissionValue.getObject();
+          mResourceType->loadOmission(mOmissionObject, ownerProject);
+        }
       }
     }
   }
@@ -146,8 +145,7 @@ namespace IsoRealms {
       if (mResourceType.second->needsSaving(savingProject)) {
         JSONObject mResourceTypeObject = mResourceTypesArray.addObject();
         mResourceTypeObject.addString(JSON_TYPE, mResourceType.first);
-        JSONArray mResourceArray = mResourceTypeObject.addArray(JSON_INSTANCES);
-        mResourceType.second->save(mResourceArray, savingProject);
+        mResourceType.second->save(mResourceTypeObject, savingProject);
       }
     }
   }

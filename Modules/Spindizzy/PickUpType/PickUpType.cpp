@@ -26,6 +26,7 @@ namespace IsoRealms::Spindizzy {
 
   PickUpType::PickUpType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
+            cAssets(spindizzy),
             cDefModel(data) {
     cSpindizzy.added(this);
   }
@@ -61,9 +62,9 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.removeAll(this);
   }
 
-  void PickUpType::registerAssets(ISpindizzyRegistry* registry) {
-    registry->add(static_cast<IWorldEditorTool*>(this), "");
-    registry->add(static_cast<IBoundaryType*>(   this), "");
+  void PickUpType::registerAssets(const std::string& parentID) {
+    cAssets.add<IWorldEditorTool>(this, parentID, "Pick Up Types");
+    cAssets.add<IBoundaryType>(   this, parentID, "Pick Up Types");
   }  
   
   std::unique_ptr<ModelInstance> PickUpType::createModel() {

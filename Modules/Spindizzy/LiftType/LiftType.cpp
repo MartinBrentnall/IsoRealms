@@ -27,6 +27,7 @@ namespace IsoRealms::Spindizzy {
 
   LiftType::LiftType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
+            cAssets(spindizzy),
             cDefModel(data),
             cDefActive(data, true),
             cDefTickAction(data.getDummyActionClient()) {
@@ -72,8 +73,8 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.removeAll(this);
   }
   
-  void LiftType::registerAssets(ISpindizzyRegistry* registry) {
-    registry->add(this, "");
+  void LiftType::registerAssets(const std::string& parentID) {
+    cAssets.add<IWorldEditorTool>(this, parentID, "Lift Types");
   }  
   
   bool LiftType::isActive() {

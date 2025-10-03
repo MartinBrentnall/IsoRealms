@@ -18,7 +18,6 @@
  */
 #include "ZoneViewTypeOverview.h"
 
-#include "Modules/Spindizzy/ISpindizzyRegistry.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
@@ -53,8 +52,8 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<ZoneViewOverview>(cWorldView, *this, zone);
   }
 
-  void ZoneViewTypeOverview::registerAssets(ISpindizzyRegistry* registry) {
-    registry->addZoneBinding(&cRuntimeParameterView1, &cRuntimeParameterView2, "");
+  void ZoneViewTypeOverview::registerAssets(Spindizzy& assets, const std::string& parentID) {
+    assets.addZoneBinding(&cRuntimeParameterView1, &cRuntimeParameterView2, parentID);
   }
 
   bool ZoneViewTypeOverview::renderAssetIcon() const {

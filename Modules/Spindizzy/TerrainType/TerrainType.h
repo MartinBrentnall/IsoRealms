@@ -27,6 +27,7 @@
 #include "Modules/Spindizzy/Assets/Client/SurfacePattern.h"
 #include "Modules/Spindizzy/Assets/Client/WallPattern.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 #include "Modules/Spindizzy/WorldEditorCursorCell.h"
 
 namespace IsoRealms::Spindizzy {
@@ -54,7 +55,7 @@ namespace IsoRealms::Spindizzy {
     void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
 
     // Interface to be used by module.
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
     
     
     
@@ -149,6 +150,9 @@ namespace IsoRealms::Spindizzy {
     // External interfaces.
     Spindizzy& cSpindizzy;
     IResourceData& cResourceData;
+
+    // Asset registry.
+    SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
 
     // Properties
     float cDefSurfaceFriction;

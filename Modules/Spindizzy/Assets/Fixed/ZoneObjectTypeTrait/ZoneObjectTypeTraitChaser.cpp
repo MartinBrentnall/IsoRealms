@@ -18,6 +18,7 @@
  */
 #include "ZoneObjectTypeTraitChaser.h"
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Chaser/Chaser.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
@@ -51,7 +52,7 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<Chaser>(object, *this);
   }
   
-  void ZoneObjectTypeTraitChaser::registerAssets(ISpindizzyRegistry* registry) {
+  void ZoneObjectTypeTraitChaser::registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
 

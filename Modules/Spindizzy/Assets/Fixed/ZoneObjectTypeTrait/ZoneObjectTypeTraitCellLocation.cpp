@@ -20,6 +20,7 @@
 
 #include <cmath>
 
+#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/World/Editor/WorldEditor.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/CellLocation/CellLocation.h"
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
@@ -42,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<CellLocation>(object, cEditingPinnedX, cEditingPinnedY, cEditingPinnedZ);
   }  
   
-  void ZoneObjectTypeTraitCellLocation::registerAssets(ISpindizzyRegistry* registry) {
+  void ZoneObjectTypeTraitCellLocation::registerAssets(SpindizzyAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
   

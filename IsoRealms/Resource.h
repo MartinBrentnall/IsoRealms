@@ -32,6 +32,14 @@
 #include "Utils.h"
 
 namespace IsoRealms {
+  template <typename TYPE> concept HasHasReadOnlyReferences = requires(TYPE type) {
+    {type.hasReadOnlyReferences()} -> std::convertible_to<bool>;
+  };  
+
+  template <typename TYPE> concept HasOverrideReadOnlyReferences = requires(TYPE type) {
+    {type.overrideReadOnlyReferences()} -> std::convertible_to<void>;
+  };
+
   template <typename MODULE, typename RESOURCE> class Resource : public IResource,
                                                                  public IResourceData,
                                                                  public IActionClient {
@@ -67,7 +75,7 @@ namespace IsoRealms {
       propertyMaker.createPropertyNativeString(mMetadata.getPropertyData("ResourceName"), [this]() {return cParent.getName(*this);}, [this](const std::string& value) {
         cParent.renameUserDataDirectory(cParent.getName(*this), value);
         cParent.renameResource(this, value);
-        cAssetRegistry.overrideReadOnlyReferences();
+        overrideReadOnlyReferences();
         registerAssets();
         cParent.registerModuleAssets();
       }, [this](const std::string& value) {
@@ -75,7 +83,7 @@ namespace IsoRealms {
           return mResource->getName() != value || mResource == this;
         });
       }, nullptr, [this, &propertyMaker](std::function<void()> confirm, std::function<void()> cancel) {
-        if (cAssetRegistry.hasReadOnlyReferences()) {
+        if (hasReadOnlyReferences()) {
           propertyMaker.confirm("TODO: This resource is referenced by read-only resources.  Renaming it will promote any read-only resources referencing this one and make them writable.", [this, confirm]() {
             confirm();
           }, [this, cancel]() {
@@ -129,6 +137,26 @@ namespace IsoRealms {
       return *this;
     }
 
+    bool hasReadOnlyReferences() const override {
+      if constexpr (HasHasReadOnlyReferences<RESOURCE>) {
+        if (cResourceHandle.hasReadOnlyReferences()) {
+          return true;
+        }
+      }
+      return cAssetRegistry.hasReadOnlyReferences();
+    }
+
+    void overrideReadOnlyReferences() override {
+      if constexpr (HasOverrideReadOnlyReferences<RESOURCE>) {
+        cResourceHandle.overrideReadOnlyReferences();
+      }
+      cAssetRegistry.overrideReadOnlyReferences();
+    }
+
+    ProjectFile* getProjectFile() const override {
+      return cOwnerProject.getProjectFile();
+    }
+
     /****************************\
      * Implements IResourceData *
     \****************************/
@@ -155,6 +183,9 @@ namespace IsoRealms {
     }
 
     void setOwner(ProjectFile* owner) override {
+      if (!cOwnerProject.getProjectFile()->isModifiable()) {
+        cParent.createOverriddenResource(this);
+      }
       cOwnerProject.setProjectFile(owner);
     }
 

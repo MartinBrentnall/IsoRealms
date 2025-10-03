@@ -25,7 +25,7 @@
 
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Spindizzy/ISpindizzyRegistry.h"
+#include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
@@ -57,7 +57,7 @@ namespace IsoRealms::Spindizzy {
     virtual ~AlienType();
 
     // Interface to be used by module.
-    void registerAssets(ISpindizzyRegistry* registry);
+    void registerAssets(const std::string& parentID);
     
     // Interface to be used by alien instances.
     std::unique_ptr<ModelInstance> createModel();
@@ -135,6 +135,9 @@ namespace IsoRealms::Spindizzy {
 
     // External interfaces.
     Spindizzy& cSpindizzy; /// Spindizzy module reference.
+
+    // Asset registry.
+    SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
 
     // Definition data
     Model cDefModel;          /// Visual representation of this alien type.
