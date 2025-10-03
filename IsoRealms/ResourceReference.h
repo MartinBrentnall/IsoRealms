@@ -47,6 +47,10 @@ namespace IsoRealms {
     }
 
     void setID(const std::string& id) {
+      if (cDefResource != nullptr) {
+        cManager.release(this, cDefResource);
+      }
+
       if (id == "") {
         cDefResource = nullptr;
       } else {

@@ -104,6 +104,10 @@ namespace IsoRealms::Spindizzy {
       return ResourceContainerTraits<TYPE>::get(*this).getResourceForClient(user, id);
     }
 
+    template <typename TYPE> void release(IResourceUser<TYPE>* user, TYPE* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).release(user, resource);
+    }
+
     template <typename TYPE> std::string getResourceID(const TYPE* resource) const {
       return ResourceContainerTraits<TYPE>::get(*this).getID(resource);
     }

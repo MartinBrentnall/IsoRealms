@@ -59,6 +59,10 @@ namespace IsoRealms {
         return &cResource;
       }
 
+      void release(IResourceUser<TYPE>* user) {
+        Utils::removeElement(cUsers, user);
+      }
+
       Resource<MODULE, TYPE>* getResource() {
         return &cResource;
       }
@@ -67,6 +71,12 @@ namespace IsoRealms {
         return &cResource;
       }
       
+      void notifyDeletion() {
+        for (IResourceUser<TYPE>* user : cUsers) {
+          user->relinquish(cResource.getResource());
+        }
+      }
+
       private:
       Resource<MODULE, TYPE> cResource;
       std::vector<IResourceUser<TYPE>*> cUsers;
@@ -171,6 +181,15 @@ namespace IsoRealms {
     TYPE* getResourceForClient(IResourceUser<TYPE>* user, const std::string& name, bool required = true) {
       return getResourceInfo(name, required)->getResourceForUser(user)->getResource();
     }
+
+    void release(IResourceUser<TYPE>* user, TYPE* resource) {
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource()->isResource(resource)) {
+          mResource.second->release(user);
+          return;
+        }
+      }
+    }
     
     std::vector<std::string> getAvailableResources() const override {
       std::vector<std::string> mResources;
@@ -209,6 +228,7 @@ namespace IsoRealms {
     void deleteResource(IResource* resource) override {
       for (typename std::map<std::string, std::unique_ptr<ResourceInfo>>::iterator it = cResources.begin(); it != cResources.end(); ++it) {
         if (it->second->getResource() == resource) {
+          it->second->notifyDeletion();
           cResources.erase(it);
           return;
         }
