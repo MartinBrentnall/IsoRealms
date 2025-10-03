@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
             cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
             cLuaBinding(zone.getWorld().getSpindizzy().getProject().getLuaState(), this) {
     cZone.getWorld().getSpindizzy().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getSpindizzy().get<PickUpType>(object.getString(JSON_TYPE));
+      cDefType = cZone.getWorld().getSpindizzy().get<PickUpType>(nullptr, object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();
     });

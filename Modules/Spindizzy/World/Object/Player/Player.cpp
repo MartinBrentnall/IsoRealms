@@ -54,7 +54,7 @@ namespace IsoRealms::Spindizzy {
             cRuntimePhysicsObject(cDefWorld.getSpindizzy(), this),
             cLuaBinding(world.getSpindizzy().getProject().getLuaState(), this, [this]() {return cDefType->renderAssetIcon();}) {
     cDefWorld.getSpindizzy().getProject().init([this, object]() {
-      cDefType = cDefWorld.getSpindizzy().get<PlayerType>(object.getString(JSON_TYPE));
+      cDefType = cDefWorld.getSpindizzy().get<PlayerType>(nullptr, object.getString(JSON_TYPE));
       cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();
       reset();

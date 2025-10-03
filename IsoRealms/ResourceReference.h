@@ -30,6 +30,11 @@ namespace IsoRealms {
               cDefResource(nullptr) {
     }
 
+    ResourceReference(MANAGER& manager, TYPE* resource) :
+              cManager(manager),
+              cDefResource(resource) {
+    }
+
     virtual ~ResourceReference() {
     }
 
@@ -45,7 +50,7 @@ namespace IsoRealms {
       if (id == "") {
         cDefResource = nullptr;
       } else {
-        cDefResource = cManager.template get<TYPE>(id);
+        cDefResource = cManager.template get<TYPE>(this, id);
       }
     }
 

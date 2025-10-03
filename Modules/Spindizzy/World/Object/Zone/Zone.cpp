@@ -114,10 +114,10 @@ namespace IsoRealms::Spindizzy {
       }
     }
     cDefWorld.getSpindizzy().getProject().init([this, object]() {
-      cDefType = cDefWorld.getSpindizzy().get<ZoneType>(object.getString(JSON_TYPE));
+      cDefType = cDefWorld.getSpindizzy().get<ZoneType>(nullptr, object.getString(JSON_TYPE));
       std::string mThemeSet = object.getString(JSON_THEME_SET);
       std::string mThemeName = object.getString(JSON_THEME);
-      cDefThemeSet = mThemeSet != "" ? cDefWorld.getSpindizzy().get<ThemeSet>(mThemeSet) : nullptr;
+      cDefThemeSet = mThemeSet != "" ? cDefWorld.getSpindizzy().get<ThemeSet>(nullptr, mThemeSet) : nullptr;
       cDefTheme = mThemeName != "" ? cDefThemeSet->getTheme(mThemeName) : nullptr;
       reset();
 

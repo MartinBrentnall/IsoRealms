@@ -22,6 +22,7 @@
 #include <map>
 #include <string>
 #include <ranges>
+#include <algorithm>
 
 #include "IsoRealms/IResourceTypeDefinition.h"
 #include "IsoRealms/Resource.h"
@@ -40,7 +41,38 @@ namespace IsoRealms {
 
 namespace IsoRealms {
   template <typename MODULE, typename TYPE> class ResourceTypeDefinition : public IResourceTypeDefinition {
-    public:
+    private:
+    class ResourceInfo {
+      public:
+      ResourceInfo(ResourceType& parent, MODULE& module, ProjectFile* ownerProject) :
+                cResource(parent, module, ownerProject) {
+      }
+      
+      ResourceInfo(ResourceType& parent, MODULE& module, ProjectFile* ownerProject, JSONObject object) :
+                cResource(parent, module, ownerProject, object) {
+      }
+      
+      Resource<MODULE, TYPE>* getResourceForUser(IResourceUser<TYPE>* user) {
+        if (user != nullptr) {
+          cUsers.emplace_back(user);
+        }
+        return &cResource;
+      }
+
+      Resource<MODULE, TYPE>* getResource() {
+        return &cResource;
+      }
+      
+      const Resource<MODULE, TYPE>* getResource() const {
+        return &cResource;
+      }
+      
+      private:
+      Resource<MODULE, TYPE> cResource;
+      std::vector<IResourceUser<TYPE>*> cUsers;
+    };
+
+    public: 
     class Iterator {
       public:
       Iterator() :
@@ -48,7 +80,7 @@ namespace IsoRealms {
                 cIterator(cParent->cResources.begin()) {
       }
 
-      Iterator(const ResourceTypeDefinition<MODULE, TYPE>* const parent, typename std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>>::const_iterator iterator) :
+      Iterator(const ResourceTypeDefinition<MODULE, TYPE>* const parent, typename std::map<std::string, std::unique_ptr<ResourceInfo>>::const_iterator iterator) :
                 cParent(parent),
                 cIterator(iterator) {
       }
@@ -63,12 +95,12 @@ namespace IsoRealms {
       }
       
       TYPE* operator*() {
-        return cIterator->second->getResource();
+        return cIterator->second->getResource()->getResource();
       }
       
       private:
       const ResourceTypeDefinition<MODULE, TYPE>* cParent;
-      typename std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>>::const_iterator cIterator;
+      typename std::map<std::string, std::unique_ptr<ResourceInfo>>::const_iterator cIterator;
     };
 
     ResourceTypeDefinition(MODULE& module) :
@@ -77,19 +109,19 @@ namespace IsoRealms {
       
     IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject) override {
       std::string mAvailableName = Utils::getAvailableKey(cResources, name);
-      return cResources.emplace(mAvailableName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, ownerProject)).first->second.get();
+      return cResources.emplace(mAvailableName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject)).first->second->getResource();
     }
     
     IResource* loadResource(ResourceType& parent, JSONObject object, ProjectFile* ownerProject) override {
       std::string mResourceName = object.getString(JSON_ID);
-      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, cModule, ownerProject, object)).first->second.get();
+      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject, object)).first->second->getResource();
       mResource->registerAssets();
       return mResource;
     }
 
     bool needsSaving(const ProjectFile* savingProject) const override {
-      for (const std::unique_ptr<Resource<MODULE, TYPE>>& mResource : cResources | std::views::values) {
-        if (mResource->needsSaving(savingProject)) {
+      for (const std::unique_ptr<ResourceInfo>& mResourceInfo : cResources | std::views::values) {
+        if (mResourceInfo->getResource()->needsSaving(savingProject)) {
           return true;
         }
       }
@@ -97,18 +129,18 @@ namespace IsoRealms {
     }
   
     void save(JSONArray& array, const ProjectFile* savingProject) override {
-      for (const std::unique_ptr<Resource<MODULE, TYPE>>& mResource : cResources | std::views::values) {
-        if (mResource->needsSaving(savingProject)) {
+      for (const std::unique_ptr<ResourceInfo>& mResourceInfo : cResources | std::views::values) {
+        if (mResourceInfo->getResource()->needsSaving(savingProject)) {
           JSONObject mResourceObject = array.addObject();
-          mResourceObject.addString(JSON_ID, mResource->getName());
-          mResource->save(mResourceObject);
+          mResourceObject.addString(JSON_ID, mResourceInfo->getResource()->getName());
+          mResourceInfo->getResource()->save(mResourceObject);
         }
       }
     }
 
     bool forEachResource(std::function<bool(IResource*)> func) override {
-      for (const std::unique_ptr<Resource<MODULE, TYPE>>& mResource : cResources | std::views::values) {
-        if (!func(mResource.get())) {
+      for (const std::unique_ptr<ResourceInfo>& mResourceInfo : cResources | std::views::values) {
+        if (!func(mResourceInfo->getResource())) {
           return false;
         }
       }
@@ -116,14 +148,14 @@ namespace IsoRealms {
     }
 
     IResource* getResource2(const std::string& name, bool required = true) const override {
-      return getResource3(name, required);
+      return getResourceInfo(name, required)->getResource();
     }
 
-    Resource<MODULE, TYPE>* getResource3(const std::string& name, bool required = true) const {
-      typename std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>>::const_iterator mResource = cResources.find(name);
+    ResourceInfo* getResourceInfo(const std::string& name, bool required = true) const {
+      typename std::map<std::string, std::unique_ptr<ResourceInfo>>::const_iterator mResource = cResources.find(name);
       if (mResource == cResources.end() && required) {
         std::cout << "Couldn't find resource of name \"" + name + "\"  Available resources" << std::endl;
-        for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mPair : cResources) {
+        for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mPair : cResources) {
           std::cout << "  " << mPair.first << std::endl;
         }
         std::cout << "End of resources" << std::endl;
@@ -133,20 +165,24 @@ namespace IsoRealms {
     }
 
     TYPE* getResource(const std::string& name, bool required = true) const {
-      return getResource3(name, required)->getResource();
+      return getResourceInfo(name, required)->getResource()->getResource();
+    }
+
+    TYPE* getResourceForClient(IResourceUser<TYPE>* user, const std::string& name, bool required = true) {
+      return getResourceInfo(name, required)->getResourceForUser(user)->getResource();
     }
     
     std::vector<std::string> getAvailableResources() const override {
       std::vector<std::string> mResources;
-      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
         mResources.push_back(mResource.first);
       }
       return mResources;
     }
 
     std::string getResourceID(const IResource& resource) const override {
-      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
-        if (mResource.second.get() == &resource) {
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource() == &resource) {
           return mResource.first;
         }
       }
@@ -154,8 +190,8 @@ namespace IsoRealms {
     }
     
     std::string getID(const TYPE* resource) const {
-      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
-        if (mResource.second->isResource(resource)) {
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource()->isResource(resource)) {
           return mResource.first;
         }
       }
@@ -171,8 +207,8 @@ namespace IsoRealms {
     }
     
     void deleteResource(IResource* resource) override {
-      for (typename std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>>::iterator it = cResources.begin(); it != cResources.end(); ++it) {
-        if (it->second.get() == resource) {
+      for (typename std::map<std::string, std::unique_ptr<ResourceInfo>>::iterator it = cResources.begin(); it != cResources.end(); ++it) {
+        if (it->second->getResource() == resource) {
           cResources.erase(it);
           return;
         }
@@ -180,8 +216,8 @@ namespace IsoRealms {
     }
 
     void renameResource(IResource* resource, const std::string& name) override {
-      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
-        if (mResource.second.get() == resource) {
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource() == resource) {
           if (mResource.first != name) {
             cResources.emplace(name, std::move(cResources[mResource.first]));
             cResources.erase(mResource.first);
@@ -192,26 +228,26 @@ namespace IsoRealms {
     }
 
     void refreshAssetRegistration(TYPE& resource) {
-      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
-        if (mResource.second->isResource(&resource)) {
-          return mResource.second->registerAssets();
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource()->isResource(&resource)) {
+          return mResource.second->getResource()->registerAssets();
         }
       }
     }
 
     bool isReadOnly(const TYPE* resource) const {
-      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
-        if (mResource.second->isResource(resource)) {
-          return mResource.second->isReadOnly();
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource()->isResource(resource)) {
+          return mResource.second->getResource()->isReadOnly();
         }
       }
       return false;
     }
 
     void setOwner(const TYPE* resource, ProjectFile* owner) {
-      for (const std::pair<const std::string, std::unique_ptr<Resource<MODULE, TYPE>>>& mResource : cResources) {
-        if (mResource.second->isResource(resource)) {
-          mResource.second->setOwner(owner);
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource()->isResource(resource)) {
+          mResource.second->getResource()->setOwner(owner);
           return;
         }
       }
@@ -221,6 +257,6 @@ namespace IsoRealms {
     inline static const std::string JSON_ID = "id";
 
     MODULE& cModule;
-    std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>> cResources;
+    std::map<std::string, std::unique_ptr<ResourceInfo>> cResources;
   };
 }
