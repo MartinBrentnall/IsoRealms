@@ -266,9 +266,9 @@ namespace IsoRealms::Spindizzy {
 
     // Editor configuration.
     bool cEditorBasicProperties;
-    ThemeSet* cDefaultThemeSet; // TODO: Set to nullptr when the ThemeSet is removed.
+    ResourceReference<ThemeSet, Spindizzy> cDefaultThemeSet;
     WorldEditorTool cDefaultWorldEditorTool;
-    ZoneType* cAutomaticZoneManagementType;
+    ResourceReference<ZoneType, Spindizzy> cAutomaticZoneManagementType;
     int cAutomaticZoneXSize;
     int cAutomaticZoneYSize;
     int cAutomaticZoneZSize;

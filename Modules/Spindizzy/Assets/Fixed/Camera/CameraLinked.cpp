@@ -16,22 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "Modules/Spindizzy/Spindizzy.h"
+ 
 #include "CameraLinked.h"
 
-#include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
   CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view) :
             cMetadata(metadata),
             cParent(view),
-            cDefLinkedView(nullptr) {
+            cDefLinkedView(view.getSpindizzy()) {
   }
   
   CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view, JSONObject object) :
             CameraLinked(metadata, view) {
     view.getSpindizzy().getProject().init([this, object]() {
-      cDefLinkedView = cParent.getSpindizzy().get<WorldView>(object.getString(JSON_VIEW));
+      cDefLinkedView.setID(object.getString(JSON_VIEW));
     });
   }
 
@@ -92,11 +93,11 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraLinked::saveAsset(JSONObject object) const {
-    object.addString(JSON_VIEW, cParent.getWorld()->getSpindizzy().getResourceID(cDefLinkedView));
+    cDefLinkedView.save(object, JSON_VIEW);
   }
 
   void CameraLinked::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyResource<WorldView, Spindizzy>(cMetadata.getPropertyData("LinkedView"), cParent.getWorld()->getSpindizzy(), cDefLinkedView);
+    owner.createPropertyAsset<ResourceReference<WorldView, Spindizzy>>(cMetadata.getPropertyData("LinkedView"), cDefLinkedView);
   }
 
   bool CameraLinked::isDefaultConfiguration() const {

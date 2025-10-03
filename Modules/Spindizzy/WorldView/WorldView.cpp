@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
   WorldView::WorldView(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cResourceData(data),
-            cDefWorld(nullptr),
+            cDefWorld(spindizzy),
             cDefCamera(*this),
             cDefZoneViewType(*this),
             cDefZoom(1.0f),
@@ -45,7 +45,7 @@ namespace IsoRealms::Spindizzy {
     cDefCamera.set(object, JSON_CAMERA);
     cDefZoneViewType.set(object, JSON_TYPE);
     data.getProject().init([this, object]() {
-      cDefWorld = cSpindizzy.get<World>(object.getString(JSON_WORLD));
+      cDefWorld.setID(object.getString(JSON_WORLD));
       cDefWorld->registerView(*this);
       std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
       for (std::unique_ptr<Zone>& mZone : mZones) {
@@ -61,7 +61,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldView::save(JSONObject object) const {
-    object.addString(JSON_WORLD, cSpindizzy.getResourceID(cDefWorld));
+    cDefWorld.save(object, JSON_WORLD);
     object.addFloat(JSON_ZOOM, cDefZoom, 1.0f);
     cDefCamera.save(object, JSON_CAMERA);
     cDefZoneViewType.save(object, JSON_TYPE);
@@ -76,14 +76,14 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldView::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyResource<World, Spindizzy>(metadata.getPropertyData("World"),        cSpindizzy, cDefWorld);
-    owner.createPropertyAsset<Camera>(             metadata.getPropertyData("Camera"),       cDefCamera);
-    owner.createPropertyAsset<ZoneViewType>(       metadata.getPropertyData("ZoneViewType"), cDefZoneViewType);
-    owner.createPropertyNativeFloat(               metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
+    owner.createPropertyAsset<ResourceReference<World, Spindizzy>>(metadata.getPropertyData("World"),        cDefWorld);
+    owner.createPropertyAsset<Camera>(                             metadata.getPropertyData("Camera"),       cDefCamera);
+    owner.createPropertyAsset<ZoneViewType>(                       metadata.getPropertyData("ZoneViewType"), cDefZoneViewType);
+    owner.createPropertyNativeFloat(                               metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
   }
 
   bool WorldView::hasReadOnlyReferences(const World* world) const {
-    return cDefWorld == world;
+    return cDefWorld.get() == world;
   }
 
   Spindizzy& WorldView::getAssetManager() {
@@ -133,7 +133,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   World* WorldView::getWorld() const {
-    return cDefWorld;
+    return cDefWorld.get();
   }
 
   Spindizzy& WorldView::getSpindizzy() {
@@ -154,7 +154,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void WorldView::renderScreen(float scale, float aspectRatio) const {
-    if (cDefWorld != nullptr) {
+    if (cDefWorld.get() != nullptr) {
       glEnable(GL_DEPTH_TEST);
       glDisable(GL_BLEND);
       glBindTexture(GL_TEXTURE_2D, 0);

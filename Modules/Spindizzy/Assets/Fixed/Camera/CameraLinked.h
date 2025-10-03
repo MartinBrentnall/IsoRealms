@@ -68,6 +68,6 @@ namespace IsoRealms::Spindizzy {
     const Metadata& cMetadata;
     WorldView& cParent;
     
-    WorldView* cDefLinkedView;
+    ResourceReference<WorldView, Spindizzy> cDefLinkedView;
   };
 }

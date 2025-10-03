@@ -112,6 +112,14 @@ namespace IsoRealms::Spindizzy {
       return ResourceContainerTraits<TYPE>::get(*this).getAvailableResources();
     }
 
+    template <typename TYPE> bool isReadOnly(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).isReadOnly(resource);
+    }
+
+    template <typename TYPE> void setOwner(const TYPE* resource, ProjectFile* owner) {
+      ResourceContainerTraits<TYPE>::get(*this).setOwner(resource, owner);
+    }
+
     // TODO: This is a hack to get around the fact that WorldView has a read only reference to World.
     template <typename TYPE> bool hasReadOnlyReferences(const TYPE* resource) const {
       for (WorldView* mWorldView : cResourceWorldView) {

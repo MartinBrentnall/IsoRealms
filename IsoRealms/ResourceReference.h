@@ -1,0 +1,113 @@
+/*
+ * Copyright 2025 Martin Brentnall
+ *
+ * This file is part of IsoRealms.
+ *
+ * IsoRealms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IsoRealms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include "IsoRealms/IResourceUser.h"
+
+#include "Project/ProjectFile.h"
+
+namespace IsoRealms {
+  template <typename TYPE, typename MANAGER> class ResourceReference : public IResourceUser<TYPE> {
+    public:
+    ResourceReference(MANAGER& manager) :
+              cManager(manager),
+              cDefResource(nullptr) {
+    }
+
+    virtual ~ResourceReference() {
+    }
+
+    TYPE* get() const {
+      return cDefResource;
+    }
+
+    TYPE* operator->() const {
+      return cDefResource;
+    }
+
+    void setID(const std::string& id) {
+      if (id == "") {
+        cDefResource = nullptr;
+      } else {
+        cDefResource = cManager.template get<TYPE>(id);
+      }
+    }
+
+    void save(JSONObject object, const std::string& name) const {
+      object.addString(name, cManager.getResourceID(cDefResource));
+    }
+
+    std::string getID() const {
+      return cManager.getResourceID(cDefResource);
+    }
+
+    bool renderAssetIcon() const {
+      return false; // TODO: Implement this.
+    }
+
+    bool hasConfiguration() const {
+      return false; // TODO: Implement this.
+    }
+
+    bool isDefaultConfigured() const {
+      return false; // TODO: Implement this.
+    }
+
+    void getAssetProperties(PropertyMaker& owner) {
+      // TODO: Implement this.
+    }
+
+    std::vector<std::string> getAvailableProviders() const {
+      return cManager.template getAvailableResources<TYPE>();
+    }
+
+    bool renderProviderIcon(const std::string& id) const {
+      return false; // TODO: Implement this.
+    }
+
+    Application& getApplication() const {
+      return cManager.getProject().getApplication();
+    }
+
+    /**********************************\
+     * Implements IResourceUser<TYPE> *
+    \**********************************/
+    void relinquish(TYPE* asset) override {
+      if (cDefResource == asset) {
+        cDefResource = nullptr;
+      }
+    }
+
+    bool isReadOnly() const override {
+      return cManager.isReadOnly(cDefResource);
+    }
+
+    void setOwner(ProjectFile* owner) override {
+      cManager.setOwner(cDefResource, owner);
+    }
+
+    private:
+
+    // External interfaces.
+    MANAGER& cManager;
+
+    // Definition data.
+    TYPE* cDefResource;
+  };
+}

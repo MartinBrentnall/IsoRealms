@@ -61,6 +61,7 @@
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ResourceAssetRegistry.h"
 #include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/ResourceReference.h"
 #include "IsoRealms/ResourceTypeDefinition.h"
 #include "IsoRealms/Struct/SpatialContainerTest.h"
 #include "IsoRealms/System.h"
