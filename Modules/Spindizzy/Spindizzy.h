@@ -124,23 +124,12 @@ namespace IsoRealms::Spindizzy {
       ResourceContainerTraits<TYPE>::get(*this).setOwner(resource, owner);
     }
 
-    // TODO: This is a hack to get around the fact that WorldView has a read only reference to World.
-    template <typename TYPE> bool hasReadOnlyReferences(const TYPE* resource) const {
-      for (WorldView* mWorldView : cResourceWorldView) {
-        if (mWorldView->hasReadOnlyReferences(resource)) {
-          return true;
-        }
-      }
-      return false;
+    template <typename TYPE> bool hasReadOnlyResourceReferences(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(resource);
     }
 
-    // TODO: This is a hack to get around the fact that WorldView has a read only reference to World.
-    template <typename TYPE> void overrideReadOnlyReferences(const TYPE* resource) {
-      for (WorldView* mWorldView : cResourceWorldView) {
-        if (mWorldView->hasReadOnlyReferences(resource)) {
-          cResourceWorldView.setOwner(mWorldView, cProject.getProjectFile());
-        }
-      }
+    template <typename TYPE> void overrideReadOnlyResourceReferences(const TYPE* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(resource);
     }
 
     template <typename TYPE> bool isUsedInReadOnlyWorld(const TYPE& resource) const {
@@ -210,6 +199,14 @@ namespace IsoRealms::Spindizzy {
       return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
+    template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(asset);
+    }
+   
+    template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* asset) {
+      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, cProject.getProjectFile());
+    }
+    
 
 
     // Event handling.

@@ -58,6 +58,11 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon();
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
+    Spindizzy& getAssetManager();
+    Project& getProject() const;
+    bool isReadOnly() const;
+    void setOwner(ProjectFile* owner);
+
     template <typename TYPE> bool isUsed(const TYPE& resource) const {
       return std::any_of(cDefZones.begin(), cDefZones.end(), [&resource](const std::unique_ptr<Zone>& mZone) {
         return mZone->isUsed(resource);
@@ -272,9 +277,9 @@ namespace IsoRealms::Spindizzy {
 
     // Editor configuration.
     bool cEditorBasicProperties;
-    ResourceReference<ThemeSet, Spindizzy> cDefaultThemeSet;
+    ResourceReference<ThemeSet, World> cDefaultThemeSet;
+    ResourceReference<ZoneType, World> cAutomaticZoneManagementType;
     WorldEditorTool cDefaultWorldEditorTool;
-    ResourceReference<ZoneType, Spindizzy> cAutomaticZoneManagementType;
     int cAutomaticZoneXSize;
     int cAutomaticZoneYSize;
     int cAutomaticZoneZSize;

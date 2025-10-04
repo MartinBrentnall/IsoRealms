@@ -77,6 +77,23 @@ namespace IsoRealms {
         }
       }
 
+      bool hasReadOnlyReferences() const {
+        for (IResourceUser<TYPE>* user : cUsers) {
+          if (user->isReadOnly()) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      void overrideReadOnlyReferences(ProjectFile* owner) {
+        for (IResourceUser<TYPE>* user : cUsers) {
+          if (user->isReadOnly()) {
+            user->setOwner(owner);
+          }
+        }
+      }
+
       private:
       Resource<MODULE, TYPE> cResource;
       std::vector<IResourceUser<TYPE>*> cUsers;
@@ -273,6 +290,24 @@ namespace IsoRealms {
       }
     }
 
+    bool hasReadOnlyReferences(const TYPE* resource) const {
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource()->isResource(resource)) {
+          return mResource.second->hasReadOnlyReferences();
+        }
+      }
+      return false;
+    }
+
+    void overrideReadOnlyReferences(const TYPE* resource) {
+      for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
+        if (mResource.second->getResource()->isResource(resource)) {
+          mResource.second->overrideReadOnlyReferences(cModule.getProject().getProjectFile());
+          return;
+        }
+      }
+    }
+    
     private:
     inline static const std::string JSON_ID = "id";
 

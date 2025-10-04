@@ -181,7 +181,6 @@ namespace IsoRealms {
     // Create a final menu item that allows creation of a new resource.
     std::unique_ptr<MenuItemResource> mCreateResourceMenuItem = std::make_unique<MenuItemResource>("[New " + cResourceType.getSingular() + "...]", [this](IResource* resource) {
       IResource* mCreatedResource = cResourceType.createResource();
-      std::cout << "CREATING RESOURCE..." << mCreatedResource << std::endl;
       openResourcePropertiesMenu(mCreatedResource);
     }, [](IResource* resource) {
       return true;

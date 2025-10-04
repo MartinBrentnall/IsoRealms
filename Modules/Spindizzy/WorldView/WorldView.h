@@ -50,8 +50,6 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
-    bool hasReadOnlyReferences(const World* world) const;
-
     /***************************\
      * Asset client interfaces *
     \***************************/
@@ -134,7 +132,7 @@ namespace IsoRealms::Spindizzy {
     IResourceData& cResourceData;
 
     // Definition data.
-    ResourceReference<World, Spindizzy> cDefWorld; /// World being viewed.
+    ResourceReference<World, WorldView> cDefWorld; /// World being viewed.
     Camera cDefCamera;                             /// Camera for this view.
     ZoneViewType cDefZoneViewType;                 /// The type of representation of zones within this view.
     float cDefZoom;                                /// Zoom adjustment.

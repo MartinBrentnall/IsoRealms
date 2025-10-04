@@ -52,6 +52,9 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
+    bool hasReadOnlyReferences() const;
+    void overrideReadOnlyReferences();
+
     // Destructor.
     virtual ~ZoneType();
 

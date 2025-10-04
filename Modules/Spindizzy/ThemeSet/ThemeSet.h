@@ -37,6 +37,9 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) const;
     void registerAssets(ResourceAssetRegistry& assets);
 
+    bool hasReadOnlyReferences() const;
+    void overrideReadOnlyReferences();
+
     /*********************\
      * Module interfaces *
     \*********************/

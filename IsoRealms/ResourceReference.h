@@ -48,22 +48,22 @@ namespace IsoRealms {
 
     void setID(const std::string& id) {
       if (cDefResource != nullptr) {
-        cManager.release(this, cDefResource);
+        cManager.getAssetManager().release(this, cDefResource);
       }
 
       if (id == "") {
         cDefResource = nullptr;
       } else {
-        cDefResource = cManager.template get<TYPE>(this, id);
+        cDefResource = cManager.getAssetManager().template get<TYPE>(this, id);
       }
     }
 
     void save(JSONObject object, const std::string& name) const {
-      object.addString(name, cManager.getResourceID(cDefResource));
+      object.addString(name, cManager.getAssetManager().getResourceID(cDefResource));
     }
 
     std::string getID() const {
-      return cManager.getResourceID(cDefResource);
+      return cManager.getAssetManager().getResourceID(cDefResource);
     }
 
     bool renderAssetIcon() const {
@@ -83,7 +83,7 @@ namespace IsoRealms {
     }
 
     std::vector<std::string> getAvailableProviders() const {
-      return cManager.template getAvailableResources<TYPE>();
+      return cManager.getAssetManager().template getAvailableResources<TYPE>();
     }
 
     bool renderProviderIcon(const std::string& id) const {
@@ -104,11 +104,11 @@ namespace IsoRealms {
     }
 
     bool isReadOnly() const override {
-      return cManager.isReadOnly(cDefResource);
+      return cManager.isReadOnly();
     }
 
     void setOwner(ProjectFile* owner) override {
-      cManager.setOwner(cDefResource, owner);
+      cManager.setOwner(owner);
     }
 
     private:

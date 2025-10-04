@@ -114,6 +114,14 @@ namespace IsoRealms::Spindizzy {
       mPair.second->registerAssets(assets, mPair.first);
     }
   }
+
+  bool ThemeSet::hasReadOnlyReferences() const {
+    return cSpindizzy.hasReadOnlyResourceReferences(this);
+  }
+
+  void ThemeSet::overrideReadOnlyReferences() {
+    cSpindizzy.overrideReadOnlyResourceReferences(this);
+  }
   
   void ThemeSet::updateEditing(unsigned int milliseconds) {
     if (cPause > 0) {
