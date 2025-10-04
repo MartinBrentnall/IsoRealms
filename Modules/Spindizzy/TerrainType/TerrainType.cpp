@@ -147,7 +147,15 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<WallPattern>(   metadata.getPropertyData("AppearanceWallWest"),  cDefWestWallPattern);
     owner.createPropertyAsset<WallPattern>(   metadata.getPropertyData("AppearanceWallEast"),  cDefEastWallPattern);
   }
-  
+
+  bool TerrainType::hasReadOnlyReferences() const {
+    return cSpindizzy.isUsedInReadOnlyWorld(*this);
+  }
+
+  void TerrainType::overrideReadOnlyReferences() {
+    cSpindizzy.overrideReadOnlyWorlds(*this);
+  }
+
   ISurfacePattern* TerrainType::getSurfacePattern() const {
     return *cDefSurfacePattern;
   }

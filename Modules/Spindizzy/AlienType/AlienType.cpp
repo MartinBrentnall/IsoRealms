@@ -100,6 +100,14 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyNativeFloat(  metadata.getPropertyData("HugThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
   }
 
+  bool AlienType::hasReadOnlyReferences() const {
+    return cSpindizzy.isUsedInReadOnlyWorld(*this);
+  }
+
+  void AlienType::overrideReadOnlyReferences() {
+    cSpindizzy.overrideReadOnlyWorlds(*this);
+  }
+
   void AlienType::reset() {
     cRuntimeSpinSpeed = cDefSpinSpeed;
   }

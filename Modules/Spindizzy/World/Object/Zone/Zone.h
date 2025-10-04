@@ -81,6 +81,12 @@ namespace IsoRealms::Spindizzy {
     
     bool isType(const ZoneType* const type) const;
     
+    bool isUsed(const TerrainType& terrainType) const;
+    bool isUsed(const PickUpType& pickUpType) const;
+    bool isUsed(const AlienType& alienType) const;
+    bool isUsed(const LiftType& liftType) const;
+    bool isUsed(const ZoneObjectType& zoneObjectType) const;
+
     void remove(Terrain* element);
     void remove(PickUp* pickUp);
     void remove(Alien* alien);

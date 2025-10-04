@@ -56,6 +56,14 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Model>(metadata.getPropertyData("Appearance"), cDefModel);
   }
 
+  bool PickUpType::hasReadOnlyReferences() const {
+    return cSpindizzy.isUsedInReadOnlyWorld(*this);
+  }
+
+  void PickUpType::overrideReadOnlyReferences() {
+    cSpindizzy.overrideReadOnlyWorlds(*this);
+  }
+
   PickUpType::~PickUpType() {
     cSpindizzy.remove(this);
     cSpindizzy.removed(this);

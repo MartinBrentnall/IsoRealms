@@ -58,6 +58,12 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon();
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
+    template <typename TYPE> bool isUsed(const TYPE& resource) const {
+      return std::any_of(cDefZones.begin(), cDefZones.end(), [&resource](const std::unique_ptr<Zone>& mZone) {
+        return mZone->isUsed(resource);
+      });
+    }
+  
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
 

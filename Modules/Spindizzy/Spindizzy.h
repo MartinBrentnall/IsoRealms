@@ -143,6 +143,25 @@ namespace IsoRealms::Spindizzy {
       }
     }
 
+    template <typename TYPE> bool isUsedInReadOnlyWorld(const TYPE& resource) const {
+      for (World* mWorld : cResourceWorld) {
+        if (cResourceWorld.isReadOnly(mWorld) && mWorld->isUsed(resource)) {
+          std::cout << "isUsedInReadOnlyWorld: " << cResourceWorld.getID(mWorld) << std::endl;
+          return true;
+        }
+      }
+      return false;
+    }
+
+    template <typename TYPE> void overrideReadOnlyWorlds(const TYPE& resource) {
+      for (World* mWorld : cResourceWorld) {
+        if (cResourceWorld.isReadOnly(mWorld) && mWorld->isUsed(resource)) {
+          std::cout << "overrideReadOnlyWorlds: " << cResourceWorld.getID(mWorld) << std::endl;
+          cResourceWorld.setOwner(mWorld, cProject.getProjectFile());
+        }
+      }
+    }
+
     std::string getResourceID() const;
     
     // Resource removal.

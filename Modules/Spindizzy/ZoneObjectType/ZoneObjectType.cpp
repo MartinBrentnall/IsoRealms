@@ -83,6 +83,14 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  bool ZoneObjectType::hasReadOnlyReferences() const {
+    return cSpindizzy.isUsedInReadOnlyWorld(*this);
+  }
+
+  void ZoneObjectType::overrideReadOnlyReferences() {
+    cSpindizzy.overrideReadOnlyWorlds(*this);
+  } 
+
   ZoneObjectType::~ZoneObjectType() {
     cSpindizzy.removeAll(this);
   }

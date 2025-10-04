@@ -50,6 +50,9 @@ namespace IsoRealms::Spindizzy {
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
     
     ~TerrainType();
+
+    bool hasReadOnlyReferences() const;
+    void overrideReadOnlyReferences();
     
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
     void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.

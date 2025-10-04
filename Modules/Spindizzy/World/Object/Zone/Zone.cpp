@@ -237,6 +237,36 @@ namespace IsoRealms::Spindizzy {
     return cDefType == type;
   }
   
+  bool Zone::isUsed(const TerrainType& terrainType) const {
+    return std::any_of(cDefTerrain.begin(), cDefTerrain.end(), [&terrainType](const std::unique_ptr<Terrain>& mTerrain) {
+      return mTerrain->isType(&terrainType);
+    });
+  }
+
+  bool Zone::isUsed(const PickUpType& pickUpType) const {
+    return std::any_of(cDefPickUps.begin(), cDefPickUps.end(), [&pickUpType](const std::unique_ptr<PickUp>& mPickUp) {
+      return mPickUp->isType(&pickUpType);
+    });
+  }
+
+  bool Zone::isUsed(const AlienType& alienType) const {
+    return std::any_of(cDefAliens.begin(), cDefAliens.end(), [&alienType](const std::unique_ptr<Alien>& mAlien) {
+      return mAlien->isType(&alienType);
+    });
+  }
+
+  bool Zone::isUsed(const LiftType& liftType) const {
+    return std::any_of(cDefLifts.begin(), cDefLifts.end(), [&liftType](const std::unique_ptr<Lift>& mLift) {
+      return mLift->isType(&liftType);
+    });
+  }
+
+  bool Zone::isUsed(const ZoneObjectType& zoneObjectType) const {
+    return std::any_of(cDefObjects.begin(), cDefObjects.end(), [&zoneObjectType](const std::unique_ptr<ZoneObject>& mObject) {
+      return mObject->isType(&zoneObjectType);
+    });
+  }
+
   Terrain* Zone::addTerrain(std::unique_ptr<Terrain> terrain) {
     Terrain* mTerrain = cDefTerrain.emplace_back(std::move(terrain)).get();
     flagForInitialisation(mTerrain);

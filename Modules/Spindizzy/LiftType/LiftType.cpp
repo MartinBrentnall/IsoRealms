@@ -69,6 +69,14 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Action>( metadata.getPropertyData("OnMove"),     cDefTickAction);
   }
 
+  bool LiftType::hasReadOnlyReferences() const {
+    return cSpindizzy.isUsedInReadOnlyWorld(*this);
+  }
+
+  void LiftType::overrideReadOnlyReferences() {
+    cSpindizzy.overrideReadOnlyWorlds(*this);
+  }
+
   LiftType::~LiftType() {
     cSpindizzy.removeAll(this);
   }
