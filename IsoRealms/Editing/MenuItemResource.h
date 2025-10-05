@@ -36,15 +36,16 @@ namespace IsoRealms {
     float getWidth(IUIStyle& style) const;
     void render(IUIStyle& style, float y, float xRemoveOffset, float aspectRatio) const;
     bool input(UISignalID id);
+    bool isResource() const;
     bool isAddResource() const;
+    bool isPlaceHolder() const;
     std::string getTooltip() const;
+    std::string getLabel() const;
 
     private:
     std::variant<IResource*, std::string> cResource;
     std::function<void(IResource*)> cAction;
     std::function<bool(IResource*)> cIcon;
-    
-    std::string getLabel() const;
   };
 }
 

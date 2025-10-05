@@ -55,7 +55,7 @@ namespace IsoRealms {
   void MenuItemResource::render(IUIStyle& style, float y, float xRemoveOffset, float aspectRatio) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
-    if (!std::holds_alternative<IResource*>(cResource) && getLabel()[0] != '[') { // TODO: This is pretty shitty code.
+    if (!std::holds_alternative<IResource*>(cResource) && !cAction) { // TODO: This is pretty shitty code.
       glColor3f(0.4f, 0.4f, 0.4f);
     }
     mFont->print(-1.0f * aspectRatio + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, getLabel());
@@ -64,6 +64,12 @@ namespace IsoRealms {
       glTranslatef(-1.0f * aspectRatio + xRemoveOffset + mFontSize, y + mFontSize, 0.0f);
       glScalef(mFontSize * 0.7f, mFontSize * 0.7f, 0.0f);
       Utils::renderIconNone();
+      glPopMatrix();
+    } else if (!cAction) {
+      glPushMatrix();
+      glTranslatef(-1.0f * aspectRatio + xRemoveOffset + mFontSize, y + mFontSize, 0.0f);
+      glScalef(mFontSize * 0.7f, mFontSize * 0.7f, 0.0f);
+      Utils::renderIconAdd();
       glPopMatrix();
     }
 
@@ -78,7 +84,12 @@ namespace IsoRealms {
 
   bool MenuItemResource::input(UISignalID id) {
     switch (id) {
-      case UISignalID::CONFIRM: cAction(getResource()); return true;
+      case UISignalID::CONFIRM:
+        if (cAction) {
+          cAction(getResource());
+        }
+        return true;
+
       default: {
         // Nothing to do.
       }
@@ -86,8 +97,16 @@ namespace IsoRealms {
     return false;
   }
   
+  bool MenuItemResource::isResource() const {
+    return getResource() != nullptr;
+  }
+
   bool MenuItemResource::isAddResource() const {
-    return getResource() == nullptr && getLabel()[0] == '['; // TODO: This code is pretty shitty.
+    return getResource() == nullptr && cAction; // TODO: This code is pretty shitty.
+  }
+
+  bool MenuItemResource::isPlaceHolder() const {
+    return getResource() == nullptr && !cAction; // TODO: This code is pretty shitty.
   }
 
   std::string MenuItemResource::getTooltip() const {

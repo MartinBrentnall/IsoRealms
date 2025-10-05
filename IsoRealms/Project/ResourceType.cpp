@@ -36,12 +36,12 @@ namespace IsoRealms {
     
     // Ignore resource if name matches an existing one (useful for include overrides and omissions).
     if (cResourceType->getResource2(mResourceName, false) != nullptr) {
-      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(mResourceName, *ownerProject));
+      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(mResourceName, ownerProject));
       return;
     }
     for (const std::unique_ptr<PlaceHolder>& mOmittedResource : cOmittedResources) {
       if (mOmittedResource->getID() == mResourceName) {
-        cOverriddenResources.push_back(std::make_unique<PlaceHolder>(mResourceName, *ownerProject));
+        cOverriddenResources.push_back(std::make_unique<PlaceHolder>(mResourceName, ownerProject));
         return;
       }
     }
@@ -49,7 +49,7 @@ namespace IsoRealms {
   }
 
   void ResourceType::loadOmission(JSONObject object, ProjectFile* ownerProject) {
-    cOmittedResources.insert(std::make_unique<PlaceHolder>(object, *ownerProject));
+    cOmittedResources.insert(std::make_unique<PlaceHolder>(object, ownerProject));
   }
 
   void ResourceType::loadMetadata(JSONObject object) {
@@ -59,6 +59,61 @@ namespace IsoRealms {
     cDescription = object.getString(JSON_DESCRIPTION);
     JSONObject mPropertiesObject = object.getObject(JSON_PROPERTIES);
     cMetadata.load(mPropertiesObject);
+  }
+
+  void ResourceType::reloadResource(const std::string& resourceName) {
+
+    // Start by finding the overridden resource to load.  From there we'll know which project file to load the resource from.
+    for (const std::unique_ptr<PlaceHolder>& mOverriddenResource : cOverriddenResources) {
+      if (mOverriddenResource->getID() == resourceName) {
+
+        // Open the project file that the omitted resource is in.
+        ProjectFile* mProjectFile = mOverriddenResource->getProjectFile();
+        std::string mProjectFilePath = mProjectFile->cFile.getRelativePath();
+        bool mProjectFileUser = mProjectFile->cFile.isUser();
+        JSONDocument mProjectFileDocument(mProjectFilePath, mProjectFileUser);
+
+        // Find the resource in the module -> resource type -> resource.
+        JSONObject mProjectObject = mProjectFileDocument.getObject(JSON_PROJECT);
+        JSONArray mModulesArray = mProjectObject.getArray(JSON_MODULES);
+        for (JSONValue mModuleValue : mModulesArray) {
+          JSONObject mModuleObject = mModuleValue.getObject();
+          if (mModuleObject.getString(JSON_NAME) == cParent.getName()) {
+
+            // Found module, now find the resource type.
+            JSONArray mResourcesArray = mModuleObject.getArray(JSON_RESOURCES);
+            for (JSONValue mResourceValue : mResourcesArray) {
+              JSONObject mResourceObject = mResourceValue.getObject();
+              if (mResourceObject.getString(JSON_TYPE) == cParent.getName(this)) {
+                
+                // Found resource type, now find the resource.
+                JSONArray mInstancesArray = mResourceObject.getArray(JSON_INSTANCES);
+                for (JSONValue mInstanceValue : mInstancesArray) {
+                  JSONObject mInstanceObject = mInstanceValue.getObject();
+                  if (mInstanceObject.getString(JSON_ID) == resourceName) {
+
+                    // Found the resource, now load it.
+                    cResourceType->loadResource(*this, mInstanceObject, mProjectFile);
+
+                    // Remove the overridden resource.
+                    cOverriddenResources.erase(std::remove_if(cOverriddenResources.begin(), cOverriddenResources.end(), [resourceName](const std::unique_ptr<PlaceHolder>& mOverriddenResource) {
+                      return mOverriddenResource->getID() == resourceName;
+                    }), cOverriddenResources.end());
+
+                    // Remove the omitted resource.
+                    std::erase_if(cOmittedResources, [resourceName](const std::unique_ptr<PlaceHolder>& mOmittedResource) {
+                      return mOmittedResource->getID() == resourceName;
+                    });
+
+                    return;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   bool ResourceType::needsSaving(const ProjectFile* savingProject) const {
@@ -109,14 +164,14 @@ namespace IsoRealms {
     if (resource->isReadOnly()) {
 
       // I don't think this branch is ever reached because the resource will be made writable before this is called.
-      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
-      cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), *cParent.getProject().getProjectFile()));
+      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), resource->getProjectFile()));
+      cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), cParent.getProject().getProjectFile()));
     } else {
 
       // If there's an overridden resource under the one to rename, place an omitted resource over it.
       for (const std::unique_ptr<PlaceHolder>& mOverriddenResource : cOverriddenResources) {
         if (mOverriddenResource->getID() == resource->getName()) {
-          cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
+          cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), resource->getProjectFile()));
           break;
         }
       }
@@ -126,14 +181,14 @@ namespace IsoRealms {
 
   void ResourceType::deleteResource(IResource* resource) {
     if (resource->isReadOnly()) {
-      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
-      cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), *cParent.getProject().getProjectFile()));
+      cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), resource->getProjectFile()));
+      cOmittedResources.insert(std::make_unique<PlaceHolder>(resource->getName(), cParent.getProject().getProjectFile()));
     }
     cResourceType->deleteResource(resource);
   }
 
   void ResourceType::createOverriddenResource(IResource* resource) {
-    cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), *resource->getProjectFile()));
+    cOverriddenResources.push_back(std::make_unique<PlaceHolder>(resource->getName(), resource->getProjectFile()));
   }
 
   void ResourceType::registerModuleAssets() {
@@ -188,12 +243,12 @@ namespace IsoRealms {
     return cMetadata;
   }  
 
-  ResourceType::PlaceHolder::PlaceHolder(const std::string& id, ProjectFile& ownerProject) :
+  ResourceType::PlaceHolder::PlaceHolder(const std::string& id, ProjectFile* ownerProject) :
             cID(id),
             cOwnerProject(ownerProject) {
   }
 
-  ResourceType::PlaceHolder::PlaceHolder(JSONObject object, ProjectFile& ownerProject) :
+  ResourceType::PlaceHolder::PlaceHolder(JSONObject object, ProjectFile* ownerProject) :
             PlaceHolder(object.getString(JSON_ID), ownerProject) {
   }
 
@@ -202,15 +257,15 @@ namespace IsoRealms {
   }
 
   ProjectFile* ResourceType::PlaceHolder::getProjectFile() const {
-    return &cOwnerProject;
+    return cOwnerProject;
   }
 
   bool ResourceType::PlaceHolder::needsSaving(const ProjectFile& savingProject) const {
-    return &cOwnerProject == &savingProject;
+    return cOwnerProject == &savingProject;
   }
 
   void ResourceType::PlaceHolder::save(JSONArray& array, const ProjectFile& savingProject) const {
-    if (&cOwnerProject == &savingProject) {
+    if (cOwnerProject == &savingProject) {
       JSONObject mOmittedResourceObject = array.addObject();
       mOmittedResourceObject.addString(JSON_ID, cID);
     }

@@ -24,6 +24,7 @@
 #include "IsoRealms/IResource.h"
 #include "IsoRealms/IResourceTypeDefinition.h"
 #include "IsoRealms/Persistence/JSONThing.h"
+#include "IsoRealms/Persistence/JSONValue.h"
 
 namespace IsoRealms {
   class Module;
@@ -34,6 +35,7 @@ namespace IsoRealms {
     void loadResource(JSONObject object, ProjectFile* ownerProject);
     void loadOmission(JSONObject object, ProjectFile* ownerProject);
     void loadMetadata(JSONObject object);
+    void reloadResource(const std::string& resourceName);
     bool needsSaving(const ProjectFile* savingProject) const;
     void save(JSONObject& object, const ProjectFile* savingProject);
 
@@ -62,8 +64,8 @@ namespace IsoRealms {
     private:
     class PlaceHolder {
       public:
-      PlaceHolder(const std::string& id, ProjectFile& ownerProject);
-      PlaceHolder(JSONObject object, ProjectFile& ownerProject);
+      PlaceHolder(const std::string& id, ProjectFile* ownerProject);
+      PlaceHolder(JSONObject object, ProjectFile* ownerProject);
       std::string getID() const;
       ProjectFile* getProjectFile() const;
       bool needsSaving(const ProjectFile& savingProject) const;
@@ -71,7 +73,7 @@ namespace IsoRealms {
 
       private:
       std::string cID;
-      ProjectFile& cOwnerProject;
+      ProjectFile* cOwnerProject;
     };
 
     inline static const std::string JSON_CATEGORY    = "category";
@@ -79,9 +81,14 @@ namespace IsoRealms {
     inline static const std::string JSON_ID          = "id";
     inline static const std::string JSON_INSTANCES   = "instances";
     inline static const std::string JSON_OMISSIONS   = "omissions";
+    inline static const std::string JSON_MODULES     = "modules";
+    inline static const std::string JSON_NAME        = "name";
     inline static const std::string JSON_PLURAL      = "plural";
+    inline static const std::string JSON_PROJECT     = "project";
     inline static const std::string JSON_PROPERTIES  = "properties";
+    inline static const std::string JSON_RESOURCES   = "resources";
     inline static const std::string JSON_SINGULAR    = "singular";
+    inline static const std::string JSON_TYPE        = "type";
 
     Module& cParent;
     IResourceTypeDefinition* cResourceType;

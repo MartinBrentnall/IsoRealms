@@ -83,35 +83,40 @@ namespace IsoRealms {
       }
       
       case UISignalID::CONFIRM: {
-        if (cDeleteSelected && !item.isAddResource()) {
-          cConfirmSelection = std::make_unique<Choice>(getStyle(), "Are you sure you want to delete \"" + item.getResource()->getName()  + "\"?", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, item](const std::string& choice)->bool {
-            if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
-              IResource* mResource = item.getResource();
-              if (mResource->hasReadOnlyReferences()) {
-                cClosedConfirmSelection = std::move(cConfirmSelection);
-                cConfirmSelection = std::make_unique<Choice>(getStyle(), "This resource is referenced by read-only resources.  Deleting it will promote any read-only resources referencing this one and make them writable.", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, item](const std::string& choice)->bool {
-                  if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
-                    IResource* mResource = item.getResource();
-                    mResource->overrideReadOnlyReferences();
-                    cResourceType.deleteResource(mResource);
-                    refresh();
-                  }
+        if (cDeleteSelected) {
+          if (item.isResource()) {
+            cConfirmSelection = std::make_unique<Choice>(getStyle(), "Are you sure you want to delete \"" + item.getResource()->getName()  + "\"?", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, item](const std::string& choice)->bool {
+              if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
+                IResource* mResource = item.getResource();
+                if (mResource->hasReadOnlyReferences()) {
+                  cClosedConfirmSelection = std::move(cConfirmSelection);
+                  cConfirmSelection = std::make_unique<Choice>(getStyle(), "This resource is referenced by read-only resources.  Deleting it will promote any read-only resources referencing this one and make them writable.", std::vector<std::string>{"Cancel", "Delete \"" + item.getResource()->getName() + "\""}, [this, item](const std::string& choice)->bool {
+                    if (choice == "Delete \"" + item.getResource()->getName() + "\"") {
+                      IResource* mResource = item.getResource();
+                      mResource->overrideReadOnlyReferences();
+                      cResourceType.deleteResource(mResource);
+                      refresh();
+                    }
+                    cClosedConfirmSelection = std::move(cConfirmSelection);
+                    cConfirmSelection = nullptr;
+                    return true;
+                  });
+                } else {
                   cClosedConfirmSelection = std::move(cConfirmSelection);
                   cConfirmSelection = nullptr;
-                  return true;
-                });
+                  cResourceType.deleteResource(mResource);
+                  refresh();
+                }
               } else {
                 cClosedConfirmSelection = std::move(cConfirmSelection);
                 cConfirmSelection = nullptr;
-                cResourceType.deleteResource(mResource);
-                refresh();
               }
-            } else {
-              cClosedConfirmSelection = std::move(cConfirmSelection);
-              cConfirmSelection = nullptr;
-            }
-            return true;
-          });
+              return true;
+            });
+          } else if (item.isPlaceHolder()) {
+            cResourceType.reloadResource(item.getLabel());
+            refresh();
+          }
           return true;
         }
       }
@@ -212,9 +217,7 @@ namespace IsoRealms {
   }
   
   void ResourceTypeMenu::addDeletedResource(const std::string& resource) {
-    std::unique_ptr<MenuItemResource> mDeletedResourceMenuItem = std::make_unique<MenuItemResource>(resource, [this](IResource* resource) {
-      // TODO: Implement this.
-    }, [](IResource* resource) {
+    std::unique_ptr<MenuItemResource> mDeletedResourceMenuItem = std::make_unique<MenuItemResource>(resource, nullptr, [](IResource* resource) {
       Utils::renderIconNone();
       return true;
     });

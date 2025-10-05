@@ -103,6 +103,7 @@ namespace IsoRealms {
     static void renderIconLeaf();
     static void renderIconCustom();
     static void renderIconNone();
+    static void renderIconAdd();
     static void renderIconTick();
     static void renderIconTerminal();
     static void renderIconLock();

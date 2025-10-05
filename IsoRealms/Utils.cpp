@@ -332,6 +332,20 @@ namespace IsoRealms {
     glColor3f(1.0f, 1.0f, 1.0f);
   }
   
+  void Utils::renderIconAdd() {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBegin(GL_QUADS);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    renderRectangle(-1.0f, -0.4f, 1.0f, 0.4f);
+    renderRectangle(-0.4f, -1.0f, 0.4f, 1.0f);
+    
+    glColor3f(0.4f, 0.4f, 1.0f);
+    renderRectangle(-0.8f, -0.2f, 0.8f, 0.2f);
+    renderRectangle(-0.2f, -0.8f, 0.2f, 0.8f);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+  }
+
   void Utils::renderIconNone() {
     glBindTexture(GL_TEXTURE_2D, 0);
     glBegin(GL_QUADS);
