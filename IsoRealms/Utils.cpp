@@ -460,6 +460,20 @@ namespace IsoRealms {
     renderCurve(x, y, radius, 0.0f, 1.0f);
   }
   
+  void Utils::renderOval(float x, float y, float width, float height, float startAngle, float endAngle) {
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(x, y);
+    unsigned int mStartAngle = static_cast<unsigned int>(32 * std::min(startAngle, endAngle));
+    unsigned int mEndAngle   = static_cast<unsigned int>(32 * std::max(startAngle, endAngle));
+    for (unsigned int i = mStartAngle; i <= mEndAngle; ++i) {
+      float mCircle = static_cast<float>(-((static_cast<float>(i) * M_PI) * (2.0 / 32)) + M_PI * 2.0);
+      float mPlotX  = (std::sin(mCircle) * width)  + x;
+      float mPlotY  = (std::cos(mCircle) * height) + y;
+      glVertex2f(mPlotX, mPlotY);
+    }
+    glEnd();
+  }
+
   void Utils::renderCurve(float x, float y, float radius, float startAngle, float endAngle) {
     glBegin(GL_TRIANGLE_FAN);
     glVertex2f(x, y);

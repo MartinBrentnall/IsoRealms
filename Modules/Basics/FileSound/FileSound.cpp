@@ -49,7 +49,17 @@ namespace IsoRealms::Basics {
   }
 
   bool FileSound::renderIcon() const {
-    return false;
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glColor3f(0.6f, 1.0f, 1.0f);
+    Utils::renderOval(-0.75f, 0.0f, 0.2f, 0.4f, 0.0f, 1.0f);
+    Utils::renderOval(-0.65f, 0.0f, 0.2f, 0.4f, 0.0f, 1.0f);
+    Utils::renderOval(-0.55f, 0.0f, 0.2f, 0.4f, 0.0f, 1.0f);
+    Utils::renderOval(-0.45f, 0.0f, 0.2f, 0.4f, 0.0f, 1.0f);
+    Utils::renderOval(-0.0f,  0.0f, 0.45f,  0.9f, 0.0f, 1.0f);
+    glColor3f(0.07f, 0.47f, 0.47f);
+    Utils::renderOval(-0.0f,  0.0f, 0.3f,  0.75f, 0.0f, 1.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    return true;
   }
 
   void FileSound::getProperties(PropertyMaker& owner, const Metadata& metadata) {
