@@ -67,13 +67,13 @@ namespace IsoRealms {
     for (const std::unique_ptr<PlaceHolder>& mOverriddenResource : cOverriddenResources) {
       if (mOverriddenResource->getID() == resourceName) {
 
-        // Open the project file that the omitted resource is in.
+        // Found overridden resource, now open the project file that the resource is in.
         ProjectFile* mProjectFile = mOverriddenResource->getProjectFile();
         std::string mProjectFilePath = mProjectFile->cFile.getRelativePath();
         bool mProjectFileUser = mProjectFile->cFile.isUser();
         JSONDocument mProjectFileDocument(mProjectFilePath, mProjectFileUser);
 
-        // Find the resource in the module -> resource type -> resource.
+        // Find the module that the resource belongs to.
         JSONObject mProjectObject = mProjectFileDocument.getObject(JSON_PROJECT);
         JSONArray mModulesArray = mProjectObject.getArray(JSON_MODULES);
         for (JSONValue mModuleValue : mModulesArray) {
@@ -105,6 +105,7 @@ namespace IsoRealms {
                       return mOmittedResource->getID() == resourceName;
                     });
 
+                    // And we're done.
                     return;
                   }
                 }

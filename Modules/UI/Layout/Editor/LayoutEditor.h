@@ -141,7 +141,10 @@ namespace IsoRealms::UI {
       
       private:
       LayoutEditor& cParent;
-      Handle cDraggingHandle;
+      bool cResizingHorizontal;
+      float cResizingFixedHorizontal;
+      bool cResizingVertical;
+      float cResizingFixedVertical;
     };
     
     class OffsetTool : public ILayoutTool {
@@ -324,7 +327,8 @@ namespace IsoRealms::UI {
     void pickHandle();
     void renderEditingHandles();
     void selectComponent(LayoutComponent* component);
-    void resizeComponent(Handle handle, float x, float y);
+    void resizeComponentHorizontal(float fixed, float x);
+    void resizeComponentVertical(float fixed, float y);
     void adjustComponentOffset(Handle handle, float x, float y);
     void updateSelectedComponentEdges();
     float getHandleXOffset(Handle handle) const;

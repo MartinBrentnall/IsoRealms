@@ -691,22 +691,15 @@ namespace IsoRealms::UI {
     }
   }
 
-  void LayoutEditor::resizeComponent(Handle handle, float x, float y) {
-    switch (handle) {
-      case Handle::WEST:      cSelectedComponent->setLeftEdgeLocation(  x, cAspectRatio); break;
-      case Handle::EAST:      cSelectedComponent->setRightEdgeLocation( x, cAspectRatio); break;
-      case Handle::SOUTH:     cSelectedComponent->setBottomEdgeLocation(y);               break;
-      case Handle::NORTH:     cSelectedComponent->setTopEdgeLocation(   y);               break;
-      case Handle::SOUTHWEST: cSelectedComponent->setLeftEdgeLocation(  x, cAspectRatio);
-                              cSelectedComponent->setBottomEdgeLocation(y);               break;
-      case Handle::SOUTHEAST: cSelectedComponent->setRightEdgeLocation( x, cAspectRatio);
-                              cSelectedComponent->setBottomEdgeLocation(y);               break;
-      case Handle::NORTHWEST: cSelectedComponent->setLeftEdgeLocation(  x, cAspectRatio);
-                              cSelectedComponent->setTopEdgeLocation(   y);               break;
-      case Handle::NORTHEAST: cSelectedComponent->setRightEdgeLocation( x, cAspectRatio);
-                              cSelectedComponent->setTopEdgeLocation(   y);               break;
-      case Handle::NONE:                                                                  break;
-    }
+  void LayoutEditor::resizeComponentHorizontal(float fixed, float x) {
+    cSelectedComponent->setLeftEdgeLocation( std::min(fixed, x), cAspectRatio);
+    cSelectedComponent->setRightEdgeLocation(std::max(fixed, x), cAspectRatio);
+    updateSelectedComponentEdges();
+  }
+
+  void LayoutEditor::resizeComponentVertical(float fixed, float y) {
+    cSelectedComponent->setBottomEdgeLocation(std::min(fixed, y));
+    cSelectedComponent->setTopEdgeLocation(   std::max(fixed, y));
     updateSelectedComponentEdges();
   }
 
@@ -869,23 +862,47 @@ namespace IsoRealms::UI {
   
   LayoutEditor::LocationTool::LocationTool(LayoutEditor& parent) :
             cParent(parent),
-            cDraggingHandle(Handle::NONE) {
+            cResizingHorizontal(false),
+            cResizingVertical(false) {
   }
   
   bool LayoutEditor::LocationTool::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::JoystickButtonPressed: {
         switch (event.joystickButton.button) {
-          case 0:  cDraggingHandle = cParent.cSelectedComponentClosestHandle; return true;
-          default:                                                            break;
+          case 0: {
+            switch (cParent.cSelectedComponentClosestHandle) {
+              case Handle::WEST:      cResizingHorizontal = true;                            cResizingFixedHorizontal = cParent.cSelectedComponentRight;                                                            break;
+              case Handle::EAST:      cResizingHorizontal = true;                            cResizingFixedHorizontal = cParent.cSelectedComponentLeft;                                                             break;
+              case Handle::SOUTH:                                  cResizingVertical = true;                                                             cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
+              case Handle::NORTH:                                  cResizingVertical = true;                                                             cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::SOUTHWEST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentRight; cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
+              case Handle::SOUTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
+              case Handle::NORTHWEST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentRight; cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::NORTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::NONE:                                                                                                                                                                                    break;
+            }
+            break;
+          }
+
+          default: {
+            break;
+          }
         }
         break;
       }
 
       case sf::Event::JoystickButtonReleased: {
         switch (event.joystickButton.button) {
-          case 0:  cDraggingHandle = Handle::NONE; return true;
-          default:                                 break;
+          case 0: {
+            cResizingHorizontal = false;
+            cResizingVertical   = false;
+            break;
+          }
+
+          default: {
+            break;
+          }
         }
         break;
       }
@@ -898,9 +915,14 @@ namespace IsoRealms::UI {
   }
   
   void LayoutEditor::LocationTool::update(unsigned int milliseconds) {
-    float mX = cParent.snapX(-cParent.cPanX.animation() + cParent.getHandleXOffset(cDraggingHandle));
-    float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(cDraggingHandle));
-    cParent.resizeComponent(cDraggingHandle, mX, mY);
+    if (cResizingHorizontal) {
+      float mX = cParent.snapX(-cParent.cPanX.animation() + cParent.getHandleXOffset(-cParent.cPanX.animation() < cResizingFixedHorizontal ? Handle::WEST : Handle::EAST));
+      cParent.resizeComponentHorizontal(cResizingFixedHorizontal, mX);
+    } 
+    if (cResizingVertical) {
+      float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(-cParent.cPanY.animation() < cResizingFixedVertical ? Handle::SOUTH : Handle::NORTH));
+      cParent.resizeComponentVertical(cResizingFixedVertical, mY);
+    }
   }
 
   void LayoutEditor::LocationTool::renderSelection() const {
