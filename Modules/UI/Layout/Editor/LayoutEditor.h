@@ -162,7 +162,10 @@ namespace IsoRealms::UI {
       
       private:
       LayoutEditor& cParent;
-      Handle cDraggingHandle;
+      bool cResizingHorizontal;
+      float cResizingFixedHorizontal;
+      bool cResizingVertical;
+      float cResizingFixedVertical;
     };
     
     class DeleteTool : public ILayoutTool {
@@ -329,7 +332,8 @@ namespace IsoRealms::UI {
     void selectComponent(LayoutComponent* component);
     void resizeComponentHorizontal(float fixed, float x);
     void resizeComponentVertical(float fixed, float y);
-    void adjustComponentOffset(Handle handle, float x, float y);
+    void offsetComponentHorizontal(float fixed, float x);
+    void offsetComponentVertical(float fixed, float y);
     void updateSelectedComponentEdges();
     float getHandleXOffset(Handle handle) const;
     float getHandleYOffset(Handle handle) const;

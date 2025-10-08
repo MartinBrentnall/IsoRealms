@@ -58,10 +58,13 @@ namespace IsoRealms::UI {
     cDefLinked->renderAsRelation(aspectRatio);
   }
 
-  void LayoutOffsetLinked::setAbsolute(float aspectRatio, float value) {
-    // TODO: Implement this.
+  void LayoutOffsetLinked::setAbsolute(float offset, float aspectRatio) {
+    float mComponentStart = cDefHorizontal ? cDefLinked->getLeft(aspectRatio) : cDefLinked->getBottom();
+    float mComponentEnd = cDefHorizontal ? cDefLinked->getRight(aspectRatio) : cDefLinked->getTop();
+    float mDifference = mComponentEnd - mComponentStart;
+    cDefRatio = mDifference != 0.0f ? offset / mDifference : 0.0f;
   }
-
+  
   bool LayoutOffsetLinked::renderAssetIcon() const {
     return false;
   }

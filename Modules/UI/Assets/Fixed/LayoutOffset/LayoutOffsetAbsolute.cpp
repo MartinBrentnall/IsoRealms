@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
   }
 
   void LayoutOffsetAbsolute::setAbsolute(float aspectRatio, float value) {
-    // TODO: Implement this.
+    cDefValue = value;
   }
 
   void LayoutOffsetAbsolute::renderRelation(float aspectRatio) const {

@@ -703,22 +703,15 @@ namespace IsoRealms::UI {
     updateSelectedComponentEdges();
   }
 
-  void LayoutEditor::adjustComponentOffset(Handle handle, float x, float y) {
-    switch (handle) {
-      case Handle::WEST:      cSelectedComponent->setLeftEdgeOffset(  x, cAspectRatio); break;
-      case Handle::EAST:      cSelectedComponent->setRightEdgeOffset( x, cAspectRatio); break;
-      case Handle::SOUTH:     cSelectedComponent->setBottomEdgeOffset(y);               break;
-      case Handle::NORTH:     cSelectedComponent->setTopEdgeOffset(   y);               break;
-      case Handle::SOUTHWEST: cSelectedComponent->setLeftEdgeOffset(  x, cAspectRatio);
-                              cSelectedComponent->setBottomEdgeOffset(y);               break;
-      case Handle::SOUTHEAST: cSelectedComponent->setRightEdgeOffset( x, cAspectRatio);
-                              cSelectedComponent->setBottomEdgeOffset(y);               break;
-      case Handle::NORTHWEST: cSelectedComponent->setLeftEdgeOffset(  x, cAspectRatio);
-                              cSelectedComponent->setTopEdgeOffset(   y);               break;
-      case Handle::NORTHEAST: cSelectedComponent->setRightEdgeOffset( x, cAspectRatio);
-                              cSelectedComponent->setTopEdgeOffset(   y);               break;
-      case Handle::NONE:                                                                break;
-    }
+  void LayoutEditor::offsetComponentHorizontal(float fixed, float x) {
+    cSelectedComponent->setLeftEdgeOffset(  std::min(fixed, x), cAspectRatio);
+    cSelectedComponent->setRightEdgeOffset( std::max(fixed, x), cAspectRatio);
+    updateSelectedComponentEdges();
+  }
+
+  void LayoutEditor::offsetComponentVertical(float fixed, float y) {
+    cSelectedComponent->setBottomEdgeOffset(std::min(fixed, y));
+    cSelectedComponent->setTopEdgeOffset(   std::max(fixed, y));
     updateSelectedComponentEdges();
   }
 
@@ -945,16 +938,39 @@ namespace IsoRealms::UI {
     switch (event.type) {
       case sf::Event::JoystickButtonPressed: {
         switch (event.joystickButton.button) {
-          case 0:  cDraggingHandle = cParent.cSelectedComponentClosestHandle; return true;
-          default:                                                            break;
+          case 0: {
+            switch (cParent.cSelectedComponentClosestHandle) {
+              case Handle::WEST:      cResizingHorizontal = true;                            cResizingFixedHorizontal = cParent.cSelectedComponentRight;                                                            break;
+              case Handle::EAST:      cResizingHorizontal = true;                            cResizingFixedHorizontal = cParent.cSelectedComponentLeft;                                                             break;
+              case Handle::SOUTH:                                  cResizingVertical = true;                                                             cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
+              case Handle::NORTH:                                  cResizingVertical = true;                                                             cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::SOUTHWEST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentRight; cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
+              case Handle::SOUTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
+              case Handle::NORTHWEST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentRight; cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::NORTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::NONE:                                                                                                                                                                                    break;
+            }
+            break;
+          }
+
+          default: {
+            break;
+          }
         }
         break;
       }
 
       case sf::Event::JoystickButtonReleased: {
         switch (event.joystickButton.button) {
-          case 0:  cDraggingHandle = Handle::NONE; return true;
-          default:                                 break;
+          case 0: {
+            cResizingHorizontal = false;
+            cResizingVertical   = false;
+            break;
+          }
+
+          default: {
+            break;
+          }
         }
         break;
       }
@@ -967,9 +983,14 @@ namespace IsoRealms::UI {
   }
   
   void LayoutEditor::OffsetTool::update(unsigned int milliseconds) {
-    float mX = cParent.snapX(-cParent.cPanX.animation() + cParent.getHandleXOffset(cDraggingHandle));
-    float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(cDraggingHandle));
-    cParent.adjustComponentOffset(cDraggingHandle, mX, mY);
+    if (cResizingHorizontal) {
+      float mX = cParent.snapX(-cParent.cPanX.animation() + cParent.getHandleXOffset(-cParent.cPanX.animation() < cResizingFixedHorizontal ? Handle::WEST : Handle::EAST));
+      cParent.offsetComponentHorizontal(cResizingFixedHorizontal, mX);
+    }
+    if (cResizingVertical) {
+      float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(-cParent.cPanY.animation() < cResizingFixedVertical ? Handle::SOUTH : Handle::NORTH));
+      cParent.offsetComponentVertical(cResizingFixedVertical, mY);
+    }
   }
 
   void LayoutEditor::OffsetTool::renderSelection() const {
