@@ -185,7 +185,7 @@ namespace IsoRealms::UI {
 
     // Render the layout itself.
     glPushMatrix();    
-    cLayout.renderEditing(cAspectRatio);
+    cLayout.renderEditing(cZoomFactor.animation(), cAspectRatio);
     glPopMatrix();
     glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -313,7 +313,7 @@ namespace IsoRealms::UI {
                 float mX = mLocation.getX() / cZoomFactor.animation() - cPanX.animation();
                 float mY = mLocation.getY() / cZoomFactor.animation() - cPanY.animation();
                 if (cCycleSelection) {
-                  selectComponent(cLayout.pickNextComponent(mX, mY, cAspectRatio, cSelectedComponent));
+                  selectComponent(cLayout.pickNextComponent(mX, mY, cZoomFactor.animation(), cAspectRatio, cSelectedComponent));
                 } else {
                   if (cSelectedComponent != nullptr) {// TODO && cSelectedComponent->pickHandle(mX, mY, cZoomFactor.animation(), cAspectRatio)) {
                     cDragging = true;
@@ -321,7 +321,7 @@ namespace IsoRealms::UI {
                     cPreviousMouseY = event.mouseButton.y;
                     return true;
                   }
-                  selectComponent(cLayout.pickComponent(mX, mY, cAspectRatio));
+                  selectComponent(cLayout.pickComponent(mX, mY, cZoomFactor.animation(), cAspectRatio));
                 }
               }
               if (cSelectedComponent == nullptr || cSelectionOverride || cDrawComponent) {
@@ -487,12 +487,12 @@ namespace IsoRealms::UI {
         case sf::Event::JoystickButtonPressed: {
           switch (event.joystickButton.button) {
             case 4: {
-              selectComponent(cLayout.pickPreviousComponent(-cPanX.animation(), -cPanY.animation(), cAspectRatio, cSelectedComponent));
+              selectComponent(cLayout.pickPreviousComponent(-cPanX.animation(), -cPanY.animation(), cZoomFactor.animation(), cAspectRatio, cSelectedComponent));
               break;
             }
 
             case 5: {
-              selectComponent(cLayout.pickNextComponent(-cPanX.animation(), -cPanY.animation(), cAspectRatio, cSelectedComponent));
+              selectComponent(cLayout.pickNextComponent(-cPanX.animation(), -cPanY.animation(), cZoomFactor.animation(), cAspectRatio, cSelectedComponent));
               break;
             }
           }

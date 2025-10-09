@@ -82,10 +82,10 @@ namespace IsoRealms::UI {
     std::string getName(const LayoutComponent* component) const;
     void setName(LayoutComponent* component, const std::string& name);
     std::vector<std::string> getAvailableRelativeNames(LayoutComponent* component);
-    void renderEditing(float aspectRatio) const;
-    LayoutComponent* pickComponent(float x, float y, float aspectRatio) const;
-    LayoutComponent* pickPreviousComponent(float x, float y, float aspectRatio, LayoutComponent* current) const;
-    LayoutComponent* pickNextComponent(float x, float y, float aspectRatio, LayoutComponent* current) const;
+    void renderEditing(float scale, float aspectRatio) const;
+    LayoutComponent* pickComponent(float x, float y, float scale, float aspectRatio) const;
+    LayoutComponent* pickPreviousComponent(float x, float y, float scale, float aspectRatio, LayoutComponent* current) const;
+    LayoutComponent* pickNextComponent(float x, float y, float scale, float aspectRatio, LayoutComponent* current) const;
 
     private:
 

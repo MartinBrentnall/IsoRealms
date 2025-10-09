@@ -114,29 +114,32 @@ namespace IsoRealms::UI {
     return mReturnValue;
   }
 
-  void Layout::renderEditing(float aspectRatio) const {
+  void Layout::renderEditing(float scale, float aspectRatio) const {
+    for (LayoutComponent* mComponent : cComponentsByOrder) {
+      mComponent->renderRegion(scale, aspectRatio);
+    }
     for (LayoutComponent* mComponent : cComponentsByOrder) {
       mComponent->renderEditor(1.0f, aspectRatio);
     }
   }
 
-  LayoutComponent* Layout::pickComponent(float x, float y, float aspectRatio) const {
+  LayoutComponent* Layout::pickComponent(float x, float y, float scale, float aspectRatio) const {
     for (LayoutComponent* mComponent : std::ranges::views::reverse(cComponentsByOrder)) {
-      if (mComponent->contains(x, y, aspectRatio)) {
+      if (mComponent->contains(x, y, scale, aspectRatio)) {
         return mComponent;
       }
     }
     return nullptr;
   }
 
-  LayoutComponent* Layout::pickPreviousComponent(float x, float y, float aspectRatio, LayoutComponent* current) const {
+  LayoutComponent* Layout::pickPreviousComponent(float x, float y, float scale, float aspectRatio, LayoutComponent* current) const {
     if (current == nullptr) {
-      return pickComponent(x, y, aspectRatio);
+      return pickComponent(x, y, scale, aspectRatio);
     }
     LayoutComponent* mFirstComponent = nullptr;
     bool mMatchedCurrent = false;
     for (LayoutComponent* mComponent : cComponentsByOrder) {
-      if (mComponent->contains(x, y, aspectRatio)) {
+      if (mComponent->contains(x, y, scale, aspectRatio)) {
         if (mMatchedCurrent) {
           return mComponent;
         }
@@ -151,11 +154,11 @@ namespace IsoRealms::UI {
     return mFirstComponent;
   }
 
-  LayoutComponent* Layout::pickNextComponent(float x, float y, float aspectRatio, LayoutComponent* current) const {
+  LayoutComponent* Layout::pickNextComponent(float x, float y, float scale, float aspectRatio, LayoutComponent* current) const {
     LayoutComponent* mFirstComponent = nullptr;
     bool mMatchedCurrent = false;
     for (LayoutComponent* mComponent : std::ranges::views::reverse(cComponentsByOrder)) {
-      if (mComponent->contains(x, y, aspectRatio)) {
+      if (mComponent->contains(x, y, scale, aspectRatio)) {
         if (mMatchedCurrent) {
           return mComponent;
         }

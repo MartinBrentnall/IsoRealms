@@ -35,6 +35,7 @@ namespace IsoRealms::UI {
     void reset();
     void registerAssets(ResourceAssetRegistry& assets, const std::string& name);
     void render(float scale, float aspectRatio);
+    void renderRegion(float scale, float aspectRatio);
     void renderEditor(float scale, float aspectRatio);
     void save(JSONObject object) const;
 //    bool pickHandle(float x, float y, float scale, float aspectRatio);
@@ -53,7 +54,7 @@ namespace IsoRealms::UI {
 //    void renderEditingHandles(float aspectRatio, float scale);
     
     void renderAsRelation(float aspectRatio) const;
-    bool contains(float x, float y, float aspectRatio);
+    bool contains(float x, float y, float scale, float aspectRatio);
     bool isRelatedTo(LayoutComponent* component) const;
     bool isHorizontalEdge(const LayoutComponentEdge& edge) const;
     bool isPositiveEdge(const LayoutComponentEdge& edge) const;

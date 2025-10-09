@@ -80,6 +80,16 @@ namespace IsoRealms::UI {
     }
   }
 
+  void LayoutComponent::renderRegion(float scale, float aspectRatio) {
+    float mAllowedDistance = 0.02f / scale;
+    float mLeft        = cDefLeftEdge.getLocation(aspectRatio)  - mAllowedDistance;
+    float mRight       = cDefRightEdge.getLocation(aspectRatio) + mAllowedDistance;
+    float mBottom      = cDefBottomEdge.getLocation(1.0f)       - mAllowedDistance;
+    float mTop         = cDefTopEdge.getLocation(1.0f)          + mAllowedDistance;
+    glColor4f(0.5f, 0.0f, 0.0f, 0.5f);
+    Utils::renderRoundedRectangleLines(mLeft, mBottom, mRight, mTop, 0.02f / scale);
+  }
+
   void LayoutComponent::renderEditor(float scale, float aspectRatio) {
     float mLeft        = cDefLeftEdge.getLocation(aspectRatio);
     float mRight       = cDefRightEdge.getLocation(aspectRatio);
@@ -247,8 +257,9 @@ namespace IsoRealms::UI {
   //   }
   // }
 
-  bool LayoutComponent::contains(float x, float y, float aspectRatio) {
-    return CollisionUtils::contains(x, y, cDefLeftEdge.getLocation(aspectRatio), cDefRightEdge.getLocation(aspectRatio), cDefBottomEdge.getLocation(1.0f), cDefTopEdge.getLocation(1.0f));
+  bool LayoutComponent::contains(float x, float y, float scale, float aspectRatio) {
+    float mAllowedDistance = 0.02f / scale;
+    return CollisionUtils::contains(x, y, cDefLeftEdge.getLocation(aspectRatio) - mAllowedDistance, cDefRightEdge.getLocation(aspectRatio) + mAllowedDistance, cDefBottomEdge.getLocation(1.0f) - mAllowedDistance, cDefTopEdge.getLocation(1.0f) + mAllowedDistance);
   }
   
   bool LayoutComponent::isRelatedTo(LayoutComponent* component) const {
