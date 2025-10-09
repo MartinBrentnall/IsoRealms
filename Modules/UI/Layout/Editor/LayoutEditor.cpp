@@ -122,6 +122,7 @@ namespace IsoRealms::UI {
               {Handle::SOUTHWEST, [this]() {return Point2D(cSelectedComponentLeft  - cEditHandleRadius,               cSelectedComponentBottom - cEditHandleRadius);}},
               {Handle::SOUTHEAST, [this]() {return Point2D(cSelectedComponentRight + cEditHandleRadius,               cSelectedComponentBottom - cEditHandleRadius);}},
               {Handle::NORTHEAST, [this]() {return Point2D(cSelectedComponentRight + cEditHandleRadius,               cSelectedComponentTop    + cEditHandleRadius);}},
+              {Handle::CENTER,    [this]() {return Point2D((cSelectedComponentLeft + cSelectedComponentRight) / 2.0f, (cSelectedComponentBottom + cSelectedComponentTop) / 2.0f);}},
             } {
     cToolbar.selectToolRelative(0);
   }
@@ -703,6 +704,34 @@ namespace IsoRealms::UI {
     updateSelectedComponentEdges();
   }
 
+  void LayoutEditor::moveComponent(Handle handle, float x, float y) {
+    float mWidth = cSelectedComponentRight - cSelectedComponentLeft;
+    float mHeight = cSelectedComponentTop - cSelectedComponentBottom;
+
+    if (handle == Handle::WEST || handle == Handle::NORTHWEST || handle == Handle::SOUTHWEST) {
+      cSelectedComponent->setLeftEdgeLocation( x,          cAspectRatio);
+      cSelectedComponent->setRightEdgeLocation(x + mWidth, cAspectRatio);
+    } else if (handle == Handle::EAST || handle == Handle::NORTHEAST || handle == Handle::SOUTHEAST) {
+      cSelectedComponent->setLeftEdgeLocation( x - mWidth, cAspectRatio);
+      cSelectedComponent->setRightEdgeLocation(x,          cAspectRatio);
+    } else {
+      cSelectedComponent->setLeftEdgeLocation( x - mWidth / 2.0f, cAspectRatio);
+      cSelectedComponent->setRightEdgeLocation(x + mWidth / 2.0f, cAspectRatio);
+    }
+    
+    if (handle == Handle::SOUTH || handle == Handle::SOUTHWEST || handle == Handle::SOUTHEAST) {
+      cSelectedComponent->setBottomEdgeLocation(y);
+      cSelectedComponent->setTopEdgeLocation(   y + mHeight);
+    } else if (handle == Handle::NORTH || handle == Handle::NORTHWEST || handle == Handle::NORTHEAST) {
+      cSelectedComponent->setBottomEdgeLocation(y - mHeight);
+      cSelectedComponent->setTopEdgeLocation(   y);
+    } else {
+      cSelectedComponent->setBottomEdgeLocation(y - mHeight / 2.0f);
+      cSelectedComponent->setTopEdgeLocation(   y + mHeight / 2.0f);
+    }
+    updateSelectedComponentEdges();
+  }
+
   void LayoutEditor::offsetComponentHorizontal(float fixed, float x) {
     cSelectedComponent->setLeftEdgeOffset(  std::min(fixed, x), cAspectRatio);
     cSelectedComponent->setRightEdgeOffset( std::max(fixed, x), cAspectRatio);
@@ -712,6 +741,34 @@ namespace IsoRealms::UI {
   void LayoutEditor::offsetComponentVertical(float fixed, float y) {
     cSelectedComponent->setBottomEdgeOffset(std::min(fixed, y));
     cSelectedComponent->setTopEdgeOffset(   std::max(fixed, y));
+    updateSelectedComponentEdges();
+  }
+
+  void LayoutEditor::offfsetComponent(Handle handle, float x, float y) {
+    float mWidth = cSelectedComponentRight - cSelectedComponentLeft;
+    float mHeight = cSelectedComponentTop - cSelectedComponentBottom;
+
+    if (handle == Handle::WEST || handle == Handle::NORTHWEST || handle == Handle::SOUTHWEST) {
+      cSelectedComponent->setLeftEdgeOffset( x,          cAspectRatio);
+      cSelectedComponent->setRightEdgeOffset(x + mWidth, cAspectRatio);
+    } else if (handle == Handle::EAST || handle == Handle::NORTHEAST || handle == Handle::SOUTHEAST) {
+      cSelectedComponent->setLeftEdgeOffset( x - mWidth, cAspectRatio);
+      cSelectedComponent->setRightEdgeOffset(x,          cAspectRatio);
+    } else {
+      cSelectedComponent->setLeftEdgeOffset( x - mWidth / 2.0f, cAspectRatio);
+      cSelectedComponent->setRightEdgeOffset(x + mWidth / 2.0f, cAspectRatio);
+    }
+    
+    if (handle == Handle::SOUTH || handle == Handle::SOUTHWEST || handle == Handle::SOUTHEAST) {
+      cSelectedComponent->setBottomEdgeOffset(y);
+      cSelectedComponent->setTopEdgeOffset(   y + mHeight);
+    } else if (handle == Handle::NORTH || handle == Handle::NORTHWEST || handle == Handle::NORTHEAST) {
+      cSelectedComponent->setBottomEdgeOffset(y - mHeight);
+      cSelectedComponent->setTopEdgeOffset(   y);
+    } else {
+      cSelectedComponent->setBottomEdgeOffset(y - mHeight / 2.0f);
+      cSelectedComponent->setTopEdgeOffset(   y + mHeight / 2.0f);
+    }
     updateSelectedComponentEdges();
   }
 
@@ -873,8 +930,14 @@ namespace IsoRealms::UI {
               case Handle::SOUTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
               case Handle::NORTHWEST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentRight; cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
               case Handle::NORTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::CENTER:                                                                                                                                                                                  break;
               case Handle::NONE:                                                                                                                                                                                    break;
             }
+            break;
+          }
+
+          case 1: {
+            cMovingHandle = cParent.cSelectedComponentClosestHandle;
             break;
           }
 
@@ -890,6 +953,11 @@ namespace IsoRealms::UI {
           case 0: {
             cResizingHorizontal = false;
             cResizingVertical   = false;
+            break;
+          }
+
+          case 1: {
+            cMovingHandle = Handle::NONE;
             break;
           }
 
@@ -915,6 +983,12 @@ namespace IsoRealms::UI {
     if (cResizingVertical) {
       float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(-cParent.cPanY.animation() < cResizingFixedVertical ? Handle::SOUTH : Handle::NORTH));
       cParent.resizeComponentVertical(cResizingFixedVertical, mY);
+    }
+
+    if (cMovingHandle != Handle::NONE) {
+      float mX = cParent.snapX(-cParent.cPanX.animation() + cParent.getHandleXOffset(cMovingHandle));
+      float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(cMovingHandle));
+      cParent.moveComponent(cMovingHandle, mX, mY);
     }
   }
 
@@ -948,8 +1022,14 @@ namespace IsoRealms::UI {
               case Handle::SOUTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentTop;    break;
               case Handle::NORTHWEST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentRight; cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
               case Handle::NORTHEAST: cResizingHorizontal = true;  cResizingVertical = true; cResizingFixedHorizontal = cParent.cSelectedComponentLeft;  cResizingFixedVertical = cParent.cSelectedComponentBottom; break;
+              case Handle::CENTER:                                                                                                                                                                                  break;
               case Handle::NONE:                                                                                                                                                                                    break;
             }
+            break;
+          }
+
+          case 1: {
+            cMovingHandle = cParent.cSelectedComponentClosestHandle;
             break;
           }
 
@@ -965,6 +1045,11 @@ namespace IsoRealms::UI {
           case 0: {
             cResizingHorizontal = false;
             cResizingVertical   = false;
+            break;
+          }
+
+          case 1: {
+            cMovingHandle = Handle::NONE;
             break;
           }
 
@@ -990,6 +1075,12 @@ namespace IsoRealms::UI {
     if (cResizingVertical) {
       float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(-cParent.cPanY.animation() < cResizingFixedVertical ? Handle::SOUTH : Handle::NORTH));
       cParent.offsetComponentVertical(cResizingFixedVertical, mY);
+    }
+
+    if (cMovingHandle != Handle::NONE) {
+      float mX = cParent.snapX(-cParent.cPanX.animation() + cParent.getHandleXOffset(cMovingHandle));
+      float mY = cParent.snapY(-cParent.cPanY.animation() + cParent.getHandleYOffset(cMovingHandle));
+      cParent.offfsetComponent(cMovingHandle, mX, mY);
     }
   }
 

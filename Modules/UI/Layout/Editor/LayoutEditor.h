@@ -77,7 +77,8 @@ namespace IsoRealms::UI {
       SOUTHWEST,
       SOUTHEAST,
       NORTHWEST,
-      NORTHEAST
+      NORTHEAST,
+      CENTER
     };
 
     class ILayoutTool {
@@ -145,6 +146,7 @@ namespace IsoRealms::UI {
       float cResizingFixedHorizontal;
       bool cResizingVertical;
       float cResizingFixedVertical;
+      Handle cMovingHandle;
     };
     
     class OffsetTool : public ILayoutTool {
@@ -166,6 +168,7 @@ namespace IsoRealms::UI {
       float cResizingFixedHorizontal;
       bool cResizingVertical;
       float cResizingFixedVertical;
+      Handle cMovingHandle;
     };
     
     class DeleteTool : public ILayoutTool {
@@ -332,8 +335,10 @@ namespace IsoRealms::UI {
     void selectComponent(LayoutComponent* component);
     void resizeComponentHorizontal(float fixed, float x);
     void resizeComponentVertical(float fixed, float y);
+    void moveComponent(Handle handle, float x, float y);
     void offsetComponentHorizontal(float fixed, float x);
     void offsetComponentVertical(float fixed, float y);
+    void offfsetComponent(Handle handle, float x, float y);
     void updateSelectedComponentEdges();
     float getHandleXOffset(Handle handle) const;
     float getHandleYOffset(Handle handle) const;
