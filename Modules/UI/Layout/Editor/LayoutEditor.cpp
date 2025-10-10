@@ -165,7 +165,7 @@ namespace IsoRealms::UI {
     renderGrid( 0.0f,                 0.5f * cAspectRatio);
     renderGrid( 1.0f * cAspectRatio,  0.5f * cAspectRatio);
     glEnd();
-    
+
     // Guidelines
     glEnable(GL_LINE_STIPPLE);
     glLineStipple(1, 255);
@@ -180,6 +180,15 @@ namespace IsoRealms::UI {
     glVertex2f( 1.0f * cAspectRatio,  0.0f);
     glVertex2f( 0.0f,                -1.0f);
     glVertex2f( 0.0f,                 1.0f);
+    glEnd();
+    
+    // Editing bounds
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(-5.0f, -5.0f);
+    glVertex2f(-5.0f,  5.0f);
+    glVertex2f( 5.0f,  5.0f);
+    glVertex2f( 5.0f, -5.0f);
     glEnd();
     glDisable(GL_LINE_STIPPLE);
 
@@ -252,8 +261,8 @@ namespace IsoRealms::UI {
 
   void LayoutEditor::updateScreen(unsigned int milliseconds) {
     if (cCursorSpeedX != 0.0f || cCursorSpeedY != 0) {
-      cPanX += -cCursorSpeedX / cZoomFactor.animation();
-      cPanY += -cCursorSpeedY / cZoomFactor.animation();
+      cPanX = std::clamp(cPanX.value() + -cCursorSpeedX / cZoomFactor.animation(), -5.0f, 5.0f);
+      cPanY = std::clamp(cPanY.value() + -cCursorSpeedY / cZoomFactor.animation(), -5.0f, 5.0f);
     }
     if (cZoomSpeed != 0.0f) {
       cZoomFactorStep = std::clamp(cZoomFactorStep + cZoomSpeed, ZOOM_LIMIT_MINIMUM, ZOOM_LIMIT_MAXIMUM);
@@ -306,7 +315,6 @@ namespace IsoRealms::UI {
                 cDrawingStarted = true;
                 cDrawingStartX = snapX(mX);
                 cDrawingStartY = snapY(mY);
-                std::cout << "DRAW: " << cDrawingStartX << " , " << cDrawingStartY << std::endl;
               } else if (!cSelectionOverride) {
                 Application& mApplication = cLayout.getUI().getProject().getApplication();
                 Point2D mLocation = mApplication.normalise(event.mouseButton.x, event.mouseButton.y);
@@ -388,8 +396,8 @@ namespace IsoRealms::UI {
               Application& mApplication = cLayout.getUI().getProject().getApplication();
               float mXPan = mApplication.normalise(event.mouseMove.x - cPreviousMouseX);
               float mYPan = mApplication.normalise(event.mouseMove.y - cPreviousMouseY);
-              cPanX = cPanX.value() + mXPan / cZoomFactor.value();
-              cPanY = cPanY.value() - mYPan / cZoomFactor.value();
+              cPanX = std::clamp(cPanX.value() + mXPan / cZoomFactor.value(), -5.0f, 5.0f);
+              cPanY = std::clamp(cPanY.value() - mYPan / cZoomFactor.value(), -5.0f, 5.0f);
               cPreviousMouseX = event.mouseMove.x;
               cPreviousMouseY = event.mouseMove.y;
             }
