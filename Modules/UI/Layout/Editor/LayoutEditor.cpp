@@ -626,7 +626,7 @@ namespace IsoRealms::UI {
   }
 
   void LayoutEditor::openProperties() {
-    const Metadata& mMetadata = cLayout.getUI().getMetadata("LayoutEditor");
+    const Metadata& mMetadata = cLayout.getResourceData().getMetadata();
     if (cSelectedComponent != nullptr) {
       cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getResourceData(), [this, &mMetadata](PropertyMaker& owner) {
         cSelectedComponent->getProperties(owner, mMetadata);

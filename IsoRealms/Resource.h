@@ -205,6 +205,10 @@ namespace IsoRealms {
       return *this;
     }
 
+    const Metadata& getMetadata() const override {
+      return cParent.getMetadata();
+    }
+
     IBindingRegistry* getBindingRegistry() override {
       return nullptr;
     }

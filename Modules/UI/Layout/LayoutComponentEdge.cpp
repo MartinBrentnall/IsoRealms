@@ -92,8 +92,8 @@ namespace IsoRealms::UI {
   }
   
   void LayoutComponentEdge::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<LayoutLocation>(metadata.getPropertyData("Location"), cDefLocation);
-    owner.createPropertyAsset<LayoutOffset>(  metadata.getPropertyData("Offset"),   cDefOffset);
+    owner.createPropertyAsset<LayoutLocation>(metadata.getPropertyData("ComponentEdgeLocation"), cDefLocation);
+    owner.createPropertyAsset<LayoutOffset>(  metadata.getPropertyData("ComponentEdgeOffset"),   cDefOffset);
   }
 
   void LayoutComponentEdge::renderRelation(float aspectRatio) const {

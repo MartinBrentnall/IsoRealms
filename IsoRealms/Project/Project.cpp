@@ -552,6 +552,10 @@ namespace IsoRealms {
     return *this;
   }
 
+  const Metadata& Project::getMetadata() const {
+    return cApplication.getMetadata("Application");
+  }
+
   IResourceData& Project::getResourceData() {
     return *this;
   }

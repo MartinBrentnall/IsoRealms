@@ -21,6 +21,7 @@
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Exception/ResourceInitException.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/System.h"
 
@@ -66,9 +67,8 @@ namespace IsoRealms {
 #endif
       mInitLuaInterfacesFunction(luaState);
     }
-    cModule = mCreateFunction(&project, this);
     
-    // Load resource type metadata.
+    // Find the metadata file.
     std::locale mLocale("");
     std::string mMetadataPath = "Metadata/" + cName + "/" + cName + "." + mLocale.name();
     std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
@@ -85,11 +85,24 @@ namespace IsoRealms {
                           : mLastDashIndex;
     }
 
-    if (!System::fileExists(mMetadataPath + ".json", false)) {
-      mMetadataPath = "Metadata/" + cName + "/" + cName + ".en";
-    }
+    // Load the metadata file.
     JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+    
+    // Load the module and asset metadata.  This needs to be done before the module is created.
     cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
+    JSONObject mAssetsObject = mMetadataDocument.getObject(JSON_ASSETS);
+    for (JSONThing mAssetThing : mAssetsObject) {
+      JSONObject mAssetObject = mAssetThing.getValue();
+      std::string mAssetName = mAssetThing.getName();
+      cAssetMetadata[mAssetName] = std::make_unique<Metadata>();
+      JSONObject mPropertiesObject = mAssetObject.getObject(JSON_PROPERTIES);
+      cAssetMetadata[mAssetName]->load(mPropertiesObject);
+    }
+
+    // Create the module.
+    cModule = mCreateFunction(&project, this);
+
+    // Load the resource type metadata.  This needs to be done after the module is created.
     JSONObject mResourceTypesObject = mMetadataDocument.getObject(JSON_RESOURCES);
     for (std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
       JSONObject mResourceTypeObject = mResourceTypesObject.getObject(mResourceType.first);
@@ -183,7 +196,15 @@ namespace IsoRealms {
   }
 
   const Metadata& Module::getAssetMetadata(const std::string& key) const {
-    return cAssetMetadata;
+    std::map<std::string, std::unique_ptr<Metadata>>::const_iterator it = cAssetMetadata.find(key);
+    if (it == cAssetMetadata.end()) {
+      std::cout << "ERROR: Module::getAssetMetadata: Asset metadata for key \"" << key << "\" not found in module \"" << cName << "\"." << std::endl;
+      for (const std::pair<const std::string, std::unique_ptr<Metadata>>& mAssetMetadata : cAssetMetadata) {
+        std::cout << "  " << mAssetMetadata.first << std::endl;
+      }
+//      throw ArgumentException("ERROR: Module::getAssetMetadata: Asset metadata for key \"" + key + "\" not found in module \"" + cName + "\".");
+    }
+    return it != cAssetMetadata.end() ? *it->second : cModuleMetadata;
   }
 
   std::string Module::getName() {
@@ -272,6 +293,10 @@ namespace IsoRealms {
 
   IActionClient& Module::getDummyActionClient() {
     return *this;
+  }
+
+  const Metadata& Module::getMetadata() const {
+    return cModuleMetadata;
   }
 
   IResourceData& Module::getResourceData() {

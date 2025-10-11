@@ -4,91 +4,123 @@
     "LayoutLocationAbsolute": {
       "description": "Positions a component edge on the screen at a location from -1.0 to +1.0.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Value": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."}
       }
     },
     "LayoutLocationRelative": {
       "description": "Positions a component edge on the screen at a location relative to another component.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Value": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."},
+        "Relative": {"name": "Relative", "description": "Component to which this edge is connected."}
       }
     },
     "LayoutOffsetAbsolute": {
       "description": "Offset a component edge using an absolute value, where the screen height is 2.0 (-1.0 to +1.0).",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Value": {"name": "Value", "description": "Value of this component edge as an offset from the edge of the screen, from -1.0 to +1.0 on the vertical axis, and values depending on screen aspect ratio on the horizontal axis."}
       }
     },
-    "LayoutLocationLinked": {
+    "LayoutOffsetLinked": {
       "description": "Offset a component edge by an amount proportional to the dimension of another component.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Orientation": {"name": "Orientation", "description": "Orientation of the linked component to use."},
+        "LinkedTo": {"name": "Linked To", "description": "The component to which this component edge offset is linked."},
+        "Ratio": {"name": "Ratio", "description": "The value of this component edge offset, where -1.0 is the top or left of the linked component, and +1.0 is the bottom or right of the linked component."}
       }
     },
     "MenuItemAction": {
       "description": "A menu item that shows a label and performs an action when selected.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "Label": {"name": "Label", "description": "Label for this menu item."},
+        "OnSelect": {"name": "On Selection", "description": "Action to perform upon selecting this action menu item."}
       }
     },
     "MenuItemBoolean": {
       "description": "A menu item that can be toggled between two states.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "Label": {"name": "Label", "description": "Label for this menu item."},
+        "TrueLabel": {"name": "True Label", "description": "Label to be shown as the value of this boolean menu item when set to true."},
+        "FalseLabel": {"name": "False Label", "description": "Label to be shown as the value of this boolean menu item when set to false."}
       }
     },
     "MenuItemDigitalInput": {
       "description": "A menu item that allows a digital input to be configured.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "ID": {"name": "ID", "description": "Unique identifier of this menu item."}
       }
     },
     "MenuItemDisplayResolution": {
       "description": "A menu item that allows a display configuration to be selected.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "Label": {"name": "Label", "description": "Label for this menu item."}
       }
     },
     "MenuItemFileList": {
       "description": "A menu item that allows a file to be selected from a list.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "Folder": {"name": "Folder", "description": "Folder from which to list files in this menu."},
+        "UserData": {"name": "User Folder", "description": "Determine whether the folder is relative to program data or user data."},
+        "OnSelection": {"name": "On Selection", "description": "Action to perform upon selecting a file."}
+      }
+    },
+    "MenuItemLauncherList": {
+      "description": "A menu item that allows a application launcher to be selected from a list.",
+      "properties": {
+        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "OnSelection": {"name": "On Selection", "description": "Action to perform upon selecting an application launcher."}
       }
     },
     "MenuItemSlider": {
       "description": "A menu item that allows a value to be adjusted by a slider.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "Label": {"name": "Label", "description": "Label for this menu item."},
+        "Minimum": {"name": "Minimum", "description": "The minimum value of this slider."},
+        "Maximum": {"name": "Maximum", "description": "The maximum value of this slider."},
+        "Steps": {"name": "Steps", "description": "The number of steps it takes to traverse from the minimum value of this slider to the maximum value."},
+        "OnChange": {"name": "On Change", "description": "Action to perform upon changing the value of this slider."}
       }
     },
     "ScreenGradient": {
       "description": "A visual component that renders a rectangle that fades from a colour on one side to another colour on the other side.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "ColourA": {"name": "Colour A", "description": "Colour at the start of the gradient."},
+        "ColourB": {"name": "Colour B", "description": "Colour at the end of the gradient."},
+        "Orientation": {"name": "Orientation", "description": "Orientation of the gradient.  This can be used to create vertical or horizontal gradients."}
       }
     },
     "ScreenModel": {
       "description": "A visual component that renders a model.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Model": {"name": "Model", "description": "Model to render."}
       }
     },
     "ScreenPanel": {
       "description": "A visual component that renders a rounded rectangle.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Colour": {"name": "Colour", "description": "Colour of the panel."},
+        "CornerSize": {"name": "Corner Size", "description": "Size of the corners of the panel."}
       }
     },
     "ScreenText": {
       "description": "A visual component that renders text.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Value": {"name": "Value", "description": "Text to render."},
+        "Font": {"name": "Font", "description": "Font to use for rendering the text."},
+        "Alignment": {"name": "Alignment", "description": "Alignment of the text."},
+        "Colour": {"name": "Colour", "description": "Colour of the text."},
+        "ShadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text."}
       }
     },
     "StringTime": {
       "description": "Converts a millisecond value into a formatted time string.",
       "properties": {
-        "": {"name": "", "description": ""}
+        "Value": {"name": "Value", "description": "Value to convert to a time string."},
+        "FormatString": {"name": "Format String", "description": "Format string to use for the time string."}
       }
     }
   },

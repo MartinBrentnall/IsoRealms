@@ -210,6 +210,7 @@ namespace IsoRealms {
     const Project& getProject() const override;
     Project& getAssetManager() override;
     IActionClient& getDummyActionClient() override;
+    const Metadata& getMetadata() const override;
     
     /****************************\
      * Implements IActionClient * TODO: Should these be here???

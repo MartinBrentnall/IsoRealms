@@ -1,6 +1,26 @@
 {
   "description": "Basic functionality for use in any application",
   "assets": {
+    "SequenceTrackAction": {
+      "description": "A track that can be used to trigger actions.",
+      "properties": {
+      }
+    },
+    "SequenceTrackAudio": {
+      "description": "A track that can be used to play audio.",
+      "properties": {
+      }
+    },
+    "SequenceTrackColour": {
+      "description": "A track that can be used to change a colour.",
+      "properties": {
+      }
+    },
+    "SequenceTrackFloat": {
+      "description": "A track that can be used to change a float value.",
+      "properties": {
+      }
+    }
   },
   "resources": {
     "AnalogueInput": {

@@ -39,6 +39,13 @@
         "Zoom": {"name": "Zoom", "description": "Use the zoom of the specified camera to zoom this camera."}
       }
     },
+    "SurfacePatternComposite": {
+      "description": "A composite pattern that combines multiple surface patterns.",
+      "properties": {
+        "Patterns": {"name": "Patterns", "description": "The patterns to combine."},
+        "Pattern": {"name": "Pattern", "description": "A pattern to combine."}
+      }
+    },
     "SurfacePatternOutline": {
       "description": "Renders outlines around surfacess to give them a cartoonish appearance.",
       "properties": {
@@ -64,6 +71,13 @@
         "Top": {"name": "Top", "description": "Texture applied to top part of walls."},
         "Middle": {"name": "Middle", "description": "Texture applied between top and bottom part of walls."},
         "Bottom": {"name": "Bottom", "description": "Texture applied to bottom part of walls."}
+      }
+    },
+    "WallPatternComposite": {
+      "description": "A composite pattern that combines multiple wall patterns.",
+      "properties": {
+        "Patterns": {"name": "Patterns", "description": "The patterns to combine."},
+        "Pattern": {"name": "Pattern", "description": "A pattern to combine."}
       }
     },
     "WallPatternOutline": {

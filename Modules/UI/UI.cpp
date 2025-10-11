@@ -59,7 +59,7 @@ namespace IsoRealms::UI {
                     cProviderScreenModel(registry.getAssetMetadata("ScreenModel")),
                     cProviderScreenPanel(registry.getAssetMetadata("ScreenPanel")),
                     cProviderScreenText(registry.getAssetMetadata("ScreenText")),
-                    cProviderStringTime(registry.getAssetMetadata("ScreenTime")),
+                    cProviderStringTime(registry.getAssetMetadata("StringTime")),
                     cResourceTypeLayout(*this),
                     cResourceTypeMenu(*this),
                     cResourceTypePrompt(*this),

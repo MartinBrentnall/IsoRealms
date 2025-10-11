@@ -91,6 +91,7 @@ namespace IsoRealms {
     const Project& getProject() const override;
     Project& getAssetManager() override;
     IActionClient& getDummyActionClient() override;
+    const Metadata& getMetadata() const override;
 
     /****************************\
      * Implements IActionClient *
@@ -101,11 +102,13 @@ namespace IsoRealms {
     virtual ~Module();
 
     private:
+    inline static const std::string JSON_ASSETS        = "assets";
     inline static const std::string JSON_CONFIGURATION = "configuration";
     inline static const std::string JSON_DESCRIPTION   = "description";
     inline static const std::string JSON_INSTANCES     = "instances";
     inline static const std::string JSON_NAME          = "name";
     inline static const std::string JSON_OMISSIONS     = "omissions";
+    inline static const std::string JSON_PROPERTIES    = "properties";
     inline static const std::string JSON_RESOURCES     = "resources";
     inline static const std::string JSON_TYPE          = "type";
 
@@ -115,7 +118,8 @@ namespace IsoRealms {
     std::string cName;
     ProjectFile* cOwnerProject;
     std::string cDescription;
-    Metadata cAssetMetadata;
+    std::map<std::string, std::unique_ptr<Metadata>> cAssetMetadata;
+    Metadata cModuleMetadata;
     IModuleHandle* cModule;
 #ifdef __linux__
     void* cModuleHandle;
