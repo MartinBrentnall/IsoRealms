@@ -54,6 +54,10 @@ namespace IsoRealms {
     return true; // TODO: I think this function should not return.
   }
 
+  Project& UIManager::getProject() const {
+    return cProject;
+  }
+
   void UIManager::render(float aspectRatio) const {
     glEnable(GL_BLEND);
     
@@ -314,10 +318,6 @@ namespace IsoRealms {
   
   bool UIManager::isHidden() const {
     return cHidden;
-  }
-
-  Project& UIManager::getProject() const {
-    return cProject;
   }
 
   void UIManager::setTooltip(const std::string& text) {

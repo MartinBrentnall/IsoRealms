@@ -230,6 +230,7 @@ namespace IsoRealms::UI {
     static const float EDIT_HANDLE_RADIUS;
 
     HatHandler& cHatHandler;
+    IDialogManager& cDialogManager;
 
     const std::map<std::string, EditorAnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
     const std::map<std::string, EditorDigitalInput<LayoutEditor, SignalInputID>*> cDigitalInputsByName; /// Mapping of digital inputs by name.

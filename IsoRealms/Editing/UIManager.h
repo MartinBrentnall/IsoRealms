@@ -45,6 +45,7 @@ namespace IsoRealms {
      * Implements IDialogManager *
     \*****************************/
     bool confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) override;
+    Project& getProject() const override;
 
     void render(float aspectRatio) const;
     void update(unsigned int milliseconds);
@@ -57,7 +58,6 @@ namespace IsoRealms {
     void hide();
     void show();
     bool isHidden() const;
-    Project& getProject() const;
     void setTooltip(const std::string& text);
     float getBreadCrumbWidth() const;
 

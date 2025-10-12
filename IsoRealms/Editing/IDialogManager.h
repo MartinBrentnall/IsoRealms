@@ -22,9 +22,12 @@
 #include <string>
 
 namespace IsoRealms {
+  class Project;
+  
   class IDialogManager {
     public:
     virtual bool confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) = 0;
+    virtual Project& getProject() const = 0;
   };
 }
 

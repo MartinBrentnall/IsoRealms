@@ -24,6 +24,7 @@
 namespace IsoRealms::UI {
   LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
             cHatHandler(layout.getUI().getProject().getApplication().getHatHandler()),
+            cDialogManager(dialogManager),
             cAnalogueInputsByName({
               {"MoveViewIn",      &cDistanceInSpeed},
               {"MoveViewOut",     &cDistanceOutSpeed},
@@ -626,12 +627,17 @@ namespace IsoRealms::UI {
   }
 
   void LayoutEditor::openProperties() {
-    const Metadata& mMetadata = cLayout.getResourceData().getMetadata();
     if (cSelectedComponent != nullptr) {
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getResourceData(), [this, &mMetadata](PropertyMaker& owner) {
-        cSelectedComponent->getProperties(owner, mMetadata);
-      }), cSelectedComponent->getName() + " Configuration:");
-      cEditingProperties = true;
+      cDialogManager.getProject().updateLater([this]() {
+        cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getResourceData(), [this](PropertyMaker& owner) {
+          const Metadata& mMetadata = cLayout.getResourceData().getMetadata();
+          cSelectedComponent->getProperties(owner, mMetadata);
+          cEditingProperties = true;
+          cCursorSpeedX = 0.0f;
+          cCursorSpeedY = 0.0f;
+          cZoomSpeed = 0.0f;
+        }), cSelectedComponent->getName() + " Configuration:");
+      });
     }
   }
 
