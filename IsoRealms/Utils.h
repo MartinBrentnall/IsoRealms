@@ -120,6 +120,49 @@ namespace IsoRealms {
     static void renderRoundedRectangle(float left, float bottom, float right, float top, float curveSize);
     static void renderBezier(const Point2D& start, const Point2D& controlA, const Point2D& controlB, const Point2D& end, int resolution);
 
+    static bool naturalCompare(const std::string &a, const std::string &b) {
+      size_t mIndexA = 0;
+      size_t mIndexB = 0;
+      while (mIndexA < a.size() && mIndexB < b.size()) {
+        if (std::isdigit(a[mIndexA]) && std::isdigit(b[mIndexB])) {
+
+          // Extract the full number from a
+          size_t mEndA = mIndexA;
+          while (mEndA < a.size() && std::isdigit(a[mEndA])) {
+            ++mEndA;
+          }
+  
+          // Extract the full number from b
+          size_t mEndB = mIndexB;
+          while (mEndB < b.size() && std::isdigit(b[mEndB])) {
+            ++mEndB;
+          }
+  
+          int mNumberA = std::stoi(a.substr(mIndexA, mEndA - mIndexA));
+          int mNumberB = std::stoi(b.substr(mIndexB, mEndB - mIndexB));
+  
+          if (mNumberA != mNumberB) {
+            return mNumberA < mNumberB;
+          }
+  
+          // Numbers are equal, continue
+          mIndexA = mEndA;
+          mIndexB = mEndB;
+        } else {
+
+          // Compare non-digit characters
+          if (a[mIndexA] != b[mIndexB]) {
+            return a[mIndexA] < b[mIndexB];
+          }
+          ++mIndexA;
+          ++mIndexB;
+        }
+      }
+  
+      // If all compared characters are equal, shorter string comes first
+      return a.size() < b.size();
+    }
+    
     template <typename TYPE, typename TYPEB> static int getIndex(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
       for (std::size_t i = 0; i < vector.size(); i++) {
         if (vector[i].get() == element) {

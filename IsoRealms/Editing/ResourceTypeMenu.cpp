@@ -168,7 +168,7 @@ namespace IsoRealms {
 
     // Sort the container with the resource names.
     std::sort(mSortedResources.begin(), mSortedResources.end(), [&mGetResourceNameFunction](const std::variant<IResource*, std::string>& a, const std::variant<IResource*, std::string>& b) {
-      return mGetResourceNameFunction(a) < mGetResourceNameFunction(b);
+      return Utils::naturalCompare(mGetResourceNameFunction(a), mGetResourceNameFunction(b));
     });
 
     // Create menu items for each resource and deleted resource.
