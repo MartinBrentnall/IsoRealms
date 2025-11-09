@@ -664,7 +664,7 @@ namespace IsoRealms::Basics {
 
                 if (cCursorEvent != nullptr) {
                   cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
-                    return cCursorEvent->getEventProperties(owner, cSequence.getBasics().getMetadata("SequenceEditor"));
+                    return cCursorEvent->getEventProperties(owner);
                   }), "Event Configuration");
                   cEditingProperties = true;
                 }

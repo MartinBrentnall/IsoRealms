@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
       \**********************************/
       unsigned int getTime() const override;
       void setTime(unsigned int time) override;
-      void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
+      void getEventProperties(PropertyMaker& owner) override;
 
       private:
       SequenceTrackAudioEvent& cParent;
@@ -67,19 +67,26 @@ namespace IsoRealms::Basics {
      * Implements ISequenceTrackEvent *
     \**********************************/
     unsigned int getTime() const override;
+    unsigned int getFadeIn() const;
+    unsigned int getFadeOut() const;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
+    void getEventProperties(PropertyMaker& owner) override;
 
     private:
-    static const std::string JSON_FILE;
-    static const std::string JSON_TIME;
+    inline static const std::string JSON_FADE_IN  = "fadeIn";
+    inline static const std::string JSON_FADE_OUT = "fadeOut";
+    inline static const std::string JSON_FILE     = "value";
+    inline static const std::string JSON_TIME     = "time";
 
     SequenceTrackAudio& cParent;
 
     End cEnd;
 
     unsigned int cDefTime;
+    unsigned int cDefFadeIn;
+    unsigned int cDefFadeOut;
     File cDefFile;
+
 
     sf::Music cMusic;
   };

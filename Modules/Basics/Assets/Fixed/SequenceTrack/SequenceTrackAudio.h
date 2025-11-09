@@ -40,6 +40,7 @@ namespace IsoRealms::Basics {
     SequenceTrackAudio(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     float getVolume() const;
+    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
     void saveAssetTrack(JSONObject object) const;
 
@@ -58,6 +59,9 @@ namespace IsoRealms::Basics {
     static const std::string JSON_NAME;
     static const std::string JSON_TIME;
     static const std::string JSON_VOLUME;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // Definition data.
     Float cDefVolume; // TODO: Should be moved to instance?

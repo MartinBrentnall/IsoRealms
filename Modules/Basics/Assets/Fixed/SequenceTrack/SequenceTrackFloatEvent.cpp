@@ -18,8 +18,11 @@
  */
 #include "SequenceTrackFloatEvent.h"
 
+#include "SequenceTrackFloat.h"
+
 namespace IsoRealms::Basics {
   SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, unsigned int time, bool fade) :
+            cParent(parent),
             cDefTime(time),
             cDefValue(owner, 0.0f),
             cDefFade(fade) {
@@ -44,9 +47,10 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackFloatEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<Float>( metadata.getPropertyData("Value"), cDefValue);
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("Fade"),  [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
+  void SequenceTrackFloatEvent::getEventProperties(PropertyMaker& owner) {
+    const Metadata& mMetadata = cParent.getMetadata();
+    owner.createPropertyAsset<Float>( mMetadata.getPropertyData("Value"), cDefValue);
+    owner.createPropertyNativeBoolean(mMetadata.getPropertyData("Fade"),  [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
   }
 
   IFloat* SequenceTrackFloatEvent::getValue() const {

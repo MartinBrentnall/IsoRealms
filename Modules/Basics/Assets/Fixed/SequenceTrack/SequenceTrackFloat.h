@@ -39,6 +39,7 @@ namespace IsoRealms::Basics {
     SequenceTrackFloat(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     const Float& getStartValue() const;
+    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
     void saveAssetTrack(JSONObject object) const;
 
@@ -54,12 +55,15 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
+    void getEventProperties(PropertyMaker& owner) override;
 
     private:
 
     // JSON members.
     static const std::string JSON_START;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // Definition data.
     Float cDefStartValue;

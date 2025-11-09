@@ -22,6 +22,7 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, unsigned int time) :
+            cParent(parent),
             cDefAction(owner.getDummyActionClient()),
             cDefTime(time) {
   }
@@ -39,8 +40,9 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackActionEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<Action>(metadata.getPropertyData("Action"), cDefAction);
+  void SequenceTrackActionEvent::getEventProperties(PropertyMaker& owner) {
+    const Metadata& mMetadata = cParent.getMetadata();
+    owner.createPropertyAsset<Action>(mMetadata.getPropertyData("Action"), cDefAction);
   }
 
   void SequenceTrackActionEvent::save(JSONObject object) const {

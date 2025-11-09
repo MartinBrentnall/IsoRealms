@@ -20,11 +20,17 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackAction::SequenceTrackAction(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence) {
+            SequenceTrackBase(sequence),
+            cMetadata(metadata) {
   }
   
   SequenceTrackAction::SequenceTrackAction(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getResourceData(), sequence, object) {
+            SequenceTrackBase(sequence.getResourceData(), sequence, object),
+            cMetadata(metadata) {
+  }
+
+  const Metadata& SequenceTrackAction::getMetadata() const {
+    return cMetadata;
   }
 
   ISequenceTrackEvent* SequenceTrackAction::getEvent(unsigned int time) {

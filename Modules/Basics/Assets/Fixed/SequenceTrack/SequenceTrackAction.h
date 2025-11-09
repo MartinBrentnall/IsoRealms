@@ -35,6 +35,7 @@ namespace IsoRealms::Basics {
     SequenceTrackAction(const Metadata& metadata, Sequence& sequence);
     SequenceTrackAction(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
+    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
     void saveAssetTrack(JSONObject object) const;
 
@@ -44,5 +45,10 @@ namespace IsoRealms::Basics {
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
     void getAssetProperties(PropertyMaker& owner) override;
+
+    private:
+
+    // External interfaces.
+    const Metadata& cMetadata;
   };
 }

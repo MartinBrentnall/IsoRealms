@@ -25,6 +25,8 @@ namespace IsoRealms::Basics {
               cParent(parent),
               cEnd(*this),
               cDefTime(time),
+              cDefFadeIn(0),
+              cDefFadeOut(0),
               cDefFile(owner.getProject(), [this]() {
                 std::string mResource = cDefFile.getPath();
                 if (!cMusic.openFromFile(mResource)) {
@@ -36,6 +38,8 @@ namespace IsoRealms::Basics {
   SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, JSONObject object) :
             SequenceTrackAudioEvent(parent, owner, object.getInteger(JSON_TIME)) {
     cDefFile.load(JSON_FILE, object);
+    cDefFadeIn = object.getInteger(JSON_FADE_IN);
+    cDefFadeOut = object.getInteger(JSON_FADE_OUT);
     std::string mResource = cDefFile.getPath();
     if (!cMusic.openFromFile(mResource)) {
       std::cout << "WARNING: SequenceTrackAudioEvent::SequenceTrackAudioEvent: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
@@ -43,6 +47,14 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudioEvent::updateVolume(float volume) {
+    unsigned int mDuration = cMusic.getDuration().asMilliseconds();
+    unsigned int mOffset = cMusic.getPlayingOffset().asMilliseconds();
+    if (mOffset < cDefFadeIn) {
+      volume = volume * (mOffset / static_cast<float>(cDefFadeIn));
+    } else if (mOffset > cMusic.getDuration().asMilliseconds() - cDefFadeOut) {
+      float timeRemaining = mDuration - mOffset;
+      volume = volume * (timeRemaining / static_cast<float>(cDefFadeOut));      
+    }
     cMusic.setVolume(volume);
   }
 
@@ -77,6 +89,8 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudioEvent::save(JSONObject object) const {
     object.addInteger(JSON_TIME, cDefTime);
+    object.addInteger(JSON_FADE_IN, cDefFadeIn);
+    object.addInteger(JSON_FADE_OUT, cDefFadeOut);
     cDefFile.save(JSON_FILE, object);
   }
 
@@ -84,12 +98,23 @@ namespace IsoRealms::Basics {
     return cDefTime;
   }
 
+  unsigned int SequenceTrackAudioEvent::getFadeIn() const {
+    return cDefFadeIn;
+  }
+
+  unsigned int SequenceTrackAudioEvent::getFadeOut() const {
+    return cDefFadeOut;
+  }
+
   void SequenceTrackAudioEvent::setTime(unsigned int time) {
     cDefTime = time;
   }
 
-  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<File>(metadata.getPropertyData("AudioFile"), cDefFile);
+  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner) {
+    const Metadata& mMetadata = cParent.getMetadata();
+    owner.createPropertyAsset<File>(mMetadata.getPropertyData("AudioFile"), cDefFile);
+    owner.createPropertyNativeInteger(mMetadata.getPropertyData("FadeIn"),  [this]() {return cDefFadeIn;},  [this](unsigned int value) {cDefFadeIn  = value; return true;});
+    owner.createPropertyNativeInteger(mMetadata.getPropertyData("FadeOut"), [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
   }
 
   SequenceTrackAudioEvent::End* SequenceTrackAudioEvent::getEndEvent() {
@@ -108,10 +133,7 @@ namespace IsoRealms::Basics {
     // Not supported.
   }
 
-  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner) {
     // Nothing to do.
   }
-
-  const std::string SequenceTrackAudioEvent::JSON_FILE = "value";
-  const std::string SequenceTrackAudioEvent::JSON_TIME = "time";
 }

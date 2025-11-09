@@ -18,8 +18,11 @@
  */
 #include "SequenceTrackColourEvent.h"
 
+#include "SequenceTrackColour.h"
+
 namespace IsoRealms::Basics {
   SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, unsigned int time, bool fade) :
+            cParent(parent),
             cDefTime(time),
             cDefTarget(owner, 1.0f, 0.0f, 0.0f),
             cDefFade(fade) {
@@ -44,9 +47,10 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackColourEvent::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<Colour>(metadata.getPropertyData("Colour"), cDefTarget);
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("Fade"),   [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
+  void SequenceTrackColourEvent::getEventProperties(PropertyMaker& owner) {
+    const Metadata& mMetadata = cParent.getMetadata();
+    owner.createPropertyAsset<Colour>(mMetadata.getPropertyData("Colour"), cDefTarget);
+    owner.createPropertyNativeBoolean(mMetadata.getPropertyData("Fade"),   [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
   }
 
   const IColour* SequenceTrackColourEvent::getColour() const {

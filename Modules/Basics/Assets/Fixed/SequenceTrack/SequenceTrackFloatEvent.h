@@ -41,13 +41,16 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
+    void getEventProperties(PropertyMaker& owner) override;
 
     private:
     static const std::string JSON_DURATION;
     static const std::string JSON_FADE;
     static const std::string JSON_VALUE;
 
+    // External interfaces.
+    SequenceTrackFloat& cParent;
+    
     // Definition data.
     unsigned int cDefTime;
     Float cDefValue;

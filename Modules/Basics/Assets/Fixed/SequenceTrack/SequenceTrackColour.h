@@ -39,6 +39,7 @@ namespace IsoRealms::Basics {
     SequenceTrackColour(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     const Colour& getStartColour() const;
+    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
     void saveAssetTrack(JSONObject object) const;
 
@@ -54,7 +55,7 @@ namespace IsoRealms::Basics {
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner, const Metadata& metadata) override;
+    void getEventProperties(PropertyMaker& owner) override;
 
     private:
 
@@ -63,6 +64,9 @@ namespace IsoRealms::Basics {
 
     // Definition data.
     Colour cDefInitColour;
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     /**********************\
      * Internal Functions *

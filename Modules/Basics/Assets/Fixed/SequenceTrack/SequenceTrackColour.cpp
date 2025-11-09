@@ -23,17 +23,23 @@
 namespace IsoRealms::Basics {
   SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence) :
             SequenceTrackBase(sequence),
+            cMetadata(metadata),
             cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
 
   SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence, JSONObject object) :
             SequenceTrackBase(sequence.getResourceData(), sequence, object),
+            cMetadata(metadata),
             cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
     cDefInitColour.init(object, JSON_START);
   }
 
   const Colour& SequenceTrackColour::getStartColour() const {
     return cDefInitColour;
+  }
+
+  const Metadata& SequenceTrackColour::getMetadata() const {
+    return cMetadata;
   }
 
   ISequenceTrackEvent* SequenceTrackColour::getEvent(unsigned int time) {
@@ -101,8 +107,8 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackColour::getEventProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<Colour>(metadata.getPropertyData("StartColour"), cDefInitColour);
+  void SequenceTrackColour::getEventProperties(PropertyMaker& owner) {
+    owner.createPropertyAsset<Colour>(cMetadata.getPropertyData("StartColour"), cDefInitColour);
   }
 
   void SequenceTrackColour::stateChanged(IColour* colour) {
