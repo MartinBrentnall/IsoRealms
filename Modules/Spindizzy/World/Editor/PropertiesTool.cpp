@@ -57,20 +57,11 @@ namespace IsoRealms::Spindizzy {
             }) {
   }
 
-  bool PropertiesTool::Modifier::inputTool(SignalInputID id, double yaw) {
-    if (cEditingProperties) {
-      switch (id) {
-        case SignalInputID::MOVE_CURSOR_FORWARD:  cPropertiesUI.input(UISignalID::MOVE_UP);    break;
-        case SignalInputID::MOVE_CURSOR_BACKWARD: cPropertiesUI.input(UISignalID::MOVE_DOWN);  break;
-        case SignalInputID::MOVE_CURSOR_LEFT:     cPropertiesUI.input(UISignalID::MOVE_LEFT);  break;
-        case SignalInputID::MOVE_CURSOR_RIGHT:    cPropertiesUI.input(UISignalID::MOVE_RIGHT); break;
-        case SignalInputID::USE_TOOL:             cPropertiesUI.input(UISignalID::CONFIRM);    break;
-        case SignalInputID::CANCEL:               cPropertiesUI.input(UISignalID::CANCEL);     break;
-        default:                                                                               break;
-      }
-      return true;
-    }
+  bool PropertiesTool::Modifier::inputTool(sf::Event& event) {
+    return cEditingProperties && cPropertiesUI.input(event);
+  }
 
+  bool PropertiesTool::Modifier::inputTool(SignalInputID id, double yaw) {
     switch (id) {
       case SignalInputID::USE_TOOL:  showProperties();                                                                                        return true;
       case SignalInputID::TOOL_MODE: cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;

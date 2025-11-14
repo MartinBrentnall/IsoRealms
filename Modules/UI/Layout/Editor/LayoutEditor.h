@@ -232,40 +232,8 @@ namespace IsoRealms::UI {
     HatHandler& cHatHandler;
     IDialogManager& cDialogManager;
 
-    const std::map<std::string, EditorAnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
-    const std::map<std::string, EditorDigitalInput<LayoutEditor, SignalInputID>*> cDigitalInputsByName; /// Mapping of digital inputs by name.
-
-    EditorAnalogueInput cPitchSpeed;
-    EditorAnalogueInput cYawSpeed;
-    EditorAnalogueInput cXSpeed;
-    EditorAnalogueInput cYSpeed;
-    EditorAnalogueInput cZSpeed;
-    EditorAnalogueInput cDistanceInSpeed;
-    EditorAnalogueInput cDistanceOutSpeed;
-
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveLeft;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveRight;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveUp;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveDown;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveHigher;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveLower;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveSlow;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cActiveFast;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cRotatingView;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cZoomingView;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cCancel;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cConfigureTool;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cNextTheme;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cNextTool;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cPreviousTheme;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cPreviousTool;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cToolMode;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cUseTool;
-    EditorDigitalInput<LayoutEditor, SignalInputID> cExit;
-
     IAction* cExitAction;
 
-    bool cSignalConsumed;
     bool cHasFocus;
 
     DrawTool cDrawTool;

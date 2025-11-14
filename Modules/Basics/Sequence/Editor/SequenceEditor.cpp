@@ -473,28 +473,7 @@ namespace IsoRealms::Basics {
     if (cHasFocus) {
       if (cEditingProperties) {
         if (cPropertiesUI.input(event)) {
-          cPropertiesUI.input(event);
           return true;
-        } else switch (event.type) {
-          case sf::Event::JoystickMoved: {
-            if (cHatHandler.upPressed())    {cPropertiesUI.input(UISignalID::MOVE_UP);    return true;}
-            if (cHatHandler.downPressed())  {cPropertiesUI.input(UISignalID::MOVE_DOWN);  return true;}
-            if (cHatHandler.leftPressed())  {cPropertiesUI.input(UISignalID::MOVE_LEFT);  return true;}
-            if (cHatHandler.rightPressed()) {cPropertiesUI.input(UISignalID::MOVE_RIGHT); return true;}
-            break;
-          }
-
-          case sf::Event::JoystickButtonPressed: {
-            switch (event.joystickButton.button) {
-              case 0: {cPropertiesUI.input(UISignalID::CONFIRM); return true;}
-              case 1: {cPropertiesUI.input(UISignalID::CANCEL);  return true;}
-            }
-            break;
-          }
-
-          default: {
-            break;
-          }
         }
       } else switch (event.type) {
         case sf::Event::MouseButtonPressed: {

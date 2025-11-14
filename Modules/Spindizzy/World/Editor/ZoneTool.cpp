@@ -53,6 +53,10 @@ namespace IsoRealms::Spindizzy {
             cSelectedZone(nullptr) {
   }
 
+  bool ZoneTool::Instance::inputTool(sf::Event& event) {
+    return false;
+  }
+
   bool ZoneTool::Instance::inputTool(SignalInputID id, double yaw) {
     switch (id) {
       case SignalInputID::USE_TOOL: {

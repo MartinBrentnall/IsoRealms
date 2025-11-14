@@ -25,56 +25,6 @@ namespace IsoRealms::UI {
   LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
             cHatHandler(layout.getUI().getProject().getApplication().getHatHandler()),
             cDialogManager(dialogManager),
-            cAnalogueInputsByName({
-              {"MoveViewIn",      &cDistanceInSpeed},
-              {"MoveViewOut",     &cDistanceOutSpeed},
-              {"MoveCursorX",     &cXSpeed},
-              {"MoveCursorY",     &cYSpeed},
-              {"MoveCursorZ",     &cZSpeed},
-              {"RotateViewPitch", &cPitchSpeed},
-              {"RotateViewYaw",   &cYawSpeed}
-            }),
-            cDigitalInputsByName({
-              {"MoveCursorBackward", &cActiveDown},
-              {"MoveCursorDown",     &cActiveLower},
-              {"MoveCursorFaster",   &cActiveFast},
-              {"MoveCursorForward",  &cActiveUp},
-              {"MoveCursorLeft",     &cActiveLeft},
-              {"MoveCursorRight",    &cActiveRight},
-              {"MoveCursorSlower",   &cActiveSlow},
-              {"MoveCursorUp",       &cActiveHigher},
-              {"MoveView",           &cZoomingView},
-              {"RotateView",         &cRotatingView},
-              {"Cancel",             &cCancel},
-              {"ConfigureTool",      &cConfigureTool},
-              {"NextTheme",          &cNextTheme},
-              {"NextTool",           &cNextTool},
-              {"PreviousTheme",      &cPreviousTheme},
-              {"PreviousTool",       &cPreviousTool},
-              {"ToolMode",           &cToolMode},
-              {"UseTool",            &cUseTool},
-              {"Exit",               &cExit},
-            }),
-            cActiveLeft(*this, SignalInputID::MOVE_CURSOR_LEFT),
-            cActiveRight(*this, SignalInputID::MOVE_CURSOR_RIGHT),
-            cActiveUp(*this, SignalInputID::MOVE_CURSOR_FORWARD),
-            cActiveDown(*this, SignalInputID::MOVE_CURSOR_BACKWARD),
-            cActiveHigher(*this, SignalInputID::MOVE_CURSOR_UP),
-            cActiveLower(*this, SignalInputID::MOVE_CURSOR_DOWN),
-            cActiveSlow(*this, SignalInputID::MOVE_CURSOR_SLOWER),
-            cActiveFast(*this, SignalInputID::MOVE_CURSOR_FASTER),
-            cRotatingView(*this, SignalInputID::ROTATE_VIEW),
-            cZoomingView(*this, SignalInputID::MOVE_VIEW),
-            cCancel(*this, SignalInputID::CANCEL),
-            cConfigureTool(*this, SignalInputID::CONFIGURE_TOOL),
-            cNextTheme(*this, SignalInputID::NEXT_THEME),
-            cNextTool(*this, SignalInputID::NEXT_TOOL),
-            cPreviousTheme(*this, SignalInputID::PREVIOUS_THEME),
-            cPreviousTool(*this, SignalInputID::PREVIOUS_TOOL),
-            cToolMode(*this, SignalInputID::TOOL_MODE),
-            cUseTool(*this, SignalInputID::USE_TOOL),
-            cExit(*this, SignalInputID::EXIT),
-            cSignalConsumed(false),
             cHasFocus(true),
             cDrawTool(*this),
             cPropertiesTool(*this),
@@ -126,31 +76,6 @@ namespace IsoRealms::UI {
               {Handle::CENTER,    [this]() {return Point2D((cSelectedComponentLeft + cSelectedComponentRight) / 2.0f, (cSelectedComponentBottom + cSelectedComponentTop) / 2.0f);}},
             } {
     cToolbar.selectToolRelative(0);
-  }
-
-  bool LayoutEditor::signal(SignalInputID id) {
-    if (cHasFocus) {
-      if (cEditingProperties) {
-        switch (id) {
-          case SignalInputID::MOVE_CURSOR_FORWARD:  cPropertiesUI.input(UISignalID::MOVE_UP);    break;
-          case SignalInputID::MOVE_CURSOR_BACKWARD: cPropertiesUI.input(UISignalID::MOVE_DOWN);  break;
-          case SignalInputID::MOVE_CURSOR_LEFT:     cPropertiesUI.input(UISignalID::MOVE_LEFT);  break;
-          case SignalInputID::MOVE_CURSOR_RIGHT:    cPropertiesUI.input(UISignalID::MOVE_RIGHT); break;
-          case SignalInputID::USE_TOOL:             cPropertiesUI.input(UISignalID::CONFIRM);    break;
-          case SignalInputID::CANCEL:               cPropertiesUI.input(UISignalID::CANCEL);     break;
-          default:                                                                               break;
-        }
-        return true;
-      }
-      
-      if (!cSignalConsumed) {
-        switch (id) {
-          case SignalInputID::EXIT: if (cExitAction != nullptr) {cExitAction->execute();} return true;
-          default:                  break;
-        }
-      }
-    }
-    return false;
   }
 
   void LayoutEditor::renderScreen(float scale, float aspectRatio) const {
@@ -269,12 +194,6 @@ namespace IsoRealms::UI {
       cZoomFactorStep = std::clamp(cZoomFactorStep + cZoomSpeed, ZOOM_LIMIT_MINIMUM, ZOOM_LIMIT_MAXIMUM);
       cZoomFactor = std::pow(2.0f, cZoomFactorStep / 5.0f);
     }
-    for (std::pair<std::string, EditorDigitalInput<LayoutEditor, SignalInputID>*> mPair : cDigitalInputsByName) {
-      if (mPair.second->triggerOnChange()) {
-        cSignalConsumed = true;
-      }
-    }
-    cSignalConsumed = false;
     cZoomFactor.update(milliseconds);
     cEditHandleRadius = EDIT_HANDLE_RADIUS / cZoomFactor.animation();
     float mShortestDistance = 0.05f / cZoomFactor.animation();
@@ -537,27 +456,19 @@ namespace IsoRealms::UI {
   }
 
   std::vector<std::string> LayoutEditor::getDigitalInputs() const {
-    std::vector<std::string> mDigitalInputNames;
-    for (std::pair<std::string, EditorDigitalInput<LayoutEditor, SignalInputID>*> mPair : cDigitalInputsByName) {
-      mDigitalInputNames.emplace_back(mPair.first);
-    }
-    return mDigitalInputNames;
+    return std::vector<std::string>();
   }
 
   std::vector<std::string> LayoutEditor::getAnalogueInputs() const {
-    std::vector<std::string> mAnalogueInputNames;
-    for (std::pair<std::string, EditorAnalogueInput*> mPair : cAnalogueInputsByName) {
-      mAnalogueInputNames.emplace_back(mPair.first);
-    }
-    return mAnalogueInputNames;
+    return std::vector<std::string>();
   }
 
   void LayoutEditor::setDigitalInput(const std::string& name, IBoolean* input) {
-    cDigitalInputsByName.find(name)->second->set(input);
+    // Nothing to do.
   }
 
   void LayoutEditor::setAnalogueInput(const std::string& name, IFloat* input) {
-    cAnalogueInputsByName.find(name)->second->set(input);
+    // Nothing to do.
   }
 
   void LayoutEditor::setExitAction(IAction* action) {

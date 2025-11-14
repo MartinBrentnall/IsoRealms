@@ -25,6 +25,7 @@
 #include "IsoRealms/Assets/Literal/LiteralColour.h"
 #include "IsoRealms/Assets/Type/IEditable.h"
 #include "IsoRealms/Common/AnimatedFloat.h"
+#include "IsoRealms/Input/ButtonMapping.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/ResourceDefinition.h"
 
@@ -90,9 +91,34 @@ namespace IsoRealms {
       std::string cText;
       int cSlideAnimation;
     };
+    
+    class ButtonState {
+      public:
+      ButtonState(std::function<void()> pressAction);
+      void setPressed(bool pressed);
+      void update(unsigned int milliseconds);
 
+      private:
+      bool cPressed;
+      int cTimeUntilTrigger;
+      int cRepeatInterval;
+      std::function<void()> cPressAction;
+    };
+
+    static const int BUTTON_STATE_PRESS_REPEAT_DELAY    = 350;
+    static const int BUTTON_STATE_PRESS_REPEAT_INTERVAL = 100;
+
+    // External interfaces.
     Project& cProject;
     IUIStyle& cStyle;
+
+    HatHandler& cHatHandler;
+
+    ButtonState cButtonStateUp;
+    ButtonState cButtonStateDown;
+    ButtonState cButtonStateLeft;
+    ButtonState cButtonStateRight;
+
     std::function<void()> cFinishCallback;
     std::function<void(IEditable*)> cEditorCallback;
 

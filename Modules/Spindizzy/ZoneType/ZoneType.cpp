@@ -165,6 +165,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  bool ZoneType::Pen::inputTool(sf::Event& event) {
+    return false;
+  }
+
   bool ZoneType::Pen::inputTool(SignalInputID id, double yaw) {
     switch (id) {
       case SignalInputID::USE_TOOL: {

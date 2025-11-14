@@ -49,6 +49,10 @@ namespace IsoRealms::Spindizzy {
             cSelectedObject(0) {
   }
 
+  bool DeleteTool::Eraser::inputTool(sf::Event& event) {
+    return false;
+  }
+
   bool DeleteTool::Eraser::inputTool(SignalInputID id, double yaw) {
     switch (id) {
       case SignalInputID::USE_TOOL:  removeSelectedObject();                                                                                  return true;

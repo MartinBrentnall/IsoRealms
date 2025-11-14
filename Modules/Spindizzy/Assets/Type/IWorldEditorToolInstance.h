@@ -72,6 +72,22 @@ namespace IsoRealms::Spindizzy {
      */
     virtual void updateUI(unsigned int milliseconds) = 0;
     
+    /**
+     * Send raw input to the tool.  This is useful for tools that pass input
+     * to another component, such as a properties UI.  This function should not
+     * be used as the primary means of interaction with the tool.
+     *
+     * @param event The raw input event.
+     */
+    virtual bool inputTool(sf::Event& event) = 0;
+    
+    /**
+     * Send input signal to the tool.  This is the primary means of interaction
+     * with tools.
+     *
+     * @param id The input signal ID.
+     * @param yaw The angle of the world editor view in which the tool is used.
+     */
     virtual bool inputTool(SignalInputID id, double yaw) = 0;
     
     virtual bool isCursorLocked() const = 0;

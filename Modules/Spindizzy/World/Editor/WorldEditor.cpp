@@ -254,7 +254,9 @@ namespace IsoRealms::Spindizzy {
 
   bool WorldEditor::input(sf::Event& event) {
     if (cHasFocus) {
-      if (cToolbar.input(event)) {
+      if (cSelectedTool != nullptr && cSelectedTool->inputTool(event)) {
+        return true;
+      } else if (cToolbar.input(event)) {
         return true;
       } else switch (event.type) {
         case sf::Event::MouseMoved: {

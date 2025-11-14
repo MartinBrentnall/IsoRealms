@@ -137,6 +137,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  bool PickUpType::Pen::inputTool(sf::Event& event) {
+    return false;
+  }
+
   bool PickUpType::Pen::inputTool(SignalInputID id, double yaw) {
     if (id == SignalInputID::USE_TOOL) {
       cEditor.getWorld().draw(cParent, cEditor.getCursorCell(), cEditor);

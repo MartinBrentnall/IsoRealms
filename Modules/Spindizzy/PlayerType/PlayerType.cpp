@@ -339,6 +339,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  bool PlayerType::Pen::inputTool(sf::Event& event) {
+    return false;
+  }
+
   bool PlayerType::Pen::inputTool(SignalInputID id, double yaw) {
     if (id == SignalInputID::USE_TOOL) {
       cEditor.getWorld().draw(cParent, cEditor.getCursorLocation());

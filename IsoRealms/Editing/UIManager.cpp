@@ -31,6 +31,11 @@ namespace IsoRealms {
   UIManager::UIManager(Project& project, IUIStyle& style, std::function<void()> finishCallback, std::function<void(IEditable*)> editorCallback) :
             cProject(project),
             cStyle(style),
+            cHatHandler(project.getApplication().getHatHandler()),
+            cButtonStateUp(   [this]() {input(UISignalID::MOVE_UP);   }),
+            cButtonStateDown( [this]() {input(UISignalID::MOVE_DOWN); }),
+            cButtonStateLeft( [this]() {input(UISignalID::MOVE_LEFT); }),
+            cButtonStateRight([this]() {input(UISignalID::MOVE_RIGHT);}),
             cFinishCallback(finishCallback),
             cEditorCallback(editorCallback),
             cTooltipVisible(false),
@@ -200,6 +205,11 @@ namespace IsoRealms {
   }
 
   void UIManager::update(unsigned int milliseconds) {
+    cButtonStateUp.update(milliseconds);
+    cButtonStateDown.update(milliseconds);
+    cButtonStateLeft.update(milliseconds);
+    cButtonStateRight.update(milliseconds);
+
     cHighlightBottom.update(milliseconds);
     cHighlightLeft.update(milliseconds);
     cHighlightRight.update(milliseconds);
@@ -280,9 +290,45 @@ namespace IsoRealms {
   bool UIManager::input(sf::Event& event) {
     if (cConfirmationSelection != nullptr) {
       // Nothing to do.
-    } else if (!cRuntimeUIs.empty()) {
-      return cRuntimeUIs.back()->cScreen->input(event);
-    }
+    } else if (!cRuntimeUIs.empty() && cRuntimeUIs.back()->cScreen->input(event)) {
+      return true;
+    } else switch (event.type) {
+      case sf::Event::KeyPressed: {
+        switch (event.key.code) {
+          case sf::Keyboard::BackSpace: // Fall through.
+          case sf::Keyboard::Escape:    input(UISignalID::CANCEL);      return true;
+          case sf::Keyboard::Space:     // Fall through.
+          case sf::Keyboard::Return:    input(UISignalID::CONFIRM);     return true;
+          case sf::Keyboard::Up:        input(UISignalID::MOVE_UP);     return true;
+          case sf::Keyboard::Down:      input(UISignalID::MOVE_DOWN);   return true;
+          case sf::Keyboard::Left:      input(UISignalID::MOVE_LEFT);   return true;
+          case sf::Keyboard::Right:     input(UISignalID::MOVE_RIGHT);  return true;
+          case sf::Keyboard::Tab:       input(UISignalID::TOGGLE_HELP); return true;
+          default: break;
+        }
+      }
+
+      case sf::Event::JoystickMoved: {
+        if (cHatHandler.upPressed())     {cButtonStateUp.setPressed(   true);  return true;}
+        if (cHatHandler.downPressed())   {cButtonStateDown.setPressed( true);  return true;}
+        if (cHatHandler.leftPressed())   {cButtonStateLeft.setPressed( true);  return true;}
+        if (cHatHandler.rightPressed())  {cButtonStateRight.setPressed(true);  return true;}
+        if (cHatHandler.upReleased())    {cButtonStateUp.setPressed(   false); return true;}
+        if (cHatHandler.downReleased())  {cButtonStateDown.setPressed( false); return true;}
+        if (cHatHandler.leftReleased())  {cButtonStateLeft.setPressed( false); return true;}
+        if (cHatHandler.rightReleased()) {cButtonStateRight.setPressed(false); return true;}
+        break;
+      }
+
+      case sf::Event::JoystickButtonPressed: {
+        if (event.joystickButton.button == ButtonMapping::CROSS)  {input(UISignalID::CONFIRM);     return true;}
+        if (event.joystickButton.button == ButtonMapping::CIRCLE) {input(UISignalID::CANCEL);      return true;}
+        if (event.joystickButton.button == ButtonMapping::SQUARE) {input(UISignalID::TOGGLE_HELP); return true;}
+        break;
+      }
+
+      default: break;
+    }    
     return false;
   }
   
@@ -415,6 +461,36 @@ namespace IsoRealms {
   void UIManager::UIScreen::updateSlideInactive(unsigned int milliseconds) {
     if (cSlideAnimation > -1000) {
       cSlideAnimation = std::max(-1000, cSlideAnimation - static_cast<int>(milliseconds * 4));
+    }
+  }
+
+  UIManager::ButtonState::ButtonState(std::function<void()> pressAction) :
+            cPressed(false),
+            cTimeUntilTrigger(BUTTON_STATE_PRESS_REPEAT_DELAY),
+            cRepeatInterval(BUTTON_STATE_PRESS_REPEAT_INTERVAL),
+            cPressAction(pressAction) {
+  }
+
+  void UIManager::ButtonState::setPressed(bool pressed) {
+    if (pressed) {
+      cPressAction();
+    }
+    cPressed = pressed;
+  }
+
+  void UIManager::ButtonState::update(unsigned int milliseconds) {
+    if (cPressed) {
+      if (cTimeUntilTrigger < 0) {
+        cPressAction();
+        if (cRepeatInterval > 10) {
+          cRepeatInterval -= 4;
+        }
+        cTimeUntilTrigger = cRepeatInterval + cTimeUntilTrigger;
+      }
+      cTimeUntilTrigger -= milliseconds;
+    } else {
+      cRepeatInterval = BUTTON_STATE_PRESS_REPEAT_INTERVAL;
+      cTimeUntilTrigger = BUTTON_STATE_PRESS_REPEAT_DELAY;
     }
   }
 }

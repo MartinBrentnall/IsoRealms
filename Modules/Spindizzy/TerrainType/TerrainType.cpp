@@ -328,6 +328,10 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
+  bool TerrainType::Pen::inputTool(sf::Event& event) {
+    return false;
+  }
+
   bool TerrainType::Pen::inputTool(SignalInputID id, double yaw) {
     if (cEditor.getTerrainBrush().input(id, yaw)) {
       return true;

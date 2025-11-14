@@ -62,11 +62,11 @@ namespace IsoRealms::Basics {
     // JSON members.
     static const std::string JSON_START;
 
-    // Definition data.
-    Colour cDefInitColour;
-
     // External interfaces.
     const Metadata& cMetadata;
+
+    // Definition data.
+    Colour cDefInitColour;
 
     /**********************\
      * Internal Functions *

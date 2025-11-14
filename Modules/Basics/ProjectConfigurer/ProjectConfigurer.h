@@ -91,18 +91,6 @@ namespace IsoRealms::Basics {
     IDialogManager& getDialogManager();
 
     private:
-    class ButtonState {
-      public:
-      ButtonState(std::function<void()> pressAction);
-      void setPressed(bool pressed);
-      void update(unsigned int milliseconds);
-
-      private:
-      bool cPressed;
-      int cTimeUntilTrigger;
-      int cRepeatInterval;
-      std::function<void()> cPressAction;
-    };
 
     // JSON members.
     static const std::string JSON_CODE_FONT;
@@ -112,17 +100,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_LOCAL;
     static const std::string JSON_ON_EDITOR;
     static const std::string JSON_ON_EXIT;
-
-    static const int BUTTON_STATE_PRESS_REPEAT_DELAY    = 350;
-    static const int BUTTON_STATE_PRESS_REPEAT_INTERVAL = 100;
-
-    // External interfaces.
-    HatHandler& cHatHandler;
-
-    ButtonState cButtonStateUp;
-    ButtonState cButtonStateDown;
-    ButtonState cButtonStateLeft;
-    ButtonState cButtonStateRight;
 
     // Action client.
     ActionClient cActionClient;

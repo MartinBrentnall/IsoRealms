@@ -183,6 +183,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  bool LiftType::Pen::inputTool(sf::Event& event) {
+    return false;
+  }
+
   bool LiftType::Pen::inputTool(SignalInputID id, double yaw) {
     switch (id) {
       case SignalInputID::USE_TOOL: draw();   return true;
