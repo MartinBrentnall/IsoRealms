@@ -24,8 +24,7 @@ namespace IsoRealms::Basics {
   SequenceTrackScreenInstance::SequenceTrackScreenInstance(SequenceTrackScreen& parent, SequenceInstance& sequenceInstance) :
             SequenceTrackInstanceBase(parent.getRealEvents()),
             cParent(parent),
-            cRuntimeScreen(nullptr),
-            cStateNotifier(nullptr) {
+            cRuntimeScreen(nullptr) {
   }
 
   void SequenceTrackScreenInstance::positionChanged() {
@@ -33,7 +32,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackScreenInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
-    cStateNotifier = assets.add<IScreen>(this, parentID + "/" + cParent.getName(), "Sequences");
+    assets.add<IScreen>(this, parentID + "/" + cParent.getName(), "Sequences");
   }
 
   void SequenceTrackScreenInstance::renderScreen(float scale, float aspectRatio) const {
@@ -76,11 +75,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackScreenInstance::updateScreen() {
-    IScreen* mPreviousScreen = cRuntimeScreen;
     cRuntimeScreen = getCurrentScreen();
-    if (cRuntimeScreen != mPreviousScreen) {
-      cStateNotifier->stateChanged();
-    }
   }
 
   IScreen* SequenceTrackScreenInstance::getCurrentScreen() const {

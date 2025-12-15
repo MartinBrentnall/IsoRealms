@@ -64,9 +64,6 @@ namespace IsoRealms::Basics {
     // Runtime data.
     IScreen* cRuntimeScreen;
 
-    // Misc.
-    IStateNotifier* cStateNotifier;
-
     // Internal functions.
     void updateScreen();
     IScreen* getCurrentScreen() const;

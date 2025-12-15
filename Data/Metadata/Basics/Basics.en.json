@@ -4,26 +4,38 @@
     "SequenceTrackAction": {
       "description": "A track that can be used to trigger actions.",
       "properties": {
+        "Action": {"name": "Action", "description": "The action to be triggered when this track is triggered."}
       }
     },
     "SequenceTrackAudio": {
       "description": "A track that can be used to play audio.",
       "properties": {
+        "AudioFile": {"name": "Audio File", "description": "The audio file to be played when this track is triggered."},
+        "FadeIn": {"name": "Fade In", "description": "The duration of the fade in effect when playing the audio file."},
+        "FadeOut": {"name": "Fade Out", "description": "The duration of the fade out effect when stopping the audio file."}
       }
     },
     "SequenceTrackColour": {
       "description": "A track that can be used to change a colour.",
       "properties": {
+        "StartColour": {"name": "Start Colour", "description": "The colour to be set at the start of this track."},
+        "Colour": {"name": "Colour", "description": "The colour to be set when this track is triggered."},
+        "Fade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous colour to this one, or just change immediately."}
       }
     },
     "SequenceTrackFloat": {
       "description": "A track that can be used to change a float value.",
       "properties": {
+        "StartValue": {"name": "Start Value", "description": "The float value to be set at the start of this track."},
+        "Value": {"name": "Value", "description": "The float value to be set when this track is triggered."},
+        "Fade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous value to this one, or just change immediately."}
       }
     },
     "SequenceTrackScreen": {
       "description": "A track that can be used to change a screen.",
       "properties": {
+        "StartScreen": {"name": "Start Screen", "description": "The screen to be displayed at the start of this track."},
+        "Screen": {"name": "Screen", "description": "The screen to be displayed when this track is triggered."}
       }
     }
   },
