@@ -77,6 +77,8 @@ namespace IsoRealms::Basics {
     static const long DURATION_HOUR;
     static const long DURATION_DAY;
 
+    inline static constexpr float SCROLL_MARGIN = 0.4f;
+
     std::function<std::string(long)> cTimeFormatMillisecondExact;
     std::function<std::string(long)> cTimeFormatMillisecondPrecise;
     std::function<std::string(long)> cTimeFormatMillisecondRough;
@@ -113,6 +115,7 @@ namespace IsoRealms::Basics {
 
     AnimatedInteger cCursorTrack;
     AnimatedFloat cCursorTimeline;
+    AnimatedFloat cTrackScrollOffset;
     bool cCursorTrackProperties;
     int cCursorTrackPropertiesAnimation;
 

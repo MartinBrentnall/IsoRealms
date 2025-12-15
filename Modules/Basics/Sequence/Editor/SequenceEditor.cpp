@@ -154,6 +154,7 @@ namespace IsoRealms::Basics {
             cTimelineZoomStep(5.0f * std::log2(cTimelineZoom)),
             cCursorTrack(0),
             cCursorTimeline(0.0f),
+            cTrackScrollOffset(0.0f),
             cCursorTrackProperties(false),
             cCursorTrackPropertiesAnimation(0),
             cMoveIndicatorTop(0.0f),
@@ -211,8 +212,11 @@ namespace IsoRealms::Basics {
     double mStartDuration = std::max(0.0, cCursorTimeline.animation() - mVisibleDuration / 2.0);
     Application& mApplication = cSequence.getProject().getApplication();
 
+    // Calculate cursor Y position (with scroll offset applied).
+    float mCursorY = (1.0f - mHeight / 2.0f) - cCursorTrack.animation() * (mHeight + 0.01f) - cTrackScrollOffset.animation();
+
     // Render tracks.
-    mY = 1.0f;
+    mY = 1.0f - cTrackScrollOffset.animation();
     ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(mX, aspectRatio - 0.001f, -1.0f, 1.0f));
     for (unsigned int i = 0; i < cSequence.getTrackCount(); i++) {
       SequenceTrack& mTrack = cSequence.getTrack(i);
@@ -248,12 +252,10 @@ namespace IsoRealms::Basics {
     // Render controller cursor.
     double mCursorX = std::min(mX + cCursorTimeline.animation() * mWidth / mVisibleDuration, static_cast<double>(mX + mWidth / 2.0f));
 
-    float mCursorY = (1.0f - mHeight / 2.0f) - cCursorTrack.animation() * (mHeight + 0.01f);
-
     // Render move indicator.
     if (cMoveIndicatorBottom.animation() != cMoveIndicatorTop.animation()) {
-      float mMoveIndicatorBottom = (1.0f - mHeight / 2.0f) - cMoveIndicatorBottom.animation() * (mHeight + 0.01f);
-      float mMoveIndicatorTop    = (1.0f - mHeight / 2.0f) - cMoveIndicatorTop.animation()    * (mHeight + 0.01f);
+      float mMoveIndicatorBottom = (1.0f - mHeight / 2.0f) - cMoveIndicatorBottom.animation() * (mHeight + 0.01f) - cTrackScrollOffset.animation();
+      float mMoveIndicatorTop    = (1.0f - mHeight / 2.0f) - cMoveIndicatorTop.animation()    * (mHeight + 0.01f) - cTrackScrollOffset.animation();
       glColor3f(0.0f, 1.0f, 0.0f);
       Utils::renderCircle(mCursorX, mMoveIndicatorBottom, 0.01f);
       Utils::renderCircle(mCursorX, mMoveIndicatorTop,    0.01f);
@@ -285,7 +287,7 @@ namespace IsoRealms::Basics {
 
     if (mHighlightSize > 0.0f) {
       glColor3f(1.0f, 0.0f, 0.2f);
-      mY = 1.0f - cCursorTrack.animation() * (mHeight + mGap) - (mHeight / 2.0f);
+      mY = 1.0f - cCursorTrack.animation() * (mHeight + mGap) - (mHeight / 2.0f) - cTrackScrollOffset.animation();
       Utils::renderRoundedRectangle((-aspectRatio + mHeight) - (mHeight * mHighlightSize), mY - (mHeight / 2.0f) * mHighlightSize, -aspectRatio + mHeight, mY + (mHeight / 2.0f) * mHighlightSize, mHeight * 0.2f * mHighlightSize);
     }
 
@@ -293,7 +295,7 @@ namespace IsoRealms::Basics {
     for (unsigned int i = 0; i < cSequence.getTrackCount(); i++) {
       SequenceTrack& mTrack = cSequence.getTrack(i);
       glPushMatrix();
-      glTranslatef(-aspectRatio + mHeight * 0.5f, (1.0f - mHeight * 0.5f) - i * (mHeight + mGap), 0.0f);
+      glTranslatef(-aspectRatio + mHeight * 0.5f, (1.0f - mHeight * 0.5f) - i * (mHeight + mGap) - cTrackScrollOffset.animation(), 0.0f);
       glScalef(mHeight * 0.5f, mHeight * 0.5f, 0.0f);
       mTrack->renderIcon();
       glPopMatrix();
@@ -309,13 +311,13 @@ namespace IsoRealms::Basics {
     }
 
     glPushMatrix();
-    glTranslatef(-aspectRatio + mHeight * 0.5f, (1.0f - mHeight * 0.5f) - cSequence.getTrackCount() * (mHeight + mGap), 0.0f);
+    glTranslatef(-aspectRatio + mHeight * 0.5f, (1.0f - mHeight * 0.5f) - cSequence.getTrackCount() * (mHeight + mGap) - cTrackScrollOffset.animation(), 0.0f);
     glScalef(mHeight * 0.5f, mHeight * 0.5f, 0.0f);
     Utils::renderIconNone();
     glPopMatrix();
 
     // Render event handles.
-    mY = 1.0f;
+    mY = 1.0f - cTrackScrollOffset.animation();
     glPushMatrix();
     glTranslatef(-mStartDuration * mWidth / mVisibleDuration, 0.0f, 0.0f);
     for (unsigned int i = 0; i < cSequence.getTrackCount(); i++) {
@@ -339,8 +341,8 @@ namespace IsoRealms::Basics {
     // Render preview position.
     if (cPreviewing) {
       float mPreviewX = ((mX + mWidth) - mX) * (cPreviewPosition / static_cast<float>(mVisibleDuration)) + mX;
-      float mMoveIndicatorBottom = (1.0f - mHeight / 2.0f) - (cSequence.getTrackCount() - 0.5f) * (mHeight + 0.01f);
-      float mMoveIndicatorTop    = (1.0f - mHeight / 2.0f) +                              0.5f  * (mHeight + 0.01f);
+      float mMoveIndicatorBottom = (1.0f - mHeight / 2.0f) - (cSequence.getTrackCount() - 0.5f) * (mHeight + 0.01f) - cTrackScrollOffset.animation();
+      float mMoveIndicatorTop    = (1.0f - mHeight / 2.0f) +                              0.5f  * (mHeight + 0.01f) - cTrackScrollOffset.animation();
       glEnable(GL_BLEND);
       glBegin(GL_QUADS);
       glColor3f(0.8f, 1.0f, 1.0f);
@@ -418,6 +420,44 @@ namespace IsoRealms::Basics {
     cCursorTimeline.update(milliseconds);
     cMoveIndicatorBottom.update(milliseconds);
     cMoveIndicatorTop.update(milliseconds);
+    
+    // Update scroll offset based on cursor Y position.
+    float mHeight = 0.08f;
+    float mGap = 0.01f;
+    float mTotalHeight = (cSequence.getTrackCount() + 1) * (mHeight + mGap);
+    float mVisibleHeight = 2.0f; // From -1.0 to 1.0
+    
+    if (mTotalHeight > mVisibleHeight) {
+      // Calculate cursor Y position without scroll offset.
+      float mCursorYNoScroll = (1.0f - mHeight / 2.0f) - cCursorTrack.animation() * (mHeight + mGap);
+      
+      // Calculate desired scroll offset to keep cursor within margins.
+      float mDesiredScrollOffset = cTrackScrollOffset.value();
+      float mCurrentCursorY = mCursorYNoScroll - mDesiredScrollOffset;
+      
+      // If cursor is near top, scroll down (increase offset) to bring it down.
+      if (mCurrentCursorY > (1.0f - SCROLL_MARGIN)) {
+        float mTargetY = 1.0f - SCROLL_MARGIN;
+        mDesiredScrollOffset = mCursorYNoScroll - mTargetY;
+      }
+      
+      // If cursor is near bottom, scroll up (decrease offset) to bring it up.
+      if (mCurrentCursorY < (-1.0f + SCROLL_MARGIN)) {
+        float mTargetY = -1.0f + SCROLL_MARGIN;
+        mDesiredScrollOffset = mCursorYNoScroll - mTargetY;
+      }
+      
+      // Clamp scroll offset so tracks don't scroll past boundaries (offset >= 0 means we can't scroll above first track).
+      float mMaxScroll = mTotalHeight - mVisibleHeight;
+      mDesiredScrollOffset = std::clamp(mDesiredScrollOffset, -mMaxScroll, 0.0f);
+      
+      cTrackScrollOffset = mDesiredScrollOffset;
+    } else {
+      // No scrolling needed if all tracks fit on screen.
+      cTrackScrollOffset = 0.0f;
+    }
+    
+    cTrackScrollOffset.update(milliseconds);
     if (cTimelineZoomSpeed != 0.0f) {
       cTimelineZoomStep = std::clamp(cTimelineZoomStep + cTimelineZoomSpeed, ZOOM_LIMIT_MINIMUM, ZOOM_LIMIT_MAXIMUM);
       cTimelineZoom = std::pow(2.0f, cTimelineZoomStep / 5.0f);
