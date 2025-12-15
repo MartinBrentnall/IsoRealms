@@ -25,6 +25,20 @@ namespace IsoRealms::Basics {
             cBasics(basics) {
   }
 
+  unsigned int Script::getNextAvailableFunctionID(unsigned int functionID) const {
+    bool mFunctionIDChanged = true;
+    while (mFunctionIDChanged) {
+      mFunctionIDChanged = false;
+      for (const std::pair<const IAction* const, std::unique_ptr<ScriptAction>>& mScriptAction : cDefScriptActions) {
+        if (mScriptAction.second->getFunctionID() == functionID) {
+          functionID++;
+          mFunctionIDChanged = true;
+        }
+      }
+    }
+    return functionID;
+  }
+
   unsigned int Script::getNextAvailableIndex() const {
     unsigned int mAvailableIndex = 0;
     bool mAvailableIndexChanged = true;
@@ -88,6 +102,10 @@ namespace IsoRealms::Basics {
 
   void Script::ScriptAction::destroyInternalAction() {
     cDefFunction.releaseAsset(cDefAction);
+  }
+
+  unsigned int Script::ScriptAction::getFunctionID() const {
+    return cDefFunction.getID();
   }
 
   unsigned int Script::ScriptAction::getIndex() const {

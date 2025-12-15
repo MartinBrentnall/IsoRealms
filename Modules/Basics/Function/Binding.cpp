@@ -71,8 +71,8 @@ namespace IsoRealms::Basics {
     return "_" + cDefName + " = {}\n";;
   }
 
-  std::string Binding::getCode(const std::string& function, unsigned int arg) const {
-    std::string mFunction = "function " + function + "_arg" + Utils::toString(arg) + "(arg)\n";
+  std::string Binding::getCode(unsigned int functionID, unsigned int arg) const {
+    std::string mFunction = "function func" + Utils::toString(functionID) + "_arg" + Utils::toString(arg) + "(arg)\n";
     mFunction += "  table.insert(_" + cDefName + ", " + cDefName + ")\n";
     mFunction += "  " + cDefName + " = arg\n";
     mFunction += "end\n";

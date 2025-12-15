@@ -66,6 +66,7 @@ namespace IsoRealms::Basics {
     Binding* getBinding(const std::string& name);
     ArgumentDefinition* getArgumentDefinition(const std::string& name);
     std::string getNextAvailableName(const std::string& name);
+    unsigned int getID() const;
 
     /****************************************************\
      * Implements IAssetProvider<IActionClient, IAction *
@@ -121,8 +122,8 @@ namespace IsoRealms::Basics {
     sol::state& cDefLuaState; /// The Lua state machine.
     
     // Definition data.
-    std::string cDefName;                                      /// Identifier of this function.
-    std::string cDefCode;                                      /// Implementation of this function.
+    unsigned int cDefID;                                  /// Unique identifier for this function.
+    std::string cDefCode;                                 /// Implementation of this function.
     std::vector<std::unique_ptr<Binding>> cDefBindings;   /// Fixed bindings for access within this function.
     std::vector<std::unique_ptr<ArgumentDefinition>> cDefArgumentDefinitions; /// Dynamic bindings for access within this function.
     
@@ -136,7 +137,7 @@ namespace IsoRealms::Basics {
       }
       mFunctionDeclaration += "\n";
       for (unsigned int i = 0; i < bindings.size(); i++) {
-        mFunctionDeclaration += bindings[i]->getCode(cDefName, i + baseIndex);
+        mFunctionDeclaration += bindings[i]->getCode(cDefID, i + baseIndex);
       }
       mFunctionDeclaration += "\n";
       return mFunctionDeclaration;

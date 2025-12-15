@@ -31,6 +31,8 @@ namespace IsoRealms::Basics {
     public:
     Script(Basics& basics);
 
+    unsigned int getNextAvailableFunctionID(unsigned int functionID) const;
+
     /*****************************************************\
      * Implements IAssetProvider<IActionClient, IAction> *
     \*****************************************************/
@@ -47,6 +49,7 @@ namespace IsoRealms::Basics {
       ScriptAction(Script& parent, IActionClient& owner, unsigned int index);
 
       void destroyInternalAction();
+      unsigned int getFunctionID() const;
       unsigned int getIndex() const;
 
       /**********************\

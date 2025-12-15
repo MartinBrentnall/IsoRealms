@@ -142,6 +142,30 @@ namespace IsoRealms::Basics {
     return cProject;
   }
 
+  unsigned int Basics::getAvailableFunctionID() const {
+    unsigned int mAvailableID = 0;
+    bool mAvailableIDChanged = true;
+    while (mAvailableIDChanged) {
+      mAvailableIDChanged = false;
+
+      // Check if the function ID is in use by a user function.
+      for (Function* mFunction : cResourceTypeFunction) {
+        if (mFunction->getID() == mAvailableID) {
+          mAvailableID++;
+          mAvailableIDChanged = true;
+        }
+      }
+    
+      // Check if the function ID is in use by a script action.
+      unsigned int mNewAvailableID = cActionScript.getNextAvailableFunctionID(mAvailableID);
+      if (mNewAvailableID != mAvailableID) {
+        mAvailableID = mNewAvailableID;
+        mAvailableIDChanged = true;
+      }
+    }
+    return mAvailableID;
+  }
+
   void Basics::reloadGlobalConfiguration() {
     if (System::fileExists(GLOBAL_CONFIGURATION_FILE, true)) {
       JSONDocument mModuleSettingsDocument(GLOBAL_CONFIGURATION_FILE, true);

@@ -67,6 +67,7 @@ namespace IsoRealms::Basics {
     void reset() override;
 
     IsoRealms::Project& getProject() const;
+    unsigned int getAvailableFunctionID() const;
 
     template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
       cSequenceTracks.release(user, asset);

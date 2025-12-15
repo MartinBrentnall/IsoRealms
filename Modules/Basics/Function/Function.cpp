@@ -113,7 +113,7 @@ namespace IsoRealms::Basics {
             cBasics(basics),
             cResourceData(owner.getResourceData()),
             cDefLuaState(basics.getProject().getLuaState().getState()),
-            cDefName(name) {
+            cDefID(basics.getAvailableFunctionID()) {
   }
 
   Function::Function(Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init) :
@@ -204,6 +204,10 @@ namespace IsoRealms::Basics {
     return mProposedName;
   }
 
+  unsigned int Function::getID() const {
+    return cDefID;
+  }
+
   IAction* Function::getAsset(IActionClient& owner, JSONObject object) {
     std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner, object);
     IAction* mKey = mInstance.get();
@@ -267,29 +271,25 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::execute() {
-    // if (cParent.cDefName[0] != '_') {
-    //   std::cout << "Executing Function \"" << cParent.cDefName << "\"..." << std::endl;
-    // } else {
-    //   std::cout << "\n\n\n\nExecuting \"" << cParent.cDefName  << "\": ===============================================================================" << std::endl << cParent.cDefCode << std::endl;
-    // }
+    //   std::cout << "\n\n\n\nExecuting function << cParent.cDefID << "\": ===============================================================================" << std::endl << cParent.cDefCode << std::endl;
     for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
-      std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(i);
+      std::string mBindFunctionName = "func" + Utils::toString(cParent.cDefID) + "_arg" + Utils::toString(i);
       IBinding* mBinding = cParent.cDefBindings[i]->getValue();
       mBinding->bind(mBindFunctionName);
     }
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
-      std::string mBindFunctionName = cParent.cDefName + "_arg" + Utils::toString(static_cast<int>(i + cParent.cDefBindings.size()));
+      std::string mBindFunctionName = "func" + Utils::toString(cParent.cDefID) + "_arg" + Utils::toString(static_cast<int>(i + cParent.cDefBindings.size()));
       (**cDefArguments[i])->bind(mBindFunctionName);
     }
 
-    sol::protected_function mFunction = cParent.cDefLuaState[cParent.cDefName];
+    sol::protected_function mFunction = cParent.cDefLuaState["func" + Utils::toString(cParent.cDefID)];
     sol::protected_function_result mResult = mFunction();
 
     // We have to check for errors manually because Sol2 exception handling is broken.
     if (!mResult.valid()) {
       sol::error mError = mResult;
       std::cout << std::endl;
-      std::cout << "Function \"" << cParent.cDefName << "\" failed: " << mError.what() << std::endl;
+      std::cout << "Function \"" << cParent.cDefID << "\" failed: " << mError.what() << std::endl;
     }
   }
 
@@ -332,7 +332,7 @@ namespace IsoRealms::Basics {
     std::string mFunctionDeclaration;
     mFunctionDeclaration += generateBindingDeclarations(cDefBindings,  0);
     mFunctionDeclaration += generateBindingDeclarations(cDefArgumentDefinitions, static_cast<unsigned int>(cDefBindings.size()));
-    mFunctionDeclaration += "function " + cDefName + "()\n";
+    mFunctionDeclaration += "function func" + Utils::toString(cDefID) + "()\n";
     mFunctionDeclaration += cDefCode + "\n";
     for (unsigned int i = 0; i < cDefBindings.size(); i++) {
       mFunctionDeclaration += cDefBindings[i]->getCleanup();
