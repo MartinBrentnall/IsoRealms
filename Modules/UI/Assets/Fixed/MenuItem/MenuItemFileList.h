@@ -31,8 +31,7 @@ namespace IsoRealms::UI {
   /**
    * Menu item that represents a list of files that can be selected.
    */
-  class MenuItemFileList final : public IMenuItem,
-                                 public IString {
+  class MenuItemFileList final : public IMenuItem {
     public:
     MenuItemFileList(const Metadata& metadata, Menu& menu);
     MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object);
@@ -54,14 +53,9 @@ namespace IsoRealms::UI {
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
 
-    /**********************\
-     * Implements IString *
-    \**********************/
-    std::string getValue() const override;
-
-    /*******************************************\
-     * Implements IAsset via IMenuItem/IString *
-    \*******************************************/
+    /***********************************\
+     * Implements IAsset via IMenuItem *
+    \***********************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(PropertyMaker& owner) override;
@@ -94,6 +88,25 @@ namespace IsoRealms::UI {
       std::string cDefPath;  /// The path of this file (relative to the data folder from which it originates).
     };
 
+    class SelectedFile final : public IString {
+      public:
+      SelectedFile(MenuItemFileList& parent);
+
+      /**********************\
+      * Implements IString *
+      \**********************/
+      std::string getValue() const override;
+      bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
+      void getAssetProperties(PropertyMaker& owner) override;
+      bool isDefaultConfiguration() const override;
+
+      private:
+
+      // External interfaces.
+      MenuItemFileList& cParent;
+    };
+
     // External Interfaces.
     const Metadata& cMetadata;
     HatHandler& cHatHandler;
@@ -111,8 +124,12 @@ namespace IsoRealms::UI {
     // Scripting support.
     LuaBinding<MenuItemFileList> cLuaBinding; /// Allows menu file lists to be bound to lua variables.
     
+    // Client assets.
+    SelectedFile cSelectedFile;
+
     // Private functions.
     bool up();
     bool down();
+    std::string getValue() const;
   };
 }

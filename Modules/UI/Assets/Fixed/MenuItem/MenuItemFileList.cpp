@@ -35,7 +35,8 @@ namespace IsoRealms::UI {
             cDefFolder(""),
             cDefUser(false),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
+            cSelectedFile(*this) {
   }
 
   MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -45,7 +46,8 @@ namespace IsoRealms::UI {
             cDefFolder(object.getString(JSON_FOLDER)),
             cDefUser(object.getBoolean(JSON_USER)),
             cDefAction(menu.getResourceData().getDummyActionClient()),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
+            cSelectedFile(*this) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 
@@ -62,7 +64,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemFileList::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IString>(this, cDefID, "System");
+    assets.add<IString>(&cSelectedFile, cDefID, "System");
     assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
   }
   
@@ -147,6 +149,30 @@ namespace IsoRealms::UI {
 
   std::string MenuItemFileList::getValue() const {
     return cRuntimeFiles[cRuntimeSelectedFile]->getPath();
+  }
+
+  MenuItemFileList::SelectedFile::SelectedFile(MenuItemFileList& parent) :
+            cParent(parent) {
+  }
+
+  std::string MenuItemFileList::SelectedFile::getValue() const {
+    return cParent.getValue();
+  }
+
+  bool MenuItemFileList::SelectedFile::renderAssetIcon() const {
+    return false;
+  }
+
+  void MenuItemFileList::SelectedFile::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  void MenuItemFileList::SelectedFile::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
+  }
+
+  bool MenuItemFileList::SelectedFile::isDefaultConfiguration() const {
+    return false;
   }
 
   MenuItemFileList::File::File(const std::string& label, const std::string& path) :
