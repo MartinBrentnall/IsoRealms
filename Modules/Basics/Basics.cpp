@@ -23,6 +23,7 @@ namespace IsoRealms::Basics {
   const std::string Basics::SEQUENCE_TRACK_AUDIO  = "Audio";
   const std::string Basics::SEQUENCE_TRACK_COLOUR = "Colour";
   const std::string Basics::SEQUENCE_TRACK_FLOAT  = "Float";
+  const std::string Basics::SEQUENCE_TRACK_SCREEN = "Screen";
 
   const std::string Basics::ACTION_SCRIPT = "Script";
   
@@ -45,6 +46,7 @@ namespace IsoRealms::Basics {
                     cProviderSequenceTrackAudio(registry.getAssetMetadata("SequenceTrackAudio")),
                     cProviderSequenceTrackColour(registry.getAssetMetadata("SequenceTrackColour")),
                     cProviderSequenceTrackFloat(registry.getAssetMetadata("SequenceTrackFloat")),
+                    cProviderSequenceTrackScreen(registry.getAssetMetadata("SequenceTrackScreen")),
                     cResourceTypeAnalogueInput(*this),
                     cResourceTypeBooleanTrigger(*this),
                     cResourceTypeDigitalInput(*this),
@@ -93,6 +95,7 @@ namespace IsoRealms::Basics {
     cSequenceTracks.add(&cProviderSequenceTrackAudio,  SEQUENCE_TRACK_AUDIO,  "Basics");
     cSequenceTracks.add(&cProviderSequenceTrackColour, SEQUENCE_TRACK_COLOUR, "Basics");
     cSequenceTracks.add(&cProviderSequenceTrackFloat,  SEQUENCE_TRACK_FLOAT,  "Basics");
+    cSequenceTracks.add(&cProviderSequenceTrackScreen, SEQUENCE_TRACK_SCREEN, "Basics");
   }
 
   void Basics::refreshAssetRegistration(Sequence& sequence) {

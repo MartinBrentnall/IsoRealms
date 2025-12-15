@@ -25,6 +25,7 @@
 #include "Assets/Fixed/SequenceTrack/SequenceTrackAudio.h"
 #include "Assets/Fixed/SequenceTrack/SequenceTrackColour.h"
 #include "Assets/Fixed/SequenceTrack/SequenceTrackFloat.h"
+#include "Assets/Fixed/SequenceTrack/SequenceTrackScreen.h"
 #include "Assets/Type/ISequenceTrack.h"
 #include "BooleanTrigger/BooleanTrigger.h"
 #include "DigitalInput/DigitalInput.h"
@@ -118,6 +119,7 @@ namespace IsoRealms::Basics {
     static const std::string SEQUENCE_TRACK_AUDIO;
     static const std::string SEQUENCE_TRACK_COLOUR;
     static const std::string SEQUENCE_TRACK_FLOAT;
+    static const std::string SEQUENCE_TRACK_SCREEN;
 
     static const std::string ACTION_SCRIPT;
 
@@ -142,6 +144,7 @@ namespace IsoRealms::Basics {
     AssetInstanced<Sequence, ISequenceTrack, SequenceTrackAudio>  cProviderSequenceTrackAudio;
     AssetInstanced<Sequence, ISequenceTrack, SequenceTrackColour> cProviderSequenceTrackColour;
     AssetInstanced<Sequence, ISequenceTrack, SequenceTrackFloat>  cProviderSequenceTrackFloat;
+    AssetInstanced<Sequence, ISequenceTrack, SequenceTrackScreen> cProviderSequenceTrackScreen;
 
     ResourceTypeDefinition<Basics, AnalogueInput>     cResourceTypeAnalogueInput;
     ResourceTypeDefinition<Basics, BooleanTrigger>    cResourceTypeBooleanTrigger;

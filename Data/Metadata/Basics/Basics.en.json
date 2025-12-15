@@ -20,6 +20,11 @@
       "description": "A track that can be used to change a float value.",
       "properties": {
       }
+    },
+    "SequenceTrackScreen": {
+      "description": "A track that can be used to change a screen.",
+      "properties": {
+      }
     }
   },
   "resources": {
@@ -175,7 +180,9 @@
         "ColourFade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous colour into this one, or just change immediately."},
         "FloatStart": {"name": "Start Value", "description": "The value output from this track at the start of this sequence."},
         "FloatValue": {"name": "Value", "description": "The value output from this track upon reaching this event in the sequence."},
-        "FloatFade": {"name": "Gradual Change", "description": "Determines whether to change gradually from the previous value to this one, or just change immediately."}
+        "FloatFade": {"name": "Gradual Change", "description": "Determines whether to change gradually from the previous value to this one, or just change immediately."},
+        "ScreenStart": {"name": "Start Screen", "description": "The screen output from this track at the start of this sequence."},
+        "ScreenValue": {"name": "Screen", "description": "The screen output from this track upon reaching this event in the sequence."}
       }
     },
     "Boolean": {

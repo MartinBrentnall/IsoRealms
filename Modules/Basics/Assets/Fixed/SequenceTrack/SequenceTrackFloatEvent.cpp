@@ -1,4 +1,4 @@
- /*
+/*
  * Copyright 2025 Martin Brentnall
  *
  * This file is part of IsoRealms.
