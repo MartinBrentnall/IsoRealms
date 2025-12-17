@@ -678,7 +678,7 @@ namespace IsoRealms::Basics {
                 cEditingProperties = true;
               } else {
                 if (cCursorEvent == nullptr) {
-                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getResourceData(), std::round(cCursorTimeline.animation()));
+                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getResourceData(), std::round(cCursorTimeline.value()));
                 }
 
                 if (cCursorEvent != nullptr) {
