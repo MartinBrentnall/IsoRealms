@@ -136,7 +136,9 @@ namespace IsoRealms {
       
     IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject) override {
       std::string mAvailableName = Utils::getAvailableKey(cResources, name);
-      return cResources.emplace(mAvailableName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject)).first->second->getResource();
+      IResource* mResource = cResources.emplace(mAvailableName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject)).first->second->getResource();
+      mResource->registerAssets();
+      return mResource;
     }
     
     IResource* loadResource(ResourceType& parent, JSONThing mInstanceThing, ProjectFile* ownerProject) override {

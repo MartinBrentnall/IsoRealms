@@ -358,7 +358,7 @@
                   }
                 }
               ],
-              "code": "print(\"STEP 1\")\ntable.insert(gMenuScreenStack, menuScreen)\nprint(\"STEP 2\")\ntable.insert(gMenuInputStack, menuInput)\nprint(\"STEP 3\")\nmenu:reset()\nprint(\"STEP 4\")\ninput:setInputHandler(menuInput)\nprint(\"STEP 5\")\nscreen:setScreen(menuScreen)\nprint(\"STEP 6\")"
+              "code": "table.insert(gMenuScreenStack, menuScreen)\ntable.insert(gMenuInputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)\n"
             },
             "ReloadConfiguration": {
               "bindings": [

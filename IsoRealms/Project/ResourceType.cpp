@@ -34,10 +34,6 @@ namespace IsoRealms {
 
   void ResourceType::loadResource(JSONThing mInstanceThing, ProjectFile* ownerProject) {
     std::string mResourceName = mInstanceThing.getName();
-    std::cout << "LOADING RESOURCE INSTANCE " << mResourceName << std::endl;
-    if (mResourceName == "SaveAsPrompt") {
-      std::cout << "DEBUG!" << std::endl;
-    }
 
     // Ignore resource if name matches an existing one (useful for include overrides and omissions).
     if (cResourceType->getResource2(mResourceName, false) != nullptr) {

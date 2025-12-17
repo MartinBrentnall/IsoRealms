@@ -49,7 +49,6 @@ namespace IsoRealms {
               cOwnerProject(parent.getProject(), ownerProject),
               cResourceHandle(module, *this),
               cAssetRegistry(*this) {
-      cResourceHandle.registerAssets(cAssetRegistry);
     }
     
     Resource(ResourceType& parent, MODULE& module, ProjectFile* ownerProject, JSONObject object) :
