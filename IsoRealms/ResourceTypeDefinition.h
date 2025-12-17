@@ -139,9 +139,10 @@ namespace IsoRealms {
       return cResources.emplace(mAvailableName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject)).first->second->getResource();
     }
     
-    IResource* loadResource(ResourceType& parent, JSONObject object, ProjectFile* ownerProject) override {
-      std::string mResourceName = object.getString(JSON_ID);
-      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject, object)).first->second->getResource();
+    IResource* loadResource(ResourceType& parent, JSONThing mInstanceThing, ProjectFile* ownerProject) override {
+      std::string mResourceName = mInstanceThing.getName();
+      JSONObject mInstanceObject = mInstanceThing.getValue();
+      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject, mInstanceObject)).first->second->getResource();
       mResource->registerAssets();
       return mResource;
     }
@@ -155,11 +156,10 @@ namespace IsoRealms {
       return false;
     }
   
-    void save(JSONArray& array, const ProjectFile* savingProject) override {
+    void save(JSONObject& object, const ProjectFile* savingProject) override {
       for (const std::unique_ptr<ResourceInfo>& mResourceInfo : cResources | std::views::values) {
         if (mResourceInfo->getResource()->needsSaving(savingProject)) {
-          JSONObject mResourceObject = array.addObject();
-          mResourceObject.addString(JSON_ID, mResourceInfo->getResource()->getName());
+          JSONObject mResourceObject = object.addObject(mResourceInfo->getResource()->getName());
           mResourceInfo->getResource()->save(mResourceObject);
         }
       }
@@ -216,7 +216,7 @@ namespace IsoRealms {
       return mResources;
     }
 
-    std::string getResourceID(const IResource& resource) const override {
+    const std::string& getResourceID(const IResource& resource) const override {
       for (const std::pair<const std::string, std::unique_ptr<ResourceInfo>>& mResource : cResources) {
         if (mResource.second->getResource() == &resource) {
           return mResource.first;

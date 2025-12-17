@@ -22,15 +22,14 @@ namespace IsoRealms::Spindizzy {
   const std::string TerrainState::JSON_HINT       = "hint";
   const std::string TerrainState::JSON_ICON       = "icon";
   const std::string TerrainState::JSON_ICON_SCALE = "iconScale";
-  const std::string TerrainState::JSON_ID         = "id";
   const std::string TerrainState::JSON_STATE      = "state";
 
   TerrainState::TerrainState(Spindizzy& spindizzy, IResourceData& data) :
-            TerrainState(data, "TODO", true, 1.0f) {
+            TerrainState(data, true, 1.0f) {
   }
 
   TerrainState::TerrainState(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            TerrainState(data, object.getString(JSON_ID), object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
+            TerrainState(data, object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
     cDefIcon.init(object, JSON_ICON);
     cDefHintAction.init(object, JSON_HINT);
   }
@@ -106,8 +105,12 @@ namespace IsoRealms::Spindizzy {
     cRuntimeValue = value;
   }
 
-  TerrainState::TerrainState(IResourceData& owner, const std::string& name, bool state, float iconScale) :
-            cDefConditionElement(name, *this, this),
+  TerrainState::TerrainState(IResourceData& owner, bool state, float iconScale) :
+            cResourceData(owner),
+            cDefConditionElement([this]() {
+              std::string mResourceID = cResourceData.getResourceID();
+              return mResourceID.substr(mResourceID.find_last_of('/') + 1);
+            }, *this, this),
             cDefValue(state),
             cDefHintAction(owner.getDummyActionClient()),
             cDefIcon(owner),

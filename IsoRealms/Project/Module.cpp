@@ -22,6 +22,7 @@
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Exception/ResourceInitException.h"
 #include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/System.h"
 
@@ -111,9 +112,9 @@ namespace IsoRealms {
   }
 
   void Module::loadResources(JSONObject object, ProjectFile* ownerProject) {
-    for (JSONValue mResourceValue : object.getArray(JSON_RESOURCES)) {
-      JSONObject mResourceObject = mResourceValue.getObject();
-      std::string mResourceTypeName = mResourceObject.getString(JSON_TYPE);
+    for (JSONThing mResourceThing : object) {
+      JSONObject mResourceObject = mResourceThing.getValue();
+      std::string mResourceTypeName = mResourceThing.getName();
       ResourceType* mResourceType = getResourceType(mResourceTypeName);
       if (mResourceType == nullptr) {
         std::cout << "ERROR: Module::loadResources: Resource type \"" << mResourceTypeName << "\" not known in module \"" << cName << "\".  Available resources:" << std::endl;
@@ -123,9 +124,8 @@ namespace IsoRealms {
         throw ResourceInitException("ERROR: Module::loadResources: Resource type \"" + mResourceTypeName + "\" not known in module \"" + cName + "\".");
       }
 
-      for (JSONValue mInstanceValue : mResourceObject.getArray(JSON_INSTANCES)) {
-        JSONObject mInstanceObject = mInstanceValue.getObject();
-        mResourceType->loadResource(mInstanceObject, ownerProject);
+      for (JSONThing mInstanceThing : mResourceObject.getObject(JSON_INSTANCES)) {
+        mResourceType->loadResource(mInstanceThing, ownerProject);
       }
 
       if (mResourceObject.hasMember(JSON_OMISSIONS)) {
@@ -151,13 +151,11 @@ namespace IsoRealms {
   }
 
   void Module::save(JSONObject object, const ProjectFile* savingProject) const {
-    object.addString(JSON_NAME, cName);
+    JSONObject mModuleObject = object.addObject(cName);
 
-    JSONArray mResourceTypesArray = object.addArray(JSON_RESOURCES);
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
       if (mResourceType.second->needsSaving(savingProject)) {
-        JSONObject mResourceTypeObject = mResourceTypesArray.addObject();
-        mResourceTypeObject.addString(JSON_TYPE, mResourceType.first);
+        JSONObject mResourceTypeObject = mModuleObject.addObject(mResourceType.first);
         mResourceType.second->save(mResourceTypeObject, savingProject);
       }
     }

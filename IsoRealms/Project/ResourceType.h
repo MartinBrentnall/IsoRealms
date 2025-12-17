@@ -32,7 +32,7 @@ namespace IsoRealms {
   class ResourceType {
     public:
     ResourceType(IResourceTypeDefinition* resourceType, Module& parent);
-    void loadResource(JSONObject object, ProjectFile* ownerProject);
+    void loadResource(JSONThing mInstanceThing, ProjectFile* ownerProject);
     void loadOmission(JSONObject object, ProjectFile* ownerProject);
     void loadMetadata(JSONObject object);
     void reloadResource(const std::string& resourceName);
@@ -49,7 +49,7 @@ namespace IsoRealms {
     void createOverriddenResource(IResource* resource);
     void registerModuleAssets();
     std::string getPath();
-    std::string getName(const IResource& resource) const;
+    const std::string& getName(const IResource& resource) const;
     std::string getDataPath(bool user);
     std::string getResourcePath();
     ProjectFile* getProjectFile();

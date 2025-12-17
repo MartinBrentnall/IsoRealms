@@ -91,6 +91,9 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_ID;
     static const std::string JSON_STATE;
 
+    // External interfaces.
+    IResourceData& cResourceData;
+
     // Definition data.
     ConditionElement cDefConditionElement; /// Condition element representing this terrain state.
     bool cDefValue;                        /// Initial value of this terrain state.
@@ -110,6 +113,6 @@ namespace IsoRealms::Spindizzy {
      * @param name ID of this terrain state.
      * @param value initial value of this terrain state.
      */
-    TerrainState(IResourceData& owner, const std::string& id, bool value, float iconScale);
+    TerrainState(IResourceData& owner, bool value, float iconScale);
   };
 }

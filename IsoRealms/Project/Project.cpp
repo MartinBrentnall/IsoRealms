@@ -103,9 +103,8 @@ namespace IsoRealms {
     cDefQuitAction.init(mProjectObject, JSON_QUIT, file);
     cDefDefaultEditor.init(mProjectObject, JSON_EDITOR, file);
 
-    for (JSONValue mModuleValue : mProjectObject.getArray(JSON_MODULES)) {
-      JSONObject mModuleObject = mModuleValue.getObject();
-      std::string mModuleName = mModuleObject.getString(JSON_NAME);
+    for (JSONThing mModuleThing : mProjectObject.getObject(JSON_MODULES)) {
+      std::string mModuleName = mModuleThing.getName();
       getModule(mModuleName);
     }
 
@@ -115,9 +114,9 @@ namespace IsoRealms {
       }
     }
 
-    for (JSONValue mModuleValue : mProjectObject.getArray(JSON_MODULES)) {
-      JSONObject mModuleObject = mModuleValue.getObject();
-      std::string mModuleName = mModuleObject.getString(JSON_NAME);
+    for (JSONThing mModuleThing : mProjectObject.getObject(JSON_MODULES)) {
+      JSONObject mModuleObject = mModuleThing.getValue();
+      std::string mModuleName = mModuleThing.getName();
       Module* mModule = getModule(mModuleName);
       mModule->loadResources(mModuleObject, &file);
     }
@@ -263,11 +262,10 @@ namespace IsoRealms {
       }
 
       // Save modules
-      JSONArray mModulesArray = mProjectObject.addArray(JSON_MODULES);
+      JSONObject mModulesObject = mProjectObject.addObject(JSON_MODULES);
       for (const std::unique_ptr<Module>& mModule : cDefModules) {
         if (mModule->needsSaving(&file)) {
-          JSONObject mModuleObject = mModulesArray.addObject();
-          mModule->save(mModuleObject, &file);
+          mModule->save(mModulesObject, &file);
         }
       }
 

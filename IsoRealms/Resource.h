@@ -66,7 +66,7 @@ namespace IsoRealms {
     /************************\
      * Implements IResource *
     \************************/
-    std::string getName() const override {
+    const std::string& getName() const override {
       return cParent.getName(*this);
     }
     

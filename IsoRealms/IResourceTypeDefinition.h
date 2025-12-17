@@ -35,14 +35,14 @@ namespace IsoRealms {
   class IResourceTypeDefinition {
     public:
     virtual IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject) = 0;
-    virtual IResource* loadResource(ResourceType& parent, JSONObject object, ProjectFile* ownerProject) = 0;
+    virtual IResource* loadResource(ResourceType& parent, JSONThing mInstanceThing, ProjectFile* ownerProject) = 0;
     virtual void deleteResource(IResource* resource) = 0;
     virtual void renameResource(IResource* resource, const std::string& name) = 0;
     virtual IResource* getResource2(const std::string& name, bool required = true) const = 0;
     virtual std::vector<std::string> getAvailableResources() const = 0;
-    virtual std::string getResourceID(const IResource& resource) const = 0;
+    virtual const std::string& getResourceID(const IResource& resource) const = 0;
     virtual bool needsSaving(const ProjectFile* savingProject) const = 0;
-    virtual void save(JSONArray& array, const ProjectFile* savingProject) = 0;
+    virtual void save(JSONObject& object, const ProjectFile* savingProject) = 0;
     virtual bool forEachResource(std::function<bool(IResource*)> func) = 0;
   };
 }

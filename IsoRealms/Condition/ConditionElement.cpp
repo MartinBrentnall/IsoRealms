@@ -25,8 +25,8 @@ namespace IsoRealms {
   const std::string ConditionElement::JSON_INPUT   = "input";
   const std::string ConditionElement::JSON_NEGATED = "negated";
 
-  ConditionElement::ConditionElement(const std::string& name, IScreen& icon, IBoolean* input) :
-            cInputName(name),
+  ConditionElement::ConditionElement(std::function<std::string()> nameFunction, IScreen& icon, IBoolean* input) :
+            cInputNameFunction(nameFunction),
             cInput(input),
             cTestInput(false),
             cIcon(icon),
@@ -35,7 +35,7 @@ namespace IsoRealms {
   }
 
   std::string ConditionElement::getName() const {
-    return cInputName;
+    return cInputNameFunction();
   }
 
   IBoolean* ConditionElement::getInputAddress() const {
@@ -96,22 +96,22 @@ namespace IsoRealms {
   }
 
   void ConditionElement::Clause::save(JSONObject object) const {
-    object.addString(JSON_INPUT, cParent.cInputName);
+    object.addString(JSON_INPUT, cParent.cInputNameFunction());
     object.addBoolean(JSON_NEGATED, cNegated);
   }
 
   void ConditionElement::Clause::saveCache(std::ostream& cache, unsigned char elementType) const {
     cache.write(reinterpret_cast<const char*>(&elementType), sizeof(elementType));
-    size_t mLength = cParent.cInputName.length();
-    cache.write(reinterpret_cast<const char*>(&mLength),                sizeof(mLength));
-    cache.write(reinterpret_cast<const char*>(&cParent.cInputName[0]), mLength);
-    cache.write(reinterpret_cast<const char*>(&cNegated),               sizeof(cNegated));
+    size_t mLength = cParent.cInputNameFunction().length();
+    cache.write(reinterpret_cast<const char*>(&mLength),                         sizeof(mLength));
+    cache.write(reinterpret_cast<const char*>(&cParent.cInputNameFunction()[0]), mLength);
+    cache.write(reinterpret_cast<const char*>(&cNegated),                        sizeof(cNegated));
   }
 
   void ConditionElement::Clause::debug() const {
     if (cNegated) {
       std::cout << "!";
     }
-    std::cout << cParent.cInputName;
+    std::cout << cParent.cInputNameFunction();
   }
 }

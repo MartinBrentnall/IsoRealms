@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/ProjectFile.h"
 #include "Module.h"
 #include "Project.h"
@@ -31,9 +32,13 @@ namespace IsoRealms {
             cCategory("None") {
   }
 
-  void ResourceType::loadResource(JSONObject object, ProjectFile* ownerProject) {
-    std::string mResourceName = object.getString(JSON_ID);
-    
+  void ResourceType::loadResource(JSONThing mInstanceThing, ProjectFile* ownerProject) {
+    std::string mResourceName = mInstanceThing.getName();
+    std::cout << "LOADING RESOURCE INSTANCE " << mResourceName << std::endl;
+    if (mResourceName == "SaveAsPrompt") {
+      std::cout << "DEBUG!" << std::endl;
+    }
+
     // Ignore resource if name matches an existing one (useful for include overrides and omissions).
     if (cResourceType->getResource2(mResourceName, false) != nullptr) {
       cOverriddenResources.push_back(std::make_unique<PlaceHolder>(mResourceName, ownerProject));
@@ -45,7 +50,7 @@ namespace IsoRealms {
         return;
       }
     }
-    cResourceType->loadResource(*this, object, ownerProject);
+    cResourceType->loadResource(*this, mInstanceThing, ownerProject);
   }
 
   void ResourceType::loadOmission(JSONObject object, ProjectFile* ownerProject) {
@@ -75,25 +80,26 @@ namespace IsoRealms {
 
         // Find the module that the resource belongs to.
         JSONObject mProjectObject = mProjectFileDocument.getObject(JSON_PROJECT);
-        JSONArray mModulesArray = mProjectObject.getArray(JSON_MODULES);
-        for (JSONValue mModuleValue : mModulesArray) {
-          JSONObject mModuleObject = mModuleValue.getObject();
+        JSONObject mModulesObject = mProjectObject.getObject(JSON_MODULES);
+        for (JSONThing mModuleThing : mModulesObject) {
+          std::string mModuleName = mModuleThing.getName();
+          JSONObject mModuleObject = mModuleThing.getValue();
           if (mModuleObject.getString(JSON_NAME) == cParent.getName()) {
 
             // Found module, now find the resource type.
-            JSONArray mResourcesArray = mModuleObject.getArray(JSON_RESOURCES);
-            for (JSONValue mResourceValue : mResourcesArray) {
-              JSONObject mResourceObject = mResourceValue.getObject();
+            for (JSONThing mResourceThing : mModuleObject) {
+              JSONObject mResourceObject = mResourceThing.getValue();
+              std::string mResourceName = mResourceThing.getName();
               if (mResourceObject.getString(JSON_TYPE) == cParent.getName(this)) {
                 
                 // Found resource type, now find the resource.
-                JSONArray mInstancesArray = mResourceObject.getArray(JSON_INSTANCES);
-                for (JSONValue mInstanceValue : mInstancesArray) {
-                  JSONObject mInstanceObject = mInstanceValue.getObject();
-                  if (mInstanceObject.getString(JSON_ID) == resourceName) {
+                JSONObject mInstancesObject = mResourceObject.getObject(JSON_INSTANCES);
+                for (JSONThing mInstanceThing : mInstancesObject) {
+                  std::string mInstanceName = mInstanceThing.getName();
+                  if (mInstanceName == resourceName) {
 
                     // Found the resource, now load it.
-                    cResourceType->loadResource(*this, mInstanceObject, mProjectFile);
+                    cResourceType->loadResource(*this, mInstanceThing, mProjectFile);
 
                     // Remove the overridden resource.
                     cOverriddenResources.erase(std::remove_if(cOverriddenResources.begin(), cOverriddenResources.end(), [resourceName](const std::unique_ptr<PlaceHolder>& mOverriddenResource) {
@@ -127,8 +133,8 @@ namespace IsoRealms {
   }
 
   void ResourceType::save(JSONObject& object, const ProjectFile* savingProject) {
-    JSONArray mInstancesArray = object.addArray(JSON_INSTANCES);
-    cResourceType->save(mInstancesArray, savingProject);
+    JSONObject mInstancesObject = object.addObject(JSON_INSTANCES);
+    cResourceType->save(mInstancesObject, savingProject);
     JSONArray mOmissionsArray = object.addArray(JSON_OMISSIONS);
     for (const std::unique_ptr<PlaceHolder>& mOmittedResource : cOmittedResources) {
       mOmittedResource->save(mOmissionsArray, *savingProject);      
@@ -200,7 +206,7 @@ namespace IsoRealms {
     return cParent.getPath() + "/" + cParent.getName(this);
   }
   
-  std::string ResourceType::getName(const IResource& resource) const {
+  const std::string& ResourceType::getName(const IResource& resource) const {
     return cResourceType->getResourceID(resource);
   }
   

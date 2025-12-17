@@ -31,7 +31,7 @@ namespace IsoRealms {
 
   class IResource {
     public:
-    virtual std::string getName() const = 0;
+    virtual const std::string& getName() const = 0;
     virtual bool isReadOnly() const = 0;
     virtual bool needsSaving(const ProjectFile* savingProject) = 0;
     virtual void save(JSONObject object) = 0;

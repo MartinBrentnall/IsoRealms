@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include <functional>
 #include <iostream>
 #include <string>
 
@@ -48,7 +49,7 @@ namespace IsoRealms {
       bool cNegated;
     };
 
-    ConditionElement(const std::string& name, IScreen& icon, IBoolean* input);
+    ConditionElement(std::function<std::string()> nameFunction, IScreen& icon, IBoolean* input);
 
     std::string getName() const;
     IBoolean* getInputAddress() const;
@@ -62,7 +63,7 @@ namespace IsoRealms {
     static const std::string JSON_INPUT;
     static const std::string JSON_NEGATED;
 
-    std::string cInputName;
+    std::function<std::string()> cInputNameFunction;
     IBoolean* cInput;
     bool cTestInput;
     IScreen& cIcon;
