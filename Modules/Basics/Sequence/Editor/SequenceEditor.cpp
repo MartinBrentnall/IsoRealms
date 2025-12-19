@@ -559,6 +559,11 @@ namespace IsoRealms::Basics {
               break;
             }
 
+            case sf::Keyboard::Escape: {
+              cExitAction->execute();
+              break;
+            }
+
             default: {
               break;
             }

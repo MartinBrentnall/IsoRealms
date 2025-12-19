@@ -302,6 +302,13 @@ namespace IsoRealms::Spindizzy {
     Project& cProject;
     IResourceTypeRegistry& cModule;
 
+    // Basic world editing tools.
+    DeleteTool     cToolDelete;
+    PropertiesTool cToolProperties;
+    ZoneTool       cToolCopyZone;
+    ZoneTool       cToolMoveZone;
+    ZoneTool       cToolDeleteZone;
+    
     // Spindizzy Assets.
     AssetClientManager<Spindizzy, Spindizzy,      IBoundaryType>        cBoundaryTypes;
     CameraRegistry              cCameras;
@@ -371,13 +378,6 @@ namespace IsoRealms::Spindizzy {
     LuaBinding<Wall>    cRuntimeParameterWall;
     LuaBinding<Zone>    cRuntimeParameterZone;
 
-    // Editing data.
-    DeleteTool     cToolDelete;
-    PropertiesTool cToolProperties;
-    ZoneTool       cToolCopyZone;
-    ZoneTool       cToolMoveZone;
-    ZoneTool       cToolDeleteZone;
-    
     // Scripting support.
     LuaBinding<Spindizzy> cLuaBinding;
     LuaBinding<Zone> cRuntimeParameterZone1;
