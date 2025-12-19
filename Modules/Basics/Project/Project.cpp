@@ -148,6 +148,23 @@ namespace IsoRealms::Basics {
     cRuntimeEditing = editing;
   }
 
+  void Project::prepareNewProject() {
+    cRuntimeProjectLoader = std::make_unique<ProjectLoader>([this](bool quitRequestGranted) {
+      cRuntimeRunning = false;
+      cRuntimeEditing = true; // TODO: Why do we assume a switch to editing mode?
+      cRuntimeQuitRequestGranted = quitRequestGranted;
+      cRuntimeProject->reset(); // TODO: Why do we reset here?
+      cDefEndAction.execute();
+    });
+
+    Application& mApplication = cProject.getApplication();
+    mApplication.executeAndReturn([this, &mApplication]() {
+      cRuntimeProjectLoader->newProject(mApplication);
+    });
+    cRuntimeLoading = true;
+    cRuntimeProject = nullptr;
+  }
+
   void Project::prepare(const std::string& file, bool user, bool force) {
 
     // If it's the same as the current project, nothing to do.

@@ -55,6 +55,7 @@ namespace IsoRealms::Basics {
     \***********************/
     void setRunning(bool running);
     void setEditing(bool editing);
+    void prepareNewProject();
     void prepare(const std::string& file, bool user, bool force);
     bool isReady();
     void resetProject();

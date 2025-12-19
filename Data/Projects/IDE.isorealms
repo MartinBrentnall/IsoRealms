@@ -2430,9 +2430,9 @@
               }
             },
             "New": {
-              "message": "Create new map?  Changes won't be saved!",
+              "message": "Create new App?  Changes won't be saved!",
               "cancelLabel": "Cancel",
-              "confirmLabel": "New Map",
+              "confirmLabel": "New App",
               "selectionColour": {
                 "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
               },
@@ -2474,7 +2474,7 @@
                     }
                   }
                 ],
-                "code": "project:prepare(\"Projects/Spindizzy/Worlds/Template.isorealms\", false, true)\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
+                "code": "project:prepareNew()\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
               },
               "onCancel": {
                 "key": "Basics/Function/PopScreen",

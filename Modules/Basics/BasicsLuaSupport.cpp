@@ -84,6 +84,7 @@ namespace IsoRealms {
       mLua.new_usertype<Project>("SubProject",                            "setRunning",                 &Project::setRunning,
                                                                           "setEditing",                 &Project::setEditing,
                                                                           "prepare",                    &Project::prepare,
+                                                                          "prepareNew",                 &Project::prepareNewProject,
                                                                           "isReady",                    &Project::isReady,
                                                                           "reset",                      &Project::resetProject,
                                                                           "resetLauncher",              &Project::resetLauncher,
