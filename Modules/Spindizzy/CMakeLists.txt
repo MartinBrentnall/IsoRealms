@@ -39,13 +39,11 @@ add_library(Spindizzy MODULE
   Assets/Client/WallPattern.cpp
   Assets/Client/WorldEditorTool.cpp
   Assets/Client/ZoneViewType.cpp
-  Assets/Fixed/BoundaryType/BoundaryTypeDummy.cpp
   Assets/Fixed/Camera/CameraGameplay.cpp
   Assets/Fixed/Camera/CameraLinked.cpp
   Assets/Fixed/Camera/CameraOverview.cpp
   Assets/Fixed/Camera/CameraTransitional.cpp
   Assets/Fixed/Camera/CameraVariant.cpp
-  Assets/Fixed/PhysicalObjectType/PhysicalObjectTypeDummy.cpp
   Assets/Fixed/SurfacePattern/SurfacePatternComposite.cpp
   Assets/Fixed/SurfacePattern/SurfacePatternOutline.cpp
   Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.cpp
@@ -54,7 +52,6 @@ add_library(Spindizzy MODULE
   Assets/Fixed/WallPattern/WallPatternComposite.cpp
   Assets/Fixed/WallPattern/WallPatternOutline.cpp
   Assets/Fixed/WallPattern/WallPatternTile.cpp
-  Assets/Fixed/WorldEditorTool/WorldEditorToolDummy.cpp
   Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.cpp
   Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitCellLocation.cpp
   Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.cpp
@@ -66,9 +63,12 @@ add_library(Spindizzy MODULE
   Assets/Fixed/ZoneViewType/ZoneViewOverview.cpp
   Assets/Fixed/ZoneViewType/ZoneViewTypeActual.cpp
   Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.cpp
+  Assets/Registry/BoundaryTypeRegistry.cpp
   Assets/Registry/CameraRegistry.cpp
+  Assets/Registry/PhysicalObjectTypeRegistry.cpp
   Assets/Registry/SurfacePatternRegistry.cpp
   Assets/Registry/WallPatternRegistry.cpp
+  Assets/Registry/WorldEditorToolRegistry.cpp
   Assets/Registry/ZoneObjectTypeTraitRegistry.cpp
   Assets/Registry/ZoneViewTypeRegistry.cpp
   Ball/Ball.cpp

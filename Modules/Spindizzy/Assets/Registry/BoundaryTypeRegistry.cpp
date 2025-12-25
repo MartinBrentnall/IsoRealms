@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2025 Martin Brentnall
  *
  * This file is part of IsoRealms.
@@ -16,35 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "BoundaryTypeDummy.h"
+#include "BoundaryTypeRegistry.h"
 
 namespace IsoRealms::Spindizzy {
-  std::string BoundaryTypeDummy::getBoundaryTypeID() const {
+  BoundaryTypeRegistry::BoundaryTypeRegistry() :
+            AssetClientManager(&cDummy) {
+  }
+
+  std::string BoundaryTypeRegistry::Dummy::getBoundaryTypeID() const {
     return "";
   }
 
-  IBinding* BoundaryTypeDummy::getBinding(const std::string& id) const {
+  IBinding* BoundaryTypeRegistry::Dummy::getBinding(const std::string& id) const {
     return nullptr;
   }
 
-  std::string BoundaryTypeDummy::getBindingID(const IBinding* binding) const {
+  std::string BoundaryTypeRegistry::Dummy::getBindingID(const IBinding* binding) const {
     return "";
   }
 
-  bool BoundaryTypeDummy::renderAssetIcon() const {
+  bool BoundaryTypeRegistry::Dummy::renderAssetIcon() const {
     Utils::renderIconNone();
     return true;
   }
 
-  void BoundaryTypeDummy::saveAsset(JSONObject object) const {
+  void BoundaryTypeRegistry::Dummy::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  void BoundaryTypeDummy::getAssetProperties(PropertyMaker& owner) {
+  void BoundaryTypeRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
     // Nothing to do.
   }
 
-  bool BoundaryTypeDummy::isDefaultConfiguration() const {
+  bool BoundaryTypeRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 }

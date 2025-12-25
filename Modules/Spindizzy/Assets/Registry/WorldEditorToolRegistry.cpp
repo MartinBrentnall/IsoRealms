@@ -16,25 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
-
-#include "IsoRealms.h"
-
-#include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
+#include "WorldEditorToolRegistry.h"
 
 namespace IsoRealms::Spindizzy {
-  class WorldEditor;
+  WorldEditorToolRegistry::WorldEditorToolRegistry() : 
+            AssetClientManager(&cDummy) {
+  }
 
-  class WorldEditorToolDummy : public IWorldEditorTool {
-    public:
+  IWorldEditorToolInstance* WorldEditorToolRegistry::Dummy::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+    return nullptr;
+  }
 
-    /*******************************\
-     * Implements IWorldEditorTool *
-    \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-  };
+  bool WorldEditorToolRegistry::Dummy::renderAssetIcon() const {
+    Utils::renderIconNone();
+    return true;
+  }
+
+  void WorldEditorToolRegistry::Dummy::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  void WorldEditorToolRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+    // Nothing to do.
+  }
+
+  bool WorldEditorToolRegistry::Dummy::isDefaultConfiguration() const {
+    return true;
+  }
 }

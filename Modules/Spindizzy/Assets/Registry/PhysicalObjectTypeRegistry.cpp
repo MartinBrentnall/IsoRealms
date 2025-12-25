@@ -16,27 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "WorldEditorToolDummy.h"
+#include "PhysicalObjectTypeRegistry.h"
 
 namespace IsoRealms::Spindizzy {
-  IWorldEditorToolInstance* WorldEditorToolDummy::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  PhysicalObjectTypeRegistry::PhysicalObjectTypeRegistry() : 
+            AssetClientManager(&cDummy) {
+  }
+
+  std::string PhysicalObjectTypeRegistry::Dummy::getPhysicalObjectTypeID() const {
+    return "";
+  }
+
+  IBinding* PhysicalObjectTypeRegistry::Dummy::getBinding(const std::string& id) const {
     return nullptr;
   }
 
-  bool WorldEditorToolDummy::renderAssetIcon() const {
+  std::string PhysicalObjectTypeRegistry::Dummy::getBindingID(const IBinding* binding) const {
+    return "";
+  }
+
+  bool PhysicalObjectTypeRegistry::Dummy::renderAssetIcon() const {
     Utils::renderIconNone();
     return true;
   }
 
-  void WorldEditorToolDummy::saveAsset(JSONObject object) const {
+  void PhysicalObjectTypeRegistry::Dummy::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 
-  void WorldEditorToolDummy::getAssetProperties(PropertyMaker& owner) {
+  void PhysicalObjectTypeRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
     // Nothing to do.
   }
 
-  bool WorldEditorToolDummy::isDefaultConfiguration() const {
+  bool PhysicalObjectTypeRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 }

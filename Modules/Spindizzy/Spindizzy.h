@@ -20,12 +20,12 @@
 
 #include "IsoRealms.h"
 
-#include "Assets/Fixed/BoundaryType/BoundaryTypeDummy.h"
-#include "Assets/Fixed/PhysicalObjectType/PhysicalObjectTypeDummy.h"
-#include "Assets/Fixed/WorldEditorTool/WorldEditorToolDummy.h"
+#include "Assets/Registry/BoundaryTypeRegistry.h"
 #include "Assets/Registry/CameraRegistry.h"
+#include "Assets/Registry/PhysicalObjectTypeRegistry.h"
 #include "Assets/Registry/SurfacePatternRegistry.h"
 #include "Assets/Registry/WallPatternRegistry.h"
+#include "Assets/Registry/WorldEditorToolRegistry.h"
 #include "Assets/Registry/ZoneObjectTypeTraitRegistry.h"
 #include "Assets/Registry/ZoneViewTypeRegistry.h"
 
@@ -314,19 +314,14 @@ namespace IsoRealms::Spindizzy {
     ZoneTool       cToolDeleteZone;
     
     // Spindizzy Assets.
-    AssetClientManager<Spindizzy, Spindizzy,      IBoundaryType>        cBoundaryTypes;
+    BoundaryTypeRegistry        cBoundaryTypes;
     CameraRegistry              cCameras;
-    AssetClientManager<Spindizzy, Spindizzy,      IPhysicalObjectType>  cPhysicalObjectTypes;
+    PhysicalObjectTypeRegistry  cPhysicalObjectTypes;
     SurfacePatternRegistry      cSurfacePatterns;
     WallPatternRegistry         cWallPatterns;
-    AssetClientManager<Spindizzy, Spindizzy,      IWorldEditorTool>     cWorldEditorTools;
+    WorldEditorToolRegistry     cWorldEditorTools;
     ZoneObjectTypeTraitRegistry cZoneObjectTypeTraits;
     ZoneViewTypeRegistry        cZoneViewTypes;
-
-    // Dummy asset providers.
-    AssetLiteralDummy<Spindizzy,      IBoundaryType,        BoundaryTypeDummy>        cDummyProviderBoundaryType;
-    AssetLiteralDummy<Spindizzy,      IPhysicalObjectType,  PhysicalObjectTypeDummy>  cDummyProviderPhysicalObjectType;
-    AssetLiteralDummy<Spindizzy,      IWorldEditorTool,     WorldEditorToolDummy>     cDummyProviderWorldEditorTool;
 
     // Resource type definitions.
     ResourceTypeDefinition<Spindizzy, AlienType>          cResourceAlien;

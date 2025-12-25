@@ -30,12 +30,9 @@ namespace IsoRealms::Spindizzy {
                     cToolCopyZone(ZoneTool::Type::COPY),
                     cToolMoveZone(ZoneTool::Type::MOVE),
                     cToolDeleteZone(ZoneTool::Type::DELETE),
-                    cBoundaryTypes(&cDummyProviderBoundaryType),
                     cCameras(registry),
-                    cPhysicalObjectTypes(&cDummyProviderPhysicalObjectType),
                     cSurfacePatterns(registry),
                     cWallPatterns(registry),
-                    cWorldEditorTools(&cDummyProviderWorldEditorTool),
                     cZoneObjectTypeTraits(registry),
                     cZoneViewTypes(registry),
                     cResourceAlien(*this),
@@ -413,7 +410,9 @@ namespace IsoRealms::Spindizzy {
     reset2(cResourceWorldView);
   }  
   
-  void Spindizzy::remove(IWorldEditorTool*    asset) {cWorldEditorTools.remove(   asset);}
+  void Spindizzy::remove(IWorldEditorTool* asset) {
+    cWorldEditorTools.remove(asset);
+  }
 
   void Spindizzy::remove(WorldEditorTool& tool) {
     // TODO: Remove from our selection.
