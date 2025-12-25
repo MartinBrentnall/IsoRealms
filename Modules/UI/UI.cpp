@@ -20,20 +20,6 @@
 #include "UI.h"
 
 namespace IsoRealms::UI {
-  const std::string UI::MENU_ITEM_ACTION             = "Action";
-  const std::string UI::MENU_ITEM_BOOLEAN            = "Boolean";
-  const std::string UI::MENU_ITEM_DIGITAL_INPUT      = "DigitalInput";
-  const std::string UI::MENU_ITEM_DISPLAY_RESOLUTION = "DisplayResolution";
-  const std::string UI::MENU_ITEM_FILE_LIST          = "FileList";
-  const std::string UI::MENU_ITEM_LAUNCHER_LIST      = "LauncherList";
-  const std::string UI::MENU_ITEM_SLIDER             = "Slider";
-
-  const std::string UI::LAYOUT_LOCATION_ABSOLUTE = "Absolute";
-  const std::string UI::LAYOUT_LOCATION_RELATIVE = "Relative";
-  
-  const std::string UI::LAYOUT_OFFSET_ABSOLUTE = "Absolute";
-  const std::string UI::LAYOUT_OFFSET_LINKED   = "Linked";
-
   const std::string UI::SCREEN_GRADIENT = "Gradient";
   const std::string UI::SCREEN_MODEL    = "Model";
   const std::string UI::SCREEN_PANEL    = "Panel";
@@ -44,17 +30,9 @@ namespace IsoRealms::UI {
   UI::UI(Project& project, IResourceTypeRegistry& registry):
                     cProject(project),
                     cModule(registry),
-                    cProviderLayoutLocationAbsolute(registry.getAssetMetadata("LayoutLocationAbsolute")),
-                    cProviderLayoutLocationRelative(registry.getAssetMetadata("LayoutLocationRelative")),
-                    cProviderLayoutOffsetAbsolute(registry.getAssetMetadata("LayoutOffsetAbsolute")),
-                    cProviderLayoutOffsetLinked(registry.getAssetMetadata("LayoutOffsetLinked")),
-                    cProviderMenuItemAction(registry.getAssetMetadata("MenuItemAction")),
-                    cProviderMenuItemBoolean(registry.getAssetMetadata("MenuItemBoolean")),
-                    cProviderMenuItemDigitalInput(registry.getAssetMetadata("MenuItemDigitalInput")),
-                    cProviderMenuItemDisplayResolution(registry.getAssetMetadata("MenuItemDisplayResolution")),
-                    cProviderMenuItemFileList(registry.getAssetMetadata("MenuItemFileList")),
-                    cProviderMenuItemLauncherList(registry.getAssetMetadata("MenuItemLauncherList")),
-                    cProviderMenuItemSlider(registry.getAssetMetadata("MenuItemSlider")),
+                    cLayoutLocations(registry),
+                    cLayoutOffsets(registry),
+                    cMenuItems(registry),
                     cProviderScreenGradient(registry.getAssetMetadata("ScreenGradient")),
                     cProviderScreenModel(registry.getAssetMetadata("ScreenModel")),
                     cProviderScreenPanel(registry.getAssetMetadata("ScreenPanel")),
@@ -72,21 +50,6 @@ namespace IsoRealms::UI {
     registry.add(&cResourceTypeScreenFader,     "ScreenFader");
     registry.add(&cResourceTypeThrobber,        "Throbber");
     registry.add(&cResourceTypeVirtualKeyboard, "VirtualKeyboard");
-
-    // Register UI built-in asset providers.
-    cLayoutLocations.add(&cProviderLayoutLocationAbsolute, LAYOUT_LOCATION_ABSOLUTE, "UI");
-    cLayoutLocations.add(&cProviderLayoutLocationRelative, LAYOUT_LOCATION_RELATIVE, "UI");
-
-    cLayoutOffsets.add(&cProviderLayoutOffsetAbsolute, LAYOUT_OFFSET_ABSOLUTE, "UI");
-    cLayoutOffsets.add(&cProviderLayoutOffsetLinked,   LAYOUT_OFFSET_LINKED,   "UI");
-    
-    cMenuItems.add(&cProviderMenuItemAction,            MENU_ITEM_ACTION,             "UI");
-    cMenuItems.add(&cProviderMenuItemBoolean,           MENU_ITEM_BOOLEAN,            "UI");
-    cMenuItems.add(&cProviderMenuItemDigitalInput,      MENU_ITEM_DIGITAL_INPUT,      "UI");
-    cMenuItems.add(&cProviderMenuItemDisplayResolution, MENU_ITEM_DISPLAY_RESOLUTION, "UI");
-    cMenuItems.add(&cProviderMenuItemFileList,          MENU_ITEM_FILE_LIST,          "UI");
-    cMenuItems.add(&cProviderMenuItemLauncherList,      MENU_ITEM_LAUNCHER_LIST,      "UI");
-    cMenuItems.add(&cProviderMenuItemSlider,            MENU_ITEM_SLIDER,             "UI");
   }
 
   const Metadata& UI::getMetadata(const std::string& key) const {

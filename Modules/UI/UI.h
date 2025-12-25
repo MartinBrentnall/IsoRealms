@@ -26,17 +26,9 @@
 
 #include "IsoRealms.h"
 
-#include "Assets/Fixed/LayoutLocation/LayoutLocationAbsolute.h"
-#include "Assets/Fixed/LayoutLocation/LayoutLocationRelative.h"
-#include "Assets/Fixed/LayoutOffset/LayoutOffsetAbsolute.h"
-#include "Assets/Fixed/LayoutOffset/LayoutOffsetLinked.h"
-#include "Assets/Fixed/MenuItem/MenuItemAction.h"
-#include "Assets/Fixed/MenuItem/MenuItemBoolean.h"
-#include "Assets/Fixed/MenuItem/MenuItemDigitalInput.h"
-#include "Assets/Fixed/MenuItem/MenuItemDisplayResolution.h"
-#include "Assets/Fixed/MenuItem/MenuItemFileList.h"
-#include "Assets/Fixed/MenuItem/MenuItemLauncherList.h"
-#include "Assets/Fixed/MenuItem/MenuItemSlider.h"
+#include "Assets/Registry/LayoutLocationRegistry.h"
+#include "Assets/Registry/LayoutOffsetRegistry.h"
+#include "Assets/Registry/MenuItemRegistry.h"
 #include "Assets/Fixed/Screen/ScreenGradient.h"
 #include "Assets/Fixed/Screen/ScreenModel.h"
 #include "Assets/Fixed/Screen/ScreenPanel.h"
@@ -110,20 +102,6 @@ namespace IsoRealms::UI {
     }
 
     private:
-    static const std::string MENU_ITEM_ACTION;
-    static const std::string MENU_ITEM_BOOLEAN;
-    static const std::string MENU_ITEM_DIGITAL_INPUT;
-    static const std::string MENU_ITEM_DISPLAY_RESOLUTION;
-    static const std::string MENU_ITEM_FILE_LIST;
-    static const std::string MENU_ITEM_LAUNCHER_LIST;
-    static const std::string MENU_ITEM_SLIDER;
-
-    static const std::string LAYOUT_LOCATION_ABSOLUTE;
-    static const std::string LAYOUT_LOCATION_RELATIVE;
-    
-    static const std::string LAYOUT_OFFSET_ABSOLUTE;
-    static const std::string LAYOUT_OFFSET_LINKED;
-
     static const std::string SCREEN_GRADIENT;
     static const std::string SCREEN_MODEL;
     static const std::string SCREEN_PANEL;
@@ -136,24 +114,9 @@ namespace IsoRealms::UI {
     IResourceTypeRegistry& cModule;
 
     // Asset registries
-    AssetClientManager<UI, LayoutComponentEdge, ILayoutLocation> cLayoutLocations;
-    AssetClientManager<UI, LayoutComponentEdge, ILayoutOffset>   cLayoutOffsets;
-    AssetClientManager<UI, Menu,                IMenuItem>       cMenuItems;
-
-    // Built-in providers for UI asset types.
-    AssetInstanced<LayoutComponentEdge, ILayoutLocation, LayoutLocationAbsolute> cProviderLayoutLocationAbsolute;
-    AssetInstanced<LayoutComponentEdge, ILayoutLocation, LayoutLocationRelative> cProviderLayoutLocationRelative;
-
-    AssetInstanced<LayoutComponentEdge, ILayoutOffset, LayoutOffsetAbsolute> cProviderLayoutOffsetAbsolute;
-    AssetInstanced<LayoutComponentEdge, ILayoutOffset, LayoutOffsetLinked>   cProviderLayoutOffsetLinked;
-
-    AssetInstanced<Menu, IMenuItem, MenuItemAction>            cProviderMenuItemAction;
-    AssetInstanced<Menu, IMenuItem, MenuItemBoolean>           cProviderMenuItemBoolean;
-    AssetInstanced<Menu, IMenuItem, MenuItemDigitalInput>      cProviderMenuItemDigitalInput;
-    AssetInstanced<Menu, IMenuItem, MenuItemDisplayResolution> cProviderMenuItemDisplayResolution;
-    AssetInstanced<Menu, IMenuItem, MenuItemFileList>          cProviderMenuItemFileList;
-    AssetInstanced<Menu, IMenuItem, MenuItemLauncherList>      cProviderMenuItemLauncherList;
-    AssetInstanced<Menu, IMenuItem, MenuItemSlider>            cProviderMenuItemSlider;
+    LayoutLocationRegistry cLayoutLocations;
+    LayoutOffsetRegistry   cLayoutOffsets;
+    MenuItemRegistry       cMenuItems;
 
     // Built-in providers for ad-hoc screens.
     AssetInstanced<IResourceData, IScreen, ScreenGradient> cProviderScreenGradient;

@@ -27,6 +27,9 @@ add_library(UI MODULE
   Assets/Client/LayoutLocation.cpp
   Assets/Client/LayoutOffset.cpp
   Assets/Client/MenuItem.cpp
+  Assets/Registry/LayoutLocationRegistry.cpp
+  Assets/Registry/LayoutOffsetRegistry.cpp
+  Assets/Registry/MenuItemRegistry.cpp
   Assets/Fixed/LayoutOffset/LayoutOffsetAbsolute.cpp
   Assets/Fixed/LayoutOffset/LayoutOffsetLinked.cpp
   Assets/Fixed/LayoutLocation/LayoutLocationAbsolute.cpp
