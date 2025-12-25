@@ -21,12 +21,7 @@
 #include "IsoRealms.h"
 
 #include "AnalogueInput/AnalogueInput.h"
-#include "Assets/Fixed/SequenceTrack/SequenceTrackAction.h"
-#include "Assets/Fixed/SequenceTrack/SequenceTrackAudio.h"
-#include "Assets/Fixed/SequenceTrack/SequenceTrackColour.h"
-#include "Assets/Fixed/SequenceTrack/SequenceTrackFloat.h"
-#include "Assets/Fixed/SequenceTrack/SequenceTrackScreen.h"
-#include "Assets/Type/ISequenceTrack.h"
+#include "Assets/Registry/SequenceTrackRegistry.h"
 #include "BooleanTrigger/BooleanTrigger.h"
 #include "DigitalInput/DigitalInput.h"
 #include "FileFont/FileFont.h"
@@ -116,12 +111,6 @@ namespace IsoRealms::Basics {
     void setMusicVolume(float volume);
 
     private:
-    static const std::string SEQUENCE_TRACK_ACTION;
-    static const std::string SEQUENCE_TRACK_AUDIO;
-    static const std::string SEQUENCE_TRACK_COLOUR;
-    static const std::string SEQUENCE_TRACK_FLOAT;
-    static const std::string SEQUENCE_TRACK_SCREEN;
-
     static const std::string ACTION_SCRIPT;
 
     static const std::string JSON_ANALOGUE_INPUT_MAPPINGS;
@@ -138,14 +127,7 @@ namespace IsoRealms::Basics {
     IResourceTypeRegistry& cModule;
     
     // Asset registries
-    AssetClientManager<Basics, Sequence, ISequenceTrack> cSequenceTracks;
-    
-    // Built-in providers for UI asset types.
-    AssetInstanced<Sequence, ISequenceTrack, SequenceTrackAction> cProviderSequenceTrackAction;
-    AssetInstanced<Sequence, ISequenceTrack, SequenceTrackAudio>  cProviderSequenceTrackAudio;
-    AssetInstanced<Sequence, ISequenceTrack, SequenceTrackColour> cProviderSequenceTrackColour;
-    AssetInstanced<Sequence, ISequenceTrack, SequenceTrackFloat>  cProviderSequenceTrackFloat;
-    AssetInstanced<Sequence, ISequenceTrack, SequenceTrackScreen> cProviderSequenceTrackScreen;
+    SequenceTrackRegistry cSequenceTracks;
 
     ResourceTypeDefinition<Basics, AnalogueInput>     cResourceTypeAnalogueInput;
     ResourceTypeDefinition<Basics, BooleanTrigger>    cResourceTypeBooleanTrigger;

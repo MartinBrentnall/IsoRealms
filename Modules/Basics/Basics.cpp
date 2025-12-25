@@ -19,12 +19,6 @@
 #include "Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string Basics::SEQUENCE_TRACK_ACTION = "Action";
-  const std::string Basics::SEQUENCE_TRACK_AUDIO  = "Audio";
-  const std::string Basics::SEQUENCE_TRACK_COLOUR = "Colour";
-  const std::string Basics::SEQUENCE_TRACK_FLOAT  = "Float";
-  const std::string Basics::SEQUENCE_TRACK_SCREEN = "Screen";
-
   const std::string Basics::ACTION_SCRIPT = "Script";
   
   const std::string Basics::JSON_ANALOGUE_INPUT_MAPPINGS = "analogueInputMappings";
@@ -42,11 +36,7 @@ namespace IsoRealms::Basics {
   Basics::Basics(IsoRealms::Project& project, IResourceTypeRegistry& registry):
                     cProject(project),
                     cModule(registry),
-                    cProviderSequenceTrackAction(registry.getAssetMetadata("SequenceTrackAction")),
-                    cProviderSequenceTrackAudio(registry.getAssetMetadata("SequenceTrackAudio")),
-                    cProviderSequenceTrackColour(registry.getAssetMetadata("SequenceTrackColour")),
-                    cProviderSequenceTrackFloat(registry.getAssetMetadata("SequenceTrackFloat")),
-                    cProviderSequenceTrackScreen(registry.getAssetMetadata("SequenceTrackScreen")),
+                    cSequenceTracks(registry),
                     cResourceTypeAnalogueInput(*this),
                     cResourceTypeBooleanTrigger(*this),
                     cResourceTypeDigitalInput(*this),
@@ -89,13 +79,6 @@ namespace IsoRealms::Basics {
     registry.add(&cResourceTypeSimpleString,      "String");
     registry.add(&cResourceTypeSimpleVertex,      "Vertex");
     registry.add(&cResourceTypeSprite,            "Sprite");
-
-    // Register Basics built-in asset providers.
-    cSequenceTracks.add(&cProviderSequenceTrackAction, SEQUENCE_TRACK_ACTION, "Basics");
-    cSequenceTracks.add(&cProviderSequenceTrackAudio,  SEQUENCE_TRACK_AUDIO,  "Basics");
-    cSequenceTracks.add(&cProviderSequenceTrackColour, SEQUENCE_TRACK_COLOUR, "Basics");
-    cSequenceTracks.add(&cProviderSequenceTrackFloat,  SEQUENCE_TRACK_FLOAT,  "Basics");
-    cSequenceTracks.add(&cProviderSequenceTrackScreen, SEQUENCE_TRACK_SCREEN, "Basics");
   }
 
   void Basics::refreshAssetRegistration(Sequence& sequence) {

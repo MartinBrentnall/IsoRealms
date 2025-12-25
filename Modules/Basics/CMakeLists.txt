@@ -35,6 +35,7 @@ add_library(Basics MODULE
   Assets/Fixed/SequenceTrack/SequenceTrackScreen.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackScreenEvent.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackScreenInstance.cpp
+  Assets/Registry/SequenceTrackRegistry.cpp
   BooleanTrigger/BooleanTrigger.cpp
   DigitalInput/DigitalInput.cpp
   FileFont/FileFont.cpp
