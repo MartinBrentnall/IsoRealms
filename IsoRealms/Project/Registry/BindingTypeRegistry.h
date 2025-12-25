@@ -53,7 +53,6 @@ namespace IsoRealms {
 
     class Dummy : public IBindingType {
       public:
-      Dummy(IResourceData& owner);
 
       /***********************\
       * Implements IBinding *

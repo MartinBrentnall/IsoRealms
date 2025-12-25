@@ -50,6 +50,10 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
+  BoundaryHandler::~BoundaryHandler() {
+    cSpindizzy.removed(this);
+  }
+
   void BoundaryHandler::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }

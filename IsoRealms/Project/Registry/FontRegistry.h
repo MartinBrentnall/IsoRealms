@@ -36,7 +36,6 @@ namespace IsoRealms {
     private:
     class Dummy : public IFont {
       public:
-      Dummy(IResourceData& owner);
 
       /********************\
       * Implements IFont *

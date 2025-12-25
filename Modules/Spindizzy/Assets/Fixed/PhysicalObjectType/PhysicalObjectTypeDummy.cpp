@@ -19,10 +19,6 @@
 #include "PhysicalObjectTypeDummy.h"
 
 namespace IsoRealms::Spindizzy {
-  PhysicalObjectTypeDummy::PhysicalObjectTypeDummy(Spindizzy& spindizzy) {
-    // Nothing to do.
-  }
-
   std::string PhysicalObjectTypeDummy::getPhysicalObjectTypeID() const {
     return "";
   }

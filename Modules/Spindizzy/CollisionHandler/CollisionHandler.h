@@ -33,7 +33,7 @@ namespace IsoRealms::Spindizzy {
    * action may be configured to be triggered when an object of a one type
    * goes into/out of proximity of an object of another type.
    */
-  class CollisionHandler final {
+  class CollisionHandler final : public IPhysicalObjectTypeListener {
     public:
 
     /**********************\
@@ -41,6 +41,7 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     CollisionHandler(Spindizzy& spindizzy, IResourceData& data);
     CollisionHandler(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    ~CollisionHandler();
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -52,6 +53,11 @@ namespace IsoRealms::Spindizzy {
     const PhysicalObjectType* getPhysicalObjectTypeB() const;
     std::unique_ptr<CollisionHandlerInstance> createInstance(World* world);
     void executeAction(bool exited);
+
+    /******************************************\
+     * Implements IPhysicalObjectTypeListener *
+    \******************************************/
+    void physicalObjectTypeChanged(const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) override;
 
     private:
 

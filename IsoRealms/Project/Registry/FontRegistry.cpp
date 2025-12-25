@@ -23,10 +23,6 @@ namespace IsoRealms {
             AssetClientManager(&cLiteral) {
   }
 
-  FontRegistry::Dummy::Dummy(IResourceData& owner) {
-    // Nothing to do.
-  }
-
   void FontRegistry::Dummy::print(float x, float y, float size, IFont::Alignment Alignment, const std::string& text) {
     // Dummy implementation, do nothing
   }

@@ -56,7 +56,6 @@ namespace IsoRealms {
     private:
     class Dummy : public IBinding {
       public:
-      Dummy(IActionClient& owner);
 
       /***********************\
       * Implements IBinding *

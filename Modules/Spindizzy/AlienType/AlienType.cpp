@@ -113,8 +113,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   AlienType::~AlienType() {
-    cSpindizzy.removed(this);
+    cAssets.clear();
     cSpindizzy.removeAll(this);
+    cSpindizzy.removed(this);
   }
   
   void AlienType::registerAssets(const std::string& parentID) {

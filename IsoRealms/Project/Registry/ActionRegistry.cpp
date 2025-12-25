@@ -23,10 +23,6 @@ namespace IsoRealms {
             AssetClientManager(&cLiteral) {
   }
 
-  ActionRegistry::Dummy::Dummy(IActionClient& owner) {
-    // Nothing to do.
-  }
-
   void ActionRegistry::Dummy::execute() {
     // Do nothing.
   }

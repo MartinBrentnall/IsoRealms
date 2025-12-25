@@ -134,6 +134,10 @@ namespace IsoRealms {
               cModule(module) {
     }
       
+    void clear() {
+      cResources.clear();
+    }
+
     IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject) override {
       std::string mAvailableName = Utils::getAvailableKey(cResources, name);
       IResource* mResource = cResources.emplace(mAvailableName, std::make_unique<ResourceInfo>(parent, cModule, ownerProject)).first->second->getResource();

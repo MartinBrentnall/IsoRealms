@@ -19,10 +19,6 @@
 #include "WorldEditorToolDummy.h"
 
 namespace IsoRealms::Spindizzy {
-  WorldEditorToolDummy::WorldEditorToolDummy(Spindizzy& owner) {
-    // Nothing to do.
-  }
-
   IWorldEditorToolInstance* WorldEditorToolDummy::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return nullptr;
   }

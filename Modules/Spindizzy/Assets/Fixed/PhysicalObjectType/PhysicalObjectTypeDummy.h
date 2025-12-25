@@ -21,11 +21,8 @@
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 
 namespace IsoRealms::Spindizzy {
-  class Spindizzy;
-
   class PhysicalObjectTypeDummy : public IPhysicalObjectType {
     public:
-    PhysicalObjectTypeDummy(Spindizzy& spindizzy);
     
     /**********************************\
      * Implements IPhysicalObjectType *

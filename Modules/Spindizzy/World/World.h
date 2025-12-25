@@ -25,6 +25,7 @@
 #include "Modules/Spindizzy/Assets/Client/WorldEditorTool.h"
 #include "Modules/Spindizzy/Assets/Type/IBoundaryType.h"
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
+#include "Modules/Spindizzy/BoundaryHandler/BoundaryHandler.h"
 #include "Modules/Spindizzy/BoundaryHandler/BoundaryHandlerInstance.h"
 #include "Modules/Spindizzy/CollisionHandler/CollisionHandlerInstance.h"
 #include "Modules/Spindizzy/IWorldObject.h"
@@ -102,17 +103,18 @@ namespace IsoRealms::Spindizzy {
     
     // Boundary handler support.
     void addBoundaryHandler(std::unique_ptr<BoundaryHandlerInstance> handler);
-    void removeBoundaryHandler(BoundaryHandlerInstance* handler);
+    void removeBoundaryHandler(BoundaryHandler* handler);
 
     // Object collision support.    
     void addCollisionHandler(std::unique_ptr<CollisionHandlerInstance> handler);
-    void removeCollisionHandler(CollisionHandlerInstance* handler);
+    void removeCollisionHandler(CollisionHandler* handler);
     
     // Movement handling support.
+    void physicalObjectTypeChanged(CollisionHandler* handler, const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType);
     void added(IPhysicalObjectType* type);
     void removed(IPhysicalObjectType* type);
-    void addMovementListener(IPhysicalObjectType* type, IMovementListener* listener);
-    void removeMovementListener(IPhysicalObjectType* type, IMovementListener* listener);
+    void addMovementListener(const IPhysicalObjectType* type, IMovementListener* listener);
+    void removeMovementListener(const IPhysicalObjectType* type, IMovementListener* listener);
     MovementHandler* getMovementHandler(IPhysicalObjectType* type);
     
     // Movement and collision detection.
@@ -195,6 +197,17 @@ namespace IsoRealms::Spindizzy {
     void getAssetProperties(PropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
+    class DummyPhysicalObjectTypeUser : public IAssetUser<IPhysicalObjectType> {
+      public:
+
+      /**********************************************\
+       * Implements IAssetUser<IPhysicalObjectType> *
+      \**********************************************/
+      void relinquish(IPhysicalObjectType* asset) override;
+      bool isReadOnly() const override;
+      void setOwner(ProjectFile* owner) override;
+    };
+
     // TODO: To be replaced with dynamic solution.
     float getAbyssDepth() const;
     
@@ -243,6 +256,9 @@ namespace IsoRealms::Spindizzy {
       std::vector<std::unique_ptr<Wall>> cWalls;
     };
 
+    // Dummy physical object type user.
+    DummyPhysicalObjectTypeUser cDummyPhysicalObjectTypeUser;
+
     // External interfaces.
     Spindizzy& cSpindizzy;        /// Spindizzy module reference.
     IResourceData& cResourceData; /// Access to world surface cache on disk.
@@ -269,7 +285,7 @@ namespace IsoRealms::Spindizzy {
     SpatialContainerTest<ISurface*> cRuntimeSurfaces;                                               /// Surfaces derived from terrain
     SpatialContainerTest<ISurface*> cRuntimePrioritySurfaces;                                       /// Surfaces that can be mounted by an object that's already on another surface.
     SpatialContainerTest<Wall*> cRuntimeWalls;                                                      /// Walls derived from terrain.
-    std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>> cRuntimeMovementHandlers;      /// Movement handlers are used by physical objects to notify interested parties of their movement.
+    std::map<const IPhysicalObjectType*, std::unique_ptr<MovementHandler>> cRuntimeMovementHandlers;/// Movement handlers are used by physical objects to notify interested parties of their movement.
     std::map<IBoundaryType*, std::unique_ptr<SpatialContainerTest<IBoundary*>>> cRuntimeBoundaries; /// Boundaries mapped by boundary type.
     std::vector<std::unique_ptr<BoundaryHandlerInstance>> cRuntimeBoundaryHandlers;                 /// Boundary handlers to be processed.
     std::vector<std::unique_ptr<CollisionHandlerInstance>> cRuntimeCollisionHandlers;               /// Collision handlers to be processed.

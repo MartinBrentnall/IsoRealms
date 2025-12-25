@@ -18,6 +18,7 @@
  */
 #include "World.h"
 
+#include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
 #include "Modules/Spindizzy/Spindizzy.h"
 
@@ -94,6 +95,9 @@ namespace IsoRealms::Spindizzy {
         mZone->updateDisplayList();
       }
     });
+
+    // Dummy physical object type.
+    added(cSpindizzy.getAsset<IPhysicalObjectType>(&cDummyPhysicalObjectTypeUser, "None", cSpindizzy));
   }
 
   World::World(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
@@ -412,16 +416,28 @@ namespace IsoRealms::Spindizzy {
     cRuntimeBoundaryHandlers.emplace_back(std::move(handler));
   }
 
-  void World::removeBoundaryHandler(BoundaryHandlerInstance* handler) {
-    Utils::removeElementUnique(cRuntimeBoundaryHandlers, handler);
+  void World::removeBoundaryHandler(BoundaryHandler* handler) {
+    std::remove_if(cRuntimeBoundaryHandlers.begin(), cRuntimeBoundaryHandlers.end(), [handler](const std::unique_ptr<BoundaryHandlerInstance>& mHandler) {
+      return mHandler->getType() == handler;
+    });
   }
 
   void World::addCollisionHandler(std::unique_ptr<CollisionHandlerInstance> handler) {
     cRuntimeCollisionHandlers.emplace_back(std::move(handler));
   }
 
-  void World::removeCollisionHandler(CollisionHandlerInstance* handler) {
-    Utils::removeElementUnique(cRuntimeCollisionHandlers, handler);
+  void World::removeCollisionHandler(CollisionHandler* handler) {
+    std::remove_if(cRuntimeCollisionHandlers.begin(), cRuntimeCollisionHandlers.end(), [handler](const std::unique_ptr<CollisionHandlerInstance>& mHandler) {
+      return mHandler->getType() == handler;
+    });
+  }
+
+  void World::physicalObjectTypeChanged(CollisionHandler* handler, const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) {
+    for (std::unique_ptr<CollisionHandlerInstance>& mCollisionHandler : cRuntimeCollisionHandlers) {
+      if (mCollisionHandler->getType() == handler) {
+        mCollisionHandler->typeChanged(oldPhysicalObjectType, newPhysicalObjectType);
+      }
+    }
   }
 
   void World::added(IPhysicalObjectType* type) {
@@ -432,16 +448,16 @@ namespace IsoRealms::Spindizzy {
     cRuntimeMovementHandlers.erase(type);
   }
 
-  void World::addMovementListener(IPhysicalObjectType* type, IMovementListener* listener) {
-    std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
+  void World::addMovementListener(const IPhysicalObjectType* type, IMovementListener* listener) {
+    std::map<const IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
     if (mIterator == cRuntimeMovementHandlers.end()) {
       throw ArgumentException("ERROR: World::addMovementListener: Specified physical object type isn't known.");
     }
     mIterator->second->addListener(listener);
   }
   
-  void World::removeMovementListener(IPhysicalObjectType* type, IMovementListener* listener) {
-    std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
+  void World::removeMovementListener(const IPhysicalObjectType* type, IMovementListener* listener) {
+    std::map<const IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
     if (mIterator == cRuntimeMovementHandlers.end()) {
       throw ArgumentException("ERROR: World::removeMovementListener: Specified physical object type isn't known.");
     }
@@ -449,7 +465,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   MovementHandler* World::getMovementHandler(IPhysicalObjectType* type) {
-    std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
+    std::map<const IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
     if (mIterator == cRuntimeMovementHandlers.end()) {
       throw ArgumentException("ERROR: World::getMovementListener: Specified physical object type isn't known.");
     }
@@ -881,6 +897,18 @@ namespace IsoRealms::Spindizzy {
 
   bool World::isDefaultConfiguration() const {
     return true;
+  }
+
+  void World::DummyPhysicalObjectTypeUser::relinquish(IPhysicalObjectType* asset) {
+    // Nothing to do.
+  }
+
+  bool World::DummyPhysicalObjectTypeUser::isReadOnly() const {
+    return false;
+  }
+
+  void World::DummyPhysicalObjectTypeUser::setOwner(ProjectFile* owner) {
+    // Nothing to do.
   }
 
   float World::getAbyssDepth() const {

@@ -21,13 +21,14 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  TextureRegistry::TextureRegistry() :
-            AssetClientManager(&cLiteral) {
+  TextureRegistry::TextureRegistry(Project& project) :
+            AssetClientManager(&cLiteral),
+            cLiteral(project) {
   }
 
-  TextureRegistry::Dummy::Dummy(IResourceData& owner) :
-            cDummyTexture(owner.getProject(), 128, 128) {
-    owner.getProject().getApplication().mainThreadInit([this, &owner]() { // TODO: Do I need to make sure this is only executed once?
+  TextureRegistry::Dummy::Dummy(Project& project) :
+            cDummyTexture(project, 128, 128) {
+    project.getApplication().mainThreadInit([this, &project]() { // TODO: Do I need to make sure this is only executed once?
       glPushAttrib(GL_TRANSFORM_BIT);
       glMatrixMode(GL_PROJECTION);
       glPushMatrix();
@@ -74,7 +75,7 @@ namespace IsoRealms {
       glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
       glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-      Application& mApplication = owner.getProject().getApplication();
+      Application& mApplication = project.getApplication();
       mApplication.setViewPort();
     });
   }

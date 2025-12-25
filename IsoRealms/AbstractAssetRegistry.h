@@ -42,6 +42,10 @@ namespace IsoRealms {
     }
 
     ~AbstractAssetRegistry() {
+      clear();
+    }
+
+    void clear() {
       for (ASSET_VARIANT& mAsset : cRegisteredAssets) {
         std::visit([this](auto* asset) {
           using RAW = std::decay_t<decltype(*asset)>;

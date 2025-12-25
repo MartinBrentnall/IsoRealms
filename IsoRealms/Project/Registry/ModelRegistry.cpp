@@ -23,10 +23,6 @@ namespace IsoRealms {
             AssetClientManager(&cLiteral) {
   }
 
-  ModelRegistry::Dummy::Dummy(IResourceData& owner) {
-    // Nothing to do.
-  }
-
   IModelInstance* ModelRegistry::Dummy::createModel() {
     return &DUMMY;
   }

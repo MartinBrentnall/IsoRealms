@@ -153,7 +153,6 @@ namespace IsoRealms {
 
     class Dummy : public IScreen {
       public:
-      Dummy(IResourceData& owner);
 
       /**********************\
       * Implements IScreen *

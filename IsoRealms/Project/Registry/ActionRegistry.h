@@ -36,7 +36,6 @@ namespace IsoRealms {
     private:
     class Dummy : public IAction {
       public:
-      Dummy(IActionClient& owner);
 
       /**********************\
       * Implements IAction *

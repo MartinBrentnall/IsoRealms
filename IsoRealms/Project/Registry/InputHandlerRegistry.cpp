@@ -23,10 +23,6 @@ namespace IsoRealms {
             AssetClientManager(&cLiteral) {
   }
 
-  InputHandlerRegistry::Dummy::Dummy(IResourceData& owner) {
-    // Nothing to do.
-  }
-
   bool InputHandlerRegistry::Dummy::input(sf::Event& event) {
     return false;
   }

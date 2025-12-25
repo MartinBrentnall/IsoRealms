@@ -70,10 +70,6 @@ namespace IsoRealms {
     return AssetClientManager::get(client, owner, id, listener);
   }
 
-  BindingRegistry::Dummy::Dummy(IActionClient& owner) {
-    // Nothing to do.
-  }
-
   void BindingRegistry::Dummy::bind(const std::string& function) const {
     // Nothing to do.
   }

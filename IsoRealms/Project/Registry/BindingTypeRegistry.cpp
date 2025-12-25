@@ -67,10 +67,6 @@ namespace IsoRealms {
     return true;
   }
 
-  BindingTypeRegistry::Dummy::Dummy(IResourceData& owner) {
-    // Nothing to do.
-  }
-
   std::string BindingTypeRegistry::Dummy::getBindingTypeID() const {
     return "";
   }

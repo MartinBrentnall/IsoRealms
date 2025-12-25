@@ -22,6 +22,7 @@
 
 #include "IsoRealms.h"
 
+#include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 #include "Modules/Spindizzy/World/Common/IMovementListener.h"
 #include "Modules/Spindizzy/World/Common/IPhysicalObject.h"
 
@@ -43,6 +44,8 @@ namespace IsoRealms::Spindizzy {
      * belonging to the specified world.
      */
     CollisionHandlerInstance(CollisionHandler* type, World* world);
+    CollisionHandler* getType() const;
+    void typeChanged(const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType);
 
     /**
      * Process objects that have registered movements that may have moved into

@@ -16,25 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
-
-#include "IsoRealms.h"
-
-#include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
+ #pragma once
 
 namespace IsoRealms::Spindizzy {
-  class WorldEditor;
-
-  class WorldEditorToolDummy : public IWorldEditorTool {
+  class IPhysicalObjectTypeListener {
     public:
-
-    /*******************************\
-     * Implements IWorldEditorTool *
-    \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    virtual void physicalObjectTypeChanged(const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) = 0;
   };
 }

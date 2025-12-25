@@ -44,6 +44,7 @@ namespace IsoRealms::Spindizzy {
      * belonging to the specified world.
      */
     BoundaryHandlerInstance(BoundaryHandler* type, World* world);
+    BoundaryHandler* getType() const;
 
     /**
      * Process objects that have registered movements that may cross boundaries

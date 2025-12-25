@@ -19,10 +19,6 @@
 #include "BoundaryTypeDummy.h"
 
 namespace IsoRealms::Spindizzy {
-  BoundaryTypeDummy::BoundaryTypeDummy(Spindizzy& spindizzy) {
-    // Nothing to do.
-  }
-
   std::string BoundaryTypeDummy::getBoundaryTypeID() const {
     return "";
   }

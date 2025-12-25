@@ -42,10 +42,6 @@ namespace IsoRealms {
     return AssetClientManager::add(provider, id, category, stateChanges);
   }
 
-  ScreenRegistry::Dummy::Dummy(IResourceData& owner) {
-    // Nothing to do.
-  }
-
   void ScreenRegistry::Dummy::renderScreen(float scale, float aspectRatio) const {
     // Nothing to do
   }

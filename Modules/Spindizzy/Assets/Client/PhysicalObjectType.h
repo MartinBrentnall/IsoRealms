@@ -24,6 +24,8 @@
 
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 
+#include "IPhysicalObjectTypeListener.h"
+
 namespace IsoRealms::Spindizzy {
   class Spindizzy;
   
@@ -34,9 +36,16 @@ namespace IsoRealms::Spindizzy {
     IBinding* getBinding(const std::string& id) const;
     std::string getBindingID(const IBinding* binding) const;
 
+    void addNotifyAssetChangedFunction(IPhysicalObjectTypeListener* listener);
+    void removeNotifyAssetChangedFunction(IPhysicalObjectTypeListener* listener);
+    void notifyAssetChanged(const IPhysicalObjectType* oldAsset, const IPhysicalObjectType* newAsset);
+
     /****************************************************\
      * Implements Asset<IPhysicalObjectType, Spindizzy> *
     \****************************************************/
     bool isDefaultConfiguration() const;
+
+    private:
+    std::vector<IPhysicalObjectTypeListener*> cNotifyAssetChangedListeners;
   };
 }

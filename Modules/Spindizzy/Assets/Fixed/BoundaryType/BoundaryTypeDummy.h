@@ -21,11 +21,8 @@
 #include "Modules/Spindizzy/Assets/Type/IBoundaryType.h"
 
 namespace IsoRealms::Spindizzy {
-  class Spindizzy;
-
   class BoundaryTypeDummy : public IBoundaryType {
     public:
-    BoundaryTypeDummy(Spindizzy& spindizzy);
 
     /****************************\
      * Implements IBoundaryType *

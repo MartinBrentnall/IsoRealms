@@ -36,7 +36,6 @@ namespace IsoRealms {
     private:
     class Dummy : public IModel {
       public:
-      Dummy(IResourceData& owner);
 
       /*********************\
       * Implements IModel *

@@ -38,7 +38,6 @@ namespace IsoRealms {
     private:
     class Dummy : public IEditable {
       public:
-      Dummy(IResourceData& owner);
 
       /************************\
       * Implements IEditable *

@@ -50,6 +50,10 @@ namespace IsoRealms {
     {type.isDefaultConfiguration()} -> std::same_as<bool>;
   };
 
+  template <typename TYPE, typename ASSET_TYPE> concept NotifyAssetChangedExists = requires(TYPE& type, const ASSET_TYPE* oldAsset, const ASSET_TYPE* newAsset) {
+    {type.notifyAssetChanged(oldAsset, newAsset)} -> std::same_as<void>;
+  };
+
   template <typename DERIVED, typename TYPE> concept IsStateListener = std::convertible_to<DERIVED*, IStateListener*>;
 
   template <typename DERIVED, typename TYPE, typename MANAGER> class Asset : public IAssetUser<TYPE> {
@@ -66,6 +70,7 @@ namespace IsoRealms {
     }
 
     virtual ~Asset() {
+      relinquish(cAsset);
       if (cAsset != nullptr) {
         cManager.getAssetManager().release(this, cAsset);
       }
@@ -84,7 +89,7 @@ namespace IsoRealms {
     void set(JSONThing thing) {
       JSONObject mAssetObject = thing.getValue();
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener());
+      setAsset(cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener()));
       loadClientConfiguration(mAssetObject);
     }
 
@@ -101,13 +106,13 @@ namespace IsoRealms {
     void set(JSONObject object, const std::string& member) {
       JSONObject mAssetObject = object.getObject(member);
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener());
+      setAsset(cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener()));
       loadClientConfiguration(mAssetObject);
     }
     
     virtual void setID(const std::string& id) {
       cManager.getAssetManager().release(this, cAsset);
-      cAsset = cManager.getAssetManager().getAsset(this, id, cManager, getStateListener());
+      setAsset(cManager.getAssetManager().getAsset(this, id, cManager, getStateListener()));
       static_cast<DERIVED*>(this)->stateChanged();
     }
     
@@ -159,9 +164,9 @@ namespace IsoRealms {
     void relinquish(TYPE* asset) override {
       if (cAsset == asset) {
         if constexpr (CreateDefaultAssetExists<DERIVED, MANAGER, TYPE>) {
-          cAsset = static_cast<DERIVED*>(this)->createDefaultAsset(cManager);
+          setAsset(static_cast<DERIVED*>(this)->createDefaultAsset(cManager));
         } else  {
-          cAsset = cManager.getAssetManager().createDefault(this, cManager);
+          setAsset(cManager.getAssetManager().createDefault(this, cManager));
         }
       }
     }
@@ -229,6 +234,13 @@ namespace IsoRealms {
       } else {
         return nullptr;
       }
+    }
+
+    void setAsset(TYPE* asset) {
+      if constexpr (NotifyAssetChangedExists<DERIVED, TYPE>) {
+        static_cast<DERIVED*>(this)->notifyAssetChanged(cAsset, asset);
+      }
+      cAsset = asset;
     }
 
     Asset(Asset<DERIVED, TYPE, MANAGER> const& asset) = delete;

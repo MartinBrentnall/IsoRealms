@@ -29,6 +29,9 @@ namespace IsoRealms::Spindizzy {
     cBoundaries = cDefWorld->getBoundaries(**cDefType->getBoundaryType());
   }
 
+  BoundaryHandler* BoundaryHandlerInstance::getType() const {
+    return cDefType;
+  }
 
   void BoundaryHandlerInstance::processCrossings() {
     for (Movement& mMovement : cRuntimeMovements) {

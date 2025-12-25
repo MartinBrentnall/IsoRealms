@@ -32,6 +32,7 @@ namespace IsoRealms {
           cApplication(application),
           cFunctionNotifyComplete(onFinish),
           cScreens(*this),
+          cTextures(*this),
           cDefProjectFileStructure(*this, "", true),
           cDefInputHandler(*this, cDefProjectFileStructure, *this),
           cDefScreen(*this, cDefProjectFileStructure, *this),

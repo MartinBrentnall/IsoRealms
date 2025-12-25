@@ -21,7 +21,7 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Literal/LiteralTexture.h"
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
+#include "IsoRealms/Assets/Providers/TextureLiteralDummy.h"
 #include "IsoRealms/Assets/Type/ITexture.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Utils.h"
@@ -32,12 +32,12 @@
 namespace IsoRealms {
   class TextureRegistry : public AssetClientManager<TextureRegistry, IResourceData, ITexture> {
     public:
-    TextureRegistry();
+    TextureRegistry(Project& project);
 
     private:
     class Dummy : public ITexture {
       public:
-      Dummy(IResourceData& owner);
+      Dummy(Project& project);
 
       /***********************\
       * Implements ITexture *
@@ -54,7 +54,7 @@ namespace IsoRealms {
       LiteralTexture cDummyTexture;
     };
 
-    AssetLiteralDummy<IResourceData, ITexture, Dummy> cLiteral;
+    TextureLiteralDummy<IResourceData, ITexture, Dummy> cLiteral;
   };
 }
 

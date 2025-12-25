@@ -342,9 +342,6 @@ namespace IsoRealms::Spindizzy {
         cDefAliens.erase(cDefAliens.begin() + i);
       }
     }
-    if (empty()) {
-      cDefWorld.remove(this);
-    }
   }
   
   void Zone::removeAll(LiftType* type) {
@@ -353,9 +350,6 @@ namespace IsoRealms::Spindizzy {
         cDefLifts.erase(cDefLifts.begin() + i);
       }
     }
-    if (empty()) {
-      cDefWorld.remove(this);
-    }
   }
   
   void Zone::removeAll(PickUpType* type) {
@@ -363,9 +357,6 @@ namespace IsoRealms::Spindizzy {
       if (cDefPickUps[i]->isType(type)) {
         cDefPickUps.erase(cDefPickUps.begin() + i);
       }
-    }
-    if (empty()) {
-      cDefWorld.remove(this);
     }
   }
   
@@ -376,9 +367,6 @@ namespace IsoRealms::Spindizzy {
       }
     }
     updateDisplayList();
-    if (empty()) {
-      cDefWorld.remove(this);
-    }
   }
   
   void Zone::removeAll(ZoneObjectType* type) {
@@ -386,9 +374,6 @@ namespace IsoRealms::Spindizzy {
       if (cDefObjects[i]->isType(type)) {
         cDefObjects.erase(cDefObjects.begin() + 1);
       }
-    }
-    if (empty()) {
-      cDefWorld.remove(this);
     }
   }
   

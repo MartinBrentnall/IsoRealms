@@ -23,10 +23,6 @@ namespace IsoRealms {
             AssetClientManager(&cLiteral) {
   }
 
-  EditableRegistry::Dummy::Dummy(IResourceData& owner) {
-    // Nothing to do.
-  }
-
   IEditableScreen* EditableRegistry::Dummy::createEditableScreen(Project* project, IDialogManager& dialogManager) {
     return &DUMMY;
   }

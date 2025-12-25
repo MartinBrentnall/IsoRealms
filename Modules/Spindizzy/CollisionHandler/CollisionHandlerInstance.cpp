@@ -29,6 +29,17 @@ namespace IsoRealms::Spindizzy {
     cDefWorld->addMovementListener(**cDefType->getPhysicalObjectTypeB(), &cRuntimeTypeBMovements);
   }
 
+  CollisionHandler* CollisionHandlerInstance::getType() const {
+    return cDefType;
+  }
+
+  void CollisionHandlerInstance::typeChanged(const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) {
+    cDefWorld->removeMovementListener(oldPhysicalObjectType, &cRuntimeTypeAMovements);
+    cDefWorld->removeMovementListener(oldPhysicalObjectType, &cRuntimeTypeBMovements);
+    cDefWorld->addMovementListener(newPhysicalObjectType, &cRuntimeTypeAMovements);
+    cDefWorld->addMovementListener(newPhysicalObjectType, &cRuntimeTypeBMovements);
+  }
+
   void CollisionHandlerInstance::processCollisions() {
     for (Movement& mMovementA : cRuntimeTypeAMovements.cMovements) {
       for (Movement& mMovementB : cRuntimeTypeBMovements.cMovements) {

@@ -36,7 +36,6 @@ namespace IsoRealms {
     private:
     class Dummy : public IInputHandler {
       public:
-      Dummy(IResourceData& owner);
 
       /****************************\
       * Implements IInputHandler *

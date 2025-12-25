@@ -23,8 +23,13 @@
 #include "AssetLiteral.h"
 
 namespace IsoRealms {
-  template <typename OWNER, typename TYPE, typename DUMMY> class AssetLiteralDummy : public IAssetProvider<OWNER, TYPE> {
+  class Project;
+
+  template <typename OWNER, typename TYPE, typename DUMMY> class TextureLiteralDummy : public IAssetProvider<OWNER, TYPE> {
     public:
+    TextureLiteralDummy(Project& project) :
+              cDummyAsset(project) {
+    }
     
     /***********************************\
      * Implements IAssetProvider<TYPE> *

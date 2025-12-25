@@ -65,9 +65,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   PickUpType::~PickUpType() {
+    cSpindizzy.removeAll(this);
     cSpindizzy.remove(this);
     cSpindizzy.removed(this);
-    cSpindizzy.removeAll(this);
   }
 
   void PickUpType::registerAssets(const std::string& parentID) {

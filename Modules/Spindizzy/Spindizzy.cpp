@@ -25,6 +25,11 @@ namespace IsoRealms::Spindizzy {
   Spindizzy::Spindizzy(Project& project, IResourceTypeRegistry& registry) :
                     cProject(project),
                     cModule(registry),
+                    cToolDelete(),
+                    cToolProperties(),
+                    cToolCopyZone(ZoneTool::Type::COPY),
+                    cToolMoveZone(ZoneTool::Type::MOVE),
+                    cToolDeleteZone(ZoneTool::Type::DELETE),
                     cBoundaryTypes(&cDummyProviderBoundaryType),
                     cCameras(registry),
                     cPhysicalObjectTypes(&cDummyProviderPhysicalObjectType),
@@ -63,11 +68,6 @@ namespace IsoRealms::Spindizzy {
                     cRuntimeParameterPlayer(project.getLuaState(), nullptr),
                     cRuntimeParameterWall(project.getLuaState(), nullptr),
                     cRuntimeParameterZone(project.getLuaState(), nullptr),
-                    cToolDelete(),
-                    cToolProperties(),
-                    cToolCopyZone(ZoneTool::Type::COPY),
-                    cToolMoveZone(ZoneTool::Type::MOVE),
-                    cToolDeleteZone(ZoneTool::Type::DELETE),
                     cLuaBinding(project.getLuaState(), this),
                     cRuntimeParameterZone1(project.getLuaState(), nullptr),
                     cRuntimeParameterZone2(project.getLuaState(), nullptr),
@@ -93,6 +93,32 @@ namespace IsoRealms::Spindizzy {
     registry.add(&cResourceWorldView,          "WorldView");
     registry.add(&cResourceZone,               "Zone");
     registry.add(&cResourceZoneObject,         "ZoneObject");
+  }
+  
+  Spindizzy::~Spindizzy() {
+
+    // Clear resource type definitions before containers are destroyed, since resource destructors may access the containers.
+    cResourceAlien.clear();
+    cResourceBall.clear();
+    cResourceBoundaryHandler.clear();
+    cResourceC64LiftGraphics.clear();
+    cResourceC64TerrainGraphics.clear();
+    cResourceCollisionHandler.clear();
+    cResourceDebrisChunk.clear();
+    cResourceGyroscope.clear();
+    cResourceJewel.clear();
+    cResourceLift.clear();
+    cResourceModelCycler.clear();
+    cResourcePickUp.clear();
+    cResourcePlayer.clear();
+    cResourceTerrain.clear();
+    cResourceTerrainState.clear();
+    cResourceThemeSet.clear();
+    cResourceTop.clear();
+    cResourceWorld.clear();
+    cResourceWorldView.clear();
+    cResourceZone.clear();
+    cResourceZoneObject.clear();
   }
 
   const Metadata& Spindizzy::getMetadata(const std::string& key) const {
@@ -187,6 +213,12 @@ namespace IsoRealms::Spindizzy {
     return mTypes;
   }  
 
+  void Spindizzy::physicalObjectTypeChanged(CollisionHandler* handler, const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) {
+    for (World* mWorld : cResourceWorld) {
+      mWorld->physicalObjectTypeChanged(handler, oldPhysicalObjectType, newPhysicalObjectType);
+    }
+  }
+
   void Spindizzy::added(BoundaryHandler* handler) {
     for (World* mWorld : cResourceWorld) {
       mWorld->addBoundaryHandler(handler->createInstance(mWorld));
@@ -219,7 +251,19 @@ namespace IsoRealms::Spindizzy {
       }
     }
   }
-  
+
+  void Spindizzy::removed(BoundaryHandler* handler) {
+    for (World* mWorld : cResourceWorld) {
+      mWorld->removeBoundaryHandler(handler);
+    }
+  }
+
+  void Spindizzy::removed(CollisionHandler* handler) {
+    for (World* mWorld : cResourceWorld) {
+      mWorld->removeCollisionHandler(handler);
+    }
+  }
+
   void Spindizzy::removed(IBoundaryType* boundaryType) {
     for (World* mWorld : cResourceWorld) {
       mWorld->removed(boundaryType);

@@ -33,6 +33,20 @@ namespace IsoRealms::Spindizzy {
     return cAsset->getBindingID(binding);
   }
 
+  void PhysicalObjectType::addNotifyAssetChangedFunction(IPhysicalObjectTypeListener* listener) {
+    cNotifyAssetChangedListeners.push_back(listener);
+  }
+
+  void PhysicalObjectType::removeNotifyAssetChangedFunction(IPhysicalObjectTypeListener* listener) {
+    cNotifyAssetChangedListeners.erase(std::remove(cNotifyAssetChangedListeners.begin(), cNotifyAssetChangedListeners.end(), listener), cNotifyAssetChangedListeners.end());
+  }
+
+  void PhysicalObjectType::notifyAssetChanged(const IPhysicalObjectType* oldAsset, const IPhysicalObjectType* newAsset) {
+    for (IPhysicalObjectTypeListener* listener : cNotifyAssetChangedListeners) {
+      listener->physicalObjectTypeChanged(oldAsset, newAsset);
+    }
+  }
+
   bool PhysicalObjectType::isDefaultConfiguration() const {
     return true;
   }

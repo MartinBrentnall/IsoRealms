@@ -33,6 +33,8 @@ namespace IsoRealms::Spindizzy {
             cDefPhysicalObjectTypeB(spindizzy),
             cDefEnteredAction(data.getDummyActionClient()),
             cDefExitedAction(data.getDummyActionClient()) {
+    cDefPhysicalObjectTypeA.addNotifyAssetChangedFunction(this);
+    cDefPhysicalObjectTypeB.addNotifyAssetChangedFunction(this);
   }
 
   CollisionHandler::CollisionHandler(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
@@ -44,6 +46,12 @@ namespace IsoRealms::Spindizzy {
     spindizzy.getProject().init([this, &spindizzy]() {
       spindizzy.added(this);
     });
+  }
+
+  CollisionHandler::~CollisionHandler() {
+    cSpindizzy.removed(this);
+    cDefPhysicalObjectTypeA.removeNotifyAssetChangedFunction(this);
+    cDefPhysicalObjectTypeB.removeNotifyAssetChangedFunction(this);
   }
 
   void CollisionHandler::registerAssets(ResourceAssetRegistry& assets) {
@@ -86,5 +94,9 @@ namespace IsoRealms::Spindizzy {
 
   void CollisionHandler::executeAction(bool exited) {
     (exited ? cDefExitedAction : cDefEnteredAction).execute();
+  }
+
+  void CollisionHandler::physicalObjectTypeChanged(const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) {
+    cSpindizzy.physicalObjectTypeChanged(this, oldPhysicalObjectType, newPhysicalObjectType);
   }
 }
