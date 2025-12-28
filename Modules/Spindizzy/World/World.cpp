@@ -272,6 +272,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyEditor(       metadata.getPropertyData("Content"),                   this);
   }
 
+  void World::removed() {
+    // Nothing to do.
+  }
+
   Spindizzy& World::getAssetManager() {
     return cSpindizzy;
   }

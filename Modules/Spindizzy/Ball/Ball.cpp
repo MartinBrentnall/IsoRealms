@@ -67,6 +67,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Outline"), cDefOutline);
   }
 
+  void Ball::removed() {
+    // Nothing to do.
+  }
+
   void Ball::set() const {
     cTexture.set();
   }

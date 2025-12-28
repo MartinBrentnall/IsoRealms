@@ -56,6 +56,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyAsset<InputHandler>(metadata.getPropertyData("Value"), cDefInputHandler);
   }
 
+  void InputSwitch::removed() {
+    // Nothing to do.
+  }
+
   void InputSwitch::reset() {
     cRuntimeInputHandler = *cDefInputHandler;
   }

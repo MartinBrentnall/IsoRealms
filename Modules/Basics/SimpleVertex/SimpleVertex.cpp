@@ -74,6 +74,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeFloat(metadata.getPropertyData("Z"), [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
   }
 
+  void SimpleVertex::removed() {
+    // Nothing to do.
+  }
+
   void SimpleVertex::reset() {
     cRuntimeX = cDefX;
     cRuntimeY = cDefY;

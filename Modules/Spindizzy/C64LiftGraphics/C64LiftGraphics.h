@@ -45,6 +45,7 @@ namespace IsoRealms::Spindizzy {
     bool renderIcon();
     void hintInUse(bool inUse);
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     private:
     

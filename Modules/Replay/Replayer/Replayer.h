@@ -32,6 +32,7 @@ namespace IsoRealms::Replay {
     bool renderIcon() const;
     void hintInUse(bool inUse);
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     /*********************\
      * Module interfaces *

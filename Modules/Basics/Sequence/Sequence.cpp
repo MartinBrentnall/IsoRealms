@@ -117,6 +117,10 @@ namespace IsoRealms::Basics {
     });
   }
 
+  void Sequence::removed() {
+    // Nothing to do.
+  }
+
   Basics& Sequence::getAssetManager() {
     return cBasics;
   }

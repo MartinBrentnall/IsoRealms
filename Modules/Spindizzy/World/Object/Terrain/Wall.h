@@ -23,10 +23,11 @@
 #include "IsoRealms.h"
 
 #include "Modules/Spindizzy/World/Common/CollisionData.h"
-#include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 
 namespace IsoRealms::Spindizzy {
+  class IPhysicalObject;
   class IWallPattern;
+  class PhysicalState;
   class TerrainType;
 
   class Wall {

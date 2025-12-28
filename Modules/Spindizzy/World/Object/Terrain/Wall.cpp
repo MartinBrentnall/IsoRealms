@@ -21,6 +21,7 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"
+#include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 
 #include "Terrain.h"
 

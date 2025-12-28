@@ -92,32 +92,6 @@ namespace IsoRealms::Spindizzy {
     registry.add(&cResourceZoneObject,         "ZoneObject");
   }
   
-  Spindizzy::~Spindizzy() {
-
-    // Clear resource type definitions before containers are destroyed, since resource destructors may access the containers.
-    cResourceAlien.clear();
-    cResourceBall.clear();
-    cResourceBoundaryHandler.clear();
-    cResourceC64LiftGraphics.clear();
-    cResourceC64TerrainGraphics.clear();
-    cResourceCollisionHandler.clear();
-    cResourceDebrisChunk.clear();
-    cResourceGyroscope.clear();
-    cResourceJewel.clear();
-    cResourceLift.clear();
-    cResourceModelCycler.clear();
-    cResourcePickUp.clear();
-    cResourcePlayer.clear();
-    cResourceTerrain.clear();
-    cResourceTerrainState.clear();
-    cResourceThemeSet.clear();
-    cResourceTop.clear();
-    cResourceWorld.clear();
-    cResourceWorldView.clear();
-    cResourceZone.clear();
-    cResourceZoneObject.clear();
-  }
-
   const Metadata& Spindizzy::getMetadata(const std::string& key) const {
     return cModule.getAssetMetadata(key);
   }
@@ -274,6 +248,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Spindizzy::removed(Zone* zone) {
+    zone->removed();
     for (WorldView* mWorldView : cResourceWorldView) {
       if (mWorldView->getWorld() == &zone->getWorld()) {
         mWorldView->removeZoneView(zone);

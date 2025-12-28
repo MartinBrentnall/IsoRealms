@@ -36,6 +36,7 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     void save(JSONObject object) const;
     void registerAssets(ResourceAssetRegistry& assets);
+    void removed();
 
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();

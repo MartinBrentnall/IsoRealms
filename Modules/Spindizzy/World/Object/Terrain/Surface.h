@@ -26,7 +26,6 @@
 
 #include "Modules/Spindizzy/ISurface.h"
 #include "Modules/Spindizzy/World/Common/CollisionData.h"
-#include "Modules/Spindizzy/World/Object/Zone/Zone.h"
 
 namespace IsoRealms::Spindizzy {
   class TerrainType;

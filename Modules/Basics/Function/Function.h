@@ -52,6 +52,7 @@ namespace IsoRealms::Basics {
     bool renderIcon() const;
     void hintInUse(bool inUse);
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     // Constructors for use by scripts (in-line functions).
     Function(Basics& basics, const std::string& name, IActionClient& owner);

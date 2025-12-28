@@ -92,6 +92,10 @@ namespace IsoRealms::Basics {
     // TODO: Input configuration
   }
 
+  void ProjectConfigurer::removed() {
+    // Nothing to do.
+  }
+
   void ProjectConfigurer::updateRuntime(unsigned int milliseconds) {
     cProjectConfigurationUI.update(milliseconds);
   }

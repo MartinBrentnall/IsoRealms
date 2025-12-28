@@ -60,6 +60,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeInteger(metadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
   }
 
+  void SimpleInteger::removed() {
+    // Nothing to do.
+  }
+
   void SimpleInteger::reset() {
     cRuntimeValue = cDefValue;
   }

@@ -61,6 +61,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Screen>(metadata.getPropertyData("Icon"),      cDefIcon);
     owner.createPropertyNativeFloat(  metadata.getPropertyData("IconScale"), [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, [](float value) {return value > 0.0f;});
   }
+
+  void TerrainState::removed() {
+    // Nothing to do.
+  }
   
   void TerrainState::reset() {
     cRuntimeValue = cDefValue;

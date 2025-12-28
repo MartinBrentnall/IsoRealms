@@ -90,6 +90,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Outline"), cDefOutline);
   }
 
+  void DebrisChunk::removed() {
+    // Nothing to do.
+  }
+
   void DebrisChunk::updateEditing(unsigned int milliseconds) {
     cEditingIconRotation += 0.1f * milliseconds;
   }

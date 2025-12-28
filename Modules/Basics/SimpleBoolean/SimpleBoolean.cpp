@@ -60,6 +60,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeBoolean(metadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
   }
 
+  void SimpleBoolean::removed() {
+    // Nothing to do.
+  }
+
   void SimpleBoolean::reset() {
     cRuntimeValue = cDefValue;
   }

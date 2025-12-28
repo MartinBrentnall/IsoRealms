@@ -92,6 +92,10 @@ namespace IsoRealms::Replay {
       // TODO: Adjust ID's.
     });
   }
+
+  void Replayer::removed() {
+    // Nothing to do.
+  }
   
   void Replayer::updateInputs(unsigned int milliseconds) {
     switch (cState) {

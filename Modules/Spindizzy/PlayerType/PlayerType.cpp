@@ -165,13 +165,13 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Float>(  metadata.getPropertyData("ViewOrientation"),      cDefOrientation);
   }
 
-  void PlayerType::reset() {
-    cRuntimeSpinSpeed = cDefSpinSpeed;
-  }
-  
-  PlayerType::~PlayerType() {
+  void PlayerType::removed() {
     cSpindizzy.removed(this);
     cSpindizzy.removeAll(this);
+  }
+
+  void PlayerType::reset() {
+    cRuntimeSpinSpeed = cDefSpinSpeed;
   }
   
   void PlayerType::registerAssets(const std::string& parentID) {

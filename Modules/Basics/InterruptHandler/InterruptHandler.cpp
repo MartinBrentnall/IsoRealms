@@ -53,6 +53,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyAsset<Action>(metadata.getPropertyData("Action"), cDefAction);
   }
 
+  void InterruptHandler::removed() {
+    // Nothing to do.
+  }
+
   bool InterruptHandler::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed:            // Fallthrough

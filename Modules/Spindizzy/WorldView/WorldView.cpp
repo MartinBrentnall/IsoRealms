@@ -82,6 +82,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyNativeFloat(                               metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
   }
 
+  void WorldView::removed() {
+    // Nothing to do.
+  }
+
   Spindizzy& WorldView::getAssetManager() {
     return cSpindizzy;
   }

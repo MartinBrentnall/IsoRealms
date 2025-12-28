@@ -52,6 +52,10 @@ namespace IsoRealms::Tables {
   void Table::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     // TODO: Implement this.
   }
+
+  void Table::removed() {
+    // Nothing to do.
+  }
   
   Table::Field::Field(JSONObject object) :
             cName(object.getString(JSON_FIELD_NAME)),

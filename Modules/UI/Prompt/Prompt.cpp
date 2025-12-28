@@ -91,6 +91,10 @@ namespace IsoRealms::UI {
     owner.createPropertyAsset<Action>(metadata.getPropertyData("OnRejection"),     cDefNegativeAction);
     owner.createPropertyAsset<Action>(metadata.getPropertyData("OnAcceptance"),    cDefPositiveAction);
   }
+
+  void Prompt::removed() {
+    // Nothing to do.
+  }
   
   void Prompt::reset() {
     cRuntimePositiveHighlighted = false;

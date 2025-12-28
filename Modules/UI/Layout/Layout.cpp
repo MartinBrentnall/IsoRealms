@@ -73,6 +73,10 @@ namespace IsoRealms::UI {
     owner.createPropertyEditor(metadata.getPropertyData("Content"), this);
   }
 
+  void Layout::removed() {
+    // Nothing to do.
+  }
+
   void Layout::updateEditing(unsigned int milliseconds) {
     for (const std::pair<IEditableScreen* const, std::unique_ptr<LayoutEditor>>& mEditor : cEditors) {
       mEditor.second->updateScreen(milliseconds);

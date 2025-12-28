@@ -53,6 +53,7 @@ namespace IsoRealms::Hue {
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     virtual ~HueManager();
 
@@ -257,7 +258,8 @@ namespace IsoRealms::Hue {
       int cBufferSize;
       void* cBuffer;
 
-      public:  
+      public:
+      Entertainment();
       int init(int lightCount);
       int setLightID(int index, uint16_t lightID);
       int setLight(int index, uint16_t red, uint16_t green, uint16_t blue);

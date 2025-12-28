@@ -169,6 +169,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeFloat(  metadata.getPropertyData("YOffset"),     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
     owner.createPropertyNativeFloat(  metadata.getPropertyData("LineSpacing"), [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
   }
+
+  void FileFont::removed() {
+    // Nothing to do.
+  }
   
   FileFont::~FileFont() {
     if (cProcessedGLListBase != 0) {

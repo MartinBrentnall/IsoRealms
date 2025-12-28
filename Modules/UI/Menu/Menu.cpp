@@ -95,6 +95,10 @@ namespace IsoRealms::UI {
       owner.createPropertyAsset<MenuItem>(metadata.getPropertyData("MenuItem"), *mItem.get());
     }
   }
+
+  void Menu::removed() {
+    // Nothing to do.
+  }
   
   void Menu::updateRuntime(unsigned int milliseconds) {
     float mPositionY = 0.0f;

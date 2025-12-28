@@ -59,6 +59,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyAsset<File>(metadata.getPropertyData("File"), cDefFile);
   }
 
+  void FileTexture::removed() {
+    // Nothing to do.
+  }
+
   void FileTexture::set() const {
     glGetError(); // TODO: Suppresses SFML picking up an error from somewhere else.  Need to find where other error comes from.
     sf::Texture::bind(&cRuntimeTexture);

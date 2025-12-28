@@ -107,6 +107,10 @@ namespace IsoRealms::Basics {
     });
     owner.createPropertyCode(metadata.getPropertyData("Code"), [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
+
+  void Function::removed() {
+    // Nothing to do.
+  }
   
   Function::Function(Basics& basics, const std::string& name, IActionClient& owner) :
             cProject(basics.getProject()),

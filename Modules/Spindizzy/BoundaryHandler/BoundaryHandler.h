@@ -44,12 +44,12 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     BoundaryHandler(Spindizzy& spindizzy, IResourceData& data);
     BoundaryHandler(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
-    ~BoundaryHandler();
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     // Boundary handler interface.
     const BoundaryType* getBoundaryType() const;

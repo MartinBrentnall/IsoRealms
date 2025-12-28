@@ -66,6 +66,10 @@ namespace IsoRealms::Spindizzy {
       owner.createPropertyAsset<Model>(metadata.getPropertyData("Model"), *mModel.get());
     }
   }
+
+  void ModelCycler::removed() {
+    // Nothing to do.
+  }
   
   void ModelCycler::updateEditing(unsigned int milliseconds) {
     cEditingIconCycle += milliseconds;

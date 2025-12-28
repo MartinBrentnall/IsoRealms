@@ -85,6 +85,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Quadrant4"), cDefQuadrant[3]);
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Outline"),   cDefOutline);
   }
+
+  void Gyroscope::removed() {
+    // Nothing to do.
+  }
   
   void Gyroscope::updateEditing(unsigned int milliseconds) {
     cEditingIconRotation -= 0.5f * milliseconds;

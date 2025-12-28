@@ -57,6 +57,7 @@ namespace IsoRealms::Basics {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     ~FileFont();
 

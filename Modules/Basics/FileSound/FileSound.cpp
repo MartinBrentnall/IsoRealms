@@ -66,6 +66,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyAsset<File>(metadata.getPropertyData("File"), cDefFile);
   }
 
+  void FileSound::removed() {
+    // Nothing to do.
+  }
+
   void FileSound::setVolume(float volume) {
     for (sf::Sound& mSound : cRuntimeSounds) {
       mSound.setVolume(volume * 100.0f);

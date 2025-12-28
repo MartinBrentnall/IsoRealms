@@ -48,12 +48,6 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  CollisionHandler::~CollisionHandler() {
-    cSpindizzy.removed(this);
-    cDefPhysicalObjectTypeA.removeNotifyAssetChangedFunction(this);
-    cDefPhysicalObjectTypeB.removeNotifyAssetChangedFunction(this);
-  }
-
   void CollisionHandler::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
@@ -78,6 +72,12 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<PhysicalObjectType>(metadata.getPropertyData("EntityB"),      cDefPhysicalObjectTypeB);
     owner.createPropertyAsset<Action>(            metadata.getPropertyData("OnCollision"),  cDefEnteredAction);
     owner.createPropertyAsset<Action>(            metadata.getPropertyData("OnSeparation"), cDefExitedAction);
+  }
+
+  void CollisionHandler::removed() {
+    cSpindizzy.removed(this);
+    cDefPhysicalObjectTypeA.removeNotifyAssetChangedFunction(this);
+    cDefPhysicalObjectTypeB.removeNotifyAssetChangedFunction(this);
   }
 
   const PhysicalObjectType* CollisionHandler::getPhysicalObjectTypeA() const {

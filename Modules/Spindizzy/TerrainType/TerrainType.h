@@ -48,9 +48,8 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
     
-    ~TerrainType();
-
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
     

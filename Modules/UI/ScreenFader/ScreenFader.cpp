@@ -59,6 +59,10 @@ namespace IsoRealms::UI {
     owner.createPropertyAsset<Float>( metadata.getPropertyData("Transition"), cDefTransition);
   }
 
+  void ScreenFader::removed() {
+    // Nothing to do.
+  }
+
   void ScreenFader::renderScreen(float scale, float aspectRatio) const {
     float mTransition = cDefTransition->getValue();
     if (mTransition <= 0.0f) {

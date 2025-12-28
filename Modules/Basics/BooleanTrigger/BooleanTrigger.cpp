@@ -65,4 +65,8 @@ namespace IsoRealms::Basics {
     owner.createPropertyAsset<Action>( metadata.getPropertyData("OnTrue"),  cDefTrueAction);
     owner.createPropertyAsset<Action>( metadata.getPropertyData("OnFalse"), cDefFalseAction);
   }
+
+  void BooleanTrigger::removed() {
+    // Nothing to do.
+  }
 }

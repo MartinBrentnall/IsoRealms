@@ -56,18 +56,18 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Model>(metadata.getPropertyData("Appearance"), cDefModel);
   }
 
+  void PickUpType::removed() {
+    cSpindizzy.removeAll(this);
+    cSpindizzy.remove(this);
+    cSpindizzy.removed(this);
+  }
+
   bool PickUpType::hasReadOnlyReferences() const {
     return cSpindizzy.isUsedInReadOnlyWorld(*this);
   }
 
   void PickUpType::overrideReadOnlyReferences() {
     cSpindizzy.overrideReadOnlyWorlds(*this);
-  }
-
-  PickUpType::~PickUpType() {
-    cSpindizzy.removeAll(this);
-    cSpindizzy.remove(this);
-    cSpindizzy.removed(this);
   }
 
   void PickUpType::registerAssets(const std::string& parentID) {

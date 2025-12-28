@@ -100,6 +100,12 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyNativeFloat(  metadata.getPropertyData("HugThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
   }
 
+  void AlienType::removed() {
+    cAssets.clear();
+    cSpindizzy.removeAll(this);
+    cSpindizzy.removed(this);
+  }
+
   bool AlienType::hasReadOnlyReferences() const {
     return cSpindizzy.isUsedInReadOnlyWorld(*this);
   }
@@ -112,12 +118,6 @@ namespace IsoRealms::Spindizzy {
     cRuntimeSpinSpeed = cDefSpinSpeed;
   }
 
-  AlienType::~AlienType() {
-    cAssets.clear();
-    cSpindizzy.removeAll(this);
-    cSpindizzy.removed(this);
-  }
-  
   void AlienType::registerAssets(const std::string& parentID) {
     cAssets.add(static_cast<IWorldEditorTool*>(   this), parentID, "Alien Types");
     cAssets.add(static_cast<IPhysicalObjectType*>(this), parentID, "Alien Types");

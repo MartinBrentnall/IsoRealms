@@ -148,6 +148,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<WallPattern>(   metadata.getPropertyData("AppearanceWallEast"),  cDefEastWallPattern);
   }
 
+  void TerrainType::removed() {
+    cSpindizzy.removeAll(this);
+  }
+
   bool TerrainType::hasReadOnlyReferences() const {
     return cSpindizzy.isUsedInReadOnlyWorld(*this);
   }
@@ -434,10 +438,6 @@ namespace IsoRealms::Spindizzy {
     cDefEastWallPattern->hintInUse(inUse);
     cDefNorthWallPattern->hintInUse(inUse);
     cDefSouthWallPattern->hintInUse(inUse);
-  }
-  
-  TerrainType::~TerrainType() {
-    cSpindizzy.removeAll(this);
   }
   
   bool TerrainType::isReadOnly() const {

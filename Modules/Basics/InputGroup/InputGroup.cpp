@@ -65,6 +65,10 @@ namespace IsoRealms::Basics {
     });
   }
 
+  void InputGroup::removed() {
+    // Nothing to do.
+  }
+
   bool InputGroup::input(sf::Event& event) {
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
       if ((*mInputHandler)->input(event)) {

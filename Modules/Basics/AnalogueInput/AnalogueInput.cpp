@@ -72,6 +72,10 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
+  void AnalogueInput::removed() {
+    // Nothing to do.
+  }
+
   float AnalogueInput::getValue() const {
     return cRuntimeState;
   }

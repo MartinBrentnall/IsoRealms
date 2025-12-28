@@ -60,6 +60,10 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeString(metadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
   }
 
+  void SimpleString::removed() {
+    // Nothing to do.
+  }
+
   void SimpleString::reset() {
     cRuntimeValue = cDefValue;
   }

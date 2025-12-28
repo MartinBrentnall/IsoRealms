@@ -183,6 +183,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Grid"),      cDefGrid);
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Highlight"), cDefHighlight);
   }
+
+  void C64TerrainGraphics::removed() {
+    // Nothing to do.
+  }
   
   void C64TerrainGraphics::hintTextureUsed(ITexture* texture, bool inUse) {
     if (cTexturesInUseCount == 0 && inUse && (!cChangedAngles.empty() || cNeedsFullRedraw)) {

@@ -33,6 +33,7 @@
 #include "Modules/Spindizzy/World/Object/Alien/Alien.h"
 #include "Modules/Spindizzy/World/Object/Lift/Lift.h"
 #include "Modules/Spindizzy/World/Object/PickUp/PickUp.h"
+#include "Modules/Spindizzy/World/Object/Terrain/Terrain.h"
 #include "Modules/Spindizzy/World/Object/ZoneObject/ZoneObject.h"
 #include "Modules/Spindizzy/WorldEditorCursorCell.h"
 
@@ -47,6 +48,7 @@ namespace IsoRealms::Spindizzy {
     public:
     Zone(World& world, ZoneType& type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone);
     Zone(World& world, JSONObject object);
+    void removed();
 
     void copy(Zone* zone);
 
@@ -166,8 +168,6 @@ namespace IsoRealms::Spindizzy {
     void render() override;
     ITexture* getTexture() override;
     void prepareVisual() override;
-
-    ~Zone();
 
     private:
     

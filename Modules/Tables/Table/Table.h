@@ -40,6 +40,7 @@ namespace IsoRealms::Tables {
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
     
     /***********************\
      * Scripting Interface *

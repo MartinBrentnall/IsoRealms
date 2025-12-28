@@ -78,7 +78,6 @@ namespace IsoRealms::Spindizzy {
 
     // Module constructor.
     Spindizzy(Project& project, IResourceTypeRegistry& registry);
-    ~Spindizzy();
     const Metadata& getMetadata(const std::string& key) const;
 
     void init(std::function<void()> initialiser);

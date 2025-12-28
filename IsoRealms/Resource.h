@@ -96,6 +96,10 @@ namespace IsoRealms {
       cResourceHandle.getProperties(propertyMaker, cParent.getMetadata());
     }
     
+    void removed() {
+      cResourceHandle.removed();
+    }
+
     bool renderIcon() override {
       glPushMatrix();
       if (!cResourceHandle.renderIcon()) {

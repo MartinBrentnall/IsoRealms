@@ -72,6 +72,7 @@ namespace IsoRealms {
       }
       
       void notifyDeletion() {
+        cResource.removed();
         for (IResourceUser<TYPE>* user : cUsers) {
           user->relinquish(cResource.getResource());
         }

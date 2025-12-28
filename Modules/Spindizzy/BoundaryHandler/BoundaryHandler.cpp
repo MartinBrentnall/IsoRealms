@@ -50,10 +50,6 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  BoundaryHandler::~BoundaryHandler() {
-    cSpindizzy.removed(this);
-  }
-
   void BoundaryHandler::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
@@ -80,6 +76,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<BoundaryType>(      metadata.getPropertyData("Boundary"), cDefBoundaryType);
     owner.createPropertyAsset<Action>(            metadata.getPropertyData("OnEntry"),  cDefEnteredAction);
     owner.createPropertyAsset<Action>(            metadata.getPropertyData("OnExit"),   cDefExitedAction);
+  }
+
+  void BoundaryHandler::removed() {
+    cSpindizzy.removed(this);
   }
 
   const BoundaryType* BoundaryHandler::getBoundaryType() const {

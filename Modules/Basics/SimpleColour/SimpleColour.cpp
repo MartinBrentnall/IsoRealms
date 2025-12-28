@@ -119,6 +119,10 @@ namespace IsoRealms::Basics {
     });
   }
 
+  void SimpleColour::removed() {
+    // Nothing to do.
+  }
+
   void SimpleColour::reset() {
     resetColour();
   }

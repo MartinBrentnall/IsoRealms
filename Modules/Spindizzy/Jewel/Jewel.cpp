@@ -50,6 +50,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Outline"), cColourFrame);
   }
 
+  void Jewel::removed() {
+    // Nothing to do.
+  }
+
   void Jewel::updateEditing(unsigned int milliseconds) {
     cSampleModel->update(milliseconds);
   }

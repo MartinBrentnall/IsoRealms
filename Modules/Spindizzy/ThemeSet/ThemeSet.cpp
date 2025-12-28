@@ -105,6 +105,10 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
+  void ThemeSet::removed() {
+    // Nothing to do.
+  }
+
   void ThemeSet::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Theme Sets");
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {

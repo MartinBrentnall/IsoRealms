@@ -129,6 +129,13 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
+  void Zone::removed() {
+    cDefWorld.unregisterBoundary(cDefType, this);
+    while (!cDefTerrain.empty()) {
+      cDefTerrain[0]->remove();
+    }
+  }
+
   void Zone::registerAssets() {
     for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {
       mObject->registerAssets();
@@ -886,12 +893,5 @@ namespace IsoRealms::Spindizzy {
 
   bool Zone::empty() const {
     return cDefTerrain.empty() && cDefAliens.empty() && cDefPickUps.empty() && cDefLifts.empty() && cDefObjects.empty();
-  }
-
-  Zone::~Zone() {
-    cDefWorld.unregisterBoundary(cDefType, this);
-    while (!cDefTerrain.empty()) {
-      cDefTerrain[0]->remove();
-    }
   }
 }

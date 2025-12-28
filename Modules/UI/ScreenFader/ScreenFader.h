@@ -41,6 +41,7 @@ namespace IsoRealms::UI {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     /**********************\
      * Implements IScreen *

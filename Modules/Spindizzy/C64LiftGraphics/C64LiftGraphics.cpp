@@ -119,6 +119,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Secondary"), cDefSecondary);
     owner.createPropertyAsset<Colour>(metadata.getPropertyData("Outline"),   cDefOutline);
   }
+
+  void C64LiftGraphics::removed() {
+    // Nothing to do.
+  }
   
   void C64LiftGraphics::generateTextures() {
     glPushAttrib(GL_TRANSFORM_BIT);

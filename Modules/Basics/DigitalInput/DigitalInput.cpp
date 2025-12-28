@@ -106,6 +106,10 @@ namespace IsoRealms::Basics {
     });
   }
 
+  void DigitalInput::removed() {
+    // Nothing to do.
+  }
+
   void DigitalInput::reset() {
     cRuntimeState = false;
     for (std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {

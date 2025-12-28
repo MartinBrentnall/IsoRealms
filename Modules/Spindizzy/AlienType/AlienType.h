@@ -48,6 +48,7 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
@@ -56,8 +57,6 @@ namespace IsoRealms::Spindizzy {
      * Module interfaces *
     \*********************/
     void reset();
-
-    virtual ~AlienType();
 
     // Interface to be used by module.
     void registerAssets(const std::string& parentID);

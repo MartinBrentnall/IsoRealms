@@ -69,6 +69,10 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyAsset<Action>( metadata.getPropertyData("OnMove"),     cDefTickAction);
   }
 
+  void LiftType::removed() {
+    cSpindizzy.removeAll(this);
+  }
+
   bool LiftType::hasReadOnlyReferences() const {
     return cSpindizzy.isUsedInReadOnlyWorld(*this);
   }
@@ -77,10 +81,6 @@ namespace IsoRealms::Spindizzy {
     cSpindizzy.overrideReadOnlyWorlds(*this);
   }
 
-  LiftType::~LiftType() {
-    cSpindizzy.removeAll(this);
-  }
-  
   void LiftType::registerAssets(const std::string& parentID) {
     cAssets.add<IWorldEditorTool>(this, parentID, "Lift Types");
   }  

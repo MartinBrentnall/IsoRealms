@@ -68,6 +68,10 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
+  void VirtualKeyboard::removed() {
+    // Nothing to do.
+  }
+
   void VirtualKeyboard::updateRuntime(unsigned int milliseconds) {
     cRuntimeCaretBlinkDelay -= milliseconds;
     if (cRuntimeCaretBlinkDelay <= 0) {

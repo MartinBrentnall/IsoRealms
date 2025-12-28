@@ -45,6 +45,7 @@ namespace IsoRealms::Basics {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void removed();
 
     // Interface called by module when adjusting global sound volume.
     void setVolume(float volume);

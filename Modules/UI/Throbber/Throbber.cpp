@@ -94,6 +94,10 @@ namespace IsoRealms::UI {
     owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("Repetitions"),  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;});
   }
 
+  void Throbber::removed() {
+    // Nothing to do.
+  }
+
   void Throbber::updateRuntime(unsigned int milliseconds) {
     cRuntimeAnimation += milliseconds;
     while (cRuntimeAnimation >= cDefDuration) {

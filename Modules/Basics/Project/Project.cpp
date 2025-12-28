@@ -77,6 +77,10 @@ namespace IsoRealms::Basics {
   void Project::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
+
+  void Project::removed() {
+    // Nothing to do.
+  }
   
   void Project::reset() {
 

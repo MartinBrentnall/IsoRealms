@@ -70,7 +70,6 @@ namespace IsoRealms {
     }
 
     virtual ~Asset() {
-      relinquish(cAsset);
       if (cAsset != nullptr) {
         cManager.getAssetManager().release(this, cAsset);
       }
