@@ -196,6 +196,13 @@ namespace IsoRealms {
     Application();
     ~Application();
 
+    /**
+     * Set the application window title.
+     *
+     * @param name The new application window title.
+     */
+    void setName(const std::string& name);
+
     int run(Options& options);
 
     JSONDocument createDocument();

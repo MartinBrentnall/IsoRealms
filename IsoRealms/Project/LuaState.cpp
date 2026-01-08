@@ -77,6 +77,7 @@ namespace IsoRealms {
     cLua->new_usertype<Action>("Action",                  "execute",              &Action::execute);
     cLua->new_usertype<Application>("Application",        "getDisplayResolution", &Application::getDisplayResolution,
                                                           "setDisplayResolution", &Application::setDisplayResolution,
+                                                          "setName",              &Application::setName,
                                                           "isFullScreen",         &Application::isFullScreen,
                                                           "createDocument",       &Application::createDocument,
                                                           "openDocument",         &Application::openDocument);

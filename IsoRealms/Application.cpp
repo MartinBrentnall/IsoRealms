@@ -442,7 +442,7 @@ namespace IsoRealms {
   
   void Application::resizeScreen() {
     cWindow.create(sf::VideoMode(cAvailableResolutions[cSelectedResolution].getWidth(), cAvailableResolutions[cSelectedResolution].getHeight()),
-                   "IsoRealms TripPlayer",
+                   "IsoRealms",
                    sf::Style::Titlebar | sf::Style::Close | (cFullScreen ? sf::Style::Fullscreen : 0),
                    sf::ContextSettings(24, 0, 4, 4, 6));
 
@@ -465,6 +465,10 @@ namespace IsoRealms {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glViewport(0, 0, cAvailableResolutions[cSelectedResolution].getWidth(), cAvailableResolutions[cSelectedResolution].getHeight());
+  }
+
+  void Application::setName(const std::string& name) {
+    cWindow.setTitle(name);
   }
 
   Application::Task* Application::startTask(const std::vector<std::function<void()>> task) {
