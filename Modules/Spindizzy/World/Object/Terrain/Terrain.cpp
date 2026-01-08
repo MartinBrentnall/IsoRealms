@@ -613,7 +613,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  Terrain::~Terrain() {
+  void Terrain::removed() {
     World& mWorld = cZone.getWorld();
     for (std::unique_ptr<ISurface>& mSurface : cRuntimeSurfacesPhysical) {
       mWorld.detachPhysicalSurface(mSurface.get());

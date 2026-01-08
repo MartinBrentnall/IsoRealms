@@ -67,7 +67,7 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  PickUp::~PickUp() {
+  void PickUp::removed() {
     cZone.getWorld().unregisterBoundary(cDefType, this);
   }
 

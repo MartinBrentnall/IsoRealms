@@ -195,7 +195,7 @@ namespace IsoRealms::Spindizzy {
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 
-    virtual ~Terrain();
+    void removed();
 
     protected:
 

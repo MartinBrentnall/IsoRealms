@@ -302,6 +302,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Zone::remove(Terrain* terrain) {
+    terrain->removed();
     Utils::removeElementUnique(cDefTerrain, terrain);
 
     // Refresh terrain states.
@@ -316,6 +317,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Zone::remove(PickUp* pickUp) {
+    pickUp->removed();
     Utils::removeElementUnique(cDefPickUps, pickUp);
     if (empty()) {
       cDefWorld.remove(this);
