@@ -73,7 +73,7 @@ namespace IsoRealms {
     }
 
     void remove(IAssetProvider<OWNER, TYPE>* provider) {
-      typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
+      typename std::map<IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
       if (mIterator != cClients.end()) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPair : mIterator->second) {
           for (IAssetUser<TYPE>* mClient : mPair.second) {
@@ -97,7 +97,7 @@ namespace IsoRealms {
     }
     
     bool hasReadOnlyReferences(IAssetProvider<OWNER, TYPE>* provider) const {
-      typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::const_iterator mIterator = cClients.find(provider);
+      typename std::map<IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::const_iterator mIterator = cClients.find(provider);
       if (mIterator != cClients.end()) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPair : mIterator->second) {
           for (IAssetUser<TYPE>* mClient : mPair.second) {
@@ -120,7 +120,7 @@ namespace IsoRealms {
     }
     
     void overrideReadOnlyReferences(IAssetProvider<OWNER, TYPE>* provider, ProjectFile* owner) {
-      typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
+      typename std::map<IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(provider);
       if (mIterator != cClients.end()) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPair : mIterator->second) {
           for (IAssetUser<TYPE>* mClient : mPair.second) {
@@ -198,8 +198,8 @@ namespace IsoRealms {
         std::cout << "WARNING: Asset to release is nullptr" << std::endl;
         return;
       }
-      const IAssetProvider<OWNER, TYPE>* mProvider = getProvider(asset);
-      typename std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(mProvider);
+      IAssetProvider<OWNER, TYPE>* mProvider = getProvider(asset);
+      typename std::map<IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>>::iterator mIterator = cClients.find(mProvider);
       if (mIterator == cClients.end()) {
         std::cout << "WARNING: Specified asset isn't registered with specified client" << std::endl;
         return;
@@ -219,6 +219,8 @@ namespace IsoRealms {
           cClients.erase(mProvider);
         }
       }
+
+      mProvider->releaseAsset(asset);
       // TODO: Remove state listener (if there is one) from state notifier
     }
     
@@ -295,8 +297,8 @@ namespace IsoRealms {
       }
     };
 
-    const IAssetProvider<OWNER, TYPE>* getProvider(const TYPE* asset) const {
-      for (std::pair<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> mPairA : cClients) {
+    IAssetProvider<OWNER, TYPE>* getProvider(const TYPE* asset) const {
+      for (std::pair<IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> mPairA : cClients) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPairB : mPairA.second) {
           if (mPairB.first == asset) {
             return mPairA.first;
@@ -319,7 +321,7 @@ namespace IsoRealms {
 //     };
     
     std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>> cStateNotifiers;
-    std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> cClients;
+    std::map<IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> cClients;
     std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>> cAssetSingletons;
     IAssetProvider<OWNER, TYPE>* cDefaultProvider;
   };
