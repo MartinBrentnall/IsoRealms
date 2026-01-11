@@ -141,7 +141,12 @@ namespace IsoRealms {
       }
 
       void releaseAsset(const IBinding* asset) override {
-        // TODO: Implement this.
+        for (const std::unique_ptr<IBinding>& mBinding : cInstances) {
+          if (mBinding.get() == asset) {
+            cInstances.erase(mBinding);
+            return;
+          }
+        }
       }
 
       bool hasConfiguration() const override {

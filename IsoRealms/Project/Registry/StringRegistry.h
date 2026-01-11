@@ -114,7 +114,12 @@ namespace IsoRealms {
       }
 
       void releaseAsset(const IString* asset) override {
-        // TODO: Implement this.
+        for (const std::unique_ptr<IString>& mString : cConvertedAssets) {
+          if (mString.get() == asset) {
+            cConvertedAssets.erase(mString);
+            return;
+          }
+        }
       }
 
       bool hasConfiguration() const override {

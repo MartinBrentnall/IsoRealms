@@ -205,10 +205,10 @@ namespace IsoRealms::Hue {
   }
 
   HueManager::~HueManager() {
-    cREST.cleanup();
-    RESTCleanup();
-    cDTLS.cleanup();
-    cEntertainment.cleanup();
+    // cREST.cleanup();
+    // RESTCleanup();
+    // cDTLS.cleanup();
+    // cEntertainment.cleanup();
   }
 
   void HueManager::updateRuntime(unsigned int milliseconds) {

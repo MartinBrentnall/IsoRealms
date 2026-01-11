@@ -126,6 +126,8 @@ namespace IsoRealms::Basics {
     IsoRealms::Project& cProject;
     IResourceTypeRegistry& cModule;
     
+    Script cActionScript;
+
     // Asset registries
     SequenceTrackRegistry cSequenceTracks;
 
@@ -150,7 +152,6 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, SimpleVertex>      cResourceTypeSimpleVertex;
     ResourceTypeDefinition<Basics, Sprite>            cResourceTypeSprite;
 
-    Script cActionScript;
     LuaBinding<Basics> cLuaBinding;
 
     static float cSoundVolume;

@@ -36,6 +36,7 @@ namespace IsoRealms::Basics {
   Basics::Basics(IsoRealms::Project& project, IResourceTypeRegistry& registry):
                     cProject(project),
                     cModule(registry),
+                    cActionScript(*this),
                     cSequenceTracks(registry),
                     cResourceTypeAnalogueInput(*this),
                     cResourceTypeBooleanTrigger(*this),
@@ -57,7 +58,6 @@ namespace IsoRealms::Basics {
                     cResourceTypeSimpleString(*this),
                     cResourceTypeSimpleVertex(*this),
                     cResourceTypeSprite(*this),
-                    cActionScript(*this),
                     cLuaBinding(project.getLuaState(), this) {
     registry.add(&cResourceTypeAnalogueInput,     "AnalogueInput");
     registry.add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
