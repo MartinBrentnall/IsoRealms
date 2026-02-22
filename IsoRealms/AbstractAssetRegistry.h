@@ -19,6 +19,7 @@
 #pragma once
 
 #include <algorithm>
+#include <iostream>
 #include <string>
 #include <variant>
 #include <vector>
@@ -39,6 +40,10 @@ namespace IsoRealms {
     public:
     AbstractAssetRegistry(MANAGER& manager) :
               cManager(manager) {
+    }
+
+    ~AbstractAssetRegistry() {
+      clear();
     }
 
     void clear() {
