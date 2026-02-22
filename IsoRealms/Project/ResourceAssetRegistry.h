@@ -61,6 +61,10 @@ namespace IsoRealms {
     ResourceAssetRegistry(IResourceData& manager) :
               AbstractAssetRegistry<AssetVariant, IResourceData>(manager) {
     }
+
+    ~ResourceAssetRegistry() {
+      clear();
+    }
   };
 }
  

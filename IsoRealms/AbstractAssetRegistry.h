@@ -42,10 +42,6 @@ namespace IsoRealms {
               cManager(manager) {
     }
 
-    ~AbstractAssetRegistry() {
-      clear();
-    }
-
     void clear() {
       for (ASSET_VARIANT& mAsset : cRegisteredAssets) {
         std::visit([this](auto* asset) {
