@@ -358,7 +358,7 @@
                   }
                 }
               ],
-              "code": "table.insert(gMenuScreenStack, menuScreen)\ntable.insert(gMenuInputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)\n"
+              "code": "table.insert(gMenuScreenStack, menuScreen)\ntable.insert(gMenuInputStack, menuInput)\nmenu:reset()\ninput:setInputHandler(menuInput)\nscreen:setScreen(menuScreen)"
             },
             "ReloadConfiguration": {
               "bindings": [

@@ -28,9 +28,15 @@
               "bindings": []
             }
           }
+        },
+        {
+          "variable": "application",
+          "to": {
+            "key": "Application"
+          }
         }
       ],
-      "code": "optionsLoaderFunction:execute()"
+      "code": "optionsLoaderFunction:execute()\napplication:setName(\"IsoRealms Development Environment\")"
     },
     "reset": {
       "key": "Basics/Script",
@@ -670,10 +676,16 @@
                       "bindings": []
                     }
                   }
+                },
+                {
+                  "variable": "application",
+                  "to": {
+                    "key": "Application"
+                  }
                 }
               ],
               "arguments": [],
-              "code": "-- If there's an active editor, resume it, otherwise go to the main menu.\nif gActiveEditor ~= nil then\n  gActiveProjectConfigurer = nil\n  closeAllMenusFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerEditor)\n  gActiveEditor:notifyGainedFocus()\nelse\n  startMenuFunction:execute()\nend"
+              "code": "-- If there's an active editor, resume it, otherwise go to the main menu.\napplication:setName(\"IsoRealms Development Environment\")\nif gActiveEditor ~= nil then\n  gActiveProjectConfigurer = nil\n  closeAllMenusFunction:execute()\n  interactiveInput:setInputHandler(inputHandlerEditor)\n  gActiveEditor:notifyGainedFocus()\nelse\n  startMenuFunction:execute()\nend"
             },
             "StartEditor": {
               "bindings": [
@@ -1424,46 +1436,6 @@
                   "right": {
                     "location": {
                       "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                },
-                {
-                  "id": "Menu",
-                  "screen": {
-                    "key": "None"
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.75
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.75
                     },
                     "offset": {
                       "key": "Absolute"
@@ -2472,9 +2444,30 @@
                         "key": "UI/Throbber/LoadingScreen"
                       }
                     }
+                  },
+                  {
+                    "variable": "editorDisplay",
+                    "to": {
+                      "key": "UI/Layout/Main/Editor"
+                    }
+                  },
+                  {
+                    "variable": "editorPlaceHolder",
+                    "to": {
+                      "key": ":Screen",
+                      "asset": {
+                        "key": "UI/Layout/EditorPlaceHolder"
+                      }
+                    }
+                  },
+                  {
+                    "variable": "directEditorInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/DirectEditorInput"
+                    }
                   }
                 ],
-                "code": "project:prepareNew()\ncloseAllMenusFunction:execute()\nmenuDisplay:setScreen(throbber)"
+                "code": "directEditorInput:setInputHandler(nil)\nproject:prepareNew()\ncloseAllMenusFunction:execute()\ngActiveEditor = nil\nmenuDisplay:setScreen(throbber)\neditorDisplay:setScreen(editorPlaceHolder)"
               },
               "onCancel": {
                 "key": "Basics/Function/PopScreen",
