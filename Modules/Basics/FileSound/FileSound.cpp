@@ -37,7 +37,7 @@ namespace IsoRealms::Basics {
   }
 
   void FileSound::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IAction>(this, "", "Play Sound");
+    assets.add<IAction>(this, "", "Play a Sound");
   }
   
   void FileSound::save(JSONObject object) const {

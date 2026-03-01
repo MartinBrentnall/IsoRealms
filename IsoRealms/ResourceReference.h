@@ -19,6 +19,7 @@
 #pragma once
 
 #include "IsoRealms/IResourceUser.h"
+#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
 
 #include "Project/ProjectFile.h"
 
@@ -82,8 +83,12 @@ namespace IsoRealms {
       // TODO: Implement this.
     }
 
-    std::vector<std::string> getAvailableProviders() const {
-      return cManager.getAssetManager().template getAvailableResources<TYPE>();
+    std::vector<AssetRegistryEntry> getAvailableProviders() const {
+      std::vector<AssetRegistryEntry> result;
+      for (const std::string& id : cManager.getAssetManager().template getAvailableResources<TYPE>()) {
+        result.emplace_back(AssetRegistryEntry{id, id});
+      }
+      return result;
     }
 
     bool renderProviderIcon(const std::string& id) const {

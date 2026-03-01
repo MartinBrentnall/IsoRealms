@@ -22,6 +22,8 @@
 #include <vector>
 #include <string>
 
+#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
+
 namespace IsoRealms {
   class Application;
   class IProperty;
@@ -40,7 +42,7 @@ namespace IsoRealms {
     bool hasConfiguration() const;
     void getAssetProperties(PropertyMaker& owner);
     Application& getApplication() const;
-    std::vector<std::string> getAvailableProviders() const;
+    std::vector<AssetRegistryEntry> getAvailableProviders() const;
     bool renderProviderIcon(const std::string& id) const;
     void setID(const std::string& id);
     

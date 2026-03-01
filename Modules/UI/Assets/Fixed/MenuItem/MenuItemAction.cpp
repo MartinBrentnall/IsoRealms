@@ -49,7 +49,7 @@ namespace IsoRealms::UI {
 
   void MenuItemAction::registerAssets(ResourceAssetRegistry& assets) {
     if (!cDefID.empty()) {
-      assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+      assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Action Menu Items");
     }
   }
   

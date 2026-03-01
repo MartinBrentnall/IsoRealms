@@ -54,7 +54,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDisplayResolution::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Display Resolution Menu Items");
   }
   
   void MenuItemDisplayResolution::reset() {

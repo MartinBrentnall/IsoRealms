@@ -25,6 +25,7 @@
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
+#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
 #include "IsoRealms/Project/Registry/IAssetUser.h"
 
 namespace IsoRealms {
@@ -43,7 +44,7 @@ namespace IsoRealms {
   };
   
   template <typename TYPE> concept GetAvailableClientProvidersExists = requires(const TYPE& type) {
-    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<std::string>>;
+    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<AssetRegistryEntry>>;
   };
   
   template <typename TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
@@ -189,11 +190,13 @@ namespace IsoRealms {
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
-    std::vector<std::string> getAvailableProviders() const {
+    std::vector<AssetRegistryEntry> getAvailableProviders() const {
       if constexpr (GetAvailableClientProvidersExists<DERIVED>) {
         return static_cast<const DERIVED*>(this)->getAvailableClientProviders();
       }
-      return cManager.getAssetManager().template getAll<TYPE>();
+      std::vector<AssetRegistryEntry> result;
+      cManager.getAssetManager().template forEachEntry<TYPE>([&result](const AssetRegistryEntry& e) { result.push_back(e); });
+      return result;
     }
     
     bool hasConfiguration() const {

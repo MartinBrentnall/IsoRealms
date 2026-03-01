@@ -90,7 +90,7 @@ namespace IsoRealms::Basics {
   }
 
   void Basics::registerAssets(ResourceAssetRegistry& assets) {
-    assets.addProvider(&cActionScript, ACTION_SCRIPT, "");
+    assets.addProvider(&cActionScript, ACTION_SCRIPT, "Run a Script");
     assets.add<IBinding>(&cLuaBinding,   "",            "Basics");
   }
   

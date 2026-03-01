@@ -27,10 +27,10 @@ namespace IsoRealms::Spindizzy {
             cOverview(registry.getAssetMetadata("CameraOverview")),
             cTransitional(registry.getAssetMetadata("CameraTransitional")),
             cVariant(registry.getAssetMetadata("CameraVariant")) {
-    add(&cGameplay,     "Gameplay",     "Spindizzy");
-    add(&cLinked,       "Linked",       "Spindizzy");
-    add(&cOverview,     "Overview",     "Spindizzy");
-    add(&cTransitional, "Transitional", "Spindizzy");
-    add(&cVariant,      "Variant",      "Spindizzy");
+    add(&cGameplay,     "Gameplay",     "Gameplay");
+    add(&cLinked,       "Linked",       "Linked");
+    add(&cOverview,     "Overview",     "Overview");
+    add(&cTransitional, "Transitional", "Transitional");
+    add(&cVariant,      "Variant",      "Variant");
   }
 }

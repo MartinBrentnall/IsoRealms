@@ -24,7 +24,7 @@ namespace IsoRealms::Spindizzy {
   ZoneViewTypeRegistry::ZoneViewTypeRegistry(IResourceTypeRegistry& registry) :
             cActual(registry.getAssetMetadata("ZoneViewTypeActual")),
             cOverview(registry.getAssetMetadata("ZoneViewTypeOverview")) {
-    add(&cActual,   "Actual",   "Spindizzy");
-    add(&cOverview, "Overview", "Spindizzy");
+    add(&cActual,   "Actual",   "Actual");
+    add(&cOverview, "Overview", "Overview");
   }
 }

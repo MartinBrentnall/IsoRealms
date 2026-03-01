@@ -79,8 +79,12 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<std::string> PropertyList::ListSelection::getAvailableProviders() const {
-    return cOptions;
+  std::vector<AssetRegistryEntry> PropertyList::ListSelection::getAvailableProviders() const {
+    std::vector<AssetRegistryEntry> result;
+    for (const std::string& opt : cOptions) {
+      result.emplace_back(AssetRegistryEntry{opt, opt});
+    }
+    return result;
   }
   
   bool PropertyList::ListSelection::renderProviderIcon(const std::string& id) const {

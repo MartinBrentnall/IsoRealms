@@ -42,7 +42,7 @@ namespace IsoRealms::Basics {
   }
 
   void Function::registerAssets(ResourceAssetRegistry& assets) {
-    assets.addProvider<IActionClient, IAction>(this, "", "Call Function");
+    assets.addProvider<IActionClient, IAction>(this, "", "Call a Function");
   }
     
   void Function::save(JSONObject object, bool script) const {

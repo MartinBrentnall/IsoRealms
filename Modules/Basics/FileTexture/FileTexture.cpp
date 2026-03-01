@@ -32,7 +32,7 @@ namespace IsoRealms::Basics {
   }
 
   void FileTexture::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<ITexture>(this, "", "Stored Textures");
+    assets.add<ITexture>(this, "", "Textures from Image Files"); // TODO: Localize this.
   }
   
   void FileTexture::save(JSONObject object) const {

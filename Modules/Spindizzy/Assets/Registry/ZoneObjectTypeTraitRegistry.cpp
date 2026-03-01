@@ -29,12 +29,12 @@ namespace IsoRealms::Spindizzy {
             cMovable(registry.getAssetMetadata("ZoneObjectTypeTraitMovable")),
             cPhysics(registry.getAssetMetadata("ZoneObjectTypeTraitPhysics")),
             cSpinner(registry.getAssetMetadata("ZoneObjectTypeTraitSpinner")) {
-    add(&cBoundary,     "Boundary",     "Spindizzy");
-    add(&cCellLocation, "CellLocation", "Spindizzy");
-    add(&cChaser,       "Chaser",       "Spindizzy");
-    add(&cModel,        "Model",        "Spindizzy");
-    add(&cMovable,      "Movable",      "Spindizzy");
-    add(&cPhysics,      "Physics",      "Spindizzy");
-    add(&cSpinner,      "Spinner",      "Spindizzy");
+    add(&cBoundary,     "Boundary",     "Boundary");
+    add(&cCellLocation, "CellLocation", "Cell Location");
+    add(&cChaser,       "Chaser",       "Chaser");
+    add(&cModel,        "Model",        "Model");
+    add(&cMovable,      "Movable",      "Movable");
+    add(&cPhysics,      "Physics",      "Physics");
+    add(&cSpinner,      "Spinner",      "Spinner");
   }
 }

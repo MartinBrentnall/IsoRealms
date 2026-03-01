@@ -23,6 +23,8 @@
 #include <vector>
 #include <string>
 
+#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
+
 namespace IsoRealms {
   class JSONObject;
   class Application;
@@ -50,7 +52,7 @@ namespace IsoRealms {
     bool isDefaultConfigured() const;
     void getAssetProperties(PropertyMaker& owner);
     Application& getApplication() const;
-    std::vector<std::string> getAvailableProviders() const;
+    std::vector<AssetRegistryEntry> getAvailableProviders() const;
     bool renderProviderIcon(const std::string& id) const;
     void setID(const std::string& id);
     

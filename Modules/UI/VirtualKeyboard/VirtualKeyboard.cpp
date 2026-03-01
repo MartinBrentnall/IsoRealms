@@ -47,7 +47,7 @@ namespace IsoRealms::UI {
     assets.add<IInputHandler>(this, "", "Presentation");
     assets.add<IScreen>(this, "", "Presentation");
     assets.add<IString>(this, "", "Presentation");
-    assets.add<IBinding>(&cLuaBinding, "", "System");
+    assets.add<IBinding>(&cLuaBinding, "", "Virtual Keyboards");
   }
   
   void VirtualKeyboard::save(JSONObject object) const {

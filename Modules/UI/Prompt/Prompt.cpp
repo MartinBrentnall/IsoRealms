@@ -55,9 +55,9 @@ namespace IsoRealms::UI {
   }
 
   void Prompt::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IInputHandler>(this, "", "System");
-    assets.add<IScreen>(this, "", "System");
-    assets.add<IBinding>(&cLuaBinding, "", "System");
+    assets.add<IInputHandler>(this, "", "Prompts");
+    assets.add<IScreen>(this, "", "Prompts");
+    assets.add<IBinding>(&cLuaBinding, "", "Prompts");
   }
   
   void Prompt::save(JSONObject object) const {

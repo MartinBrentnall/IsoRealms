@@ -87,12 +87,16 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<std::string> File::getAvailableProviders() const {
+  std::vector<AssetRegistryEntry> File::getAvailableProviders() const {
     std::vector<std::string> mFiles;
     getFilesAt(System::getPath("./", false), LOCATION_PREFIX_PROGRAM, mFiles);
     getFilesAt(System::getPath("", true), LOCATION_PREFIX_USER, mFiles);
     std::sort(mFiles.begin(), mFiles.end());
-    return mFiles;
+    std::vector<AssetRegistryEntry> result;
+    for (const std::string& mFile : mFiles) {
+      result.emplace_back(AssetRegistryEntry{mFile, mFile});
+    }
+    return result;
   }
   
   bool File::renderProviderIcon(const std::string& id) const {

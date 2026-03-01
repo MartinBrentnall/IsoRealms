@@ -69,7 +69,7 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
 
-  std::vector<std::string> ResourceOwner::getAvailableProviders() const {
+  std::vector<AssetRegistryEntry> ResourceOwner::getAvailableProviders() const {
     std::vector<std::string> mNames = cProject.getWritableProjectFileNames();
     std::string mThisName = cOwner->getName();
     bool mFound = false;
@@ -82,7 +82,11 @@ namespace IsoRealms {
     if (!mFound) {
       mNames.emplace_back(mThisName);
     }
-    return mNames;
+    std::vector<AssetRegistryEntry> result;
+    for (const std::string& mName : mNames) {
+      result.emplace_back(AssetRegistryEntry{mName, mName});
+    }
+    return result;
   }
 
   bool ResourceOwner::renderProviderIcon(const std::string& id) const {

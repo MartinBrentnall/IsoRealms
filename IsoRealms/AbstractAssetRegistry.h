@@ -82,17 +82,30 @@ namespace IsoRealms {
     }
 
     template <typename OWNER, typename TYPE> IStateNotifier* addProvider(IAssetProvider<OWNER, TYPE>* provider, const std::string& assetID, const std::string& category) {
+      if (category == "Run a Script") {
+        std::cout << "WARNING: AbstractAssetRegistry::addProvider: Category cannot be empty." << std::endl;
+      }
       registerAsset(provider);
       std::string mResourceID = cManager.getResourceID();
-      return cManager.getAssetManager().template add<TYPE>(provider, assetID == "" ? mResourceID : mResourceID + "/" + assetID, category);
+      std::string mName = cManager.getResourceName();
+      return cManager.getAssetManager().template add<TYPE>(provider, assetID == "" ? mResourceID : mResourceID + "/" + assetID, 
+                                                                     mName == ""   ? category
+                                                                   : assetID == "" ? category + "/" + mName 
+                                                                   :                 category + "/" + mName + "/" + assetID);
     }
 
     template <typename TYPE> IStateNotifier* add(TYPE* asset, const std::string& assetID, const std::string& category) {
+      if (category.empty()) {
+        std::cout << "WARNING: AbstractAssetRegistry::add: Category cannot be empty." << std::endl;
+      }
       registerAsset(asset);
       std::string mResourceID = cManager.getResourceID();
+      std::string mName = cManager.getResourceName();
       return cManager.getAssetManager().template add<TYPE>(asset, mResourceID == "" ? assetID
                                                                 : assetID     == "" ? mResourceID
-                                                                :                     mResourceID + "/" + assetID, category);
+                                                                :                     mResourceID + "/" + assetID,
+                                                                  assetID == "" ? category + "/" + mName 
+                                                                                : category + "/" + mName + "/" + assetID);
     }
 
     private:

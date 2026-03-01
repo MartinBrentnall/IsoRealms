@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   BooleanRegistry::BooleanRegistry() :
-            AssetClientManager(&cLiteral, "Literal") {
+            AssetClientManager(&cLiteral, "Literal", "Literal") {
   }
 
   BooleanRegistry::Literal::Instance::Instance(Project& project, bool value) :

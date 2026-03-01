@@ -83,8 +83,8 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<std::string> PropertyNativeBoolean::BooleanSelection::getAvailableProviders() const {
-    return std::vector<std::string>{ID_TRUE, ID_FALSE};
+  std::vector<AssetRegistryEntry> PropertyNativeBoolean::BooleanSelection::getAvailableProviders() const {
+    return std::vector<AssetRegistryEntry>{{ID_TRUE, "True"}, {ID_FALSE, "False"}}; // TODO: Localisation.
   }
   
   bool PropertyNativeBoolean::BooleanSelection::renderProviderIcon(const std::string& id) const {

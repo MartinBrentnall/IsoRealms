@@ -82,6 +82,7 @@ namespace IsoRealms {
      * Implements IResourceData *
     \****************************/
     std::string getResourceID() const override;
+    std::string getResourceName() const override;
     std::string getPath(const std::string& file, bool user) const override;
     void makeUserDataDirectory() override;
     bool isIncluded() const override;

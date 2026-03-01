@@ -26,9 +26,9 @@ namespace IsoRealms::Spindizzy {
             cComposite(registry.getAssetMetadata("WallPatternComposite")),
             cOutline(registry.getAssetMetadata("WallPatternOutline")),
             cTile(registry.getAssetMetadata("WallPatternTile")) {
-    add(&cCapped,  "Capped",  "Spindizzy");
-    add(&cComposite, "Composite", "Spindizzy");
-    add(&cOutline, "Outline", "Spindizzy");
-    add(&cTile,    "Tile",    "Spindizzy");
+    add(&cCapped,    "Capped",    "Capped");
+    add(&cComposite, "Composite", "Composite");
+    add(&cOutline,   "Outline",   "Outline");
+    add(&cTile,      "Tile",      "Tile");
   }
 }

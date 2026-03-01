@@ -77,8 +77,8 @@ namespace IsoRealms::UI {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }
 
-    template <typename TYPE> std::vector<std::string> getAll() const {
-      return AssetContainerTraits<TYPE>::get(*this).getAll();
+    template <typename TYPE> void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+      AssetContainerTraits<TYPE>::get(*this).forEachEntry(f);
     }
 
     template <typename TYPE> bool renderIcon(const std::string& id) const {

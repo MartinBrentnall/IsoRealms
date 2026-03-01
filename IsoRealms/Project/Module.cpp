@@ -257,6 +257,10 @@ namespace IsoRealms {
     return cName;
   }
 
+  std::string Module::getResourceName() const {
+    return "";
+  }
+
   std::string Module::getPath(const std::string& file, bool user) const {
     return cProject.getPath(file, user);
   }

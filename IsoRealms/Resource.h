@@ -166,6 +166,10 @@ namespace IsoRealms {
     std::string getResourceID() const override {
       return cParent.getPath() + "/" + cParent.getName(*this);
     }
+
+    std::string getResourceName() const override {
+      return cParent.getName(*this);
+    }
     
     std::string getPath(const std::string& file, bool user) const override {
       std::string mRelativePath = cOwnerProject.getProjectFile()->cFile.getRelativePath();

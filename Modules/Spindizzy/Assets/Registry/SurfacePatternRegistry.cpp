@@ -26,9 +26,9 @@ namespace IsoRealms::Spindizzy {
             cOutline(registry.getAssetMetadata("SurfacePatternOutline")),
             cSplitVariant(registry.getAssetMetadata("SurfacePatternSplitVariant")),
             cTile(registry.getAssetMetadata("SurfacePatternTile")) {
-    add(&cComposite,    "Composite",    "Spindizzy");
-    add(&cOutline,      "Outline",      "Spindizzy");
-    add(&cSplitVariant, "SplitVariant", "Spindizzy");
-    add(&cTile,         "Tile",         "Spindizzy");
+    add(&cComposite,    "Composite",    "Composite");
+    add(&cOutline,      "Outline",      "Outline");
+    add(&cSplitVariant, "SplitVariant", "Split Variant");
+    add(&cTile,         "Tile",         "Tile");
   }
 }

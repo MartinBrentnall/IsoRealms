@@ -40,7 +40,7 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IBinding, IActionClient> *
     \*********************************************/
-    std::vector<std::string> getAvailableClientProviders() const;
+    std::vector<AssetRegistryEntry> getAvailableClientProviders() const;
     bool renderOtherClientProviderIcon(const std::string& id) const;
     bool hasClientConfiguration() const;
 

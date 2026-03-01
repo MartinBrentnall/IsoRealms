@@ -32,11 +32,11 @@ namespace IsoRealms {
             Asset<Binding, IBinding, IActionClient>(owner),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
-    std::vector<std::string> mProviders = getAvailableProviders();
-    for (std::string mProvider : mProviders) {
-      if (mProvider == cDefType) {
+    std::vector<AssetRegistryEntry> mProviders = getAvailableProviders();
+    for (const AssetRegistryEntry& mEntry : mProviders) {
+      if (mEntry.cID == cDefType) {
         cManager.getAssetManager().release(this, cAsset);
-        cAsset = cManager.getAssetManager().getAsset(this, mProvider, owner);
+        cAsset = cManager.getAssetManager().getAsset(this, mEntry.cID, owner);
         break;
       }
     }
@@ -76,12 +76,13 @@ namespace IsoRealms {
 //     return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
 //   }
   
-  std::vector<std::string> Binding::getAvailableClientProviders() const {
+  std::vector<AssetRegistryEntry> Binding::getAvailableClientProviders() const {
 
     // Case where any type is allowed.
-    std::vector<std::string> mProviders = cManager.getAssetManager().getAll<IBinding>();
     if (cDefType.empty()) {
-      return mProviders;
+      std::vector<AssetRegistryEntry> result;
+      cManager.getAssetManager().forEachEntry<IBinding>([&result](const AssetRegistryEntry& e) { result.push_back(e); });
+      return result;
     }
 
     // Case where a conversion type is allowed.
@@ -91,15 +92,18 @@ namespace IsoRealms {
     }
 
     // Case where only a specific type is allowed.
-    std::vector<std::string> mProvidersOfType;
-    for (std::string mProvider : mProviders) {
+    std::vector<AssetRegistryEntry> mProvidersOfType;
+    std::vector<AssetRegistryEntry> exactMatch;
+    cManager.getAssetManager().forEachEntry<IBinding>([&mProvidersOfType, &exactMatch, this](const AssetRegistryEntry& e) {
+      const std::string& mProvider = e.cID;
       if (mProvider == cDefType) {
-        return std::vector<std::string>{mProvider};
+        exactMatch.assign(1, e);
       } else if (mProvider.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
-        mProvidersOfType.emplace_back(mProvider.substr(cDefType.length() + 1));
+        mProvidersOfType.emplace_back(AssetRegistryEntry{mProvider.substr(cDefType.length() + 1), e.cPath});
       }
-    }
-    mProvidersOfType.emplace_back("None"); // TODO: Kludge
+    });
+    if (!exactMatch.empty()) return exactMatch;
+    mProvidersOfType.emplace_back(AssetRegistryEntry{"None", ""}); // TODO: Kludge
     return mProvidersOfType;
   }  
 

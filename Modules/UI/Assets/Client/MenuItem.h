@@ -19,6 +19,7 @@
 #pragma once
 
 #include "IsoRealms.h"
+#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
 
 #include "Modules/UI/Assets/Type/IMenuItem.h"
 
@@ -35,7 +36,7 @@ namespace IsoRealms::UI {
     void setID(const std::string& id);
     void save(JSONObject object, const std::string& name) const;
     std::string getID() const;
-    std::vector<std::string> getAvailableProviders() const;
+    std::vector<AssetRegistryEntry> getAvailableProviders() const;
     bool renderProviderIcon(const std::string& id) const;
     bool hasConfiguration() const;
     bool isDefaultConfigured() const;

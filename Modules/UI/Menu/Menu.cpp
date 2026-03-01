@@ -58,7 +58,7 @@ namespace IsoRealms::UI {
   void Menu::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IScreen>(static_cast<IScreen*>(this), "", "Menus");
     assets.add<IInputHandler>(static_cast<IInputHandler*>(this), "", "Menus");
-    assets.add<IBinding>(&cLuaBinding, "", "System");
+    assets.add<IBinding>(&cLuaBinding, "", "Menus");
     for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
       (*mMenuItem)->registerAssets(assets);
     }

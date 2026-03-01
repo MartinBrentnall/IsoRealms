@@ -19,8 +19,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "IAsset.h"
+#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
 
 namespace IsoRealms {
   class IBindingRegistry;
@@ -28,7 +30,7 @@ namespace IsoRealms {
   class IBinding : public IAsset {
     public:
     virtual void bind(const std::string& bindFunction) const = 0;
-    virtual std::vector<std::string> getAvailableProviders() const = 0;
+    virtual std::vector<AssetRegistryEntry> getAvailableProviders() const = 0;
     virtual bool renderProviderIcon(const std::string& id) const = 0;
     virtual bool renderWrappedIcon() const = 0;
     virtual bool isConfigurable() const = 0;

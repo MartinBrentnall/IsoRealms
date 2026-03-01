@@ -47,8 +47,12 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<std::string> ModuleChooser::getAvailableProviders() const {
-    return cProject.getUnusedModuleNames();
+  std::vector<AssetRegistryEntry> ModuleChooser::getAvailableProviders() const {
+    std::vector<AssetRegistryEntry> result;
+    for (const std::string& mName : cProject.getUnusedModuleNames()) {
+      result.emplace_back(AssetRegistryEntry{mName, mName});
+    }
+    return result;
   }
   
   bool ModuleChooser::renderProviderIcon(const std::string& id) const {

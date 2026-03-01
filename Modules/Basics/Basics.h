@@ -76,8 +76,8 @@ namespace IsoRealms::Basics {
       cSequenceTracks.save(object, asset);
     }
 
-    template <typename TYPE> std::vector<std::string> getAll() const {
-      return cSequenceTracks.getAll();
+    template <typename TYPE> void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+      cSequenceTracks.forEachEntry(f);
     }
 
     template <typename TYPE> bool renderIcon(const std::string& id) const {

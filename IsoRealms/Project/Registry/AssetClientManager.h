@@ -34,10 +34,10 @@ namespace IsoRealms {
               AssetClientManager(nullptr) {
     }
 
-    AssetClientManager(IAssetProvider<OWNER, TYPE>* defaultProvider, const std::string& defaultProviderID = "None") :
+    AssetClientManager(IAssetProvider<OWNER, TYPE>* defaultProvider, const std::string& defaultProviderID = "None", const std::string& defaultProviderName = "None") :
               cDefaultProvider(defaultProvider) {
       if (cDefaultProvider != nullptr) {
-        add(cDefaultProvider, defaultProviderID, "Default");
+        add(cDefaultProvider, defaultProviderID, defaultProviderName);
       }
     }
 
@@ -185,8 +185,8 @@ namespace IsoRealms {
       }
     }
     
-    std::vector<std::string> getAll() const {
-      return cRegistry.getAll();
+    void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+      cRegistry.forEachEntry(f);
     }
     
     void release(IAssetUser<TYPE>* client, TYPE* asset) {

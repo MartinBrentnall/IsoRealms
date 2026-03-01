@@ -52,8 +52,12 @@ namespace IsoRealms::UI {
     return cUI.getID(cMenuItem);
   }
 
-  std::vector<std::string> MenuItem::getAvailableProviders() const {
-    return cUI.getAll<IMenuItem>();
+  std::vector<AssetRegistryEntry> MenuItem::getAvailableProviders() const {
+    std::vector<AssetRegistryEntry> result;
+    cUI.forEachEntry<IMenuItem>([&result](const AssetRegistryEntry& e) {
+      result.push_back(e);
+    });
+    return result;
   }
 
   bool MenuItem::renderProviderIcon(const std::string& id) const {

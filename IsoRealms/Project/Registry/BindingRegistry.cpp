@@ -74,8 +74,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<std::string> BindingRegistry::Dummy::getAvailableProviders() const {
-    return std::vector<std::string>();
+  std::vector<AssetRegistryEntry> BindingRegistry::Dummy::getAvailableProviders() const {
+    return std::vector<AssetRegistryEntry>();
   }
 
   bool BindingRegistry::Dummy::renderProviderIcon(const std::string& id) const {

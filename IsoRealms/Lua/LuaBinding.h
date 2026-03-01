@@ -65,8 +65,8 @@ namespace IsoRealms {
 
     void bind(const std::string& bindFunction) const override;
     
-    std::vector<std::string> getAvailableProviders() const override {
-      return std::vector<std::string>();
+    std::vector<AssetRegistryEntry> getAvailableProviders() const override {
+      return std::vector<AssetRegistryEntry>();
     }
 
     bool renderProviderIcon(const std::string& id) const override {

@@ -50,10 +50,10 @@ namespace IsoRealms {
           cRuntimeUpdatingRuntime(false),
           cRuntimeResetPostponed(false),
           cQuitAction(*this) {
-    add<IBinding, IBinding>(&cLuaBindingApplication, "Application", "System");
-    add<IBinding, IBinding>(&cLuaBindingProject,     "Project",     "System");
-    add<IBinding, IBinding>(&cLuaBindingOptions,     "Options",     "System");
-    add<IAction,  IAction> (&cQuitAction,            "Quit",        "System");
+    add<IBinding, IBinding>(&cLuaBindingApplication, "Application", "Application");
+    add<IBinding, IBinding>(&cLuaBindingProject,     "Project",     "Project");
+    add<IBinding, IBinding>(&cLuaBindingOptions,     "Options",     "Options");
+    add<IAction,  IAction> (&cQuitAction,            "Quit",        "Terminate the Application");
   }
 
   Project::Project(Application& application, std::function<void(bool)> onFinish, const std::string& file, bool user) :
@@ -512,6 +512,10 @@ namespace IsoRealms {
   }
 
   std::string Project::getResourceID() const {
+    return ""; // TODO: Implement this.
+  }
+
+  std::string Project::getResourceName() const {
     return ""; // TODO: Implement this.
   }
 

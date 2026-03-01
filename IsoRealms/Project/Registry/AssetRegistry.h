@@ -26,6 +26,7 @@
 #include <vector>
 
 #include "AssetIDException.h"
+#include "AssetRegistryEntry.h"
 #include "IAssetListener.h"
 #include "IAssetUser.h"
 
@@ -91,12 +92,10 @@ namespace IsoRealms {
       return "";
     }
     
-    std::vector<std::string> getAll() const {
-      std::vector<std::string> mAllIDs;
-      for (std::pair<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>> mPair : cProviders) {
-        mAllIDs.emplace_back(mPair.first);
+    void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+      for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& p : cProviders) {
+        f(AssetRegistryEntry{p.first, p.second.second});
       }
-      return mAllIDs;
     }
 
     void addAssetListener(IAssetListener<OWNER, TYPE>* assetListener) {

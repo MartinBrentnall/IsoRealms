@@ -113,9 +113,9 @@ namespace IsoRealms {
         return cParent.cApplication;
       }
 
-      std::vector<std::string> getAvailableProviders() const {
-        std::vector<std::string> mAvailableOptions = cParent.cSimulatedType.getAvailableProviders();
-        mAvailableOptions.emplace_back("None");
+      std::vector<AssetRegistryEntry> getAvailableProviders() const {
+        std::vector<AssetRegistryEntry> mAvailableOptions = cParent.cSimulatedType.getAvailableProviders();
+        mAvailableOptions.emplace_back(AssetRegistryEntry{"None", "None"});
         return mAvailableOptions;
       }
 

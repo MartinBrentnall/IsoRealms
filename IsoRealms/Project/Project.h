@@ -155,8 +155,8 @@ namespace IsoRealms {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }
 
-    template <typename TYPE> std::vector<std::string> getAll() const {
-      return AssetContainerTraits<TYPE>::get(*this).getAll();
+    template <typename TYPE> void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+      AssetContainerTraits<TYPE>::get(*this).forEachEntry(f);
     }
     
     template <typename TYPE> bool renderIcon(const std::string& id) const {
@@ -201,6 +201,7 @@ namespace IsoRealms {
      * Implements IResourceData * TODO: Should these be here???
     \****************************/
     std::string getResourceID() const override;
+    std::string getResourceName() const override;
     std::string getPath(const std::string& file, bool user) const override;
     void makeUserDataDirectory() override;
     bool isIncluded() const override;

@@ -119,6 +119,10 @@ namespace IsoRealms::Spindizzy {
     return ""; // TODO: Implement this.
   }
 
+  std::string Spindizzy::getResourceName() const {
+    return ""; // TODO: Implement this.
+  }
+
   void Spindizzy::removeAll(AlienType* type) {
     for (World* mWorld : cResourceWorld) {
       mWorld->removeAll(type);
@@ -314,17 +318,17 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Spindizzy::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBindingType>(&cBindingTypeTerrainState, "Terrain State", "Spindizzy");
+    assets.add<IBindingType>(&cBindingTypeTerrainState, "Terrain State", "Terrain States");
 
     // TODO: The following things should not be needed!!!
-    assets.add<IBinding>(&cRuntimeParameterAlien,          "Alien",          "Spindizzy");
-    assets.add<IBinding>(&cRuntimeParameterFallDistance,   "FallDistance",   "Spindizzy");
-    assets.add<IBinding>(&cRuntimeParameterLaunchLocation, "LaunchLocation", "Spindizzy");
-    assets.add<IBinding>(&cRuntimeParameterLaunchMomentum, "LaunchMomentum", "Spindizzy");
-    assets.add<IBinding>(&cRuntimeParameterPlayer,         "Player",         "Spindizzy");
-    assets.add<IBinding>(&cRuntimeParameterWall,           "Wall",           "Spindizzy");
-    assets.add<IBinding>(&cRuntimeParameterZone,           "Zone",           "Spindizzy");
-    assets.add<IBinding>(&cLuaBinding,                     "",               "Spindizzy");
+    assets.add<IBinding>(&cRuntimeParameterAlien,          "Alien",          "Alien");
+    assets.add<IBinding>(&cRuntimeParameterFallDistance,   "FallDistance",   "FallDistance");
+    assets.add<IBinding>(&cRuntimeParameterLaunchLocation, "LaunchLocation", "LaunchLocation");
+    assets.add<IBinding>(&cRuntimeParameterLaunchMomentum, "LaunchMomentum", "LaunchMomentum");
+    assets.add<IBinding>(&cRuntimeParameterPlayer,         "Player",         "Player");
+    assets.add<IBinding>(&cRuntimeParameterWall,           "Wall",           "Wall");
+    assets.add<IBinding>(&cRuntimeParameterZone,           "Zone",           "Zone");
+    assets.add<IBinding>(&cLuaBinding,                     "",               "Spindizzy Module");
     
     for (AlienType* mResource : cResourceAlien) {
       mResource->registerAssets("Alien/" + getResourceID(mResource));
@@ -350,11 +354,11 @@ namespace IsoRealms::Spindizzy {
     for (ZoneObjectType* mResource : cResourceZoneObject) {
       mResource->registerAssets("ZoneObject/" + getResourceID(mResource));
     }
-    add<IWorldEditorTool>(&cToolDelete,     TOOL_DELETE,      "Spindizzy");
-    add<IWorldEditorTool>(&cToolProperties, TOOL_PROPERTIES,  "Spindizzy");
-    add<IWorldEditorTool>(&cToolCopyZone,   TOOL_COPY_ZONE,   "Spindizzy");
-    add<IWorldEditorTool>(&cToolMoveZone,   TOOL_MOVE_ZONE,   "Spindizzy");
-    add<IWorldEditorTool>(&cToolDeleteZone, TOOL_DELETE_ZONE, "Spindizzy");
+    add<IWorldEditorTool>(&cToolDelete,     TOOL_DELETE,      TOOL_DELETE);
+    add<IWorldEditorTool>(&cToolProperties, TOOL_PROPERTIES,  TOOL_PROPERTIES);
+    add<IWorldEditorTool>(&cToolCopyZone,   TOOL_COPY_ZONE,   TOOL_COPY_ZONE);
+    add<IWorldEditorTool>(&cToolMoveZone,   TOOL_MOVE_ZONE,   TOOL_MOVE_ZONE);
+    add<IWorldEditorTool>(&cToolDeleteZone, TOOL_DELETE_ZONE, TOOL_DELETE_ZONE);
   }
 
   void Spindizzy::updateInputs(unsigned int milliseconds) {

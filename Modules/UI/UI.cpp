@@ -72,11 +72,11 @@ namespace IsoRealms::UI {
   } // TODO: Probably shouldn't be here.
 
   void UI::registerAssets(ResourceAssetRegistry& assets) {
-    assets.addProvider(&cProviderScreenGradient, SCREEN_GRADIENT, "");
-    assets.addProvider(&cProviderScreenModel,    SCREEN_MODEL,    "");
-    assets.addProvider(&cProviderScreenPanel,    SCREEN_PANEL,    "");
-    assets.addProvider(&cProviderScreenText,     SCREEN_TEXT,     "");
-    assets.addProvider(&cProviderStringTime,     STRING_TIME,     "");
+    assets.addProvider(&cProviderScreenGradient, SCREEN_GRADIENT, "A Rectangle Gradient");
+    assets.addProvider(&cProviderScreenModel,    SCREEN_MODEL,    "A 3D Model");
+    assets.addProvider(&cProviderScreenPanel,    SCREEN_PANEL,    "A Rounded Rectangle");
+    assets.addProvider(&cProviderScreenText,     SCREEN_TEXT,     "A Text Label or Value");
+    assets.addProvider(&cProviderStringTime,     STRING_TIME,     "A Time Value");
   }
   
   void UI::updateInputs(unsigned int milliseconds) {

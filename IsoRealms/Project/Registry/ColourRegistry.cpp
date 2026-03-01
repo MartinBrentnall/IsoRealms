@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   ColourRegistry::ColourRegistry() :
-            AssetClientManager(&cLiteral, "Literal") {
+            AssetClientManager(&cLiteral, "Literal", "One-off Colour") { // TODO: Localize this.
   }
 
   ColourRegistry::Literal::Instance::Instance(const Project& project) :
