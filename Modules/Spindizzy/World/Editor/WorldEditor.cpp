@@ -334,6 +334,7 @@ namespace IsoRealms::Spindizzy {
 
     cPaletteSelectionX.update(milliseconds);
     cTerrainBrush.update(milliseconds, cScreenYaw.getValue(), cXSpeed.get(), cYSpeed.get());
+    cToolbar.update(milliseconds);
   }
 
   void WorldEditor::renderScreen(float scale, float aspectRatio) const {
