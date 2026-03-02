@@ -63,8 +63,12 @@ namespace IsoRealms {
     mFileObject.addBoolean(JSON_USER, cUser);
   }
   
-  std::string File::getID() const {
-    return std::string(cUser ? "User" : "Program") + "/" + cPath;
+  AssetInfo File::getAssetInfo() const {
+    std::string id = std::string(cUser ? "User" : "Program") + "/" + cPath;
+    for (const AssetInfo& e : getAvailableProviders()) {
+      if (e.cID == id) return e;
+    }
+    return AssetInfo{id, ""};
   }
   
   bool File::renderAssetIcon() const {
@@ -87,14 +91,14 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<AssetRegistryEntry> File::getAvailableProviders() const {
+  std::vector<AssetInfo> File::getAvailableProviders() const {
     std::vector<std::string> mFiles;
     getFilesAt(System::getPath("./", false), LOCATION_PREFIX_PROGRAM, mFiles);
     getFilesAt(System::getPath("", true), LOCATION_PREFIX_USER, mFiles);
     std::sort(mFiles.begin(), mFiles.end());
-    std::vector<AssetRegistryEntry> result;
+    std::vector<AssetInfo> result;
     for (const std::string& mFile : mFiles) {
-      result.emplace_back(AssetRegistryEntry{mFile, mFile});
+      result.emplace_back(AssetInfo{mFile, mFile});
     }
     return result;
   }

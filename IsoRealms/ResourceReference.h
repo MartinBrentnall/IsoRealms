@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/IResourceUser.h"
-#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
+#include "IsoRealms/Project/Registry/AssetInfo.h"
 
 #include "Project/ProjectFile.h"
 
@@ -63,8 +63,12 @@ namespace IsoRealms {
       object.addString(name, cManager.getAssetManager().getResourceID(cDefResource));
     }
 
-    std::string getID() const {
-      return cManager.getAssetManager().getResourceID(cDefResource);
+    AssetInfo getAssetInfo() const {
+      std::string id = cManager.getAssetManager().getResourceID(cDefResource);
+      for (const AssetInfo& e : getAvailableProviders()) {
+        if (e.cID == id) return e;
+      }
+      return AssetInfo{id, ""};
     }
 
     bool renderAssetIcon() const {
@@ -83,12 +87,12 @@ namespace IsoRealms {
       // TODO: Implement this.
     }
 
-    std::vector<AssetRegistryEntry> getAvailableProviders() const {
-      std::vector<AssetRegistryEntry> result;
+    std::vector<AssetInfo> getAvailableProviders() const {
+      std::vector<AssetInfo> mResult;
       for (const std::string& id : cManager.getAssetManager().template getAvailableResources<TYPE>()) {
-        result.emplace_back(AssetRegistryEntry{id, id});
+        mResult.emplace_back(AssetInfo{id, id});
       }
-      return result;
+      return mResult;
     }
 
     bool renderProviderIcon(const std::string& id) const {

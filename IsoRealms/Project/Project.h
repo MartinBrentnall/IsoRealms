@@ -147,16 +147,16 @@ namespace IsoRealms {
       AssetContainerTraits<TYPE>::get(*this).release(user, asset);
     }
 
-    template <typename TYPE> std::string getID(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getID(asset);
+    template <typename TYPE> AssetInfo getAssetInfo(const TYPE* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).getAssetInfo(asset);
     }
 
     template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }
 
-    template <typename TYPE> void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
-      AssetContainerTraits<TYPE>::get(*this).forEachEntry(f);
+    template <typename TYPE> void forEachEntry(std::function<void(const AssetInfo&)> getAssetInfoFunction) const {
+      AssetContainerTraits<TYPE>::get(*this).forEachEntry(getAssetInfoFunction);
     }
     
     template <typename TYPE> bool renderIcon(const std::string& id) const {

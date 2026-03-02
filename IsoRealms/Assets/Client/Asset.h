@@ -25,7 +25,7 @@
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
-#include "IsoRealms/Project/Registry/AssetRegistryEntry.h"
+#include "IsoRealms/Project/Registry/AssetInfo.h"
 #include "IsoRealms/Project/Registry/IAssetUser.h"
 
 namespace IsoRealms {
@@ -44,7 +44,7 @@ namespace IsoRealms {
   };
   
   template <typename TYPE> concept GetAvailableClientProvidersExists = requires(const TYPE& type) {
-    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<AssetRegistryEntry>>;
+    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<AssetInfo>>;
   };
   
   template <typename TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
@@ -122,10 +122,6 @@ namespace IsoRealms {
       cManager.getAssetManager().save(mAssetObject, cAsset);
     }
 
-    virtual std::string getID() const {
-      return cManager.getAssetManager().getID(cAsset);
-    }
-
     void getAssetProperties(PropertyMaker& owner) {
       getClientProperties(owner);
       getTheAssetProperties(cAsset, owner);
@@ -180,7 +176,7 @@ namespace IsoRealms {
     }
 
     bool renderProviderIcon(const std::string& id) const {
-      if (id == getID()) {
+      if (id == getRawID()) {
         return renderAssetIcon();
       }
       
@@ -190,25 +186,33 @@ namespace IsoRealms {
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
-    std::vector<AssetRegistryEntry> getAvailableProviders() const {
+    std::vector<AssetInfo> getAvailableProviders() const {
       if constexpr (GetAvailableClientProvidersExists<DERIVED>) {
         return static_cast<const DERIVED*>(this)->getAvailableClientProviders();
       }
-      std::vector<AssetRegistryEntry> result;
-      cManager.getAssetManager().template forEachEntry<TYPE>([&result](const AssetRegistryEntry& e) { result.push_back(e); });
+      std::vector<AssetInfo> result;
+      cManager.getAssetManager().template forEachEntry<TYPE>([&result](const AssetInfo& e) { result.push_back(e); });
       return result;
     }
-    
+
+    AssetInfo getAssetInfo() const {
+      return cManager.getAssetManager().getAssetInfo(cAsset);
+    }
+
     bool hasConfiguration() const {
       if constexpr (HasClientConfigurationExists<DERIVED>) {
         if (static_cast<const DERIVED*>(this)->hasClientConfiguration()) {
           return true;
         }
       }
-      return cManager.getAssetManager().template isConfigurable<TYPE>(getID());
+      return cManager.getAssetManager().template isConfigurable<TYPE>(getRawID());
     }  
     
     protected:
+    std::string getRawID() const {
+      return cManager.getAssetManager().getAssetInfo(cAsset).cID;
+    }
+
     MANAGER& cManager;
     TYPE* cAsset;
 

@@ -55,8 +55,12 @@ namespace IsoRealms {
             cSetter(setter) {
   }
 
-  std::string PropertyList::ListSelection::getID() const {
-    return cGetter();
+  AssetInfo PropertyList::ListSelection::getAssetInfo() const {
+    std::string id = cGetter();
+    for (const AssetInfo& e : getAvailableProviders()) {
+      if (e.cID == id) return e;
+    }
+    return AssetInfo{id, ""};
   }
 
   bool PropertyList::ListSelection::renderAssetIcon() const {
@@ -79,10 +83,10 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<AssetRegistryEntry> PropertyList::ListSelection::getAvailableProviders() const {
-    std::vector<AssetRegistryEntry> result;
+  std::vector<AssetInfo> PropertyList::ListSelection::getAvailableProviders() const {
+    std::vector<AssetInfo> result;
     for (const std::string& opt : cOptions) {
-      result.emplace_back(AssetRegistryEntry{opt, opt});
+      result.emplace_back(AssetInfo{opt, opt});
     }
     return result;
   }

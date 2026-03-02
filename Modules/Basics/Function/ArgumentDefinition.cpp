@@ -25,7 +25,7 @@ namespace IsoRealms::Basics {
             cParent(parent),
             cDefName(name),
             cDefType(parent.getResourceData(), [this]() {
-              std::string mNewBindingID = cDefType.getID();
+              std::string mNewBindingID = cDefType.getAssetInfo().cID;
               std::size_t mLastSeparator = mNewBindingID.rfind('/');
               if (mLastSeparator != std::string::npos) {
                 mNewBindingID = mNewBindingID.substr(mLastSeparator + 1);

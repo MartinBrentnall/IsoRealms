@@ -32,8 +32,8 @@ namespace IsoRealms {
             Asset<Binding, IBinding, IActionClient>(owner),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
-    std::vector<AssetRegistryEntry> mProviders = getAvailableProviders();
-    for (const AssetRegistryEntry& mEntry : mProviders) {
+    std::vector<AssetInfo> mProviders = getAvailableProviders();
+    for (const AssetInfo& mEntry : mProviders) {
       if (mEntry.cID == cDefType) {
         cManager.getAssetManager().release(this, cAsset);
         cAsset = cManager.getAssetManager().getAsset(this, mEntry.cID, owner);
@@ -47,7 +47,7 @@ namespace IsoRealms {
   }
 
   void Binding::setID(const std::string& id) {
-    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
+    std::string mRawID = getRawID();
     if (cDefType == mRawID) {
       cAsset->set(id);
     } else {
@@ -55,16 +55,20 @@ namespace IsoRealms {
     }
   }
 
-  std::string Binding::getID() const {
-    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
+  AssetInfo Binding::getAssetInfo() const {
+    std::string mRawID = getRawID();
     if (cDefType == mRawID) {
-      return cAsset->getID();
+      return cAsset->getAssetInfo();
     }
-    return cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
+    std::string exposedID = cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
+    for (const AssetInfo& e : getAvailableProviders()) {
+      if (e.cID == exposedID) return e;
+    }
+    return AssetInfo{exposedID, ""};
   }
 
   bool Binding::renderAssetIcon() const {
-    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
+    std::string mRawID = getRawID();
     return cDefType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
   }
 
@@ -76,39 +80,39 @@ namespace IsoRealms {
 //     return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
 //   }
   
-  std::vector<AssetRegistryEntry> Binding::getAvailableClientProviders() const {
+  std::vector<AssetInfo> Binding::getAvailableClientProviders() const {
 
     // Case where any type is allowed.
     if (cDefType.empty()) {
-      std::vector<AssetRegistryEntry> result;
-      cManager.getAssetManager().forEachEntry<IBinding>([&result](const AssetRegistryEntry& e) { result.push_back(e); });
+      std::vector<AssetInfo> result;
+      cManager.getAssetManager().forEachEntry<IBinding>([&result](const AssetInfo& e) { result.push_back(e); });
       return result;
     }
 
     // Case where a conversion type is allowed.
-    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
+    std::string mRawID = getRawID();
     if (cDefType == mRawID) {
       return cAsset->getAvailableProviders();
     }
 
     // Case where only a specific type is allowed.
-    std::vector<AssetRegistryEntry> mProvidersOfType;
-    std::vector<AssetRegistryEntry> exactMatch;
-    cManager.getAssetManager().forEachEntry<IBinding>([&mProvidersOfType, &exactMatch, this](const AssetRegistryEntry& e) {
+    std::vector<AssetInfo> mProvidersOfType;
+    std::vector<AssetInfo> exactMatch;
+    cManager.getAssetManager().forEachEntry<IBinding>([&mProvidersOfType, &exactMatch, this](const AssetInfo& e) {
       const std::string& mProvider = e.cID;
       if (mProvider == cDefType) {
         exactMatch.assign(1, e);
       } else if (mProvider.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
-        mProvidersOfType.emplace_back(AssetRegistryEntry{mProvider.substr(cDefType.length() + 1), e.cPath});
+        mProvidersOfType.emplace_back(AssetInfo{mProvider.substr(cDefType.length() + 1), e.cPath});
       }
     });
     if (!exactMatch.empty()) return exactMatch;
-    mProvidersOfType.emplace_back(AssetRegistryEntry{"None", ""}); // TODO: Kludge
+    mProvidersOfType.emplace_back(AssetInfo{"None", ""}); // TODO: Kludge
     return mProvidersOfType;
   }  
 
   bool Binding::renderOtherClientProviderIcon(const std::string& id) const {
-    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
+    std::string mRawID = getRawID();
     if (cDefType == mRawID) {
       return cAsset->renderProviderIcon(id);
     }
@@ -117,16 +121,16 @@ namespace IsoRealms {
   }
 
   bool Binding::hasClientConfiguration() const {
-    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
+    std::string mRawID = getRawID();
     if (cDefType == mRawID) {
       return cAsset->isConfigurable();
     }
 
-    return cManager.getAssetManager().isConfigurable<IBinding>(Asset<Binding, IBinding, IActionClient>::getID());
+    return cManager.getAssetManager().isConfigurable<IBinding>(getRawID());
   }  
 
   void Binding::getTheAssetProperties(IBinding* asset, PropertyMaker& owner) {
-    std::string mRawID = Asset<Binding, IBinding, IActionClient>::getID();
+    std::string mRawID = getRawID();
     cDefType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);
   }
 }

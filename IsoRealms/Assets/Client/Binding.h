@@ -33,14 +33,14 @@ namespace IsoRealms {
     Binding(IActionClient& owner, const std::string& type);
     std::string getType() const;
 
-    std::string getID() const override;
+    AssetInfo getAssetInfo() const;
     void setID(const std::string& id) override;
     bool renderAssetIcon() const override;
 
     /*********************************************\
      * Implements Asset<IBinding, IActionClient> *
     \*********************************************/
-    std::vector<AssetRegistryEntry> getAvailableClientProviders() const;
+    std::vector<AssetInfo> getAvailableClientProviders() const;
     bool renderOtherClientProviderIcon(const std::string& id) const;
     bool hasClientConfiguration() const;
 

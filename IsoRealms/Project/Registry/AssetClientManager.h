@@ -185,7 +185,7 @@ namespace IsoRealms {
       }
     }
     
-    void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+    void forEachEntry(std::function<void(const AssetInfo&)> f) const {
       cRegistry.forEachEntry(f);
     }
     
@@ -224,13 +224,13 @@ namespace IsoRealms {
       // TODO: Remove state listener (if there is one) from state notifier
     }
     
-    std::string getID(const TYPE* asset) const {
-      return cRegistry.getID(getProvider(asset));
+    AssetInfo getAssetInfo(const TYPE* asset) const {
+      return cRegistry.getAssetInfo(getProvider(asset));
     }
 
     void save(JSONObject object, const TYPE* asset) const {
       const IAssetProvider<OWNER, TYPE>* mProvider = getProvider(asset);
-      std::string mID = cRegistry.getID(mProvider);
+      std::string mID = cRegistry.getAssetInfo(mProvider).cID;
       object.addString(JSON_KEY, mID);
       asset->saveAsset(object);
     }

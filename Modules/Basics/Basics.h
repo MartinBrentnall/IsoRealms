@@ -68,15 +68,15 @@ namespace IsoRealms::Basics {
       cSequenceTracks.release(user, asset);
     }
 
-    template <typename TYPE> std::string getID(const TYPE* asset) const {
-      return cSequenceTracks.getID(asset);
+    template <typename TYPE> AssetInfo getAssetInfo(const TYPE* asset) const {
+      return cSequenceTracks.getAssetInfo(asset);
     }
 
     template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
       cSequenceTracks.save(object, asset);
     }
 
-    template <typename TYPE> void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+    template <typename TYPE> void forEachEntry(std::function<void(const AssetInfo&)> f) const {
       cSequenceTracks.forEachEntry(f);
     }
 

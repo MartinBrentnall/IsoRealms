@@ -54,8 +54,8 @@ namespace IsoRealms {
             cValue(value) {
   }
 
-  std::string PropertyNativeBoolean::BooleanSelection::getID() const {
-    return cValue ? ID_TRUE : ID_FALSE;
+  AssetInfo PropertyNativeBoolean::BooleanSelection::getAssetInfo() const {
+    return cValue ? AssetInfo{ID_TRUE, "True"} : AssetInfo{ID_FALSE, "False"};
   }
   
   bool PropertyNativeBoolean::BooleanSelection::renderAssetIcon() const {
@@ -83,8 +83,8 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<AssetRegistryEntry> PropertyNativeBoolean::BooleanSelection::getAvailableProviders() const {
-    return std::vector<AssetRegistryEntry>{{ID_TRUE, "True"}, {ID_FALSE, "False"}}; // TODO: Localisation.
+  std::vector<AssetInfo> PropertyNativeBoolean::BooleanSelection::getAvailableProviders() const {
+    return std::vector<AssetInfo>{{ID_TRUE, "True"}, {ID_FALSE, "False"}}; // TODO: Localisation.
   }
   
   bool PropertyNativeBoolean::BooleanSelection::renderProviderIcon(const std::string& id) const {

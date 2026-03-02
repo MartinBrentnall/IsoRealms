@@ -26,7 +26,7 @@
 #include <vector>
 
 #include "AssetIDException.h"
-#include "AssetRegistryEntry.h"
+#include "AssetInfo.h"
 #include "IAssetListener.h"
 #include "IAssetUser.h"
 
@@ -82,19 +82,19 @@ namespace IsoRealms {
       }
     }
     
-    std::string getID(const IAssetProvider<OWNER, TYPE>* provider) const {
-      for (std::pair<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>> mPair : cProviders) {
+    AssetInfo getAssetInfo(const IAssetProvider<OWNER, TYPE>* provider) const {
+      for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& mPair : cProviders) {
         if (provider == mPair.second.first) {
-          return mPair.first;
+          return AssetInfo{mPair.first, mPair.second.second};
         }
       }
-      std::cout << "WARNING: AssetRegistry::getID: Specified provider not found in this registry" << std::endl;
-      return "";
+      std::cout << "WARNING: AssetRegistry::getAssetInfo: Specified provider not found in this registry" << std::endl;
+      return AssetInfo{"", ""};
     }
-    
-    void forEachEntry(std::function<void(const AssetRegistryEntry&)> f) const {
+
+    void forEachEntry(std::function<void(const AssetInfo&)> getAssetInfoFunction) const {
       for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& p : cProviders) {
-        f(AssetRegistryEntry{p.first, p.second.second});
+        getAssetInfoFunction(AssetInfo{p.first, p.second.second});
       }
     }
 

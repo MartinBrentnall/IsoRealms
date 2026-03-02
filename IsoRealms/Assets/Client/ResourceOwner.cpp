@@ -45,8 +45,12 @@ namespace IsoRealms {
     }
   }
 
-  std::string ResourceOwner::getID() const {
-    return cOwner->getName();
+  AssetInfo ResourceOwner::getAssetInfo() const {
+    std::string id = cOwner->getName();
+    for (const AssetInfo& e : getAvailableProviders()) {
+      if (e.cID == id) return e;
+    }
+    return AssetInfo{id, ""};
   }
 
   bool ResourceOwner::renderAssetIcon() const {
@@ -69,7 +73,7 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
 
-  std::vector<AssetRegistryEntry> ResourceOwner::getAvailableProviders() const {
+  std::vector<AssetInfo> ResourceOwner::getAvailableProviders() const {
     std::vector<std::string> mNames = cProject.getWritableProjectFileNames();
     std::string mThisName = cOwner->getName();
     bool mFound = false;
@@ -82,11 +86,11 @@ namespace IsoRealms {
     if (!mFound) {
       mNames.emplace_back(mThisName);
     }
-    std::vector<AssetRegistryEntry> result;
+    std::vector<AssetInfo> mResult;
     for (const std::string& mName : mNames) {
-      result.emplace_back(AssetRegistryEntry{mName, mName});
+      mResult.emplace_back(AssetInfo{mName, mName});
     }
-    return result;
+    return mResult;
   }
 
   bool ResourceOwner::renderProviderIcon(const std::string& id) const {

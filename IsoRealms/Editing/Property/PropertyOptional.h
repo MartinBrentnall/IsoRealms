@@ -88,8 +88,8 @@ namespace IsoRealms {
       /*******************************\
        * Interface for PropertyAsset *
       \*******************************/
-      std::string getID() const {
-        return "None";
+      AssetInfo getAssetInfo() const {
+        return AssetInfo{"None", "None"};
       }
 
       bool renderAssetIcon() const {
@@ -113,9 +113,9 @@ namespace IsoRealms {
         return cParent.cApplication;
       }
 
-      std::vector<AssetRegistryEntry> getAvailableProviders() const {
-        std::vector<AssetRegistryEntry> mAvailableOptions = cParent.cSimulatedType.getAvailableProviders();
-        mAvailableOptions.emplace_back(AssetRegistryEntry{"None", "None"});
+      std::vector<AssetInfo> getAvailableProviders() const {
+        std::vector<AssetInfo> mAvailableOptions = cParent.cSimulatedType.getAvailableProviders();
+        mAvailableOptions.emplace_back(AssetInfo{"None", "None"});
         return mAvailableOptions;
       }
 

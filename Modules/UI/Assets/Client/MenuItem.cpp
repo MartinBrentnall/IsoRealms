@@ -48,16 +48,16 @@ namespace IsoRealms::UI {
     cUI.save(mAssetObject, cMenuItem);
   }
 
-  std::string MenuItem::getID() const {
-    return cUI.getID(cMenuItem);
+  AssetInfo MenuItem::getAssetInfo() const {
+    return cUI.getAssetInfo(cMenuItem);
   }
 
-  std::vector<AssetRegistryEntry> MenuItem::getAvailableProviders() const {
-    std::vector<AssetRegistryEntry> result;
-    cUI.forEachEntry<IMenuItem>([&result](const AssetRegistryEntry& e) {
-      result.push_back(e);
+  std::vector<AssetInfo> MenuItem::getAvailableProviders() const {
+    std::vector<AssetInfo> mResult;
+    cUI.forEachEntry<IMenuItem>([&mResult](const AssetInfo& e) {
+      mResult.push_back(e);
     });
-    return result;
+    return mResult;
   }
 
   bool MenuItem::renderProviderIcon(const std::string& id) const {

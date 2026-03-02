@@ -27,8 +27,12 @@ namespace IsoRealms {
             cProject(project) {
   }
   
-  std::string ModuleChooser::getID() const {
-    return "";
+  AssetInfo ModuleChooser::getAssetInfo() const {
+    std::string id;
+    for (const AssetInfo& e : getAvailableProviders()) {
+      if (e.cID == id) return e;
+    }
+    return AssetInfo{id, ""};
   }
   
   bool ModuleChooser::renderAssetIcon() const {
@@ -47,12 +51,12 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<AssetRegistryEntry> ModuleChooser::getAvailableProviders() const {
-    std::vector<AssetRegistryEntry> result;
+  std::vector<AssetInfo> ModuleChooser::getAvailableProviders() const {
+    std::vector<AssetInfo> mResult;
     for (const std::string& mName : cProject.getUnusedModuleNames()) {
-      result.emplace_back(AssetRegistryEntry{mName, mName});
+      mResult.emplace_back(AssetInfo{mName, mName});
     }
-    return result;
+    return mResult;
   }
   
   bool ModuleChooser::renderProviderIcon(const std::string& id) const {
