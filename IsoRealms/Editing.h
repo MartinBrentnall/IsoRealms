@@ -19,7 +19,7 @@
 #pragma once
 
 #include "Editing/Property/PropertyAdd.h"
-#include "Editing/Property/PropertyAsset.h"
+#include "Editing/Property/PropertyTreeSelector.h"
 #include "Editing/Property/PropertyCode.h"
 #include "Editing/Property/PropertyColourChannel.h"
 #include "Editing/Property/PropertyColourHue.h"

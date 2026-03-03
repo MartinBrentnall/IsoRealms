@@ -23,7 +23,7 @@
 #include <vector>
 #include <string>
 
-#include "IsoRealms/Project/Registry/AssetInfo.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
   class JSONObject;
@@ -43,16 +43,16 @@ namespace IsoRealms {
     void load(const std::string& name, JSONObject object);
     void save(const std::string& name, JSONObject object) const;
 
-    /*******************************\
-     * Interface for PropertyAsset *
-    \*******************************/
-    AssetInfo getAssetInfo() const;
+    /**************************************\
+     * Interface for PropertyTreeSelector *
+    \**************************************/
+    TreeItemInfo getTreeItemInfo() const;
     bool renderAssetIcon() const;
     bool hasConfiguration() const;
     bool isDefaultConfigured() const;
     void getAssetProperties(PropertyMaker& owner);
     Application& getApplication() const;
-    std::vector<AssetInfo> getAvailableProviders() const;
+    std::vector<TreeItemInfo> getAvailableTreeItems() const;
     bool renderProviderIcon(const std::string& id) const;
     void setID(const std::string& id);
     

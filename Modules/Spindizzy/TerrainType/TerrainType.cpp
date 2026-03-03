@@ -133,19 +133,19 @@ namespace IsoRealms::Spindizzy {
   
   
   void TerrainType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(          metadata.getPropertyData("SurfaceFriction"),     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
-    owner.createPropertyNativeFloat(          metadata.getPropertyData("SurfaceGrip"),         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
-    owner.createPropertyNativeFloat(          metadata.getPropertyData("SurfaceBounce"),       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
-    owner.createPropertyNativeFloat(          metadata.getPropertyData("WallBounce"),          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;});
-    owner.createPropertyNativeBoolean(        metadata.getPropertyData("AllowRespawn"),        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
-    owner.createPropertyNativeBoolean(        metadata.getPropertyData("Solid"),               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
-    owner.createPropertyAsset<Action>(        metadata.getPropertyData("OnTouch"),             cDefContactAction);
-    owner.createPropertyAsset<Action>(        metadata.getPropertyData("OnImpact"),            cDefImpactAction);
-    owner.createPropertyAsset<SurfacePattern>(metadata.getPropertyData("AppearanceSurface"),   cDefSurfacePattern);
-    owner.createPropertyAsset<WallPattern>(   metadata.getPropertyData("AppearanceWallNorth"), cDefNorthWallPattern);
-    owner.createPropertyAsset<WallPattern>(   metadata.getPropertyData("AppearanceWallSouth"), cDefSouthWallPattern);
-    owner.createPropertyAsset<WallPattern>(   metadata.getPropertyData("AppearanceWallWest"),  cDefWestWallPattern);
-    owner.createPropertyAsset<WallPattern>(   metadata.getPropertyData("AppearanceWallEast"),  cDefEastWallPattern);
+    owner.createPropertyNativeFloat(                 metadata.getPropertyData("SurfaceFriction"),     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
+    owner.createPropertyNativeFloat(                 metadata.getPropertyData("SurfaceGrip"),         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
+    owner.createPropertyNativeFloat(                 metadata.getPropertyData("SurfaceBounce"),       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
+    owner.createPropertyNativeFloat(                 metadata.getPropertyData("WallBounce"),          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;});
+    owner.createPropertyNativeBoolean(               metadata.getPropertyData("AllowRespawn"),        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
+    owner.createPropertyNativeBoolean(               metadata.getPropertyData("Solid"),               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
+    owner.createPropertyTreeSelector<Action>(        metadata.getPropertyData("OnTouch"),             cDefContactAction);
+    owner.createPropertyTreeSelector<Action>(        metadata.getPropertyData("OnImpact"),            cDefImpactAction);
+    owner.createPropertyTreeSelector<SurfacePattern>(metadata.getPropertyData("AppearanceSurface"),   cDefSurfacePattern);
+    owner.createPropertyTreeSelector<WallPattern>(   metadata.getPropertyData("AppearanceWallNorth"), cDefNorthWallPattern);
+    owner.createPropertyTreeSelector<WallPattern>(   metadata.getPropertyData("AppearanceWallSouth"), cDefSouthWallPattern);
+    owner.createPropertyTreeSelector<WallPattern>(   metadata.getPropertyData("AppearanceWallWest"),  cDefWestWallPattern);
+    owner.createPropertyTreeSelector<WallPattern>(   metadata.getPropertyData("AppearanceWallEast"),  cDefEastWallPattern);
   }
 
   void TerrainType::removed() {

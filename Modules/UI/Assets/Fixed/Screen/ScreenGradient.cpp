@@ -68,9 +68,9 @@ namespace IsoRealms::UI {
   }
 
   void ScreenGradient::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>( cMetadata.getPropertyData("ColourA"), cDefColourA);
-    owner.createPropertyAsset<Colour>( cMetadata.getPropertyData("ColourB"), cDefColourB);
-    owner.createPropertyList(          cMetadata.getPropertyData("Orientation"), std::vector<std::string>{
+    owner.createPropertyTreeSelector<Colour>( cMetadata.getPropertyData("ColourA"), cDefColourA);
+    owner.createPropertyTreeSelector<Colour>( cMetadata.getPropertyData("ColourB"), cDefColourB);
+    owner.createPropertyList(                 cMetadata.getPropertyData("Orientation"), std::vector<std::string>{
       VALUE_HORIZONTAL, VALUE_VERTICAL
     }, [this]() {
       return cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL;

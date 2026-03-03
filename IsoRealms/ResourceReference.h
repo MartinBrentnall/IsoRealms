@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/IResourceUser.h"
-#include "IsoRealms/Project/Registry/AssetInfo.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 #include "Project/ProjectFile.h"
 
@@ -63,12 +63,12 @@ namespace IsoRealms {
       object.addString(name, cManager.getAssetManager().getResourceID(cDefResource));
     }
 
-    AssetInfo getAssetInfo() const {
-      std::string id = cManager.getAssetManager().getResourceID(cDefResource);
-      for (const AssetInfo& e : getAvailableProviders()) {
-        if (e.cID == id) return e;
+    TreeItemInfo getTreeItemInfo() const {
+      std::string mResourceID = cManager.getAssetManager().getResourceID(cDefResource);
+      for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+        if (mTreeItemInfo.cID == mResourceID) return mTreeItemInfo;
       }
-      return AssetInfo{id, ""};
+      return TreeItemInfo{mResourceID, ""};
     }
 
     bool renderAssetIcon() const {
@@ -87,10 +87,10 @@ namespace IsoRealms {
       // TODO: Implement this.
     }
 
-    std::vector<AssetInfo> getAvailableProviders() const {
-      std::vector<AssetInfo> mResult;
-      for (const std::string& id : cManager.getAssetManager().template getAvailableResources<TYPE>()) {
-        mResult.emplace_back(AssetInfo{id, id});
+    std::vector<TreeItemInfo> getAvailableTreeItems() const {
+      std::vector<TreeItemInfo> mResult;
+      for (const std::string& mResourceID : cManager.getAssetManager().template getAvailableResources<TYPE>()) {
+        mResult.emplace_back(TreeItemInfo{mResourceID, mResourceID});
       }
       return mResult;
     }

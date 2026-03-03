@@ -63,12 +63,14 @@ namespace IsoRealms {
     mFileObject.addBoolean(JSON_USER, cUser);
   }
   
-  AssetInfo File::getAssetInfo() const {
-    std::string id = std::string(cUser ? "User" : "Program") + "/" + cPath;
-    for (const AssetInfo& e : getAvailableProviders()) {
-      if (e.cID == id) return e;
+  TreeItemInfo File::getTreeItemInfo() const {
+    std::string mFilePath = std::string(cUser ? "User" : "Program") + "/" + cPath;
+    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+      if (mTreeItemInfo.cID == mFilePath) {
+        return mTreeItemInfo;
+      }
     }
-    return AssetInfo{id, ""};
+    return TreeItemInfo{mFilePath, mFilePath};
   }
   
   bool File::renderAssetIcon() const {
@@ -91,14 +93,14 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<AssetInfo> File::getAvailableProviders() const {
+  std::vector<TreeItemInfo> File::getAvailableTreeItems() const {
     std::vector<std::string> mFiles;
     getFilesAt(System::getPath("./", false), LOCATION_PREFIX_PROGRAM, mFiles);
     getFilesAt(System::getPath("", true), LOCATION_PREFIX_USER, mFiles);
     std::sort(mFiles.begin(), mFiles.end());
-    std::vector<AssetInfo> result;
+    std::vector<TreeItemInfo> result;
     for (const std::string& mFile : mFiles) {
-      result.emplace_back(AssetInfo{mFile, mFile});
+      result.emplace_back(TreeItemInfo{mFile, mFile});
     }
     return result;
   }

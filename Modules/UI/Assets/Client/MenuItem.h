@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms.h"
-#include "IsoRealms/Project/Registry/AssetInfo.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 #include "Modules/UI/Assets/Type/IMenuItem.h"
 
@@ -35,8 +35,8 @@ namespace IsoRealms::UI {
     void set(JSONObject object, const std::string& member, Menu& owner);
     void setID(const std::string& id);
     void save(JSONObject object, const std::string& name) const;
-    AssetInfo getAssetInfo() const;
-    std::vector<AssetInfo> getAvailableProviders() const;
+    TreeItemInfo getTreeItemInfo() const;
+    std::vector<TreeItemInfo> getAvailableTreeItems() const;
     bool renderProviderIcon(const std::string& id) const;
     bool hasConfiguration() const;
     bool isDefaultConfigured() const;

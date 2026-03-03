@@ -41,16 +41,18 @@ namespace IsoRealms {
 
   void ResourceOwner::createProperty(PropertyMaker& owner, const PropertyData& metadata) {
     if (cProject.getWritableProjectFileNames().size() > 1) {
-      owner.createPropertyAsset(metadata, *this);
+      owner.createPropertyTreeSelector(metadata, *this);
     }
   }
 
-  AssetInfo ResourceOwner::getAssetInfo() const {
-    std::string id = cOwner->getName();
-    for (const AssetInfo& e : getAvailableProviders()) {
-      if (e.cID == id) return e;
+  TreeItemInfo ResourceOwner::getTreeItemInfo() const {
+    std::string mResourceID = cOwner->getName();
+    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+      if (mTreeItemInfo.cID == mResourceID) {
+        return mTreeItemInfo;
+      }
     }
-    return AssetInfo{id, ""};
+    return TreeItemInfo{mResourceID, mResourceID};
   }
 
   bool ResourceOwner::renderAssetIcon() const {
@@ -73,7 +75,7 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
 
-  std::vector<AssetInfo> ResourceOwner::getAvailableProviders() const {
+  std::vector<TreeItemInfo> ResourceOwner::getAvailableTreeItems() const {
     std::vector<std::string> mNames = cProject.getWritableProjectFileNames();
     std::string mThisName = cOwner->getName();
     bool mFound = false;
@@ -86,9 +88,9 @@ namespace IsoRealms {
     if (!mFound) {
       mNames.emplace_back(mThisName);
     }
-    std::vector<AssetInfo> mResult;
+    std::vector<TreeItemInfo> mResult;
     for (const std::string& mName : mNames) {
-      mResult.emplace_back(AssetInfo{mName, mName});
+      mResult.emplace_back(TreeItemInfo{mName, mName});
     }
     return mResult;
   }

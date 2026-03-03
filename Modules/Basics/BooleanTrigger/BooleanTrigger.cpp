@@ -61,9 +61,9 @@ namespace IsoRealms::Basics {
   }
 
   void BooleanTrigger::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<Boolean>(metadata.getPropertyData("Value"),   cDefValue);
-    owner.createPropertyAsset<Action>( metadata.getPropertyData("OnTrue"),  cDefTrueAction);
-    owner.createPropertyAsset<Action>( metadata.getPropertyData("OnFalse"), cDefFalseAction);
+    owner.createPropertyTreeSelector<Boolean>(metadata.getPropertyData("Value"),   cDefValue);
+    owner.createPropertyTreeSelector<Action>( metadata.getPropertyData("OnTrue"),  cDefTrueAction);
+    owner.createPropertyTreeSelector<Action>( metadata.getPropertyData("OnFalse"), cDefFalseAction);
   }
 
   void BooleanTrigger::removed() {

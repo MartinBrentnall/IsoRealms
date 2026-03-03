@@ -69,16 +69,16 @@ namespace IsoRealms::UI {
       AssetContainerTraits<TYPE>::get(*this).release(user, asset);
     }
 
-    template <typename TYPE> AssetInfo getAssetInfo(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getAssetInfo(asset);
+    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).getTreeItemInfo(asset);
     }
 
     template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }
 
-    template <typename TYPE> void forEachEntry(std::function<void(const AssetInfo&)> assetInfoFunction) const {
-      AssetContainerTraits<TYPE>::get(*this).forEachEntry(assetInfoFunction);
+    template <typename TYPE> void forEachEntry(std::function<void(const TreeItemInfo&)> treeItemInfoFunction) const {
+      AssetContainerTraits<TYPE>::get(*this).forEachEntry(treeItemInfoFunction);
     }
 
     template <typename TYPE> bool renderIcon(const std::string& id) const {

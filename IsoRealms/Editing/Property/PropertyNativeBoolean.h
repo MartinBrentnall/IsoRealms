@@ -22,7 +22,7 @@
 #include <functional>
 #include <string>
 
-#include "PropertyAsset.h"
+#include "PropertyTreeSelector.h"
 
 namespace IsoRealms {
   class PropertyNativeBoolean;
@@ -45,16 +45,16 @@ namespace IsoRealms {
       public:
       BooleanSelection(std::function<void(bool)> setter, Project& project, bool value);
 
-      /*******************************\
-      * Interface for PropertyAsset *
-      \*******************************/
-      AssetInfo getAssetInfo() const;
+      /**************************************\
+       * Interface for PropertyTreeSelector *
+      \**************************************/
+      TreeItemInfo getTreeItemInfo() const;
       bool renderAssetIcon() const;
       bool hasConfiguration() const;
       bool isDefaultConfigured() const;
       void getAssetProperties(PropertyMaker& owner);
       Application& getApplication() const;
-      std::vector<AssetInfo> getAvailableProviders() const;
+      std::vector<TreeItemInfo> getAvailableTreeItems() const;
       bool renderProviderIcon(const std::string& id) const;
       void setID(const std::string& id);
 
@@ -68,6 +68,6 @@ namespace IsoRealms {
     };
 
     BooleanSelection cInternalSelection;
-    PropertyAsset<BooleanSelection> cInternalProperty;
+    PropertyTreeSelector<BooleanSelection> cInternalProperty;
   };
 }

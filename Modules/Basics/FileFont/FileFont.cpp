@@ -162,12 +162,12 @@ namespace IsoRealms::Basics {
   }
 
   void FileFont::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<File>(  metadata.getPropertyData("File"),        cDefFilename);
-    owner.createPropertyNativeInteger(metadata.getPropertyData("Detail"),      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("Scale"),       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("XOffset"),     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("YOffset"),     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("LineSpacing"), [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
+    owner.createPropertyTreeSelector<File>(metadata.getPropertyData("File"),        cDefFilename);
+    owner.createPropertyNativeInteger(     metadata.getPropertyData("Detail"),      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;});
+    owner.createPropertyNativeFloat(       metadata.getPropertyData("Scale"),       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
+    owner.createPropertyNativeFloat(       metadata.getPropertyData("XOffset"),     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
+    owner.createPropertyNativeFloat(       metadata.getPropertyData("YOffset"),     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
+    owner.createPropertyNativeFloat(       metadata.getPropertyData("LineSpacing"), [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
   }
 
   void FileFont::removed() {

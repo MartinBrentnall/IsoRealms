@@ -49,8 +49,8 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackColourEvent::getEventProperties(PropertyMaker& owner) {
     const Metadata& mMetadata = cParent.getMetadata();
-    owner.createPropertyAsset<Colour>(mMetadata.getPropertyData("Colour"), cDefTarget);
-    owner.createPropertyNativeBoolean(mMetadata.getPropertyData("Fade"),   [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
+    owner.createPropertyTreeSelector<Colour>(mMetadata.getPropertyData("Colour"), cDefTarget);
+    owner.createPropertyNativeBoolean(       mMetadata.getPropertyData("Fade"),   [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
   }
 
   const IColour* SequenceTrackColourEvent::getColour() const {

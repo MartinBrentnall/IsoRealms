@@ -74,8 +74,8 @@ namespace IsoRealms::UI {
   }
 
   void ScreenPanel::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Colour>(cMetadata.getPropertyData("Colour"),     cDefColour);
-    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("CornerSize"), [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
+    owner.createPropertyTreeSelector<Colour>(cMetadata.getPropertyData("Colour"),     cDefColour);
+    owner.createPropertyNativeFloat(         cMetadata.getPropertyData("CornerSize"), [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
   }
   
   bool ScreenPanel::isDefaultConfiguration() const {

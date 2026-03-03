@@ -21,7 +21,7 @@
 #include <string>
 
 namespace IsoRealms {
-  struct AssetInfo {
+  struct TreeItemInfo {
     std::string cID;
     std::string cPath;
   };

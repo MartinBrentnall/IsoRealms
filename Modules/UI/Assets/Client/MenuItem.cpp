@@ -48,13 +48,13 @@ namespace IsoRealms::UI {
     cUI.save(mAssetObject, cMenuItem);
   }
 
-  AssetInfo MenuItem::getAssetInfo() const {
-    return cUI.getAssetInfo(cMenuItem);
+  TreeItemInfo MenuItem::getTreeItemInfo() const {
+    return cUI.getTreeItemInfo(cMenuItem);
   }
 
-  std::vector<AssetInfo> MenuItem::getAvailableProviders() const {
-    std::vector<AssetInfo> mResult;
-    cUI.forEachEntry<IMenuItem>([&mResult](const AssetInfo& e) {
+  std::vector<TreeItemInfo> MenuItem::getAvailableTreeItems() const {
+    std::vector<TreeItemInfo> mResult;
+    cUI.forEachEntry<IMenuItem>([&mResult](const TreeItemInfo& e) {
       mResult.push_back(e);
     });
     return mResult;

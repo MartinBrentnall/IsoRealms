@@ -68,10 +68,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CollisionHandler::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<PhysicalObjectType>(metadata.getPropertyData("EntityA"),      cDefPhysicalObjectTypeA);
-    owner.createPropertyAsset<PhysicalObjectType>(metadata.getPropertyData("EntityB"),      cDefPhysicalObjectTypeB);
-    owner.createPropertyAsset<Action>(            metadata.getPropertyData("OnCollision"),  cDefEnteredAction);
-    owner.createPropertyAsset<Action>(            metadata.getPropertyData("OnSeparation"), cDefExitedAction);
+    owner.createPropertyTreeSelector<PhysicalObjectType>(metadata.getPropertyData("EntityA"),      cDefPhysicalObjectTypeA);
+    owner.createPropertyTreeSelector<PhysicalObjectType>(metadata.getPropertyData("EntityB"),      cDefPhysicalObjectTypeB);
+    owner.createPropertyTreeSelector<Action>(            metadata.getPropertyData("OnCollision"),  cDefEnteredAction);
+    owner.createPropertyTreeSelector<Action>(            metadata.getPropertyData("OnSeparation"), cDefExitedAction);
   }
 
   void CollisionHandler::removed() {

@@ -325,7 +325,7 @@ namespace IsoRealms {
   }
   
   IEditable* Project::getDefaultEditable() {
-    return (*cDefDefaultEditor)->getAssetInfo().cID == "None" ? nullptr : ***cDefDefaultEditor;
+    return (*cDefDefaultEditor)->getTreeItemInfo().cID == "None" ? nullptr : ***cDefDefaultEditor;
   }
 
   IScreen* Project::getScreenProxy(IScreen* screen) {

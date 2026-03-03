@@ -32,8 +32,8 @@ namespace IsoRealms {
             Asset<Binding, IBinding, IActionClient>(owner),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
-    std::vector<AssetInfo> mProviders = getAvailableProviders();
-    for (const AssetInfo& mEntry : mProviders) {
+    std::vector<TreeItemInfo> mProviders = getAvailableTreeItems();
+    for (const TreeItemInfo& mEntry : mProviders) {
       if (mEntry.cID == cDefType) {
         cManager.getAssetManager().release(this, cAsset);
         cAsset = cManager.getAssetManager().getAsset(this, mEntry.cID, owner);
@@ -55,16 +55,18 @@ namespace IsoRealms {
     }
   }
 
-  AssetInfo Binding::getAssetInfo() const {
+  TreeItemInfo Binding::getTreeItemInfo() const {
     std::string mRawID = getRawID();
     if (cDefType == mRawID) {
-      return cAsset->getAssetInfo();
+      return cAsset->getTreeItemInfo();
     }
-    std::string exposedID = cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
-    for (const AssetInfo& e : getAvailableProviders()) {
-      if (e.cID == exposedID) return e;
+    std::string mExposedID = cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
+    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+      if (mTreeItemInfo.cID == mExposedID) {
+        return mTreeItemInfo;
+      }
     }
-    return AssetInfo{exposedID, ""};
+    return TreeItemInfo{mExposedID, mExposedID};
   }
 
   bool Binding::renderAssetIcon() const {
@@ -80,34 +82,36 @@ namespace IsoRealms {
 //     return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
 //   }
   
-  std::vector<AssetInfo> Binding::getAvailableClientProviders() const {
+  std::vector<TreeItemInfo> Binding::getAvailableClientProviders() const {
 
     // Case where any type is allowed.
     if (cDefType.empty()) {
-      std::vector<AssetInfo> result;
-      cManager.getAssetManager().forEachEntry<IBinding>([&result](const AssetInfo& e) { result.push_back(e); });
+      std::vector<TreeItemInfo> result;
+      cManager.getAssetManager().forEachEntry<IBinding>([&result](const TreeItemInfo& e) { result.push_back(e); });
       return result;
     }
 
     // Case where a conversion type is allowed.
     std::string mRawID = getRawID();
     if (cDefType == mRawID) {
-      return cAsset->getAvailableProviders();
+      return cAsset->getAvailableTreeItems();
     }
 
     // Case where only a specific type is allowed.
-    std::vector<AssetInfo> mProvidersOfType;
-    std::vector<AssetInfo> exactMatch;
-    cManager.getAssetManager().forEachEntry<IBinding>([&mProvidersOfType, &exactMatch, this](const AssetInfo& e) {
-      const std::string& mProvider = e.cID;
-      if (mProvider == cDefType) {
-        exactMatch.assign(1, e);
-      } else if (mProvider.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
-        mProvidersOfType.emplace_back(AssetInfo{mProvider.substr(cDefType.length() + 1), e.cPath});
+    std::vector<TreeItemInfo> mProvidersOfType;
+    std::vector<TreeItemInfo> mExactMatch;
+    cManager.getAssetManager().forEachEntry<IBinding>([&mProvidersOfType, &mExactMatch, this](const TreeItemInfo& mTreeItemInfo) {
+      const std::string& mBindingID = mTreeItemInfo.cID;
+      if (mBindingID == cDefType) {
+        mExactMatch.assign(1, mTreeItemInfo);
+      } else if (mBindingID.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
+        mProvidersOfType.emplace_back(TreeItemInfo{mBindingID.substr(cDefType.length() + 1), mTreeItemInfo.cPath});
       }
     });
-    if (!exactMatch.empty()) return exactMatch;
-    mProvidersOfType.emplace_back(AssetInfo{"None", ""}); // TODO: Kludge
+    if (!mExactMatch.empty()) {
+      return mExactMatch;
+    }
+    mProvidersOfType.emplace_back(TreeItemInfo{"None", "None"}); // TODO: Kludge
     return mProvidersOfType;
   }  
 

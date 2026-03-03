@@ -137,10 +137,10 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::getAssetProperties(PropertyMaker& owner) {
     // TODO: Change this so it uses "File" client asset.
-    owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
-    owner.createPropertyNativeString( cMetadata.getPropertyData("Folder"),      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
-    owner.createPropertyNativeBoolean(cMetadata.getPropertyData("UserData"),    [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
-    owner.createPropertyAsset<Action>(cMetadata.getPropertyData("OnSelection"), cDefAction);
+    owner.createPropertyNativeString(        cMetadata.getPropertyData("ID"),          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
+    owner.createPropertyNativeString(        cMetadata.getPropertyData("Folder"),      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
+    owner.createPropertyNativeBoolean(       cMetadata.getPropertyData("UserData"),    [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
+    owner.createPropertyTreeSelector<Action>(cMetadata.getPropertyData("OnSelection"), cDefAction);
   }
 
   bool MenuItemFileList::isDefaultConfiguration() const {

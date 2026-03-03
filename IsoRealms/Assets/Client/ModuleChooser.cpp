@@ -27,12 +27,14 @@ namespace IsoRealms {
             cProject(project) {
   }
   
-  AssetInfo ModuleChooser::getAssetInfo() const {
-    std::string id;
-    for (const AssetInfo& e : getAvailableProviders()) {
-      if (e.cID == id) return e;
+  TreeItemInfo ModuleChooser::getTreeItemInfo() const {
+    std::string mID; // TODO: Kludge
+    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+      if (mTreeItemInfo.cID == mID) {
+        return mTreeItemInfo;
+      }
     }
-    return AssetInfo{id, ""};
+    return TreeItemInfo{mID, mID};
   }
   
   bool ModuleChooser::renderAssetIcon() const {
@@ -51,10 +53,10 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<AssetInfo> ModuleChooser::getAvailableProviders() const {
-    std::vector<AssetInfo> mResult;
+  std::vector<TreeItemInfo> ModuleChooser::getAvailableTreeItems() const {
+    std::vector<TreeItemInfo> mResult;
     for (const std::string& mName : cProject.getUnusedModuleNames()) {
-      mResult.emplace_back(AssetInfo{mName, mName});
+      mResult.emplace_back(TreeItemInfo{mName, mName});
     }
     return mResult;
   }

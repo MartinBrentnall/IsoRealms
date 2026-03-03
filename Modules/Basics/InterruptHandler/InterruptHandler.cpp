@@ -50,7 +50,7 @@ namespace IsoRealms::Basics {
   }
 
   void InterruptHandler::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyAsset<Action>(metadata.getPropertyData("Action"), cDefAction);
+    owner.createPropertyTreeSelector<Action>(metadata.getPropertyData("Action"), cDefAction);
   }
 
   void InterruptHandler::removed() {

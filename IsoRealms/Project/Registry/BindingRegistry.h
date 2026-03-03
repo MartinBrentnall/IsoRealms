@@ -61,11 +61,11 @@ namespace IsoRealms {
       * Implements IBinding *
       \***********************/
       void bind(const std::string& function) const override;
-      std::vector<AssetInfo> getAvailableProviders() const override;
+      std::vector<TreeItemInfo> getAvailableTreeItems() const override;
       bool renderProviderIcon(const std::string& id) const override;
       bool renderWrappedIcon() const override;
       bool isConfigurable() const override;
-      AssetInfo getAssetInfo() const override;
+      TreeItemInfo getTreeItemInfo() const override;
       void set(const std::string& id) override;
       void getWrappedProperties(PropertyMaker& owner) override;
       bool renderAssetIcon() const override;
@@ -175,12 +175,12 @@ namespace IsoRealms {
         \***********************/
         void bind(const std::string& bindFunction) const override;
 
-        std::vector<AssetInfo> getAvailableProviders() const override {
-          return cDefValue.getAvailableProviders();
+        std::vector<TreeItemInfo> getAvailableTreeItems() const override {
+          return cDefValue.getAvailableTreeItems();
         }
 
-        AssetInfo getAssetInfo() const override {
-          return cDefValue.getAssetInfo();
+        TreeItemInfo getTreeItemInfo() const override {
+          return cDefValue.getTreeItemInfo();
         }
 
         bool renderProviderIcon(const std::string& id) const override {
@@ -212,7 +212,7 @@ namespace IsoRealms {
         }
 
         void getAssetProperties(PropertyMaker& owner) override {
-          owner.createPropertyAsset<TYPE>(PropertyData("TODO: Asset", "TODO: Description"), cDefValue);
+          owner.createPropertyTreeSelector<TYPE>(PropertyData("TODO: Asset", "TODO: Description"), cDefValue);
         }
 
         bool isDefaultConfiguration() const override {

@@ -55,12 +55,14 @@ namespace IsoRealms {
             cSetter(setter) {
   }
 
-  AssetInfo PropertyList::ListSelection::getAssetInfo() const {
-    std::string id = cGetter();
-    for (const AssetInfo& e : getAvailableProviders()) {
-      if (e.cID == id) return e;
+  TreeItemInfo PropertyList::ListSelection::getTreeItemInfo() const {
+    std::string mSelectedID = cGetter();
+    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+      if (mTreeItemInfo.cID == mSelectedID) {
+        return mTreeItemInfo;
+      }
     }
-    return AssetInfo{id, ""};
+    return TreeItemInfo{mSelectedID, mSelectedID};
   }
 
   bool PropertyList::ListSelection::renderAssetIcon() const {
@@ -83,10 +85,10 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<AssetInfo> PropertyList::ListSelection::getAvailableProviders() const {
-    std::vector<AssetInfo> result;
-    for (const std::string& opt : cOptions) {
-      result.emplace_back(AssetInfo{opt, opt});
+  std::vector<TreeItemInfo> PropertyList::ListSelection::getAvailableTreeItems() const {
+    std::vector<TreeItemInfo> result;
+    for (const std::string& mOption : cOptions) {
+      result.emplace_back(TreeItemInfo{mOption, mOption});
     }
     return result;
   }

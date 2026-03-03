@@ -167,13 +167,13 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CameraTransitional::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Camera>(        cMetadata.getPropertyData("Start"),                cDefStart);
-    owner.createPropertyAsset<Camera>(        cMetadata.getPropertyData("End"),                  cDefEnd);
+    owner.createPropertyTreeSelector<Camera>( cMetadata.getPropertyData("Start"),                cDefStart);
+    owner.createPropertyTreeSelector<Camera>( cMetadata.getPropertyData("End"),                  cDefEnd);
     owner.createPropertyNativeUnsignedInteger(cMetadata.getPropertyData("Duration"),             [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
-    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnDepartureFromStart"), cDefStartDepartureAction);
-    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnArrivalAtEnd"),       cDefEndArrivalAction);
-    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnDepartureFromEnd"),   cDefEndDepartureAction);
-    owner.createPropertyAsset<Action>(        cMetadata.getPropertyData("OnArrivalAtStart"),     cDefStartArrivalAction);
+    owner.createPropertyTreeSelector<Action>( cMetadata.getPropertyData("OnDepartureFromStart"), cDefStartDepartureAction);
+    owner.createPropertyTreeSelector<Action>( cMetadata.getPropertyData("OnArrivalAtEnd"),       cDefEndArrivalAction);
+    owner.createPropertyTreeSelector<Action>( cMetadata.getPropertyData("OnDepartureFromEnd"),   cDefEndDepartureAction);
+    owner.createPropertyTreeSelector<Action>( cMetadata.getPropertyData("OnArrivalAtStart"),     cDefStartArrivalAction);
   }
 
   bool CameraTransitional::isDefaultConfiguration() const {

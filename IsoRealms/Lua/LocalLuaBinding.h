@@ -69,8 +69,8 @@ namespace IsoRealms {
 
     void bind(const std::string& bindFunction) const override;
     
-    std::vector<AssetInfo> getAvailableProviders() const override {
-      return std::vector<AssetInfo>();
+    std::vector<TreeItemInfo> getAvailableTreeItems() const override {
+      return std::vector<TreeItemInfo>();
     }
 
     bool renderProviderIcon(const std::string& id) const override {
@@ -85,8 +85,8 @@ namespace IsoRealms {
       return false;
     }
 
-    AssetInfo getAssetInfo() const override {
-      return AssetInfo{"", ""};
+    TreeItemInfo getTreeItemInfo() const override {
+      return TreeItemInfo{"", ""};
     }
 
     void set(const std::string& id) override {

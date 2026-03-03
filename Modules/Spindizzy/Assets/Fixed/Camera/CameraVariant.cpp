@@ -114,10 +114,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void CameraVariant::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Location"), cDefLocation);
-    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Angle"),    cDefYaw);
-    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Tilt"),     cDefPitch);
-    owner.createPropertyAsset<Camera>(cMetadata.getPropertyData("Zoom"),     cDefZoom);
+    owner.createPropertyTreeSelector<Camera>(cMetadata.getPropertyData("Location"), cDefLocation);
+    owner.createPropertyTreeSelector<Camera>(cMetadata.getPropertyData("Angle"),    cDefYaw);
+    owner.createPropertyTreeSelector<Camera>(cMetadata.getPropertyData("Tilt"),     cDefPitch);
+    owner.createPropertyTreeSelector<Camera>(cMetadata.getPropertyData("Zoom"),     cDefZoom);
   }
 
   bool CameraVariant::isDefaultConfiguration() const {

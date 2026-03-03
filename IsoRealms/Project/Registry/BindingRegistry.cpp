@@ -74,8 +74,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<AssetInfo> BindingRegistry::Dummy::getAvailableProviders() const {
-    return std::vector<AssetInfo>();
+  std::vector<TreeItemInfo> BindingRegistry::Dummy::getAvailableTreeItems() const {
+    return std::vector<TreeItemInfo>();
   }
 
   bool BindingRegistry::Dummy::renderProviderIcon(const std::string& id) const {
@@ -90,8 +90,8 @@ namespace IsoRealms {
     return false;
   }
 
-  AssetInfo BindingRegistry::Dummy::getAssetInfo() const {
-    return AssetInfo{"", ""};
+  TreeItemInfo BindingRegistry::Dummy::getTreeItemInfo() const {
+    return TreeItemInfo{"", ""};
   }
 
   void BindingRegistry::Dummy::set(const std::string& id) {

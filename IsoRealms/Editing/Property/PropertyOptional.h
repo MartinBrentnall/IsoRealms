@@ -28,7 +28,7 @@
 
 #include "IPropertyManager.h"
 #include "Property.h"
-#include "PropertyAsset.h"
+#include "PropertyTreeSelector.h"
 
 namespace IsoRealms {
   class Project;
@@ -85,11 +85,11 @@ namespace IsoRealms {
               cParent(parent) {
       }
 
-      /*******************************\
-       * Interface for PropertyAsset *
-      \*******************************/
-      AssetInfo getAssetInfo() const {
-        return AssetInfo{"None", "None"};
+      /**************************************\
+       * Interface for PropertyTreeSelector *
+      \**************************************/
+      TreeItemInfo getTreeItemInfo() const {
+        return TreeItemInfo{"None", "None"};
       }
 
       bool renderAssetIcon() const {
@@ -113,9 +113,9 @@ namespace IsoRealms {
         return cParent.cApplication;
       }
 
-      std::vector<AssetInfo> getAvailableProviders() const {
-        std::vector<AssetInfo> mAvailableOptions = cParent.cSimulatedType.getAvailableProviders();
-        mAvailableOptions.emplace_back(AssetInfo{"None", "None"});
+      std::vector<TreeItemInfo> getAvailableTreeItems() const {
+        std::vector<TreeItemInfo> mAvailableOptions = cParent.cSimulatedType.getAvailableTreeItems();
+        mAvailableOptions.emplace_back(TreeItemInfo{"None", "None"});
         return mAvailableOptions;
       }
 
@@ -137,7 +137,7 @@ namespace IsoRealms {
     TYPE cSimulatedType;
     OptionWrapper cWrapperType;
     std::string cValue;
-    PropertyAsset<OptionWrapper> cSubProperty;
+    PropertyTreeSelector<OptionWrapper> cSubProperty;
     std::function<void(const std::string&)> cChoiceCallback;
     IPropertyManager* cPropertyManager;
     Project& cProject;

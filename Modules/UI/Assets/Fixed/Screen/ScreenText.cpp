@@ -59,11 +59,11 @@ namespace IsoRealms::UI {
   }
 
   void ScreenText::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyAsset<String>(cMetadata.getPropertyData("Value"),        cDefString);
-    owner.createPropertyAsset<Font>(  cMetadata.getPropertyData("Font"),         cDefFont);
-    owner.createPropertyList(         cMetadata.getPropertyData("Alignment"),    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
-    owner.createPropertyAsset<Colour>(cMetadata.getPropertyData("Colour"),       cDefColour);
-    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector<String>(cMetadata.getPropertyData("Value"),        cDefString);
+    owner.createPropertyTreeSelector<Font>(  cMetadata.getPropertyData("Font"),         cDefFont);
+    owner.createPropertyList(                cMetadata.getPropertyData("Alignment"),    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
+    owner.createPropertyTreeSelector<Colour>(cMetadata.getPropertyData("Colour"),       cDefColour);
+    owner.createPropertyNativeFloat(         cMetadata.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
   }
   
   bool ScreenText::isDefaultConfiguration() const {

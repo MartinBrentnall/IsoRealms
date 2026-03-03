@@ -112,9 +112,9 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner) {
     const Metadata& mMetadata = cParent.getMetadata();
-    owner.createPropertyAsset<File>(mMetadata.getPropertyData("AudioFile"), cDefFile);
-    owner.createPropertyNativeInteger(mMetadata.getPropertyData("FadeIn"),  [this]() {return cDefFadeIn;},  [this](unsigned int value) {cDefFadeIn  = value; return true;});
-    owner.createPropertyNativeInteger(mMetadata.getPropertyData("FadeOut"), [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
+    owner.createPropertyTreeSelector<File>(mMetadata.getPropertyData("AudioFile"), cDefFile);
+    owner.createPropertyNativeInteger(     mMetadata.getPropertyData("FadeIn"),  [this]() {return cDefFadeIn;},  [this](unsigned int value) {cDefFadeIn  = value; return true;});
+    owner.createPropertyNativeInteger(     mMetadata.getPropertyData("FadeOut"), [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
   }
 
   SequenceTrackAudioEvent::End* SequenceTrackAudioEvent::getEndEvent() {

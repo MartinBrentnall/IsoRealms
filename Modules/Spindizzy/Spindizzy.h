@@ -168,15 +168,15 @@ namespace IsoRealms::Spindizzy {
       AssetContainerTraits<TYPE>::get(*this).release(user, asset);
     }
 
-    template <typename TYPE> AssetInfo getAssetInfo(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getAssetInfo(asset);
+    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).getTreeItemInfo(asset);
     }
 
     template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }
 
-    template <typename TYPE> void forEachEntry(std::function<void(const AssetInfo&)> f) const {
+    template <typename TYPE> void forEachEntry(std::function<void(const TreeItemInfo&)> f) const {
       AssetContainerTraits<TYPE>::get(*this).forEachEntry(f);
     }
 

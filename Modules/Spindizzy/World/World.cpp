@@ -246,25 +246,25 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("Gravity"),                   [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("SlopeEffect"),               [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
-    owner.createPropertyNativeInteger(metadata.getPropertyData("BounceTime"),                [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;});
-    owner.createPropertyStruct(       metadata.getPropertyData("Editing"), "Edit...", [this, &metadata](PropertyMaker& owner) {
-      owner.createPropertyNativeBoolean(metadata.getPropertyData("EditingAdvancedProperties"), [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneWidth"),    [this]() {return cAutomaticZoneXSize;}, [this](int value) {cAutomaticZoneXSize = value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneLength"),   [this]() {return cAutomaticZoneYSize;}, [this](int value) {cAutomaticZoneYSize = value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneHeight"),   [this]() {return cAutomaticZoneZSize;}, [this](int value) {cAutomaticZoneZSize = value;});
-      owner.createPropertyAsset<ResourceReference<ZoneType, World>>(metadata.getPropertyData("EditingAutomaticZoneType"), cAutomaticZoneManagementType);
-      owner.createPropertyAsset<ResourceReference<ThemeSet, World>>(metadata.getPropertyData("EditingDefaultZoneThemeSet"), cDefaultThemeSet);
-      owner.createPropertyAsset<WorldEditorTool>(metadata.getPropertyData("EditingDefaultEditingTool"), cDefaultWorldEditorTool);
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundaryWest"),   [this]() {return cEditorMinX;},         [this](int value) {cEditorMinX         = value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundaryEast"),   [this]() {return cEditorMaxX;},         [this](int value) {cEditorMaxX         = value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundarySouth"),  [this]() {return cEditorMinY;},         [this](int value) {cEditorMinY         = value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundaryNorth"),  [this]() {return cEditorMaxY;},         [this](int value) {cEditorMaxY         = value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundaryDepth"),  [this]() {return cEditorMinZ;},         [this](int value) {cEditorMinZ         = value;});
-      owner.createPropertyNativeInteger(metadata.getPropertyData("EditingBoundaryHeight"), [this]() {return cEditorMaxZ;},         [this](int value) {cEditorMaxZ         = value;});
+    owner.createPropertyNativeFloat(                                       metadata.getPropertyData("Gravity"),                    [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
+    owner.createPropertyNativeFloat(                                       metadata.getPropertyData("SlopeEffect"),                [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
+    owner.createPropertyNativeInteger(                                     metadata.getPropertyData("BounceTime"),                 [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;});
+    owner.createPropertyStruct(                                            metadata.getPropertyData("Editing"), "Edit...",         [this, &metadata](PropertyMaker& owner) {
+      owner.createPropertyNativeBoolean(                                   metadata.getPropertyData("EditingAdvancedProperties"),  [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingDefaultZoneWidth"),    [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingDefaultZoneLength"),   [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingDefaultZoneHeight"),   [this]() {return cAutomaticZoneZSize;},           [this](int   value) {cAutomaticZoneZSize           = value;});
+      owner.createPropertyTreeSelector<ResourceReference<ZoneType, World>>(metadata.getPropertyData("EditingAutomaticZoneType"),   cAutomaticZoneManagementType);
+      owner.createPropertyTreeSelector<ResourceReference<ThemeSet, World>>(metadata.getPropertyData("EditingDefaultZoneThemeSet"), cDefaultThemeSet);
+      owner.createPropertyTreeSelector<WorldEditorTool>(                   metadata.getPropertyData("EditingDefaultEditingTool"),  cDefaultWorldEditorTool);
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingBoundaryWest"),        [this]() {return cEditorMinX;},                   [this](int   value) {cEditorMinX                   = value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingBoundaryEast"),        [this]() {return cEditorMaxX;},                   [this](int   value) {cEditorMaxX                   = value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingBoundarySouth"),       [this]() {return cEditorMinY;},                   [this](int   value) {cEditorMinY                   = value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingBoundaryNorth"),       [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingBoundaryDepth"),       [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;});
+      owner.createPropertyNativeInteger(                                   metadata.getPropertyData("EditingBoundaryHeight"),      [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;});
       for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-        owner.createPropertyAsset<WorldEditorTool>(metadata.getPropertyData("EditingEditingTool"), *cAvailableWorldEditorTools[i].get(), [this, i]() {
+        owner.createPropertyTreeSelector<WorldEditorTool>(metadata.getPropertyData("EditingEditingTool"), *cAvailableWorldEditorTools[i].get(), [this, i]() {
           cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
         });
       }

@@ -44,11 +44,11 @@ namespace IsoRealms {
 
   void ProjectLaunchConfiguration::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project) {
     owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
-    owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationOwner"), cDefOwner);
-    owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationPreparationAction"), cDefOptionPreparationAction);
-    owner.createPropertyArray(metadata.getPropertyData("LaunchConfigurationOptionAdd"), cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &owner, &metadata](Option& option) {
-      owner.createPropertyStruct(metadata.getPropertyData("LaunchConfigurationOption"), option.getName(), [this, &metadata, &option](PropertyMaker& owner) {
-        option.getProperties(owner, metadata, *this);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("LaunchConfigurationOwner"), cDefOwner);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("LaunchConfigurationPreparationAction"), cDefOptionPreparationAction);
+    owner.createPropertyArray(       metadata.getPropertyData("LaunchConfigurationOptionAdd"), cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &owner, &metadata](Option& option) {
+      owner.createPropertyStruct(    metadata.getPropertyData("LaunchConfigurationOption"), option.getName(), [this, &metadata, &option](PropertyMaker& owner) {
+        option.getProperties(owner,  metadata, *this);
       }, [this, &option]() {
         Utils::removeElementUnique(cDefOptions, &option);
       });
@@ -119,8 +119,8 @@ namespace IsoRealms {
   }
 
   void ProjectLaunchConfiguration::Option::getProperties(PropertyMaker& owner, const Metadata& metadata, ProjectLaunchConfiguration& launch) {
-    owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationOptionName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
-    owner.createPropertyAsset(metadata.getPropertyData("LaunchConfigurationOptionValue"), cDefValue);
+    owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationOptionName"),  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
+    owner.createPropertyTreeSelector(metadata.getPropertyData("LaunchConfigurationOptionValue"), cDefValue);
   }
 
   void ProjectLaunchConfiguration::Option::save(JSONObject object) const {

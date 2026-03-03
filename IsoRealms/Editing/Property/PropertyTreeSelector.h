@@ -31,7 +31,7 @@
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Editing/UISignalID.h"
 #include "IsoRealms/Application.h"
-#include "IsoRealms/Project/Registry/AssetInfo.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyEditor.h"
@@ -41,27 +41,27 @@
 namespace IsoRealms {
   class PropertyMaker;
 
-  template <typename TYPE> class PropertyAsset : public Property {
+  template <typename TYPE> class PropertyTreeSelector : public Property {
     public:
-    PropertyAsset(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, TYPE& asset, std::function<void()> removeFunction = nullptr) :
+    PropertyTreeSelector(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, TYPE& item, std::function<void()> removeFunction = nullptr) :
               Property(data, resourceAccessManager, removeFunction),
               cPropertyOwner(owner),
               cResourceData(resourceData),
-              cAsset(asset),
+              cSelectedItem(item),
               cValueLabel(getValue()) {
     }
 
     std::string getValue() {
-      AssetInfo mAssetInfo = cAsset.getAssetInfo();
-      std::string::size_type mLastSeparator = mAssetInfo.cPath.find_last_of('/');
+      TreeItemInfo mTreeItemInfo = cSelectedItem.getTreeItemInfo();
+      std::string::size_type mLastSeparator = mTreeItemInfo.cPath.find_last_of('/');
       if (mLastSeparator != std::string::npos) {
-        return mAssetInfo.cPath.substr(mLastSeparator + 1);
+        return mTreeItemInfo.cPath.substr(mLastSeparator + 1);
       }
-      if (!mAssetInfo.cPath.empty()) {
-        return mAssetInfo.cPath;
+      if (!mTreeItemInfo.cPath.empty()) {
+        return mTreeItemInfo.cPath;
       }
-      mLastSeparator = mAssetInfo.cID.find_last_of('/');
-      return mLastSeparator == std::string::npos ? mAssetInfo.cID : mAssetInfo.cID.substr(mLastSeparator + 1);
+      mLastSeparator = mTreeItemInfo.cID.find_last_of('/');
+      return mLastSeparator == std::string::npos ? mTreeItemInfo.cID : mTreeItemInfo.cID.substr(mLastSeparator + 1);
     }
 
     /************************\
@@ -74,7 +74,7 @@ namespace IsoRealms {
       glPushMatrix();
       glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
       glScalef(mFontSize, mFontSize, 0.0f);
-      if (!cAsset.renderAssetIcon()) {
+      if (!cSelectedItem.renderAssetIcon()) {
         Utils::renderIconLeaf();
       }
       glPopMatrix();
@@ -92,19 +92,19 @@ namespace IsoRealms {
     }
     
     bool hasConfiguration() const override {
-      return cAsset.hasConfiguration();
+      return cSelectedItem.hasConfiguration();
     }
     
     void configure(IPropertyManager& manager) override {
       manager.openProperties(cResourceData, getPropertyName(), [this](PropertyMaker& owner) {
-        cAsset.getAssetProperties(owner);
+        cSelectedItem.getAssetProperties(owner);
       });
     }
   
     private:
     class Editor : public IPropertyEditor {
       public:
-      Editor(PropertyAsset<TYPE>& parent, IUIStyle& style, float y, float width, float height) :
+      Editor(PropertyTreeSelector<TYPE>& parent, IUIStyle& style, float y, float width, float height) :
                 cParent(parent),
                 cStyle(style),
                 cY(y),
@@ -113,18 +113,18 @@ namespace IsoRealms {
                 cPathBarWidth(0.0f) {
         cBackArrowSize.init(0.0f);
 
-        AssetInfo mAssetInfo = cParent.cAsset.getAssetInfo();
+        TreeItemInfo mTreeItemInfo = cParent.cSelectedItem.getTreeItemInfo();
 
-        // Construct menus based on current asset path (tree is cPath-based).
-        std::string::size_type mSeparator = mAssetInfo.cPath.find_first_of('/');
-        cMenus.emplace_back(std::make_unique<MenuScroller>(*this, "", mAssetInfo, mSeparator == std::string::npos ? MenuScroller::State::ACTIVE : MenuScroller::State::INACTIVE));
+        // Construct menus based on current item path.
+        std::string::size_type mSeparator = mTreeItemInfo.cPath.find_first_of('/');
+        cMenus.emplace_back(std::make_unique<MenuScroller>(*this, "", mTreeItemInfo, mSeparator == std::string::npos ? MenuScroller::State::ACTIVE : MenuScroller::State::INACTIVE));
 
         while (mSeparator != std::string::npos) {
-          std::string::size_type mNextSeparator = mAssetInfo.cPath.find_first_of('/', mSeparator + 1);
-          cMenus.emplace_back(std::make_unique<MenuScroller>(*this, mAssetInfo.cPath.substr(0, mSeparator), mAssetInfo, mNextSeparator == std::string::npos ? MenuScroller::State::ACTIVE : MenuScroller::State::INACTIVE));
+          std::string::size_type mNextSeparator = mTreeItemInfo.cPath.find_first_of('/', mSeparator + 1);
+          cMenus.emplace_back(std::make_unique<MenuScroller>(*this, mTreeItemInfo.cPath.substr(0, mSeparator), mTreeItemInfo, mNextSeparator == std::string::npos ? MenuScroller::State::ACTIVE : MenuScroller::State::INACTIVE));
           mSeparator = mNextSeparator;
         }
-        cCurrentAssetPath = mAssetInfo.cPath;
+        cCurrentAssetPath = mTreeItemInfo.cPath;
 
         cWidth.init(cMenus.back()->getMenu().getWidth(cStyle));
         cHeight.init(cMenus.back()->getMenu().getMenuItemCount());
@@ -135,7 +135,7 @@ namespace IsoRealms {
       }
 
       void openFolder(const std::string& path) {
-        cMenus.emplace_back(std::make_unique<MenuScroller>(*this, path, cParent.cAsset.getAssetInfo(), MenuScroller::State::NEW));
+        cMenus.emplace_back(std::make_unique<MenuScroller>(*this, path, cParent.cSelectedItem.getTreeItemInfo(), MenuScroller::State::NEW));
       }
 
       void updateAnimationValues() {
@@ -188,7 +188,7 @@ namespace IsoRealms {
         glEnd();
 
         // Render menu contents.
-        Application& mApplication = cParent.cAsset.getApplication();
+        Application& mApplication = cParent.cSelectedItem.getApplication();
         ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(x, x + mWidth, (mYPosition + mFontSize * 2.0f) - mHeight, mYPosition + mFontSize * 2.0f));
         for (const std::unique_ptr<MenuScroller>& mMenu : cMenus) {
           mMenu->render(cStyle, cY, x, aspectRatio);
@@ -316,26 +316,26 @@ namespace IsoRealms {
       private:
       class Menu {
         public:
-        Menu(Editor& parent, const std::string& path, const AssetInfo& currentEntry) :
+        Menu(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry) :
                   cParent(parent),
                   cPath(path),
                   cSelectedIndex(0) {
           std::string mSelectedPath = currentEntry.cPath;
-          std::vector<AssetInfo> mAllAssetInfos = cParent.cParent.cAsset.getAvailableProviders();
+          std::vector<TreeItemInfo> mAllTreeItemInfos = cParent.cParent.cSelectedItem.getAvailableTreeItems();
 
           std::set<std::string> mFolders;
-          std::vector<AssetInfo> mProviders;
+          std::vector<TreeItemInfo> mProviders;
 
           // Build tree from cPath (not cID).
-          for (const AssetInfo& mAssetInfo : mAllAssetInfos) {
-            const std::string& mPath = mAssetInfo.cPath;
+          for (const TreeItemInfo& mTreeItemInfo : mAllTreeItemInfos) {
+            const std::string& mPath = mTreeItemInfo.cPath;
             if (mPath.substr(0, path.length() + (path.empty() ? 0 : 1)) == (path.empty() ? path : path + "/")) {
               std::string mEntity = mPath.substr(path.length() + (path == "" ? 0 : 1));
               std::string::size_type mSplit = mEntity.find_first_of('/');
               if (mSplit != std::string::npos) {
                 mFolders.emplace(mEntity.substr(0, mSplit));
               } else {
-                mProviders.push_back(mAssetInfo);
+                mProviders.push_back(mTreeItemInfo);
               }
             }
           }
@@ -350,11 +350,11 @@ namespace IsoRealms {
             mIndex++;
           }
 
-          for (const AssetInfo& mAssetInfo : mProviders) {
-            if (mAssetInfo.cPath == mSelectedPath) {
+          for (const TreeItemInfo& mTreeItemInfo : mProviders) {
+            if (mTreeItemInfo.cPath == mSelectedPath) {
               cSelectedIndex = mIndex;
             }
-            cMenuItems.emplace_back(std::make_unique<AssetMenuItemAsset>(*this, mAssetInfo.cID, mAssetInfo.cPath));
+            cMenuItems.emplace_back(std::make_unique<AssetMenuItemAsset>(*this, mTreeItemInfo.cID, mTreeItemInfo.cPath));
             mIndex++;
           }
           cSelectedItem.init(cSelectedIndex);
@@ -519,7 +519,7 @@ namespace IsoRealms {
             glPushMatrix();
             glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
             glScalef(mFontSize, mFontSize, 0.0f);
-            if (!cParent.cParent.cParent.cAsset.renderProviderIcon(cAssetID)) {
+            if (!cParent.cParent.cParent.cSelectedItem.renderProviderIcon(cAssetID)) {
               Utils::renderIconLeaf();
             }
             glPopMatrix();
@@ -532,11 +532,11 @@ namespace IsoRealms {
           }
 
           bool confirm(IUIStyle& style) override {
-            std::string mCurrentAssetID = cParent.cParent.cParent.cAsset.getAssetInfo().cID;
+            std::string mCurrentAssetID = cParent.cParent.cParent.cSelectedItem.getTreeItemInfo().cID;
             if (cAssetID != mCurrentAssetID) {
-              if (cParent.cParent.cParent.cAsset.hasConfiguration() && !cParent.cParent.cParent.cAsset.isDefaultConfigured()) {
-                cParent.cParent.cConfirmSelection = std::make_unique<Choice>(style, "You will lose the configuration of \"" + cParent.cParent.cParent.cValueLabel + "\" if you select a new one", std::vector<std::string>{"Keep \"" + cParent.cParent.cParent.cValueLabel + "\"", "Choose new asset"}, [this](const std::string& choice)->bool {
-                  if (choice == "Choose new asset") {
+              if (cParent.cParent.cParent.cSelectedItem.hasConfiguration() && !cParent.cParent.cParent.cSelectedItem.isDefaultConfigured()) {
+                cParent.cParent.cConfirmSelection = std::make_unique<Choice>(style, "You will lose the configuration of \"" + cParent.cParent.cParent.cValueLabel + "\" if you select a new one", std::vector<std::string>{"Keep \"" + cParent.cParent.cParent.cValueLabel + "\"", "Choose new item"}, [this](const std::string& choice)->bool {
+                  if (choice == "Choose new item") {
                     cParent.applyChange(cAssetID);
                   }
                   cParent.cParent.cClosedConfirmSelection = std::move(cParent.cParent.cConfirmSelection);
@@ -574,7 +574,7 @@ namespace IsoRealms {
 
         void applyChange(const std::string& id) {
           cParent.cParent.confirmAccess([this, id]() {
-            cParent.cParent.cAsset.setID(id);
+            cParent.cParent.cSelectedItem.setID(id);
             cParent.cParent.cValueLabel = cParent.cParent.getValue();
             cParent.cClosing = true;
           }, [this]() {
@@ -597,7 +597,7 @@ namespace IsoRealms {
           NEW
         };
 
-        MenuScroller(Editor& parent, const std::string& path, const AssetInfo& currentEntry, State state) :
+        MenuScroller(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry, State state) :
                   cMenu(parent, path, currentEntry),
                   cScroll(state == State::ACTIVE   ?  0
                         : state == State::INACTIVE ? -200
@@ -641,7 +641,7 @@ namespace IsoRealms {
         int cScroll;
       };
 
-      PropertyAsset<TYPE>& cParent;
+      PropertyTreeSelector<TYPE>& cParent;
       IUIStyle& cStyle;
 
       float cY;
@@ -658,7 +658,7 @@ namespace IsoRealms {
       std::unique_ptr<Choice> cConfirmSelection;
       std::unique_ptr<Choice> cClosedConfirmSelection;
 
-      // Path bar stuff (current asset's path in tree, from AssetInfo::cPath)
+      // Path bar stuff (current item's path in tree, from TreeItemInfo::cPath)
       std::string cCurrentAssetPath;
       std::string cActivePath;
       std::string cInactivePath;
@@ -668,7 +668,7 @@ namespace IsoRealms {
 
     PropertyMaker& cPropertyOwner;
     IResourceData& cResourceData;
-    TYPE& cAsset;
+    TYPE& cSelectedItem;
     std::string cValueLabel;
   };
 }

@@ -23,7 +23,7 @@
 #include <string>
 
 #include "Property.h"
-#include "PropertyAsset.h"
+#include "PropertyTreeSelector.h"
 
 namespace IsoRealms {
   class Project;
@@ -46,16 +46,16 @@ namespace IsoRealms {
       public:
       ListSelection(Project& project, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter);
       
-      /*******************************\
-       * Interface for PropertyAsset *
-      \*******************************/
-      AssetInfo getAssetInfo() const;
+      /**************************************\
+       * Interface for PropertyTreeSelector *
+      \**************************************/
+      TreeItemInfo getTreeItemInfo() const;
       bool renderAssetIcon() const;
       bool hasConfiguration() const;
       bool isDefaultConfigured() const;
       void getAssetProperties(PropertyMaker& owner);
       Application& getApplication() const;
-      std::vector<AssetInfo> getAvailableProviders() const;
+      std::vector<TreeItemInfo> getAvailableTreeItems() const;
       bool renderProviderIcon(const std::string& id) const;
       void setID(const std::string& id);
       
@@ -67,6 +67,6 @@ namespace IsoRealms {
     };
   
     ListSelection cInternalSelection;
-    PropertyAsset<ListSelection> cInternalProperty;
+    PropertyTreeSelector<ListSelection> cInternalProperty;
   };
 }

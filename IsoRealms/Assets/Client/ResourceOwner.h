@@ -21,7 +21,7 @@
 #include <string>
 #include <vector>
 
-#include "IsoRealms/Project/Registry/AssetInfo.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
   class Application;
@@ -38,16 +38,16 @@ namespace IsoRealms {
     bool isConfigurable() const;
     void createProperty(PropertyMaker& owner, const PropertyData& metadata);
 
-    /*******************************\
-     * Interface for PropertyAsset *
-    \*******************************/
-    AssetInfo getAssetInfo() const;
+    /**************************************\
+     * Interface for PropertyTreeSelector *
+    \**************************************/
+    TreeItemInfo getTreeItemInfo() const;
     bool renderAssetIcon() const;
     bool hasConfiguration() const;
     bool isDefaultConfigured() const;
     void getAssetProperties(PropertyMaker& owner);
     Application& getApplication() const;
-    std::vector<AssetInfo> getAvailableProviders() const;
+    std::vector<TreeItemInfo> getAvailableTreeItems() const;
     bool renderProviderIcon(const std::string& id) const;
     void setID(const std::string& id);
 

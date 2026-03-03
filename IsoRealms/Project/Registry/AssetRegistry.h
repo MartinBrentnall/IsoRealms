@@ -26,7 +26,7 @@
 #include <vector>
 
 #include "AssetIDException.h"
-#include "AssetInfo.h"
+#include "TreeItemInfo.h"
 #include "IAssetListener.h"
 #include "IAssetUser.h"
 
@@ -82,19 +82,19 @@ namespace IsoRealms {
       }
     }
     
-    AssetInfo getAssetInfo(const IAssetProvider<OWNER, TYPE>* provider) const {
+    TreeItemInfo getTreeItemInfo(const IAssetProvider<OWNER, TYPE>* provider) const {
       for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& mPair : cProviders) {
         if (provider == mPair.second.first) {
-          return AssetInfo{mPair.first, mPair.second.second};
+          return TreeItemInfo{mPair.first, mPair.second.second};
         }
       }
-      std::cout << "WARNING: AssetRegistry::getAssetInfo: Specified provider not found in this registry" << std::endl;
-      return AssetInfo{"", ""};
+      std::cout << "WARNING: AssetRegistry::getTreeItemInfo: Specified provider not found in this registry" << std::endl;
+      return TreeItemInfo{"", ""};
     }
 
-    void forEachEntry(std::function<void(const AssetInfo&)> getAssetInfoFunction) const {
+    void forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
       for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& p : cProviders) {
-        getAssetInfoFunction(AssetInfo{p.first, p.second.second});
+        getTreeItemInfoFunction(TreeItemInfo{p.first, p.second.second});
       }
     }
 

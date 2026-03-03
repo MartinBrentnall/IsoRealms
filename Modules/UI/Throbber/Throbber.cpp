@@ -89,7 +89,7 @@ namespace IsoRealms::UI {
     owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("SpotSides"),    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;});
     owner.createPropertyNativeFloat(          metadata.getPropertyData("SpotSize"),     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;});
     owner.createPropertyNativeFloat(          metadata.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;});
-    owner.createPropertyAsset<Colour>(        metadata.getPropertyData("Colour"),       cDefColour);
+    owner.createPropertyTreeSelector<Colour>( metadata.getPropertyData("Colour"),       cDefColour);
     owner.createPropertyNativeFloat(          metadata.getPropertyData("RingSize"),     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;});
     owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("Repetitions"),  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;});
   }

@@ -315,7 +315,7 @@ namespace IsoRealms::Basics {
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
       std::string mArgumentName = cParent.cDefArgumentDefinitions[i]->getName();
       std::unique_ptr<IsoRealms::Binding>& mBinding = cDefArguments[i];
-      owner.createPropertyAsset<IsoRealms::Binding>(mMetadata.getPropertyData("Argument"), *mBinding);
+      owner.createPropertyTreeSelector<IsoRealms::Binding>(mMetadata.getPropertyData("Argument"), *mBinding);
     }
   }
 

@@ -25,7 +25,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include "Editing/IResourceAccessManager.h"
-#include "Editing/Property/PropertyAsset.h"
+#include "Editing/Property/PropertyTreeSelector.h"
 #include "Editing/Property/PropertyOptional.h"
 
 namespace IsoRealms {
@@ -71,8 +71,8 @@ namespace IsoRealms {
       });
     }
 
-    template <typename ASSET_TYPE> void createPropertyAsset(const PropertyData& metadata, ASSET_TYPE& asset, std::function<void()> removeFunction = nullptr) {
-      cProperties.addProperty(std::make_unique<PropertyAsset<ASSET_TYPE>>(*this, *this, cParent, metadata, asset, removeFunction));
+    template <typename TREE_ITEM_TYPE> void createPropertyTreeSelector(const PropertyData& metadata, TREE_ITEM_TYPE& item, std::function<void()> removeFunction = nullptr) {
+      cProperties.addProperty(std::make_unique<PropertyTreeSelector<TREE_ITEM_TYPE>>(*this, *this, cParent, metadata, item, removeFunction));
     }
 
     template <typename OPTIONAL_TYPE> void createPropertyOptional(const PropertyData& metadata, std::function<void(const std::string&)> choiceCallback) {

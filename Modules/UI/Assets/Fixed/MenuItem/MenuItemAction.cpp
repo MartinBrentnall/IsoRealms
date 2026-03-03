@@ -121,9 +121,9 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemAction::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),       [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
-    owner.createPropertyNativeString( cMetadata.getPropertyData("Label"),    [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
-    owner.createPropertyAsset<Action>(cMetadata.getPropertyData("OnSelect"), cDefAction);
+    owner.createPropertyNativeString(        cMetadata.getPropertyData("ID"),       [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
+    owner.createPropertyNativeString(        cMetadata.getPropertyData("Label"),    [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
+    owner.createPropertyTreeSelector<Action>(cMetadata.getPropertyData("OnSelect"), cDefAction);
   }
 
   bool MenuItemAction::isDefaultConfiguration() const {

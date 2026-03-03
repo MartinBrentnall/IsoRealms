@@ -25,7 +25,7 @@
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
-#include "IsoRealms/Project/Registry/AssetInfo.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Project/Registry/IAssetUser.h"
 
 namespace IsoRealms {
@@ -44,7 +44,7 @@ namespace IsoRealms {
   };
   
   template <typename TYPE> concept GetAvailableClientProvidersExists = requires(const TYPE& type) {
-    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<AssetInfo>>;
+    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<TreeItemInfo>>;
   };
   
   template <typename TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
@@ -186,17 +186,19 @@ namespace IsoRealms {
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
-    std::vector<AssetInfo> getAvailableProviders() const {
+    std::vector<TreeItemInfo> getAvailableTreeItems() const {
       if constexpr (GetAvailableClientProvidersExists<DERIVED>) {
         return static_cast<const DERIVED*>(this)->getAvailableClientProviders();
       }
-      std::vector<AssetInfo> result;
-      cManager.getAssetManager().template forEachEntry<TYPE>([&result](const AssetInfo& e) { result.push_back(e); });
-      return result;
+      std::vector<TreeItemInfo> mResult;
+      cManager.getAssetManager().template forEachEntry<TYPE>([&mResult](const TreeItemInfo& mTreeItemInfo) {
+        mResult.push_back(mTreeItemInfo);
+      });
+      return mResult;
     }
 
-    AssetInfo getAssetInfo() const {
-      return cManager.getAssetManager().getAssetInfo(cAsset);
+    TreeItemInfo getTreeItemInfo() const {
+      return cManager.getAssetManager().getTreeItemInfo(cAsset);
     }
 
     bool hasConfiguration() const {
@@ -210,7 +212,7 @@ namespace IsoRealms {
     
     protected:
     std::string getRawID() const {
-      return cManager.getAssetManager().getAssetInfo(cAsset).cID;
+      return cManager.getAssetManager().getTreeItemInfo(cAsset).cID;
     }
 
     MANAGER& cManager;
