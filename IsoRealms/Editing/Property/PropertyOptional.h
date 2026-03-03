@@ -119,8 +119,8 @@ namespace IsoRealms {
         return mAvailableOptions;
       }
 
-      bool renderProviderIcon(const std::string& id) const {
-        return false; // TODO cParent.cSubProperty.renderProviderIcon(id);
+      bool renderTreeItemIcon(const std::string& id) const {
+        return false; // TODO cParent.cSubProperty.renderTreeItemIcon(id);
       }
 
       void setID(const std::string& id) {

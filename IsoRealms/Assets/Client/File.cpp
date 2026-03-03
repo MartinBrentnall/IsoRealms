@@ -105,7 +105,7 @@ namespace IsoRealms {
     return result;
   }
   
-  bool File::renderProviderIcon(const std::string& id) const {
+  bool File::renderTreeItemIcon(const std::string& id) const {
     return false;
   }
   

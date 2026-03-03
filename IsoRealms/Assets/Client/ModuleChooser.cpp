@@ -61,7 +61,7 @@ namespace IsoRealms {
     return mResult;
   }
   
-  bool ModuleChooser::renderProviderIcon(const std::string& id) const {
+  bool ModuleChooser::renderTreeItemIcon(const std::string& id) const {
     return false;
   }
   

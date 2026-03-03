@@ -78,7 +78,7 @@ namespace IsoRealms {
     return std::vector<TreeItemInfo>();
   }
 
-  bool BindingRegistry::Dummy::renderProviderIcon(const std::string& id) const {
+  bool BindingRegistry::Dummy::renderTreeItemIcon(const std::string& id) const {
     return false;
   }
 

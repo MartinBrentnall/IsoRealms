@@ -62,7 +62,7 @@ namespace IsoRealms {
       \***********************/
       void bind(const std::string& function) const override;
       std::vector<TreeItemInfo> getAvailableTreeItems() const override;
-      bool renderProviderIcon(const std::string& id) const override;
+      bool renderTreeItemIcon(const std::string& id) const override;
       bool renderWrappedIcon() const override;
       bool isConfigurable() const override;
       TreeItemInfo getTreeItemInfo() const override;
@@ -183,8 +183,8 @@ namespace IsoRealms {
           return cDefValue.getTreeItemInfo();
         }
 
-        bool renderProviderIcon(const std::string& id) const override {
-          return cDefValue.renderProviderIcon(id);
+        bool renderTreeItemIcon(const std::string& id) const override {
+          return cDefValue.renderTreeItemIcon(id);
         }
 
         bool renderWrappedIcon() const override {

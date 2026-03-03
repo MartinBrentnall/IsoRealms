@@ -519,7 +519,7 @@ namespace IsoRealms {
             glPushMatrix();
             glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
             glScalef(mFontSize, mFontSize, 0.0f);
-            if (!cParent.cParent.cParent.cSelectedItem.renderProviderIcon(cAssetID)) {
+            if (!cParent.cParent.cParent.cSelectedItem.renderTreeItemIcon(cAssetID)) {
               Utils::renderIconLeaf();
             }
             glPopMatrix();

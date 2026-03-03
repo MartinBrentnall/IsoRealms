@@ -60,7 +60,7 @@ namespace IsoRealms::UI {
     return mResult;
   }
 
-  bool MenuItem::renderProviderIcon(const std::string& id) const {
+  bool MenuItem::renderTreeItemIcon(const std::string& id) const {
     return false;
   }
 

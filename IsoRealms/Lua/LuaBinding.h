@@ -69,7 +69,7 @@ namespace IsoRealms {
       return std::vector<TreeItemInfo>();
     }
 
-    bool renderProviderIcon(const std::string& id) const override {
+    bool renderTreeItemIcon(const std::string& id) const override {
       return false;
     }
 

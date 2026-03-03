@@ -48,7 +48,7 @@ namespace IsoRealms {
     void getAssetProperties(PropertyMaker& owner);
     Application& getApplication() const;
     std::vector<TreeItemInfo> getAvailableTreeItems() const;
-    bool renderProviderIcon(const std::string& id) const;
+    bool renderTreeItemIcon(const std::string& id) const;
     void setID(const std::string& id);
 
     private:

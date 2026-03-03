@@ -87,7 +87,7 @@ namespace IsoRealms {
     return std::vector<TreeItemInfo>{{ID_TRUE, "True"}, {ID_FALSE, "False"}}; // TODO: Localisation.
   }
   
-  bool PropertyNativeBoolean::BooleanSelection::renderProviderIcon(const std::string& id) const {
+  bool PropertyNativeBoolean::BooleanSelection::renderTreeItemIcon(const std::string& id) const {
     if (id == ID_TRUE) {
       Utils::renderIconTick();
     } else if (id == ID_FALSE) {

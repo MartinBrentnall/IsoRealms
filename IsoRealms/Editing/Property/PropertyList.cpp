@@ -93,7 +93,7 @@ namespace IsoRealms {
     return result;
   }
   
-  bool PropertyList::ListSelection::renderProviderIcon(const std::string& id) const {
+  bool PropertyList::ListSelection::renderTreeItemIcon(const std::string& id) const {
     return false;
   }
   

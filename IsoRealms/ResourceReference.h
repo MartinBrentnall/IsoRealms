@@ -95,7 +95,7 @@ namespace IsoRealms {
       return mResult;
     }
 
-    bool renderProviderIcon(const std::string& id) const {
+    bool renderTreeItemIcon(const std::string& id) const {
       return false; // TODO: Implement this.
     }
 

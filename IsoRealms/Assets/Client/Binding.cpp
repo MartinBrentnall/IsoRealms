@@ -118,7 +118,7 @@ namespace IsoRealms {
   bool Binding::renderOtherClientProviderIcon(const std::string& id) const {
     std::string mRawID = getRawID();
     if (cDefType == mRawID) {
-      return cAsset->renderProviderIcon(id);
+      return cAsset->renderTreeItemIcon(id);
     }
 
     return cManager.getAssetManager().renderIcon<IBinding>(cDefType.empty() || id == "None" ? id : cDefType + "/" + id);

@@ -175,7 +175,7 @@ namespace IsoRealms {
       return cManager.setOwner(owner);
     }
 
-    bool renderProviderIcon(const std::string& id) const {
+    bool renderTreeItemIcon(const std::string& id) const {
       if (id == getRawID()) {
         return renderAssetIcon();
       }

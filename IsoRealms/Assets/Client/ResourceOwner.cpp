@@ -95,7 +95,7 @@ namespace IsoRealms {
     return mResult;
   }
 
-  bool ResourceOwner::renderProviderIcon(const std::string& id) const {
+  bool ResourceOwner::renderTreeItemIcon(const std::string& id) const {
     return false;
   }
 
