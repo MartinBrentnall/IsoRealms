@@ -18,6 +18,8 @@
  */
 #include "Binding.h"
 
+#include <optional>
+
 #include "IsoRealms/ActionClient.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
@@ -32,14 +34,14 @@ namespace IsoRealms {
             Asset<Binding, IBinding, IActionClient>(owner),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
-    std::vector<TreeItemInfo> mProviders = getAvailableTreeItems();
-    for (const TreeItemInfo& mEntry : mProviders) {
-      if (mEntry.cID == cDefType) {
+    bool mDone = false;
+    forEachAvailableTreeItem([this, &owner, &mDone](const TreeItemInfo& mEntry) {
+      if (!mDone && mEntry.cID == cDefType) {
         cManager.getAssetManager().release(this, cAsset);
         cAsset = cManager.getAssetManager().getAsset(this, mEntry.cID, owner);
-        break;
+        mDone = true;
       }
-    }
+    });
   }
 
   std::string Binding::getType() const {
@@ -61,12 +63,13 @@ namespace IsoRealms {
       return cAsset->getTreeItemInfo();
     }
     std::string mExposedID = cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
-    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+    std::optional<TreeItemInfo> mFound;
+    forEachAvailableTreeItem([&mFound, &mExposedID](const TreeItemInfo& mTreeItemInfo) {
       if (mTreeItemInfo.cID == mExposedID) {
-        return mTreeItemInfo;
+        mFound = mTreeItemInfo;
       }
-    }
-    return TreeItemInfo{mExposedID, mExposedID};
+    });
+    return mFound.value_or(TreeItemInfo{mExposedID, mExposedID});
   }
 
   bool Binding::renderAssetIcon() const {
@@ -82,37 +85,38 @@ namespace IsoRealms {
 //     return owner.getAssetManager().getBinding(this, (cDefType.empty() || id == "None") ? id : cDefType + "/" + id, owner); // TODO: What happens if there's an option called "None"????
 //   }
   
-  std::vector<TreeItemInfo> Binding::getAvailableClientProviders() const {
-
+  void Binding::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     // Case where any type is allowed.
     if (cDefType.empty()) {
-      std::vector<TreeItemInfo> result;
-      cManager.getAssetManager().forEachEntry<IBinding>([&result](const TreeItemInfo& e) { result.push_back(e); });
-      return result;
+      cManager.getAssetManager().forEachEntry<IBinding>(getTreeItemInfoFunction);
+      return;
     }
 
     // Case where a conversion type is allowed.
     std::string mRawID = getRawID();
     if (cDefType == mRawID) {
-      return cAsset->getAvailableTreeItems();
+      cAsset->forEachAvailableTreeItem(getTreeItemInfoFunction);
+      return;
     }
 
     // Case where only a specific type is allowed.
-    std::vector<TreeItemInfo> mProvidersOfType;
-    std::vector<TreeItemInfo> mExactMatch;
-    cManager.getAssetManager().forEachEntry<IBinding>([&mProvidersOfType, &mExactMatch, this](const TreeItemInfo& mTreeItemInfo) {
-      const std::string& mBindingID = mTreeItemInfo.cID;
-      if (mBindingID == cDefType) {
-        mExactMatch.assign(1, mTreeItemInfo);
-      } else if (mBindingID.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
-        mProvidersOfType.emplace_back(TreeItemInfo{mBindingID.substr(cDefType.length() + 1), mTreeItemInfo.cPath});
+    bool mExactMatchFound = false;
+    cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, &mExactMatchFound, this](const TreeItemInfo& mTreeItemInfo) {
+      if (mTreeItemInfo.cID == cDefType) {
+        getTreeItemInfoFunction(mTreeItemInfo);
+        mExactMatchFound = true;
       }
     });
-    if (!mExactMatch.empty()) {
-      return mExactMatch;
+    if (mExactMatchFound) {
+      return;
     }
-    mProvidersOfType.emplace_back(TreeItemInfo{"None", "None"}); // TODO: Kludge
-    return mProvidersOfType;
+    cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, this](const TreeItemInfo& mTreeItemInfo) {
+      const std::string& mBindingID = mTreeItemInfo.cID;
+      if (mBindingID.length() > cDefType.length() + 1 && mBindingID.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
+        getTreeItemInfoFunction(TreeItemInfo{mBindingID.substr(cDefType.length() + 1), mTreeItemInfo.cPath});
+      }
+    });
+    getTreeItemInfoFunction(TreeItemInfo{"None", "None"}); // TODO: Kludge
   }  
 
   bool Binding::renderOtherClientProviderIcon(const std::string& id) const {

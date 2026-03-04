@@ -43,10 +43,6 @@ namespace IsoRealms {
     {type.renderOtherClientProviderIcon(id)} -> std::same_as<bool>;
   };
   
-  template <typename TYPE> concept GetAvailableClientProvidersExists = requires(const TYPE& type) {
-    {type.getAvailableClientProviders()} -> std::convertible_to<std::vector<TreeItemInfo>>;
-  };
-  
   template <typename TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
     {type.isDefaultConfiguration()} -> std::same_as<bool>;
   };
@@ -186,15 +182,8 @@ namespace IsoRealms {
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
-    std::vector<TreeItemInfo> getAvailableTreeItems() const {
-      if constexpr (GetAvailableClientProvidersExists<DERIVED>) {
-        return static_cast<const DERIVED*>(this)->getAvailableClientProviders();
-      }
-      std::vector<TreeItemInfo> mResult;
-      cManager.getAssetManager().template forEachEntry<TYPE>([&mResult](const TreeItemInfo& mTreeItemInfo) {
-        mResult.push_back(mTreeItemInfo);
-      });
-      return mResult;
+    virtual void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+      cManager.getAssetManager().template forEachEntry<TYPE>(getTreeItemInfoFunction);
     }
 
     TreeItemInfo getTreeItemInfo() const {

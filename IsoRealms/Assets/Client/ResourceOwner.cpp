@@ -18,6 +18,8 @@
  */
 #include "ResourceOwner.h"
 
+#include <optional>
+
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ProjectFile.h"
 
@@ -47,12 +49,13 @@ namespace IsoRealms {
 
   TreeItemInfo ResourceOwner::getTreeItemInfo() const {
     std::string mResourceID = cOwner->getName();
-    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+    std::optional<TreeItemInfo> mFound;
+    forEachAvailableTreeItem([&mFound, &mResourceID](const TreeItemInfo& mTreeItemInfo) {
       if (mTreeItemInfo.cID == mResourceID) {
-        return mTreeItemInfo;
+        mFound = mTreeItemInfo;
       }
-    }
-    return TreeItemInfo{mResourceID, mResourceID};
+    });
+    return mFound.value_or(TreeItemInfo{mResourceID, mResourceID});
   }
 
   bool ResourceOwner::renderAssetIcon() const {
@@ -75,11 +78,11 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
 
-  std::vector<TreeItemInfo> ResourceOwner::getAvailableTreeItems() const {
+  void ResourceOwner::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     std::vector<std::string> mNames = cProject.getWritableProjectFileNames();
     std::string mThisName = cOwner->getName();
     bool mFound = false;
-    for (std::string& mName : mNames) {
+    for (const std::string& mName : mNames) {
       if (mName == mThisName) {
         mFound = true;
         break;
@@ -88,11 +91,9 @@ namespace IsoRealms {
     if (!mFound) {
       mNames.emplace_back(mThisName);
     }
-    std::vector<TreeItemInfo> mResult;
     for (const std::string& mName : mNames) {
-      mResult.emplace_back(TreeItemInfo{mName, mName});
+      getTreeItemInfoFunction(TreeItemInfo{mName, mName});
     }
-    return mResult;
   }
 
   bool ResourceOwner::renderTreeItemIcon(const std::string& id) const {

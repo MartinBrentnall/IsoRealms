@@ -113,10 +113,9 @@ namespace IsoRealms {
         return cParent.cApplication;
       }
 
-      std::vector<TreeItemInfo> getAvailableTreeItems() const {
-        std::vector<TreeItemInfo> mAvailableOptions = cParent.cSimulatedType.getAvailableTreeItems();
-        mAvailableOptions.emplace_back(TreeItemInfo{"None", "None"});
-        return mAvailableOptions;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+        cParent.cSimulatedType.forEachAvailableTreeItem(getTreeItemInfoFunction);
+        getTreeItemInfoFunction(TreeItemInfo{"None", "None"});
       }
 
       bool renderTreeItemIcon(const std::string& id) const {

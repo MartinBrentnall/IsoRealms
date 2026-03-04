@@ -18,6 +18,9 @@
  */
 #pragma once
 
+#include <functional>
+#include <optional>
+
 #include "IsoRealms/IResourceUser.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
@@ -65,10 +68,13 @@ namespace IsoRealms {
 
     TreeItemInfo getTreeItemInfo() const {
       std::string mResourceID = cManager.getAssetManager().getResourceID(cDefResource);
-      for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
-        if (mTreeItemInfo.cID == mResourceID) return mTreeItemInfo;
-      }
-      return TreeItemInfo{mResourceID, ""};
+      std::optional<TreeItemInfo> mFound;
+      forEachAvailableTreeItem([&mFound, &mResourceID](const TreeItemInfo& mTreeItemInfo) {
+        if (mTreeItemInfo.cID == mResourceID) {
+          mFound = mTreeItemInfo;
+        }
+      });
+      return mFound.value_or(TreeItemInfo{mResourceID, ""});
     }
 
     bool renderAssetIcon() const {
@@ -87,12 +93,10 @@ namespace IsoRealms {
       // TODO: Implement this.
     }
 
-    std::vector<TreeItemInfo> getAvailableTreeItems() const {
-      std::vector<TreeItemInfo> mResult;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
       for (const std::string& mResourceID : cManager.getAssetManager().template getAvailableResources<TYPE>()) {
-        mResult.emplace_back(TreeItemInfo{mResourceID, mResourceID});
+        getTreeItemInfoFunction(TreeItemInfo{mResourceID, mResourceID});
       }
-      return mResult;
     }
 
     bool renderTreeItemIcon(const std::string& id) const {

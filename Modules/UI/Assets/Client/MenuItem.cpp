@@ -52,12 +52,8 @@ namespace IsoRealms::UI {
     return cUI.getTreeItemInfo(cMenuItem);
   }
 
-  std::vector<TreeItemInfo> MenuItem::getAvailableTreeItems() const {
-    std::vector<TreeItemInfo> mResult;
-    cUI.forEachEntry<IMenuItem>([&mResult](const TreeItemInfo& e) {
-      mResult.push_back(e);
-    });
-    return mResult;
+  void MenuItem::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cUI.forEachEntry<IMenuItem>(getTreeItemInfoFunction);
   }
 
   bool MenuItem::renderTreeItemIcon(const std::string& id) const {

@@ -61,7 +61,7 @@ namespace IsoRealms {
       * Implements IBinding *
       \***********************/
       void bind(const std::string& function) const override;
-      std::vector<TreeItemInfo> getAvailableTreeItems() const override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
       bool renderTreeItemIcon(const std::string& id) const override;
       bool renderWrappedIcon() const override;
       bool isConfigurable() const override;
@@ -175,8 +175,8 @@ namespace IsoRealms {
         \***********************/
         void bind(const std::string& bindFunction) const override;
 
-        std::vector<TreeItemInfo> getAvailableTreeItems() const override {
-          return cDefValue.getAvailableTreeItems();
+        void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {
+          cDefValue.forEachAvailableTreeItem(getTreeItemInfoFunction);
         }
 
         TreeItemInfo getTreeItemInfo() const override {

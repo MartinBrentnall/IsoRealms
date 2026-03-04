@@ -18,9 +18,10 @@
  */
 #pragma once
 
+#include <functional>
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
@@ -42,7 +43,7 @@ namespace IsoRealms {
     bool hasConfiguration() const;
     void getAssetProperties(PropertyMaker& owner);
     Application& getApplication() const;
-    std::vector<TreeItemInfo> getAvailableTreeItems() const;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
     bool renderTreeItemIcon(const std::string& id) const;
     void setID(const std::string& id);
     

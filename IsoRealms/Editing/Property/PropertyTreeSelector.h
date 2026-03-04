@@ -321,13 +321,11 @@ namespace IsoRealms {
                   cPath(path),
                   cSelectedIndex(0) {
           std::string mSelectedPath = currentEntry.cPath;
-          std::vector<TreeItemInfo> mAllTreeItemInfos = cParent.cParent.cSelectedItem.getAvailableTreeItems();
-
           std::set<std::string> mFolders;
           std::vector<TreeItemInfo> mProviders;
 
           // Build tree from cPath (not cID).
-          for (const TreeItemInfo& mTreeItemInfo : mAllTreeItemInfos) {
+          cParent.cParent.cSelectedItem.forEachAvailableTreeItem([&](const TreeItemInfo& mTreeItemInfo) {
             const std::string& mPath = mTreeItemInfo.cPath;
             if (mPath.substr(0, path.length() + (path.empty() ? 0 : 1)) == (path.empty() ? path : path + "/")) {
               std::string mEntity = mPath.substr(path.length() + (path == "" ? 0 : 1));
@@ -338,7 +336,7 @@ namespace IsoRealms {
                 mProviders.push_back(mTreeItemInfo);
               }
             }
-          }
+          });
 
           unsigned int mIndex = 0;
           for (const std::string& mFolder : mFolders) {

@@ -18,6 +18,8 @@
  */
 #include "ModuleChooser.h"
 
+#include <optional>
+
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project/Project.h"
@@ -29,12 +31,13 @@ namespace IsoRealms {
   
   TreeItemInfo ModuleChooser::getTreeItemInfo() const {
     std::string mID; // TODO: Kludge
-    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+    std::optional<TreeItemInfo> mFound;
+    forEachAvailableTreeItem([&mFound, &mID](const TreeItemInfo& mTreeItemInfo) {
       if (mTreeItemInfo.cID == mID) {
-        return mTreeItemInfo;
+        mFound = mTreeItemInfo;
       }
-    }
-    return TreeItemInfo{mID, mID};
+    });
+    return mFound.value_or(TreeItemInfo{mID, mID});
   }
   
   bool ModuleChooser::renderAssetIcon() const {
@@ -53,12 +56,10 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<TreeItemInfo> ModuleChooser::getAvailableTreeItems() const {
-    std::vector<TreeItemInfo> mResult;
+  void ModuleChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (const std::string& mName : cProject.getUnusedModuleNames()) {
-      mResult.emplace_back(TreeItemInfo{mName, mName});
+      getTreeItemInfoFunction(TreeItemInfo{mName, mName});
     }
-    return mResult;
   }
   
   bool ModuleChooser::renderTreeItemIcon(const std::string& id) const {

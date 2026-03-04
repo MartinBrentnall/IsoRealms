@@ -74,8 +74,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  std::vector<TreeItemInfo> BindingRegistry::Dummy::getAvailableTreeItems() const {
-    return std::vector<TreeItemInfo>();
+  void BindingRegistry::Dummy::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    // Nothing to do.
   }
 
   bool BindingRegistry::Dummy::renderTreeItemIcon(const std::string& id) const {

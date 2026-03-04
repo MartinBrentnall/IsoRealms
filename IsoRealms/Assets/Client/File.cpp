@@ -18,6 +18,8 @@
  */
 #include "File.h"
 
+#include <optional>
+
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Persistence/JSONObject.h"
@@ -65,12 +67,13 @@ namespace IsoRealms {
   
   TreeItemInfo File::getTreeItemInfo() const {
     std::string mFilePath = std::string(cUser ? "User" : "Program") + "/" + cPath;
-    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+    std::optional<TreeItemInfo> mFound;
+    forEachAvailableTreeItem([&mFound, &mFilePath](const TreeItemInfo& mTreeItemInfo) {
       if (mTreeItemInfo.cID == mFilePath) {
-        return mTreeItemInfo;
+        mFound = mTreeItemInfo;
       }
-    }
-    return TreeItemInfo{mFilePath, mFilePath};
+    });
+    return mFound.value_or(TreeItemInfo{mFilePath, mFilePath});
   }
   
   bool File::renderAssetIcon() const {
@@ -93,16 +96,14 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<TreeItemInfo> File::getAvailableTreeItems() const {
+  void File::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     std::vector<std::string> mFiles;
     getFilesAt(System::getPath("./", false), LOCATION_PREFIX_PROGRAM, mFiles);
     getFilesAt(System::getPath("", true), LOCATION_PREFIX_USER, mFiles);
     std::sort(mFiles.begin(), mFiles.end());
-    std::vector<TreeItemInfo> result;
     for (const std::string& mFile : mFiles) {
-      result.emplace_back(TreeItemInfo{mFile, mFile});
+      getTreeItemInfoFunction(TreeItemInfo{mFile, mFile});
     }
-    return result;
   }
   
   bool File::renderTreeItemIcon(const std::string& id) const {

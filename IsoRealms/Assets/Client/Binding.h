@@ -40,7 +40,7 @@ namespace IsoRealms {
     /*********************************************\
      * Implements Asset<IBinding, IActionClient> *
     \*********************************************/
-    std::vector<TreeItemInfo> getAvailableClientProviders() const;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     bool renderOtherClientProviderIcon(const std::string& id) const;
     bool hasClientConfiguration() const;
 

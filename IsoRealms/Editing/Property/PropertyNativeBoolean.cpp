@@ -83,8 +83,9 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<TreeItemInfo> PropertyNativeBoolean::BooleanSelection::getAvailableTreeItems() const {
-    return std::vector<TreeItemInfo>{{ID_TRUE, "True"}, {ID_FALSE, "False"}}; // TODO: Localisation.
+  void PropertyNativeBoolean::BooleanSelection::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{ID_TRUE, "True"});
+    getTreeItemInfoFunction(TreeItemInfo{ID_FALSE, "False"}); // TODO: Localisation.
   }
   
   bool PropertyNativeBoolean::BooleanSelection::renderTreeItemIcon(const std::string& id) const {

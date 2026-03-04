@@ -18,6 +18,8 @@
  */
 #include "PropertyList.h"
 
+#include <optional>
+
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
@@ -57,12 +59,13 @@ namespace IsoRealms {
 
   TreeItemInfo PropertyList::ListSelection::getTreeItemInfo() const {
     std::string mSelectedID = cGetter();
-    for (const TreeItemInfo& mTreeItemInfo : getAvailableTreeItems()) {
+    std::optional<TreeItemInfo> mFound;
+    forEachAvailableTreeItem([&mFound, &mSelectedID](const TreeItemInfo& mTreeItemInfo) {
       if (mTreeItemInfo.cID == mSelectedID) {
-        return mTreeItemInfo;
+        mFound = mTreeItemInfo;
       }
-    }
-    return TreeItemInfo{mSelectedID, mSelectedID};
+    });
+    return mFound.value_or(TreeItemInfo{mSelectedID, mSelectedID});
   }
 
   bool PropertyList::ListSelection::renderAssetIcon() const {
@@ -85,12 +88,10 @@ namespace IsoRealms {
     return cProject.getApplication();
   }
   
-  std::vector<TreeItemInfo> PropertyList::ListSelection::getAvailableTreeItems() const {
-    std::vector<TreeItemInfo> result;
+  void PropertyList::ListSelection::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (const std::string& mOption : cOptions) {
-      result.emplace_back(TreeItemInfo{mOption, mOption});
+      getTreeItemInfoFunction(TreeItemInfo{mOption, mOption});
     }
-    return result;
   }
   
   bool PropertyList::ListSelection::renderTreeItemIcon(const std::string& id) const {
