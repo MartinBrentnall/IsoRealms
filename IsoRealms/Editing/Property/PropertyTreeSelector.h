@@ -124,7 +124,7 @@ namespace IsoRealms {
           cMenus.emplace_back(std::make_unique<MenuScroller>(*this, mTreeItemInfo.cPath.substr(0, mSeparator), mTreeItemInfo, mNextSeparator == std::string::npos ? MenuScroller::State::ACTIVE : MenuScroller::State::INACTIVE));
           mSeparator = mNextSeparator;
         }
-        cCurrentAssetPath = mTreeItemInfo.cPath;
+        cCurrentPath = mTreeItemInfo.cPath;
 
         cWidth.init(cMenus.back()->getMenu().getWidth(cStyle));
         cHeight.init(cMenus.back()->getMenu().getMenuItemCount());
@@ -226,8 +226,8 @@ namespace IsoRealms {
 
       void updatePathBar(IUIStyle& style) {
         cActivePath = cMenus.size() > 1 ? cMenus[cMenus.size() - 1]->getMenu().getPath() + "/" : "";
-        cInactivePath = (cActivePath == cCurrentAssetPath.substr(0, cActivePath.length()))
-                      ? cCurrentAssetPath.substr(cActivePath.length())
+        cInactivePath = (cActivePath == cCurrentPath.substr(0, cActivePath.length()))
+                      ? cCurrentPath.substr(cActivePath.length())
                       : "";
         IFont* mFont = style.getFont();
         float mFontSize = style.getFontSize();
@@ -344,7 +344,7 @@ namespace IsoRealms {
             if (mFullFolderPath == mSelectedPath.substr(0, mFullFolderPath.length()) && (mSelectedPath.length() == mFullFolderPath.length() || mSelectedPath[mFullFolderPath.length()] == '/')) {
               cSelectedIndex = mIndex;
             }
-            cMenuItems.emplace_back(std::make_unique<AssetMenuItemFolder>(*this, mFolder));
+            cMenuItems.emplace_back(std::make_unique<MenuFolder>(*this, mFolder));
             mIndex++;
           }
 
@@ -352,7 +352,7 @@ namespace IsoRealms {
             if (mTreeItemInfo.cPath == mSelectedPath) {
               cSelectedIndex = mIndex;
             }
-            cMenuItems.emplace_back(std::make_unique<AssetMenuItemAsset>(*this, mTreeItemInfo.cID, mTreeItemInfo.cPath));
+            cMenuItems.emplace_back(std::make_unique<MenuItem>(*this, mTreeItemInfo));
             mIndex++;
           }
           cSelectedItem.init(cSelectedIndex);
@@ -365,7 +365,7 @@ namespace IsoRealms {
         void render(IUIStyle& style, float y, float x, float aspectRatio) const {
           float mFontSize = style.getFontSize();
           float mYPosition = y + cSelectedItem.animation() * mFontSize * 2.0f;
-          for (const std::unique_ptr<IAssetMenuItem>& mItem : cMenuItems) {
+          for (const std::unique_ptr<IMenuEntry>& mItem : cMenuItems) {
             mItem->render(style, mYPosition, x, aspectRatio);
             mYPosition -= mFontSize * 2.0f;
           }
@@ -373,7 +373,7 @@ namespace IsoRealms {
 
         float getWidth(IUIStyle& style) const {
           float mMaxWidth = 0.0f;
-          for (const std::unique_ptr<IAssetMenuItem>& mItem : cMenuItems) {
+          for (const std::unique_ptr<IMenuEntry>& mItem : cMenuItems) {
             mMaxWidth = std::max(mMaxWidth, mItem->getWidth(style));
           }
           return mMaxWidth;
@@ -434,7 +434,7 @@ namespace IsoRealms {
         }
 
         bool hasChildren() const {
-          for (const std::unique_ptr<IAssetMenuItem>& mMenuItem : cMenuItems) {
+          for (const std::unique_ptr<IMenuEntry>& mMenuItem : cMenuItems) {
             if (mMenuItem->hasChildren()) {
               return true;
             }
@@ -443,7 +443,7 @@ namespace IsoRealms {
         }
 
         private:
-        class IAssetMenuItem {
+        class IMenuEntry {
           public:
           virtual void render(IUIStyle& style, float y, float x, float aspectRatio) const = 0;
           virtual float getWidth(IUIStyle& style) const = 0;
@@ -452,16 +452,16 @@ namespace IsoRealms {
           virtual bool hasChildren() const = 0;
         };
 
-        class AssetMenuItemFolder : public IAssetMenuItem {
+        class MenuFolder : public IMenuEntry {
           public:
-          AssetMenuItemFolder(Menu& parent, const std::string& folder) :
+          MenuFolder(Menu& parent, const std::string& folder) :
                     cParent(parent),
                     cFolderName(folder) {
           }
           
-          /*****************************\
-           * Implements IAssetMenuItem *
-          \*****************************/
+          /*************************\
+           * Implements IMenuEntry *
+          \*************************/
           void render(IUIStyle& style, float y, float x, float aspectRatio) const override {
             IFont* mFont = style.getFont();
             float mFontSize = style.getFontSize();
@@ -498,26 +498,25 @@ namespace IsoRealms {
           std::string cFolderName;
         };
 
-        class AssetMenuItemAsset : public IAssetMenuItem {
+        class MenuItem : public IMenuEntry {
           public:
-          AssetMenuItemAsset(Menu& parent, const std::string& id, const std::string& path) :
+          MenuItem(Menu& parent, const TreeItemInfo& itemInfo) :
                     cParent(parent),
-                    cAssetID(id),
-                    cAssetLabel(getLabel(path)),
-                    cAssetDescription(path) {
+                    cItemInfo(itemInfo),
+                    cLabel(getLabelFromPath(itemInfo.cPath)) {
           }
           
-          /*****************************\
-           * Implements IAssetMenuItem *
-          \*****************************/
+          /*************************\
+           * Implements IMenuEntry *
+          \*************************/
           void render(IUIStyle& style, float y, float x, float aspectRatio) const override {
             IFont* mFont = style.getFont();
             float mFontSize = style.getFontSize();
-            mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cAssetLabel);
+            mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
             glPushMatrix();
             glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
             glScalef(mFontSize, mFontSize, 0.0f);
-            if (!cParent.cParent.cParent.cSelectedItem.renderTreeItemIcon(cAssetID)) {
+            if (!cParent.cParent.cParent.cSelectedItem.renderTreeItemIcon(cItemInfo.cID)) {
               Utils::renderIconLeaf();
             }
             glPopMatrix();
@@ -526,23 +525,23 @@ namespace IsoRealms {
           float getWidth(IUIStyle& style) const override {
             IFont* mFont = style.getFont();
             float mFontSize = style.getFontSize();
-            return mFont->getWidth(mFontSize, cAssetLabel) + mFontSize * 2.25f;
+            return mFont->getWidth(mFontSize, cLabel) + mFontSize * 2.25f;
           }
 
           bool confirm(IUIStyle& style) override {
-            std::string mCurrentAssetID = cParent.cParent.cParent.cSelectedItem.getTreeItemInfo().cID;
-            if (cAssetID != mCurrentAssetID) {
+            std::string mCurrentID = cParent.cParent.cParent.cSelectedItem.getTreeItemInfo().cID;
+            if (cItemInfo.cID != mCurrentID) {
               if (cParent.cParent.cParent.cSelectedItem.hasConfiguration() && !cParent.cParent.cParent.cSelectedItem.isDefaultConfigured()) {
                 cParent.cParent.cConfirmSelection = std::make_unique<Choice>(style, "You will lose the configuration of \"" + cParent.cParent.cParent.cValueLabel + "\" if you select a new one", std::vector<std::string>{"Keep \"" + cParent.cParent.cParent.cValueLabel + "\"", "Choose new item"}, [this](const std::string& choice)->bool {
                   if (choice == "Choose new item") {
-                    cParent.applyChange(cAssetID);
+                    cParent.applyChange(cItemInfo.cID);
                   }
                   cParent.cParent.cClosedConfirmSelection = std::move(cParent.cParent.cConfirmSelection);
                   cParent.cParent.cConfirmSelection = nullptr;
                   return cParent.cParent.cClosing;
                 });
               } else {
-                cParent.applyChange(cAssetID);
+                cParent.applyChange(cItemInfo.cID);
               }
             } else {
               cParent.cParent.cClosing = true;
@@ -560,13 +559,12 @@ namespace IsoRealms {
 
           private:
           Menu& cParent;
-          std::string cAssetID;
-          std::string cAssetLabel;
-          std::string cAssetDescription;
+          TreeItemInfo cItemInfo;
+          std::string cLabel;
 
-          static std::string getLabel(const std::string& id) {
-            std::string::size_type mLastSeparator = id.find_last_of('/');
-            return mLastSeparator == std::string::npos ? id : id.substr(mLastSeparator + 1);
+          static std::string getLabelFromPath(const std::string& path) {
+            std::string::size_type mLastSeparator = path.find_last_of('/');
+            return mLastSeparator == std::string::npos ? path : path.substr(mLastSeparator + 1);
           }
         };
 
@@ -582,7 +580,7 @@ namespace IsoRealms {
 
         Editor& cParent;
         std::string cPath;
-        std::vector<std::unique_ptr<IAssetMenuItem>> cMenuItems;
+        std::vector<std::unique_ptr<IMenuEntry>> cMenuItems;
         unsigned int cSelectedIndex;
         AnimatedFloat cSelectedItem;
       };
@@ -657,7 +655,7 @@ namespace IsoRealms {
       std::unique_ptr<Choice> cClosedConfirmSelection;
 
       // Path bar stuff (current item's path in tree, from TreeItemInfo::cPath)
-      std::string cCurrentAssetPath;
+      std::string cCurrentPath;
       std::string cActivePath;
       std::string cInactivePath;
       float cActivePartWidth;
