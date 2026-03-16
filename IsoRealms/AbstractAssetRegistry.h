@@ -82,7 +82,7 @@ namespace IsoRealms {
     }
 
     template <typename OWNER, typename TYPE> IStateNotifier* addProvider(IAssetProvider<OWNER, TYPE>* provider, const std::string& assetID, const std::string& category) {
-      if (category == "Run a Script") {
+      if (category.empty()) {
         std::cout << "WARNING: AbstractAssetRegistry::addProvider: Category cannot be empty." << std::endl;
       }
       registerAsset(provider);
