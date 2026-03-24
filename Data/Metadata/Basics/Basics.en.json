@@ -144,7 +144,8 @@
       "description": "Trigger actions when the user performs any active input, such as clicking a mouse button or pressing any key.  This can be useful for interrupting demos or splash screens.",
       "category": "Input",
       "properties": {
-        "Action": {"name": "Action", "description": "Action to be performed upon triggering of this interrupt handler."}
+        "Action": {"name": "Action", "description": "Action to be performed upon triggering of this interrupt handler."},
+        "Consume": {"name": "Consume Input", "description": "Determines whether the input event should be consumed by this interrupt handler.  If true, then the input event will not be passed to further input handlers."}
       }
     },
     "Project": {
