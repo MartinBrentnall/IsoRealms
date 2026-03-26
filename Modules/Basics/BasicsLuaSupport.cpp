@@ -88,6 +88,7 @@ namespace IsoRealms {
                                                                           "isReady",                    &Project::isReady,
                                                                           "reset",                      &Project::resetProject,
                                                                           "resetLauncher",              &Project::resetLauncher,
+                                                                          "resetOptions",               &Project::resetOptions,
                                                                           "getDefaultEditor",           &Project::getDefaultEditor,
                                                                           "getProject",                 &Project::getProject,
                                                                           "isUser",                     &Project::isUser,

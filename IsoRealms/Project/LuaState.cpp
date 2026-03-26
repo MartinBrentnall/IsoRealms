@@ -115,7 +115,9 @@ namespace IsoRealms {
                                                           "getInteger",           &JSONObject::getInteger,
                                                           "getFloat",             &JSONObject::getFloat,
                                                           "getBoolean",           &JSONObject::getBoolean);
-    cLua->new_usertype<Options>("Options",                "getOption",            &Options::getOption);
+    cLua->new_usertype<Options>("Options",                sol::constructors<Options()>(),
+                                                          "addOption",            &Options::addOption,
+                                                          "getOption",            &Options::getOption);
     cLua->new_usertype<Project>("Project",                "finish",               &Project::finish,
                                                           "getUserDataPath",      &Project::getUserDataPath);
     cLua->new_usertype<IString>("String",                 "getValue",             &IString::getValue);

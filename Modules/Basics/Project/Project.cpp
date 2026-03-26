@@ -20,10 +20,11 @@
 
 namespace IsoRealms::Basics {
   const std::string Project::JSON_EDITING   = "editing";
+  const std::string Project::JSON_FILE      = "file";
   const std::string Project::JSON_ON_FINISH = "onFinish";
   const std::string Project::JSON_ON_READY  = "onReady";
-  const std::string Project::JSON_OPTIONS   = "options";
   const std::string Project::JSON_RUNNING   = "running";
+  const std::string Project::JSON_USER      = "user";
 
   Project::Project(Basics& basics, IResourceData& data) :
             cProject(data.getProject()),
@@ -47,6 +48,8 @@ namespace IsoRealms::Basics {
   
   Project::Project(Basics& basics, IResourceData& data, JSONObject object) :
             Project(basics, data) {
+    cDefProjectPath = object.getString(JSON_FILE);
+    cDefProjectUser = object.getBoolean(JSON_USER);
     cDefRunning = object.getBoolean(JSON_RUNNING);
     cDefEditing = object.getBoolean(JSON_EDITING);
     cDefEndAction.init(object, JSON_ON_FINISH);
@@ -60,6 +63,8 @@ namespace IsoRealms::Basics {
   }
   
   void Project::save(JSONObject object) const {
+    object.addString(JSON_FILE, cDefProjectPath);
+    object.addBoolean(JSON_USER, cDefProjectUser);
     object.addBoolean(JSON_RUNNING, cDefRunning);
     object.addBoolean(JSON_EDITING, cDefEditing);
     cDefEndAction.save(object, JSON_ON_FINISH);
@@ -98,6 +103,11 @@ namespace IsoRealms::Basics {
     cRuntimeRunning            = cDefRunning;
     cRuntimeEditing            = cDefEditing;
     cRuntimeQuitRequestGranted = false;
+
+    // Start loading the project, ready action will be executed when it's done.
+    if (cDefProjectPath != "") {
+      prepare(cDefProjectPath, cDefProjectUser, false);
+    }
   }
 
   void Project::updateRuntime(unsigned int milliseconds) {
@@ -225,6 +235,10 @@ namespace IsoRealms::Basics {
     cRuntimeProject->reset(launcher);
   }
   
+  void Project::resetOptions(Options& options) {
+    cRuntimeProject->reset(options);
+  }
+
   IEditable* Project::getDefaultEditor() {
     return cRuntimeProject->getDefaultEditable();
   }

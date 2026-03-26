@@ -61,6 +61,7 @@ namespace IsoRealms::Basics {
     bool isReady();
     void resetProject();
     void resetLauncher(const ProjectLaunchConfiguration* launcher);
+    void resetOptions(Options& options);
     IEditable* getDefaultEditor();
     IsoRealms::Project* getProject();
     bool isUser();
@@ -93,16 +94,18 @@ namespace IsoRealms::Basics {
 
     // JSON members.
     static const std::string JSON_EDITING;
+    static const std::string JSON_FILE;
     static const std::string JSON_ON_FINISH;
     static const std::string JSON_ON_READY;
-    static const std::string JSON_OPTIONS;
     static const std::string JSON_RUNNING;
+    static const std::string JSON_USER;
 
     // External interfaces.
     IsoRealms::Project& cProject;
 
     // Definition data
     std::string cDefProjectPath;
+    bool cDefProjectUser;
     Action cDefReadyAction;
     Action cDefEndAction;
     bool cDefRunning;
