@@ -33,6 +33,7 @@ namespace IsoRealms::Basics {
             cDefRunning(false),
             cDefEditing(false),
             cRuntimeProject(nullptr),
+            cRuntimeResetPostponed(false),
             cLuaBinding(data.getProject().getLuaState(), this) {
     cRuntimeProjectLoader = std::make_unique<ProjectLoader>([this](bool quitRequestGranted) {
       cRuntimeRunning = false;
@@ -119,6 +120,11 @@ namespace IsoRealms::Basics {
         cDefReadyAction.execute();
         cRuntimeLoading = false;
       }
+
+      if (cRuntimeResetPostponed) {
+        cRuntimeResetPostponed = false;
+        cRuntimeProject->reset(cRuntimeOptions);
+      }
     }
 
     if (cRuntimeRunning && cRuntimeProject != nullptr) {
@@ -171,16 +177,16 @@ namespace IsoRealms::Basics {
       cDefEndAction.execute();
     });
 
+    cRuntimeLoading = true;
+    cRuntimeProject = nullptr;
     Application& mApplication = cProject.getApplication();
     mApplication.executeAndReturn([this, &mApplication]() {
       cRuntimeProjectLoader->newProject(mApplication);
     });
-    cRuntimeLoading = true;
-    cRuntimeProject = nullptr;
   }
 
   void Project::prepare(const std::string& file, bool user, bool force) {
-
+    
     // If it's the same as the current project, nothing to do.
     if (!force && cRuntimeProjectLoader != nullptr && cRuntimeProjectLoader->matches(file, user)) {
       cRuntimeLoading = true;
@@ -236,7 +242,12 @@ namespace IsoRealms::Basics {
   }
   
   void Project::resetOptions(Options& options) {
-    cRuntimeProject->reset(options);
+    if (cRuntimeLoading) {
+      cRuntimeOptions = options;
+      cRuntimeResetPostponed = true;
+    } else {
+      cRuntimeProject->reset(options);
+    }
   }
 
   IEditable* Project::getDefaultEditor() {

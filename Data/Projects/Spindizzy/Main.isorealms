@@ -97,10 +97,19 @@
           }
         }
       ],
-      "code": "menuStack = {}\ninputStack = {}\ngameLoading = false\nif scoreTable and scoreTable.reload then scoreTable:reload() end\n\n-- settingsFilePath = project:getDataPath() .. \"/settings.json\"\n-- print(\"Reading settings from \" .. settingsFilePath)\n-- uiSettings = project:readNode(settingsFilePath)\n-- if uiSettings ~= nil then\n--   settings = uiSettings:getNode(\"UI\")\n--   currentMission:setValue(settings:getAttribute(\"project\"))\n--   currentMissionUser:setValue(settings:getAttribute(\"user\"))\n--   if currentMissionUser:getValue() == \"true\" then\n--     currentMissionUserBool = true\n--     missionName = string.sub(currentMission:getValue(), string.find(currentMission:getValue(), \"/[^/]*$\"), string.len(currentMission:getValue()) - 10)\n--     currentMissionText:setValue(\"Spindizzy: \" .. missionName)\n--     currentHighScoreText:setValue(\"Master Cartographers of \" .. missionName)\n--   else\n    currentMissionUserBool = false\n    currentMissionText:setValue(\"IsoRealms Spindizzy\")\n    currentHighScoreText:setValue(\"Master Cartographers of Hangworld\")\n--   end\n-- TODO  project:releaseReadNode(uiSettings)\n-- end\n\n-- mission:prepare(projectArgs, false)\n\ninput:setInputHandler(interruptHandler)\n\nsplash:play()\n\noptionsLoader:execute()\n\nmessages1 = {\"\\\"Peace will come when the Arabs will love their children more than they hate us.\\\"\",\n             \"\\\"We don't thrive on military acts. We do them because we have to,\",\n             \"\\\"When peace comes, we will perhaps in time be able to forgive the Arabs for killing our sons,\",\n             \"\\\"I prefer to stay alive and be criticized than be sympathized.\\\"\",\n             \"\\\"Israel has few true friends. Palestine has a sea of false ones.\\\"\",\n             \"\\\"Innocent Palestinian are not killed by Israel, they are sacrificed by Hamas.\\\"\",\n             \"\\\"Israel will endure and flourish. It is the child of hope and the home of the brave.\\\"\",\n             \"\\\"We do not rejoice in victories. We rejoice when a new kind of\",\n             \"\\\"The truth about Hamas and Islamic Jihad is that they don't prevent Israel\",\n             \"\\\"If the Arabs put down their weapons today, there would be no more violence.\",\n             \"\\\"Israel is the only country in the Middle East where Arabs can be\"}\n\nmessages2 = {\"- Golda Meir, 1957\",\n             \"and thank God we are efficient.\\\"\",\n             \"but it will be harder for us to forgive them for having forced us to kill their sons\",\n             \"- Golda Meir, 1973\",\n             \"- Anonymous, 2024\",\n             \"- Anonymous, 2023\",\n             \"- John F. Kennedy, 1960\",\n             \"cotton is grown and when strawberries bloom in Israel.\\\"\",\n             \"from existing or even flourishing, they prevent Palestine from coming into existence.\\\"\",\n             \"If the Jews put down their weapons today, there would be no more Israel.\\\"\",\n             \"elected to the parliament in a democratic election.\\\"\"}\n\nmessages3 = {\"\",\n             \"- Golda Meir, 1969\",\n             \"- Golda Meir, 1969\",\n             \"\",\n             \"\",\n             \"\",\n             \"\",\n             \"- Golda Meir, 1970\",\n             \"- Michael Medved\",\n             \"- Benjamin Netanyahu\",\n             \"- Adam Michnik\"}\n"
+      "code": "menuStack = {}\ninputStack = {}\ngameLoading = false\nif scoreTable and scoreTable.reload then scoreTable:reload() end\n\n-- settingsFilePath = project:getDataPath() .. \"/settings.json\"\n-- print(\"Reading settings from \" .. settingsFilePath)\n-- uiSettings = project:readNode(settingsFilePath)\n-- if uiSettings ~= nil then\n--   settings = uiSettings:getNode(\"UI\")\n--   currentMission:setValue(settings:getAttribute(\"project\"))\n--   currentMissionUser:setValue(settings:getAttribute(\"user\"))\n--   if currentMissionUser:getValue() == \"true\" then\n--     currentMissionUserBool = true\n--     missionName = string.sub(currentMission:getValue(), string.find(currentMission:getValue(), \"/[^/]*$\"), string.len(currentMission:getValue()) - 10)\n--     currentMissionText:setValue(\"Spindizzy: \" .. missionName)\n--     currentHighScoreText:setValue(\"Master Cartographers of \" .. missionName)\n--   else\n    currentMissionUserBool = false\n    currentMissionText:setValue(\"IsoRealms Spindizzy\")\n    currentHighScoreText:setValue(\"Master Cartographers of Hangworld\")\n--   end\n-- TODO  project:releaseReadNode(uiSettings)\n-- end\n\ninput:setInputHandler(interruptHandler)\n\nsplash:play()\n\noptionsLoader:execute()\n\nmessages1 = {\"\\\"Peace will come when the Arabs will love their children more than they hate us.\\\"\",\n             \"\\\"We don't thrive on military acts. We do them because we have to,\",\n             \"\\\"When peace comes, we will perhaps in time be able to forgive the Arabs for killing our sons,\",\n             \"\\\"I prefer to stay alive and be criticized than be sympathized.\\\"\",\n             \"\\\"Israel has few true friends. Palestine has a sea of false ones.\\\"\",\n             \"\\\"Innocent Palestinian are not killed by Israel, they are sacrificed by Hamas.\\\"\",\n             \"\\\"Israel will endure and flourish. It is the child of hope and the home of the brave.\\\"\",\n             \"\\\"We do not rejoice in victories. We rejoice when a new kind of\",\n             \"\\\"The truth about Hamas and Islamic Jihad is that they don't prevent Israel\",\n             \"\\\"If the Arabs put down their weapons today, there would be no more violence.\",\n             \"\\\"Israel is the only country in the Middle East where Arabs can be\"}\n\nmessages2 = {\"- Golda Meir, 1957\",\n             \"and thank God we are efficient.\\\"\",\n             \"but it will be harder for us to forgive them for having forced us to kill their sons\",\n             \"- Golda Meir, 1973\",\n             \"- Anonymous, 2024\",\n             \"- Anonymous, 2023\",\n             \"- John F. Kennedy, 1960\",\n             \"cotton is grown and when strawberries bloom in Israel.\\\"\",\n             \"from existing or even flourishing, they prevent Palestine from coming into existence.\\\"\",\n             \"If the Jews put down their weapons today, there would be no more Israel.\\\"\",\n             \"elected to the parliament in a democratic election.\\\"\"}\n\nmessages3 = {\"\",\n             \"- Golda Meir, 1969\",\n             \"- Golda Meir, 1969\",\n             \"\",\n             \"\",\n             \"\",\n             \"\",\n             \"- Golda Meir, 1970\",\n             \"- Michael Medved\",\n             \"- Benjamin Netanyahu\",\n             \"- Adam Michnik\"}\n"
     },
     "reset": {
-      "key": "None"
+      "key": "Basics/Script",
+      "bindings": [
+        {
+          "variable": "mission",
+          "to": {
+            "key": "Basics/Project/Demo"
+          }
+        }
+      ],
+      "code": "-- Set up the project to play the Demo.\nmAttractConfiguration = Options.new()\nmAttractConfiguration:addOption(\"Replayer\", \"Replaying\")\nmAttractConfiguration:addOption(\"File\", \"Demo.recording\")\nmAttractConfiguration:addOption(\"User\", \"false\")\nmission:resetOptions(mAttractConfiguration)"
     },
     "start": {
       "key": "None"
@@ -130,88 +139,7 @@
         },
         "Function": {
           "instances": {
-            "StartAttract": {
-              "name": "StartAttract",
-              "bindings": [
-                {
-                  "variable": "decor",
-                  "to": {
-                    "key": "UI/Layout/Main/Decor"
-                  }
-                },
-                {
-                  "variable": "title",
-                  "to": {
-                    "key": ":Screen",
-                    "asset": {
-                      "key": "UI/Layout/Title"
-                    }
-                  }
-                },
-                {
-                  "variable": "project",
-                  "to": {
-                    "key": "UI/Layout/Main/Project"
-                  }
-                },
-                {
-                  "variable": "demo",
-                  "to": {
-                    "key": ":Screen",
-                    "asset": {
-                      "key": "Basics/Project/Demo"
-                    }
-                  }
-                },
-                {
-                  "variable": "demoProject",
-                  "to": {
-                    "key": "Basics/Project/Demo"
-                  }
-                },
-                {
-                  "variable": "titleTimer",
-                  "to": {
-                    "key": "Basics/Sequence/Title Timer/Instance"
-                  }
-                }
-              ],
-              "arguments": [],
-              "code": "decor:setScreen(title)\nproject:setScreen(demo)\ndemoProject:setRunning(true)\ntitleTimer:setTime(0)\ntitleTimer:play()"
-            },
-            "UIQuit": {
-              "name": "UIQuit",
-              "bindings": [
-                {
-                  "variable": "project",
-                  "to": {
-                    "key": "Project"
-                  }
-                },
-                {
-                  "variable": "currentMission",
-                  "to": {
-                    "key": ":String",
-                    "asset": {
-                      "key": "Basics/String/Mission"
-                    }
-                  }
-                },
-                {
-                  "variable": "currentMissionUser",
-                  "to": {
-                    "key": ":String",
-                    "asset": {
-                      "key": "Basics/String/UserMission"
-                    }
-                  }
-                }
-              ],
-              "arguments": [],
-              "code": "settingsDocument = project:createDocument()\nsettingsObject = settingsDocument:addObject(\"Settings\")\nsettingsObject:addString(\"project\", currentMission:getValue(), \"\")\nsettingsObject:addString(\"user\", currentMissionUser:getValue(), \"\")\nsettingsFilePath = project:getUserDataPath() .. \"/settings.json\"\nsettingsDocument:save(settingsFilePath)\nproject:finish(false)\n"
-            },
             "GameEnd": {
-              "name": "GameEnd",
               "bindings": [
                 {
                   "variable": "decor",
@@ -330,7 +258,6 @@
               "code": "-- Did the project terminate by a close request?\nif currentMission:isQuitRequestGranted() then\n  quit:execute()\nelse\n\n  -- Return to main menu.\n  table.insert(menuStack, menuScreen)\n  table.insert(inputStack, menuInput)\n  menu:reset()\n  input:setInputHandler(menuInput)\n  screen:setScreen(menuScreen)\n\n  -- Set title decor.\n  decor:setScreen(title)\n\n  -- Deactive mission.\n  currentMission:setRunning(false)\n\n  -- Activate demo.\n  project:setScreen(demoScreen)\n  demo:setRunning(true)\n  demo:reset()\n\n  -- Reload configuration in case it changed during the game.\n  optionsLoader:execute()\n\n  -- Reload the score table in case the player achieved a high score.\n  if scoreTable and scoreTable.reload then scoreTable:reload() end\n\n  -- Start idle menu timer\n  menuIdleTimer:setTime(0)\n  menuIdleTimer:play()\n\n  -- Enable menu interruption\n  interrupt:setInputHandler(menuInterrupt)\nend"
             },
             "MissionReady": {
-              "name": "MissionReady",
               "bindings": [
                 {
                   "variable": "decor",
@@ -374,7 +301,6 @@
               "code": "if gameLoading and currentMission == mission then\n  screen:setScreen(nil)\n  input:setInputHandler(currentMissionInput)\n  project:setScreen(currentMissionScreen)\n  decor:setScreen(nil)\n  currentMission:setRunning(true)\n  demo:setRunning(false)\nend"
             },
             "SelectMission": {
-              "name": "SelectMission",
               "bindings": [
                 {
                   "variable": "projectName",
@@ -463,8 +389,151 @@
               ],
               "code": "reload = false\nif missionUser:getValue() ~= currentMissionUser:getValue() then\n  reload = true\n  currentMissionUser:setValue(missionUser:getValue())\nend\ntable.remove(menuStack)\ntable.remove(inputStack)\nif currentMissionUser:getValue() == \"user\" then\n  currentMissionUserBool = true\n  missionPath = mission:getValue()\n  missionName = string.sub(missionPath, string.find(missionPath, \"/[^/]*$\") + 1, string.len(missionPath) - 10)\n  currentMissionText:setValue(\"Spindizzy: \" .. missionName)\n  currentHighScoreText:setValue(\"Master Cartographers of \" .. missionName)\n  table.remove(menuStack)\n  table.remove(inputStack)\nelse\n  currentMissionUserBool = false\n  missionPath = \"Projects/\" .. mission:getValue()\n  currentMissionText:setValue(\"IsoRealms Spindizzy\")\n  currentHighScoreText:setValue(\"Master Cartographers of Hangworld\")\nend\nif missionPath ~= currentMission:getValue() then\n  reload = true\n  currentMission:setValue(missionPath)\nend\nif reload then\n  project:prepare(projectArgs, false)\nend\ninput:setInputHandler(inputStack[#inputStack])\nscreen:setScreen(menuStack[#menuStack])"
             },
+            "StartAttract": {
+              "bindings": [
+                {
+                  "variable": "decor",
+                  "to": {
+                    "key": "UI/Layout/Main/Decor"
+                  }
+                },
+                {
+                  "variable": "title",
+                  "to": {
+                    "key": ":Screen",
+                    "asset": {
+                      "key": "UI/Layout/Title"
+                    }
+                  }
+                },
+                {
+                  "variable": "project",
+                  "to": {
+                    "key": "UI/Layout/Main/Project"
+                  }
+                },
+                {
+                  "variable": "demo",
+                  "to": {
+                    "key": ":Screen",
+                    "asset": {
+                      "key": "Basics/Project/Demo"
+                    }
+                  }
+                },
+                {
+                  "variable": "demoProject",
+                  "to": {
+                    "key": "Basics/Project/Demo"
+                  }
+                },
+                {
+                  "variable": "titleTimer",
+                  "to": {
+                    "key": "Basics/Sequence/Title Timer/Instance"
+                  }
+                }
+              ],
+              "arguments": [],
+              "code": "decor:setScreen(title)\nproject:setScreen(demo)\ndemoProject:setRunning(true)\ntitleTimer:setTime(0)\ntitleTimer:play()"
+            },
+            "StartAuthorsMessage": {
+              "bindings": [
+                {
+                  "variable": "decor",
+                  "to": {
+                    "key": "UI/Layout/Main/Decor"
+                  }
+                },
+                {
+                  "variable": "screen",
+                  "to": {
+                    "key": "UI/Layout/Main/Menu"
+                  }
+                },
+                {
+                  "variable": "authorsMessage",
+                  "to": {
+                    "key": ":Screen",
+                    "asset": {
+                      "key": "UI/Layout/AuthorsMessage"
+                    }
+                  }
+                },
+                {
+                  "variable": "input",
+                  "to": {
+                    "key": "Basics/InputSwitch/Options Screen"
+                  }
+                },
+                {
+                  "variable": "authorsMessageHandler",
+                  "to": {
+                    "key": ":InputHandler",
+                    "asset": {
+                      "key": "Basics/InterruptHandler/AuthorsMessageInterrupt"
+                    }
+                  }
+                },
+                {
+                  "variable": "menuIdleTimer",
+                  "to": {
+                    "key": "Basics/Sequence/Menu Idle Timer/Instance"
+                  }
+                }
+              ],
+              "arguments": [],
+              "code": "screen:setScreen(nil)\ndecor:setScreen(authorsMessage)\ninput:setInputHandler(authorsMessageHandler)\nmenuIdleTimer:pause()"
+            },
+            "StartCreditsMessage": {
+              "bindings": [
+                {
+                  "variable": "decor",
+                  "to": {
+                    "key": "UI/Layout/Main/Decor"
+                  }
+                },
+                {
+                  "variable": "screen",
+                  "to": {
+                    "key": "UI/Layout/Main/Menu"
+                  }
+                },
+                {
+                  "variable": "creditsMessage",
+                  "to": {
+                    "key": ":Screen",
+                    "asset": {
+                      "key": "UI/Layout/CreditsMessage"
+                    }
+                  }
+                },
+                {
+                  "variable": "input",
+                  "to": {
+                    "key": "Basics/InputSwitch/Options Screen"
+                  }
+                },
+                {
+                  "variable": "authorsMessageHandler",
+                  "to": {
+                    "key": ":InputHandler",
+                    "asset": {
+                      "key": "Basics/InterruptHandler/AuthorsMessageInterrupt"
+                    }
+                  }
+                },
+                {
+                  "variable": "menuIdleTimer",
+                  "to": {
+                    "key": "Basics/Sequence/Menu Idle Timer/Instance"
+                  }
+                }
+              ],
+              "arguments": [],
+              "code": "screen:setScreen(nil)\ndecor:setScreen(creditsMessage)\ninput:setInputHandler(authorsMessageHandler)\nmenuIdleTimer:pause()"
+            },
             "StartHighScore": {
-              "name": "StartHighScore",
               "bindings": [
                 {
                   "variable": "decor",
@@ -513,7 +582,6 @@
               "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ndecor:setScreen(highScores)\ninput:setInputHandler(interruptHandler)\nhighScoreTimer:setTime(0)\nhighScoreTimer:play()"
             },
             "StartMessage": {
-              "name": "StartMessage",
               "bindings": [
                 {
                   "variable": "decor",
@@ -579,106 +647,7 @@
               "arguments": [],
               "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ndecor:setScreen(message)\nselectedMessage = math.random(1,11)\nmessageText1:setValue(messages1[selectedMessage])\nmessageText2:setValue(messages2[selectedMessage])\nmessageText3:setValue(messages3[selectedMessage])\ninput:setInputHandler(interruptHandler)\nmessageTimer:setTime(0)\nmessageTimer:play()"
             },
-            "StartAuthorsMessage": {
-              "name": "StartAuthorsMessage",
-              "bindings": [
-                {
-                  "variable": "decor",
-                  "to": {
-                    "key": "UI/Layout/Main/Decor"
-                  }
-                },
-                {
-                  "variable": "screen",
-                  "to": {
-                    "key": "UI/Layout/Main/Menu"
-                  }
-                },
-                {
-                  "variable": "authorsMessage",
-                  "to": {
-                    "key": ":Screen",
-                    "asset": {
-                      "key": "UI/Layout/AuthorsMessage"
-                    }
-                  }
-                },
-                {
-                  "variable": "input",
-                  "to": {
-                    "key": "Basics/InputSwitch/Options Screen"
-                  }
-                },
-                {
-                  "variable": "authorsMessageHandler",
-                  "to": {
-                    "key": ":InputHandler",
-                    "asset": {
-                      "key": "Basics/InterruptHandler/AuthorsMessageInterrupt"
-                    }
-                  }
-                },
-                {
-                  "variable": "menuIdleTimer",
-                  "to": {
-                    "key": "Basics/Sequence/Menu Idle Timer/Instance"
-                  }
-                }
-              ],
-              "arguments": [],
-              "code": "screen:setScreen(nil)\ndecor:setScreen(authorsMessage)\ninput:setInputHandler(authorsMessageHandler)\nmenuIdleTimer:pause()"
-            },
-            "StartCreditsMessage": {
-              "name": "StartCreditsMessage",
-              "bindings": [
-                {
-                  "variable": "decor",
-                  "to": {
-                    "key": "UI/Layout/Main/Decor"
-                  }
-                },
-                {
-                  "variable": "screen",
-                  "to": {
-                    "key": "UI/Layout/Main/Menu"
-                  }
-                },
-                {
-                  "variable": "creditsMessage",
-                  "to": {
-                    "key": ":Screen",
-                    "asset": {
-                      "key": "UI/Layout/CreditsMessage"
-                    }
-                  }
-                },
-                {
-                  "variable": "input",
-                  "to": {
-                    "key": "Basics/InputSwitch/Options Screen"
-                  }
-                },
-                {
-                  "variable": "authorsMessageHandler",
-                  "to": {
-                    "key": ":InputHandler",
-                    "asset": {
-                      "key": "Basics/InterruptHandler/AuthorsMessageInterrupt"
-                    }
-                  }
-                },
-                {
-                  "variable": "menuIdleTimer",
-                  "to": {
-                    "key": "Basics/Sequence/Menu Idle Timer/Instance"
-                  }
-                }
-              ],
-              "arguments": [],
-              "code": "screen:setScreen(nil)\ndecor:setScreen(creditsMessage)\ninput:setInputHandler(authorsMessageHandler)\nmenuIdleTimer:pause()"
-            },
             "StartProject": {
-              "name": "StartProject",
               "bindings": [
                 {
                   "variable": "decor",
@@ -761,7 +730,6 @@
               "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nif mission:isReady() then\n  screen:setScreen(nil)\n  input:setInputHandler(missionInput)\n  project:setScreen(missionScreen)\n  decor:setScreen(nil)\n  mission:setRunning(true)\n  mission:setProperty(\"Mode\", mode:getValue())\n  demo:setRunning(false)\nelse\n  gameLoading = true\n  screen:setScreen(loading)\n  input:setInputHandler(nil)\nend\n\n-- Set current mission\ncurrentMission = mission\ncurrentMissionInput = missionInput\ncurrentMissionScreen = missionScreen\n\n-- Stop menu idle timer\nmenuIdleTimer:pause()\n\n-- Prevent menu interrupt from triggering.\ninterrupt:setInputHandler(nil)"
             },
             "StartProjectNew": {
-              "name": "StartProjectNew",
               "bindings": [
                 {
                   "variable": "decor",
@@ -836,6 +804,36 @@
                 }
               ],
               "code": "while #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\n\nmission:prepare(projectArgs, false)\n\nif mission:isReady() then\n  screen:setScreen(nil)\n  input:setInputHandler(missionInput)\n  project:setScreen(missionScreen)\n  decor:setScreen(nil)\n  mission:setRunning(true)\n  demo:setRunning(false)\nelse\n  gameLoading = true\n  screen:setScreen(loading)\n  input:setInputHandler(nil)\nend\n\n-- Set current mission\ncurrentMission = mission\ncurrentMissionInput = missionInput\ncurrentMissionScreen = missionScreen\n\n-- Stop menu idle timer\nmenuIdleTimer:pause()\n\n-- Prevent menu interrupt from triggering.\ninterrupt:setInputHandler(nil)"
+            },
+            "UIQuit": {
+              "bindings": [
+                {
+                  "variable": "project",
+                  "to": {
+                    "key": "Project"
+                  }
+                },
+                {
+                  "variable": "currentMission",
+                  "to": {
+                    "key": ":String",
+                    "asset": {
+                      "key": "Basics/String/Mission"
+                    }
+                  }
+                },
+                {
+                  "variable": "currentMissionUser",
+                  "to": {
+                    "key": ":String",
+                    "asset": {
+                      "key": "Basics/String/UserMission"
+                    }
+                  }
+                }
+              ],
+              "arguments": [],
+              "code": "settingsDocument = project:createDocument()\nsettingsObject = settingsDocument:addObject(\"Settings\")\nsettingsObject:addString(\"project\", currentMission:getValue(), \"\")\nsettingsObject:addString(\"user\", currentMissionUser:getValue(), \"\")\nsettingsFilePath = project:getUserDataPath() .. \"/settings.json\"\nsettingsDocument:save(settingsFilePath)\nproject:finish(false)\n"
             }
           },
           "omissions": []
@@ -871,21 +869,6 @@
         },
         "InterruptHandler": {
           "instances": {
-            "MenuTimeOutHandler": {
-              "onInput": {
-                "key": "Basics/Script",
-                "bindings": [
-                  {
-                    "variable": "menuIdleTimer",
-                    "to": {
-                      "key": "Basics/Sequence/Menu Idle Timer/Instance"
-                    }
-                  }
-                ],
-                "code": "menuIdleTimer:setTime(0)\nmenuIdleTimer:play()"
-              },
-              "consume": false
-            },
             "AttractInterrupt": {
               "onInput": {
                 "key": "Basics/Script",
@@ -1001,6 +984,21 @@
                 ],
                 "code": "popScreenFunc:execute()\ndecor:setScreen(title)"
               }
+            },
+            "MenuTimeOutHandler": {
+              "onInput": {
+                "key": "Basics/Script",
+                "bindings": [
+                  {
+                    "variable": "menuIdleTimer",
+                    "to": {
+                      "key": "Basics/Sequence/Menu Idle Timer/Instance"
+                    }
+                  }
+                ],
+                "code": "menuIdleTimer:setTime(0)\nmenuIdleTimer:play()"
+              },
+              "consume": false
             }
           },
           "omissions": []
@@ -1008,6 +1006,8 @@
         "Project": {
           "instances": {
             "Demo": {
+              "file": "Projects/UserHangworld.isorealms",
+              "user": true,
               "onFinish": {
                 "key": "Basics/Script",
                 "bindings": [
@@ -1021,29 +1021,6 @@
                 "code": "demo:setRunning(true)\ndemo:reset()"
               },
               "onReady": {
-                "key": "None"
-              },
-              "options": {
-                "key": "Basics/ProjectOptions/Demo"
-              }
-            },
-            "Replay": {
-              "onFinish": {
-                "key": "Basics/Function/GameEnd",
-                "bindings": []
-              },
-              "onReady": {
-                "key": "Basics/Function/MissionReady",
-                "bindings": [
-                  {
-                    "argument": "mission",
-                    "to": {
-                      "key": "Basics/Project/Replay"
-                    }
-                  }
-                ]
-              },
-              "options": {
                 "key": "None"
               }
             },
@@ -1062,9 +1039,6 @@
                     }
                   }
                 ]
-              },
-              "options": {
-                "key": "None"
               }
             },
             "Mission": {
@@ -1082,9 +1056,23 @@
                     }
                   }
                 ]
+              }
+            },
+            "Replay": {
+              "onFinish": {
+                "key": "Basics/Function/GameEnd",
+                "bindings": []
               },
-              "options": {
-                "key": "None"
+              "onReady": {
+                "key": "Basics/Function/MissionReady",
+                "bindings": [
+                  {
+                    "argument": "mission",
+                    "to": {
+                      "key": "Basics/Project/Replay"
+                    }
+                  }
+                ]
               }
             }
           },
@@ -1092,11 +1080,39 @@
         },
         "Sequence": {
           "instances": {
+            "High Score Timer": {
+              "playing": true,
+              "speed": {
+                "key": "Literal",
+                "value": 1.0
+              },
+              "tracks": [
+                {
+                  "track": {
+                    "key": "Action",
+                    "events": [
+                      {
+                        "delay": 10000,
+                        "execute": {
+                          "key": "Basics/Function/StartMessage",
+                          "bindings": []
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "instances": [
+                {
+                  "name": "Instance"
+                }
+              ]
+            },
             "Menu Idle Timer": {
               "playing": true,
               "speed": {
                 "key": "Literal",
-                "value": 1
+                "value": 1.0
               },
               "tracks": [
                 {
@@ -1149,38 +1165,11 @@
                 }
               ]
             },
-            "Title Timer": {
-              "playing": true,
-              "speed": {
-                "key": "Literal",
-                "value": 1
-              },
-              "tracks": [
-                {
-                  "track": {
-                    "key": "Action",
-                    "events": [
-                      {
-                        "delay": 10000,
-                        "execute": {
-                          "key": "None"
-                        }
-                      }
-                    ]
-                  }
-                }
-              ],
-              "instances": [
-                {
-                  "name": "Instance"
-                }
-              ]
-            },
             "Message Timer": {
               "playing": true,
               "speed": {
                 "key": "Literal",
-                "value": 1
+                "value": 1.0
               },
               "tracks": [
                 {
@@ -1204,44 +1193,11 @@
                 }
               ]
             },
-            "High Score Timer": {
-              "playing": true,
-              "speed": {
-                "key": "Literal",
-                "value": 1
-              },
-              "tracks": [
-                {
-                  "track": {
-                    "key": "Action",
-                    "events": [
-                      {
-                        "delay": 10000,
-                        "execute": {
-                          "key": "Basics/Function/StartMessage",
-                          "bindings": []
-                        }
-                      }
-                    ]
-                  }
-                }
-              ],
-              "instances": [
-                {
-                  "name": "Instance"
-                }
-              ]
-            },
             "Splash": {
               "playing": true,
-              "instances": [
-                {
-                  "name": "Instance"
-                }
-              ],
               "speed": {
                 "key": "Literal",
-                "value": 1
+                "value": 1.0
               },
               "tracks": [
                 {
@@ -1250,7 +1206,7 @@
                     "name": "Colour",
                     "start": {
                       "key": "Literal",
-                      "alpha": 1
+                      "alpha": 1.0
                     },
                     "events": [
                       {
@@ -1269,7 +1225,7 @@
                         "duration": 5000,
                         "target": {
                           "key": "Literal",
-                          "alpha": 1
+                          "alpha": 1.0
                         }
                       },
                       {
@@ -1295,6 +1251,38 @@
                     ]
                   }
                 }
+              ],
+              "instances": [
+                {
+                  "name": "Instance"
+                }
+              ]
+            },
+            "Title Timer": {
+              "playing": true,
+              "speed": {
+                "key": "Literal",
+                "value": 1.0
+              },
+              "tracks": [
+                {
+                  "track": {
+                    "key": "Action",
+                    "events": [
+                      {
+                        "delay": 10000,
+                        "execute": {
+                          "key": "None"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "instances": [
+                {
+                  "name": "Instance"
+                }
               ]
             }
           },
@@ -1302,23 +1290,23 @@
         },
         "String": {
           "instances": {
-            "MessageText3": {},
+            "Error": {
+              "value": "Error"
+            },
             "HighScoreText": {
               "value": "Master Cartographers of Hangworld"
+            },
+            "MessageText1": {},
+            "MessageText2": {},
+            "MessageText3": {},
+            "Mission": {
+              "value": "Projects/Spindizzy/Worlds/Hangworld.isorealms"
             },
             "MissionText": {
               "value": "Spindizzy"
             },
-            "MessageText2": {},
-            "MessageText1": {},
             "UserMission": {
               "value": "false"
-            },
-            "Mission": {
-              "value": "Projects/Spindizzy/Worlds/Hangworld.isorealms"
-            },
-            "Error": {
-              "value": "Error"
             }
           },
           "omissions": []
@@ -1327,174 +1315,6 @@
       "UI": {
         "Layout": {
           "instances": {
-            "Splash": {
-              "components": [
-                {
-                  "id": "TextSplash1",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Center",
-                    "value": {
-                      "key": "Literal",
-                      "value": "IsoRealms Spindizzy is released in support of peace in Israel,"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.15000000596046448
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.05000000074505806
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                },
-                {
-                  "id": "TextSplash2",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Center",
-                    "value": {
-                      "key": "Literal",
-                      "value": "and opposition of hate, antisemitism, and misinformation"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.05000000074505806
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.05000000074505806
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                },
-                {
-                  "id": "TextSplash3",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Center",
-                    "value": {
-                      "key": "Literal"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.05000000074505806
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.15000000596046448
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                }
-              ]
-            },
             "AuthorsMessage": {
               "components": [
                 {
@@ -1558,10 +1378,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1576,11 +1396,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.23000000417232513
+                      "value": -0.23000000417232514
                     }
                   },
                   "left": {
@@ -1589,7 +1409,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -1598,7 +1418,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -1616,10 +1436,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1628,17 +1448,17 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.23000000417232513
+                      "value": -0.23000000417232514
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.30000001192092896
+                      "value": -0.30000001192092898
                     }
                   },
                   "left": {
@@ -1647,7 +1467,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -1656,7 +1476,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -1674,10 +1494,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1686,13 +1506,13 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.30000001192092896
+                      "value": -0.30000001192092898
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -1705,7 +1525,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -1714,7 +1534,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -1732,10 +1552,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1750,7 +1570,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -1763,7 +1583,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -1772,7 +1592,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -1790,10 +1610,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1808,7 +1628,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -1821,7 +1641,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -1830,7 +1650,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -1848,10 +1668,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1866,7 +1686,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -1879,7 +1699,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -1888,7 +1708,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -1906,10 +1726,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1924,7 +1744,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -1937,7 +1757,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -1946,7 +1766,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -1964,10 +1784,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -1982,11 +1802,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.8600000143051147
+                      "value": -0.8600000143051148
                     }
                   },
                   "left": {
@@ -1995,7 +1815,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2004,7 +1824,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2022,10 +1842,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2034,13 +1854,13 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.8600000143051147
+                      "value": -0.8600000143051148
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2053,7 +1873,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2062,7 +1882,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2080,10 +1900,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2098,11 +1918,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1
+                      "value": -1.0
                     }
                   },
                   "left": {
@@ -2111,7 +1931,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2120,7 +1940,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2138,10 +1958,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2150,17 +1970,17 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1
+                      "value": -1.0
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.0700000524520874
+                      "value": -1.0700000524520875
                     }
                   },
                   "left": {
@@ -2169,7 +1989,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2178,7 +1998,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2196,10 +2016,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2208,13 +2028,13 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.0700000524520874
+                      "value": -1.0700000524520875
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2227,7 +2047,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2236,7 +2056,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2254,10 +2074,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2272,11 +2092,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.2799999713897705
+                      "value": -1.2799999713897706
                     }
                   },
                   "left": {
@@ -2285,7 +2105,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2294,7 +2114,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2312,10 +2132,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2324,13 +2144,13 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.2799999713897705
+                      "value": -1.2799999713897706
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2343,7 +2163,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2352,7 +2172,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2370,10 +2190,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2388,7 +2208,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2401,7 +2221,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2410,7 +2230,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2428,10 +2248,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2446,7 +2266,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2459,7 +2279,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2468,7 +2288,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2486,10 +2306,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2504,11 +2324,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.6299999952316284
+                      "value": -1.6299999952316285
                     }
                   },
                   "left": {
@@ -2517,7 +2337,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2526,7 +2346,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2544,10 +2364,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2556,17 +2376,17 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.6299999952316284
+                      "value": -1.6299999952316285
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.7000000476837158
+                      "value": -1.7000000476837159
                     }
                   },
                   "left": {
@@ -2575,7 +2395,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2584,7 +2404,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2616,7 +2436,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2629,7 +2449,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2638,7 +2458,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 }
@@ -2707,10 +2527,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2725,11 +2545,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.23000000417232513
+                      "value": -0.23000000417232514
                     }
                   },
                   "left": {
@@ -2738,7 +2558,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2747,7 +2567,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2765,10 +2585,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2777,17 +2597,17 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.23000000417232513
+                      "value": -0.23000000417232514
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.30000001192092896
+                      "value": -0.30000001192092898
                     }
                   },
                   "left": {
@@ -2796,7 +2616,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2805,7 +2625,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2823,10 +2643,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2841,7 +2661,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2854,7 +2674,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2863,7 +2683,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2881,10 +2701,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2899,7 +2719,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2912,7 +2732,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2921,7 +2741,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2939,10 +2759,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -2957,7 +2777,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -2970,7 +2790,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -2979,7 +2799,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -2997,10 +2817,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3015,7 +2835,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3028,7 +2848,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3037,7 +2857,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3055,10 +2875,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3073,11 +2893,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.8600000143051147
+                      "value": -0.8600000143051148
                     }
                   },
                   "left": {
@@ -3086,7 +2906,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3095,7 +2915,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3113,10 +2933,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3125,13 +2945,13 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.8600000143051147
+                      "value": -0.8600000143051148
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3144,7 +2964,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3153,7 +2973,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3171,10 +2991,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3189,11 +3009,11 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1
+                      "value": -1.0
                     }
                   },
                   "left": {
@@ -3202,7 +3022,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3211,7 +3031,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3229,10 +3049,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3241,17 +3061,17 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1
+                      "value": -1.0
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.0700000524520874
+                      "value": -1.0700000524520875
                     }
                   },
                   "left": {
@@ -3260,7 +3080,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3269,7 +3089,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3287,10 +3107,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3299,13 +3119,13 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.0700000524520874
+                      "value": -1.0700000524520875
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3318,7 +3138,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3327,7 +3147,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3345,10 +3165,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3363,7 +3183,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3376,7 +3196,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3385,7 +3205,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3403,10 +3223,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3415,13 +3235,13 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -1.2799999713897705
+                      "value": -1.2799999713897706
                     }
                   },
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3434,7 +3254,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3443,7 +3263,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3461,10 +3281,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3479,7 +3299,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3492,7 +3312,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3501,7 +3321,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3519,10 +3339,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3537,7 +3357,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3550,7 +3370,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3559,7 +3379,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 },
@@ -3591,7 +3411,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 1
+                      "value": 1.0
                     },
                     "offset": {
                       "key": "Absolute",
@@ -3604,7 +3424,7 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     }
                   },
                   "right": {
@@ -3613,37 +3433,38 @@
                     },
                     "offset": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     }
                   }
                 }
               ]
             },
-            "Message": {
+            "ErrorMessage": {
               "components": [
                 {
-                  "id": "TextMessage1",
+                  "id": "ErrorHeading",
                   "screen": {
                     "key": "UI/Text",
                     "alignment": "Center",
                     "value": {
-                      "key": "Basics/String/MessageText1"
+                      "key": "Literal",
+                      "value": "Mission cannot be started due to error:"
                     },
                     "font": {
                       "key": "Basics/Font/Menu"
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
                     "location": {
                       "key": "Absolute",
-                      "value": 0.15000000596046448
+                      "value": 0.25
                     },
                     "offset": {
                       "key": "Absolute"
@@ -3652,7 +3473,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": 0.05000000074505806
+                      "value": 0.15000000596046449
                     },
                     "offset": {
                       "key": "Absolute"
@@ -3676,28 +3497,28 @@
                   }
                 },
                 {
-                  "id": "TextMessage2",
+                  "id": "ErrorMessage",
                   "screen": {
                     "key": "UI/Text",
                     "alignment": "Center",
                     "value": {
-                      "key": "Basics/String/MessageText2"
+                      "key": "Basics/String/Error"
                     },
                     "font": {
                       "key": "Basics/Font/Menu"
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
                     "location": {
                       "key": "Absolute",
-                      "value": 0.05000000074505806
+                      "value": 0.02500000037252903
                     },
                     "offset": {
                       "key": "Absolute"
@@ -3706,7 +3527,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": -0.05000000074505806
+                      "value": -0.02500000037252903
                     },
                     "offset": {
                       "key": "Absolute"
@@ -3730,28 +3551,29 @@
                   }
                 },
                 {
-                  "id": "TextMessage3",
+                  "id": "ErrorPrompt",
                   "screen": {
                     "key": "UI/Text",
                     "alignment": "Center",
                     "value": {
-                      "key": "Basics/String/MessageText3"
+                      "key": "Literal",
+                      "value": "Press enter to continue"
                     },
                     "font": {
                       "key": "Basics/Font/Menu"
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
                     "location": {
                       "key": "Absolute",
-                      "value": -0.05000000074505806
+                      "value": -0.15000000596046449
                     },
                     "offset": {
                       "key": "Absolute"
@@ -3760,7 +3582,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": -0.15000000596046448
+                      "value": -0.25
                     },
                     "offset": {
                       "key": "Absolute"
@@ -3777,121 +3599,6 @@
                   "right": {
                     "location": {
                       "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                }
-              ]
-            },
-            "Title": {
-              "components": [
-                {
-                  "id": "TextTitle",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Center",
-                    "value": {
-                      "key": "Basics/String/MissionText"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.8999999761581421
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.699999988079071
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                },
-                {
-                  "id": "TextVersion",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Left",
-                    "value": {
-                      "key": "Literal",
-                      "value": "Early Access Version 0.7"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.8999999761581421
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.949999988079071
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.949999988079071
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.949999988079071
                     },
                     "offset": {
                       "key": "Absolute"
@@ -3915,10 +3622,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -3970,10 +3677,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4027,10 +3734,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4084,10 +3791,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4141,10 +3848,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4198,10 +3905,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4255,10 +3962,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4312,10 +4019,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4369,10 +4076,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4426,10 +4133,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4483,10 +4190,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4540,10 +4247,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4597,16 +4304,16 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
                     "location": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     },
                     "offset": {
                       "key": "Absolute"
@@ -4654,16 +4361,16 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
                     "location": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     },
                     "offset": {
                       "key": "Absolute"
@@ -4711,16 +4418,16 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
                     "location": {
                       "key": "Absolute",
-                      "value": 0.20000000298023224
+                      "value": 0.20000000298023225
                     },
                     "offset": {
                       "key": "Absolute"
@@ -4768,10 +4475,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4825,10 +4532,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4882,10 +4589,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4939,10 +4646,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -4957,7 +4664,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     },
                     "offset": {
                       "key": "Absolute"
@@ -4996,10 +4703,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5014,7 +4721,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     },
                     "offset": {
                       "key": "Absolute"
@@ -5053,10 +4760,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5071,7 +4778,7 @@
                   "bottom": {
                     "location": {
                       "key": "Absolute",
-                      "value": -0.20000000298023224
+                      "value": -0.20000000298023225
                     },
                     "offset": {
                       "key": "Absolute"
@@ -5110,10 +4817,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5167,10 +4874,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5224,10 +4931,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5281,10 +4988,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5338,10 +5045,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5395,10 +5102,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5452,10 +5159,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5509,10 +5216,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5566,10 +5273,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5623,10 +5330,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5680,10 +5387,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5737,10 +5444,10 @@
                     },
                     "colour": {
                       "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
                     }
                   },
                   "top": {
@@ -5774,174 +5481,6 @@
                     "location": {
                       "key": "Absolute",
                       "value": 0.8999999761581421
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                }
-              ]
-            },
-            "ErrorMessage": {
-              "components": [
-                {
-                  "id": "ErrorHeading",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Center",
-                    "value": {
-                      "key": "Literal",
-                      "value": "Mission cannot be started due to error:"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.25
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.15000000596046448
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                },
-                {
-                  "id": "ErrorMessage",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Center",
-                    "value": {
-                      "key": "Basics/String/Error"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": 0.02500000037252903
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.02500000037252903
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  }
-                },
-                {
-                  "id": "ErrorPrompt",
-                  "screen": {
-                    "key": "UI/Text",
-                    "alignment": "Center",
-                    "value": {
-                      "key": "Literal",
-                      "value": "Press enter to continue"
-                    },
-                    "font": {
-                      "key": "Basics/Font/Menu"
-                    },
-                    "colour": {
-                      "key": "Literal",
-                      "red": 1,
-                      "green": 1,
-                      "blue": 1,
-                      "alpha": 1
-                    }
-                  },
-                  "top": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.15000000596046448
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "bottom": {
-                    "location": {
-                      "key": "Absolute",
-                      "value": -0.25
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "left": {
-                    "location": {
-                      "key": "Absolute"
-                    },
-                    "offset": {
-                      "key": "Absolute"
-                    }
-                  },
-                  "right": {
-                    "location": {
-                      "key": "Absolute"
                     },
                     "offset": {
                       "key": "Absolute"
@@ -6148,12 +5687,547 @@
                   }
                 }
               ]
+            },
+            "Message": {
+              "components": [
+                {
+                  "id": "TextMessage1",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Center",
+                    "value": {
+                      "key": "Basics/String/MessageText1"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.15000000596046449
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                },
+                {
+                  "id": "TextMessage2",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Center",
+                    "value": {
+                      "key": "Basics/String/MessageText2"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                },
+                {
+                  "id": "TextMessage3",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Center",
+                    "value": {
+                      "key": "Basics/String/MessageText3"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.15000000596046449
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                }
+              ]
+            },
+            "Splash": {
+              "components": [
+                {
+                  "id": "TextSplash1",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Center",
+                    "value": {
+                      "key": "Literal",
+                      "value": "IsoRealms Spindizzy is released in support of peace in Israel,"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.15000000596046449
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                },
+                {
+                  "id": "TextSplash2",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Center",
+                    "value": {
+                      "key": "Literal",
+                      "value": "and opposition of hate, antisemitism, and misinformation"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                },
+                {
+                  "id": "TextSplash3",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Center",
+                    "value": {
+                      "key": "Literal"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.05000000074505806
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.15000000596046449
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                }
+              ]
+            },
+            "Title": {
+              "components": [
+                {
+                  "id": "TextTitle",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Center",
+                    "value": {
+                      "key": "Basics/String/MissionText"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.8999999761581421
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.699999988079071
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute"
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                },
+                {
+                  "id": "TextVersion",
+                  "screen": {
+                    "key": "UI/Text",
+                    "alignment": "Left",
+                    "value": {
+                      "key": "Literal",
+                      "value": "Early Access Version 0.7"
+                    },
+                    "font": {
+                      "key": "Basics/Font/Menu"
+                    },
+                    "colour": {
+                      "key": "Literal",
+                      "red": 1.0,
+                      "green": 1.0,
+                      "blue": 1.0,
+                      "alpha": 1.0
+                    }
+                  },
+                  "top": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.8999999761581421
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "bottom": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.949999988079071
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "left": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": -0.949999988079071
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  },
+                  "right": {
+                    "location": {
+                      "key": "Absolute",
+                      "value": 0.949999988079071
+                    },
+                    "offset": {
+                      "key": "Absolute"
+                    }
+                  }
+                }
+              ]
             }
           },
           "omissions": []
         },
         "Menu": {
           "instances": {
+            "Links": {
+              "colour": {
+                "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
+              },
+              "font": {
+                "key": "Basics/Font/Menu"
+              },
+              "onExit": {
+                "key": "Basics/Function/PopScreen",
+                "bindings": []
+              },
+              "options": [
+                {
+                  "item": {
+                    "key": "Action",
+                    "label": "Go to IDF YouTube Channel",
+                    "onSelection": {
+                      "key": "Basics/Script",
+                      "bindings": [
+                        {
+                          "variable": "project",
+                          "to": {
+                            "key": "Project"
+                          }
+                        }
+                      ],
+                      "code": "project:executeCommand(\"start https://www.youtube.com/@IsraelDefenseForces\")"
+                    }
+                  }
+                },
+                {
+                  "item": {
+                    "key": "Action",
+                    "label": "Go to Travelling Israel",
+                    "onSelection": {
+                      "key": "Basics/Script",
+                      "bindings": [
+                        {
+                          "variable": "project",
+                          "to": {
+                            "key": "Project"
+                          }
+                        }
+                      ],
+                      "code": "project:executeCommand(\"start https://www.travelingisrael.com/\")"
+                    }
+                  }
+                },
+                {
+                  "item": {
+                    "key": "Action",
+                    "label": "Go to Jewish Breaking News",
+                    "onSelection": {
+                      "key": "Basics/Script",
+                      "bindings": [
+                        {
+                          "variable": "project",
+                          "to": {
+                            "key": "Project"
+                          }
+                        }
+                      ],
+                      "code": "project:executeCommand(\"start https://chat.whatsapp.com/IYpx98S6Q5GD05vAeW3OgG\")"
+                    }
+                  }
+                },
+                {
+                  "item": {
+                    "key": "Action",
+                    "label": "Go to WorldNews Subreddit",
+                    "onSelection": {
+                      "key": "Basics/Script",
+                      "bindings": [
+                        {
+                          "variable": "project",
+                          "to": {
+                            "key": "Project"
+                          }
+                        }
+                      ],
+                      "code": "project:executeCommand(\"start https://www.reddit.com/r/worldnews/\")"
+                    }
+                  }
+                }
+              ]
+            },
             "Main": {
               "colour": {
                 "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
@@ -6465,196 +6539,6 @@
                 }
               ]
             },
-            "PlayMode": {
-              "colour": {
-                "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
-              },
-              "font": {
-                "key": "Basics/Font/Menu"
-              },
-              "onExit": {
-                "key": "Basics/Function/PopScreen",
-                "bindings": []
-              },
-              "options": [
-                {
-                  "item": {
-                    "key": "Action",
-                    "label": "Play Arcade Mode",
-                    "onSelection": {
-                      "key": "Basics/Function/StartProject",
-                      "bindings": [
-                        {
-                          "argument": "mission",
-                          "to": {
-                            "key": "Basics/Project/Mission"
-                          }
-                        },
-                        {
-                          "argument": "missionInput",
-                          "to": {
-                            "key": ":InputHandler",
-                            "asset": {
-                              "key": "Basics/Project/Mission"
-                            }
-                          }
-                        },
-                        {
-                          "argument": "missionScreen",
-                          "to": {
-                            "key": ":Screen",
-                            "asset": {
-                              "key": "Basics/Project/Mission"
-                            }
-                          }
-                        },
-                        {
-                          "argument": "mode",
-                          "to": {
-                            "key": ":String",
-                            "asset": {
-                              "key": "Literal",
-                              "value": "Arcade"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                },
-                {
-                  "item": {
-                    "key": "Action",
-                    "label": "Play Explorer Mode",
-                    "onSelection": {
-                      "key": "Basics/Function/StartProject",
-                      "bindings": [
-                        {
-                          "argument": "mission",
-                          "to": {
-                            "key": "Basics/Project/Mission"
-                          }
-                        },
-                        {
-                          "argument": "missionInput",
-                          "to": {
-                            "key": ":InputHandler",
-                            "asset": {
-                              "key": "Basics/Project/Mission"
-                            }
-                          }
-                        },
-                        {
-                          "argument": "missionScreen",
-                          "to": {
-                            "key": ":Screen",
-                            "asset": {
-                              "key": "Basics/Project/Mission"
-                            }
-                          }
-                        },
-                        {
-                          "argument": "mode",
-                          "to": {
-                            "key": ":String",
-                            "asset": {
-                              "key": "Literal",
-                              "value": "Explorer"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              ]
-            },
-            "Links": {
-              "colour": {
-                "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
-              },
-              "font": {
-                "key": "Basics/Font/Menu"
-              },
-              "onExit": {
-                "key": "Basics/Function/PopScreen",
-                "bindings": []
-              },
-              "options": [
-                {
-                  "item": {
-                    "key": "Action",
-                    "label": "Go to IDF YouTube Channel",
-                    "onSelection": {
-                      "key": "Basics/Script",
-                      "bindings": [
-                        {
-                          "variable": "project",
-                          "to": {
-                            "key": "Project"
-                          }
-                        }
-                      ],
-                      "code": "project:executeCommand(\"start https://www.youtube.com/@IsraelDefenseForces\")"
-                    }
-                  }
-                },
-                {
-                  "item": {
-                    "key": "Action",
-                    "label": "Go to Travelling Israel",
-                    "onSelection": {
-                      "key": "Basics/Script",
-                      "bindings": [
-                        {
-                          "variable": "project",
-                          "to": {
-                            "key": "Project"
-                          }
-                        }
-                      ],
-                      "code": "project:executeCommand(\"start https://www.travelingisrael.com/\")"
-                    }
-                  }
-                },
-                {
-                  "item": {
-                    "key": "Action",
-                    "label": "Go to Jewish Breaking News",
-                    "onSelection": {
-                      "key": "Basics/Script",
-                      "bindings": [
-                        {
-                          "variable": "project",
-                          "to": {
-                            "key": "Project"
-                          }
-                        }
-                      ],
-                      "code": "project:executeCommand(\"start https://chat.whatsapp.com/IYpx98S6Q5GD05vAeW3OgG\")"
-                    }
-                  }
-                },
-                {
-                  "item": {
-                    "key": "Action",
-                    "label": "Go to WorldNews Subreddit",
-                    "onSelection": {
-                      "key": "Basics/Script",
-                      "bindings": [
-                        {
-                          "variable": "project",
-                          "to": {
-                            "key": "Project"
-                          }
-                        }
-                      ],
-                      "code": "project:executeCommand(\"start https://www.reddit.com/r/worldnews/\")"
-                    }
-                  }
-                }
-              ]
-            },
             "MissionSelect": {
               "colour": {
                 "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
@@ -6772,6 +6656,110 @@
                             "asset": {
                               "key": "Literal",
                               "value": "user"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "PlayMode": {
+              "colour": {
+                "key": "Basics/Sequence/Menu Selection Colour/Instance/Colour"
+              },
+              "font": {
+                "key": "Basics/Font/Menu"
+              },
+              "onExit": {
+                "key": "Basics/Function/PopScreen",
+                "bindings": []
+              },
+              "options": [
+                {
+                  "item": {
+                    "key": "Action",
+                    "label": "Play Arcade Mode",
+                    "onSelection": {
+                      "key": "Basics/Function/StartProject",
+                      "bindings": [
+                        {
+                          "argument": "mission",
+                          "to": {
+                            "key": "Basics/Project/Mission"
+                          }
+                        },
+                        {
+                          "argument": "missionInput",
+                          "to": {
+                            "key": ":InputHandler",
+                            "asset": {
+                              "key": "Basics/Project/Mission"
+                            }
+                          }
+                        },
+                        {
+                          "argument": "missionScreen",
+                          "to": {
+                            "key": ":Screen",
+                            "asset": {
+                              "key": "Basics/Project/Mission"
+                            }
+                          }
+                        },
+                        {
+                          "argument": "mode",
+                          "to": {
+                            "key": ":String",
+                            "asset": {
+                              "key": "Literal",
+                              "value": "Arcade"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "item": {
+                    "key": "Action",
+                    "label": "Play Explorer Mode",
+                    "onSelection": {
+                      "key": "Basics/Function/StartProject",
+                      "bindings": [
+                        {
+                          "argument": "mission",
+                          "to": {
+                            "key": "Basics/Project/Mission"
+                          }
+                        },
+                        {
+                          "argument": "missionInput",
+                          "to": {
+                            "key": ":InputHandler",
+                            "asset": {
+                              "key": "Basics/Project/Mission"
+                            }
+                          }
+                        },
+                        {
+                          "argument": "missionScreen",
+                          "to": {
+                            "key": ":Screen",
+                            "asset": {
+                              "key": "Basics/Project/Mission"
+                            }
+                          }
+                        },
+                        {
+                          "argument": "mode",
+                          "to": {
+                            "key": ":String",
+                            "asset": {
+                              "key": "Literal",
+                              "value": "Explorer"
                             }
                           }
                         }
