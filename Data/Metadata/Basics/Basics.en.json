@@ -1,6 +1,17 @@
 {
   "description": "Basic functionality for use in any application",
   "assets": {
+    "Script": {
+      "description": "Script written in Lua.",
+      "properties": {
+        "Bindings": {"name": "Bindings", "description": "Bind IsoRealms objects to Lua variables for use in this function."},
+        "Binding": {"name": "Binding", "description": "Binds an IsoRealm objects to a Lua variable for use in this function."},
+        "BindingValue": {"name": "What", "description": "The IsoRealms object to bind."},
+        "BindingName": {"name": "Name", "description": "Lua variable name for the bound object."},
+        "BindingAdd": {"name": "Binding", "description": "Add a binding to this function."},
+        "Code": {"name": "Code", "description": "The Lua code of this script."}
+      }
+    },
     "SequenceTrackAction": {
       "description": "A track that can be used to trigger actions.",
       "properties": {

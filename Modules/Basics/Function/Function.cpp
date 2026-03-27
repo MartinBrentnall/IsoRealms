@@ -143,7 +143,7 @@ namespace IsoRealms::Basics {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
         });
       }
-      owner.createPropertyAdd(metadata.getPropertyData("Binding"), "New...", [this, &owner, &metadata]() {
+      owner.createPropertyAdd(metadata.getPropertyData("BindingAdd"), "New...", [this, &owner, &metadata]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
         return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](PropertyMaker& owner) {
           return mNewBinding->getProperties(owner, metadata);
