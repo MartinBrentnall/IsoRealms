@@ -141,7 +141,7 @@ namespace IsoRealms {
 
       // Events might have accumulated during project construction, so lets flush it before starting.
       sf::Event mEvent;
-      while (pollEvent(mEvent));
+      while (cWindow.pollEvent(mEvent));
 
       // Project execution main loop.  Continues until project finish callback.
       unsigned int mLeftoverMilliseconds = 0;
@@ -167,7 +167,7 @@ namespace IsoRealms {
         if (mMillisecondsPassed > 0) {
 
           // Process all pending input events.
-          while (pollEvent(mEvent)) {
+          while (cWindow.pollEvent(mEvent)) {
             getHatHandler().input(mEvent);
             if (mEvent.type == sf::Event::Closed) {
               mProject.requestQuit();
@@ -202,7 +202,7 @@ namespace IsoRealms {
           glMatrixMode(GL_PROJECTION);
           glPopMatrix();
           glPopAttrib();
-          display();
+          cWindow.display();
         }
         mPreviousTime = mCurrentTime;
         cleanUp();
@@ -240,14 +240,6 @@ namespace IsoRealms {
 
   JSONDocument Application::openDocument(const std::string& name) {
     return JSONDocument(name, true);
-  }
-
-  bool Application::pollEvent(sf::Event& event) {
-    return cWindow.pollEvent(event);
-  }
-
-  void Application::display() {
-    cWindow.display();
   }
 
   void Application::loop(int threadID) {
@@ -463,6 +455,9 @@ namespace IsoRealms {
 
     // Enable a nice alpha blending effect.
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Enable VSync.
+    cWindow.setVerticalSyncEnabled(true);
 
     glViewport(0, 0, cAvailableResolutions[cSelectedResolution].getWidth(), cAvailableResolutions[cSelectedResolution].getHeight());
   }

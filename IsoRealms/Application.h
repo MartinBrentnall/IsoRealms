@@ -208,9 +208,6 @@ namespace IsoRealms {
     JSONDocument createDocument();
     JSONDocument openDocument(const std::string& name);
 
-    bool pollEvent(sf::Event& event);
-    void display();
-
     /**
      * Main loop function for threads in the pool.  This should not be called
      * by the main thread.
