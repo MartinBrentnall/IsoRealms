@@ -275,7 +275,7 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::execute() {
-//    std::cout << "\n\n\n\nExecuting \"" << cParent.cResourceData.getResourceName() << "\" on behalf of \"" << cOwner.getResourceData().getResourceID() << "\"" << std::endl;
+//    std::cout << "Executing function \"" << cParent.cResourceData.getResourceName() << "\" on behalf of owner \"" << cOwner.getResourceData().getResourceID() << "\"" << std::endl;
 //    std::cout << "===============================================================================" << std::endl << cParent.cDefCode << std::endl;
     for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
       std::string mBindFunctionName = "func" + Utils::toString(cParent.cDefID) + "_arg" + Utils::toString(i);

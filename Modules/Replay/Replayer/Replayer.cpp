@@ -21,7 +21,7 @@
 namespace IsoRealms::Replay {
   Replayer::Replayer(Replay& replay, IResourceData& data) :
             cResource(data),
-            cState(State::INACTIVE),
+            cRuntimeState(State::INACTIVE),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
@@ -30,31 +30,31 @@ namespace IsoRealms::Replay {
 
     // Read configuration.
     for (JSONValue mDigitalInputValue : object.getArray(JSON_DIGITAL_INPUTS)) {
-      cDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, data, mDigitalInputValue.getObject()));
+      cDefDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, data, mDigitalInputValue.getObject()));
     }
     for (JSONValue mAnalogueInputValue : object.getArray(JSON_ANALOGUE_INPUTS)) {
-      cAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, data, mAnalogueInputValue.getObject()));
+      cDefAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, data, mAnalogueInputValue.getObject()));
     }
   }
 
   void Replayer::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Replayer");
-    for (std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
+    for (std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
       mInput->registerAssets(assets);
     }
-    for (std::unique_ptr<AnalogueInput>& mInput : cAnalogueInputs) {
+    for (std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
       mInput->registerAssets(assets);
     }
   }
   
   void Replayer::save(JSONObject object) const {
     JSONArray mDigitalInputsArray = object.addArray(JSON_DIGITAL_INPUTS);
-    for (const std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
+    for (const std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
       JSONObject mDigitalInputObject = mDigitalInputsArray.addObject();
       mInput->save(mDigitalInputObject);
     }
     JSONArray mAnalogueInputsArray = object.addArray(JSON_ANALOGUE_INPUTS);
-    for (const std::unique_ptr<AnalogueInput>& mInput : cAnalogueInputs) {
+    for (const std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
       JSONObject mAnalogueInputObject = mAnalogueInputsArray.addObject();
       mInput->save(mAnalogueInputObject);
     }
@@ -69,26 +69,26 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(metadata.getPropertyData("DigitalInputAdd"), cDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &owner, &metadata](DigitalInput& digitalInput) {
+    owner.createPropertyArray(metadata.getPropertyData("DigitalInputAdd"), cDefDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &owner, &metadata](DigitalInput& digitalInput) {
       owner.createPropertyStruct(metadata.getPropertyData("DigitalInput"), digitalInput.getName(), [&metadata, &digitalInput](PropertyMaker& owner) {
         digitalInput.getProperties(owner, metadata);
       }, [this, &digitalInput]() {
-        Utils::removeElementUnique(cDigitalInputs, &digitalInput);
+        Utils::removeElementUnique(cDefDigitalInputs, &digitalInput);
         // TODO: Adjust ID's.
       });
     }, [this]()->DigitalInput& {
-      return *cDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, cResource));
+      return *cDefDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, cResource));
       // TODO: Adjust ID's.
     });
-    owner.createPropertyArray(metadata.getPropertyData("AnalogueInputAdd"), cAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &owner, &metadata](AnalogueInput& analogueInput) {
+    owner.createPropertyArray(metadata.getPropertyData("AnalogueInputAdd"), cDefAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &owner, &metadata](AnalogueInput& analogueInput) {
       owner.createPropertyStruct(metadata.getPropertyData("AnalogueInput"), analogueInput.getName(), [&metadata, &analogueInput](PropertyMaker& owner) {
         analogueInput.getProperties(owner, metadata);
       }, [this, &analogueInput]() {
-        Utils::removeElementUnique(cAnalogueInputs, &analogueInput);
+        Utils::removeElementUnique(cDefAnalogueInputs, &analogueInput);
         // TODO: Adjust ID's.
       });
     }, [this]()->AnalogueInput& {
-      return *cAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, cResource));
+      return *cDefAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, cResource));
       // TODO: Adjust ID's.
     });
   }
@@ -98,22 +98,22 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::updateInputs(unsigned int milliseconds) {
-    switch (cState) {
+    switch (cRuntimeState) {
       case State::RECORDING: {
         // Nothing to do.
         break;
       }
       
       case State::REPLAYING: {
-        while (cNextEvent.cTime == cElapsedTime) {
-          if (cNextEvent.cID < cDigitalInputs.size()) {
-            cDigitalInputs[cNextEvent.cID]->setRecordedState(cNextEvent.cState.cDigital);
+        while (cRuntimeNextEvent.cTime == cRuntimeElapsedTime) {
+          if (cRuntimeNextEvent.cID < cDefDigitalInputs.size()) {
+            cDefDigitalInputs[cRuntimeNextEvent.cID]->setRecordedState(cRuntimeNextEvent.cState.cDigital);
           } else {
-            cAnalogueInputs[cNextEvent.cID - cDigitalInputs.size()]->setRecordedState(cNextEvent.cState.cAnalogue);
+            cDefAnalogueInputs[cRuntimeNextEvent.cID - cDefDigitalInputs.size()]->setRecordedState(cRuntimeNextEvent.cState.cAnalogue);
           }
           readEvent();
         }
-        cElapsedTime += milliseconds;
+        cRuntimeElapsedTime += milliseconds;
         break;
       }
       
@@ -125,24 +125,10 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::updateRuntime(unsigned int milliseconds) {
-    switch (cState) {
+    switch (cRuntimeState) {
       case State::RECORDING: {
-        if (cElapsedTime == 0) {
-
-          // Construct date and time string for filename
-//          time_t mCurrentTime = time(0);
-//          struct tm* mNow = localtime(&mCurrentTime);
-//          std::stringstream mDateTimeReader;
-//          mDateTimeReader << std::setfill('0') << std::setw(2) << (mNow->tm_year - 100)
-//                                               << std::setw(2) << (mNow->tm_mon + 1)
-//                                               << std::setw(2) <<  mNow->tm_mday << "-"
-//                                               << std::setw(2) <<  mNow->tm_hour
-//                                               << std::setw(2) <<  mNow->tm_min
-//                                               << std::setw(2) <<  mNow->tm_sec;
-//          cFilenameString.setValue("Recordings/" + mDateTimeReader.str());
-          cOutput.open(cFilename, std::ios::out | std::ios::binary);
-        }
-        cElapsedTime += milliseconds;
+        cRuntimeElapsedTime += milliseconds;
+        break;
       }
       
       case State::REPLAYING: {
@@ -158,77 +144,60 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::reset() {
-    cElapsedTime = 0;
-    switch (cState) {
-      case State::RECORDING: {
-        if (cOutput.is_open()) {
-          cOutput.close();
-        }
-        break;
-      }
-      
-      case State::REPLAYING: {
-        cRecording   = std::ifstream(cFilename, std::ios::binary);
+    cRuntimeState = State::INACTIVE;
+    cRuntimeElapsedTime = 0;
+    if (cRuntimeRecordingOutput.is_open()) {
+      cRuntimeRecordingOutput.close();
+    }
+    if (cRuntimeRecordedInput.is_open()) {
+      cRuntimeRecordedInput.close();
+    }
+    cRuntimeNextEvent.cID = 0;
+    cRuntimeNextEvent.cState.cAnalogue = 0.0f;
+    cRuntimeNextEvent.cTime = 0;
 
-        // Obtain project file.
-        std::string mProjectFile;
-        size_t mLength;
-        cRecording.read(reinterpret_cast<char*>(&mLength), sizeof(mLength));
-        mProjectFile.resize(mLength);
-        cRecording.read(&mProjectFile[0], mLength);
-
-        // Obtain configuration file.
-        std::string mConfigurationFile;
-        cRecording.read(reinterpret_cast<char*>(&mLength), sizeof(mLength));
-        mConfigurationFile.resize(mLength);
-        cRecording.read(&mConfigurationFile[0], mLength);
-
-        // Reset inputs.
-        for (std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
-          mInput->setRecordedState(false);
-        }
-        for (std::unique_ptr<AnalogueInput>& mInput : cAnalogueInputs) {
-          mInput->setRecordedState(0.0f);
-        }
-
-        // Read first event.
-        readEvent();
-        break;
-      }
-      
-      case State::INACTIVE: {
-        // Nothing to do.
-        break;
-      }
+    // Reset all input states.
+    for (std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
+      mInput->reset();
+    }
+    for (std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
+      mInput->reset();
     }
   }
   
   void Replayer::setRecording(const std::string& file) {
-    cState = State::RECORDING;
+    cRuntimeState = State::RECORDING;
     Project& mProject = cResource.getProject();
     mProject.makeUserDataDirectory();
-    cFilename = mProject.getDataPath(true) + "/" + file;
+    std::string mFilename = mProject.getDataPath(true) + "/" + file;
+    if (cRuntimeRecordingOutput.is_open()) {
+      cRuntimeRecordingOutput.close();
+    }
+    cRuntimeRecordingOutput.open(mFilename, std::ios::out | std::ios::binary);
   }
 
   void Replayer::setReplaying(const std::string& file, bool user) {
-    cState = State::REPLAYING;
+    cRuntimeState = State::REPLAYING;
     Project& mProject = cResource.getProject();
-    cFilename = mProject.getDataPath(user) + "/" + file;
-    cRecording = std::ifstream(cFilename, std::ios::binary);
+    std::string mFilename = mProject.getDataPath(user) + "/" + file;
+    cRuntimeRecordedInput = std::ifstream(mFilename, std::ios::binary);
+
+    // Read first event.
+    readEvent();
   }
 
   void Replayer::setInactive() {
-    cState = State::INACTIVE;
+    cRuntimeState = State::INACTIVE;
   }
 
   Replayer::DigitalInput::DigitalInput(Replayer& parent, IResourceData& data) :
             cParent(parent),
             cDefActualInput(data, false, [this](bool value) {
-              if (cParent.cState == State::RECORDING) {
+              if (cParent.cRuntimeState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
             }),
-            cRuntimeID(cParent.cDigitalInputs.size() + cParent.cAnalogueInputs.size()),
+            cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(false) {
   }
   
@@ -236,12 +205,12 @@ namespace IsoRealms::Replay {
             cParent(parent),
             cDefName(object.getString(JSON_NAME)),
             cDefActualInput(data, false, [this](bool value) {
-              if (cParent.cState == State::RECORDING) {
+              if (cParent.cRuntimeState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
               cStateNotifier->stateChanged();
             }),
-            cRuntimeID(cParent.cDigitalInputs.size() + cParent.cAnalogueInputs.size()),
+            cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(false) {
     cDefActualInput.init(object, JSON_VALUE);
   }
@@ -260,6 +229,10 @@ namespace IsoRealms::Replay {
     owner.createPropertyTreeSelector<Boolean>(metadata.getPropertyData("DigitalInputValue"), cDefActualInput);
   }
   
+  void Replayer::DigitalInput::reset() {
+    cRuntimeRecordedInput = false;
+  }
+  
   void Replayer::DigitalInput::setRecordedState(bool state) {
     if (cRuntimeRecordedInput != state) {
       cRuntimeRecordedInput = state;
@@ -272,7 +245,7 @@ namespace IsoRealms::Replay {
   }
 
   bool Replayer::DigitalInput::getValue() const {
-    return cParent.cState == State::REPLAYING ? cRuntimeRecordedInput : cDefActualInput->getValue();
+    return cParent.cRuntimeState == State::REPLAYING ? cRuntimeRecordedInput : cDefActualInput->getValue();
   }
   
   bool Replayer::DigitalInput::renderAssetIcon() const {
@@ -294,11 +267,11 @@ namespace IsoRealms::Replay {
   Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IResourceData& data) :
             cParent(parent),
             cDefActualInput(data, 0.0f, [this](float value) {
-              if (cParent.cState == State::RECORDING) {
+              if (cParent.cRuntimeState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
             }),
-            cRuntimeID(cParent.cDigitalInputs.size() + cParent.cAnalogueInputs.size()),
+            cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(0.0f) {
   }
   
@@ -306,12 +279,12 @@ namespace IsoRealms::Replay {
             cParent(parent),
             cDefName(object.getString(JSON_NAME)),
             cDefActualInput(data, 0.0f, [this](float value) {
-              if (cParent.cState == State::RECORDING) {
+              if (cParent.cRuntimeState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
               cStateNotifier->stateChanged();
             }),
-            cRuntimeID(cParent.cDigitalInputs.size() + cParent.cAnalogueInputs.size()),
+            cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(0.0f) {
     cDefActualInput.init(object, JSON_VALUE);
   }
@@ -329,6 +302,10 @@ namespace IsoRealms::Replay {
     owner.createPropertyNativeString(metadata.getPropertyData("AnalogueInputName"),  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
     owner.createPropertyTreeSelector<Float>(metadata.getPropertyData("AnalogueInputValue"), cDefActualInput);
   }
+      
+  void Replayer::AnalogueInput::reset() {
+    cRuntimeRecordedInput = 0.0f;
+  }
   
   void Replayer::AnalogueInput::setRecordedState(float state) {
     if (cRuntimeRecordedInput != state) {
@@ -342,7 +319,7 @@ namespace IsoRealms::Replay {
   }
 
   float Replayer::AnalogueInput::getValue() const {
-    return cParent.cState == State::REPLAYING ? cRuntimeRecordedInput : cDefActualInput->getValue();
+    return cParent.cRuntimeState == State::REPLAYING ? cRuntimeRecordedInput : cDefActualInput->getValue();
   }
   
   bool Replayer::AnalogueInput::renderAssetIcon() const {
@@ -362,41 +339,41 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::readEvent() {
-    if (cRecording.eof()) {
+    if (cRuntimeRecordedInput.eof()) {
       // TODO: Action on end of recording???
       return;
     }
 
-    cRecording.read(reinterpret_cast<char*>(&cNextEvent.cID), sizeof(cNextEvent.cID));
-    if (cNextEvent.cID < cDigitalInputs.size()) {
-      cRecording.read(reinterpret_cast<char*>(&cNextEvent.cState.cDigital), sizeof(cNextEvent.cState.cDigital));
+    cRuntimeRecordedInput.read(reinterpret_cast<char*>(&cRuntimeNextEvent.cID), sizeof(cRuntimeNextEvent.cID));
+    if (cRuntimeNextEvent.cID < cDefDigitalInputs.size()) {
+      cRuntimeRecordedInput.read(reinterpret_cast<char*>(&cRuntimeNextEvent.cState.cDigital), sizeof(cRuntimeNextEvent.cState.cDigital));
     } else {
-      cRecording.read(reinterpret_cast<char*>(&cNextEvent.cState.cAnalogue), sizeof(cNextEvent.cState.cAnalogue));
+      cRuntimeRecordedInput.read(reinterpret_cast<char*>(&cRuntimeNextEvent.cState.cAnalogue), sizeof(cRuntimeNextEvent.cState.cAnalogue));
     }
-    cRecording.read(reinterpret_cast<char*>(&cNextEvent.cTime), sizeof(cNextEvent.cTime));
+    cRuntimeRecordedInput.read(reinterpret_cast<char*>(&cRuntimeNextEvent.cTime), sizeof(cRuntimeNextEvent.cTime));
   }
   
   void Replayer::writeEvent(unsigned int id, bool state) {
-    cOutput.write(reinterpret_cast<const char*>(&id),           sizeof(id));
-    cOutput.write(reinterpret_cast<const char*>(&state),        sizeof(state));
-    cOutput.write(reinterpret_cast<const char*>(&cElapsedTime), sizeof(cElapsedTime));
-    cOutput.flush();
+    cRuntimeRecordingOutput.write(reinterpret_cast<const char*>(&id),                  sizeof(id));
+    cRuntimeRecordingOutput.write(reinterpret_cast<const char*>(&state),               sizeof(state));
+    cRuntimeRecordingOutput.write(reinterpret_cast<const char*>(&cRuntimeElapsedTime), sizeof(cRuntimeElapsedTime));
+    cRuntimeRecordingOutput.flush();
   }
   
   void Replayer::writeEvent(unsigned int id, float state) {
-    cOutput.write(reinterpret_cast<const char*>(&id),           sizeof(id));
-    cOutput.write(reinterpret_cast<const char*>(&state),        sizeof(state));
-    cOutput.write(reinterpret_cast<const char*>(&cElapsedTime), sizeof(cElapsedTime));
-    cOutput.flush();
+    cRuntimeRecordingOutput.write(reinterpret_cast<const char*>(&id),                  sizeof(id));
+    cRuntimeRecordingOutput.write(reinterpret_cast<const char*>(&state),               sizeof(state));
+    cRuntimeRecordingOutput.write(reinterpret_cast<const char*>(&cRuntimeElapsedTime), sizeof(cRuntimeElapsedTime));
+    cRuntimeRecordingOutput.flush();
   }
   
   bool Replayer::isInputNameAllowed(DigitalInput& input, const std::string& name) const {
-    for (const std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
+    for (const std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
       if (mInput->getName() == name && mInput.get() != &input) {
         return false;
       }
     }
-    for (const std::unique_ptr<AnalogueInput>& mInput : cAnalogueInputs) {
+    for (const std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
       if (mInput->getName() == name) {
         return false;
       }
@@ -405,12 +382,12 @@ namespace IsoRealms::Replay {
   }
   
   bool Replayer::isInputNameAllowed(AnalogueInput& input, const std::string& name) const {
-    for (const std::unique_ptr<DigitalInput>& mInput : cDigitalInputs) {
+    for (const std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
       if (mInput->getName() == name) {
         return false;
       }
     }
-    for (const std::unique_ptr<AnalogueInput>& mInput : cAnalogueInputs) {
+    for (const std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
       if (mInput->getName() == name && mInput.get() != &input) {
         return false;
       }

@@ -67,6 +67,7 @@ namespace IsoRealms::Replay {
       void registerAssets(ResourceAssetRegistry& assets);
       void save(JSONObject object) const;
       void getProperties(PropertyMaker& owner, const Metadata& metadata);
+      void reset();
       void setRecordedState(bool state);
       std::string getName() const;
       
@@ -101,6 +102,7 @@ namespace IsoRealms::Replay {
       void registerAssets(ResourceAssetRegistry& assets);
       void save(JSONObject object) const;
       void getProperties(PropertyMaker& owner, const Metadata& metadata);
+      void reset();
       void setRecordedState(float state);
       std::string getName() const;
 
@@ -134,26 +136,30 @@ namespace IsoRealms::Replay {
       REPLAYING
     };
     
+    // JSON constants.
     static const std::string JSON_ANALOGUE_INPUTS;
     static const std::string JSON_DIGITAL_INPUTS;
     static const std::string JSON_NAME;
     static const std::string JSON_VALUE;
 
+    // External interfaces.
     IResourceData& cResource;
 
-    State cState;
-    
-    unsigned int cElapsedTime;
-    std::string cFilename; 
-    InputEvent cNextEvent;
-    std::ifstream cRecording;
-    LiteralString cFilenameString;
-    std::ofstream cOutput;
-    std::vector<std::unique_ptr<DigitalInput>> cDigitalInputs;
-    std::vector<std::unique_ptr<AnalogueInput>> cAnalogueInputs;
+    // Definition data.
+    std::vector<std::unique_ptr<DigitalInput>> cDefDigitalInputs;
+    std::vector<std::unique_ptr<AnalogueInput>> cDefAnalogueInputs;
 
+    // Runtime data.
+    State cRuntimeState;                   /// Current state of the replayer.
+    unsigned int cRuntimeElapsedTime;      /// Elapsed time since the start of the recording or replay.
+    InputEvent cRuntimeNextEvent;          /// Next event to be processed.
+    std::ifstream cRuntimeRecordedInput;   /// Stream for reading the recorded input.
+    std::ofstream cRuntimeRecordingOutput; /// Stream for writing the recorded output.
+
+    // Scripting interface.
     LuaBinding<Replayer> cLuaBinding;
-    
+
+    // Private methods.    
     void readEvent();
     void writeEvent(unsigned int id, bool state);
     void writeEvent(unsigned int id, float state);
