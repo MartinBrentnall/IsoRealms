@@ -21,9 +21,10 @@
 #include "Function.h"
 
 namespace IsoRealms::Basics {
-  ArgumentDefinition::ArgumentDefinition(Function& parent, const std::string& name) :
+  ArgumentDefinition::ArgumentDefinition(Function& parent, const std::string& name, const std::string& luaName) :
             cParent(parent),
             cDefName(name),
+            cDefLuaName(luaName),
             cDefType(parent.getResourceData(), [this]() {
               std::string mNewBindingID = cDefType.getTreeItemInfo().cID;
               std::size_t mLastSeparator = mNewBindingID.rfind('/');
@@ -42,12 +43,13 @@ namespace IsoRealms::Basics {
   }
 
   ArgumentDefinition::ArgumentDefinition(Function& parent, JSONObject object) :
-            ArgumentDefinition(parent, object.getString(JSON_NAME)) {
+            ArgumentDefinition(parent, object.getString(JSON_NAME), object.getString(JSON_LUA_NAME)) {
     cDefType.init(object, JSON_TYPE);
   }
 
   void ArgumentDefinition::save(JSONObject object) const {
     object.addString(JSON_NAME, cDefName);
+    object.addString(JSON_LUA_NAME, cDefLuaName);
     cDefType.save(object, JSON_TYPE);
   }
 
@@ -64,8 +66,9 @@ namespace IsoRealms::Basics {
   }
 
   void ArgumentDefinition::getProperties(PropertyMaker& owner, const Metadata& metadata, Function& parent) {
-    owner.createPropertyTreeSelector<BindingType>(metadata.getPropertyData("ArgumentType"), cDefType);
-    owner.createPropertyNativeString(             metadata.getPropertyData("ArgumentName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    owner.createPropertyNativeString(             metadata.getPropertyData("ArgumentName"),    [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    owner.createPropertyTreeSelector<BindingType>(metadata.getPropertyData("ArgumentType"),    cDefType);
+    owner.createPropertyNativeString(             metadata.getPropertyData("ArgumentLuaName"), [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
   }
 
   void ArgumentDefinition::saveCall(JSONObject object, const std::string& attributeName) const {
@@ -73,25 +76,26 @@ namespace IsoRealms::Basics {
   }
 
   std::string ArgumentDefinition::getInitCode() const {
-    return "_" + cDefName + " = {}\n";;
+    return "_" + cDefLuaName + " = {}\n";;
   }
 
   std::string ArgumentDefinition::getCode(unsigned int functionID, unsigned int arg) const {
     std::string mFunction = "function func" + Utils::toString(functionID) + "_arg" + Utils::toString(arg) + "(arg)\n";
-    mFunction += "  table.insert(_" + cDefName + ", " + cDefName + ")\n";
-    mFunction += "  " + cDefName + " = arg\n";
+    mFunction += "  table.insert(_" + cDefLuaName + ", " + cDefLuaName + ")\n";
+    mFunction += "  " + cDefLuaName + " = arg\n";
     mFunction += "end\n";
     mFunction += "\n";
     return mFunction;
   }
 
   std::string ArgumentDefinition::getCleanup() const {
-    std::string mFunction = "  " + cDefName + " = _" + cDefName + "[#_" + cDefName + "]\n";
-    mFunction += "  table.remove(_" + cDefName + ")\n";
+    std::string mFunction = "  " + cDefLuaName + " = _" + cDefLuaName + "[#_" + cDefLuaName + "]\n";
+    mFunction += "  table.remove(_" + cDefLuaName + ")\n";
     return mFunction;
   }
 
-  const std::string ArgumentDefinition::JSON_NAME = "name";
-  const std::string ArgumentDefinition::JSON_TYPE = "type";
+  const std::string ArgumentDefinition::JSON_LUA_NAME = "luaName";
+  const std::string ArgumentDefinition::JSON_NAME     = "name";
+  const std::string ArgumentDefinition::JSON_TYPE     = "type";
 }
 

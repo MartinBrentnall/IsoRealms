@@ -25,8 +25,8 @@ namespace IsoRealms {
             AssetClientManager(&cLiteral, "Literal") {
 
     // Support conversions.
-    add(&cFloats,   ":Float",   "Conversions");
-    add(&cIntegers, ":Integer", "Conversions");
+    add(&cFloats,   ":Float",   "Floats");
+    add(&cIntegers, ":Integer", "Integers");
   }
 
   StringRegistry::Literal::Instance::Instance(Project& project, const std::string& value) :

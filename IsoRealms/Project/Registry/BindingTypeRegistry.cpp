@@ -31,16 +31,16 @@ namespace IsoRealms {
             cScreens(":Screen"),
             cStrings(":String"),
             cVertices(":Vertex") {
-    add(&cActions,       "Action",        "Conversions");
-    add(&cBooleans,      "Boolean",       "Conversions");
-    add(&cColours,       "Colour",        "Conversions");
-    add(&cFloats,        "Float",         "Conversions");
-    add(&cFonts,         "Font",          "Conversions");
-    add(&cInputHandlers, "Input Handler", "Conversions");
-    add(&cIntegers,      "Integer",       "Conversions");
-    add(&cScreens,       "Screen",        "Conversions");
-    add(&cStrings,       "String",        "Conversions");
-    add(&cVertices,      "Vertex",        "Conversions");
+    add(&cActions,       "Action",        "Actions");
+    add(&cBooleans,      "Boolean",       "Booleans");
+    add(&cColours,       "Colour",        "Colours");
+    add(&cFloats,        "Float",         "Floats");
+    add(&cFonts,         "Font",          "Fonts");
+    add(&cInputHandlers, "Input Handler", "Input Handlers");
+    add(&cIntegers,      "Integer",       "Integers");
+    add(&cScreens,       "Screen",        "Screens");
+    add(&cStrings,       "String",        "Strings");
+    add(&cVertices,      "Vertex",        "Vertices");
   }
 
   BindingTypeRegistry::Literal::Literal(const std::string& type) :

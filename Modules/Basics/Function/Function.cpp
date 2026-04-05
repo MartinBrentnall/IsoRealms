@@ -97,7 +97,8 @@ namespace IsoRealms::Basics {
         });
       }
       owner.createPropertyAdd(metadata.getPropertyData("ArgumentAdd"), "New...", [this, &owner, &metadata]() {
-        ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, getNextAvailableName("newArgument"))).get();
+        std::string mNewArgumentName = getNextAvailableName("newArgument");
+        ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mNewArgumentName, mNewArgumentName)).get();
         return owner.createPropertyStruct(metadata.getPropertyData("Argument"), mNewArgumentDefinition->getName(), [this, mNewArgumentDefinition, &metadata](PropertyMaker& owner) {
           return mNewArgumentDefinition->getProperties(owner, metadata, *this);
         }, [this, mNewArgumentDefinition]() {
@@ -312,11 +313,11 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::getAssetProperties(PropertyMaker& owner) {
-    const Metadata& mMetadata = cParent.cBasics.getMetadata("FunctionCall");
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
       std::string mArgumentName = cParent.cDefArgumentDefinitions[i]->getName();
       std::unique_ptr<IsoRealms::Binding>& mBinding = cDefArguments[i];
-      owner.createPropertyTreeSelector<IsoRealms::Binding>(mMetadata.getPropertyData("Argument"), *mBinding);
+      PropertyData mArgumentData(mArgumentName, "An argument to the function.");
+      owner.createPropertyTreeSelector<IsoRealms::Binding>(mArgumentData, *mBinding);
     }
   }
 

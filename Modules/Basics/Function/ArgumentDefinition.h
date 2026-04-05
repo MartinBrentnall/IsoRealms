@@ -28,7 +28,7 @@ namespace IsoRealms::Basics {
 
   class ArgumentDefinition final {
     public:
-    ArgumentDefinition(Function& parent, const std::string& name);
+    ArgumentDefinition(Function& parent, const std::string& name, const std::string& luaName);
     ArgumentDefinition(Function& parent, JSONObject object);
     void save(JSONObject object) const;
     void setName(const std::string& name);
@@ -43,8 +43,10 @@ namespace IsoRealms::Basics {
     private:
     Function& cParent;
     std::string cDefName;
+    std::string cDefLuaName;
     BindingType cDefType;
 
+    static const std::string JSON_LUA_NAME;
     static const std::string JSON_NAME;
     static const std::string JSON_TYPE;
   };

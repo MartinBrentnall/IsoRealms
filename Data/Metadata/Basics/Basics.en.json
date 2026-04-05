@@ -126,6 +126,7 @@
         "Argument": {"name": "Argument", "description": "Binds an IsoRealms object to a Lua variables for use in this function.  The object to bind is selected when calling the function."},
         "ArgumentType": {"name": "Type", "description": "The type of IsoRealms object to be bound to this argument."},
         "ArgumentName": {"name": "Name", "description": "Lua variable name for the bound object."},
+        "ArgumentLuaName": {"name": "Lua Name", "description": "Lua variable name for the bound object."},
         "ArgumentAdd": {"name": "Argument", "description": "Add an argument to this function."},
         "Code": {"name": "Code", "description": "The Lua code of this function."}
       }
