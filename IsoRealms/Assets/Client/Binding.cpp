@@ -21,22 +21,24 @@
 #include <optional>
 
 #include "IsoRealms/ActionClient.h"
+#include "IsoRealms/Assets/Client/BindingType.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
   Binding::Binding(IActionClient& owner) :
-            Binding(owner, "") {
+            Binding(owner, nullptr) {
   }
 
-  Binding::Binding(IActionClient& owner, const std::string& type) :
+  Binding::Binding(IActionClient& owner, const BindingType* type) :
             Asset<Binding, IBinding, IActionClient>(owner),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
     bool mDone = false;
     forEachAvailableTreeItem([this, &owner, &mDone](const TreeItemInfo& mEntry) {
-      if (!mDone && mEntry.cID == cDefType) {
+      std::string mType = getType();
+      if (!mDone && mEntry.cID == mType) {
         cManager.getAssetManager().release(this, cAsset);
         cAsset = cManager.getAssetManager().getAsset(this, mEntry.cID, owner);
         mDone = true;
@@ -45,12 +47,13 @@ namespace IsoRealms {
   }
 
   std::string Binding::getType() const {
-    return cDefType;
+    return cDefType != nullptr ? (*cDefType)->getBindingTypeID() : "";
   }
 
   void Binding::setID(const std::string& id) {
     std::string mRawID = getRawID();
-    if (cDefType == mRawID) {
+    std::string mType = getType();
+    if (mType == mRawID) {
       cAsset->set(id);
     } else {
       Asset<Binding, IBinding, IActionClient>::setID(id);
@@ -59,10 +62,11 @@ namespace IsoRealms {
 
   TreeItemInfo Binding::getTreeItemInfo() const {
     std::string mRawID = getRawID();
-    if (cDefType == mRawID) {
+    std::string mType = getType();
+    if (mType == mRawID) {
       return cAsset->getTreeItemInfo();
     }
-    std::string mExposedID = cDefType.empty() || mRawID == "None" ? mRawID : mRawID.substr(cDefType.length() + 1);
+    std::string mExposedID = mType.empty() || mRawID == "None" ? mRawID : mRawID.substr(mType.length() + 1);
     std::optional<TreeItemInfo> mFound;
     forEachAvailableTreeItem([&mFound, &mExposedID](const TreeItemInfo& mTreeItemInfo) {
       if (mTreeItemInfo.cID == mExposedID) {
@@ -74,7 +78,8 @@ namespace IsoRealms {
 
   bool Binding::renderAssetIcon() const {
     std::string mRawID = getRawID();
-    return cDefType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
+    std::string mType = getType();
+    return mType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
   }
 
 //   IBinding* Binding::getAsset(IActionClient& owner, JSONObject object) {
@@ -86,23 +91,25 @@ namespace IsoRealms {
 //   }
   
   void Binding::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    std::string mType = getType();
+
     // Case where any type is allowed.
-    if (cDefType.empty()) {
+    if (mType.empty()) {
       cManager.getAssetManager().forEachEntry<IBinding>(getTreeItemInfoFunction);
       return;
     }
 
     // Case where a conversion type is allowed.
     std::string mRawID = getRawID();
-    if (cDefType == mRawID) {
+    if (mType == mRawID) {
       cAsset->forEachAvailableTreeItem(getTreeItemInfoFunction);
       return;
     }
 
     // Case where only a specific type is allowed.
     bool mExactMatchFound = false;
-    cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, &mExactMatchFound, this](const TreeItemInfo& mTreeItemInfo) {
-      if (mTreeItemInfo.cID == cDefType) {
+    cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, &mExactMatchFound, &mType, this](const TreeItemInfo& mTreeItemInfo) {
+      if (mTreeItemInfo.cID == mType) {
         getTreeItemInfoFunction(mTreeItemInfo);
         mExactMatchFound = true;
       }
@@ -110,10 +117,10 @@ namespace IsoRealms {
     if (mExactMatchFound) {
       return;
     }
-    cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, this](const TreeItemInfo& mTreeItemInfo) {
+    cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, &mType, this](const TreeItemInfo& mTreeItemInfo) {
       const std::string& mBindingID = mTreeItemInfo.cID;
-      if (mBindingID.length() > cDefType.length() + 1 && mBindingID.substr(0, cDefType.length() + 1) == (cDefType + "/")) {
-        getTreeItemInfoFunction(TreeItemInfo{mBindingID.substr(cDefType.length() + 1), mTreeItemInfo.cPath});
+      if (mBindingID.length() > mType.length() + 1 && mBindingID.substr(0, mType.length() + 1) == (mType + "/")) {
+        getTreeItemInfoFunction(TreeItemInfo{mBindingID.substr(mType.length() + 1), mTreeItemInfo.cPath});
       }
     });
     getTreeItemInfoFunction(TreeItemInfo{"None", "None"}); // TODO: Kludge
@@ -121,16 +128,18 @@ namespace IsoRealms {
 
   bool Binding::renderOtherClientProviderIcon(const std::string& id) const {
     std::string mRawID = getRawID();
-    if (cDefType == mRawID) {
+    std::string mType = getType();
+    if (mType == mRawID) {
       return cAsset->renderTreeItemIcon(id);
     }
 
-    return cManager.getAssetManager().renderIcon<IBinding>(cDefType.empty() || id == "None" ? id : cDefType + "/" + id);
+    return cManager.getAssetManager().renderIcon<IBinding>(mType.empty() || id == "None" ? id : mType + "/" + id);
   }
 
   bool Binding::hasClientConfiguration() const {
     std::string mRawID = getRawID();
-    if (cDefType == mRawID) {
+    std::string mType = getType();
+    if (mType == mRawID) {
       return cAsset->isConfigurable();
     }
 
@@ -139,6 +148,7 @@ namespace IsoRealms {
 
   void Binding::getTheAssetProperties(IBinding* asset, PropertyMaker& owner) {
     std::string mRawID = getRawID();
-    cDefType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);
+    std::string mType = getType();
+    mType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);
   }
 }

@@ -61,8 +61,8 @@ namespace IsoRealms::Basics {
     return cDefName;
   }
 
-  std::string ArgumentDefinition::getType() const {
-    return cDefType->getBindingTypeID();
+  const BindingType* ArgumentDefinition::getType() const {
+    return &cDefType;
   }
 
   void ArgumentDefinition::getProperties(PropertyMaker& owner, const Metadata& metadata, Function& parent) {

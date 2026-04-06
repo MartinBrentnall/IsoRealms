@@ -26,11 +26,12 @@
 
 namespace IsoRealms {
   class IActionClient;
+  class BindingType;
 
   class Binding : public Asset<Binding, IBinding, IActionClient> {
     public:
     Binding(IActionClient& owner);
-    Binding(IActionClient& owner, const std::string& type);
+    Binding(IActionClient& owner, const BindingType* type);
     std::string getType() const;
 
     TreeItemInfo getTreeItemInfo() const;
@@ -47,8 +48,8 @@ namespace IsoRealms {
     void getTheAssetProperties(IBinding* asset, PropertyMaker& owner) override;
 
     private:
-    std::string cDefType;
-    IBindingRegistry* cDefRegistry;
+    const BindingType* cDefType;     /// Pointer to the binding type within the argument definition.
+    IBindingRegistry* cDefRegistry;  /// Pointer to the binding registry.
     std::function<void()> cListener;
   };
 }
