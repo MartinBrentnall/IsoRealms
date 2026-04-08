@@ -51,7 +51,8 @@ namespace IsoRealms::UI {
     void selectBottom() override;
     void render(float aspectRatio, float y, bool selected, const Menu& menu) const override;
     float getHeight(const Menu& menu) const override;
-    float getSelectedY(const Menu& menu) const override;
+    float getSelectedY(const Menu& menu) const override;  
+    std::string getTreeItemLabel() const override;
 
     /***********************************\
      * Implements IAsset via IMenuItem *

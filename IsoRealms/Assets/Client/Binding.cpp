@@ -61,6 +61,10 @@ namespace IsoRealms {
   }
 
   TreeItemInfo Binding::getTreeItemInfo() const {
+    std::string mConversionPath = cAsset->getConversionPath();
+    if (!mConversionPath.empty()) {
+      return TreeItemInfo{mConversionPath, mConversionPath};
+    }
     std::string mRawID = getRawID();
     std::string mType = getType();
     if (mType == mRawID) {

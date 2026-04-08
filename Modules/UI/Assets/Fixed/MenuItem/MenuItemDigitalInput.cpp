@@ -148,6 +148,10 @@ namespace IsoRealms::UI {
     return menu.getFontSize() * 2.0f * cRuntimeSelectedMapping;
   }
 
+  std::string MenuItemDigitalInput::getTreeItemLabel() const {
+    return cDefID;
+  }
+
   bool MenuItemDigitalInput::renderAssetIcon() const {
     return false;
   }

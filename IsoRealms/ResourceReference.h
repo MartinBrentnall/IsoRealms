@@ -74,7 +74,11 @@ namespace IsoRealms {
           mFound = mTreeItemInfo;
         }
       });
-      return mFound.value_or(TreeItemInfo{mResourceID, ""});
+      return mFound.value_or(TreeItemInfo{mResourceID, mResourceID});
+    }
+
+    std::string getTreeItemLabel() const {
+      return cManager.getAssetManager().getResourceID(cDefResource);
     }
 
     bool renderAssetIcon() const {

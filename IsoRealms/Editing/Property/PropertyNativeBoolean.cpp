@@ -58,6 +58,10 @@ namespace IsoRealms {
     return cValue ? TreeItemInfo{ID_TRUE, "True"} : TreeItemInfo{ID_FALSE, "False"};
   }
   
+  std::string PropertyNativeBoolean::BooleanSelection::getTreeItemLabel() const {
+    return cValue ? "True" : "False";
+  }
+  
   bool PropertyNativeBoolean::BooleanSelection::renderAssetIcon() const {
     if (cValue) {
       Utils::renderIconTick();

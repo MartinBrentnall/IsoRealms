@@ -111,6 +111,10 @@ namespace IsoRealms::UI {
     return 0.0f;
   }
 
+  std::string MenuItemDisplayResolution::getTreeItemLabel() const {
+    return cDefLabel;
+  }
+
   bool MenuItemDisplayResolution::renderAssetIcon() const {
     return false;
   }

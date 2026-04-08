@@ -29,12 +29,12 @@ namespace IsoRealms::UI {
             cFileList(registry.getAssetMetadata("MenuItemFileList")),
             cLauncherList(registry.getAssetMetadata("MenuItemLauncherList")),
             cSlider(registry.getAssetMetadata("MenuItemSlider")) {
-    add(&cAction,            "Action",            "UI");
-    add(&cBoolean,           "Boolean",           "UI");
-    add(&cDigitalInput,      "DigitalInput",      "UI");
-    add(&cDisplayResolution, "DisplayResolution", "UI");
-    add(&cFileList,          "FileList",          "UI");
-    add(&cLauncherList,      "LauncherList",      "UI");
-    add(&cSlider,            "Slider",            "UI");
+    add(&cAction,            "Action",            "Action");
+    add(&cBoolean,           "Boolean",           "Boolean");
+    add(&cDigitalInput,      "DigitalInput",      "Digital Input");
+    add(&cDisplayResolution, "DisplayResolution", "Display Resolution");
+    add(&cFileList,          "FileList",          "File List");
+    add(&cLauncherList,      "LauncherList",      "Launcher List");
+    add(&cSlider,            "Slider",            "Slider");
   }
 }

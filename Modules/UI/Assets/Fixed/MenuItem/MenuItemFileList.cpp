@@ -124,6 +124,10 @@ namespace IsoRealms::UI {
     return menu.getFontSize() * 2.0f * cRuntimeSelectedFile;
   }
 
+  std::string MenuItemFileList::getTreeItemLabel() const {
+    return cDefID;
+  }
+
   bool MenuItemFileList::renderAssetIcon() const {
     return false;
   }

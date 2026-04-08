@@ -76,6 +76,10 @@ namespace IsoRealms {
     return mFound.value_or(TreeItemInfo{mFilePath, mFilePath});
   }
   
+  std::string File::getTreeItemLabel() const {
+    return cPath;
+  }
+  
   bool File::renderAssetIcon() const {
     return false;
   }

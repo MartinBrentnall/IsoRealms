@@ -41,8 +41,9 @@ namespace IsoRealms {
   template class BindingRegistry::Conversion<IResourceData, String>::Instance<IResourceData, String>;  
   template class BindingRegistry::Conversion<IResourceData, Vertex>::Instance<IResourceData, Vertex>;  
   
-  BindingRegistry::BindingRegistry() :
-            AssetClientManager(&cDummy) {
+  BindingRegistry::BindingRegistry(Project& project) :
+            AssetClientManager(&cDummy),
+            cProject(project) {
 
     // Support local bindings.
     add(&cLocals, "~", "Local");
@@ -67,7 +68,34 @@ namespace IsoRealms {
 
   IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener* listener) {
     cLocals.setBindings(owner.getBindingRegistry());
+    if (id.starts_with(":Boolean/")) {
+      JSONDocument mDocument;
+      JSONObject mBooleanBindingObject = mDocument.addObject("temp");
+      mBooleanBindingObject.addString(JSON_KEY, ":Boolean");
+      JSONObject mAssetObject = mBooleanBindingObject.addObject(JSON_ASSET);
+      mAssetObject.addString(JSON_KEY, id.substr(9));
+
+      return AssetClientManager::get(client, owner, mBooleanBindingObject, listener, true);
+    }
     return AssetClientManager::get(client, owner, id, listener);
+  }
+
+  void BindingRegistry::forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    AssetClientManager::forEachEntry(getTreeItemInfoFunction);
+
+    cProject.forEachEntry<IBoolean>([&getTreeItemInfoFunction](const TreeItemInfo& mTreeItemInfo) {
+      TreeItemInfo mBooleanTreeItemInfo(":Boolean/" + mTreeItemInfo.cID, "Booleans/" + mTreeItemInfo.cPath);
+      getTreeItemInfoFunction(mBooleanTreeItemInfo);
+    });
+    // TODO: Add conversions.
+    // TODO: Add local bindings.
+  }
+
+  bool BindingRegistry::renderIcon(const std::string& id) const {
+    if (id.starts_with(":Boolean/")) {
+      return cProject.renderIcon<IBoolean>(id.substr(9));
+    }
+    return AssetClientManager::renderIcon(id);
   }
 
   void BindingRegistry::Dummy::bind(const std::string& function) const {
@@ -117,5 +145,9 @@ namespace IsoRealms {
 
   bool BindingRegistry::Dummy::isDefaultConfiguration() const {
     return true;
+  }
+
+  std::string BindingRegistry::Dummy::getConversionPath() const {
+    return "";
   }
 }

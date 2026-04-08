@@ -190,6 +190,19 @@ namespace IsoRealms {
       return cManager.getAssetManager().getTreeItemInfo(cAsset);
     }
 
+    std::string getTreeItemLabel() const {
+      TreeItemInfo mTreeItemInfo = getTreeItemInfo();
+      std::string::size_type mLastSeparator = mTreeItemInfo.cPath.find_last_of('/');
+      if (mLastSeparator != std::string::npos) {
+        return mTreeItemInfo.cPath.substr(mLastSeparator + 1);
+      }
+      if (!mTreeItemInfo.cPath.empty()) {
+        return mTreeItemInfo.cPath;
+      }
+      mLastSeparator = mTreeItemInfo.cID.find_last_of('/');
+      return mLastSeparator == std::string::npos ? mTreeItemInfo.cID : mTreeItemInfo.cID.substr(mLastSeparator + 1);
+    }
+
     bool hasConfiguration() const {
       if constexpr (HasClientConfigurationExists<DERIVED>) {
         if (static_cast<const DERIVED*>(this)->hasClientConfiguration()) {

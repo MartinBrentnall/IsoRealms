@@ -31,6 +31,7 @@ namespace IsoRealms {
   Project::Project(Application& application, std::function<void(bool)> onFinish) :
           cApplication(application),
           cFunctionNotifyComplete(onFinish),
+          cBindings(*this),
           cScreens(*this),
           cTextures(*this),
           cDefProjectFileStructure(*this, "", true),

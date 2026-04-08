@@ -97,6 +97,10 @@ namespace IsoRealms {
       // Nothing to do.
     }
 
+    std::string getConversionPath() const override {
+      return "";
+    }
+
     private:
     sol::state& cDefLuaState;
     T* cDefValue;

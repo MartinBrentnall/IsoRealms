@@ -113,6 +113,10 @@ namespace IsoRealms::UI {
     return 0.0f;
   }
 
+  std::string MenuItemBoolean::getTreeItemLabel() const {
+    return cDefLabel;
+  }
+
   bool MenuItemBoolean::renderAssetIcon() const {
     return false;
   }

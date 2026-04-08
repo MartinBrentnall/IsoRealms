@@ -49,16 +49,19 @@ namespace IsoRealms {
 
   class BindingRegistry : public AssetClientManager<BindingRegistry, IActionClient, IBinding> {
     public:
-    BindingRegistry();
+    BindingRegistry(Project& project);
     IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener* listener, bool required);
     IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener* listener);
 
+    void forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override; 
+    bool renderIcon(const std::string& id) const override;
+    
     private:
     class Dummy : public IBinding {
       public:
 
       /***********************\
-      * Implements IBinding *
+       * Implements IBinding *
       \***********************/
       void bind(const std::string& function) const override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
@@ -72,6 +75,7 @@ namespace IsoRealms {
       void saveAsset(JSONObject object) const override;
       void getAssetProperties(PropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
+      std::string getConversionPath() const override;
     };
 
     class Local final : public IAssetProvider<IActionClient, IBinding> {
@@ -85,7 +89,7 @@ namespace IsoRealms {
       }
 
       /************************************************\
-      * Implements IAssetProvider<Project, IBinding> *
+       * Implements IAssetProvider<Project, IBinding> *
       \************************************************/
       IBinding* getAsset(IActionClient& owner) override {
         return nullptr; // TODO: Implement this.
@@ -126,17 +130,17 @@ namespace IsoRealms {
       public:
       IBinding* getAsset(IActionClient& owner, JSONObject object) override {
         if constexpr (std::is_same_v<OWNER, IActionClient>) {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner, object)).first->get();
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner, object)).first->get();
         } else {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner.getResourceData(), object)).first->get();
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner.getResourceData(), object)).first->get();
         }
       }
 
       IBinding* getAsset(IActionClient& owner) override {
         if constexpr (std::is_same_v<OWNER, IActionClient>) {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner)).first->get();
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner)).first->get();
         } else {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(owner.getResourceData())).first->get();
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner.getResourceData())).first->get();
         }
       }
 
@@ -160,18 +164,19 @@ namespace IsoRealms {
       private:
       template <typename OWNER2, typename TYPE> class Instance : public IBinding {
         public:
-        Instance(OWNER2& owner) :
+        Instance(Conversion& parent, OWNER2& owner) :
+                  cParent(parent),
                   cDefLuaState(owner.getProject().getLuaState().getState()),
                   cDefValue(owner) {
         }
 
-        Instance(OWNER2& owner, JSONObject object) :
-                  Instance(owner) {
+        Instance(Conversion& parent, OWNER2& owner, JSONObject object) :
+                  Instance(parent, owner) {
           cDefValue.set(object, JSON_ASSET);
         }
 
         /***********************\
-        * Implements IBinding *
+         * Implements IBinding *
         \***********************/
         void bind(const std::string& bindFunction) const override;
 
@@ -219,15 +224,27 @@ namespace IsoRealms {
           return cDefValue->isDefaultConfiguration();
         }
 
-        private:
-        inline static const std::string JSON_ASSET = "asset";
+        std::string getConversionPath() const override {
+          TreeItemInfo mTreeItemInfo = cDefValue.getTreeItemInfo();
+          return cParent.cAssetID + "/" + mTreeItemInfo.cID;
+        }
 
+        private:
+        Conversion& cParent;
         sol::state& cDefLuaState;
         TYPE cDefValue;
       };
 
       mutable std::set<std::unique_ptr<IBinding>> cInstances;
+
+      std::string cAssetID;
     };
+
+    inline static const std::string JSON_ASSET = "asset";
+    inline static const std::string JSON_VALUE = "value";
+    
+    // External interfaces.
+    Project& cProject;
 
     AssetLiteralDummy<IActionClient, IBinding, Dummy> cDummy;
     Local                                             cLocals;

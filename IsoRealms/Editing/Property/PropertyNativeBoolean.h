@@ -49,6 +49,7 @@ namespace IsoRealms {
        * Interface for PropertyTreeSelector *
       \**************************************/
       TreeItemInfo getTreeItemInfo() const;
+      std::string getTreeItemLabel() const;
       bool renderAssetIcon() const;
       bool hasConfiguration() const;
       bool isDefaultConfigured() const;

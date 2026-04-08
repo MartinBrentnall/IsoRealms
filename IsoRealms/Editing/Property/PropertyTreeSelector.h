@@ -52,16 +52,7 @@ namespace IsoRealms {
     }
 
     std::string getValue() {
-      TreeItemInfo mTreeItemInfo = cSelectedItem.getTreeItemInfo();
-      std::string::size_type mLastSeparator = mTreeItemInfo.cPath.find_last_of('/');
-      if (mLastSeparator != std::string::npos) {
-        return mTreeItemInfo.cPath.substr(mLastSeparator + 1);
-      }
-      if (!mTreeItemInfo.cPath.empty()) {
-        return mTreeItemInfo.cPath;
-      }
-      mLastSeparator = mTreeItemInfo.cID.find_last_of('/');
-      return mLastSeparator == std::string::npos ? mTreeItemInfo.cID : mTreeItemInfo.cID.substr(mLastSeparator + 1);
+      return cSelectedItem.getTreeItemLabel();
     }
 
     /************************\

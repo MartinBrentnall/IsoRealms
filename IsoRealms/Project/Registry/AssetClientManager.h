@@ -28,6 +28,8 @@
 namespace IsoRealms {
   template <typename DERIVED, typename OWNER, typename TYPE> class AssetClientManager {
     public:
+    inline static const std::string JSON_KEY = "key";
+
     AssetRegistry<OWNER, TYPE> cRegistry;
 
     AssetClientManager() :
@@ -185,8 +187,8 @@ namespace IsoRealms {
       }
     }
     
-    void forEachEntry(std::function<void(const TreeItemInfo&)> f) const {
-      cRegistry.forEachEntry(f);
+    virtual void forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+      cRegistry.forEachEntry(getTreeItemInfoFunction);
     }
     
     void release(IAssetUser<TYPE>* client, TYPE* asset) {
@@ -239,7 +241,7 @@ namespace IsoRealms {
       cRegistry.addAssetListener(listener);
     }
     
-    bool renderIcon(const std::string& id) const {
+    virtual bool renderIcon(const std::string& id) const {
       return cRegistry.renderIcon(id);
     }
     
@@ -276,8 +278,6 @@ namespace IsoRealms {
     }
 
     private:
-    inline static const std::string JSON_KEY = "key";
-
     class StateNotifier final : public IStateNotifier {
       private:
       std::vector<IStateListener*> cListeners;

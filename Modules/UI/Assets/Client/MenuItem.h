@@ -36,6 +36,7 @@ namespace IsoRealms::UI {
     void setID(const std::string& id);
     void save(JSONObject object, const std::string& name) const;
     TreeItemInfo getTreeItemInfo() const;
+    std::string getTreeItemLabel() const;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
     bool renderTreeItemIcon(const std::string& id) const;
     bool hasConfiguration() const;

@@ -117,6 +117,10 @@ namespace IsoRealms::UI {
     return menu.getFontSize() * 2.0f * cRuntimeSelectedLauncher;
   }
 
+  std::string MenuItemLauncherList::getTreeItemLabel() const {
+    return cDefID;
+  }
+
   bool MenuItemLauncherList::renderAssetIcon() const {
     return false;
   }

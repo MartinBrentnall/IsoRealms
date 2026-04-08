@@ -91,6 +91,10 @@ namespace IsoRealms {
       TreeItemInfo getTreeItemInfo() const {
         return TreeItemInfo{"None", "None"};
       }
+      
+      std::string getTreeItemLabel() const {
+        return "None";
+      }
 
       bool renderAssetIcon() const {
         Utils::renderIconNone();

@@ -34,6 +34,7 @@ namespace IsoRealms {
       virtual void render(float aspectRatio, float y, bool selected, const Menu& menu) const = 0;
       virtual float getHeight(const Menu& menu) const = 0;
       virtual float getSelectedY(const Menu& menu) const = 0;
+      virtual std::string getTreeItemLabel() const = 0;
 
       virtual ~IMenuItem() {
       }

@@ -68,6 +68,10 @@ namespace IsoRealms {
     return mFound.value_or(TreeItemInfo{mSelectedID, mSelectedID});
   }
 
+  std::string PropertyList::ListSelection::getTreeItemLabel() const {
+    return cGetter();
+  }
+
   bool PropertyList::ListSelection::renderAssetIcon() const {
     return false;
   }

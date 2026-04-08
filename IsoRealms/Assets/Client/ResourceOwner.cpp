@@ -58,6 +58,10 @@ namespace IsoRealms {
     return mFound.value_or(TreeItemInfo{mResourceID, mResourceID});
   }
 
+  std::string ResourceOwner::getTreeItemLabel() const {
+    return cOwner->getName();
+  }
+
   bool ResourceOwner::renderAssetIcon() const {
     return false;
   }

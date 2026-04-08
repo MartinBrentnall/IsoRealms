@@ -40,6 +40,10 @@ namespace IsoRealms {
     return mFound.value_or(TreeItemInfo{mID, mID});
   }
   
+  std::string ModuleChooser::getTreeItemLabel() const {
+    return "None";
+  }
+  
   bool ModuleChooser::renderAssetIcon() const {
     return false;
   }
