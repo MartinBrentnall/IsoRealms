@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "VertexRegistry.h"
+#include "VertexRegistry.h" 
 
 namespace IsoRealms {
   VertexRegistry::VertexRegistry() :
-            AssetClientManager(&cLiteral, "Literal") {
+            AssetClientManager(&cLiteral, "Literal", "Literal") {
   }
 
   VertexRegistry::Literal::Instance::Instance() :

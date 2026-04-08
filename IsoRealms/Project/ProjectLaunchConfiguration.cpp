@@ -23,16 +23,13 @@
 namespace IsoRealms {
   ProjectLaunchConfiguration::ProjectLaunchConfiguration(Project& parent, ProjectFile& owner) :
             cDefName(parent.makeLaunchConfigurationName()),
-            cDefOwner(parent, &owner),
-            cDefOptionPreparationAction(parent) {
+            cDefOwner(parent, &owner) {
   }
 
   ProjectLaunchConfiguration::ProjectLaunchConfiguration(Project& parent, ProjectFile& owner, JSONThing thing) :
             cDefName(thing.getName()),
-            cDefOwner(parent, &owner),
-            cDefOptionPreparationAction(parent) {
+            cDefOwner(parent, &owner) {
     JSONObject mLaunchConfigurationObject = thing.getValue();
-    cDefOptionPreparationAction.init(mLaunchConfigurationObject, JSON_PREPARATION_ACTION);
     for (JSONThing mOptionThing : mLaunchConfigurationObject.getObject(JSON_OPTIONS)) {
       cDefOptions.emplace_back(std::make_unique<Option>(parent, mOptionThing));
     }
@@ -45,7 +42,6 @@ namespace IsoRealms {
   void ProjectLaunchConfiguration::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project) {
     owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
     owner.createPropertyTreeSelector(metadata.getPropertyData("LaunchConfigurationOwner"), cDefOwner);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("LaunchConfigurationPreparationAction"), cDefOptionPreparationAction);
     owner.createPropertyArray(       metadata.getPropertyData("LaunchConfigurationOptionAdd"), cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &owner, &metadata](Option& option) {
       owner.createPropertyStruct(    metadata.getPropertyData("LaunchConfigurationOption"), option.getName(), [this, &metadata, &option](PropertyMaker& owner) {
         option.getProperties(owner,  metadata, *this);
@@ -79,7 +75,6 @@ namespace IsoRealms {
   void ProjectLaunchConfiguration::save(JSONObject object, const ProjectFile& savingProject) const {
     if (&savingProject == cDefOwner.getProjectFile()) {
       JSONObject mLaunchConfigurationObject = object.addObject(cDefName);
-      cDefOptionPreparationAction.save(mLaunchConfigurationObject, JSON_PREPARATION_ACTION);
       JSONObject mOptionsObject = mLaunchConfigurationObject.addObject(JSON_OPTIONS);
       for (const std::unique_ptr<Option>& mOption : cDefOptions) {
         mOption->save(mOptionsObject);
@@ -127,6 +122,5 @@ namespace IsoRealms {
     cDefValue.save(object, cDefName);
   }
 
-  const std::string ProjectLaunchConfiguration::JSON_PREPARATION_ACTION = "preparationAction";
-  const std::string ProjectLaunchConfiguration::JSON_OPTIONS            = "options";
+  const std::string ProjectLaunchConfiguration::JSON_OPTIONS = "options";
 }

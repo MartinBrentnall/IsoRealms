@@ -52,12 +52,10 @@ namespace IsoRealms {
       String cDefValue;
     };
 
-    static const std::string JSON_PREPARATION_ACTION;
     static const std::string JSON_OPTIONS;
 
     std::string cDefName;
     ResourceOwner cDefOwner;
-    Action cDefOptionPreparationAction;
     std::vector<std::unique_ptr<Option>> cDefOptions;
 
     bool isOptionNameUsed(const std::string& name, Option* option) const;

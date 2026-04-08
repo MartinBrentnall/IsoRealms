@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   StringRegistry::StringRegistry() :
-            AssetClientManager(&cLiteral, "Literal") {
+            AssetClientManager(&cLiteral, "Literal", "Literal") {
 
     // Support conversions.
     add(&cFloats,   ":Float",   "Floats");
