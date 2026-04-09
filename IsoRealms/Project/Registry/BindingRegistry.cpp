@@ -43,8 +43,18 @@ namespace IsoRealms {
   
   BindingRegistry::BindingRegistry(Project& project) :
             AssetClientManager(&cDummy),
-            cProject(project) {
-
+            cProject(project),
+            cActions("Actions"),
+            cBooleans("Booleans"),
+            cColours("Colours"),
+            cFloats("Floats"),
+            cFonts("Fonts"),
+            cInputHandlers("Input Handlers"),
+            cIntegers("Integers"),
+            cScreens("Screens"),
+            cStrings("Strings"),
+            cVertices("Vertices") {
+  
     // Support local bindings.
     add(&cLocals, "~", "Local");
 

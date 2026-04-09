@@ -127,6 +127,10 @@ namespace IsoRealms {
 
     template <typename OWNER, typename FROM> class Conversion : public IAssetProvider<IActionClient, IBinding> {
       public:
+      Conversion(const std::string& assetID) :
+                cAssetID(assetID) {
+      }
+
       IBinding* getAsset(IActionClient& owner, JSONObject object) override {
         if constexpr (std::is_same_v<OWNER, IActionClient>) {
           return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner, object)).first->get();
@@ -221,7 +225,7 @@ namespace IsoRealms {
 
         std::string getConversionPath() const override {
           TreeItemInfo mTreeItemInfo = cDefValue.getTreeItemInfo();
-          return cParent.cAssetID + "/" + mTreeItemInfo.cID;
+          return cParent.cAssetID + "/" + mTreeItemInfo.cPath;
         }
 
         private:
