@@ -80,12 +80,6 @@ namespace IsoRealms {
     return mFound.value_or(TreeItemInfo{mExposedID, mExposedID});
   }
 
-  bool Binding::renderAssetIcon() const {
-    std::string mRawID = getRawID();
-    std::string mType = getType();
-    return mType == mRawID ? cAsset->renderWrappedIcon() : cAsset->renderAssetIcon();
-  }
-
 //   IBinding* Binding::getAsset(IActionClient& owner, JSONObject object) {
 //     return owner.getAssetManager().getBinding(this, object, owner, cDefRegistry);
 //   }

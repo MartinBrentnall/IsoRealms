@@ -77,10 +77,6 @@ namespace IsoRealms {
       return false;
     }
 
-    bool renderWrappedIcon() const override {
-      return false;
-    }
-
     bool isConfigurable() const override {
       return false;
     }

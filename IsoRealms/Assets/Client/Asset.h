@@ -186,7 +186,7 @@ namespace IsoRealms {
       cManager.getAssetManager().template forEachEntry<TYPE>(getTreeItemInfoFunction);
     }
 
-    TreeItemInfo getTreeItemInfo() const {
+    virtual TreeItemInfo getTreeItemInfo() const {
       return cManager.getAssetManager().getTreeItemInfo(cAsset);
     }
 

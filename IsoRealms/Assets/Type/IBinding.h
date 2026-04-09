@@ -32,7 +32,6 @@ namespace IsoRealms {
     virtual void bind(const std::string& bindFunction) const = 0;
     virtual void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const = 0;
     virtual bool renderTreeItemIcon(const std::string& id) const = 0;
-    virtual bool renderWrappedIcon() const = 0;
     virtual bool isConfigurable() const = 0;
     virtual TreeItemInfo getTreeItemInfo() const = 0;
     virtual void set(const std::string& id) = 0;

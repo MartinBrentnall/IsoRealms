@@ -110,10 +110,6 @@ namespace IsoRealms {
     return false;
   }
 
-  bool BindingRegistry::Dummy::renderWrappedIcon() const {
-    return false;
-  }
-
   bool BindingRegistry::Dummy::isConfigurable() const {
     return false;
   }

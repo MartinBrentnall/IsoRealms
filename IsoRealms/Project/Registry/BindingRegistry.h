@@ -66,7 +66,6 @@ namespace IsoRealms {
       void bind(const std::string& function) const override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
       bool renderTreeItemIcon(const std::string& id) const override;
-      bool renderWrappedIcon() const override;
       bool isConfigurable() const override;
       TreeItemInfo getTreeItemInfo() const override;
       void set(const std::string& id) override;
@@ -192,10 +191,6 @@ namespace IsoRealms {
           return cDefValue.renderTreeItemIcon(id);
         }
 
-        bool renderWrappedIcon() const override {
-          return cDefValue.renderAssetIcon();
-        }
-
         bool isConfigurable() const override {
           return cDefValue.hasConfiguration();
         }
@@ -209,7 +204,7 @@ namespace IsoRealms {
         }
 
         bool renderAssetIcon() const override {
-          return false;
+          return cDefValue.renderAssetIcon();
         }
 
         void saveAsset(JSONObject object) const override {
