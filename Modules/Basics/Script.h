@@ -41,6 +41,7 @@ namespace IsoRealms::Basics {
     void releaseAsset(const IAction* asset) override;
     bool hasConfiguration() const override;
     bool renderAssetProviderIcon() const override;
+    bool isHiddenProvider() const override;
     
     private:
     class ScriptAction : public IAction {

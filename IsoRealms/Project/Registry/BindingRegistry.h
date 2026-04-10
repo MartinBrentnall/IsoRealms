@@ -123,6 +123,10 @@ namespace IsoRealms {
         return false;
       }
 
+      bool isHiddenProvider() const override {
+        return false;
+      }
+
       private:
       inline static const std::string JSON_LOCAL = "local";
 
@@ -189,6 +193,10 @@ namespace IsoRealms {
 
       bool renderAssetProviderIcon() const override {
         return false;
+      }
+
+      bool isHiddenProvider() const override {
+        return true;
       }
 
       bool renderIcon(Project& project, const std::string& id) const override {

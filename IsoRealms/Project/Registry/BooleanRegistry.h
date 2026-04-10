@@ -64,6 +64,10 @@ namespace IsoRealms {
         return false;
       }
 
+      bool isHiddenProvider() const override {
+        return false;
+      }
+
       private:
       class Instance : public IBoolean {
         public:

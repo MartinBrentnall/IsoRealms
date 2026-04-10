@@ -61,6 +61,10 @@ namespace IsoRealms {
       return cAsset->renderAssetIcon();
     }
 
+    bool isHiddenProvider() const override {
+      return false;
+    }
+
     private:
     std::string cID;
     TYPE* cAsset;

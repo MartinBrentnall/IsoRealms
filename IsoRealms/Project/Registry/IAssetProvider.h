@@ -28,6 +28,7 @@ namespace IsoRealms {
     virtual void releaseAsset(const TYPE* asset) = 0;
     virtual bool hasConfiguration() const = 0;
     virtual bool renderAssetProviderIcon() const = 0;
+    virtual bool isHiddenProvider() const = 0;
   };
 }
 

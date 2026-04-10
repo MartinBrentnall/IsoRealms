@@ -58,7 +58,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemBoolean::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Boolean Menu Items");
+    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items (Boolean)");
   }
   
   void MenuItemBoolean::reset() {

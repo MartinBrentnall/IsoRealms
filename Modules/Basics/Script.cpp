@@ -82,6 +82,10 @@ namespace IsoRealms::Basics {
     return true;
   }
 
+  bool Script::isHiddenProvider() const {
+    return false;
+  }
+
   bool Script::hasConfiguration() const {
     return true;
   }

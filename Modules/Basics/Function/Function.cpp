@@ -254,6 +254,10 @@ namespace IsoRealms::Basics {
     return true;
   }
 
+  bool Function::isHiddenProvider() const {
+    return false;
+  }
+
   Function::Call::Call(Function& parent, IActionClient& owner) :
             cParent(parent),
             cOwner(owner) {

@@ -55,6 +55,10 @@ namespace IsoRealms {
       return false;
     }
 
+    bool isHiddenProvider() const override {
+      return false;
+    }
+
     typename std::vector<std::unique_ptr<TYPE>>::iterator begin() {
       return cInstances.begin();
     }

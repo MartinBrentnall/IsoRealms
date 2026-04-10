@@ -61,6 +61,10 @@ namespace IsoRealms {
         return false;
       }
 
+      bool isHiddenProvider() const override {
+        return false;
+      }
+
       std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(object.getFloat(JSON_X), object.getFloat(JSON_Y), object.getFloat(JSON_Z));
       }

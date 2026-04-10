@@ -94,7 +94,9 @@ namespace IsoRealms {
 
     void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
       for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& mProvider : cProviders) {
-        getTreeItemInfoFunction(TreeItemInfo{mProvider.first, mProvider.second.second});
+        if (!mProvider.second.first->isHiddenProvider()) {
+          getTreeItemInfoFunction(TreeItemInfo{mProvider.first, mProvider.second.second});
+        }
       }
     }
 

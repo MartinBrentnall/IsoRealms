@@ -72,6 +72,10 @@ namespace IsoRealms {
         return false;
       }
 
+      bool isHiddenProvider() const override {
+        return false;
+      }
+
       private:
       class Instance : public IString {
         public:
@@ -128,6 +132,10 @@ namespace IsoRealms {
 
       bool renderAssetProviderIcon() const override {
         return false;
+      }
+
+      bool isHiddenProvider() const override {
+        return false; // TODO: Change this to true when the conversions are implemented.
       }
 
       private:

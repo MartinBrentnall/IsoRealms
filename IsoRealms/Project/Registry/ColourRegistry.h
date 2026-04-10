@@ -70,6 +70,10 @@ namespace IsoRealms {
         return true;
       }
 
+      bool isHiddenProvider() const override {
+        return false;
+      }
+
       private:
       class Instance : public IColour {
         public:

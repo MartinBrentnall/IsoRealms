@@ -69,7 +69,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemSlider::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Slider Menu Items");
+    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items (Slider)");
   }
   
   void MenuItemSlider::reset() {

@@ -55,6 +55,10 @@ namespace IsoRealms {
       return true;
     }
 
+    bool isHiddenProvider() const override {
+      return false;
+    }
+
     private:
     DUMMY cDummyAsset;
   };
