@@ -43,32 +43,27 @@ namespace IsoRealms {
   
   BindingRegistry::BindingRegistry(Project& project) :
             AssetClientManager(&cDummy),
-            cProject(project),
-            cActions("Actions"),
-            cBooleans("Booleans"),
-            cColours("Colours"),
-            cFloats("Floats"),
-            cFonts("Fonts"),
-            cInputHandlers("Input Handlers"),
-            cIntegers("Integers"),
-            cScreens("Screens"),
-            cStrings("Strings"),
-            cVertices("Vertices") {
-  
+            cProject(project) {
+
+    // Set up conversion providers.
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IActionClient, Action>>(       ":Action",       "Actions"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Boolean>>(      ":Boolean",      "Booleans"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Colour>>(       ":Colour",       "Colours"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Float>>(        ":Float",        "Floats"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Font>>(         ":Font",         "Fonts"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, InputHandler>>( ":InputHandler", "Input Handlers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Integer>>(      ":Integer",      "Integers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Screen>>(       ":Screen",       "Screens"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, String>>(       ":String",       "Strings"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Vertex>>(       ":Vertex",       "Vertices"));
+            
     // Support local bindings.
     add(&cLocals, "~", "Local");
 
     // Support conversions.
-    add(&cActions,       ":Action",       "Actions");
-    add(&cBooleans,      ":Boolean",      "Booleans");
-    add(&cColours,       ":Colour",       "Colours");
-    add(&cFloats,        ":Float",        "Floats");
-    add(&cFonts,         ":Font",         "Fonts");
-    add(&cInputHandlers, ":InputHandler", "Input Handlers");
-    add(&cIntegers,      ":Integer",      "Integers");
-    add(&cScreens,       ":Screen",       "Screens");
-    add(&cStrings,       ":String",       "Strings");
-    add(&cVertices,      ":Vertex",       "Vertices");
+    for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
+      add(mConversionProvider.get(), mConversionProvider->getProviderID(), mConversionProvider->getConversionPath());
+    }
   }
 
   IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener* listener, bool required) {
@@ -78,32 +73,36 @@ namespace IsoRealms {
 
   IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener* listener) {
     cLocals.setBindings(owner.getBindingRegistry());
-    if (id.starts_with(":Boolean/")) {
-      JSONDocument mDocument;
-      JSONObject mBooleanBindingObject = mDocument.addObject("temp");
-      mBooleanBindingObject.addString(JSON_KEY, ":Boolean");
-      JSONObject mAssetObject = mBooleanBindingObject.addObject(JSON_ASSET);
-      mAssetObject.addString(JSON_KEY, id.substr(9));
 
-      return AssetClientManager::get(client, owner, mBooleanBindingObject, listener, true);
+    for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
+      if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
+        JSONDocument mDocument;
+        JSONObject mConversionProviderObject = mDocument.addObject("temp");
+        mConversionProviderObject.addString(JSON_KEY, mConversionProvider->getProviderID());
+        JSONObject mAssetObject = mConversionProviderObject.addObject(JSON_ASSET);
+        mAssetObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
+
+        return AssetClientManager::get(client, owner, mConversionProviderObject, listener, true);
+      }
     }
     return AssetClientManager::get(client, owner, id, listener);
   }
 
-  void BindingRegistry::forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+  void BindingRegistry::forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
     AssetClientManager::forEachEntry(getTreeItemInfoFunction);
 
-    cProject.forEachEntry<IBoolean>([&getTreeItemInfoFunction](const TreeItemInfo& mTreeItemInfo) {
-      TreeItemInfo mBooleanTreeItemInfo(":Boolean/" + mTreeItemInfo.cID, "Booleans/" + mTreeItemInfo.cPath);
-      getTreeItemInfoFunction(mBooleanTreeItemInfo);
-    });
-    // TODO: Add conversions.
+    for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
+      mConversionProvider->forEachEntry(cProject, getTreeItemInfoFunction);
+    }
+
     // TODO: Add local bindings.
   }
 
   bool BindingRegistry::renderIcon(const std::string& id) const {
-    if (id.starts_with(":Boolean/")) {
-      return cProject.renderIcon<IBoolean>(id.substr(9));
+    for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
+      if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
+        return mConversionProvider->renderIcon(cProject, id);
+      }
     }
     return AssetClientManager::renderIcon(id);
   }

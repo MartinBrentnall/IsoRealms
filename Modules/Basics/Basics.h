@@ -76,7 +76,7 @@ namespace IsoRealms::Basics {
       cSequenceTracks.save(object, asset);
     }
 
-    template <typename TYPE> void forEachEntry(std::function<void(const TreeItemInfo&)> f) const {
+    template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& f) const {
       cSequenceTracks.forEachEntry(f);
     }
 

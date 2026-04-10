@@ -47,13 +47,17 @@ namespace sol {
 namespace IsoRealms {
   class Project;
 
+  // Forwards to Project::renderIcon for type FROM; lives in Project.h to avoid a header cycle with BindingRegistry.h.
+  template <typename FROM> bool renderProviderIcon(Project& project, const std::string& id);
+  template <typename FROM> void forEachProviderEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction, const std::string& providerID, const std::string& conversionPath);
+
   class BindingRegistry : public AssetClientManager<BindingRegistry, IActionClient, IBinding> {
     public:
     BindingRegistry(Project& project);
     IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener* listener, bool required);
     IBinding* get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener* listener);
 
-    void forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override; 
+    void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override; 
     bool renderIcon(const std::string& id) const override;
     
     private:
@@ -125,10 +129,33 @@ namespace IsoRealms {
       IBindingRegistry* cRuntimeLocals;
     };
 
-    template <typename OWNER, typename FROM> class Conversion : public IAssetProvider<IActionClient, IBinding> {
+    class ConversionProvider : public IAssetProvider<IActionClient, IBinding> {
       public:
-      Conversion(const std::string& assetID) :
-                cAssetID(assetID) {
+      ConversionProvider(const std::string& providerID, const std::string& conversionPath) :
+                cProviderID(providerID),
+                cConversionPath(conversionPath) {
+      }
+
+      std::string getProviderID() const {
+        return cProviderID;
+      }
+
+      std::string getConversionPath() const {
+        return cConversionPath;
+      }
+
+      virtual bool renderIcon(Project& project, const std::string& id) const = 0;
+      virtual void forEachEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const = 0;
+
+      protected:
+      std::string cProviderID;
+      std::string cConversionPath;
+    };
+
+    template <typename OWNER, typename FROM> class Conversion : public ConversionProvider {
+      public:
+      Conversion(const std::string& providerID, const std::string& conversionPath) :
+                ConversionProvider(providerID, conversionPath) {
       }
 
       IBinding* getAsset(IActionClient& owner, JSONObject object) override {
@@ -162,6 +189,14 @@ namespace IsoRealms {
 
       bool renderAssetProviderIcon() const override {
         return false;
+      }
+
+      bool renderIcon(Project& project, const std::string& id) const override {
+        return ::IsoRealms::renderProviderIcon<FROM>(project, id.substr(getProviderID().length() + 1));
+      }
+
+      void forEachEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override {
+        forEachProviderEntry<FROM>(project, getTreeItemInfoFunction, getProviderID(), getConversionPath());
       }
 
       private:
@@ -216,7 +251,7 @@ namespace IsoRealms {
         }
 
         void getAssetProperties(PropertyMaker& owner) override {
-          owner.createPropertyTreeSelector<TYPE>(PropertyData("TODO: Asset", "TODO: Description"), cDefValue);
+          // Nothing to do.
         }
 
         bool isDefaultConfiguration() const override {
@@ -225,7 +260,7 @@ namespace IsoRealms {
 
         std::string getConversionPath() const override {
           TreeItemInfo mTreeItemInfo = cDefValue.getTreeItemInfo();
-          return cParent.cAssetID + "/" + mTreeItemInfo.cPath;
+          return cParent.getConversionPath() + "/" + mTreeItemInfo.cPath;
         }
 
         private:
@@ -235,8 +270,6 @@ namespace IsoRealms {
       };
 
       mutable std::set<std::unique_ptr<IBinding>> cInstances;
-
-      std::string cAssetID;
     };
 
     inline static const std::string JSON_ASSET = "asset";
@@ -247,15 +280,6 @@ namespace IsoRealms {
 
     AssetLiteralDummy<IActionClient, IBinding, Dummy> cDummy;
     Local                                             cLocals;
-    Conversion<IActionClient, Action>                 cActions;
-    Conversion<IResourceData, Boolean>                cBooleans;
-    Conversion<IResourceData, Colour>                 cColours;
-    Conversion<IResourceData, Float>                  cFloats;
-    Conversion<IResourceData, Font>                   cFonts;
-    Conversion<IResourceData, InputHandler>           cInputHandlers;
-    Conversion<IResourceData, Integer>                cIntegers;
-    Conversion<IResourceData, Screen>                 cScreens;
-    Conversion<IResourceData, String>                 cStrings;
-    Conversion<IResourceData, Vertex>                 cVertices;
+    std::vector<std::unique_ptr<ConversionProvider>>  cConversionProviders;
   };
 }

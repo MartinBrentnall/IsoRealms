@@ -55,6 +55,8 @@ namespace IsoRealms {
 
   template <typename DERIVED, typename TYPE, typename MANAGER> class Asset : public IAssetUser<TYPE> {
     public:
+    using AssetInterfaceType = TYPE;
+
     Asset(MANAGER& manager) :
               cManager(manager),
               cAsset(manager.getAssetManager().createDefault(this, manager)) {

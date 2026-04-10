@@ -77,7 +77,7 @@ namespace IsoRealms::UI {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }
 
-    template <typename TYPE> void forEachEntry(std::function<void(const TreeItemInfo&)> treeItemInfoFunction) const {
+    template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& treeItemInfoFunction) const {
       AssetContainerTraits<TYPE>::get(*this).forEachEntry(treeItemInfoFunction);
     }
 

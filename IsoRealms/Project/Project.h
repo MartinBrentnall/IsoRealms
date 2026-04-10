@@ -155,7 +155,7 @@ namespace IsoRealms {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }
 
-    template <typename TYPE> void forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
       AssetContainerTraits<TYPE>::get(*this).forEachEntry(getTreeItemInfoFunction);
     }
     
@@ -330,4 +330,15 @@ namespace IsoRealms {
   template<> struct AssetContainerTraits<IString>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cStrings;      }};
   template<> struct AssetContainerTraits<ITexture>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cTextures;     }};
   template<> struct AssetContainerTraits<IVertex>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cVertices;     }};
+
+  template <typename FROM> bool renderProviderIcon(Project& project, const std::string& id) {
+    return project.renderIcon<typename FROM::AssetInterfaceType>(id);
+  }
+
+  template <typename FROM> void forEachProviderEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction, const std::string& providerID, const std::string& conversionPath) {
+    project.forEachEntry<typename FROM::AssetInterfaceType>([&getTreeItemInfoFunction, &providerID, &conversionPath](const TreeItemInfo& mTreeItemInfo) {
+      TreeItemInfo mConversionTreeItemInfo(providerID + "/" + mTreeItemInfo.cID, conversionPath + "/" + mTreeItemInfo.cPath);
+      getTreeItemInfoFunction(mConversionTreeItemInfo);
+    });
+  }
 }

@@ -187,7 +187,7 @@ namespace IsoRealms {
       }
     }
     
-    virtual void forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    virtual void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
       cRegistry.forEachEntry(getTreeItemInfoFunction);
     }
     

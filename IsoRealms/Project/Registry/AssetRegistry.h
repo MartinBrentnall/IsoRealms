@@ -92,7 +92,7 @@ namespace IsoRealms {
       return TreeItemInfo{"", ""};
     }
 
-    void forEachEntry(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
       for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& mProvider : cProviders) {
         getTreeItemInfoFunction(TreeItemInfo{mProvider.first, mProvider.second.second});
       }
