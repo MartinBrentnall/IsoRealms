@@ -101,15 +101,18 @@ namespace IsoRealms::UI {
   }
   
   void Menu::updateRuntime(unsigned int milliseconds) {
-    float mPositionY = 0.0f;
-    for (unsigned int i = 0; i < cRuntimeSelectedItem; i++) {
-      mPositionY -= (*cDefItems[i].get())->getHeight(*this);
-    }
-    mPositionY -= (*cDefItems[cRuntimeSelectedItem].get())->getSelectedY(*this);
-    if (mPositionY < cRuntimeScroll - 0.6f) {
-      cRuntimeScroll += (mPositionY - (cRuntimeScroll - 0.6f)) * 0.1f;    
-    } else if (mPositionY > cRuntimeScroll) {
-      cRuntimeScroll += (mPositionY - cRuntimeScroll) * 0.1f;    
+    if (cRuntimeSelectedItem < cDefItems.size()) {
+      float mPositionY = 0.0f;
+      for (unsigned int i = 0; i < cRuntimeSelectedItem; i++) {
+        mPositionY -= (*cDefItems[i].get())->getHeight(*this);
+      }
+
+      mPositionY -= (*cDefItems[cRuntimeSelectedItem].get())->getSelectedY(*this);
+      if (mPositionY < cRuntimeScroll - 0.6f) {
+        cRuntimeScroll += (mPositionY - (cRuntimeScroll - 0.6f)) * 0.1f;    
+      } else if (mPositionY > cRuntimeScroll) {
+        cRuntimeScroll += (mPositionY - cRuntimeScroll) * 0.1f;    
+      }
     }
   }
   

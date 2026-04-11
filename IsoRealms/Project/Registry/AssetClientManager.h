@@ -33,7 +33,12 @@ namespace IsoRealms {
     AssetRegistry<OWNER, TYPE> cRegistry;
 
     AssetClientManager() :
-              AssetClientManager(nullptr) {
+              AssetClientManager(static_cast<IAssetProvider<OWNER, TYPE>*>(nullptr)) {
+    }
+
+    AssetClientManager(TYPE* defaultAsset, const std::string& defaultProviderID = "None", const std::string& defaultProviderName = "None") {
+      cDefaultProvider = cAssetSingletons.emplace(defaultAsset, std::make_unique<AssetSingleton<OWNER, TYPE>>(defaultProviderID, defaultAsset)).first->second.get();
+      add(cDefaultProvider, defaultProviderID, defaultProviderName, false);
     }
 
     AssetClientManager(IAssetProvider<OWNER, TYPE>* defaultProvider, const std::string& defaultProviderID = "None", const std::string& defaultProviderName = "None") :

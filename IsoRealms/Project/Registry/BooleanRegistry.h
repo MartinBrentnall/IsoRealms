@@ -43,70 +43,49 @@ namespace IsoRealms {
     }
 
     private:
-    class Literal : public AssetLiteral<IResourceData, IBoolean> {
+    class LiteralBoolean : public IBoolean {
       public:
-      IBoolean* createLiteralAsset(IResourceData& owner, bool value) const {
-        return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
+      LiteralBoolean(bool value) :
+                cValue(value) {
       }
 
-      /*************************************\
-      * Implements AssetLiteral<IBoolean> *
-      \*************************************/
-      bool hasConfiguration() const override {
+      /***********************\
+       * Implements IBoolean *
+      \***********************/
+      bool getValue() const override {
+        return cValue;
+      }
+
+      /***********************************\
+       * Implements IAsset from IBoolean *
+      \***********************************/
+      bool renderAssetIcon() const override {
+        if (cValue) {
+          Utils::renderIconTick();
+        } else {
+          Utils::renderIconNone();
+        }
         return true;
       }
 
-      std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner) const override {
-        return std::make_unique<Instance>(owner.getProject(), false);
+      void saveAsset(JSONObject object) const override {
+        // Nothing to do.
       }
 
-      bool renderAssetProviderIcon() const override {
-        return false;
+      void getAssetProperties(PropertyMaker& owner) override {
+        // Nothing to do.
       }
 
-      bool isHiddenProvider() const override {
-        return false;
+      bool isDefaultConfiguration() const override {
+        return true;
       }
 
       private:
-      class Instance : public IBoolean {
-        public:
-        Instance(Project& project, bool value);
-
-        /***********************\
-         * Implements IBoolean *
-        \***********************/
-        bool getValue() const override;
-
-        /***********************************\
-         * Implements IAsset from IBoolean *
-        \***********************************/
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        void getAssetProperties(PropertyMaker& owner) override;
-        bool isDefaultConfiguration() const override;
-
-        private:
-        static const std::string JSON_VALUE;
-
-        // External interfaces.
-        const Metadata& cMetadata;
-
-        bool cValue; /// The value of this Boolean.
-      };
-
-      std::unique_ptr<IBoolean> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
-        return std::make_unique<Instance>(owner.getProject(), object.getBoolean(JSON_VALUE));
-      }
-
-      inline static const std::string JSON_VALUE = "value";
-
-      // Recognized values.
-      inline static const std::string VALUE_FALSE = "false"; /// String value for literal false
-      inline static const std::string VALUE_TRUE  = "true";  /// String value for literal true
+      bool cValue; /// The value of this Boolean.
     };
 
-    Literal cLiteral;
+    LiteralBoolean cLiteralFalse;
+    LiteralBoolean cLiteralTrue;
   };
 }
 
