@@ -24,7 +24,7 @@
 namespace IsoRealms {
   PropertyNativeBoolean::PropertyNativeBoolean(PropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
-            cInternalSelection(setter, project, getter()),
+            cInternalSelection(setter, getter, project),
             cInternalProperty(owner, resourceAccessManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
   }
 
@@ -48,22 +48,22 @@ namespace IsoRealms {
     cInternalProperty.configure(manager);
   }
   
-  PropertyNativeBoolean::BooleanSelection::BooleanSelection(std::function<void(bool)> setter, Project& project, bool value) :
+  PropertyNativeBoolean::BooleanSelection::BooleanSelection(std::function<void(bool)> setter, std::function<bool()> getter, Project& project) :
             cProject(project),
             cSetter(setter),
-            cValue(value) {
+            cGetter(getter) {
   }
 
   TreeItemInfo PropertyNativeBoolean::BooleanSelection::getTreeItemInfo() const {
-    return cValue ? TreeItemInfo{ID_TRUE, "True"} : TreeItemInfo{ID_FALSE, "False"};
+    return cGetter() ? TreeItemInfo{ID_TRUE, "True"} : TreeItemInfo{ID_FALSE, "False"};
   }
   
   std::string PropertyNativeBoolean::BooleanSelection::getTreeItemLabel() const {
-    return cValue ? "True" : "False";
-  }
+    return cGetter() ? "True" : "False";
+  } 
   
   bool PropertyNativeBoolean::BooleanSelection::renderAssetIcon() const {
-    if (cValue) {
+    if (cGetter()) {
       Utils::renderIconTick();
     } else {
       Utils::renderIconNone();
@@ -105,13 +105,12 @@ namespace IsoRealms {
   
   void PropertyNativeBoolean::BooleanSelection::setID(const std::string& id) {
     if (id == ID_TRUE) {
-      cValue = true;
+      cSetter(true);
     } else if (id == ID_FALSE) {
-      cValue = false;
+      cSetter(false);
     } else {
       std::cout << "TODO: Throw Unsupported BooleanSelection ID" << std::endl;
     }
-    cSetter(cValue);
   }
 
   const std::string PropertyNativeBoolean::BooleanSelection::ID_TRUE  = "true";

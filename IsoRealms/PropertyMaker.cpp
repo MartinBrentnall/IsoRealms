@@ -106,10 +106,6 @@ namespace IsoRealms {
     cDialogManager.confirm(message, confirm, cancel);
   }
 
-  void PropertyMaker::confirm(std::function<void()> confirm, std::function<void()> cancel) {
-    cDialogManager.confirm("TODO: The resource you're modifying is read-only.  In order to modify this resource, it will need to be promoted to the main project file.", confirm, cancel);
-  }
-
   void PropertyMaker::promoteResourceToProject() {
     cParent.setOwner(cParent.getProject().getProjectFile());
   }

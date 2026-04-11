@@ -78,13 +78,11 @@ namespace IsoRealms {
     template <typename OPTIONAL_TYPE> void createPropertyOptional(const PropertyData& metadata, std::function<void(const std::string&)> choiceCallback) {
       cProperties.addProperty(std::make_unique<PropertyOptional<OPTIONAL_TYPE>>(*this, *this, cParent, metadata, choiceCallback, cParent.getProject(), cApplication));
     }
-
-    void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel);
     
-    /***********************************\
+    /*************************************\
      * Implements IResourceAccessManager *
-    \***********************************/
-    void confirm(std::function<void()> confirm, std::function<void()> cancel) override;
+    \*************************************/
+    void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) override;
     bool isResourceReadOnly() const override;
     void promoteResourceToProject() override;
 

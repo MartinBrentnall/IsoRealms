@@ -23,7 +23,7 @@
 namespace IsoRealms {
   class IResourceAccessManager {
     public:
-    virtual void confirm(std::function<void()> confirm, std::function<void()> cancel) = 0;
+    virtual void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) = 0;
     virtual bool isResourceReadOnly() const = 0;
     virtual void promoteResourceToProject() = 0;
   };

@@ -43,7 +43,7 @@ namespace IsoRealms {
     private:
     class BooleanSelection {
       public:
-      BooleanSelection(std::function<void(bool)> setter, Project& project, bool value);
+      BooleanSelection(std::function<void(bool)> setter, std::function<bool()> getter, Project& project);
 
       /**************************************\
        * Interface for PropertyTreeSelector *
@@ -65,7 +65,7 @@ namespace IsoRealms {
 
       Project& cProject;
       std::function<void(bool)> cSetter;
-      bool cValue;
+      std::function<bool()> cGetter;
     };
 
     BooleanSelection cInternalSelection;

@@ -99,11 +99,17 @@ namespace IsoRealms {
     owner.createPropertyTreeSelector<File>(metadata.getPropertyData("File"), cFile);
     owner.createPropertyNativeString(metadata.getPropertyData("Description"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
-      owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowModifications"), [this]() {return cAllowModifications;}, [this, &project](bool value) {
-        if (!cAllowModifications) {
-          project.save(*this);
+      owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowModifications"), [this]() {return cAllowModifications;}, [this, &owner, &project](bool value) {
+        if (!value) {
+          owner.confirm("Setting this file to read-only will cause it to be saved as it is currently.  Are you sure you want to do this?", [this, &project]() {
+            project.save(*this);
+            cAllowModifications = false;
+          }, []() {
+            // Nothing to do.
+          });
+        } else {
+          cAllowModifications = true;
         }
-        cAllowModifications = value;
       });
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
