@@ -122,7 +122,7 @@ namespace IsoRealms {
 
     void getAssetProperties(PropertyMaker& owner) {
       getClientProperties(owner);
-      getTheAssetProperties(cAsset, owner);
+      cAsset->getAssetProperties(owner);
     }
 
     virtual bool renderAssetIcon() const {
@@ -234,9 +234,6 @@ namespace IsoRealms {
     }
     virtual void getClientProperties(PropertyMaker& owner) {
       // Nothing to do.
-    }
-    virtual void getTheAssetProperties(TYPE* asset, PropertyMaker& owner) {
-      asset->getAssetProperties(owner);
     }
 
     private:

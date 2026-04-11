@@ -116,7 +116,7 @@ namespace IsoRealms {
       }
 
       bool hasConfiguration() const override {
-        return true;
+        return false;
       }
 
       bool renderAssetProviderIcon() const override {
@@ -188,7 +188,7 @@ namespace IsoRealms {
       }
 
       bool hasConfiguration() const override {
-        return true;
+        return false;
       }
 
       bool renderAssetProviderIcon() const override {

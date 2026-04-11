@@ -135,18 +135,11 @@ namespace IsoRealms {
   }
 
   bool Binding::hasClientConfiguration() const {
-    std::string mRawID = getRawID();
-    std::string mType = getType();
-    if (mType == mRawID) {
-      return cAsset->isConfigurable();
-    }
-
-    return cManager.getAssetManager().isConfigurable<IBinding>(getRawID());
+    return cAsset->isConfigurable() || cManager.getAssetManager().isConfigurable<IBinding>(getRawID());
   }  
 
-  void Binding::getTheAssetProperties(IBinding* asset, PropertyMaker& owner) {
-    std::string mRawID = getRawID();
-    std::string mType = getType();
-    mType == mRawID ? asset->getWrappedProperties(owner) : asset->getAssetProperties(owner);
+  void Binding::getClientProperties(PropertyMaker& owner) {
+    cAsset->getWrappedProperties(owner);
+    cAsset->getAssetProperties(owner);
   }
 }
