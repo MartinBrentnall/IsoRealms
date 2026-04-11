@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void AlienType::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Aliens");
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy/Aliens");
   }
     
   void AlienType::save(JSONObject object) const {

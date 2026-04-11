@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
 
   void SimpleFloat::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IFloat>(this, "", "Simple Floats");
-    assets.add<IBinding>(&cLuaBinding, "", "Simple Floats");
+    assets.add<IBinding>(&cLuaBinding, "", "Variables/Floats");
   }
   
   void SimpleFloat::save(JSONObject object) const {

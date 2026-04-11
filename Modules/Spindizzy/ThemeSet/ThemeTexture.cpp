@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void ThemeTexture::registerAssets(ResourceAssetRegistry& assets, const std::string& id) {
-    cStateNotifier = assets.add<ITexture>(this, id, "Spindizzy Themes");
+    cStateNotifier = assets.add<ITexture>(this, id, "Spindizzy/Theme Textures");
   }
   
   void ThemeTexture::notifyChange() {

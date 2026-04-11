@@ -55,7 +55,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemLauncherList::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items (Launcher List)");
+    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Launcher Lists");
   }
 
   void MenuItemLauncherList::reset() {

@@ -65,7 +65,7 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IString>(&cSelectedFile, cDefID, "Menu Items (File List)");
-    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items (File List)");
+    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/File Lists");
   }
   
   void MenuItemFileList::reset() {

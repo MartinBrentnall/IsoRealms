@@ -57,7 +57,7 @@ namespace IsoRealms::UI {
   }
   
   void MenuItemDigitalInput::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items (Digital Input)");
+    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Digital Inputs");
   }
   
   void MenuItemDigitalInput::reset() {

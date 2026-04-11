@@ -101,7 +101,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PlayerType::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Players");
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy/Players");
   }
 
   void PlayerType::save(JSONObject object) const {

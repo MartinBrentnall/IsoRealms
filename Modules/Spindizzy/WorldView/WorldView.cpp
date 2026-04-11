@@ -56,7 +56,7 @@ namespace IsoRealms::Spindizzy {
 
   void WorldView::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Spindizzy World Views");
-    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy World Views");
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy/World Views");
     cDefCamera->registerAssets(assets, "Camera");
   }
 

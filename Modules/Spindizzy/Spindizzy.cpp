@@ -328,7 +328,7 @@ namespace IsoRealms::Spindizzy {
     assets.add<IBinding>(&cRuntimeParameterPlayer,         "Player",         "Player");
     assets.add<IBinding>(&cRuntimeParameterWall,           "Wall",           "Wall");
     assets.add<IBinding>(&cRuntimeParameterZone,           "Zone",           "Zone");
-    assets.add<IBinding>(&cLuaBinding,                     "",               "Spindizzy Module");
+    assets.add<IBinding>(&cLuaBinding,                     "",               "Modules/Spindizzy");
     
     for (AlienType* mResource : cResourceAlien) {
       mResource->registerAssets("Alien/" + getResourceID(mResource));

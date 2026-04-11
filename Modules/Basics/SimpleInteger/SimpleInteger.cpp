@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
 
   void SimpleInteger::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IInteger>(this, "", "Simple Integers");
-    assets.add<IBinding>(&cLuaBinding, "", "Simple Integers");
+    assets.add<IBinding>(&cLuaBinding, "", "Variables/Integers");
   }
   
   void SimpleInteger::save(JSONObject object) const {

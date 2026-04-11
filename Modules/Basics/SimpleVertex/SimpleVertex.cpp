@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
 
   void SimpleVertex::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IVertex>(this, "", "Simple Vertices");
-    assets.add<IBinding>(&cLuaBinding, "", "Simple Vertices");
+    assets.add<IBinding>(&cLuaBinding, "", "Variables/Vertices");
   }
 
   void SimpleVertex::save(JSONObject object) const {

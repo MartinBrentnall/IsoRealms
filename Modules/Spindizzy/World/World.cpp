@@ -182,7 +182,7 @@ namespace IsoRealms::Spindizzy {
 
   void World::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IEditable>(this, "", "Spindizzy Worlds");
-    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Worlds");
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy/Worlds");
     for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
       mDebrisGenerator->registerAssets(assets, "DebrisGenerator");
     }

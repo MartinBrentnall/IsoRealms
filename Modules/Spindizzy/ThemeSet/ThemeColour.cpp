@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
 
   void ThemeColour::registerAssets(ResourceAssetRegistry& assets, const std::string& id) {
     assets.add<IColour>(this, id, "Colours from Spindizzy Themes"); // TODO: Localize this.
-    assets.add<IBinding>(&cLuaBinding, "ThemeColour/" + id, "Colours from Spindizzy Themes");
+    assets.add<IBinding>(&cLuaBinding, "ThemeColour/" + id, "Spindizzy/Theme Colours");
   }
   
   void ThemeColour::set(IColour* colour) {

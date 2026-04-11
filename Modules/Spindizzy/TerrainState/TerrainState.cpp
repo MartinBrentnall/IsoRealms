@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
 
   void TerrainState::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBoolean>(this, "", "Spindizzy Terrain States");
-    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Terrain States");
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy/Terrain States");
   }
 
   void TerrainState::save(JSONObject object) const {

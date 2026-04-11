@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
 
   void Player::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
     assets.add<IVertex>(&cRuntimePhysicsObject.cLocation, parentID, "Spindizzy Players");
-    assets.add<IBinding>(&cLuaBinding,                    parentID, "Spindizzy Players");
+    assets.add<IBinding>(&cLuaBinding,                    parentID, "Spindizzy/Players");
   }
   
   void Player::reset() {

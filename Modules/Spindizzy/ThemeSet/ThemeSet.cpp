@@ -110,7 +110,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void ThemeSet::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy Theme Sets");
+    assets.add<IBinding>(&cLuaBinding, "", "Spindizzy/Theme Sets");
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
       mPair.second->registerAssets(assets, mPair.first);
     }

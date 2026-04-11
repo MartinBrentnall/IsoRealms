@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
 
   void SimpleString::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IString>(this, "", "Simple Strings");
-    assets.add<IBinding>(&cLuaBinding, "", "Simple Strings");
+    assets.add<IBinding>(&cLuaBinding, "", "Variables/Strings");
   }
   
   void SimpleString::save(JSONObject object) const {

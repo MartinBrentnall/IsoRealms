@@ -91,7 +91,7 @@ namespace IsoRealms::Basics {
 
   void Basics::registerAssets(ResourceAssetRegistry& assets) {
     assets.addProvider(&cActionScript, ACTION_SCRIPT, "Run a Script");
-    assets.add<IBinding>(&cLuaBinding,   "",            "Basics");
+    assets.add<IBinding>(&cLuaBinding, "",            "Modules/Basics");
   }
   
   void Basics::updateInputs(unsigned int milliseconds) {
