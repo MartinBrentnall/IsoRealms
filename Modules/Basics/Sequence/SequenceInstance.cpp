@@ -152,6 +152,10 @@ namespace IsoRealms::Basics {
     setPreviewPosition(cRuntimePosition);
   }
 
+  void SequenceInstance::deleteTrackInstance(unsigned int track) {
+    cTrackInstances.erase(cTrackInstances.begin() + track);
+  }
+
   SequenceInstance::Position::Position(SequenceInstance& parent) :
             cParent(parent) {
   }

@@ -50,7 +50,7 @@ namespace IsoRealms {
 
     void render(float aspectRatio) const;
     void update(unsigned int milliseconds);
-    void input(UISignalID id);
+    bool input(UISignalID id);
     bool input(sf::Event& event);  
 
     void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LiteralColour(1.0f, 1.0f, 1.0f));
@@ -94,15 +94,15 @@ namespace IsoRealms {
     
     class ButtonState {
       public:
-      ButtonState(std::function<void()> pressAction);
-      void setPressed(bool pressed);
+      ButtonState(std::function<bool()> pressAction);
+      bool setPressed(bool pressed);
       void update(unsigned int milliseconds);
 
       private:
       bool cPressed;
       int cTimeUntilTrigger;
       int cRepeatInterval;
-      std::function<void()> cPressAction;
+      std::function<bool()> cPressAction;
     };
 
     static const int BUTTON_STATE_PRESS_REPEAT_DELAY    = 350;

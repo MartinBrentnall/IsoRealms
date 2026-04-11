@@ -91,6 +91,7 @@ namespace IsoRealms::Basics {
     unsigned int getDuration() const;
     void addTrack();
     void refreshAssetRegistration();
+    void deleteTrack(unsigned int track);
 
     private:
 

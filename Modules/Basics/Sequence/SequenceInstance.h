@@ -47,7 +47,7 @@ namespace IsoRealms::Basics {
     void getProperties(PropertyMaker& owner, const Metadata& metadata);
 
     /***********************\
-      * Scripting Interface *
+     * Scripting Interface *
     \***********************/
     void play();
     void pause();
@@ -55,6 +55,8 @@ namespace IsoRealms::Basics {
     int getTime() const;
     void setTime(int time);
 
+    void deleteTrackInstance(unsigned int track);
+    
     private:
     static const std::string JSON_SPEED;
     static const std::string JSON_START_TIME;

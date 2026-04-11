@@ -269,6 +269,14 @@ namespace IsoRealms::Basics {
     cBasics.refreshAssetRegistration(*this);
   }
 
+  void Sequence::deleteTrack(unsigned int track) {
+    cDefTracks.erase(cDefTracks.begin() + track);
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
+      mEntry.second->deleteTrackInstance(track);
+    }
+    refreshAssetRegistration();
+  }
+
   Sequence::Length::Length(Sequence& parent) :
             cParent(parent) {
   }

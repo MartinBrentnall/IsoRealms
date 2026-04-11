@@ -733,12 +733,22 @@ namespace IsoRealms::Basics {
             }
 
             case 6: {
-              if (cCursorEvent != nullptr) {
-                cSequence.getTrack(cCursorTrack.value())->deleteEvent(cCursorEvent);
+              if (cCursorTrack.value() < static_cast<int>(cSequence.getTrackCount())) {
+                if (cCursorTrackProperties) {
+                  cEditingProperties = true;
+                  cPropertiesUI.confirm("Are you sure you want to delete this track?", [this]() {
+                    cSequence.deleteTrack(cCursorTrack.value());
+                    cTrackLocks.erase(cTrackLocks.begin() + cCursorTrack.value());
+                    cEditingProperties = false;
+                  }, [this]() {
+                    cEditingProperties = false;
+                  });
+                } else if (cCursorEvent != nullptr) {
+                  cSequence.getTrack(cCursorTrack.value())->deleteEvent(cCursorEvent);
+                  }
+                }
               }
               break;
-            }
-
             case 9: {
               cExitAction->execute();
               break;
