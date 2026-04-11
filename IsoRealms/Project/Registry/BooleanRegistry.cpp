@@ -27,36 +27,4 @@ namespace IsoRealms {
             cLiteralTrue(true) {
     add(&cLiteralTrue, "True", "True");
   }
-
-  BooleanRegistry::Literal::Instance::Instance(Project& project, bool value) :
-            cMetadata(project.getApplication().getMetadata("LiteralBoolean")),
-            cValue(value) {
-  }
-
-  bool BooleanRegistry::Literal::Instance::getValue() const {
-    return cValue;
-  }
-
-  bool BooleanRegistry::Literal::Instance::renderAssetIcon() const {
-    if (cValue) {
-      Utils::renderIconTick();
-    } else {
-      Utils::renderIconNone();
-    }
-    return true;
-  }
-
-  void BooleanRegistry::Literal::Instance::saveAsset(JSONObject object) const {
-    object.addBoolean(JSON_VALUE, cValue);
-  }
-
-  void BooleanRegistry::Literal::Instance::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyNativeBoolean(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](bool value) {cValue = value;});
-  }
-
-  bool BooleanRegistry::Literal::Instance::isDefaultConfiguration() const {
-    return !cValue;
-  }
-
-  const std::string BooleanRegistry::Literal::Instance::JSON_VALUE = "value";
 }

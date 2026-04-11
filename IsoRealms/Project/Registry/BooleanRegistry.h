@@ -37,8 +37,9 @@ namespace IsoRealms {
     BooleanRegistry();
 
     IBoolean* literal(IAssetUser<IBoolean>* client, IResourceData& owner, bool value) {
-      IBoolean* mBoolean = cLiteral.createLiteralAsset(owner, value);
-      registerClient(client, &cLiteral, mBoolean);
+      IAssetProvider<IResourceData, IBoolean>* mProvider = cRegistry.getProvider(value ? "True" : "False", true);
+      IBoolean* mBoolean = mProvider->getAsset(owner);
+      registerClient(client, mProvider, mBoolean);
       return mBoolean;
     }
 
