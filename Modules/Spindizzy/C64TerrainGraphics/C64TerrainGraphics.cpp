@@ -366,7 +366,7 @@ namespace IsoRealms::Spindizzy {
     glRotatef(-angle, 0.0f, 0.0f, 1.0f);
   }
 
-  void C64TerrainGraphics::renderSwitchDiamond(float angle) {
+  void C64TerrainGraphics::renderSwitchDiamondBoth(float angle) {
     renderTile(cDefFloor);
     glRotatef(angle, 0.0f, 0.0f, 1.0f);
     renderSquare(SWITCH_DIAMOND_OUTER, cDefWall);
@@ -376,16 +376,16 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::renderSwitchDiamondHalf(float angle) {
-    renderSwitchDiamond(angle);
-    renderRectangle( SWITCH_DIAMOND_INNER, -SWITCH_DIAMOND_OUTER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, **cDefWall);
+    renderSwitchDiamondBoth(angle);
+    renderRectangle( SWITCH_DIAMOND_INNER, -SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, **cDefWall);
     renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER, **cDefWall);
     glRotatef(-angle, 0.0f, 0.0f, 1.0f);
   }
 
-  void C64TerrainGraphics::renderSwitchDiamondBoth() {
+  void C64TerrainGraphics::renderSwitchDiamondNone() {
     renderSwitchDiamondHalf(0.0f);
     renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER,  SWITCH_DIAMOND_OUTER, **cDefWall);
-    renderRectangle(-SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_INNER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, **cDefWall);
+    renderRectangle(-SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_INNER,  SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, **cDefWall);
   }
 
   void C64TerrainGraphics::renderSwitchCircle(float angle) {
@@ -457,9 +457,9 @@ namespace IsoRealms::Spindizzy {
       mAngle -= 360.0f;
     }
     cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2 ]->setRenderTarget(angle); renderSwitchDiamondHalf(mAngle);
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6 ]->setRenderTarget(angle); renderSwitchSquareHalf (mAngle);
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_7      ]->setRenderTarget(angle); renderSwitchSquareBoth (mAngle);
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10]->setRenderTarget(angle); renderSwitchCircleHalf (mAngle);
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6 ]->setRenderTarget(angle); renderSwitchSquareHalf( mAngle);
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_7      ]->setRenderTarget(angle); renderSwitchSquareBoth( mAngle);
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10]->setRenderTarget(angle); renderSwitchCircleHalf( mAngle);
     float mInterpolation = std::abs(mAngle / 90.0f);
     if (mInterpolation > 1.0f) {
       mInterpolation -= ((mInterpolation - 1.0f) * 2.0f);
@@ -486,8 +486,8 @@ namespace IsoRealms::Spindizzy {
     cTextures[ASSET_ID_SURFACE_ARROW                ]->setRenderTarget(); renderArrow();
     cTextures[ASSET_ID_SURFACE_TRAMPOLINE           ]->setRenderTarget(); renderTrampoline();
     cTextures[ASSET_ID_SURFACE_ICE_OR_WATER         ]->setRenderTarget(); renderIce();
-    cTextures[ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES]->setRenderTarget(); renderSwitchDiamond(0.0f);
-    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_3     ]->setRenderTarget(); renderSwitchDiamondBoth();
+    cTextures[ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES]->setRenderTarget(); renderSwitchDiamondNone();
+    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_3     ]->setRenderTarget(); renderSwitchDiamondBoth(0.0f);
     cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_4     ]->setRenderTarget(); renderSwitchSquare(0.0f);
     cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_8     ]->setRenderTarget(); renderSwitchCircle(0.0f);
     cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_11    ]->setRenderTarget(); renderSwitchCircleBoth();

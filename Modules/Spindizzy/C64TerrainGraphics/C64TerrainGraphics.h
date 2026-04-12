@@ -172,9 +172,9 @@ namespace IsoRealms::Spindizzy {
     void renderSwitchSquare(float);
     void renderSwitchSquareHalf(float);
     void renderSwitchSquareBoth(float);
-    void renderSwitchDiamond(float);
+    void renderSwitchDiamondBoth(float);
     void renderSwitchDiamondHalf(float);
-    void renderSwitchDiamondBoth();
+    void renderSwitchDiamondNone();
     void renderSwitchCircle(float);
     void renderSwitchCircleBoth();
     void renderSwitchCircleHalf(float);
