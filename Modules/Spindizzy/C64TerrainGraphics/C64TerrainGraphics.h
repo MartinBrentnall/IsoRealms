@@ -73,8 +73,9 @@ namespace IsoRealms::Spindizzy {
 
     static const std::string ASSET_ID_SURFACE_PLAIN;
     static const std::string ASSET_ID_SURFACE_PLAIN_SPLIT;
-    static const std::string ASSET_ID_SURFACE_ICE_OR_WATER;
     static const std::string ASSET_ID_SURFACE_ARROW;
+    static const std::string ASSET_ID_SURFACE_ICE_OR_WATER;
+    static const std::string ASSET_ID_SURFACE_TRAMPOLINE;
     static const std::string ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES;
     static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2;
     static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_3;
@@ -84,12 +85,11 @@ namespace IsoRealms::Spindizzy {
     static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_8;
     static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10;
     static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_11;
-    static const std::string ASSET_ID_SURFACE_TRAMPOLINE;
-    static const std::string ASSET_ID_WALL_ICE;
-    static const std::string ASSET_ID_WALL_VARIANT_CAP;
-    static const std::string ASSET_ID_WALL_VARIANT_MIDDLE;
     static const std::string ASSET_ID_WALL_PLAIN_CAP;
     static const std::string ASSET_ID_WALL_PLAIN_MIDDLE;
+    static const std::string ASSET_ID_WALL_VARIANT_CAP;
+    static const std::string ASSET_ID_WALL_VARIANT_MIDDLE;
+    static const std::string ASSET_ID_WALL_ICE;
 
     static const std::string JSON_FLOOR;
     static const std::string JSON_GRID;
@@ -183,7 +183,7 @@ namespace IsoRealms::Spindizzy {
     void renderWallCap(float);
     void renderIceWall();
 
-    void generateAngledTextures(const IFloat* angle);
+    void generateOrientedTextures(const IFloat* angle);
     void generateTextures();
 
     std::unique_ptr<LiteralTexture> createTexture(bool clamp = false);

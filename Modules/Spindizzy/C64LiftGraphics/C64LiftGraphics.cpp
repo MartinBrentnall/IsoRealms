@@ -41,15 +41,15 @@ namespace IsoRealms::Spindizzy {
   const float C64LiftGraphics::DIAMOND_SQUARE_COLOUR_OUTER  = 0.62f;
   const float C64LiftGraphics::DIAMOND_SQUARE_COLOUR_INNER  = 0.48f;
 
-  const std::string C64LiftGraphics::CIRCLE_NONE  = "CircleEmpty";
-  const std::string C64LiftGraphics::CIRCLE_HALF  = "CircleHalf";
-  const std::string C64LiftGraphics::CIRCLE_BOTH  = "CircleFilled";
-  const std::string C64LiftGraphics::SQUARE_NONE  = "SquareEmpty";
-  const std::string C64LiftGraphics::SQUARE_HALF  = "SquareHalf";
-  const std::string C64LiftGraphics::SQUARE_BOTH  = "SquareFilled";
-  const std::string C64LiftGraphics::DIAMOND_NONE = "DiamondEmpty";
-  const std::string C64LiftGraphics::DIAMOND_HALF = "DiamondHalf";
-  const std::string C64LiftGraphics::DIAMOND_BOTH = "DiamondFilled";
+  const std::string C64LiftGraphics::ASSET_ID_ALWAYS_ON      = "Always On";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_1_AND_2  = "State 1 and 2";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_3        = "State 3";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_4        = "State 4";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_5_AND_6  = "State 5 and 6";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_7        = "State 7";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_8        = "State 8";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_9_AND_10 = "State 9 and 10";
+  const std::string C64LiftGraphics::ASSET_ID_STATE_11       = "State 11";
 
   const std::string C64LiftGraphics::JSON_OUTLINE   = "outline";
   const std::string C64LiftGraphics::JSON_PRIMARY   = "primary";
@@ -61,15 +61,15 @@ namespace IsoRealms::Spindizzy {
             cDefSecondary(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cNeedsRedrawing(false) {
-    cTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[SQUARE_NONE]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[SQUARE_HALF]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[SQUARE_BOTH]  = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
-    cTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_ALWAYS_ON     ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_1_AND_2 ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_3       ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_4       ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_5_AND_6 ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_7       ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_8       ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_9_AND_10] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
+    cTextures[ASSET_ID_STATE_11      ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
     setNeedsRedrawing();
   }
   
@@ -102,7 +102,7 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH,       1.0f, 0.0f, 0.0f);
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW - 90.0f, 0.0f, 0.0f, 1.0f);
     glScalef(1.3f, 1.3f, 1.3f);
-    cTextures[DIAMOND_HALF]->set();
+    cTextures[ASSET_ID_STATE_1_AND_2]->set();
     glEnable(GL_ALPHA_TEST);
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex2f(-1.0f,  1.0f);
@@ -131,15 +131,15 @@ namespace IsoRealms::Spindizzy {
     glLoadIdentity();
     glPopAttrib();
 
-    cTextures[CIRCLE_HALF]->setRenderTarget();  renderLiftCircleHalf();
-    cTextures[CIRCLE_NONE]->setRenderTarget();  renderLiftCircle();
-    cTextures[CIRCLE_BOTH]->setRenderTarget();  renderLiftCircleBoth();
-    cTextures[SQUARE_HALF]->setRenderTarget();  renderLiftSquareHalf();
-    cTextures[SQUARE_NONE]->setRenderTarget();  renderLiftSquare();
-    cTextures[SQUARE_BOTH]->setRenderTarget();  renderLiftSquareBoth();
-    cTextures[DIAMOND_HALF]->setRenderTarget(); renderLiftDiamondHalf();
-    cTextures[DIAMOND_NONE]->setRenderTarget(); renderLiftDiamond();
-    cTextures[DIAMOND_BOTH]->setRenderTarget(); renderLiftDiamondBoth();
+    cTextures[ASSET_ID_ALWAYS_ON     ]->setRenderTarget(); renderLiftDiamond();
+    cTextures[ASSET_ID_STATE_1_AND_2 ]->setRenderTarget(); renderLiftDiamondHalf();
+    cTextures[ASSET_ID_STATE_3       ]->setRenderTarget(); renderLiftDiamondBoth();
+    cTextures[ASSET_ID_STATE_4       ]->setRenderTarget(); renderLiftSquare();
+    cTextures[ASSET_ID_STATE_5_AND_6 ]->setRenderTarget(); renderLiftSquareHalf();
+    cTextures[ASSET_ID_STATE_7       ]->setRenderTarget(); renderLiftSquareBoth();
+    cTextures[ASSET_ID_STATE_8       ]->setRenderTarget(); renderLiftCircle();
+    cTextures[ASSET_ID_STATE_9_AND_10]->setRenderTarget(); renderLiftCircleHalf();
+    cTextures[ASSET_ID_STATE_11      ]->setRenderTarget(); renderLiftCircleBoth();
 
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);

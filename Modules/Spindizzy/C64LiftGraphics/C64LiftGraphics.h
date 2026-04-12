@@ -71,15 +71,15 @@ namespace IsoRealms::Spindizzy {
     static const float DIAMOND_SQUARE_COLOUR_INNER;
 
     // Texture asset ID's.
-    static const std::string CIRCLE_NONE;
-    static const std::string CIRCLE_HALF;
-    static const std::string CIRCLE_BOTH;
-    static const std::string SQUARE_NONE;
-    static const std::string SQUARE_HALF;
-    static const std::string SQUARE_BOTH;
-    static const std::string DIAMOND_NONE;
-    static const std::string DIAMOND_HALF;
-    static const std::string DIAMOND_BOTH;
+    static const std::string ASSET_ID_ALWAYS_ON;
+    static const std::string ASSET_ID_STATE_1_AND_2;
+    static const std::string ASSET_ID_STATE_3;
+    static const std::string ASSET_ID_STATE_4;
+    static const std::string ASSET_ID_STATE_5_AND_6;
+    static const std::string ASSET_ID_STATE_7;
+    static const std::string ASSET_ID_STATE_8;
+    static const std::string ASSET_ID_STATE_9_AND_10;
+    static const std::string ASSET_ID_STATE_11;
     
     // JSON members.
     static const std::string JSON_OUTLINE;
