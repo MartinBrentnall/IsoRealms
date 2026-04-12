@@ -92,14 +92,14 @@ namespace IsoRealms::Basics {
 
   Script::ScriptAction::ScriptAction(Script& parent, IActionClient& owner, unsigned int index, JSONObject object) :
             cParent(parent),
-            cDefFunction(cParent.cBasics, "_t" + Utils::toString(index), owner, object, false),
+            cDefFunction(cParent.cBasics, owner, object, false),
             cDefAction(cDefFunction.getAsset(owner, object)),
             cDefIndex(index) {
   }
 
   Script::ScriptAction::ScriptAction(Script& parent, IActionClient& owner, unsigned int index) :
             cParent(parent),
-            cDefFunction(cParent.cBasics, "_t" + Utils::toString(index), owner),
+            cDefFunction(cParent.cBasics, owner),
             cDefAction(cDefFunction.getAsset(owner)),
             cDefIndex(index) {
   }

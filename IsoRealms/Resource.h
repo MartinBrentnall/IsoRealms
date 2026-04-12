@@ -47,14 +47,14 @@ namespace IsoRealms {
     Resource(ResourceType& parent, MODULE& module, ProjectFile* ownerProject) :
               cParent(parent),
               cOwnerProject(parent.getProject(), ownerProject),
-              cResourceHandle(module, *this),
+              cResourceHandle(module, static_cast<IResourceData&>(*this)),
               cAssetRegistry(*this) {
     }
     
     Resource(ResourceType& parent, MODULE& module, ProjectFile* ownerProject, JSONObject object) :
               cParent(parent),
               cOwnerProject(parent.getProject(), ownerProject),
-              cResourceHandle(module, *this, object),
+              cResourceHandle(module, static_cast<IResourceData&>(*this), object),
               cAssetRegistry(*this) {
     }
 

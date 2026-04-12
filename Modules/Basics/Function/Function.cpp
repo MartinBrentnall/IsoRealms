@@ -34,11 +34,11 @@ namespace IsoRealms::Basics {
   const std::string Function::JSON_VARIABLE      = "variable";
 
   Function::Function(Basics& basics, IResourceData& data) :
-            Function(basics, "", data.getDummyActionClient()) {
+            Function(basics, data.getDummyActionClient()) {
   }
     
   Function::Function(Basics& basics, IResourceData& data, JSONObject object) :
-            Function(basics, object.getString(JSON_ID), data.getDummyActionClient(), object, true) {
+            Function(basics, data.getDummyActionClient(), object, true) {
   }
 
   void Function::registerAssets(ResourceAssetRegistry& assets) {
@@ -113,7 +113,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
-  Function::Function(Basics& basics, const std::string& name, IActionClient& owner) :
+  Function::Function(Basics& basics, IActionClient& owner) :
             cProject(basics.getProject()),
             cBasics(basics),
             cResourceData(owner.getResourceData()),
@@ -121,8 +121,8 @@ namespace IsoRealms::Basics {
             cDefID(basics.getAvailableFunctionID()) {
   }
 
-  Function::Function(Basics& basics, const std::string& name, IActionClient& owner, JSONObject object, bool init) :
-            Function(basics, name, owner) {
+  Function::Function(Basics& basics, IActionClient& owner, JSONObject object, bool init) :
+            Function(basics, owner) {
     if (init) {
       for (JSONValue mArgumentValue : object.getArray(JSON_ARGUMENTS)) {
         cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mArgumentValue.getObject()));
