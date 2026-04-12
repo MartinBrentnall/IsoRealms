@@ -289,7 +289,9 @@ namespace IsoRealms {
   }
 
   bool UIManager::input(sf::Event& event) {
-    switch (event.type) {
+    if (cConfirmationSelection == nullptr && !cRuntimeUIs.empty() && cRuntimeUIs.back()->cScreen->input(event)) {
+      return true;
+    } else switch (event.type) {
       case sf::Event::KeyPressed: {
         switch (event.key.code) {
           case sf::Keyboard::BackSpace: // Fall through.

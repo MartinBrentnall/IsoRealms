@@ -38,25 +38,25 @@ namespace IsoRealms::Spindizzy {
   
   const float C64TerrainGraphics::MAX_LUMINANCE_ADJUSTMENT     = 0.3f;
 
-  const std::string C64TerrainGraphics::PLAIN                = "Plain";
-  const std::string C64TerrainGraphics::PLAIN_SPLIT          = "PlainSplit";
-  const std::string C64TerrainGraphics::ICE_WATER            = "IceWater";
-  const std::string C64TerrainGraphics::ARROW                = "Arrow";
-  const std::string C64TerrainGraphics::SWITCH_CIRCLE_BOTH   = "SwitchCircleFilled";
-  const std::string C64TerrainGraphics::SWITCH_CIRCLE_ONE    = "SwitchCircleOne";
-  const std::string C64TerrainGraphics::SWITCH_CIRCLE_NONE   = "SwitchCircleEmpty";
-  const std::string C64TerrainGraphics::SWITCH_SQUARE_BOTH   = "SwitchSquareFilled";
-  const std::string C64TerrainGraphics::SWITCH_SQUARE_ONE    = "SwitchSquareOne";
-  const std::string C64TerrainGraphics::SWITCH_SQUARE_NONE   = "SwitchSquareEmpty";
-  const std::string C64TerrainGraphics::SWITCH_DIAMOND_BOTH  = "SwitchDiamondFilled";
-  const std::string C64TerrainGraphics::SWITCH_DIAMOND_ONE   = "SwitchDiamondOne";
-  const std::string C64TerrainGraphics::SWITCH_DIAMOND_NONE  = "SwitchDiamondEmpty";
-  const std::string C64TerrainGraphics::TRAMPOLINE           = "Trampoline";
-  const std::string C64TerrainGraphics::WALL_ICE             = "WallIce";
-  const std::string C64TerrainGraphics::WALL_MIXED_CAP       = "WallMixedCap";
-  const std::string C64TerrainGraphics::WALL_MIXED_MIDDLE    = "WallMixedMiddle";
-  const std::string C64TerrainGraphics::WALL_PLAIN_CAP       = "WallPlainCap";
-  const std::string C64TerrainGraphics::WALL_PLAIN_MIDDLE    = "WallPlainMiddle";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_PLAIN                  = "Surface Plain";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_PLAIN_SPLIT            = "Surface Plain Split";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ICE_OR_WATER           = "Surface Ice or Water";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ARROW                  = "Surface Arrow";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES  = "Surface Deactivate All States";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2  = "Surface Activate State 1 or 2";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_3       = "Surface Activate State 3";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_4       = "Surface Activate State 4";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6  = "Surface Activate State 5 or 6";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_7       = "Surface Activate State 7";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_8       = "Surface Activate State 8";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10 = "Surface Activate State 9 or 10";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_11      = "Surface Activate State 11";
+  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_TRAMPOLINE             = "Surface Trampoline";
+  const std::string C64TerrainGraphics::ASSET_ID_WALL_ICE                       = "Wall Ice";
+  const std::string C64TerrainGraphics::ASSET_ID_WALL_PLAIN_CAP                 = "Wall Plain Cap";
+  const std::string C64TerrainGraphics::ASSET_ID_WALL_PLAIN_MIDDLE              = "Wall Plain Middle";
+  const std::string C64TerrainGraphics::ASSET_ID_WALL_VARIANT_CAP               = "Wall Plain Variant Cap";
+  const std::string C64TerrainGraphics::ASSET_ID_WALL_VARIANT_MIDDLE            = "Wall Plain Variant Middle";
 
   const std::string C64TerrainGraphics::JSON_FLOOR     = "floor";
   const std::string C64TerrainGraphics::JSON_GRID      = "grid";
@@ -74,28 +74,28 @@ namespace IsoRealms::Spindizzy {
 
     cTexturesInUseCount = 0;
     
-    cTextures[SWITCH_CIRCLE_BOTH]         = createTexture();
-    cOrientedTextures[SWITCH_CIRCLE_ONE]  = createOrientedTexture();
-    cTextures[SWITCH_CIRCLE_NONE]         = createTexture();
-    cOrientedTextures[SWITCH_SQUARE_BOTH] = createOrientedTexture();
-    cOrientedTextures[SWITCH_SQUARE_ONE]  = createOrientedTexture();
-    cTextures[SWITCH_SQUARE_NONE]         = createTexture();
-    cTextures[SWITCH_DIAMOND_NONE]        = createTexture();
-    cOrientedTextures[SWITCH_DIAMOND_ONE] = createOrientedTexture();
-    cTextures[SWITCH_DIAMOND_BOTH]        = createTexture();
-    cTextures[ARROW]                      = createTexture();
-    cTextures[TRAMPOLINE]                 = createTexture();
-    cTextures[ICE_WATER]                  = createTexture();
-    cTextures[PLAIN]                      = createTexture();
-    cTextures[PLAIN_SPLIT]                = createTexture();
-    cOrientedTextures[WALL_MIXED_CAP]     = createOrientedTexture();
-    cOrientedTextures[WALL_MIXED_MIDDLE]  = createOrientedTexture();
-    cOrientedTextures[WALL_PLAIN_CAP]     = createOrientedTexture();
-    cOrientedTextures[WALL_PLAIN_MIDDLE]  = createOrientedTexture();
-    cTextures[WALL_ICE]                   = createTexture();
+    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_11]      = createTexture();
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10] = createOrientedTexture();
+    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_8]       = createTexture();
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_7]       = createOrientedTexture();
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6]  = createOrientedTexture();
+    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_4]       = createTexture();
+    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_3]       = createTexture();
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2]  = createOrientedTexture();
+    cTextures[        ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES]  = createTexture();
+    cTextures[        ASSET_ID_SURFACE_ARROW]                  = createTexture();
+    cTextures[        ASSET_ID_SURFACE_TRAMPOLINE]             = createTexture();
+    cTextures[        ASSET_ID_SURFACE_ICE_OR_WATER]           = createTexture();
+    cTextures[        ASSET_ID_SURFACE_PLAIN]                  = createTexture();
+    cTextures[        ASSET_ID_SURFACE_PLAIN_SPLIT]            = createTexture();
+    cOrientedTextures[ASSET_ID_WALL_VARIANT_CAP]               = createOrientedTexture();
+    cOrientedTextures[ASSET_ID_WALL_VARIANT_MIDDLE]            = createOrientedTexture();
+    cOrientedTextures[ASSET_ID_WALL_PLAIN_CAP]                 = createOrientedTexture();
+    cOrientedTextures[ASSET_ID_WALL_PLAIN_MIDDLE]              = createOrientedTexture();
+    cTextures[        ASSET_ID_WALL_ICE]                       = createTexture();
 
     for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
+      bool mClamp = mOrientedTexture.first == ASSET_ID_WALL_VARIANT_CAP || mOrientedTexture.first == ASSET_ID_WALL_PLAIN_CAP;
       mOrientedTexture.second->addOrientation(*cDefaultYaw, cProject, mClamp);
     }
     cUniqueViews.insert(*cDefaultYaw);
@@ -141,7 +141,7 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW,   0.0f, 0.0f, 1.0f);
     glScalef(1.6f, 1.6f, 1.6f);
-    cTextures[ARROW]->set();
+    cTextures[ASSET_ID_SURFACE_ARROW]->set();
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f,  0.5f, 0.25f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f, -0.5f, 0.25f);
@@ -149,7 +149,7 @@ namespace IsoRealms::Spindizzy {
     glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.5f,  0.5f, 0.25f);
     glEnd();
     
-    cOrientedTextures[WALL_PLAIN_CAP]->set();
+    cOrientedTextures[ASSET_ID_WALL_PLAIN_CAP]->set();
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f, -0.5f,  0.25f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f, -0.5f,  0.0f);
@@ -162,7 +162,7 @@ namespace IsoRealms::Spindizzy {
     glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.0f);
     glEnd();
     
-    cOrientedTextures[WALL_MIXED_CAP]->set();
+    cOrientedTextures[ASSET_ID_WALL_VARIANT_CAP]->set();
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f,  0.25f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.0f);
@@ -210,7 +210,7 @@ namespace IsoRealms::Spindizzy {
       cTextureStateListeners.push_back(std::make_unique<TextureStateListener>(*this, mAngle));
       cProject.addStateChangeListener(mAngle, cTextureStateListeners.back().get());
       for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-        bool mClamp = mOrientedTexture.first == WALL_MIXED_CAP || mOrientedTexture.first == WALL_PLAIN_CAP;
+        bool mClamp = mOrientedTexture.first == ASSET_ID_WALL_VARIANT_CAP || mOrientedTexture.first == ASSET_ID_WALL_PLAIN_CAP;
         mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);
       }
       cUniqueViews.insert(mAngle);
@@ -456,18 +456,18 @@ namespace IsoRealms::Spindizzy {
     if (mAngle > 180.0f) {
       mAngle -= 360.0f;
     }
-    cOrientedTextures[SWITCH_CIRCLE_ONE]->setRenderTarget(angle);   renderSwitchCircleHalf(mAngle);
-    cOrientedTextures[SWITCH_SQUARE_ONE]->setRenderTarget(angle);   renderSwitchSquareHalf(mAngle);
-    cOrientedTextures[SWITCH_SQUARE_BOTH]->setRenderTarget(angle);  renderSwitchSquareBoth(mAngle);
-    cOrientedTextures[SWITCH_DIAMOND_ONE]->setRenderTarget(angle);  renderSwitchDiamondHalf(mAngle);
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10]->setRenderTarget(angle); renderSwitchCircleHalf(mAngle);
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6 ]->setRenderTarget(angle); renderSwitchSquareHalf(mAngle);
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_7      ]->setRenderTarget(angle); renderSwitchSquareBoth(mAngle);
+    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2 ]->setRenderTarget(angle); renderSwitchDiamondHalf(mAngle);
     float mInterpolation = std::abs(mAngle / 90.0f);
     if (mInterpolation > 1.0f) {
       mInterpolation -= ((mInterpolation - 1.0f) * 2.0f);
     }
-    cOrientedTextures[WALL_MIXED_CAP]->setRenderTarget(angle);      renderWallCap(std::abs(mInterpolation - 1.0f));
-    cOrientedTextures[WALL_MIXED_MIDDLE]->setRenderTarget(angle);   renderWallMiddle(std::abs(mInterpolation - 1.0f));
-    cOrientedTextures[WALL_PLAIN_CAP]->setRenderTarget(angle);      renderWallCap(mInterpolation);
-    cOrientedTextures[WALL_PLAIN_MIDDLE]->setRenderTarget(angle);   renderWallMiddle(mInterpolation);
+    cOrientedTextures[ASSET_ID_WALL_VARIANT_CAP   ]->setRenderTarget(angle); renderWallCap(std::abs(mInterpolation - 1.0f));
+    cOrientedTextures[ASSET_ID_WALL_VARIANT_MIDDLE]->setRenderTarget(angle); renderWallMiddle(std::abs(mInterpolation - 1.0f));
+    cOrientedTextures[ASSET_ID_WALL_PLAIN_CAP     ]->setRenderTarget(angle); renderWallCap(mInterpolation);
+    cOrientedTextures[ASSET_ID_WALL_PLAIN_MIDDLE  ]->setRenderTarget(angle); renderWallMiddle(mInterpolation);
   }
 
   void C64TerrainGraphics::generateTextures() {
@@ -481,17 +481,17 @@ namespace IsoRealms::Spindizzy {
       generateAngledTextures(mView);
     }
 
-    cTextures[SWITCH_CIRCLE_BOTH]->setRenderTarget();  renderSwitchCircleBoth();
-    cTextures[SWITCH_CIRCLE_NONE]->setRenderTarget();  renderSwitchCircle(0.0f);
-    cTextures[SWITCH_SQUARE_NONE]->setRenderTarget();  renderSwitchSquare(0.0f);
-    cTextures[SWITCH_DIAMOND_BOTH]->setRenderTarget(); renderSwitchDiamondBoth();
-    cTextures[SWITCH_DIAMOND_NONE]->setRenderTarget(); renderSwitchDiamond(0.0f);
-    cTextures[ARROW]->setRenderTarget();               renderArrow();
-    cTextures[TRAMPOLINE]->setRenderTarget();          renderTrampoline();
-    cTextures[ICE_WATER]->setRenderTarget();           renderIce();
-    cTextures[PLAIN]->setRenderTarget();               renderPlain();
-    cTextures[PLAIN_SPLIT]->setRenderTarget();         renderSplitPlain();
-    cTextures[WALL_ICE]->setRenderTarget();            renderIceWall();
+    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_11    ]->setRenderTarget(); renderSwitchCircleBoth();
+    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_8     ]->setRenderTarget(); renderSwitchCircle(0.0f);
+    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_4     ]->setRenderTarget(); renderSwitchSquare(0.0f);
+    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_3     ]->setRenderTarget(); renderSwitchDiamondBoth();
+    cTextures[ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES]->setRenderTarget(); renderSwitchDiamond(0.0f);
+    cTextures[ASSET_ID_SURFACE_ARROW                ]->setRenderTarget(); renderArrow();
+    cTextures[ASSET_ID_SURFACE_TRAMPOLINE           ]->setRenderTarget(); renderTrampoline();
+    cTextures[ASSET_ID_SURFACE_ICE_OR_WATER         ]->setRenderTarget(); renderIce();
+    cTextures[ASSET_ID_SURFACE_PLAIN                ]->setRenderTarget(); renderPlain();
+    cTextures[ASSET_ID_SURFACE_PLAIN_SPLIT          ]->setRenderTarget(); renderSplitPlain();
+    cTextures[ASSET_ID_WALL_ICE                     ]->setRenderTarget(); renderIceWall();
 
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
