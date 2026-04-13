@@ -76,6 +76,7 @@ add_library(IsoRealms
   Editing/Property/PropertyNativeBoolean.cpp
   Editing/Property/PropertyNativeFloat.cpp
   Editing/Property/PropertyList.cpp
+  Editing/Property/PropertyOptional.cpp
   Editing/Property/PropertyKey.cpp
   Editing/Property/PropertyNativeInteger.cpp
   Editing/Property/PropertyNativeString.cpp

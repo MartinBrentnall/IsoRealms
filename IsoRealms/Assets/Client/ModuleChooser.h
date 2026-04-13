@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 
+#include "IsoRealms/Editing/Property/IOptionalObject.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
@@ -32,7 +33,7 @@ namespace IsoRealms {
   class Project;
   class PropertyMaker;
   
-  class ModuleChooser : public ITreeSelectorObject {
+  class ModuleChooser : public ITreeSelectorObject, public IOptionalObject {
     public:
     ModuleChooser(Project& project);
 
@@ -46,7 +47,7 @@ namespace IsoRealms {
     bool isDefaultConfigured() const override;
     void getAssetProperties(PropertyMaker& owner) override;
     Application& getApplication() override;
-    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override; // ITreeSelectorObject, IOptionalObject
     bool renderTreeItemIcon(const std::string& id) const override;
     void setID(const std::string& id) override;
     

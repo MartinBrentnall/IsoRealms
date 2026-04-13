@@ -18,7 +18,6 @@
  */
 #pragma once
 
-#include <limits>
 #include <functional>
 #include <string>
 
@@ -27,119 +26,52 @@
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyManager.h"
+#include "IOptionalObject.h"
 #include "Property.h"
 #include "PropertyTreeSelector.h"
 
 namespace IsoRealms {
   class Project;
+  class PropertyMaker;
 
-  template <typename TYPE> class PropertyOptional : public Property {
+  class PropertyOptional : public Property {
     public:
-    PropertyOptional(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application) :
-            Property(data, resourceAccessManager, nullptr),
-            cSimulatedType(project),
-            cWrapperType(*this),
-            cSubProperty(owner, resourceAccessManager, resourceData, data, cWrapperType),
-            cChoiceCallback(choiceCallback),
-            cProject(project),
-            cApplication(application) {
-    }
+    PropertyOptional(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource);
 
     /************************\
      * Implements IProperty *
     \************************/
-    void renderValue(IUIStyle& style, float y, float x, float aspectRatio) const override {
-      IFont* mFont = style.getFont();
-      float mFontSize = style.getFontSize();
-      mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, "None");
-      glPushMatrix();
-      glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
-      glScalef(mFontSize, mFontSize, 0.0f);
-      Utils::renderIconNone();
-      glPopMatrix();
-    }
-
-    float getValueWidth(IUIStyle& style) const override {
-      IFont* mFont = style.getFont();
-      float mFontSize = style.getFontSize();
-      return mFont->getWidth(mFontSize, "None") + mFontSize * 2.25f;
-    }
-
-    void confirm(IPropertyManager& manager, float y) override {
-      cPropertyManager = &manager;
-      cSubProperty.confirm(manager, y);
-    }
-
-    bool hasConfiguration() const override {
-      return false;
-    }
-
-    void configure(IPropertyManager& manager) override {
-      // Nothing to do.
-    }
+    void renderValue(IUIStyle& style, float y, float x, float aspectRatio) const override;
+    float getValueWidth(IUIStyle& style) const override;
+    void confirm(IPropertyManager& manager, float y) override;
+    bool hasConfiguration() const override;
+    void configure(IPropertyManager& manager) override;
 
     private:
     class OptionWrapper : public ITreeSelectorObject {
       public:
-      OptionWrapper(PropertyOptional& parent) :
-              cParent(parent) {
-      }
+      OptionWrapper(PropertyOptional& parent);
 
-      /**********************************\
+      /*******************************\
        * Implements ITreeSelectorObject *
-      \**********************************/
-      TreeItemInfo getTreeItemInfo() const override {
-        return TreeItemInfo{"None", "None"};
-      }
-      
-      std::string getTreeItemLabel() const override {
-        return "None";
-      }
+      \*******************************/
+      TreeItemInfo getTreeItemInfo() const override;
+      std::string getTreeItemLabel() const override;
+      bool renderAssetIcon() const override;
+      bool hasConfiguration() const override;
+      bool isDefaultConfigured() const override;
+      void getAssetProperties(PropertyMaker& owner) override;
+      Application& getApplication() override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+      bool renderTreeItemIcon(const std::string& id) const override;
+      void setID(const std::string& id) override;
 
-      bool renderAssetIcon() const override {
-        Utils::renderIconNone();
-        return true;
-      }
-
-      bool hasConfiguration() const override {
-        return false;
-      }
-
-      bool isDefaultConfigured() const override {
-        return true;
-      }
-
-      void getAssetProperties(PropertyMaker& owner) override {
-        // Nothing to do.
-      }
-
-      Application& getApplication() override {
-        return cParent.cApplication;
-      }
-
-      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {
-        cParent.cSimulatedType.forEachAvailableTreeItem(getTreeItemInfoFunction);
-        getTreeItemInfoFunction(TreeItemInfo{"None", "None"});
-      }
-
-      bool renderTreeItemIcon(const std::string& id) const override {
-        return false; // TODO cParent.cSubProperty.renderTreeItemIcon(id);
-      }
-
-      void setID(const std::string& id) override {
-        if (id != "None") {
-          cParent.cChoiceCallback(id);
-//          cParent.cPropertyManager->refreshProperties(); // TODO: Causes a crash when loading a module.
-        }
-      }
-      
       private:
       PropertyOptional& cParent;
     };
-    
-    TYPE cSimulatedType;
+
+    IOptionalObject& cOptionalSource;
     OptionWrapper cWrapperType;
-    std::string cValue;
     PropertyTreeSelector cSubProperty;
     std::function<void(const std::string&)> cChoiceCallback;
     IPropertyManager* cPropertyManager;

@@ -29,6 +29,7 @@
 
 namespace IsoRealms {
   Project::Project(Application& application, std::function<void(bool)> onFinish) :
+          cDefModuleChooser(*this),
           cApplication(application),
           cFunctionNotifyComplete(onFinish),
           cBindings(*this),
@@ -298,7 +299,7 @@ namespace IsoRealms {
         });
         mIndex++;
       }
-      propertyMaker.createPropertyOptional<ModuleChooser>(mMetadata.getPropertyData("Module"), [this](const std::string& value) {
+      propertyMaker.createPropertyOptional(mMetadata.getPropertyData("Module"), cDefModuleChooser, [this](const std::string& value) {
         loadModule(value);
       });
     });

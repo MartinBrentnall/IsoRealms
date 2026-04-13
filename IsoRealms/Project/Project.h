@@ -253,6 +253,9 @@ namespace IsoRealms {
       Project& cParent;
     };
 
+    // Supporting objects.
+    ModuleChooser cDefModuleChooser;                  /// Source list for optional module property (must outlive property UI).
+
     // External interfaces.
     Application& cApplication;                        /// Host application of this Project.
     std::function<void(bool)> cFunctionNotifyComplete; /// Function to be notified of Project completion.

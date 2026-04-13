@@ -35,6 +35,7 @@ namespace IsoRealms {
   class IEditable;
   class IProperty;
   class IPropertyManager;
+  class IOptionalObject;
   class IResourceData;
   class ITreeSelectorObject;
 
@@ -61,6 +62,7 @@ namespace IsoRealms {
     void createPropertyNativeInteger(        const PropertyData& metadata, std::function<int()>          getter, std::function<void(int)>                setter,             std::function<bool(int)>                validityChecker = [](int)                {return true;}, std::function<void()> removeFunction = nullptr);
     void createPropertyNativeString(         const PropertyData& metadata, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom = nullptr);
     void createPropertyNativeUnsignedInteger(const PropertyData& metadata, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr);
+    void createPropertyOptional(             const PropertyData& metadata, IOptionalObject& optionalSource, std::function<void(const std::string&)> choiceCallback);
     void createPropertyStruct(               const PropertyData& metadata, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr);
     void createPropertyTreeSelector(         const PropertyData& metadata, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr);
 
@@ -73,10 +75,6 @@ namespace IsoRealms {
       });
     }
 
-    template <typename OPTIONAL_TYPE> void createPropertyOptional(const PropertyData& metadata, std::function<void(const std::string&)> choiceCallback) {
-      cProperties.addProperty(std::make_unique<PropertyOptional<OPTIONAL_TYPE>>(*this, *this, cParent, metadata, choiceCallback, cParent.getProject(), cApplication));
-    }
-    
     /*************************************\
      * Implements IResourceAccessManager *
     \*************************************/
