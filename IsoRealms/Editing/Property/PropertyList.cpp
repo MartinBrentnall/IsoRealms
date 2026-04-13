@@ -88,7 +88,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
   
-  Application& PropertyList::ListSelection::getApplication() const {
+  Application& PropertyList::ListSelection::getApplication() {
     return cProject.getApplication();
   }
   

@@ -96,7 +96,7 @@ namespace IsoRealms {
   }
 
   void ProjectFile::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project, bool inclusion) {
-    owner.createPropertyTreeSelector<File>(metadata.getPropertyData("File"), cFile);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("File"), cFile);
     owner.createPropertyNativeString(metadata.getPropertyData("Description"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
       owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowModifications"), [this]() {return cAllowModifications;}, [this, &owner, &project](bool value) {

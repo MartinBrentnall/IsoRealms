@@ -74,7 +74,7 @@
  
    void WallPatternComposite::getAssetProperties(PropertyMaker& owner) {
      owner.createPropertyArray(cMetadata.getPropertyData("Patterns"), cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &owner](WallPattern& wallPattern) {
-       owner.createPropertyTreeSelector<WallPattern>(cMetadata.getPropertyData("Pattern"), wallPattern);
+       owner.createPropertyTreeSelector(cMetadata.getPropertyData("Pattern"), wallPattern);
      }, [this]()->WallPattern& {
        return *cDefWallPatterns.emplace_back(std::make_unique<WallPattern>(cOwner.getSpindizzy(), cOwner, nullptr));
      });

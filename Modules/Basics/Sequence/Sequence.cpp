@@ -93,11 +93,10 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyEditor(metadata.getPropertyData("Content"), this);
-
-    owner.createPropertyNativeBoolean(      metadata.getPropertyData("Playing"), [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
-    owner.createPropertyNativeBoolean(      metadata.getPropertyData("Loop"),    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
-    owner.createPropertyTreeSelector<Float>(metadata.getPropertyData("Speed"),   cDefSpeed);
+    owner.createPropertyEditor(       metadata.getPropertyData("Content"), this);
+    owner.createPropertyNativeBoolean(metadata.getPropertyData("Playing"), [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
+    owner.createPropertyNativeBoolean(metadata.getPropertyData("Loop"),    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
+    owner.createPropertyTreeSelector( metadata.getPropertyData("Speed"),   cDefSpeed);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       owner.createPropertyStruct(metadata.getPropertyData("Instance"), mEntry.first, [this, &mEntry, &metadata](PropertyMaker& owner) {
         return mEntry.second->getProperties(owner, metadata);

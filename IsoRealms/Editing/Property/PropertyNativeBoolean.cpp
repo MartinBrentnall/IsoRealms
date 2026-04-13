@@ -83,7 +83,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
   
-  Application& PropertyNativeBoolean::BooleanSelection::getApplication() const {
+  Application& PropertyNativeBoolean::BooleanSelection::getApplication() {
     return cProject.getApplication();
   }
   

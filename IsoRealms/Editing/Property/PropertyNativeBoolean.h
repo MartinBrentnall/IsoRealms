@@ -41,23 +41,23 @@ namespace IsoRealms {
     void configure(IPropertyManager& manager) override;
 
     private:
-    class BooleanSelection {
+    class BooleanSelection : public ITreeSelectorObject {
       public:
       BooleanSelection(std::function<void(bool)> setter, std::function<bool()> getter, Project& project);
 
-      /**************************************\
-       * Interface for PropertyTreeSelector *
-      \**************************************/
-      TreeItemInfo getTreeItemInfo() const;
-      std::string getTreeItemLabel() const;
-      bool renderAssetIcon() const;
-      bool hasConfiguration() const;
-      bool isDefaultConfigured() const;
-      void getAssetProperties(PropertyMaker& owner);
-      Application& getApplication() const;
-      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
-      bool renderTreeItemIcon(const std::string& id) const;
-      void setID(const std::string& id);
+      /**********************************\
+       * Implements ITreeSelectorObject *
+      \**********************************/
+      TreeItemInfo getTreeItemInfo() const override;
+      std::string getTreeItemLabel() const override;
+      bool renderAssetIcon() const override;
+      bool hasConfiguration() const override;
+      bool isDefaultConfigured() const override;
+      void getAssetProperties(PropertyMaker& owner) override;
+      Application& getApplication() override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+      bool renderTreeItemIcon(const std::string& id) const override;
+      void setID(const std::string& id) override;
 
       private:
       static const std::string ID_TRUE;
@@ -69,6 +69,6 @@ namespace IsoRealms {
     };
 
     BooleanSelection cInternalSelection;
-    PropertyTreeSelector<BooleanSelection> cInternalProperty;
+    PropertyTreeSelector cInternalProperty;
   };
 }

@@ -79,54 +79,54 @@ namespace IsoRealms {
     }
 
     private:
-    class OptionWrapper {
+    class OptionWrapper : public ITreeSelectorObject {
       public:
       OptionWrapper(PropertyOptional& parent) :
               cParent(parent) {
       }
 
-      /**************************************\
-       * Interface for PropertyTreeSelector *
-      \**************************************/
-      TreeItemInfo getTreeItemInfo() const {
+      /**********************************\
+       * Implements ITreeSelectorObject *
+      \**********************************/
+      TreeItemInfo getTreeItemInfo() const override {
         return TreeItemInfo{"None", "None"};
       }
       
-      std::string getTreeItemLabel() const {
+      std::string getTreeItemLabel() const override {
         return "None";
       }
 
-      bool renderAssetIcon() const {
+      bool renderAssetIcon() const override {
         Utils::renderIconNone();
         return true;
       }
 
-      bool hasConfiguration() const {
+      bool hasConfiguration() const override {
         return false;
       }
 
-      bool isDefaultConfigured() const {
+      bool isDefaultConfigured() const override {
         return true;
       }
 
-      void getAssetProperties(PropertyMaker& owner) {
+      void getAssetProperties(PropertyMaker& owner) override {
         // Nothing to do.
       }
 
-      Application& getApplication() const {
+      Application& getApplication() override {
         return cParent.cApplication;
       }
 
-      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {
         cParent.cSimulatedType.forEachAvailableTreeItem(getTreeItemInfoFunction);
         getTreeItemInfoFunction(TreeItemInfo{"None", "None"});
       }
 
-      bool renderTreeItemIcon(const std::string& id) const {
+      bool renderTreeItemIcon(const std::string& id) const override {
         return false; // TODO cParent.cSubProperty.renderTreeItemIcon(id);
       }
 
-      void setID(const std::string& id) {
+      void setID(const std::string& id) override {
         if (id != "None") {
           cParent.cChoiceCallback(id);
 //          cParent.cPropertyManager->refreshProperties(); // TODO: Causes a crash when loading a module.
@@ -140,7 +140,7 @@ namespace IsoRealms {
     TYPE cSimulatedType;
     OptionWrapper cWrapperType;
     std::string cValue;
-    PropertyTreeSelector<OptionWrapper> cSubProperty;
+    PropertyTreeSelector cSubProperty;
     std::function<void(const std::string&)> cChoiceCallback;
     IPropertyManager* cPropertyManager;
     Project& cProject;

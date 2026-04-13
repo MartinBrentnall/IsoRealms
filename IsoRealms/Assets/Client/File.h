@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 
+#include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
@@ -32,7 +33,7 @@ namespace IsoRealms {
   class Project;
   class PropertyMaker;
 
-  class File {
+  class File : public ITreeSelectorObject {
     public:
     File(Project& project, std::function<void()> changeCallback = nullptr);
     void setPath(const std::string& path, bool user);
@@ -43,19 +44,19 @@ namespace IsoRealms {
     void load(const std::string& name, JSONObject object);
     void save(const std::string& name, JSONObject object) const;
 
-    /**************************************\
-     * Interface for PropertyTreeSelector *
-    \**************************************/
-    TreeItemInfo getTreeItemInfo() const;
-    std::string getTreeItemLabel() const;
-    bool renderAssetIcon() const;
-    bool hasConfiguration() const;
-    bool isDefaultConfigured() const;
-    void getAssetProperties(PropertyMaker& owner);
-    Application& getApplication() const;
-    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
-    bool renderTreeItemIcon(const std::string& id) const;
-    void setID(const std::string& id);
+    /**********************************\
+     * Implements ITreeSelectorObject *
+    \**********************************/
+    TreeItemInfo getTreeItemInfo() const override;
+    std::string getTreeItemLabel() const override;
+    bool renderAssetIcon() const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfigured() const override;
+    void getAssetProperties(PropertyMaker& owner) override;
+    Application& getApplication() override;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    bool renderTreeItemIcon(const std::string& id) const override;
+    void setID(const std::string& id) override;
     
     private:
     static const std::string LOCATION_PREFIX_USER;

@@ -225,8 +225,8 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::DigitalInput::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(         metadata.getPropertyData("DigitalInputName"),  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
-    owner.createPropertyTreeSelector<Boolean>(metadata.getPropertyData("DigitalInputValue"), cDefActualInput);
+    owner.createPropertyNativeString(metadata.getPropertyData("DigitalInputName"),  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    owner.createPropertyTreeSelector(metadata.getPropertyData("DigitalInputValue"), cDefActualInput);
   }
   
   void Replayer::DigitalInput::reset() {
@@ -300,7 +300,7 @@ namespace IsoRealms::Replay {
   
   void Replayer::AnalogueInput::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString(metadata.getPropertyData("AnalogueInputName"),  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
-    owner.createPropertyTreeSelector<Float>(metadata.getPropertyData("AnalogueInputValue"), cDefActualInput);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("AnalogueInputValue"), cDefActualInput);
   }
       
   void Replayer::AnalogueInput::reset() {

@@ -108,7 +108,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackColour::getEventProperties(PropertyMaker& owner) {
-    owner.createPropertyTreeSelector<Colour>(cMetadata.getPropertyData("StartColour"), cDefInitColour);
+    owner.createPropertyTreeSelector(cMetadata.getPropertyData("StartColour"), cDefInitColour);
   }
 
   void SequenceTrackColour::stateChanged(IColour* colour) {

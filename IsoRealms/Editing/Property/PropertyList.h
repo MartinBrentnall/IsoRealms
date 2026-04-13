@@ -42,23 +42,23 @@ namespace IsoRealms {
     void configure(IPropertyManager& manager) override;
     
     private:
-    class ListSelection {
+    class ListSelection : public ITreeSelectorObject {
       public:
       ListSelection(Project& project, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter);
       
-      /**************************************\
-       * Interface for PropertyTreeSelector *
-      \**************************************/
-      TreeItemInfo getTreeItemInfo() const;
-      std::string getTreeItemLabel() const;
-      bool renderAssetIcon() const;
-      bool hasConfiguration() const;
-      bool isDefaultConfigured() const;
-      void getAssetProperties(PropertyMaker& owner);
-      Application& getApplication() const;
-      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
-      bool renderTreeItemIcon(const std::string& id) const;
-      void setID(const std::string& id);
+      /**********************************\
+       * Implements ITreeSelectorObject *
+      \**********************************/
+      TreeItemInfo getTreeItemInfo() const override;
+      std::string getTreeItemLabel() const override;
+      bool renderAssetIcon() const override;
+      bool hasConfiguration() const override;
+      bool isDefaultConfigured() const override;
+      void getAssetProperties(PropertyMaker& owner) override;
+      Application& getApplication() override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+      bool renderTreeItemIcon(const std::string& id) const override;
+      void setID(const std::string& id) override;
       
       private:
       Project& cProject;
@@ -68,6 +68,6 @@ namespace IsoRealms {
     };
   
     ListSelection cInternalSelection;
-    PropertyTreeSelector<ListSelection> cInternalProperty;
+    PropertyTreeSelector cInternalProperty;
   };
 }

@@ -98,6 +98,10 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyStruct>(*this, metadata, *this, value, subProperties, removeFunction));
   }
 
+  void PropertyMaker::createPropertyTreeSelector(const PropertyData& metadata, ITreeSelectorObject& item, std::function<void()> removeFunction) {
+    cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, *this, cParent, metadata, item, removeFunction));
+  }
+
   bool PropertyMaker::isResourceReadOnly() const {
     return cParent.isReadOnly();
   }

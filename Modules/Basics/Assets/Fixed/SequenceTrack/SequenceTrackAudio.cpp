@@ -85,7 +85,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::getAssetProperties(PropertyMaker& owner) {
-    owner.createPropertyTreeSelector<Float>(PropertyData("TODO: Volume should be in instance, not track!", "TODO: Description"), cDefVolume);
+    owner.createPropertyTreeSelector(PropertyData("TODO: Volume should be in instance, not track!", "TODO: Description"), cDefVolume);
   }
 
   const std::string SequenceTrackAudio::JSON_VOLUME = "volume";

@@ -81,15 +81,15 @@ namespace IsoRealms::UI {
   }
 
   void Prompt::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector<Font>(  metadata.getPropertyData("Font"),            cDefFont);
-    owner.createPropertyNativeFloat(         metadata.getPropertyData("FontSize"),        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
-    owner.createPropertyNativeFloat(         metadata.getPropertyData("ShadowOffset"),    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
-    owner.createPropertyTreeSelector<Colour>(metadata.getPropertyData("SelectionColour"), cDefSelectionColour);
-    owner.createPropertyNativeString(        metadata.getPropertyData("Message"),         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
-    owner.createPropertyNativeString(        metadata.getPropertyData("RejectLabel"),     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
-    owner.createPropertyNativeString(        metadata.getPropertyData("AcceptLabel"),     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
-    owner.createPropertyTreeSelector<Action>(metadata.getPropertyData("OnRejection"),     cDefNegativeAction);
-    owner.createPropertyTreeSelector<Action>(metadata.getPropertyData("OnAcceptance"),    cDefPositiveAction);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Font"),            cDefFont);
+    owner.createPropertyNativeFloat( metadata.getPropertyData("FontSize"),        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
+    owner.createPropertyNativeFloat( metadata.getPropertyData("ShadowOffset"),    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector(metadata.getPropertyData("SelectionColour"), cDefSelectionColour);
+    owner.createPropertyNativeString(metadata.getPropertyData("Message"),         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
+    owner.createPropertyNativeString(metadata.getPropertyData("RejectLabel"),     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
+    owner.createPropertyNativeString(metadata.getPropertyData("AcceptLabel"),     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
+    owner.createPropertyTreeSelector(metadata.getPropertyData("OnRejection"),     cDefNegativeAction);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("OnAcceptance"),    cDefPositiveAction);
   }
 
   void Prompt::removed() {

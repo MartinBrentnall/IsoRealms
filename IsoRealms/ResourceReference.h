@@ -21,13 +21,15 @@
 #include <functional>
 #include <optional>
 
+#include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IResourceUser.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 #include "Project/ProjectFile.h"
 
 namespace IsoRealms {
-  template <typename TYPE, typename MANAGER> class ResourceReference : public IResourceUser<TYPE> {
+  template <typename TYPE, typename MANAGER> class ResourceReference : public IResourceUser<TYPE>, 
+                                                                       public ITreeSelectorObject {
     public:
     ResourceReference(MANAGER& manager) :
               cManager(manager),
@@ -50,7 +52,7 @@ namespace IsoRealms {
       return cDefResource;
     }
 
-    void setID(const std::string& id) {
+    void setID(const std::string& id) override {
       if (cDefResource != nullptr) {
         cManager.getAssetManager().release(this, cDefResource);
       }
@@ -66,7 +68,7 @@ namespace IsoRealms {
       object.addString(name, cManager.getAssetManager().getResourceID(cDefResource));
     }
 
-    TreeItemInfo getTreeItemInfo() const {
+    TreeItemInfo getTreeItemInfo() const override {
       std::string mResourceID = cManager.getAssetManager().getResourceID(cDefResource);
       std::optional<TreeItemInfo> mFound;
       forEachAvailableTreeItem([&mFound, &mResourceID](const TreeItemInfo& mTreeItemInfo) {
@@ -77,37 +79,37 @@ namespace IsoRealms {
       return mFound.value_or(TreeItemInfo{mResourceID, mResourceID});
     }
 
-    std::string getTreeItemLabel() const {
+    std::string getTreeItemLabel() const override {
       return cManager.getAssetManager().getResourceID(cDefResource);
     }
 
-    bool renderAssetIcon() const {
+    bool renderAssetIcon() const override {
       return false; // TODO: Implement this.
     }
 
-    bool hasConfiguration() const {
+    bool hasConfiguration() const override {
       return false; // TODO: Implement this.
     }
 
-    bool isDefaultConfigured() const {
+    bool isDefaultConfigured() const override {
       return false; // TODO: Implement this.
     }
 
-    void getAssetProperties(PropertyMaker& owner) {
+    void getAssetProperties(PropertyMaker& owner) override {
       // TODO: Implement this.
     }
 
-    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {
       for (const std::string& mResourceID : cManager.getAssetManager().template getAvailableResources<TYPE>()) {
         getTreeItemInfoFunction(TreeItemInfo{mResourceID, mResourceID});
       }
     }
 
-    bool renderTreeItemIcon(const std::string& id) const {
+    bool renderTreeItemIcon(const std::string& id) const override {
       return false; // TODO: Implement this.
     }
 
-    Application& getApplication() const {
+    Application& getApplication() override {
       return cManager.getProject().getApplication();
     }
 

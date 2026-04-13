@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
 
   void ModelCycler::getProperties(PropertyMaker& owner, const Metadata& metadata) {
     for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      owner.createPropertyTreeSelector<Model>(metadata.getPropertyData("Model"), *mModel.get());
+      owner.createPropertyTreeSelector(metadata.getPropertyData("Model"), *mModel.get());
     }
   }
 

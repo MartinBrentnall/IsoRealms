@@ -22,6 +22,7 @@
 #include <memory>
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
@@ -53,7 +54,8 @@ namespace IsoRealms {
 
   template <typename DERIVED, typename TYPE> concept IsStateListener = std::convertible_to<DERIVED*, IStateListener*>;
 
-  template <typename DERIVED, typename TYPE, typename MANAGER> class Asset : public IAssetUser<TYPE> {
+  template <typename DERIVED, typename TYPE, typename MANAGER> class Asset : public IAssetUser<TYPE>,
+                                                                             public ITreeSelectorObject {
     public:
     using AssetInterfaceType = TYPE;
 
@@ -108,7 +110,7 @@ namespace IsoRealms {
       loadClientConfiguration(mAssetObject);
     }
     
-    virtual void setID(const std::string& id) {
+    void setID(const std::string& id) override {
       cManager.getAssetManager().release(this, cAsset);
       setAsset(cManager.getAssetManager().getAsset(this, id, cManager, getStateListener()));
       static_cast<DERIVED*>(this)->stateChanged();
@@ -120,16 +122,16 @@ namespace IsoRealms {
       cManager.getAssetManager().save(mAssetObject, cAsset);
     }
 
-    void getAssetProperties(PropertyMaker& owner) {
+    void getAssetProperties(PropertyMaker& owner) override {
       getClientProperties(owner);
       cAsset->getAssetProperties(owner);
     }
 
-    virtual bool renderAssetIcon() const {
+    bool renderAssetIcon() const override {
       return cAsset->renderAssetIcon();
     }
 
-    bool isDefaultConfigured() const {
+    bool isDefaultConfigured() const override {
       if (!cAsset->isDefaultConfiguration()) {
         return false;
       }
@@ -148,7 +150,7 @@ namespace IsoRealms {
       return cAsset;
     }
 
-    Application& getApplication() {
+    Application& getApplication() override {
       return cManager.getAssetManager().getProject().getApplication();
     }
 
@@ -173,7 +175,7 @@ namespace IsoRealms {
       return cManager.setOwner(owner);
     }
 
-    bool renderTreeItemIcon(const std::string& id) const {
+    bool renderTreeItemIcon(const std::string& id) const override {
       if (id == getRawID()) {
         return renderAssetIcon();
       }
@@ -184,15 +186,15 @@ namespace IsoRealms {
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 
-    virtual void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {
       cManager.getAssetManager().template forEachEntry<TYPE>(getTreeItemInfoFunction);
     }
 
-    virtual TreeItemInfo getTreeItemInfo() const {
+    TreeItemInfo getTreeItemInfo() const override {
       return cManager.getAssetManager().getTreeItemInfo(cAsset);
     }
 
-    std::string getTreeItemLabel() const {
+    std::string getTreeItemLabel() const override {
       TreeItemInfo mTreeItemInfo = getTreeItemInfo();
       std::string::size_type mLastSeparator = mTreeItemInfo.cPath.find_last_of('/');
       if (mLastSeparator != std::string::npos) {
@@ -205,7 +207,7 @@ namespace IsoRealms {
       return mLastSeparator == std::string::npos ? mTreeItemInfo.cID : mTreeItemInfo.cID.substr(mLastSeparator + 1);
     }
 
-    bool hasConfiguration() const {
+    bool hasConfiguration() const override {
       if constexpr (HasClientConfigurationExists<DERIVED>) {
         if (static_cast<const DERIVED*>(this)->hasClientConfiguration()) {
           return true;

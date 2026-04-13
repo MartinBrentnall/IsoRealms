@@ -19,6 +19,7 @@
 #pragma once
 
 #include "IsoRealms.h"
+#include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 #include "Modules/UI/Assets/Type/IMenuItem.h"
@@ -27,23 +28,23 @@ namespace IsoRealms::UI {
   class UI;
   class Menu;
 
-  class MenuItem : public IAssetUser<IMenuItem> {
+  class MenuItem : public IAssetUser<IMenuItem>, public ITreeSelectorObject {
     public:
     MenuItem(UI& ui, Menu& menu);
 
     void init(JSONObject object, const std::string& member, Menu& owner);
     void set(JSONObject object, const std::string& member, Menu& owner);
-    void setID(const std::string& id);
+    void setID(const std::string& id) override;
     void save(JSONObject object, const std::string& name) const;
-    TreeItemInfo getTreeItemInfo() const;
-    std::string getTreeItemLabel() const;
-    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
-    bool renderTreeItemIcon(const std::string& id) const;
-    bool hasConfiguration() const;
-    bool isDefaultConfigured() const;
-    void getAssetProperties(PropertyMaker& owner);
-    bool renderAssetIcon() const;
-    Application& getApplication();
+    TreeItemInfo getTreeItemInfo() const override;
+    std::string getTreeItemLabel() const override;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    bool renderTreeItemIcon(const std::string& id) const override;
+    bool hasConfiguration() const override;
+    bool isDefaultConfigured() const override;
+    void getAssetProperties(PropertyMaker& owner) override;
+    bool renderAssetIcon() const override;
+    Application& getApplication() override;
 
     IMenuItem* operator->() const {
       return cMenuItem;

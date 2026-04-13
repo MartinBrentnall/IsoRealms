@@ -36,6 +36,7 @@ namespace IsoRealms {
   class IProperty;
   class IPropertyManager;
   class IResourceData;
+  class ITreeSelectorObject;
 
   class PropertyMaker : public IResourceAccessManager {
     public:
@@ -61,6 +62,7 @@ namespace IsoRealms {
     void createPropertyNativeString(         const PropertyData& metadata, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom = nullptr);
     void createPropertyNativeUnsignedInteger(const PropertyData& metadata, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr);
     void createPropertyStruct(               const PropertyData& metadata, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr);
+    void createPropertyTreeSelector(         const PropertyData& metadata, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr);
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC> void createPropertyArray(const PropertyData& metadata, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
       for (const auto& mElement : container) {
@@ -69,10 +71,6 @@ namespace IsoRealms {
       createPropertyAdd(metadata, "Add...", [createProperty, add]() {
         createProperty(add());
       });
-    }
-
-    template <typename TREE_ITEM_TYPE> void createPropertyTreeSelector(const PropertyData& metadata, TREE_ITEM_TYPE& item, std::function<void()> removeFunction = nullptr) {
-      cProperties.addProperty(std::make_unique<PropertyTreeSelector<TREE_ITEM_TYPE>>(*this, *this, cParent, metadata, item, removeFunction));
     }
 
     template <typename OPTIONAL_TYPE> void createPropertyOptional(const PropertyData& metadata, std::function<void(const std::string&)> choiceCallback) {

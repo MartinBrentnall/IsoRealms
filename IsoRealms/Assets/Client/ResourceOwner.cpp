@@ -78,7 +78,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  Application& ResourceOwner::getApplication() const {
+  Application& ResourceOwner::getApplication() {
     return cProject.getApplication();
   }
 

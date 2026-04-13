@@ -72,10 +72,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void BoundaryHandler::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector<PhysicalObjectType>(metadata.getPropertyData("Entity"),   cDefObjectType);
-    owner.createPropertyTreeSelector<BoundaryType>(      metadata.getPropertyData("Boundary"), cDefBoundaryType);
-    owner.createPropertyTreeSelector<Action>(            metadata.getPropertyData("OnEntry"),  cDefEnteredAction);
-    owner.createPropertyTreeSelector<Action>(            metadata.getPropertyData("OnExit"),   cDefExitedAction);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Entity"),   cDefObjectType);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Boundary"), cDefBoundaryType);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("OnEntry"),  cDefEnteredAction);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("OnExit"),   cDefExitedAction);
   }
 
   void BoundaryHandler::removed() {

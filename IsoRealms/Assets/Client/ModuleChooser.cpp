@@ -51,12 +51,16 @@ namespace IsoRealms {
   bool ModuleChooser::hasConfiguration() const {
     return false;
   }
+
+  bool ModuleChooser::isDefaultConfigured() const {
+    return true;
+  }
   
   void ModuleChooser::getAssetProperties(PropertyMaker& owner) {
     // Nothing to do.
   }
   
-  Application& ModuleChooser::getApplication() const {
+  Application& ModuleChooser::getApplication() {
     return cProject.getApplication();
   }
   

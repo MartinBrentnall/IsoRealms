@@ -115,9 +115,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64LiftGraphics::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector<Colour>(metadata.getPropertyData("Primary"),   cDefPrimary);
-    owner.createPropertyTreeSelector<Colour>(metadata.getPropertyData("Secondary"), cDefSecondary);
-    owner.createPropertyTreeSelector<Colour>(metadata.getPropertyData("Outline"),   cDefOutline);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Primary"),   cDefPrimary);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Secondary"), cDefSecondary);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Outline"),   cDefOutline);
   }
 
   void C64LiftGraphics::removed() {

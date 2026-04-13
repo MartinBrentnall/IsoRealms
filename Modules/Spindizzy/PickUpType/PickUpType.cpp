@@ -53,7 +53,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void PickUpType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector<Model>(metadata.getPropertyData("Appearance"), cDefModel);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"), cDefModel);
   }
 
   void PickUpType::removed() {

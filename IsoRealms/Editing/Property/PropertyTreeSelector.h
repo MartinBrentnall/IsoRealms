@@ -36,14 +36,15 @@
 
 #include "IPropertyEditor.h"
 #include "IPropertyManager.h"
+#include "ITreeSelectorObject.h"
 #include "Property.h"
 
 namespace IsoRealms {
   class PropertyMaker;
 
-  template <typename TYPE> class PropertyTreeSelector : public Property {
+  class PropertyTreeSelector : public Property {
     public:
-    PropertyTreeSelector(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, TYPE& item, std::function<void()> removeFunction = nullptr) :
+    PropertyTreeSelector(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr) :
               Property(data, resourceAccessManager, removeFunction),
               cPropertyOwner(owner),
               cResourceData(resourceData),
@@ -95,7 +96,7 @@ namespace IsoRealms {
     private:
     class Editor : public IPropertyEditor {
       public:
-      Editor(PropertyTreeSelector<TYPE>& parent, IUIStyle& style, float y, float width, float height) :
+      Editor(PropertyTreeSelector& parent, IUIStyle& style, float y, float width, float height) :
                 cParent(parent),
                 cStyle(style),
                 cY(y),
@@ -628,7 +629,7 @@ namespace IsoRealms {
         int cScroll;
       };
 
-      PropertyTreeSelector<TYPE>& cParent;
+      PropertyTreeSelector& cParent;
       IUIStyle& cStyle;
 
       float cY;
@@ -655,7 +656,7 @@ namespace IsoRealms {
 
     PropertyMaker& cPropertyOwner;
     IResourceData& cResourceData;
-    TYPE& cSelectedItem;
+    ITreeSelectorObject& cSelectedItem;
     std::string cValueLabel;
   };
 }

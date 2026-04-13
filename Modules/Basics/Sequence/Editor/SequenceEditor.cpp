@@ -666,8 +666,8 @@ namespace IsoRealms::Basics {
 
               if (cCursorTrackProperties) {
                 cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
-                  owner.createPropertyTreeSelector<SequenceTrack>(PropertyData("TODO: Type Name", "TODO: Type Description"), cSequence.getTrack(cCursorTrack.value()));
-                  owner.createPropertyNativeString(               PropertyData("TODO: Name Name", "TODO: Name Description"), [this]() {
+                  owner.createPropertyTreeSelector(PropertyData("TODO: Type Name", "TODO: Type Description"), cSequence.getTrack(cCursorTrack.value()));
+                  owner.createPropertyNativeString(PropertyData("TODO: Name Name", "TODO: Name Description"), [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     cSequence.getTrack(cCursorTrack.value())->setName(name);

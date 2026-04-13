@@ -64,9 +64,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void LiftType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector<Model>(  metadata.getPropertyData("Appearance"), cDefModel);
-    owner.createPropertyTreeSelector<Boolean>(metadata.getPropertyData("State"),      cDefActive);
-    owner.createPropertyTreeSelector<Action>( metadata.getPropertyData("OnMove"),     cDefTickAction);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"), cDefModel);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("State"),      cDefActive);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("OnMove"),     cDefTickAction);
   }
 
   void LiftType::removed() {

@@ -74,9 +74,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Top::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector<Colour>(metadata.getPropertyData("Top"),     cDefColourTop);
-    owner.createPropertyTreeSelector<Colour>(metadata.getPropertyData("Side"),    cDefColourSide);
-    owner.createPropertyTreeSelector<Colour>(metadata.getPropertyData("Outline"), cDefColourOutline);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Top"),     cDefColourTop);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Side"),    cDefColourSide);
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Outline"), cDefColourOutline);
   }
 
   void Top::removed() {

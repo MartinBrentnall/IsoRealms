@@ -321,7 +321,7 @@ namespace IsoRealms::Basics {
       std::string mArgumentName = cParent.cDefArgumentDefinitions[i]->getName();
       std::unique_ptr<IsoRealms::Binding>& mBinding = cDefArguments[i];
       PropertyData mArgumentData(mArgumentName, "An argument to the function.");
-      owner.createPropertyTreeSelector<IsoRealms::Binding>(mArgumentData, *mBinding);
+      owner.createPropertyTreeSelector(mArgumentData, *mBinding);
     }
   }
 
