@@ -30,6 +30,7 @@ namespace IsoRealms {
   class IProperty;
   class IPropertyEditor;
   class IUIStyle;
+  class PropertyMaker;
 
   class IPropertyManager {
     public:

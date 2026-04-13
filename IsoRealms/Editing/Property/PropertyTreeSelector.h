@@ -18,21 +18,20 @@
  */
 #pragma once
 
-#include <cmath>
-#include <regex>
-#include <set>
+#include <functional>
+#include <memory>
+#include <string>
+#include <vector>
 
-#include <GL/glew.h>
+#include <SFML/Window.hpp>
 
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Common/AnimatedFloat.h"
-#include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/Editing/Choice.h"
 #include "IsoRealms/Editing/IResourceAccessManager.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Editing/UISignalID.h"
-#include "IsoRealms/Application.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
-#include "IsoRealms/Utils.h"
 
 #include "IPropertyEditor.h"
 #include "IPropertyManager.h"
@@ -40,399 +39,49 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  class PropertyMaker;
+  class IResourceData;
 
   class PropertyTreeSelector : public Property {
     public:
-    PropertyTreeSelector(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr) :
-              Property(data, resourceAccessManager, removeFunction),
-              cPropertyOwner(owner),
-              cResourceData(resourceData),
-              cSelectedItem(item),
-              cValueLabel(getValue()) {
-    }
+    PropertyTreeSelector(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr);
 
-    std::string getValue() {
-      return cSelectedItem.getTreeItemLabel();
-    }
+    std::string getValue();
 
     /************************\
      * Implements IProperty *
     \************************/
-    void renderValue(IUIStyle& style, float y, float x, float aspectRatio) const override {
-      IFont* mFont = style.getFont();
-      float mFontSize = style.getFontSize();
-      mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cValueLabel);
-      glPushMatrix();
-      glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
-      glScalef(mFontSize, mFontSize, 0.0f);
-      if (!cSelectedItem.renderAssetIcon()) {
-        Utils::renderIconLeaf();
-      }
-      glPopMatrix();
-    }
-    
-    float getValueWidth(IUIStyle& style) const override {
-      IFont* mFont = style.getFont();
-      float mFontSize = style.getFontSize();
-      return mFont->getWidth(mFontSize, cValueLabel) + mFontSize * 2.25f;
-    }
+    void renderValue(IUIStyle& style, float y, float x, float aspectRatio) const override;
+    float getValueWidth(IUIStyle& style) const override;
+    void confirm(IPropertyManager& manager, float y) override;
+    bool hasConfiguration() const override;
+    void configure(IPropertyManager& manager) override;
 
-    void confirm(IPropertyManager& manager, float y) override {
-      IUIStyle& mStyle = manager.getPropertyStyle();
-      manager.edit(std::make_unique<Editor>(*this, mStyle, y, getValueWidth(mStyle), mStyle.getFontSize() * 2.0f));
-    }
-    
-    bool hasConfiguration() const override {
-      return cSelectedItem.hasConfiguration();
-    }
-    
-    void configure(IPropertyManager& manager) override {
-      manager.openProperties(cResourceData, getPropertyName(), [this](PropertyMaker& owner) {
-        cSelectedItem.getAssetProperties(owner);
-      });
-    }
-  
     private:
     class Editor : public IPropertyEditor {
       public:
-      Editor(PropertyTreeSelector& parent, IUIStyle& style, float y, float width, float height) :
-                cParent(parent),
-                cStyle(style),
-                cY(y),
-                cOpenness(0),
-                cClosing(false),
-                cPathBarWidth(0.0f) {
-        cBackArrowSize.init(0.0f);
-
-        TreeItemInfo mTreeItemInfo = cParent.cSelectedItem.getTreeItemInfo();
-
-        // Construct menus based on current item path.
-        std::string::size_type mSeparator = mTreeItemInfo.cPath.find_first_of('/');
-        cMenus.emplace_back(std::make_unique<MenuScroller>(*this, "", mTreeItemInfo, mSeparator == std::string::npos ? MenuScroller::State::ACTIVE : MenuScroller::State::INACTIVE));
-
-        while (mSeparator != std::string::npos) {
-          std::string::size_type mNextSeparator = mTreeItemInfo.cPath.find_first_of('/', mSeparator + 1);
-          cMenus.emplace_back(std::make_unique<MenuScroller>(*this, mTreeItemInfo.cPath.substr(0, mSeparator), mTreeItemInfo, mNextSeparator == std::string::npos ? MenuScroller::State::ACTIVE : MenuScroller::State::INACTIVE));
-          mSeparator = mNextSeparator;
-        }
-        cCurrentPath = mTreeItemInfo.cPath;
-
-        cWidth.init(cMenus.back()->getMenu().getWidth(cStyle));
-        cHeight.init(cMenus.back()->getMenu().getMenuItemCount());
-        cSelectionWidth.init(cMenus.back()->getMenu().getSelectedItemWidth(cStyle));
-        cYPosition.init(cMenus.back()->getMenu().getSelectedItem());
-        cBackArrowSize = cMenus.size() > 1 ? 1.0f : 0.0f;
-        updatePathBar(style);
-      }
-
-      void openFolder(const std::string& path) {
-        cMenus.emplace_back(std::make_unique<MenuScroller>(*this, path, cParent.cSelectedItem.getTreeItemInfo(), MenuScroller::State::NEW));
-      }
-
-      void updateAnimationValues() {
-        cWidth = cMenus.back()->getMenu().getWidth(cStyle);
-        cHeight = cMenus.back()->getMenu().getMenuItemCount();
-        cSelectionWidth = cMenus.back()->getMenu().getSelectedItemWidth(cStyle);
-        cYPosition = cMenus.back()->getMenu().getSelectedItem();
-        cBackArrowSize = cMenus.size() > 1 ? 1.0f : 0.0f;
-      }
-
-      /******************************\
-       * Implements IPropertyEditor *
-      \******************************/
-      void render(IUIStyle& style, float y, float x, float aspectRatio) const override {
-        glBindTexture(GL_TEXTURE_2D, 0);
-        float mFontSize = style.getFontSize();
-        float mYPosition = (cOpenness / 250.0f * cYPosition.animation()) * mFontSize * 2.0f + cY;
-        float mHeight = (cOpenness / 250.0f * (cHeight.animation() - 1.0f) + 1.0f) * mFontSize * 2.0f;
-        float mWidth = (cOpenness / 250.0f * (cWidth.animation() - cSelectionWidth.animation()) + cSelectionWidth.animation());
-
-        // Dim everything behind the editor
-        glEnable(GL_BLEND);
-        glColor4f(0.0f, 0.0f, 0.0f, cOpenness / 250.0f * 0.5f);
-        glBegin(GL_QUADS);
-        Utils::renderRectangle(-aspectRatio * 2.0f, -1.0f, aspectRatio * 2.0f, 1.0f); // TODO: The "* 2.0f" is a hack because we don't know the actual screen width'
-        glEnd();
-        glDisable(GL_BLEND);
-
-        // Render black background.
-        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-        float mLeft = x - mFontSize;
-        float mRight = x + mWidth + mFontSize;
-        float mBottom = (mYPosition + mFontSize * 2.0f) - mHeight;
-        float mTop = mYPosition + mFontSize * 2.0f;
-        Utils::renderRoundedRectangle(mLeft, mBottom, mRight, mTop, mFontSize);
-
-        // Render cursor.
-        glColor3f(1.0f, 0.0f, 0.2f);
-        Utils::renderBar(x, cY, x + cSelectionWidth.animation(), cY + mFontSize * 2.0f);
-
-        // Render background line border.
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        Utils::renderRoundedRectangleLines(mLeft, mBottom, mRight, mTop, mFontSize);
-
-        // Render arrow indicating left possibility.
-        glBegin(GL_TRIANGLES);
-        glVertex2f(x - mFontSize * 0.25f * cBackArrowSize.animation(), (cY + mFontSize) + mFontSize * 0.5f * cBackArrowSize.animation());
-        glVertex2f(x - mFontSize * 0.75f * cBackArrowSize.animation(),  cY + mFontSize);
-        glVertex2f(x - mFontSize * 0.25f * cBackArrowSize.animation(), (cY + mFontSize) - mFontSize * 0.5f * cBackArrowSize.animation());
-        glEnd();
-
-        // Render menu contents.
-        Application& mApplication = cParent.cSelectedItem.getApplication();
-        ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(x, x + mWidth, (mYPosition + mFontSize * 2.0f) - mHeight, mYPosition + mFontSize * 2.0f));
-        for (const std::unique_ptr<MenuScroller>& mMenu : cMenus) {
-          mMenu->render(cStyle, cY, x, aspectRatio);
-        }
-        for (const std::unique_ptr<MenuScroller>& mMenu : cClosedMenus) {
-          mMenu->render(cStyle, cY, x, aspectRatio);
-        }
-        mApplication.crop(mPreviousCrop);
-        
-        float mPathBarY = 1.0f - mFontSize * 2;
-        IFont* mFont = style.getFont();
-
-        // Render path bar.
-        if (cPathBarWidth.animation() > 0.0f && cMenus[0]->getMenu().hasChildren()) {
-          glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-          Utils::renderRoundedRectangle(-aspectRatio - mFontSize, mPathBarY - mFontSize * 1.5f, -aspectRatio + cPathBarWidth.animation() + mFontSize, mPathBarY + mFontSize * 1.5f, mFontSize);
-          glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-          Utils::renderRoundedRectangleLines(-aspectRatio - mFontSize, mPathBarY - mFontSize * 1.5f, -aspectRatio + cPathBarWidth.animation() + mFontSize, mPathBarY + mFontSize * 1.5f, mFontSize);
-          
-          ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(-1.0f * aspectRatio, -1.0f * aspectRatio + cPathBarWidth.animation(), mPathBarY - mFontSize, mPathBarY + mFontSize));
-          mFont->print(-1.0f * aspectRatio,                    1.0f - mFontSize * 3.0f, mFontSize, IFont::Alignment::LEFT, cActivePath);
-          glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
-          mFont->print(-1.0f * aspectRatio + cActivePartWidth, 1.0f - mFontSize * 3.0f, mFontSize, IFont::Alignment::LEFT, cInactivePath);
-          mApplication.crop(mPreviousCrop);
-        }
-        
-        // Render confirmation choice.
-        if (cConfirmSelection != nullptr) {
-          cConfirmSelection->render(style);
-        }
-        if (cClosedConfirmSelection != nullptr) {
-          cClosedConfirmSelection->render(style);
-        }
-      }
-
-      void updatePathBar(IUIStyle& style) {
-        cActivePath = cMenus.size() > 1 ? cMenus[cMenus.size() - 1]->getMenu().getPath() + "/" : "";
-        cInactivePath = (cActivePath == cCurrentPath.substr(0, cActivePath.length()))
-                      ? cCurrentPath.substr(cActivePath.length())
-                      : "";
-        IFont* mFont = style.getFont();
-        float mFontSize = style.getFontSize();
-        cActivePath = std::regex_replace(cActivePath, std::regex("/"), " > ");
-        cInactivePath = std::regex_replace(cInactivePath, std::regex("/"), " > ");
-        cActivePartWidth = mFont->getWidth(mFontSize, cActivePath);
-        cPathBarWidth = mFont->getWidth(mFontSize, cInactivePath) + cActivePartWidth;
-      }
-
-      bool update(unsigned int milliseconds) override {
-        cWidth.update(milliseconds);
-        cHeight.update(milliseconds);
-        cSelectionWidth.update(milliseconds);
-        cYPosition.update(milliseconds);
-        cBackArrowSize.update(milliseconds);
-        cPathBarWidth.update(milliseconds);
-        
-        if (cClosing) {
-          cOpenness = std::max(cOpenness - static_cast<int>(milliseconds), 0);
-        } else if (cOpenness < 250) {
-          cOpenness = std::min(cOpenness + static_cast<int>(milliseconds), 250);
-        }
-
-        for (unsigned int i = 0; i < cMenus.size(); i++) {
-          if (i == cMenus.size() - 1) {
-            cMenus[i]->updateActive(milliseconds);
-          } else {
-            cMenus[i]->updateInactive(milliseconds);
-          }
-          cMenus[i]->getMenu().update(milliseconds);
-        }
-
-        for (const std::unique_ptr<MenuScroller>& mMenu : cClosedMenus) {
-          mMenu->updateClosing(milliseconds);
-        }
-
-        while (!cClosedMenus.empty() && cClosedMenus.back()->isClosed()) {
-          cClosedMenus.pop_back();
-        }
-        
-        if (cConfirmSelection != nullptr) {
-          cConfirmSelection->update(milliseconds);
-        }
-        if (cClosedConfirmSelection != nullptr) {
-          if (cClosedConfirmSelection->update(milliseconds)) {
-            cClosedConfirmSelection = nullptr;
-          }
-        }
-
-        return cOpenness == 0;
-      }
-
-      bool input(UISignalID id, IUIStyle& style) override {
-        if (cConfirmSelection != nullptr) {
-          return cConfirmSelection->input(id);
-        } if (cMenus.back()->getMenu().input(id, style)) {
-          return true;
-        } else switch (id) {
-          case UISignalID::CANCEL: {
-            cClosing = true;
-            return true;
-            break;
-          }
-
-          case UISignalID::MOVE_LEFT: {
-            if (cMenus.size() > 1) {
-              cClosedMenus.emplace(cClosedMenus.begin(), std::move(cMenus.back()));
-              cMenus.pop_back();
-              updatePathBar(style);
-            }
-            break;
-          }
-
-          default: {
-            break;
-          }
-        }
-        updateAnimationValues();
-        return false;
-      }
-
-      bool input(sf::Event& event, IUIStyle& style) override {
-        return false; // Nothing to do.
-      }
+      Editor(PropertyTreeSelector& parent, IUIStyle& style, float y, float width, float height);
+      void openFolder(const std::string& path);
+      void updateAnimationValues();
+      void render(IUIStyle& style, float y, float x, float aspectRatio) const override;
+      void updatePathBar(IUIStyle& style);
+      bool update(unsigned int milliseconds) override;
+      bool input(UISignalID id, IUIStyle& style) override;
+      bool input(sf::Event& event, IUIStyle& style) override;
 
       private:
       class Menu {
         public:
-        Menu(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry) :
-                  cParent(parent),
-                  cPath(path),
-                  cSelectedIndex(0) {
-          std::string mSelectedPath = currentEntry.cPath;
-          std::set<std::string> mFolders;
-          std::vector<TreeItemInfo> mProviders;
-
-          // Build tree from cPath (not cID).
-          cParent.cParent.cSelectedItem.forEachAvailableTreeItem([&](const TreeItemInfo& mTreeItemInfo) {
-            const std::string& mPath = mTreeItemInfo.cPath;
-            if (mPath.substr(0, path.length() + (path.empty() ? 0 : 1)) == (path.empty() ? path : path + "/")) {
-              std::string mEntity = mPath.substr(path.length() + (path == "" ? 0 : 1));
-              std::string::size_type mSplit = mEntity.find_first_of('/');
-              if (mSplit != std::string::npos) {
-                mFolders.emplace(mEntity.substr(0, mSplit));
-              } else {
-                mProviders.push_back(mTreeItemInfo);
-              }
-            }
-          });
-
-          unsigned int mIndex = 0;
-          for (const std::string& mFolder : mFolders) {
-            std::string mFullFolderPath = path.empty() ? mFolder : path + "/" + mFolder;
-            if (mFullFolderPath == mSelectedPath.substr(0, mFullFolderPath.length()) && (mSelectedPath.length() == mFullFolderPath.length() || mSelectedPath[mFullFolderPath.length()] == '/')) {
-              cSelectedIndex = mIndex;
-            }
-            cMenuItems.emplace_back(std::make_unique<MenuFolder>(*this, mFolder));
-            mIndex++;
-          }
-
-          for (const TreeItemInfo& mTreeItemInfo : mProviders) {
-            if (mTreeItemInfo.cPath == mSelectedPath) {
-              cSelectedIndex = mIndex;
-            }
-            cMenuItems.emplace_back(std::make_unique<MenuItem>(*this, mTreeItemInfo));
-            mIndex++;
-          }
-          cSelectedItem.init(cSelectedIndex);
-        }
-
-        unsigned int getMenuItemCount() const {
-          return cMenuItems.size();
-        }
-
-        void render(IUIStyle& style, float y, float x, float aspectRatio) const {
-          float mFontSize = style.getFontSize();
-          float mYPosition = y + cSelectedItem.animation() * mFontSize * 2.0f;
-          for (const std::unique_ptr<IMenuEntry>& mItem : cMenuItems) {
-            mItem->render(style, mYPosition, x, aspectRatio);
-            mYPosition -= mFontSize * 2.0f;
-          }
-        }
-
-        float getWidth(IUIStyle& style) const {
-          float mMaxWidth = 0.0f;
-          for (const std::unique_ptr<IMenuEntry>& mItem : cMenuItems) {
-            mMaxWidth = std::max(mMaxWidth, mItem->getWidth(style));
-          }
-          return mMaxWidth;
-        }
-
-        float getSelectedItemWidth(IUIStyle& style) const {
-          return cMenuItems.empty() ? 0.0f : cMenuItems[cSelectedIndex]->getWidth(style);
-        }
-
-        void update(unsigned int milliseconds) {
-          cSelectedItem.update(milliseconds);
-        }
-
-        float getSelectedItemAnimation() const {
-          return cSelectedItem.animation();
-        }
-
-        bool input(UISignalID id, IUIStyle& style) {
-          switch (id) {
-            case UISignalID::CONFIRM: {
-              return cMenuItems[cSelectedIndex]->confirm(style);
-            }
-
-            case UISignalID::MOVE_RIGHT: {
-              cMenuItems[cSelectedIndex]->enter(style);
-              break;
-            }
-
-            case UISignalID::MOVE_DOWN: {
-              if (cSelectedIndex < cMenuItems.size() - 1) {
-                cSelectedIndex += 1;
-                cSelectedItem = cSelectedIndex;
-              }
-              break;
-            }
-
-            case UISignalID::MOVE_UP: {
-              if (cSelectedIndex > 0) {
-                cSelectedIndex -= 1;
-                cSelectedItem = cSelectedIndex;
-              }
-              break;
-            }
-
-            default: {
-              break;
-            }
-          }
-          return false;
-        }
-
-        unsigned int getSelectedItem() const {
-          return cSelectedIndex;
-        }
-        
-        std::string getPath() const {
-          return cPath;
-        }
-
-        bool hasChildren() const {
-          for (const std::unique_ptr<IMenuEntry>& mMenuItem : cMenuItems) {
-            if (mMenuItem->hasChildren()) {
-              return true;
-            }
-          }
-          return false;
-        }
+        Menu(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry);
+        unsigned int getMenuItemCount() const;
+        void render(IUIStyle& style, float y, float x, float aspectRatio) const;
+        float getWidth(IUIStyle& style) const;
+        float getSelectedItemWidth(IUIStyle& style) const;
+        void update(unsigned int milliseconds);
+        float getSelectedItemAnimation() const;
+        bool input(UISignalID id, IUIStyle& style);
+        unsigned int getSelectedItem() const;
+        std::string getPath() const;
+        bool hasChildren() const;
 
         private:
         class IMenuEntry {
@@ -446,44 +95,16 @@ namespace IsoRealms {
 
         class MenuFolder : public IMenuEntry {
           public:
-          MenuFolder(Menu& parent, const std::string& folder) :
-                    cParent(parent),
-                    cFolderName(folder) {
-          }
-          
+
           /*************************\
            * Implements IMenuEntry *
           \*************************/
-          void render(IUIStyle& style, float y, float x, float aspectRatio) const override {
-            IFont* mFont = style.getFont();
-            float mFontSize = style.getFontSize();
-            mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cFolderName);
-            glPushMatrix();
-            glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
-            glScalef(mFontSize, mFontSize, 0.0f);
-            Utils::renderIconBranch();
-            glPopMatrix();
-          }
-          
-          float getWidth(IUIStyle& style) const override {
-            IFont* mFont = style.getFont();
-            float mFontSize = style.getFontSize();
-            return mFont->getWidth(mFontSize, cFolderName) + mFontSize * 2.25f;
-          }
-
-          bool confirm(IUIStyle& style) override {
-            cParent.cParent.openFolder(cParent.cPath.empty() ? cFolderName : cParent.cPath + "/" + cFolderName);
-            cParent.cParent.updatePathBar(style);
-            return false;
-          }
-
-          void enter(IUIStyle& style) override {
-            confirm(style);
-          }
-
-          bool hasChildren() const override {
-            return true;
-          }
+          MenuFolder(Menu& parent, const std::string& folder);
+          void render(IUIStyle& style, float y, float x, float aspectRatio) const override;
+          float getWidth(IUIStyle& style) const override;
+          bool confirm(IUIStyle& style) override;
+          void enter(IUIStyle& style) override;
+          bool hasChildren() const override;
 
           private:
           Menu& cParent;
@@ -492,83 +113,26 @@ namespace IsoRealms {
 
         class MenuItem : public IMenuEntry {
           public:
-          MenuItem(Menu& parent, const TreeItemInfo& itemInfo) :
-                    cParent(parent),
-                    cItemInfo(itemInfo),
-                    cLabel(getLabelFromPath(itemInfo.cPath)) {
-          }
-          
+          MenuItem(Menu& parent, const TreeItemInfo& itemInfo);
+
           /*************************\
            * Implements IMenuEntry *
           \*************************/
-          void render(IUIStyle& style, float y, float x, float aspectRatio) const override {
-            IFont* mFont = style.getFont();
-            float mFontSize = style.getFontSize();
-            mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
-            glPushMatrix();
-            glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
-            glScalef(mFontSize, mFontSize, 0.0f);
-            if (!cParent.cParent.cParent.cSelectedItem.renderTreeItemIcon(cItemInfo.cID)) {
-              Utils::renderIconLeaf();
-            }
-            glPopMatrix();
-          }
-          
-          float getWidth(IUIStyle& style) const override {
-            IFont* mFont = style.getFont();
-            float mFontSize = style.getFontSize();
-            return mFont->getWidth(mFontSize, cLabel) + mFontSize * 2.25f;
-          }
-
-          bool confirm(IUIStyle& style) override {
-            std::string mCurrentID = cParent.cParent.cParent.cSelectedItem.getTreeItemInfo().cID;
-            if (cItemInfo.cID != mCurrentID) {
-              if (cParent.cParent.cParent.cSelectedItem.hasConfiguration() && !cParent.cParent.cParent.cSelectedItem.isDefaultConfigured()) {
-                cParent.cParent.cConfirmSelection = std::make_unique<Choice>(style, "You will lose the configuration of \"" + cParent.cParent.cParent.cValueLabel + "\" if you select a new one", std::vector<std::string>{"Keep \"" + cParent.cParent.cParent.cValueLabel + "\"", "Choose new item"}, [this](const std::string& choice)->bool {
-                  if (choice == "Choose new item") {
-                    cParent.applyChange(cItemInfo.cID);
-                  }
-                  cParent.cParent.cClosedConfirmSelection = std::move(cParent.cParent.cConfirmSelection);
-                  cParent.cParent.cConfirmSelection = nullptr;
-                  return cParent.cParent.cClosing;
-                });
-              } else {
-                cParent.applyChange(cItemInfo.cID);
-              }
-            } else {
-              cParent.cParent.cClosing = true;
-            }
-            return cParent.cParent.cClosing;
-          }
-
-          void enter(IUIStyle& style) override {
-            // Nothing to do.
-          }
-
-          bool hasChildren() const override {
-            return false;
-          }
+          void render(IUIStyle& style, float y, float x, float aspectRatio) const override;
+          float getWidth(IUIStyle& style) const override;
+          bool confirm(IUIStyle& style) override;
+          void enter(IUIStyle& style) override;
+          bool hasChildren() const override;
 
           private:
           Menu& cParent;
           TreeItemInfo cItemInfo;
           std::string cLabel;
 
-          static std::string getLabelFromPath(const std::string& path) {
-            std::string::size_type mLastSeparator = path.find_last_of('/');
-            return mLastSeparator == std::string::npos ? path : path.substr(mLastSeparator + 1);
-          }
+          static std::string getLabelFromPath(const std::string& path);
         };
 
-        void applyChange(const std::string& id) {
-          cParent.cParent.confirmAccess([this, id]() {
-            cParent.cParent.cSelectedItem.setID(id);
-            cParent.cParent.cValueLabel = cParent.cParent.getValue();
-            cParent.cClosing = true;
-          }, [this]() {
-            // Nothing to do.
-          });
-        }
+        void applyChange(const std::string& id);
 
         Editor& cParent;
         std::string cPath;
@@ -585,44 +149,13 @@ namespace IsoRealms {
           NEW
         };
 
-        MenuScroller(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry, State state) :
-                  cMenu(parent, path, currentEntry),
-                  cScroll(state == State::ACTIVE   ?  0
-                        : state == State::INACTIVE ? -200
-                        :                             200) {
-        }
-
-        void render(IUIStyle& style, float y, float x, float aspectRatio) const {
-          float mWidth = cMenu.getWidth(style);
-          glPushMatrix();
-          glTranslatef(cScroll / static_cast<float>(200) * aspectRatio * mWidth, 0.0f, 0.0f);
-          cMenu.render(style, y, x, aspectRatio);
-          glPopMatrix();
-        }
-
-        void updateActive(unsigned int milliseconds) {
-          if (cScroll > 0) {
-            cScroll = std::max(cScroll - static_cast<int>(milliseconds), 0);
-          } else if (cScroll < 0) {
-            cScroll = std::min(cScroll + static_cast<int>(milliseconds), 0);
-          }
-        }
-
-        void updateInactive(unsigned int milliseconds) {
-          cScroll = std::max(cScroll - static_cast<int>(milliseconds), -200);
-        }
-
-        void updateClosing(unsigned int milliseconds) {
-          cScroll = std::min(cScroll + static_cast<int>(milliseconds), 200);
-        }
-
-        bool isClosed() const {
-          return cScroll == 200;
-        }
-
-        Menu& getMenu() {
-          return cMenu;
-        }
+        MenuScroller(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry, State state);
+        void render(IUIStyle& style, float y, float x, float aspectRatio) const;
+        void updateActive(unsigned int milliseconds);
+        void updateInactive(unsigned int milliseconds);
+        void updateClosing(unsigned int milliseconds);
+        bool isClosed() const;
+        Menu& getMenu();
 
         private:
         Menu cMenu;
@@ -646,7 +179,6 @@ namespace IsoRealms {
       std::unique_ptr<Choice> cConfirmSelection;
       std::unique_ptr<Choice> cClosedConfirmSelection;
 
-      // Path bar stuff (current item's path in tree, from TreeItemInfo::cPath)
       std::string cCurrentPath;
       std::string cActivePath;
       std::string cInactivePath;

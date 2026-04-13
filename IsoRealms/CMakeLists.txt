@@ -82,6 +82,7 @@ add_library(IsoRealms
   Editing/Property/PropertyNativeUnsignedInteger.cpp
   Editing/Property/PropertySlider.cpp
   Editing/Property/PropertyStruct.cpp
+  Editing/Property/PropertyTreeSelector.cpp
   Editing/UIManager.cpp
   Exception/ActionException.cpp
   Exception/ApplicationException.cpp
