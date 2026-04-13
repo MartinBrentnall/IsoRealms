@@ -59,7 +59,7 @@ namespace IsoRealms {
       cDefLocalBindingRegistry->saveBinding(object, this);
     }
 
-    void getAssetProperties(PropertyMaker& owner) override {
+    void getAssetProperties(IPropertyMaker& owner) override {
       // Nothing to do.
     }
 
@@ -89,7 +89,7 @@ namespace IsoRealms {
       // Nothing to do.
     }
 
-    void getWrappedProperties(PropertyMaker& owner) override {
+    void getWrappedProperties(IPropertyMaker& owner) override {
       // Nothing to do.
     }
 

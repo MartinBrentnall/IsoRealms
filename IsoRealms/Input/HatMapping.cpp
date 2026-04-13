@@ -88,7 +88,7 @@ namespace IsoRealms {
     object.addString(JSON_DIRECTION, getName(cDirection));
   }
 
-  void HatMapping::getProperties(PropertyMaker& owner) {
+  void HatMapping::getProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

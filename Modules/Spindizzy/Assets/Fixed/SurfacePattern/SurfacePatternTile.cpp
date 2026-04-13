@@ -138,7 +138,7 @@ namespace IsoRealms::Spindizzy {
     cDefTexture.save(object, JSON_TEXTURE);
   }
 
-  void SurfacePatternTile::getAssetProperties(PropertyMaker& owner) {
+  void SurfacePatternTile::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Texture"), cDefTexture);
   }
 

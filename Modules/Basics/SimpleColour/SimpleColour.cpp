@@ -76,7 +76,7 @@ namespace IsoRealms::Basics {
     return renderAssetIcon();
   }
 
-  void SimpleColour::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void SimpleColour::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyColourChannel(metadata.getPropertyData("Red"), [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
       cDefRed = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
@@ -151,7 +151,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SimpleColour::getAssetProperties(PropertyMaker& owner) {
+  void SimpleColour::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

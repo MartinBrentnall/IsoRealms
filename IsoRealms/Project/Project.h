@@ -32,7 +32,7 @@
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Lua/LuaBinding.h"
 #include "IsoRealms/Lua/LocalLuaBinding.h"
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/Types.h"
 
 #include "Options.h"
@@ -61,7 +61,6 @@ namespace IsoRealms {
   
   class IScreenListener;
   class Module;
-  class PropertyMaker;
 
   /**
    * The Project is the root object of an IsoRealms game or application.  The
@@ -91,7 +90,7 @@ namespace IsoRealms {
     void save(const std::string& file);
     void save(const ProjectFile& file) const;
     bool isUser();
-    void getProperties(PropertyMaker& propertyMaker);
+    void getProperties(IPropertyMaker& propertyMaker);
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
     
@@ -246,7 +245,7 @@ namespace IsoRealms {
       void execute() override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

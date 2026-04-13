@@ -405,7 +405,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceEditor::getAssetProperties(PropertyMaker& owner) {
+  void SequenceEditor::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -665,7 +665,7 @@ namespace IsoRealms::Basics {
               }
 
               if (cCursorTrackProperties) {
-                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
+                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](IPropertyMaker& owner) {
                   owner.createPropertyTreeSelector(PropertyData("TODO: Type Name", "TODO: Type Description"), cSequence.getTrack(cCursorTrack.value()));
                   owner.createPropertyNativeString(PropertyData("TODO: Name Name", "TODO: Name Description"), [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
@@ -687,7 +687,7 @@ namespace IsoRealms::Basics {
                 }
 
                 if (cCursorEvent != nullptr) {
-                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](PropertyMaker& owner) {
+                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](IPropertyMaker& owner) {
                     return cCursorEvent->getEventProperties(owner);
                   }), "Event Configuration");
                   cEditingProperties = true;

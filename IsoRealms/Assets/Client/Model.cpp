@@ -90,7 +90,7 @@ namespace IsoRealms {
     object.addFloat(JSON_YAW,      cDefYaw);
   }
 
-  void Model::getClientProperties(PropertyMaker& owner) {
+  void Model::getClientProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cManager.getProject().getApplication().getMetadata("Model");
     owner.createPropertyNativeFloat(mMetadata.getPropertyData("OffsetX"), [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
     owner.createPropertyNativeFloat(mMetadata.getPropertyData("OffsetY"), [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});

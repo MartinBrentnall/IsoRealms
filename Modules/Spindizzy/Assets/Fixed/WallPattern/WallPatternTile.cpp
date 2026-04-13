@@ -112,7 +112,7 @@ namespace IsoRealms::Spindizzy {
     cDefTexture.save(object, JSON_TEXTURE);
   }
 
-  void WallPatternTile::getAssetProperties(PropertyMaker& owner) {
+  void WallPatternTile::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Texture"), cDefTexture);
   }
 

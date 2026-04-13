@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Jewel::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Jewel::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
       cColoursCycle[i]->getProperties(owner, metadata);
     }
@@ -93,7 +93,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void Jewel::getAssetProperties(PropertyMaker& owner) {
+  void Jewel::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -151,7 +151,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void Jewel::CycleColour::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Jewel::CycleColour::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("PanelPhase"), cDefColour);
   }
 

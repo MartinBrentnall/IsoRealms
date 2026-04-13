@@ -234,7 +234,7 @@ namespace IsoRealms::Spindizzy {
     cZone.remove(this);
   }
 
-  void Alien::getProperties(PropertyMaker& owner) {
+  void Alien::getProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

@@ -35,7 +35,7 @@ namespace IsoRealms {
     virtual bool isConfigurable() const = 0;
     virtual TreeItemInfo getTreeItemInfo() const = 0;
     virtual void set(const std::string& id) = 0;
-    virtual void getWrappedProperties(PropertyMaker& owner) = 0;
+    virtual void getWrappedProperties(IPropertyMaker& owner) = 0;
     virtual std::string getConversionPath() const = 0;
 
     virtual ~IBinding() {}

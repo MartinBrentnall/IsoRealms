@@ -29,7 +29,7 @@ namespace IsoRealms {
   class PropertiesMenu : public Menu<MenuItemProperty>,
                          public IPropertyManager {
     public:
-    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher);
 
     /*************************************\
      * Implements Menu<MenuItemProperty> *
@@ -49,7 +49,7 @@ namespace IsoRealms {
      * Implements IPropertyManager *
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
-    void openProperties(IResourceData& owner, const std::string& name, std::function<void(PropertyMaker&)> propertyFetcher) override;
+    void openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
     void refreshProperties() override;
@@ -63,7 +63,7 @@ namespace IsoRealms {
     };
 
     PropertyMaker cPropertyMaker;
-    std::function<void(PropertyMaker&)> cPropertyFetcher;
+    std::function<void(IPropertyMaker&)> cPropertyFetcher;
     
     std::unique_ptr<IPropertyEditor> cEditingProperty;
     std::unique_ptr<IPropertyEditor> cClosingProperty;

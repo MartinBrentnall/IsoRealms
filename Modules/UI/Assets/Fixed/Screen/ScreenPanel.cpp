@@ -73,7 +73,7 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_CORNER_SIZE, cDefCornerSize);
   }
 
-  void ScreenPanel::getAssetProperties(PropertyMaker& owner) {
+  void ScreenPanel::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Colour"),     cDefColour);
     owner.createPropertyNativeFloat( cMetadata.getPropertyData("CornerSize"), [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
   }

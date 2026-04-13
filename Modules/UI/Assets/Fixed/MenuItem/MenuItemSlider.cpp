@@ -166,7 +166,7 @@ namespace IsoRealms::UI {
     cDefValueChangedAction.save(object, JSON_ON_CHANGE);
   }
 
-  void MenuItemSlider::getAssetProperties(PropertyMaker& owner) {
+  void MenuItemSlider::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
     owner.createPropertyNativeString( cMetadata.getPropertyData("Label"),    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
     owner.createPropertyNativeFloat(  cMetadata.getPropertyData("Minimum"),  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});

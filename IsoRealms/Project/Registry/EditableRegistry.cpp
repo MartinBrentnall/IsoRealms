@@ -36,7 +36,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void EditableRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void EditableRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -116,7 +116,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void EditableRegistry::Dummy::Instance::getAssetProperties(PropertyMaker& owner) {
+  void EditableRegistry::Dummy::Instance::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

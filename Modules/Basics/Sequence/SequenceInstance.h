@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     void update(unsigned int milliseconds);
     void updatePreview(unsigned int milliseconds);
     void save(JSONObject object) const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /***********************\
      * Scripting Interface *
@@ -71,7 +71,7 @@ namespace IsoRealms::Basics {
       int getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:
@@ -88,7 +88,7 @@ namespace IsoRealms::Basics {
       int getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

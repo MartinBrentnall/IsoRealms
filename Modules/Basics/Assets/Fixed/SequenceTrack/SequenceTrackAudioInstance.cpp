@@ -116,7 +116,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackAudioInstance::Name::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackAudioInstance::Name::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -140,7 +140,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackAudioInstance::Count::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackAudioInstance::Count::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -164,7 +164,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackAudioInstance::Current::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackAudioInstance::Current::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -188,7 +188,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackAudioInstance::Length::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackAudioInstance::Length::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -212,7 +212,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackAudioInstance::Position::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackAudioInstance::Position::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

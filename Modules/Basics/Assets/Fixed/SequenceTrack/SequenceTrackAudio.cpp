@@ -84,7 +84,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackAudio::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackAudio::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(PropertyData("TODO: Volume should be in instance, not track!", "TODO: Description"), cDefVolume);
   }
 

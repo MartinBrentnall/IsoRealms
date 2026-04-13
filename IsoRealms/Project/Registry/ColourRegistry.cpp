@@ -68,7 +68,7 @@ namespace IsoRealms {
     object.addFloat(JSON_ALPHA, cAlpha);
   }
 
-  void ColourRegistry::Literal::Instance::getAssetProperties(PropertyMaker& owner) {
+  void ColourRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
     cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
     cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
     cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);

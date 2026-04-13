@@ -31,7 +31,7 @@ namespace IsoRealms::Replay {
     void save(JSONObject object) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     /*********************\
@@ -66,7 +66,7 @@ namespace IsoRealms::Replay {
       DigitalInput(Replayer& parent, IResourceData& data, JSONObject object);
       void registerAssets(ResourceAssetRegistry& assets);
       void save(JSONObject object) const;
-      void getProperties(PropertyMaker& owner, const Metadata& metadata);
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
       void reset();
       void setRecordedState(bool state);
       std::string getName() const;
@@ -77,7 +77,7 @@ namespace IsoRealms::Replay {
       bool getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
       
       private:
@@ -101,7 +101,7 @@ namespace IsoRealms::Replay {
       AnalogueInput(Replayer& parent, IResourceData& data, JSONObject object);
       void registerAssets(ResourceAssetRegistry& assets);
       void save(JSONObject object) const;
-      void getProperties(PropertyMaker& owner, const Metadata& metadata);
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
       void reset();
       void setRecordedState(float state);
       std::string getName() const;
@@ -112,7 +112,7 @@ namespace IsoRealms::Replay {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
       
       private:

@@ -51,7 +51,7 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_VALUE, cDefValue);
   }
   
-  void LayoutOffsetAbsolute::getAssetProperties(PropertyMaker& owner) {
+  void LayoutOffsetAbsolute::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeFloat(cMetadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 

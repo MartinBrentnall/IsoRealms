@@ -72,7 +72,7 @@
      }
    }
  
-   void WallPatternComposite::getAssetProperties(PropertyMaker& owner) {
+   void WallPatternComposite::getAssetProperties(IPropertyMaker& owner) {
      owner.createPropertyArray(cMetadata.getPropertyData("Patterns"), cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &owner](WallPattern& wallPattern) {
        owner.createPropertyTreeSelector(cMetadata.getPropertyData("Pattern"), wallPattern);
      }, [this]()->WallPattern& {

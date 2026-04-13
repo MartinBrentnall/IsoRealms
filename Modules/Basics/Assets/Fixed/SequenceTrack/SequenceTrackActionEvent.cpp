@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackActionEvent::getEventProperties(PropertyMaker& owner) {
+  void SequenceTrackActionEvent::getEventProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cParent.getMetadata();
     owner.createPropertyTreeSelector(mMetadata.getPropertyData("Action"), cDefAction);
   }

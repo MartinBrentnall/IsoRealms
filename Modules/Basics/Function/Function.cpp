@@ -70,10 +70,10 @@ namespace IsoRealms::Basics {
     return renderAssetProviderIcon();
   }
 
-  void Function::getProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyStruct(metadata.getPropertyData("Bindings"), "Edit...", [this, &metadata](PropertyMaker& owner) {
+  void Function::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyStruct(metadata.getPropertyData("Bindings"), "Edit...", [this, &metadata](IPropertyMaker& owner) {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        owner.createPropertyStruct(metadata.getPropertyData("Binding"), mBinding->getName(), [&mBinding, &metadata](PropertyMaker& owner) {
+        owner.createPropertyStruct(metadata.getPropertyData("Binding"), mBinding->getName(), [&mBinding, &metadata](IPropertyMaker& owner) {
           return mBinding->getProperties(owner, metadata);
         }, [this, &mBinding]() {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
@@ -81,16 +81,16 @@ namespace IsoRealms::Basics {
       }
       owner.createPropertyAdd(metadata.getPropertyData("BindingAdd"), "New...", [this, &owner, &metadata]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
-        return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](PropertyMaker& owner) {
+        return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](IPropertyMaker& owner) {
           return mNewBinding->getProperties(owner, metadata);
         }, [this, mNewBinding]() {
           Utils::removeElementUnique(cDefBindings, mNewBinding);
         });
       });
     });
-    owner.createPropertyStruct(metadata.getPropertyData("Arguments"), "Edit...", [this, &metadata](PropertyMaker& owner) {
+    owner.createPropertyStruct(metadata.getPropertyData("Arguments"), "Edit...", [this, &metadata](IPropertyMaker& owner) {
       for (std::unique_ptr<ArgumentDefinition>& mArgumentDefinition : cDefArgumentDefinitions) {
-        owner.createPropertyStruct(metadata.getPropertyData("Argument"), mArgumentDefinition->getName(), [this, &mArgumentDefinition, &metadata](PropertyMaker& owner) {
+        owner.createPropertyStruct(metadata.getPropertyData("Argument"), mArgumentDefinition->getName(), [this, &mArgumentDefinition, &metadata](IPropertyMaker& owner) {
           return mArgumentDefinition->getProperties(owner, metadata, *this);
         }, [this, &mArgumentDefinition]() {
           Utils::removeElementUnique(cDefArgumentDefinitions, mArgumentDefinition.get());
@@ -99,7 +99,7 @@ namespace IsoRealms::Basics {
       owner.createPropertyAdd(metadata.getPropertyData("ArgumentAdd"), "New...", [this, &owner, &metadata]() {
         std::string mNewArgumentName = getNextAvailableName("newArgument");
         ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mNewArgumentName, mNewArgumentName)).get();
-        return owner.createPropertyStruct(metadata.getPropertyData("Argument"), mNewArgumentDefinition->getName(), [this, mNewArgumentDefinition, &metadata](PropertyMaker& owner) {
+        return owner.createPropertyStruct(metadata.getPropertyData("Argument"), mNewArgumentDefinition->getName(), [this, mNewArgumentDefinition, &metadata](IPropertyMaker& owner) {
           return mNewArgumentDefinition->getProperties(owner, metadata, *this);
         }, [this, mNewArgumentDefinition]() {
           Utils::removeElementUnique(cDefArgumentDefinitions, mNewArgumentDefinition);
@@ -135,10 +135,10 @@ namespace IsoRealms::Basics {
     declare();
   }
 
-  void Function::getScriptProperties(PropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyStruct(metadata.getPropertyData("Bindings"), "Edit...", [this, &metadata](PropertyMaker& owner) {
+  void Function::getScriptProperties(IPropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyStruct(metadata.getPropertyData("Bindings"), "Edit...", [this, &metadata](IPropertyMaker& owner) {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        owner.createPropertyStruct(metadata.getPropertyData("Binding"), mBinding->getName(), [&mBinding, &metadata](PropertyMaker& owner) {
+        owner.createPropertyStruct(metadata.getPropertyData("Binding"), mBinding->getName(), [&mBinding, &metadata](IPropertyMaker& owner) {
           return mBinding->getProperties(owner, metadata);
         }, [this, &mBinding]() {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
@@ -146,7 +146,7 @@ namespace IsoRealms::Basics {
       }
       owner.createPropertyAdd(metadata.getPropertyData("BindingAdd"), "New...", [this, &owner, &metadata]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
-        return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](PropertyMaker& owner) {
+        return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](IPropertyMaker& owner) {
           return mNewBinding->getProperties(owner, metadata);
         }, [this, mNewBinding]() {
           Utils::removeElementUnique(cDefBindings, mNewBinding);
@@ -316,7 +316,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void Function::Call::getAssetProperties(PropertyMaker& owner) {
+  void Function::Call::getAssetProperties(IPropertyMaker& owner) {
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
       std::string mArgumentName = cParent.cDefArgumentDefinitions[i]->getName();
       std::unique_ptr<IsoRealms::Binding>& mBinding = cDefArguments[i];

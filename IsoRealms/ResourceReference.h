@@ -95,7 +95,7 @@ namespace IsoRealms {
       return false; // TODO: Implement this.
     }
 
-    void getAssetProperties(PropertyMaker& owner) override {
+    void getAssetProperties(IPropertyMaker& owner) override {
       // TODO: Implement this.
     }
 

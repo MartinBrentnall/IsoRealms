@@ -49,7 +49,7 @@ namespace IsoRealms::Tables {
     // Nothing to do.
   }
 
-  void Table::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Table::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     // TODO: Implement this.
   }
 

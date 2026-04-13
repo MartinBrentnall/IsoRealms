@@ -86,7 +86,7 @@ namespace IsoRealms {
     object.addString(JSON_BUTTON, getShortName());
   }
 
-  void MouseButtonMapping::getProperties(PropertyMaker& owner) {
+  void MouseButtonMapping::getProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

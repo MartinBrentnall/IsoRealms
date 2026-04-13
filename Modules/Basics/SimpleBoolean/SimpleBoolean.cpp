@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void SimpleBoolean::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void SimpleBoolean::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeBoolean(metadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
   }
 
@@ -80,7 +80,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SimpleBoolean::getAssetProperties(PropertyMaker& owner) {
+  void SimpleBoolean::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

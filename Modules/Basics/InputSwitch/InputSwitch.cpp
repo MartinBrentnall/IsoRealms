@@ -52,7 +52,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void InputSwitch::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void InputSwitch::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Value"), cDefInputHandler);
   }
 
@@ -85,7 +85,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void InputSwitch::getAssetProperties(PropertyMaker& owner) {
+  void InputSwitch::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

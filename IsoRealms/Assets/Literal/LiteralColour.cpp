@@ -84,7 +84,7 @@ namespace IsoRealms {
     // Not supported.
   }
 
-  void LiteralColour::getAssetProperties(PropertyMaker& owner) {
+  void LiteralColour::getAssetProperties(IPropertyMaker& owner) {
     // Not supported.
   }
 

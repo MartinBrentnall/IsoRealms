@@ -40,7 +40,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void InputHandlerRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void InputHandlerRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

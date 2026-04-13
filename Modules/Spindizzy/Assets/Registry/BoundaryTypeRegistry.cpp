@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void BoundaryTypeRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void BoundaryTypeRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

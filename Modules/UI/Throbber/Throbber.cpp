@@ -83,7 +83,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void Throbber::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Throbber::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("Duration"),     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;});
     owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("Spots"),        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;});
     owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("SpotSides"),    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;});
@@ -123,7 +123,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  void Throbber::getAssetProperties(PropertyMaker& owner) {
+  void Throbber::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

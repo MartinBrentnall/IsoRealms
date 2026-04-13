@@ -27,7 +27,7 @@
 #include "IsoRealms/Persistence/JSONObject.h"
 
 namespace IsoRealms {
-  class PropertyMaker;
+  class IPropertyMaker;
   class IProperty;
   
   /**
@@ -66,7 +66,7 @@ namespace IsoRealms {
      */
     virtual void save(JSONObject object) const = 0;
 
-    virtual void getProperties(PropertyMaker& owner) = 0;
+    virtual void getProperties(IPropertyMaker& owner) = 0;
 
     /**
      * Return a short name of this digital input mapping.  The short name is

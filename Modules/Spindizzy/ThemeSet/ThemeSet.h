@@ -31,7 +31,7 @@ namespace IsoRealms::Spindizzy {
     public:
     ThemeSet(Spindizzy& spindizzy, IResourceData& data);
     ThemeSet(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     bool renderIcon();
     void hintInUse(bool inUse);
     void save(JSONObject object) const;
@@ -99,7 +99,7 @@ namespace IsoRealms::Spindizzy {
 
     LuaBinding<ThemeSet> cLuaBinding;
     
-    void createTextureElementProperty(PropertyMaker& owner, const Metadata& metadata, ThemeTexture* element);
-    void createColourElementProperty(PropertyMaker& owner, const Metadata& metadata, ThemeColour* element);
+    void createTextureElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeTexture* element);
+    void createColourElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeColour* element);
   };
 }

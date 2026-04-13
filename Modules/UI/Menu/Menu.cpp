@@ -85,7 +85,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void Menu::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Menu::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Colour"),       cDefColour);
     owner.createPropertyTreeSelector(metadata.getPropertyData("Font"),         cDefFont);
     owner.createPropertyNativeFloat( metadata.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
@@ -202,7 +202,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  void Menu::getAssetProperties(PropertyMaker& owner) {
+  void Menu::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

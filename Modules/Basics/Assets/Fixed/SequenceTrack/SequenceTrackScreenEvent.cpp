@@ -45,7 +45,7 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackScreenEvent::getEventProperties(PropertyMaker& owner) {
+  void SequenceTrackScreenEvent::getEventProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cParent.getMetadata();
     owner.createPropertyTreeSelector(mMetadata.getPropertyData("Screen"), cDefScreen);
   }

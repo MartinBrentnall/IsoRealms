@@ -44,7 +44,7 @@ namespace IsoRealms {
     bool renderOtherClientProviderIcon(const std::string& id) const;
     bool hasClientConfiguration() const;
 
-    void getClientProperties(PropertyMaker& owner) override;
+    void getClientProperties(IPropertyMaker& owner) override;
 
     private:
     const BindingType* cDefType;     /// Pointer to the binding type within the argument definition.

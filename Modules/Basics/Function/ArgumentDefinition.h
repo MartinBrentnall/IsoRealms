@@ -34,7 +34,7 @@ namespace IsoRealms::Basics {
     void setName(const std::string& name);
     std::string getName() const;
     const BindingType* getType() const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata, Function& parent);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata, Function& parent);
     void saveCall(JSONObject object, const std::string& attributeName) const;
     std::string getInitCode() const;
     std::string getCode(unsigned int functionID, unsigned int arg) const;

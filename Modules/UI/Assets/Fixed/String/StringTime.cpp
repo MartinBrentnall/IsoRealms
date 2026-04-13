@@ -159,7 +159,7 @@ namespace IsoRealms::UI {
     object.addString(JSON_FORMAT, format, DEFAULT_FORMAT);
   }
 
-  void StringTime::getAssetProperties(PropertyMaker& owner) {
+  void StringTime::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Value"),        cDefValue);
     owner.createPropertyNativeString(cMetadata.getPropertyData("FormatString"), [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();});
   }

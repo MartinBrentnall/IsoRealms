@@ -67,7 +67,7 @@ namespace IsoRealms::UI {
     object.addString(JSON_ORIENTATION, cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL);
   }
 
-  void ScreenGradient::getAssetProperties(PropertyMaker& owner) {
+  void ScreenGradient::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("ColourA"), cDefColourA);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("ColourB"), cDefColourB);
     owner.createPropertyList(        cMetadata.getPropertyData("Orientation"), std::vector<std::string>{

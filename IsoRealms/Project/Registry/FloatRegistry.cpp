@@ -38,7 +38,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void FloatRegistry::Literal::Instance::getAssetProperties(PropertyMaker& owner) {
+  void FloatRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeFloat(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](float value) {cValue = value;});
   }
 

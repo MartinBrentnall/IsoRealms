@@ -92,13 +92,13 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void Sequence::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Sequence::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyEditor(       metadata.getPropertyData("Content"), this);
     owner.createPropertyNativeBoolean(metadata.getPropertyData("Playing"), [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
     owner.createPropertyNativeBoolean(metadata.getPropertyData("Loop"),    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
     owner.createPropertyTreeSelector( metadata.getPropertyData("Speed"),   cDefSpeed);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      owner.createPropertyStruct(metadata.getPropertyData("Instance"), mEntry.first, [this, &mEntry, &metadata](PropertyMaker& owner) {
+      owner.createPropertyStruct(metadata.getPropertyData("Instance"), mEntry.first, [this, &mEntry, &metadata](IPropertyMaker& owner) {
         return mEntry.second->getProperties(owner, metadata);
       }, [this, &mEntry]() {
         cDefInstances.erase(mEntry.first);
@@ -108,7 +108,7 @@ namespace IsoRealms::Basics {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       // mInstance->registerAssets(assets, mKey);
-      return owner.createPropertyStruct(metadata.getPropertyData("Instance"), "Edit...", [this, &mInstance, &metadata](PropertyMaker& owner) {
+      return owner.createPropertyStruct(metadata.getPropertyData("Instance"), "Edit...", [this, &mInstance, &metadata](IPropertyMaker& owner) {
         return mInstance->getProperties(owner, metadata);
       }, [this, mKey]() {
         cDefInstances.erase(mKey);
@@ -206,7 +206,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void Sequence::getAssetProperties(PropertyMaker& owner) {
+  void Sequence::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -292,7 +292,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void Sequence::Length::getAssetProperties(PropertyMaker& owner) {
+  void Sequence::Length::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

@@ -62,7 +62,7 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  void FileSound::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void FileSound::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("File"), cDefFile);
   }
 
@@ -95,7 +95,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void FileSound::getAssetProperties(PropertyMaker& owner) {
+  void FileSound::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

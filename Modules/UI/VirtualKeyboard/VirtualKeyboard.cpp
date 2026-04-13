@@ -64,7 +64,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void VirtualKeyboard::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void VirtualKeyboard::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 
@@ -191,7 +191,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  void VirtualKeyboard::getAssetProperties(PropertyMaker& owner) {
+  void VirtualKeyboard::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

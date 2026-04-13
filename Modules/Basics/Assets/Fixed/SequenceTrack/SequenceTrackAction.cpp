@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackAction::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackAction::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 }

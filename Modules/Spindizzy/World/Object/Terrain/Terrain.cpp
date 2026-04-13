@@ -682,7 +682,7 @@ namespace IsoRealms::Spindizzy {
     cZone.remove(this);
   }
 
-  void Terrain::getProperties(PropertyMaker& owner) {
+  void Terrain::getProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cZone.getWorld().getSpindizzy().getMetadata("Terrain");
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
     owner.createPropertyCondition(mMetadata.getPropertyData("Condition"), mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {

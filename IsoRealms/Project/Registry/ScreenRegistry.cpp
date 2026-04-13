@@ -55,7 +55,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void ScreenRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void ScreenRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

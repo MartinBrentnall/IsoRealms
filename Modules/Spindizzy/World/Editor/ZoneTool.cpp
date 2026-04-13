@@ -38,7 +38,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void ZoneTool::getAssetProperties(PropertyMaker& owner) {
+  void ZoneTool::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

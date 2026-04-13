@@ -43,7 +43,7 @@ namespace IsoRealms {
     object.addInteger(JSON_VALUE, cValue);
   }
 
-  void IntegerRegistry::Literal::Instance::getAssetProperties(PropertyMaker& owner) {
+  void IntegerRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeInteger(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 

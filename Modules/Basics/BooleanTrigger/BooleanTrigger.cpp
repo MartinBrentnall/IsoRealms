@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void BooleanTrigger::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void BooleanTrigger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Value"),   cDefValue);
     owner.createPropertyTreeSelector( metadata.getPropertyData("OnTrue"),  cDefTrueAction);
     owner.createPropertyTreeSelector( metadata.getPropertyData("OnFalse"), cDefFalseAction);

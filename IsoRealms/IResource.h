@@ -27,7 +27,7 @@ namespace IsoRealms {
   class IResourceData;
   class Project;
   class ProjectFile;
-  class PropertyMaker;
+  class IPropertyMaker;
 
   class IResource {
     public:
@@ -37,7 +37,7 @@ namespace IsoRealms {
     virtual void save(JSONObject object) = 0;
     virtual void registerAssets() = 0;
     virtual bool renderIcon() = 0;
-    virtual void getProperties(PropertyMaker& propertyMaker) = 0;
+    virtual void getProperties(IPropertyMaker& propertyMaker) = 0;
     virtual IResourceData& getResourceData() = 0;
     virtual bool hasReadOnlyReferences() const = 0;
     virtual void overrideReadOnlyReferences() = 0;

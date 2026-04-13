@@ -58,7 +58,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void ThemeColour::getAssetProperties(PropertyMaker& owner) {
+  void ThemeColour::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

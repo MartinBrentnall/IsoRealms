@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     \*****************************/
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
 
     private:
 

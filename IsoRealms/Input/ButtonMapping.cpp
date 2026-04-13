@@ -61,7 +61,7 @@ namespace IsoRealms {
     object.addInteger(JSON_BUTTON, cButton);
   }
 
-  void ButtonMapping::getProperties(PropertyMaker& owner) {
+  void ButtonMapping::getProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

@@ -35,7 +35,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void DeleteTool::getAssetProperties(PropertyMaker& owner) {
+  void DeleteTool::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

@@ -92,7 +92,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void File::getAssetProperties(PropertyMaker& owner) {
+  void File::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
   

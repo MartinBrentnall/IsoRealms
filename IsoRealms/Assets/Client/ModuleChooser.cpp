@@ -56,7 +56,7 @@ namespace IsoRealms {
     return true;
   }
   
-  void ModuleChooser::getAssetProperties(PropertyMaker& owner) {
+  void ModuleChooser::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
   

@@ -76,7 +76,7 @@ namespace IsoRealms::Spindizzy {
     cDefSplitBPattern.save(object, JSON_SPLIT_B);
   }
 
-  void SurfacePatternSplitVariant::getAssetProperties(PropertyMaker& owner) {
+  void SurfacePatternSplitVariant::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Regular"), cDefRegularPattern);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("SplitA"),  cDefSplitAPattern);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("SplitB"),  cDefSplitBPattern);

@@ -59,7 +59,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void BindingTypeRegistry::Literal::getAssetProperties(PropertyMaker& owner) {
+  void BindingTypeRegistry::Literal::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -79,7 +79,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void BindingTypeRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void BindingTypeRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

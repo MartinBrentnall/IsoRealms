@@ -45,7 +45,7 @@ namespace IsoRealms {
 
     void loadClientConfiguration(JSONObject object) override;
     void saveClientConfiguration(JSONObject object) const override;
-    void getClientProperties(PropertyMaker& owner) override;
+    void getClientProperties(IPropertyMaker& owner) override;
 
     private:
     static const std::string JSON_OFFSET_X;

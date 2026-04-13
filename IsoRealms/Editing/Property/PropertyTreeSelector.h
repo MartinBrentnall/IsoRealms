@@ -43,7 +43,7 @@ namespace IsoRealms {
 
   class PropertyTreeSelector : public Property {
     public:
-    PropertyTreeSelector(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr);
+    PropertyTreeSelector(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr);
 
     std::string getValue();
 
@@ -186,7 +186,7 @@ namespace IsoRealms {
       AnimatedFloat cPathBarWidth;
     };
 
-    PropertyMaker& cPropertyOwner;
+    IPropertyMaker& cPropertyOwner;
     IResourceData& cResourceData;
     ITreeSelectorObject& cSelectedItem;
     std::string cValueLabel;

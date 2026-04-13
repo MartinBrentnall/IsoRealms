@@ -96,7 +96,7 @@ namespace IsoRealms::Spindizzy {
     cDefLinkedView.save(object, JSON_VIEW);
   }
 
-  void CameraLinked::getAssetProperties(PropertyMaker& owner) {
+  void CameraLinked::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("LinkedView"), cDefLinkedView);
   }
 

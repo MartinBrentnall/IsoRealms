@@ -95,7 +95,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackColour::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackColour::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -107,7 +107,7 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackColour::getEventProperties(PropertyMaker& owner) {
+  void SequenceTrackColour::getEventProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("StartColour"), cDefInitColour);
   }
 

@@ -201,7 +201,7 @@ namespace IsoRealms::Spindizzy {
     object.addInteger(JSON_ROTATE_DURATION, cDefRollDuration);
   }
 
-  void CameraGameplay::getAssetProperties(PropertyMaker& owner) {
+  void CameraGameplay::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyList(cMetadata.getPropertyData("InitialAngle"),
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},

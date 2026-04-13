@@ -46,7 +46,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void StringRegistry::Literal::Instance::getAssetProperties(PropertyMaker& owner) {
+  void StringRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
   }
 

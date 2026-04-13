@@ -89,7 +89,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
  
-  void SurfacePatternComposite::getAssetProperties(PropertyMaker& owner) {
+  void SurfacePatternComposite::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyArray(cMetadata.getPropertyData("Patterns"), cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &owner](SurfacePattern& surfacePattern) {
       owner.createPropertyTreeSelector(cMetadata.getPropertyData("Pattern"), surfacePattern);
     }, [this]()->SurfacePattern& {

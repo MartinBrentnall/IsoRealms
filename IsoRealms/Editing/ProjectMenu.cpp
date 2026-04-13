@@ -34,7 +34,7 @@ namespace IsoRealms {
     UIManager& mManager = getUIManager();
     IUIStyle& mStyle = getStyle();
     addItem(std::make_unique<MenuItemAction>("Project Configuration", "TODO: Description", [this, &mManager, &mStyle]() {
-      mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](PropertyMaker& owner) {
+      mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](IPropertyMaker& owner) {
         cProject.getProperties(owner);
       }), "Project Configuration");
     }));

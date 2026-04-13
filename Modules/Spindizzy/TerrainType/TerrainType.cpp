@@ -132,7 +132,7 @@ namespace IsoRealms::Spindizzy {
   
   
   
-  void TerrainType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void TerrainType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeFloat(  metadata.getPropertyData("SurfaceFriction"),     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
     owner.createPropertyNativeFloat(  metadata.getPropertyData("SurfaceGrip"),         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
     owner.createPropertyNativeFloat(  metadata.getPropertyData("SurfaceBounce"),       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
@@ -267,7 +267,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void TerrainType::getAssetProperties(PropertyMaker& owner) {
+  void TerrainType::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

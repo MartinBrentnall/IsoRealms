@@ -33,7 +33,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyTreeSelector::PropertyTreeSelector(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
+  PropertyTreeSelector::PropertyTreeSelector(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cPropertyOwner(owner),
             cResourceData(resourceData),
@@ -74,7 +74,7 @@ namespace IsoRealms {
   }
 
   void PropertyTreeSelector::configure(IPropertyManager& manager) {
-    manager.openProperties(cResourceData, getPropertyName(), [this](PropertyMaker& owner) {
+    manager.openProperties(cResourceData, getPropertyName(), [this](IPropertyMaker& owner) {
       cSelectedItem.getAssetProperties(owner);
     });
   }

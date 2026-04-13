@@ -130,7 +130,7 @@ namespace IsoRealms::UI {
     cDefAction.save(object, JSON_ON_SELECTION);
   }
 
-  void MenuItemLauncherList::getAssetProperties(PropertyMaker& owner) {
+  void MenuItemLauncherList::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("OnSelection"), cDefAction);
   }

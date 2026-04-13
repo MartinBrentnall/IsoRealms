@@ -40,7 +40,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) const;
     void hintInUse(bool);
     bool renderIcon() const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     /***********************\
@@ -51,7 +51,7 @@ namespace IsoRealms::Spindizzy {
     ITexture* getTexture() override;
     void coord(float x, float y) const override;
     void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:

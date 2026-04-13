@@ -205,7 +205,7 @@ namespace IsoRealms {
     object.addString(JSON_KEY, getShortName());
   }
 
-  void KeyMapping::getProperties(PropertyMaker& owner) {
+  void KeyMapping::getProperties(IPropertyMaker& owner) {
     owner.createPropertyKey(PropertyData("TODO: Key", "TODO: Description"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
   }
 

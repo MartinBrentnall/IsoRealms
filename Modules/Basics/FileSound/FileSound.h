@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     // Interface called by module when adjusting global sound volume.
@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     void execute() override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:

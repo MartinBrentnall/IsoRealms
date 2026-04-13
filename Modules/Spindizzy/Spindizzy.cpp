@@ -511,7 +511,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void Spindizzy::SpindizzyBindingType::getAssetProperties(PropertyMaker& owner) {
+  void Spindizzy::SpindizzyBindingType::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

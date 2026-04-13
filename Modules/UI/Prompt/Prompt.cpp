@@ -80,7 +80,7 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void Prompt::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Prompt::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Font"),            cDefFont);
     owner.createPropertyNativeFloat( metadata.getPropertyData("FontSize"),        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
     owner.createPropertyNativeFloat( metadata.getPropertyData("ShadowOffset"),    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
@@ -149,7 +149,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  void Prompt::getAssetProperties(PropertyMaker& owner) {
+  void Prompt::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

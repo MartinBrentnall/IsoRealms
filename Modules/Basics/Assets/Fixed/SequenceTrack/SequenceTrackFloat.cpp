@@ -88,7 +88,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackFloat::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackFloat::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -100,7 +100,7 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackFloat::getEventProperties(PropertyMaker& owner) {
+  void SequenceTrackFloat::getEventProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("StartValue"), cDefStartValue);
   }
 

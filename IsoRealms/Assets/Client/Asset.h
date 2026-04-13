@@ -122,7 +122,7 @@ namespace IsoRealms {
       cManager.getAssetManager().save(mAssetObject, cAsset);
     }
 
-    void getAssetProperties(PropertyMaker& owner) override {
+    void getAssetProperties(IPropertyMaker& owner) override {
       getClientProperties(owner);
       cAsset->getAssetProperties(owner);
     }
@@ -234,7 +234,7 @@ namespace IsoRealms {
     virtual void saveClientConfiguration(JSONObject object) const {
       // Nothing to do.
     }
-    virtual void getClientProperties(PropertyMaker& owner) {
+    virtual void getClientProperties(IPropertyMaker& owner) {
       // Nothing to do.
     }
 

@@ -110,7 +110,7 @@ namespace IsoRealms::Basics {
     cDefTime = time;
   }
 
-  void SequenceTrackAudioEvent::getEventProperties(PropertyMaker& owner) {
+  void SequenceTrackAudioEvent::getEventProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cParent.getMetadata();
     owner.createPropertyTreeSelector( mMetadata.getPropertyData("AudioFile"), cDefFile);
     owner.createPropertyNativeInteger(mMetadata.getPropertyData("FadeIn"),  [this]() {return cDefFadeIn;},  [this](unsigned int value) {cDefFadeIn  = value; return true;});
@@ -133,7 +133,7 @@ namespace IsoRealms::Basics {
     // Not supported.
   }
 
-  void SequenceTrackAudioEvent::End::getEventProperties(PropertyMaker& owner) {
+  void SequenceTrackAudioEvent::End::getEventProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 }

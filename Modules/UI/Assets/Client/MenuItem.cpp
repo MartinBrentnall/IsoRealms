@@ -72,7 +72,7 @@ namespace IsoRealms::UI {
     return true;
   }
 
-  void MenuItem::getAssetProperties(PropertyMaker& owner) {
+  void MenuItem::getAssetProperties(IPropertyMaker& owner) {
     cMenuItem->getAssetProperties(owner);
   }
 

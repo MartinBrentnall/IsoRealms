@@ -46,7 +46,7 @@ namespace IsoRealms {
       unsigned int getChar(float position, float size, const std::string& text) override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
     };
 

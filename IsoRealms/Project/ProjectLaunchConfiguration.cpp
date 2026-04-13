@@ -39,11 +39,11 @@ namespace IsoRealms {
     return cDefName;
   }
 
-  void ProjectLaunchConfiguration::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project) {
+  void ProjectLaunchConfiguration::getProperties(IPropertyMaker& owner, const Metadata& metadata, Project& project) {
     owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationName"), [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
     owner.createPropertyTreeSelector(metadata.getPropertyData("LaunchConfigurationOwner"), cDefOwner);
     owner.createPropertyArray(       metadata.getPropertyData("LaunchConfigurationOptionAdd"), cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &owner, &metadata](Option& option) {
-      owner.createPropertyStruct(    metadata.getPropertyData("LaunchConfigurationOption"), option.getName(), [this, &metadata, &option](PropertyMaker& owner) {
+      owner.createPropertyStruct(    metadata.getPropertyData("LaunchConfigurationOption"), option.getName(), [this, &metadata, &option](IPropertyMaker& owner) {
         option.getProperties(owner,  metadata, *this);
       }, [this, &option]() {
         Utils::removeElementUnique(cDefOptions, &option);
@@ -113,7 +113,7 @@ namespace IsoRealms {
     return cDefValue->getValue();
   }
 
-  void ProjectLaunchConfiguration::Option::getProperties(PropertyMaker& owner, const Metadata& metadata, ProjectLaunchConfiguration& launch) {
+  void ProjectLaunchConfiguration::Option::getProperties(IPropertyMaker& owner, const Metadata& metadata, ProjectLaunchConfiguration& launch) {
     owner.createPropertyNativeString(metadata.getPropertyData("LaunchConfigurationOptionName"),  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
     owner.createPropertyTreeSelector(metadata.getPropertyData("LaunchConfigurationOptionValue"), cDefValue);
   }

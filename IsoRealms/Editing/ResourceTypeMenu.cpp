@@ -235,7 +235,7 @@ namespace IsoRealms {
     UIManager& mManager = getUIManager();
     IUIStyle& mStyle = getStyle();
     std::string mResourceName = resource->getName();
-    mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, resource->getResourceData(), [this, resource](PropertyMaker& owner) {
+    mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, resource->getResourceData(), [this, resource](IPropertyMaker& owner) {
       resource->getProperties(owner);
     }), mResourceName, LiteralColour(1.0f, 1.0f, 0.5f));
   }

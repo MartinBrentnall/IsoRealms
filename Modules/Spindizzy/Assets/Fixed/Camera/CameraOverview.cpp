@@ -103,7 +103,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void CameraOverview::getAssetProperties(PropertyMaker& owner) {
+  void CameraOverview::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

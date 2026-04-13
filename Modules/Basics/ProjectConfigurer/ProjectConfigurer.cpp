@@ -82,7 +82,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void ProjectConfigurer::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void ProjectConfigurer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Font"),         cDefFont);
     owner.createPropertyNativeFloat( metadata.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
     owner.createPropertyTreeSelector(metadata.getPropertyData("CodeFont"),     cDefCodeFont);
@@ -112,7 +112,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void ProjectConfigurer::getAssetProperties(PropertyMaker& owner) {
+  void ProjectConfigurer::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

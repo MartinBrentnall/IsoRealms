@@ -245,11 +245,11 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void World::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void World::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeFloat(    metadata.getPropertyData("Gravity"),                    [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
     owner.createPropertyNativeFloat(    metadata.getPropertyData("SlopeEffect"),                [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
     owner.createPropertyNativeInteger(  metadata.getPropertyData("BounceTime"),                 [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;});
-    owner.createPropertyStruct(         metadata.getPropertyData("Editing"), "Edit...",         [this, &metadata](PropertyMaker& owner) {
+    owner.createPropertyStruct(         metadata.getPropertyData("Editing"), "Edit...",         [this, &metadata](IPropertyMaker& owner) {
       owner.createPropertyNativeBoolean(metadata.getPropertyData("EditingAdvancedProperties"),  [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
       owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneWidth"),    [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;});
       owner.createPropertyNativeInteger(metadata.getPropertyData("EditingDefaultZoneLength"),   [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;});
@@ -895,7 +895,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void World::getAssetProperties(PropertyMaker& owner) {
+  void World::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

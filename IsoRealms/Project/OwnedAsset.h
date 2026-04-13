@@ -21,7 +21,7 @@
 #include <string>
 
 #include "IsoRealms/Metadata.h"
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
 
 namespace IsoRealms {
   template <typename OWNER, typename TYPE> class OwnedAsset {
@@ -50,9 +50,9 @@ namespace IsoRealms {
       }
     }
 
-    void getProperty(PropertyMaker& owner, const Metadata& metadata, const std::string& name) {
+    void getProperty(IPropertyMaker& owner, const Metadata& metadata, const std::string& name) {
       if (cOwner.isConfigurable()) {
-        owner.createPropertyStruct(metadata.getPropertyData(name), cAsset.getTreeItemLabel(), [this, &metadata, name](PropertyMaker& owner) {
+        owner.createPropertyStruct(metadata.getPropertyData(name), cAsset.getTreeItemLabel(), [this, &metadata, name](IPropertyMaker& owner) {
           owner.createPropertyTreeSelector(metadata.getPropertyData("Value"), cAsset);
           cOwner.createProperty(owner, metadata.getPropertyData("Owner"));
         });

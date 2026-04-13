@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void LiftType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void LiftType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"), cDefModel);
     owner.createPropertyTreeSelector(metadata.getPropertyData("State"),      cDefActive);
     owner.createPropertyTreeSelector(metadata.getPropertyData("OnMove"),     cDefTickAction);
@@ -109,7 +109,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void LiftType::getAssetProperties(PropertyMaker& owner) {
+  void LiftType::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

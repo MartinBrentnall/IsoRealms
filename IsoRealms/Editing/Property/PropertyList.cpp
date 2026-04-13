@@ -24,7 +24,7 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+  PropertyList::PropertyList(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(project, options, getter, setter),
             cInternalProperty(owner, resourceAccessManager, owner.getResourceData(), data, cInternalSelection, removeFunction) {
@@ -84,7 +84,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyList::ListSelection::getAssetProperties(PropertyMaker& owner) {
+  void PropertyList::ListSelection::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
   

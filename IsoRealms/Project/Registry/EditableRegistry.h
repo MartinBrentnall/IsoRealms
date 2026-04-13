@@ -45,7 +45,7 @@ namespace IsoRealms {
       IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:
@@ -73,7 +73,7 @@ namespace IsoRealms {
         void resetInput() override;
         bool renderAssetIcon() const override;
         void saveAsset(JSONObject object) const override;
-        void getAssetProperties(PropertyMaker& owner) override;
+        void getAssetProperties(IPropertyMaker& owner) override;
         bool isDefaultConfiguration() const override;
       };
       static Instance DUMMY; /// Dummy editable screen.

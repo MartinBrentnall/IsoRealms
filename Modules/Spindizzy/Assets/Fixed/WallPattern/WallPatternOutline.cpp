@@ -145,7 +145,7 @@ namespace IsoRealms::Spindizzy {
     // TODO: Implement this.
   }
 
-  void WallPatternOutline::getAssetProperties(PropertyMaker& owner) {
+  void WallPatternOutline::getAssetProperties(IPropertyMaker& owner) {
     // TODO: Implement this.
   }
 

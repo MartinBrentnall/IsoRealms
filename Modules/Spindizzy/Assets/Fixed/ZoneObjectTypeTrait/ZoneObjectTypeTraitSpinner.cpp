@@ -70,7 +70,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void ZoneObjectTypeTraitSpinner::getAssetProperties(PropertyMaker& owner) {
+  void ZoneObjectTypeTraitSpinner::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

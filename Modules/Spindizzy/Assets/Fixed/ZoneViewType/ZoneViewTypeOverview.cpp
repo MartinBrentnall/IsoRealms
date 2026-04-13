@@ -64,7 +64,7 @@ namespace IsoRealms::Spindizzy {
     cDefColour.save(object, JSON_COLOUR);
   }
 
-  void ZoneViewTypeOverview::getAssetProperties(PropertyMaker& owner) {
+  void ZoneViewTypeOverview::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

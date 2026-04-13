@@ -130,7 +130,7 @@ namespace IsoRealms {
         // Nothing to do.
       }
 
-      void getAssetProperties(PropertyMaker& owner) override {
+      void getAssetProperties(IPropertyMaker& owner) override {
         // Nothing to do.
       }
 
@@ -160,7 +160,7 @@ namespace IsoRealms {
       void renderScreen(float scale, float aspectRatio) const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
     };
 

@@ -106,7 +106,7 @@ namespace IsoRealms::Basics {
 //     }
   }
   
-  void Binding::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Binding::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("BindingValue"), cDefValue);
     owner.createPropertyNativeString(metadata.getPropertyData("BindingName"),  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
   }

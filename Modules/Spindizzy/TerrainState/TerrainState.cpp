@@ -55,7 +55,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void TerrainState::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void TerrainState::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeBoolean(metadata.getPropertyData("State"),     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
     owner.createPropertyTreeSelector( metadata.getPropertyData("Hint"),      cDefHintAction);
     owner.createPropertyTreeSelector( metadata.getPropertyData("Icon"),      cDefIcon);
@@ -97,7 +97,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void TerrainState::getAssetProperties(PropertyMaker& owner) {
+  void TerrainState::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

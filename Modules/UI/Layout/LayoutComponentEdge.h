@@ -51,7 +51,7 @@ namespace IsoRealms::UI {
     bool isPositiveEdge() const;
     float getLocation(float aspectRatio) const;
     void save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void renderRelation(float aspectRatio) const;
     
     private:

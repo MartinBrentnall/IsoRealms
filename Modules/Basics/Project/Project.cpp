@@ -80,7 +80,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void Project::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Project::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 
@@ -314,7 +314,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void Project::getAssetProperties(PropertyMaker& owner) {
+  void Project::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

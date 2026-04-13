@@ -67,7 +67,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void CollisionHandler::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void CollisionHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("EntityA"),      cDefPhysicalObjectTypeA);
     owner.createPropertyTreeSelector(metadata.getPropertyData("EntityB"),      cDefPhysicalObjectTypeB);
     owner.createPropertyTreeSelector(metadata.getPropertyData("OnCollision"),  cDefEnteredAction);

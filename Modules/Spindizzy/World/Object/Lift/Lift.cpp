@@ -583,7 +583,7 @@ namespace IsoRealms::Spindizzy {
     cZone.remove(this);
   }
 
-  void Lift::getProperties(PropertyMaker& owner) {
+  void Lift::getProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cZone.getWorld().getSpindizzy().getMetadata("Lift");
     if (cZone.getWorld().isBasicProperties()) {
       owner.createPropertyNativeBoolean(mMetadata.getPropertyData("Pause"), [this]() {return cDefTopPause > 0;}, [this](bool value) {

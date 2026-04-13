@@ -133,7 +133,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  void PlayerType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void PlayerType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
 
     // Dimensions
     owner.createPropertyNativeFloat(  metadata.getPropertyData("Radius"),               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
@@ -291,7 +291,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void PlayerType::getAssetProperties(PropertyMaker& owner) {
+  void PlayerType::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

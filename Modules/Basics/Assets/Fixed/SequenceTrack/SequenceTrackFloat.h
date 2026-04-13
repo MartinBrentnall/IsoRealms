@@ -48,14 +48,14 @@ namespace IsoRealms::Basics {
     \*****************************/
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
 
     /**********************************\
       * Implements ISequenceTrackEvent *
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner) override;
+    void getEventProperties(IPropertyMaker& owner) override;
 
     private:
 

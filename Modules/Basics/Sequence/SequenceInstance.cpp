@@ -129,7 +129,7 @@ namespace IsoRealms::Basics {
     object.addFloat(JSON_SPEED, cDefSpeed, 1.0f);
   }
 
-  void SequenceInstance::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void SequenceInstance::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString( metadata.getPropertyData("InstanceName"),      [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
     owner.createPropertyNativeInteger(metadata.getPropertyData("InstanceStartTime"), [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
     owner.createPropertyNativeFloat(  metadata.getPropertyData("InstanceSpeed"),     [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;});
@@ -172,7 +172,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceInstance::Position::getAssetProperties(PropertyMaker& owner) {
+  void SequenceInstance::Position::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -196,7 +196,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceInstance::Remaining::getAssetProperties(PropertyMaker& owner) {
+  void SequenceInstance::Remaining::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

@@ -113,7 +113,7 @@ namespace IsoRealms::Spindizzy {
     cDefZoom.save(object, JSON_ZOOM);
   }
 
-  void CameraVariant::getAssetProperties(PropertyMaker& owner) {
+  void CameraVariant::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Location"), cDefLocation);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Angle"),    cDefYaw);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Tilt"),     cDefPitch);

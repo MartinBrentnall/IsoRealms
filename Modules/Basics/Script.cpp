@@ -129,7 +129,7 @@ namespace IsoRealms::Basics {
     cDefFunction.save(object, true);
   }
   
-  void Script::ScriptAction::getAssetProperties(PropertyMaker& owner) {
+  void Script::ScriptAction::getAssetProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cParent.cBasics.getMetadata("Script");
     cDefFunction.getScriptProperties(owner, mMetadata);
   }  

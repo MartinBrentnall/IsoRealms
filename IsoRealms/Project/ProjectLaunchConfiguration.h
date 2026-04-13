@@ -32,7 +32,7 @@ namespace IsoRealms {
     ProjectLaunchConfiguration(Project& parent, ProjectFile& owner);
     ProjectLaunchConfiguration(Project& parent, ProjectFile& owner, JSONThing thing);
     std::string getName() const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata, Project& project);
     void save(JSONObject object, const ProjectFile& savingProject) const;
     bool isOwnedBy(const ProjectFile& project) const;
     Options getOptions() const;
@@ -44,7 +44,7 @@ namespace IsoRealms {
       Option(Project& parent, JSONThing thing);
       std::string getName() const;
       std::string getValue() const;
-      void getProperties(PropertyMaker& owner, const Metadata& metadata, ProjectLaunchConfiguration& launch);
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata, ProjectLaunchConfiguration& launch);
       void save(JSONObject object) const;
 
       private:

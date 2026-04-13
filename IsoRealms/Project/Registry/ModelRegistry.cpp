@@ -40,7 +40,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void ModelRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void ModelRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

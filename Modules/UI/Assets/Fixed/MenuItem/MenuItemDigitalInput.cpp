@@ -160,7 +160,7 @@ namespace IsoRealms::UI {
     object.addString(JSON_ID, cDefID);
   }
 
-  void MenuItemDigitalInput::getAssetProperties(PropertyMaker& owner) {
+  void MenuItemDigitalInput::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(cMetadata.getPropertyData("ID"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
   }
 

@@ -100,7 +100,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void TextureRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void TextureRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

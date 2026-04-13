@@ -39,7 +39,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void LiteralString::getAssetProperties(PropertyMaker& owner) {
+  void LiteralString::getAssetProperties(IPropertyMaker& owner) {
     // Not supported.
   }
 

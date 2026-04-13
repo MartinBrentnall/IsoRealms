@@ -185,7 +185,7 @@ namespace IsoRealms::Spindizzy {
     cDefTextureTop.save(object, JSON_TOP);
   }
 
-  void WallPatternCap::getAssetProperties(PropertyMaker& owner) {
+  void WallPatternCap::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Top"),    cDefTextureTop);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Middle"), cDefTextureMiddle);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Bottom"), cDefTextureBottom);

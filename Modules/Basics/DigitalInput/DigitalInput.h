@@ -55,7 +55,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     /*********************\
@@ -79,7 +79,7 @@ namespace IsoRealms::Basics {
     \***********************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     /***********************\
@@ -164,7 +164,7 @@ namespace IsoRealms::Basics {
       std::string getShortName() const;
       std::shared_ptr<IDigitalInputMapping> getInput() const;
       void save(JSONObject object) const;
-      void getProperties(PropertyMaker& owner);
+      void getProperties(IPropertyMaker& owner);
 
       private:
       std::shared_ptr<IDigitalInputMapping> cPhysicalInput;

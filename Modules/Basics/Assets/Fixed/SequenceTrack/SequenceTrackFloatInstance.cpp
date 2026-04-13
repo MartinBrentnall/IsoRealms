@@ -66,7 +66,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackFloatInstance::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackFloatInstance::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

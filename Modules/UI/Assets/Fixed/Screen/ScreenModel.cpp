@@ -50,7 +50,7 @@ namespace IsoRealms::UI {
     cDefModel.save(object, JSON_MODEL);
   }
 
-  void ScreenModel::getAssetProperties(PropertyMaker& owner) {
+  void ScreenModel::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Model"), cDefModel);
   }
   

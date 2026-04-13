@@ -36,7 +36,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void LiteralFloat::getAssetProperties(PropertyMaker& owner) {
+  void LiteralFloat::getAssetProperties(IPropertyMaker& owner) {
     // Not supported.
   }
 

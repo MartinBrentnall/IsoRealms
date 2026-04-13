@@ -82,7 +82,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void DebrisChunk::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void DebrisChunk::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Side1"),   cDefSide[0]);
     owner.createPropertyTreeSelector(metadata.getPropertyData("Side2"),   cDefSide[1]);
     owner.createPropertyTreeSelector(metadata.getPropertyData("Side3"),   cDefSide[2]);
@@ -114,7 +114,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void DebrisChunk::getAssetProperties(PropertyMaker& owner) {
+  void DebrisChunk::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

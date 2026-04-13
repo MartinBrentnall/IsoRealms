@@ -30,7 +30,7 @@ namespace IsoRealms {
   
   class PropertyList : public Property {
     public:
-    PropertyList(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyList(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -54,7 +54,7 @@ namespace IsoRealms {
       bool renderAssetIcon() const override;
       bool hasConfiguration() const override;
       bool isDefaultConfigured() const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       Application& getApplication() override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
       bool renderTreeItemIcon(const std::string& id) const override;

@@ -181,7 +181,7 @@ namespace IsoRealms::Spindizzy {
     cZone.remove(this);
   }
 
-  void PickUp::getProperties(PropertyMaker& owner) {
+  void PickUp::getProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

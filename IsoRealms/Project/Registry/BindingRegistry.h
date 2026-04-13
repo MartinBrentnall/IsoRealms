@@ -73,10 +73,10 @@ namespace IsoRealms {
       bool isConfigurable() const override;
       TreeItemInfo getTreeItemInfo() const override;
       void set(const std::string& id) override;
-      void getWrappedProperties(PropertyMaker& owner) override;
+      void getWrappedProperties(IPropertyMaker& owner) override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
       std::string getConversionPath() const override;
     };
@@ -246,7 +246,7 @@ namespace IsoRealms {
           cDefValue.setID(id);
         }
 
-        void getWrappedProperties(PropertyMaker& owner) override {
+        void getWrappedProperties(IPropertyMaker& owner) override {
           return cDefValue.getAssetProperties(owner);
         }
 
@@ -258,7 +258,7 @@ namespace IsoRealms {
           cDefValue.save(object, JSON_ASSET);
         }
 
-        void getAssetProperties(PropertyMaker& owner) override {
+        void getAssetProperties(IPropertyMaker& owner) override {
           // Nothing to do.
         }
 

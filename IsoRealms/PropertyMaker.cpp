@@ -34,6 +34,10 @@ namespace IsoRealms {
             cDialogManager(dialogManager) {
   }
 
+  IResourceData& PropertyMaker::getResourceData() {
+    return cParent;
+  }
+
   void PropertyMaker::createPropertyAdd(const PropertyData& metadata, const std::string& value, std::function<void()> addPropertyFunction) {
     cProperties.addProperty(std::make_unique<PropertyAdd>(metadata, *this, value, addPropertyFunction));
   }
@@ -98,7 +102,7 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyOptional>(*this, *this, cParent, metadata, choiceCallback, cParent.getProject(), cApplication, optionalSource));
   }
 
-  void PropertyMaker::createPropertyStruct(const PropertyData& metadata, const std::string& value, std::function<void(PropertyMaker&)> subProperties, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyStruct(const PropertyData& metadata, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction) {
     cProperties.addProperty(std::make_unique<PropertyStruct>(*this, metadata, *this, value, subProperties, removeFunction));
   }
 

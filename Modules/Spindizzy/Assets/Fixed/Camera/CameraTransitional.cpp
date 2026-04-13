@@ -166,7 +166,7 @@ namespace IsoRealms::Spindizzy {
     cDefEndArrivalAction.save(object, JSON_ON_END_ARRIVAL);
   }
 
-  void CameraTransitional::getAssetProperties(PropertyMaker& owner) {
+  void CameraTransitional::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(         cMetadata.getPropertyData("Start"),                cDefStart);
     owner.createPropertyTreeSelector(         cMetadata.getPropertyData("End"),                  cDefEnd);
     owner.createPropertyNativeUnsignedInteger(cMetadata.getPropertyData("Duration"),             [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
@@ -205,7 +205,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void CameraTransitional::Yaw::getAssetProperties(PropertyMaker& owner) {
+  void CameraTransitional::Yaw::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -230,7 +230,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void CameraTransitional::Pitch::getAssetProperties(PropertyMaker& owner) {
+  void CameraTransitional::Pitch::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -254,7 +254,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void CameraTransitional::Transition::getAssetProperties(PropertyMaker& owner) {
+  void CameraTransitional::Transition::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

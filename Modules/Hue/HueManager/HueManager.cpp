@@ -182,7 +182,7 @@ namespace IsoRealms::Hue {
     return false;
   }
   
-  void HueManager::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void HueManager::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString(metadata.getPropertyData("Address"), [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
     owner.createPropertyNativeString(metadata.getPropertyData("User"),    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
     owner.createPropertyNativeString(metadata.getPropertyData("PSK"),     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});

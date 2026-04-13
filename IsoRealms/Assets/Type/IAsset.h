@@ -25,7 +25,7 @@
 
 namespace IsoRealms {
   class IProperty;
-  class PropertyMaker;
+  class IPropertyMaker;
 
   /**
    * Base interface for assets.
@@ -34,7 +34,7 @@ namespace IsoRealms {
     public:
     virtual bool renderAssetIcon() const = 0;
     virtual void saveAsset(JSONObject object) const = 0;
-    virtual void getAssetProperties(PropertyMaker& owner) = 0;
+    virtual void getAssetProperties(IPropertyMaker& owner) = 0;
     virtual bool isDefaultConfiguration() const = 0;
 
     virtual ~IAsset() {}

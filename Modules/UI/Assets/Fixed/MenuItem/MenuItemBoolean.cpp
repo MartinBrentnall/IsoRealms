@@ -128,7 +128,7 @@ namespace IsoRealms::UI {
     object.addString(JSON_FALSE_LABEL, cDefLabelFalse);
   }
 
-  void MenuItemBoolean::getAssetProperties(PropertyMaker& owner) {
+  void MenuItemBoolean::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),         [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value;});
     owner.createPropertyNativeString(cMetadata.getPropertyData("Label"),      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
     owner.createPropertyNativeString(cMetadata.getPropertyData("TrueLabel"),  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});

@@ -23,7 +23,7 @@ namespace IsoRealms::Basics {
     public:
     virtual unsigned int getTime() const = 0;
     virtual void setTime(unsigned int time) = 0;
-    virtual void getEventProperties(PropertyMaker& owner) = 0;
+    virtual void getEventProperties(IPropertyMaker& owner) = 0;
     virtual ~ISequenceTrackEvent() {}
   };
 }

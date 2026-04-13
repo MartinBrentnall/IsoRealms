@@ -91,7 +91,7 @@ namespace IsoRealms::UI {
     cDefOffset.save(mEdgeObject, JSON_OFFSET);
   }
   
-  void LayoutComponentEdge::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void LayoutComponentEdge::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("ComponentEdgeLocation"), cDefLocation);
     owner.createPropertyTreeSelector(metadata.getPropertyData("ComponentEdgeOffset"),   cDefOffset);
   }

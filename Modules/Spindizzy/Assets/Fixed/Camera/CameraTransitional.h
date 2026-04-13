@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
     \*********************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     /******************************\
@@ -99,7 +99,7 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:
@@ -116,7 +116,7 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:
@@ -133,7 +133,7 @@ namespace IsoRealms::Spindizzy {
       float getValue() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

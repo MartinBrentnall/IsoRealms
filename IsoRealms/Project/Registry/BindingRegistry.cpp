@@ -131,7 +131,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void BindingRegistry::Dummy::getWrappedProperties(PropertyMaker& owner) {
+  void BindingRegistry::Dummy::getWrappedProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -144,7 +144,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void BindingRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void BindingRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

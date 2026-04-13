@@ -124,7 +124,7 @@ namespace IsoRealms::UI {
     object.addString(JSON_LABEL, cDefLabel);
   }
 
-  void MenuItemDisplayResolution::getAssetProperties(PropertyMaker& owner) {
+  void MenuItemDisplayResolution::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
     owner.createPropertyNativeString(cMetadata.getPropertyData("Label"), [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
   }

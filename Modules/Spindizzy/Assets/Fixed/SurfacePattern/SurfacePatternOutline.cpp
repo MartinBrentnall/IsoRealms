@@ -139,7 +139,7 @@ namespace IsoRealms::Spindizzy {
     // TODO: Implement this.
   }
 
-  void SurfacePatternOutline::getAssetProperties(PropertyMaker& owner) {
+  void SurfacePatternOutline::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

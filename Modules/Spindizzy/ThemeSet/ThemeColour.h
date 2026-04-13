@@ -42,7 +42,7 @@ namespace IsoRealms::Spindizzy {
     float getBlue() const override;
     float getAlpha() const override;
     void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:

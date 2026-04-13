@@ -94,7 +94,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void LiteralTexture::getAssetProperties(PropertyMaker& owner) {
+  void LiteralTexture::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

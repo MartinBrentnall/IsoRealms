@@ -48,7 +48,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void FontRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void FontRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

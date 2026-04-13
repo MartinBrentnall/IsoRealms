@@ -55,7 +55,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void ZoneObjectTypeTraitCellLocation::getAssetProperties(PropertyMaker& owner) {
+  void ZoneObjectTypeTraitCellLocation::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

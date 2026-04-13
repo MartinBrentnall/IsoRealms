@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void ThemeTexture::getAssetProperties(PropertyMaker& owner) {
+  void ThemeTexture::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

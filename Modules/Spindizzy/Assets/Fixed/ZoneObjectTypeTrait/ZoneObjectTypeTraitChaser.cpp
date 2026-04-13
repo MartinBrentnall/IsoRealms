@@ -64,7 +64,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void ZoneObjectTypeTraitChaser::getAssetProperties(PropertyMaker& owner) {
+  void ZoneObjectTypeTraitChaser::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

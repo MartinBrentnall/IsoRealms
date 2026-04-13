@@ -75,7 +75,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void WorldView::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void WorldView::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("World"),        cDefWorld);
     owner.createPropertyTreeSelector(metadata.getPropertyData("Camera"),       cDefCamera);
     owner.createPropertyTreeSelector(metadata.getPropertyData("ZoneViewType"), cDefZoneViewType);
@@ -194,7 +194,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void WorldView::getAssetProperties(PropertyMaker& owner) {
+  void WorldView::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

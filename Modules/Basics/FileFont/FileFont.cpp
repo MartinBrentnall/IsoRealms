@@ -161,7 +161,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void FileFont::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void FileFont::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector( metadata.getPropertyData("File"),        cDefFilename);
     owner.createPropertyNativeInteger(metadata.getPropertyData("Detail"),      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;});
     owner.createPropertyNativeFloat(  metadata.getPropertyData("Scale"),       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
@@ -274,7 +274,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void FileFont::getAssetProperties(PropertyMaker& owner) {
+  void FileFont::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

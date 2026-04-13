@@ -57,7 +57,7 @@ namespace IsoRealms {
     object.addFloat(JSON_Z, z);
   }
 
-  void VertexRegistry::Literal::Instance::getAssetProperties(PropertyMaker& owner) {
+  void VertexRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

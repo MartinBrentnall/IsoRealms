@@ -24,7 +24,7 @@
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(PropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
             cPropertyMaker(owner.getProject().getApplication(), owner, *this, manager),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
@@ -243,10 +243,10 @@ namespace IsoRealms {
     }
   }
 
-  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(PropertyMaker&)> propertyFetcher) {
+  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](PropertyMaker& owner) {
+    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](IPropertyMaker& owner) {
       propertyFetcher(owner);
     }), name, LiteralColour(0.75f, 0.5f, 1.0f));
   }

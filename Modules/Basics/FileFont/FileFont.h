@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     ~FileFont();
@@ -70,7 +70,7 @@ namespace IsoRealms::Basics {
     unsigned int getChar(float, float, const std::string& text) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     private:

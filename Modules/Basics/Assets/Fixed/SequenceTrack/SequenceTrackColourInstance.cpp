@@ -81,7 +81,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackColourInstance::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackColourInstance::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

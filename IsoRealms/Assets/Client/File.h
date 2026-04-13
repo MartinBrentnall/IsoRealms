@@ -31,7 +31,7 @@ namespace IsoRealms {
   class Application;
   class IProperty;
   class Project;
-  class PropertyMaker;
+  class IPropertyMaker;
 
   class File : public ITreeSelectorObject {
     public:
@@ -52,7 +52,7 @@ namespace IsoRealms {
     bool renderAssetIcon() const override;
     bool hasConfiguration() const override;
     bool isDefaultConfigured() const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     Application& getApplication() override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     bool renderTreeItemIcon(const std::string& id) const override;

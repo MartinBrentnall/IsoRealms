@@ -89,7 +89,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  void AlienType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void AlienType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"),   cDefModel);
     owner.createPropertyTreeSelector(metadata.getPropertyData("Target"),       cDefTarget);
     owner.createPropertyNativeFloat( metadata.getPropertyData("Acceleration"), [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
@@ -187,7 +187,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void AlienType::getAssetProperties(PropertyMaker& owner) {
+  void AlienType::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

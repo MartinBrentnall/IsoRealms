@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void PropertiesTool::getAssetProperties(PropertyMaker& owner) {
+  void PropertiesTool::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -76,7 +76,7 @@ namespace IsoRealms::Spindizzy {
 
   void PropertiesTool::Modifier::showProperties() {
     if (!cHoverObjects.empty() && !cEditingProperties) {
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldResourceOwner, [this](PropertyMaker& owner) {
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldResourceOwner, [this](IPropertyMaker& owner) {
         cHoverObjects[cSelectedObject]->getProperties(owner);
       }), cHoverObjects[cSelectedObject]->getTypeName() + " Configuration");
       cEditingProperties = true;

@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
       \**********************************/
       unsigned int getTime() const override;
       void setTime(unsigned int time) override;
-      void getEventProperties(PropertyMaker& owner) override;
+      void getEventProperties(IPropertyMaker& owner) override;
 
       private:
       SequenceTrackAudioEvent& cParent;
@@ -70,7 +70,7 @@ namespace IsoRealms::Basics {
     unsigned int getFadeIn() const;
     unsigned int getFadeOut() const;
     void setTime(unsigned int time) override;
-    void getEventProperties(PropertyMaker& owner) override;
+    void getEventProperties(IPropertyMaker& owner) override;
 
     private:
     inline static const std::string JSON_FADE_IN  = "fadeIn";

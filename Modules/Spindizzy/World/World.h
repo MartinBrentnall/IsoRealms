@@ -57,7 +57,7 @@ namespace IsoRealms::Spindizzy {
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
-    void getProperties(PropertyMaker& owner, const Metadata& metadata);
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     Spindizzy& getAssetManager();
@@ -195,7 +195,7 @@ namespace IsoRealms::Spindizzy {
     IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
-    void getAssetProperties(PropertyMaker& owner) override;
+    void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
     class DummyPhysicalObjectTypeUser : public IAssetUser<IPhysicalObjectType> {

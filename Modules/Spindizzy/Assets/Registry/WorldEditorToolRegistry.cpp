@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void WorldEditorToolRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void WorldEditorToolRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

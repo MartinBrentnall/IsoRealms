@@ -177,7 +177,7 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void C64TerrainGraphics::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void C64TerrainGraphics::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Floor"),     cDefFloor);
     owner.createPropertyTreeSelector(metadata.getPropertyData("Wall"),      cDefWall);
     owner.createPropertyTreeSelector(metadata.getPropertyData("Grid"),      cDefGrid);
@@ -583,7 +583,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void C64TerrainGraphics::OrientedTexture::getAssetProperties(PropertyMaker& owner) {
+  void C64TerrainGraphics::OrientedTexture::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

@@ -79,7 +79,7 @@ namespace IsoRealms::Spindizzy {
     return false; // TODO
   }
 
-  void ZoneObjectType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void ZoneObjectType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 
@@ -177,7 +177,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void ZoneObjectType::getAssetProperties(PropertyMaker& owner) {
+  void ZoneObjectType::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

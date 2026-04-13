@@ -58,7 +58,7 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
   }
 
-  void ScreenText::getAssetProperties(PropertyMaker& owner) {
+  void ScreenText::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Value"),        cDefString);
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("Font"),         cDefFont);
     owner.createPropertyList(        cMetadata.getPropertyData("Alignment"),    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});

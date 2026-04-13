@@ -441,7 +441,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void WorldEditor::getAssetProperties(PropertyMaker& owner) {
+  void WorldEditor::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -598,7 +598,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void WorldEditor::ScreenFloat::getAssetProperties(PropertyMaker& owner) {
+  void WorldEditor::ScreenFloat::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

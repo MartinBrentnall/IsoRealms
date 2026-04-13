@@ -76,7 +76,7 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  void Sprite::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void Sprite::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector( metadata.getPropertyData("Appearance"),     cDefTexture);
     owner.createPropertyNativeBoolean(metadata.getPropertyData("BillboardAngle"), [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
     owner.createPropertyNativeBoolean(metadata.getPropertyData("BillboardTilt"),  [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
@@ -106,7 +106,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void Sprite::getAssetProperties(PropertyMaker& owner) {
+  void Sprite::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

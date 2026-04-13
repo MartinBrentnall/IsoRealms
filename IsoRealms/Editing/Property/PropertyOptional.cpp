@@ -22,7 +22,7 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyOptional::PropertyOptional(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource) :
+  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource) :
             Property(data, resourceAccessManager, nullptr),
             cOptionalSource(optionalSource),
             cWrapperType(*this),
@@ -88,7 +88,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyOptional::OptionWrapper::getAssetProperties(PropertyMaker& owner) {
+  void PropertyOptional::OptionWrapper::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

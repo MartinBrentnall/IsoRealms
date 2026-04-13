@@ -74,7 +74,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackScreen::getAssetProperties(PropertyMaker& owner) {
+  void SequenceTrackScreen::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
@@ -86,7 +86,7 @@ namespace IsoRealms::Basics {
     // Cannot change.
   }
 
-  void SequenceTrackScreen::getEventProperties(PropertyMaker& owner) {
+  void SequenceTrackScreen::getEventProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(cMetadata.getPropertyData("StartScreen"), cDefStartScreen);
   }
 

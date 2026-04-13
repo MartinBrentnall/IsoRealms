@@ -139,7 +139,7 @@ namespace IsoRealms::UI {
     cDefAction.save(object, JSON_ON_SELECTION);
   }
 
-  void MenuItemFileList::getAssetProperties(PropertyMaker& owner) {
+  void MenuItemFileList::getAssetProperties(IPropertyMaker& owner) {
     // TODO: Change this so it uses "File" client asset.
     owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
     owner.createPropertyNativeString( cMetadata.getPropertyData("Folder"),      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
@@ -171,7 +171,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  void MenuItemFileList::SelectedFile::getAssetProperties(PropertyMaker& owner) {
+  void MenuItemFileList::SelectedFile::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

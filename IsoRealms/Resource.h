@@ -21,6 +21,7 @@
 #include <string>
 
 #include "Assets/Client/ResourceOwner.h"
+#include "Editing/Property/IPropertyMaker.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionClient.h"
 #include "IResource.h"
@@ -69,7 +70,7 @@ namespace IsoRealms {
       return cParent.getName(*this);
     }
     
-    void getProperties(PropertyMaker& propertyMaker) override {
+    void getProperties(IPropertyMaker& propertyMaker) override {
       const Metadata& mMetadata = cParent.getProject().getApplication().getMetadata("Resource");
       propertyMaker.createPropertyNativeString(mMetadata.getPropertyData("ResourceName"), [this]() {return cParent.getName(*this);}, [this](const std::string& value) {
         cParent.renameUserDataDirectory(cParent.getName(*this), value);

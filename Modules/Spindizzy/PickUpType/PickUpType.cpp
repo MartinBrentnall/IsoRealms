@@ -52,7 +52,7 @@ namespace IsoRealms::Spindizzy {
     return cDefModel.renderIcon();
   }
 
-  void PickUpType::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void PickUpType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"), cDefModel);
   }
 
@@ -103,7 +103,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void PickUpType::getAssetProperties(PropertyMaker& owner) {
+  void PickUpType::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

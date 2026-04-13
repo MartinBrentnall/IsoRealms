@@ -138,7 +138,7 @@ namespace IsoRealms {
     return cAsset->isConfigurable() || cManager.getAssetManager().isConfigurable<IBinding>(getRawID());
   }  
 
-  void Binding::getClientProperties(PropertyMaker& owner) {
+  void Binding::getClientProperties(IPropertyMaker& owner) {
     cAsset->getWrappedProperties(owner);
     cAsset->getAssetProperties(owner);
   }

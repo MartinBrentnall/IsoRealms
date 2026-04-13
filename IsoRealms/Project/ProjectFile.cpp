@@ -95,7 +95,7 @@ namespace IsoRealms {
     cFile.setPath(name, user);
   }
 
-  void ProjectFile::getProperties(PropertyMaker& owner, const Metadata& metadata, Project& project, bool inclusion) {
+  void ProjectFile::getProperties(IPropertyMaker& owner, const Metadata& metadata, Project& project, bool inclusion) {
     owner.createPropertyTreeSelector(metadata.getPropertyData("File"), cFile);
     owner.createPropertyNativeString(metadata.getPropertyData("Description"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
@@ -113,7 +113,7 @@ namespace IsoRealms {
       });
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      owner.createPropertyStruct(metadata.getPropertyData("Inclusion"), mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](PropertyMaker& owner) {
+      owner.createPropertyStruct(metadata.getPropertyData("Inclusion"), mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](IPropertyMaker& owner) {
         mInclusion->getProperties(owner, metadata, project, true);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
@@ -121,7 +121,7 @@ namespace IsoRealms {
     }
     owner.createPropertyAdd(metadata.getPropertyData("Inclusion"), "Add...", [this, &owner, &metadata, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      owner.createPropertyStruct(metadata.getPropertyData("Inclusion"), mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &metadata, &project](PropertyMaker& owner) {
+      owner.createPropertyStruct(metadata.getPropertyData("Inclusion"), mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &metadata, &project](IPropertyMaker& owner) {
         mNewInclusion->getProperties(owner, metadata, project, true);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);

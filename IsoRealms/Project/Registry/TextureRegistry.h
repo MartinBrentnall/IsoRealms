@@ -47,7 +47,7 @@ namespace IsoRealms {
       void hintTextureInUse(bool) override;
       void coord(float x, float y) const override;
       void saveAsset(JSONObject object) const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
 
       private:

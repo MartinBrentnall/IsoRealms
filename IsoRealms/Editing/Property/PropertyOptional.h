@@ -32,11 +32,11 @@
 
 namespace IsoRealms {
   class Project;
-  class PropertyMaker;
+  class IPropertyMaker;
 
   class PropertyOptional : public Property {
     public:
-    PropertyOptional(PropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource);
+    PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource);
 
     /************************\
      * Implements IProperty *
@@ -60,7 +60,7 @@ namespace IsoRealms {
       bool renderAssetIcon() const override;
       bool hasConfiguration() const override;
       bool isDefaultConfigured() const override;
-      void getAssetProperties(PropertyMaker& owner) override;
+      void getAssetProperties(IPropertyMaker& owner) override;
       Application& getApplication() override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
       bool renderTreeItemIcon(const std::string& id) const override;

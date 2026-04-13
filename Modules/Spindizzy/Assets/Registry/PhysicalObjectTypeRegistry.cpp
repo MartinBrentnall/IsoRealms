@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void PhysicalObjectTypeRegistry::Dummy::getAssetProperties(PropertyMaker& owner) {
+  void PhysicalObjectTypeRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

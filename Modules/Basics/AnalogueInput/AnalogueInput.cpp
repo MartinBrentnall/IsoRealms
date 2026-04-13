@@ -68,7 +68,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  void AnalogueInput::getProperties(PropertyMaker& owner, const Metadata& metadata) {
+  void AnalogueInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     // Nothing to do.
   }
 
@@ -116,7 +116,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void AnalogueInput::getAssetProperties(PropertyMaker& owner) {
+  void AnalogueInput::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
