@@ -27,10 +27,10 @@ namespace IsoRealms::Basics {
             cColour(registry.getAssetMetadata("SequenceTrackColour")),
             cFloat(registry.getAssetMetadata("SequenceTrackFloat")),
             cScreen(registry.getAssetMetadata("SequenceTrackScreen")) {
-    add(&cAction, "Action", "Basics");
-    add(&cAudio,  "Audio",  "Basics");
-    add(&cColour, "Colour", "Basics");
-    add(&cFloat,  "Float",  "Basics");
-    add(&cScreen, "Screen", "Basics");
+    add(&cAction, "Action", "Action");
+    add(&cAudio,  "Audio",  "Audio");
+    add(&cColour, "Colour", "Colour");
+    add(&cFloat,  "Float",  "Float");
+    add(&cScreen, "Screen", "Screen");
   }
 }
