@@ -197,17 +197,8 @@
         "InstanceName": {"name": "Name", "description": "The name of this sequence instance."},
         "InstanceStartTime": {"name": "Start Time", "description": "The starting point within the sequence of this instance."},
         "InstanceSpeed": {"name": "Speed", "description": "The speed at which this instance of the sequence plays."},
-        "Action": {"name": "Action", "description": "Action to perform upon reaching this event in the sequence."},
-        "AudioVolume": {"name": "Volume", "description": "The volume at which to play audio within this track."},
-        "AudioFile": {"name": "Audio File", "description": "Supported audio file from which to play audio from this position in the sequence."},
-        "ColourStart": {"name": "Start Colour", "description": "The colour output from this track at the start of this sequence."},
-        "ColourValue": {"name": "Colour", "description": "The colour output from this track upon reaching this event in the sequence."},
-        "ColourFade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous colour into this one, or just change immediately."},
-        "FloatStart": {"name": "Start Value", "description": "The value output from this track at the start of this sequence."},
-        "FloatValue": {"name": "Value", "description": "The value output from this track upon reaching this event in the sequence."},
-        "FloatFade": {"name": "Gradual Change", "description": "Determines whether to change gradually from the previous value to this one, or just change immediately."},
-        "ScreenStart": {"name": "Start Screen", "description": "The screen output from this track at the start of this sequence."},
-        "ScreenValue": {"name": "Screen", "description": "The screen output from this track upon reaching this event in the sequence."}
+        "TrackType": {"name": "Type", "description": "The type of this track."},
+        "TrackName": {"name": "Name", "description": "The name of this track."}
       }
     },
     "Boolean": {
