@@ -87,11 +87,13 @@ namespace IsoRealms::Basics {
      * Editing Interface *
     \*********************/
     unsigned int getTrackCount() const;
+    unsigned int getTrackIndex(SequenceTrack& track) const;
     SequenceTrack& getTrack(unsigned int track) const;
     unsigned int getDuration() const;
     void addTrack();
     void refreshAssetRegistration();
     void deleteTrack(unsigned int track);
+    void trackStateChanged(SequenceTrack& track);
 
     private:
 

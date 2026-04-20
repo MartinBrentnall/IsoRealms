@@ -32,4 +32,8 @@ namespace IsoRealms::Basics {
   bool SequenceTrack::isDefaultConfiguration() const {
     return true;
   }
+
+  void SequenceTrack::stateChanged() {
+    cManager.trackStateChanged(*this);
+  }
 }

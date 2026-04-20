@@ -18,6 +18,8 @@
  */
 #include "Sequence.h"
 
+#include <algorithm>
+
 #include "Modules/Basics/Basics.h"
 
 #include "Editor/SequenceEditor.h"
@@ -99,7 +101,7 @@ namespace IsoRealms::Basics {
     owner.createPropertyTreeSelector( metadata.getPropertyData("Speed"),   cDefSpeed);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       owner.createPropertyStruct(metadata.getPropertyData("Instance"), mEntry.first, [this, &mEntry, &metadata](IPropertyMaker& owner) {
-        return mEntry.second->getProperties(owner, metadata);
+        mEntry.second->getProperties(owner, metadata);
       }, [this, &mEntry]() {
         cDefInstances.erase(mEntry.first);
       });
@@ -108,8 +110,8 @@ namespace IsoRealms::Basics {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
       std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
       // mInstance->registerAssets(assets, mKey);
-      return owner.createPropertyStruct(metadata.getPropertyData("Instance"), "Edit...", [this, &mInstance, &metadata](IPropertyMaker& owner) {
-        return mInstance->getProperties(owner, metadata);
+      owner.createPropertyStruct(metadata.getPropertyData("Instance"), "Edit...", [this, &mInstance, &metadata](IPropertyMaker& owner) {
+        mInstance->getProperties(owner, metadata);
       }, [this, mKey]() {
         cDefInstances.erase(mKey);
       });
@@ -243,6 +245,13 @@ namespace IsoRealms::Basics {
     return static_cast<unsigned int>(cDefTracks.size());
   }
 
+  unsigned int Sequence::getTrackIndex(SequenceTrack& track) const {
+    std::vector<std::unique_ptr<SequenceTrack>>::const_iterator it = std::find_if(cDefTracks.begin(), cDefTracks.end(), [&track](const std::unique_ptr<SequenceTrack>& ptr) {
+      return ptr.get() == &track;
+    });
+    return static_cast<unsigned int>(it - cDefTracks.begin());
+  }
+
   SequenceTrack& Sequence::getTrack(unsigned int track) const {
     return *cDefTracks[track].get();
   }
@@ -272,6 +281,15 @@ namespace IsoRealms::Basics {
     cDefTracks.erase(cDefTracks.begin() + track);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->deleteTrackInstance(track);
+    }
+    refreshAssetRegistration();
+  }
+
+  void Sequence::trackStateChanged(SequenceTrack& track) {
+    unsigned int mTrackIndex = getTrackIndex(track);
+    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
+      ISequenceTrackInstance* mTrackInstance = track->createTrackInstance(*mEntry.second.get());
+      mEntry.second->refreshTrackInstance(mTrackInstance, mTrackIndex);
     }
     refreshAssetRegistration();
   }

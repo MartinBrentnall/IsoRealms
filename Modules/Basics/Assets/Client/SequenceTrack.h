@@ -35,5 +35,6 @@ namespace IsoRealms::Basics {
     \********************************************/
     ISequenceTrack* createLiteralAsset(Sequence& sequence);
     bool isDefaultConfiguration() const;
+    void stateChanged() override;    
   };
 }

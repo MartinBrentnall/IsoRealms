@@ -35,6 +35,7 @@ namespace IsoRealms::Basics {
     SequenceInstance(Sequence& parent, JSONObject object);
 
     void addTrackInstance(ISequenceTrackInstance* trackInstance);
+    void refreshTrackInstance(ISequenceTrackInstance* trackInstance, unsigned int trackIndex);
 
     Sequence& getSequence() const;
 

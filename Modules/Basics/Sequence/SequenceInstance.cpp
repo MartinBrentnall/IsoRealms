@@ -53,6 +53,10 @@ namespace IsoRealms::Basics {
     }
   }
 
+  void SequenceInstance::refreshTrackInstance(ISequenceTrackInstance* trackInstance, unsigned int trackIndex) {
+    cTrackInstances[trackIndex] = trackInstance;
+  }
+
   Sequence& SequenceInstance::getSequence() const {
     return cParent;
   }
