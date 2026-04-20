@@ -818,14 +818,14 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Zone::bindValues() {
-    cDefWorld.getSpindizzy().bind(this);
+    cDefWorld.getSpindizzy().bind1(this);
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->bindProperty();
     }
   }
 
   void Zone::bindValues2(Wall* wall) {
-    cDefWorld.getSpindizzy().bind(this);
+    cDefWorld.getSpindizzy().bind2(this);
     cDefWorld.getSpindizzy().bind(wall);
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->bindProperty2();
@@ -833,7 +833,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Zone::unbindValues() {
-    cDefWorld.getSpindizzy().bind(static_cast<Zone*>(nullptr));
+    cDefWorld.getSpindizzy().bind1(static_cast<Zone*>(nullptr));
     cDefWorld.getSpindizzy().bind(static_cast<Wall*>(nullptr));
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->unbindProperty();
@@ -841,7 +841,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Zone::unbindValues2() {
-    cDefWorld.getSpindizzy().bind(static_cast<Zone*>(nullptr));
+    cDefWorld.getSpindizzy().bind2(static_cast<Zone*>(nullptr));
     for (IZoneProperty* mProperty : cRuntimeZoneProperties) {
       mProperty->unbindProperty2();
     }

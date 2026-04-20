@@ -64,10 +64,9 @@ namespace IsoRealms::Spindizzy {
                     cRuntimeParameterLaunchMomentum(project.getLuaState(), nullptr),
                     cRuntimeParameterPlayer(project.getLuaState(), nullptr),
                     cRuntimeParameterWall(project.getLuaState(), nullptr),
-                    cRuntimeParameterZone(project.getLuaState(), nullptr),
-                    cLuaBinding(project.getLuaState(), this),
                     cRuntimeParameterZone1(project.getLuaState(), nullptr),
                     cRuntimeParameterZone2(project.getLuaState(), nullptr),
+                    cLuaBinding(project.getLuaState(), this),
                     cRuntimeLocalBindingIdentifier(nullptr) {
     registry.add(&cResourceAlien,              "Alien");
     registry.add(&cResourceBall,               "Ball");
@@ -303,7 +302,8 @@ namespace IsoRealms::Spindizzy {
 
   void Spindizzy::bind(              Alien*   value) {cRuntimeParameterAlien.setValue(         value);}
   void Spindizzy::bind(              Player*  value) {cRuntimeParameterPlayer.setValue(        value);}
-  void Spindizzy::bind(              Zone*    value) {cRuntimeParameterZone.setValue(          value);}
+  void Spindizzy::bind1(             Zone*    value) {cRuntimeParameterZone1.setValue(         value);}
+  void Spindizzy::bind2(             Zone*    value) {cRuntimeParameterZone2.setValue(         value);}
   void Spindizzy::bind(              Wall*    value) {cRuntimeParameterWall.setValue(          value);}
   void Spindizzy::bindFallDistance(  IFloat*  value) {cRuntimeParameterFallDistance.setValue(  value);}
   void Spindizzy::bindLaunchLocation(IVertex* value) {cRuntimeParameterLaunchLocation.setValue(value);}
@@ -320,15 +320,8 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBindingType>(&cBindingTypeTerrainState, "Terrain State", "Terrain States");
 
-    // TODO: The following things should not be needed!!!
-    assets.add<IBinding>(&cRuntimeParameterAlien,          "Alien",          "Alien");
-    assets.add<IBinding>(&cRuntimeParameterFallDistance,   "FallDistance",   "FallDistance");
-    assets.add<IBinding>(&cRuntimeParameterLaunchLocation, "LaunchLocation", "LaunchLocation");
-    assets.add<IBinding>(&cRuntimeParameterLaunchMomentum, "LaunchMomentum", "LaunchMomentum");
-    assets.add<IBinding>(&cRuntimeParameterPlayer,         "Player",         "Player");
-    assets.add<IBinding>(&cRuntimeParameterWall,           "Wall",           "Wall");
-    assets.add<IBinding>(&cRuntimeParameterZone,           "Zone",           "Zone");
-    assets.add<IBinding>(&cLuaBinding,                     "",               "Modules/Spindizzy");
+    // Bind the module.
+    assets.add<IBinding>(&cLuaBinding, "", "Modules/Spindizzy");
     
     for (AlienType* mResource : cResourceAlien) {
       mResource->registerAssets("Alien/" + getResourceID(mResource));
@@ -405,8 +398,12 @@ namespace IsoRealms::Spindizzy {
   IBinding* Spindizzy::getZoneBinding(const std::string& id) {
     std::size_t mSplit = id.find('/');
     if (mSplit == std::string::npos) {
-      return id == BIND_TO_ZONE ? static_cast<IBinding*>(&cRuntimeParameterZone1)
-                                : nullptr;
+      return id == BIND_TO_ZONE            ? static_cast<IBinding*>(&cRuntimeParameterZone1)
+           : id == BIND_TO_PLAYER          ? static_cast<IBinding*>(&cRuntimeParameterPlayer)
+           : id == BIND_TO_FALL_DISTANCE   ? static_cast<IBinding*>(&cRuntimeParameterFallDistance)
+           : id == BIND_TO_LAUNCH_LOCATION ? static_cast<IBinding*>(&cRuntimeParameterLaunchLocation)
+           : id == BIND_TO_LAUNCH_MOMENTUM ? static_cast<IBinding*>(&cRuntimeParameterLaunchMomentum)
+           :                                 nullptr;
     }
 
     std::string mBindTo = id.substr(0, mSplit);
@@ -424,7 +421,8 @@ namespace IsoRealms::Spindizzy {
     std::size_t mSplit = id.find('/');
     if (mSplit == std::string::npos) {
       return id == BIND_TO_ZONE ? static_cast<IBinding*>(&cRuntimeParameterZone2)
-                                : nullptr;
+           : id == BIND_TO_WALL ? static_cast<IBinding*>(&cRuntimeParameterWall)
+           :                      nullptr;
     }
 
     std::string mBindTo = id.substr(0, mSplit);
@@ -475,7 +473,7 @@ namespace IsoRealms::Spindizzy {
          : id == "launchLocation" ? static_cast<IBinding*>(&cRuntimeParameterLaunchLocation)
          : id == "LaunchMomentum" ? static_cast<IBinding*>(&cRuntimeParameterLaunchMomentum)
          : id == "wall"           ? static_cast<IBinding*>(&cRuntimeParameterWall)
-         : id == "zone"           ? static_cast<IBinding*>(&cRuntimeParameterZone)
+         : id == "zone"           ? static_cast<IBinding*>(&cRuntimeParameterZone1)
          :                          nullptr;
   }
 
@@ -531,7 +529,12 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::TOOL_MOVE_ZONE   = "ZoneMoveTool";
   const std::string Spindizzy::TOOL_DELETE_ZONE = "ZoneDeleteTool";
 
-  const std::string Spindizzy::BIND_TO_ZONE = "Zone";
+  const std::string Spindizzy::BIND_TO_FALL_DISTANCE   = "FallDistance";
+  const std::string Spindizzy::BIND_TO_LAUNCH_LOCATION = "LaunchLocation";
+  const std::string Spindizzy::BIND_TO_LAUNCH_MOMENTUM = "LaunchMomentum";
+  const std::string Spindizzy::BIND_TO_PLAYER          = "Player";
+  const std::string Spindizzy::BIND_TO_WALL            = "Wall";
+  const std::string Spindizzy::BIND_TO_ZONE            = "Zone";
 
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<Spindizzy>> ModuleInstances;

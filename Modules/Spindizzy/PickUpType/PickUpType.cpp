@@ -84,11 +84,11 @@ namespace IsoRealms::Spindizzy {
   }
   
   IBinding* PickUpType::getBinding(const std::string& id) const {
-    return nullptr;
+    return cSpindizzy.getZoneBinding(id);
   }
 
   std::string PickUpType::getBindingID(const IBinding* binding) const {
-    return "";
+    return cSpindizzy.getZoneBindingID1(binding);
   }
 
   IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor& editor, IResourceData& owner) {

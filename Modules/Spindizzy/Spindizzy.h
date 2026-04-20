@@ -237,7 +237,8 @@ namespace IsoRealms::Spindizzy {
     void bind(Alien* alien);
     void bind(Player* player);
     void bind(Wall* wall);
-    void bind(Zone* zone);
+    void bind1(Zone* zone);
+    void bind2(Zone* zone);
     void bindFallDistance(IFloat* value);
     void bindLaunchLocation(IVertex* value);
     void bindLaunchMomentum(IVertex* value);
@@ -300,6 +301,11 @@ namespace IsoRealms::Spindizzy {
     static const std::string TOOL_MOVE_ZONE;
     static const std::string TOOL_DELETE_ZONE;
 
+    static const std::string BIND_TO_FALL_DISTANCE;
+    static const std::string BIND_TO_LAUNCH_LOCATION;
+    static const std::string BIND_TO_LAUNCH_MOMENTUM;
+    static const std::string BIND_TO_PLAYER;
+    static const std::string BIND_TO_WALL;
     static const std::string BIND_TO_ZONE;
 
     // External interfaces.
@@ -375,12 +381,11 @@ namespace IsoRealms::Spindizzy {
     LuaBinding<IVertex> cRuntimeParameterLaunchMomentum;
     LuaBinding<Player>  cRuntimeParameterPlayer;
     LuaBinding<Wall>    cRuntimeParameterWall;
-    LuaBinding<Zone>    cRuntimeParameterZone;
+    LuaBinding<Zone>    cRuntimeParameterZone1;
+    LuaBinding<Zone>    cRuntimeParameterZone2;
 
     // Scripting support.
     LuaBinding<Spindizzy> cLuaBinding;
-    LuaBinding<Zone> cRuntimeParameterZone1;
-    LuaBinding<Zone> cRuntimeParameterZone2;
     std::map<std::string, IBinding*> cRuntimeZoneBindings1;
     std::map<std::string, IBinding*> cRuntimeZoneBindings2;
     mutable const IBindingIdentifier* cRuntimeLocalBindingIdentifier;

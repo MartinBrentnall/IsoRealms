@@ -190,7 +190,7 @@ namespace IsoRealms::Spindizzy {
 
   void PlayerType::bounceWall(Player* player, Zone* zone) {
     cSpindizzy.bind(player);
-    cSpindizzy.bind(zone);
+    cSpindizzy.bind1(zone);
     cDefWallBounceAction.execute();
   }
 
