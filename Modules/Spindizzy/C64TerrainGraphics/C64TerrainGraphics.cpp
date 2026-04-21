@@ -140,7 +140,7 @@ namespace IsoRealms::Spindizzy {
   bool C64TerrainGraphics::renderIcon() {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW,   0.0f, 0.0f, 1.0f);
-    glScalef(1.6f, 1.6f, 1.6f);
+    glScalef(1.4f, 1.4f, 1.4f);
     cTextures[ASSET_ID_SURFACE_ARROW]->set();
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f,  0.5f, 0.25f);

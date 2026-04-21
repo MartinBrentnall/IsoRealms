@@ -45,8 +45,8 @@ namespace IsoRealms::Spindizzy {
             cDefBottom(bottom),
             cDefTopPause(1500),
             cDefBottomPause(1500),
-            cDefSpeedUp(1000),
-            cDefSpeedDown(1000),
+            cDefSpeedUp(750),
+            cDefSpeedDown(750),
             cSurface(*this) {
     reset();
   }

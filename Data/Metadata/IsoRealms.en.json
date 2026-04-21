@@ -29,6 +29,14 @@
     "LaunchConfigurationOptionValue": {"name": "Value", "description": "Value of this option."},
 
     "Value": {"name": "Value", "description": "Value of this asset."},
-    "Owner": {"name": "Owner", "description": "Owner of this asset."}
+    "Owner": {"name": "Owner", "description": "Owner of this asset."},
+
+    "Red": {"name": "Red", "description": "Red intensity of this colour."},
+    "Green": {"name": "Green", "description": "Green intensity of this colour."},
+    "Blue": {"name": "Blue", "description": "Blue intensity of this colour."},
+    "Alpha": {"name": "Alpha", "description": "Alpha intensity of this colour."},
+    "Hue": {"name": "Hue", "description": "Hue of this colour."},
+    "Saturation": {"name": "Saturation", "description": "Saturation of this colour."},
+    "Lightness": {"name": "Lightness", "description": "Lightness of this colour."}
   }
 }
