@@ -48,6 +48,6 @@ namespace IsoRealms {
       bool isDefaultConfiguration() const override;
     };
 
-    AssetLiteralDummy<IResourceData, IInputHandler, Dummy> cLiteral;
+    AssetLiteralDummy<IResourceData, IInputHandler, Dummy> cNone;
   };
 }

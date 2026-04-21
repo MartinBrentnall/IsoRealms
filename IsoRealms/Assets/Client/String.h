@@ -30,6 +30,9 @@ namespace IsoRealms {
     public:
     String(IResourceData& owner);
 
+    TreeItemInfo getTreeItemInfo() const override;
+    bool hasClientConfiguration() const;
+
     /********************************************\
      * Implements Asset<IString, IResourceData> *
     \********************************************/

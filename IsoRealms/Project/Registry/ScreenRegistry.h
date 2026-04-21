@@ -39,7 +39,7 @@ namespace IsoRealms {
 
     public:
     ScreenRegistry(Project& project) :
-              AssetClientManager(&cLiteralProvider),
+              AssetClientManager(&cNone),
               cProject(project) {
     }
 
@@ -165,7 +165,7 @@ namespace IsoRealms {
     };
 
     Project& cProject;
-    AssetLiteralDummy<IResourceData, IScreen, Dummy> cLiteralProvider;
+    AssetLiteralDummy<IResourceData, IScreen, Dummy> cNone;
     std::map<IScreen*, std::unique_ptr<Proxy>> cProxyMapping;
     std::vector<IScreenListener*> cListeners;
   };

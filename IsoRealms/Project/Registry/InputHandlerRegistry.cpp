@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   InputHandlerRegistry::InputHandlerRegistry() :
-            AssetClientManager(&cLiteral) {
+            AssetClientManager(&cNone) {
   }
 
   bool InputHandlerRegistry::Dummy::input(sf::Event& event) {

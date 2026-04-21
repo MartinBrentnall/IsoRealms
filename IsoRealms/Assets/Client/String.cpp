@@ -27,6 +27,18 @@ namespace IsoRealms {
             Asset<String, IString, IResourceData>(owner, owner.getAssetManager().createLiteralString(this, owner, "")) {
   }
 
+  TreeItemInfo String::getTreeItemInfo() const {
+    std::string mConversionPath = cAsset->getConversionPath();
+    if (!mConversionPath.empty()) {
+      return TreeItemInfo{mConversionPath, mConversionPath};
+    }
+    return Asset<String, IString, IResourceData>::getTreeItemInfo();
+  }
+
+  bool String::hasClientConfiguration() const {
+    return cAsset->isConfigurable() || cManager.getAssetManager().isConfigurable<IString>(getRawID());
+  }  
+
   IString* String::createDefaultAsset(IResourceData& owner) {
     return owner.getAssetManager().createLiteralString(this, owner, "");
   }

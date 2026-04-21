@@ -36,9 +36,18 @@
 namespace IsoRealms {
   class Project;
 
+  // Declarations match Project.h; forward here so Conversion<FROM>::renderIcon / forEachEntry can call the templates without including Project.h (avoids cycles).
+  template <typename FROM> bool renderProviderIcon(Project& project, const std::string& id);
+  template <typename FROM> void forEachProviderEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction, const std::string& providerID, const std::string& conversionPath);
+
   class StringRegistry : public AssetClientManager<StringRegistry, IResourceData, IString> {
     public:
-    StringRegistry();
+    StringRegistry(Project& project);
+    IString* get(IAssetUser<IString>* client, IResourceData& owner, JSONObject object, IStateListener* listener, bool required);
+    IString* get(IAssetUser<IString>* client, IResourceData& owner, const std::string& id, IStateListener* listener);
+
+    void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override; 
+    bool renderIcon(const std::string& id) const override;
 
     IString* literal(IAssetUser<IString>* client, IResourceData& owner, const std::string& value) {
       IString* mString = cLiteral.createLiteralAsset(owner, value);
@@ -95,7 +104,9 @@ namespace IsoRealms {
         void saveAsset(JSONObject object) const override;
         void getAssetProperties(IPropertyMaker& owner) override;
         bool isDefaultConfiguration() const override;
-
+        std::string getConversionPath() const override;
+        bool isConfigurable() const override;
+        
         private:
         static const std::string JSON_VALUE;
 
@@ -107,14 +118,41 @@ namespace IsoRealms {
       inline static const std::string JSON_VALUE = "value";
     };
 
-    template <typename FROM> class Conversion : public IAssetProvider<IResourceData, IString> {
+    class ConversionProvider : public IAssetProvider<IResourceData, IString> {
       public:
+      ConversionProvider(const std::string& providerID, const std::string& conversionPath) :
+                cProviderID(providerID),
+                cConversionPath(conversionPath) {
+      }
+
+      std::string getProviderID() const {
+        return cProviderID;
+      }
+
+      std::string getConversionPath() const {
+        return cConversionPath;
+      }
+
+      virtual bool renderIcon(Project& project, const std::string& id) const = 0;
+      virtual void forEachEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const = 0;
+
+      protected:
+      std::string cProviderID;
+      std::string cConversionPath;
+    };
+
+    template <typename FROM> class Conversion : public ConversionProvider {
+      public:
+      Conversion(const std::string& providerID, const std::string& conversionPath) :
+                ConversionProvider(providerID, conversionPath) {
+      }
+
       IString* getAsset(IResourceData& owner, JSONObject object) override {
-        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(owner, object)).first->get();
+        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(*this, owner, object)).first->get();
       }
 
       IString* getAsset(IResourceData& owner) override {
-        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(owner)).first->get();
+        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(*this, owner)).first->get();
       }
 
       void releaseAsset(const IString* asset) override {
@@ -127,7 +165,7 @@ namespace IsoRealms {
       }
 
       bool hasConfiguration() const override {
-        return true;
+        return false;
       }
 
       bool renderAssetProviderIcon() const override {
@@ -135,18 +173,27 @@ namespace IsoRealms {
       }
 
       bool isHiddenProvider() const override {
-        return false; // TODO: Change this to true when the conversions are implemented.
+        return true;
+      }
+
+      bool renderIcon(Project& project, const std::string& id) const override {
+        return ::IsoRealms::renderProviderIcon<FROM>(project, id.substr(getProviderID().length() + 1));
+      }
+
+      void forEachEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override {
+        forEachProviderEntry<FROM>(project, getTreeItemInfoFunction, getProviderID(), getConversionPath());
       }
 
       private:
       template <typename TYPE> class Instance : public IString {
         public:
-        Instance(IResourceData& owner) :
+        Instance(Conversion& parent, IResourceData& owner) :
+                  cParent(parent),
                   cDefValue(owner) {
         }
 
-        Instance(IResourceData& owner, JSONObject object) :
-                  Instance(owner) {
+        Instance(Conversion& parent, IResourceData& owner, JSONObject object) :
+                  Instance(parent, owner) {
           cDefValue.set(object, JSON_ASSET);
         }
 
@@ -166,24 +213,41 @@ namespace IsoRealms {
         }
 
         void getAssetProperties(IPropertyMaker& owner) override {
-          owner.createPropertyTreeSelector(PropertyData("TODO: Asset", "TODO: Description"), cDefValue);
+          // Nothing to do.
         }
 
         bool isDefaultConfiguration() const override {
-          return true; // TODO?
+          return cDefValue.hasConfiguration();
+        }
+
+        std::string getConversionPath() const override {
+          TreeItemInfo mTreeItemInfo = cDefValue.getTreeItemInfo();
+          return cParent.getConversionPath() + "/" + mTreeItemInfo.cPath;
+        }
+
+        bool isConfigurable() const override {
+          return cDefValue.hasConfiguration();
         }
 
         private:
         inline static const std::string JSON_ASSET = "asset";
+
+        // External interfaces.
+        Conversion& cParent;
 
         TYPE cDefValue;
       };
       mutable std::set<std::unique_ptr<IString>> cConvertedAssets;
     };
 
-    Literal             cLiteral;
-    Conversion<Float>   cFloats;
-    Conversion<Integer> cIntegers;
+    inline static const std::string JSON_ASSET = "asset";
+    inline static const std::string JSON_VALUE = "value";
+    
+    // External interfaces.
+    Project& cProject;
+
+    Literal                                          cLiteral;
+    std::vector<std::unique_ptr<ConversionProvider>> cConversionProviders;
   };
 }
 

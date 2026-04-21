@@ -61,6 +61,6 @@ namespace IsoRealms {
       static Instance DUMMY;
     };
 
-    AssetLiteralDummy<IResourceData, IModel, Dummy> cLiteral;
+    AssetLiteralDummy<IResourceData, IModel, Dummy> cNone;
   };
 }

@@ -34,6 +34,7 @@ namespace IsoRealms {
           cFunctionNotifyComplete(onFinish),
           cBindings(*this),
           cScreens(*this),
+          cStrings(*this),
           cTextures(*this),
           cDefProjectFileStructure(*this, "", true),
           cDefInputHandler(*this, cDefProjectFileStructure, *this),

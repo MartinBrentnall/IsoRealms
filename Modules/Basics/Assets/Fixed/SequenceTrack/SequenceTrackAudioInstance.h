@@ -62,6 +62,8 @@ namespace IsoRealms::Basics {
       void saveAsset(JSONObject object) const override;
       void getAssetProperties(IPropertyMaker& owner) override;
       bool isDefaultConfiguration() const override;
+      std::string getConversionPath() const override;
+      bool isConfigurable() const override;
 
       private:
       SequenceTrackAudioInstance& cParent;

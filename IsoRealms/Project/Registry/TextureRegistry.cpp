@@ -22,8 +22,8 @@
 
 namespace IsoRealms {
   TextureRegistry::TextureRegistry(Project& project) :
-            AssetClientManager(&cLiteral),
-            cLiteral(project) {
+            AssetClientManager(&cNone),
+            cNone(project) {
   }
 
   TextureRegistry::Dummy::Dummy(Project& project) :

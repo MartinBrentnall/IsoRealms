@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   EditableRegistry::EditableRegistry() :
-            AssetClientManager(&cLiteral) {
+            AssetClientManager(&cNone) {
   }
 
   IEditableScreen* EditableRegistry::Dummy::createEditableScreen(Project* project, IDialogManager& dialogManager) {

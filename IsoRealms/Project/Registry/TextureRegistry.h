@@ -54,7 +54,7 @@ namespace IsoRealms {
       LiteralTexture cDummyTexture;
     };
 
-    TextureLiteralDummy<IResourceData, ITexture, Dummy> cLiteral;
+    TextureLiteralDummy<IResourceData, ITexture, Dummy> cNone;
   };
 }
 

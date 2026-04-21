@@ -199,6 +199,14 @@ namespace IsoRealms::UI {
     return true;
   }
 
+  std::string VirtualKeyboard::getConversionPath() const {
+    return "";
+  }
+
+  bool VirtualKeyboard::isConfigurable() const {
+    return false;
+  }
+
   void VirtualKeyboard::left() {
      if (cRuntimeSelected % COLUMNS != 0) {
        cRuntimeSelected--;

@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   FontRegistry::FontRegistry() :
-            AssetClientManager(&cLiteral) {
+            AssetClientManager(&cNone) {
   }
 
   void FontRegistry::Dummy::print(float x, float y, float size, IFont::Alignment Alignment, const std::string& text) {

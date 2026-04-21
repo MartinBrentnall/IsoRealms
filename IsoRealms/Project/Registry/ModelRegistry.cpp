@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   ModelRegistry::ModelRegistry() :
-            AssetClientManager(&cLiteral) {
+            AssetClientManager(&cNone) {
   }
 
   IModelInstance* ModelRegistry::Dummy::createModel() {

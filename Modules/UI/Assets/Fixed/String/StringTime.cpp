@@ -168,6 +168,14 @@ namespace IsoRealms::UI {
     return cDefValue.isDefaultConfigured() && format == DEFAULT_FORMAT;
   }
 
+  std::string StringTime::getConversionPath() const {
+    return "";
+  }
+
+  bool StringTime::isConfigurable() const {
+    return false;
+  }
+
   const std::string StringTime::JSON_VALUE  = "value";
   const std::string StringTime::JSON_FORMAT = "format";
 

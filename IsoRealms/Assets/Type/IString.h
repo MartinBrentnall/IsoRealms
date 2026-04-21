@@ -37,6 +37,9 @@ namespace IsoRealms {
      */
     virtual std::string getValue() const = 0;
     
+    virtual std::string getConversionPath() const = 0;
+    virtual bool isConfigurable() const = 0;
+
     virtual ~IString() {}
   };
 }

@@ -179,6 +179,14 @@ namespace IsoRealms::UI {
     return false;
   }
 
+  std::string MenuItemFileList::SelectedFile::getConversionPath() const {
+    return "";
+  }
+
+  bool MenuItemFileList::SelectedFile::isConfigurable() const {
+    return false;
+  }
+
   MenuItemFileList::File::File(const std::string& label, const std::string& path) :
             cDefLabel(label),
             cDefPath(path) {

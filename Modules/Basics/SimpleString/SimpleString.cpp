@@ -88,6 +88,14 @@ namespace IsoRealms::Basics {
     return true;
   }
 
+  std::string SimpleString::getConversionPath() const {
+    return "";
+  }
+
+  bool SimpleString::isConfigurable() const {
+    return false;
+  }
+
   void SimpleString::setValue(const std::string& value) {
     cRuntimeValue = value;
     cStateNotifier->stateChanged();

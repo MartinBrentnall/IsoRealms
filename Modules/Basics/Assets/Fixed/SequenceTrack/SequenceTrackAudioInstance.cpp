@@ -124,6 +124,14 @@ namespace IsoRealms::Basics {
     return true;
   }
 
+  std::string SequenceTrackAudioInstance::Name::getConversionPath() const {
+    return "";
+  }
+
+  bool SequenceTrackAudioInstance::Name::isConfigurable() const {
+    return false;
+  }
+
   SequenceTrackAudioInstance::Count::Count(SequenceTrackAudioInstance& parent) :
             cParent(parent) {
   }

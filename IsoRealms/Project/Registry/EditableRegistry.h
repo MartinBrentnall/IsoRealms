@@ -79,6 +79,6 @@ namespace IsoRealms {
       static Instance DUMMY; /// Dummy editable screen.
     };
 
-    AssetLiteralDummy<IResourceData, IEditable, Dummy> cLiteral;
+    AssetLiteralDummy<IResourceData, IEditable, Dummy> cNone;
   };
 }

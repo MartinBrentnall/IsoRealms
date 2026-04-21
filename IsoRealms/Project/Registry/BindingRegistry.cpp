@@ -46,16 +46,16 @@ namespace IsoRealms {
             cProject(project) {
 
     // Set up conversion providers.
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IActionClient, Action>>(       ":Action",       "Core Assets/Actions"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Boolean>>(      ":Boolean",      "Core Assets/Booleans"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Colour>>(       ":Colour",       "Core Assets/Colours"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Float>>(        ":Float",        "Core Assets/Floats"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Font>>(         ":Font",         "Core Assets/Fonts"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, InputHandler>>( ":InputHandler", "Core Assets/Input Handlers"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Integer>>(      ":Integer",      "Core Assets/Integers"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Screen>>(       ":Screen",       "Core Assets/Screens"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, String>>(       ":String",       "Core Assets/Strings"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Vertex>>(       ":Vertex",       "Core Assets/Vertices"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IActionClient, Action>>(      ":Action",       "Core Assets/Actions"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Boolean>>(     ":Boolean",      "Core Assets/Booleans"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Colour>>(      ":Colour",       "Core Assets/Colours"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Float>>(       ":Float",        "Core Assets/Floats"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Font>>(        ":Font",         "Core Assets/Fonts"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, InputHandler>>(":InputHandler", "Core Assets/Input Handlers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Integer>>(     ":Integer",      "Core Assets/Integers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Screen>>(      ":Screen",       "Core Assets/Screens"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, String>>(      ":String",       "Core Assets/Strings"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Vertex>>(      ":Vertex",       "Core Assets/Vertices"));
             
     // Support local bindings.
     add(&cLocals, "~", "Local");
