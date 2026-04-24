@@ -40,10 +40,6 @@ namespace IsoRealms {
     {type.hasClientConfiguration()} -> std::same_as<bool>;
   };
   
-  template <typename TYPE> concept RenderOtherClientProviderIconExists = requires(const TYPE& type, const std::string& id) {
-    {type.renderOtherClientProviderIcon(id)} -> std::same_as<bool>;
-  };
-  
   template <typename TYPE> concept IsDefaultConfigurationExists = requires(const TYPE& type) {
     {type.isDefaultConfiguration()} -> std::same_as<bool>;
   };
@@ -180,9 +176,6 @@ namespace IsoRealms {
         return renderAssetIcon();
       }
       
-      if constexpr (RenderOtherClientProviderIconExists<DERIVED>) {
-        return static_cast<const DERIVED*>(this)->renderOtherClientProviderIcon(id);
-      }
       return cManager.getAssetManager().template renderIcon<TYPE>(id);
     }
 

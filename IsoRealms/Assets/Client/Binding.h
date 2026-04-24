@@ -35,13 +35,11 @@ namespace IsoRealms {
     std::string getType() const;
 
     TreeItemInfo getTreeItemInfo() const override;
-    void setID(const std::string& id) override;
 
     /*********************************************\
      * Implements Asset<IBinding, IActionClient> *
     \*********************************************/
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-    bool renderOtherClientProviderIcon(const std::string& id) const;
     bool hasClientConfiguration() const;
 
     void getClientProperties(IPropertyMaker& owner) override;
