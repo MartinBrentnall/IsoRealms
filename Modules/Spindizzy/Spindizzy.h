@@ -357,12 +357,13 @@ namespace IsoRealms::Spindizzy {
     
     class SpindizzyBindingType : public IBindingType {
       public:
-      SpindizzyBindingType(const std::string& typeName);
+      SpindizzyBindingType(const std::string& typeName, const std::string& rootFolder);
 
       /**************************\
        * Implement IBindingType *
       \**************************/
       std::string getBindingTypeID() const override;
+      std::string getBindingTypeRootFolder() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
       void getAssetProperties(IPropertyMaker& owner) override;
@@ -370,6 +371,7 @@ namespace IsoRealms::Spindizzy {
 
       private:
       std::string cTypeName;
+      std::string cRootFolder;
     };
 
     SpindizzyBindingType cBindingTypeTerrainState;

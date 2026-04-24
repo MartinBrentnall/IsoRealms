@@ -57,7 +57,7 @@ namespace IsoRealms::Spindizzy {
                     cResourceZone(*this),
                     cResourceZoneObject(*this),
                     cRuntimePaused(false),
-                    cBindingTypeTerrainState("TerrainState"),
+                    cBindingTypeTerrainState("TerrainState", "Spindizzy/Terrain States"),
                     cRuntimeParameterAlien(project.getLuaState(), nullptr),
                     cRuntimeParameterFallDistance(project.getLuaState(), nullptr),
                     cRuntimeParameterLaunchLocation(project.getLuaState(), nullptr),
@@ -493,12 +493,17 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  Spindizzy::SpindizzyBindingType::SpindizzyBindingType(const std::string& typeName) :
-            cTypeName(typeName) {
+  Spindizzy::SpindizzyBindingType::SpindizzyBindingType(const std::string& typeName, const std::string& rootFolder) :
+            cTypeName(typeName),
+            cRootFolder(rootFolder) {
   }
 
   std::string Spindizzy::SpindizzyBindingType::getBindingTypeID() const {
     return "Spindizzy/" + cTypeName;
+  }
+
+  std::string Spindizzy::SpindizzyBindingType::getBindingTypeRootFolder() const {
+    return cRootFolder;
   }
 
   bool Spindizzy::SpindizzyBindingType::renderAssetIcon() const {

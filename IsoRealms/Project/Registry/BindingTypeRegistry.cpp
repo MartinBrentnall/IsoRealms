@@ -21,16 +21,16 @@
 namespace IsoRealms {
   BindingTypeRegistry::BindingTypeRegistry() :
             AssetClientManager(&cDummy, "Any"),
-            cActions(":Action"),
-            cBooleans(":Boolean"),
-            cColours(":Colour"),
-            cFloats(":Float"),
-            cFonts(":Font"),
-            cInputHandlers(":InputHandler"),
-            cIntegers(":Integer"),
-            cScreens(":Screen"),
-            cStrings(":String"),
-            cVertices(":Vertex") {
+            cActions(      ":Action",       "Core Assets/Actions"),
+            cBooleans(     ":Boolean",      "Core Assets/Booleans"),
+            cColours(      ":Colour",       "Core Assets/Colours"),
+            cFloats(       ":Float",        "Core Assets/Floats"),
+            cFonts(        ":Font",         "Core Assets/Fonts"),
+            cInputHandlers(":InputHandler", "Core Assets/Input Handlers"),
+            cIntegers(     ":Integer",      "Core Assets/Integers"),
+            cScreens(      ":Screen",       "Core Assets/Screens"),
+            cStrings(      ":String",       "Core Assets/Strings"),
+            cVertices(     ":Vertex",       "Core Assets/Vertices") {
     add(&cActions,       "Action",        "Actions");
     add(&cBooleans,      "Boolean",       "Booleans");
     add(&cColours,       "Colour",        "Colours");
@@ -43,12 +43,17 @@ namespace IsoRealms {
     add(&cVertices,      "Vertex",        "Vertices");
   }
 
-  BindingTypeRegistry::Literal::Literal(const std::string& type) :
-            cType(type) {
+  BindingTypeRegistry::Literal::Literal(const std::string& type, const std::string& rootFolder) :
+            cType(type),
+            cRootFolder(rootFolder) {
   }
 
   std::string BindingTypeRegistry::Literal::getBindingTypeID() const {
     return cType;
+  }
+
+  std::string BindingTypeRegistry::Literal::getBindingTypeRootFolder() const {
+    return cRootFolder;
   }
 
   bool BindingTypeRegistry::Literal::renderAssetIcon() const {
@@ -68,6 +73,10 @@ namespace IsoRealms {
   }
 
   std::string BindingTypeRegistry::Dummy::getBindingTypeID() const {
+    return "";
+  }
+
+  std::string BindingTypeRegistry::Dummy::getBindingTypeRootFolder() const {
     return "";
   }
 

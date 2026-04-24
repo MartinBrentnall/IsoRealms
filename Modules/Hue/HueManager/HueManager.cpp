@@ -105,58 +105,58 @@ namespace IsoRealms::Hue {
       cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, data, cDefBulbs.size(), mBulbValue.getObject()));
     }
 
-    // RESTInit();
-    // cREST.init(cDefBridgeAddress.c_str(), SSL_PORT, cDefBridgeUser.c_str(), DEBUG_LEVEL);
+    RESTInit();
+    cREST.init(cDefBridgeAddress.c_str(), SSL_PORT, cDefBridgeUser.c_str(), DEBUG_LEVEL);
 
-    // std::cout << "Getting entertainment areas" << std::endl;
-    // std::vector<EntertainmentArea*> mEntertainmentAreas;
-    // cREST.getEntertainmentAreas(&mEntertainmentAreas);
-    // if (mEntertainmentAreas.size() <= 0) {
-    //   cREST.cleanup();
-    //   RESTCleanup();
-    //   // FIXME:TripPlayer: throw
-    //   throw ArgumentException("ERROR: HueManager::HueManager: No entertainement areas found.");
-    // }
+    std::cout << "Getting entertainment areas" << std::endl;
+    std::vector<EntertainmentArea*> mEntertainmentAreas;
+    cREST.getEntertainmentAreas(&mEntertainmentAreas);
+    if (mEntertainmentAreas.size() <= 0) {
+      cREST.cleanup();
+      RESTCleanup();
+      // FIXME:TripPlayer: throw
+      throw ArgumentException("ERROR: HueManager::HueManager: No entertainement areas found.");
+    }
 
-    // /* Count how many lights are in the entertainment area */
-    // int mLightCount = 0;
-    // for (int i = 0; i < MAX_LIGHTS_PER_AREA; ++i) {
-    //   if (mEntertainmentAreas[0]->cLightIDs[i] == 0) {
-    //     break;
-    //   }
-    //   mLightCount++;
-    // }
+    /* Count how many lights are in the entertainment area */
+    int mLightCount = 0;
+    for (int i = 0; i < MAX_LIGHTS_PER_AREA; ++i) {
+      if (mEntertainmentAreas[0]->cLightIDs[i] == 0) {
+        break;
+      }
+      mLightCount++;
+    }
 
-    // if (mLightCount == 0) {
-    //   cREST.cleanup();
-    //   RESTCleanup();
-    //   throw ArgumentException("ERROR: HueManager::HueManager: No lights found in entertainement area \"" + mEntertainmentAreas[0]->cName + "\".");
-    // }
+    if (mLightCount == 0) {
+      cREST.cleanup();
+      RESTCleanup();
+      throw ArgumentException("ERROR: HueManager::HueManager: No lights found in entertainement area \"" + mEntertainmentAreas[0]->cName + "\".");
+    }
 
-    // // Activate the entertainment area
-    // std::cout << "Enabling entertainment area [" << mEntertainmentAreas[0]->cName << "]" << std::endl;
-    // cREST.activateStream(mEntertainmentAreas[0]->cID);
+    // Activate the entertainment area
+    std::cout << "Enabling entertainment area [" << mEntertainmentAreas[0]->cName << "]" << std::endl;
+    cREST.activateStream(mEntertainmentAreas[0]->cID);
 
-    // /* Initialise hue entertainment */
-    // cEntertainment.init(mLightCount);
+    /* Initialise hue entertainment */
+    cEntertainment.init(mLightCount);
 
-    // /* Assign the light ID (as returned by the bridge) to each light to be controlled (0..n) */
-    // for (int i = 0; i < mLightCount; i++) {
-    //   cEntertainment.setLightID(i, mEntertainmentAreas[0]->cLightIDs[i]);
-    // }
+    /* Assign the light ID (as returned by the bridge) to each light to be controlled (0..n) */
+    for (int i = 0; i < mLightCount; i++) {
+      cEntertainment.setLightID(i, mEntertainmentAreas[0]->cLightIDs[i]);
+    }
 
-    // /* Connect to bridge using DTLS */
-    // std::cout << "Making DTLS connection to bridge: " << cDefBridgeUser << "  " << cDefBridgePSK << std::endl;
-    // cDTLS.init(cDefBridgeUser.c_str(), cDefBridgePSK.c_str(), DEBUG_LEVEL);
-    // int retval = cDTLS.connect(cDefBridgeAddress.c_str(), DTLS_PORT);
-    // if (retval) {
-    //   cREST.cleanup();
-    //   RESTCleanup();
-    //   cDTLS.cleanup();
-    //   cEntertainment.cleanup();
-    //   throw ArgumentException("ERROR: HueManager::HueManager: Failed to make DTLS connection to bridge (returned: " + Utils::toString(retval) + ").");
-    // }
-    // printf("Running...\n");
+    /* Connect to bridge using DTLS */
+    std::cout << "Making DTLS connection to bridge: " << cDefBridgeUser << "  " << cDefBridgePSK << std::endl;
+    cDTLS.init(cDefBridgeUser.c_str(), cDefBridgePSK.c_str(), DEBUG_LEVEL);
+    int retval = cDTLS.connect(cDefBridgeAddress.c_str(), DTLS_PORT);
+    if (retval) {
+      cREST.cleanup();
+      RESTCleanup();
+      cDTLS.cleanup();
+      cEntertainment.cleanup();
+      throw ArgumentException("ERROR: HueManager::HueManager: Failed to make DTLS connection to bridge (returned: " + Utils::toString(retval) + ").");
+    }
+    printf("Running...\n");
   }
 
   void HueManager::registerAssets(ResourceAssetRegistry& assets) {
@@ -205,10 +205,10 @@ namespace IsoRealms::Hue {
   }
 
   HueManager::~HueManager() {
-    // cREST.cleanup();
-    // RESTCleanup();
-    // cDTLS.cleanup();
-    // cEntertainment.cleanup();
+    cREST.cleanup();
+    RESTCleanup();
+    cDTLS.cleanup();
+    cEntertainment.cleanup();
   }
 
   void HueManager::updateRuntime(unsigned int milliseconds) {
@@ -247,16 +247,16 @@ namespace IsoRealms::Hue {
   }
 
   void HueManager::Bulb::sync() {
-    // void *mMessageBuffer;
-    // int mMessageBufferLength;
-    // uint16_t mRed   = cDefColour->getRed()   * 65535.0f;
-    // uint16_t mGreen = cDefColour->getGreen() * 65535.0f;
-    // uint16_t mBlue  = cDefColour->getBlue()  * 65535.0f;
-    // cParent.cEntertainment.setLight(cDefID, mRed, mGreen, mBlue);
-    // cParent.cEntertainment.getMessage(&mMessageBuffer, &mMessageBufferLength);
-    // if (cParent.cDTLS.sendData(mMessageBuffer, mMessageBufferLength)) {
-    //   std::cout << "WARNING: HueManager::Bulb::sync: Failed to send colour data to hue system." << std::endl;
-    // }
+    void *mMessageBuffer;
+    int mMessageBufferLength;
+    uint16_t mRed   = cDefColour->getRed()   * 65535.0f;
+    uint16_t mGreen = cDefColour->getGreen() * 65535.0f;
+    uint16_t mBlue  = cDefColour->getBlue()  * 65535.0f;
+    cParent.cEntertainment.setLight(cDefID, mRed, mGreen, mBlue);
+    cParent.cEntertainment.getMessage(&mMessageBuffer, &mMessageBufferLength);
+    if (cParent.cDTLS.sendData(mMessageBuffer, mMessageBufferLength)) {
+      std::cout << "WARNING: HueManager::Bulb::sync: Failed to send colour data to hue system." << std::endl;
+    }
   }
 
   static int hue_dtls_ctx_index;

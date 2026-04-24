@@ -36,12 +36,13 @@ namespace IsoRealms {
     private:
     class Literal : public IBindingType {
       public:
-      Literal(const std::string& type);
+      Literal(const std::string& type, const std::string& rootFolder);
 
       /***********************\
       * Implements IBinding *
       \***********************/
       std::string getBindingTypeID() const override;
+      std::string getBindingTypeRootFolder() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
       void getAssetProperties(IPropertyMaker& owner) override;
@@ -49,6 +50,7 @@ namespace IsoRealms {
 
       private:
       std::string cType;
+      std::string cRootFolder;
     };
 
     class Dummy : public IBindingType {
@@ -58,6 +60,7 @@ namespace IsoRealms {
       * Implements IBinding *
       \***********************/
       std::string getBindingTypeID() const override;
+      std::string getBindingTypeRootFolder() const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
       void getAssetProperties(IPropertyMaker& owner) override;

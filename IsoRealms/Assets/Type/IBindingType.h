@@ -28,6 +28,7 @@ namespace IsoRealms {
     virtual ~IBindingType() {}
 
     virtual std::string getBindingTypeID() const = 0;
+    virtual std::string getBindingTypeRootFolder() const = 0;
   };
 }
 

@@ -42,20 +42,24 @@ namespace IsoRealms {
   }
 
   TreeItemInfo Binding::getTreeItemInfo() const {
+    TreeItemInfo mTreeItemInfo = Asset::getTreeItemInfo();
     std::string mConversionPath = cAsset->getConversionPath();
     if (!mConversionPath.empty()) {
-      return TreeItemInfo{mConversionPath, mConversionPath};
+      mTreeItemInfo.cPath = mConversionPath;
     }
-    std::string mRawID = getRawID();
-    std::string mType = getType();
-    std::string mExposedID = mType.empty() || mRawID == "None" ? mRawID : mRawID.substr(mType.length() + 1);
-    std::optional<TreeItemInfo> mFound;
-    forEachAvailableTreeItem([&mFound, &mExposedID](const TreeItemInfo& mTreeItemInfo) {
-      if (mTreeItemInfo.cID == mExposedID) {
-        mFound = mTreeItemInfo;
-      }
-    });
-    return mFound.value_or(TreeItemInfo{mExposedID, mExposedID});
+
+    std::string mBindingRootFolder = (*cDefType)->getBindingTypeRootFolder();
+    if (mBindingRootFolder.empty()) {
+      return mTreeItemInfo;
+    }
+
+    std::string mBindingPath = mTreeItemInfo.cPath;
+    if (mBindingPath.length() > mBindingRootFolder.length() + 1 && mBindingPath.substr(0, mBindingRootFolder.length() + 1) == (mBindingRootFolder + "/")) {
+      mBindingPath = mBindingPath.substr(mBindingRootFolder.length() + 1);
+    } else {
+      std::cout << "Binding::getTreeItemInfo: WARNING: Binding path \"" << mBindingPath << "\" does not start with root folder \"" << mBindingRootFolder << "\"" << std::endl;
+    }
+    return TreeItemInfo{mTreeItemInfo.cID, mBindingPath};
   }
 
   void Binding::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
@@ -63,26 +67,22 @@ namespace IsoRealms {
 
     // Case where any type is allowed.
     if (mType.empty()) {
-      std::cout << "Binding::forEachAvailableTreeItem: mType is ANY" << std::endl;
       cManager.getAssetManager().forEachEntry<IBinding>(getTreeItemInfoFunction);
       return;
     }
 
     // Case where only a specific type is allowed.
-    bool mExactMatchFound = false;
-    cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, &mExactMatchFound, &mType, this](const TreeItemInfo& mTreeItemInfo) {
-      if (mTreeItemInfo.cID == mType) {
-        getTreeItemInfoFunction(mTreeItemInfo);
-        mExactMatchFound = true;
-      }
-    });
-    if (mExactMatchFound) {
-      return;
-    }
     cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction, &mType, this](const TreeItemInfo& mTreeItemInfo) {
       const std::string& mBindingID = mTreeItemInfo.cID;
       if (mBindingID.length() > mType.length() + 1 && mBindingID.substr(0, mType.length() + 1) == (mType + "/")) {
-        getTreeItemInfoFunction(mTreeItemInfo);
+        std::string mBindingPath = mTreeItemInfo.cPath;
+        std::string mBindingRootFolder = (*cDefType)->getBindingTypeRootFolder();
+        if (mBindingPath.length() > mBindingRootFolder.length() + 1 && mBindingPath.substr(0, mBindingRootFolder.length() + 1) == (mBindingRootFolder + "/")) {
+          mBindingPath = mBindingPath.substr(mBindingRootFolder.length() + 1);
+        } else {
+          std::cout << "Binding::forEachAvailableTreeItem: WARNING: Binding path \"" << mBindingPath << "\" does not start with root folder \"" << mBindingRootFolder << "\"" << std::endl;
+        }
+        getTreeItemInfoFunction(TreeItemInfo{mBindingID, mBindingPath});
       }
     });
     getTreeItemInfoFunction(TreeItemInfo{"None", "None"}); // TODO: Kludge
