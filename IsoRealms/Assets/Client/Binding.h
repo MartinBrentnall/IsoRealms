@@ -33,6 +33,7 @@ namespace IsoRealms {
     Binding(IActionClient& owner);
     Binding(IActionClient& owner, const BindingType* type);
     std::string getType() const;
+    std::string getRootFolder() const;
 
     TreeItemInfo getTreeItemInfo() const override;
 

@@ -41,6 +41,10 @@ namespace IsoRealms {
     return cDefType != nullptr ? (*cDefType)->getBindingTypeID() : "";
   }
 
+  std::string Binding::getRootFolder() const {
+    return cDefType != nullptr ? (*cDefType)->getBindingTypeRootFolder() : "";
+  }
+
   TreeItemInfo Binding::getTreeItemInfo() const {
     TreeItemInfo mTreeItemInfo = Asset::getTreeItemInfo();
     std::string mConversionPath = cAsset->getConversionPath();
@@ -48,11 +52,14 @@ namespace IsoRealms {
       mTreeItemInfo.cPath = mConversionPath;
     }
 
-    std::string mBindingRootFolder = (*cDefType)->getBindingTypeRootFolder();
+    std::string mBindingRootFolder = getRootFolder();
+
+    // Case where the binding type has no root folder.
     if (mBindingRootFolder.empty()) {
       return mTreeItemInfo;
     }
 
+    // Case where the binding type has a root folder.
     std::string mBindingPath = mTreeItemInfo.cPath;
     if (mBindingPath.length() > mBindingRootFolder.length() + 1 && mBindingPath.substr(0, mBindingRootFolder.length() + 1) == (mBindingRootFolder + "/")) {
       mBindingPath = mBindingPath.substr(mBindingRootFolder.length() + 1);
@@ -76,7 +83,7 @@ namespace IsoRealms {
       const std::string& mBindingID = mTreeItemInfo.cID;
       if (mBindingID.length() > mType.length() + 1 && mBindingID.substr(0, mType.length() + 1) == (mType + "/")) {
         std::string mBindingPath = mTreeItemInfo.cPath;
-        std::string mBindingRootFolder = (*cDefType)->getBindingTypeRootFolder();
+        std::string mBindingRootFolder = getRootFolder();
         if (mBindingPath.length() > mBindingRootFolder.length() + 1 && mBindingPath.substr(0, mBindingRootFolder.length() + 1) == (mBindingRootFolder + "/")) {
           mBindingPath = mBindingPath.substr(mBindingRootFolder.length() + 1);
         } else {

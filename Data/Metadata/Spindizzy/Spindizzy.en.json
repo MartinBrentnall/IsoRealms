@@ -290,7 +290,7 @@
         "Acceleration": {"name": "Acceleration", "description": "Rate at which the players of this type increase their movement speed"},
         "WallBounce": {"name": "Wall Bounce", "description": "Factor of speed loss when bouncing off of walls."},
         "StepReach": {"name": "Step Reach", "description": "Maximum height of steps that players of this type can climb."},
-        "HugThreshold": {"name": "Hug Momentum Threshold", "description": "Speed under which players of this type will stick to a wall and slide along it instead of bouncing off it."},
+        "HugMomentumThreshold": {"name": "Hug Momentum Threshold", "description": "Speed under which players of this type will stick to a wall and slide along it instead of bouncing off it."},
         "Appearance": {"name": "Appearance", "description": "Model to visually represent this type of player."},
         "SpinSpeed": {"name": "Spin Speed", "description": "Speed at which players of this type spin as they move.  This is purely a visual effect."},
         "InputX": {"name": "Input X Movement", "description": "Input controlling movement of players of this type along the X axis."},
