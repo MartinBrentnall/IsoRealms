@@ -274,10 +274,6 @@ namespace IsoRealms::Spindizzy {
     std::string getBindingIDPickUp(const IBinding* binding) const;
     void getTreeItemsPickUp(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
     
-    IBinding* getBindingFallImpact(const std::string& id);
-    std::string getBindingIDFallImpact(const IBinding* binding) const;
-    void getTreeItemsFallImpact(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
-
     IBinding* getBindingWallBounce(const std::string& id);
     std::string getBindingIDWallBounce(const IBinding* binding) const;
     void getTreeItemsWallBounce(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;

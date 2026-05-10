@@ -23,26 +23,25 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string PlayerType::JSON_ACCELERATION   = "acceleration";
-  const std::string PlayerType::JSON_APPEARANCE     = "appearance";
-  const std::string PlayerType::JSON_BOUNCE_FACTOR  = "bounceFactor";
-  const std::string PlayerType::JSON_HEIGHT         = "height";
-  const std::string PlayerType::JSON_HUG_MOMENTUM   = "hugMomentum";
-  const std::string PlayerType::JSON_ON_APEX        = "onApex";
-  const std::string PlayerType::JSON_ON_FALL_BOUNCE = "onFallBounce";
-  const std::string PlayerType::JSON_ON_FALL_IMPACT = "onFallImpact";
+  const std::string PlayerType::JSON_ACCELERATION     = "acceleration";
+  const std::string PlayerType::JSON_APPEARANCE       = "appearance";
+  const std::string PlayerType::JSON_BOUNCE_FACTOR    = "bounceFactor";
+  const std::string PlayerType::JSON_HEIGHT           = "height";
+  const std::string PlayerType::JSON_HUG_MOMENTUM     = "hugMomentum";
+  const std::string PlayerType::JSON_ON_APEX          = "onApex";
+  const std::string PlayerType::JSON_ON_FALL_BOUNCE   = "onFallBounce";
+  const std::string PlayerType::JSON_ON_FALL_IMPACT   = "onFallImpact";
   const std::string PlayerType::JSON_ON_LEAVE_SURFACE = "onLeaveSurface";
-  const std::string PlayerType::JSON_ON_WALL_BOUNCE = "onWallBounce";
-  const std::string PlayerType::JSON_ON_RESPAWN     = "onRespawn";
-  const std::string PlayerType::JSON_ORIENTATION    = "orientation";
-  const std::string PlayerType::JSON_RADIUS         = "radius";
-  const std::string PlayerType::JSON_RESPAWN_DELAY  = "respawnDelay";
-  const std::string PlayerType::JSON_SPIN_SPEED     = "spinSpeed";
-  const std::string PlayerType::JSON_STEP_REACH     = "stepReach";
-  const std::string PlayerType::JSON_THRUST_INPUT   = "thrustInput";
-  const std::string PlayerType::JSON_X_INPUT        = "xInput";
-  const std::string PlayerType::JSON_Y_INPUT        = "yInput";
-
+  const std::string PlayerType::JSON_ON_WALL_BOUNCE   = "onWallBounce";
+  const std::string PlayerType::JSON_ON_RESPAWN       = "onRespawn";
+  const std::string PlayerType::JSON_ORIENTATION      = "orientation";
+  const std::string PlayerType::JSON_RADIUS           = "radius";
+  const std::string PlayerType::JSON_RESPAWN_DELAY    = "respawnDelay";
+  const std::string PlayerType::JSON_SPIN_SPEED       = "spinSpeed";
+  const std::string PlayerType::JSON_STEP_REACH       = "stepReach";
+  const std::string PlayerType::JSON_THRUST_INPUT     = "thrustInput";
+  const std::string PlayerType::JSON_X_INPUT          = "xInput";
+  const std::string PlayerType::JSON_Y_INPUT          = "yInput";
 
   const float PlayerType::DEFAULT_ACCELERATION  = 0.0000265f;
   const float PlayerType::DEFAULT_BOUNCE_FACTOR = 1.0f;
@@ -57,17 +56,9 @@ namespace IsoRealms::Spindizzy {
             cSpindizzy(spindizzy),
             cAssets(spindizzy),
             cWallBounceActionContext(data, cWallBounceBindings),
-            cFallImpactActionContext(data, cFallImpactBindings),
-            cFallBounceActionContext(data, cFallBounceBindings),
-            cRespawnActionContext(data, cRespawnBindings),
-            cLeaveSurfaceActionContext(data, cLeaveSurfaceBindings),
-            cApexActionContext(data, cApexBindings),
+            cPlayerActionContext(data, cPlayerBindings),
             cWallBounceBindings(*this),
-            cFallImpactBindings(*this),
-            cFallBounceBindings(*this),
-            cRespawnBindings(*this),
-            cLeaveSurfaceBindings(*this),
-            cApexBindings(*this),
+            cPlayerBindings(*this),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
             cDefBounceFactor(DEFAULT_BOUNCE_FACTOR),
@@ -81,12 +72,12 @@ namespace IsoRealms::Spindizzy {
             cDefInputX(data, 0.0f),
             cDefInputY(data, 0.0f),
             cDefOrientation(data, 0.0f),
-            cDefRespawnAction(cRespawnActionContext),
-            cDefFallImpactAction(cFallImpactActionContext),
-            cDefFallBounceAction(cFallBounceActionContext),
+            cDefRespawnAction(cPlayerActionContext),
+            cDefFallImpactAction(cPlayerActionContext),
+            cDefFallBounceAction(cPlayerActionContext),
             cDefWallBounceAction(cWallBounceActionContext),
-            cDefLeaveSurfaceAction(cLeaveSurfaceActionContext),
-            cDefApexAction(cApexActionContext),
+            cDefLeaveSurfaceAction(cPlayerActionContext),
+            cDefApexAction(cPlayerActionContext),
             cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
   }
@@ -386,30 +377,6 @@ namespace IsoRealms::Spindizzy {
 
   double PlayerType::Pen::getSnapInterval() const {
     return 0.5;
-  }
-
-  PlayerType::FallImpactBindings::FallImpactBindings(PlayerType& parent) :
-            cParent(parent) {
-  }
-
-  IBinding* PlayerType::FallImpactBindings::getBinding(const std::string& id) {
-    return cParent.cSpindizzy.getBindingFallImpact(id);
-  }
-
-  std::string PlayerType::FallImpactBindings::getBindingID(const IBinding* binding) const {
-    return cParent.cSpindizzy.getBindingIDFallImpact(binding);
-  }
-
-  void PlayerType::FallImpactBindings::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-    cParent.cSpindizzy.getTreeItemsFallImpact(getTreeItemInfoFunction);
-  }
-
-  void PlayerType::FallImpactBindings::saveBinding(JSONObject object, const IBinding* binding) const {
-    // TODO: Implement this.
-  }
-
-  void PlayerType::FallImpactBindings::releaseBinding(const IBinding* asset) {
-    // Nothing to do.
   }
 
   PlayerType::WallBounceBindings::WallBounceBindings(PlayerType& parent) :

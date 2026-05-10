@@ -399,44 +399,6 @@ namespace IsoRealms::Spindizzy {
     throw ArgumentException("ERROR: Spindizzy::getZonePropertyBinding: No zone property binding found for: \"" + id + "\"");
   }
 
-  IBinding* Spindizzy::getBindingFallImpact(const std::string& id) {
-    std::size_t mSplit = id.find('/');
-    std::string mBindTo = id.substr(0, mSplit);
-    std::string mBindPath = id.substr(mSplit + 1);
-    if (mBindTo == BIND_TO_PLAYER) {
-      mSplit = mBindPath.find('/');
-      if (mSplit == std::string::npos) {
-        if (mBindPath == BIND_TO_PLAYER) {return &cRuntimeParameterPlayer;}
-      } else {
-        return getZonePropertyBinding(cRuntimeZoneBindings1, mBindPath);
-      }
-    } else if (mBindTo == BIND_TO_TERRAIN) {
-      mSplit = mBindPath.find('/');
-      if (mSplit == std::string::npos) {
-        if (mBindPath == BIND_TO_WALL) {return &cRuntimeParameterWall;}
-      } else {
-        return getZonePropertyBinding(cRuntimeZoneBindings2, mBindPath);
-      }
-    }
-    throw ArgumentException("ERROR: Spindizzy::getBindingFallImpact: No fall impact binding found for: \"" + id + "\"");
-  }
-
-  std::string Spindizzy::getBindingIDFallImpact(const IBinding* binding) const {
-    if (&cRuntimeParameterPlayer == binding) {return "Player/Player";}
-    if (&cRuntimeParameterZone2  == binding) {return "Terrain/Zone";}
-    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
-      if (mZoneBinding.second == binding) {
-        return "Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first;
-      }
-    }
-    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings2) {
-      if (mZoneBinding.second == binding) {
-        return "Terrain/" + BIND_TO_ZONE + "/" + mZoneBinding.first;
-      }
-    }
-    return "";
-  }
-
   IBinding* Spindizzy::getBindingPlayer(const std::string& id) {
     if (id == BIND_TO_PLAYER) {
       return &cRuntimeParameterPlayer;
@@ -514,17 +476,6 @@ namespace IsoRealms::Spindizzy {
     getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE, "Pick Up's Zone"});
     for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
       getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE + "/" + mZoneBinding.first, "Pick Up's Zone Properties/" + mZoneBinding.first});
-    }
-  }
-
-  void Spindizzy::getTreeItemsFallImpact(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-    getTreeItemInfoFunction(TreeItemInfo{"Player/Player", "Player/Player"});
-    getTreeItemInfoFunction(TreeItemInfo{"Terrain/Zone",  "Terrain/Terrain's Zone"});
-    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
-      getTreeItemInfoFunction(TreeItemInfo{"Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Player/Player's Zone Properties/" + mZoneBinding.first});
-    }
-    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings2) {
-      getTreeItemInfoFunction(TreeItemInfo{"Terrain/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Terrain/Terrain's Zone Properties/" + mZoneBinding.first});
     }
   }
 
