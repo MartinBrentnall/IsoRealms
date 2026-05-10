@@ -429,7 +429,7 @@ namespace IsoRealms::Spindizzy {
         return getZonePropertyBinding(cRuntimeZoneBindings2, mBindPath);
       }
     }
-    throw ArgumentException("ERROR: Spindizzy::getBindingWallBounce: No wall bounce binding found for: \"" + id + "\"");
+    throw ArgumentException("ERROR: Spindizzy::getBindingFallImpact: No fall impact binding found for: \"" + id + "\"");
   }
 
   std::string Spindizzy::getBindingIDFallImpact(const IBinding* binding) const {
@@ -568,7 +568,6 @@ namespace IsoRealms::Spindizzy {
     }
     throw ArgumentException("ERROR: Spindizzy::getBindingWallBounce: No wall bounce binding found for: \"" + id + "\"");
   }
-
 
   std::string Spindizzy::getBindingIDWallBounce(const IBinding* binding) const {
     if (&cRuntimeParameterPlayer == binding) {return "Player/Player";}

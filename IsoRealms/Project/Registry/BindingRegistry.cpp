@@ -85,6 +85,15 @@ namespace IsoRealms {
         return AssetClientManager::get(client, owner, mConversionProviderObject, listener, true);
       }
     }
+
+    if (id.starts_with("~/")) {
+      JSONDocument mDocument;
+      JSONObject mEventRelated = mDocument.addObject("temp");
+      mEventRelated.addString(JSON_KEY, "~");
+      mEventRelated.addString("local", id.substr(2));
+
+      return AssetClientManager::get(client, owner, mEventRelated, listener, true);
+    }
     return AssetClientManager::get(client, owner, id, listener);
   }
 
