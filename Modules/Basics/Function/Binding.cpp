@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   const std::string Binding::JSON_TO       = "to";
   const std::string Binding::JSON_VARIABLE = "variable";
 
-  Binding::Binding(Function& parent, IActionClient& owner, const std::string& name) :
+  Binding::Binding(Function& parent, IActionContext& owner, const std::string& name) :
             cParent(parent),
             cDefName(name),
             cDefValue(owner) { //, [this]() {
@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
             // }) {
   }
 
-  Binding::Binding(Function& parent, IActionClient& owner, bool init, JSONObject object) :
+  Binding::Binding(Function& parent, IActionContext& owner, bool init, JSONObject object) :
             Binding(parent, owner, object.getString(JSON_VARIABLE)) {
     if (object.hasMember(JSON_TO)) {
       if (init) {

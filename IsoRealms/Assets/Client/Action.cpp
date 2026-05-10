@@ -18,14 +18,14 @@
  */
 #include "Action.h"
 
-#include "IsoRealms/ActionClient.h"
+#include "IsoRealms/ActionContext.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Action::Action(IActionClient& owner) :
-            Asset<Action, IAction, IActionClient>(owner) {
+  Action::Action(IActionContext& owner) :
+            Asset<Action, IAction, IActionContext>(owner) {
   }
 
   void Action::execute() {

@@ -54,14 +54,14 @@ namespace IsoRealms::Basics {
     return mAvailableIndex;
   }
 
-  IAction* Script::getAsset(IActionClient& owner, JSONObject object) {
+  IAction* Script::getAsset(IActionContext& owner, JSONObject object) {
     std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex(), object);
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
 
-  IAction* Script::getAsset(IActionClient& owner) {
+  IAction* Script::getAsset(IActionContext& owner) {
     std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
@@ -90,14 +90,14 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  Script::ScriptAction::ScriptAction(Script& parent, IActionClient& owner, unsigned int index, JSONObject object) :
+  Script::ScriptAction::ScriptAction(Script& parent, IActionContext& owner, unsigned int index, JSONObject object) :
             cParent(parent),
             cDefFunction(cParent.cBasics, owner, object, false),
             cDefAction(cDefFunction.getAsset(owner, object)),
             cDefIndex(index) {
   }
 
-  Script::ScriptAction::ScriptAction(Script& parent, IActionClient& owner, unsigned int index) :
+  Script::ScriptAction::ScriptAction(Script& parent, IActionContext& owner, unsigned int index) :
             cParent(parent),
             cDefFunction(cParent.cBasics, owner),
             cDefAction(cDefFunction.getAsset(owner)),

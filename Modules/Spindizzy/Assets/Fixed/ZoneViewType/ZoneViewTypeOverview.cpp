@@ -27,8 +27,8 @@ namespace IsoRealms::Spindizzy {
   ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView) :
             cWorldView(worldView),
             cDefColour(worldView.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f),
-            cRuntimeParameterView1(worldView.getSpindizzy().getProject().getLuaState(), nullptr, &worldView.getSpindizzy()),
-            cRuntimeParameterView2(worldView.getSpindizzy().getProject().getLuaState(), nullptr, &worldView.getSpindizzy()) {
+            cRuntimeParameterView1(worldView.getSpindizzy().getProject().getLuaState(), nullptr),
+            cRuntimeParameterView2(worldView.getSpindizzy().getProject().getLuaState(), nullptr) {
   }
 
   ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView, JSONObject object) :

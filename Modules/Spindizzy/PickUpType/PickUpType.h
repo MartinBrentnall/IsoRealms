@@ -64,8 +64,9 @@ namespace IsoRealms::Spindizzy {
      * Implements IBoundaryType *
     \****************************/
     std::string getBoundaryTypeID() const override;
-    IBinding* getBinding(const std::string& id) const override;
-    std::string getBindingID(const IBinding* binding) const override;
+    IBinding* getBounderyTypeBinding(const std::string& id) const override;
+    std::string getBoundaryTypeBindingID(const IBinding* binding) const override;
+    void forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
 
     /*******************************\
      * Implements IWorldEditorTool *

@@ -19,7 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 #set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 add_library(IsoRealms
-  ActionClient.cpp
+  ActionContext.cpp
   Application.cpp
   Assets/Client/Action.cpp
   Assets/Client/Binding.cpp

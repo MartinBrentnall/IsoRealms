@@ -81,8 +81,9 @@ namespace IsoRealms::Spindizzy {
      * Implements IPhysicalObjectType *
     \**********************************/
     std::string getPhysicalObjectTypeID() const override;
-    IBinding* getBinding(const std::string& id) const override;
-    std::string getBindingID(const IBinding* binding) const override;
+    IBinding* getPhysicalObjectTypeBinding(const std::string& id) const override;
+    std::string getPhysicalObjectTypeBindingID(const IBinding* binding) const override;
+    void forEachAvailablePhysicalObjectTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
 
     /*******************************\
      * Implements IWorldEditorTool *

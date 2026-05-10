@@ -39,7 +39,7 @@ namespace IsoRealms::Basics {
    * function may override dynamic bindings with their own values.  This class
    * also facilitates scripting (in-line functions) via the Script type.
    */
-  class Function final : public IAssetProvider<IActionClient, IAction> {
+  class Function final : public IAssetProvider<IActionContext, IAction> {
     public:
     
     /**********************\
@@ -55,8 +55,8 @@ namespace IsoRealms::Basics {
     void removed();
 
     // Constructors for use by scripts (in-line functions).
-    Function(Basics& basics, IActionClient& owner);
-    Function(Basics& basics, IActionClient& owner, JSONObject object, bool init);
+    Function(Basics& basics, IActionContext& owner);
+    Function(Basics& basics, IActionContext& owner, JSONObject object, bool init);
     void getScriptProperties(IPropertyMaker& owner, const Metadata& metadata);
     IsoRealms::Project& getProject() const;
     IResourceData& getResourceData() const;
@@ -69,11 +69,11 @@ namespace IsoRealms::Basics {
     std::string getNextAvailableName(const std::string& name);
     unsigned int getID() const;
 
-    /****************************************************\
-     * Implements IAssetProvider<IActionClient, IAction *
-    \****************************************************/
-    IAction* getAsset(IActionClient& owner, JSONObject object) override;
-    IAction* getAsset(IActionClient& owner) override;
+    /******************************************************\
+     * Implements IAssetProvider<IActionContext, IAction> *
+    \******************************************************/
+    IAction* getAsset(IActionContext& owner, JSONObject object) override;
+    IAction* getAsset(IActionContext& owner) override;
     void releaseAsset(const IAction* asset) override;
     bool hasConfiguration() const override;
     bool renderAssetProviderIcon() const override;
@@ -95,8 +95,8 @@ namespace IsoRealms::Basics {
     // Private types.
     class Call : public IAction {
       public:
-      Call(Function& parent, IActionClient& owner);
-      Call(Function& parent, IActionClient& owner, JSONObject object);
+      Call(Function& parent, IActionContext& owner);
+      Call(Function& parent, IActionContext& owner, JSONObject object);
 
       /**********************\
        * Implements IAction *
@@ -111,7 +111,7 @@ namespace IsoRealms::Basics {
       
       // External interfaces.
       Function& cParent; /// Function from which this call is derived.
-      IActionClient& cOwner;                                       /// The one who is making this call.
+      IActionContext& cOwner;                                       /// The one who is making this call.
 
       // Definition data.
       std::vector<std::unique_ptr<IsoRealms::Binding>> cDefArguments; /// Overrides default values of dynamic bindings in the function.

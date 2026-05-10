@@ -33,6 +33,7 @@ namespace IsoRealms::Spindizzy {
 
     IBinding* getBoundaryBinding(const std::string& id) const;
     std::string getBoundaryBindingID(const IBinding* binding) const;
+    void forEachAvailableBoundaryTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
 
     /**********************************************\
      * Implements Asset<IBoundaryType, Spindizzy> *

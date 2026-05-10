@@ -554,7 +554,7 @@ namespace IsoRealms {
     return *this;
   }
 
-  IActionClient& Project::getDummyActionClient() {
+  IActionContext& Project::getDummyActionContext() {
     return *this;
   }
 
@@ -566,7 +566,7 @@ namespace IsoRealms {
     return *this;
   }
 
-  IBindingRegistry* Project::getBindingRegistry() {
+  IEventBindings* Project::getBindingRegistry() {
     return nullptr;
   }
 

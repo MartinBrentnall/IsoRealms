@@ -25,7 +25,7 @@
 #include <string>
 
 #include "IsoRealms/Assets/Client/ResourceOwner.h"
-#include "IsoRealms/Assets/IBindingRegistry.h"
+#include "IsoRealms/Assets/IEventBindings.h"
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/IResourceData.h"
@@ -68,7 +68,7 @@ namespace IsoRealms {
    * provides control over execution of the application.
    */
   class Project : public IResourceData,
-                  public IActionClient {
+                  public IActionContext {
     public:
     
     // Functions used by a runtime host.
@@ -209,14 +209,14 @@ namespace IsoRealms {
     Project& getProject() override;
     const Project& getProject() const override;
     Project& getAssetManager() override;
-    IActionClient& getDummyActionClient() override;
+    IActionContext& getDummyActionContext() override;
     const Metadata& getMetadata() const override;
     
-    /****************************\
-     * Implements IActionClient * TODO: Should these be here???
-    \****************************/
+    /*****************************\
+     * Implements IActionContext * TODO: Should these be here???
+    \*****************************/
     IResourceData& getResourceData() override;
-    IBindingRegistry* getBindingRegistry() override;
+    IEventBindings* getBindingRegistry() override;
     
     template <typename TYPE> friend struct AssetContainerTraits;
 
@@ -284,10 +284,10 @@ namespace IsoRealms {
     OwnedAsset<IResourceData, InputHandler>                  cDefInputHandler;
     OwnedAsset<IResourceData, Screen>                        cDefScreen;
     OwnedAsset<IResourceData, Editable>                      cDefDefaultEditor;
-    OwnedAsset<IActionClient, Action>                        cDefInitAction;
-    OwnedAsset<IActionClient, Action>                        cDefResetAction;
-    OwnedAsset<IActionClient, Action>                        cDefStartAction;
-    OwnedAsset<IActionClient, Action>                        cDefQuitAction;
+    OwnedAsset<IActionContext, Action>                        cDefInitAction;
+    OwnedAsset<IActionContext, Action>                        cDefResetAction;
+    OwnedAsset<IActionContext, Action>                        cDefStartAction;
+    OwnedAsset<IActionContext, Action>                        cDefQuitAction;
     LuaState cLuaState;                       /// Lua State for this project.
 
     // Scripting support.

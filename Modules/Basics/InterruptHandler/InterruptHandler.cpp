@@ -23,7 +23,7 @@ namespace IsoRealms::Basics {
   const std::string InterruptHandler::JSON_ON_INPUT = "onInput";
 
   InterruptHandler::InterruptHandler(Basics& basics, IResourceData& data) :
-            cDefAction(data.getDummyActionClient()) {
+            cDefAction(data.getDummyActionContext()) {
   }
   
   InterruptHandler::InterruptHandler(Basics& basics, IResourceData& data, JSONObject object) :

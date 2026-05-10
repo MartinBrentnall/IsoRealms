@@ -167,12 +167,16 @@ namespace IsoRealms::Spindizzy {
     return cSpindizzy.getResourceID(this);
   }
 
-  IBinding* AlienType::getBinding(const std::string& id) const {
+  IBinding* AlienType::getPhysicalObjectTypeBinding(const std::string& id) const {
     return nullptr;
   }
   
-  std::string AlienType::getBindingID(const IBinding* binding) const {
+  std::string AlienType::getPhysicalObjectTypeBindingID(const IBinding* binding) const {
     return "";
+  }
+
+  void AlienType::forEachAvailablePhysicalObjectTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    // Nothing to do.
   }
 
   IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor, IResourceData& owner) {

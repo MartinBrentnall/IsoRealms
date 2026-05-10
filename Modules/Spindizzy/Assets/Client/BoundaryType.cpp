@@ -26,11 +26,15 @@ namespace IsoRealms::Spindizzy {
   }
 
   IBinding* BoundaryType::getBoundaryBinding(const std::string& id) const {
-    return cAsset->getBinding(id);
+    return cAsset->getBounderyTypeBinding(id);
   }
 
   std::string BoundaryType::getBoundaryBindingID(const IBinding* binding) const {
-    return cAsset->getBindingID(binding);
+    return cAsset->getBoundaryTypeBindingID(binding);
+  }
+
+  void BoundaryType::forEachAvailableBoundaryTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cAsset->forEachAvailableBoundaryTypeTreeItem(getTreeItemInfoFunction);
   }
 
   bool BoundaryType::isDefaultConfiguration() const {

@@ -29,21 +29,21 @@ namespace IsoRealms::UI {
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
-            cActionClient(menu.getResourceData(), *this),
+            cActionContext(menu.getResourceData(), *this),
             cDefID(""),
-            cDefAction(cActionClient),
+            cDefAction(cActionContext),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
-            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr, this) {
+            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr) {
   }
 
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
-            cActionClient(menu.getResourceData(), *this),
+            cActionContext(menu.getResourceData(), *this),
             cDefID(object.getString(JSON_ID)),
-            cDefAction(cActionClient),
+            cDefAction(cActionContext),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
-            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr, this) {
+            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 
@@ -139,8 +139,19 @@ namespace IsoRealms::UI {
     return false; // TODO: Implement this.
   }
 
+  std::string MenuItemLauncherList::getBindingID(const IBinding* binding) const {
+    if (binding == &cLauncherBinding) {
+      return "Launcher";
+    }
+    return "";
+  }
+
   IBinding* MenuItemLauncherList::getBinding(const std::string& id) {
     return id == "Launcher" ? &cLauncherBinding : nullptr;
+  }
+
+  void MenuItemLauncherList::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{"Launcher", "Launcher"});
   }
 
   void MenuItemLauncherList::saveBinding(JSONObject object, const IBinding* binding) const {

@@ -26,7 +26,8 @@ namespace IsoRealms::Spindizzy {
   class IPhysicalObjectType : public IAsset {
     public:
     virtual std::string getPhysicalObjectTypeID() const = 0;
-    virtual IBinding* getBinding(const std::string& id) const = 0;
-    virtual std::string getBindingID(const IBinding* binding) const = 0;
+    virtual IBinding* getPhysicalObjectTypeBinding(const std::string& id) const = 0;
+    virtual std::string getPhysicalObjectTypeBindingID(const IBinding* binding) const = 0;
+    virtual void forEachAvailablePhysicalObjectTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const = 0;
   };
 }

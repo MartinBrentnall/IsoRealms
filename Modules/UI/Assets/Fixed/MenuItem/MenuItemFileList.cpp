@@ -34,7 +34,7 @@ namespace IsoRealms::UI {
             cDefID(""),
             cDefFolder(""),
             cDefUser(false),
-            cDefAction(menu.getResourceData().getDummyActionClient()),
+            cDefAction(menu.getResourceData().getDummyActionContext()),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
             cSelectedFile(*this) {
   }
@@ -45,7 +45,7 @@ namespace IsoRealms::UI {
             cDefID(object.getString(JSON_ID)),
             cDefFolder(object.getString(JSON_FOLDER)),
             cDefUser(object.getBoolean(JSON_USER)),
-            cDefAction(menu.getResourceData().getDummyActionClient()),
+            cDefAction(menu.getResourceData().getDummyActionContext()),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
             cSelectedFile(*this) {
     cDefAction.init(object, JSON_ON_SELECTION);

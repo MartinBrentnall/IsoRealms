@@ -22,7 +22,6 @@
 
 #include "Modules/Spindizzy/Assets/Client/BoundaryType.h"
 #include "Modules/Spindizzy/Assets/Client/PhysicalObjectType.h"
-#include "Modules/Spindizzy/IBindingIdentifier.h"
 
 namespace IsoRealms::Spindizzy {
   class BoundaryHandlerInstance;
@@ -35,8 +34,7 @@ namespace IsoRealms::Spindizzy {
    * upon an object of a specified type crossing a boundary of a specified
    * type.
    */
-  class BoundaryHandler final : public IBindingRegistry,
-                                public IBindingIdentifier {
+  class BoundaryHandler final : public IEventBindings {
     public:
 
     /**********************\
@@ -57,17 +55,14 @@ namespace IsoRealms::Spindizzy {
     std::unique_ptr<BoundaryHandlerInstance> createInstance(World* world);
     void executeAction(bool exited);
 
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
+    /*****************************\
+     * Implements IEventBindings *
+    \*****************************/
     IBinding* getBinding(const std::string& id) override;
+    std::string getBindingID(const IBinding* binding) const override;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
-    
-    /*********************************\
-     * Implements IBindingIdentifier *
-    \*********************************/
-    std::string getBindingID(const IBinding* binding) const override;
     
     private:
 
@@ -84,7 +79,7 @@ namespace IsoRealms::Spindizzy {
     Spindizzy& cSpindizzy;
     
     // Action client.
-    ActionClient cActionClient;
+    ActionContext cActionContext;
 
     // Definition data.
     BoundaryType cDefBoundaryType;     /// Boundary type to handle.

@@ -34,7 +34,7 @@ namespace IsoRealms::UI {
   Menu::Menu(UI& ui, IResourceData& data) :
             cResourceData(data),
             cHatHandler(data.getProject().getApplication().getHatHandler()),
-            cDefExitAction(data.getDummyActionClient()),
+            cDefExitAction(data.getDummyActionContext()),
             cDefFont(data),
             cDefColour(data, 1.0f, 1.0f, 1.0f),
             cDefFontSize(DEFAULT_FONT_SIZE),

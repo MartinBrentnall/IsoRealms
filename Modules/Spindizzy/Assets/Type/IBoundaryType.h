@@ -26,7 +26,8 @@ namespace IsoRealms::Spindizzy {
   class IBoundaryType : public IAsset {
     public:
     virtual std::string getBoundaryTypeID() const = 0;
-    virtual IBinding* getBinding(const std::string& id) const = 0;
-    virtual std::string getBindingID(const IBinding* binding) const = 0;
+    virtual IBinding* getBounderyTypeBinding(const std::string& id) const = 0;
+    virtual std::string getBoundaryTypeBindingID(const IBinding* binding) const = 0;
+    virtual void forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const = 0;
   };
 }

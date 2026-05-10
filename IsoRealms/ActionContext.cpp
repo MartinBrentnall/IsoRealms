@@ -16,38 +16,38 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ActionClient.h"
+#include "ActionContext.h"
 
 #include "IResourceData.h"
 #include "Project/Project.h"
 
 namespace IsoRealms {
-  ActionClient::ActionClient(IResourceData& resource, IBindingRegistry& bindingRegistry) :
+  ActionContext::ActionContext(IResourceData& resource, IEventBindings& bindingRegistry) :
             cResource(resource),
             cBindingRegistry(bindingRegistry) {
   }
   
-  bool ActionClient::isReadOnly() const {
+  bool ActionContext::isReadOnly() const {
     return cResource.isReadOnly();
   }
   
-  void ActionClient::setOwner(ProjectFile* owner) {
+  void ActionContext::setOwner(ProjectFile* owner) {
     cResource.setOwner(owner);
   }
   
-  Project& ActionClient::getProject() {
+  Project& ActionContext::getProject() {
     return cResource.getProject();
   }
   
-  Project& ActionClient::getAssetManager() {
+  Project& ActionContext::getAssetManager() {
     return cResource.getAssetManager();
   }
 
-  IResourceData& ActionClient::getResourceData() {
+  IResourceData& ActionContext::getResourceData() {
     return cResource;
   }
 
-  IBindingRegistry* ActionClient::getBindingRegistry() {
+  IEventBindings* ActionContext::getBindingRegistry() {
     return &cBindingRegistry;
   }
 }

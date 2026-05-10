@@ -35,6 +35,7 @@ namespace IsoRealms::Spindizzy {
 
     IBinding* getBinding(const std::string& id) const;
     std::string getBindingID(const IBinding* binding) const;
+    void forEachAvailablePhysicalObjectTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
 
     void addNotifyAssetChangedFunction(IPhysicalObjectTypeListener* listener);
     void removeNotifyAssetChangedFunction(IPhysicalObjectTypeListener* listener);

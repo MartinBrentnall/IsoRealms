@@ -58,16 +58,15 @@ namespace IsoRealms::Spindizzy {
                     cResourceZoneObject(*this),
                     cRuntimePaused(false),
                     cBindingTypeTerrainState("TerrainState", "Spindizzy/Terrain States"),
-                    cRuntimeParameterAlien(project.getLuaState(), nullptr),
-                    cRuntimeParameterFallDistance(project.getLuaState(), nullptr),
+                    cRuntimeParameterAlien(         project.getLuaState(), nullptr),
+                    cRuntimeParameterFallDistance(  project.getLuaState(), nullptr),
                     cRuntimeParameterLaunchLocation(project.getLuaState(), nullptr),
                     cRuntimeParameterLaunchMomentum(project.getLuaState(), nullptr),
-                    cRuntimeParameterPlayer(project.getLuaState(), nullptr),
-                    cRuntimeParameterWall(project.getLuaState(), nullptr),
-                    cRuntimeParameterZone1(project.getLuaState(), nullptr),
-                    cRuntimeParameterZone2(project.getLuaState(), nullptr),
-                    cLuaBinding(project.getLuaState(), this),
-                    cRuntimeLocalBindingIdentifier(nullptr) {
+                    cRuntimeParameterPlayer(        project.getLuaState(), nullptr),
+                    cRuntimeParameterWall(          project.getLuaState(), nullptr),
+                    cRuntimeParameterZone1(         project.getLuaState(), nullptr),
+                    cRuntimeParameterZone2(         project.getLuaState(), nullptr),
+                    cLuaBinding(project.getLuaState(), this) {
     registry.add(&cResourceAlien,              "Alien");
     registry.add(&cResourceBall,               "Ball");
     registry.add(&cResourceBoundaryHandler,    "BoundaryHandler");
@@ -395,97 +394,228 @@ namespace IsoRealms::Spindizzy {
     cRuntimeZoneBindings2[id] = binding2;
   }
 
-  IBinding* Spindizzy::getZoneBinding(const std::string& id) {
+  IBinding* Spindizzy::getZonePropertyBinding(std::map<std::string, IBinding*>& bindings, const std::string& id) {
     std::size_t mSplit = id.find('/');
-    if (mSplit == std::string::npos) {
-      return id == BIND_TO_ZONE            ? static_cast<IBinding*>(&cRuntimeParameterZone1)
-           : id == BIND_TO_PLAYER          ? static_cast<IBinding*>(&cRuntimeParameterPlayer)
-           : id == BIND_TO_FALL_DISTANCE   ? static_cast<IBinding*>(&cRuntimeParameterFallDistance)
-           : id == BIND_TO_LAUNCH_LOCATION ? static_cast<IBinding*>(&cRuntimeParameterLaunchLocation)
-           : id == BIND_TO_LAUNCH_MOMENTUM ? static_cast<IBinding*>(&cRuntimeParameterLaunchMomentum)
-           :                                 nullptr;
-    }
-
     std::string mBindTo = id.substr(0, mSplit);
     std::string mBindPath = id.substr(mSplit + 1);
     if (mBindTo == BIND_TO_ZONE) {
-      std::map<std::string, IBinding*>::iterator mZoneProperty = cRuntimeZoneBindings1.find(mBindPath);
-      if (mZoneProperty != cRuntimeZoneBindings1.end()) {
+      std::map<std::string, IBinding*>::iterator mZoneProperty = bindings.find(mBindPath);
+      if (mZoneProperty != bindings.end()) {
         return mZoneProperty->second;
       }
     }
-    return nullptr;
+    throw ArgumentException("ERROR: Spindizzy::getZonePropertyBinding: No zone property binding found for: \"" + id + "\"");
   }
 
-  IBinding* Spindizzy::getZoneBinding2(const std::string& id) {
+  IBinding* Spindizzy::getBindingFallImpact(const std::string& id) {
     std::size_t mSplit = id.find('/');
-    if (mSplit == std::string::npos) {
-      return id == BIND_TO_ZONE ? static_cast<IBinding*>(&cRuntimeParameterZone2)
-           : id == BIND_TO_WALL ? static_cast<IBinding*>(&cRuntimeParameterWall)
-           :                      nullptr;
-    }
-
     std::string mBindTo = id.substr(0, mSplit);
     std::string mBindPath = id.substr(mSplit + 1);
-    if (mBindTo == BIND_TO_ZONE) {
-      std::map<std::string, IBinding*>::iterator mZoneProperty = cRuntimeZoneBindings2.find(mBindPath);
-      if (mZoneProperty != cRuntimeZoneBindings2.end()) {
-        return mZoneProperty->second;
+    if (mBindTo == BIND_TO_PLAYER) {
+      mSplit = mBindPath.find('/');
+      if (mSplit == std::string::npos) {
+        if (mBindPath == BIND_TO_PLAYER)          {return &cRuntimeParameterPlayer;}
+        if (mBindPath == BIND_TO_FALL_DISTANCE)   {return &cRuntimeParameterFallDistance;}
+        if (mBindPath == BIND_TO_LAUNCH_LOCATION) {return &cRuntimeParameterLaunchLocation;}
+        if (mBindPath == BIND_TO_LAUNCH_MOMENTUM) {return &cRuntimeParameterLaunchMomentum;}
+      } else {
+        return getZonePropertyBinding(cRuntimeZoneBindings1, mBindPath);
+      }
+    } else if (mBindTo == BIND_TO_TERRAIN) {
+      mSplit = mBindPath.find('/');
+      if (mSplit == std::string::npos) {
+        if (mBindPath == BIND_TO_WALL) {return &cRuntimeParameterWall;}
+      } else {
+        return getZonePropertyBinding(cRuntimeZoneBindings2, mBindPath);
       }
     }
-    return nullptr;
+    throw ArgumentException("ERROR: Spindizzy::getBindingWallBounce: No wall bounce binding found for: \"" + id + "\"");
   }
-  
-  std::string Spindizzy::getZoneBindingID1(const IBinding* binding) const {
+
+  std::string Spindizzy::getBindingIDFallImpact(const IBinding* binding) const {
+    if (&cRuntimeParameterPlayer         == binding) {return "Player/Player";}
+    if (&cRuntimeParameterFallDistance   == binding) {return "Player/FallDistance";}
+    if (&cRuntimeParameterLaunchLocation == binding) {return "Player/LaunchLocation";}
+    if (&cRuntimeParameterLaunchMomentum == binding) {return "Player/LaunchMomentum";}
+    if (&cRuntimeParameterZone2          == binding) {return "Terrain/Zone";}
     for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
-      if (binding == mZoneBinding.second) {
-        return BIND_TO_ZONE + "/" + mZoneBinding.first;
+      if (mZoneBinding.second == binding) {
+        return "Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first;
       }
     }
-    
-    if (binding == &cRuntimeParameterZone1) {
-      return BIND_TO_ZONE;
-    }
-    return "";
-  }
-
-  std::string Spindizzy::getZoneBindingID2(const IBinding* binding) const {
     for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings2) {
-      if (binding == mZoneBinding.second) {
-        return BIND_TO_ZONE + "/" + mZoneBinding.first;
+      if (mZoneBinding.second == binding) {
+        return "Terrain/" + BIND_TO_ZONE + "/" + mZoneBinding.first;
       }
-    }
-    
-    if (binding == &cRuntimeParameterZone2) {
-      return BIND_TO_ZONE;
     }
     return "";
   }
 
-  void Spindizzy::setBindingIdentifier(const IBindingIdentifier* bindingIdentifier) const {
-    cRuntimeLocalBindingIdentifier = bindingIdentifier;
+  IBinding* Spindizzy::getBindingPlayer(const std::string& id) {
+    if (id == BIND_TO_PLAYER) {
+      return &cRuntimeParameterPlayer;
+    }
+    return getZonePropertyBinding(cRuntimeZoneBindings1, id);
   }
 
-  IBinding* Spindizzy::getBinding(const std::string& id) {
-    return id == "alien"          ? static_cast<IBinding*>(&cRuntimeParameterAlien)
-         : id == "player"         ? static_cast<IBinding*>(&cRuntimeParameterPlayer)
-         : id == "fallDistance"   ? static_cast<IBinding*>(&cRuntimeParameterFallDistance)
-         : id == "launchLocation" ? static_cast<IBinding*>(&cRuntimeParameterLaunchLocation)
-         : id == "LaunchMomentum" ? static_cast<IBinding*>(&cRuntimeParameterLaunchMomentum)
-         : id == "wall"           ? static_cast<IBinding*>(&cRuntimeParameterWall)
-         : id == "zone"           ? static_cast<IBinding*>(&cRuntimeParameterZone1)
-         :                          nullptr;
+  std::string Spindizzy::getBindingIDPlayer(const IBinding* binding) const {
+    if (&cRuntimeParameterPlayer == binding) {return BIND_TO_PLAYER;}
+    if (&cRuntimeParameterZone1  == binding) {return BIND_TO_ZONE;}
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      if (mZoneBinding.second == binding) {
+        return BIND_TO_ZONE + "/" + mZoneBinding.first;
+      }
+    }
+    return "";
   }
 
-  void Spindizzy::saveBinding(JSONObject object, const IBinding* binding) const {
-    if (cRuntimeLocalBindingIdentifier != nullptr) {
-      object.addString(JSON_LOCAL, cRuntimeLocalBindingIdentifier->getBindingID(binding));
+  void Spindizzy::getTreeItemsPlayer(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{BIND_TO_PLAYER, "Player"});
+    getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE,   "Player's Zone"});
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE + "/" + mZoneBinding.first, "Player's Zone Properties/" + mZoneBinding.first});
     }
   }
 
-  void Spindizzy::releaseBinding(const IBinding* asset) {
-    // Nothing to do.
+  IBinding* Spindizzy::getBindingZone(const std::string& id) {
+    if (id == BIND_TO_ZONE) {
+      return &cRuntimeParameterZone1;
+    }
+    return getZonePropertyBinding(cRuntimeZoneBindings1, id);
   }
+
+  std::string Spindizzy::getBindingIDZone(const IBinding* binding) const {
+    if (&cRuntimeParameterZone1 == binding) {return BIND_TO_ZONE;}
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      if (mZoneBinding.second == binding) {
+        return BIND_TO_ZONE + "/" + mZoneBinding.first;
+      }
+    }
+    return "";
+  }
+
+  void Spindizzy::getTreeItemsZone(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE, BIND_TO_ZONE});
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE + "/" + mZoneBinding.first, "Zone Properties/" + mZoneBinding.first});
+    }
+  }
+
+  IBinding* Spindizzy::getBindingPickUp(const std::string& id) {
+    if (id == BIND_TO_ZONE) {
+      return &cRuntimeParameterZone1;
+    }
+    std::size_t mSplit = id.find('/');
+    std::string mBindTo = id.substr(0, mSplit);
+    std::string mBindPath = id.substr(mSplit + 1);
+    if (mBindTo == BIND_TO_ZONE) {
+      return getZonePropertyBinding(cRuntimeZoneBindings1, mBindPath);
+    }
+    return nullptr;
+  }
+
+  std::string Spindizzy::getBindingIDPickUp(const IBinding* binding) const {
+    if (&cRuntimeParameterZone1 == binding) {return BIND_TO_ZONE;}
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      if (mZoneBinding.second == binding) {
+        return BIND_TO_ZONE + "/" + mZoneBinding.first;
+      }
+    }
+    return "";
+  }
+
+  void Spindizzy::getTreeItemsPickUp(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE, "Pick Up's Zone"});
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      getTreeItemInfoFunction(TreeItemInfo{BIND_TO_ZONE + "/" + mZoneBinding.first, "Pick Up's Zone Properties/" + mZoneBinding.first});
+    }
+  }
+
+  void Spindizzy::getTreeItemsFallImpact(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{"Player/Player",         "Player/Player"});
+    getTreeItemInfoFunction(TreeItemInfo{"Player/FallDistance",   "Player/Player's Fall Distance"});
+    getTreeItemInfoFunction(TreeItemInfo{"Player/LaunchLocation", "Player/Player's Launch Location"});
+    getTreeItemInfoFunction(TreeItemInfo{"Player/LaunchMomentum", "Player/Player's Launch Momentum"});
+    getTreeItemInfoFunction(TreeItemInfo{"Terrain/Zone",          "Terrain/Terrain's Zone"});
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      getTreeItemInfoFunction(TreeItemInfo{"Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Player/Player's Zone Properties/" + mZoneBinding.first});
+    }
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings2) {
+      getTreeItemInfoFunction(TreeItemInfo{"Terrain/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Terrain/Terrain's Zone Properties/" + mZoneBinding.first});
+    }
+  }
+
+  IBinding* Spindizzy::getBindingWallBounce(const std::string& id) {
+    std::size_t mSplit = id.find('/');
+    std::string mBindTo = id.substr(0, mSplit);
+    std::string mBindPath = id.substr(mSplit + 1);
+    if (mBindTo == BIND_TO_PLAYER) {
+      mSplit = mBindPath.find('/');
+      if (mSplit == std::string::npos) {
+        if (mBindPath == BIND_TO_PLAYER) {return &cRuntimeParameterPlayer;}
+        if (mBindPath == BIND_TO_ZONE)   {return &cRuntimeParameterZone1;}
+      } else {
+        return getZonePropertyBinding(cRuntimeZoneBindings1, mBindPath);
+      }
+    } else if (mBindTo == BIND_TO_TERRAIN) {
+      mSplit = mBindPath.find('/');
+      if (mSplit == std::string::npos) {
+        if (mBindPath == BIND_TO_WALL) {return &cRuntimeParameterWall;}
+        if (mBindPath == BIND_TO_ZONE) {return &cRuntimeParameterZone2;}
+      } else {
+        return getZonePropertyBinding(cRuntimeZoneBindings2, mBindPath);
+      }
+    }
+    throw ArgumentException("ERROR: Spindizzy::getBindingWallBounce: No wall bounce binding found for: \"" + id + "\"");
+  }
+
+
+  std::string Spindizzy::getBindingIDWallBounce(const IBinding* binding) const {
+    if (&cRuntimeParameterPlayer == binding) {return "Player/Player";}
+    if (&cRuntimeParameterZone2  == binding) {return "Terrain/Zone";}
+    if (&cRuntimeParameterWall   == binding) {return "Terrain/Wall";}
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      if (mZoneBinding.second == binding) {
+        return "Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first;
+      }
+    }
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings2) {
+      if (mZoneBinding.second == binding) {
+        return "Terrain/" + BIND_TO_ZONE + "/" + mZoneBinding.first;
+      }
+    }
+    return "";
+  }
+
+  void Spindizzy::getTreeItemsWallBounce(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{"Player/Player", "Player/Player"});
+    getTreeItemInfoFunction(TreeItemInfo{"Terrain/Wall",  "Terrain/Wall"});
+    getTreeItemInfoFunction(TreeItemInfo{"Terrain/Zone",  "Terrain/Terrain's Zone"});
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      getTreeItemInfoFunction(TreeItemInfo{"Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Player/Player's Zone Properties/" + mZoneBinding.first});
+    }
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings2) {
+      getTreeItemInfoFunction(TreeItemInfo{"Terrain/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Terrain/Terrain's Zone Properties/" + mZoneBinding.first});
+    }
+  }
+
+  // void Spindizzy::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+  //   getTreeItemInfoFunction(TreeItemInfo{"alien",          "Alien"});
+  //   getTreeItemInfoFunction(TreeItemInfo{"player",         "Player"});
+  //   getTreeItemInfoFunction(TreeItemInfo{"fallDistance",   "Fall Distance"});
+  //   getTreeItemInfoFunction(TreeItemInfo{"launchLocation", "Launch Location"});
+  //   getTreeItemInfoFunction(TreeItemInfo{"launchMomentum", "Launch Momentum"});
+  //   getTreeItemInfoFunction(TreeItemInfo{"wall",           "Wall"});
+  //   getTreeItemInfoFunction(TreeItemInfo{"zone",           "Zone"});
+  // }
+
+  // void Spindizzy::saveBinding(JSONObject object, const IBinding* binding) const {
+  //   // TODO: Remove this.
+  // }
+
+  // void Spindizzy::releaseBinding(const IBinding* asset) {
+  //   // Nothing to do.
+  // }
 
   void Spindizzy::stateChanged(ITexture* asset) {
     for (World* mWorld : cResourceWorld) {
@@ -522,6 +652,27 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
+  Spindizzy::EventBindingsPlayerWallBounce::EventBindingsPlayerWallBounce(Spindizzy& spindizzy) :
+            cSpindizzy(spindizzy) {
+  }
+
+  IBinding* Spindizzy::EventBindingsPlayerWallBounce::getBinding(const std::string& id) {
+    return nullptr;
+  }
+
+  void Spindizzy::EventBindingsPlayerWallBounce::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{"player", "Player"});
+    getTreeItemInfoFunction(TreeItemInfo{"wall",   "Wall"});
+  }
+
+  void Spindizzy::EventBindingsPlayerWallBounce::saveBinding(JSONObject object, const IBinding* binding) const {
+    // Nothing to do.
+  }
+
+  void Spindizzy::EventBindingsPlayerWallBounce::releaseBinding(const IBinding* asset) {
+    // Nothing to do.
+  }
+
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS = "Spindizzy Elements";
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS = "Spindizzy Graphics";
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_LOGIC    = "Spindizzy Logic";
@@ -537,8 +688,6 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::BIND_TO_FALL_DISTANCE   = "FallDistance";
   const std::string Spindizzy::BIND_TO_LAUNCH_LOCATION = "LaunchLocation";
   const std::string Spindizzy::BIND_TO_LAUNCH_MOMENTUM = "LaunchMomentum";
-  const std::string Spindizzy::BIND_TO_PLAYER          = "Player";
-  const std::string Spindizzy::BIND_TO_WALL            = "Wall";
   const std::string Spindizzy::BIND_TO_ZONE            = "Zone";
 
   std::mutex cModuleInstantiationMutex;

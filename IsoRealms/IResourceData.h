@@ -21,7 +21,7 @@
 #include <string>
 
 namespace IsoRealms {
-  class IActionClient;
+  class IActionContext;
   class Metadata;
   class Project;
   class ProjectFile;
@@ -39,7 +39,7 @@ namespace IsoRealms {
     virtual Project& getProject() = 0;
     virtual const Project& getProject() const = 0;
     virtual Project& getAssetManager() = 0;
-    virtual IActionClient& getDummyActionClient() = 0;
+    virtual IActionContext& getDummyActionContext() = 0;
     virtual const Metadata& getMetadata() const = 0;
   };
 }

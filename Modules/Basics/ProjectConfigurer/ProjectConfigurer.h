@@ -31,7 +31,7 @@ namespace IsoRealms::Basics {
   class ProjectConfigurer final : public IScreen,
                                   public IInputHandler,
                                   public IUIStyle,
-                                  public IBindingRegistry {
+                                  public IEventBindings {
     public:
 
     /**********************\
@@ -75,10 +75,12 @@ namespace IsoRealms::Basics {
     float getCodeFontSize() const override;
     IsoRealms::Project& getProject() const override;
 
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
+    /*****************************\
+     * Implements IEventBindings *
+    \*****************************/
+    std::string getBindingID(const IBinding* binding) const override;
     IBinding* getBinding(const std::string& id) override;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
     
@@ -103,7 +105,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_ON_EXIT;
 
     // Action client.
-    ActionClient cActionClient;
+    ActionContext cActionContext;
 
     // Definition data.
     Font cDefFont;

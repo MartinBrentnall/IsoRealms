@@ -96,14 +96,18 @@ namespace IsoRealms::Spindizzy {
     return "Zone/" + cSpindizzy.getResourceID(this);
   }  
   
-  IBinding* ZoneType::getBinding(const std::string& id) const {
-    return cSpindizzy.getZoneBinding(id);
+  IBinding* ZoneType::getBounderyTypeBinding(const std::string& id) const {
+    return cSpindizzy.getBindingZone(id);
   }
   
-  std::string ZoneType::getBindingID(const IBinding* binding) const {
-    return cSpindizzy.getZoneBindingID1(binding);
+  std::string ZoneType::getBoundaryTypeBindingID(const IBinding* binding) const {
+    return cSpindizzy.getBindingIDZone(binding);
   }
   
+  void ZoneType::forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cSpindizzy.getTreeItemsZone(getTreeItemInfoFunction);
+  }
+
   IWorldEditorToolInstance* ZoneType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }

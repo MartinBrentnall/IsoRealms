@@ -51,13 +51,17 @@ namespace IsoRealms::Spindizzy {
   const float PlayerType::DEFAULT_SPIN_SPEED    = 0.0f;
   const float PlayerType::DEFAULT_STEP_REACH    = 0.5f;
 
-  const std::string PlayerType::BIND_TO_PLAYER  = "Player";
-  const std::string PlayerType::BIND_TO_TERRAIN = "Terrain";
-
   PlayerType::PlayerType(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
             cAssets(spindizzy),
-            cActionClient(data, *this),
+            cWallBounceActionContext(data, cWallBounceBindings),
+            cFallImpactActionContext(data, cFallImpactBindings),
+            cFallBounceActionContext(data, cFallBounceBindings),
+            cRespawnActionContext(data, cRespawnBindings),
+            cWallBounceBindings(*this),
+            cFallImpactBindings(*this),
+            cFallBounceBindings(*this),
+            cRespawnBindings(*this),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
             cDefBounceFactor(DEFAULT_BOUNCE_FACTOR),
@@ -71,10 +75,10 @@ namespace IsoRealms::Spindizzy {
             cDefInputX(data, 0.0f),
             cDefInputY(data, 0.0f),
             cDefOrientation(data, 0.0f),
-            cDefRespawnAction(cActionClient),
-            cDefFallImpactAction(cActionClient),
-            cDefFallBounceAction(cActionClient),
-            cDefWallBounceAction(cActionClient),
+            cDefRespawnAction(cRespawnActionContext),
+            cDefFallImpactAction(cFallImpactActionContext),
+            cDefFallBounceAction(cFallBounceActionContext),
+            cDefWallBounceAction(cWallBounceActionContext),
             cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
   }
@@ -120,9 +124,7 @@ namespace IsoRealms::Spindizzy {
     cDefInputY.save(object, JSON_Y_INPUT);
     cDefFallImpactAction.save(object, JSON_ON_FALL_IMPACT);
     cDefFallBounceAction.save(object, JSON_ON_FALL_BOUNCE);
-    cSpindizzy.setBindingIdentifier(this);
     cDefWallBounceAction.save(object, JSON_ON_WALL_BOUNCE);
-    cSpindizzy.setBindingIdentifier(nullptr);
     cDefOrientation.save(object, JSON_ORIENTATION);
   }
 
@@ -263,20 +265,24 @@ namespace IsoRealms::Spindizzy {
     return cSpindizzy.getResourceID(this);
   }
   
-  IBinding* PlayerType::getBinding(const std::string& id) const {
-    return nullptr; // TODO: Implement this.
-  }
+  // IBinding* PlayerType::getBinding(const std::string& id) const {
+  //   return nullptr; // TODO: Implement this.
+  // }
   
-  void PlayerType::saveBinding(JSONObject object, const IBinding* binding) const {
-    // TODO: Implement this.
+  // void PlayerType::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+  //   cSpindizzy.getTreeItemsWallBounce(getTreeItemInfoFunction);
+  // }
+
+  // void PlayerType::saveBinding(JSONObject object, const IBinding* binding) const {
+  //   // TODO: Implement this.
+  // }
+
+  std::string PlayerType::getPhysicalObjectTypeBindingID(const IBinding* binding) const {
+    return cSpindizzy.getBindingIDPlayer(binding);
   }
 
-  std::string PlayerType::getBindingID(const IBinding* binding) const {
-    std::string mBindingID = cSpindizzy.getZoneBindingID2(binding);
-    if (mBindingID != "") {
-      return BIND_TO_TERRAIN + "/" + mBindingID;
-    }
-    return BIND_TO_PLAYER + "/" + cSpindizzy.getZoneBindingID1(binding);
+  void PlayerType::forEachAvailablePhysicalObjectTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cSpindizzy.getTreeItemsPlayer(getTreeItemInfoFunction);
   }
 
   IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
@@ -299,18 +305,13 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  IBinding* PlayerType::getBinding(const std::string& id) {
-    std::size_t mSplit = id.find('/');
-    std::string mBindTo = id.substr(0, mSplit);
-    std::string mBindPath = id.substr(mSplit + 1);
-    return mBindTo == BIND_TO_TERRAIN ? cSpindizzy.getZoneBinding2(mBindPath)
-         : mBindTo == BIND_TO_PLAYER  ? cSpindizzy.getZoneBinding(mBindPath)
-         :                              nullptr;
+  IBinding* PlayerType::getPhysicalObjectTypeBinding(const std::string& id) const {
+    return cSpindizzy.getBindingPlayer(id);
   }
 
-  void PlayerType::releaseBinding(const IBinding* asset) {
-    // Nothing to do.
-  }
+  // void PlayerType::releaseBinding(const IBinding* asset) {
+  //   // Nothing to do.
+  // }
 
   PlayerType::Pen::Pen(PlayerType& parent, WorldEditor& editor) :
             cParent(parent),
@@ -361,5 +362,53 @@ namespace IsoRealms::Spindizzy {
 
   double PlayerType::Pen::getSnapInterval() const {
     return 0.5;
+  }
+
+  PlayerType::FallImpactBindings::FallImpactBindings(PlayerType& parent) :
+            cParent(parent) {
+  }
+
+  IBinding* PlayerType::FallImpactBindings::getBinding(const std::string& id) {
+    return cParent.cSpindizzy.getBindingFallImpact(id);
+  }
+
+  std::string PlayerType::FallImpactBindings::getBindingID(const IBinding* binding) const {
+    return cParent.cSpindizzy.getBindingIDFallImpact(binding);
+  }
+
+  void PlayerType::FallImpactBindings::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cParent.cSpindizzy.getTreeItemsFallImpact(getTreeItemInfoFunction);
+  }
+
+  void PlayerType::FallImpactBindings::saveBinding(JSONObject object, const IBinding* binding) const {
+    // TODO: Implement this.
+  }
+
+  void PlayerType::FallImpactBindings::releaseBinding(const IBinding* asset) {
+    // Nothing to do.
+  }
+
+  PlayerType::WallBounceBindings::WallBounceBindings(PlayerType& parent) :
+            cParent(parent) {
+  }
+
+  IBinding* PlayerType::WallBounceBindings::getBinding(const std::string& id) {
+    return cParent.cSpindizzy.getBindingWallBounce(id);
+  }
+
+  std::string PlayerType::WallBounceBindings::getBindingID(const IBinding* binding) const {
+    return cParent.cSpindizzy.getBindingIDWallBounce(binding);
+  }
+
+  void PlayerType::WallBounceBindings::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cParent.cSpindizzy.getTreeItemsWallBounce(getTreeItemInfoFunction);
+  }
+
+  void PlayerType::WallBounceBindings::saveBinding(JSONObject object, const IBinding* binding) const {
+    // TODO: Implement this.
+  }
+
+  void PlayerType::WallBounceBindings::releaseBinding(const IBinding* asset) {
+    // Nothing to do.
   }
 }

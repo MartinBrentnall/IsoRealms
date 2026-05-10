@@ -48,7 +48,7 @@ namespace IsoRealms {
 
   class Module : public IResourceTypeRegistry,
                  public IResourceData,
-                 public IActionClient {
+                 public IActionContext {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
@@ -91,14 +91,14 @@ namespace IsoRealms {
     Project& getProject() override;
     const Project& getProject() const override;
     Project& getAssetManager() override;
-    IActionClient& getDummyActionClient() override;
+    IActionContext& getDummyActionContext() override;
     const Metadata& getMetadata() const override;
 
-    /****************************\
-     * Implements IActionClient *
-    \****************************/
+    /*****************************\
+     * Implements IActionContext *
+    \*****************************/
     IResourceData& getResourceData() override;
-    IBindingRegistry* getBindingRegistry() override;
+    IEventBindings* getBindingRegistry() override;
 
     virtual ~Module();
 

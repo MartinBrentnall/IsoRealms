@@ -23,7 +23,7 @@
 namespace IsoRealms::Basics {
   SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, unsigned int time) :
             cParent(parent),
-            cDefAction(owner.getDummyActionClient()),
+            cDefAction(owner.getDummyActionContext()),
             cDefTime(time) {
   }
 

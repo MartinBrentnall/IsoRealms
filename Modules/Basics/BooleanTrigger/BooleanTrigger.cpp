@@ -31,8 +31,8 @@ namespace IsoRealms::Basics {
             cDefValue(data, false, [this](bool value) {
               (value ? cDefTrueAction : cDefFalseAction).execute();
             }),
-            cDefTrueAction(data.getDummyActionClient()),
-            cDefFalseAction(data.getDummyActionClient()) {
+            cDefTrueAction(data.getDummyActionContext()),
+            cDefFalseAction(data.getDummyActionContext()) {
   }
   
   BooleanTrigger::BooleanTrigger(Basics& basics, IResourceData& data, JSONObject object) :

@@ -34,11 +34,12 @@ namespace IsoRealms::Spindizzy {
       public:
     
       /**********************************\
-      * Implements IPhysicalObjectType *
+       * Implements IPhysicalObjectType *
       \**********************************/
       std::string getPhysicalObjectTypeID() const override;
-      IBinding* getBinding(const std::string& id) const override;
-      std::string getBindingID(const IBinding* binding) const override;
+      IBinding* getPhysicalObjectTypeBinding(const std::string& id) const override;
+      std::string getPhysicalObjectTypeBindingID(const IBinding* binding) const override;
+      void forEachAvailablePhysicalObjectTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
       void getAssetProperties(IPropertyMaker& owner) override;

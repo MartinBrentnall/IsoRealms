@@ -37,7 +37,7 @@
 #include "CollisionHandler/CollisionHandler.h"
 #include "DebrisChunk/DebrisChunk.h"
 #include "Gyroscope/Gyroscope.h"
-#include "IBindingIdentifier.h"
+#include "IsoRealms/Assets/IEventBindings.h"
 #include "Jewel/Jewel.h"
 #include "LiftType/LiftType.h"
 #include "ModelCycler/ModelCycler.h"
@@ -59,8 +59,7 @@ namespace IsoRealms::Spindizzy {
   template <typename TYPE> struct AssetContainerTraits;
   template <typename TYPE> struct ResourceContainerTraits;
 
-  class Spindizzy : public IModuleHandle,
-                    public IBindingRegistry {
+  class Spindizzy : public IModuleHandle {
     public:
     
     // Module constants.
@@ -264,20 +263,27 @@ namespace IsoRealms::Spindizzy {
 
     void addZoneBinding(IBinding* binding1, IBinding* binding2, const std::string& id);
 
-    IBinding* getZoneBinding(const std::string& id);
-    IBinding* getZoneBinding2(const std::string& id);
-    std::string getZoneBindingID1(const IBinding* binding) const;
-    std::string getZoneBindingID2(const IBinding* binding) const;
+    IBinding* getZonePropertyBinding(std::map<std::string, IBinding*>& bindings, const std::string& id);
+
+    IBinding* getBindingPlayer(const std::string& id);
+    std::string getBindingIDPlayer(const IBinding* binding) const;
+    void getTreeItemsPlayer(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
+
+    IBinding* getBindingZone(const std::string& id);
+    std::string getBindingIDZone(const IBinding* binding) const;
+    void getTreeItemsZone(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
+
+    IBinding* getBindingPickUp(const std::string& id);
+    std::string getBindingIDPickUp(const IBinding* binding) const;
+    void getTreeItemsPickUp(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
     
-    void setBindingIdentifier(const IBindingIdentifier* bindingIdentifier) const;
-    
-    // TODO: Replace with local bindings.
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
-    IBinding* getBinding(const std::string& id) override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
-    void releaseBinding(const IBinding* asset) override;
+    IBinding* getBindingFallImpact(const std::string& id);
+    std::string getBindingIDFallImpact(const IBinding* binding) const;
+    void getTreeItemsFallImpact(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
+
+    IBinding* getBindingWallBounce(const std::string& id);
+    std::string getBindingIDWallBounce(const IBinding* binding) const;
+    void getTreeItemsWallBounce(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const;
 
     /****************************************\
      * Implements IStateListener<ITexture*> *
@@ -304,9 +310,11 @@ namespace IsoRealms::Spindizzy {
     static const std::string BIND_TO_FALL_DISTANCE;
     static const std::string BIND_TO_LAUNCH_LOCATION;
     static const std::string BIND_TO_LAUNCH_MOMENTUM;
-    static const std::string BIND_TO_PLAYER;
-    static const std::string BIND_TO_WALL;
     static const std::string BIND_TO_ZONE;
+
+    inline static const std::string BIND_TO_PLAYER  = "Player";
+    inline static const std::string BIND_TO_TERRAIN = "Terrain";
+    inline static const std::string BIND_TO_WALL    = "Wall";
 
     // External interfaces.
     Project& cProject;
@@ -374,23 +382,38 @@ namespace IsoRealms::Spindizzy {
       std::string cRootFolder;
     };
 
+    class EventBindingsPlayerWallBounce : public IEventBindings {
+      public:
+      EventBindingsPlayerWallBounce(Spindizzy& spindizzy);
+
+      /*****************************\
+       * Implements IEventBindings *
+      \*****************************/
+      IBinding* getBinding(const std::string& id) override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+      void saveBinding(JSONObject object, const IBinding* binding) const override;  
+      void releaseBinding(const IBinding* asset) override;
+
+      private:
+      Spindizzy& cSpindizzy;
+    };
+
     SpindizzyBindingType cBindingTypeTerrainState;
 
     // Action parameters (TODO remove these)
-    LuaBinding<Alien>   cRuntimeParameterAlien;
-    LuaBinding<IFloat>  cRuntimeParameterFallDistance;
-    LuaBinding<IVertex> cRuntimeParameterLaunchLocation;
-    LuaBinding<IVertex> cRuntimeParameterLaunchMomentum;
-    LuaBinding<Player>  cRuntimeParameterPlayer;
-    LuaBinding<Wall>    cRuntimeParameterWall;
-    LuaBinding<Zone>    cRuntimeParameterZone1;
-    LuaBinding<Zone>    cRuntimeParameterZone2;
+    LocalLuaBinding<Alien>   cRuntimeParameterAlien;
+    LocalLuaBinding<IFloat>  cRuntimeParameterFallDistance;
+    LocalLuaBinding<IVertex> cRuntimeParameterLaunchLocation;
+    LocalLuaBinding<IVertex> cRuntimeParameterLaunchMomentum;
+    LocalLuaBinding<Player>  cRuntimeParameterPlayer;
+    LocalLuaBinding<Wall>    cRuntimeParameterWall;
+    LocalLuaBinding<Zone>    cRuntimeParameterZone1;
+    LocalLuaBinding<Zone>    cRuntimeParameterZone2;
 
     // Scripting support.
     LuaBinding<Spindizzy> cLuaBinding;
     std::map<std::string, IBinding*> cRuntimeZoneBindings1;
     std::map<std::string, IBinding*> cRuntimeZoneBindings2;
-    mutable const IBindingIdentifier* cRuntimeLocalBindingIdentifier;
 
     template <class TYPE> friend struct AssetContainerTraits;
     template <class TYPE> friend struct ResourceContainerTraits;

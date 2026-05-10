@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
             cSpindizzy(spindizzy),
             cDefPhysicalObjectTypeA(spindizzy),
             cDefPhysicalObjectTypeB(spindizzy),
-            cDefEnteredAction(data.getDummyActionClient()),
-            cDefExitedAction(data.getDummyActionClient()) {
+            cDefEnteredAction(data.getDummyActionContext()),
+            cDefExitedAction(data.getDummyActionContext()) {
     cDefPhysicalObjectTypeA.addNotifyAssetChangedFunction(this);
     cDefPhysicalObjectTypeB.addNotifyAssetChangedFunction(this);
   }

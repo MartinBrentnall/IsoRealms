@@ -29,7 +29,7 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class ActionRegistry : public AssetClientManager<ActionRegistry, IActionClient, IAction> {
+  class ActionRegistry : public AssetClientManager<ActionRegistry, IActionContext, IAction> {
     public:
     ActionRegistry();
 
@@ -47,6 +47,6 @@ namespace IsoRealms {
       bool isDefaultConfiguration() const override;
     };
 
-    AssetLiteralDummy<IActionClient, IAction, Dummy> cLiteral;
+    AssetLiteralDummy<IActionContext, IAction, Dummy> cLiteral;
   };
 }

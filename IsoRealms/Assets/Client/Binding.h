@@ -25,21 +25,22 @@
 #include "Asset.h"
 
 namespace IsoRealms {
-  class IActionClient;
+  class IActionContext;
   class BindingType;
 
-  class Binding : public Asset<Binding, IBinding, IActionClient> {
+  class Binding : public Asset<Binding, IBinding, IActionContext> {
     public:
-    Binding(IActionClient& owner);
-    Binding(IActionClient& owner, const BindingType* type);
+    Binding(IActionContext& owner);
+    Binding(IActionContext& owner, const BindingType* type);
     std::string getType() const;
     std::string getRootFolder() const;
 
     TreeItemInfo getTreeItemInfo() const override;
+    bool renderTreeItemIcon(const std::string& id) const override;
 
-    /*********************************************\
-     * Implements Asset<IBinding, IActionClient> *
-    \*********************************************/
+    /**********************************************\
+     * Implements Asset<IBinding, IActionContext> *
+    \**********************************************/
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     bool hasClientConfiguration() const;
 
@@ -47,7 +48,6 @@ namespace IsoRealms {
 
     private:
     const BindingType* cDefType;     /// Pointer to the binding type within the argument definition.
-    IBindingRegistry* cDefRegistry;  /// Pointer to the binding registry.
-    std::function<void()> cListener;
+    IEventBindings* cDefRegistry;  /// Pointer to the binding registry.
   };
 }

@@ -36,8 +36,8 @@ namespace IsoRealms::UI {
             cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefFont(data),
             cDefSelectionColour(data, 1.0f, 1.0f, 1.0f),
-            cDefNegativeAction(data.getDummyActionClient()),
-            cDefPositiveAction(data.getDummyActionClient()),
+            cDefNegativeAction(data.getDummyActionContext()),
+            cDefPositiveAction(data.getDummyActionContext()),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   

@@ -30,23 +30,23 @@ namespace IsoRealms {
     cDefLuaState[bindFunction](*cDefValue);
   }
   
-  template class BindingRegistry::Conversion<IActionClient, Action>::Instance<IActionClient, Action>;
-  template class BindingRegistry::Conversion<IResourceData, Boolean>::Instance<IResourceData, Boolean>;  
-  template class BindingRegistry::Conversion<IResourceData, Colour>::Instance<IResourceData, Colour>;
-  template class BindingRegistry::Conversion<IResourceData, Float>::Instance<IResourceData, Float>;  
-  template class BindingRegistry::Conversion<IResourceData, Font>::Instance<IResourceData, Font>;  
-  template class BindingRegistry::Conversion<IResourceData, InputHandler>::Instance<IResourceData, InputHandler>;  
-  template class BindingRegistry::Conversion<IResourceData, Integer>::Instance<IResourceData, Integer>;  
-  template class BindingRegistry::Conversion<IResourceData, Screen>::Instance<IResourceData, Screen>;  
-  template class BindingRegistry::Conversion<IResourceData, String>::Instance<IResourceData, String>;  
-  template class BindingRegistry::Conversion<IResourceData, Vertex>::Instance<IResourceData, Vertex>;  
+  template class BindingRegistry::Conversion<IActionContext, Action>::Instance<IActionContext, Action>;
+  template class BindingRegistry::Conversion<IResourceData,  Boolean>::Instance<IResourceData, Boolean>;  
+  template class BindingRegistry::Conversion<IResourceData,  Colour>::Instance<IResourceData, Colour>;
+  template class BindingRegistry::Conversion<IResourceData,  Float>::Instance<IResourceData, Float>;  
+  template class BindingRegistry::Conversion<IResourceData,  Font>::Instance<IResourceData, Font>;  
+  template class BindingRegistry::Conversion<IResourceData,  InputHandler>::Instance<IResourceData, InputHandler>;  
+  template class BindingRegistry::Conversion<IResourceData,  Integer>::Instance<IResourceData, Integer>;  
+  template class BindingRegistry::Conversion<IResourceData,  Screen>::Instance<IResourceData, Screen>;  
+  template class BindingRegistry::Conversion<IResourceData,  String>::Instance<IResourceData, String>;  
+  template class BindingRegistry::Conversion<IResourceData,  Vertex>::Instance<IResourceData, Vertex>;  
   
   BindingRegistry::BindingRegistry(Project& project) :
             AssetClientManager(&cDummy),
             cProject(project) {
 
     // Set up conversion providers.
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IActionClient, Action>>(      ":Action",       "Core Assets/Actions"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IActionContext, Action>>(      ":Action",       "Core Assets/Actions"));
     cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Boolean>>(     ":Boolean",      "Core Assets/Booleans"));
     cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Colour>>(      ":Colour",       "Core Assets/Colours"));
     cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Float>>(       ":Float",        "Core Assets/Floats"));
@@ -66,12 +66,12 @@ namespace IsoRealms {
     }
   }
 
-  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, JSONObject object, IStateListener* listener, bool required) {
+  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionContext& owner, JSONObject object, IStateListener* listener, bool required) {
     cLocals.setBindings(owner.getBindingRegistry());
     return AssetClientManager::get(client, owner, object, listener, required);
   }
 
-  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionClient& owner, const std::string& id, IStateListener* listener) {
+  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionContext& owner, const std::string& id, IStateListener* listener) {
     cLocals.setBindings(owner.getBindingRegistry());
 
     for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {

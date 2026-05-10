@@ -65,6 +65,12 @@ namespace IsoRealms {
   template class LuaBinding<Spindizzy::WorldView>;
   template class LuaBinding<Spindizzy::Zone>;
 
+  template class LocalLuaBinding<Spindizzy::Alien>;
+  template class LocalLuaBinding<IFloat>;
+  template class LocalLuaBinding<IVertex>;
+  template class LocalLuaBinding<Spindizzy::Player>;
+  template class LocalLuaBinding<Spindizzy::Wall>;
+  template class LocalLuaBinding<Spindizzy::Zone>;
   template class LocalLuaBinding<Spindizzy::ZoneViewOverview>;
 
   namespace Spindizzy {

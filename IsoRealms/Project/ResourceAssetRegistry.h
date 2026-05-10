@@ -26,8 +26,8 @@
 #include "IsoRealms/Types.h"
  
 namespace IsoRealms {
-  using AssetVariant = std::variant<IAssetProvider<IActionClient, IAction>*,
-                                    IAssetProvider<IActionClient, IBinding>*,
+  using AssetVariant = std::variant<IAssetProvider<IActionContext, IAction>*,
+                                    IAssetProvider<IActionContext, IBinding>*,
                                     IAssetProvider<IResourceData, IBindingType>*,
                                     IAssetProvider<IResourceData, IBoolean>*,
                                     IAssetProvider<IResourceData, IColour>*,

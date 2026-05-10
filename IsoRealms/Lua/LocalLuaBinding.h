@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/IBindingRegistry.h"
+#include "IsoRealms/Assets/IEventBindings.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/Project/LuaState.h"
 
@@ -34,10 +34,9 @@ namespace IsoRealms {
    */
   template <typename T> class LocalLuaBinding : public IBinding {
     public:
-    LocalLuaBinding(LuaState& lua, T* value, IBindingRegistry* localBindingRegistry) :
+    LocalLuaBinding(LuaState& lua, T* value) :
               cDefLuaState(lua.getState()),
-              cDefValue(value),
-              cDefLocalBindingRegistry(localBindingRegistry) {
+              cDefValue(value) {
     }
     
     void setValue(T* value) {
@@ -56,7 +55,7 @@ namespace IsoRealms {
     }
 
     void saveAsset(JSONObject object) const override {
-      cDefLocalBindingRegistry->saveBinding(object, this);
+      // cDefLocalBindingRegistry->saveBinding(object, this);
     }
 
     void getAssetProperties(IPropertyMaker& owner) override {
@@ -95,11 +94,12 @@ namespace IsoRealms {
 
     std::string getConversionPath() const override {
       return "";
+      // return cDefLocalBindingRegistry->getBindingID(this);
     }
 
     private:
     sol::state& cDefLuaState;
     T* cDefValue;
-    IBindingRegistry* cDefLocalBindingRegistry;
+//    IEventBindings* cDefLocalBindingRegistry;
   };
 }

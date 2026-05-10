@@ -27,9 +27,9 @@
 
 #include "IsoRealms.h"
 
+#include "IsoRealms/Assets/IEventBindings.h"
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Spindizzy/IBindingIdentifier.h"
 #include "Modules/Spindizzy/SpindizzyAssetRegistry.h"
 
 namespace IsoRealms::Spindizzy {
@@ -41,9 +41,7 @@ namespace IsoRealms::Spindizzy {
 
   // TODO: This class leaks its assets! (i.e. doesn't create literals upon construction)
   class PlayerType final : public IPhysicalObjectType,
-                           public IWorldEditorTool,
-                           public IBindingRegistry,
-                           public IBindingIdentifier {
+                           public IWorldEditorTool {
     public:
 
     /**********************\
@@ -92,9 +90,9 @@ namespace IsoRealms::Spindizzy {
      * Implements IPhysicalObjectType *
     \**********************************/
     std::string getPhysicalObjectTypeID() const override;
-    IBinding* getBinding(const std::string& id) const override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
-    std::string getBindingID(const IBinding* binding) const override;
+    IBinding* getPhysicalObjectTypeBinding(const std::string& id) const override;
+    std::string getPhysicalObjectTypeBindingID(const IBinding* binding) const override;
+    void forEachAvailablePhysicalObjectTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
 
     /*******************************\
      * Implements IWorldEditorTool *
@@ -105,11 +103,13 @@ namespace IsoRealms::Spindizzy {
     void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
-    IBinding* getBinding(const std::string& id) override;
-    void releaseBinding(const IBinding* asset) override;
+    /*****************************\
+     * Implements IEventBindings *
+    \*****************************/
+    // IBinding* getBinding(const std::string& id) override;
+    // void releaseBinding(const IBinding* asset) override;
+    // void saveBinding(JSONObject object, const IBinding* binding) const override;
+    // void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
 
     private:
     
@@ -141,9 +141,6 @@ namespace IsoRealms::Spindizzy {
     static const float DEFAULT_SPIN_SPEED;
     static const float DEFAULT_STEP_REACH;
 
-    static const std::string BIND_TO_PLAYER;
-    static const std::string BIND_TO_TERRAIN;
-
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:
@@ -168,14 +165,55 @@ namespace IsoRealms::Spindizzy {
       WorldEditor& cEditor;
     };
 
+    class FallImpactBindings : public IEventBindings {
+      public:
+      FallImpactBindings(PlayerType& parent);
+      
+      /*****************************\
+       * Implements IEventBindings *
+      \*****************************/
+      IBinding* getBinding(const std::string& id) override;
+      std::string getBindingID(const IBinding* binding) const override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+      void saveBinding(JSONObject object, const IBinding* binding) const override;
+      void releaseBinding(const IBinding* asset) override;
+
+      private:
+      PlayerType& cParent;
+    };
+
+    class WallBounceBindings : public IEventBindings {
+      public:
+      WallBounceBindings(PlayerType& parent);
+
+      /*****************************\
+       * Implements IEventBindings *
+      \*****************************/
+      IBinding* getBinding(const std::string& id) override;
+      std::string getBindingID(const IBinding* binding) const override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+      void saveBinding(JSONObject object, const IBinding* binding) const override;
+      void releaseBinding(const IBinding* asset) override;
+
+      private:
+      PlayerType& cParent;
+    };
+
     // External interfaces.
     Spindizzy& cSpindizzy;     /// Spindizzy module reference.
 
     // Asset registry.
     SpindizzyAssetRegistry cAssets; /// Spindizzy asset registry.
 
-    // Action client.
-    ActionClient cActionClient;
+    // Action contexts.
+    ActionContext cWallBounceActionContext;
+    ActionContext cFallImpactActionContext;
+    ActionContext cFallBounceActionContext;
+    ActionContext cRespawnActionContext;
+    WallBounceBindings cWallBounceBindings;
+    FallImpactBindings cFallImpactBindings;
+    FallImpactBindings cFallBounceBindings;
+    FallImpactBindings cRespawnBindings; // TODO: Correct this.
 
     // Definition data.
     float   cDefAcceleration;     /// Initial speed of movement.

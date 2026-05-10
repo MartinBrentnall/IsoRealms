@@ -27,17 +27,17 @@ namespace IsoRealms::Basics {
   /**
    * Fixed resource definition for scripts (in-line functions).
    */
-  class Script : public IAssetProvider<IActionClient, IAction> {
+  class Script : public IAssetProvider<IActionContext, IAction> {
     public:
     Script(Basics& basics);
 
     unsigned int getNextAvailableFunctionID(unsigned int functionID) const;
 
-    /*****************************************************\
-     * Implements IAssetProvider<IActionClient, IAction> *
-    \*****************************************************/
-    IAction* getAsset(IActionClient& owner, JSONObject object) override;
-    IAction* getAsset(IActionClient& owner) override;
+    /******************************************************\
+     * Implements IAssetProvider<IActionContext, IAction> *
+    \******************************************************/
+    IAction* getAsset(IActionContext& owner, JSONObject object) override;
+    IAction* getAsset(IActionContext& owner) override;
     void releaseAsset(const IAction* asset) override;
     bool hasConfiguration() const override;
     bool renderAssetProviderIcon() const override;
@@ -46,8 +46,8 @@ namespace IsoRealms::Basics {
     private:
     class ScriptAction : public IAction {
       public:
-      ScriptAction(Script& parent, IActionClient& owner, unsigned int index, JSONObject object);
-      ScriptAction(Script& parent, IActionClient& owner, unsigned int index);
+      ScriptAction(Script& parent, IActionContext& owner, unsigned int index, JSONObject object);
+      ScriptAction(Script& parent, IActionContext& owner, unsigned int index);
 
       void destroyInternalAction();
       unsigned int getFunctionID() const;

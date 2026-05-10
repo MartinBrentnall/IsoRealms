@@ -32,7 +32,7 @@ namespace IsoRealms::UI {
    * Menu item that represents a list of project launchers that can be selected.
    */
   class MenuItemLauncherList final : public IMenuItem,
-                                     public IBindingRegistry {
+                                     public IEventBindings {
     public:
     MenuItemLauncherList(const Metadata& metadata, Menu& menu);
     MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object);
@@ -63,10 +63,12 @@ namespace IsoRealms::UI {
     void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
-    /*******************************\
-     * Implements IBindingRegistry *
-    \*******************************/
+    /*****************************\
+     * Implements IEventBindings *
+    \*****************************/
+    std::string getBindingID(const IBinding* binding) const override;
     IBinding* getBinding(const std::string& id) override;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
 
@@ -101,7 +103,7 @@ namespace IsoRealms::UI {
     HatHandler& cHatHandler;
 
     // Action client.
-    ActionClient cActionClient;
+    ActionContext cActionContext;
 
     // Definition data.
     std::string cDefID; /// ID of this menu item for binding.

@@ -32,11 +32,11 @@ namespace IsoRealms::Spindizzy {
 
   BoundaryHandler::BoundaryHandler(Spindizzy& spindizzy, IResourceData& data) :
             cSpindizzy(spindizzy),
-            cActionClient(data, *this),
+            cActionContext(data, *this),
             cDefBoundaryType(spindizzy),
             cDefObjectType(spindizzy),
-            cDefEnteredAction(cActionClient),
-            cDefExitedAction(cActionClient) {
+            cDefEnteredAction(cActionContext),
+            cDefExitedAction(cActionContext) {
   }
 
   BoundaryHandler::BoundaryHandler(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
@@ -57,10 +57,8 @@ namespace IsoRealms::Spindizzy {
   void BoundaryHandler::save(JSONObject object) const {
     cDefBoundaryType.save(object, JSON_BOUNDARY);
     cDefObjectType.save(object, JSON_OBJECT);
-    cSpindizzy.setBindingIdentifier(this);
     cDefEnteredAction.save(object, JSON_ON_ENTRY);
     cDefExitedAction.save(object, JSON_ON_EXIT);
-    cSpindizzy.setBindingIdentifier(nullptr);
   }
 
   void BoundaryHandler::hintInUse(bool inUse) {
@@ -107,6 +105,15 @@ namespace IsoRealms::Spindizzy {
          :                               nullptr;
   }
   
+  void BoundaryHandler::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cDefBoundaryType->forEachAvailableBoundaryTypeTreeItem([&getTreeItemInfoFunction](const TreeItemInfo& mTreeItemInfo) {
+      getTreeItemInfoFunction(TreeItemInfo{BIND_TO_BOUNDARY + "/" + mTreeItemInfo.cID, BIND_TO_BOUNDARY + "/" + mTreeItemInfo.cPath});
+    });
+    cDefObjectType->forEachAvailablePhysicalObjectTypeTreeItem([&getTreeItemInfoFunction](const TreeItemInfo& mTreeItemInfo) {
+      getTreeItemInfoFunction(TreeItemInfo{BIND_TO_OBJECT + "/" + mTreeItemInfo.cID, BIND_TO_OBJECT + "/" + mTreeItemInfo.cPath});
+    });
+  }
+  
   void BoundaryHandler::saveBinding(JSONObject object, const IBinding* binding) const {
     // TODO: Implement this.
   }
@@ -116,7 +123,11 @@ namespace IsoRealms::Spindizzy {
     if (mBindingID != "") {
       return BIND_TO_BOUNDARY + "/" + mBindingID;
     }
-    return BIND_TO_OBJECT + "/" + cDefObjectType.getBindingID(binding);
+    mBindingID = cDefObjectType.getBindingID(binding);
+    if (mBindingID != "") {
+      return BIND_TO_OBJECT + "/" + mBindingID;
+    }
+    return "";
   }
   
   void BoundaryHandler::releaseBinding(const IBinding* asset) {

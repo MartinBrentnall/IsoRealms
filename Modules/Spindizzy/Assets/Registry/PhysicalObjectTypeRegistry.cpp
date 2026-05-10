@@ -27,12 +27,16 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  IBinding* PhysicalObjectTypeRegistry::Dummy::getBinding(const std::string& id) const {
+  IBinding* PhysicalObjectTypeRegistry::Dummy::getPhysicalObjectTypeBinding(const std::string& id) const {
     return nullptr;
   }
 
-  std::string PhysicalObjectTypeRegistry::Dummy::getBindingID(const IBinding* binding) const {
+  std::string PhysicalObjectTypeRegistry::Dummy::getPhysicalObjectTypeBindingID(const IBinding* binding) const {
     return "";
+  }
+
+  void PhysicalObjectTypeRegistry::Dummy::forEachAvailablePhysicalObjectTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    // Nothing to do.
   }
 
   bool PhysicalObjectTypeRegistry::Dummy::renderAssetIcon() const {

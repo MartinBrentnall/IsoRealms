@@ -26,11 +26,15 @@ namespace IsoRealms::Spindizzy {
   }
 
   IBinding* PhysicalObjectType::getBinding(const std::string& id) const {
-    return cAsset->getBinding(id);
+    return cAsset->getPhysicalObjectTypeBinding(id);
   }
 
   std::string PhysicalObjectType::getBindingID(const IBinding* binding) const {
-    return cAsset->getBindingID(binding);
+    return cAsset->getPhysicalObjectTypeBindingID(binding);
+  }
+
+  void PhysicalObjectType::forEachAvailablePhysicalObjectTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cAsset->forEachAvailablePhysicalObjectTypeTreeItem(getTreeItemInfoFunction);
   }
 
   void PhysicalObjectType::addNotifyAssetChangedFunction(IPhysicalObjectTypeListener* listener) {

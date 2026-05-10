@@ -21,13 +21,18 @@
 #include <string>
 
 namespace IsoRealms {
-  class JSONObject;
-  class IBinding;
+  class IEventBindings;
+  class IResourceData;
+  class Project;
+  class ProjectFile;
 
-  class IBindingRegistry {
+  class IActionContext {
     public:
-    virtual IBinding* getBinding(const std::string& id) = 0;
-    virtual void saveBinding(JSONObject object, const IBinding* binding) const = 0;
-    virtual void releaseBinding(const IBinding* asset) = 0;
+    virtual bool isReadOnly() const = 0;
+    virtual void setOwner(ProjectFile* owner) = 0;
+    virtual Project& getProject() = 0;
+    virtual Project& getAssetManager() = 0;
+    virtual IResourceData& getResourceData() = 0;
+    virtual IEventBindings* getBindingRegistry() = 0;
   };
 }

@@ -43,7 +43,7 @@ namespace IsoRealms::UI {
             cDefMinimum(DEFAULT_MINIMUM),
             cDefMaximum(DEFAULT_MAXIMUM),
             cDefSteps(DEFAULT_STEPS),
-            cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
+            cDefValueChangedAction(menu.getResourceData().getDummyActionContext()),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
@@ -55,7 +55,7 @@ namespace IsoRealms::UI {
             cDefMinimum(object.getFloat(JSON_MINIMUM, DEFAULT_MINIMUM)),
             cDefMaximum(object.getFloat(JSON_MAXIMUM, DEFAULT_MAXIMUM)),
             cDefSteps(object.getInteger(JSON_STEPS, DEFAULT_STEPS)),
-            cDefValueChangedAction(menu.getResourceData().getDummyActionClient()),
+            cDefValueChangedAction(menu.getResourceData().getDummyActionContext()),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
     cDefValueChangedAction.init(object, JSON_ON_CHANGE);
   }

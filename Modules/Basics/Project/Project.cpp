@@ -28,8 +28,8 @@ namespace IsoRealms::Basics {
 
   Project::Project(Basics& basics, IResourceData& data) :
             cProject(data.getProject()),
-            cDefReadyAction(data.getDummyActionClient()),
-            cDefEndAction(data.getDummyActionClient()),
+            cDefReadyAction(data.getDummyActionContext()),
+            cDefEndAction(data.getDummyActionContext()),
             cDefRunning(false),
             cDefEditing(false),
             cRuntimeProject(nullptr),

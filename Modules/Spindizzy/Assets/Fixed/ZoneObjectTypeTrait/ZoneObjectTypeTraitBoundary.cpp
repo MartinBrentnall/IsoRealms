@@ -71,12 +71,16 @@ namespace IsoRealms::Spindizzy {
     return "ZoneObject/" + cDefType.getSpindizzy().getResourceID(&cDefType) + "/" + cDefType.getID(this);
   }
   
-  IBinding* ZoneObjectTypeTraitBoundary::getBinding(const std::string& id) const {
+  IBinding* ZoneObjectTypeTraitBoundary::getBounderyTypeBinding(const std::string& id) const {
     return cDefType.getBinding(id);
   }
   
-  std::string ZoneObjectTypeTraitBoundary::getBindingID(const IBinding* binding) const {
+  std::string ZoneObjectTypeTraitBoundary::getBoundaryTypeBindingID(const IBinding* binding) const {
     return cDefType.getBindingID(binding);
+  }
+
+  void ZoneObjectTypeTraitBoundary::forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    // TODO: Implement this.
   }
 
   bool ZoneObjectTypeTraitBoundary::renderAssetIcon() const {

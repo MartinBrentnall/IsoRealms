@@ -23,7 +23,7 @@
 #include "Assets/Client/ResourceOwner.h"
 #include "Editing/Property/IPropertyMaker.h"
 #include "Editing/Property/PropertyNativeString.h"
-#include "IActionClient.h"
+#include "IActionContext.h"
 #include "IResource.h"
 #include "IResourceData.h"
 #include "Project/Registry/AssetIDException.h"
@@ -43,7 +43,7 @@ namespace IsoRealms {
 
   template <typename MODULE, typename RESOURCE> class Resource : public IResource,
                                                                  public IResourceData,
-                                                                 public IActionClient {
+                                                                 public IActionContext {
     public:
     Resource(ResourceType& parent, MODULE& module, ProjectFile* ownerProject) :
               cParent(parent),
@@ -209,7 +209,7 @@ namespace IsoRealms {
       return cParent.getProject();
     }
 
-    IActionClient& getDummyActionClient() override {
+    IActionContext& getDummyActionContext() override {
       return *this;
     }
 
@@ -217,7 +217,7 @@ namespace IsoRealms {
       return cParent.getMetadata();
     }
 
-    IBindingRegistry* getBindingRegistry() override {
+    IEventBindings* getBindingRegistry() override {
       return nullptr;
     }
     

@@ -27,12 +27,16 @@ namespace IsoRealms::Spindizzy {
     return "";
   }
 
-  IBinding* BoundaryTypeRegistry::Dummy::getBinding(const std::string& id) const {
+  IBinding* BoundaryTypeRegistry::Dummy::getBounderyTypeBinding(const std::string& id) const {
     return nullptr;
   }
 
-  std::string BoundaryTypeRegistry::Dummy::getBindingID(const IBinding* binding) const {
+  std::string BoundaryTypeRegistry::Dummy::getBoundaryTypeBindingID(const IBinding* binding) const {
     return "";
+  }
+
+  void BoundaryTypeRegistry::Dummy::forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    // Nothing to do.
   }
 
   bool BoundaryTypeRegistry::Dummy::renderAssetIcon() const {

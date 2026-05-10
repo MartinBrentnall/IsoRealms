@@ -20,27 +20,27 @@
 
 #include <string>
 
-#include "IActionClient.h"
+#include "IActionContext.h"
 
 namespace IsoRealms {
   class ProjectFile;
 
-  class ActionClient : public IActionClient {
+  class ActionContext : public IActionContext {
     public:
-    ActionClient(IResourceData& resource, IBindingRegistry& bindingRegistry);
+    ActionContext(IResourceData& resource, IEventBindings& bindingRegistry);
 
-    /****************************\
-     * Implements IActionClient *
-    \****************************/
+    /*****************************\
+     * Implements IActionContext *
+    \*****************************/
     bool isReadOnly() const override;
     void setOwner(ProjectFile* owner) override;
     Project& getProject() override;
     Project& getAssetManager() override;
     IResourceData& getResourceData() override;
-    IBindingRegistry* getBindingRegistry() override;
+    IEventBindings* getBindingRegistry() override;
     
     private:
     IResourceData& cResource;
-    IBindingRegistry& cBindingRegistry;
+    IEventBindings& cBindingRegistry;
   };
 }

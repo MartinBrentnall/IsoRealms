@@ -20,19 +20,19 @@
 
 #include <optional>
 
-#include "IsoRealms/ActionClient.h"
+#include "IsoRealms/ActionContext.h"
 #include "IsoRealms/Assets/Client/BindingType.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Binding::Binding(IActionClient& owner) :
+  Binding::Binding(IActionContext& owner) :
             Binding(owner, nullptr) {
   }
 
-  Binding::Binding(IActionClient& owner, const BindingType* type) :
-            Asset<Binding, IBinding, IActionClient>(owner),
+  Binding::Binding(IActionContext& owner, const BindingType* type) :
+            Asset<Binding, IBinding, IActionContext>(owner),
             cDefType(type),
             cDefRegistry(owner.getBindingRegistry()) {
   }
@@ -46,6 +46,20 @@ namespace IsoRealms {
   }
 
   TreeItemInfo Binding::getTreeItemInfo() const {
+    if (cDefRegistry != nullptr) {
+      std::string mBindingID = cDefRegistry->getBindingID(cAsset);
+      if (!mBindingID.empty()) {
+        mBindingID = "~/" + mBindingID;
+        std::string mPath = "";
+        forEachAvailableTreeItem([&mPath, &mBindingID](const TreeItemInfo& treeItemInfo) {
+          if (treeItemInfo.cID == mBindingID) {
+            mPath = treeItemInfo.cPath;
+          }
+        });
+        return TreeItemInfo{mBindingID, mPath};
+      }
+    }
+
     TreeItemInfo mTreeItemInfo = Asset::getTreeItemInfo();
     std::string mConversionPath = cAsset->getConversionPath();
     if (!mConversionPath.empty()) {
@@ -69,12 +83,36 @@ namespace IsoRealms {
     return TreeItemInfo{mTreeItemInfo.cID, mBindingPath};
   }
 
+  bool Binding::renderTreeItemIcon(const std::string& id) const {
+    if (cDefRegistry != nullptr) {
+      return false;
+      // TODO: Implement this.
+      // if (cDefRegistry->renderIcon(id)) {
+      //   return true;
+      // }
+    }
+    return Asset::renderTreeItemIcon(id);
+  }
+
   void Binding::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     std::string mType = getType();
 
+    // Add event related bindings.
+    if (cDefRegistry != nullptr) {
+      cDefRegistry->forEachAvailableTreeItem([&getTreeItemInfoFunction](const TreeItemInfo& mTreeItemInfo) {
+        getTreeItemInfoFunction(TreeItemInfo{"~/" + mTreeItemInfo.cID, "Event Related/" + mTreeItemInfo.cPath});
+      });
+    }
+
     // Case where any type is allowed.
     if (mType.empty()) {
-      cManager.getAssetManager().forEachEntry<IBinding>(getTreeItemInfoFunction);
+      if (cDefRegistry != nullptr) {
+        cManager.getAssetManager().forEachEntry<IBinding>([&getTreeItemInfoFunction](const TreeItemInfo& mTreeItemInfo) {
+          getTreeItemInfoFunction(TreeItemInfo{mTreeItemInfo.cID, "Global/" + mTreeItemInfo.cPath});
+        });
+      } else {
+        cManager.getAssetManager().forEachEntry<IBinding>(getTreeItemInfoFunction);
+      }
       return;
     }
 

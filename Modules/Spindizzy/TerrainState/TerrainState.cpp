@@ -116,7 +116,7 @@ namespace IsoRealms::Spindizzy {
               return mResourceID.substr(mResourceID.find_last_of('/') + 1);
             }, *this, this),
             cDefValue(state),
-            cDefHintAction(owner.getDummyActionClient()),
+            cDefHintAction(owner.getDummyActionContext()),
             cDefIcon(owner),
             cDefIconScale(iconScale),
             cRuntimeValue(state),

@@ -83,12 +83,16 @@ namespace IsoRealms::Spindizzy {
     return "PickUp/" + cSpindizzy.getResourceID(this);
   }
   
-  IBinding* PickUpType::getBinding(const std::string& id) const {
-    return cSpindizzy.getZoneBinding(id);
+  IBinding* PickUpType::getBounderyTypeBinding(const std::string& id) const {
+    return cSpindizzy.getBindingPickUp(id);
   }
 
-  std::string PickUpType::getBindingID(const IBinding* binding) const {
-    return cSpindizzy.getZoneBindingID1(binding);
+  std::string PickUpType::getBoundaryTypeBindingID(const IBinding* binding) const {
+    return cSpindizzy.getBindingIDPickUp(binding);
+  }
+
+  void PickUpType::forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cSpindizzy.getTreeItemsPickUp(getTreeItemInfoFunction);
   }
 
   IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor& editor, IResourceData& owner) {

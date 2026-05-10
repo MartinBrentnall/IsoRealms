@@ -21,10 +21,10 @@
 #include <set>
 #include <string>
 
-#include "IsoRealms/ActionClient.h"
+#include "IsoRealms/ActionContext.h"
 #include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Common/AnimatedInteger.h"
-#include "IsoRealms/Assets/IBindingRegistry.h"
+#include "IsoRealms/Assets/IEventBindings.h"
 #include "IsoRealms/Assets/Literal/LiteralColour.h"
 #include "IsoRealms/Assets/Literal/LiteralFloat.h"
 #include "IsoRealms/Assets/Literal/LiteralString.h"

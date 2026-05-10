@@ -30,13 +30,13 @@ namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_ON_EXIT        = "onExit";
 
   ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data) :
-            cActionClient(data, *this),
+            cActionContext(data, *this),
             cDefFont(data),
             cDefCodeFont(data),
             cDefFontSize(0.03f),
             cDefCodeFontSize(0.02f),
-            cDefExitAction(cActionClient),
-            cDefEditorAction(cActionClient),
+            cDefExitAction(cActionContext),
+            cDefEditorAction(cActionContext),
             cProjectConfigurationUI(data.getProject(), *this, [this]() {
               cDefExitAction.execute();
             }, [this](IEditable* editor) {
@@ -45,7 +45,7 @@ namespace IsoRealms::Basics {
               cBindingEditor.setValue(nullptr);
             }),
             cLuaBinding(data.getProject().getLuaState(), this),
-            cBindingEditor(data.getProject().getLuaState(), nullptr, this) {
+            cBindingEditor(data.getProject().getLuaState(), nullptr) {
   }
 
   ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data, JSONObject object) :
@@ -157,8 +157,19 @@ namespace IsoRealms::Basics {
     return cProjectConfigurationUI.getProject();
   }  
 
+  std::string ProjectConfigurer::getBindingID(const IBinding* binding) const {
+    if (binding == &cBindingEditor) {
+      return "editor";
+    }
+    return "";
+  }
+
   IBinding* ProjectConfigurer::getBinding(const std::string& id) {
     return id == "editor" ? &cBindingEditor : nullptr;
+  }
+
+  void ProjectConfigurer::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    getTreeItemInfoFunction(TreeItemInfo{"editor", "editor"});
   }
 
   void ProjectConfigurer::saveBinding(JSONObject object, const IBinding* binding) const {

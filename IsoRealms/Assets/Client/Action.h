@@ -21,14 +21,14 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IAction.h"
-#include "IsoRealms/IActionClient.h"
+#include "IsoRealms/IActionContext.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Action : public Asset<Action, IAction, IActionClient> {
+  class Action : public Asset<Action, IAction, IActionContext> {
     public:
-    Action(IActionClient& owner);
+    Action(IActionContext& owner);
     void execute();
   };
 }

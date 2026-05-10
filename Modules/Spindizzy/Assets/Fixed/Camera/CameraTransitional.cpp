@@ -32,10 +32,10 @@ namespace IsoRealms::Spindizzy {
             cDefStart(view),
             cDefEnd(view),
             cDefDuration(DEFAULT_DURATION),
-            cDefStartDepartureAction(view.getResourceData().getDummyActionClient()),
-            cDefStartArrivalAction(view.getResourceData().getDummyActionClient()),
-            cDefEndDepartureAction(view.getResourceData().getDummyActionClient()),
-            cDefEndArrivalAction(view.getResourceData().getDummyActionClient()),
+            cDefStartDepartureAction(view.getResourceData().getDummyActionContext()),
+            cDefStartArrivalAction(view.getResourceData().getDummyActionContext()),
+            cDefEndDepartureAction(view.getResourceData().getDummyActionContext()),
+            cDefEndArrivalAction(view.getResourceData().getDummyActionContext()),
             cRuntimeYawStateNotifier(nullptr),
             cLuaBinding(view.getSpindizzy().getProject().getLuaState(), this) {
   }

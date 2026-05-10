@@ -34,15 +34,15 @@ namespace IsoRealms::Basics {
   const std::string Function::JSON_VARIABLE      = "variable";
 
   Function::Function(Basics& basics, IResourceData& data) :
-            Function(basics, data.getDummyActionClient()) {
+            Function(basics, data.getDummyActionContext()) {
   }
     
   Function::Function(Basics& basics, IResourceData& data, JSONObject object) :
-            Function(basics, data.getDummyActionClient(), object, true) {
+            Function(basics, data.getDummyActionContext(), object, true) {
   }
 
   void Function::registerAssets(ResourceAssetRegistry& assets) {
-    assets.addProvider<IActionClient, IAction>(this, "", "Call a Function");
+    assets.addProvider<IActionContext, IAction>(this, "", "Call a Function");
   }
     
   void Function::save(JSONObject object, bool script) const {
@@ -80,7 +80,7 @@ namespace IsoRealms::Basics {
         });
       }
       owner.createPropertyAdd(metadata.getPropertyData("BindingAdd"), "New...", [this, &owner, &metadata]() {
-        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
+        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionContext(), getNextAvailableName("newBinding"))).get();
         return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](IPropertyMaker& owner) {
           return mNewBinding->getProperties(owner, metadata);
         }, [this, mNewBinding]() {
@@ -113,7 +113,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
-  Function::Function(Basics& basics, IActionClient& owner) :
+  Function::Function(Basics& basics, IActionContext& owner) :
             cProject(basics.getProject()),
             cBasics(basics),
             cResourceData(owner.getResourceData()),
@@ -121,7 +121,7 @@ namespace IsoRealms::Basics {
             cDefID(basics.getAvailableFunctionID()) {
   }
 
-  Function::Function(Basics& basics, IActionClient& owner, JSONObject object, bool init) :
+  Function::Function(Basics& basics, IActionContext& owner, JSONObject object, bool init) :
             Function(basics, owner) {
     if (init) {
       for (JSONValue mArgumentValue : object.getArray(JSON_ARGUMENTS)) {
@@ -145,7 +145,7 @@ namespace IsoRealms::Basics {
         });
       }
       owner.createPropertyAdd(metadata.getPropertyData("BindingAdd"), "New...", [this, &owner, &metadata]() {
-        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionClient(), getNextAvailableName("newBinding"))).get();
+        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionContext(), getNextAvailableName("newBinding"))).get();
         return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](IPropertyMaker& owner) {
           return mNewBinding->getProperties(owner, metadata);
         }, [this, mNewBinding]() {
@@ -213,14 +213,14 @@ namespace IsoRealms::Basics {
     return cDefID;
   }
 
-  IAction* Function::getAsset(IActionClient& owner, JSONObject object) {
+  IAction* Function::getAsset(IActionContext& owner, JSONObject object) {
     std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner, object);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
   }
 
-  IAction* Function::getAsset(IActionClient& owner) {
+  IAction* Function::getAsset(IActionContext& owner) {
     std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
@@ -258,7 +258,7 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  Function::Call::Call(Function& parent, IActionClient& owner) :
+  Function::Call::Call(Function& parent, IActionContext& owner) :
             cParent(parent),
             cOwner(owner) {
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
@@ -266,7 +266,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  Function::Call::Call(Function& parent, IActionClient& owner, JSONObject object) :
+  Function::Call::Call(Function& parent, IActionContext& owner, JSONObject object) :
             Call(parent, owner) {
     if (!cParent.cDefArgumentDefinitions.empty()) {
       for (JSONValue mBindingValue : object.getArray(JSON_BINDINGS)) {

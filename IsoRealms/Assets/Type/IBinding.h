@@ -25,7 +25,7 @@
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
-  class IBindingRegistry;
+  class IEventBindings;
 
   class IBinding : public IAsset {
     public:
