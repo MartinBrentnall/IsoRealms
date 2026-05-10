@@ -33,9 +33,7 @@ namespace IsoRealms::Spindizzy {
             cEastWall(nullptr),
             cSouthWall(nullptr),
             cNorthWall(nullptr),
-            cLaunched(false), // TODO: Logic of the code dictates that this should not be needed?
-            cLaunchLocation(),
-            cLaunchMomentum() {
+            cLaunched(false) { // TODO: Logic of the code dictates that this should not be needed?
   }
   
   void PhysicsObject::setPhysicalState(PhysicalState& state) {
@@ -54,25 +52,14 @@ namespace IsoRealms::Spindizzy {
     setPhysicalState(state);
     cObject->leaveSurface(surface);
     if (!cLaunched) {
-      cLaunchLocation.x = cLocation.x;
-      cLaunchLocation.y = cLocation.y;
-      cLaunchLocation.z = cLocation.z;
-//       cLaunchLocation.x = cMovable->getX();
-//       cLaunchLocation.y = cMovable->getY();
-//       cLaunchLocation.z = cMovable->getZ();
-      cLaunchMomentum = cMomentum;
       cLaunched = true;
     }
   }
   
-  void PhysicsObject::mountSurface(ISurface* surface, PhysicalState& state, float fallHeight) {
+  void PhysicsObject::mountSurface(ISurface* surface, PhysicalState& state) {
     cLaunched = false;
     cSurface = surface;
     setPhysicalState(state);
-    LiteralFloat mFallDistance(fallHeight);
-    cSpindizzy.bindFallDistance(&mFallDistance);
-    cSpindizzy.bindLaunchLocation(&cLaunchLocation);
-    cSpindizzy.bindLaunchMomentum(&cLaunchMomentum);
     cObject->impactSurface();
 
     // Object may have been destroyed by surface impact.
@@ -84,11 +71,9 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void PhysicsObject::bounceSurface(ISurface* surface, PhysicalState& state, float fallHeight) {
+  void PhysicsObject::bounceSurface(ISurface* surface, PhysicalState& state) {
     cSurface = surface;
     cSurface->notifyImpact();
-    LiteralFloat mFallDistance(fallHeight);
-    cSpindizzy.bindFallDistance(&mFallDistance);
     cObject->bounceSurface();
     setPhysicalState(state);
   }

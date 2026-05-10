@@ -145,5 +145,7 @@ namespace IsoRealms::Spindizzy {
      * levitation).
      */
     virtual ISurface* getObjectSurface() = 0;
+
+    virtual void objectApex() = 0;
   };
 }

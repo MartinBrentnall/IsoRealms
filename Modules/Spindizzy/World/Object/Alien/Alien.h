@@ -86,6 +86,7 @@ namespace IsoRealms::Spindizzy {
     void leaveSurface(ISurface* surface) override;
     void bounceWall(Wall* wall) override;
     ISurface* getObjectSurface() override;
+    void objectApex() override;
 
     /***************************\
      * Implements IWorldObject *

@@ -42,15 +42,13 @@ namespace IsoRealms::Spindizzy {
     Wall* cSouthWall;
     Wall* cNorthWall;
     bool cLaunched;
-    LiteralVertex cLaunchLocation;
-    LiteralVertex cLaunchMomentum;
     
     PhysicsObject(Spindizzy& spindizzy, IPhysicalObject* object);
     
     void setPhysicalState(PhysicalState& state);
     void leaveSurface(ISurface* surface, PhysicalState& state);
-    void mountSurface(ISurface* surface, PhysicalState& state, float fallHeight);
-    void bounceSurface(ISurface* surface, PhysicalState& state, float fallHeight);
+    void mountSurface(ISurface* surface, PhysicalState& state);
+    void bounceSurface(ISurface* surface, PhysicalState& state);
     bool isHuggable(Wall* wall) const;
     void hugWall(Wall* wall, PhysicalState& state);
     void unhugWall(Wall* wall, PhysicalState& state);

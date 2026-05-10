@@ -221,6 +221,10 @@ namespace IsoRealms::Spindizzy {
     return &cDefSurfaceOutsideHomeZone;
   }
 
+  void Alien::objectApex() {
+    // Nothing to do.
+  }
+
   bool Alien::contains(const LiteralVertex& location) const {
     return location.x >= cDefX - 0.5f && location.x <= cDefX + 0.5f && location.y >= cDefY - 0.5f && location.y <= cDefY + 0.5f && location.z >= cDefZ * 0.5f && location.z <= (cDefZ + 2.0f) * 0.5f;
   }

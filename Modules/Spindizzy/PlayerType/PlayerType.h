@@ -70,7 +70,8 @@ namespace IsoRealms::Spindizzy {
     void bounceWall(Player* player, Zone* zone);
     void bounceSurface();
     void leaveSurface(Player* player, Zone* zone);
-    void respawn(LiteralVertex& launchMomentum);
+    void objectApex(Player* player);
+    void respawn();
     float getXThrust() const;
     float getYThrust() const;
     float getSpinSpeed() const;
@@ -120,6 +121,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_BOUNCE_FACTOR;
     static const std::string JSON_HEIGHT;
     static const std::string JSON_HUG_MOMENTUM;
+    static const std::string JSON_ON_APEX;
     static const std::string JSON_ON_FALL_BOUNCE;
     static const std::string JSON_ON_FALL_IMPACT;
     static const std::string JSON_ON_LEAVE_SURFACE;
@@ -230,11 +232,13 @@ namespace IsoRealms::Spindizzy {
     ActionContext cFallBounceActionContext;
     ActionContext cRespawnActionContext;
     ActionContext cLeaveSurfaceActionContext;
+    ActionContext cApexActionContext;
     WallBounceBindings cWallBounceBindings;
     FallImpactBindings cFallImpactBindings;
     FallImpactBindings cFallBounceBindings;
     FallImpactBindings cRespawnBindings; // TODO: Correct this.
     PlayerBindings cLeaveSurfaceBindings;
+    PlayerBindings cApexBindings;
 
     // Definition data.
     float   cDefAcceleration;     /// Initial speed of movement.
@@ -255,6 +259,7 @@ namespace IsoRealms::Spindizzy {
     Action  cDefFallBounceAction; /// Action to perform upon bouncing from a surface.
     Action  cDefWallBounceAction; /// Action to perform upon bouncing from a wall.
     Action  cDefLeaveSurfaceAction; /// Action to perform upon leaving a surface.
+    Action  cDefApexAction; /// Action to perform upon reaching the apex of a jump.
 
     // Runtime data.
     float cRuntimeSpinSpeed;      /// Current speed at which the player spins while moving.

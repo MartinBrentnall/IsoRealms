@@ -238,9 +238,6 @@ namespace IsoRealms::Spindizzy {
     void bind(Wall* wall);
     void bind1(Zone* zone);
     void bind2(Zone* zone);
-    void bindFallDistance(IFloat* value);
-    void bindLaunchLocation(IVertex* value);
-    void bindLaunchMomentum(IVertex* value);
 
     /***********************\
      * Scripting Interface *
@@ -308,7 +305,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string TOOL_DELETE_ZONE;
 
     static const std::string BIND_TO_FALL_DISTANCE;
-    static const std::string BIND_TO_LAUNCH_LOCATION;
     static const std::string BIND_TO_LAUNCH_MOMENTUM;
     static const std::string BIND_TO_ZONE;
 
@@ -400,15 +396,11 @@ namespace IsoRealms::Spindizzy {
 
     SpindizzyBindingType cBindingTypeTerrainState;
 
-    // Action parameters (TODO remove these)
-    LocalLuaBinding<Alien>   cRuntimeParameterAlien;
-    LocalLuaBinding<IFloat>  cRuntimeParameterFallDistance;
-    LocalLuaBinding<IVertex> cRuntimeParameterLaunchLocation;
-    LocalLuaBinding<IVertex> cRuntimeParameterLaunchMomentum;
-    LocalLuaBinding<Player>  cRuntimeParameterPlayer;
-    LocalLuaBinding<Wall>    cRuntimeParameterWall;
-    LocalLuaBinding<Zone>    cRuntimeParameterZone1;
-    LocalLuaBinding<Zone>    cRuntimeParameterZone2;
+    // Event bindings.
+    LocalLuaBinding<Player> cRuntimeParameterPlayer;
+    LocalLuaBinding<Wall>   cRuntimeParameterWall;
+    LocalLuaBinding<Zone>   cRuntimeParameterZone1;
+    LocalLuaBinding<Zone>   cRuntimeParameterZone2;
 
     // Scripting support.
     LuaBinding<Spindizzy> cLuaBinding;

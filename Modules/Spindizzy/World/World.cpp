@@ -1020,6 +1020,9 @@ namespace IsoRealms::Spindizzy {
 
       // Airborne: Momentum is not affected by thrust
       for (unsigned int i = 0; i < milliseconds; i++) {
+        if (mObjectState.cMomentum.z + cDefGravity < 0.0f && mObjectState.cMomentum.z >= 0.0f) {
+          object->cObject->objectApex();
+        }
         mObjectState.cMomentum.z += cDefGravity;
         mObjectState.cLocation.x += mObjectState.cMomentum.x;
         mObjectState.cLocation.y += mObjectState.cMomentum.y;
@@ -1158,10 +1161,10 @@ namespace IsoRealms::Spindizzy {
         double mRemainingHeight = object->cLocation.z - mState.cLocation.z;
         float mFallHeight = ((mState.cMomentum.z * mState.cMomentum.z) / -cDefGravity) / 2.0 + mRemainingHeight + -(mState.cMomentum.z) / 2.0;
         if (mMountedSurface->getSurfaceBounce() == 0.0f || mFallHeight == 0.0f) {
-          object->mountSurface(mMountedSurface, mState, mFallHeight);
+          object->mountSurface(mMountedSurface, mState);
         } else {
           // NO MOMENTUM CONTROL WHILE AIRBORNE!
-          object->bounceSurface(mMountedSurface, mState, mFallHeight);
+          object->bounceSurface(mMountedSurface, mState);
           mState.cMomentum.z      = std::sqrt(std::max(0.0f, (mFallHeight + object->cObject->getBounceFactor()) * -cDefGravity * 2.0f));
           PhysicalState mNewState = calculateNewState(object, cDefBounceTime);
           mState.cMomentum.x      = mNewState.cMomentum.x;

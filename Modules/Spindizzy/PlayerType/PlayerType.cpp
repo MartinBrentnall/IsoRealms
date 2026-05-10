@@ -28,6 +28,7 @@ namespace IsoRealms::Spindizzy {
   const std::string PlayerType::JSON_BOUNCE_FACTOR  = "bounceFactor";
   const std::string PlayerType::JSON_HEIGHT         = "height";
   const std::string PlayerType::JSON_HUG_MOMENTUM   = "hugMomentum";
+  const std::string PlayerType::JSON_ON_APEX        = "onApex";
   const std::string PlayerType::JSON_ON_FALL_BOUNCE = "onFallBounce";
   const std::string PlayerType::JSON_ON_FALL_IMPACT = "onFallImpact";
   const std::string PlayerType::JSON_ON_LEAVE_SURFACE = "onLeaveSurface";
@@ -60,11 +61,13 @@ namespace IsoRealms::Spindizzy {
             cFallBounceActionContext(data, cFallBounceBindings),
             cRespawnActionContext(data, cRespawnBindings),
             cLeaveSurfaceActionContext(data, cLeaveSurfaceBindings),
+            cApexActionContext(data, cApexBindings),
             cWallBounceBindings(*this),
             cFallImpactBindings(*this),
             cFallBounceBindings(*this),
             cRespawnBindings(*this),
             cLeaveSurfaceBindings(*this),
+            cApexBindings(*this),
             cDefAcceleration(DEFAULT_ACCELERATION),
             cDefSpinSpeed(DEFAULT_SPIN_SPEED),
             cDefBounceFactor(DEFAULT_BOUNCE_FACTOR),
@@ -83,6 +86,7 @@ namespace IsoRealms::Spindizzy {
             cDefFallBounceAction(cFallBounceActionContext),
             cDefWallBounceAction(cWallBounceActionContext),
             cDefLeaveSurfaceAction(cLeaveSurfaceActionContext),
+            cDefApexAction(cApexActionContext),
             cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
     cSpindizzy.added(this);
   }
@@ -107,6 +111,7 @@ namespace IsoRealms::Spindizzy {
     cDefWallBounceAction.init(object, JSON_ON_WALL_BOUNCE);
     cDefRespawnAction.init(object, JSON_ON_RESPAWN);
     cDefLeaveSurfaceAction.init(object, JSON_ON_LEAVE_SURFACE);
+    cDefApexAction.init(object, JSON_ON_APEX);
   }
 
   void PlayerType::registerAssets(ResourceAssetRegistry& assets) {
@@ -132,6 +137,7 @@ namespace IsoRealms::Spindizzy {
     cDefWallBounceAction.save(object, JSON_ON_WALL_BOUNCE);
     cDefOrientation.save(object, JSON_ORIENTATION);
     cDefLeaveSurfaceAction.save(object, JSON_ON_LEAVE_SURFACE);
+    cDefApexAction.save(object, JSON_ON_APEX);
   }
 
   void PlayerType::hintInUse(bool inUse) {
@@ -168,6 +174,7 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyTreeSelector( metadata.getPropertyData("OnBounce"),             cDefFallBounceAction);
     owner.createPropertyTreeSelector( metadata.getPropertyData("OnWallBounce"),         cDefWallBounceAction);
     owner.createPropertyTreeSelector( metadata.getPropertyData("OnLeaveSurface"),       cDefLeaveSurfaceAction);
+    owner.createPropertyTreeSelector( metadata.getPropertyData("OnApex"      ),         cDefApexAction);
 
     // Misc
     owner.createPropertyNativeInteger(metadata.getPropertyData("RespawnDelay"),         [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;});
@@ -213,8 +220,12 @@ namespace IsoRealms::Spindizzy {
     cDefLeaveSurfaceAction.execute();
   }
 
-  void PlayerType::respawn(LiteralVertex& launchMomentum) {
-    cSpindizzy.bindLaunchMomentum(&launchMomentum);
+  void PlayerType::objectApex(Player* player) {
+    cSpindizzy.bind(player);
+    cDefApexAction.execute();
+  }
+
+  void PlayerType::respawn() {
     cDefRespawnAction.execute();
   }
 

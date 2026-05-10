@@ -118,7 +118,7 @@ namespace IsoRealms::Spindizzy {
             if (cRuntimeFirstSpawn) {
               cRuntimeFirstSpawn = false;
             } else {
-              cDefType->respawn(cRuntimePhysicsObject.cLaunchMomentum);
+              cDefType->respawn();
             }
 
             if (cRuntimePhysicsObject.cSurface != nullptr) {
@@ -129,7 +129,7 @@ namespace IsoRealms::Spindizzy {
             cRuntimePhysicsObject.cLocation.y = cRuntimeRespawnData.top().cY;
             cRuntimePhysicsObject.cSurface    = cRuntimeRespawnData.top().cSurface;
             cRuntimePhysicsObject.cLocation.z = cRuntimePhysicsObject.cSurface->getHeightAt(cRuntimePhysicsObject.cLocation.x, cRuntimePhysicsObject.cLocation.y);
-            cDefType->respawn(cRuntimePhysicsObject.cLaunchMomentum);
+            cDefType->respawn();
           }
           cRuntimeZone = cDefWorld.getZone(&cRuntimePhysicsObject.cLocation);
           cRuntimePhysicsObject.cMomentum.x = 0.0f;
@@ -312,5 +312,9 @@ namespace IsoRealms::Spindizzy {
 
   ISurface* Player::getObjectSurface() {
     return nullptr;
+  }
+
+  void Player::objectApex() {
+    cDefType->objectApex(this);
   }
 }

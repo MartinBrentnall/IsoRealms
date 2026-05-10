@@ -144,4 +144,8 @@ namespace IsoRealms::Spindizzy {
   ISurface* Debris::getObjectSurface() {
     return nullptr;
   }
+
+  void Debris::objectApex() {
+    // Nothing to do.
+  }
 }

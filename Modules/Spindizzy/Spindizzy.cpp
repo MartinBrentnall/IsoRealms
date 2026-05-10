@@ -58,14 +58,10 @@ namespace IsoRealms::Spindizzy {
                     cResourceZoneObject(*this),
                     cRuntimePaused(false),
                     cBindingTypeTerrainState("TerrainState", "Spindizzy/Terrain States"),
-                    cRuntimeParameterAlien(         project.getLuaState(), nullptr),
-                    cRuntimeParameterFallDistance(  project.getLuaState(), nullptr),
-                    cRuntimeParameterLaunchLocation(project.getLuaState(), nullptr),
-                    cRuntimeParameterLaunchMomentum(project.getLuaState(), nullptr),
-                    cRuntimeParameterPlayer(        project.getLuaState(), nullptr),
-                    cRuntimeParameterWall(          project.getLuaState(), nullptr),
-                    cRuntimeParameterZone1(         project.getLuaState(), nullptr),
-                    cRuntimeParameterZone2(         project.getLuaState(), nullptr),
+                    cRuntimeParameterPlayer(project.getLuaState(), nullptr),
+                    cRuntimeParameterWall(  project.getLuaState(), nullptr),
+                    cRuntimeParameterZone1( project.getLuaState(), nullptr),
+                    cRuntimeParameterZone2( project.getLuaState(), nullptr),
                     cLuaBinding(project.getLuaState(), this) {
     registry.add(&cResourceAlien,              "Alien");
     registry.add(&cResourceBall,               "Ball");
@@ -299,14 +295,10 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Spindizzy::bind(              Alien*   value) {cRuntimeParameterAlien.setValue(         value);}
-  void Spindizzy::bind(              Player*  value) {cRuntimeParameterPlayer.setValue(        value);}
-  void Spindizzy::bind1(             Zone*    value) {cRuntimeParameterZone1.setValue(         value);}
-  void Spindizzy::bind2(             Zone*    value) {cRuntimeParameterZone2.setValue(         value);}
-  void Spindizzy::bind(              Wall*    value) {cRuntimeParameterWall.setValue(          value);}
-  void Spindizzy::bindFallDistance(  IFloat*  value) {cRuntimeParameterFallDistance.setValue(  value);}
-  void Spindizzy::bindLaunchLocation(IVertex* value) {cRuntimeParameterLaunchLocation.setValue(value);}
-  void Spindizzy::bindLaunchMomentum(IVertex* value) {cRuntimeParameterLaunchMomentum.setValue(value);}
+  void Spindizzy::bind( Player* value) {cRuntimeParameterPlayer.setValue(value);}
+  void Spindizzy::bind1(Zone*   value) {cRuntimeParameterZone1.setValue( value);}
+  void Spindizzy::bind2(Zone*   value) {cRuntimeParameterZone2.setValue( value);}
+  void Spindizzy::bind( Wall*   value) {cRuntimeParameterWall.setValue(  value);}
 
   void Spindizzy::setPause(bool pause) {
     cRuntimePaused = pause;
@@ -414,10 +406,7 @@ namespace IsoRealms::Spindizzy {
     if (mBindTo == BIND_TO_PLAYER) {
       mSplit = mBindPath.find('/');
       if (mSplit == std::string::npos) {
-        if (mBindPath == BIND_TO_PLAYER)          {return &cRuntimeParameterPlayer;}
-        if (mBindPath == BIND_TO_FALL_DISTANCE)   {return &cRuntimeParameterFallDistance;}
-        if (mBindPath == BIND_TO_LAUNCH_LOCATION) {return &cRuntimeParameterLaunchLocation;}
-        if (mBindPath == BIND_TO_LAUNCH_MOMENTUM) {return &cRuntimeParameterLaunchMomentum;}
+        if (mBindPath == BIND_TO_PLAYER) {return &cRuntimeParameterPlayer;}
       } else {
         return getZonePropertyBinding(cRuntimeZoneBindings1, mBindPath);
       }
@@ -433,11 +422,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string Spindizzy::getBindingIDFallImpact(const IBinding* binding) const {
-    if (&cRuntimeParameterPlayer         == binding) {return "Player/Player";}
-    if (&cRuntimeParameterFallDistance   == binding) {return "Player/FallDistance";}
-    if (&cRuntimeParameterLaunchLocation == binding) {return "Player/LaunchLocation";}
-    if (&cRuntimeParameterLaunchMomentum == binding) {return "Player/LaunchMomentum";}
-    if (&cRuntimeParameterZone2          == binding) {return "Terrain/Zone";}
+    if (&cRuntimeParameterPlayer == binding) {return "Player/Player";}
+    if (&cRuntimeParameterZone2  == binding) {return "Terrain/Zone";}
     for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
       if (mZoneBinding.second == binding) {
         return "Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first;
@@ -532,11 +518,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Spindizzy::getTreeItemsFallImpact(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-    getTreeItemInfoFunction(TreeItemInfo{"Player/Player",         "Player/Player"});
-    getTreeItemInfoFunction(TreeItemInfo{"Player/FallDistance",   "Player/Player's Fall Distance"});
-    getTreeItemInfoFunction(TreeItemInfo{"Player/LaunchLocation", "Player/Player's Launch Location"});
-    getTreeItemInfoFunction(TreeItemInfo{"Player/LaunchMomentum", "Player/Player's Launch Momentum"});
-    getTreeItemInfoFunction(TreeItemInfo{"Terrain/Zone",          "Terrain/Terrain's Zone"});
+    getTreeItemInfoFunction(TreeItemInfo{"Player/Player", "Player/Player"});
+    getTreeItemInfoFunction(TreeItemInfo{"Terrain/Zone",  "Terrain/Terrain's Zone"});
     for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
       getTreeItemInfoFunction(TreeItemInfo{"Player/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Player/Player's Zone Properties/" + mZoneBinding.first});
     }
@@ -597,24 +580,6 @@ namespace IsoRealms::Spindizzy {
       getTreeItemInfoFunction(TreeItemInfo{"Terrain/" + BIND_TO_ZONE + "/" + mZoneBinding.first, "Terrain/Terrain's Zone Properties/" + mZoneBinding.first});
     }
   }
-
-  // void Spindizzy::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-  //   getTreeItemInfoFunction(TreeItemInfo{"alien",          "Alien"});
-  //   getTreeItemInfoFunction(TreeItemInfo{"player",         "Player"});
-  //   getTreeItemInfoFunction(TreeItemInfo{"fallDistance",   "Fall Distance"});
-  //   getTreeItemInfoFunction(TreeItemInfo{"launchLocation", "Launch Location"});
-  //   getTreeItemInfoFunction(TreeItemInfo{"launchMomentum", "Launch Momentum"});
-  //   getTreeItemInfoFunction(TreeItemInfo{"wall",           "Wall"});
-  //   getTreeItemInfoFunction(TreeItemInfo{"zone",           "Zone"});
-  // }
-
-  // void Spindizzy::saveBinding(JSONObject object, const IBinding* binding) const {
-  //   // TODO: Remove this.
-  // }
-
-  // void Spindizzy::releaseBinding(const IBinding* asset) {
-  //   // Nothing to do.
-  // }
 
   void Spindizzy::stateChanged(ITexture* asset) {
     for (World* mWorld : cResourceWorld) {
@@ -684,10 +649,7 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::TOOL_MOVE_ZONE   = "ZoneMoveTool";
   const std::string Spindizzy::TOOL_DELETE_ZONE = "ZoneDeleteTool";
 
-  const std::string Spindizzy::BIND_TO_FALL_DISTANCE   = "FallDistance";
-  const std::string Spindizzy::BIND_TO_LAUNCH_LOCATION = "LaunchLocation";
-  const std::string Spindizzy::BIND_TO_LAUNCH_MOMENTUM = "LaunchMomentum";
-  const std::string Spindizzy::BIND_TO_ZONE            = "Zone";
+  const std::string Spindizzy::BIND_TO_ZONE = "Zone";
 
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<Spindizzy>> ModuleInstances;

@@ -145,4 +145,8 @@ namespace IsoRealms::Spindizzy {
   ISurface* Physics::getObjectSurface() {
     return nullptr;
   }
+
+  void Physics::objectApex() {
+    std::cout << "TODO: Physics::objectApex" << std::endl;
+  }
 }
