@@ -69,6 +69,7 @@ namespace IsoRealms::Spindizzy {
     void impactSurface(Player* player);
     void bounceWall(Player* player, Zone* zone);
     void bounceSurface();
+    void leaveSurface(Player* player, Zone* zone);
     void respawn(LiteralVertex& launchMomentum);
     float getXThrust() const;
     float getYThrust() const;
@@ -121,6 +122,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string JSON_HUG_MOMENTUM;
     static const std::string JSON_ON_FALL_BOUNCE;
     static const std::string JSON_ON_FALL_IMPACT;
+    static const std::string JSON_ON_LEAVE_SURFACE;
     static const std::string JSON_ON_WALL_BOUNCE;
     static const std::string JSON_ON_RESPAWN;
     static const std::string JSON_ORIENTATION;
@@ -199,6 +201,23 @@ namespace IsoRealms::Spindizzy {
       PlayerType& cParent;
     };
 
+    class PlayerBindings : public IEventBindings {
+      public:
+      PlayerBindings(PlayerType& parent);
+
+      /*****************************\
+       * Implements IEventBindings *
+      \*****************************/
+      IBinding* getBinding(const std::string& id) override;
+      std::string getBindingID(const IBinding* binding) const override;
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+      void saveBinding(JSONObject object, const IBinding* binding) const override;
+      void releaseBinding(const IBinding* asset) override;
+
+      private:
+      PlayerType& cParent;
+    };
+
     // External interfaces.
     Spindizzy& cSpindizzy;     /// Spindizzy module reference.
 
@@ -210,10 +229,12 @@ namespace IsoRealms::Spindizzy {
     ActionContext cFallImpactActionContext;
     ActionContext cFallBounceActionContext;
     ActionContext cRespawnActionContext;
+    ActionContext cLeaveSurfaceActionContext;
     WallBounceBindings cWallBounceBindings;
     FallImpactBindings cFallImpactBindings;
     FallImpactBindings cFallBounceBindings;
     FallImpactBindings cRespawnBindings; // TODO: Correct this.
+    PlayerBindings cLeaveSurfaceBindings;
 
     // Definition data.
     float   cDefAcceleration;     /// Initial speed of movement.
@@ -233,6 +254,7 @@ namespace IsoRealms::Spindizzy {
     Action  cDefFallImpactAction; /// Action to perform upon impact with a surface.
     Action  cDefFallBounceAction; /// Action to perform upon bouncing from a surface.
     Action  cDefWallBounceAction; /// Action to perform upon bouncing from a wall.
+    Action  cDefLeaveSurfaceAction; /// Action to perform upon leaving a surface.
 
     // Runtime data.
     float cRuntimeSpinSpeed;      /// Current speed at which the player spins while moving.

@@ -293,7 +293,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Player::leaveSurface(ISurface* surface) {
-    // Nothing to do.
+    cDefType->leaveSurface(this, cRuntimeZone);
   }
 
   void Player::bounceWall(Wall* wall) {

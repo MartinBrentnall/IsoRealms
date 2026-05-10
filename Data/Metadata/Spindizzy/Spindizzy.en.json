@@ -301,6 +301,7 @@
         "OnImpact": {"name": "Action on Impact", "description": "Action to perform upon falling onto a floor surface that doesn't cause the player to bounce."},
         "OnBounce": {"name": "Action on Bounce", "description": "Action to perform upon falling onto a floor surface that causes the player to bounce."},
         "OnWallBounce": {"name": "Action on Wall Bounce", "description": "Action to perform upon bouncing from hitting a wall."},
+        "OnLeaveSurface": {"name": "Action on Leave Surface", "description": "Action to perform upon leaving a surface."},
         "RespawnDelay": {"name": "Respawn Delay", "description": "Amount of time in milliseconds after being destroyed before player craft respawns."}
       }
     },
