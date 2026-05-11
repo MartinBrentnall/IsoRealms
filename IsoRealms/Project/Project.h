@@ -31,7 +31,6 @@
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Lua/LuaBinding.h"
-#include "IsoRealms/Lua/LocalLuaBinding.h"
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/Types.h"
 

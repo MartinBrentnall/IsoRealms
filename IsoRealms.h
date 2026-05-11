@@ -51,7 +51,6 @@
 #include "IsoRealms/Input/MouseButtonMapping.h"
 #include "IsoRealms/IResourceTypeRegistry.h"
 #include "IsoRealms/Lua/LuaBinding.h"
-#include "IsoRealms/Lua/LocalLuaBinding.h"
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Persistence/JSONObject.h"

@@ -115,7 +115,7 @@ namespace IsoRealms::UI {
 
     // Scripting support.
     LuaBinding<MenuItemLauncherList> cLuaBinding;                 /// Allows menu launcher lists to be bound to lua variables.
-    LocalLuaBinding<const ProjectLaunchConfiguration> cLauncherBinding; /// The binding to the selected launcher.
+    LuaBinding<const ProjectLaunchConfiguration> cLauncherBinding; /// The binding to the selected launcher.
 
     // Private functions.
     bool up();

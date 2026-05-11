@@ -120,6 +120,6 @@ namespace IsoRealms::Basics {
     // Scripting Interface.
     LuaBinding<ProjectConfigurer> cLuaBinding;
     
-    LocalLuaBinding<IEditable> cBindingEditor;
+    LuaBinding<IEditable> cBindingEditor;
   };
 }

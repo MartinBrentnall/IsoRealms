@@ -393,10 +393,10 @@ namespace IsoRealms::Spindizzy {
     SpindizzyBindingType cBindingTypeTerrainState;
 
     // Event bindings.
-    LocalLuaBinding<Player> cRuntimeParameterPlayer;
-    LocalLuaBinding<Wall>   cRuntimeParameterWall;
-    LocalLuaBinding<Zone>   cRuntimeParameterZone1;
-    LocalLuaBinding<Zone>   cRuntimeParameterZone2;
+    LuaBinding<Player> cRuntimeParameterPlayer;
+    LuaBinding<Wall>   cRuntimeParameterWall;
+    LuaBinding<Zone>   cRuntimeParameterZone1;
+    LuaBinding<Zone>   cRuntimeParameterZone2;
 
     // Scripting support.
     LuaBinding<Spindizzy> cLuaBinding;

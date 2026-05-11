@@ -30,10 +30,6 @@ namespace IsoRealms {
     cDefLuaState[bindFunction](cDefValue);
   }
 
-  template <typename TYPE> void LocalLuaBinding<TYPE>::bind(const std::string& bindFunction) const {
-    cDefLuaState[bindFunction](cDefValue);
-  }
-
   template class LuaBinding<Action>;
   template class LuaBinding<Application>;
   template class LuaBinding<IAction>;
@@ -52,9 +48,6 @@ namespace IsoRealms {
   template class LuaBinding<Options>;
   template class LuaBinding<Project>;
   template class LuaBinding<ProjectLaunchConfiguration>;
-
-  template class LocalLuaBinding<IEditable>;
-  template class LocalLuaBinding<const ProjectLaunchConfiguration>;
 
   bool operator==(const IColour& a, const IColour& b) {
     return &a == &b;

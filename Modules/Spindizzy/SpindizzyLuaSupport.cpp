@@ -40,10 +40,6 @@ namespace IsoRealms {
     cDefLuaState[bindFunction](cDefValue);
   }
   
-  template <typename TYPE> void LocalLuaBinding<TYPE>::bind(const std::string& bindFunction) const {
-    cDefLuaState[bindFunction](cDefValue);
-  }
-
   template class LuaBinding<Spindizzy::Alien>;
   template class LuaBinding<Spindizzy::AlienType>;
   template class LuaBinding<Spindizzy::Boundary>;
@@ -64,14 +60,7 @@ namespace IsoRealms {
   template class LuaBinding<Spindizzy::World>;
   template class LuaBinding<Spindizzy::WorldView>;
   template class LuaBinding<Spindizzy::Zone>;
-
-  template class LocalLuaBinding<Spindizzy::Alien>;
-  template class LocalLuaBinding<IFloat>;
-  template class LocalLuaBinding<IVertex>;
-  template class LocalLuaBinding<Spindizzy::Player>;
-  template class LocalLuaBinding<Spindizzy::Wall>;
-  template class LocalLuaBinding<Spindizzy::Zone>;
-  template class LocalLuaBinding<Spindizzy::ZoneViewOverview>;
+  template class LuaBinding<Spindizzy::ZoneViewOverview>;
 
   namespace Spindizzy {
 
