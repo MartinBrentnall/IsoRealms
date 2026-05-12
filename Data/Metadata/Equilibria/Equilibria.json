@@ -1,0 +1,336 @@
+{
+  "description": "Equilibria Game Engine resources.",
+  "assets": {
+    "CameraGameplay": {
+      "description": "A camera shows a single zone at a time, with ability to view the zone from different isometric angles.",
+      "properties": {
+        "InitialAngle": {"name": "Initial Angle", "description": "Angle at which this camera is initially set."},
+        "RotateDuration": {"name": "Rotate Duration", "description": "The time it takes to rotate the camera from one angle to another (in ms)."}
+      }
+    },
+    "CameraLinked": {
+      "description": "A camera copies the state of another view's camera.",
+      "properties": {
+      }
+    },
+    "CameraOverview": {
+      "description": "A camera that shows an entire world from above.",
+      "properties": {
+      }
+    },
+    "CameraTransitional": {
+      "description": "A camera that transitions between two other configured cameras.",
+      "properties": {
+        "Start": {"name": "State A", "description": "State A of this camera."},
+        "End": {"name": "State B", "description": "State B of this camera."},
+        "Duration": {"name": "Duration", "description": "The time it takes to transition between the two states (in ms)."},
+        "OnDepartureFromStart": {"name": "On Departure from State A", "description": "Action to perform when this camera leaves state A."},
+        "OnArriveAtEnd": {"name": "On Arrival at State B", "description": "Action to perform when this camera reaches state B."},
+        "OnDepartureFromEnd": {"name": "On Departure from State B", "description": "Action to perform when this camera leaves state B."},
+        "OnArrivalFromStart": {"name": "On Arrival at State A", "description": "Action to perform when this camera reaches state A."}
+      }
+    },
+    "CameraVariant": {
+      "description": "A camera that combines the states of other cameras.",
+      "properties": {
+        "Location": {"name": "Location", "description": "Use the location of the specified camera to position this camera."},
+        "Angle": {"name": "Angle", "description": "Use the angle of the specified camera to rotate this camera."},
+        "Tilt": {"name": "Tilt", "description": "Use the tilt of the specified camera to tilt this camera."},
+        "Zoom": {"name": "Zoom", "description": "Use the zoom of the specified camera to zoom this camera."}
+      }
+    },
+    "SurfacePatternComposite": {
+      "description": "A composite pattern that combines multiple surface patterns.",
+      "properties": {
+        "Patterns": {"name": "Patterns", "description": "The patterns to combine."},
+        "Pattern": {"name": "Pattern", "description": "A pattern to combine."}
+      }
+    },
+    "SurfacePatternOutline": {
+      "description": "Renders outlines around surfacess to give them a cartoonish appearance.",
+      "properties": {
+      }
+    },
+    "SurfacePatternSplitVariant": {
+      "description": "Renders surfaces using different styles depending on whether the tiles are split into triangles.",
+      "properties": {
+        "Regular": {"name": "Regular Pattern", "description": "Pattern to use for tiles without a split."},
+        "SplitA": {"name": "Split A Pattern", "description": "Pattern to use for one half of split tiles."},
+        "SplitB": {"name": "Split B Pattern", "description": "Pattern to use for other half of split tiles."}
+      }
+    },
+    "SurfacePatternTile": {
+      "description": "Renders surfaces using a single texture.",
+      "properties": {
+        "Texture": {"name": "Texture", "description": "Texture to apply to surfaces."}
+      }
+    },
+    "WallPatternCap": {
+      "description": "Renders walls with using different textures at the top, bottom, and middle sections.",
+      "properties": {
+        "Top": {"name": "Top", "description": "Texture applied to top part of walls."},
+        "Middle": {"name": "Middle", "description": "Texture applied between top and bottom part of walls."},
+        "Bottom": {"name": "Bottom", "description": "Texture applied to bottom part of walls."}
+      }
+    },
+    "WallPatternComposite": {
+      "description": "A composite pattern that combines multiple wall patterns.",
+      "properties": {
+        "Patterns": {"name": "Patterns", "description": "The patterns to combine."},
+        "Pattern": {"name": "Pattern", "description": "A pattern to combine."}
+      }
+    },
+    "WallPatternOutline": {
+      "description": "Renders outlines around walls to give them a cartoonish appearance.",
+      "properties": {
+      }
+    },
+    "WallPatternTile": {
+      "description": "Renders walls using a single texture.",
+      "properties": {
+        "Texture": {"name": "Texture", "description": "Texture to apply to walls."}
+      }
+    },
+    "ZoneViewTypeActual": {
+      "description": "Renders actual contents of zones.",
+      "properties": {
+      }
+    },
+    "ZoneViewTypeOverview": {
+      "description": "Renders coloured squares to represent zones.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitBoundary": {
+      "description": "Applies a boundary to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitCellLocation": {
+      "description": "Applies a cell location to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitChaser": {
+      "description": "Applies a chase behaviour to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitModel": {
+      "description": "Applies a visual representation to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitMovable": {
+      "description": "Applies the ability to move to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitPhysics": {
+      "description": "Applies physics to this entity.",
+      "properties": {
+      }
+    },
+    "ZoneObjectTypeTraitSpinner": {
+      "description": "Applies a visual representation to this entity that spins as it moves.",
+      "properties": {
+      }
+    }
+  },
+  "resources": {
+    "Alien": {
+      "singular": "Alien",
+      "plural": "Aliens",
+      "description": "Physical entities that chases a specific target, capable of triggering collisions with other entities.",
+      "category": "Equilibria Elements",
+      "properties": {
+        "Appearance": {"name": "Appearance", "description": "Model to visually represent this type of alien."},
+        "Target": {"name": "Target", "description": "Target that aliens of this type will attempt to move towards"},
+        "Acceleration": {"name": "Acceleration", "description": "Rate at which the aliens of this type increase their movement speed"},
+        "Friction": {"name": "Friction", "description": "Rate at which acceleration drops off for aliens of this type."},
+        "SpinSpeed": {"name": "Spin Speed", "description": "Speed at which aliens of this type spin as they move.  This is purely a visual effect."},
+        "Height": {"name": "Height", "description": "Height of aliens of this type in number of platform blocks."},
+        "Radius": {"name": "Radius", "description": "Radius of aliens of this type in number of platform blocks."},
+        "HugThreshold": {"name": "Hug Momentum Threshold", "description": "Speed under which aliens of this type will stick to a wall and slide along it instead of bouncing off it."}
+      }
+    },
+    "BoundaryHandler": {
+      "singular": "Boundary Handler",
+      "plural": "Boundary Handlers",
+      "description": "Define actions to be performed when objects of a specific type enter or leave fixed boundaries of a specific type.  This can be used to define on players encountering different types of pick-ups, or upon entering and leaving zones.",
+      "category": "Equilibria Logic",
+      "properties": {
+        "Entity": {"name": "Entity Type", "description": "Type of entity to react upon boundary entry and exit."},
+        "Boundary": {"name": "Boundary Type", "description": "Type of boundary to test entry and exit of."},
+        "OnEntry": {"name": "Action on Entry", "description": "Action to perform each time an entity of the selected type enters a boundary of the selected type."},
+        "OnExit": {"name": "Action on Exit", "description": "Action to perform each time an entity of the selected type leaving a boundary of the selected type."}
+      }
+    },
+    "CollisionHandler": {
+      "singular": "Collision Handler",
+      "plural": "Collision Handlers",
+      "description": "Define actions to be performed when objects of one type collide with object of another type.  This can be used to apply damage to the player upon collision with alien crafts.",
+      "category": "Equilibria Logic",
+      "properties": {
+        "EntityA": {"name": "Entity Type A", "description": "React upon collisions between entities of this type and Entity Type B."},
+        "EntityB": {"name": "Entity Type B", "description": "React upon collisions between entities of this type and Entity Type A."},
+        "OnCollision": {"name": "Action on Collision", "description": "Action to perform each time two entities of each respective type begin to overlap "},
+        "OnSeparation": {"name": "Action on Separation", "description": "Action to perform each time two entities of each respective type cease to overlap."}
+      }
+    },
+    "Lift": {
+      "singular": "Lift",
+      "plural": "Lifts",
+      "description": "Vertically moving platforms that enable players and other objects to reach higher places.",
+      "category": "Equilibria Elements",
+      "properties": {
+        "Appearance": {"name": "Appearance", "description": "Model to visually represent lifts of this type."},
+        "State": {"name": "State", "description": "Determine whether all lifts of this type are moving or not."},
+        "OnMove": {"name": "Action on Movement", "description": "Action to perform upon movement of the lift.  The action is triggered each time the lift begins movement from or passes through a whole block height."}
+      }
+    },
+    "PickUp": {
+      "singular": "Pick Up",
+      "plural": "Pick Ups",
+      "description": "Fixed-place objects that can be collected by players or other objects.  Note that interaction between entity type and pick-up types can be defined in Boundary Handlers.",
+      "category": "Equilibria Elements",
+      "properties": {
+        "Appearance": {"name": "Appearance", "description": "Model to visually represent pick-ups of this type."}
+      }
+    },
+    "Player": {
+      "singular": "Player Craft",
+      "plural": "Player Crafts",
+      "description": "Crafts whose movements are controlled through external inputs.",
+      "category": "Equilibria Elements",
+      "properties": {
+        "Radius": {"name": "Radius", "description": "Radius of players of this type in number of platform blocks."},
+        "Height": {"name": "Height", "description": "Height of players of this type in number of platform blocks."},
+        "Acceleration": {"name": "Acceleration", "description": "Rate at which the players of this type increase their movement speed"},
+        "WallBounce": {"name": "Wall Bounce", "description": "Factor of speed loss when bouncing off of walls."},
+        "StepReach": {"name": "Step Reach", "description": "Maximum height of steps that players of this type can climb."},
+        "HugMomentumThreshold": {"name": "Hug Momentum Threshold", "description": "Speed under which players of this type will stick to a wall and slide along it instead of bouncing off it."},
+        "Appearance": {"name": "Appearance", "description": "Model to visually represent this type of player."},
+        "SpinSpeed": {"name": "Spin Speed", "description": "Speed at which players of this type spin as they move.  This is purely a visual effect."},
+        "InputX": {"name": "Input X Movement", "description": "Input controlling movement of players of this type along the X axis."},
+        "InputY": {"name": "Input Y Movement", "description": "Input controlling movement of players of this type along the Y axis."},
+        "InputThrust": {"name": "Input Thrust", "description": "Input for doubling movement speed of players of this type."},
+        "ViewOrientation": {"name": "View Orientation", "description": "Movement inputs are adjusted according to angle of the specified view.  This should be the view that is visible to the viewer controlling the player craft."},
+        "OnRespawn": {"name": "Action on Respawn", "description": "Action to perform upon respawning after being destroyed."},
+        "OnImpact": {"name": "Action on Surface Impact", "description": "Action to perform upon falling onto a floor surface that doesn't cause the player to bounce."},
+        "OnBounce": {"name": "Action on Surface Bounce", "description": "Action to perform upon falling onto a floor surface that causes the player to bounce."},
+        "OnWallBounce": {"name": "Action on Wall Bounce", "description": "Action to perform upon bouncing from hitting a wall."},
+        "OnLeaveSurface": {"name": "Action on Leave Surface", "description": "Action to perform upon leaving a surface."},
+        "OnApex": {"name": "Action on Jump Apex", "description": "Action to perform upon reaching the apex of a jump."},
+        "RespawnDelay": {"name": "Respawn Delay", "description": "Amount of time in milliseconds after being destroyed before player craft respawns."}
+      }
+    },
+    "Terrain": {
+      "singular": "Terrain",
+      "plural": "Terrain",
+      "description": "Terrain is used for constructing fixed platforms, walls, water, and other shapes that the player and other objects can traverse.",
+      "category": "Equilibria Elements",
+      "properties": {
+        "SurfaceFriction": {"name": "Surface Friction", "description": "Rate at which objects moving along surfaces of this terrain type lose speed."},
+        "SurfaceGrip": {"name": "Surface Grip", "description": "Factor at which movement changes to objects moving along surfaces of this terrain type are applied.  A value of 1 provides normal control.  A value less than 1 makes surfaces more slippery and a value of 0 nullifies control of objects on the surface."},
+        "SurfaceBounce": {"name": "Surface Bounce", "description": "Factor at which objects hitting surfaces of this terrain type are propelled upwards.  A value of 1 causes objects to reach the same height as they fell from.  A value less than 1 causes objects to lose height on each bounce.  A value of 0 means that objects will not bounce when hitting this surface."},
+        "WallBounce": {"name": "Wall Bounce", "description": "Factor at which objects hitting walls of this terrain type will lose speed."},
+        "AllowRespawn": {"name": "Allow Respawn", "description": "Determines whether objects are allowed spawn on surfaces of this terrain type."},
+        "Solid": {"name": "Solid", "description": "Determines whether elements of this terrain type are solid or not.  Non-solid terrain types are used for things that allow objects to pass through it such as water."},
+        "OnTouch": {"name": "Action on Touch", "description": "Action to perform when surfaces of this terrain type are touched by any object."},
+        "OnImpact": {"name": "Action on Impact", "description": "Action to perform when surfaces of this terrain type are fell onto by any object."},
+        "AppearanceSurface": {"name": "Surface Appearance", "description": "Pattern to visually represent surfaces of this terrain type."},
+        "AppearanceWallNorth": {"name": "North Wall Appearance", "description": "Pattern to visually represent north-facing walls of this terrain type."},
+        "AppearanceWallSouth": {"name": "South Wall Appearance", "description": "Pattern to visually represent south-facing walls of this terrain type."},
+        "AppearanceWallWest": {"name": "West Wall Appearance", "description": "Pattern to visually represent west-facing walls of this terrain type."},
+        "AppearanceWallEast": {"name": "East Wall Appearance", "description": "Pattern to visually represent east-facing walls of this terrain type."}
+      }
+    },
+    "TerrainState": {
+      "singular": "Terrain State",
+      "plural": "Terrain States",
+      "description": "Terrain states are used for controlling the presence of individual terrain elements via the definition of conditions that include one or more of these states.  Terrain states are also exposed as boolean values in order that they can also be used to control other things, such as lifts.",
+      "category": "Equilibria Logic",
+      "properties": {
+        "State": {"name": "Initial State", "description": "Initial value of this terrain state."},
+        "Hint": {"name": "Hint Action", "description": "Action to be performed that provides a hint for this terrain state."},
+        "Icon": {"name": "Icon", "description": "Icon representing this terrain state."},
+        "IconScale": {"name": "Icon Scale", "description": "Scale of the icon representing this terrain state."}
+      }
+    },
+    "ThemeSet": {
+      "singular": "Theme Set",
+      "plural": "Theme Sets",
+      "description": "Each theme set contains multiple themes, where each theme contains the same set of elements (textures, colours, etc.), but the appearance of each element varies in each theme.  A theme set may be applied to a zone type, such that each zone of that type applies a theme from the set.  This is useful for setting different colours for each room.",
+      "category": "Equilibria Graphics",
+      "properties": {
+        "TextureElements": {"name": "Texture Elements", "description": "Texture elements of each theme in this set."},
+        "TextureElement": {"name": "Texture Element", "description": "A texture elements of each theme in this set."},
+        "TextureElementAdd": {"name": "Texture Element", "description": "Add a texture element for each theme in this set."},
+        "ColourElements": {"name": "Colour Elements", "description": "Colour elements of each theme in this set."},
+        "ColourElement": {"name": "Colour Element", "description": "A colour elements of each theme in this set."},
+        "ColourElementAdd": {"name": "Colour Element", "description": "Add a colour elements for each theme in this set."},
+        "Themes": {"name": "Themes", "description": "Available themes within this set."},
+        "Theme": {"name": "Themes", "description": "An available themes within this set."},
+        "ThemeAdd": {"name": "Themes", "description": "Add a themes to this set."},
+        "ThemeName": {"name": "Name", "description": "Name of the theme within this set."}
+      }
+    },
+    "World": {
+      "singular": "World",
+      "plural": "Worlds",
+      "description": "Worlds in which an actual game takes place.  Each world consists of one or more zones (or rooms), each of which can contain elements for the player to traverse.  Note that worlds can also be used for purposes other than gameplay.  For example, worlds can also be used to construct HUD icons, such as the compass, clue, and switch states on the screen.",
+      "category": "Equilibria Elements",
+      "properties": {
+        "Gravity": {"name": "Gravity", "description": "The rate at which falling objects increase their fall speed."},
+        "SlopeEffect": {"name": "Slope Effect", "description": "The rate at which objects on slopes increase speed in the downward direction of the slope.  This rate is set on the basis of a slope of a single block step in height."},
+        "BounceTime": {"name": "Bounce Control", "description": "A simulated time window in which the movement control is allowed for an object during a bounce from a surface.  This allows a small degree of control while continuously bouncing on surfaces."},
+        "Content": {"name": "Content", "description": "Edit the content of this world."},
+        "Editing": {"name": "Editor Settings", "description": "Customize the editing functionality of this world.  Note these properties have no impact on the runtime behaviour of this world."},
+        "EditingAdvancedProperties": {"name": "Advanced Object Properties", "description": "Determines whether additional advanced properties of various elements are exposed in the editor.  When disabled, only legacy properties are exposed.  When enabled, extra properties are shown that expose additional functionality, such as lift movement speed, lift pause times, invisible terrain, ghost terrain, etc."},
+        "EditingAutomaticZoneType": {"name": "Automatic Zone Type", "description": "Type of zone to use for automatic zone management.  If no type of zone is selected, then automatic zone management is disabled for this world and zones must be drawn manually."},
+        "EditingDefaultZoneWidth": {"name": "Default Zone Width", "description": "Width in surface tiles of automatically created zones (west to east)."},
+        "EditingDefaultZoneLength": {"name": "Default Zone Length", "description": "Length in surface tiles of automatically created zones (south to north)."},
+        "EditingDefaultZoneHeight": {"name": "Default Zone Height", "description": "Height in block steps of automatically created zones (bottom to top)."},
+        "EditingDefaultZoneThemeSet": {"name": "Default Zone Theme Set", "description": "Theme set applied to automatically created zones."},
+        "EditingBoundaryWest": {"name": "West Boundary", "description": "Maximum distance in surface tiles to which this world can extend westward."},
+        "EditingBoundaryEast": {"name": "East Boundary", "description": "Maximum distance in surface tiles to which this world can extend eastward."},
+        "EditingBoundarySouth": {"name": "South Boundary", "description": "Maximum distance in surface tiles to which this world can extend southward."},
+        "EditingBoundaryNorth": {"name": "North Boundary", "description": "Maximum distance in surface tiles to which this world can extend northward."},
+        "EditingBoundaryDepth": {"name": "Depth Boundary", "description": "Maximum distance in block steps to which this world can extend downward."},
+        "EditingBoundaryHeight": {"name": "Height Boundary", "description": "Maximum distance in block steps to which this world can extend upward."},
+        "EditingDefaultEditingTool": {"name": "Default Editing Tool", "description": "The editor tool selected by default when editing the content of this world."},
+        "EditingEditingTool": {"name": "Editing Tool", "description": "A tool to be used for editing this world."},
+        "EditingEditingToolAdd": {"name": "Editing Tool", "description": "Add a tool to be used for editing this world."}
+      }
+    },
+    "WorldView": {
+      "singular": "World View",
+      "plural": "World Views",
+      "description": "Views of worlds that can be presented on the screen.",
+      "category": "Equilibria Graphics",
+      "properties": {
+        "World": {"name": "World", "description": "The world to be display by this view."},
+        "Camera": {"name": "Camera", "description": "The camera through which to view the world."},
+        "ZoneViewType": {"name": "ZoneViewType", "description": "Determine how zones are visually represented within this world."},
+        "Zoom": {"name": "Zoom", "description": "A factor by which the world in this view is zoomed."}
+      }
+    },
+    "Zone": {
+      "singular": "Zone",
+      "plural": "Zones",
+      "description": "Different types of rooms that can be used within a world.",
+      "category": "Equilibria Elements",
+      "properties": {
+      }
+    },
+    "ZoneObject": {
+      "singular": "Entity",
+      "plural": "Entities",
+      "description": "Object types with behaviour that can be customized via the application of various \"traits\".  This is an experimental type of resource that implements an Entity-Component-System design.  It is intended to replace the existing fixed object types, such as lifts, aliens, pick-ups, etc. with a single resource type that includes enough flexibility to cover all of these functionalities and much more.  This resource type is experimental and unused in the existing game.",
+      "category": "Equilibria Elements",
+      "properties": {
+      }
+    }
+  }
+}

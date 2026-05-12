@@ -17,6 +17,7 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_subdirectory(Basics)
+add_subdirectory(Equilibria)
 add_subdirectory(Hue)
 add_subdirectory(Replay)
 add_subdirectory(Spindizzy)

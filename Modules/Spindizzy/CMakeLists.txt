@@ -31,110 +31,16 @@ else(OPENGL_FOUND)
 endif(OPENGL_FOUND)
 
 add_library(Spindizzy MODULE
-  AlienType/AlienType.cpp
-  Assets/Client/BoundaryType.cpp
-  Assets/Client/Camera.cpp
-  Assets/Client/PhysicalObjectType.cpp
-  Assets/Client/SurfacePattern.cpp
-  Assets/Client/WallPattern.cpp
-  Assets/Client/WorldEditorTool.cpp
-  Assets/Client/ZoneViewType.cpp
-  Assets/Fixed/Camera/CameraGameplay.cpp
-  Assets/Fixed/Camera/CameraLinked.cpp
-  Assets/Fixed/Camera/CameraOverview.cpp
-  Assets/Fixed/Camera/CameraTransitional.cpp
-  Assets/Fixed/Camera/CameraVariant.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternComposite.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternOutline.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternTile.cpp
-  Assets/Fixed/WallPattern/WallPatternCap.cpp
-  Assets/Fixed/WallPattern/WallPatternComposite.cpp
-  Assets/Fixed/WallPattern/WallPatternOutline.cpp
-  Assets/Fixed/WallPattern/WallPatternTile.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitCellLocation.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitModel.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitPhysics.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitSpinner.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewActual.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewOverview.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewTypeActual.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.cpp
-  Assets/Registry/BoundaryTypeRegistry.cpp
-  Assets/Registry/CameraRegistry.cpp
-  Assets/Registry/PhysicalObjectTypeRegistry.cpp
-  Assets/Registry/SurfacePatternRegistry.cpp
-  Assets/Registry/WallPatternRegistry.cpp
-  Assets/Registry/WorldEditorToolRegistry.cpp
-  Assets/Registry/ZoneObjectTypeTraitRegistry.cpp
-  Assets/Registry/ZoneViewTypeRegistry.cpp
   Ball/Ball.cpp
-  BoundaryHandler/BoundaryHandler.cpp
-  BoundaryHandler/BoundaryHandlerInstance.cpp
   C64LiftGraphics/C64LiftGraphics.cpp
   C64TerrainGraphics/C64TerrainGraphics.cpp
-  CollisionHandler/CollisionHandler.cpp
-  CollisionHandler/CollisionHandlerInstance.cpp
   DebrisChunk/DebrisChunk.cpp
   Gyroscope/Gyroscope.cpp
-  InfiniteSurface.cpp
   Jewel/Jewel.cpp
-  LiftType/LiftType.cpp
   ModelCycler/ModelCycler.cpp
-  PickUpType/PickUpType.cpp
-  PlayerType/PlayerType.cpp
   Spindizzy.cpp
   SpindizzyLuaSupport.cpp
-  TerrainType/TerrainType.cpp
-  TerrainState/TerrainState.cpp
-  ThemeSet/Theme.cpp
-  ThemeSet/ThemeColour.cpp
-  ThemeSet/ThemeSet.cpp
-  ThemeSet/ThemeTexture.cpp
   Top/Top.cpp
-  World/Common/CollisionData.cpp
-  World/Common/MovementHandler.cpp
-  World/Common/PhysicalState.cpp
-  World/Common/PhysicsObject.cpp
-  World/DebrisGenerator/Debris.cpp
-  World/DebrisGenerator/DebrisGenerator.cpp
-  World/Editor/DeleteTool.cpp
-  World/Editor/PropertiesTool.cpp
-  World/Editor/TerrainBrush.cpp
-  World/Editor/WorldEditor.cpp
-  World/Editor/ZoneTool.cpp
-  World/Object/Alien/Alien.cpp
-  World/Object/Lift/Lift.cpp
-  World/Object/PickUp/PickUp.cpp
-  World/Object/Player/Player.cpp
-  World/Object/Terrain/SplitSurface.cpp
-  World/Object/Terrain/Surface.cpp
-  World/Object/Terrain/Terrain.cpp
-  World/Object/Terrain/Wall.cpp
-  World/Object/Zone/Zone.cpp
-  World/Object/ZoneObject/ZoneObject.cpp
-  World/Object/ZoneObject/Traits/Boundary/Boundary.cpp
-  World/Object/ZoneObject/Traits/CellLocation/CellLocation.cpp
-  World/Object/ZoneObject/Traits/Chaser/Chaser.cpp
-  World/Object/ZoneObject/Traits/Dummy/Dummy.cpp
-  World/Object/ZoneObject/Traits/Model/Model.cpp
-  World/Object/ZoneObject/Traits/Movable/Movable.cpp
-  World/Object/ZoneObject/Traits/Physics/Physics.cpp
-  World/Object/ZoneObject/Traits/Spinner/Spinner.cpp
-  World/TerrainProcessor/TerrainProcessor.cpp
-  World/TerrainProcessor/TileBlock.cpp
-  World/TerrainProcessor/TileColumn.cpp
-  World/TerrainProcessor/SurfaceTemplate.cpp
-  World/TerrainProcessor/WallColumn.cpp
-  World/TerrainProcessor/WallSegment.cpp
-  World/TerrainProcessor/WallTemplate.cpp
-  World/World.cpp
-  WorldView/WorldView.cpp
-  ZoneObjectType/ZoneObjectType.cpp
-  ZoneType/ZoneType.cpp
 )
 
 set_target_properties(Spindizzy PROPERTIES OUTPUT_NAME "IsoRealms-Spindizzy")

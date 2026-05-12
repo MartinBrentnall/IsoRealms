@@ -1,0 +1,91 @@
+/*
+ * Copyright 2025 Martin Brentnall
+ *
+ * This file is part of IsoRealms.
+ *
+ * IsoRealms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IsoRealms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include "IsoRealms.h"
+
+#include "Modules/Equilibria/Assets/Client/BoundaryType.h"
+#include "Modules/Equilibria/Assets/Client/PhysicalObjectType.h"
+
+namespace IsoRealms::Equilibria {
+  class BoundaryHandlerInstance;
+  class Equilibria;
+  class World;
+
+  /**
+   * Resource definition triggering actions when objects cross boundaries.
+   * For each boundary handler, an entry and exit action may be configured
+   * upon an object of a specified type crossing a boundary of a specified
+   * type.
+   */
+  class BoundaryHandler final : public IEventBindings {
+    public:
+
+    /**********************\
+     * Resource Interface *
+    \**********************/
+    BoundaryHandler(Equilibria& equilibria, IResourceData& data);
+    BoundaryHandler(Equilibria& equilibria, IResourceData& data, JSONObject object);
+    void registerAssets(ResourceAssetRegistry& assets);
+    void save(JSONObject object) const;
+    void hintInUse(bool inUse);
+    bool renderIcon();
+    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void removed();
+
+    // Boundary handler interface.
+    const BoundaryType* getBoundaryType() const;
+    const PhysicalObjectType* getObjectType() const;
+    std::unique_ptr<BoundaryHandlerInstance> createInstance(World* world);
+    void executeAction(bool exited);
+
+    /*****************************\
+     * Implements IEventBindings *
+    \*****************************/
+    IBinding* getBinding(const std::string& id) override;
+    std::string getBindingID(const IBinding* binding) const override;
+    void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
+    void releaseBinding(const IBinding* asset) override;
+    
+    private:
+
+    // JSON members.
+    static const std::string JSON_BOUNDARY;
+    static const std::string JSON_OBJECT;
+    static const std::string JSON_ON_ENTRY;
+    static const std::string JSON_ON_EXIT;
+
+    static const std::string BIND_TO_BOUNDARY;
+    static const std::string BIND_TO_OBJECT;
+
+    // External interfaces.
+    Equilibria& cEquilibria;
+    
+    // Action client.
+    ActionContext cActionContext;
+
+    // Definition data.
+    BoundaryType cDefBoundaryType;     /// Boundary type to handle.
+    PhysicalObjectType cDefObjectType; /// Object type to handle.
+    Action cDefEnteredAction;          /// Action to execute upon object entering a boundary.
+    Action cDefExitedAction;           /// Action to execute upon object leaving a boundary.
+  };
+}
+
