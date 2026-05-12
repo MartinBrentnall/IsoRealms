@@ -474,6 +474,14 @@ namespace IsoRealms {
     }
   }
 
+  IEventBindings* Project::getEventBindings() const {
+    return cLuaState.getCurrentEventBindings();
+  }
+
+  void Project::setEventBindings(IEventBindings* eventBindings) {
+    cLuaState.setCurrentEventBindings(eventBindings);
+  }
+
   IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value) {
     return cBooleans.literal(user, owner, value);
   }

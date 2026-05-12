@@ -50,10 +50,10 @@ namespace IsoRealms::Equilibria {
                     cResourceZoneObject(*this),
                     cRuntimePaused(false),
                     cBindingTypeTerrainState("TerrainState", "Equilibria/Terrain States"),
-                    cRuntimeParameterPlayer(project.getLuaState(), nullptr),
-                    cRuntimeParameterWall(  project.getLuaState(), nullptr),
-                    cRuntimeParameterZone1( project.getLuaState(), nullptr),
-                    cRuntimeParameterZone2( project.getLuaState(), nullptr),
+                    cRuntimeParameterPlayer(project.getLuaState(), nullptr, nullptr, true),
+                    cRuntimeParameterWall(  project.getLuaState(), nullptr, nullptr, true),
+                    cRuntimeParameterZone1( project.getLuaState(), nullptr, nullptr, true),
+                    cRuntimeParameterZone2( project.getLuaState(), nullptr, nullptr, true),
                     cLuaBinding(project.getLuaState(), this) {
     registry.add(&cResourceAlien,            "Alien");
     registry.add(&cResourceBoundaryHandler,  "BoundaryHandler");
@@ -558,10 +558,6 @@ namespace IsoRealms::Equilibria {
     getTreeItemInfoFunction(TreeItemInfo{"wall",   "Wall"});
   }
 
-  void Equilibria::EventBindingsPlayerWallBounce::saveBinding(JSONObject object, const IBinding* binding) const {
-    // Nothing to do.
-  }
-
   void Equilibria::EventBindingsPlayerWallBounce::releaseBinding(const IBinding* asset) {
     // Nothing to do.
   }
@@ -569,8 +565,6 @@ namespace IsoRealms::Equilibria {
   const std::string Equilibria::RESOURCE_CATEGORY_EQUILIBRIA_ELEMENTS = "Equilibria Elements";
   const std::string Equilibria::RESOURCE_CATEGORY_EQUILIBRIA_GRAPHICS = "Equilibria Graphics";
   const std::string Equilibria::RESOURCE_CATEGORY_EQUILIBRIA_LOGIC    = "Equilibria Logic";
-
-  const std::string Equilibria::JSON_LOCAL = "local";
 
   const std::string Equilibria::TOOL_DELETE      = "DeleteTool";
   const std::string Equilibria::TOOL_PROPERTIES  = "PropertiesTool";

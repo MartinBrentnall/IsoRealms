@@ -36,7 +36,7 @@
 
 namespace IsoRealms {
   template <typename TYPE> void LuaBinding<TYPE>::bind(const std::string& bindFunction) const {
-    cDefLuaState[bindFunction](cDefValue);
+    cLuaState.getState()[bindFunction](cDefValue);
   }
   
   template class LuaBinding<Equilibria::Alien>;

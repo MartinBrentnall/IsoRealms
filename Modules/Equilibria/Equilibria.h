@@ -282,9 +282,6 @@ namespace IsoRealms::Equilibria {
     static const std::string RESOURCE_CATEGORY_EQUILIBRIA_GRAPHICS;
     static const std::string RESOURCE_CATEGORY_EQUILIBRIA_LOGIC;
 
-    // JSON members.
-    static const std::string JSON_LOCAL;
-
     // Fixed tool names.
     static const std::string TOOL_DELETE;
     static const std::string TOOL_PROPERTIES;
@@ -367,7 +364,6 @@ namespace IsoRealms::Equilibria {
       \*****************************/
       IBinding* getBinding(const std::string& id) override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-      void saveBinding(JSONObject object, const IBinding* binding) const override;  
       void releaseBinding(const IBinding* asset) override;
 
       private:

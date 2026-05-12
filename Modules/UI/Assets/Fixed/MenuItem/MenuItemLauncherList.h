@@ -69,7 +69,6 @@ namespace IsoRealms::UI {
     std::string getBindingID(const IBinding* binding) const override;
     IBinding* getBinding(const std::string& id) override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
 
     private:
@@ -77,7 +76,6 @@ namespace IsoRealms::UI {
     // JSON members.
     static const std::string JSON_ID;
     static const std::string JSON_ON_SELECTION;
-    inline static const std::string JSON_LOCAL = "local";
 
     // Constants.
     static const std::string BINDING_TYPE;

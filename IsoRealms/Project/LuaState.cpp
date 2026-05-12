@@ -20,6 +20,7 @@
 
 #include "LuaState.h"
 
+#include "IsoRealms/Assets/IEventBindings.h"
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Editing/IDialogManager.h"
 #include "IsoRealms/Project/Project.h"
@@ -27,7 +28,7 @@
 
 namespace IsoRealms {
   template <typename TYPE> void LuaBinding<TYPE>::bind(const std::string& bindFunction) const {
-    cDefLuaState[bindFunction](cDefValue);
+    cLuaState.getState()[bindFunction](cDefValue);
   }
 
   template class LuaBinding<Action>;
@@ -54,7 +55,8 @@ namespace IsoRealms {
   }
 
   LuaState::LuaState() :
-            cLua(std::make_unique<sol::state>()) {
+            cLua(std::make_unique<sol::state>()),
+            cCurrentEventBindings(nullptr) {
     
     // Open Lua Libraries.
     cLua->open_libraries(sol::lib::base);
@@ -121,7 +123,19 @@ namespace IsoRealms {
 
   LuaState::~LuaState() = default;
 
+  IEventBindings* LuaState::getCurrentEventBindings() const {
+    return cCurrentEventBindings;
+  }
+
+  void LuaState::setCurrentEventBindings(IEventBindings* eventBindings) {
+    cCurrentEventBindings = eventBindings;
+  }
+
   sol::state& LuaState::getState() {
     return *cLua.get();
+  }
+
+  std::string LuaState::getBindingID(const IBinding* binding) const {
+    return cCurrentEventBindings->getBindingID(binding);
   }
 }

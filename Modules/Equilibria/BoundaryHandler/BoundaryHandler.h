@@ -61,7 +61,6 @@ namespace IsoRealms::Equilibria {
     IBinding* getBinding(const std::string& id) override;
     std::string getBindingID(const IBinding* binding) const override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
     
     private:

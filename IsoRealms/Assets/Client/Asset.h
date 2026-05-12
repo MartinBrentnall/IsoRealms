@@ -112,7 +112,7 @@ namespace IsoRealms {
       static_cast<DERIVED*>(this)->stateChanged();
     }
     
-    void save(JSONObject object, const std::string& name) const {
+    virtual void save(JSONObject object, const std::string& name) const {
       JSONObject mAssetObject = object.addObject(name);
       saveClientConfiguration(mAssetObject);
       cManager.getAssetManager().save(mAssetObject, cAsset);

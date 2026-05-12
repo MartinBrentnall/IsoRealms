@@ -34,10 +34,11 @@ namespace IsoRealms {
    */
   template <typename TYPE> class LuaBinding : public IBinding {
     public:
-    LuaBinding(LuaState& lua, TYPE* value, std::function<bool()> icon = nullptr) :
-              cDefLuaState(lua.getState()),
+    LuaBinding(LuaState& lua, TYPE* value, std::function<bool()> icon = nullptr, bool event = false) :
+              cLuaState(lua),
               cDefValue(value),
-              cIcon(icon) {
+              cIcon(icon),
+              cEvent(event) {
     }
     
     void setValue(TYPE* value) {
@@ -52,7 +53,9 @@ namespace IsoRealms {
     }
 
     void saveAsset(JSONObject object) const override {
-      // Nothing to do.
+      if (cEvent) {
+        object.addString(JSON_LOCAL, cLuaState.getBindingID(this));
+      }
     }
 
     void getAssetProperties(IPropertyMaker& owner) override {
@@ -94,8 +97,11 @@ namespace IsoRealms {
     }
 
     private:
-    sol::state& cDefLuaState;
+    inline static const std::string JSON_LOCAL = "local";
+    
+    LuaState& cLuaState;
     TYPE* cDefValue;
     std::function<bool()> cIcon;
+    bool cEvent;
   };
 }

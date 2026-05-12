@@ -124,6 +124,9 @@ namespace IsoRealms {
     // Functions used by module client assets.
     bool isLoading() const;
     void execute(IAction& action);
+
+    IEventBindings* getEventBindings() const;
+    void setEventBindings(IEventBindings* eventBindings);
     
     template <typename TYPE, typename THING> IStateNotifier* add(THING* asset, const std::string& id, const std::string& category) {
       return AssetContainerTraits<TYPE>::get(*this).add(asset, id, category, true);
@@ -225,7 +228,6 @@ namespace IsoRealms {
     inline static const std::string JSON_INITIALISATION        = "initialisation";
     inline static const std::string JSON_INPUT                 = "input";
     inline static const std::string JSON_LAUNCH_CONFIGURATIONS = "launchConfigurations";
-    inline static const std::string JSON_LOCAL                 = "local";
     inline static const std::string JSON_MODULES               = "modules";
     inline static const std::string JSON_NAME                  = "name";
     inline static const std::string JSON_PROJECT               = "project";

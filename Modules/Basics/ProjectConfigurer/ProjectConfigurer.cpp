@@ -25,7 +25,6 @@ namespace IsoRealms::Basics {
   const std::string ProjectConfigurer::JSON_CODE_FONT_SIZE = "codeFontSize";
   const std::string ProjectConfigurer::JSON_FONT           = "font";
   const std::string ProjectConfigurer::JSON_FONT_SIZE      = "fontSize";
-  const std::string ProjectConfigurer::JSON_LOCAL          = "local";
   const std::string ProjectConfigurer::JSON_ON_EDITOR      = "onEditor";
   const std::string ProjectConfigurer::JSON_ON_EXIT        = "onExit";
 
@@ -170,12 +169,6 @@ namespace IsoRealms::Basics {
 
   void ProjectConfigurer::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     getTreeItemInfoFunction(TreeItemInfo{"editor", "editor"});
-  }
-
-  void ProjectConfigurer::saveBinding(JSONObject object, const IBinding* binding) const {
-    if (binding == &cBindingEditor) {
-      object.addString(JSON_LOCAL, "editor");
-    }
   }
 
   void ProjectConfigurer::releaseBinding(const IBinding* asset) {

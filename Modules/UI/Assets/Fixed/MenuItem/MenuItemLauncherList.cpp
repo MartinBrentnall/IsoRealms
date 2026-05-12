@@ -154,12 +154,6 @@ namespace IsoRealms::UI {
     getTreeItemInfoFunction(TreeItemInfo{"Launcher", "Launcher"});
   }
 
-  void MenuItemLauncherList::saveBinding(JSONObject object, const IBinding* binding) const {
-    if (binding == &cLauncherBinding) {
-      object.addString(JSON_LOCAL, "Launcher");
-    }
-  }
-
   void MenuItemLauncherList::releaseBinding(const IBinding* asset) {
     // Nothing to do.
   }

@@ -27,8 +27,8 @@ namespace IsoRealms::Equilibria {
   ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView) :
             cWorldView(worldView),
             cDefColour(worldView.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f),
-            cRuntimeParameterView1(worldView.getEquilibria().getProject().getLuaState(), nullptr),
-            cRuntimeParameterView2(worldView.getEquilibria().getProject().getLuaState(), nullptr) {
+            cRuntimeParameterView1(worldView.getEquilibria().getProject().getLuaState(), nullptr, nullptr, true),
+            cRuntimeParameterView2(worldView.getEquilibria().getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
   ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView, JSONObject object) :

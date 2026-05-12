@@ -81,7 +81,6 @@ namespace IsoRealms::Basics {
     std::string getBindingID(const IBinding* binding) const override;
     IBinding* getBinding(const std::string& id) override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-    void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
     
     /***********************\
@@ -100,7 +99,6 @@ namespace IsoRealms::Basics {
     static const std::string JSON_CODE_FONT_SIZE;
     static const std::string JSON_FONT;
     static const std::string JSON_FONT_SIZE;
-    static const std::string JSON_LOCAL;
     static const std::string JSON_ON_EDITOR;
     static const std::string JSON_ON_EXIT;
 

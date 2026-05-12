@@ -105,14 +105,6 @@ namespace IsoRealms::Equilibria {
     void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
 
-    /*****************************\
-     * Implements IEventBindings *
-    \*****************************/
-    // IBinding* getBinding(const std::string& id) override;
-    // void releaseBinding(const IBinding* asset) override;
-    // void saveBinding(JSONObject object, const IBinding* binding) const override;
-    // void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-
     private:
     
     // JSON members.
@@ -179,7 +171,6 @@ namespace IsoRealms::Equilibria {
       IBinding* getBinding(const std::string& id) override;
       std::string getBindingID(const IBinding* binding) const override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-      void saveBinding(JSONObject object, const IBinding* binding) const override;
       void releaseBinding(const IBinding* asset) override;
 
       private:
@@ -196,7 +187,6 @@ namespace IsoRealms::Equilibria {
       IBinding* getBinding(const std::string& id) override;
       std::string getBindingID(const IBinding* binding) const override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-      void saveBinding(JSONObject object, const IBinding* binding) const override;
       void releaseBinding(const IBinding* asset) override;
 
       private:

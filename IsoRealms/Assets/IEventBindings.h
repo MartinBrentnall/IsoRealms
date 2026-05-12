@@ -31,7 +31,6 @@ namespace IsoRealms {
     virtual std::string getBindingID(const IBinding* binding) const = 0;
     virtual IBinding* getBinding(const std::string& id) = 0;
     virtual void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const = 0;
-    virtual void saveBinding(JSONObject object, const IBinding* binding) const = 0;
     virtual void releaseBinding(const IBinding* asset) = 0;
   };
 }

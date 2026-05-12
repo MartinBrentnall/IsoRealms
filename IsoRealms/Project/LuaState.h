@@ -25,7 +25,9 @@ namespace sol {
 }
 
 namespace IsoRealms {
-  
+  class IEventBindings;
+  class IBinding;
+
   /**
    * Binds IsoRealms engine types to the lua state, and wraps the state to
    * give access to only those that need it.
@@ -40,9 +42,14 @@ namespace IsoRealms {
     LuaState(const LuaState&) = delete;
     LuaState& operator=(const LuaState&) = delete;
 
+    IEventBindings* getCurrentEventBindings() const;
+    void setCurrentEventBindings(IEventBindings* eventBindings);
+
     sol::state& getState();
+    std::string getBindingID(const IBinding* binding) const;
     
     private:
     std::unique_ptr<sol::state> cLua; /// The Lua state machine.
+    IEventBindings* cCurrentEventBindings;
   };
 }

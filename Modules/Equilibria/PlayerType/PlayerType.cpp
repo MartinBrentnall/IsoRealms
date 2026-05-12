@@ -280,18 +280,6 @@ namespace IsoRealms::Equilibria {
     return cEquilibria.getResourceID(this);
   }
   
-  // IBinding* PlayerType::getBinding(const std::string& id) const {
-  //   return nullptr; // TODO: Implement this.
-  // }
-  
-  // void PlayerType::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-  //   cEquilibria.getTreeItemsWallBounce(getTreeItemInfoFunction);
-  // }
-
-  // void PlayerType::saveBinding(JSONObject object, const IBinding* binding) const {
-  //   // TODO: Implement this.
-  // }
-
   std::string PlayerType::getPhysicalObjectTypeBindingID(const IBinding* binding) const {
     return cEquilibria.getBindingIDPlayer(binding);
   }
@@ -395,10 +383,6 @@ namespace IsoRealms::Equilibria {
     cParent.cEquilibria.getTreeItemsWallBounce(getTreeItemInfoFunction);
   }
 
-  void PlayerType::WallBounceBindings::saveBinding(JSONObject object, const IBinding* binding) const {
-    // TODO: Implement this.
-  }
-
   void PlayerType::WallBounceBindings::releaseBinding(const IBinding* asset) {
     // Nothing to do.
   }
@@ -417,10 +401,6 @@ namespace IsoRealms::Equilibria {
 
   void PlayerType::PlayerBindings::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     cParent.cEquilibria.getTreeItemsPlayer(getTreeItemInfoFunction);
-  }
-
-  void PlayerType::PlayerBindings::saveBinding(JSONObject object, const IBinding* binding) const {
-    // TODO: Implement this.
   }
 
   void PlayerType::PlayerBindings::releaseBinding(const IBinding* asset) {

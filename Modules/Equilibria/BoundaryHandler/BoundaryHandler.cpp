@@ -114,10 +114,6 @@ namespace IsoRealms::Equilibria {
     });
   }
   
-  void BoundaryHandler::saveBinding(JSONObject object, const IBinding* binding) const {
-    // TODO: Implement this.
-  }
-
   std::string BoundaryHandler::getBindingID(const IBinding* binding) const {
     std::string mBindingID = cDefBoundaryType.getBoundaryBindingID(binding);
     if (mBindingID != "") {
