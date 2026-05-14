@@ -1,5 +1,8 @@
 {
   "description": "Functionality for supporting user-interfaces and presentation.",
+  "categories": {
+    "User Interfaces": "User interfaces resources."
+  },
   "assets": {
     "LayoutLocationAbsolute": {
       "description": "Positions a component edge on the screen at a location from -1.0 to +1.0.",

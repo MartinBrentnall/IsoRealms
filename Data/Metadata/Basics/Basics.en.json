@@ -1,5 +1,11 @@
 {
   "description": "Basic functionality for use in any application",
+  "categories": {
+    "Input": "Resources that enable user interaction with the application.",
+    "Logic": "Resources that control the behaviour of the application.",
+    "Primitives": "Resources that are used to create the basic elements of the application.",
+    "System": "Resources that are used to manage an application itself."
+  },
   "assets": {
     "Script": {
       "description": "Script written in Lua.",

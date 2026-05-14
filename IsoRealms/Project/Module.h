@@ -62,6 +62,8 @@ namespace IsoRealms {
     void updateEditing(unsigned int milliseconds);
     void reset();
     std::string getName();
+    std::string getDescription() const;
+    std::string getCategoryDescription(const std::string& key) const;
     std::vector<ResourceType*> getResourceTypes();
 
     /************************************\
@@ -104,6 +106,7 @@ namespace IsoRealms {
 
     private:
     inline static const std::string JSON_ASSETS        = "assets";
+    inline static const std::string JSON_CATEGORIES    = "categories";
     inline static const std::string JSON_CONFIGURATION = "configuration";
     inline static const std::string JSON_DESCRIPTION   = "description";
     inline static const std::string JSON_INSTANCES     = "instances";
@@ -120,6 +123,7 @@ namespace IsoRealms {
     ProjectFile* cOwnerProject;
     std::string cDescription;
     std::map<std::string, std::unique_ptr<Metadata>> cAssetMetadata;
+    std::map<std::string, std::string> cCategoryDescriptions;
     Metadata cModuleMetadata;
     IModuleHandle* cModule;
 #ifdef __linux__

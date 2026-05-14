@@ -1,5 +1,10 @@
 {
   "description": "Equilibria Game Engine resources.",
+  "categories": {
+    "Elements": "Equilibria physical game elements, such as aliens, lifts, and pick-ups, terrain, and other objects that can be placed in a world.",
+    "Graphics": "Resources for presenting the game world to the player.",
+    "Logic": "Resources for controlling the behaviour of the game world."
+  },
   "assets": {
     "CameraGameplay": {
       "description": "A camera shows a single zone at a time, with ability to view the zone from different isometric angles.",

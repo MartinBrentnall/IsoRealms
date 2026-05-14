@@ -91,6 +91,16 @@ namespace IsoRealms {
     
     // Load the module and asset metadata.  This needs to be done before the module is created.
     cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
+
+    JSONObject mCategoriesObject = mMetadataDocument.getObject(JSON_CATEGORIES);
+    std::cout << "Module: " << cName << std::endl;
+    for (JSONThing mCategoryThing : mCategoriesObject) {
+      std::string mCategoryDescription = mCategoryThing.getValueAsString();
+      std::string mCategoryName = mCategoryThing.getName();
+      std::cout << "   Category: " << mCategoryName << " - " << mCategoryDescription << std::endl;
+      cCategoryDescriptions[mCategoryName] = mCategoryDescription;
+    }
+
     JSONObject mAssetsObject = mMetadataDocument.getObject(JSON_ASSETS);
     for (JSONThing mAssetThing : mAssetsObject) {
       JSONObject mAssetObject = mAssetThing.getValue();
@@ -200,13 +210,25 @@ namespace IsoRealms {
       for (const std::pair<const std::string, std::unique_ptr<Metadata>>& mAssetMetadata : cAssetMetadata) {
         std::cout << "  " << mAssetMetadata.first << std::endl;
       }
-//      throw ArgumentException("ERROR: Module::getAssetMetadata: Asset metadata for key \"" + key + "\" not found in module \"" + cName + "\".");
+      throw ArgumentException("ERROR: Module::getAssetMetadata: Asset metadata for key \"" + key + "\" not found in module \"" + cName + "\".");
     }
-    return it != cAssetMetadata.end() ? *it->second : cModuleMetadata;
+    return *it->second;
   }
 
   std::string Module::getName() {
     return cName;
+  }
+
+  std::string Module::getDescription() const {
+    return cDescription;
+  }
+
+  std::string Module::getCategoryDescription(const std::string& key) const {
+    std::map<std::string, std::string>::const_iterator it = cCategoryDescriptions.find(key);
+    if (it == cCategoryDescriptions.end()) {
+      return "TODO: Category description for \"" + key + "\".";
+    }
+    return it->second;
   }
 
   std::vector<ResourceType*> Module::getResourceTypes() {

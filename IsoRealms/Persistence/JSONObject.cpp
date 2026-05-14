@@ -114,9 +114,7 @@ namespace IsoRealms {
   }
 
   JSONObject::Iterator& JSONObject::Iterator::operator++() {
-    do {
-      ++cMember;
-    } while (cMember != cParent.cObject.MemberEnd() && !cMember->value.IsObject());
+    ++cMember;
     return *this;
   }
 

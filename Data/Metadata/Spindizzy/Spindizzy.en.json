@@ -1,5 +1,9 @@
 {
   "description": "Graphics, elements, and functionality designed for supporting the IsoRealms Spindizzy remake.",
+  "categories": {
+    "Textures": "Textures in the style of Spindizzy, such as lifts and terrain.",
+    "Models": "Models in the style of Spindizzy, such as crafts and jewels."
+  },
   "assets": {
   },
   "resources": {

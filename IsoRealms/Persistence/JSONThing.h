@@ -33,6 +33,7 @@ namespace IsoRealms {
     JSONThing(JSONDocument& parent, rapidjson::Value::MemberIterator member);
     std::string getName() const;
     JSONObject getValue();
+    std::string getValueAsString() const;
 
     private:
     JSONDocument& cParent;

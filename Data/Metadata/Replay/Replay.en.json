@@ -1,5 +1,8 @@
 {
   "description": "Functionality for recording and playing back inputs.",
+  "categories": {
+    "Input": "Input resources."
+  },
   "assets": {
   },
   "resources": {

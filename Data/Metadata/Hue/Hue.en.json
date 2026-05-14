@@ -1,5 +1,8 @@
 {
   "description": "Functionality for recording and playing back inputs.",
+  "categories": {
+    "Hue": "Hue resources."
+  },
   "assets": {
   },
   "resources": {

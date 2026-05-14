@@ -33,4 +33,8 @@ namespace IsoRealms {
   JSONObject JSONThing::getValue() {
     return JSONObject(cParent, cMember->value);
   }
+
+  std::string JSONThing::getValueAsString() const {
+    return cMember->value.GetString();
+  }
 }

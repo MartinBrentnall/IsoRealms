@@ -56,10 +56,10 @@ namespace IsoRealms {
     for (const std::pair<Module* const, std::set<std::string>>& mCategoryByModule : mCategoriesByModule) {
       Module* mModule = mCategoryByModule.first;
       std::string mModuleName = mModule->getName();
-      addItem(std::make_unique<MenuItemModule>(mModuleName, "TODO: Module description."));
+      addItem(std::make_unique<MenuItemModule>(mModuleName, mModule->getDescription()));
 
       for (const std::string& mCategory : mCategoryByModule.second) {
-        addItem(std::make_unique<MenuItemAction>(mCategory, "TODO: Category description.", [this, mModule, mCategory, &mManager, &mStyle]() {
+        addItem(std::make_unique<MenuItemAction>(mCategory, mModule->getCategoryDescription(mCategory), [this, mModule, mCategory, &mManager, &mStyle]() {
           openUI(std::make_unique<CategoryMenu>(mManager, mStyle, cProject, mModule, mCategory), mCategory);
         }, 1));
       }
