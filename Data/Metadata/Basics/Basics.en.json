@@ -1,4 +1,5 @@
 {
+  "longName": "IsoRealms Basics",
   "description": "Basic functionality for use in any application",
   "categories": {
     "Input": "Resources that enable user interaction with the application.",

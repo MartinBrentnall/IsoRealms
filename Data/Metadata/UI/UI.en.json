@@ -1,4 +1,5 @@
 {
+  "longName": "User Interface",
   "description": "Functionality for supporting user-interfaces and presentation.",
   "assets": {
     "LayoutLocationAbsolute": {

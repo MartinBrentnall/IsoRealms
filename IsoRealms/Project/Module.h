@@ -62,6 +62,7 @@ namespace IsoRealms {
     void updateEditing(unsigned int milliseconds);
     void reset();
     std::string getName();
+    std::string getLongName() const;
     std::string getDescription() const;
     std::string getCategoryDescription(const std::string& key) const;
     std::vector<ResourceType*> getResourceTypes();
@@ -110,6 +111,7 @@ namespace IsoRealms {
     inline static const std::string JSON_CONFIGURATION = "configuration";
     inline static const std::string JSON_DESCRIPTION   = "description";
     inline static const std::string JSON_INSTANCES     = "instances";
+    inline static const std::string JSON_LONG_NAME     = "longName";
     inline static const std::string JSON_NAME          = "name";
     inline static const std::string JSON_OMISSIONS     = "omissions";
     inline static const std::string JSON_PROPERTIES    = "properties";
@@ -120,6 +122,7 @@ namespace IsoRealms {
     ResourceAssetRegistry cModuleAssetRegistry;
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
     std::string cName;
+    std::string cLongName;
     ProjectFile* cOwnerProject;
     std::string cDescription;
     std::map<std::string, std::unique_ptr<Metadata>> cAssetMetadata;

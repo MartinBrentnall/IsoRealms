@@ -1,5 +1,6 @@
 {
-  "description": "Equilibria Game Engine resources.",
+  "longName": "Equilibria Game Engine",
+  "description": "Equilibria Game Engine resources and functionality.",
   "categories": {
     "Elements": "Equilibria physical game elements, such as aliens, lifts, and pick-ups, terrain, and other objects that can be placed in a world.",
     "Graphics": "Resources for presenting the game world to the player.",

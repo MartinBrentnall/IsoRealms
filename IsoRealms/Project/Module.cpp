@@ -91,6 +91,7 @@ namespace IsoRealms {
     
     // Load the module and asset metadata.  This needs to be done before the module is created.
     cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
+    cLongName = mMetadataDocument.hasMember(JSON_LONG_NAME) ? mMetadataDocument.getString(JSON_LONG_NAME) : cName;
 
     if (mMetadataDocument.hasMember(JSON_CATEGORIES)) {
       JSONObject mCategoriesObject = mMetadataDocument.getObject(JSON_CATEGORIES);
@@ -217,6 +218,10 @@ namespace IsoRealms {
 
   std::string Module::getName() {
     return cName;
+  }
+
+  std::string Module::getLongName() const {
+    return cLongName;
   }
 
   std::string Module::getDescription() const {

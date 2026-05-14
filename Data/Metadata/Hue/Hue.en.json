@@ -1,5 +1,6 @@
 {
-  "description": "Functionality for recording and playing back inputs.",
+  "longName": "Philips Hue",
+  "description": "Functionality for connecting colours to Philips Hue light bulbs.",
   "categories": {
     "Hue": "Hue resources."
   },
