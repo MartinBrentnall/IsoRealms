@@ -189,6 +189,16 @@
         "OnMove": {"name": "Action on Movement", "description": "Action to perform upon movement of the lift.  The action is triggered each time the lift begins movement from or passes through a whole block height."}
       }
     },
+    "ModelCycler": {
+      "singular": "Model Cycler",
+      "plural": "Model Cyclers",
+      "description": "Models that programmatically cycle through the appearances of other models.",
+      "category": "Graphics",
+      "properties": {
+        "Model": {"name": "Model", "description": "A model to cycle through within this set."},
+        "ModelAdd": {"name": "Model", "description": "Add another model to cycle through within this set."}
+      }
+    },
     "PickUp": {
       "singular": "Pick Up",
       "plural": "Pick Ups",

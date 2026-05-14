@@ -46,6 +46,7 @@ namespace IsoRealms {
   template class LuaBinding<Equilibria::CameraTransitional>;
   template class LuaBinding<Equilibria::DebrisGenerator>;
   template class LuaBinding<Equilibria::Model>;
+  template class LuaBinding<Equilibria::ModelCycler>;
   template class LuaBinding<Equilibria::PickUp>;
   template class LuaBinding<Equilibria::Player>;
   template class LuaBinding<Equilibria::PlayerType>;
@@ -85,6 +86,8 @@ namespace IsoRealms {
                                                                   "clear",                    &DebrisGenerator::clear);
       mLua.new_usertype<Model>("Model",                           "isEnabled",                &Model::isEnabled,
                                                                   "setEnabled",               &Model::setEnabled);
+      mLua.new_usertype<ModelCycler>("ModelCycler",               "next",                     &ModelCycler::next,
+                                                                  "previous",                 &ModelCycler::previous);
       mLua.new_usertype<Player>("Player",                         "destroy",                  &Player::destroy,
                                                                   "stop",                     &Player::stop,
                                                                   "setStepReach",             &Player::setStepReach,

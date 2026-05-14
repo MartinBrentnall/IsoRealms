@@ -15,8 +15,8 @@
       }
     },
     "C64LiftGraphics": {
-      "singular": "C64 Lift Graphics Set",
-      "plural": "C64 Lift Graphics Sets",
+      "singular": "C64 Lift Set",
+      "plural": "C64 Lift Sets",
       "description": "Sets of textures intended for use as lift elements, in the style of C64 Spindizzy.",
       "category": "Textures",
       "properties": {
@@ -26,8 +26,8 @@
       }
     },
     "C64TerrainGraphics": {
-      "singular": "C64 Terrain Graphics Set",
-      "plural": "C64 Terrain Graphics Sets",
+      "singular": "C64 Terrain Set",
+      "plural": "C64 Terrain Sets",
       "description": "Sets of texture intended to be applied to terrain elements, in the style of C64 Spindizzy.",
       "category": "Textures",
       "properties": {
@@ -72,16 +72,6 @@
         "PanelPhase": {"name": "Panel Phase Colour", "description": "Panels of this jewel model will phase through this colour."},
         "PanelPhaseAdd": {"name": "Panel Phase Colour", "description": "Add another panel phase colour."},
         "Outline": {"name": "Outline Colour", "description": "Outline colour of this jewel model."}
-      }
-    },
-    "ModelCycler": {
-      "singular": "Model Cycler",
-      "plural": "Model Cyclers",
-      "description": "Models that programmatically cycle through the appearances of other models.",
-      "category": "Models",
-      "properties": {
-        "Model": {"name": "Model", "description": "A model to cycle through within this set."},
-        "ModelAdd": {"name": "Model", "description": "Add another model to cycle through within this set."}
       }
     },
     "Top": {

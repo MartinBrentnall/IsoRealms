@@ -29,7 +29,6 @@ namespace IsoRealms::Spindizzy {
                     cResourceDebrisChunk(*this),
                     cResourceGyroscope(*this),
                     cResourceJewel(*this),
-                    cResourceModelCycler(*this),
                     cResourceTop(*this) {
     registry.add(&cResourceBall,               "Ball");
     registry.add(&cResourceC64LiftGraphics,    "C64LiftGraphics");
@@ -37,7 +36,6 @@ namespace IsoRealms::Spindizzy {
     registry.add(&cResourceDebrisChunk,        "DebrisChunk");
     registry.add(&cResourceGyroscope,          "Gyroscope");
     registry.add(&cResourceJewel,              "Jewel");
-    registry.add(&cResourceModelCycler,        "ModelCycler");
     registry.add(&cResourceTop,                "Top");
   }
   
@@ -57,12 +55,11 @@ namespace IsoRealms::Spindizzy {
     updateEditing2(cResourceDebrisChunk, milliseconds);
     updateEditing2(cResourceGyroscope,   milliseconds);
     updateEditing2(cResourceJewel,       milliseconds);
-    updateEditing2(cResourceModelCycler, milliseconds);
     updateEditing2(cResourceTop,         milliseconds);
   }
   
   void Spindizzy::reset() {
-    reset2(cResourceModelCycler);
+    // Nothing to do.
   }  
   
   std::mutex cModuleInstantiationMutex;

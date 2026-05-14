@@ -20,8 +20,8 @@
 
 #include "IsoRealms.h"
 
-namespace IsoRealms::Spindizzy {
-  class Spindizzy;
+namespace IsoRealms::Equilibria {
+  class Equilibria;
 
   /**
    * Resource definition for a model that can be dynamically cycled through
@@ -34,8 +34,8 @@ namespace IsoRealms::Spindizzy {
     /**********************\
      * Resource Interface *
     \**********************/
-    ModelCycler(Spindizzy& spindizzy, IResourceData& data);
-    ModelCycler(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
+    ModelCycler(Equilibria& equilibria, IResourceData& data);
+    ModelCycler(Equilibria& equilibria, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

@@ -37,9 +37,7 @@ add_library(Spindizzy MODULE
   DebrisChunk/DebrisChunk.cpp
   Gyroscope/Gyroscope.cpp
   Jewel/Jewel.cpp
-  ModelCycler/ModelCycler.cpp
   Spindizzy.cpp
-  SpindizzyLuaSupport.cpp
   Top/Top.cpp
 )
 

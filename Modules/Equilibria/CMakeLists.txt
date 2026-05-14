@@ -77,6 +77,7 @@ add_library(Equilibria MODULE
   CollisionHandler/CollisionHandlerInstance.cpp
   InfiniteSurface.cpp
   LiftType/LiftType.cpp
+  ModelCycler/ModelCycler.cpp
   PickUpType/PickUpType.cpp
   PlayerType/PlayerType.cpp
   Equilibria.cpp

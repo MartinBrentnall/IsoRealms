@@ -34,6 +34,7 @@
 #include "CollisionHandler/CollisionHandler.h"
 #include "IsoRealms/Assets/IEventBindings.h"
 #include "LiftType/LiftType.h"
+#include "ModelCycler/ModelCycler.h"
 #include "PickUpType/PickUpType.h"
 #include "PlayerType/PlayerType.h"
 #include "TerrainState/TerrainState.h"
@@ -318,6 +319,7 @@ namespace IsoRealms::Equilibria {
     ResourceTypeDefinition<Equilibria, BoundaryHandler>  cResourceBoundaryHandler;
     ResourceTypeDefinition<Equilibria, CollisionHandler> cResourceCollisionHandler;
     ResourceTypeDefinition<Equilibria, LiftType>         cResourceLift;
+    ResourceTypeDefinition<Equilibria, ModelCycler>      cResourceModelCycler;
     ResourceTypeDefinition<Equilibria, PickUpType>       cResourcePickUp;
     ResourceTypeDefinition<Equilibria, PlayerType>       cResourcePlayer;
     ResourceTypeDefinition<Equilibria, TerrainType>      cResourceTerrain;
@@ -395,6 +397,7 @@ namespace IsoRealms::Equilibria {
   template<> struct ResourceContainerTraits<BoundaryHandler>    {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceBoundaryHandler;   }};
   template<> struct ResourceContainerTraits<CollisionHandler>   {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceCollisionHandler;  }};
   template<> struct ResourceContainerTraits<LiftType>           {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceLift;              }};
+  template<> struct ResourceContainerTraits<ModelCycler>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceModelCycler;      }};
   template<> struct ResourceContainerTraits<PickUpType>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourcePickUp;            }};
   template<> struct ResourceContainerTraits<PlayerType>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourcePlayer;            }};
   template<> struct ResourceContainerTraits<TerrainType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceTerrain;           }};

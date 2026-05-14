@@ -39,6 +39,7 @@ namespace IsoRealms::Equilibria {
                     cResourceBoundaryHandler(*this),
                     cResourceCollisionHandler(*this),
                     cResourceLift(*this),
+                    cResourceModelCycler(*this),
                     cResourcePickUp(*this),
                     cResourcePlayer(*this),
                     cResourceTerrain(*this),
@@ -59,6 +60,7 @@ namespace IsoRealms::Equilibria {
     registry.add(&cResourceBoundaryHandler,  "BoundaryHandler");
     registry.add(&cResourceCollisionHandler, "CollisionHandler");
     registry.add(&cResourceLift,             "Lift");
+    registry.add(&cResourceModelCycler,      "ModelCycler");
     registry.add(&cResourcePickUp,           "PickUp");
     registry.add(&cResourcePlayer,           "Player");
     registry.add(&cResourceTerrain,          "Terrain");
@@ -339,12 +341,14 @@ namespace IsoRealms::Equilibria {
   }
   
   void Equilibria::updateEditing(unsigned int milliseconds) {
-    updateEditing2(cResourceThemeSet, milliseconds);
-    updateEditing2(cResourceWorld,    milliseconds);
+    updateEditing2(cResourceModelCycler, milliseconds);
+    updateEditing2(cResourceThemeSet,    milliseconds);
+    updateEditing2(cResourceWorld,       milliseconds);
   }
   
   void Equilibria::reset() {
     reset2(cResourceAlien);
+    reset2(cResourceModelCycler);
     reset2(cResourcePlayer);
     reset2(cResourceTerrainState);
     reset2(cResourceWorld);

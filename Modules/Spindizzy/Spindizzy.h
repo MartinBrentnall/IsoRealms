@@ -26,7 +26,6 @@
 #include "DebrisChunk/DebrisChunk.h"
 #include "Gyroscope/Gyroscope.h"
 #include "Jewel/Jewel.h"
-#include "ModelCycler/ModelCycler.h"
 #include "Top/Top.h"
 
 namespace IsoRealms::Spindizzy {
@@ -61,7 +60,6 @@ namespace IsoRealms::Spindizzy {
     ResourceTypeDefinition<Spindizzy, DebrisChunk>        cResourceDebrisChunk;
     ResourceTypeDefinition<Spindizzy, Gyroscope>          cResourceGyroscope;
     ResourceTypeDefinition<Spindizzy, Jewel>              cResourceJewel;
-    ResourceTypeDefinition<Spindizzy, ModelCycler>        cResourceModelCycler;
     ResourceTypeDefinition<Spindizzy, Top>                cResourceTop;
 
     // Scripting support.
@@ -75,6 +73,5 @@ namespace IsoRealms::Spindizzy {
   template<> struct ResourceContainerTraits<DebrisChunk>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceDebrisChunk;       }};
   template<> struct ResourceContainerTraits<Gyroscope>          {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceGyroscope;         }};
   template<> struct ResourceContainerTraits<Jewel>              {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceJewel;             }};
-  template<> struct ResourceContainerTraits<ModelCycler>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceModelCycler;       }};
   template<> struct ResourceContainerTraits<Top>                {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceTop;               }};
 }
