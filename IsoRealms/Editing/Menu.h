@@ -237,7 +237,7 @@ namespace IsoRealms {
     void updateRight() override {
       float mAspectRatio = 1.0f / cUIManager.getProject().getApplication().getScreenAspectRatio();
       float mFontSize = cStyle.getFontSize();
-      cPanelRight = std::max(getContentRight(), cUIManager.getBreadCrumbWidth() + mFontSize * 2.0f - mAspectRatio);
+      cPanelRight = std::max(getContentRight() + mFontSize, -mAspectRatio + cUIManager.getBreadCrumbWidth() + mFontSize * 3.0f);
     }
 
     private:

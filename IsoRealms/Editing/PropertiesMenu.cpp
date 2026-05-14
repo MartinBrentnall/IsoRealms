@@ -58,7 +58,8 @@ namespace IsoRealms {
   }
 
   float PropertiesMenu::getWidth(MenuItemProperty& item, IUIStyle& style) const {
-    return cColumnWidthLabel.value() + cColumnWidthValue.value() + style.getFontSize() * 2.25f * (1.5f + (cHasRemoveColumn ? 1 : 0) + (cHasConfigureColumn ? 1 : 0));
+    //     Property name:              Spacing                       Property value              Remove icon                                              Configure icon          
+    return cColumnWidthLabel.value() + style.getFontSize() * 2.25f + cColumnWidthValue.value() + style.getFontSize() * (cHasRemoveColumn ? 3.0f : 0.0f) + style.getFontSize() * (cHasConfigureColumn ? 3.0f : 0.0f);
   }
 
   float PropertiesMenu::getHeight(MenuItemProperty& item, IUIStyle& style) const {
@@ -78,7 +79,8 @@ namespace IsoRealms {
 
     if (item.getProperty()->isRemovable()) {
       glPushMatrix();
-      glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * 6.75f, y + mFontSize, 0.0f);
+      float mPosition = cHasConfigureColumn ? 6.75f : 4.50f;
+      glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * mPosition, y + mFontSize, 0.0f);
       glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
       Utils::renderIconNone();
       glPopMatrix();
@@ -110,8 +112,8 @@ namespace IsoRealms {
   float PropertiesMenu::getSelectionHighlightLeft(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const {
     float mFontSize = style.getFontSize();
     return cAction == Action::SELECT    ? -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f
-         : cAction == Action::CONFIGURE ? -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f + cColumnWidthValue.animation() + mFontSize * 2.25
-         :                                -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f + cColumnWidthValue.animation() + mFontSize * 4.50;
+         : cAction == Action::CONFIGURE ? -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f + cColumnWidthValue.animation() + mFontSize * 2.25f
+         :                                -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f + cColumnWidthValue.animation() + mFontSize * (cHasConfigureColumn ? 4.50f : 2.25f);
   }
   
   float PropertiesMenu::getSelectionHighlightRight(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const {
