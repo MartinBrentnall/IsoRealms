@@ -1,8 +1,5 @@
 {
   "description": "Functionality for supporting user-interfaces and presentation.",
-  "categories": {
-    "User Interfaces": "User interfaces resources."
-  },
   "assets": {
     "LayoutLocationAbsolute": {
       "description": "Positions a component edge on the screen at a location from -1.0 to +1.0.",
@@ -132,7 +129,6 @@
       "singular": "Layout",
       "plural": "Layouts",
       "description": "Combine and arrange multiple visual elements on a single screen.  Each visual element of the layout can be switched programmatically.",
-      "category": "User Interfaces",
       "properties": {
         "Content": {"name": "Content", "description": "Edit the content of this layout."},
         "ComponentName": {"name": "Name", "description": "Name of this component.  The name is only used when interacting with this component programmatically."},
@@ -156,7 +152,6 @@
       "singular": "Menu",
       "plural": "Menus",
       "description": "Menus supporting items of various types, including actions, booleans, multiple-choice, sliders, etc.",
-      "category": "User Interfaces",
       "properties": {
         "Colour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
         "Font": {"name": "Font", "description": "Font to use for rendering the menu."},
@@ -190,7 +185,6 @@
       "singular": "Prompt",
       "plural": "Prompts",
       "description": "Prompts that display a message and allow the user to choose between two options, such as cancelling or confirming an action.",
-      "category": "User Interfaces",
       "properties": {
         "Colour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
         "Font": {"name": "Font", "description": "Font to use for rendering the menu."},
@@ -207,7 +201,6 @@
       "singular": "Screen Fader",
       "plural": "Screen Faders",
       "description": "Visual elements that fade between two different different visual elements.  This can be used to create nice visual transitions between gameplay and a pause menu, for example.",
-      "category": "User Interfaces",
       "properties": {
         "ScreenA": {"name": "Screen A", "description": "First screen of this screen fader."},
         "ScreenB": {"name": "Screen B", "description": "Second screen of this screen fader."},
@@ -218,7 +211,6 @@
       "singular": "Throbber",
       "plural": "Throbbers",
       "description": "Animated visual elements to indicate that the application is busy.",
-      "category": "User Interfaces",
       "properties": {
         "Duration": {"name": "Animation Duration", "description": "Total duration of the Throbber animation before it loops in milliseconds."},
         "Spots": {"name": "Spots", "description": "Number of spots to animate in this Throbber."},
@@ -234,7 +226,6 @@
       "singular": "Virtual Keyboard",
       "plural": "Virtual Keyboards",
       "description": "On-screen keyboards that allow the user to enter text without a real keyboard.",
-      "category": "User Interfaces",
       "properties": {
       }
     }

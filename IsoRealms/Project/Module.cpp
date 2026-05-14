@@ -92,13 +92,13 @@ namespace IsoRealms {
     // Load the module and asset metadata.  This needs to be done before the module is created.
     cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
 
-    JSONObject mCategoriesObject = mMetadataDocument.getObject(JSON_CATEGORIES);
-    std::cout << "Module: " << cName << std::endl;
-    for (JSONThing mCategoryThing : mCategoriesObject) {
-      std::string mCategoryDescription = mCategoryThing.getValueAsString();
-      std::string mCategoryName = mCategoryThing.getName();
-      std::cout << "   Category: " << mCategoryName << " - " << mCategoryDescription << std::endl;
-      cCategoryDescriptions[mCategoryName] = mCategoryDescription;
+    if (mMetadataDocument.hasMember(JSON_CATEGORIES)) {
+      JSONObject mCategoriesObject = mMetadataDocument.getObject(JSON_CATEGORIES);
+      for (JSONThing mCategoryThing : mCategoriesObject) {
+        std::string mCategoryDescription = mCategoryThing.getValueAsString();
+        std::string mCategoryName = mCategoryThing.getName();
+        cCategoryDescriptions[mCategoryName] = mCategoryDescription;
+      }
     }
 
     JSONObject mAssetsObject = mMetadataDocument.getObject(JSON_ASSETS);

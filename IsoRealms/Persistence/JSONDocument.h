@@ -40,6 +40,7 @@ namespace IsoRealms {
     JSONObject addObject(const std::string& name);
     JSONObject getObject(const std::string& name);
     std::string getString(const std::string& name, const std::string& defaultValue = "") const;
+    bool hasMember(const std::string& name) const;
     void save(const std::string& filename);
     rapidjson::Document& getDocument();
 

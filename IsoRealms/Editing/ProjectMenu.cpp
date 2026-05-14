@@ -58,10 +58,25 @@ namespace IsoRealms {
       std::string mModuleName = mModule->getName();
       addItem(std::make_unique<MenuItemModule>(mModuleName, mModule->getDescription()));
 
+      // Add a menu item for each category within the module.
       for (const std::string& mCategory : mCategoryByModule.second) {
-        addItem(std::make_unique<MenuItemAction>(mCategory, mModule->getCategoryDescription(mCategory), [this, mModule, mCategory, &mManager, &mStyle]() {
-          openUI(std::make_unique<CategoryMenu>(mManager, mStyle, cProject, mModule, mCategory), mCategory);
-        }, 1));
+        if (!mCategory.empty()) {
+          addItem(std::make_unique<MenuItemAction>(mCategory, mModule->getCategoryDescription(mCategory), [this, mModule, mCategory, &mManager, &mStyle]() {
+            openUI(std::make_unique<CategoryMenu>(mManager, mStyle, cProject, mModule, mCategory), mCategory);
+          }, 1));
+        }
+      }
+
+      // Add a menu item for each resource type within the module that does not have a category.
+      std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
+      for (ResourceType* mResourceType : mResourceTypes) {
+        if (mResourceType->getCategory().empty()) {
+          std::string mResourceTypeName = mResourceType->getPlural();
+          std::string mResourceTypeTooltip = mResourceType->getDescription();
+          addItem(std::make_unique<MenuItemAction>(mResourceTypeName, mResourceTypeTooltip, [this, &mManager, &mStyle, mResourceType]() {
+            mManager.openUI(std::make_unique<ResourceTypeMenu>(mManager, mStyle, *mResourceType), mResourceType->getPlural());
+          }, 1));
+        }
       }
     }
 

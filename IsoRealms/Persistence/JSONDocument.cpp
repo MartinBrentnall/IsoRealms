@@ -58,6 +58,10 @@ namespace IsoRealms {
     return cDocument.HasMember(name) ? cDocument[name].GetString() : defaultValue;
   }
 
+  bool JSONDocument::hasMember(const std::string& name) const {
+    return cDocument.HasMember(name);
+  }
+
   void JSONDocument::save(const std::string& filename) {
     rapidjson::StringBuffer mBuffer;
 //    rapidjson::Writer<rapidjson::StringBuffer> mWriter(mBuffer);

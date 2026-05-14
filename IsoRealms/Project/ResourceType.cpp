@@ -231,7 +231,7 @@ namespace IsoRealms {
   }
 
   std::string ResourceType::getCategory() {
-    return cCategory.empty() ? "TODO: Category" : cCategory;
+    return cCategory;
   }
   
   std::string ResourceType::getDescription() const {
