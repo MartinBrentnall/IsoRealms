@@ -36,6 +36,7 @@ namespace IsoRealms {
      * Implements IMenuItem *
     \************************/
     float getWidth(IUIStyle& style) const override;
+    float getHeight(IUIStyle& style) const override;
     float getIndentation(IUIStyle& style) const override;
     void render(IUIStyle& style, float y, float aspectRatio) const override;
     bool input(UISignalID id) override;

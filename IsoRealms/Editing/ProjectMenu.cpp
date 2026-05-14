@@ -23,6 +23,7 @@
 #include "IsoRealms/Project/ResourceType.h"
 
 #include "MenuItemAction.h"
+#include "MenuItemLoadModule.h"
 #include "MenuItemModule.h"
 
 namespace IsoRealms {
@@ -62,6 +63,14 @@ namespace IsoRealms {
           openUI(std::make_unique<CategoryMenu>(mManager, mStyle, cProject, mModule, mCategory), mCategory);
         }, 1));
       }
+    }
+
+    // Add a menu item to load a module.
+    std::vector<std::string> mUnusedModuleNames = cProject.getUnusedModuleNames();
+    if (!mUnusedModuleNames.empty()) {
+      addItem(std::make_unique<MenuItemLoadModule>("Load Module...", "TODO: Load module description.", []() {
+        // TODO: Implement this.
+      }));
     }
   }
 }

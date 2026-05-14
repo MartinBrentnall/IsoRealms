@@ -34,6 +34,7 @@ namespace IsoRealms {
      * Implements Menu<IMenuItem> *
     \******************************/
     float getWidth(IMenuItem& item, IUIStyle& style) const override;
+    float getHeight(IMenuItem& item, IUIStyle& style) const override;
     void renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const override;
     void renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const override;
     void updateOverlay(unsigned int milliseconds) override;

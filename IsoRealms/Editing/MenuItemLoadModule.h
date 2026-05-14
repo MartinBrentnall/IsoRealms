@@ -27,10 +27,10 @@
  #include "UISignalID.h"
  
  namespace IsoRealms {
-   class MenuItemModule : public IMenuItem {
+   class MenuItemLoadModule : public IMenuItem {
      public:
-     MenuItemModule(const std::string& label, const std::string& tooltip);
-     virtual ~MenuItemModule() = default;
+     MenuItemLoadModule(const std::string& label, const std::string& tooltip, std::function<void()> action);
+     virtual ~MenuItemLoadModule() = default;
      
      /************************\
       * Implements IMenuItem *
@@ -49,6 +49,7 @@
      private:
      std::string cLabel;
      std::string cTooltip;
+     std::function<void()> cAction;
    };
  }
  

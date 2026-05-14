@@ -61,6 +61,10 @@ namespace IsoRealms {
     return cColumnWidthLabel.value() + cColumnWidthValue.value() + style.getFontSize() * 2.25f * (1.5f + (cHasRemoveColumn ? 1 : 0) + (cHasConfigureColumn ? 1 : 0));
   }
 
+  float PropertiesMenu::getHeight(MenuItemProperty& item, IUIStyle& style) const {
+    return style.getFontSize() * 2.0f;
+  }
+
   void PropertiesMenu::renderMenuItem(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const {
     float mFontSize = style.getFontSize();
     item.render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f, aspectRatio);

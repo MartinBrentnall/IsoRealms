@@ -34,6 +34,10 @@ namespace IsoRealms {
     return cRemoveButtonOffset + style.getFontSize() * 2.0f;
   }
 
+  float ResourceTypeMenu::getHeight(MenuItemResource& item, IUIStyle& style) const {
+    return style.getFontSize() * 2.0f;
+  }
+
   void ResourceTypeMenu::renderMenuItem(MenuItemResource& item, IUIStyle& style, float y, float aspectRatio) const {
     item.render(style, y, cRemoveButtonOffset, aspectRatio);
   }

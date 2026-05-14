@@ -50,7 +50,11 @@ namespace IsoRealms {
 
       float mTop = 1.0f - mFontSize;
       float mLeft = -1.0 * aspectRatio;
-      float mBottom = std::max(-1.0f + mFontSize, 1.0f - ((cItems.size() + 2.0f) * mFontSize * 2.0f));
+      float mHeight = 0.0f;
+      for (std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
+        mHeight += getHeight(*mItem, cStyle);
+      }
+      float mBottom = std::max(-1.0f + mFontSize, 1.0f - (mFontSize * 4.0f + mHeight));
 
       glColor3f(0.0f, 0.0f, 0.0f);
       Utils::renderRoundedRectangle(mLeft, mBottom, cPanelRight, mTop, mFontSize);
@@ -64,7 +68,7 @@ namespace IsoRealms {
       ScreenArea mPreviousCrop = mApplication.crop(ScreenArea(-aspectRatio, aspectRatio, -1.0f + mFontSize, 1.0f - mFontSize * 4.0f));
       float mYPosition = (1.0f - mFontSize * 4.0f) + cScroll.animation();
       for (std::unique_ptr<MENU_ITEM_TYPE>& mItem : cItems) {
-        mYPosition -= mFontSize * 2.0f;
+        mYPosition -= getHeight(*mItem, cStyle);
         glPushMatrix();
         renderMenuItem(*mItem, cStyle, mYPosition, aspectRatio);
         glPopMatrix();
@@ -91,7 +95,12 @@ namespace IsoRealms {
     }
 
     float getSelectionHighlightTop() const override {
-      return (1.0f - ((cSelectedItem + 2.0f) * cStyle.getFontSize() * 2.0f)) + cScroll.animation();
+      float mHeight = 0.0f;
+      for (unsigned int i = 0; i < cSelectedItem + 1; i++) {
+        mHeight += getHeight(*cItems[i], cStyle);
+      }
+      mHeight -= cStyle.getFontSize() * 2.0f;
+      return (1.0f - (cStyle.getFontSize() * 4.0f + mHeight)) + cScroll.animation();
     }
 
     float getSelectionHighlightBottom() const override {
@@ -168,6 +177,7 @@ namespace IsoRealms {
     }
 
     virtual float getWidth(MENU_ITEM_TYPE& item, IUIStyle& style) const = 0;
+    virtual float getHeight(MENU_ITEM_TYPE& item, IUIStyle& style) const = 0;
     virtual void renderMenuItem(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;
     virtual void renderOverlay(MENU_ITEM_TYPE& item, IUIStyle& style, float y, float aspectRatio) const = 0;
     virtual void updateOverlay(unsigned int milliseconds) = 0;

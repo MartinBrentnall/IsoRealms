@@ -31,6 +31,7 @@ namespace IsoRealms {
     virtual ~IMenuItem() = default;
     
     virtual float getWidth(IUIStyle& style) const = 0;
+    virtual float getHeight(IUIStyle& style) const = 0;
     virtual float getIndentation(IUIStyle& style) const = 0;
     virtual void render(IUIStyle& style, float y, float aspectRatio) const = 0;
     virtual bool input(UISignalID id) = 0;

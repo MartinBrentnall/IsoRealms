@@ -34,6 +34,10 @@
      return mFont->getWidth(mFontSize, cLabel);
    }
  
+   float MenuItemModule::getHeight(IUIStyle& style) const {
+     return style.getFontSize() * 3.0f;
+   }
+
    float MenuItemModule::getIndentation(IUIStyle& style) const {
      return 0.0f;
    }

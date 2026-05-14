@@ -4,10 +4,10 @@
   },
   "resources": {
     "Ball": {
-      "singular": "Ball Texture",
-      "plural": "Ball Textures",
+      "singular": "Ball Sprite",
+      "plural": "Ball Sprites",
       "description": "Textures in the style of the C64 Spindizzy Ball craft.  These textures are designed to be applied to billboarded sprites.",
-      "category": "Graphics",
+      "category": "Textures",
       "properties": {
         "Fill": {"name": "Fill Colour", "description": "Main colour of this ball texture."},
         "Shine": {"name": "Shine Colour", "description": "Colour of the 'shine' on the upper part of this ball texture."},
@@ -18,7 +18,7 @@
       "singular": "C64 Lift Graphics Set",
       "plural": "C64 Lift Graphics Sets",
       "description": "Sets of textures intended for use as lift elements, in the style of C64 Spindizzy.",
-      "category": "Graphics",
+      "category": "Textures",
       "properties": {
         "Primary": {"name": "Primary Colour", "description": "Primary colour used in this set of textures."},
         "Secondary": {"name": "Secondary Colour", "description": "Secondary colour used in this set of textures."},
@@ -29,7 +29,7 @@
       "singular": "C64 Terrain Graphics Set",
       "plural": "C64 Terrain Graphics Sets",
       "description": "Sets of texture intended to be applied to terrain elements, in the style of C64 Spindizzy.",
-      "category": "Graphics",
+      "category": "Textures",
       "properties": {
         "Floor": {"name": "Floor Colour", "description": "Colour mainly applied to textures to be used as floors."},
         "Wall": {"name": "Wall Colour", "description": "Colour mainly applied to textures to be used as walls.  Note that this colour is mixed with the floor texture to generate a second variation of the standard wall texture for displaying at a different angle."},
@@ -38,10 +38,10 @@
       }
     },
     "DebrisChunk": {
-      "singular": "Debris Chunk Model",
-      "plural": "Debris Chunk Models",
+      "singular": "Debris Chunk",
+      "plural": "Debris Chunks",
       "description": "Simple tetrahedron models that can be used to represent chunks of derbis from a destroyed craft.",
-      "category": "Graphics",
+      "category": "Models",
       "properties": {
         "Side1": {"name": "Side 1 Colour", "description": "Colour of one side of this debris chunk model."},
         "Side2": {"name": "Side 2 Colour", "description": "Colour of one side of this debris chunk model."},
@@ -51,10 +51,10 @@
       }
     },
     "Gyroscope": {
-      "singular": "Gyroscope Model",
-      "plural": "Gyroscope Models",
+      "singular": "Gyroscope",
+      "plural": "Gyroscopes",
       "description": "Models in the style of the C64 Spindizzy Gyroscope craft.",
-      "category": "Graphics",
+      "category": "Models",
       "properties": {
         "Quadrant1": {"name": "Quadrant 1 Colour", "description": "Colour of one quadrant of this gyroscope model."},
         "Quadrant2": {"name": "Quadrant 2 Colour", "description": "Colour of one quadrant of this gyroscope model."},
@@ -64,10 +64,10 @@
       }
     },
     "Jewel": {
-      "singular": "Jewel Model",
-      "plural": "Jewel Models",
+      "singular": "Jewel",
+      "plural": "Jewels",
       "description": "Models in the style of C64 Spindizzy jewels, including colour changing panels.",
-      "category": "Graphics",
+      "category": "Models",
       "properties": {
         "PanelPhase": {"name": "Panel Phase Colour", "description": "Panels of this jewel model will phase through this colour."},
         "PanelPhaseAdd": {"name": "Panel Phase Colour", "description": "Add another panel phase colour."},
@@ -78,17 +78,17 @@
       "singular": "Model Cycler",
       "plural": "Model Cyclers",
       "description": "Models that programmatically cycle through the appearances of other models.",
-      "category": "Graphics",
+      "category": "Models",
       "properties": {
         "Model": {"name": "Model", "description": "A model to cycle through within this set."},
         "ModelAdd": {"name": "Model", "description": "Add another model to cycle through within this set."}
       }
     },
     "Top": {
-      "singular": "Top Model",
-      "plural": "Top Models",
+      "singular": "Top",
+      "plural": "Tops",
       "description": "Models in the style of the C64 Spindizzy Top craft.",
-      "category": "Graphics",
+      "category": "Models",
       "properties": {
         "Top": {"name": "Top Colour", "description": "Colour of the top of this model."},
         "Side": {"name": "Side Colour", "description": "Colour of the sides of this model."},

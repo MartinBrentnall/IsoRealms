@@ -27,6 +27,10 @@ namespace IsoRealms {
     return item.getWidth(style);
   }
 
+  float ActionMenu::getHeight(IMenuItem& item, IUIStyle& style) const {
+    return item.getHeight(style);
+  }
+
   void ActionMenu::renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
     item.render(style, y, aspectRatio);
   }
