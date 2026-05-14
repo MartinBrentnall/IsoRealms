@@ -30,6 +30,7 @@ namespace IsoRealms {
   class MenuItemAction : public IMenuItem {
     public:
     MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action, int indentLevel = 0);
+    MenuItemAction(const PropertyData& propertyData, std::function<void()> action, int indentLevel = 0);
     virtual ~MenuItemAction() = default;
     
     /************************\

@@ -18,14 +18,15 @@
  */
  #include "MenuItemLoadModule.h"
 
+ #include "IsoRealms/PropertyData.h"
  #include "IsoRealms/Utils.h"
  
  #include "IUIStyle.h"
  
  namespace IsoRealms {
-   MenuItemLoadModule::MenuItemLoadModule(const std::string& label, const std::string& tooltip, std::function<void()> action) :
-             cLabel(label),
-             cTooltip(tooltip),
+   MenuItemLoadModule::MenuItemLoadModule(const PropertyData& propertyData, std::function<void()> action) :
+             cLabel(propertyData.getName()),
+             cTooltip(propertyData.getTooltip()),
              cAction(action) {
    }
  

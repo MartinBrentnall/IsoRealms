@@ -29,7 +29,7 @@
  namespace IsoRealms {
    class MenuItemLoadModule : public IMenuItem {
      public:
-     MenuItemLoadModule(const std::string& label, const std::string& tooltip, std::function<void()> action);
+     MenuItemLoadModule(const PropertyData& propertyData, std::function<void()> action);
      virtual ~MenuItemLoadModule() = default;
      
      /************************\

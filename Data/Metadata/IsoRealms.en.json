@@ -37,6 +37,9 @@
     "Alpha": {"name": "Alpha", "description": "Alpha intensity of this colour."},
     "Hue": {"name": "Hue", "description": "Hue of this colour."},
     "Saturation": {"name": "Saturation", "description": "Saturation of this colour."},
-    "Lightness": {"name": "Lightness", "description": "Lightness of this colour."}
+    "Lightness": {"name": "Lightness", "description": "Lightness of this colour."},
+
+    "ApplicationConfiguration": {"name": "Application Configuration", "description": "Overall configuration of this application."},
+    "ApplicationLoadModule": {"name": "Load Module...", "description": "Load a module into this application."}
   }
 }

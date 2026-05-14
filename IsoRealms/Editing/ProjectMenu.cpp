@@ -37,10 +37,11 @@ namespace IsoRealms {
 
     UIManager& mManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    addItem(std::make_unique<MenuItemAction>("Project Configuration", "TODO: Description", [this, &mManager, &mStyle]() {
+    const Metadata& mMetadata = cProject.getMetadata();
+    addItem(std::make_unique<MenuItemAction>(mMetadata.getPropertyData("ApplicationConfiguration"), [this, &mManager, &mStyle, &mMetadata]() {
       mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](IPropertyMaker& owner) {
         cProject.getProperties(owner);
-      }), "Project Configuration");
+      }), mMetadata.getPropertyData("ApplicationConfiguration").getName());
     }));
 
     // Build a map of categories within each module.
@@ -83,7 +84,7 @@ namespace IsoRealms {
     // Add a menu item to load a module.
     std::vector<std::string> mUnusedModuleNames = cProject.getUnusedModuleNames();
     if (!mUnusedModuleNames.empty()) {
-      addItem(std::make_unique<MenuItemLoadModule>("Load Module...", "TODO: Load module description.", []() {
+      addItem(std::make_unique<MenuItemLoadModule>(mMetadata.getPropertyData("ApplicationLoadModule"), []() {
         // TODO: Implement this.
       }));
     }

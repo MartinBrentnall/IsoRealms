@@ -18,6 +18,7 @@
  */
 #include "MenuItemAction.h"
 
+#include "IsoRealms/PropertyData.h"
 #include "IsoRealms/Utils.h"
 
 #include "IUIStyle.h"
@@ -26,6 +27,13 @@ namespace IsoRealms {
   MenuItemAction::MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action, int indentLevel) :
             cLabel(label),
             cTooltip(tooltip),
+            cAction(action),
+            cIndentLevel(indentLevel) {
+  }
+
+  MenuItemAction::MenuItemAction(const PropertyData& propertyData, std::function<void()> action, int indentLevel) :
+            cLabel(propertyData.getName()),
+            cTooltip(propertyData.getTooltip()),
             cAction(action),
             cIndentLevel(indentLevel) {
   }
