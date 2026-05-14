@@ -17,20 +17,21 @@
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "ActionMenu.h"
+#include "IsoRealms/Editing/IMenuItem.h"
 
 namespace IsoRealms {
-  ActionMenu::ActionMenu(UIManager& manager, IUIStyle& style) : Menu<MenuItemAction>(manager, style) {
+  ActionMenu::ActionMenu(UIManager& manager, IUIStyle& style) : Menu<IMenuItem>(manager, style) {
   }
 
-  float ActionMenu::getWidth(MenuItemAction& item, IUIStyle& style) const {
+  float ActionMenu::getWidth(IMenuItem& item, IUIStyle& style) const {
     return item.getWidth(style);
   }
 
-  void ActionMenu::renderMenuItem(MenuItemAction& item, IUIStyle& style, float y, float aspectRatio) const {
+  void ActionMenu::renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
     item.render(style, y, aspectRatio);
   }
 
-  void ActionMenu::renderOverlay(MenuItemAction& item, IUIStyle& style, float y, float aspectRatio) const {
+  void ActionMenu::renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
     // Nothing to do.
   }
 
@@ -38,19 +39,19 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  float ActionMenu::getSelectionHighlightLeft(MenuItemAction& item, IUIStyle& style, float aspectRatio) const {
-    return -1.0f * aspectRatio;
+  float ActionMenu::getSelectionHighlightLeft(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
+    return -1.0f * aspectRatio + item.getIndentation(style);
   }
 
-  float ActionMenu::getSelectionHighlightRight(MenuItemAction& item, IUIStyle& style, float aspectRatio) const {
-    return -1.0f * aspectRatio + item.getWidth(style);
+  float ActionMenu::getSelectionHighlightRight(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
+    return -1.0f * aspectRatio + item.getIndentation(style) + item.getWidth(style);
   }
 
-  bool ActionMenu::input(MenuItemAction& item, UISignalID id, float y) {
+  bool ActionMenu::input(IMenuItem& item, UISignalID id, float y) {
     return item.input(id);
   }
 
-  bool ActionMenu::input(MenuItemAction& item, sf::Event& event) {
+  bool ActionMenu::input(IMenuItem& item, sf::Event& event) {
     return false;
   }
   

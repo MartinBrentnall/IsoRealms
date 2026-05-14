@@ -23,20 +23,23 @@
 
 #include "IsoRealms/Types.h"
 
+#include "IMenuItem.h"
 #include "UISignalID.h"
 
 namespace IsoRealms {
-  class MenuItemAction {
+  class MenuItemAction : public IMenuItem {
     public:
-    MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action);
+    MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action, int indentLevel = 0);
+    virtual ~MenuItemAction() = default;
     
     /************************\
      * Implements IMenuItem *
     \************************/
-    float getWidth(IUIStyle& style) const;
-    void render(IUIStyle& style, float y, float aspectRatio) const;
-    bool input(UISignalID id);
-    std::string getTooltip() const;
+    float getWidth(IUIStyle& style) const override;
+    float getIndentation(IUIStyle& style) const override;
+    void render(IUIStyle& style, float y, float aspectRatio) const override;
+    bool input(UISignalID id) override;
+    std::string getTooltip() const override;
 
     protected:
     std::string getLabel() const;
@@ -46,5 +49,6 @@ namespace IsoRealms {
     std::string cLabel;
     std::string cTooltip;
     std::function<void()> cAction;
+    int cIndentLevel;
   };
 }

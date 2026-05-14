@@ -23,10 +23,11 @@
 #include "IUIStyle.h"
 
 namespace IsoRealms {
-  MenuItemAction::MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action) :
+  MenuItemAction::MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action, int indentLevel) :
             cLabel(label),
             cTooltip(tooltip),
-            cAction(action) {
+            cAction(action),
+            cIndentLevel(indentLevel) {
   }
 
   float MenuItemAction::getWidth(IUIStyle& style) const {
@@ -35,11 +36,17 @@ namespace IsoRealms {
     return mFont->getWidth(mFontSize, cLabel) + mFontSize * 2.25f;
   }
 
+  float MenuItemAction::getIndentation(IUIStyle& style) const {
+    float mFontSize = style.getFontSize();
+    return mFontSize * 2.0f * cIndentLevel;
+  }
+
   void MenuItemAction::render(IUIStyle& style, float y, float aspectRatio) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
-    mFont->print(-1.0f * aspectRatio + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
-    glTranslatef(-1.0f * aspectRatio + mFontSize, y + mFontSize, 0.0f);
+    float mIndentWidth = mFontSize * 2.0f * cIndentLevel;
+    mFont->print(-1.0f * aspectRatio + mIndentWidth + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
+    glTranslatef(-1.0f * aspectRatio + mIndentWidth + mFontSize, y + mFontSize, 0.0f);
     glScalef(mFontSize, mFontSize, 0.0f);
     if (!renderIcon()) {
       Utils::renderIconBranch();

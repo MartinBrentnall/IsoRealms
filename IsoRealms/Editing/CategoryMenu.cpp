@@ -22,18 +22,18 @@
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ResourceType.h"
 
+#include "MenuItemAction.h"
+
 namespace IsoRealms {
-  CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, const std::string& category) : ActionMenu(manager, style) {
-    for (const std::unique_ptr<Module>& mModule : project.getModules()) {
-      std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
-      for (ResourceType* mResourceType : mResourceTypes) {
-        if (category == mResourceType->getCategory()) {
-          std::string mResourceTypeName = mResourceType->getPlural();
-          std::string mResourceTypeTooltip = mResourceType->getDescription();
-          addItem(std::make_unique<MenuItemAction>(mResourceTypeName, mResourceTypeTooltip, [this, &manager, &style, mResourceType]() {
-            manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, *mResourceType), mResourceType->getPlural());
-          }));
-        }
+  CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, Module* module, const std::string& category) : ActionMenu(manager, style) {
+    std::vector<ResourceType*> mResourceTypes = module->getResourceTypes();
+    for (ResourceType* mResourceType : mResourceTypes) {
+      if (category == mResourceType->getCategory()) {
+        std::string mResourceTypeName = mResourceType->getPlural();
+        std::string mResourceTypeTooltip = mResourceType->getDescription();
+        addItem(std::make_unique<MenuItemAction>(mResourceTypeName, mResourceTypeTooltip, [this, &manager, &style, mResourceType]() {
+          manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, *mResourceType), mResourceType->getPlural());
+        }));
       }
     }
   }

@@ -65,8 +65,6 @@ namespace IsoRealms::Spindizzy {
     reset2(cResourceModelCycler);
   }  
   
-  const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS = "Spindizzy Graphics";
-
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<Spindizzy>> ModuleInstances;
 }

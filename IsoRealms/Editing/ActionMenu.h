@@ -23,24 +23,24 @@
 #include <vector>
 
 #include "Menu.h"
-#include "MenuItemAction.h"
+#include "IMenuItem.h"
 
 namespace IsoRealms {
-  class ActionMenu : public Menu<MenuItemAction> {
+  class ActionMenu : public Menu<IMenuItem> {
     public:
     ActionMenu(UIManager& manager, IUIStyle& style);
 
-    /***********************************\
-     * Implements Menu<MenuItemAction> *
-    \***********************************/
-    float getWidth(MenuItemAction& item, IUIStyle& style) const override;
-    void renderMenuItem(MenuItemAction& item, IUIStyle& style, float y, float aspectRatio) const override;
-    void renderOverlay(MenuItemAction& item, IUIStyle& style, float y, float aspectRatio) const override;
+    /******************************\
+     * Implements Menu<IMenuItem> *
+    \******************************/
+    float getWidth(IMenuItem& item, IUIStyle& style) const override;
+    void renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const override;
+    void renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const override;
     void updateOverlay(unsigned int milliseconds) override;
-    float getSelectionHighlightLeft(MenuItemAction& item, IUIStyle& style, float aspectRatio) const override;
-    float getSelectionHighlightRight(MenuItemAction& item, IUIStyle& style, float aspectRatio) const override;
-    bool input(MenuItemAction& item, UISignalID id, float y) override;
-    bool input(MenuItemAction& item, sf::Event& event) override;
+    float getSelectionHighlightLeft(IMenuItem& item, IUIStyle& style, float aspectRatio) const override;
+    float getSelectionHighlightRight(IMenuItem& item, IUIStyle& style, float aspectRatio) const override;
+    bool input(IMenuItem& item, UISignalID id, float y) override;
+    bool input(IMenuItem& item, sf::Event& event) override;
     void selectedItemChanged() override;
     void refresh() override;
   };

@@ -53,9 +53,6 @@ namespace IsoRealms::Spindizzy {
     void reset() override;
 
     private:
-    
-    // Resource strings.
-    static const std::string RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS;
 
     // Resource type definitions.
     ResourceTypeDefinition<Spindizzy, Ball>               cResourceBall;

@@ -62,6 +62,7 @@ add_library(IsoRealms
   Editing/ResourceTypeMenu.cpp
   Editing/MenuItemAction.cpp
   Editing/MenuItemResource.cpp
+  Editing/MenuItemModule.cpp
   Editing/MenuItemProperty.cpp
   Editing/Property/Property.cpp
   Editing/Property/PropertyAdd.cpp

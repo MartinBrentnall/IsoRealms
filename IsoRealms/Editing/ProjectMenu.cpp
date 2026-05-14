@@ -22,6 +22,9 @@
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ResourceType.h"
 
+#include "MenuItemAction.h"
+#include "MenuItemModule.h"
+
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style),
             cProject(project) {
@@ -39,18 +42,26 @@ namespace IsoRealms {
       }), "Project Configuration");
     }));
 
-    std::set<std::string> mCategories;
+    // Build a map of categories within each module.
+    std::map<Module*, std::set<std::string>> mCategoriesByModule;  
     for (const std::unique_ptr<Module>& mModule : cProject.getModules()) {
       std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
       for (ResourceType* mResourceType : mResourceTypes) {
-        mCategories.insert(mResourceType->getCategory());
+        mCategoriesByModule[mModule.get()].insert(mResourceType->getCategory());
       }
     }
 
-    for (std::string mCategory : mCategories) {
-      addItem(std::make_unique<MenuItemAction>(mCategory, "TODO: Category description.", [this, mCategory, &mManager, &mStyle]() {
-        openUI(std::make_unique<CategoryMenu>(mManager, mStyle, cProject, mCategory), mCategory);
-      }));
+    // Add a menu item for each category within each module.
+    for (const std::pair<Module* const, std::set<std::string>>& mCategoryByModule : mCategoriesByModule) {
+      Module* mModule = mCategoryByModule.first;
+      std::string mModuleName = mModule->getName();
+      addItem(std::make_unique<MenuItemModule>(mModuleName, "TODO: Module description."));
+
+      for (const std::string& mCategory : mCategoryByModule.second) {
+        addItem(std::make_unique<MenuItemAction>(mCategory, "TODO: Category description.", [this, mModule, mCategory, &mManager, &mStyle]() {
+          openUI(std::make_unique<CategoryMenu>(mManager, mStyle, cProject, mModule, mCategory), mCategory);
+        }, 1));
+      }
     }
   }
 }

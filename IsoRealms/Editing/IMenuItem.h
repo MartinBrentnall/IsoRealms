@@ -18,19 +18,23 @@
  */
 #pragma once
 
-#include "IsoRealms/IResource.h"
+#include <functional>
+#include <string>
 
-#include "ActionMenu.h"
-#include "ResourceTypeMenu.h"
+#include "IsoRealms/Types.h"
+
+#include "UISignalID.h"
 
 namespace IsoRealms {
-
-  /**
-   * UI screen for allowing navigation of Resource Types within a specified
-   * project category.
-   */
-  class CategoryMenu : public ActionMenu {
+  class IMenuItem {
     public:
-    CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, Module* module, const std::string& category);
+    virtual ~IMenuItem() = default;
+    
+    virtual float getWidth(IUIStyle& style) const = 0;
+    virtual float getIndentation(IUIStyle& style) const = 0;
+    virtual void render(IUIStyle& style, float y, float aspectRatio) const = 0;
+    virtual bool input(UISignalID id) = 0;
+    virtual std::string getTooltip() const = 0;
   };
 }
+ 

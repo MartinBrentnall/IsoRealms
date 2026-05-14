@@ -142,7 +142,7 @@
       "singular": "Alien",
       "plural": "Aliens",
       "description": "Physical entities that chases a specific target, capable of triggering collisions with other entities.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
         "Appearance": {"name": "Appearance", "description": "Model to visually represent this type of alien."},
         "Target": {"name": "Target", "description": "Target that aliens of this type will attempt to move towards"},
@@ -158,7 +158,7 @@
       "singular": "Boundary Handler",
       "plural": "Boundary Handlers",
       "description": "Define actions to be performed when objects of a specific type enter or leave fixed boundaries of a specific type.  This can be used to define on players encountering different types of pick-ups, or upon entering and leaving zones.",
-      "category": "Equilibria Logic",
+      "category": "Logic",
       "properties": {
         "Entity": {"name": "Entity Type", "description": "Type of entity to react upon boundary entry and exit."},
         "Boundary": {"name": "Boundary Type", "description": "Type of boundary to test entry and exit of."},
@@ -170,7 +170,7 @@
       "singular": "Collision Handler",
       "plural": "Collision Handlers",
       "description": "Define actions to be performed when objects of one type collide with object of another type.  This can be used to apply damage to the player upon collision with alien crafts.",
-      "category": "Equilibria Logic",
+      "category": "Logic",
       "properties": {
         "EntityA": {"name": "Entity Type A", "description": "React upon collisions between entities of this type and Entity Type B."},
         "EntityB": {"name": "Entity Type B", "description": "React upon collisions between entities of this type and Entity Type A."},
@@ -182,7 +182,7 @@
       "singular": "Lift",
       "plural": "Lifts",
       "description": "Vertically moving platforms that enable players and other objects to reach higher places.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
         "Appearance": {"name": "Appearance", "description": "Model to visually represent lifts of this type."},
         "State": {"name": "State", "description": "Determine whether all lifts of this type are moving or not."},
@@ -193,7 +193,7 @@
       "singular": "Pick Up",
       "plural": "Pick Ups",
       "description": "Fixed-place objects that can be collected by players or other objects.  Note that interaction between entity type and pick-up types can be defined in Boundary Handlers.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
         "Appearance": {"name": "Appearance", "description": "Model to visually represent pick-ups of this type."}
       }
@@ -202,7 +202,7 @@
       "singular": "Player Craft",
       "plural": "Player Crafts",
       "description": "Crafts whose movements are controlled through external inputs.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
         "Radius": {"name": "Radius", "description": "Radius of players of this type in number of platform blocks."},
         "Height": {"name": "Height", "description": "Height of players of this type in number of platform blocks."},
@@ -229,7 +229,7 @@
       "singular": "Terrain",
       "plural": "Terrain",
       "description": "Terrain is used for constructing fixed platforms, walls, water, and other shapes that the player and other objects can traverse.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
         "SurfaceFriction": {"name": "Surface Friction", "description": "Rate at which objects moving along surfaces of this terrain type lose speed."},
         "SurfaceGrip": {"name": "Surface Grip", "description": "Factor at which movement changes to objects moving along surfaces of this terrain type are applied.  A value of 1 provides normal control.  A value less than 1 makes surfaces more slippery and a value of 0 nullifies control of objects on the surface."},
@@ -250,7 +250,7 @@
       "singular": "Terrain State",
       "plural": "Terrain States",
       "description": "Terrain states are used for controlling the presence of individual terrain elements via the definition of conditions that include one or more of these states.  Terrain states are also exposed as boolean values in order that they can also be used to control other things, such as lifts.",
-      "category": "Equilibria Logic",
+      "category": "Logic",
       "properties": {
         "State": {"name": "Initial State", "description": "Initial value of this terrain state."},
         "Hint": {"name": "Hint Action", "description": "Action to be performed that provides a hint for this terrain state."},
@@ -262,7 +262,7 @@
       "singular": "Theme Set",
       "plural": "Theme Sets",
       "description": "Each theme set contains multiple themes, where each theme contains the same set of elements (textures, colours, etc.), but the appearance of each element varies in each theme.  A theme set may be applied to a zone type, such that each zone of that type applies a theme from the set.  This is useful for setting different colours for each room.",
-      "category": "Equilibria Graphics",
+      "category": "Graphics",
       "properties": {
         "TextureElements": {"name": "Texture Elements", "description": "Texture elements of each theme in this set."},
         "TextureElement": {"name": "Texture Element", "description": "A texture elements of each theme in this set."},
@@ -280,7 +280,7 @@
       "singular": "World",
       "plural": "Worlds",
       "description": "Worlds in which an actual game takes place.  Each world consists of one or more zones (or rooms), each of which can contain elements for the player to traverse.  Note that worlds can also be used for purposes other than gameplay.  For example, worlds can also be used to construct HUD icons, such as the compass, clue, and switch states on the screen.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
         "Gravity": {"name": "Gravity", "description": "The rate at which falling objects increase their fall speed."},
         "SlopeEffect": {"name": "Slope Effect", "description": "The rate at which objects on slopes increase speed in the downward direction of the slope.  This rate is set on the basis of a slope of a single block step in height."},
@@ -308,7 +308,7 @@
       "singular": "World View",
       "plural": "World Views",
       "description": "Views of worlds that can be presented on the screen.",
-      "category": "Equilibria Graphics",
+      "category": "Graphics",
       "properties": {
         "World": {"name": "World", "description": "The world to be display by this view."},
         "Camera": {"name": "Camera", "description": "The camera through which to view the world."},
@@ -320,7 +320,7 @@
       "singular": "Zone",
       "plural": "Zones",
       "description": "Different types of rooms that can be used within a world.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
       }
     },
@@ -328,7 +328,7 @@
       "singular": "Entity",
       "plural": "Entities",
       "description": "Object types with behaviour that can be customized via the application of various \"traits\".  This is an experimental type of resource that implements an Entity-Component-System design.  It is intended to replace the existing fixed object types, such as lifts, aliens, pick-ups, etc. with a single resource type that includes enough flexibility to cover all of these functionalities and much more.  This resource type is experimental and unused in the existing game.",
-      "category": "Equilibria Elements",
+      "category": "Elements",
       "properties": {
       }
     }

@@ -276,11 +276,6 @@ namespace IsoRealms::Equilibria {
     void stateChanged(ITexture* asset);
 
     private:
-    
-    // Resource strings.
-    static const std::string RESOURCE_CATEGORY_EQUILIBRIA_ELEMENTS;
-    static const std::string RESOURCE_CATEGORY_EQUILIBRIA_GRAPHICS;
-    static const std::string RESOURCE_CATEGORY_EQUILIBRIA_LOGIC;
 
     // Fixed tool names.
     static const std::string TOOL_DELETE;

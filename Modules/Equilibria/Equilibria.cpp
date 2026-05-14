@@ -562,10 +562,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  const std::string Equilibria::RESOURCE_CATEGORY_EQUILIBRIA_ELEMENTS = "Equilibria Elements";
-  const std::string Equilibria::RESOURCE_CATEGORY_EQUILIBRIA_GRAPHICS = "Equilibria Graphics";
-  const std::string Equilibria::RESOURCE_CATEGORY_EQUILIBRIA_LOGIC    = "Equilibria Logic";
-
   const std::string Equilibria::TOOL_DELETE      = "DeleteTool";
   const std::string Equilibria::TOOL_PROPERTIES  = "PropertiesTool";
   const std::string Equilibria::TOOL_COPY_ZONE   = "ZoneCopyTool";
