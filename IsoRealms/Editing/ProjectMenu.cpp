@@ -25,10 +25,13 @@
 #include "MenuItemAction.h"
 #include "MenuItemLoadModule.h"
 #include "MenuItemModule.h"
+#include "MenuItemSpacer.h"
 
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style),
-            cProject(project) {
+            cProject(project),
+            cPropertyMaker(project.getApplication(), project, *this, manager),
+            cDefModuleChooser(project) {
     refresh();
   }
 
@@ -57,6 +60,7 @@ namespace IsoRealms {
     for (const std::pair<Module* const, std::set<std::string>>& mCategoryByModule : mCategoriesByModule) {
       Module* mModule = mCategoryByModule.first;
       std::string mModuleName = mModule->getName();
+      addItem(std::make_unique<MenuItemSpacer>(1.0f));
       addItem(std::make_unique<MenuItemModule>(mModule->getLongName(), mModule->getDescription()));
 
       // Add a menu item for each category within the module.
@@ -82,11 +86,36 @@ namespace IsoRealms {
     }
 
     // Add a menu item to load a module.
+    addItem(std::make_unique<MenuItemSpacer>(1.0f));
     std::vector<std::string> mUnusedModuleNames = cProject.getUnusedModuleNames();
     if (!mUnusedModuleNames.empty()) {
-      addItem(std::make_unique<MenuItemLoadModule>(mMetadata.getPropertyData("ApplicationLoadModule"), []() {
-        // TODO: Implement this.
-      }));
+      cPropertyMaker.createPropertyOptional(mMetadata.getPropertyData("Module"), cDefModuleChooser, [this](const std::string& value) {
+        cProject.loadModule(value);
+      });
     }
+  }
+
+  void ProjectMenu::addProperty(std::unique_ptr<IProperty> property) {
+    addItem(std::make_unique<MenuItemProperty>(property->getPropertyName(), std::move(property)));
+  }
+
+  void ProjectMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
+    throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
+  }
+
+  void ProjectMenu::edit(std::unique_ptr<IPropertyEditor> editor) {
+    // TODO: Implement this.
+  }
+
+  void ProjectMenu::edit(IEditable* editor) {
+    throw std::runtime_error("ProjectMenu::edit: Not implemented");
+  }
+
+  void ProjectMenu::refreshProperties() {
+    // TODO: Implement this.
+  }
+
+  IUIStyle& ProjectMenu::getPropertyStyle() {
+    return getStyle();
   }
 }

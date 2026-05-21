@@ -33,7 +33,8 @@ namespace IsoRealms {
   class Project;
   class IPropertyMaker;
   
-  class ModuleChooser : public ITreeSelectorObject, public IOptionalObject {
+  class ModuleChooser : public ITreeSelectorObject,
+                        public IOptionalObject {
     public:
     ModuleChooser(Project& project);
 

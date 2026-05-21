@@ -32,7 +32,7 @@ namespace IsoRealms {
   }
 
   void ActionMenu::renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
-    item.render(style, y, aspectRatio);
+    item.render(style, y, 0.0f, aspectRatio);
   }
 
   void ActionMenu::renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
@@ -61,6 +61,10 @@ namespace IsoRealms {
   
   void ActionMenu::selectedItemChanged() {
     // Nothing to do.
+  }
+
+  bool ActionMenu::isSelectable(IMenuItem& item) const {
+    return item.isSelectable();
   }
 
   void ActionMenu::refresh() {

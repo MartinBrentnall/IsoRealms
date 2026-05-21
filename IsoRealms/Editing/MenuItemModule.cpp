@@ -35,14 +35,14 @@
    }
  
    float MenuItemModule::getHeight(IUIStyle& style) const {
-     return style.getFontSize() * 3.0f;
+     return style.getFontSize() * 2.0f;
    }
 
    float MenuItemModule::getIndentation(IUIStyle& style) const {
      return 0.0f;
    }
  
-   void MenuItemModule::render(IUIStyle& style, float y, float aspectRatio) const {
+   void MenuItemModule::render(IUIStyle& style, float y, float x, float aspectRatio) const {
      IFont* mFont = style.getFont();
      float mFontSize = style.getFontSize();
      mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
@@ -54,6 +54,10 @@
  
    std::string MenuItemModule::getTooltip() const {
      return cTooltip;
+   }
+ 
+   bool MenuItemModule::isSelectable() const {
+     return true;
    }
  
    std::string MenuItemModule::getLabel() const {

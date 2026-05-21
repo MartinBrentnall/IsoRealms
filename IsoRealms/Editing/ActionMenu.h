@@ -43,6 +43,7 @@ namespace IsoRealms {
     bool input(IMenuItem& item, UISignalID id, float y) override;
     bool input(IMenuItem& item, sf::Event& event) override;
     void selectedItemChanged() override;
+    bool isSelectable(IMenuItem& item) const override;
     void refresh() override;
   };
 }

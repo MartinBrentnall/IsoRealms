@@ -140,6 +140,10 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  bool ResourceTypeMenu::isSelectable(MenuItemResource& item) const {
+    return true;
+  }
+
   void ResourceTypeMenu::refresh() {
     
     // Start fresh.

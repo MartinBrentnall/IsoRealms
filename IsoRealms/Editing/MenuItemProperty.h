@@ -24,16 +24,26 @@
 
 #include "Property/IProperty.h"
 
+#include "IMenuItem.h"
+
 namespace IsoRealms {
-  class MenuItemProperty {
+  class MenuItemProperty : public IMenuItem {
     public:
     MenuItemProperty(const std::string& name, std::unique_ptr<IProperty> property);
 
     IProperty* getProperty() const;
-    float getWidth(IUIStyle& style) const;
     float getValueWidth(IUIStyle& style) const;
-    void render(IUIStyle& style, float y, float x, float aspectRatio) const;
-    std::string getTooltip() const;
+
+    /************************\
+     * Implements IMenuItem *
+    \************************/
+    float getWidth(IUIStyle& style) const override;
+    float getHeight(IUIStyle& style) const override;
+    float getIndentation(IUIStyle& style) const override;
+    void render(IUIStyle& style, float y, float x, float aspectRatio) const override;
+    bool input(UISignalID id) override;
+    std::string getTooltip() const override;
+    bool isSelectable() const override;
 
     private:
     std::unique_ptr<IProperty> cProperty;

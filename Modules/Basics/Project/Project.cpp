@@ -21,6 +21,7 @@
 namespace IsoRealms::Basics {
   const std::string Project::JSON_EDITING   = "editing";
   const std::string Project::JSON_FILE      = "file";
+  const std::string Project::JSON_ON_ERROR  = "onError";
   const std::string Project::JSON_ON_FINISH = "onFinish";
   const std::string Project::JSON_ON_READY  = "onReady";
   const std::string Project::JSON_RUNNING   = "running";
@@ -30,6 +31,7 @@ namespace IsoRealms::Basics {
             cProject(data.getProject()),
             cDefReadyAction(data.getDummyActionContext()),
             cDefEndAction(data.getDummyActionContext()),
+            cDefErrorAction(data.getDummyActionContext()),
             cDefRunning(false),
             cDefEditing(false),
             cRuntimeProject(nullptr),
@@ -54,6 +56,7 @@ namespace IsoRealms::Basics {
     cDefRunning = object.getBoolean(JSON_RUNNING);
     cDefEditing = object.getBoolean(JSON_EDITING);
     cDefEndAction.init(object, JSON_ON_FINISH);
+    cDefErrorAction.init(object, JSON_ON_ERROR);
     cDefReadyAction.init(object, JSON_ON_READY);
   }
 
@@ -69,6 +72,7 @@ namespace IsoRealms::Basics {
     object.addBoolean(JSON_RUNNING, cDefRunning);
     object.addBoolean(JSON_EDITING, cDefEditing);
     cDefEndAction.save(object, JSON_ON_FINISH);
+    cDefErrorAction.save(object, JSON_ON_ERROR);
     cDefReadyAction.save(object, JSON_ON_READY);
   }
 
@@ -113,12 +117,18 @@ namespace IsoRealms::Basics {
 
   void Project::updateRuntime(unsigned int milliseconds) {
     if (cRuntimeLoading) {
-      IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
-      if (mProject != nullptr) {
-        cRuntimeProject = mProject;
-        cRuntimeProject->reset();
-        cDefReadyAction.execute();
+      try {
+        IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
+        if (mProject != nullptr) {
+          cRuntimeProject = mProject;
+          cRuntimeProject->reset();
+          cDefReadyAction.execute();
+          cRuntimeLoading = false;
+        }
+      } catch (ParseException& parseException) {
+        cDefErrorAction.execute();
         cRuntimeLoading = false;
+        return;
       }
 
       if (cRuntimeResetPostponed) {

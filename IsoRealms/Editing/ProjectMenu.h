@@ -25,13 +25,27 @@
 #include "CategoryMenu.h"
 
 namespace IsoRealms {
-  class ProjectMenu : public ActionMenu {
+  class ProjectMenu : public ActionMenu,
+                      public IPropertyManager {
     public:
     ProjectMenu(UIManager& manager, IUIStyle& style, Project& project);
 
     void refresh() override;
 
+    /*******************************\
+     * Implements IPropertyManager *
+    \*******************************/
+    void addProperty(std::unique_ptr<IProperty> property) override;
+    void openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) override;
+    void edit(std::unique_ptr<IPropertyEditor> editor) override;
+    void edit(IEditable* editor) override;
+    void refreshProperties() override;
+    IUIStyle& getPropertyStyle() override;
+
     private:
     Project& cProject;
+
+    PropertyMaker cPropertyMaker;
+    ModuleChooser cDefModuleChooser;                  /// Source list for optional module property (must outlive property UI).
   };
 }

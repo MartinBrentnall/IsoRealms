@@ -33,9 +33,10 @@ namespace IsoRealms {
     virtual float getWidth(IUIStyle& style) const = 0;
     virtual float getHeight(IUIStyle& style) const = 0;
     virtual float getIndentation(IUIStyle& style) const = 0;
-    virtual void render(IUIStyle& style, float y, float aspectRatio) const = 0;
+    virtual void render(IUIStyle& style, float y, float x, float aspectRatio) const = 0;
     virtual bool input(UISignalID id) = 0;
     virtual std::string getTooltip() const = 0;
+    virtual bool isSelectable() const = 0;
   };
 }
  

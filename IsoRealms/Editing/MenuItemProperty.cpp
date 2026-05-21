@@ -32,14 +32,22 @@ namespace IsoRealms {
     return cProperty.get();
   }
 
+  float MenuItemProperty::getValueWidth(IUIStyle& style) const {
+    return cProperty->getValueWidth(style);
+  }
+  
   float MenuItemProperty::getWidth(IUIStyle& style) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
     return mFont->getWidth(mFontSize, cName + ":");
   }
-  
-  float MenuItemProperty::getValueWidth(IUIStyle& style) const {
-    return cProperty->getValueWidth(style);
+
+  float MenuItemProperty::getHeight(IUIStyle& style) const {
+    return style.getFontSize() * 2.0f;
+  }
+
+  float MenuItemProperty::getIndentation(IUIStyle& style) const {
+    return 0.0f;
   }
   
   void MenuItemProperty::render(IUIStyle& style, float y, float x, float aspectRatio) const {
@@ -49,7 +57,16 @@ namespace IsoRealms {
     cProperty->renderValue(style, y, x, aspectRatio);
   }
 
+  bool MenuItemProperty::input(UISignalID id) {
+    // Nothing to do.
+    return false;
+  }
+
   std::string MenuItemProperty::getTooltip() const {
     return cProperty->getTooltip();
+  }
+
+  bool MenuItemProperty::isSelectable() const {
+    return true;
   }
 }

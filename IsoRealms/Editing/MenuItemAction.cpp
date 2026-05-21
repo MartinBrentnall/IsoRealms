@@ -53,7 +53,7 @@ namespace IsoRealms {
     return mFontSize * 2.0f * cIndentLevel;
   }
 
-  void MenuItemAction::render(IUIStyle& style, float y, float aspectRatio) const {
+  void MenuItemAction::render(IUIStyle& style, float y, float x, float aspectRatio) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
     float mIndentWidth = mFontSize * 2.0f * cIndentLevel;
@@ -75,6 +75,10 @@ namespace IsoRealms {
 
   std::string MenuItemAction::getTooltip() const {
     return cTooltip;
+  }
+
+  bool MenuItemAction::isSelectable() const {
+    return true;
   }
 
   std::string MenuItemAction::getLabel() const {

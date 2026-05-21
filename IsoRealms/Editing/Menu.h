@@ -120,8 +120,19 @@ namespace IsoRealms {
 
       switch (id) {
         case UISignalID::MOVE_DOWN: {
-          if (!cItems.empty() && cSelectedItem < cItems.size() - 1) {
-            cSelectedItem++;
+
+          // Find the next selectable item.
+          int mItemToSelect = -1;
+          for (int i = cSelectedItem + 1; i < static_cast<int>(cItems.size()); i++) {
+            if (isSelectable(*cItems[i])) {
+              mItemToSelect = i;
+              break;
+            }
+          }
+
+          // Select the next selectable item.
+          if (mItemToSelect != -1) {
+            cSelectedItem = mItemToSelect;
             selectedItemChanged();
             updateScrollPosition();
             updateRight();
@@ -131,8 +142,19 @@ namespace IsoRealms {
         }
 
         case UISignalID::MOVE_UP: {
-          if (cSelectedItem > 0) {
-            cSelectedItem--;
+
+          // Find the previous selectable item.
+          int mItemToSelect = -1;
+          for (int i = cSelectedItem - 1; i >= 0; i--) {
+            if (isSelectable(*cItems[i])) {
+              mItemToSelect = i;
+              break;
+            }
+          }
+
+          // Select the previous selectable item.
+          if (mItemToSelect != -1) {
+            cSelectedItem = mItemToSelect;
             selectedItemChanged();
             updateScrollPosition();
             updateRight();
@@ -186,6 +208,7 @@ namespace IsoRealms {
     virtual bool input(MENU_ITEM_TYPE& item, UISignalID id, float y) = 0;
     virtual bool input(MENU_ITEM_TYPE& item, sf::Event& event) = 0;
     virtual void selectedItemChanged() = 0;
+    virtual bool isSelectable(MENU_ITEM_TYPE& item) const = 0;
 
     protected:
     void openUI(std::unique_ptr<IUIScreen> screen, const std::string& breadCrumb, const IColour& breadCrumbColour = LiteralColour(1.0f, 1.0f, 1.0f)) {

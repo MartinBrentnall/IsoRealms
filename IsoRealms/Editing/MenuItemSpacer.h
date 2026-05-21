@@ -27,10 +27,10 @@
  #include "UISignalID.h"
  
  namespace IsoRealms {
-   class MenuItemLoadModule : public IMenuItem {
+   class MenuItemSpacer : public IMenuItem {
      public:
-     MenuItemLoadModule(const PropertyData& propertyData, std::function<void()> action);
-     virtual ~MenuItemLoadModule() = default;
+     MenuItemSpacer(float height);
+     virtual ~MenuItemSpacer() = default;
      
      /************************\
       * Implements IMenuItem *
@@ -38,18 +38,13 @@
      float getWidth(IUIStyle& style) const override;
      float getHeight(IUIStyle& style) const override;
      float getIndentation(IUIStyle& style) const override;
-     void render(IUIStyle& style, float y, float aspectRatio) const override;
+     void render(IUIStyle& style, float y, float x, float aspectRatio) const override;
      bool input(UISignalID id) override;
      std::string getTooltip() const override;
- 
-     protected:
-     std::string getLabel() const;
-     virtual bool renderIcon() const;
+     bool isSelectable() const override;
  
      private:
-     std::string cLabel;
-     std::string cTooltip;
-     std::function<void()> cAction;
+     float cHeight;
    };
  }
  

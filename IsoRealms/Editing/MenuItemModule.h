@@ -38,10 +38,11 @@
      float getWidth(IUIStyle& style) const override;
      float getHeight(IUIStyle& style) const override;
      float getIndentation(IUIStyle& style) const override;
-     void render(IUIStyle& style, float y, float aspectRatio) const override;
+     void render(IUIStyle& style, float y, float x, float aspectRatio) const override;
      bool input(UISignalID id) override;
      std::string getTooltip() const override;
- 
+     bool isSelectable() const override;
+     
      protected:
      std::string getLabel() const;
      virtual bool renderIcon() const;

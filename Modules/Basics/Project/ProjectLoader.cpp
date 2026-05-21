@@ -58,7 +58,9 @@ namespace IsoRealms::Basics {
       cProject = std::move(mProject);
       cMutex.unlock();
     } catch (ParseException& parseException) {  // TODO: Should be a more appropriate exception here
+      cMutex.lock();
       cError = parseException.getMessage();
+      cMutex.unlock();
       std::cout << "WARNING: ProjectLoader::loadProject: Failed to load project due to exception: \"" << cError << "\"." << std::endl;
     }
   }
@@ -95,6 +97,9 @@ namespace IsoRealms::Basics {
 
   Project* ProjectLoader::getLoadedProject() {
     cMutex.lock();
+    if (cError != "") {
+      throw ParseException(cError);
+    }
     Project* mProject = cProject.get();
     cMutex.unlock();
     if (mProject != nullptr) {

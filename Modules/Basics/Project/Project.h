@@ -95,6 +95,7 @@ namespace IsoRealms::Basics {
     // JSON members.
     static const std::string JSON_EDITING;
     static const std::string JSON_FILE;
+    static const std::string JSON_ON_ERROR;
     static const std::string JSON_ON_FINISH;
     static const std::string JSON_ON_READY;
     static const std::string JSON_RUNNING;
@@ -108,6 +109,7 @@ namespace IsoRealms::Basics {
     bool cDefProjectUser;
     Action cDefReadyAction;
     Action cDefEndAction;
+    Action cDefErrorAction;
     bool cDefRunning;
     bool cDefEditing;
 

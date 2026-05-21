@@ -234,6 +234,10 @@ namespace IsoRealms {
     cAction = Action::SELECT;
   }
 
+  bool PropertiesMenu::isSelectable(MenuItemProperty& item) const {
+    return true;
+  }
+
   void PropertiesMenu::refresh() {
     refreshProperties();
   }
