@@ -42,7 +42,7 @@
      return 0.0f;
    }
  
-   void MenuItemModule::render(IUIStyle& style, float y, float x, float aspectRatio) const {
+   void MenuItemModule::render(IUIStyle& style, float y, float aspectRatio) const {
      IFont* mFont = style.getFont();
      float mFontSize = style.getFontSize();
      mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);

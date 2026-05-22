@@ -42,10 +42,6 @@ namespace IsoRealms {
     return mFont->getWidth(mFontSize, cName + ":");
   }
 
-  float MenuItemProperty::getHeight(IUIStyle& style) const {
-    return style.getFontSize() * 2.0f;
-  }
-
   float MenuItemProperty::getIndentation(IUIStyle& style) const {
     return 0.0f;
   }
@@ -55,11 +51,6 @@ namespace IsoRealms {
     float mFontSize = style.getFontSize();
     mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cName + ":");
     cProperty->renderValue(style, y, x, aspectRatio);
-  }
-
-  bool MenuItemProperty::input(UISignalID id) {
-    // Nothing to do.
-    return false;
   }
 
   std::string MenuItemProperty::getTooltip() const {

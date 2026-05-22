@@ -22,8 +22,10 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource) :
+  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon) :
             Property(data, resourceAccessManager, nullptr),
+            cNoneLabel(noneLabel),
+            cNoneIcon(noneIcon),
             cOptionalSource(optionalSource),
             cWrapperType(*this),
             cSubProperty(owner, resourceAccessManager, resourceData, data, cWrapperType),
@@ -36,18 +38,20 @@ namespace IsoRealms {
   void PropertyOptional::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
-    mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, "None");
+    mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cNoneLabel);
     glPushMatrix();
     glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
     glScalef(mFontSize, mFontSize, 0.0f);
-    Utils::renderIconNone();
+    if (!cNoneIcon()) {
+      Utils::renderIconNone();
+    }
     glPopMatrix();
   }
 
   float PropertyOptional::getValueWidth(IUIStyle& style) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
-    return mFont->getWidth(mFontSize, "None") + mFontSize * 2.25f;
+    return mFont->getWidth(mFontSize, cNoneLabel) + mFontSize * 2.25f;
   }
 
   void PropertyOptional::confirm(IPropertyManager& manager, float y) {
@@ -68,7 +72,7 @@ namespace IsoRealms {
   }
 
   TreeItemInfo PropertyOptional::OptionWrapper::getTreeItemInfo() const {
-    return TreeItemInfo{"None", "None"};
+    return TreeItemInfo{"None", cParent.cNoneLabel};
   }
 
   std::string PropertyOptional::OptionWrapper::getTreeItemLabel() const {
@@ -98,7 +102,7 @@ namespace IsoRealms {
 
   void PropertyOptional::OptionWrapper::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     cParent.cOptionalSource.forEachAvailableTreeItem(getTreeItemInfoFunction);
-    getTreeItemInfoFunction(TreeItemInfo{"None", "None"});
+    getTreeItemInfoFunction(TreeItemInfo{"None", cParent.cNoneLabel});
   }
 
   bool PropertyOptional::OptionWrapper::renderTreeItemIcon(const std::string& id) const {

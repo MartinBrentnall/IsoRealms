@@ -40,7 +40,7 @@ namespace IsoRealms {
     return 0.0f;
   }
 
-  void MenuItemSpacer::render(IUIStyle& style, float y, float x, float aspectRatio) const {
+  void MenuItemSpacer::render(IUIStyle& style, float y, float aspectRatio) const {
     // Nothing to do.
   }
 

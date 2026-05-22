@@ -32,7 +32,7 @@ namespace IsoRealms {
   }
 
   void ActionMenu::renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
-    item.render(style, y, 0.0f, aspectRatio);
+    item.render(style, y, aspectRatio);
   }
 
   void ActionMenu::renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {

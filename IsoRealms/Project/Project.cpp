@@ -290,21 +290,7 @@ namespace IsoRealms {
 
   void Project::getProperties(IPropertyMaker& propertyMaker) {
     const Metadata& mMetadata = cApplication.getMetadata("Application");
-    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("AppModules"), "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
-      unsigned int mIndex = 1;
-      for (const std::unique_ptr<Module>& mModule : cDefModules) {
-        propertyMaker.createPropertyStruct(mMetadata.getPropertyData("Module"), mModule->getName(), [this, &mModule](IPropertyMaker& propertyMaker) {
-          // Nothing to do.
-        }, [this, &mModule]() {
-          Utils::removeElementUnique(cDefModules, mModule.get());
-        });
-        mIndex++;
-      }
-      propertyMaker.createPropertyOptional(mMetadata.getPropertyData("Module"), cDefModuleChooser, [this](const std::string& value) {
-        loadModule(value);
-      });
-    });
-    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("AppFileStructure"), "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
+    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("FileStructure"), "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
       cDefProjectFileStructure.getProperties(propertyMaker, mMetadata, *this, false);
     });
     propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfigurations"), "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {

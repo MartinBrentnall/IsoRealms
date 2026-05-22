@@ -19,7 +19,7 @@
 #include "ProjectMenu.h"
 
 #include "IsoRealms/Project/Module.h"
-#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/Project.h"  
 #include "IsoRealms/Project/ResourceType.h"
 
 #include "MenuItemAction.h"
@@ -89,14 +89,17 @@ namespace IsoRealms {
     addItem(std::make_unique<MenuItemSpacer>(1.0f));
     std::vector<std::string> mUnusedModuleNames = cProject.getUnusedModuleNames();
     if (!mUnusedModuleNames.empty()) {
-      cPropertyMaker.createPropertyOptional(mMetadata.getPropertyData("Module"), cDefModuleChooser, [this](const std::string& value) {
+      cPropertyMaker.createPropertyOptional(mMetadata.getPropertyData("Module"), cDefModuleChooser, "Load Module...", []() {
+        Utils::renderIconAdd();
+        return true;
+      }, [this](const std::string& value) {
         cProject.loadModule(value);
       });
     }
   }
 
   void ProjectMenu::addProperty(std::unique_ptr<IProperty> property) {
-    addItem(std::make_unique<MenuItemProperty>(property->getPropertyName(), std::move(property)));
+    addItem(std::make_unique<MenuItemLoadModule>(std::move(property)));
   }
 
   void ProjectMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {

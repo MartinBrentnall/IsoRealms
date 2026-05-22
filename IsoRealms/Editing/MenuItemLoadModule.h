@@ -19,19 +19,21 @@
  #pragma once
 
  #include <functional>
+ #include <memory>
  #include <string>
  
- #include "IsoRealms/Types.h"
+ #include "Property/IProperty.h"
  
  #include "IMenuItem.h"
- #include "UISignalID.h"
  
  namespace IsoRealms {
-   class MenuItemSpacer : public IMenuItem {
+   class MenuItemLoadModule : public IMenuItem {
      public:
-     MenuItemSpacer(float height);
-     virtual ~MenuItemSpacer() = default;
-     
+     MenuItemLoadModule(std::unique_ptr<IProperty> property);
+ 
+     IProperty* getProperty() const;
+     float getValueWidth(IUIStyle& style) const;
+ 
      /************************\
       * Implements IMenuItem *
      \************************/
@@ -44,7 +46,7 @@
      bool isSelectable() const override;
  
      private:
-     float cHeight;
+     std::unique_ptr<IProperty> cProperty;
    };
  }
  

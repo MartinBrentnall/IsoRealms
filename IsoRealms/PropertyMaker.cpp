@@ -98,8 +98,8 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(metadata, *this, getter, setter, validityChecker, removeFunction));
   }
   
-  void PropertyMaker::createPropertyOptional(const PropertyData& metadata, IOptionalObject& optionalSource, std::function<void(const std::string&)> choiceCallback) {
-    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, *this, cParent, metadata, choiceCallback, cParent.getProject(), cApplication, optionalSource));
+  void PropertyMaker::createPropertyOptional(const PropertyData& metadata, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback) {
+    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, *this, cParent, metadata, choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon));
   }
 
   void PropertyMaker::createPropertyStruct(const PropertyData& metadata, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction) {
