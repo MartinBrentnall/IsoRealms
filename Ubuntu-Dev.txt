@@ -1,5 +1,0 @@
-sudo apt install cmake kdevelop libglew-dev libsfml-dev rapidjson-dev liblua5.3-dev libfreetype-dev libcurl4-openssl-dev libjson-c-dev libssl-dev
-sudo ln -s /home/martin/spindizzyremake /usr/share/IsoRealms
-mkdir ~/.isorealms
-mkdir ~/.isorealms/Projects
-mkdir ~/.isorealms/Recordings
