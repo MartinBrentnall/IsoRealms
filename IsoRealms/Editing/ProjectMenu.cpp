@@ -115,7 +115,8 @@ namespace IsoRealms {
   }
 
   void ProjectMenu::refreshProperties() {
-    // TODO: Implement this.
+    refresh();
+    setLastSelectedItem();
   }
 
   IUIStyle& ProjectMenu::getPropertyStyle() {

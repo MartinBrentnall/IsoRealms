@@ -268,6 +268,10 @@ namespace IsoRealms {
       cPanelRight = std::max(getContentRight() + mFontSize, -mAspectRatio + cUIManager.getBreadCrumbWidth() + mFontSize * 3.0f);
     }
 
+    void setLastSelectedItem() {
+      cSelectedItem = cItems.size() - 1;
+    }
+
     private:
     UIManager& cUIManager;
     IUIStyle& cStyle;

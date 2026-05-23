@@ -115,7 +115,7 @@ namespace IsoRealms {
   void PropertyOptional::OptionWrapper::setID(const std::string& id) {
     if (id != "None") {
       cParent.cChoiceCallback(id);
-//          cParent.cPropertyManager->refreshProperties(); // TODO: Causes a crash when loading a module.
+      cParent.cPropertyManager->refreshProperties();
     }
   }
 }
