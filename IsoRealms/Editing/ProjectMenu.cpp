@@ -99,7 +99,7 @@ namespace IsoRealms {
   }
 
   void ProjectMenu::addProperty(std::unique_ptr<IProperty> property) {
-    addItem(std::make_unique<MenuItemLoadModule>(std::move(property)));
+    addItem(std::make_unique<MenuItemLoadModule>(*this, std::move(property)));
   }
 
   void ProjectMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
@@ -107,7 +107,7 @@ namespace IsoRealms {
   }
 
   void ProjectMenu::edit(std::unique_ptr<IPropertyEditor> editor) {
-    // TODO: Implement this.
+    cEditingProperty = std::move(editor);
   }
 
   void ProjectMenu::edit(IEditable* editor) {
@@ -120,5 +120,53 @@ namespace IsoRealms {
 
   IUIStyle& ProjectMenu::getPropertyStyle() {
     return getStyle();
+  }
+
+  void ProjectMenu::renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
+    ActionMenu::renderOverlay(item, style, y, aspectRatio);
+    if (cEditingProperty != nullptr) {
+      cEditingProperty->render(style, y, -1.0f * aspectRatio + item.getIndentation(style), aspectRatio);
+    }
+    if (cClosingProperty != nullptr) {
+      cClosingProperty->render(style, y, -1.0f * aspectRatio + item.getIndentation(style), aspectRatio);
+    }
+  }
+
+  void ProjectMenu::updateOverlay(unsigned int milliseconds) {
+    ActionMenu::updateOverlay(milliseconds);
+    if (cEditingProperty != nullptr) {
+      cEditingProperty->update(milliseconds);
+    }
+    if (cClosingProperty != nullptr) {
+      if (cClosingProperty->update(milliseconds)) {
+        cClosingProperty = nullptr;
+      }
+    }
+  }
+
+  bool ProjectMenu::input(IMenuItem& item, UISignalID id, float y) {
+    if (cEditingProperty != nullptr) {
+      if (cEditingProperty->input(id, getStyle())) {
+        getUIManager().getProject().updateLater([this]() {
+          cClosingProperty = std::move(cEditingProperty);
+          cEditingProperty = nullptr;
+        });
+      }
+      return true;
+    }
+    return ActionMenu::input(item, id, y);
+  }
+
+  bool ProjectMenu::input(IMenuItem& item, sf::Event& event) {
+    if (cEditingProperty != nullptr) {
+      if (cEditingProperty->input(event, getStyle())) {
+        getUIManager().getProject().updateLater([this]() {
+          cClosingProperty = std::move(cEditingProperty);
+          cEditingProperty = nullptr;
+          // refreshProperties(); TODO: Doing this nulls out the closing property... need a less brute-force way of refreshing properties (names and values)
+        });
+      }
+    }
+    return ActionMenu::input(item, event);
   }
 }

@@ -48,7 +48,7 @@
      mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
    }
  
-   bool MenuItemModule::input(UISignalID id) {
+   bool MenuItemModule::input(UISignalID id, float y) {
      return false;
    }
  

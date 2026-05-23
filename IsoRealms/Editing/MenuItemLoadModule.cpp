@@ -23,7 +23,8 @@
  #include "IUIStyle.h"
  
  namespace IsoRealms {
-   MenuItemLoadModule::MenuItemLoadModule(std::unique_ptr<IProperty> property) :
+   MenuItemLoadModule::MenuItemLoadModule(IPropertyManager& manager, std::unique_ptr<IProperty> property) :
+             cManager(manager),
              cProperty(std::move(property)) {
    }
  
@@ -51,7 +52,11 @@
      cProperty->renderValue(style, y, -1.0f * aspectRatio, aspectRatio);
    }
  
-   bool MenuItemLoadModule::input(UISignalID id) {
+   bool MenuItemLoadModule::input(UISignalID id, float y) {
+     if (id == UISignalID::CONFIRM) {
+      cProperty->confirm(cManager, y);
+      return true;
+     }
      return false;
    }
  

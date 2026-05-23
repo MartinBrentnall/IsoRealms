@@ -114,7 +114,12 @@ namespace IsoRealms {
 
     bool input(UISignalID id) override {
       float mFontSize = cStyle.getFontSize();
-      if (!cItems.empty() && input(*cItems[cSelectedItem], id, (1.0f - (mFontSize * 4.0f + (cSelectedItem + 1) * mFontSize * 2.0f)) + cScroll.value())) {
+      float mHeight = 0.0f;
+      for (unsigned int i = 0; i < cSelectedItem + 1; i++) {
+        mHeight += getHeight(*cItems[i], cStyle);
+      }
+      float mYPosition = (1.0f - (mFontSize * 4.0f + mHeight)) + cScroll.value();
+      if (!cItems.empty() && input(*cItems[cSelectedItem], id, mYPosition)) {
         return true;
       }
 

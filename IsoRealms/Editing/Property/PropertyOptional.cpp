@@ -101,11 +101,14 @@ namespace IsoRealms {
   }
 
   void PropertyOptional::OptionWrapper::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-    cParent.cOptionalSource.forEachAvailableTreeItem(getTreeItemInfoFunction);
     getTreeItemInfoFunction(TreeItemInfo{"None", cParent.cNoneLabel});
+    cParent.cOptionalSource.forEachAvailableTreeItem(getTreeItemInfoFunction);
   }
 
   bool PropertyOptional::OptionWrapper::renderTreeItemIcon(const std::string& id) const {
+    if (id == "None") {
+      return cParent.cNoneIcon();
+    }
     return false; // TODO cParent.cSubProperty.renderTreeItemIcon(id);
   }
 

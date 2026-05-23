@@ -36,6 +36,7 @@ Testing/
 *.user
 *.suo
 *.VC.db
+*.idx
 
 # -------------------------
 # OS junk

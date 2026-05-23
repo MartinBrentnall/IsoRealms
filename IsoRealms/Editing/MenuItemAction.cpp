@@ -65,7 +65,7 @@ namespace IsoRealms {
     }
   }
 
-  bool MenuItemAction::input(UISignalID id) {
+  bool MenuItemAction::input(UISignalID id, float y) {
     switch (id) {
       case UISignalID::CONFIRM: {cAction(); return true;}
       default:                  {           return false;}

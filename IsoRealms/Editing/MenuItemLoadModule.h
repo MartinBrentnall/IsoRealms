@@ -29,7 +29,7 @@
  namespace IsoRealms {
    class MenuItemLoadModule : public IMenuItem {
      public:
-     MenuItemLoadModule(std::unique_ptr<IProperty> property);
+     MenuItemLoadModule(IPropertyManager& manager, std::unique_ptr<IProperty> property);
  
      IProperty* getProperty() const;
      float getValueWidth(IUIStyle& style) const;
@@ -41,11 +41,12 @@
      float getHeight(IUIStyle& style) const override;
      float getIndentation(IUIStyle& style) const override;
      void render(IUIStyle& style, float y, float aspectRatio) const override;
-     bool input(UISignalID id) override;
+     bool input(UISignalID id, float y) override;
      std::string getTooltip() const override;
      bool isSelectable() const override;
  
      private:
+     IPropertyManager& cManager;
      std::unique_ptr<IProperty> cProperty;
    };
  }

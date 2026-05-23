@@ -1,0 +1,21 @@
+IsoRealms is a modular, data-driven application framework and game engine.
+
+Build Requirements (Linux dependencies):
+ - cmake
+ - libglew-dev
+ - libsfml-dev
+ - rapidjson-dev
+ - liblua5.3-dev
+ - libfreetype-dev
+ - libcurl4-openssl-dev
+ - libjson-c-dev
+ - libssl-dev
+
+Build Steps:
+ - cmake -S . -B build
+ - cmake --build build
+
+Run Steps:
+ - ./IsoRealms Projects/Spindizzy/Main.isorealms
+
+Note: This project is in active development and APIs may change.

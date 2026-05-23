@@ -42,10 +42,18 @@ namespace IsoRealms {
     void refreshProperties() override;
     IUIStyle& getPropertyStyle() override;
 
+    void renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const override;
+    void updateOverlay(unsigned int milliseconds) override;
+    bool input(IMenuItem& item, UISignalID id, float y) override;
+    bool input(IMenuItem& item, sf::Event& event) override;
+
     private:
     Project& cProject;
 
     PropertyMaker cPropertyMaker;
     ModuleChooser cDefModuleChooser;                  /// Source list for optional module property (must outlive property UI).
+
+    std::unique_ptr<IPropertyEditor> cEditingProperty;
+    std::unique_ptr<IPropertyEditor> cClosingProperty;
   };
 }

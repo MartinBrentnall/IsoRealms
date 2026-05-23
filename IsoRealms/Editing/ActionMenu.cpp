@@ -52,7 +52,7 @@ namespace IsoRealms {
   }
 
   bool ActionMenu::input(IMenuItem& item, UISignalID id, float y) {
-    return item.input(id);
+    return item.input(id, y);
   }
 
   bool ActionMenu::input(IMenuItem& item, sf::Event& event) {

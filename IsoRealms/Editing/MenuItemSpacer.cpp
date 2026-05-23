@@ -44,7 +44,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  bool MenuItemSpacer::input(UISignalID id) {
+  bool MenuItemSpacer::input(UISignalID id, float y) {
     return false;
   }
 
