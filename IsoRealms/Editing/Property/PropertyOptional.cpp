@@ -72,11 +72,11 @@ namespace IsoRealms {
   }
 
   TreeItemInfo PropertyOptional::OptionWrapper::getTreeItemInfo() const {
-    return TreeItemInfo{"None", cParent.cNoneLabel};
+    return TreeItemInfo{"", cParent.cNoneLabel};
   }
 
   std::string PropertyOptional::OptionWrapper::getTreeItemLabel() const {
-    return "None";
+    return "";
   }
 
   bool PropertyOptional::OptionWrapper::renderAssetIcon() const {
@@ -101,19 +101,19 @@ namespace IsoRealms {
   }
 
   void PropertyOptional::OptionWrapper::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-    getTreeItemInfoFunction(TreeItemInfo{"None", cParent.cNoneLabel});
+    getTreeItemInfoFunction(TreeItemInfo{"", cParent.cNoneLabel});
     cParent.cOptionalSource.forEachAvailableTreeItem(getTreeItemInfoFunction);
   }
 
   bool PropertyOptional::OptionWrapper::renderTreeItemIcon(const std::string& id) const {
-    if (id == "None") {
+    if (id == "") {
       return cParent.cNoneIcon();
     }
     return false; // TODO cParent.cSubProperty.renderTreeItemIcon(id);
   }
 
   void PropertyOptional::OptionWrapper::setID(const std::string& id) {
-    if (id != "None") {
+    if (id != "") {
       cParent.cChoiceCallback(id);
       cParent.cPropertyManager->refreshProperties();
     }

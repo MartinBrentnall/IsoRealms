@@ -25,7 +25,7 @@ namespace IsoRealms {
     std::cout << message << std::endl;
   }
 
-  std::string InitException::getMessage() {
+  std::string InitException::getMessage() const {
     return cMessage;
   }
 }

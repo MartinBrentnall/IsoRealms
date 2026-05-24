@@ -69,24 +69,8 @@ namespace IsoRealms {
       mInitLuaInterfacesFunction(luaState);
     }
     
-    // Find the metadata file.
-    std::locale mLocale("");
-    std::string mMetadataPath = "Metadata/" + cName + "/" + cName + "." + mLocale.name();
-    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
-    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                                               ? mLastExtensionIndex
-                                               : mLastDashIndex;
-    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
-      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
-      mLastExtensionIndex = mMetadataPath.find_last_of('.');
-      mLastDashIndex = mMetadataPath.find_last_of('_');
-      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                          ? mLastExtensionIndex
-                          : mLastDashIndex;
-    }
-
     // Load the metadata file.
+    std::string mMetadataPath = getMetadataPath(cName);
     JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
     
     // Load the module and asset metadata.  This needs to be done before the module is created.
@@ -120,6 +104,29 @@ namespace IsoRealms {
       JSONObject mResourceTypeObject = mResourceTypesObject.getObject(mResourceType.first);
       mResourceType.second->loadMetadata(mResourceTypeObject);
     }
+  }
+
+  std::string Module::getMetadataPath(const std::string& name) {
+    std::locale mLocale("");
+    std::string mMetadataPath = "Metadata/" + name + "/" + name + "." + mLocale.name();
+    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
+    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                                               ? mLastExtensionIndex
+                                               : mLastDashIndex;
+    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
+      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
+      mLastExtensionIndex = mMetadataPath.find_last_of('.');
+      mLastDashIndex = mMetadataPath.find_last_of('_');
+      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                          ? mLastExtensionIndex
+                          : mLastDashIndex;
+    }
+
+    if (!System::fileExists(mMetadataPath + ".json", false)) {
+      throw InitException("ERROR: Module::getMetadataPath: No metadata file found for module \"" + name + "\".");
+    }
+    return mMetadataPath;
   }
 
   void Module::loadResources(JSONObject object, ProjectFile* ownerProject) {

@@ -21,7 +21,9 @@
 #include <optional>
 
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
+#include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
@@ -41,7 +43,7 @@ namespace IsoRealms {
   }
   
   std::string ModuleChooser::getTreeItemLabel() const {
-    return "None";
+    return "";
   }
   
   bool ModuleChooser::renderAssetIcon() const {
@@ -66,7 +68,20 @@ namespace IsoRealms {
   
   void ModuleChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (const std::string& mName : cProject.getUnusedModuleNames()) {
-      getTreeItemInfoFunction(TreeItemInfo{mName, mName});
+
+      // Read the long name from the metadata file.
+      std::string mLongName;
+      try {
+        std::string mMetadataPath = Module::getMetadataPath(mName);
+        JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+        mLongName = mMetadataDocument.hasMember(JSON_LONG_NAME) ? mMetadataDocument.getString(JSON_LONG_NAME) : mName;
+      } catch (const InitException& e) {
+        std::cout << "ERROR: ModuleChooser::forEachAvailableTreeItem: " << e.getMessage() << std::endl;
+        mLongName = mName;
+      }
+      
+      // Load the module and asset metadata.  This needs to be done before the module is created.
+      getTreeItemInfoFunction(TreeItemInfo{mName, mLongName});
     }
   }
   

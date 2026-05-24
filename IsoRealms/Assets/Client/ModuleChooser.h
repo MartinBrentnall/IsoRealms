@@ -53,6 +53,8 @@ namespace IsoRealms {
     void setID(const std::string& id) override;
     
     private:
+    inline static const std::string JSON_LONG_NAME = "longName";
+    
     Project& cProject;
   };
 }

@@ -28,6 +28,6 @@ namespace IsoRealms {
 
     public:
     InitException(std::string);
-    std::string getMessage();
+    std::string getMessage() const;
   };
 }

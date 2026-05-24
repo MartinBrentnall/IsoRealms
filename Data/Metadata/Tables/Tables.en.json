@@ -1,0 +1,15 @@
+{
+  "longName": "Data Tables",
+  "description": "Functionality for creating and managing data tables.",
+  "assets": {
+  },
+  "resources": {
+    "Table": {
+      "singular": "Table",
+      "plural": "Tables",
+      "description": "Data tables.",
+      "properties": {
+      }
+    },
+  }
+}
