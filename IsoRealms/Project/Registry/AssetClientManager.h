@@ -53,7 +53,7 @@ namespace IsoRealms {
       if (mIterator == cAssetSingletons.end()) {
         return add(cAssetSingletons.emplace(asset, std::make_unique<AssetSingleton<OWNER, TYPE>>(id, asset)).first->second.get(), id, category, stateChanges);
       }
-      return add(mIterator->second.get(), id, category);
+      return add(mIterator->second.get(), id, category, stateChanges);
     }
     
     IStateNotifier* add(IAssetProvider<OWNER, TYPE>* provider, const std::string& id, const std::string& category, bool stateChanges = false) {
