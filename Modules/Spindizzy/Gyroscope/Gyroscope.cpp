@@ -34,11 +34,11 @@ namespace IsoRealms::Spindizzy {
 
   Gyroscope::Gyroscope(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
-            cDefQuadrant{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                         Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                         Colour(data, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                         Colour(data, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
-            cDefOutline(data, 1.0f, 0.0f, 1.0f),
+            cDefQuadrant{Colour(data, 1.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(data, 1.0f, 1.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(data, 0.0f, 1.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(data, 0.0f, 0.0f, 1.0f, 1.0f, [this]() {setNeedsRedrawing();})},
+            cDefOutline(data, 0.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
             cTexture(data.getProject(), 128, 128),
             cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {

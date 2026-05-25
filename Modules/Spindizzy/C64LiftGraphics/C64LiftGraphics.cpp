@@ -57,9 +57,9 @@ namespace IsoRealms::Spindizzy {
 
   C64LiftGraphics::C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
-            cDefPrimary(data, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefSecondary(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
-            cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefPrimary(data,   1.0f, 1.0f, 1.0f, 1.0f, [this]() {setNeedsRedrawing();}),
+            cDefSecondary(data, 0.5f, 0.5f, 0.5f, 1.0f, [this]() {setNeedsRedrawing();}),
+            cDefOutline(data,   0.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
             cNeedsRedrawing(false) {
     cTextures[ASSET_ID_ALWAYS_ON     ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);
     cTextures[ASSET_ID_STATE_1_AND_2 ] = std::make_unique<LiteralTexture>(data.getProject(), 128, 128);

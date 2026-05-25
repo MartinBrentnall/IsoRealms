@@ -66,10 +66,10 @@ namespace IsoRealms::Spindizzy {
   C64TerrainGraphics::C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
             cDefaultYaw(data, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),
-            cDefFloor(data, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsFullRedraw();}),
-            cDefWall(data, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsFullRedraw();}),
-            cDefGrid(data, 0.3f, 0.3f, 0.3f, 0.0f, [this]() {setNeedsFullRedraw();}),
-            cDefHighlight(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsFullRedraw();}) {
+            cDefFloor(data,     1.0f, 1.0f, 1.0f, 1.0f, [this]() {setNeedsFullRedraw();}),
+            cDefWall(data,      0.7f, 0.7f, 0.7f, 1.0f, [this]() {setNeedsFullRedraw();}),
+            cDefGrid(data,      0.3f, 0.3f, 0.3f, 1.0f, [this]() {setNeedsFullRedraw();}),
+            cDefHighlight(data, 0.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsFullRedraw();}) {
 
 
     cTexturesInUseCount = 0;

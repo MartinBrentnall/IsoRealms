@@ -30,11 +30,11 @@ namespace IsoRealms::Spindizzy {
 
   DebrisChunk::DebrisChunk(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
-            cDefSide{Colour(data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                     Colour(data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                     Colour(data, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
-                     Colour(data, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
-            cDefOutline(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefSide{Colour(data, 1.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(data, 1.0f, 1.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(data, 0.0f, 1.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(data, 0.0f, 0.0f, 1.0f, 1.0f, [this]() {setNeedsRedrawing();})},
+            cDefOutline(data, 0.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
             cDefOutlineWidth(DEFAULT_OUTLINE_WIDTH),
             cTextures{{data.getProject(), 128, 128},
                       {data.getProject(), 128, 128},
