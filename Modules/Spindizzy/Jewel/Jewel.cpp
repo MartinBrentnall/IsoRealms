@@ -21,21 +21,17 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Jewel::JSON_COLOUR        = "colour";
-  const std::string Jewel::JSON_CYCLE_COLOURS = "cycleColours";
-  const std::string Jewel::JSON_CYCLE_SPEED   = "cycleSpeed";
-  const std::string Jewel::JSON_FRAME         = "frame";
-
   Jewel::Jewel(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
-            cColourFrame(data, 1.0f, 1.0f, 0.0f) {
+            cColourFrame(data, 1.0f, 1.0f, 0.0f),
+            cCycleSpeed(DEFAULT_CYCLE_SPEED) {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
     cColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, data));
   }
   
   Jewel::Jewel(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
             Jewel(spindizzy, data) {
-    cCycleSpeed = object.getFloat(JSON_CYCLE_SPEED);
+    cCycleSpeed = object.getFloat(JSON_CYCLE_SPEED, DEFAULT_CYCLE_SPEED);
     cColourFrame.init(object, JSON_FRAME);
     cColoursCycle.clear();
     for (JSONValue mCycleColourValue : object.getArray(JSON_CYCLE_COLOURS)) {
@@ -60,7 +56,7 @@ namespace IsoRealms::Spindizzy {
   
   void Jewel::save(JSONObject object) const {
     cColourFrame.save(object, JSON_FRAME);
-    object.addFloat(JSON_CYCLE_SPEED, cCycleSpeed);
+    object.addFloat(JSON_CYCLE_SPEED, cCycleSpeed, DEFAULT_CYCLE_SPEED);
     JSONArray mCycleColoursArray = object.addArray(JSON_CYCLE_COLOURS);
     for (const std::unique_ptr<CycleColour>& mCycleColour : cColoursCycle) {
       JSONObject mCycleColourObject =  mCycleColoursArray.addObject();

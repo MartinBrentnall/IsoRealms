@@ -110,10 +110,13 @@ namespace IsoRealms::Spindizzy {
     };
 
     // JSON members.
-    static const std::string JSON_COLOUR;
-    static const std::string JSON_CYCLE_COLOURS;
-    static const std::string JSON_CYCLE_SPEED;
-    static const std::string JSON_FRAME;
+    inline static const std::string JSON_COLOUR        = "colour";
+    inline static const std::string JSON_CYCLE_COLOURS = "cycleColours";
+    inline static const std::string JSON_CYCLE_SPEED   = "cycleSpeed";
+    inline static const std::string JSON_FRAME         = "frame";
+
+    // Default values.
+    inline static const float DEFAULT_CYCLE_SPEED = 0.001f;
 
     // External interfaces.
     Project& cProject; // Required for pre-rendering.
