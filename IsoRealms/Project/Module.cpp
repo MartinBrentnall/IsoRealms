@@ -156,6 +156,8 @@ namespace IsoRealms {
   }
 
   void Module::registerAssets() {
+
+    // TODO: I don't remember why this is separate from the constructor.
     cModule->registerAssets(cModuleAssetRegistry);
   }
 

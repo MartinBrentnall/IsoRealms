@@ -107,9 +107,13 @@ namespace IsoRealms {
 
   bool PropertyOptional::OptionWrapper::renderTreeItemIcon(const std::string& id) const {
     if (id == "") {
-      return cParent.cNoneIcon();
+      if (!cParent.cNoneIcon()) {
+        Utils::renderIconNone();
+      }
+    } else {
+      Utils::renderIconBranch();
     }
-    return false; // TODO cParent.cSubProperty.renderTreeItemIcon(id);
+    return true;
   }
 
   void PropertyOptional::OptionWrapper::setID(const std::string& id) {

@@ -322,7 +322,9 @@ namespace IsoRealms {
   }
 
   Module* Project::loadModule(const std::string& moduleName) {
-    return cDefModules.emplace_back(std::make_unique<Module>(moduleName, *this, &cLuaState)).get();
+    Module* mModule = cDefModules.emplace_back(std::make_unique<Module>(moduleName, *this, &cLuaState)).get();
+    mModule->registerAssets();
+    return mModule;
   }
 
   void Project::unloadModule(const std::string& moduleName) {
