@@ -136,7 +136,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void ResourceTypeMenu::selectedItemChanged() {
+  void ResourceTypeMenu::selectedItemChanged(MenuItemResource& item) {
     // Nothing to do.
   }
 

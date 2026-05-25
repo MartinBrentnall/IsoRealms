@@ -42,6 +42,9 @@
      bool input(UISignalID id, float y) override;
      std::string getTooltip() const override;
      bool isSelectable() const override;
+     void notifySelected() override;
+     float getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const override;
+     float getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const override;
      
      protected:
      std::string getLabel() const;
@@ -50,6 +53,7 @@
      private:
      std::string cLabel;
      std::string cTooltip;
+     bool cRemoveSelected;
    };
  }
  

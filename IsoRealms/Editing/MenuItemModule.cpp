@@ -16,56 +16,99 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
- #include "MenuItemModule.h"
+#include "MenuItemModule.h"
 
- #include "IsoRealms/Utils.h"
+#include "IsoRealms/Utils.h"
  
- #include "IUIStyle.h"
+#include "IUIStyle.h"
  
- namespace IsoRealms {
-   MenuItemModule::MenuItemModule(const std::string& label, const std::string& tooltip) :
-             cLabel(label),
-             cTooltip(tooltip) {
-   }
+namespace IsoRealms {
+  MenuItemModule::MenuItemModule(const std::string& label, const std::string& tooltip) :
+            cLabel(label),
+            cTooltip(tooltip),
+            cRemoveSelected(false) {
+  }
  
-   float MenuItemModule::getWidth(IUIStyle& style) const {
-     IFont* mFont = style.getFont();
-     float mFontSize = style.getFontSize();
-     return mFont->getWidth(mFontSize, cLabel);
-   }
- 
-   float MenuItemModule::getHeight(IUIStyle& style) const {
-     return style.getFontSize() * 2.0f;
-   }
+  float MenuItemModule::getWidth(IUIStyle& style) const {
+    IFont* mFont = style.getFont();
+    float mFontSize = style.getFontSize();
+    return mFont->getWidth(mFontSize, cLabel) + mFontSize * 4.25f;
+  }
 
-   float MenuItemModule::getIndentation(IUIStyle& style) const {
-     return 0.0f;
-   }
+  float MenuItemModule::getHeight(IUIStyle& style) const {
+    return style.getFontSize() * 2.0f;
+  }
+
+  float MenuItemModule::getIndentation(IUIStyle& style) const {
+    return 0.0f;
+  }
  
-   void MenuItemModule::render(IUIStyle& style, float y, float aspectRatio) const {
-     IFont* mFont = style.getFont();
-     float mFontSize = style.getFontSize();
-     mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
-   }
+  void MenuItemModule::render(IUIStyle& style, float y, float aspectRatio) const {
+    IFont* mFont = style.getFont();
+    float mFontSize = style.getFontSize();
+    mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cLabel);
+    glTranslatef(-1.0f * aspectRatio + mFontSize + mFont->getWidth(mFontSize, cLabel) + mFontSize * 2.25f, y + mFontSize, 0.0f);
+    glScalef(mFontSize, mFontSize, 0.0f);
+    Utils::renderIconNone();
+  }
+
+  bool MenuItemModule::input(UISignalID id, float y) {
+    switch (id) {
+      case UISignalID::MOVE_LEFT: {
+        cRemoveSelected = false;
+        return true;
+      }
+     
+      case UISignalID::MOVE_RIGHT: {
+        cRemoveSelected = true;
+        return true;
+      }
+     
+      default: {
+        // Nothing to do.
+      }
+    }
+    return false;
+  }
+
+  std::string MenuItemModule::getTooltip() const {
+    return cTooltip;
+  }
+
+  bool MenuItemModule::isSelectable() const {
+    return true;
+  }
+
+  void MenuItemModule::notifySelected() {
+    cRemoveSelected = false;
+  }
+
+  float MenuItemModule::getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const {
+    if (cRemoveSelected) {
+      IFont* mFont = style.getFont();
+      float mFontSize = style.getFontSize();
+      return -1.0f * aspectRatio + mFont->getWidth(mFontSize, cLabel) + mFontSize * 2.25f;
+    } else {
+      return -1.0f * aspectRatio;
+    }
+  }
  
-   bool MenuItemModule::input(UISignalID id, float y) {
-     return false;
-   }
+  float MenuItemModule::getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const {
+    IFont* mFont = style.getFont();
+    float mFontSize = style.getFontSize();
+    if (cRemoveSelected) {
+      return getSelectionHighlightLeft(style, aspectRatio) + mFontSize * 2.0f;
+    } else {
+      return -1.0f * aspectRatio + mFont->getWidth(mFontSize, cLabel);
+    }
+  }
+
+  std::string MenuItemModule::getLabel() const {
+    return cLabel;
+  }
  
-   std::string MenuItemModule::getTooltip() const {
-     return cTooltip;
-   }
- 
-   bool MenuItemModule::isSelectable() const {
-     return true;
-   }
- 
-   std::string MenuItemModule::getLabel() const {
-     return cLabel;
-   }
- 
-   bool MenuItemModule::renderIcon() const {
-     return false;
-   }
- }
+  bool MenuItemModule::renderIcon() const {
+    return false;
+  }
+}
  

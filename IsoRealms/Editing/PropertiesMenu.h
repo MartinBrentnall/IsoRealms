@@ -43,7 +43,7 @@ namespace IsoRealms {
     float getSelectionHighlightRight(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const override;
     bool input(MenuItemProperty& item, UISignalID id, float y) override;
     bool input(MenuItemProperty& item, sf::Event& event) override;
-    void selectedItemChanged() override;
+    void selectedItemChanged(MenuItemProperty& item) override;
     bool isSelectable(MenuItemProperty& item) const override;
     void refresh() override;
 

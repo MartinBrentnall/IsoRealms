@@ -44,11 +44,11 @@ namespace IsoRealms {
   }
 
   float ActionMenu::getSelectionHighlightLeft(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
-    return -1.0f * aspectRatio + item.getIndentation(style);
+    return item.getSelectionHighlightLeft(style, aspectRatio);
   }
 
   float ActionMenu::getSelectionHighlightRight(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
-    return -1.0f * aspectRatio + item.getIndentation(style) + item.getWidth(style);
+    return item.getSelectionHighlightRight(style, aspectRatio);
   }
 
   bool ActionMenu::input(IMenuItem& item, UISignalID id, float y) {
@@ -59,8 +59,8 @@ namespace IsoRealms {
     return false;
   }
   
-  void ActionMenu::selectedItemChanged() {
-    // Nothing to do.
+  void ActionMenu::selectedItemChanged(IMenuItem& item) {
+    item.notifySelected();
   }
 
   bool ActionMenu::isSelectable(IMenuItem& item) const {

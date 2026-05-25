@@ -230,7 +230,7 @@ namespace IsoRealms {
     return false;
   }
   
-  void PropertiesMenu::selectedItemChanged() {
+  void PropertiesMenu::selectedItemChanged(MenuItemProperty& item) {
     cAction = Action::SELECT;
   }
 

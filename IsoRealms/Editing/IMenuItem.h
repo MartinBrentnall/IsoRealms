@@ -37,6 +37,9 @@ namespace IsoRealms {
     virtual bool input(UISignalID id, float y) = 0;
     virtual std::string getTooltip() const = 0;
     virtual bool isSelectable() const = 0;
+    virtual void notifySelected() = 0;
+    virtual float getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const = 0;
+    virtual float getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const = 0;
   };
 }
  

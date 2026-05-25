@@ -138,7 +138,7 @@ namespace IsoRealms {
           // Select the next selectable item.
           if (mItemToSelect != -1) {
             cSelectedItem = mItemToSelect;
-            selectedItemChanged();
+            selectedItemChanged(*cItems[cSelectedItem]);
             updateScrollPosition();
             updateRight();
             cUIManager.setTooltip(getTooltip());
@@ -160,7 +160,7 @@ namespace IsoRealms {
           // Select the previous selectable item.
           if (mItemToSelect != -1) {
             cSelectedItem = mItemToSelect;
-            selectedItemChanged();
+            selectedItemChanged(*cItems[cSelectedItem]);
             updateScrollPosition();
             updateRight();
             cUIManager.setTooltip(getTooltip());
@@ -212,7 +212,7 @@ namespace IsoRealms {
     virtual float getSelectionHighlightRight(MENU_ITEM_TYPE& item, IUIStyle& style, float aspectRatio) const = 0;
     virtual bool input(MENU_ITEM_TYPE& item, UISignalID id, float y) = 0;
     virtual bool input(MENU_ITEM_TYPE& item, sf::Event& event) = 0;
-    virtual void selectedItemChanged() = 0;
+    virtual void selectedItemChanged(MENU_ITEM_TYPE& item) = 0;
     virtual bool isSelectable(MENU_ITEM_TYPE& item) const = 0;
 
     protected:

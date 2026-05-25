@@ -81,11 +81,23 @@ namespace IsoRealms {
     return true;
   }
 
+  void MenuItemAction::notifySelected() {
+    // Nothing to do.
+  }
+
   std::string MenuItemAction::getLabel() const {
     return cLabel;
   }
 
   bool MenuItemAction::renderIcon() const {
     return false;
+  }
+
+  float MenuItemAction::getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const {
+    return -1.0f * aspectRatio + getIndentation(style);
+  }
+
+  float MenuItemAction::getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const {
+    return -1.0f * aspectRatio + getIndentation(style) + getWidth(style);
   }
 }

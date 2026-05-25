@@ -55,5 +55,17 @@ namespace IsoRealms {
   bool MenuItemSpacer::isSelectable() const {
     return false;
   }
+
+  void MenuItemSpacer::notifySelected() {
+    // Nothing to do.
+  }
+
+  float MenuItemSpacer::getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const {
+    return 0.0f;
+  }
+
+  float MenuItemSpacer::getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const {
+    return 0.0f;
+  }
 }
  

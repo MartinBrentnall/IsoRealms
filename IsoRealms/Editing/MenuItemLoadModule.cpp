@@ -67,5 +67,17 @@
    bool MenuItemLoadModule::isSelectable() const {
      return true;
    }
+
+   void MenuItemLoadModule::notifySelected() {
+     // Nothing to do.
+   }
+
+   float MenuItemLoadModule::getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const {
+     return -1.0f * aspectRatio;
+   }
+
+   float MenuItemLoadModule::getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const {
+     return -1.0f * aspectRatio + getValueWidth(style);
+   }
  }
  
