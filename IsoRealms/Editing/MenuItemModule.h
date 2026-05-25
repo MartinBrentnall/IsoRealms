@@ -29,7 +29,7 @@
  namespace IsoRealms {
    class MenuItemModule : public IMenuItem {
      public:
-     MenuItemModule(const std::string& label, const std::string& tooltip);
+     MenuItemModule(const std::string& label, const std::string& tooltip, std::function<void()> removeAction);
      virtual ~MenuItemModule() = default;
      
      /************************\
@@ -54,6 +54,7 @@
      std::string cLabel;
      std::string cTooltip;
      bool cRemoveSelected;
+     std::function<void()> cRemoveAction;
    };
  }
  

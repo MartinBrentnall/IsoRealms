@@ -328,7 +328,14 @@ namespace IsoRealms {
   }
 
   void Project::unloadModule(const std::string& moduleName) {
-    // TODO: Implement this
+    for (const std::unique_ptr<Module>& mModule : cDefModules) {
+      if (mModule->getName() == moduleName) {
+        cDefModules.erase(std::remove_if(cDefModules.begin(), cDefModules.end(), [moduleName](const std::unique_ptr<Module>& mModule) {
+          return mModule->getName() == moduleName;
+        }));
+        break;
+      }
+    }
   }
 
   const std::vector<std::unique_ptr<Module>>& Project::getModules() const {

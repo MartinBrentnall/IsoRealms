@@ -61,7 +61,10 @@ namespace IsoRealms {
       Module* mModule = mCategoryByModule.first;
       std::string mModuleName = mModule->getName();
       addItem(std::make_unique<MenuItemSpacer>(1.0f));
-      addItem(std::make_unique<MenuItemModule>(mModule->getLongName(), mModule->getDescription()));
+      addItem(std::make_unique<MenuItemModule>(mModule->getLongName(), mModule->getDescription(), [this, mModule]() {
+        cProject.unloadModule(mModule->getName());
+        refresh();
+      }));
 
       // Add a menu item for each category within the module.
       for (const std::string& mCategory : mCategoryByModule.second) {

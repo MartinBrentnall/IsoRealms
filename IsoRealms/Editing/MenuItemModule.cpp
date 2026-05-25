@@ -23,10 +23,11 @@
 #include "IUIStyle.h"
  
 namespace IsoRealms {
-  MenuItemModule::MenuItemModule(const std::string& label, const std::string& tooltip) :
+  MenuItemModule::MenuItemModule(const std::string& label, const std::string& tooltip, std::function<void()> removeAction) :
             cLabel(label),
             cTooltip(tooltip),
-            cRemoveSelected(false) {
+            cRemoveSelected(false),
+            cRemoveAction(removeAction) {
   }
  
   float MenuItemModule::getWidth(IUIStyle& style) const {
@@ -64,6 +65,14 @@ namespace IsoRealms {
         return true;
       }
      
+      case UISignalID::CONFIRM: {
+        if (cRemoveSelected) {
+          cRemoveAction();
+          return true;
+        }
+        return true;
+      }
+
       default: {
         // Nothing to do.
       }
