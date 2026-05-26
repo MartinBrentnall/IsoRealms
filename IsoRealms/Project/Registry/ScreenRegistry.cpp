@@ -21,11 +21,11 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  IStateNotifier* ScreenRegistry::add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges) {
+  IStateNotifier* ScreenRegistry::add(IScreen* asset, const std::string& id, const std::string& path, bool stateChanges) {
     std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mExistingProxy = cProxyMapping.find(asset);
     if (mExistingProxy == cProxyMapping.end()) {
       std::unique_ptr<Proxy> mNewProxy = std::make_unique<Proxy>(*this, asset);
-      AssetClientManager::add(mNewProxy.get(), id, category);
+      AssetClientManager::add(mNewProxy.get(), id, path);
       if (!cProject.isLoading()) {
         for (IScreenListener* mListener : cListeners) {
           mListener->screenAdded(mNewProxy.get());
@@ -34,12 +34,12 @@ namespace IsoRealms {
       cProxyMapping.emplace(asset, std::move(mNewProxy)).first->second.get();
       return nullptr;
     }
-    AssetClientManager::add(mExistingProxy->second.get(), id, category);
+    AssetClientManager::add(mExistingProxy->second.get(), id, path);
     return nullptr;
   }
 
-  IStateNotifier* ScreenRegistry::add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category, bool stateChanges) {
-    return AssetClientManager::add(provider, id, category, stateChanges);
+  IStateNotifier* ScreenRegistry::add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& path, bool stateChanges) {
+    return AssetClientManager::add(provider, id, path, stateChanges);
   }
 
   void ScreenRegistry::Dummy::renderScreen(float scale, float aspectRatio) const {

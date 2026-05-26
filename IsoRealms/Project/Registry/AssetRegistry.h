@@ -33,7 +33,7 @@
 namespace IsoRealms {
   template <typename OWNER, typename TYPE> class AssetRegistry final {
     public:
-    void add(IAssetProvider<OWNER, TYPE>* provider, const std::string& key, const std::string& category) {
+    void add(IAssetProvider<OWNER, TYPE>* provider, const std::string& key, const std::string& path) {
 
       // Don't allow nullptr assets to be added
       if (provider == nullptr) {
@@ -45,14 +45,14 @@ namespace IsoRealms {
         if (it->second.first == provider) {
           typename std::map<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>::node_type node = cProviders.extract(it);
           node.key() = key;
-          node.mapped().second = category;
+          node.mapped().second = path;
           cProviders.insert(std::move(node));
           return;
         }
       }
 
       // It's not already registered, so register the asset and ID.
-      cProviders.emplace(key, std::make_pair(provider, category));
+      cProviders.emplace(key, std::make_pair(provider, path));
       for (unsigned int i = 0; i < cListeners.size(); i++) {
         cListeners[i]->assetAdded(provider);
       }

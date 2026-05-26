@@ -48,16 +48,16 @@ namespace IsoRealms {
       }
     }
 
-    IStateNotifier* add(TYPE* asset, const std::string& id, const std::string& category = "TODO", bool stateChanges = false) {
+    IStateNotifier* add(TYPE* asset, const std::string& id, const std::string& path = "TODO", bool stateChanges = false) {
       typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
       if (mIterator == cAssetSingletons.end()) {
-        return add(cAssetSingletons.emplace(asset, std::make_unique<AssetSingleton<OWNER, TYPE>>(id, asset)).first->second.get(), id, category, stateChanges);
+        return add(cAssetSingletons.emplace(asset, std::make_unique<AssetSingleton<OWNER, TYPE>>(id, asset)).first->second.get(), id, path, stateChanges);
       }
-      return add(mIterator->second.get(), id, category, stateChanges);
+      return add(mIterator->second.get(), id, path, stateChanges);
     }
     
-    IStateNotifier* add(IAssetProvider<OWNER, TYPE>* provider, const std::string& id, const std::string& category, bool stateChanges = false) {
-      cRegistry.add(provider, id, category);
+    IStateNotifier* add(IAssetProvider<OWNER, TYPE>* provider, const std::string& id, const std::string& path, bool stateChanges = false) {
+      cRegistry.add(provider, id, path);
       if (stateChanges) {
         typename std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>>::iterator mNotifier = cStateNotifiers.find(provider);
         if (mNotifier != cStateNotifiers.end()) {
