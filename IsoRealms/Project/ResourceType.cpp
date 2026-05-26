@@ -160,7 +160,7 @@ namespace IsoRealms {
   IResource* ResourceType::createResource() {
     Project& mProject = cParent.getProject();
     ProjectFile* mOwnerProject = mProject.getProjectFile();
-    return cResourceType->createResource(*this, "Unnamed " + cParent.getName(this), mOwnerProject);
+    return cResourceType->createResource(*this, "Unnamed " + cSingular, mOwnerProject);
   }
 
   void ResourceType::renameResource(IResource* resource, const std::string& name) {

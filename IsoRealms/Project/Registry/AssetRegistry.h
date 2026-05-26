@@ -45,6 +45,7 @@ namespace IsoRealms {
         if (it->second.first == provider) {
           typename std::map<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>::node_type node = cProviders.extract(it);
           node.key() = key;
+          node.mapped().second = category;
           cProviders.insert(std::move(node));
           return;
         }
