@@ -38,7 +38,7 @@ namespace IsoRealms::Basics {
       JSONObject mMappingObject = mMappingValue.getObject();
       std::string mType = mMappingObject.getString(JSON_TYPE);
       if      (mType == AxisMapping::TYPE_AXIS)                             {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<AxisMapping>(mMappingObject), "TODO: Remove This"));}
-      else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(basics, mMappingObject), mMappingObject.getString(JSON_NAME)));}
+      else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(basics, data, mMappingObject), mMappingObject.getString(JSON_NAME)));}
       else                                                                  {throw ParseException("Unknown tag for Basics/AnalogueInput: " + mType);}
     }
   }

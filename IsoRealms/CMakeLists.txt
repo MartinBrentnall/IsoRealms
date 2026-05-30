@@ -26,6 +26,7 @@ add_library(IsoRealms
   Assets/Client/BindingType.cpp
   Assets/Client/Boolean.cpp
   Assets/Client/Colour.cpp
+  Assets/Client/DigitalInputMapping.cpp
   Assets/Client/Editable.cpp
   Assets/Client/File.cpp
   Assets/Client/Float.cpp
@@ -40,6 +41,10 @@ add_library(IsoRealms
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
+  Assets/Fixed/DigitalInput/ButtonMapping.cpp
+  Assets/Fixed/DigitalInput/HatMapping.cpp
+  Assets/Fixed/DigitalInput/KeyMapping.cpp
+  Assets/Fixed/DigitalInput/MouseButtonMapping.cpp
   Assets/Literal/LiteralColour.cpp
   Assets/Literal/LiteralFloat.cpp
   Assets/Literal/LiteralString.cpp
@@ -95,11 +100,7 @@ add_library(IsoRealms
   Exception/InitException.cpp
   Exception/ResourceInitException.cpp
   Input/AxisMapping.cpp
-  Input/ButtonMapping.cpp
   Input/HatHandler.cpp
-  Input/HatMapping.cpp
-  Input/KeyMapping.cpp
-  Input/MouseButtonMapping.cpp
   Metadata.cpp
   Persistence/JSONArray.cpp
   Persistence/JSONDocument.cpp
@@ -119,6 +120,7 @@ add_library(IsoRealms
   Project/Registry/BindingRegistry.cpp
   Project/Registry/BindingTypeRegistry.cpp
   Project/Registry/ColourRegistry.cpp
+  Project/Registry/DigitalInputRegistry.cpp
   Project/Registry/EditableRegistry.cpp
   Project/Registry/FloatRegistry.cpp
   Project/Registry/FontRegistry.cpp

@@ -33,6 +33,7 @@ namespace IsoRealms {
           cApplication(application),
           cFunctionNotifyComplete(onFinish),
           cBindings(*this),
+          cDigitalInputs(*this),
           cScreens(*this),
           cStrings(*this),
           cTextures(*this),

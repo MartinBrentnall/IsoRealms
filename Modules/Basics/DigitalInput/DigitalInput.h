@@ -46,9 +46,7 @@ namespace IsoRealms::Basics {
     /**********************\
      * Resource Interface *
     \**********************/
-    DigitalInput(Basics& basics);
     DigitalInput(Basics& basics, IResourceData& data);
-    DigitalInput(Basics& basics, JSONObject object);
     DigitalInput(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
@@ -108,7 +106,7 @@ namespace IsoRealms::Basics {
      * @param index Index of the desired input mapping.
      * @return The physical input mapping at the specified index.
      */
-    std::shared_ptr<IDigitalInputMapping> getMapping(unsigned int index) const;
+    std::shared_ptr<DigitalInputMapping> getMapping(unsigned int index) const;
 
     /**
      * Bind the specified digital input mapping as a user-mapping to this
@@ -116,7 +114,7 @@ namespace IsoRealms::Basics {
      *
      * @param input The input to bind.
      */
-    void addCustomInput(std::shared_ptr<IDigitalInputMapping> input);
+    void addCustomInput(std::shared_ptr<DigitalInputMapping> input);
 
     /**
      * Remove all user-bound physical input mappings.
@@ -147,32 +145,29 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_BUTTON_DOWN;
-    static const std::string JSON_HAT;
-    static const std::string JSON_KEY_DOWN;
-    static const std::string JSON_MAPPINGS;
-    static const std::string JSON_MOUSE_BUTTON_DOWN;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_TYPE     = "type";
+    inline static const std::string JSON_MAPPINGS = "mappings";
 
     class PhysicalInputMapping {
       public:
-      PhysicalInputMapping(std::shared_ptr<IDigitalInputMapping> physicalInput);
+      PhysicalInputMapping(std::shared_ptr<DigitalInputMapping> physicalInput);
 
       bool matches(sf::Event& event) const;
       bool input(sf::Event& event);
       void reset();
       std::string getShortName() const;
-      std::shared_ptr<IDigitalInputMapping> getInput() const;
+      std::shared_ptr<DigitalInputMapping> getInput() const;
       void save(JSONObject object) const;
       void getProperties(IPropertyMaker& owner);
 
       private:
-      std::shared_ptr<IDigitalInputMapping> cPhysicalInput;
+      std::shared_ptr<DigitalInputMapping> cPhysicalInput;
       bool cState;
     };
 
     // External interfaces.
     Project& cProject;
+    IResourceData& cResourceData;
 
     // Definition data.
     std::vector<std::unique_ptr<PhysicalInputMapping>> cDefMapping; /// Default input mapping.

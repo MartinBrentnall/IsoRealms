@@ -18,23 +18,17 @@
  */
 #pragma once
 
-#include "Assets/Client/Action.h"
-#include "Assets/Client/Binding.h"
-#include "Assets/Client/BindingType.h"
-#include "Assets/Client/Boolean.h"
-#include "Assets/Client/Colour.h"
-#include "Assets/Client/DigitalInputMapping.h"
-#include "Assets/Client/File.h"
-#include "Assets/Client/Float.h"
-#include "Assets/Client/Editable.h"
-#include "Assets/Client/Font.h"
-#include "Assets/Client/InputHandler.h"
-#include "Assets/Client/Integer.h"
-#include "Assets/Client/Model.h"
-#include "Assets/Client/ModuleChooser.h"
-#include "Assets/Client/Screen.h"
-#include "Assets/Client/String.h"
-#include "Assets/Client/Texture.h"
-#include "Assets/Client/Vertex.h"
-#include "Assets/Type/IStateNotifier.h"
-#include "Assets/Type/ITextureUseListener.h"
+#include <functional>
+
+#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/IResourceData.h"
+
+#include "Asset.h"
+
+namespace IsoRealms {
+  class DigitalInputMapping : public Asset<DigitalInputMapping, IDigitalInputMapping, IResourceData> {
+    public:
+    DigitalInputMapping(IResourceData& owner);
+  };
+}
+ 

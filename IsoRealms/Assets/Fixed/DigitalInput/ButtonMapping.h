@@ -18,25 +18,24 @@
  */
 #pragma once
 
-#include "IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
 
 namespace IsoRealms {
+  class Metadata;
+  class IResourceData;
 
   /**
    * A digital input mapping to a button on a controller.
    */
   class ButtonMapping : public IDigitalInputMapping {
     private:
-    static const std::string JSON_BUTTON;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_BUTTON = "button";
 
-    const unsigned int cButton; /// The key associated with this mapping.
+    unsigned int cButton; /// The button associated with this mapping.
     // TODO: Support inversion.
     // TODO: Support multiple controllers.
 
     public:
-    static const std::string TYPE_BUTTON_DOWN;
-
     static const unsigned int CROSS;
     static const unsigned int CIRCLE;
     static const unsigned int SQUARE;
@@ -50,22 +49,23 @@ namespace IsoRealms {
      */
     ButtonMapping(const unsigned int button);
     
-    /**
-     * Construct a digital input mapping by loading the associated button from
-     * the specified node.
-     * 
-     * @param node The node from which to read the associated button.
-     */
-    ButtonMapping(JSONObject object);
+    ButtonMapping(const Metadata& metadata, IResourceData& owner);
+    ButtonMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /***********************************\
      * Implements IDigitalInputMapping *
     \***********************************/
     bool getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(JSONObject object) const override;
-    void getProperties(IPropertyMaker& owner) override;
     std::string getShortName() const override;
     std::string getLongName() const override;
+
+    /**********************************************\
+     * Implements IAsset via IDigitalInputMapping *
+    \**********************************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    void getAssetProperties(IPropertyMaker& owner) override;
+    bool isDefaultConfiguration() const override;
   };
 }

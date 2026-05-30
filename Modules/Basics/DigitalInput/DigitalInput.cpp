@@ -21,41 +21,22 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string DigitalInput::JSON_BUTTON_DOWN       = "ButtonDown";
-  const std::string DigitalInput::JSON_HAT               = "Hat";
-  const std::string DigitalInput::JSON_KEY_DOWN          = "KeyDown";
-  const std::string DigitalInput::JSON_MAPPINGS          = "mappings";
-  const std::string DigitalInput::JSON_MOUSE_BUTTON_DOWN = "MouseButtonDown";
-  const std::string DigitalInput::JSON_TYPE              = "type";
-
-  DigitalInput::DigitalInput(Basics& basics) :
-             cProject(basics.getProject()),
-             cRuntimeState(false),
-             cLuaBinding(basics.getProject().getLuaState(), this),
-             cStateNotifier(nullptr) {
-  }
-
   DigitalInput::DigitalInput(Basics& basics, IResourceData& data) :
-            DigitalInput(basics) {
+            cProject(basics.getProject()),
+            cResourceData(data),
+            cRuntimeState(false),
+            cLuaBinding(basics.getProject().getLuaState(), this),
+            cStateNotifier(nullptr) {
   }
   
-  DigitalInput::DigitalInput(Basics& basics, JSONObject object) :
-            DigitalInput(basics) {
-    Application& mApplication = basics.getProject().getApplication();
-    HatHandler& mHatHandler = mApplication.getHatHandler();
+  DigitalInput::DigitalInput(Basics& basics, IResourceData& data, JSONObject object) :
+            DigitalInput(basics, data) {
     for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingValue.getObject();
-      std::string mType = mMappingObject.getString(JSON_TYPE);
-      if      (mType == KeyMapping::TYPE_KEY_DOWN)                  {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingObject)));}
-      else if (mType == ButtonMapping::TYPE_BUTTON_DOWN)            {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingObject)));}
-      else if (mType == HatMapping::TYPE_HAT)                       {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingObject)));}
-      else if (mType == MouseButtonMapping::TYPE_MOUSE_BUTTON_DOWN) {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<MouseButtonMapping>(mMappingObject)));}
-      else                                                          {throw ParseException("Unknown tag for Basics/DigitalInput: " + mType);}
+      std::shared_ptr<DigitalInputMapping> mInput = std::make_shared<DigitalInputMapping>(data);
+      mInput->set(mMappingObject);
+      cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(mInput));
     }
-  }
-
-  DigitalInput::DigitalInput(Basics& basics, IResourceData& data, JSONObject object) :
-            DigitalInput(basics, object) {
   }
 
   void DigitalInput::registerAssets(ResourceAssetRegistry& assets) {
@@ -87,23 +68,23 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
-      owner.createPropertyStruct(metadata.getPropertyData("Input"), mInput->getShortName(), [&mInput](IPropertyMaker& owner) {
-        return mInput->getProperties(owner);
-      }, [this, &mInput]() {
-        Utils::removeElementUnique(cDefMapping, mInput.get());
-      });
-    }
+    // for (std::unique_ptr<PhysicalInputMapping>& mInput : cDefMapping) {
+    //   owner.createPropertyStruct(metadata.getPropertyData("Input"), mInput->getShortName(), [&mInput](IPropertyMaker& owner) {
+    //     return mInput->getProperties(owner);
+    //   }, [this, &mInput]() {
+    //     Utils::removeElementUnique(cDefMapping, mInput.get());
+    //   });
+    // }
     
-    owner.createPropertyAdd(metadata.getPropertyData("Input"), "Add...", [this, &owner, &metadata]() {
-      cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
-      std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
-      return owner.createPropertyStruct(metadata.getPropertyData("Input"), mInput->getShortName(), [&mInput](IPropertyMaker& owner) {
-        return mInput->getProperties(owner);
-      }, [this, &mInput]() {
-        Utils::removeElementUnique(cDefMapping, mInput.get());
-      });
-    });
+    // owner.createPropertyAdd(metadata.getPropertyData("Input"), "Add...", [this, &owner, &metadata]() {
+    //   cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(sf::Keyboard::Return)));
+    //   std::unique_ptr<PhysicalInputMapping>& mInput = cDefMapping.back();
+    //   return owner.createPropertyStruct(metadata.getPropertyData("Input"), mInput->getShortName(), [&mInput](IPropertyMaker& owner) {
+    //     return mInput->getProperties(owner);
+    //   }, [this, &mInput]() {
+    //     Utils::removeElementUnique(cDefMapping, mInput.get());
+    //   });
+    // });
   }
 
   void DigitalInput::removed() {
@@ -185,7 +166,7 @@ namespace IsoRealms::Basics {
     return static_cast<unsigned int>(cRuntimeMapping.empty() ? cDefMapping.size() : cRuntimeMapping.size());
   }
 
-  std::shared_ptr<IDigitalInputMapping> DigitalInput::getMapping(unsigned int index) const {
+  std::shared_ptr<DigitalInputMapping> DigitalInput::getMapping(unsigned int index) const {
     const std::vector<std::unique_ptr<PhysicalInputMapping>>& mMapping = cRuntimeMapping.empty() ? cDefMapping : cRuntimeMapping;
     if (index < mMapping.size()) {
       return mMapping[index]->getInput();
@@ -193,7 +174,7 @@ namespace IsoRealms::Basics {
     throw ActionException("DigitalInput::getMapping(" + Utils::toString(index) + ") : Index out of range: 0..." + Utils::toString(static_cast<int>(mMapping.size()) - 1) + ")");
   }
 
-  void DigitalInput::addCustomInput(std::shared_ptr<IDigitalInputMapping> input) {
+  void DigitalInput::addCustomInput(std::shared_ptr<DigitalInputMapping> input) {
     cRuntimeMapping.push_back(std::make_unique<PhysicalInputMapping>(input));
   }
 
@@ -201,18 +182,18 @@ namespace IsoRealms::Basics {
     cRuntimeMapping.clear();
   }
 
-  DigitalInput::PhysicalInputMapping::PhysicalInputMapping(std::shared_ptr<IDigitalInputMapping> physicalInput) :
+  DigitalInput::PhysicalInputMapping::PhysicalInputMapping(std::shared_ptr<DigitalInputMapping> physicalInput) :
             cPhysicalInput(physicalInput),
             cState(false) {
   }
 
   bool DigitalInput::PhysicalInputMapping::matches(sf::Event& event) const {
-    return cPhysicalInput->matches(event);
+    return (*cPhysicalInput)->matches(event);
   }
 
   bool DigitalInput::PhysicalInputMapping::input(sf::Event& event) {
-    if (cPhysicalInput->matches(event)) {
-      cState = cPhysicalInput->getState(event);
+    if ((*cPhysicalInput)->matches(event)) {
+      cState = (*cPhysicalInput)->getState(event);
     }
     return cState;
   }
@@ -222,33 +203,28 @@ namespace IsoRealms::Basics {
   }
 
   std::string DigitalInput::PhysicalInputMapping::getShortName() const {
-    return cPhysicalInput->getShortName();
+    return (*cPhysicalInput)->getShortName();
   }
 
-  std::shared_ptr<IDigitalInputMapping> DigitalInput::PhysicalInputMapping::getInput() const {
+  std::shared_ptr<DigitalInputMapping> DigitalInput::PhysicalInputMapping::getInput() const {
     return cPhysicalInput;
   }
 
   void DigitalInput::PhysicalInputMapping::save(JSONObject object) const {
-    cPhysicalInput->save(object);
+    cPhysicalInput->save(object, JSON_TYPE);
   }
 
   void DigitalInput::PhysicalInputMapping::getProperties(IPropertyMaker& owner) {
-    cPhysicalInput->getProperties(owner);
+    // cPhysicalInput->getProperties(owner); TODO: Implement this.
   }
 
   void DigitalInput::loadCustomMapping(JSONObject object) {
-    Application& mApplication = cProject.getApplication();
-    HatHandler& mHatHandler = mApplication.getHatHandler();
     cRuntimeMapping.clear();
     for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingsObject = mMappingsValue.getObject();
-      std::string mType = mMappingsObject.getString(JSON_TYPE);
-      if      (mType == KeyMapping::TYPE_KEY_DOWN)                  {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingsObject)));}
-      else if (mType == ButtonMapping::TYPE_BUTTON_DOWN)            {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingsObject)));}
-      else if (mType == HatMapping::TYPE_HAT)                       {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingsObject)));}
-      else if (mType == MouseButtonMapping::TYPE_MOUSE_BUTTON_DOWN) {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<MouseButtonMapping>(mMappingsObject)));}
-      else                                                          {throw ParseException("Unknown tag for Basics/DigitalInput: " + mType);}
+      std::shared_ptr<DigitalInputMapping> mInput = std::make_shared<DigitalInputMapping>(cResourceData);
+      mInput->init(mMappingsObject, JSON_TYPE);
+      cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(mInput));
     }
   }
 

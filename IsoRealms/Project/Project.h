@@ -44,6 +44,7 @@
 #include "Registry/BindingRegistry.h"
 #include "Registry/BindingTypeRegistry.h"
 #include "Registry/ColourRegistry.h"
+#include "Registry/DigitalInputRegistry.h"
 #include "Registry/EditableRegistry.h"
 #include "Registry/FloatRegistry.h"
 #include "Registry/FontRegistry.h"
@@ -266,6 +267,7 @@ namespace IsoRealms {
     BindingTypeRegistry  cBindingTypes; // Note: Contents of this module is set by modules (i.e. NOT configurable!)
     BooleanRegistry      cBooleans;
     ColourRegistry       cColours;
+    DigitalInputRegistry cDigitalInputs;
     EditableRegistry     cEditables;
     FloatRegistry        cFloats;
     FontRegistry         cFonts;
@@ -318,21 +320,22 @@ namespace IsoRealms {
     void saveRecursive(const ProjectFile& file) const;
   };
 
-  template<> struct AssetContainerTraits<IAction>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cActions;      }};
-  template<> struct AssetContainerTraits<IBinding>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindings;     }};
-  template<> struct AssetContainerTraits<IBindingType>  {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes; }};
-  template<> struct AssetContainerTraits<IBoolean>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;     }};
-  template<> struct AssetContainerTraits<IColour>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cColours;      }};
-  template<> struct AssetContainerTraits<IEditable>     {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cEditables;    }};
-  template<> struct AssetContainerTraits<IFloat>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFloats;       }};
-  template<> struct AssetContainerTraits<IFont>         {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFonts;        }};
-  template<> struct AssetContainerTraits<IInputHandler> {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers;}};
-  template<> struct AssetContainerTraits<IInteger>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;     }};
-  template<> struct AssetContainerTraits<IModel>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cModels;       }};
-  template<> struct AssetContainerTraits<IScreen>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cScreens;      }};
-  template<> struct AssetContainerTraits<IString>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cStrings;      }};
-  template<> struct AssetContainerTraits<ITexture>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cTextures;     }};
-  template<> struct AssetContainerTraits<IVertex>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cVertices;     }};
+  template<> struct AssetContainerTraits<IAction>              {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cActions;      }};
+  template<> struct AssetContainerTraits<IBinding>             {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindings;     }};
+  template<> struct AssetContainerTraits<IBindingType>         {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes; }};
+  template<> struct AssetContainerTraits<IBoolean>             {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;     }};
+  template<> struct AssetContainerTraits<IColour>              {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cColours;      }};
+  template<> struct AssetContainerTraits<IDigitalInputMapping> {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cDigitalInputs; }};
+  template<> struct AssetContainerTraits<IEditable>            {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cEditables;    }};
+  template<> struct AssetContainerTraits<IFloat>               {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFloats;       }};
+  template<> struct AssetContainerTraits<IFont>                {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFonts;        }};
+  template<> struct AssetContainerTraits<IInputHandler>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers;}};
+  template<> struct AssetContainerTraits<IInteger>             {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;     }};
+  template<> struct AssetContainerTraits<IModel>               {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cModels;       }};
+  template<> struct AssetContainerTraits<IScreen>              {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cScreens;      }};
+  template<> struct AssetContainerTraits<IString>              {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cStrings;      }};
+  template<> struct AssetContainerTraits<ITexture>             {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cTextures;     }};
+  template<> struct AssetContainerTraits<IVertex>              {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cVertices;     }};
 
   template <typename FROM> bool renderProviderIcon(Project& project, const std::string& id) {
     return project.renderIcon<typename FROM::AssetInterfaceType>(id);

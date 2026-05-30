@@ -22,27 +22,27 @@
 
 #include <SFML/Window/Mouse.hpp>
 
-#include "IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
 
 namespace IsoRealms {
+  class Metadata;
+  class IResourceData;
 
   /**
    * A digital input mapping to a mouse button.
    */
   class MouseButtonMapping : public IDigitalInputMapping {
     private:
-    static const std::string JSON_BUTTON;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_BUTTON = "button";
 
-    static const std::string UNMAPPED_BUTTON_PREFIX;
+    inline static const std::string UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
 
     static const std::map<std::string, sf::Mouse::Button> cButtonsByName; /// Mapping of buttons by name.
 
-    const sf::Mouse::Button cButton; /// The key associated with this mapping.
+    sf::Mouse::Button cButton; /// The mouse button associated with this mapping.
     // TODO: Support inversion.
 
     public:
-    static const std::string TYPE_MOUSE_BUTTON_DOWN;
 
     static sf::Mouse::Button getButton(const std::string& name);
     static std::string getName(const sf::Mouse::Button button);
@@ -54,23 +54,24 @@ namespace IsoRealms {
      */
     MouseButtonMapping(const sf::Mouse::Button button);
 
-    /**
-     * Construct a digital input mapping by loading the associated key from the
-     * specified node.
-     *
-     * @param node The node from which to read the associated key.
-     */
-    MouseButtonMapping(JSONObject object);
+    MouseButtonMapping(const Metadata& metadata, IResourceData& owner);
+    MouseButtonMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /***********************************\
      * Implements IDigitalInputMapping *
     \***********************************/
     bool matches(const sf::Event& event) const override;
     bool getState(const sf::Event& event) const override;
-    void save(JSONObject object) const override;
-    void getProperties(IPropertyMaker& owner) override;
     std::string getShortName() const override;
     std::string getLongName() const override;
+
+    /**********************************************\
+     * Implements IAsset via IDigitalInputMapping *
+    \**********************************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    void getAssetProperties(IPropertyMaker& owner) override;
+    bool isDefaultConfiguration() const override;
   };
 }
 

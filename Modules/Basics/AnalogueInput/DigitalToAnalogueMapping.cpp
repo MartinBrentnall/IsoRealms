@@ -28,16 +28,16 @@ namespace IsoRealms::Basics {
 
   const std::string DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE = "DigitalToAnalogue";
 
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(Basics& basics, JSONObject object) :
-            cDefInput(basics, object),
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(Basics& basics, IResourceData& data, JSONObject object) :
+            cDefInput(basics, data, object),
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
   }
 
   float DigitalToAnalogueMapping::getState(const sf::Event& event) const {
     for (unsigned int i = 0; i < cDefInput.getMappingCount(); i++) {
-      std::shared_ptr<IDigitalInputMapping> mInput = cDefInput.getMapping(i);
-      if (mInput->matches(event)) {
-        if (mInput->getState(event)) {
+      std::shared_ptr<DigitalInputMapping> mInput = cDefInput.getMapping(i);
+      if ((*mInput)->matches(event)) {
+        if ((*mInput)->getState(event)) {
           return cDefOutputValue;
         }
       }
@@ -47,8 +47,8 @@ namespace IsoRealms::Basics {
   
   bool DigitalToAnalogueMapping::matches(const sf::Event& event) const {
     for (unsigned int i = 0; i < cDefInput.getMappingCount(); i++) {
-      std::shared_ptr<IDigitalInputMapping> mInput = cDefInput.getMapping(i);
-      if (mInput->matches(event)) {
+      std::shared_ptr<DigitalInputMapping> mInput = cDefInput.getMapping(i);
+      if ((*mInput)->matches(event)) {
         return true;
       }
     }

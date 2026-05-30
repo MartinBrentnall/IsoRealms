@@ -20,17 +20,18 @@
 
 #include <map>
 
-#include "IDigitalInputMapping.h"
-#include "HatHandler.h"
+#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/Input/HatHandler.h"
 
 namespace IsoRealms {
+  class Metadata;
+  class IResourceData;
 
   /**
    * A digital input mapping to an analogue stick or similar.
    */
   class HatMapping : public IDigitalInputMapping {
     public:
-    static const std::string TYPE_HAT;
 
     /**
      * Construct a digital input mapping with the specified properties..
@@ -51,6 +52,9 @@ namespace IsoRealms {
      * @throws ArgumentException If the specified direction is not known.
      */
     HatMapping(HatHandler& hatHandler, JSONObject object);
+
+    HatMapping(const Metadata& metadata, IResourceData& owner);
+    HatMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /**
      * Retrieve the direction of the specified name.  The key is always such that it
@@ -79,19 +83,34 @@ namespace IsoRealms {
     \***********************************/
     bool getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(JSONObject object) const override;
-    void getProperties(IPropertyMaker& owner) override;
     std::string getShortName() const override;
     std::string getLongName() const override;
 
-    private:
-    static const std::string JSON_DIRECTION;
-    static const std::string JSON_TYPE;
+    /**********************************************\
+     * Implements IAsset via IDigitalInputMapping *
+    \**********************************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    void getAssetProperties(IPropertyMaker& owner) override;
+    bool isDefaultConfiguration() const override;
 
-    static const std::map<std::string, HatHandler::Direction> cDirectionsByName;
+    private:
+    inline static const std::string JSON_DIRECTION = "direction";
+
+    inline static const std::map<std::string, HatHandler::Direction> cDirectionsByName = {
+      {"LeftUp",    HatHandler::Direction::HAT_LEFTUP},
+      {"Up",        HatHandler::Direction::HAT_UP},
+      {"RightUp",   HatHandler::Direction::HAT_RIGHTUP},
+      {"Left",      HatHandler::Direction::HAT_LEFT},
+      {"Centered",  HatHandler::Direction::HAT_CENTERED},
+      {"Right",     HatHandler::Direction::HAT_RIGHT},
+      {"LeftDown",  HatHandler::Direction::HAT_LEFTDOWN},
+      {"Down",      HatHandler::Direction::HAT_DOWN},
+      {"RightDown", HatHandler::Direction::HAT_RIGHTDOWN}
+    };
 
     HatHandler& cHatHandler;
 
-    const HatHandler::Direction cDirection; /// Determines the direction of true and false state.
+    HatHandler::Direction cDirection; /// Determines the direction of true and false state.
   };
 }

@@ -19,26 +19,10 @@
 #include "HatMapping.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  const std::string HatMapping::JSON_DIRECTION = "direction";
-  const std::string HatMapping::JSON_TYPE      = "type";
-
-  const std::string HatMapping::TYPE_HAT = "Hat";
-
-  const std::map<std::string, HatHandler::Direction> HatMapping::cDirectionsByName = {
-    {"LeftUp",    HatHandler::Direction::HAT_LEFTUP},
-    {"Up",        HatHandler::Direction::HAT_UP},
-    {"RightUp",   HatHandler::Direction::HAT_RIGHTUP},
-    {"Left",      HatHandler::Direction::HAT_LEFT},
-    {"Centered",  HatHandler::Direction::HAT_CENTERED},
-    {"Right",     HatHandler::Direction::HAT_RIGHT},
-    {"LeftDown",  HatHandler::Direction::HAT_LEFTDOWN},
-    {"Down",      HatHandler::Direction::HAT_DOWN},
-    {"RightDown", HatHandler::Direction::HAT_RIGHTDOWN}
-  };
-
   HatMapping::HatMapping(HatHandler& hatHandler, const HatHandler::Direction direction) :
           cHatHandler(hatHandler),
           cDirection(direction) {
@@ -47,6 +31,16 @@ namespace IsoRealms {
   HatMapping::HatMapping(HatHandler& hatHandler, JSONObject object) :
           cHatHandler(hatHandler),
           cDirection(getDirection(object.getString(JSON_DIRECTION))) {
+  }
+
+  HatMapping::HatMapping(const Metadata& metadata, IResourceData& owner) :
+          cHatHandler(owner.getProject().getApplication().getHatHandler()) {
+    // TODO: Implement this.
+  }
+
+  HatMapping::HatMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          HatMapping(metadata, owner) {
+    cDirection = getDirection(object.getString(JSON_DIRECTION));
   }
 
   bool HatMapping::matches(const sf::Event& event) const {
@@ -83,15 +77,6 @@ namespace IsoRealms {
     return false;
   }
 
-  void HatMapping::save(JSONObject object) const {
-    object.addString(JSON_TYPE, TYPE_HAT);
-    object.addString(JSON_DIRECTION, getName(cDirection));
-  }
-
-  void HatMapping::getProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
   std::string HatMapping::getShortName() const {
     return getName(cDirection);
   }
@@ -115,5 +100,21 @@ namespace IsoRealms {
       }
     }
     throw ArgumentException("ERROR: HatMapping::getName: Specified direction value is not known.");
+  }
+
+  bool HatMapping::renderAssetIcon() const {
+    return false;
+  }
+
+  void HatMapping::saveAsset(JSONObject object) const {
+    object.addString(JSON_DIRECTION, getName(cDirection));
+  }
+
+  void HatMapping::getAssetProperties(IPropertyMaker& owner) {
+    // Nothing to do.
+  }
+
+  bool HatMapping::isDefaultConfiguration() const {
+    return true;
   }
 }

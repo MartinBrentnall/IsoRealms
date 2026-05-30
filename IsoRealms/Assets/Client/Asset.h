@@ -82,11 +82,15 @@ namespace IsoRealms {
       }
     }
 
+    void set(JSONObject object) {
+      cManager.getAssetManager().release(this, cAsset);
+      setAsset(cManager.getAssetManager().getAsset(this, object, cManager, getStateListener()));
+      loadClientConfiguration(object);
+    }
+
     void set(JSONThing thing) {
       JSONObject mAssetObject = thing.getValue();
-      cManager.getAssetManager().release(this, cAsset);
-      setAsset(cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener()));
-      loadClientConfiguration(mAssetObject);
+      set(mAssetObject);
     }
 
     void init(JSONObject object, const std::string& member) {
@@ -101,9 +105,7 @@ namespace IsoRealms {
     
     void set(JSONObject object, const std::string& member) {
       JSONObject mAssetObject = object.getObject(member);
-      cManager.getAssetManager().release(this, cAsset);
-      setAsset(cManager.getAssetManager().getAsset(this, mAssetObject, cManager, getStateListener()));
-      loadClientConfiguration(mAssetObject);
+      set(mAssetObject);
     }
     
     void setID(const std::string& id) override {

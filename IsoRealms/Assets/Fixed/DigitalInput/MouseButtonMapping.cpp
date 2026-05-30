@@ -22,13 +22,6 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  const std::string MouseButtonMapping::JSON_BUTTON = "button";
-  const std::string MouseButtonMapping::JSON_TYPE   = "type";
-
-  const std::string MouseButtonMapping::TYPE_MOUSE_BUTTON_DOWN = "MouseButtonDown";
-
-  const std::string MouseButtonMapping::UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
-
   const std::map<std::string, sf::Mouse::Button> MouseButtonMapping::cButtonsByName = {
     {"Left",         sf::Mouse::Button::Left},
     {"Right",        sf::Mouse::Button::Right},
@@ -69,8 +62,13 @@ namespace IsoRealms {
           cButton(button) {
   }
 
-  MouseButtonMapping::MouseButtonMapping(JSONObject object) :
-          cButton(getButton(object.getString(JSON_BUTTON))) {
+  MouseButtonMapping::MouseButtonMapping(const Metadata& metadata, IResourceData& owner) {
+    // TODO: Implement this.
+  }
+
+  MouseButtonMapping::MouseButtonMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          MouseButtonMapping(metadata, owner) {
+    cButton = getButton(object.getString(JSON_BUTTON));
   }
 
   bool MouseButtonMapping::matches(const sf::Event& event) const {
@@ -81,21 +79,28 @@ namespace IsoRealms {
     return event.type == sf::Event::MouseButtonPressed;
   }
 
-  void MouseButtonMapping::save(JSONObject object) const {
-    object.addString(JSON_TYPE, TYPE_MOUSE_BUTTON_DOWN);
-    object.addString(JSON_BUTTON, getShortName());
-  }
-
-  void MouseButtonMapping::getProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
   std::string MouseButtonMapping::getShortName() const {
     return getName(cButton);
   }
 
   std::string MouseButtonMapping::getLongName() const {
     return getName(cButton) + " Mouse Button";
+  }
+
+  bool MouseButtonMapping::renderAssetIcon() const {
+    return false;
+  }
+
+  void MouseButtonMapping::saveAsset(JSONObject object) const {
+    object.addString(JSON_BUTTON, getShortName());
+  }
+
+  void MouseButtonMapping::getAssetProperties(IPropertyMaker& owner) {
+    // Nothing to do.
+  }
+
+  bool MouseButtonMapping::isDefaultConfiguration() const {
+    return true;
   }
 }
 

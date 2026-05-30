@@ -22,11 +22,6 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  const std::string ButtonMapping::JSON_BUTTON = "button";
-  const std::string ButtonMapping::JSON_TYPE   = "type";
-
-  const std::string ButtonMapping::TYPE_BUTTON_DOWN = "ButtonDown";
-
 #if _WIN32
   const unsigned int ButtonMapping::CROSS    = 1;
   const unsigned int ButtonMapping::CIRCLE   = 2;
@@ -44,8 +39,13 @@ namespace IsoRealms {
           cButton(button) {
   }
 
-  ButtonMapping::ButtonMapping(JSONObject object) :
-          cButton(object.getInteger(JSON_BUTTON)) {
+  ButtonMapping::ButtonMapping(const Metadata& metadata, IResourceData& owner) {
+    // TODO: Implement this.
+  }
+
+  ButtonMapping::ButtonMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          ButtonMapping(metadata, owner) {
+    cButton = object.getInteger(JSON_BUTTON);
   }
 
   bool ButtonMapping::matches(const sf::Event& event) const {
@@ -56,20 +56,27 @@ namespace IsoRealms {
     return event.type == sf::Event::JoystickButtonPressed;
   }
 
-  void ButtonMapping::save(JSONObject object) const {
-    object.addString(JSON_TYPE, TYPE_BUTTON_DOWN);
-    object.addInteger(JSON_BUTTON, cButton);
-  }
-
-  void ButtonMapping::getProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
   std::string ButtonMapping::getShortName() const {
     return "B" + Utils::toString(cButton);
   }
     
   std::string ButtonMapping::getLongName() const {
     return "Button " + Utils::toString(cButton);
+  }
+
+  bool ButtonMapping::renderAssetIcon() const {
+    return false;
+  }
+
+  void ButtonMapping::saveAsset(JSONObject object) const {
+    object.addInteger(JSON_BUTTON, cButton);
+  }
+
+  void ButtonMapping::getAssetProperties(IPropertyMaker& owner) {
+    // Nothing to do.
+  }
+
+  bool ButtonMapping::isDefaultConfiguration() const {
+    return true;
   }
 }

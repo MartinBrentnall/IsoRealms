@@ -26,6 +26,8 @@
 
 #include "IsoRealms/Persistence/JSONObject.h"
 
+#include "IAsset.h"
+
 namespace IsoRealms {
   class IPropertyMaker;
   class IProperty;
@@ -34,7 +36,7 @@ namespace IsoRealms {
    * Interface to a digital input mapping on which input events can be tested
    * and processed.
    */
-  class IDigitalInputMapping {
+  class IDigitalInputMapping : public IAsset {
     public:
       
     /**
@@ -58,15 +60,6 @@ namespace IsoRealms {
      * @return The state of this digital input mapping.
      */
     virtual bool getState(const sf::Event& event) const = 0;
-    
-    /**
-     * Save this digital input mapping to the specified node.
-     * 
-     * @param node The node to save this digital input mapping to.
-     */
-    virtual void save(JSONObject object) const = 0;
-
-    virtual void getProperties(IPropertyMaker& owner) = 0;
 
     /**
      * Return a short name of this digital input mapping.  The short name is
