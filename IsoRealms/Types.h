@@ -19,6 +19,7 @@
 #pragma once
 
 #include "Assets/Client/Action.h"
+#include "Assets/Client/AnalogueInputMapping.h"
 #include "Assets/Client/Binding.h"
 #include "Assets/Client/BindingType.h"
 #include "Assets/Client/Boolean.h"

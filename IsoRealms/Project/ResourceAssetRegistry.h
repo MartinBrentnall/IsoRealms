@@ -27,6 +27,7 @@
  
 namespace IsoRealms {
   using AssetVariant = std::variant<IAssetProvider<IActionContext, IAction>*,
+                                    IAssetProvider<IResourceData, IAnalogueInputMapping>*,
                                     IAssetProvider<IActionContext, IBinding>*,
                                     IAssetProvider<IResourceData, IBindingType>*,
                                     IAssetProvider<IResourceData, IBoolean>*,
@@ -43,6 +44,7 @@ namespace IsoRealms {
                                     IAssetProvider<IResourceData, ITexture>*,
                                     IAssetProvider<IResourceData, IVertex>*,
                                     IAction*,
+                                    IAnalogueInputMapping*,
                                     IBinding*,
                                     IBindingType*,
                                     IBoolean*,

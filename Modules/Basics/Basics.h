@@ -21,6 +21,7 @@
 #include "IsoRealms.h"
 
 #include "AnalogueInput/AnalogueInput.h"
+#include "Assets/Fixed/AnalogueInput/DigitalToAnalogueMapping.h"
 #include "Assets/Registry/SequenceTrackRegistry.h"
 #include "BooleanTrigger/BooleanTrigger.h"
 #include "DigitalInput/DigitalInput.h"
@@ -151,6 +152,8 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, SimpleString>      cResourceTypeSimpleString;
     ResourceTypeDefinition<Basics, SimpleVertex>      cResourceTypeSimpleVertex;
     ResourceTypeDefinition<Basics, Sprite>            cResourceTypeSprite;
+
+    AssetInstanced<IResourceData, IAnalogueInputMapping, DigitalToAnalogueMapping> cDigitalToAnalogueMapping;
 
     LuaBinding<Basics> cLuaBinding;
 

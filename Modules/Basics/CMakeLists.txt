@@ -18,8 +18,8 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Basics MODULE
   AnalogueInput/AnalogueInput.cpp
-  AnalogueInput/DigitalToAnalogueMapping.cpp
   Assets/Client/SequenceTrack.cpp
+  Assets/Fixed/AnalogueInput/DigitalToAnalogueMapping.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackAction.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackActionEvent.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackActionInstance.cpp

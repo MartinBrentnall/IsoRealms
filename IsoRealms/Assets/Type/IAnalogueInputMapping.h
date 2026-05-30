@@ -20,6 +20,10 @@
 
 #include <string>
 
+#include <SFML/Window/Event.hpp>
+
+#include "IAsset.h"
+
 namespace IsoRealms {
   class ResourceAssetRegistry;
 
@@ -27,7 +31,7 @@ namespace IsoRealms {
    * Interface to a analogue input mapping on which input events can be tested
    * and processed.
    */
-  class IAnalogueInputMapping {
+  class IAnalogueInputMapping : public IAsset {
     public:
 
     /**

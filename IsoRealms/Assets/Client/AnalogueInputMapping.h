@@ -18,15 +18,14 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Type/IAnalogueInputMapping.h"
 #include "IsoRealms/IResourceData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class DigitalInputMapping : public Asset<DigitalInputMapping, IDigitalInputMapping, IResourceData> {
+  class AnalogueInputMapping : public Asset<AnalogueInputMapping, IAnalogueInputMapping, IResourceData> {
     public:
-    DigitalInputMapping(IResourceData& owner);
+    AnalogueInputMapping(IResourceData& owner);
   };
 }
- 

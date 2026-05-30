@@ -32,6 +32,7 @@ namespace IsoRealms {
           cDefModuleChooser(*this),
           cApplication(application),
           cFunctionNotifyComplete(onFinish),
+          cAnalogueInputs(*this),
           cBindings(*this),
           cDigitalInputs(*this),
           cScreens(*this),

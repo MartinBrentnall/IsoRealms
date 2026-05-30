@@ -23,8 +23,6 @@
 
 #include "IsoRealms.h"
 
-#include "DigitalToAnalogueMapping.h"
-
 namespace IsoRealms::Basics {
   class Basics;
 
@@ -103,7 +101,7 @@ namespace IsoRealms::Basics {
      * @param index Index of the desired input mapping.
      * @return The physical input mapping at the specified index.
      */
-    std::shared_ptr<IAnalogueInputMapping> getMapping(unsigned int index) const;
+    std::shared_ptr<AnalogueInputMapping> getMapping(unsigned int index) const;
 
     /**
      * Bind the specified analogue input mapping as a user-mapping to this
@@ -111,7 +109,7 @@ namespace IsoRealms::Basics {
      *
      * @param input The input to bind.
      */
-    void addCustomInput(std::shared_ptr<IAnalogueInputMapping> input);
+    void addCustomInput(std::shared_ptr<AnalogueInputMapping> input);
 
     /**
      * Remove all user-bound physical input mappings.
@@ -151,12 +149,12 @@ namespace IsoRealms::Basics {
     // Definition data.
     class InputMapping {
       public:
-      InputMapping(std::shared_ptr<IAnalogueInputMapping> input, const std::string& name);
+      InputMapping(std::shared_ptr<AnalogueInputMapping> input, const std::string& name);
 
       bool matches(sf::Event& event) const;
       float input(sf::Event& event);
       std::string getShortName() const;
-      std::shared_ptr<IAnalogueInputMapping> getInput() const;
+      std::shared_ptr<AnalogueInputMapping> getInput() const;
       void save(JSONObject object) const;
       void loadCustomMapping(JSONObject object);
       void registerAssets(ResourceAssetRegistry& assets);
@@ -165,7 +163,7 @@ namespace IsoRealms::Basics {
 
       private:
       std::string cName;
-      std::shared_ptr<IAnalogueInputMapping> cPhysicalInput;
+      std::shared_ptr<AnalogueInputMapping> cPhysicalInput;
       float cState;
     };
     std::vector<std::unique_ptr<InputMapping>> cDefMapping; /// Default input mapping.

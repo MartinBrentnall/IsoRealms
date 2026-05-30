@@ -20,24 +20,17 @@
 
 #include "IsoRealms/Utils.h"
 
-#include "IAnalogueInputMapping.h"
+#include "IsoRealms/Assets/Type/IAnalogueInputMapping.h"
 
 namespace IsoRealms {
+  class Metadata;
+  class IResourceData;
 
   /**
    * A analogue input mapping to an analogue stick or similar.
    */
   class AxisMapping : public IAnalogueInputMapping {
-    private:
-    static const std::string JSON_AXIS;
-    static const std::string JSON_DEAD_ZONE;
-    static const std::string JSON_TYPE;
-
-    const unsigned int cDefAxis; /// Axis of this mapping.
-    const float cDefDeadZone;    /// Dead zone of this mapping
-
     public:
-    static const std::string TYPE_AXIS;
 
     /**
      * Construct a analogue input mapping with the specified properties..
@@ -49,6 +42,9 @@ namespace IsoRealms {
      */
     AxisMapping(const unsigned int axis, const bool positive, const int threshold);
     
+    AxisMapping(const Metadata& metadata, IResourceData& owner);
+    AxisMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
+
     /**
      * Construct a analogue input mapping by loading the axis properties
      * from the specified node.
@@ -67,5 +63,23 @@ namespace IsoRealms {
     std::string getLongName() const override;
     void loadCustomMapping(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) override;
+
+    /***********************************************\
+     * Implements IAsset via IAnalogueInputMapping *
+    \***********************************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+    void getAssetProperties(IPropertyMaker& owner) override;
+    bool isDefaultConfiguration() const override;
+
+    private:
+
+    // JSON members.
+    inline static const std::string JSON_AXIS      = "axis";
+    inline static const std::string JSON_DEAD_ZONE = "deadZone";
+
+    // Definition data.
+    unsigned int cDefAxis; /// Axis of this mapping.
+    float cDefDeadZone;    /// Dead zone of this mapping
   };
 }

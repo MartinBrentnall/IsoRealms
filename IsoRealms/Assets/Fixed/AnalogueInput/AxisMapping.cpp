@@ -18,13 +18,11 @@
  */
 #include "AxisMapping.h"
 
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
+#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project/Project.h"
+
 namespace IsoRealms {
-  const std::string AxisMapping::JSON_AXIS      = "axis";
-  const std::string AxisMapping::JSON_DEAD_ZONE = "deadZone";
-  const std::string AxisMapping::JSON_TYPE      = "type";
-
-  const std::string AxisMapping::TYPE_AXIS = "Axis";
-
   AxisMapping::AxisMapping(unsigned int axis, bool positive, int threshold) :
           cDefAxis(axis),
           cDefDeadZone(0.16f) {
@@ -33,6 +31,17 @@ namespace IsoRealms {
   AxisMapping::AxisMapping(JSONObject object) :
           cDefAxis(object.getInteger(JSON_AXIS)),
           cDefDeadZone(object.getFloat(JSON_DEAD_ZONE)) {
+  }
+
+  AxisMapping::AxisMapping(const Metadata& metadata, IResourceData& owner) :
+          cDefAxis(0),
+          cDefDeadZone(0.16f) {
+  }
+
+  AxisMapping::AxisMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          AxisMapping(metadata, owner) {
+    cDefAxis = object.getInteger(JSON_AXIS);
+    cDefDeadZone = object.getFloat(JSON_DEAD_ZONE);
   }
 
   bool AxisMapping::matches(const sf::Event& event) const {
@@ -45,7 +54,6 @@ namespace IsoRealms {
   }
 
   void AxisMapping::save(JSONObject object, const std::string& name) const {
-    object.addString(JSON_TYPE, TYPE_AXIS);
     object.addInteger(JSON_AXIS, cDefAxis);
     object.addFloat(JSON_DEAD_ZONE, cDefDeadZone);
   }
@@ -64,5 +72,22 @@ namespace IsoRealms {
 
   void AxisMapping::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
+  }
+
+  bool AxisMapping::renderAssetIcon() const {
+    return true;
+  }
+
+  void AxisMapping::saveAsset(JSONObject object) const {
+    object.addInteger(JSON_AXIS, cDefAxis);
+    object.addFloat(JSON_DEAD_ZONE, cDefDeadZone);
+  }
+
+  void AxisMapping::getAssetProperties(IPropertyMaker& owner) {
+    // TODO: Implement this.
+  }
+
+  bool AxisMapping::isDefaultConfiguration() const {
+    return cDefAxis == 0 && cDefDeadZone == 0.16f;
   }
 }

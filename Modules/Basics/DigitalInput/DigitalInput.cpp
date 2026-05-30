@@ -21,22 +21,30 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  DigitalInput::DigitalInput(Basics& basics, IResourceData& data) :
-            cProject(basics.getProject()),
-            cResourceData(data),
+  DigitalInput::DigitalInput(IResourceData& owner) :
+            cProject(owner.getProject()),
+            cResourceData(owner),
             cRuntimeState(false),
-            cLuaBinding(basics.getProject().getLuaState(), this),
+            cLuaBinding(owner.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
-  
-  DigitalInput::DigitalInput(Basics& basics, IResourceData& data, JSONObject object) :
-            DigitalInput(basics, data) {
+
+  DigitalInput::DigitalInput(IResourceData& owner, JSONObject object) :
+            DigitalInput(owner) {
     for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingValue.getObject();
-      std::shared_ptr<DigitalInputMapping> mInput = std::make_shared<DigitalInputMapping>(data);
+      std::shared_ptr<DigitalInputMapping> mInput = std::make_shared<DigitalInputMapping>(owner);
       mInput->set(mMappingObject);
       cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(mInput));
     }
+  }
+
+  DigitalInput::DigitalInput(Basics& basics, IResourceData& data) :
+            DigitalInput(data) {
+  }
+  
+  DigitalInput::DigitalInput(Basics& basics, IResourceData& data, JSONObject object) :
+            DigitalInput(data, object) {
   }
 
   void DigitalInput::registerAssets(ResourceAssetRegistry& assets) {

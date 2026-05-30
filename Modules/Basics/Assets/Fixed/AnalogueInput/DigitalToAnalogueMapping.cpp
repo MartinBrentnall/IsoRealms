@@ -33,6 +33,16 @@ namespace IsoRealms::Basics {
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
   }
 
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner) :
+            cDefInput(owner),
+            cDefOutputValue(0.0f) {
+  }
+
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+            cDefInput(owner, object),
+            cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
+  }
+
   float DigitalToAnalogueMapping::getState(const sf::Event& event) const {
     for (unsigned int i = 0; i < cDefInput.getMappingCount(); i++) {
       std::shared_ptr<DigitalInputMapping> mInput = cDefInput.getMapping(i);
@@ -76,5 +86,21 @@ namespace IsoRealms::Basics {
 
   void DigitalToAnalogueMapping::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
     cDefInput.registerAssets(assets, parentID);
+  }
+
+  bool DigitalToAnalogueMapping::renderAssetIcon() const {
+    return false;
+  }
+
+  void DigitalToAnalogueMapping::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  void DigitalToAnalogueMapping::getAssetProperties(IPropertyMaker& owner) {
+    // Nothing to do.
+  }
+  
+  bool DigitalToAnalogueMapping::isDefaultConfiguration() const {
+    return true;
   }
 }

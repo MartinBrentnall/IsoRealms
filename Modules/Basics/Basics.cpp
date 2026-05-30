@@ -58,6 +58,7 @@ namespace IsoRealms::Basics {
                     cResourceTypeSimpleString(*this),
                     cResourceTypeSimpleVertex(*this),
                     cResourceTypeSprite(*this),
+                    cDigitalToAnalogueMapping(registry.getAssetMetadata("DigitalToAnalogue")),
                     cLuaBinding(project.getLuaState(), this) {
     registry.add(&cResourceTypeAnalogueInput,     "AnalogueInput");
     registry.add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
@@ -92,6 +93,7 @@ namespace IsoRealms::Basics {
   void Basics::registerAssets(ResourceAssetRegistry& assets) {
     assets.addProvider(&cActionScript, ACTION_SCRIPT, "Run a Script");
     assets.add<IBinding>(&cLuaBinding, "",            "Modules/Basics");
+    assets.addProvider(&cDigitalToAnalogueMapping, "DigitalToAnalogue", "Digital to Analogue Mapping");
   }
   
   void Basics::updateInputs(unsigned int milliseconds) {

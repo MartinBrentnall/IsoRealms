@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2025 Martin Brentnall
  *
  * This file is part of IsoRealms.
@@ -16,17 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+ #include "AnalogueInputRegistry.h"
 
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
-#include "IsoRealms/IResourceData.h"
-
-#include "Asset.h"
-
-namespace IsoRealms {
-  class DigitalInputMapping : public Asset<DigitalInputMapping, IDigitalInputMapping, IResourceData> {
-    public:
-    DigitalInputMapping(IResourceData& owner);
-  };
-}
+ #include "IsoRealms/Project/Project.h"
  
+ namespace IsoRealms {
+   AnalogueInputRegistry::AnalogueInputRegistry(Project& project) :
+             cAxisMapping(project.getMetadata()) {
+     add(&cAxisMapping, "Axis", "Axis Mapping");
+   }
+ }

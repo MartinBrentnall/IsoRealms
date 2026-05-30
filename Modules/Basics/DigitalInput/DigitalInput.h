@@ -56,6 +56,9 @@ namespace IsoRealms::Basics {
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
+    DigitalInput(IResourceData& owner);
+    DigitalInput(IResourceData& owner, JSONObject object);
+
     /*********************\
      * Module interfaces *
     \*********************/

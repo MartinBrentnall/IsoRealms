@@ -8,6 +8,11 @@
     "System": "Resources that are used to manage an application itself."
   },
   "assets": {
+    "DigitalToAnalogue": {
+      "description": "A mapping that converts a digital input to an analogue value.",
+      "properties": {
+      }
+    },
     "Script": {
       "description": "Script written in Lua.",
       "properties": {

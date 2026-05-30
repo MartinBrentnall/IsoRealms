@@ -22,6 +22,7 @@ add_library(IsoRealms
   ActionContext.cpp
   Application.cpp
   Assets/Client/Action.cpp
+  Assets/Client/AnalogueInputMapping.cpp
   Assets/Client/Binding.cpp
   Assets/Client/BindingType.cpp
   Assets/Client/Boolean.cpp
@@ -41,6 +42,7 @@ add_library(IsoRealms
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
+  Assets/Fixed/AnalogueInput/AxisMapping.cpp
   Assets/Fixed/DigitalInput/ButtonMapping.cpp
   Assets/Fixed/DigitalInput/HatMapping.cpp
   Assets/Fixed/DigitalInput/KeyMapping.cpp
@@ -99,7 +101,6 @@ add_library(IsoRealms
   Exception/IllegalStateException.cpp
   Exception/InitException.cpp
   Exception/ResourceInitException.cpp
-  Input/AxisMapping.cpp
   Input/HatHandler.cpp
   Metadata.cpp
   Persistence/JSONArray.cpp
@@ -116,6 +117,7 @@ add_library(IsoRealms
   Project/ProjectLaunchConfiguration.cpp
   Project/Registry/AssetIDException.cpp
   Project/Registry/ActionRegistry.cpp
+  Project/Registry/AnalogueInputRegistry.cpp
   Project/Registry/BooleanRegistry.cpp
   Project/Registry/BindingRegistry.cpp
   Project/Registry/BindingTypeRegistry.cpp
