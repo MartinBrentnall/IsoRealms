@@ -219,7 +219,7 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalInput::PhysicalInputMapping::save(JSONObject object) const {
-    cPhysicalInput->save(object, JSON_TYPE);
+    cPhysicalInput->save(object);
   }
 
   void DigitalInput::PhysicalInputMapping::getProperties(IPropertyMaker& owner) {
@@ -229,9 +229,9 @@ namespace IsoRealms::Basics {
   void DigitalInput::loadCustomMapping(JSONObject object) {
     cRuntimeMapping.clear();
     for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
-      JSONObject mMappingsObject = mMappingsValue.getObject();
+      JSONObject mMappingObject = mMappingsValue.getObject();
       std::shared_ptr<DigitalInputMapping> mInput = std::make_shared<DigitalInputMapping>(cResourceData);
-      mInput->init(mMappingsObject, JSON_TYPE);
+      mInput->set(mMappingObject);
       cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(mInput));
     }
   }

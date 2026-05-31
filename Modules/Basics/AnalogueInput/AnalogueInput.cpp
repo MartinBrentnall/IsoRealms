@@ -38,7 +38,7 @@ namespace IsoRealms::Basics {
       JSONObject mMappingObject = mMappingValue.getObject();
       std::shared_ptr<AnalogueInputMapping> mInput = std::make_shared<AnalogueInputMapping>(data);
       mInput->set(mMappingObject);
-      cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput, mMappingObject.getString(JSON_NAME)));
+      cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
     }
   }
 
@@ -148,7 +148,7 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueInput::addCustomInput(std::shared_ptr<AnalogueInputMapping> input) {
-    cRuntimeMapping.emplace_back(std::make_unique<InputMapping>(input, "TODO: Custom Analogue Mapping"));
+    cRuntimeMapping.emplace_back(std::make_unique<InputMapping>(input));
   }
 
   void AnalogueInput::clearCustomInputs() {
@@ -186,8 +186,7 @@ namespace IsoRealms::Basics {
 //     }
   }
 
-  AnalogueInput::InputMapping::InputMapping(std::shared_ptr<AnalogueInputMapping> physicalInput, const std::string& name) :
-            cName(name),
+  AnalogueInput::InputMapping::InputMapping(std::shared_ptr<AnalogueInputMapping> physicalInput) :
             cPhysicalInput(physicalInput),
             cState(0.0f) {
   }
@@ -204,7 +203,7 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueInput::InputMapping::save(JSONObject object) const {
-    (*cPhysicalInput)->save(object, cName);
+    cPhysicalInput->save(object);
   }
 
   void AnalogueInput::InputMapping::loadCustomMapping(JSONObject object) {
@@ -212,7 +211,7 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueInput::InputMapping::registerAssets(ResourceAssetRegistry& assets) {
-    (*cPhysicalInput)->registerAssets(assets, cName);
+    (*cPhysicalInput)->registerAssets(assets);
   }
   
   std::string AnalogueInput::InputMapping::getShortName() const {
@@ -224,7 +223,7 @@ namespace IsoRealms::Basics {
   }
 
   std::string AnalogueInput::InputMapping::getName() {
-    return cName;
+    return (*cPhysicalInput)->getName();
   }
 
   void AnalogueInput::InputMapping::reset() {

@@ -33,6 +33,7 @@ namespace IsoRealms {
    */
   class IAnalogueInputMapping : public IAsset {
     public:
+    virtual std::string getName() const = 0;
 
     /**
      * Determine whether the specified event is a match for this analogue input
@@ -57,13 +58,6 @@ namespace IsoRealms {
     virtual float getState(const sf::Event& event) const = 0;
 
     /**
-     * Save this analogue input mapping to the specified node.
-     *
-     * @param node The node to save this analogue input mapping to.
-     */
-    virtual void save(JSONObject object, const std::string& name) const = 0;
-
-    /**
      * Return a short name of this analogue input mapping.  The short name is
      * intended only for presentation purposes to the user.
      *
@@ -80,7 +74,7 @@ namespace IsoRealms {
      */
     virtual std::string getLongName() const = 0;
 
-    virtual void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) = 0;
+    virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
 
     virtual ~IAnalogueInputMapping() {}
   };

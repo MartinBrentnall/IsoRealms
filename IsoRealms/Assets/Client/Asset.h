@@ -114,10 +114,14 @@ namespace IsoRealms {
       static_cast<DERIVED*>(this)->stateChanged();
     }
     
+    void save(JSONObject object) const {
+      saveClientConfiguration(object);
+      cManager.getAssetManager().save(object, cAsset);
+    }
+
     virtual void save(JSONObject object, const std::string& name) const {
       JSONObject mAssetObject = object.addObject(name);
-      saveClientConfiguration(mAssetObject);
-      cManager.getAssetManager().save(mAssetObject, cAsset);
+      save(mAssetObject);
     }
 
     void getAssetProperties(IPropertyMaker& owner) override {

@@ -44,6 +44,10 @@ namespace IsoRealms {
     cDefDeadZone = object.getFloat(JSON_DEAD_ZONE);
   }
 
+  std::string AxisMapping::getName() const {
+    return ""; // TODO: Implement this.
+  }
+
   bool AxisMapping::matches(const sf::Event& event) const {
     return event.type == sf::Event::JoystickMoved && event.joystickMove.axis == cDefAxis;
   }
@@ -51,11 +55,6 @@ namespace IsoRealms {
   float AxisMapping::getState(const sf::Event& event) const {
     float mValue = event.joystickMove.position / 100.0f;
     return std::abs(mValue) < cDefDeadZone ? 0 : (mValue - (mValue < 0 ? -cDefDeadZone : cDefDeadZone)) * (1.0f / (1.0f - cDefDeadZone));
-  }
-
-  void AxisMapping::save(JSONObject object, const std::string& name) const {
-    object.addInteger(JSON_AXIS, cDefAxis);
-    object.addFloat(JSON_DEAD_ZONE, cDefDeadZone);
   }
 
   std::string AxisMapping::getShortName() const {
@@ -70,7 +69,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void AxisMapping::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void AxisMapping::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
 

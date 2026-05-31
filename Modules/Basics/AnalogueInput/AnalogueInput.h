@@ -149,7 +149,7 @@ namespace IsoRealms::Basics {
     // Definition data.
     class InputMapping {
       public:
-      InputMapping(std::shared_ptr<AnalogueInputMapping> input, const std::string& name);
+      InputMapping(std::shared_ptr<AnalogueInputMapping> input);
 
       bool matches(sf::Event& event) const;
       float input(sf::Event& event);
@@ -162,7 +162,6 @@ namespace IsoRealms::Basics {
       void reset();
 
       private:
-      std::string cName;
       std::shared_ptr<AnalogueInputMapping> cPhysicalInput;
       float cState;
     };

@@ -21,26 +21,26 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string DigitalToAnalogueMapping::JSON_DIGITAL_TO_ANALOGUE = "digitalToAnalogue";
-  const std::string DigitalToAnalogueMapping::JSON_NAME                = "name";
-  const std::string DigitalToAnalogueMapping::JSON_TO_VALUE            = "toValue";
-  const std::string DigitalToAnalogueMapping::JSON_TYPE                = "type";
-
-  const std::string DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE = "DigitalToAnalogue";
-
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(Basics& basics, IResourceData& data, JSONObject object) :
+            cDefName(object.getString(JSON_NAME)),
             cDefInput(basics, data, object),
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
   }
 
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner) :
+            cDefName("TODO Name this mapping"),
             cDefInput(owner),
             cDefOutputValue(0.0f) {
   }
 
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+            cDefName(object.getString(JSON_NAME)),
             cDefInput(owner, object),
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
+  }
+
+  std::string DigitalToAnalogueMapping::getName() const {
+    return cDefName;
   }
 
   float DigitalToAnalogueMapping::getState(const sf::Event& event) const {
@@ -65,13 +65,6 @@ namespace IsoRealms::Basics {
     return false;
   }
   
-  void DigitalToAnalogueMapping::save(JSONObject object, const std::string& name) const {
-    object.addString(JSON_TYPE, TYPE_DIGITAL_TO_ANALOGUE);
-    object.addString(JSON_NAME, name);
-    object.addFloat(JSON_TO_VALUE, cDefOutputValue);
-    cDefInput.save(object);
-  }
-
   std::string DigitalToAnalogueMapping::getShortName() const {
     return "TODO";
   }
@@ -84,8 +77,8 @@ namespace IsoRealms::Basics {
     cDefInput.loadCustomMapping(object);
   }
 
-  void DigitalToAnalogueMapping::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
-    cDefInput.registerAssets(assets, parentID);
+  void DigitalToAnalogueMapping::registerAssets(ResourceAssetRegistry& assets) {
+    cDefInput.registerAssets(assets, cDefName);
   }
 
   bool DigitalToAnalogueMapping::renderAssetIcon() const {
@@ -93,7 +86,9 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalToAnalogueMapping::saveAsset(JSONObject object) const {
-    // Nothing to do.
+    object.addString(JSON_NAME, cDefName);
+    object.addFloat(JSON_TO_VALUE, cDefOutputValue);
+    cDefInput.save(object);
   }
 
   void DigitalToAnalogueMapping::getAssetProperties(IPropertyMaker& owner) {

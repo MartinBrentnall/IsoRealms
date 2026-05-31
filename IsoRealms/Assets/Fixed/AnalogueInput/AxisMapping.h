@@ -56,13 +56,13 @@ namespace IsoRealms {
     /************************************\
      * Implements IAnalogueInputMapping *
     \************************************/
+    std::string getName() const override;
     float getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(JSONObject object, const std::string& name) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
     void loadCustomMapping(JSONObject object) override;
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) override;
+    void registerAssets(ResourceAssetRegistry& assets) override;
 
     /***********************************************\
      * Implements IAsset via IAnalogueInputMapping *

@@ -35,8 +35,6 @@ namespace IsoRealms::Basics {
    */
   class DigitalToAnalogueMapping final : public IAnalogueInputMapping {
     public:
-    static const std::string TYPE_DIGITAL_TO_ANALOGUE;
-
     DigitalToAnalogueMapping(Basics& basics, IResourceData& data, JSONObject object);
 
     DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner);
@@ -45,13 +43,13 @@ namespace IsoRealms::Basics {
     /************************************\
      * Implements IAnalogueInputMapping *
     \************************************/
+    std::string getName() const override;
     float getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(JSONObject object, const std::string& name) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
     void loadCustomMapping(JSONObject object) override;
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) override;
+    void registerAssets(ResourceAssetRegistry& assets) override;
 
     /**********************\
      * Implements IAsset *
@@ -64,12 +62,11 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_DIGITAL_TO_ANALOGUE;
-    static const std::string JSON_NAME;
-    static const std::string JSON_TO_VALUE;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_NAME     = "name";
+    inline static const std::string JSON_TO_VALUE = "toValue";
 
     // Definition data.
+    std::string cDefName;   /// Name of this mapping.
     DigitalInput cDefInput; /// Digital input to be converted.
     float cDefOutputValue;  /// Output value when the digital input is on (otherwise 0.0f).
   };
