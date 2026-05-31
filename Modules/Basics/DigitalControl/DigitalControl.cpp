@@ -82,7 +82,7 @@ namespace IsoRealms::Basics {
       });
     }, [this]()->InputMapping& {
       std::shared_ptr<DigitalInput> mInput = std::make_shared<DigitalInput>(cResourceData);
-      mInput->setID("Key");
+      mInput->setID("KeyboardKey");
       return *cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
     });
   }

@@ -24,8 +24,8 @@
 
 namespace IsoRealms {
   GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner) :
-          cMetadata(metadata) {
-    // TODO: Implement this.
+          cMetadata(metadata),
+          cButton(0) {
   }
 
   GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner, JSONObject object) :

@@ -25,8 +25,8 @@
 namespace IsoRealms {
   GameControllerHat::GameControllerHat(const Metadata& metadata, IResourceData& owner) :
           cMetadata(metadata),
-          cHatHandler(owner.getProject().getApplication().getHatHandler()) {
-    // TODO: Implement this.
+          cHatHandler(owner.getProject().getApplication().getHatHandler()),
+          cDirection(HatHandler::Direction::HAT_RIGHT) {
   }
 
   GameControllerHat::GameControllerHat(const Metadata& metadata, IResourceData& owner, JSONObject object) :

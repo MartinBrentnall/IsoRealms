@@ -52,8 +52,8 @@ namespace IsoRealms {
   }
   
   KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner) :
-          cMetadata(metadata) {
-    // TODO: Implement this.
+          cMetadata(metadata),
+          cKey(sf::Keyboard::Enter) {
   }
 
   KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner, JSONObject object) :

@@ -52,8 +52,8 @@ namespace IsoRealms {
   }
 
   MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner) :
-          cMetadata(metadata) {
-    // TODO: Implement this.
+          cMetadata(metadata),
+          cButton(sf::Mouse::Left) {
   }
 
   MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner, JSONObject object) :
@@ -93,4 +93,3 @@ namespace IsoRealms {
     return true;
   }
 }
-
