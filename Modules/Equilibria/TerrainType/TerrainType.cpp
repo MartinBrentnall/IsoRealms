@@ -23,22 +23,6 @@
 #include "Modules/Equilibria/ZoneType/ZoneType.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string TerrainType::JSON_ALLOW_RESPAWN = "allowRespawn";
-  const std::string TerrainType::JSON_EAST_WALL     = "eastWall";
-  const std::string TerrainType::JSON_FLOOR_BOUNCE  = "floorBounce";
-  const std::string TerrainType::JSON_FRICTION      = "friction";
-  const std::string TerrainType::JSON_GRIP          = "grip";
-  const std::string TerrainType::JSON_NORTH_WALL    = "northWall";
-  const std::string TerrainType::JSON_ON_IMPACT     = "onImpact";
-  const std::string TerrainType::JSON_ON_TOUCH      = "onTouch";
-  const std::string TerrainType::JSON_SOLID         = "solid";
-  const std::string TerrainType::JSON_SOUTH_WALL    = "southWall";
-  const std::string TerrainType::JSON_SURFACE       = "surface";
-  const std::string TerrainType::JSON_WALL_BOUNCE   = "wallBounce";
-  const std::string TerrainType::JSON_WEST_WALL     = "westWall";
-
-  const float TerrainType::DEFAULT_WALL_BOUNCE = 0.6f;
-
   TerrainType::TerrainType(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cResourceData(data),
@@ -247,12 +231,6 @@ namespace IsoRealms::Equilibria {
   std::vector<ConditionElement*> TerrainType::getTerrainStateConditionElements() {
     return cEquilibria.getTerrainStateConditionElements();
   }
-
-
-
-
-
-
 
 
   IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor, IResourceData& owner) {

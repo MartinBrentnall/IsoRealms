@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_FILENAME;
+    inline static const std::string JSON_FILENAME = "filename";
 
     // Definition data.
     File cDefFile; /// Filename containing the image create a texture from.

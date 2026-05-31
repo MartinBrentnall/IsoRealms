@@ -53,7 +53,4 @@ namespace IsoRealms::Basics {
   void SequenceTrackActionEvent::execute() {
     cDefAction.execute();
   }
-
-  const std::string SequenceTrackActionEvent::JSON_DELAY   = "delay";
-  const std::string SequenceTrackActionEvent::JSON_EXECUTE = "execute";
 }

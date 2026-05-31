@@ -108,34 +108,34 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_ACCELERATION;
-    static const std::string JSON_APPEARANCE;
-    static const std::string JSON_BOUNCE_FACTOR;
-    static const std::string JSON_HEIGHT;
-    static const std::string JSON_HUG_MOMENTUM;
-    static const std::string JSON_ON_APEX;
-    static const std::string JSON_ON_FALL_BOUNCE;
-    static const std::string JSON_ON_FALL_IMPACT;
-    static const std::string JSON_ON_LEAVE_SURFACE;
-    static const std::string JSON_ON_WALL_BOUNCE;
-    static const std::string JSON_ON_RESPAWN;
-    static const std::string JSON_ORIENTATION;
-    static const std::string JSON_RADIUS;
-    static const std::string JSON_RESPAWN_DELAY;
-    static const std::string JSON_SPIN_SPEED;
-    static const std::string JSON_STEP_REACH;
-    static const std::string JSON_THRUST_INPUT;
-    static const std::string JSON_X_INPUT;
-    static const std::string JSON_Y_INPUT;
+    inline static const std::string JSON_ACCELERATION     = "acceleration";
+    inline static const std::string JSON_APPEARANCE       = "appearance";
+    inline static const std::string JSON_BOUNCE_FACTOR    = "bounceFactor";
+    inline static const std::string JSON_HEIGHT           = "height";
+    inline static const std::string JSON_HUG_MOMENTUM     = "hugMomentum";
+    inline static const std::string JSON_ON_APEX          = "onApex";
+    inline static const std::string JSON_ON_FALL_BOUNCE   = "onFallBounce";
+    inline static const std::string JSON_ON_FALL_IMPACT   = "onFallImpact";
+    inline static const std::string JSON_ON_LEAVE_SURFACE = "onLeaveSurface";
+    inline static const std::string JSON_ON_WALL_BOUNCE   = "onWallBounce";
+    inline static const std::string JSON_ON_RESPAWN       = "onRespawn";
+    inline static const std::string JSON_ORIENTATION      = "orientation";
+    inline static const std::string JSON_RADIUS           = "radius";
+    inline static const std::string JSON_RESPAWN_DELAY    = "respawnDelay";
+    inline static const std::string JSON_SPIN_SPEED       = "spinSpeed";
+    inline static const std::string JSON_STEP_REACH       = "stepReach";
+    inline static const std::string JSON_THRUST_INPUT     = "thrustInput";
+    inline static const std::string JSON_X_INPUT          = "xInput";
+    inline static const std::string JSON_Y_INPUT          = "yInput";
 
-    static const float DEFAULT_ACCELERATION;
-    static const float DEFAULT_BOUNCE_FACTOR;
-    static const float DEFAULT_HUG_MOMENTUM;
-    static const float DEFAULT_HEIGHT;
-    static const float DEFAULT_RADIUS;
-    static const int   DEFAULT_RESPAWN_DELAY;
-    static const float DEFAULT_SPIN_SPEED;
-    static const float DEFAULT_STEP_REACH;
+    inline static const float DEFAULT_ACCELERATION  = 0.0000265f;
+    inline static const float DEFAULT_BOUNCE_FACTOR = 1.0f;
+    inline static const float DEFAULT_HUG_MOMENTUM  = 0.0001f;
+    inline static const float DEFAULT_HEIGHT        = 1.7f;
+    inline static const float DEFAULT_RADIUS        = 0.4f;
+    inline static const int DEFAULT_RESPAWN_DELAY   = 500;
+    inline static const float DEFAULT_SPIN_SPEED    = 0.0f;
+    inline static const float DEFAULT_STEP_REACH    = 0.5f;
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {

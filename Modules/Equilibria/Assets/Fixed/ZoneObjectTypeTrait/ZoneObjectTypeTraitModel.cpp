@@ -23,9 +23,6 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ZoneObjectTypeTraitModel::JSON_LOCATION = "location";
-  const std::string ZoneObjectTypeTraitModel::JSON_MODEL    = "model";
-
   ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type) :
             cDefModel(type.getResourceData()) {
   }

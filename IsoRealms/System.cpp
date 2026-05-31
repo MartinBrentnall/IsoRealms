@@ -22,14 +22,6 @@
 #include "Utils.h"
 
 namespace IsoRealms {
-#if _WIN32
-  const std::string System::USER_DATA_DIRECTORY    = std::string(getenv("USERPROFILE")) + "/.isorealms/";
-  const std::string System::MODULE_EXTENSION       = ".dll";
-#elif __linux__
-  const std::string System::USER_DATA_DIRECTORY    = std::string(getenv("HOME")) + "/.isorealms/";
-  const std::string System::MODULE_EXTENSION       = ".so";
-#endif
-  
   std::string System::getPath(const std::string& filename, bool user) {
     return (user ? USER_DATA_DIRECTORY : "") + convertToSystemFormat(filename);
   }

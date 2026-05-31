@@ -63,10 +63,10 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_VALUE;
+    inline static const std::string JSON_VALUE = "value";
 
     // Property names.
-    static const std::string PROPERTY_VALUE;
+    inline static const std::string PROPERTY_VALUE = "Initial Value";
 
     // Definition data.
     bool cDefValue;     /// Initial value.

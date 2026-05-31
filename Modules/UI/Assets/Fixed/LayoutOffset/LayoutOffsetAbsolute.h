@@ -51,7 +51,7 @@ namespace IsoRealms::UI {
     private:
 
     // JSON members.
-    static const std::string JSON_VALUE;
+    inline static const std::string JSON_VALUE = "value";
 
     // External interfaces.
     const Metadata& cMetadata;

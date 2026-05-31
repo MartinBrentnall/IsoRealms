@@ -19,8 +19,6 @@
 #include "LayoutOffsetAbsolute.h"
 
 namespace IsoRealms::UI {
-  const std::string LayoutOffsetAbsolute::JSON_VALUE = "value";
-
   LayoutOffsetAbsolute::LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner) :
             cMetadata(metadata),
             cDefValue(0.0f) {

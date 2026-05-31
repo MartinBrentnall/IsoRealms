@@ -19,10 +19,6 @@
 #include "SimpleString.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleString::JSON_VALUE = "value";
-
-  const std::string SimpleString::PROPERTY_VALUE = "Initial Value";
-
   SimpleString::SimpleString(Basics& basics, IResourceData& data) :
             cDefValue(""),
             cRuntimeValue(""),

@@ -75,11 +75,11 @@ namespace IsoRealms::UI {
     private:
     
     // JSON members.
-    static const std::string JSON_BOTTOM;
-    static const std::string JSON_LEFT;
-    static const std::string JSON_RIGHT;
-    static const std::string JSON_SCREEN;
-    static const std::string JSON_TOP;
+    inline static const std::string JSON_BOTTOM = "bottom";
+    inline static const std::string JSON_LEFT   = "left";
+    inline static const std::string JSON_RIGHT  = "right";
+    inline static const std::string JSON_SCREEN = "screen";
+    inline static const std::string JSON_TOP    = "top";
 
     // External interfaces.
     Layout& cLayout;

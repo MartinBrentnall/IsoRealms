@@ -215,40 +215,40 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_BASIC_PROPERTIES;
-    static const std::string JSON_BOUNCE_CONTROL;
-    static const std::string JSON_DEBRIS_GENERATORS;
-    static const std::string JSON_GRAVITY;
-    static const std::string JSON_PLAYERS;
-    static const std::string JSON_SLOPE_FORCE;
-    static const std::string JSON_ZONES;
+    inline static const std::string JSON_BASIC_PROPERTIES  = "basicProperties";
+    inline static const std::string JSON_BOUNCE_CONTROL    = "bounceControl";
+    inline static const std::string JSON_DEBRIS_GENERATORS = "debrisGenerators";
+    inline static const std::string JSON_GRAVITY           = "gravity";
+    inline static const std::string JSON_PLAYERS           = "players";
+    inline static const std::string JSON_SLOPE_FORCE       = "slopeForce";
+    inline static const std::string JSON_ZONES             = "zones";
 
-    static const std::string JSON_AUTOMATIC_ZONE_MANAGEMENT;
-    static const std::string JSON_AUTOMATIC_ZONE_X_SIZE;
-    static const std::string JSON_AUTOMATIC_ZONE_Y_SIZE;
-    static const std::string JSON_AUTOMATIC_ZONE_Z_SIZE;
-    static const std::string JSON_DEFAULT_THEME_SET;
-    static const std::string JSON_DEFAULT_WORLD_EDITOR_TOOL;
-    static const std::string JSON_EDITOR_MAX_X;
-    static const std::string JSON_EDITOR_MAX_Y;
-    static const std::string JSON_EDITOR_MAX_Z;
-    static const std::string JSON_EDITOR_MIN_X;
-    static const std::string JSON_EDITOR_MIN_Y;
-    static const std::string JSON_EDITOR_MIN_Z;
-    static const std::string JSON_EDITOR_TOOL;
-    static const std::string JSON_EDITOR_TOOLS;
+    inline static const std::string JSON_AUTOMATIC_ZONE_MANAGEMENT = "automaticZoneManagement";
+    inline static const std::string JSON_AUTOMATIC_ZONE_X_SIZE     = "automaticZoneXSize";
+    inline static const std::string JSON_AUTOMATIC_ZONE_Y_SIZE     = "automaticZoneYSize";
+    inline static const std::string JSON_AUTOMATIC_ZONE_Z_SIZE     = "automaticZoneZSize";
+    inline static const std::string JSON_DEFAULT_THEME_SET         = "defaultThemeSet";
+    inline static const std::string JSON_DEFAULT_WORLD_EDITOR_TOOL = "defaultWorldEditorTool";
+    inline static const std::string JSON_EDITOR_MAX_X              = "editorMaxX";
+    inline static const std::string JSON_EDITOR_MAX_Y              = "editorMaxY";
+    inline static const std::string JSON_EDITOR_MAX_Z              = "editorMaxZ";
+    inline static const std::string JSON_EDITOR_MIN_X              = "editorMinX";
+    inline static const std::string JSON_EDITOR_MIN_Y              = "editorMinY";
+    inline static const std::string JSON_EDITOR_MIN_Z              = "editorMinZ";
+    inline static const std::string JSON_EDITOR_TOOL               = "editorTool";
+    inline static const std::string JSON_EDITOR_TOOLS              = "editorTools";
 
-    static const unsigned int DEFAULT_BOUNCE_CONTROL;
+    inline static const unsigned int DEFAULT_BOUNCE_CONTROL = 10;
     
-    static const int DEFAULT_AUTOMATIC_ZONE_X_SIZE;
-    static const int DEFAULT_AUTOMATIC_ZONE_Y_SIZE;
-    static const int DEFAULT_AUTOMATIC_ZONE_Z_SIZE;
-    static const int DEFAULT_EDITOR_MAX_X;
-    static const int DEFAULT_EDITOR_MIN_X;
-    static const int DEFAULT_EDITOR_MAX_Y;
-    static const int DEFAULT_EDITOR_MIN_Y;
-    static const int DEFAULT_EDITOR_MAX_Z;
-    static const int DEFAULT_EDITOR_MIN_Z;
+    inline static const int DEFAULT_AUTOMATIC_ZONE_X_SIZE = 8;
+    inline static const int DEFAULT_AUTOMATIC_ZONE_Y_SIZE = 8;
+    inline static const int DEFAULT_AUTOMATIC_ZONE_Z_SIZE = 8;
+    inline static const int DEFAULT_EDITOR_MAX_X          = 511;
+    inline static const int DEFAULT_EDITOR_MIN_X          = -512;
+    inline static const int DEFAULT_EDITOR_MAX_Y          = 511;
+    inline static const int DEFAULT_EDITOR_MIN_Y          = -512;
+    inline static const int DEFAULT_EDITOR_MAX_Z          = 7;
+    inline static const int DEFAULT_EDITOR_MIN_Z          = 0;
 
     // World types.
     class ElementSurfaces {

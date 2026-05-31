@@ -55,8 +55,8 @@ namespace IsoRealms::UI {
     void renderRelation(float aspectRatio) const;
     
     private:
-    static const std::string JSON_LOCATION;
-    static const std::string JSON_OFFSET;
+    inline static const std::string JSON_LOCATION = "location";
+    inline static const std::string JSON_OFFSET   = "offset";
    
     // External interfaces.
     LayoutComponent& cDefParent;

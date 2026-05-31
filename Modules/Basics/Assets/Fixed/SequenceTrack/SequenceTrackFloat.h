@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_START;
+    inline static const std::string JSON_START = "start";
 
     // External interfaces.
     const Metadata& cMetadata;

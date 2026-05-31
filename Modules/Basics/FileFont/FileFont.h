@@ -76,16 +76,16 @@ namespace IsoRealms::Basics {
     private:
     
     // JSON members.
-    static const std::string JSON_DETAIL;
-    static const std::string JSON_FILENAME;
-    static const std::string JSON_LINE_SPACING;
-    static const std::string JSON_SCALE;
-    static const std::string JSON_OFFSET_X;
-    static const std::string JSON_OFFSET_Y;
+    inline static const std::string JSON_DETAIL       = "detail";
+    inline static const std::string JSON_FILENAME     = "filename";
+    inline static const std::string JSON_LINE_SPACING = "lineSpacing";
+    inline static const std::string JSON_SCALE        = "scale";
+    inline static const std::string JSON_OFFSET_X     = "offsetX";
+    inline static const std::string JSON_OFFSET_Y     = "offsetY";
 
-    static const int   DEFAULT_DETAIL;
-    static const float DEFAULT_LINE_SPACING;
-    static const float DEFAULT_SCALE;
+    inline static const int DEFAULT_DETAIL         = 64;
+    inline static const float DEFAULT_LINE_SPACING = 2.5f;
+    inline static const float DEFAULT_SCALE        = 1.0f;
 
     // Definition data.
     File cDefFilename;        /// Filename of the font to use.

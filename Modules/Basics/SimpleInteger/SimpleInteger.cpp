@@ -19,10 +19,6 @@
 #include "SimpleInteger.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleInteger::JSON_VALUE = "value";
-
-  const std::string SimpleInteger::PROPERTY_VALUE = "Initial Value";
-
   SimpleInteger::SimpleInteger(Basics& basics, IResourceData& data) :
             cDefValue(0),
             cRuntimeValue(0),

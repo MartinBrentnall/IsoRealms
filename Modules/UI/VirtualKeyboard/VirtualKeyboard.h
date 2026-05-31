@@ -79,14 +79,14 @@ namespace IsoRealms::UI {
     private:
     
     // Constants.  TODO: Make these configurable!
-    static const unsigned int ROWS;
-    static const unsigned int COLUMNS;
-    static const unsigned int CARET_BLINK_DELAY;
+    inline static const unsigned int ROWS              = 3;
+    inline static const unsigned int COLUMNS           = 10;
+    inline static const unsigned int CARET_BLINK_DELAY = 200;
     
     // JSON members.
-    static const std::string JSON_FONT;
-    static const std::string JSON_ON_CONFIRM;
-    static const std::string JSON_SELECTION_COLOUR;
+    inline static const std::string JSON_FONT             = "font";
+    inline static const std::string JSON_ON_CONFIRM       = "onConfirm";
+    inline static const std::string JSON_SELECTION_COLOUR = "selectionColour";
 
     // External interfaces.
     HatHandler& cHatHandler;

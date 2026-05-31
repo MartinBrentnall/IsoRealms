@@ -115,14 +115,14 @@ namespace IsoRealms::Basics {
     };
 
     // JSON members.
-    static const std::string JSON_INSTANCES;
-    static const std::string JSON_LOOP;
-    static const std::string JSON_NAME;
-    static const std::string JSON_PLAYING;
-    static const std::string JSON_SPEED;
-    static const std::string JSON_TRACKS;
-    static const std::string JSON_TRACK;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_INSTANCES = "instances";
+    inline static const std::string JSON_LOOP      = "loop";
+    inline static const std::string JSON_NAME      = "name";
+    inline static const std::string JSON_PLAYING   = "playing";
+    inline static const std::string JSON_SPEED     = "speed";
+    inline static const std::string JSON_TRACKS    = "tracks";
+    inline static const std::string JSON_TRACK     = "track";
+    inline static const std::string JSON_TYPE      = "type";
 
     // External interfaces.
     Basics& cBasics;

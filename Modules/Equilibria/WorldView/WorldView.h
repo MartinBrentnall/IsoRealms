@@ -121,12 +121,12 @@ namespace IsoRealms::Equilibria {
     };
 
     // JSON members.
-    static const std::string JSON_CAMERA;
-    static const std::string JSON_TYPE;
-    static const std::string JSON_WORLD;
-    static const std::string JSON_ZOOM;
+    inline static const std::string JSON_CAMERA = "camera";
+    inline static const std::string JSON_TYPE   = "type";
+    inline static const std::string JSON_WORLD  = "world";
+    inline static const std::string JSON_ZOOM   = "zoom";
 
-    static const std::string TYPE_ZONE_VIEW;
+    inline static const std::string TYPE_ZONE_VIEW = "ZoneView";
     
     // External interfaces.
     Equilibria& cEquilibria;      /// Equilibria module reference.

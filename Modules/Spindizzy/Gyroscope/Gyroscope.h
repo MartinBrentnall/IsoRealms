@@ -69,17 +69,17 @@ namespace IsoRealms::Spindizzy {
     private:
 
     // JSON members.
-    static const std::string JSON_COLOUR_1;
-    static const std::string JSON_COLOUR_2;
-    static const std::string JSON_COLOUR_3;
-    static const std::string JSON_COLOUR_4;
-    static const std::string JSON_OUTLINE;
+    inline static const std::string JSON_COLOUR_1 = "colour1";
+    inline static const std::string JSON_COLOUR_2 = "colour2";
+    inline static const std::string JSON_COLOUR_3 = "colour3";
+    inline static const std::string JSON_COLOUR_4 = "colour4";
+    inline static const std::string JSON_OUTLINE  = "outline";
 
     // Resource definition constants.
-    static const float CIRCLE_RESOLUTION; /// Degrees for each segment of a rendered circle.
-    static const float SPINDLE_WIDTH;
-    static const float WIDTH;
-    static const float HEIGHT;
+    inline static const float CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0); /// Degrees for each segment of a rendered circle.
+    inline static const float SPINDLE_WIDTH     = 0.03f;
+    inline static const float WIDTH             = 0.33f;
+    inline static const float HEIGHT            = 0.9f;
 
     // External interfaces.
     Project& cProject;

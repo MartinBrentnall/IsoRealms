@@ -140,11 +140,11 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_ID;
-    static const std::string JSON_INPUT;
-    static const std::string JSON_MAPPINGS;
-    static const std::string JSON_NAME;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_ID       = "id";
+    inline static const std::string JSON_INPUT    = "Input";
+    inline static const std::string JSON_MAPPINGS = "mappings";
+    inline static const std::string JSON_NAME     = "name";
+    inline static const std::string JSON_TYPE     = "type";
 
     // Definition data.
     class InputMapping {

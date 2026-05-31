@@ -50,13 +50,13 @@ namespace IsoRealms::Tables {
 //    insertRecordAt(Record& record, int index);
     
     private:
-    static const std::string JSON_FIELD_NAME;
-    static const std::string JSON_FIELD_TYPE;
-    static const std::string JSON_FIELDS;
-    static const std::string JSON_RECORDS;
+    inline static const std::string JSON_FIELD_NAME = "name";
+    inline static const std::string JSON_FIELD_TYPE = "type";
+    inline static const std::string JSON_FIELDS     = "fields";
+    inline static const std::string JSON_RECORDS    = "records";
 
-    static const std::string FIELD_TYPE_INTEGER;
-    static const std::string FIELD_TYPE_STRING;
+    inline static const std::string FIELD_TYPE_INTEGER = "Integer";
+    inline static const std::string FIELD_TYPE_STRING  = "String";
 
     enum class FieldType {
       STRING,

@@ -21,13 +21,6 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string WorldView::JSON_CAMERA = "camera";
-  const std::string WorldView::JSON_TYPE   = "type";
-  const std::string WorldView::JSON_WORLD  = "world";
-  const std::string WorldView::JSON_ZOOM   = "zoom";
-
-  const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
-
   WorldView::WorldView(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cResourceData(data),

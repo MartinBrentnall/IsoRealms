@@ -67,14 +67,14 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_X;
-    static const std::string JSON_Y;
-    static const std::string JSON_Z;
+    inline static const std::string JSON_X = "x";
+    inline static const std::string JSON_Y = "y";
+    inline static const std::string JSON_Z = "z";
 
     // Property names.
-    static const std::string PROPERTY_X;
-    static const std::string PROPERTY_Y;
-    static const std::string PROPERTY_Z;
+    inline static const std::string PROPERTY_X = "X";
+    inline static const std::string PROPERTY_Y = "Y";
+    inline static const std::string PROPERTY_Z = "Z";
 
     // Definition data.
     float cDefX; /// Initial X value.

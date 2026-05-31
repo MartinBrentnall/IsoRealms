@@ -394,9 +394,4 @@ namespace IsoRealms::Replay {
     }
     return true;
   }
-  
-  const std::string Replayer::JSON_ANALOGUE_INPUTS = "analogueInputs";
-  const std::string Replayer::JSON_DIGITAL_INPUTS  = "digitalInputs";
-  const std::string Replayer::JSON_NAME            = "name";
-  const std::string Replayer::JSON_VALUE           = "value";
 }

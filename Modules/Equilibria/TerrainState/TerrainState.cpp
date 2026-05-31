@@ -19,11 +19,6 @@
 #include "TerrainState.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string TerrainState::JSON_HINT       = "hint";
-  const std::string TerrainState::JSON_ICON       = "icon";
-  const std::string TerrainState::JSON_ICON_SCALE = "iconScale";
-  const std::string TerrainState::JSON_STATE      = "state";
-
   TerrainState::TerrainState(Equilibria& equilibria, IResourceData& data) :
             TerrainState(data, true, 1.0f) {
   }

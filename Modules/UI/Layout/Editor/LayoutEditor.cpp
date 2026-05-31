@@ -1178,11 +1178,4 @@ namespace IsoRealms::UI {
   bool LayoutEditor::CopyTool::isTool(ILayoutTool* tool) const {
     return this == tool;
   }
-
-  const float LayoutEditor::ZOOM_LIMIT_MAXIMUM =  20.0f;
-  const float LayoutEditor::ZOOM_LIMIT_MINIMUM = -20.0f;
-
-  const float LayoutEditor::ANALOGUE_INPUT_DEAD_ZONE = 16.0f;
-
-  const float LayoutEditor::EDIT_HANDLE_RADIUS = 0.013f;
 }

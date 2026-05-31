@@ -19,14 +19,6 @@
 #include "Project.h"
 
 namespace IsoRealms::Basics {
-  const std::string Project::JSON_EDITING   = "editing";
-  const std::string Project::JSON_FILE      = "file";
-  const std::string Project::JSON_ON_ERROR  = "onError";
-  const std::string Project::JSON_ON_FINISH = "onFinish";
-  const std::string Project::JSON_ON_READY  = "onReady";
-  const std::string Project::JSON_RUNNING   = "running";
-  const std::string Project::JSON_USER      = "user";
-
   Project::Project(Basics& basics, IResourceData& data) :
             cProject(data.getProject()),
             cDefReadyAction(data.getDummyActionContext()),

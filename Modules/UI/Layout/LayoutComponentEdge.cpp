@@ -24,9 +24,6 @@
 #include "Layout.h"
 
 namespace IsoRealms::UI {
-  const std::string LayoutComponentEdge::JSON_LOCATION = "location";
-  const std::string LayoutComponentEdge::JSON_OFFSET   = "offset";
-
   LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, float aspectRatio, float value) :
             cDefParent(parent),
             cDefLocation(*this),

@@ -25,22 +25,6 @@
 #include "Modules/Equilibria/ZoneType/ZoneType.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string Zone::JSON_ALIENS    = "aliens";
-  const std::string Zone::JSON_HEIGHT    = "height";
-  const std::string Zone::JSON_LIFTS     = "lifts";
-  const std::string Zone::JSON_LENGTH    = "length";
-  const std::string Zone::JSON_OBJECTS   = "objects";
-  const std::string Zone::JSON_PICK_UPS  = "pickUps";
-  const std::string Zone::JSON_TERRAIN   = "terrain";
-  const std::string Zone::JSON_THEME     = "theme";
-  const std::string Zone::JSON_THEME_SET = "themeSet";
-  const std::string Zone::JSON_TYPE      = "type";
-  const std::string Zone::JSON_VISITED   = "visited";
-  const std::string Zone::JSON_WIDTH     = "width";
-  const std::string Zone::JSON_X         = "x";
-  const std::string Zone::JSON_Y         = "y";
-  const std::string Zone::JSON_Z         = "z";
-
   Zone::Zone(World& world, ZoneType& type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone) :
             cDefWorld(world),
             cDefType(&type),
@@ -177,30 +161,6 @@ namespace IsoRealms::Equilibria {
     return nullptr;
   }
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   void Zone::registerView(IScreen& screen) {

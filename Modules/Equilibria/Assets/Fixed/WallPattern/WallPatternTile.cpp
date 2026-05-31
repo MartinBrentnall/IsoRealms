@@ -119,6 +119,4 @@ namespace IsoRealms::Equilibria {
   bool WallPatternTile::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  const std::string WallPatternTile::JSON_TEXTURE = "texture";
 }

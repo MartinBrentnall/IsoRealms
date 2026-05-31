@@ -73,10 +73,10 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_RED;
-    static const std::string JSON_GREEN;
-    static const std::string JSON_BLUE;
-    static const std::string JSON_ALPHA;
+    inline static const std::string JSON_RED   = "red";
+    inline static const std::string JSON_GREEN = "green";
+    inline static const std::string JSON_BLUE  = "blue";
+    inline static const std::string JSON_ALPHA = "alpha";
 
     // Definition data.
     float cDefRed;   /// Initial red intensity.

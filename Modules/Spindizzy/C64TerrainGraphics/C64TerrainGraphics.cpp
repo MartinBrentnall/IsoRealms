@@ -21,48 +21,6 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const float C64TerrainGraphics::TILE_SIZE                    = 0.88f;
-  const float C64TerrainGraphics::SWITCH_SQUARE_OUTER          = 0.63f;
-  const float C64TerrainGraphics::SWITCH_SQUARE_INNER          = 0.44f;
-  const float C64TerrainGraphics::SWITCH_SQUARE_TRIANGLE_INNER = 0.0f;
-
-  const float C64TerrainGraphics::SWITCH_DIAMOND_OUTER         = 0.66f;
-  const float C64TerrainGraphics::SWITCH_DIAMOND_INNER         = 0.41f;
-
-  const float C64TerrainGraphics::SWITCH_CIRCLE_OUTER          = 0.7f;
-  const float C64TerrainGraphics::SWITCH_CIRCLE_INNER          = 0.52f;
-  const float C64TerrainGraphics::ICE_EDGE_WIDTH               = 0.1f;
-  const float C64TerrainGraphics::ARROW_SIZE                   = 0.66f;
-  const float C64TerrainGraphics::ARROW_LINE_WIDTH             = 0.25f;
-  const float C64TerrainGraphics::CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
-  
-  const float C64TerrainGraphics::MAX_LUMINANCE_ADJUSTMENT     = 0.3f;
-
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_PLAIN                  = "Surface Plain";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_PLAIN_SPLIT            = "Surface Plain Split";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ARROW                  = "Surface Arrow";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_TRAMPOLINE             = "Surface Trampoline";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ICE_OR_WATER           = "Surface Ice or Water";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES  = "Surface Deactivate All States";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2  = "Surface Activate State 1 or 2";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_3       = "Surface Activate State 3";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_4       = "Surface Activate State 4";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6  = "Surface Activate State 5 or 6";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_7       = "Surface Activate State 7";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_8       = "Surface Activate State 8";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10 = "Surface Activate State 9 or 10";
-  const std::string C64TerrainGraphics::ASSET_ID_SURFACE_ACTIVATE_STATE_11      = "Surface Activate State 11";
-  const std::string C64TerrainGraphics::ASSET_ID_WALL_PLAIN_CAP                 = "Wall Plain Cap";
-  const std::string C64TerrainGraphics::ASSET_ID_WALL_PLAIN_MIDDLE              = "Wall Plain Middle";
-  const std::string C64TerrainGraphics::ASSET_ID_WALL_VARIANT_CAP               = "Wall Plain Variant Cap";
-  const std::string C64TerrainGraphics::ASSET_ID_WALL_VARIANT_MIDDLE            = "Wall Plain Variant Middle";
-  const std::string C64TerrainGraphics::ASSET_ID_WALL_ICE                       = "Wall Ice";
-
-  const std::string C64TerrainGraphics::JSON_FLOOR     = "floor";
-  const std::string C64TerrainGraphics::JSON_GRID      = "grid";
-  const std::string C64TerrainGraphics::JSON_HIGHLIGHT = "highlight";
-  const std::string C64TerrainGraphics::JSON_WALL      = "wall";
-
   C64TerrainGraphics::C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
             cDefaultYaw(data, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),

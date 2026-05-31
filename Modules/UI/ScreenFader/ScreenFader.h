@@ -55,9 +55,9 @@ namespace IsoRealms::UI {
     private:
 
     // JSON members.
-    static const std::string JSON_SCREEN_A;
-    static const std::string JSON_SCREEN_B;
-    static const std::string JSON_TRANSITION;
+    inline static const std::string JSON_SCREEN_A   = "screenA";
+    inline static const std::string JSON_SCREEN_B   = "screenB";
+    inline static const std::string JSON_TRANSITION = "transition";
 
     // External interfaces.
     Project& cProject;

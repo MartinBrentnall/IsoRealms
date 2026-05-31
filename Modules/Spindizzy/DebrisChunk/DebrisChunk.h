@@ -71,15 +71,15 @@ namespace IsoRealms::Spindizzy {
     private:
 
     // JSON members.
-    static const std::string JSON_OUTLINE;
-    static const std::string JSON_OUTLINE_WIDTH;
-    static const std::string JSON_SIDE_1;
-    static const std::string JSON_SIDE_2;
-    static const std::string JSON_SIDE_3;
-    static const std::string JSON_SIDE_4;
+    inline static const std::string JSON_OUTLINE       = "outline";
+    inline static const std::string JSON_OUTLINE_WIDTH = "outlineWidth";
+    inline static const std::string JSON_SIDE_1        = "side1";
+    inline static const std::string JSON_SIDE_2        = "side2";
+    inline static const std::string JSON_SIDE_3        = "side3";
+    inline static const std::string JSON_SIDE_4        = "side4";
 
     // Default constants.
-    static const float DEFAULT_OUTLINE_WIDTH;
+    inline static const float DEFAULT_OUTLINE_WIDTH = 0.18f;
 
     Project& cProject;
 

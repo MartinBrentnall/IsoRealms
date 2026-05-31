@@ -48,14 +48,14 @@ namespace IsoRealms {
     void getClientProperties(IPropertyMaker& owner) override;
 
     private:
-    static const std::string JSON_OFFSET_X;
-    static const std::string JSON_OFFSET_Y;
-    static const std::string JSON_OFFSET_Z;
-    static const std::string JSON_PITCH;
-    static const std::string JSON_SCALE_X;
-    static const std::string JSON_SCALE_Y;
-    static const std::string JSON_SCALE_Z;
-    static const std::string JSON_YAW;
+    inline static const std::string JSON_OFFSET_X = "offsetX";
+    inline static const std::string JSON_OFFSET_Y = "offsetY";
+    inline static const std::string JSON_OFFSET_Z = "offsetZ";
+    inline static const std::string JSON_PITCH    = "pitch";
+    inline static const std::string JSON_SCALE_X  = "scaleX";
+    inline static const std::string JSON_SCALE_Y  = "scaleY";
+    inline static const std::string JSON_SCALE_Z  = "scaleZ";
+    inline static const std::string JSON_YAW      = "yaw";
 
     float cDefOffsetX;
     float cDefOffsetY;

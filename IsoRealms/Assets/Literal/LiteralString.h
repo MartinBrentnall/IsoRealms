@@ -53,7 +53,7 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
-    static const std::string JSON_VALUE;
+    inline static const std::string JSON_VALUE = "value";
 
     std::string cValue; /// The value of this String.
   };

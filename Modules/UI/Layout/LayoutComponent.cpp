@@ -23,12 +23,6 @@
 #include "Layout.h"
 
 namespace IsoRealms::UI {
-  const std::string LayoutComponent::JSON_BOTTOM = "bottom";
-  const std::string LayoutComponent::JSON_LEFT   = "left";
-  const std::string LayoutComponent::JSON_RIGHT  = "right";
-  const std::string LayoutComponent::JSON_SCREEN = "screen";
-  const std::string LayoutComponent::JSON_TOP    = "top";
-
   LayoutComponent::LayoutComponent(Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio) :
             cLayout(layout),
             cDefScreen(layout.getResourceData()),

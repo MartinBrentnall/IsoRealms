@@ -86,6 +86,9 @@ namespace IsoRealms {
       }
 
       private:
+
+      inline static const std::string JSON_VALUE = "value";
+
       class Instance : public IString {
         public:
         Instance(Project& project, const std::string&);
@@ -108,14 +111,12 @@ namespace IsoRealms {
         bool isConfigurable() const override;
         
         private:
-        static const std::string JSON_VALUE;
 
         // External interfaces.
         const Metadata& cMetadata;
 
         std::string cValue; /// The value of this String.
       };
-      inline static const std::string JSON_VALUE = "value";
     };
 
     class ConversionProvider : public IAssetProvider<IResourceData, IString> {

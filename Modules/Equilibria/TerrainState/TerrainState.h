@@ -86,11 +86,10 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_HINT;
-    static const std::string JSON_ICON;
-    static const std::string JSON_ICON_SCALE;
-    static const std::string JSON_ID;
-    static const std::string JSON_STATE;
+    inline static const std::string JSON_HINT       = "hint";
+    inline static const std::string JSON_ICON       = "icon";
+    inline static const std::string JSON_ICON_SCALE = "iconScale";
+    inline static const std::string JSON_STATE      = "state";
 
     // External interfaces.
     IResourceData& cResourceData;

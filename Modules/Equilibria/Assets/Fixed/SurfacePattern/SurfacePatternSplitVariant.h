@@ -55,9 +55,9 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_REGULAR;
-    static const std::string JSON_SPLIT_A;
-    static const std::string JSON_SPLIT_B;
+    inline static const std::string JSON_REGULAR = "regular";
+    inline static const std::string JSON_SPLIT_A = "splitA";
+    inline static const std::string JSON_SPLIT_B = "splitB";
 
     // External interfaces.
     const Metadata& cMetadata;

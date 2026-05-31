@@ -112,16 +112,16 @@ namespace IsoRealms::Basics {
     void setMusicVolume(float volume);
 
     private:
-    static const std::string ACTION_SCRIPT;
+    inline static const std::string ACTION_SCRIPT = "Script";
 
-    static const std::string JSON_ANALOGUE_INPUT_MAPPINGS;
-    static const std::string JSON_DIGITAL_INPUT_MAPPINGS;
-    static const std::string JSON_ID;
-    static const std::string JSON_MODULE_SETTINGS;
-    static const std::string JSON_MUSIC_VOLUME;
-    static const std::string JSON_SOUND_VOLUME;
+    inline static const std::string JSON_ANALOGUE_INPUT_MAPPINGS = "analogueInputMappings";
+    inline static const std::string JSON_DIGITAL_INPUT_MAPPINGS  = "digitalInputMappings";
+    inline static const std::string JSON_ID                      = "id";
+    inline static const std::string JSON_MODULE_SETTINGS         = "moduleSettings";
+    inline static const std::string JSON_MUSIC_VOLUME            = "musicVolume";
+    inline static const std::string JSON_SOUND_VOLUME            = "soundVolume";
 
-    static const std::string GLOBAL_CONFIGURATION_FILE;
+    inline static const std::string GLOBAL_CONFIGURATION_FILE = "Module_IsoRealms.json";
 
     // External interfaces.
     IsoRealms::Project& cProject;

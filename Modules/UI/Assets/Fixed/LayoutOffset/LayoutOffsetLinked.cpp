@@ -23,13 +23,6 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  const std::string LayoutOffsetLinked::JSON_LINKED = "linked";
-  const std::string LayoutOffsetLinked::JSON_RATIO  = "ratio";
-  const std::string LayoutOffsetLinked::JSON_VALUE  = "value";
-
-  const std::string LayoutOffsetLinked::VALUE_HEIGHT = "Height";
-  const std::string LayoutOffsetLinked::VALUE_WIDTH  = "Width";
-  
   LayoutOffsetLinked::LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner) :
             cMetadata(metadata),
             cParent(owner),

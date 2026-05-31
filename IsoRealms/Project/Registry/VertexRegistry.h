@@ -70,12 +70,12 @@ namespace IsoRealms {
       }
 
       private:
-      class Instance : public IVertex {
-        private:
-        static const std::string JSON_X;
-        static const std::string JSON_Y;
-        static const std::string JSON_Z;
 
+      inline static const std::string JSON_X = "x";
+      inline static const std::string JSON_Y = "y";
+      inline static const std::string JSON_Z = "z";
+
+      class Instance : public IVertex {
         public:
         double x;
         double y;
@@ -100,10 +100,6 @@ namespace IsoRealms {
         void getAssetProperties(IPropertyMaker& owner) override;
         bool isDefaultConfiguration() const override;
       };
-
-      inline static const std::string JSON_X = "x";
-      inline static const std::string JSON_Y = "y";
-      inline static const std::string JSON_Z = "z";
     };
 
     Literal cLiteral;

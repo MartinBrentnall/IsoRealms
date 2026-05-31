@@ -82,15 +82,15 @@ namespace IsoRealms::Basics {
     private:
     
     // JSON members.
-    static const std::string JSON_ARGUMENT;
-    static const std::string JSON_ARGUMENTS;
-    static const std::string JSON_BINDINGS;
-    static const std::string JSON_CODE;
-    static const std::string JSON_DEFAULT_VALUE;
-    static const std::string JSON_ID;
-    static const std::string JSON_TO;
-    static const std::string JSON_TYPE;
-    static const std::string JSON_VARIABLE;
+    inline static const std::string JSON_ARGUMENT      = "argument";
+    inline static const std::string JSON_ARGUMENTS     = "arguments";
+    inline static const std::string JSON_BINDINGS      = "bindings";
+    inline static const std::string JSON_CODE          = "code";
+    inline static const std::string JSON_DEFAULT_VALUE = "defaultValue";
+    inline static const std::string JSON_ID            = "id";
+    inline static const std::string JSON_TO            = "to";
+    inline static const std::string JSON_TYPE          = "type";
+    inline static const std::string JSON_VARIABLE      = "variable";
 
     // Private types.
     class Call : public IAction {

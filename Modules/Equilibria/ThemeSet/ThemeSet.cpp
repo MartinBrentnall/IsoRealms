@@ -21,12 +21,6 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  const unsigned int ThemeSet::ICON_TRANSITION_TIME = 500;
-  const unsigned int ThemeSet::ICON_PAUSE_TIME      = 1000;
-
-  const std::string ThemeSet::JSON_ID     = "id";
-  const std::string ThemeSet::JSON_THEMES = "themes";
-
   ThemeSet::ThemeSet(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cResourceData(data),

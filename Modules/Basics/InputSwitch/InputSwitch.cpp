@@ -19,8 +19,6 @@
 #include "InputSwitch.h"
 
 namespace IsoRealms::Basics {
-  const std::string InputSwitch::JSON_VALUE = "value";
-
   InputSwitch::InputSwitch(Basics& basics, IResourceData& data) :
             cDefInputHandler(data),
             cRuntimeInputHandler(*cDefInputHandler),

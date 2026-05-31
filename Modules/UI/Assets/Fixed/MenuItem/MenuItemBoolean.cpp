@@ -21,14 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemBoolean::JSON_FALSE_LABEL = "falseLabel";
-  const std::string MenuItemBoolean::JSON_ID          = "id";
-  const std::string MenuItemBoolean::JSON_LABEL       = "label";
-  const std::string MenuItemBoolean::JSON_TRUE_LABEL  = "trueLabel";
-  const std::string MenuItemBoolean::JSON_TYPE        = "type";
-
-  const std::string MenuItemBoolean::BINDING_TYPE = "Boolean";
-
   MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),

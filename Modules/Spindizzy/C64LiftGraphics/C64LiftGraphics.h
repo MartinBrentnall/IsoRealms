@@ -50,41 +50,41 @@ namespace IsoRealms::Spindizzy {
     private:
     
     // Constants for rendering.
-    static const float CIRCLE_RESOLUTION;
-    static const float CIRCLE_OUTLINE_OUTER;
-    static const float CIRCLE_OUTLINE_INNER;
-    static const float CIRCLE_COLOUR_OUTER;
-    static const float CIRCLE_COLOUR_INNER;
-    static const float SQUARE_OUTLINE_OUTER;
-    static const float SQUARE_OUTLINE_INNER;
-    static const float SQUARE_COLOUR_OUTER;
-    static const float SQUARE_COLOUR_INNER;
-    static const float SQUARE_TRIANGLE_OUTER;
-    static const float SQUARE_TRIANGLE_INNER;
-    static const float DIAMOND_OUTLINE_OUTER;
-    static const float DIAMOND_OUTLINE_INNER;
-    static const float DIAMOND_COLOUR_OUTER;
-    static const float DIAMOND_COLOUR_INNER;
-    static const float DIAMOND_SQUARE_OUTLINE_OUTER;
-    static const float DIAMOND_SQUARE_OUTLINE_INNER;
-    static const float DIAMOND_SQUARE_COLOUR_OUTER;
-    static const float DIAMOND_SQUARE_COLOUR_INNER;
+    inline static const float CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
+    inline static const float CIRCLE_OUTLINE_OUTER         = 1.0f;
+    inline static const float CIRCLE_OUTLINE_INNER         = 0.6f;
+    inline static const float CIRCLE_COLOUR_OUTER          = 0.9f;
+    inline static const float CIRCLE_COLOUR_INNER          = 0.7f;
+    inline static const float SQUARE_OUTLINE_OUTER         = 1.0f;
+    inline static const float SQUARE_OUTLINE_INNER         = 0.51f;
+    inline static const float SQUARE_COLOUR_OUTER          = 0.87f;
+    inline static const float SQUARE_COLOUR_INNER          = 0.64f;
+    inline static const float SQUARE_TRIANGLE_OUTER        = 0.2f;
+    inline static const float SQUARE_TRIANGLE_INNER        = 0.0f;
+    inline static const float DIAMOND_OUTLINE_OUTER        = 1.0f;
+    inline static const float DIAMOND_OUTLINE_INNER        = 0.6f;
+    inline static const float DIAMOND_COLOUR_OUTER         = 0.9f;
+    inline static const float DIAMOND_COLOUR_INNER         = 0.7f;
+    inline static const float DIAMOND_SQUARE_OUTLINE_OUTER = 0.70f;
+    inline static const float DIAMOND_SQUARE_OUTLINE_INNER = 0.40f;
+    inline static const float DIAMOND_SQUARE_COLOUR_OUTER  = 0.62f;
+    inline static const float DIAMOND_SQUARE_COLOUR_INNER  = 0.48f;
 
     // Texture asset ID's.
-    static const std::string ASSET_ID_ALWAYS_ON;
-    static const std::string ASSET_ID_STATE_1_AND_2;
-    static const std::string ASSET_ID_STATE_3;
-    static const std::string ASSET_ID_STATE_4;
-    static const std::string ASSET_ID_STATE_5_AND_6;
-    static const std::string ASSET_ID_STATE_7;
-    static const std::string ASSET_ID_STATE_8;
-    static const std::string ASSET_ID_STATE_9_AND_10;
-    static const std::string ASSET_ID_STATE_11;
+    inline static const std::string ASSET_ID_ALWAYS_ON      = "Always On";
+    inline static const std::string ASSET_ID_STATE_1_AND_2  = "State 1 and 2";
+    inline static const std::string ASSET_ID_STATE_3        = "State 3";
+    inline static const std::string ASSET_ID_STATE_4        = "State 4";
+    inline static const std::string ASSET_ID_STATE_5_AND_6  = "State 5 and 6";
+    inline static const std::string ASSET_ID_STATE_7        = "State 7";
+    inline static const std::string ASSET_ID_STATE_8        = "State 8";
+    inline static const std::string ASSET_ID_STATE_9_AND_10 = "State 9 and 10";
+    inline static const std::string ASSET_ID_STATE_11       = "State 11";
     
     // JSON members.
-    static const std::string JSON_OUTLINE;
-    static const std::string JSON_PRIMARY;
-    static const std::string JSON_SECONDARY;
+    inline static const std::string JSON_OUTLINE   = "outline";
+    inline static const std::string JSON_PRIMARY   = "primary";
+    inline static const std::string JSON_SECONDARY = "secondary";
 
     Project& cProject;
 

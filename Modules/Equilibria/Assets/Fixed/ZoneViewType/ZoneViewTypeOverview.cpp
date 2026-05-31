@@ -71,6 +71,4 @@ namespace IsoRealms::Equilibria {
   bool ZoneViewTypeOverview::isDefaultConfiguration() const {
     return true;
   }
-
-  const std::string ZoneViewTypeOverview::JSON_COLOUR = "colour";
 }

@@ -19,10 +19,6 @@
 #include "SimpleFloat.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleFloat::JSON_VALUE = "value";
-
-  const std::string SimpleFloat::PROPERTY_VALUE  = "Initial Value";
-  
   SimpleFloat::SimpleFloat(Basics& basics, IResourceData& data) :
             cDefValue(0.0f),
             cRuntimeValue(0.0f),

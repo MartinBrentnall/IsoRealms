@@ -79,15 +79,15 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_DURATION;
-    static const std::string JSON_END;
-    static const std::string JSON_ON_END_ARRIVAL;
-    static const std::string JSON_ON_END_DEPARTURE;
-    static const std::string JSON_ON_START_ARRIVAL;
-    static const std::string JSON_ON_START_DEPARTURE;
-    static const std::string JSON_START;
+    inline static const std::string JSON_DURATION           = "duration";
+    inline static const std::string JSON_END                = "end";
+    inline static const std::string JSON_ON_END_ARRIVAL     = "onEndArrival";
+    inline static const std::string JSON_ON_END_DEPARTURE   = "onEndDeparture";
+    inline static const std::string JSON_ON_START_ARRIVAL   = "onStartArrival";
+    inline static const std::string JSON_ON_START_DEPARTURE = "onStartDeparture";
+    inline static const std::string JSON_START              = "start";
     
-    static const unsigned int DEFAULT_DURATION;
+    inline static const unsigned int DEFAULT_DURATION = 500U;
 
     class Yaw : public IFloat {
       public:

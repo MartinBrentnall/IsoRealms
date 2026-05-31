@@ -137,8 +137,4 @@ namespace IsoRealms::UI {
   bool ScreenFader::isDefaultConfiguration() const {
     return true;
   }
-
-  const std::string ScreenFader::JSON_SCREEN_A   = "screenA";
-  const std::string ScreenFader::JSON_SCREEN_B   = "screenB";
-  const std::string ScreenFader::JSON_TRANSITION = "transition";
 }

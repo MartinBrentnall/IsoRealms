@@ -50,9 +50,9 @@ namespace IsoRealms {
     void stateChanged() override;
 
     private:
-    static const std::string JSON_ANGLE;
-    static const std::string JSON_SCALE_X;
-    static const std::string JSON_SCALE_Y;
+    inline static const std::string JSON_ANGLE   = "angle";
+    inline static const std::string JSON_SCALE_X = "scaleX";
+    inline static const std::string JSON_SCALE_Y = "scaleY";
     
     std::function<void()> cListener;
     float cDefScaleX;

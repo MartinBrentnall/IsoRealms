@@ -19,10 +19,6 @@
 #include "SimpleBoolean.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleBoolean::JSON_VALUE = "value";
-
-  const std::string SimpleBoolean::PROPERTY_VALUE = "Initial Value";
-  
   SimpleBoolean::SimpleBoolean(Basics& basics, IResourceData& data) :
             cDefValue(false),
             cRuntimeValue(false),

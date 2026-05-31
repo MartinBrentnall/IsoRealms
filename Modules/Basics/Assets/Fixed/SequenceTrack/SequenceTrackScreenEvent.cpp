@@ -53,8 +53,5 @@ namespace IsoRealms::Basics {
   IScreen* SequenceTrackScreenEvent::getScreen() const {
     return *cDefScreen;
   }
-
-  const std::string SequenceTrackScreenEvent::JSON_DURATION = "duration";
-  const std::string SequenceTrackScreenEvent::JSON_SCREEN    = "screen";
 }
 

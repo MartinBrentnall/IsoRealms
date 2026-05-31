@@ -22,19 +22,6 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-#if _WIN32
-  const unsigned int ButtonMapping::CROSS    = 1;
-  const unsigned int ButtonMapping::CIRCLE   = 2;
-  const unsigned int ButtonMapping::SQUARE   = 0;
-  const unsigned int ButtonMapping::TRIANGLE = 3;
-#else
-  const unsigned int ButtonMapping::CROSS    = 0;
-  const unsigned int ButtonMapping::CIRCLE   = 1;
-  const unsigned int ButtonMapping::SQUARE   = 3;
-  const unsigned int ButtonMapping::TRIANGLE = 2;
-#endif
-  const unsigned int ButtonMapping::L2       = 6;
-
   ButtonMapping::ButtonMapping(const unsigned int button) :
           cButton(button) {
   }

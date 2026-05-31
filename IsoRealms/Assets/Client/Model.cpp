@@ -101,13 +101,4 @@ namespace IsoRealms {
     owner.createPropertyNativeFloat(mMetadata.getPropertyData("Angle"),   [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value;});
     owner.createPropertyNativeFloat(mMetadata.getPropertyData("Tilt"),    [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value;});
   }
-  
-  const std::string Model::JSON_OFFSET_X = "offsetX";
-  const std::string Model::JSON_OFFSET_Y = "offsetY";
-  const std::string Model::JSON_OFFSET_Z = "offsetZ";
-  const std::string Model::JSON_PITCH    = "pitch";
-  const std::string Model::JSON_SCALE_X  = "scaleX";
-  const std::string Model::JSON_SCALE_Y  = "scaleY";
-  const std::string Model::JSON_SCALE_Z  = "scaleZ";
-  const std::string Model::JSON_YAW      = "yaw";
 }

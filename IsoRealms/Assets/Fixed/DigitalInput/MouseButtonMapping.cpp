@@ -22,14 +22,6 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  const std::map<std::string, sf::Mouse::Button> MouseButtonMapping::cButtonsByName = {
-    {"Left",         sf::Mouse::Button::Left},
-    {"Right",        sf::Mouse::Button::Right},
-    {"Middle",       sf::Mouse::Button::Middle},
-    {"ExtraButton1", sf::Mouse::Button::XButton1},
-    {"ExtraButton2", sf::Mouse::Button::XButton2}
-  };
-
   sf::Mouse::Button MouseButtonMapping::getButton(const std::string& name) {
     std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.find(name);
     if (i == cButtonsByName.end()) {

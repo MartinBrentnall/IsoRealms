@@ -21,17 +21,6 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Gyroscope::JSON_COLOUR_1 = "colour1";
-  const std::string Gyroscope::JSON_COLOUR_2 = "colour2";
-  const std::string Gyroscope::JSON_COLOUR_3 = "colour3";
-  const std::string Gyroscope::JSON_COLOUR_4 = "colour4";
-  const std::string Gyroscope::JSON_OUTLINE  = "outline";
-
-  const float Gyroscope::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
-  const float Gyroscope::SPINDLE_WIDTH     = 0.03f;
-  const float Gyroscope::WIDTH             = 0.33f;
-  const float Gyroscope::HEIGHT            = 0.9f;
-
   Gyroscope::Gyroscope(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
             cDefQuadrant{Colour(data, 1.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),

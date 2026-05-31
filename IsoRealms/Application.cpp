@@ -29,14 +29,6 @@
 #include "IsoRealms/System.h"
 
 namespace IsoRealms {
-  const std::string Application::JSON_FULL_SCREEN = "fullScreen";
-  const std::string Application::JSON_HEIGHT      = "height";
-  const std::string Application::JSON_PROPERTIES  = "properties";
-  const std::string Application::JSON_SETTINGS    = "settings";
-  const std::string Application::JSON_WIDTH       = "width";
-
-  const std::string Application::FILENAME_SETTINGS     = "settings.json";
-
   Application::Application() :
             cReleaseThreads(false) {
 

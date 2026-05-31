@@ -53,11 +53,11 @@ namespace IsoRealms::Equilibria {
     void hintInUse(bool);
 
     private:
-    static const std::string JSON_COLOUR;
-    static const std::string JSON_COLOURS;
-    static const std::string JSON_ELEMENT;
-    static const std::string JSON_TEXTURE;
-    static const std::string JSON_TEXTURES;
+    inline static const std::string JSON_COLOUR   = "colour";
+    inline static const std::string JSON_COLOURS  = "colours";
+    inline static const std::string JSON_ELEMENT  = "element";
+    inline static const std::string JSON_TEXTURE  = "texture";
+    inline static const std::string JSON_TEXTURES = "textures";
 
     // External interfaces.
     ThemeSet& cThemeSet;

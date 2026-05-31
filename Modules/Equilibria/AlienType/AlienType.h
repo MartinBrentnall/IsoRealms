@@ -97,21 +97,21 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_ACCELERATION;
-    static const std::string JSON_APPEARANCE;
-    static const std::string JSON_FRICTION;
-    static const std::string JSON_HEIGHT;
-    static const std::string JSON_HUG_MOMENTUM;
-    static const std::string JSON_RADIUS;
-    static const std::string JSON_SPIN_SPEED;
-    static const std::string JSON_TARGET;
+    inline static const std::string JSON_ACCELERATION = "acceleration";
+    inline static const std::string JSON_APPEARANCE   = "appearance";
+    inline static const std::string JSON_FRICTION     = "friction";
+    inline static const std::string JSON_HEIGHT       = "height";
+    inline static const std::string JSON_HUG_MOMENTUM = "hugMomentum";
+    inline static const std::string JSON_RADIUS       = "radius";
+    inline static const std::string JSON_SPIN_SPEED   = "spinSpeed";
+    inline static const std::string JSON_TARGET       = "target";
 
-    static const float DEFAULT_ACCELERATION;
-    static const float DEFAULT_HEIGHT;
-    static const float DEFAULT_HUG_MOMENTUM;
-    static const float DEFAULT_FRICTION;
-    static const float DEFAULT_RADIUS;
-    static const float DEFAULT_SPIN_SPEED;
+    inline static const float DEFAULT_ACCELERATION = 0.0000215f;
+    inline static const float DEFAULT_HEIGHT       = 1.7f;
+    inline static const float DEFAULT_HUG_MOMENTUM = 0.0001f;
+    inline static const float DEFAULT_FRICTION     = 0.001f;
+    inline static const float DEFAULT_RADIUS       = 0.4f;
+    inline static const float DEFAULT_SPIN_SPEED   = 0.0f;
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {

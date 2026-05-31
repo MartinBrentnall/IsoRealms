@@ -133,11 +133,6 @@ namespace IsoRealms::UI {
     glVertex2f(xStart, yEnd);
   }
 
-  const float ScreenPanel::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
-
-  const std::string ScreenPanel::JSON_COLOUR      = "colour";
-  const std::string ScreenPanel::JSON_CORNER_SIZE = "cornerSize";
-
   std::unique_ptr<LiteralTexture> ScreenPanel::cGlobalCornerTexture = nullptr;
   unsigned int ScreenPanel::cGlobalInstanceCount = 0;
 }

@@ -76,9 +76,9 @@ namespace IsoRealms::Equilibria {
     private:  
 
     // JSON members.
-    static const std::string JSON_APPEARANCE;
-    static const std::string JSON_ON_TICK;
-    static const std::string JSON_STATE;
+    inline static const std::string JSON_APPEARANCE = "appearance";
+    inline static const std::string JSON_ON_TICK    = "onTick";
+    inline static const std::string JSON_STATE      = "state";
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {

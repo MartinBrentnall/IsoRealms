@@ -64,18 +64,18 @@ namespace IsoRealms::Basics {
     IsoRealms::Project& getProject() const override;
       
     private:
-    static const float ZOOM_LIMIT_MAXIMUM;
-    static const float ZOOM_LIMIT_MINIMUM;
+    inline static const float ZOOM_LIMIT_MAXIMUM = 28.0f;
+    inline static const float ZOOM_LIMIT_MINIMUM = -68.0f;
 
-    static const float ANALOGUE_INPUT_DEAD_ZONE;
+    inline static const float ANALOGUE_INPUT_DEAD_ZONE = 16.0f;
 
-    static const float DEFAULT_VISIBLE_DURATION; /// Visible duration at 1.0f scale.
-    static const int MAX_VISIBLE_MAJOR_TICKS;    /// Maximum number of visible major ticks (with labels)
+    inline static const float DEFAULT_VISIBLE_DURATION = 1000.0f * 60.0f * 15.0f; /// Visible duration at 1.0f scale.
+    inline static const int   MAX_VISIBLE_MAJOR_TICKS  = 20; /// Maximum number of visible major ticks (with labels)
 
-    static const long DURATION_SECOND;
-    static const long DURATION_MINUTE;
-    static const long DURATION_HOUR;
-    static const long DURATION_DAY;
+    inline static const long DURATION_SECOND = 1000;
+    inline static const long DURATION_MINUTE = 60 * DURATION_SECOND;
+    inline static const long DURATION_HOUR   = 60 * DURATION_MINUTE;
+    inline static const long DURATION_DAY    = 24 * DURATION_HOUR;
 
     inline static constexpr float SCROLL_MARGIN = 0.4f;
 

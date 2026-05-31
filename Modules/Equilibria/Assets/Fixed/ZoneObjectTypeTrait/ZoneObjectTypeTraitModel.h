@@ -52,8 +52,8 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_MODEL;
-    static const std::string JSON_LOCATION;
+    inline static const std::string JSON_MODEL    = "model";
+    inline static const std::string JSON_LOCATION = "location";
 
     // Definition data.
     IsoRealms::Model cDefModel;            /// The model to be rendered by instances.

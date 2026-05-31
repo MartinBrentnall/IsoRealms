@@ -19,23 +19,6 @@
 #include "Throbber.h"
 
 namespace IsoRealms::UI {
-  const std::string Throbber::JSON_COLOUR        = "colour";
-  const std::string Throbber::JSON_DURATION      = "duration";
-  const std::string Throbber::JSON_REPETITIONS   = "repetitions";
-  const std::string Throbber::JSON_RING_RADIUS   = "ringRadius";
-  const std::string Throbber::JSON_SHADOW_OFFSET = "shadowOffset";
-  const std::string Throbber::JSON_SPOT_RADIUS   = "spotRadius";
-  const std::string Throbber::JSON_SPOT_SIDES    = "spotSides";
-  const std::string Throbber::JSON_SPOTS         = "spots";
-
-  const unsigned int Throbber::DEFAULT_DURATION      = 2000U;
-  const unsigned int Throbber::DEFAULT_REPETITIONS   = 1U;
-  const float        Throbber::DEFAULT_RING_RADIUS   = 0.2f;
-  const float        Throbber::DEFAULT_SHADOW_OFFSET = 0.008f;
-  const float        Throbber::DEFAULT_SPOT_RADIUS   = 0.06f;
-  const unsigned int Throbber::DEFAULT_SPOT_SIDES    = 32U;
-  const unsigned int Throbber::DEFAULT_SPOTS         = 8U;
-
   Throbber::Throbber(UI& ui, IResourceData& data) :
             cDefDuration(DEFAULT_DURATION),
             cDefRepetitions(DEFAULT_REPETITIONS),

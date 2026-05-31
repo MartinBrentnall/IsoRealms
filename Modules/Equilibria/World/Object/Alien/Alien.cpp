@@ -24,11 +24,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string Alien::JSON_TYPE = "type";
-  const std::string Alien::JSON_X    = "x";
-  const std::string Alien::JSON_Y    = "y";
-  const std::string Alien::JSON_Z    = "z";
-
   Alien::Alien(Zone& zone, AlienType& type, int x, int y, int z) :
             cZone(zone),
             cDefType(&type),

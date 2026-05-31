@@ -21,11 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemDigitalInput::JSON_ID   = "id";
-  const std::string MenuItemDigitalInput::JSON_TYPE = "type";
-  
-  const std::string MenuItemDigitalInput::BINDING_TYPE = "DigitalInput";
-  
   MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),

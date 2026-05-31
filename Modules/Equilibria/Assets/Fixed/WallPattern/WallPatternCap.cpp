@@ -266,8 +266,4 @@ namespace IsoRealms::Equilibria {
   void WallPatternCap::SectionTop::prepareVisual() {
     // Nothing to do
   }
-
-  const std::string WallPatternCap::JSON_BOTTOM = "bottom";
-  const std::string WallPatternCap::JSON_MIDDLE = "middle";
-  const std::string WallPatternCap::JSON_TOP    = "top";
 }

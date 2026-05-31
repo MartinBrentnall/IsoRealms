@@ -19,10 +19,6 @@
 #include "Sprite.h"
 
 namespace IsoRealms::Basics {
-  const std::string Sprite::JSON_BILLBOARD_PITCH = "billboardPitch";
-  const std::string Sprite::JSON_BILLBOARD_YAW   = "billboardYaw";
-  const std::string Sprite::JSON_TEXTURE         = "texture";
-
   Sprite::Sprite(Basics& basics, IResourceData& data) :
             cDefProject(data.getProject()),
             cDefTexture(data),

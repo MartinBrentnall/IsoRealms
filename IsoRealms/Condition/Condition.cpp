@@ -24,18 +24,6 @@
 #include "IsoRealms/Persistence/JSONValue.h"
 
 namespace IsoRealms {
-  const char Condition::ATTRIB_AND    = 0x1;
-  const char Condition::ATTRIB_NEGATE = 0x2;
-
-  const std::string Condition::JSON_INPUT          = "input";
-  const std::string Condition::JSON_INPUTS         = "inputs";
-  const std::string Condition::JSON_OPERATOR       = "operator";
-  const std::string Condition::JSON_NEGATED        = "negated";
-  const std::string Condition::JSON_SUB_CONDITIONS = "subConditions";
-
-  const std::string Condition::OPERATOR_AND = "And";
-  const std::string Condition::OPERATOR_OR  = "Or";
-
   Condition::Condition(bool andGate, bool negated) :
             cAnd(andGate),
             cNegated(negated) {

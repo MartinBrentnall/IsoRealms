@@ -23,12 +23,6 @@
 #include "ThemeSet.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string Theme::JSON_COLOUR   = "colour";
-  const std::string Theme::JSON_COLOURS  = "colours";
-  const std::string Theme::JSON_ELEMENT  = "element";
-  const std::string Theme::JSON_TEXTURE  = "texture";
-  const std::string Theme::JSON_TEXTURES = "textures";
-
   Theme::Theme(ThemeSet& themeSet) :
             cThemeSet(themeSet) {
     std::vector<ThemeTexture*> mThemeTextures = themeSet.getThemeTextures();

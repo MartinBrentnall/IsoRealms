@@ -21,11 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemLauncherList::JSON_ID           = "id";
-  const std::string MenuItemLauncherList::JSON_ON_SELECTION = "onSelection";
-
-  const std::string MenuItemLauncherList::BINDING_TYPE = "LauncherList";
-
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),

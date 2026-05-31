@@ -80,7 +80,7 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_APPEARANCE;
+    inline static const std::string JSON_APPEARANCE = "appearance";
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {

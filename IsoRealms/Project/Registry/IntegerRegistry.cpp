@@ -50,6 +50,4 @@ namespace IsoRealms {
   bool IntegerRegistry::Literal::Instance::isDefaultConfiguration() const {
     return cValue == 0;
   }
-
-  const std::string IntegerRegistry::Literal::Instance::JSON_VALUE = "value";
 }

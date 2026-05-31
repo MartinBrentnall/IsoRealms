@@ -100,9 +100,9 @@ namespace IsoRealms::Equilibria {
     };
 
     // JSON members.
-    static const std::string JSON_BOTTOM;
-    static const std::string JSON_MIDDLE;
-    static const std::string JSON_TOP;
+    inline static const std::string JSON_BOTTOM = "bottom";
+    inline static const std::string JSON_MIDDLE = "middle";
+    inline static const std::string JSON_TOP    = "top";
  
     // External interfaces.
     const Metadata& cMetadata;

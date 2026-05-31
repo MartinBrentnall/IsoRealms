@@ -87,12 +87,12 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_TYPE;
-    static const std::string JSON_X;
-    static const std::string JSON_Y;
-    static const std::string JSON_Z;
+    inline static const std::string JSON_TYPE = "type";
+    inline static const std::string JSON_X    = "x";
+    inline static const std::string JSON_Y    = "y";
+    inline static const std::string JSON_Z    = "z";
 
-    static const std::string BIND_TO_ZONE;
+    inline static const std::string BIND_TO_ZONE = "Zone";
 
     // External interfaces.
     Zone& cZone; /// Zone to which this pick up belongs.

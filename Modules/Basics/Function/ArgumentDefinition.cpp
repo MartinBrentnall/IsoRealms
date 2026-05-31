@@ -93,9 +93,5 @@ namespace IsoRealms::Basics {
     mFunction += "  table.remove(_" + cDefLuaName + ")\n";
     return mFunction;
   }
-
-  const std::string ArgumentDefinition::JSON_LUA_NAME = "luaName";
-  const std::string ArgumentDefinition::JSON_NAME     = "name";
-  const std::string ArgumentDefinition::JSON_TYPE     = "type";
 }
 

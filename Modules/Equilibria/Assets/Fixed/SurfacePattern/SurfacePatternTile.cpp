@@ -179,7 +179,5 @@ namespace IsoRealms::Equilibria {
   void SurfacePatternTile::SurfacePatternSplitSurface::prepareVisual() {
     // Nothing to do.
   }
-
-  const std::string SurfacePatternTile::JSON_TEXTURE = "texture";
 }
 

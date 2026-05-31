@@ -23,8 +23,6 @@
 #include "ZoneObjectTypeTraitMovable.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ZoneObjectTypeTraitMovable::JSON_LOCATION = "location";
-
   ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type) {
     // Nothing to do.
   }

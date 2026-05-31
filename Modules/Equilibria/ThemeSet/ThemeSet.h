@@ -75,12 +75,12 @@ namespace IsoRealms::Equilibria {
     IColour* getCurrentColour(ThemeColour* colour);
 
     private:
-    static const unsigned int ICON_TRANSITION_TIME;
-    static const unsigned int ICON_PAUSE_TIME;
+    inline static const unsigned int ICON_TRANSITION_TIME = 500;
+    inline static const unsigned int ICON_PAUSE_TIME      = 1000;
 
     // JSON strings
-    static const std::string JSON_ID;
-    static const std::string JSON_THEMES;
+    inline static const std::string JSON_ID     = "id";
+    inline static const std::string JSON_THEMES = "themes";
 
     // External interfaces.
     Equilibria& cEquilibria;

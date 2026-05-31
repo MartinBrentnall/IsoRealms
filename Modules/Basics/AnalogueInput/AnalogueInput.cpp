@@ -21,12 +21,6 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string AnalogueInput::JSON_ID       = "id";
-  const std::string AnalogueInput::JSON_INPUT    = "Input";
-  const std::string AnalogueInput::JSON_MAPPINGS = "mappings";
-  const std::string AnalogueInput::JSON_NAME     = "name";
-  const std::string AnalogueInput::JSON_TYPE     = "type";
-
   AnalogueInput::AnalogueInput(Basics& basics, IResourceData& data) :
              cRuntimeState(false),
              cLuaBinding(basics.getProject().getLuaState(), this) {

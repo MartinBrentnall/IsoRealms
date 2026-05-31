@@ -23,44 +23,8 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const char Terrain::FLAGS_NORMAL           = 0;
-  const char Terrain::FLAG_INVISIBLE         = 0x1;
-  const char Terrain::FLAG_GHOST             = 0x2;
-  const char Terrain::FLAG_FORCE_DYNAMIC     = 0x4;
-  const char Terrain::FLAG_STEPPED_BOTTOM    = 0x8;
-  const char Terrain::FLAG_ALTERNATIVE_SPLIT = 0x10;
-  const char Terrain::FLAG_BEHAVIOUR_MASK    = FLAG_INVISIBLE | FLAG_GHOST | FLAG_FORCE_DYNAMIC;
   
-  const unsigned char Terrain::CACHE_BLOCK_END         = 0;
-  const unsigned char Terrain::CACHE_SURFACE           = 1;
-  const unsigned char Terrain::CACHE_SPLIT_SURFACE     = 2;
-  const unsigned char Terrain::CACHE_WALL              = 3;
-  const unsigned char Terrain::CACHE_SURFACE_END       = 4;
-  const unsigned char Terrain::CACHE_CONDITION         = 5;
-  const unsigned char Terrain::CACHE_CONDITION_ELEMENT = 6;
-  const unsigned char Terrain::CACHE_CONDITION_END     = 7;
 
-  const std::string Terrain::JSON_ALTERNATIVE_SPLIT = "alternativeSplit";
-  const std::string Terrain::JSON_BEHAVIOUR         = "behaviour";
-  const std::string Terrain::JSON_CONDITION         = "condition";
-  const std::string Terrain::JSON_HEIGHT            = "height";
-  const std::string Terrain::JSON_LENGTH            = "length";
-  const std::string Terrain::JSON_NORTH_EAST_CORNER = "northEastCorner";
-  const std::string Terrain::JSON_NORTH_WEST_CORNER = "northWestCorner";
-  const std::string Terrain::JSON_SOUTH_WEST_CORNER = "southWestCorner";
-  const std::string Terrain::JSON_SOUTH_EAST_CORNER = "southEastCorner";
-  const std::string Terrain::JSON_STEPPED_BOTTOM    = "steppedBottom";
-  const std::string Terrain::JSON_TYPE              = "type";
-  const std::string Terrain::JSON_WIDTH             = "width";
-  const std::string Terrain::JSON_X                 = "x";
-  const std::string Terrain::JSON_Y                 = "y";
-  const std::string Terrain::JSON_Z                 = "z";
-
-  const std::string Terrain::BEHAVIOUR_NORMAL        = "normal";
-  const std::string Terrain::BEHAVIOUR_INVISIBLE     = "invisible";
-  const std::string Terrain::BEHAVIOUR_GHOST         = "ghost";
-  const std::string Terrain::BEHAVIOUR_DYNAMIC       = "dynamic";
-  const std::string Terrain::BEHAVIOUR_DYNAMIC_GHOST = "dynamicGhost";
 
   Terrain::Terrain(Zone& zone, JSONObject object) :
             cZone(zone),

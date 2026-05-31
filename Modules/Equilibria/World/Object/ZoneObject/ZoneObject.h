@@ -86,9 +86,9 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_ID;
-    static const std::string JSON_TRAITS;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_ID     = "id";
+    inline static const std::string JSON_TRAITS = "traits";
+    inline static const std::string JSON_TYPE   = "type";
 
     // Internal classes.
     class TraitRegistry : public ITraitRegistry {

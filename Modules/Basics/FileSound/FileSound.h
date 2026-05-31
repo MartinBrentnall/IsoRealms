@@ -62,7 +62,7 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_FILENAME;
+    inline static const std::string JSON_FILENAME = "filename";
 
     // External interfaces.
     Basics& cDefBasics; /// Module holding the global sound volume.

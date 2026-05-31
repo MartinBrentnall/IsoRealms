@@ -49,17 +49,17 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_APPEARANCE;
-    static const std::string JSON_HEIGHT;
-    static const std::string JSON_ID;
-    static const std::string JSON_LIFE;
-    static const std::string JSON_RADIUS;
-    static const std::string JSON_STEP_REACH;
+    inline static const std::string JSON_APPEARANCE = "appearance";
+    inline static const std::string JSON_HEIGHT     = "height";
+    inline static const std::string JSON_ID         = "id";
+    inline static const std::string JSON_LIFE       = "life";
+    inline static const std::string JSON_RADIUS     = "radius";
+    inline static const std::string JSON_STEP_REACH = "stepReach";
 
-    static const float        DEFAULT_HEIGHT;
-    static const unsigned int DEFAULT_LIFE;
-    static const float        DEFAULT_RADIUS;
-    static const float        DEFAULT_STEP_REACH;
+    inline static const float        DEFAULT_HEIGHT      = 0.7f;
+    inline static const unsigned int DEFAULT_LIFE        = 2000U;
+    inline static const float        DEFAULT_RADIUS      = 0.3f;
+    inline static const float        DEFAULT_STEP_REACH  = 0.2f;
 
     // Definition data.
     std::string cDefID;        /// ID of this generator.

@@ -47,18 +47,18 @@ namespace IsoRealms::UI {
     private:
     
     // JSON members.
-    static const std::string JSON_ALIGNMENT;
-    static const std::string JSON_COLOUR;
-    static const std::string JSON_FONT;
-    static const std::string JSON_SHADOW_OFFSET;
-    static const std::string JSON_VALUE;
+    inline static const std::string JSON_ALIGNMENT     = "alignment";
+    inline static const std::string JSON_COLOUR        = "colour";
+    inline static const std::string JSON_FONT          = "font";
+    inline static const std::string JSON_SHADOW_OFFSET = "shadowOffset";
+    inline static const std::string JSON_VALUE         = "value";
 
-    static const std::string ALIGNMENT_CENTER;
-    static const std::string ALIGNMENT_LEFT;
-    static const std::string ALIGNMENT_RIGHT;
+    inline static const std::string ALIGNMENT_CENTER = "Center";
+    inline static const std::string ALIGNMENT_LEFT   = "Left";
+    inline static const std::string ALIGNMENT_RIGHT  = "Right";
 
     // Constants.
-    static const float DEFAULT_SHADOW_OFFSET;
+    inline static const float DEFAULT_SHADOW_OFFSET = 0.2f;
 
     // External interfaces.
     const Metadata& cMetadata;

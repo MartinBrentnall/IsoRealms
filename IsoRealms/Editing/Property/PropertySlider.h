@@ -61,7 +61,7 @@ namespace IsoRealms {
       float cOriginalValue;
     };
 
-    static const float WIDTH;
+    inline static const float WIDTH = 0.7f;
 
     IPropertyMaker& cPropertyOwner;
 

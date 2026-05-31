@@ -60,8 +60,4 @@ namespace IsoRealms::Basics {
   bool SequenceTrackFloatEvent::isFade() const {
     return cDefFade;
   }
-
-  const std::string SequenceTrackFloatEvent::JSON_DURATION = "duration";
-  const std::string SequenceTrackFloatEvent::JSON_FADE     = "fade";
-  const std::string SequenceTrackFloatEvent::JSON_VALUE    = "value";
 }

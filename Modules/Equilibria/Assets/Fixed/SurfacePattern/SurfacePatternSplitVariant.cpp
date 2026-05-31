@@ -85,9 +85,5 @@ namespace IsoRealms::Equilibria {
   bool SurfacePatternSplitVariant::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  const std::string SurfacePatternSplitVariant::JSON_REGULAR = "regular";
-  const std::string SurfacePatternSplitVariant::JSON_SPLIT_A = "splitA";
-  const std::string SurfacePatternSplitVariant::JSON_SPLIT_B = "splitB";
 }
 

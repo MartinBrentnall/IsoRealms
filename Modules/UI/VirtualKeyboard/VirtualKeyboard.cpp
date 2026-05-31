@@ -19,14 +19,6 @@
 #include "VirtualKeyboard.h"
 
 namespace IsoRealms::UI {
-  const std::string VirtualKeyboard::JSON_FONT             = "font";
-  const std::string VirtualKeyboard::JSON_ON_CONFIRM       = "onConfirm";
-  const std::string VirtualKeyboard::JSON_SELECTION_COLOUR = "selectionColour";
-
-  const unsigned int VirtualKeyboard::ROWS              = 3;
-  const unsigned int VirtualKeyboard::COLUMNS           = 10;
-  const unsigned int VirtualKeyboard::CARET_BLINK_DELAY = 200;
-
   VirtualKeyboard::VirtualKeyboard(UI& ui, IResourceData& data) :
             cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefConfirmAction(data.getDummyActionContext()),

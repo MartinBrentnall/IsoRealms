@@ -81,24 +81,24 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_DIRECTION;
-    static const std::string JSON_ROTATE_DURATION;
+    inline static const std::string JSON_DIRECTION       = "direction";
+    inline static const std::string JSON_ROTATE_DURATION = "rotateDuration";
 
-    static const std::string DIRECTION_NORTH_EAST;
-    static const std::string DIRECTION_NORTH_WEST;
-    static const std::string DIRECTION_SOUTH_EAST;
-    static const std::string DIRECTION_SOUTH_WEST;
-    static const std::string DIRECTION_INVALID;
+    inline static const std::string DIRECTION_NORTH_EAST = "NorthEast";
+    inline static const std::string DIRECTION_NORTH_WEST = "NorthWest";
+    inline static const std::string DIRECTION_SOUTH_EAST = "SouthEast";
+    inline static const std::string DIRECTION_SOUTH_WEST = "SouthWest";
+    inline static const std::string DIRECTION_INVALID    = "Invalid";
 
     // Constants.
-    static const int DEFAULT_DURATION;
-    static const int VALUE_MAX;
-    static const int VALUE_MIN;
-    static const int VALUE_NORTH_EAST;
-    static const int VALUE_NORTH_WEST;
-    static const int VALUE_SOUTH_EAST;
-    static const int VALUE_SOUTH_WEST;
-    static const int VALUE_INVALID;
+    inline static const int DEFAULT_DURATION = 500;
+    inline static const int VALUE_MAX        = 180;
+    inline static const int VALUE_MIN        = -180;
+    inline static const int VALUE_NORTH_EAST = 45;
+    inline static const int VALUE_NORTH_WEST = -45;
+    inline static const int VALUE_SOUTH_EAST = 135;
+    inline static const int VALUE_SOUTH_WEST = -135;
+    inline static const int VALUE_INVALID    = 0;
     
 
     // External interfaces.

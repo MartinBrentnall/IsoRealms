@@ -21,11 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemAction::JSON_ID           = "id";
-  const std::string MenuItemAction::JSON_LABEL        = "label";
-  const std::string MenuItemAction::JSON_ON_SELECTION = "onSelection";
-  const std::string MenuItemAction::BINDING_TYPE = "Action";
-    
   MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cDefID(""),

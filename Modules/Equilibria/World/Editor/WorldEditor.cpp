@@ -22,18 +22,6 @@
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 
 namespace IsoRealms::Equilibria {
-  const float WorldEditor::SPEED_FAST     = 0.3f;
-  const float WorldEditor::SPEED_NORMAL   = 0.1f;
-  const float WorldEditor::SPEED_SLOW     = 0.05f;
-  const float WorldEditor::STOP_THRESHOLD = 0.01f;
-  const float WorldEditor::SELECTION_BOUNDARY_RENDERING_OFFSET = 0.001f;
-
-  const float WorldEditor::BORDER_SPACING = 0.02f;
-  const float WorldEditor::ICON_WIDTH = 0.12f;
-  const float WorldEditor::ICON_HEIGHT = 0.12f;
-  const float WorldEditor::BOTTOM_BORDER = -1.0f + BORDER_SPACING;
-  const float WorldEditor::ICON_SPACING = 0.02f;
-  
   WorldEditor::WorldEditor(Project& assets, World& world, IDialogManager& dialogManager) :
             cAnalogueInputsByName({
               {"MoveViewIn",      &cDistanceInSpeed},

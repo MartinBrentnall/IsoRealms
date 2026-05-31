@@ -25,10 +25,6 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ZoneObjectTypeTraitBoundary::JSON_ENABLED = "enabled";
-  const std::string ZoneObjectTypeTraitBoundary::JSON_END     = "end";
-  const std::string ZoneObjectTypeTraitBoundary::JSON_START   = "start";
-
   ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type) :
             cDefType(type) {
     cDefType.getEquilibria().added(this);

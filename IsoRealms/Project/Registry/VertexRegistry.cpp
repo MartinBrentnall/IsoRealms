@@ -64,8 +64,4 @@ namespace IsoRealms {
   bool VertexRegistry::Literal::Instance::isDefaultConfiguration() const {
     return x == 0.0f && y == 0.0f && z == 0.0f;
   }
-
-  const std::string VertexRegistry::Literal::Instance::JSON_X = "x";
-  const std::string VertexRegistry::Literal::Instance::JSON_Y = "y";
-  const std::string VertexRegistry::Literal::Instance::JSON_Z = "z";
 }

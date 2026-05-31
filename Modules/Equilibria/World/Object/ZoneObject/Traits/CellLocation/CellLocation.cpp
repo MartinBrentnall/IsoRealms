@@ -21,10 +21,6 @@
 #include "Modules/Equilibria/World/Object/ZoneObject/ZoneObject.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string CellLocation::JSON_X = "x";
-  const std::string CellLocation::JSON_Y = "y";
-  const std::string CellLocation::JSON_Z = "z";
-
   CellLocation::CellLocation(ZoneObject& object, int x, int y, int z) :
             cDefObject(object),
             cDefX(x),

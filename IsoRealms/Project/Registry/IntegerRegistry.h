@@ -73,6 +73,9 @@ namespace IsoRealms {
       }
 
       private:
+
+      inline static const std::string JSON_VALUE = "value";
+
       class Instance : public IInteger {
         public:
         Instance(Project& project, const int value = 0);
@@ -91,15 +94,12 @@ namespace IsoRealms {
         bool isDefaultConfiguration() const override;
 
         private:
-        static const std::string JSON_VALUE;
 
         // External interfaces.
         const Metadata& cMetadata;
 
         int cValue; /// Integer value.
       };
-
-      inline static const std::string JSON_VALUE = "value";
     };
 
     Literal cLiteral;

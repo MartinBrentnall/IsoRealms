@@ -127,12 +127,6 @@ namespace IsoRealms {
     cChangeCallback();
   }
   
-  const std::string File::LOCATION_PREFIX_USER    = "User";
-  const std::string File::LOCATION_PREFIX_PROGRAM = "Program";
-
-  const std::string File::JSON_PATH = "path";
-  const std::string File::JSON_USER = "user";
-
   void File::getFilesAt(const std::string& path, const std::string& prefix, std::vector<std::string>& list) {
     std::cout << "Getting files at path: \"" << path << "\"..." << std::endl;
     for (const std::filesystem::directory_entry& mDirEntry : std::filesystem::recursive_directory_iterator{path}) {

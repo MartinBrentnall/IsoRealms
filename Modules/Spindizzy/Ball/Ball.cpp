@@ -19,12 +19,6 @@
 #include "Ball.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Ball::JSON_FILL    = "fill";
-  const std::string Ball::JSON_OUTLINE = "outline";
-  const std::string Ball::JSON_SHINE   = "shine";
-
-  const float Ball::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
-
   Ball::Ball(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
             cDefFill(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),

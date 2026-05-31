@@ -52,7 +52,7 @@ namespace IsoRealms {
       String cDefValue;
     };
 
-    static const std::string JSON_OPTIONS;
+    inline static const std::string JSON_OPTIONS = "options";
 
     std::string cDefName;
     ResourceOwner cDefOwner;

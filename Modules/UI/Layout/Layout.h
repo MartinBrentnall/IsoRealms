@@ -91,8 +91,8 @@ namespace IsoRealms::UI {
     private:
 
     // JSON members.
-    static const std::string JSON_COMPONENTS;
-    static const std::string JSON_ID;
+    inline static const std::string JSON_COMPONENTS = "components";
+    inline static const std::string JSON_ID         = "id";
 
     // External interfaces.
     IResourceData& cResourceData;

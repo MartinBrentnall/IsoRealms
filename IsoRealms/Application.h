@@ -54,13 +54,13 @@ namespace IsoRealms {
    */ 
   class Application {
     private:
-    static const std::string JSON_FULL_SCREEN;
-    static const std::string JSON_HEIGHT;
-    static const std::string JSON_PROPERTIES;
-    static const std::string JSON_SETTINGS;
-    static const std::string JSON_WIDTH;
+    inline static const std::string JSON_FULL_SCREEN = "fullScreen";
+    inline static const std::string JSON_HEIGHT      = "height";
+    inline static const std::string JSON_PROPERTIES  = "properties";
+    inline static const std::string JSON_SETTINGS    = "settings";
+    inline static const std::string JSON_WIDTH       = "width";
 
-    static const std::string FILENAME_SETTINGS;
+    inline static const std::string FILENAME_SETTINGS = "settings.json";
     
     /**
      * Task wrapper contains data regarding number of workers assigned to a task

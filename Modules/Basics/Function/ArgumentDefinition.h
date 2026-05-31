@@ -46,8 +46,8 @@ namespace IsoRealms::Basics {
     std::string cDefLuaName;
     BindingType cDefType;
 
-    static const std::string JSON_LUA_NAME;
-    static const std::string JSON_NAME;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_LUA_NAME = "luaName";
+    inline static const std::string JSON_NAME     = "name";
+    inline static const std::string JSON_TYPE     = "type";
   };
 }

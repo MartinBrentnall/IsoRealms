@@ -60,8 +60,8 @@ namespace IsoRealms {
     bool getTestInput() const;
 
     private:
-    static const std::string JSON_INPUT;
-    static const std::string JSON_NEGATED;
+    inline static const std::string JSON_INPUT   = "input";
+    inline static const std::string JSON_NEGATED = "negated";
 
     std::function<std::string()> cInputNameFunction;
     IBoolean* cInput;

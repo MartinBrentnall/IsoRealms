@@ -41,8 +41,8 @@ namespace IsoRealms::Basics {
 
     private:
 
-    static const std::string JSON_TO;
-    static const std::string JSON_VARIABLE;
+    inline static const std::string JSON_TO       = "to";
+    inline static const std::string JSON_VARIABLE = "variable";
 
     // External interfaces.
     Function& cParent;

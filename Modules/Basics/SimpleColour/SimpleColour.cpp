@@ -19,11 +19,6 @@
 #include "SimpleColour.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleColour::JSON_RED   = "red";
-  const std::string SimpleColour::JSON_GREEN = "green";
-  const std::string SimpleColour::JSON_BLUE  = "blue";
-  const std::string SimpleColour::JSON_ALPHA = "alpha";
-
   SimpleColour::SimpleColour(Basics& basics, IResourceData& data) :
             cDefRed(0.0f),
             cDefGreen(0.0f),

@@ -24,12 +24,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string Player::JSON_ID   = "id";
-  const std::string Player::JSON_TYPE = "type";
-  const std::string Player::JSON_X    = "x";
-  const std::string Player::JSON_Y    = "y";
-  const std::string Player::JSON_Z    = "z";
-
   Player::Player(World& world, PlayerType& type, float x, float y, float z) :
             cDefWorld(world),
             cDefType(&type),

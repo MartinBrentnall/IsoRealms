@@ -74,18 +74,18 @@ namespace IsoRealms::UI {
     private:
     
     // JSON members.
-    static const std::string JSON_CANCEL_LABEL;
-    static const std::string JSON_CONFIRM_LABEL;
-    static const std::string JSON_FONT;
-    static const std::string JSON_MESSAGE;
-    static const std::string JSON_ON_CANCEL;
-    static const std::string JSON_ON_CONFIRM;
-    static const std::string JSON_SELECTION_COLOUR;
-    static const std::string JSON_SHADOW_OFFSET;
-    static const std::string JSON_TEXT_SIZE;
+    inline static const std::string JSON_CANCEL_LABEL     = "cancelLabel";
+    inline static const std::string JSON_CONFIRM_LABEL    = "confirmLabel";
+    inline static const std::string JSON_FONT             = "font";
+    inline static const std::string JSON_MESSAGE          = "message";
+    inline static const std::string JSON_ON_CANCEL        = "onCancel";
+    inline static const std::string JSON_ON_CONFIRM       = "onConfirm";
+    inline static const std::string JSON_SELECTION_COLOUR = "selectionColour";
+    inline static const std::string JSON_SHADOW_OFFSET    = "shadowOffset";
+    inline static const std::string JSON_TEXT_SIZE        = "textSize";
 
-    static const float DEFAULT_SHADOW_OFFSET;
-    static const float DEFAULT_TEXT_SIZE;
+    inline static const float DEFAULT_SHADOW_OFFSET = 0.008f;
+    inline static const float DEFAULT_TEXT_SIZE     = 0.05f;
 
     // External interfaces.
     HatHandler& cHatHandler;

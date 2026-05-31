@@ -19,18 +19,6 @@
 #include "Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string Menu::JSON_COLOUR        = "colour";
-  const std::string Menu::JSON_FONT          = "font";
-  const std::string Menu::JSON_FONT_SIZE     = "fontSize";
-  const std::string Menu::JSON_ITEM          = "item";
-  const std::string Menu::JSON_ON_EXIT       = "onExit";
-  const std::string Menu::JSON_OPTIONS       = "options";
-  const std::string Menu::JSON_SHADOW_OFFSET = "shadowOffset";
-  const std::string Menu::JSON_TYPE          = "type";
-
-  const float Menu::DEFAULT_FONT_SIZE     = 0.05f;
-  const float Menu::DEFAULT_SHADOW_OFFSET = 0.008f;
-
   Menu::Menu(UI& ui, IResourceData& data) :
             cResourceData(data),
             cHatHandler(data.getProject().getApplication().getHatHandler()),

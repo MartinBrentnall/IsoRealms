@@ -31,17 +31,17 @@
 namespace IsoRealms {
   class Condition {
     private:
-    static const char ATTRIB_AND;
-    static const char ATTRIB_NEGATE;
+    inline static const char ATTRIB_AND    = 0x1;
+    inline static const char ATTRIB_NEGATE = 0x2;
 
-    static const std::string JSON_INPUT;
-    static const std::string JSON_INPUTS;
-    static const std::string JSON_OPERATOR;
-    static const std::string JSON_NEGATED;
-    static const std::string JSON_SUB_CONDITIONS;
+    inline static const std::string JSON_INPUT          = "input";
+    inline static const std::string JSON_INPUTS         = "inputs";
+    inline static const std::string JSON_OPERATOR       = "operator";
+    inline static const std::string JSON_NEGATED        = "negated";
+    inline static const std::string JSON_SUB_CONDITIONS = "subConditions";
 
-    static const std::string OPERATOR_AND;
-    static const std::string OPERATOR_OR;
+    inline static const std::string OPERATOR_AND = "And";
+    inline static const std::string OPERATOR_OR  = "Or";
 
     bool cAnd;
     bool cNegated;

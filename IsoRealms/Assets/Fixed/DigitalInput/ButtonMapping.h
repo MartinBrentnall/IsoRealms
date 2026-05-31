@@ -36,11 +36,19 @@ namespace IsoRealms {
     // TODO: Support multiple controllers.
 
     public:
-    static const unsigned int CROSS;
-    static const unsigned int CIRCLE;
-    static const unsigned int SQUARE;
-    static const unsigned int TRIANGLE;
-    static const unsigned int L2;
+#if _WIN32
+    inline static const unsigned int CROSS    = 1;
+    inline static const unsigned int CIRCLE   = 2;
+    inline static const unsigned int SQUARE   = 0;
+    inline static const unsigned int TRIANGLE = 3;
+    inline static const unsigned int L2       = 6;
+#else
+    inline static const unsigned int CROSS    = 0;
+    inline static const unsigned int CIRCLE   = 1;
+    inline static const unsigned int SQUARE   = 3;
+    inline static const unsigned int TRIANGLE = 2;
+    inline static const unsigned int L2       = 6;
+#endif
 
     /**
      * Construct a digital input mapping associated with the specified button.

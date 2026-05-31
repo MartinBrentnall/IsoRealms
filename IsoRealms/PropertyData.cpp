@@ -43,8 +43,5 @@ namespace IsoRealms {
   std::string PropertyData::getTooltip() const {
     return cTooltip;
   }
-
-  const std::string PropertyData::JSON_DESCRIPTION = "description";
-  const std::string PropertyData::JSON_NAME        = "name";
 }
 

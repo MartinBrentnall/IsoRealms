@@ -82,12 +82,5 @@ namespace IsoRealms::UI {
   bool ScreenGradient::isDefaultConfiguration() const {
     return cDefColourA.isDefaultConfigured() && cDefColourB.isDefaultConfigured(); // TODO: This doesn't factor in the custom colours????'
   }
-
-  const std::string ScreenGradient::JSON_COLOUR_A    = "colourA";
-  const std::string ScreenGradient::JSON_COLOUR_B    = "colourB";
-  const std::string ScreenGradient::JSON_ORIENTATION = "orientation";
-
-  const std::string ScreenGradient::VALUE_HORIZONTAL = "Horizontal";
-  const std::string ScreenGradient::VALUE_VERTICAL   = "Vertical";
 }
 

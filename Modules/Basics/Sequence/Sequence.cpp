@@ -26,15 +26,6 @@
 #include "SequenceInstance.h"
 
 namespace IsoRealms::Basics {
-  const std::string Sequence::JSON_INSTANCES = "instances";
-  const std::string Sequence::JSON_LOOP      = "loop";
-  const std::string Sequence::JSON_NAME      = "name";
-  const std::string Sequence::JSON_PLAYING   = "playing";
-  const std::string Sequence::JSON_SPEED     = "speed";
-  const std::string Sequence::JSON_TRACKS    = "tracks";
-  const std::string Sequence::JSON_TRACK     = "track";
-  const std::string Sequence::JSON_TYPE      = "type";
-
   Sequence::Sequence(Basics& basics, IResourceData& data) :
             cBasics(basics),
             cResourceData(data),

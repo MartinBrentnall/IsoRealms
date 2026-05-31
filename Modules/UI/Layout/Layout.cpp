@@ -21,9 +21,6 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  const std::string Layout::JSON_COMPONENTS = "components";
-  const std::string Layout::JSON_ID         = "id";
-
   Layout::Layout(UI& ui, IResourceData& data) :
             cResourceData(data),
             cUI(ui) {

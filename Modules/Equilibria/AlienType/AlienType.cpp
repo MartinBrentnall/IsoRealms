@@ -22,22 +22,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string AlienType::JSON_ACCELERATION = "acceleration";
-  const std::string AlienType::JSON_APPEARANCE   = "appearance";
-  const std::string AlienType::JSON_FRICTION     = "friction";
-  const std::string AlienType::JSON_HEIGHT       = "height";
-  const std::string AlienType::JSON_HUG_MOMENTUM = "hugMomentum";
-  const std::string AlienType::JSON_RADIUS       = "radius";
-  const std::string AlienType::JSON_SPIN_SPEED   = "spinSpeed";
-  const std::string AlienType::JSON_TARGET       = "target";
-
-  const float AlienType::DEFAULT_ACCELERATION = 0.0000215f;
-  const float AlienType::DEFAULT_FRICTION     = 0.001f;
-  const float AlienType::DEFAULT_HEIGHT       = 1.7f;
-  const float AlienType::DEFAULT_HUG_MOMENTUM = 0.0001f;
-  const float AlienType::DEFAULT_RADIUS       = 0.4f;
-  const float AlienType::DEFAULT_SPIN_SPEED   = 0.0f;
-
   AlienType::AlienType(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),

@@ -109,6 +109,4 @@ namespace IsoRealms::Basics {
       mInstance->stateChanged(value);
     }
   }
-
-  const std::string SequenceTrackFloat::JSON_START = "start";
 }

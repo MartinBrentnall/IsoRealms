@@ -33,8 +33,8 @@ namespace IsoRealms {
     std::string getTooltip() const;
 
     private:
-    static const std::string JSON_DESCRIPTION;
-    static const std::string JSON_NAME;
+    inline static const std::string JSON_DESCRIPTION = "description";
+    inline static const std::string JSON_NAME        = "name";
 
     const std::string cName;
     const std::string cTooltip;

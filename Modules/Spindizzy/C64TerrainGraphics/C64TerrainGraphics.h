@@ -57,44 +57,44 @@ namespace IsoRealms::Spindizzy {
     void screenPostRender(const IScreen* screen) override;
 
     private:
-    static const float TILE_SIZE;
-    static const float SWITCH_SQUARE_OUTER;
-    static const float SWITCH_SQUARE_INNER;
-    static const float SWITCH_SQUARE_TRIANGLE_INNER;
-    static const float SWITCH_DIAMOND_OUTER;
-    static const float SWITCH_DIAMOND_INNER;
-    static const float SWITCH_CIRCLE_OUTER;
-    static const float SWITCH_CIRCLE_INNER;
-    static const float ICE_EDGE_WIDTH;
-    static const float ARROW_SIZE;
-    static const float ARROW_LINE_WIDTH;
-    static const float CIRCLE_RESOLUTION;
-    static const float MAX_LUMINANCE_ADJUSTMENT;
+    inline static const float TILE_SIZE                    = 0.88f;
+    inline static const float SWITCH_SQUARE_OUTER          = 0.63f;
+    inline static const float SWITCH_SQUARE_INNER          = 0.44f;
+    inline static const float SWITCH_SQUARE_TRIANGLE_INNER = 0.0f;
+    inline static const float SWITCH_DIAMOND_OUTER         = 0.66f;
+    inline static const float SWITCH_DIAMOND_INNER         = 0.41f;
+    inline static const float SWITCH_CIRCLE_OUTER          = 0.7f;
+    inline static const float SWITCH_CIRCLE_INNER          = 0.52f;
+    inline static const float ICE_EDGE_WIDTH               = 0.1f;
+    inline static const float ARROW_SIZE                   = 0.66f;
+    inline static const float ARROW_LINE_WIDTH             = 0.25f;
+    inline static const float CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
+    inline static const float MAX_LUMINANCE_ADJUSTMENT     = 0.3f;
 
-    static const std::string ASSET_ID_SURFACE_PLAIN;
-    static const std::string ASSET_ID_SURFACE_PLAIN_SPLIT;
-    static const std::string ASSET_ID_SURFACE_ARROW;
-    static const std::string ASSET_ID_SURFACE_ICE_OR_WATER;
-    static const std::string ASSET_ID_SURFACE_TRAMPOLINE;
-    static const std::string ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_3;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_4;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_7;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_8;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10;
-    static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_11;
-    static const std::string ASSET_ID_WALL_PLAIN_CAP;
-    static const std::string ASSET_ID_WALL_PLAIN_MIDDLE;
-    static const std::string ASSET_ID_WALL_VARIANT_CAP;
-    static const std::string ASSET_ID_WALL_VARIANT_MIDDLE;
-    static const std::string ASSET_ID_WALL_ICE;
+    inline static const std::string ASSET_ID_SURFACE_PLAIN                  = "Surface Plain";
+    inline static const std::string ASSET_ID_SURFACE_PLAIN_SPLIT            = "Surface Plain Split";
+    inline static const std::string ASSET_ID_SURFACE_ARROW                  = "Surface Arrow";
+    inline static const std::string ASSET_ID_SURFACE_ICE_OR_WATER           = "Surface Ice or Water";
+    inline static const std::string ASSET_ID_SURFACE_TRAMPOLINE             = "Surface Trampoline";
+    inline static const std::string ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES  = "Surface Deactivate All States";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2  = "Surface Activate State 1 or 2";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_3       = "Surface Activate State 3";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_4       = "Surface Activate State 4";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6  = "Surface Activate State 5 or 6";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_7       = "Surface Activate State 7";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_8       = "Surface Activate State 8";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10 = "Surface Activate State 9 or 10";
+    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_11      = "Surface Activate State 11";
+    inline static const std::string ASSET_ID_WALL_PLAIN_CAP                 = "Wall Plain Cap";
+    inline static const std::string ASSET_ID_WALL_PLAIN_MIDDLE              = "Wall Plain Middle";
+    inline static const std::string ASSET_ID_WALL_VARIANT_CAP               = "Wall Plain Variant Cap";
+    inline static const std::string ASSET_ID_WALL_VARIANT_MIDDLE            = "Wall Plain Variant Middle";
+    inline static const std::string ASSET_ID_WALL_ICE                       = "Wall Ice";
 
-    static const std::string JSON_FLOOR;
-    static const std::string JSON_GRID;
-    static const std::string JSON_HIGHLIGHT;
-    static const std::string JSON_WALL;
+    inline static const std::string JSON_FLOOR     = "floor";
+    inline static const std::string JSON_GRID      = "grid";
+    inline static const std::string JSON_HIGHLIGHT = "highlight";
+    inline static const std::string JSON_WALL      = "wall";
 
     class OrientedTexture : public ITexture {
       public:

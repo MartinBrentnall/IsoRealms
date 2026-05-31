@@ -23,35 +23,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string PlayerType::JSON_ACCELERATION     = "acceleration";
-  const std::string PlayerType::JSON_APPEARANCE       = "appearance";
-  const std::string PlayerType::JSON_BOUNCE_FACTOR    = "bounceFactor";
-  const std::string PlayerType::JSON_HEIGHT           = "height";
-  const std::string PlayerType::JSON_HUG_MOMENTUM     = "hugMomentum";
-  const std::string PlayerType::JSON_ON_APEX          = "onApex";
-  const std::string PlayerType::JSON_ON_FALL_BOUNCE   = "onFallBounce";
-  const std::string PlayerType::JSON_ON_FALL_IMPACT   = "onFallImpact";
-  const std::string PlayerType::JSON_ON_LEAVE_SURFACE = "onLeaveSurface";
-  const std::string PlayerType::JSON_ON_WALL_BOUNCE   = "onWallBounce";
-  const std::string PlayerType::JSON_ON_RESPAWN       = "onRespawn";
-  const std::string PlayerType::JSON_ORIENTATION      = "orientation";
-  const std::string PlayerType::JSON_RADIUS           = "radius";
-  const std::string PlayerType::JSON_RESPAWN_DELAY    = "respawnDelay";
-  const std::string PlayerType::JSON_SPIN_SPEED       = "spinSpeed";
-  const std::string PlayerType::JSON_STEP_REACH       = "stepReach";
-  const std::string PlayerType::JSON_THRUST_INPUT     = "thrustInput";
-  const std::string PlayerType::JSON_X_INPUT          = "xInput";
-  const std::string PlayerType::JSON_Y_INPUT          = "yInput";
-
-  const float PlayerType::DEFAULT_ACCELERATION  = 0.0000265f;
-  const float PlayerType::DEFAULT_BOUNCE_FACTOR = 1.0f;
-  const float PlayerType::DEFAULT_HEIGHT        = 1.7f;
-  const float PlayerType::DEFAULT_HUG_MOMENTUM  = 0.0001f;
-  const float PlayerType::DEFAULT_RADIUS        = 0.4f;
-  const int   PlayerType::DEFAULT_RESPAWN_DELAY = 500;
-  const float PlayerType::DEFAULT_SPIN_SPEED    = 0.0f;
-  const float PlayerType::DEFAULT_STEP_REACH    = 0.5f;
-
   PlayerType::PlayerType(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),

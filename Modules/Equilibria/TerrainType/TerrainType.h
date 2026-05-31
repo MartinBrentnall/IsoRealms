@@ -100,19 +100,19 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_ALLOW_RESPAWN;
-    static const std::string JSON_EAST_WALL;
-    static const std::string JSON_FLOOR_BOUNCE;
-    static const std::string JSON_FRICTION;
-    static const std::string JSON_GRIP;
-    static const std::string JSON_NORTH_WALL;
-    static const std::string JSON_ON_IMPACT;
-    static const std::string JSON_ON_TOUCH;
-    static const std::string JSON_SOLID;
-    static const std::string JSON_SOUTH_WALL;
-    static const std::string JSON_SURFACE;
-    static const std::string JSON_WALL_BOUNCE;
-    static const std::string JSON_WEST_WALL;
+    inline static const std::string JSON_ALLOW_RESPAWN = "allowRespawn";
+    inline static const std::string JSON_EAST_WALL     = "eastWall";
+    inline static const std::string JSON_FLOOR_BOUNCE  = "floorBounce";
+    inline static const std::string JSON_FRICTION      = "friction";
+    inline static const std::string JSON_GRIP          = "grip";
+    inline static const std::string JSON_NORTH_WALL    = "northWall";
+    inline static const std::string JSON_ON_IMPACT     = "onImpact";
+    inline static const std::string JSON_ON_TOUCH      = "onTouch";
+    inline static const std::string JSON_SOLID         = "solid";
+    inline static const std::string JSON_SOUTH_WALL    = "southWall";
+    inline static const std::string JSON_SURFACE       = "surface";
+    inline static const std::string JSON_WALL_BOUNCE   = "wallBounce";
+    inline static const std::string JSON_WEST_WALL     = "westWall";
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
@@ -148,7 +148,7 @@ namespace IsoRealms::Equilibria {
     };
 
     // Defaults.
-    static const float DEFAULT_WALL_BOUNCE;
+    inline static const float DEFAULT_WALL_BOUNCE = 0.6f;
 
     // External interfaces.
     Equilibria& cEquilibria;

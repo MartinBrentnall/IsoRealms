@@ -66,77 +66,77 @@ namespace IsoRealms::Hue {
 
     
     private:
-    static const std::string JSON_BRIDGE;
-    static const std::string JSON_BULBS;
-    static const std::string JSON_COLOUR;
-    static const std::string JSON_ID;
-    static const std::string JSON_PSK;
-    static const std::string JSON_USER;
+    inline static const std::string JSON_BRIDGE = "bridge";
+    inline static const std::string JSON_BULBS  = "bulbs";
+    inline static const std::string JSON_COLOUR = "colour";
+    inline static const std::string JSON_ID     = "id";
+    inline static const std::string JSON_PSK    = "psk";
+    inline static const std::string JSON_USER   = "user";
 
-    static const int HUE_DTLS_MAX_PAYLOAD_SIZE;
-    static const int HUE_DTLS_STATE_INIT;
-    static const int HUE_DTLS_STATE_CONNECTED;
-    static const int HUE_DTLS_STATE_CLEANEDUP;
+    inline static const int HUE_DTLS_MAX_PAYLOAD_SIZE = 1350;
+    inline static const int HUE_DTLS_STATE_INIT       = 10;
+    inline static const int HUE_DTLS_STATE_CONNECTED  = 20;
+    inline static const int HUE_DTLS_STATE_CLEANEDUP  = 30;
 
-    static const int DTLS_PORT;
-    static const int SSL_PORT;
+    inline static const int DTLS_PORT = 2100;
+    inline static const int SSL_PORT  = 443;
     
-    static const std::string HUE_ENTERTAINMENT_API_NEEDED;
+    inline static const std::string HUE_ENTERTAINMENT_API_NEEDED = "1.22.0";
 
-    static const int AREA_NAME_LEN;
-    static const int MAX_LIGHTS_PER_AREA;
+    inline static const int AREA_NAME_LEN       = 33;
+    inline static const int MAX_LIGHTS_PER_AREA = 10;
 
-    static const int HUE_APP_NAME_SIZE;
-    static const int HUE_DEVICE_NAME_SIZE;
+    inline static const int HUE_APP_NAME_SIZE    = 21;
+    inline static const int HUE_DEVICE_NAME_SIZE = 20;
 
     // Generic errors
-    static const int HUE_ERR_UNAUTHORIZED;
-    static const int HUE_ERR_INVALID_MSG;
-    static const int HUE_ERR_NOT_AVAILABLE;
-    static const int HUE_ERR_INCORRECT_METHOD;
-    static const int HUE_ERR_MISSING_PARAMS;
-    static const int HUE_ERR_PARAM_NOT_AVAILABLE;
-    static const int HUE_ERR_INVALID_VALUE;
-    static const int HUE_ERR_NOT_MODIFIABLE;
-    static const int HUE_ERR_TOO_MANY;
-    static const int HUE_ERR_PORTAL_REQUIRED;
-    static const int HUE_ERR_INTERNAL_ERROR;
+    inline static const int HUE_ERR_UNAUTHORIZED        = 1;
+    inline static const int HUE_ERR_INVALID_MSG         = 2;
+    inline static const int HUE_ERR_NOT_AVAILABLE       = 3;
+    inline static const int HUE_ERR_INCORRECT_METHOD    = 4;
+    inline static const int HUE_ERR_MISSING_PARAMS      = 5;
+    inline static const int HUE_ERR_PARAM_NOT_AVAILABLE = 6;
+    inline static const int HUE_ERR_INVALID_VALUE       = 7;
+    inline static const int HUE_ERR_NOT_MODIFIABLE      = 8;
+    inline static const int HUE_ERR_TOO_MANY            = 11;
+    inline static const int HUE_ERR_PORTAL_REQUIRED     = 12;
+    inline static const int HUE_ERR_INTERNAL_ERROR      = 901;
 
     // Command specific errors
-    static const int HUE_ERR_LINK_BUTTON_NOT_PUSHED;
-    static const int HUE_ERR_DHCP_NOT_DISABLED;
-    static const int HUE_ERR_INVALID_UPDATASTATE;
-    static const int HUE_ERR_PARAM_NOT_MODIFIABLE;
-    static const int HUE_ERR_COMMISSIONABLE_LIST_FULL;
-    static const int HUE_ERR_GROUP_TABLE_FULL;
-    static const int HUE_ERR_DELETE_NOT_PERMITTED;
-    static const int HUE_ERR_ALREADY_USED;
-    static const int HUE_ERR_SCENE_BUFFER_FULL;
-    static const int HUE_ERR_SCENE_LOCKED;
-    static const int HUE_ERR_GROUP_EMPTY;
-    static const int HUE_ERR_CANNOT_CREATE_SENSOR;
-    static const int HUE_ERR_SENSOR_LIST_FULL;
-    static const int HUE_ERR_COMMISSIONABLE_SENSOR_LIST_FULL;
-    static const int HUE_ERR_RULE_ENGINE_FULL;
-    static const int HUE_ERR_CONDITION_ERROR;
-    static const int HUE_ERR_ACTION_ERROR;
-    static const int HUE_ERR_UNABLE_TO_ACTIVATE;
-    static const int HUE_ERR_SCHEDULE_LIST_FULL;
-    static const int HUE_ERR_INVALID_TIMEZONE;
-    static const int HUE_ERR_CANNOT_SET_SCHED_TIME;
-    static const int HUE_ERR_CANNOT_CREATE_SCHEDULE;
-    static const int HUE_ERR_SCHEDULE_IN_PAST;
-    static const int HUE_ERR_COMMAND_ERROR;
-    static const int HUE_ERR_MODEL_INVALID;
-    static const int HUE_ERR_FACTORY_NEW;
-    static const int HUE_ERR_INVALID_STATE;
-    
-    static const int DEBUG_LEVEL;
+    inline static const int HUE_ERR_LINK_BUTTON_NOT_PUSHED          = 101;
+    inline static const int HUE_ERR_DHCP_NOT_DISABLED               = 110;
+    inline static const int HUE_ERR_INVALID_UPDATASTATE             = 111;
+    inline static const int HUE_ERR_PARAM_NOT_MODIFIABLE            = 201;
+    inline static const int HUE_ERR_COMMISSIONABLE_LIST_FULL        = 203;
+    inline static const int HUE_ERR_GROUP_TABLE_FULL                = 301;
+    inline static const int HUE_ERR_DELETE_NOT_PERMITTED            = 305;
+    inline static const int HUE_ERR_ALREADY_USED                    = 306;
+    inline static const int HUE_ERR_SCENE_BUFFER_FULL               = 402;
+    inline static const int HUE_ERR_SCENE_LOCKED                    = 403;
+    inline static const int HUE_ERR_GROUP_EMPTY                     = 404;
+    inline static const int HUE_ERR_CANNOT_CREATE_SENSOR            = 501;
+    inline static const int HUE_ERR_SENSOR_LIST_FULL                = 502;
+    inline static const int HUE_ERR_COMMISSIONABLE_SENSOR_LIST_FULL = 503;
+    inline static const int HUE_ERR_RULE_ENGINE_FULL                = 601;
+    inline static const int HUE_ERR_CONDITION_ERROR                 = 607;
+    inline static const int HUE_ERR_ACTION_ERROR                    = 608;
+    inline static const int HUE_ERR_UNABLE_TO_ACTIVATE              = 609;
+    inline static const int HUE_ERR_SCHEDULE_LIST_FULL              = 701;
+    inline static const int HUE_ERR_INVALID_TIMEZONE                = 702;
+    inline static const int HUE_ERR_CANNOT_SET_SCHED_TIME           = 703;
+    inline static const int HUE_ERR_CANNOT_CREATE_SCHEDULE          = 704;
+    inline static const int HUE_ERR_SCHEDULE_IN_PAST                = 705;
+    inline static const int HUE_ERR_COMMAND_ERROR                   = 706;
+    inline static const int HUE_ERR_MODEL_INVALID                   = 801;
+    inline static const int HUE_ERR_FACTORY_NEW                     = 802;
+    inline static const int HUE_ERR_INVALID_STATE                   = 803;
 
-    static const int HUE_MSG_DEBUG;
-    static const int HUE_MSG_INFO;
-    static const int HUE_MSG_ERR;
-    static const int HUE_MSG_OFF;
+    inline static const int HUE_MSG_DEBUG = 3;
+    inline static const int HUE_MSG_INFO  = 2;
+    inline static const int HUE_MSG_ERR   = 1;
+    inline static const int HUE_MSG_OFF   = 0;
+
+    inline static const int DEBUG_LEVEL = HUE_MSG_ERR;
     
     class DTLS {
       private:

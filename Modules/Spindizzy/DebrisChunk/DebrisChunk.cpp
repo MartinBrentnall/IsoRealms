@@ -19,15 +19,6 @@
 #include "DebrisChunk.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string DebrisChunk::JSON_OUTLINE       = "outline";
-  const std::string DebrisChunk::JSON_OUTLINE_WIDTH = "outlineWidth";
-  const std::string DebrisChunk::JSON_SIDE_1        = "side1";
-  const std::string DebrisChunk::JSON_SIDE_2        = "side2";
-  const std::string DebrisChunk::JSON_SIDE_3        = "side3";
-  const std::string DebrisChunk::JSON_SIDE_4        = "side4";
-
-  const float DebrisChunk::DEFAULT_OUTLINE_WIDTH = 0.18f;
-
   DebrisChunk::DebrisChunk(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
             cDefSide{Colour(data, 1.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),

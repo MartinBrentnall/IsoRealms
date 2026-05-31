@@ -19,14 +19,6 @@
 #include "SimpleVertex.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleVertex::JSON_X = "x";
-  const std::string SimpleVertex::JSON_Y = "y";
-  const std::string SimpleVertex::JSON_Z = "z";
-
-  const std::string SimpleVertex::PROPERTY_X = "X";
-  const std::string SimpleVertex::PROPERTY_Y = "Y";
-  const std::string SimpleVertex::PROPERTY_Z = "Z";
-
   SimpleVertex::SimpleVertex(Basics& basics, IResourceData& data) :
             cDefX(0.0),
             cDefY(0.0),

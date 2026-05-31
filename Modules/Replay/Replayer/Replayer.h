@@ -137,10 +137,10 @@ namespace IsoRealms::Replay {
     };
     
     // JSON constants.
-    static const std::string JSON_ANALOGUE_INPUTS;
-    static const std::string JSON_DIGITAL_INPUTS;
-    static const std::string JSON_NAME;
-    static const std::string JSON_VALUE;
+    inline static const std::string JSON_ANALOGUE_INPUTS = "analogueInputs";
+    inline static const std::string JSON_DIGITAL_INPUTS  = "digitalInputs";
+    inline static const std::string JSON_NAME            = "name";
+    inline static const std::string JSON_VALUE           = "value";
 
     // External interfaces.
     IResourceData& cResource;

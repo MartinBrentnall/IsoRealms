@@ -21,10 +21,6 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string LiftType::JSON_APPEARANCE = "appearance";
-  const std::string LiftType::JSON_ON_TICK    = "onTick";
-  const std::string LiftType::JSON_STATE      = "state";
-
   LiftType::LiftType(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),

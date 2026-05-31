@@ -96,17 +96,17 @@ namespace IsoRealms::Equilibria {
     const std::map<std::string, EditorAnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
     const std::map<std::string, EditorDigitalInput<WorldEditor, SignalInputID>*> cDigitalInputsByName; /// Mapping of digital inputs by name.
 
-    static const float SPEED_FAST;
-    static const float SPEED_NORMAL;
-    static const float SPEED_SLOW;
-    static const float STOP_THRESHOLD;
-    static const float SELECTION_BOUNDARY_RENDERING_OFFSET;
+    inline static const float SPEED_FAST                          = 0.3f;
+    inline static const float SPEED_NORMAL                        = 0.1f;
+    inline static const float SPEED_SLOW                          = 0.05f;
+    inline static const float STOP_THRESHOLD                      = 0.01f;
+    inline static const float SELECTION_BOUNDARY_RENDERING_OFFSET = 0.001f;
 
-    static const float BORDER_SPACING;
-    static const float ICON_WIDTH;
-    static const float ICON_HEIGHT;
-    static const float BOTTOM_BORDER;
-    static const float ICON_SPACING;
+    inline static const float BORDER_SPACING = 0.02f;
+    inline static const float ICON_WIDTH     = 0.12f;
+    inline static const float ICON_HEIGHT    = 0.12f;
+    inline static const float BOTTOM_BORDER  = -1.0f + BORDER_SPACING;
+    inline static const float ICON_SPACING   = 0.02f;
 
     int cDefAnalogueSensitivity;
 

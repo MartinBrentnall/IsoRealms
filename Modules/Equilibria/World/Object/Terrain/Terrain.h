@@ -46,14 +46,14 @@ namespace IsoRealms::Equilibria {
     public:
 
     // Cache values.
-    static const unsigned char CACHE_BLOCK_END;         /// Signifies the end of data for this terrain element.
-    static const unsigned char CACHE_SURFACE;           /// Signifies the beginning of data for a surface belonging to this terrain element.
-    static const unsigned char CACHE_SPLIT_SURFACE;     /// Signifies the beginning of data for a split surface belonging to this terrain element.
-    static const unsigned char CACHE_WALL;              /// Signifies the beginning of data for a wall surface belonging to this terrain element.
-    static const unsigned char CACHE_SURFACE_END;       /// Signifies the end of data for the current surface.
-    static const unsigned char CACHE_CONDITION;         /// Signifies the beginning of a (sub-)condition for the current surface or condition.
-    static const unsigned char CACHE_CONDITION_ELEMENT; /// Signifies the beginning of a condition element name.
-    static const unsigned char CACHE_CONDITION_END;     /// Signifies the end of a (sub-)condition.
+    inline static const unsigned char CACHE_BLOCK_END         = 0; /// Signifies the end of data for this terrain element.
+    inline static const unsigned char CACHE_SURFACE           = 1; /// Signifies the beginning of data for a surface belonging to this terrain element.
+    inline static const unsigned char CACHE_SPLIT_SURFACE     = 2; /// Signifies the beginning of data for a split surface belonging to this terrain element.
+    inline static const unsigned char CACHE_WALL              = 3; /// Signifies the beginning of data for a wall surface belonging to this terrain element.
+    inline static const unsigned char CACHE_SURFACE_END       = 4; /// Signifies the end of data for the current surface.
+    inline static const unsigned char CACHE_CONDITION         = 5; /// Signifies the beginning of a (sub-)condition for the current surface or condition.
+    inline static const unsigned char CACHE_CONDITION_ELEMENT = 6; /// Signifies the beginning of a condition element name.
+    inline static const unsigned char CACHE_CONDITION_END     = 7; /// Signifies the end of a (sub-)condition.
 
     
 
@@ -213,36 +213,36 @@ namespace IsoRealms::Equilibria {
     void loadWall(std::ifstream& cache);
 
     private:
-    static const char FLAGS_NORMAL;
-    static const char FLAG_INVISIBLE;
-    static const char FLAG_GHOST;
-    static const char FLAG_FORCE_DYNAMIC;
-    static const char FLAG_STEPPED_BOTTOM;
-    static const char FLAG_ALTERNATIVE_SPLIT;
-    static const char FLAG_BEHAVIOUR_MASK;
+    inline static const char FLAGS_NORMAL           = 0;
+    inline static const char FLAG_INVISIBLE         = 0x1;
+    inline static const char FLAG_GHOST             = 0x2;
+    inline static const char FLAG_FORCE_DYNAMIC     = 0x4;
+    inline static const char FLAG_STEPPED_BOTTOM    = 0x8;
+    inline static const char FLAG_ALTERNATIVE_SPLIT = 0x10;
+    inline static const char FLAG_BEHAVIOUR_MASK    = FLAG_INVISIBLE | FLAG_GHOST | FLAG_FORCE_DYNAMIC;
 
     // JSON members.
-    static const std::string JSON_ALTERNATIVE_SPLIT;
-    static const std::string JSON_BEHAVIOUR;
-    static const std::string JSON_CONDITION;
-    static const std::string JSON_HEIGHT;
-    static const std::string JSON_LENGTH;
-    static const std::string JSON_NORTH_EAST_CORNER;
-    static const std::string JSON_NORTH_WEST_CORNER;
-    static const std::string JSON_SOUTH_WEST_CORNER;
-    static const std::string JSON_SOUTH_EAST_CORNER;
-    static const std::string JSON_STEPPED_BOTTOM;
-    static const std::string JSON_TYPE;
-    static const std::string JSON_WIDTH;
-    static const std::string JSON_X;
-    static const std::string JSON_Y;
-    static const std::string JSON_Z;
+    inline static const std::string JSON_ALTERNATIVE_SPLIT = "alternativeSplit";
+    inline static const std::string JSON_BEHAVIOUR         = "behaviour";
+    inline static const std::string JSON_CONDITION         = "condition";
+    inline static const std::string JSON_HEIGHT            = "height";
+    inline static const std::string JSON_LENGTH            = "length";
+    inline static const std::string JSON_NORTH_EAST_CORNER = "northEastCorner";
+    inline static const std::string JSON_NORTH_WEST_CORNER = "northWestCorner";
+    inline static const std::string JSON_SOUTH_WEST_CORNER = "southWestCorner";
+    inline static const std::string JSON_SOUTH_EAST_CORNER = "southEastCorner";
+    inline static const std::string JSON_STEPPED_BOTTOM    = "steppedBottom";
+    inline static const std::string JSON_TYPE              = "type";
+    inline static const std::string JSON_WIDTH             = "width";
+    inline static const std::string JSON_X                 = "x";
+    inline static const std::string JSON_Y                 = "y";
+    inline static const std::string JSON_Z                 = "z";
 
-    static const std::string BEHAVIOUR_NORMAL;
-    static const std::string BEHAVIOUR_INVISIBLE;
-    static const std::string BEHAVIOUR_GHOST;
-    static const std::string BEHAVIOUR_DYNAMIC;
-    static const std::string BEHAVIOUR_DYNAMIC_GHOST;
+    inline static const std::string BEHAVIOUR_NORMAL        = "normal";
+    inline static const std::string BEHAVIOUR_INVISIBLE     = "invisible";
+    inline static const std::string BEHAVIOUR_GHOST         = "ghost";
+    inline static const std::string BEHAVIOUR_DYNAMIC       = "dynamic";
+    inline static const std::string BEHAVIOUR_DYNAMIC_GHOST = "dynamicGhost";
 
     // External interfaces.
     Zone& cZone;

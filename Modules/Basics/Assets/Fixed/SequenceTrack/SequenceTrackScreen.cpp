@@ -95,7 +95,5 @@ namespace IsoRealms::Basics {
       mInstance->positionChanged();
     }
   }
-
-  const std::string SequenceTrackScreen::JSON_START = "start";
 }
 

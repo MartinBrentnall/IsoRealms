@@ -59,9 +59,9 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_ENABLED;
-    static const std::string JSON_END;
-    static const std::string JSON_START;
+    inline static const std::string JSON_ENABLED = "enabled";
+    inline static const std::string JSON_END     = "end";
+    inline static const std::string JSON_START   = "start";
 
     // Definition data.
     ZoneObjectType& cDefType;  /// Object type to which this boundary type belongs.

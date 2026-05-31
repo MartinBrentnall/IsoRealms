@@ -22,11 +22,6 @@
 #include "Modules/Equilibria/CollisionHandler/CollisionHandlerInstance.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string CollisionHandler::JSON_OBJECT_A     = "objectA";
-  const std::string CollisionHandler::JSON_OBJECT_B     = "objectB";
-  const std::string CollisionHandler::JSON_ON_COLLISION = "onCollision";
-  const std::string CollisionHandler::JSON_ON_PARTING   = "onParting";
-
   CollisionHandler::CollisionHandler(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cDefPhysicalObjectTypeA(equilibria),

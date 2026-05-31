@@ -57,12 +57,12 @@ namespace IsoRealms::Spindizzy {
     private:
 
     // JSON members.
-    static const std::string JSON_FILL;
-    static const std::string JSON_OUTLINE;
-    static const std::string JSON_SHINE;
+    inline static const std::string JSON_FILL    = "fill";
+    inline static const std::string JSON_OUTLINE = "outline";
+    inline static const std::string JSON_SHINE   = "shine";
 
     // Resource definition constants.
-    static const float CIRCLE_RESOLUTION;
+    inline static const float CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
     Project& cProject;
 

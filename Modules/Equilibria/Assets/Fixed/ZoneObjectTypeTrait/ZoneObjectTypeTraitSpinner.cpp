@@ -23,10 +23,6 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ZoneObjectTypeTraitSpinner::JSON_LOCATION   = "location";
-  const std::string ZoneObjectTypeTraitSpinner::JSON_MODEL      = "model";
-  const std::string ZoneObjectTypeTraitSpinner::JSON_SPIN_SPEED = "spinSpeed";
-  
   ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type) :
             cDefModel(type.getResourceData()) {
   }

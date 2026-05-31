@@ -54,11 +54,7 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_EVENTS;
-    static const std::string JSON_FILE;
-    static const std::string JSON_NAME;
-    static const std::string JSON_TIME;
-    static const std::string JSON_VOLUME;
+    inline static const std::string JSON_VOLUME = "volume";
 
     // External interfaces.
     const Metadata& cMetadata;

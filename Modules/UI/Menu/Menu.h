@@ -84,17 +84,17 @@ namespace IsoRealms::UI {
     private:
     
     // JSON members.
-    static const std::string JSON_COLOUR;
-    static const std::string JSON_FONT;
-    static const std::string JSON_FONT_SIZE;
-    static const std::string JSON_ITEM;
-    static const std::string JSON_ON_EXIT;
-    static const std::string JSON_OPTIONS;
-    static const std::string JSON_SHADOW_OFFSET;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_COLOUR        = "colour";
+    inline static const std::string JSON_FONT          = "font";
+    inline static const std::string JSON_FONT_SIZE     = "fontSize";
+    inline static const std::string JSON_ITEM          = "item";
+    inline static const std::string JSON_ON_EXIT       = "onExit";
+    inline static const std::string JSON_OPTIONS       = "options";
+    inline static const std::string JSON_SHADOW_OFFSET = "shadowOffset";
+    inline static const std::string JSON_TYPE          = "type";
 
-    static const float DEFAULT_FONT_SIZE;
-    static const float DEFAULT_SHADOW_OFFSET;
+    inline static const float DEFAULT_FONT_SIZE     = 0.05f;
+    inline static const float DEFAULT_SHADOW_OFFSET = 0.008f;
 
     // External interfaces.
     IResourceData& cResourceData;

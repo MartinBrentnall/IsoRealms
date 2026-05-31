@@ -58,8 +58,8 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_CONSUME;
-    static const std::string JSON_ON_INPUT;
+    inline static const std::string JSON_CONSUME  = "consume";
+    inline static const std::string JSON_ON_INPUT = "onInput";
 
     // Definition data.
     Action cDefAction;

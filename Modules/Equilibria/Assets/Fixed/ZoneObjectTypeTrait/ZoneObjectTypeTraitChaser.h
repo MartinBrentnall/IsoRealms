@@ -48,8 +48,8 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_OBJECT;
-    static const std::string JSON_TARGET;
+    inline static const std::string JSON_OBJECT = "object";
+    inline static const std::string JSON_TARGET = "target";
 
     // Definition data.
     Vertex cDefTarget;        /// Target of chasers.

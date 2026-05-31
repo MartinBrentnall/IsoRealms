@@ -60,8 +60,8 @@ namespace IsoRealms {
       void setID(const std::string& id) override;
 
       private:
-      static const std::string ID_TRUE;
-      static const std::string ID_FALSE;
+      inline static const std::string ID_TRUE  = "true";
+      inline static const std::string ID_FALSE = "false";
 
       Project& cProject;
       std::function<void(bool)> cSetter;

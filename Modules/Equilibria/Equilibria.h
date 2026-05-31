@@ -56,8 +56,8 @@ namespace IsoRealms::Equilibria {
     public:
     
     // Module constants.
-    static const double DEFAULT_VIEW_ANGLE_PITCH;
-    static const double DEFAULT_VIEW_ANGLE_YAW;
+    inline static const double DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
+    inline static const double DEFAULT_VIEW_ANGLE_YAW   = -45.0;
 
     // Module utility functions.
     static int getTerrainSlope(int startA, int startB, int endA, int endB) {
@@ -279,19 +279,16 @@ namespace IsoRealms::Equilibria {
     private:
 
     // Fixed tool names.
-    static const std::string TOOL_DELETE;
-    static const std::string TOOL_PROPERTIES;
-    static const std::string TOOL_COPY_ZONE;
-    static const std::string TOOL_MOVE_ZONE;
-    static const std::string TOOL_DELETE_ZONE;
-
-    static const std::string BIND_TO_FALL_DISTANCE;
-    static const std::string BIND_TO_LAUNCH_MOMENTUM;
-    static const std::string BIND_TO_ZONE;
+    inline static const std::string TOOL_DELETE      = "DeleteTool";
+    inline static const std::string TOOL_PROPERTIES  = "PropertiesTool";
+    inline static const std::string TOOL_COPY_ZONE   = "ZoneCopyTool";
+    inline static const std::string TOOL_MOVE_ZONE   = "ZoneMoveTool";
+    inline static const std::string TOOL_DELETE_ZONE = "ZoneDeleteTool";
 
     inline static const std::string BIND_TO_PLAYER  = "Player";
     inline static const std::string BIND_TO_TERRAIN = "Terrain";
     inline static const std::string BIND_TO_WALL    = "Wall";
+    inline static const std::string BIND_TO_ZONE    = "Zone";
 
     // External interfaces.
     Project& cProject;

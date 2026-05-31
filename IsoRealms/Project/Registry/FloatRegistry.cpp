@@ -49,6 +49,4 @@ namespace IsoRealms {
   void FloatRegistry::Literal::Instance::saveAsset(JSONObject object) const {
     object.addFloat(JSON_VALUE, cValue);
   }
-
-  const std::string FloatRegistry::Literal::Instance::JSON_VALUE = "value";
 }

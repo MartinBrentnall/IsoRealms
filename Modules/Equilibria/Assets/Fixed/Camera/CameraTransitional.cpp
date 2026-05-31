@@ -21,8 +21,6 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  const unsigned int CameraTransitional::DEFAULT_DURATION = 500U;
-
   CameraTransitional::CameraTransitional(const Metadata& metadata, WorldView& view) :
             cMetadata(metadata),
             cParent(view),
@@ -261,12 +259,4 @@ namespace IsoRealms::Equilibria {
   bool CameraTransitional::Transition::isDefaultConfiguration() const {
     return true; // TODO?
   }
-
-  const std::string CameraTransitional::JSON_DURATION           = "duration";
-  const std::string CameraTransitional::JSON_END                = "end";
-  const std::string CameraTransitional::JSON_ON_END_ARRIVAL     = "onEndArrival";
-  const std::string CameraTransitional::JSON_ON_END_DEPARTURE   = "onEndDeparture";
-  const std::string CameraTransitional::JSON_ON_START_ARRIVAL   = "onStartArrival";
-  const std::string CameraTransitional::JSON_ON_START_DEPARTURE = "onStartDeparture";
-  const std::string CameraTransitional::JSON_START              = "start";
 }

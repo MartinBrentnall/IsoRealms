@@ -23,13 +23,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string PickUp::JSON_TYPE = "type";
-  const std::string PickUp::JSON_X    = "x";
-  const std::string PickUp::JSON_Y    = "y";
-  const std::string PickUp::JSON_Z    = "z";
-
-  const std::string PickUp::BIND_TO_ZONE = "Zone";
-
   PickUp::PickUp(Zone& zone, PickUpType& type, int x, int y, int z) :
             cZone(zone),
             cDefType(&type),

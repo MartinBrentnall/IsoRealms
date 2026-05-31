@@ -74,11 +74,11 @@ namespace IsoRealms::UI {
     private:
 
     // JSON members.
-    static const std::string JSON_ID;
-    static const std::string JSON_ON_SELECTION;
+    inline static const std::string JSON_ID           = "id";
+    inline static const std::string JSON_ON_SELECTION = "onSelection";
 
     // Constants.
-    static const std::string BINDING_TYPE;
+    inline static const std::string BINDING_TYPE = "LauncherList";
 
     // Private types.
     class Launcher {

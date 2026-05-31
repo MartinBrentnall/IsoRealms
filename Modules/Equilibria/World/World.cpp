@@ -23,41 +23,6 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string World::JSON_BASIC_PROPERTIES  = "basicProperties";
-  const std::string World::JSON_BOUNCE_CONTROL    = "bounceControl";
-  const std::string World::JSON_DEBRIS_GENERATORS = "debrisGenerators";
-  const std::string World::JSON_GRAVITY           = "gravity";
-  const std::string World::JSON_PLAYERS           = "players";
-  const std::string World::JSON_SLOPE_FORCE       = "slopeForce";
-  const std::string World::JSON_ZONES             = "zones";
-
-  const std::string World::JSON_AUTOMATIC_ZONE_MANAGEMENT = "automaticZoneManagement";
-  const std::string World::JSON_AUTOMATIC_ZONE_X_SIZE     = "automaticZoneXSize";
-  const std::string World::JSON_AUTOMATIC_ZONE_Y_SIZE     = "automaticZoneYSize";
-  const std::string World::JSON_AUTOMATIC_ZONE_Z_SIZE     = "automaticZoneZSize";
-  const std::string World::JSON_DEFAULT_THEME_SET         = "defaultThemeSet";
-  const std::string World::JSON_DEFAULT_WORLD_EDITOR_TOOL = "defaultWorldEditorTool";
-  const std::string World::JSON_EDITOR_MAX_X              = "editorMaxX";
-  const std::string World::JSON_EDITOR_MAX_Y              = "editorMaxY";
-  const std::string World::JSON_EDITOR_MAX_Z              = "editorMaxZ";
-  const std::string World::JSON_EDITOR_MIN_X              = "editorMinX";
-  const std::string World::JSON_EDITOR_MIN_Y              = "editorMinY";
-  const std::string World::JSON_EDITOR_MIN_Z              = "editorMinZ";
-  const std::string World::JSON_EDITOR_TOOL               = "editorTool";
-  const std::string World::JSON_EDITOR_TOOLS              = "editorTools";
-
-  const unsigned int World::DEFAULT_BOUNCE_CONTROL = 10;
-
-  const int World::DEFAULT_AUTOMATIC_ZONE_X_SIZE =  8;
-  const int World::DEFAULT_AUTOMATIC_ZONE_Y_SIZE =  8;
-  const int World::DEFAULT_AUTOMATIC_ZONE_Z_SIZE =  8;
-  const int World::DEFAULT_EDITOR_MAX_X          =  511;
-  const int World::DEFAULT_EDITOR_MIN_X          = -512;
-  const int World::DEFAULT_EDITOR_MAX_Y          =  511;
-  const int World::DEFAULT_EDITOR_MIN_Y          = -512;
-  const int World::DEFAULT_EDITOR_MAX_Z          =  7;
-  const int World::DEFAULT_EDITOR_MIN_Z          =  0;
-
   World::World(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cResourceData(data),

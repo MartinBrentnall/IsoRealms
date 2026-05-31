@@ -23,16 +23,6 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string Function::JSON_ARGUMENT      = "argument";
-  const std::string Function::JSON_ARGUMENTS     = "arguments";
-  const std::string Function::JSON_BINDINGS      = "bindings";
-  const std::string Function::JSON_CODE          = "code";
-  const std::string Function::JSON_DEFAULT_VALUE = "defaultValue";
-  const std::string Function::JSON_ID            = "id";
-  const std::string Function::JSON_TO            = "to";
-  const std::string Function::JSON_TYPE          = "type";
-  const std::string Function::JSON_VARIABLE      = "variable";
-
   Function::Function(Basics& basics, IResourceData& data) :
             Function(basics, data.getDummyActionContext()) {
   }

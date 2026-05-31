@@ -63,7 +63,7 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_VIEW;
+    inline static const std::string JSON_VIEW = "view";
         
     const Metadata& cMetadata;
     WorldView& cParent;

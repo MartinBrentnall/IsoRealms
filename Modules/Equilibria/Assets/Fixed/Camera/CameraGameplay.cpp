@@ -21,21 +21,6 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string CameraGameplay::DIRECTION_NORTH_EAST = "NorthEast";
-  const std::string CameraGameplay::DIRECTION_NORTH_WEST = "NorthWest";
-  const std::string CameraGameplay::DIRECTION_SOUTH_EAST = "SouthEast";
-  const std::string CameraGameplay::DIRECTION_SOUTH_WEST = "SouthWest";
-  const std::string CameraGameplay::DIRECTION_INVALID    = "Invalid";
-
-  const int CameraGameplay::DEFAULT_DURATION =  500;
-  const int CameraGameplay::VALUE_MAX        =  180;
-  const int CameraGameplay::VALUE_MIN        = -180;
-  const int CameraGameplay::VALUE_NORTH_EAST =   45;
-  const int CameraGameplay::VALUE_NORTH_WEST =  -45;
-  const int CameraGameplay::VALUE_SOUTH_EAST =  135;
-  const int CameraGameplay::VALUE_SOUTH_WEST = -135;
-  const int CameraGameplay::VALUE_INVALID    =    0;
-  
   CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view) :
             cMetadata(metadata),
             cParent(view),
@@ -241,7 +226,4 @@ namespace IsoRealms::Equilibria {
          : value == DIRECTION_SOUTH_WEST ? VALUE_SOUTH_WEST
          :                                 VALUE_INVALID;
   }
-
-  const std::string CameraGameplay::JSON_DIRECTION       = "direction";
-  const std::string CameraGameplay::JSON_ROTATE_DURATION = "rotateDuration";
 }

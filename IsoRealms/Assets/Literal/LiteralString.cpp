@@ -50,6 +50,4 @@ namespace IsoRealms {
   void LiteralString::saveAsset(JSONObject object) const {
     object.addString(JSON_VALUE, cValue);
   }
-
-  const std::string LiteralString::JSON_VALUE = "value";
 }

@@ -175,9 +175,4 @@ namespace IsoRealms::UI {
   bool StringTime::isConfigurable() const {
     return false;
   }
-
-  const std::string StringTime::JSON_VALUE  = "value";
-  const std::string StringTime::JSON_FORMAT = "format";
-
-  const std::string StringTime::DEFAULT_FORMAT = "{m}:{s:02}.{ms:2}";
 }

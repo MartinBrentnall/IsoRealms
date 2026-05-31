@@ -57,6 +57,4 @@ namespace IsoRealms::UI {
   bool ScreenModel::isDefaultConfiguration() const {
     return cDefModel.isDefaultConfigured();
   }
-
-  const std::string ScreenModel::JSON_MODEL = "model";
 }

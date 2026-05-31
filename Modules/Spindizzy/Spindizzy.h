@@ -36,8 +36,8 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Module constants.
-    static const double DEFAULT_VIEW_ANGLE_PITCH;
-    static const double DEFAULT_VIEW_ANGLE_YAW;
+    inline static const double DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
+    inline static const double DEFAULT_VIEW_ANGLE_YAW   = -45.0;
     
     // Module constructor.
     Spindizzy(Project& project, IResourceTypeRegistry& registry);

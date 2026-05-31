@@ -22,9 +22,6 @@
 #include "IsoRealms/Assets/Type/IScreen.h"
 
 namespace IsoRealms {
-  const std::string ConditionElement::JSON_INPUT   = "input";
-  const std::string ConditionElement::JSON_NEGATED = "negated";
-
   ConditionElement::ConditionElement(std::function<std::string()> nameFunction, IScreen& icon, IBoolean* input) :
             cInputNameFunction(nameFunction),
             cInput(input),

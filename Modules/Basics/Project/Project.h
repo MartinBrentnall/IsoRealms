@@ -93,13 +93,13 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_EDITING;
-    static const std::string JSON_FILE;
-    static const std::string JSON_ON_ERROR;
-    static const std::string JSON_ON_FINISH;
-    static const std::string JSON_ON_READY;
-    static const std::string JSON_RUNNING;
-    static const std::string JSON_USER;
+    inline static const std::string JSON_EDITING   = "editing";
+    inline static const std::string JSON_FILE      = "file";
+    inline static const std::string JSON_ON_ERROR  = "onError";
+    inline static const std::string JSON_ON_FINISH = "onFinish";
+    inline static const std::string JSON_ON_READY  = "onReady";
+    inline static const std::string JSON_RUNNING   = "running";
+    inline static const std::string JSON_USER      = "user";
 
     // External interfaces.
     IsoRealms::Project& cProject;

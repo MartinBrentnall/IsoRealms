@@ -19,8 +19,6 @@
 #include "FileTexture.h"
 
 namespace IsoRealms::Basics {
-  const std::string FileTexture::JSON_FILENAME = "filename";
-
   FileTexture::FileTexture(Basics& basics, IResourceData& data) :
             cDefFile(data.getProject()) {
   }

@@ -116,6 +116,4 @@ namespace IsoRealms::Basics {
       mInstance->stateChanged(colour);
     }
   }
-
-  const std::string SequenceTrackColour::JSON_START = "start";
 }

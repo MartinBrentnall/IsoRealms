@@ -19,17 +19,6 @@
 #include "Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string Basics::ACTION_SCRIPT = "Script";
-  
-  const std::string Basics::JSON_ANALOGUE_INPUT_MAPPINGS = "analogueInputMappings";
-  const std::string Basics::JSON_DIGITAL_INPUT_MAPPINGS  = "digitalInputMappings";
-  const std::string Basics::JSON_ID                      = "id";
-  const std::string Basics::JSON_MODULE_SETTINGS         = "moduleSettings";
-  const std::string Basics::JSON_MUSIC_VOLUME            = "musicVolume";
-  const std::string Basics::JSON_SOUND_VOLUME            = "soundVolume";
-
-  const std::string Basics::GLOBAL_CONFIGURATION_FILE = "Module_IsoRealms.json";
-
   float Basics::cSoundVolume = 1.0f;
   float Basics::cMusicVolume = 1.0f;
 

@@ -74,9 +74,12 @@ namespace IsoRealms {
 
       private:
 
+      // JSON members.
+      inline static const std::string JSON_VALUE = "value";
+
       /**
-      * A simple Float asset implementation.
-      */
+       * A simple Float asset implementation.
+       */
       class Instance : public IFloat {
         public:
         Instance(Project& project, const float value);
@@ -95,15 +98,12 @@ namespace IsoRealms {
         bool isDefaultConfiguration() const override;
 
         private:
-        static const std::string JSON_VALUE;
 
         // External interfaces.
         const Metadata& cMetadata;
 
         float cValue; /// The value of this Float.
       };
-
-      inline static const std::string JSON_VALUE = "value";
     };
 
     Literal cLiteral;

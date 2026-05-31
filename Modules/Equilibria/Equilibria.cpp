@@ -19,9 +19,6 @@
 #include "Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  const double Equilibria::DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
-  const double Equilibria::DEFAULT_VIEW_ANGLE_YAW = -45.0;
-
   Equilibria::Equilibria(Project& project, IResourceTypeRegistry& registry) :
                     cProject(project),
                     cModule(registry),
@@ -566,13 +563,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  const std::string Equilibria::TOOL_DELETE      = "DeleteTool";
-  const std::string Equilibria::TOOL_PROPERTIES  = "PropertiesTool";
-  const std::string Equilibria::TOOL_COPY_ZONE   = "ZoneCopyTool";
-  const std::string Equilibria::TOOL_MOVE_ZONE   = "ZoneMoveTool";
-  const std::string Equilibria::TOOL_DELETE_ZONE = "ZoneDeleteTool";
-
-  const std::string Equilibria::BIND_TO_ZONE = "Zone";
 
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<Equilibria>> ModuleInstances;

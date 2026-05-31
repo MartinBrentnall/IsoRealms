@@ -66,23 +66,23 @@ namespace IsoRealms::UI {
     private:
 
     // JSON members.
-    static const std::string JSON_COLOUR;
-    static const std::string JSON_DURATION;
-    static const std::string JSON_REPETITIONS;
-    static const std::string JSON_RING_RADIUS;
-    static const std::string JSON_SHADOW_OFFSET;
-    static const std::string JSON_SPOT_RADIUS;
-    static const std::string JSON_SPOT_SIDES;
-    static const std::string JSON_SPOTS;
+    inline static const std::string JSON_COLOUR        = "colour";
+    inline static const std::string JSON_DURATION      = "duration";
+    inline static const std::string JSON_REPETITIONS   = "repetitions";
+    inline static const std::string JSON_RING_RADIUS   = "ringRadius";
+    inline static const std::string JSON_SHADOW_OFFSET = "shadowOffset";
+    inline static const std::string JSON_SPOT_RADIUS   = "spotRadius";
+    inline static const std::string JSON_SPOT_SIDES    = "spotSides";
+    inline static const std::string JSON_SPOTS         = "spots";
 
     // Default values.
-    static const unsigned int DEFAULT_DURATION;
-    static const unsigned int DEFAULT_REPETITIONS;
-    static const float        DEFAULT_RING_RADIUS;
-    static const float        DEFAULT_SHADOW_OFFSET;
-    static const float        DEFAULT_SPOT_RADIUS;
-    static const unsigned int DEFAULT_SPOT_SIDES;
-    static const unsigned int DEFAULT_SPOTS;
+    inline static const unsigned int DEFAULT_DURATION      = 2000U;
+    inline static const unsigned int DEFAULT_REPETITIONS   = 1U;
+    inline static const float        DEFAULT_RING_RADIUS   = 0.2f;
+    inline static const float        DEFAULT_SHADOW_OFFSET = 0.008f;
+    inline static const float        DEFAULT_SPOT_RADIUS   = 0.06f;
+    inline static const unsigned int DEFAULT_SPOT_SIDES    = 32U;
+    inline static const unsigned int DEFAULT_SPOTS         = 8U;
 
     // Definition data.
     unsigned int cDefDuration;    /// Duration of the animation loop in milliseconds.

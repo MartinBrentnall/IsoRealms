@@ -82,16 +82,16 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_EDITING_PROCESSOR;
-    static const std::string JSON_EDITING_RENDERER;
-    static const std::string JSON_ID;
-    static const std::string JSON_RUNTIME_PROCESSOR;
-    static const std::string JSON_RUNTIME_RENDERER;
-    static const std::string JSON_TRAITS;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_EDITING_PROCESSOR = "editingProcessor";
+    inline static const std::string JSON_EDITING_RENDERER  = "editingRenderer";
+    inline static const std::string JSON_ID                = "id";
+    inline static const std::string JSON_RUNTIME_PROCESSOR = "runtimeProcessor";
+    inline static const std::string JSON_RUNTIME_RENDERER  = "runtimeRenderer";
+    inline static const std::string JSON_TRAITS            = "traits";
+    inline static const std::string JSON_TYPE              = "type";
 
-    static const std::string BIND_TO_TRAIT;
-    static const std::string BIND_TO_ZONE;
+    inline static const std::string BIND_TO_TRAIT = "Trait";
+    inline static const std::string BIND_TO_ZONE  = "Zone";
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {

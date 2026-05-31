@@ -79,16 +79,16 @@ namespace IsoRealms::Equilibria {
     };
 
     // JSON members.
-    static const std::string JSON_BOTTOM;
-    static const std::string JSON_BOTTOM_PAUSE;
-    static const std::string JSON_DOWN_SPEED;
-    static const std::string JSON_TOP;
-    static const std::string JSON_TOP_PAUSE;
-    static const std::string JSON_TYPE;
-    static const std::string JSON_UP_SPEED;
-    static const std::string JSON_X;
-    static const std::string JSON_Y;
-    static const std::string JSON_Z;
+    inline static const std::string JSON_BOTTOM       = "bottom";
+    inline static const std::string JSON_BOTTOM_PAUSE = "bottomPause";
+    inline static const std::string JSON_DOWN_SPEED   = "downSpeed";
+    inline static const std::string JSON_TOP          = "top";
+    inline static const std::string JSON_TOP_PAUSE    = "topPause";
+    inline static const std::string JSON_TYPE         = "type";
+    inline static const std::string JSON_UP_SPEED     = "upSpeed";
+    inline static const std::string JSON_X            = "x";
+    inline static const std::string JSON_Y            = "y";
+    inline static const std::string JSON_Z            = "z";
 
     // External interfaces.
     Zone& cZone; /// Zone to which this lift belongs.

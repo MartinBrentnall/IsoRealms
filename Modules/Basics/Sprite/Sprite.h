@@ -74,9 +74,9 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_BILLBOARD_PITCH;
-    static const std::string JSON_BILLBOARD_YAW;
-    static const std::string JSON_TEXTURE;
+    inline static const std::string JSON_BILLBOARD_PITCH = "billboardPitch";
+    inline static const std::string JSON_BILLBOARD_YAW   = "billboardYaw";
+    inline static const std::string JSON_TEXTURE         = "texture";
 
     // System.
     Project& cDefProject;   /// Hosting project.

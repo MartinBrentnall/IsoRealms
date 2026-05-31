@@ -952,17 +952,4 @@ namespace IsoRealms::Basics {
     }
     return cMajorTicks[0];
   }
-
-  const float SequenceEditor::ZOOM_LIMIT_MAXIMUM =  28.0f;
-  const float SequenceEditor::ZOOM_LIMIT_MINIMUM = -68.0f;
-
-  const float SequenceEditor::ANALOGUE_INPUT_DEAD_ZONE = 16.0f;
-
-  const float SequenceEditor::DEFAULT_VISIBLE_DURATION = 1000.0f * 60.0f * 15.0f; // 15 minutes.
-  const int SequenceEditor::MAX_VISIBLE_MAJOR_TICKS = 20;
-
-  const long SequenceEditor::DURATION_SECOND = 1000;
-  const long SequenceEditor::DURATION_MINUTE = 60 * DURATION_SECOND;
-  const long SequenceEditor::DURATION_HOUR   = 60 * DURATION_MINUTE;
-  const long SequenceEditor::DURATION_DAY    = 24 * DURATION_HOUR;
 }

@@ -29,10 +29,6 @@
 #include "IsoRealms/System.h"
 
 namespace IsoRealms {
-  const float Utils::LUMINANCE_BLUE  = 0.0722f;
-  const float Utils::LUMINANCE_GREEN = 0.7152f;
-  const float Utils::LUMINANCE_RED   = 0.2126f;
-  
   std::string Utils::toString(int number) {
     std::stringstream mStringStream;
     mStringStream << number;

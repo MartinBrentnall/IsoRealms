@@ -19,11 +19,6 @@
 #include "InputGroup.h"
 
 namespace IsoRealms::Basics {
-  const std::string InputGroup::JSON_INPUT  = "input";
-  const std::string InputGroup::JSON_INPUTS = "inputs";
-
-  const std::string InputGroup::PROPERTY_INPUT_HANDLER = "Input";
-  
   InputGroup::InputGroup(Basics& basics, IResourceData& data) :
             cResource(data) {
   }

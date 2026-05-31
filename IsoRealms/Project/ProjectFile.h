@@ -48,10 +48,10 @@ namespace IsoRealms {
     bool isModifiable() const;
 
 //    private:
-    static const std::string JSON_ALLOW_MODIFICATION;
-    static const std::string JSON_DESCRIPTION;
-    static const std::string JSON_FILENAME;
-    static const std::string JSON_INCLUDE;
+    inline static const std::string JSON_ALLOW_MODIFICATION = "allowModifications";
+    inline static const std::string JSON_DESCRIPTION        = "description";
+    inline static const std::string JSON_FILENAME           = "filename";
+    inline static const std::string JSON_INCLUDE            = "include";
 
     File cFile;
     std::string cDefID;

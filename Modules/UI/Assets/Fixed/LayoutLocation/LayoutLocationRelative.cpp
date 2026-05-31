@@ -23,9 +23,6 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  const std::string LayoutLocationRelative::JSON_RELATIVE = "relative";
-  const std::string LayoutLocationRelative::JSON_VALUE    = "value";
-
   LayoutLocationRelative::LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner) :
             cMetadata(metadata),
             cParent(owner),

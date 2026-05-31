@@ -65,20 +65,20 @@ namespace IsoRealms::UI {
     private:
     
     // JSON members.
-    static const std::string JSON_ID;
-    static const std::string JSON_LABEL;
-    static const std::string JSON_MAXIMUM;
-    static const std::string JSON_MINIMUM;
-    static const std::string JSON_ON_CHANGE;
-    static const std::string JSON_STEPS;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_ID        = "id";
+    inline static const std::string JSON_LABEL     = "label";
+    inline static const std::string JSON_MAXIMUM   = "maximum";
+    inline static const std::string JSON_MINIMUM   = "minimum";
+    inline static const std::string JSON_ON_CHANGE = "onChange";
+    inline static const std::string JSON_STEPS     = "steps";
+    inline static const std::string JSON_TYPE      = "type";
 
     // Constants.
-    static const std::string BINDING_TYPE;
+    inline static const std::string BINDING_TYPE = "Slider";
     
-    static const float DEFAULT_MAXIMUM;
-    static const float DEFAULT_MINIMUM;
-    static const int DEFAULT_STEPS;
+    inline static const float DEFAULT_MAXIMUM = 1.0f;
+    inline static const float DEFAULT_MINIMUM = 0.0f;
+    inline static const int   DEFAULT_STEPS   = 20;
 
     // External interfaces.
     const Metadata& cMetadata;

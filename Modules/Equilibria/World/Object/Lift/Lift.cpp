@@ -23,17 +23,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string Lift::JSON_BOTTOM       = "bottom";
-  const std::string Lift::JSON_BOTTOM_PAUSE = "bottomPause";
-  const std::string Lift::JSON_DOWN_SPEED   = "downSpeed";
-  const std::string Lift::JSON_TOP          = "top";
-  const std::string Lift::JSON_TOP_PAUSE    = "topPause";
-  const std::string Lift::JSON_TYPE         = "type";
-  const std::string Lift::JSON_UP_SPEED     = "upSpeed";
-  const std::string Lift::JSON_X            = "x";
-  const std::string Lift::JSON_Y            = "y";
-  const std::string Lift::JSON_Z            = "z";
-
   Lift::Lift(Zone& zone, LiftType& type, int x, int y, int z, int bottom, int top) :
             cZone(zone),
             cDefType(&type),
@@ -161,35 +150,6 @@ namespace IsoRealms::Equilibria {
     glColor3f(1.0, 1.0, 1.0);
     glLineWidth(1.0);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   void Lift::renderEditingArrow() const {

@@ -123,9 +123,4 @@ namespace IsoRealms::Equilibria {
   bool CameraVariant::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  const std::string CameraVariant::JSON_LOCATION = "location";
-  const std::string CameraVariant::JSON_PITCH    = "pitch";
-  const std::string CameraVariant::JSON_YAW      = "yaw";
-  const std::string CameraVariant::JSON_ZOOM     = "zoom";
 }

@@ -83,12 +83,4 @@ namespace IsoRealms::Tables {
       cValues.emplace_back(Value(parent.cDefFields[cValues.size()].cType, mRecordValue));
     }
   }
-
-  const std::string Table::JSON_FIELD_NAME = "name";
-  const std::string Table::JSON_FIELD_TYPE = "type";
-  const std::string Table::JSON_FIELDS     = "fields";
-  const std::string Table::JSON_RECORDS    = "records";
-
-  const std::string Table::FIELD_TYPE_INTEGER = "Integer";
-  const std::string Table::FIELD_TYPE_STRING  = "String";
 }

@@ -47,9 +47,9 @@ namespace IsoRealms::Basics {
 
     private:
 
-      // JSON members.
-    static const std::string JSON_DELAY;
-    static const std::string JSON_EXECUTE;
+    // JSON members.
+    inline static const std::string JSON_DELAY   = "delay";
+    inline static const std::string JSON_EXECUTE = "execute";
 
     // External interfaces.
     SequenceTrackAction& cParent;

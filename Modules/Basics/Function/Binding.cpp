@@ -21,9 +21,6 @@
 #include "Function.h"
 
 namespace IsoRealms::Basics {
-  const std::string Binding::JSON_TO       = "to";
-  const std::string Binding::JSON_VARIABLE = "variable";
-
   Binding::Binding(Function& parent, IActionContext& owner, const std::string& name) :
             cParent(parent),
             cDefName(name),

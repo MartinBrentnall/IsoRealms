@@ -24,10 +24,6 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ZoneObject::JSON_ID     = "id";
-  const std::string ZoneObject::JSON_TRAITS = "traits";
-  const std::string ZoneObject::JSON_TYPE   = "type";
-
   ZoneObject::ZoneObject(Zone& zone, ZoneObjectType* type) :
             cZone(zone),
             cDefType(type),

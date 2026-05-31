@@ -207,7 +207,4 @@ namespace IsoRealms::Basics {
   bool SequenceInstance::Remaining::isDefaultConfiguration() const {
     return true;
   }
-
-  const std::string SequenceInstance::JSON_SPEED      = "speed";
-  const std::string SequenceInstance::JSON_START_TIME = "startTime";
 }

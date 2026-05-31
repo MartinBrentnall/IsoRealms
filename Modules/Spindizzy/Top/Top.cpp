@@ -21,16 +21,6 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Top::JSON_OUTLINE = "outline";
-  const std::string Top::JSON_SIDES   = "sides";
-  const std::string Top::JSON_TOP     = "top";
-
-  const float Top::OUTLINE        = 0.82f;
-  const float Top::SPINDLE_WIDTH  = 0.03f;
-  const float Top::SPINDLE_HEIGHT = 0.25f;
-  const float Top::WIDTH          = 0.3f;
-  const float Top::HEIGHT         = 0.75f;
-
   Top::Top(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
             cDefColourTop(    data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),

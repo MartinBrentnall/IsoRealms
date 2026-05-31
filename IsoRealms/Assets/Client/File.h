@@ -59,11 +59,11 @@ namespace IsoRealms {
     void setID(const std::string& id) override;
     
     private:
-    static const std::string LOCATION_PREFIX_USER;
-    static const std::string LOCATION_PREFIX_PROGRAM;
+    inline static const std::string LOCATION_PREFIX_USER    = "User";
+    inline static const std::string LOCATION_PREFIX_PROGRAM = "Program";
     
-    static const std::string JSON_PATH;
-    static const std::string JSON_USER;
+    inline static const std::string JSON_PATH = "path";
+    inline static const std::string JSON_USER = "user";
 
     Project& cProject;
     std::function<void()> cChangeCallback;

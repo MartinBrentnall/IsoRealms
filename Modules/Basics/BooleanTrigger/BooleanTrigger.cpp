@@ -19,14 +19,6 @@
 #include "BooleanTrigger.h"
 
 namespace IsoRealms::Basics {
-  const std::string BooleanTrigger::JSON_ON_BECOMING_FALSE = "onBecomingFalse";
-  const std::string BooleanTrigger::JSON_ON_BECOMING_TRUE  = "onBecomingTrue";
-  const std::string BooleanTrigger::JSON_VALUE             = "value";
-
-  const std::string BooleanTrigger::PROPERTY_VALUE        = "Monitored Value";
-  const std::string BooleanTrigger::PROPERTY_TRUE_ACTION  = "Action on True";
-  const std::string BooleanTrigger::PROPERTY_FALSE_ACTION = "Action on False";
-  
   BooleanTrigger::BooleanTrigger(Basics& basics, IResourceData& data) :
             cDefValue(data, false, [this](bool value) {
               (value ? cDefTrueAction : cDefFalseAction).execute();

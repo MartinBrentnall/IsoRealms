@@ -112,7 +112,4 @@ namespace IsoRealms {
       std::cout << "TODO: Throw Unsupported BooleanSelection ID" << std::endl;
     }
   }
-
-  const std::string PropertyNativeBoolean::BooleanSelection::ID_TRUE  = "true";
-  const std::string PropertyNativeBoolean::BooleanSelection::ID_FALSE = "false";
 }

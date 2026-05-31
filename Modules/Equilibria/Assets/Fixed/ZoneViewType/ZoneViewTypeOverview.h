@@ -57,7 +57,7 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_COLOUR;
+    inline static const std::string JSON_COLOUR = "colour";
     
     WorldView& cWorldView;
 

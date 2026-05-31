@@ -20,13 +20,6 @@
 #include "UI.h"
 
 namespace IsoRealms::UI {
-  const std::string UI::SCREEN_GRADIENT = "Gradient";
-  const std::string UI::SCREEN_MODEL    = "Model";
-  const std::string UI::SCREEN_PANEL    = "Panel";
-  const std::string UI::SCREEN_TEXT     = "Text";
-
-  const std::string UI::STRING_TIME = "Time";
-
   UI::UI(Project& project, IResourceTypeRegistry& registry):
                     cProject(project),
                     cModule(registry),

@@ -23,9 +23,6 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ZoneObjectTypeTraitChaser::JSON_OBJECT = "object";
-  const std::string ZoneObjectTypeTraitChaser::JSON_TARGET = "target";
-
   ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type) :
             cDefTarget(type.getResourceData()) {
   }

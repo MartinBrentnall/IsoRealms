@@ -222,12 +222,12 @@ namespace IsoRealms::UI {
       LayoutEditor& cParent;
     };
     
-    static const float ZOOM_LIMIT_MAXIMUM;
-    static const float ZOOM_LIMIT_MINIMUM;
+    inline static const float ZOOM_LIMIT_MAXIMUM = 20.0f;
+    inline static const float ZOOM_LIMIT_MINIMUM = -20.0f;
     
-    static const float ANALOGUE_INPUT_DEAD_ZONE;
+    inline static const float ANALOGUE_INPUT_DEAD_ZONE = 16.0f;
 
-    static const float EDIT_HANDLE_RADIUS;
+    inline static const float EDIT_HANDLE_RADIUS = 0.013f;
 
     HatHandler& cHatHandler;
     IDialogManager& cDialogManager;

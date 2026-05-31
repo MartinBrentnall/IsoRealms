@@ -22,8 +22,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string PickUpType::JSON_APPEARANCE = "appearance";
-
   PickUpType::PickUpType(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),

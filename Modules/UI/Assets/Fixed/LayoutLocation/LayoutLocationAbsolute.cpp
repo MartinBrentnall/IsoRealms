@@ -21,8 +21,6 @@
 #include "Modules/UI/Layout/LayoutComponentEdge.h"
 
 namespace IsoRealms::UI {
-  const std::string LayoutLocationAbsolute::JSON_VALUE = "value";
-
   LayoutLocationAbsolute::LayoutLocationAbsolute(const Metadata& metadata, LayoutComponentEdge& owner) :
             cMetadata(metadata),
             cParent(owner),

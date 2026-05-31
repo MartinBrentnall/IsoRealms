@@ -103,6 +103,4 @@ namespace IsoRealms::Equilibria {
   bool CameraLinked::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  const std::string CameraLinked::JSON_VIEW = "view";
 }

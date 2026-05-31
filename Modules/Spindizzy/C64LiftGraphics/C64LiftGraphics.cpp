@@ -21,40 +21,6 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const float C64LiftGraphics::CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
-  const float C64LiftGraphics::CIRCLE_OUTLINE_OUTER         = 1.0f;
-  const float C64LiftGraphics::CIRCLE_OUTLINE_INNER         = 0.6f;
-  const float C64LiftGraphics::CIRCLE_COLOUR_OUTER          = 0.9f;
-  const float C64LiftGraphics::CIRCLE_COLOUR_INNER          = 0.7f;
-  const float C64LiftGraphics::SQUARE_OUTLINE_OUTER         = 1.0f;
-  const float C64LiftGraphics::SQUARE_OUTLINE_INNER         = 0.51f;
-  const float C64LiftGraphics::SQUARE_COLOUR_OUTER          = 0.87f;
-  const float C64LiftGraphics::SQUARE_COLOUR_INNER          = 0.64f;
-  const float C64LiftGraphics::SQUARE_TRIANGLE_OUTER        = 0.2f;
-  const float C64LiftGraphics::SQUARE_TRIANGLE_INNER        = 0.0f;
-  const float C64LiftGraphics::DIAMOND_OUTLINE_OUTER        = 1.0f;
-  const float C64LiftGraphics::DIAMOND_OUTLINE_INNER        = 0.6f;
-  const float C64LiftGraphics::DIAMOND_COLOUR_OUTER         = 0.9f;
-  const float C64LiftGraphics::DIAMOND_COLOUR_INNER         = 0.7f;
-  const float C64LiftGraphics::DIAMOND_SQUARE_OUTLINE_OUTER = 0.70f;
-  const float C64LiftGraphics::DIAMOND_SQUARE_OUTLINE_INNER = 0.40f;
-  const float C64LiftGraphics::DIAMOND_SQUARE_COLOUR_OUTER  = 0.62f;
-  const float C64LiftGraphics::DIAMOND_SQUARE_COLOUR_INNER  = 0.48f;
-
-  const std::string C64LiftGraphics::ASSET_ID_ALWAYS_ON      = "Always On";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_1_AND_2  = "State 1 and 2";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_3        = "State 3";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_4        = "State 4";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_5_AND_6  = "State 5 and 6";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_7        = "State 7";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_8        = "State 8";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_9_AND_10 = "State 9 and 10";
-  const std::string C64LiftGraphics::ASSET_ID_STATE_11       = "State 11";
-
-  const std::string C64LiftGraphics::JSON_OUTLINE   = "outline";
-  const std::string C64LiftGraphics::JSON_PRIMARY   = "primary";
-  const std::string C64LiftGraphics::JSON_SECONDARY = "secondary";
-
   C64LiftGraphics::C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data) :
             cProject(data.getProject()),
             cDefPrimary(data,   1.0f, 1.0f, 1.0f, 1.0f, [this]() {setNeedsRedrawing();}),

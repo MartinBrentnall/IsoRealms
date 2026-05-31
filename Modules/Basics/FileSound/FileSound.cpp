@@ -21,8 +21,6 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string FileSound::JSON_FILENAME = "filename";
-
   std::mutex FileSound::cRuntimeLoadMutex;
 
   FileSound::FileSound(Basics& basics, IResourceData& data) :

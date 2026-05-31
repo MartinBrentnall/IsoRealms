@@ -91,8 +91,4 @@ namespace IsoRealms {
   bool LiteralVertex::isDefaultConfiguration() const {
     return x == 0.0f && y == 0.0f && z == 0.0f;
   }
-
-  const std::string LiteralVertex::JSON_X = "x";
-  const std::string LiteralVertex::JSON_Y = "y";
-  const std::string LiteralVertex::JSON_Z = "z";
 }

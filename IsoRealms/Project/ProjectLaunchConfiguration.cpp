@@ -121,6 +121,4 @@ namespace IsoRealms {
   void ProjectLaunchConfiguration::Option::save(JSONObject object) const {
     cDefValue.save(object, cDefName);
   }
-
-  const std::string ProjectLaunchConfiguration::JSON_OPTIONS = "options";
 }

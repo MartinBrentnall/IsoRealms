@@ -45,14 +45,14 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_ON_BECOMING_FALSE;
-    static const std::string JSON_ON_BECOMING_TRUE;
-    static const std::string JSON_VALUE;
+    inline static const std::string JSON_ON_BECOMING_FALSE = "onBecomingFalse";
+    inline static const std::string JSON_ON_BECOMING_TRUE  = "onBecomingTrue";
+    inline static const std::string JSON_VALUE             = "value";
 
     // Property names.
-    static const std::string PROPERTY_VALUE;
-    static const std::string PROPERTY_TRUE_ACTION;
-    static const std::string PROPERTY_FALSE_ACTION;
+    inline static const std::string PROPERTY_VALUE        = "Monitored Value";
+    inline static const std::string PROPERTY_TRUE_ACTION  = "Action on True";
+    inline static const std::string PROPERTY_FALSE_ACTION = "Action on False";
 
     // Definition data.
     Boolean cDefValue;      /// Boolean value to monitor.

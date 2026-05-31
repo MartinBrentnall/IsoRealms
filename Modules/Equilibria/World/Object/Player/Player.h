@@ -110,11 +110,11 @@ namespace IsoRealms::Equilibria {
     };
     
     // JSON members.
-    static const std::string JSON_ID;
-    static const std::string JSON_TYPE;
-    static const std::string JSON_X;
-    static const std::string JSON_Y;
-    static const std::string JSON_Z;
+    inline static const std::string JSON_ID   = "id";
+    inline static const std::string JSON_TYPE = "type";
+    inline static const std::string JSON_X    = "x";
+    inline static const std::string JSON_Y    = "y";
+    inline static const std::string JSON_Z    = "z";
 
     // Definition data.
     World&                         cDefWorld;           /// World to which is player belongs.

@@ -65,13 +65,13 @@ namespace IsoRealms::UI {
     private:
     
     // JSON members.
-    static const std::string JSON_FOLDER;
-    static const std::string JSON_ID;
-    static const std::string JSON_ON_SELECTION;
-    static const std::string JSON_USER;
+    inline static const std::string JSON_FOLDER       = "folder";
+    inline static const std::string JSON_ID           = "id";
+    inline static const std::string JSON_ON_SELECTION = "onSelection";
+    inline static const std::string JSON_USER         = "user";
 
     // Constants.
-    static const std::string BINDING_TYPE;
+    inline static const std::string BINDING_TYPE = "FileList";
   
     // Private types.
     class File {

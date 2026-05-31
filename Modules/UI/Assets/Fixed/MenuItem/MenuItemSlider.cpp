@@ -21,20 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemSlider::JSON_ID        = "id";
-  const std::string MenuItemSlider::JSON_LABEL     = "label";
-  const std::string MenuItemSlider::JSON_MAXIMUM   = "maximum";
-  const std::string MenuItemSlider::JSON_MINIMUM   = "minimum";
-  const std::string MenuItemSlider::JSON_ON_CHANGE = "onChange";
-  const std::string MenuItemSlider::JSON_STEPS     = "steps";
-  const std::string MenuItemSlider::JSON_TYPE      = "type";
-
-  const std::string MenuItemSlider::BINDING_TYPE = "Slider";
-
-  const float MenuItemSlider::DEFAULT_MAXIMUM = 1.0f;
-  const float MenuItemSlider::DEFAULT_MINIMUM = 0.0f;
-  const int   MenuItemSlider::DEFAULT_STEPS   = 20;
-
   MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),

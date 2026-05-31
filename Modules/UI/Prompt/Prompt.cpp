@@ -19,19 +19,6 @@
 #include "Prompt.h"
 
 namespace IsoRealms::UI {
-  const std::string Prompt::JSON_CANCEL_LABEL     = "cancelLabel";
-  const std::string Prompt::JSON_CONFIRM_LABEL    = "confirmLabel";
-  const std::string Prompt::JSON_FONT             = "font";
-  const std::string Prompt::JSON_MESSAGE          = "message";
-  const std::string Prompt::JSON_ON_CANCEL        = "onCancel";
-  const std::string Prompt::JSON_ON_CONFIRM       = "onConfirm";
-  const std::string Prompt::JSON_SELECTION_COLOUR = "selectionColour";
-  const std::string Prompt::JSON_SHADOW_OFFSET    = "shadowOffset";
-  const std::string Prompt::JSON_TEXT_SIZE        = "textSize";
-
-  const float Prompt::DEFAULT_SHADOW_OFFSET = 0.008f;
-  const float Prompt::DEFAULT_TEXT_SIZE     = 0.05f;
-
   Prompt::Prompt(UI& ui, IResourceData& data) :
             cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefFont(data),

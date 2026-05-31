@@ -19,9 +19,6 @@
 #include "Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const double Spindizzy::DEFAULT_VIEW_ANGLE_PITCH = -90.0 + std::atan(1.0 / std::sqrt(2.0)) * (180.0 / M_PI);
-  const double Spindizzy::DEFAULT_VIEW_ANGLE_YAW = -45.0;
-
   Spindizzy::Spindizzy(Project& project, IResourceTypeRegistry& registry) :
                     cResourceBall(*this),
                     cResourceC64LiftGraphics(*this),

@@ -21,12 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemDisplayResolution::JSON_ID    = "id";
-  const std::string MenuItemDisplayResolution::JSON_LABEL = "label";
-  const std::string MenuItemDisplayResolution::JSON_TYPE  = "type";
-
-  const std::string MenuItemDisplayResolution::BINDING_TYPE = "DisplayResolution";
-
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu) :
             cMetadata(metadata),
             cProject(menu.getResourceData().getProject()),

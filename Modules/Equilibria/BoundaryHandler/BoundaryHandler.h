@@ -66,13 +66,13 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_BOUNDARY;
-    static const std::string JSON_OBJECT;
-    static const std::string JSON_ON_ENTRY;
-    static const std::string JSON_ON_EXIT;
+    inline static const std::string JSON_BOUNDARY = "boundary";
+    inline static const std::string JSON_OBJECT   = "object";
+    inline static const std::string JSON_ON_ENTRY = "onEntry";
+    inline static const std::string JSON_ON_EXIT  = "onExit";
 
-    static const std::string BIND_TO_BOUNDARY;
-    static const std::string BIND_TO_OBJECT;
+    inline static const std::string BIND_TO_BOUNDARY = "Boundary";
+    inline static const std::string BIND_TO_OBJECT   = "Object";
 
     // External interfaces.
     Equilibria& cEquilibria;

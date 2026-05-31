@@ -22,14 +22,6 @@
 #include "Modules/Equilibria/BoundaryHandler/BoundaryHandlerInstance.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string BoundaryHandler::JSON_BOUNDARY = "boundary";
-  const std::string BoundaryHandler::JSON_OBJECT   = "object";
-  const std::string BoundaryHandler::JSON_ON_ENTRY = "onEntry";
-  const std::string BoundaryHandler::JSON_ON_EXIT  = "onExit";
-
-  const std::string BoundaryHandler::BIND_TO_BOUNDARY = "Boundary";
-  const std::string BoundaryHandler::BIND_TO_OBJECT   = "Object";
-
   BoundaryHandler::BoundaryHandler(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
             cActionContext(data, *this),

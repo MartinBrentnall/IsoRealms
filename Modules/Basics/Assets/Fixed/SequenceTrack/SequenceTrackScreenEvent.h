@@ -43,8 +43,8 @@ namespace IsoRealms::Basics {
     void getEventProperties(IPropertyMaker& owner) override;
 
     private:
-    static const std::string JSON_DURATION;
-    static const std::string JSON_SCREEN;
+    inline static const std::string JSON_DURATION = "duration";
+    inline static const std::string JSON_SCREEN   = "screen";
 
     // External interfaces.
     SequenceTrackScreen& cParent;

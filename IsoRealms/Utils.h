@@ -323,8 +323,8 @@ namespace IsoRealms {
     static double getValue(LiteralVertex, LiteralVertex, LiteralVertex, LiteralVertex);
     
     private:
-    static const float LUMINANCE_BLUE;
-    static const float LUMINANCE_GREEN;
-    static const float LUMINANCE_RED;
+    inline static const float LUMINANCE_BLUE  = 0.0722f;
+    inline static const float LUMINANCE_GREEN = 0.7152f;
+    inline static const float LUMINANCE_RED   = 0.2126f;
   };
 }

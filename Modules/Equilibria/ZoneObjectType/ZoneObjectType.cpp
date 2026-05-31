@@ -22,17 +22,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ZoneObjectType::JSON_EDITING_PROCESSOR = "editingProcessor";
-  const std::string ZoneObjectType::JSON_EDITING_RENDERER  = "editingRenderer";
-  const std::string ZoneObjectType::JSON_ID                = "id";
-  const std::string ZoneObjectType::JSON_RUNTIME_PROCESSOR = "runtimeProcessor";
-  const std::string ZoneObjectType::JSON_RUNTIME_RENDERER  = "runtimeRenderer";
-  const std::string ZoneObjectType::JSON_TRAITS            = "traits";
-  const std::string ZoneObjectType::JSON_TYPE              = "type";
-
-  const std::string ZoneObjectType::BIND_TO_TRAIT = "Trait";
-  const std::string ZoneObjectType::BIND_TO_ZONE  = "Zone";
-
   ZoneObjectType::ZoneObjectType(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),  
             cResourceData(data),

@@ -19,17 +19,6 @@
 #include "FileFont.h"
 
 namespace IsoRealms::Basics {
-  const std::string FileFont::JSON_DETAIL       = "detail";
-  const std::string FileFont::JSON_FILENAME     = "filename";
-  const std::string FileFont::JSON_LINE_SPACING = "lineSpacing";
-  const std::string FileFont::JSON_SCALE        = "scale";
-  const std::string FileFont::JSON_OFFSET_X     = "offsetX";
-  const std::string FileFont::JSON_OFFSET_Y     = "offsetY";
-
-  const int   FileFont::DEFAULT_DETAIL       = 64;
-  const float FileFont::DEFAULT_LINE_SPACING = 2.5f;
-  const float FileFont::DEFAULT_SCALE        = 1.0f;
-
   FileFont::FileFont(Basics& basics, IResourceData& data) :
             cDefFilename(data.getProject()),
             cDefDetail(DEFAULT_DETAIL),

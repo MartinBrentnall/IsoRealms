@@ -57,8 +57,8 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_MODEL;
-    static const std::string JSON_MODELS;
+    inline static const std::string JSON_MODEL  = "model";
+    inline static const std::string JSON_MODELS = "models";
 
     /**
      * An output "Offset" model is created for each input model configured

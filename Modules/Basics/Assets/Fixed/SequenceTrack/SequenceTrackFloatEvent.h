@@ -44,9 +44,9 @@ namespace IsoRealms::Basics {
     void getEventProperties(IPropertyMaker& owner) override;
 
     private:
-    static const std::string JSON_DURATION;
-    static const std::string JSON_FADE;
-    static const std::string JSON_VALUE;
+    inline static const std::string JSON_DURATION = "duration";
+    inline static const std::string JSON_FADE     = "fade";
+    inline static const std::string JSON_VALUE    = "value";
 
     // External interfaces.
     SequenceTrackFloat& cParent;

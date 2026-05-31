@@ -60,8 +60,4 @@ namespace IsoRealms::Basics {
   bool SequenceTrackColourEvent::isFade() const {
     return cDefFade;
   }
-
-  const std::string SequenceTrackColourEvent::JSON_DURATION = "duration";
-  const std::string SequenceTrackColourEvent::JSON_FADE     = "fade";
-  const std::string SequenceTrackColourEvent::JSON_TARGET   = "target";
 }

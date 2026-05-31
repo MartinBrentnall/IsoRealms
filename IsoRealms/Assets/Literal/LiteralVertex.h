@@ -27,9 +27,9 @@
 namespace IsoRealms {
   class LiteralVertex : public IVertex {
     private:
-    static const std::string JSON_X;
-    static const std::string JSON_Y;
-    static const std::string JSON_Z;
+    inline static const std::string JSON_X = "x";
+    inline static const std::string JSON_Y = "y";
+    inline static const std::string JSON_Z = "z";
 
     public:
     double x;

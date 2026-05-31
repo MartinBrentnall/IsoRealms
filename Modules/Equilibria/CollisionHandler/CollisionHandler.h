@@ -62,10 +62,10 @@ namespace IsoRealms::Equilibria {
     private:
 
     // JSON members.
-    static const std::string JSON_OBJECT_A;
-    static const std::string JSON_OBJECT_B;
-    static const std::string JSON_ON_COLLISION;
-    static const std::string JSON_ON_PARTING;
+    inline static const std::string JSON_OBJECT_A     = "objectA";
+    inline static const std::string JSON_OBJECT_B     = "objectB";
+    inline static const std::string JSON_ON_COLLISION = "onCollision";
+    inline static const std::string JSON_ON_PARTING   = "onParting";
 
     // External interfaces.
     Equilibria& cEquilibria;

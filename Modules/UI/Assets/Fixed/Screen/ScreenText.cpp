@@ -81,16 +81,4 @@ namespace IsoRealms::UI {
                     : alignment == ALIGNMENT_RIGHT ? IFont::Alignment::RIGHT
                     :                                IFont::Alignment::CENTER;
   }
-  
-  const std::string ScreenText::JSON_ALIGNMENT     = "alignment";
-  const std::string ScreenText::JSON_COLOUR        = "colour";
-  const std::string ScreenText::JSON_FONT          = "font";
-  const std::string ScreenText::JSON_SHADOW_OFFSET = "shadowOffset";
-  const std::string ScreenText::JSON_VALUE         = "value";
-  
-  const std::string ScreenText::ALIGNMENT_CENTER = "Center";
-  const std::string ScreenText::ALIGNMENT_LEFT   = "Left";
-  const std::string ScreenText::ALIGNMENT_RIGHT  = "Right";
-  
-  const float ScreenText::DEFAULT_SHADOW_OFFSET = 0.2f;
 }

@@ -21,13 +21,6 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string ProjectConfigurer::JSON_CODE_FONT      = "codeFont";
-  const std::string ProjectConfigurer::JSON_CODE_FONT_SIZE = "codeFontSize";
-  const std::string ProjectConfigurer::JSON_FONT           = "font";
-  const std::string ProjectConfigurer::JSON_FONT_SIZE      = "fontSize";
-  const std::string ProjectConfigurer::JSON_ON_EDITOR      = "onEditor";
-  const std::string ProjectConfigurer::JSON_ON_EXIT        = "onExit";
-
   ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data) :
             cActionContext(data, *this),
             cDefFont(data),

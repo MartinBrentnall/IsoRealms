@@ -37,7 +37,13 @@ namespace IsoRealms {
 
     inline static const std::string UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
 
-    static const std::map<std::string, sf::Mouse::Button> cButtonsByName; /// Mapping of buttons by name.
+    inline static const std::map<std::string, sf::Mouse::Button> cButtonsByName = {
+      {"Left",         sf::Mouse::Button::Left},
+      {"Right",        sf::Mouse::Button::Right},
+      {"Middle",       sf::Mouse::Button::Middle},
+      {"ExtraButton1", sf::Mouse::Button::XButton1},
+      {"ExtraButton2", sf::Mouse::Button::XButton2}
+    };
 
     sf::Mouse::Button cButton; /// The mouse button associated with this mapping.
     // TODO: Support inversion.

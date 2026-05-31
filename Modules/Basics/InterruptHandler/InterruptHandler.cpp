@@ -19,9 +19,6 @@
 #include "InterruptHandler.h"
 
 namespace IsoRealms::Basics {
-  const std::string InterruptHandler::JSON_CONSUME  = "consume";
-  const std::string InterruptHandler::JSON_ON_INPUT = "onInput";
-
   InterruptHandler::InterruptHandler(Basics& basics, IResourceData& data) :
             cDefAction(data.getDummyActionContext()) {
   }

@@ -55,20 +55,20 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    static const std::string JSON_BOUNCE_FACTOR;
-    static const std::string JSON_CONTROLS;
-    static const std::string JSON_HEIGHT;
-    static const std::string JSON_HUG_MOMENTUM;
-    static const std::string JSON_RADIUS;
-    static const std::string JSON_STEP_REACH;
-    static const std::string JSON_USE_NON_SOLID;
+    inline static const std::string JSON_BOUNCE_FACTOR = "bounceFactor";
+    inline static const std::string JSON_CONTROLS      = "controls";
+    inline static const std::string JSON_HEIGHT        = "height";
+    inline static const std::string JSON_HUG_MOMENTUM  = "hugMomentum";
+    inline static const std::string JSON_RADIUS        = "radius";
+    inline static const std::string JSON_STEP_REACH    = "stepReach";
+    inline static const std::string JSON_USE_NON_SOLID = "useNonSolid";
 
-    static const float DEFAULT_BOUNCE_FACTOR;
-    static const float DEFAULT_HEIGHT;
-    static const float DEFAULT_HUG_MOMENTUM;
-    static const float DEFAULT_RADIUS;
-    static const float DEFAULT_STEP_REACH;
-    static const bool  DEFAULT_USE_NON_SOLID;
+    inline static const float DEFAULT_BOUNCE_FACTOR = 1.0f;
+    inline static const float DEFAULT_HEIGHT        = 1.7f;
+    inline static const float DEFAULT_HUG_MOMENTUM  = 0.0001f;
+    inline static const float DEFAULT_RADIUS        = 0.4f;
+    inline static const float DEFAULT_STEP_REACH    = 0.5f;
+    inline static const bool  DEFAULT_USE_NON_SOLID = false;
     
     // Definition data.
     std::string cDefMovableID;

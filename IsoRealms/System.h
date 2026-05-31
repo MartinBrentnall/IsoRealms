@@ -51,8 +51,13 @@ namespace IsoRealms {
     static std::string convertToSystemFormat(const std::string& path);
 
     public:
-    static const std::string USER_DATA_DIRECTORY;
-    static const std::string MODULE_EXTENSION;
+#if _WIN32
+    inline static const std::string USER_DATA_DIRECTORY = std::string(getenv("USERPROFILE")) + "/.isorealms/";
+    inline static const std::string MODULE_EXTENSION    = ".dll";
+#elif __linux__
+    inline static const std::string USER_DATA_DIRECTORY = std::string(getenv("HOME")) + "/.isorealms/";
+    inline static const std::string MODULE_EXTENSION    = ".so";
+#endif
 
     /**
      * Return the path to the program or user data directory.

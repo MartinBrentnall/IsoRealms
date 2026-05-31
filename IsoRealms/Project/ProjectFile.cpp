@@ -128,10 +128,5 @@ namespace IsoRealms {
       });
     });
   }
-
-  const std::string ProjectFile::JSON_ALLOW_MODIFICATION = "allowModifications";
-  const std::string ProjectFile::JSON_DESCRIPTION        = "description";
-  const std::string ProjectFile::JSON_FILENAME           = "filename";
-  const std::string ProjectFile::JSON_INCLUDE            = "include";
 }
 

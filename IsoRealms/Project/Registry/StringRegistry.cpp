@@ -109,6 +109,4 @@ namespace IsoRealms {
   void StringRegistry::Literal::Instance::saveAsset(JSONObject object) const {
     object.addString(JSON_VALUE, cValue);
   }
-
-  const std::string StringRegistry::Literal::Instance::JSON_VALUE = "value";
 }

@@ -102,12 +102,12 @@ namespace IsoRealms::UI {
     }
 
     private:
-    static const std::string SCREEN_GRADIENT;
-    static const std::string SCREEN_MODEL;
-    static const std::string SCREEN_PANEL;
-    static const std::string SCREEN_TEXT;
+    inline static const std::string SCREEN_GRADIENT = "Gradient";
+    inline static const std::string SCREEN_MODEL    = "Model";
+    inline static const std::string SCREEN_PANEL    = "Panel";
+    inline static const std::string SCREEN_TEXT     = "Text";
 
-    static const std::string STRING_TIME;
+    inline static const std::string STRING_TIME = "Time";
 
     // External interfaces.
     Project& cProject;

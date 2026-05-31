@@ -67,11 +67,11 @@ namespace IsoRealms::UI {
     private:
     
     // JSON members.
-    static const std::string JSON_ID;
-    static const std::string JSON_TYPE;
+    inline static const std::string JSON_ID   = "id";
+    inline static const std::string JSON_TYPE = "type";
 
     // Constants.
-    static const std::string BINDING_TYPE;
+    inline static const std::string BINDING_TYPE = "DigitalInput";
 
     // External interfaces.
     const Metadata& cMetadata;

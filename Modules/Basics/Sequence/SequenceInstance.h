@@ -59,8 +59,8 @@ namespace IsoRealms::Basics {
     void deleteTrackInstance(unsigned int track);
     
     private:
-    static const std::string JSON_SPEED;
-    static const std::string JSON_START_TIME;
+    inline static const std::string JSON_SPEED      = "speed";
+    inline static const std::string JSON_START_TIME = "startTime";
 
     class Position : public IInteger {
       public:

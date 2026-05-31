@@ -95,12 +95,12 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    static const std::string JSON_CODE_FONT;
-    static const std::string JSON_CODE_FONT_SIZE;
-    static const std::string JSON_FONT;
-    static const std::string JSON_FONT_SIZE;
-    static const std::string JSON_ON_EDITOR;
-    static const std::string JSON_ON_EXIT;
+    inline static const std::string JSON_CODE_FONT      = "codeFont";
+    inline static const std::string JSON_CODE_FONT_SIZE = "codeFontSize";
+    inline static const std::string JSON_FONT           = "font";
+    inline static const std::string JSON_FONT_SIZE      = "fontSize";
+    inline static const std::string JSON_ON_EDITOR      = "onEditor";
+    inline static const std::string JSON_ON_EXIT        = "onExit";
 
     // Action client.
     ActionContext cActionContext;

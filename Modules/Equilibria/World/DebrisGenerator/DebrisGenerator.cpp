@@ -19,18 +19,6 @@
 #include "DebrisGenerator.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string DebrisGenerator::JSON_APPEARANCE = "appearance";
-  const std::string DebrisGenerator::JSON_HEIGHT     = "height";
-  const std::string DebrisGenerator::JSON_ID         = "id";
-  const std::string DebrisGenerator::JSON_LIFE       = "life";
-  const std::string DebrisGenerator::JSON_RADIUS     = "radius";
-  const std::string DebrisGenerator::JSON_STEP_REACH = "stepReach";
-
-  const float        DebrisGenerator::DEFAULT_HEIGHT     = 0.7f;
-  const unsigned int DebrisGenerator::DEFAULT_LIFE       = 2000U;
-  const float        DebrisGenerator::DEFAULT_RADIUS     = 0.3f;
-  const float        DebrisGenerator::DEFAULT_STEP_REACH = 0.2f;
-
   DebrisGenerator::DebrisGenerator(JSONObject object, IResourceData& owner) :
             cDefID(object.getString(JSON_ID)),
             cDefModel(owner),

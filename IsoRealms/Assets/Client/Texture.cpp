@@ -74,8 +74,4 @@ namespace IsoRealms {
       cListener();
     }
   }
-
-  const std::string Texture::JSON_ANGLE   = "angle";
-  const std::string Texture::JSON_SCALE_X = "scaleX";
-  const std::string Texture::JSON_SCALE_Y = "scaleY";
 }

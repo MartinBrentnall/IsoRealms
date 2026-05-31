@@ -19,9 +19,6 @@
 #include "ModelCycler.h"
 
 namespace IsoRealms::Equilibria {
-  const std::string ModelCycler::JSON_MODEL  = "model";
-  const std::string ModelCycler::JSON_MODELS = "models";
-
   ModelCycler::ModelCycler(Equilibria& equilibria, IResourceData& data) :
             cRuntimeCycleIndex(0),
             cLuaBinding(data.getProject().getLuaState(), this),
