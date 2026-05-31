@@ -21,19 +21,15 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(Basics& basics, IResourceData& data, JSONObject object) :
-            cDefName(object.getString(JSON_NAME)),
-            cDefInput(basics, data, object),
-            cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
-  }
-
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner) :
+            cMetadata(metadata),
             cDefName("TODO Name this mapping"),
             cDefInput(owner),
             cDefOutputValue(0.0f) {
   }
 
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+            cMetadata(metadata),
             cDefName(object.getString(JSON_NAME)),
             cDefInput(owner, object),
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
@@ -92,7 +88,9 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalToAnalogueMapping::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
+    owner.createPropertyNativeString(cMetadata.getPropertyData("Name"),    [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
+    //owner.createPropertyTreeSelector(cMetadata.getPropertyData("Input"),   &cDefInput);
+    owner.createPropertyNativeFloat( cMetadata.getPropertyData("ToValue"), [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
   }
   
   bool DigitalToAnalogueMapping::isDefaultConfiguration() const {

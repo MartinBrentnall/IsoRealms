@@ -161,7 +161,7 @@ namespace IsoRealms::Basics {
       std::string getShortName() const;
       std::shared_ptr<DigitalInputMapping> getInput() const;
       void save(JSONObject object) const;
-      void getProperties(IPropertyMaker& owner);
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
       private:
       std::shared_ptr<DigitalInputMapping> cPhysicalInput;

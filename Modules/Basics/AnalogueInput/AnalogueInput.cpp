@@ -22,6 +22,7 @@
 
 namespace IsoRealms::Basics {
   AnalogueInput::AnalogueInput(Basics& basics, IResourceData& data) :
+             cResourceData(data),
              cRuntimeState(false),
              cLuaBinding(basics.getProject().getLuaState(), this) {
   }
@@ -62,7 +63,17 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    // Nothing to do.
+    owner.createPropertyArray(metadata.getPropertyData("MappingAdd"), cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner, &metadata](InputMapping& mapping) {
+      owner.createPropertyStruct(metadata.getPropertyData("Mapping"), mapping.getShortName(), [&mapping, &metadata](IPropertyMaker& owner) {
+        mapping.getProperties(owner, metadata);
+      }, [this, &mapping]() {
+        Utils::removeElementUnique(cDefMapping, &mapping);
+      });
+    }, [this]()->InputMapping& {
+      std::shared_ptr<AnalogueInputMapping> mInput = std::make_shared<AnalogueInputMapping>(cResourceData);
+      mInput->setID("Axis");
+      return *cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
+    });
   }
 
   void AnalogueInput::removed() {
@@ -218,6 +229,10 @@ namespace IsoRealms::Basics {
 
   std::string AnalogueInput::InputMapping::getName() {
     return (*cPhysicalInput)->getName();
+  }
+
+  void AnalogueInput::InputMapping::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Mapping"), *cPhysicalInput);
   }
 
   void AnalogueInput::InputMapping::reset() {

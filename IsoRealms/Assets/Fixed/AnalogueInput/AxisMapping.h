@@ -31,27 +31,8 @@ namespace IsoRealms {
    */
   class AxisMapping : public IAnalogueInputMapping {
     public:
-
-    /**
-     * Construct a analogue input mapping with the specified properties..
-     * 
-     * @param axis The axis of the mapping.
-     * @param positive If true, then state is true when input is above the
-     *                 threshold, otherwise this is reversed.
-     * @param threshold The threshold above or below which the state is true.
-     */
-    AxisMapping(const unsigned int axis, const bool positive, const int threshold);
-    
     AxisMapping(const Metadata& metadata, IResourceData& owner);
     AxisMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
-
-    /**
-     * Construct a analogue input mapping by loading the axis properties
-     * from the specified node.
-     * 
-     * @param node The node from which to read the properties.
-     */
-    AxisMapping(JSONObject object);
 
     /************************************\
      * Implements IAnalogueInputMapping *
@@ -73,6 +54,9 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // JSON members.
     inline static const std::string JSON_AXIS      = "axis";

@@ -23,17 +23,8 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  AxisMapping::AxisMapping(unsigned int axis, bool positive, int threshold) :
-          cDefAxis(axis),
-          cDefDeadZone(0.16f) {
-  }
-
-  AxisMapping::AxisMapping(JSONObject object) :
-          cDefAxis(object.getInteger(JSON_AXIS)),
-          cDefDeadZone(object.getFloat(JSON_DEAD_ZONE)) {
-  }
-
   AxisMapping::AxisMapping(const Metadata& metadata, IResourceData& owner) :
+          cMetadata(metadata),
           cDefAxis(0),
           cDefDeadZone(0.16f) {
   }
@@ -83,7 +74,8 @@ namespace IsoRealms {
   }
 
   void AxisMapping::getAssetProperties(IPropertyMaker& owner) {
-    // TODO: Implement this.
+    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Axis"),     [this]() {return cDefAxis;},     [this](int   axis)     {cDefAxis     = axis;});
+    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("DeadZone"), [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 
   bool AxisMapping::isDefaultConfiguration() const {

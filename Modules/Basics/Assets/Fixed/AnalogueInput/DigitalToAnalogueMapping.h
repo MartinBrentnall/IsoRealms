@@ -35,8 +35,6 @@ namespace IsoRealms::Basics {
    */
   class DigitalToAnalogueMapping final : public IAnalogueInputMapping {
     public:
-    DigitalToAnalogueMapping(Basics& basics, IResourceData& data, JSONObject object);
-
     DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner);
     DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
@@ -60,6 +58,9 @@ namespace IsoRealms::Basics {
     bool isDefaultConfiguration() const override;
 
     private:
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     // JSON members.
     inline static const std::string JSON_NAME     = "name";

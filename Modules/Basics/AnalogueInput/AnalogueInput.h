@@ -146,7 +146,6 @@ namespace IsoRealms::Basics {
     inline static const std::string JSON_NAME     = "name";
     inline static const std::string JSON_TYPE     = "type";
 
-    // Definition data.
     class InputMapping {
       public:
       InputMapping(std::shared_ptr<AnalogueInputMapping> input);
@@ -159,12 +158,18 @@ namespace IsoRealms::Basics {
       void loadCustomMapping(JSONObject object);
       void registerAssets(ResourceAssetRegistry& assets);
       std::string getName();
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
       void reset();
 
       private:
       std::shared_ptr<AnalogueInputMapping> cPhysicalInput;
       float cState;
     };
+
+    // External interfaces.
+    IResourceData& cResourceData;
+
+    // Definition data.
     std::vector<std::unique_ptr<InputMapping>> cDefMapping; /// Default input mapping.
 
     // Runtime data.
