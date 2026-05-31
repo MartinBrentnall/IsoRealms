@@ -77,9 +77,7 @@ namespace IsoRealms::Basics {
 
   void DigitalInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyArray(metadata.getPropertyData("InputAdd"), cDefMapping, [](const std::unique_ptr<PhysicalInputMapping>& mMapping)->PhysicalInputMapping& {return *mMapping;}, [this, &owner, &metadata](PhysicalInputMapping& mapping) {
-      owner.createPropertyStruct(metadata.getPropertyData("Input"), mapping.getShortName(), [&mapping, &metadata](IPropertyMaker& owner) {
-        mapping.getProperties(owner, metadata);
-      }, [this, &mapping]() {
+      mapping.getProperties(owner, metadata, [this, &mapping]() {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });
     }, [this]()->PhysicalInputMapping& {
@@ -216,8 +214,8 @@ namespace IsoRealms::Basics {
     cPhysicalInput->save(object);
   }
 
-  void DigitalInput::PhysicalInputMapping::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Input"), *cPhysicalInput);
+  void DigitalInput::PhysicalInputMapping::getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction) {
+    owner.createPropertyTreeSelector(metadata.getPropertyData("Input"), *cPhysicalInput, removeFunction);
   }
 
   void DigitalInput::loadCustomMapping(JSONObject object) {

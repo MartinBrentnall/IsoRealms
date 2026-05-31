@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include <functional>
 #include <set>
 #include <queue>
 
@@ -158,7 +159,7 @@ namespace IsoRealms::Basics {
       void loadCustomMapping(JSONObject object);
       void registerAssets(ResourceAssetRegistry& assets);
       std::string getName();
-      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction);
       void reset();
 
       private:

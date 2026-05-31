@@ -65,7 +65,7 @@ namespace IsoRealms {
   }
 
   bool AxisMapping::renderAssetIcon() const {
-    return true;
+    return false;
   }
 
   void AxisMapping::saveAsset(JSONObject object) const {
