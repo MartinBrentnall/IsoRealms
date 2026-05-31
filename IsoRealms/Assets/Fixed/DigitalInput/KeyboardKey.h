@@ -22,7 +22,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Type/IDigitalInput.h"
 
 namespace IsoRealms {
   class Metadata;
@@ -31,7 +31,7 @@ namespace IsoRealms {
   /**
    * A digital input mapping to a key on a keyboard.
    */
-  class KeyMapping : public IDigitalInputMapping {
+  class KeyboardKey : public IDigitalInput {
     public:
       
     /**
@@ -60,22 +60,22 @@ namespace IsoRealms {
      * 
      * @param key The key to associate this digital input mapping with.
      */
-    KeyMapping(const sf::Keyboard::Key key);
+    KeyboardKey(const sf::Keyboard::Key key);
     
-    KeyMapping(const Metadata& metadata, IResourceData& owner);
-    KeyMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    KeyboardKey(const Metadata& metadata, IResourceData& owner);
+    KeyboardKey(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
-    /***********************************\
-     * Implements IDigitalInputMapping *
-    \***********************************/
+    /****************************\
+     * Implements IDigitalInput *
+    \****************************/
     bool matches(const sf::Event& event) const override;
     bool getState(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
 
-    /**********************************************\
-     * Implements IAsset via IDigitalInputMapping *
-    \**********************************************/
+    /***************************************\
+     * Implements IAsset via IDigitalInput *
+    \***************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;

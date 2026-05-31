@@ -22,7 +22,7 @@
  
  namespace IsoRealms {
    AnalogueInputRegistry::AnalogueInputRegistry(Project& project) :
-             cAxisMapping(project.getMetadata()) {
-     add(&cAxisMapping, "Axis", "Axis Mapping");
+             cGameControllerAxis(project.getMetadata()) {
+     add(&cGameControllerAxis, "GameControllerAxis", "Game Controller Axis");
    }
  }

@@ -107,8 +107,8 @@ namespace IsoRealms::UI {
       }
 
       case sf::Event::JoystickButtonPressed: {
-        if      (event.joystickButton.button == ButtonMapping::CROSS)  {(cRuntimePositiveHighlighted ? cDefPositiveAction : cDefNegativeAction).execute(); return true;}
-        else if (event.joystickButton.button == ButtonMapping::CIRCLE) {cDefNegativeAction.execute();                                                      return true;}
+        if      (event.joystickButton.button == GameControllerButton::CROSS)  {(cRuntimePositiveHighlighted ? cDefPositiveAction : cDefNegativeAction).execute(); return true;}
+        else if (event.joystickButton.button == GameControllerButton::CIRCLE) {cDefNegativeAction.execute();                                                      return true;}
         break;
       }
 

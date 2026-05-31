@@ -41,15 +41,15 @@ namespace IsoRealms::Basics {
    * when they exist, and default physical input mappings when user-defined
    * physicalinput mappings do not exist.
    */
-  class AnalogueInput final : public IFloat,
-                              public IInputHandler {
+  class AnalogueControl final : public IFloat,
+                                public IInputHandler {
     public:
 
     /**********************\
      * Resource Interface *
     \**********************/
-    AnalogueInput(Basics& basics, IResourceData& data);
-    AnalogueInput(Basics& basics, IResourceData& data, JSONObject object);
+    AnalogueControl(Basics& basics, IResourceData& data);
+    AnalogueControl(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -102,7 +102,7 @@ namespace IsoRealms::Basics {
      * @param index Index of the desired input mapping.
      * @return The physical input mapping at the specified index.
      */
-    std::shared_ptr<AnalogueInputMapping> getMapping(unsigned int index) const;
+    std::shared_ptr<AnalogueInput> getMapping(unsigned int index) const;
 
     /**
      * Bind the specified analogue input mapping as a user-mapping to this
@@ -110,7 +110,7 @@ namespace IsoRealms::Basics {
      *
      * @param input The input to bind.
      */
-    void addCustomInput(std::shared_ptr<AnalogueInputMapping> input);
+    void addCustomInput(std::shared_ptr<AnalogueInput> input);
 
     /**
      * Remove all user-bound physical input mappings.
@@ -149,12 +149,12 @@ namespace IsoRealms::Basics {
 
     class InputMapping {
       public:
-      InputMapping(std::shared_ptr<AnalogueInputMapping> input);
+      InputMapping(std::shared_ptr<AnalogueInput> input);
 
       bool matches(sf::Event& event) const;
       float input(sf::Event& event);
       std::string getShortName() const;
-      std::shared_ptr<AnalogueInputMapping> getInput() const;
+      std::shared_ptr<AnalogueInput> getInput() const;
       void save(JSONObject object) const;
       void loadCustomMapping(JSONObject object);
       void registerAssets(ResourceAssetRegistry& assets);
@@ -163,7 +163,7 @@ namespace IsoRealms::Basics {
       void reset();
 
       private:
-      std::shared_ptr<AnalogueInputMapping> cPhysicalInput;
+      std::shared_ptr<AnalogueInput> cPhysicalInput;
       float cState;
     };
 
@@ -178,7 +178,7 @@ namespace IsoRealms::Basics {
     float cRuntimeState;                                        /// Current state of this input.
 
     // Scripting Interface.
-    LuaBinding<AnalogueInput> cLuaBinding;
+    LuaBinding<AnalogueControl> cLuaBinding;
 
     // Misc.
     IStateNotifier* cStateNotifier;

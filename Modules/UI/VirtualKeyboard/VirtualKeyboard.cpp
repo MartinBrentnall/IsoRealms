@@ -90,8 +90,8 @@ namespace IsoRealms::UI {
       }
 
       case sf::Event::JoystickButtonPressed: {
-        if      (event.joystickButton.button == ButtonMapping::CROSS) {confirm();                                        return true;}
-        else if (event.joystickButton.button == ButtonMapping::L2)    {cRuntimeControllerCaps = !cRuntimeControllerCaps; return true;}
+        if      (event.joystickButton.button == GameControllerButton::CROSS) {confirm();                                        return true;}
+        else if (event.joystickButton.button == GameControllerButton::L2)    {cRuntimeControllerCaps = !cRuntimeControllerCaps; return true;}
         break;
       }
 

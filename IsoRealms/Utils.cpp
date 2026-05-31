@@ -21,10 +21,10 @@
 #include "IsoRealms/Assets/Literal/LiteralVertex.h"
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/Application.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/ButtonMapping.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/HatMapping.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/KeyMapping.h"
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerButton.h"
+#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerHat.h"
+#include "IsoRealms/Assets/Fixed/DigitalInput/KeyboardKey.h"
+#include "IsoRealms/Assets/Type/IDigitalInput.h"
 #include "IsoRealms/Types.h"
 #include "IsoRealms/System.h"
 
@@ -634,16 +634,16 @@ namespace IsoRealms {
     return sqrt(px * px + py * py);
   }
 
-  std::unique_ptr<IDigitalInputMapping> Utils::toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event) {
+  std::unique_ptr<IDigitalInput> Utils::toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event) {
     switch (event.type) {
-      case sf::Event::KeyPressed:            return std::make_unique<KeyMapping>(event.key.code);
-      case sf::Event::JoystickButtonPressed: return std::make_unique<ButtonMapping>(event.joystickButton.button);
+      case sf::Event::KeyPressed:            return std::make_unique<KeyboardKey>(event.key.code);
+      case sf::Event::JoystickButtonPressed: return std::make_unique<GameControllerButton>(event.joystickButton.button);
       case sf::Event::JoystickMoved: {
         if (event.joystickMove.axis == sf::Joystick::Axis::PovX) {
           if (event.joystickMove.position < 0) {
-            return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_LEFT);
+            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_LEFT);
           } else if (event.joystickMove.position > 0) {
-            return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_RIGHT);
+            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_RIGHT);
           }
         } else if (event.joystickMove.axis == sf::Joystick::Axis::PovY) {
 #if _WIN32
@@ -654,9 +654,9 @@ namespace IsoRealms {
           }
 #elif __linux__
           if (event.joystickMove.position < 0) {
-            return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_UP);
+            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_UP);
           } else if (event.joystickMove.position > 0) {
-            return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_DOWN);
+            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_DOWN);
           }
 #endif
         }

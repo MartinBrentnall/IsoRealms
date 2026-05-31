@@ -34,7 +34,7 @@
 
 namespace IsoRealms {
   class HatHandler;
-  class IDigitalInputMapping;
+  class IDigitalInput;
   class IColour;
   class ITexture;
   class IVisualElement;
@@ -262,7 +262,7 @@ namespace IsoRealms {
            :                  std::floor(value / static_cast<double>(alignTo)) * alignTo;
     }
 
-    static std::unique_ptr<IDigitalInputMapping> toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event);
+    static std::unique_ptr<IDigitalInput> toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event);
     
     static void shadowPrint(float x, float y, IFont& font, float fontSize, const IColour& colour, float shadowOffset, IFont::Alignment alignment, const std::string& text);
 

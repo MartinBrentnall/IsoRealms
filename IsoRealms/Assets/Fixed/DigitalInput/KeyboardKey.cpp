@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "KeyMapping.h"
+#include "KeyboardKey.h"
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  sf::Keyboard::Key KeyMapping::getKey(const std::string& name) {
+  sf::Keyboard::Key KeyboardKey::getKey(const std::string& name) {
     std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.find(name);
     if (i == cKeysByName.end()) {
       
@@ -40,7 +40,7 @@ namespace IsoRealms {
     return i->second;
   }
 
-  std::string KeyMapping::getName(const sf::Keyboard::Key& key) {
+  std::string KeyboardKey::getName(const sf::Keyboard::Key& key) {
     for (std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.begin(); i != cKeysByName.end(); i++) {
       if (i->second == key) {
         return i->first;
@@ -51,48 +51,48 @@ namespace IsoRealms {
     return UNMAPPED_KEY_PREFIX + Utils::toString(key);
   }
   
-  KeyMapping::KeyMapping(sf::Keyboard::Key key) :
+  KeyboardKey::KeyboardKey(sf::Keyboard::Key key) :
           cKey(key) {
   }
       
-  KeyMapping::KeyMapping(const Metadata& metadata, IResourceData& owner) {
+  KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner) {
     // TODO: Implement this.
   }
 
-  KeyMapping::KeyMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
-          KeyMapping(metadata, owner) {
+  KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          KeyboardKey(metadata, owner) {
     cKey = getKey(object.getString(JSON_WHICH));
   }
 
-  bool KeyMapping::matches(const sf::Event& event) const {
+  bool KeyboardKey::matches(const sf::Event& event) const {
     return (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) && event.key.code == cKey;
   }
 
-  bool KeyMapping::getState(const sf::Event& event) const {
+  bool KeyboardKey::getState(const sf::Event& event) const {
     return event.type == sf::Event::KeyPressed;
   }
 
-  std::string KeyMapping::getShortName() const {
+  std::string KeyboardKey::getShortName() const {
     return getName(cKey);
   }
     
-  std::string KeyMapping::getLongName() const {
+  std::string KeyboardKey::getLongName() const {
     return getName(cKey) + " Key";
   }
 
-  bool KeyMapping::renderAssetIcon() const {
+  bool KeyboardKey::renderAssetIcon() const {
     return false;
   }
 
-  void KeyMapping::saveAsset(JSONObject object) const {
+  void KeyboardKey::saveAsset(JSONObject object) const {
     object.addString(JSON_WHICH, getShortName());
   }
 
-  void KeyMapping::getAssetProperties(IPropertyMaker& owner) {
+  void KeyboardKey::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyKey(PropertyData("TODO: Key", "TODO: Description"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
   }
 
-  bool KeyMapping::isDefaultConfiguration() const {
+  bool KeyboardKey::isDefaultConfiguration() const {
     return true;
   }
 }

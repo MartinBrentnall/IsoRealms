@@ -23,7 +23,7 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Basics/DigitalInput/DigitalInput.h"
+#include "Modules/Basics/DigitalControl/DigitalControl.h"
 
 namespace IsoRealms::Basics {
   class Basics;
@@ -33,7 +33,7 @@ namespace IsoRealms::Basics {
    * specified analogue value if the digital input is active (otherwise it
    * outputs 0.0f).
    */
-  class DigitalToAnalogueMapping final : public IAnalogueInputMapping {
+  class DigitalToAnalogueMapping final : public IAnalogueInput {
     public:
     DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner);
     DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
@@ -67,8 +67,8 @@ namespace IsoRealms::Basics {
     inline static const std::string JSON_TO_VALUE = "toValue";
 
     // Definition data.
-    std::string cDefName;   /// Name of this mapping.
-    DigitalInput cDefInput; /// Digital input to be converted.
-    float cDefOutputValue;  /// Output value when the digital input is on (otherwise 0.0f).
+    std::string cDefName;       /// Name of this mapping.
+    DigitalControl cDefControl; /// Digital control to be converted.
+    float cDefOutputValue;      /// Output value when the digital input is on (otherwise 0.0f).
   };
 }

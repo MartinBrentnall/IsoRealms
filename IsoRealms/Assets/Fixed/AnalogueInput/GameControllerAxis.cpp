@@ -16,69 +16,69 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "AxisMapping.h"
+#include "GameControllerAxis.h"
 
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  AxisMapping::AxisMapping(const Metadata& metadata, IResourceData& owner) :
+  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IResourceData& owner) :
           cMetadata(metadata),
           cDefAxis(0),
           cDefDeadZone(0.16f) {
   }
 
-  AxisMapping::AxisMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
-          AxisMapping(metadata, owner) {
+  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          GameControllerAxis(metadata, owner) {
     cDefAxis = object.getInteger(JSON_AXIS);
     cDefDeadZone = object.getFloat(JSON_DEAD_ZONE);
   }
 
-  std::string AxisMapping::getName() const {
+  std::string GameControllerAxis::getName() const {
     return ""; // TODO: Implement this.
   }
 
-  bool AxisMapping::matches(const sf::Event& event) const {
+  bool GameControllerAxis::matches(const sf::Event& event) const {
     return event.type == sf::Event::JoystickMoved && event.joystickMove.axis == cDefAxis;
   }
 
-  float AxisMapping::getState(const sf::Event& event) const {
+  float GameControllerAxis::getState(const sf::Event& event) const {
     float mValue = event.joystickMove.position / 100.0f;
     return std::abs(mValue) < cDefDeadZone ? 0 : (mValue - (mValue < 0 ? -cDefDeadZone : cDefDeadZone)) * (1.0f / (1.0f - cDefDeadZone));
   }
 
-  std::string AxisMapping::getShortName() const {
+  std::string GameControllerAxis::getShortName() const {
     return "A" + Utils::toString(cDefAxis);
   }
     
-  std::string AxisMapping::getLongName() const {
+  std::string GameControllerAxis::getLongName() const {
     return "Axis " + Utils::toString(cDefAxis);
   }
   
-  void AxisMapping::loadCustomMapping(JSONObject object) {
+  void GameControllerAxis::loadCustomMapping(JSONObject object) {
     // Nothing to do.
   }
 
-  void AxisMapping::registerAssets(ResourceAssetRegistry& assets) {
+  void GameControllerAxis::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
 
-  bool AxisMapping::renderAssetIcon() const {
+  bool GameControllerAxis::renderAssetIcon() const {
     return false;
   }
 
-  void AxisMapping::saveAsset(JSONObject object) const {
+  void GameControllerAxis::saveAsset(JSONObject object) const {
     object.addInteger(JSON_AXIS, cDefAxis);
     object.addFloat(JSON_DEAD_ZONE, cDefDeadZone);
   }
 
-  void AxisMapping::getAssetProperties(IPropertyMaker& owner) {
+  void GameControllerAxis::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeInteger(cMetadata.getPropertyData("Axis"),     [this]() {return cDefAxis;},     [this](int   axis)     {cDefAxis     = axis;});
     owner.createPropertyNativeFloat(  cMetadata.getPropertyData("DeadZone"), [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 
-  bool AxisMapping::isDefaultConfiguration() const {
+  bool GameControllerAxis::isDefaultConfiguration() const {
     return cDefAxis == 0 && cDefDeadZone == 0.16f;
   }
 }

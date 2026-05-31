@@ -38,10 +38,10 @@ namespace IsoRealms::UI {
     /***********************\
      * Scripting Interface *
     \***********************/
-    void addMapping(std::shared_ptr<IDigitalInputMapping> input);
+    void addMapping(std::shared_ptr<IDigitalInput> input);
     void clear();
     unsigned int getMappingCount();
-    std::shared_ptr<IDigitalInputMapping> getMapping(unsigned int index);
+    std::shared_ptr<IDigitalInput> getMapping(unsigned int index);
     
     /************************\
      * Implements IMenuItem *
@@ -81,7 +81,7 @@ namespace IsoRealms::UI {
     std::string cDefID; /// ID of this menu item for binding.
     
     // Runtime data.
-    std::vector<std::shared_ptr<IDigitalInputMapping>> cRuntimeMappings; /// Mappings applied to this digital input.
+    std::vector<std::shared_ptr<IDigitalInput>> cRuntimeMappings; /// Mappings applied to this digital input.
     unsigned int cRuntimeSelectedMapping;                                /// Index of the selected mapping.
     bool cRuntimeAddingMapping;                                          /// True when awaiting user input from which to apply a new mapping.
 

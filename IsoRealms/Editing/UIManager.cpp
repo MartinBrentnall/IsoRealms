@@ -320,9 +320,9 @@ namespace IsoRealms {
       }
 
       case sf::Event::JoystickButtonPressed: {
-        if (event.joystickButton.button == ButtonMapping::CROSS)  {return input(UISignalID::CONFIRM);     }
-        if (event.joystickButton.button == ButtonMapping::CIRCLE) {return input(UISignalID::CANCEL);      }
-        if (event.joystickButton.button == ButtonMapping::SQUARE) {return input(UISignalID::TOGGLE_HELP); }
+        if (event.joystickButton.button == GameControllerButton::CROSS)  {return input(UISignalID::CONFIRM);     }
+        if (event.joystickButton.button == GameControllerButton::CIRCLE) {return input(UISignalID::CANCEL);      }
+        if (event.joystickButton.button == GameControllerButton::SQUARE) {return input(UISignalID::TOGGLE_HELP); }
         break;
       }
 

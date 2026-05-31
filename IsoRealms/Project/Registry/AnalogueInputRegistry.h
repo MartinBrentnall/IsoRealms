@@ -20,20 +20,20 @@
 
  #include <functional>
  
- #include "IsoRealms/Assets/Type/IAnalogueInputMapping.h"
+ #include "IsoRealms/Assets/Type/IAnalogueInput.h"
  #include "IsoRealms/IResourceData.h"
- #include "IsoRealms/Assets/Fixed/AnalogueInput/AxisMapping.h"
+ #include "IsoRealms/Assets/Fixed/AnalogueInput/GameControllerAxis.h"
  #include "IsoRealms/Assets/Providers/AssetInstanced.h"
  
  #include "AssetClientManager.h"
  
  namespace IsoRealms {
-   class AnalogueInputRegistry : public AssetClientManager<AnalogueInputRegistry, IResourceData, IAnalogueInputMapping> {
+   class AnalogueInputRegistry : public AssetClientManager<AnalogueInputRegistry, IResourceData, IAnalogueInput> {
      public:
      AnalogueInputRegistry(Project& project);
   
      private:
-     AssetInstanced<IResourceData, IAnalogueInputMapping, AxisMapping> cAxisMapping;
+     AssetInstanced<IResourceData, IAnalogueInput, GameControllerAxis> cGameControllerAxis;
    };
  }
   

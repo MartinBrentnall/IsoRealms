@@ -20,26 +20,26 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Type/IDigitalInput.h"
 #include "IsoRealms/IResourceData.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/ButtonMapping.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/HatMapping.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/MouseButtonMapping.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/KeyMapping.h"
+#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerButton.h"
+#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerHat.h"
+#include "IsoRealms/Assets/Fixed/DigitalInput/KeyboardKey.h"
+#include "IsoRealms/Assets/Fixed/DigitalInput/MouseButton.h"
 #include "IsoRealms/Assets/Providers/AssetInstanced.h"
 
 #include "AssetClientManager.h"
 
 namespace IsoRealms {
-  class DigitalInputRegistry : public AssetClientManager<DigitalInputRegistry, IResourceData, IDigitalInputMapping> {
+  class DigitalInputRegistry : public AssetClientManager<DigitalInputRegistry, IResourceData, IDigitalInput> {
     public:
     DigitalInputRegistry(Project& project);
  
     private:
-    AssetInstanced<IResourceData, IDigitalInputMapping, ButtonMapping>      cButtonMapping;
-    AssetInstanced<IResourceData, IDigitalInputMapping, HatMapping>         cHatMapping;
-    AssetInstanced<IResourceData, IDigitalInputMapping, MouseButtonMapping> cMouseButtonMapping;
-    AssetInstanced<IResourceData, IDigitalInputMapping, KeyMapping>         cKeyMapping;
+    AssetInstanced<IResourceData, IDigitalInput, GameControllerButton> cGameControllerButton;
+    AssetInstanced<IResourceData, IDigitalInput, GameControllerHat>    cGameControllerHat;
+    AssetInstanced<IResourceData, IDigitalInput, MouseButton>          cMouseButton;
+    AssetInstanced<IResourceData, IDigitalInput, KeyboardKey>          cKeyboardKey;
   };
 }
  

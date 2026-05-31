@@ -20,11 +20,11 @@
 
 #include "IsoRealms.h"
 
-#include "AnalogueInput/AnalogueInput.h"
+#include "AnalogueControl/AnalogueControl.h"
 #include "Assets/Fixed/AnalogueInput/DigitalToAnalogueMapping.h"
 #include "Assets/Registry/SequenceTrackRegistry.h"
 #include "BooleanTrigger/BooleanTrigger.h"
-#include "DigitalInput/DigitalInput.h"
+#include "DigitalControl/DigitalControl.h"
 #include "FileFont/FileFont.h"
 #include "FileSound/FileSound.h"
 #include "FileTexture/FileTexture.h"
@@ -132,9 +132,9 @@ namespace IsoRealms::Basics {
     // Asset registries
     SequenceTrackRegistry cSequenceTracks;
 
-    ResourceTypeDefinition<Basics, AnalogueInput>     cResourceTypeAnalogueInput;
+    ResourceTypeDefinition<Basics, AnalogueControl>   cResourceTypeAnalogueControl;
     ResourceTypeDefinition<Basics, BooleanTrigger>    cResourceTypeBooleanTrigger;
-    ResourceTypeDefinition<Basics, DigitalInput>      cResourceTypeDigitalInput;
+    ResourceTypeDefinition<Basics, DigitalControl>    cResourceTypeDigitalControl;
     ResourceTypeDefinition<Basics, FileFont>          cResourceTypeFileFont;
     ResourceTypeDefinition<Basics, FileSound>         cResourceTypeFileSound;
     ResourceTypeDefinition<Basics, FileTexture>       cResourceTypeFileTexture;
@@ -153,7 +153,7 @@ namespace IsoRealms::Basics {
     ResourceTypeDefinition<Basics, SimpleVertex>      cResourceTypeSimpleVertex;
     ResourceTypeDefinition<Basics, Sprite>            cResourceTypeSprite;
 
-    AssetInstanced<IResourceData, IAnalogueInputMapping, DigitalToAnalogueMapping> cDigitalToAnalogueMapping;
+    AssetInstanced<IResourceData, IAnalogueInput, DigitalToAnalogueMapping> cDigitalToAnalogueMapping;
 
     LuaBinding<Basics> cLuaBinding;
 

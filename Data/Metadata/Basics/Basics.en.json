@@ -63,14 +63,14 @@
     }
   },
   "resources": {
-    "AnalogueInput": {
-      "singular": "Analogue Input",
-      "plural": "Analogue Inputs",
-      "description": "Inputs for analogue devices such as analogue sticks and trigger buttons.",
+    "AnalogueControl": {
+      "singular": "Analogue Control",
+      "plural": "Analogue Controls",
+      "description": "Controls for analogue devices such as analogue sticks and trigger buttons.",
       "category": "Input",
       "properties": {
-        "Mapping": {"name": "Mapping", "description": "Maps a physical input that contributes to this analogue input."},
-        "MappingAdd": {"name": "Mapping", "description": "Add a physical input mapping to this analogue input."}
+        "DefaultMapping": {"name": "Default Mapping", "description": "Maps a physical input that contributes to this analogue control."},
+        "DefaultMappingAdd": {"name": "Default Mapping", "description": "Add a physical input mapping to this analogue control."}
       }
     },
     "BooleanTrigger": {
@@ -84,14 +84,14 @@
         "OnFalse": {"name": "Action on False", "description": "Action to perform on value becoming FALSE."}
       }
     },
-    "DigitalInput": {
-      "singular": "Digital Input",
-      "plural": "Digital Inputs",
-      "description": "Inputs for digital devices such as face buttons, mouse buttons, and keyboard keys.",
+    "DigitalControl": {
+      "singular": "Digital Control",
+      "plural": "Digital Controls",
+      "description": "Controls for digital devices such as face buttons, mouse buttons, and keyboard keys.",
       "category": "Input",
       "properties": {
-        "Input": {"name": "Input", "description": "Maps a physical input that triggers this digital input."},
-        "InputAdd": {"name": "Input", "description": "Add a physical input mapping to this digital input."}
+        "DefaultMapping": {"name": "Default Mapping", "description": "Maps a physical input that triggers this digital control."},
+        "DefaultMappingAdd": {"name": "Default Mapping", "description": "Add a physical input mapping to this digital control."}
       }
     },
     "Font": {

@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DigitalInputMapping.h"
+#include "AnalogueInput.h"
 
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  DigitalInputMapping::DigitalInputMapping(IResourceData& owner) :
-            Asset<DigitalInputMapping, IDigitalInputMapping, IResourceData>(owner) {
+  AnalogueInput::AnalogueInput(IResourceData& owner) :
+            Asset<AnalogueInput, IAnalogueInput, IResourceData>(owner) {
   }
 }
  

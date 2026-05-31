@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "MouseButtonMapping.h"
+#include "MouseButton.h"
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  sf::Mouse::Button MouseButtonMapping::getButton(const std::string& name) {
+  sf::Mouse::Button MouseButton::getButton(const std::string& name) {
     std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.find(name);
     if (i == cButtonsByName.end()) {
 
@@ -39,7 +39,7 @@ namespace IsoRealms {
     return i->second;
   }
 
-  std::string MouseButtonMapping::getName(const sf::Mouse::Button button) {
+  std::string MouseButton::getName(const sf::Mouse::Button button) {
     for (std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.begin(); i != cButtonsByName.end(); i++) {
       if (i->second == button) {
         return i->first;
@@ -50,48 +50,48 @@ namespace IsoRealms {
     return UNMAPPED_BUTTON_PREFIX + Utils::toString(button);
   }
 
-  MouseButtonMapping::MouseButtonMapping(sf::Mouse::Button button) :
+  MouseButton::MouseButton(sf::Mouse::Button button) :
           cButton(button) {
   }
 
-  MouseButtonMapping::MouseButtonMapping(const Metadata& metadata, IResourceData& owner) {
+  MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner) {
     // TODO: Implement this.
   }
 
-  MouseButtonMapping::MouseButtonMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
-          MouseButtonMapping(metadata, owner) {
+  MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          MouseButton(metadata, owner) {
     cButton = getButton(object.getString(JSON_BUTTON));
   }
 
-  bool MouseButtonMapping::matches(const sf::Event& event) const {
+  bool MouseButton::matches(const sf::Event& event) const {
     return (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased) && event.mouseButton.button == cButton;
   }
 
-  bool MouseButtonMapping::getState(const sf::Event& event) const {
+  bool MouseButton::getState(const sf::Event& event) const {
     return event.type == sf::Event::MouseButtonPressed;
   }
 
-  std::string MouseButtonMapping::getShortName() const {
+  std::string MouseButton::getShortName() const {
     return getName(cButton);
   }
 
-  std::string MouseButtonMapping::getLongName() const {
+  std::string MouseButton::getLongName() const {
     return getName(cButton) + " Mouse Button";
   }
 
-  bool MouseButtonMapping::renderAssetIcon() const {
+  bool MouseButton::renderAssetIcon() const {
     return false;
   }
 
-  void MouseButtonMapping::saveAsset(JSONObject object) const {
+  void MouseButton::saveAsset(JSONObject object) const {
     object.addString(JSON_BUTTON, getShortName());
   }
 
-  void MouseButtonMapping::getAssetProperties(IPropertyMaker& owner) {
+  void MouseButton::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
-  bool MouseButtonMapping::isDefaultConfiguration() const {
+  bool MouseButton::isDefaultConfiguration() const {
     return true;
   }
 }

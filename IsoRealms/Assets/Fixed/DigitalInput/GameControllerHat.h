@@ -20,7 +20,7 @@
 
 #include <map>
 
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Type/IDigitalInput.h"
 #include "IsoRealms/Input/HatHandler.h"
 
 namespace IsoRealms {
@@ -30,7 +30,7 @@ namespace IsoRealms {
   /**
    * A digital input mapping to an analogue stick or similar.
    */
-  class HatMapping : public IDigitalInputMapping {
+  class GameControllerHat : public IDigitalInput {
     public:
 
     /**
@@ -42,7 +42,7 @@ namespace IsoRealms {
      * @param threshold The threshold above or below which the state is true.
      * @throws ArgumentException If the specified direction is not known.
      */
-    HatMapping(HatHandler& hatHandler, const HatHandler::Direction direction);
+    GameControllerHat(HatHandler& hatHandler, const HatHandler::Direction direction);
 
     /**
      * Construct a digital input mapping by loading the hat properties
@@ -51,10 +51,10 @@ namespace IsoRealms {
      * @param node The node from which to read the properties.
      * @throws ArgumentException If the specified direction is not known.
      */
-    HatMapping(HatHandler& hatHandler, JSONObject object);
+    GameControllerHat(HatHandler& hatHandler, JSONObject object);
 
-    HatMapping(const Metadata& metadata, IResourceData& owner);
-    HatMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    GameControllerHat(const Metadata& metadata, IResourceData& owner);
+    GameControllerHat(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
     /**
      * Retrieve the direction of the specified name.  The key is always such that it
@@ -78,17 +78,17 @@ namespace IsoRealms {
      */
     static std::string getName(const HatHandler::Direction value);
 
-    /***********************************\
-     * Implements IDigitalInputMapping *
-    \***********************************/
+    /****************************\
+     * Implements IDigitalInput *
+    \****************************/
     bool getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
 
-    /**********************************************\
-     * Implements IAsset via IDigitalInputMapping *
-    \**********************************************/
+    /***************************************\
+     * Implements IAsset via IDigitalInput *
+    \***************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;

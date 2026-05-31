@@ -36,7 +36,7 @@ namespace IsoRealms {
    * Interface to a digital input mapping on which input events can be tested
    * and processed.
    */
-  class IDigitalInputMapping : public IAsset {
+  class IDigitalInput : public IAsset {
     public:
       
     /**
@@ -77,7 +77,7 @@ namespace IsoRealms {
      */
     virtual std::string getLongName() const = 0;
 
-    virtual ~IDigitalInputMapping() {
+    virtual ~IDigitalInput() {
     }
   };
 }

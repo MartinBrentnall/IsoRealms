@@ -19,12 +19,12 @@
 #pragma once
 
 #include "Assets/Client/Action.h"
-#include "Assets/Client/AnalogueInputMapping.h"
+#include "Assets/Client/AnalogueInput.h"
 #include "Assets/Client/Binding.h"
 #include "Assets/Client/BindingType.h"
 #include "Assets/Client/Boolean.h"
 #include "Assets/Client/Colour.h"
-#include "Assets/Client/DigitalInputMapping.h"
+#include "Assets/Client/DigitalInput.h"
 #include "Assets/Client/File.h"
 #include "Assets/Client/Float.h"
 #include "Assets/Client/Editable.h"

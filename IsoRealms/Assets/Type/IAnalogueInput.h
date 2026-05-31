@@ -31,7 +31,7 @@ namespace IsoRealms {
    * Interface to a analogue input mapping on which input events can be tested
    * and processed.
    */
-  class IAnalogueInputMapping : public IAsset {
+  class IAnalogueInput : public IAsset {
     public:
     virtual std::string getName() const = 0;
 
@@ -76,6 +76,6 @@ namespace IsoRealms {
 
     virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
 
-    virtual ~IAnalogueInputMapping() {}
+    virtual ~IAnalogueInput() {}
   };
 }

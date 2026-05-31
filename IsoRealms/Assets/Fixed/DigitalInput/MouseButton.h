@@ -22,7 +22,7 @@
 
 #include <SFML/Window/Mouse.hpp>
 
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
+#include "IsoRealms/Assets/Type/IDigitalInput.h"
 
 namespace IsoRealms {
   class Metadata;
@@ -31,7 +31,7 @@ namespace IsoRealms {
   /**
    * A digital input mapping to a mouse button.
    */
-  class MouseButtonMapping : public IDigitalInputMapping {
+  class MouseButton : public IDigitalInput {
     private:
     inline static const std::string JSON_BUTTON = "button";
 
@@ -58,22 +58,22 @@ namespace IsoRealms {
      *
      * @param key The key to associate this digital input mapping with.
      */
-    MouseButtonMapping(const sf::Mouse::Button button);
+    MouseButton(const sf::Mouse::Button button);
 
-    MouseButtonMapping(const Metadata& metadata, IResourceData& owner);
-    MouseButtonMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    MouseButton(const Metadata& metadata, IResourceData& owner);
+    MouseButton(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
-    /***********************************\
-     * Implements IDigitalInputMapping *
-    \***********************************/
+    /****************************\
+     * Implements IDigitalInput *
+    \****************************/
     bool matches(const sf::Event& event) const override;
     bool getState(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
 
-    /**********************************************\
-     * Implements IAsset via IDigitalInputMapping *
-    \**********************************************/
+    /***************************************\
+     * Implements IAsset via IDigitalInput *
+    \***************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;

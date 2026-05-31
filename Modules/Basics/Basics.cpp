@@ -27,9 +27,9 @@ namespace IsoRealms::Basics {
                     cModule(registry),
                     cActionScript(*this),
                     cSequenceTracks(registry),
-                    cResourceTypeAnalogueInput(*this),
+                    cResourceTypeAnalogueControl(*this),
                     cResourceTypeBooleanTrigger(*this),
-                    cResourceTypeDigitalInput(*this),
+                    cResourceTypeDigitalControl(*this),
                     cResourceTypeFileFont(*this),
                     cResourceTypeFileSound(*this),
                     cResourceTypeFileTexture(*this),
@@ -49,9 +49,9 @@ namespace IsoRealms::Basics {
                     cResourceTypeSprite(*this),
                     cDigitalToAnalogueMapping(registry.getAssetMetadata("DigitalToAnalogue")),
                     cLuaBinding(project.getLuaState(), this) {
-    registry.add(&cResourceTypeAnalogueInput,     "AnalogueInput");
+    registry.add(&cResourceTypeAnalogueControl,   "AnalogueControl");
     registry.add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
-    registry.add(&cResourceTypeDigitalInput,      "DigitalInput");
+    registry.add(&cResourceTypeDigitalControl,    "DigitalControl");
     registry.add(&cResourceTypeFileFont,          "Font");
     registry.add(&cResourceTypeFileSound,         "Sound");
     registry.add(&cResourceTypeFileTexture,       "Texture");
@@ -100,7 +100,7 @@ namespace IsoRealms::Basics {
   }
   
   void Basics::reset() {
-    reset2(cResourceTypeDigitalInput);
+    reset2(cResourceTypeDigitalControl);
     reset2(cResourceTypeInputSwitch);
     reset2(cResourceTypeProject);
     reset2(cResourceTypeSequence);
@@ -149,7 +149,7 @@ namespace IsoRealms::Basics {
       for (JSONValue mDigitalInputMappingValue : mModuleSettingsObject.getArray(JSON_DIGITAL_INPUT_MAPPINGS)) {
         JSONObject mDigitalInputMappingObject = mDigitalInputMappingValue.getObject();
         std::string mInputID = mDigitalInputMappingObject.getString(JSON_ID);
-        DigitalInput* mDigitalInput = cResourceTypeDigitalInput.getResource(mInputID);
+        DigitalControl* mDigitalInput = cResourceTypeDigitalControl.getResource(mInputID);
         if (mDigitalInput == nullptr) {
           throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Digital input \"" + mInputID + "\" not found.");
         }
@@ -158,7 +158,7 @@ namespace IsoRealms::Basics {
       for (JSONValue mAnalogueInputMappingValue : mModuleSettingsObject.getArray(JSON_ANALOGUE_INPUT_MAPPINGS)) {
         JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingValue.getObject();
         std::string mInputID = mAnalogueInputMappingObject.getString(JSON_ID);
-        AnalogueInput* mAnalogueInput = cResourceTypeAnalogueInput.getResource(mInputID);
+        AnalogueControl* mAnalogueInput = cResourceTypeAnalogueControl.getResource(mInputID);
         if (mAnalogueInput == nullptr) {
           throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Analogue input \"" + mInputID + "\" not found.");
         }
@@ -173,15 +173,15 @@ namespace IsoRealms::Basics {
     mModuleSettingsObject.addFloat(JSON_SOUND_VOLUME, getSoundVolume());
     mModuleSettingsObject.addFloat(JSON_MUSIC_VOLUME, getMusicVolume());
     JSONArray mDigitalInputMappingArray = mModuleSettingsObject.addArray(JSON_DIGITAL_INPUT_MAPPINGS);
-    for (DigitalInput* mDigitalInput : cResourceTypeDigitalInput) {
+    for (DigitalControl* mDigitalInput : cResourceTypeDigitalControl) {
       JSONObject mDigitalInputMappingObject = mDigitalInputMappingArray.addObject();
-      mDigitalInputMappingObject.addString(JSON_ID, cResourceTypeDigitalInput.getID(mDigitalInput));
+      mDigitalInputMappingObject.addString(JSON_ID, cResourceTypeDigitalControl.getID(mDigitalInput));
       mDigitalInput->saveCustomMapping(mDigitalInputMappingObject);
     }
     JSONArray mAnalogueInputMappingArray = mModuleSettingsObject.addArray(JSON_ANALOGUE_INPUT_MAPPINGS);
-    for (AnalogueInput* mAnalogueInput : cResourceTypeAnalogueInput) {
+    for (AnalogueControl* mAnalogueInput : cResourceTypeAnalogueControl) {
       JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingArray.addObject();
-      mAnalogueInputMappingObject.addString(JSON_ID, cResourceTypeAnalogueInput.getID(mAnalogueInput));
+      mAnalogueInputMappingObject.addString(JSON_ID, cResourceTypeAnalogueControl.getID(mAnalogueInput));
       mAnalogueInput->saveCustomMapping(mAnalogueInputMappingObject);
     }
     mModuleSettingsDocument.save(GLOBAL_CONFIGURATION_FILE);

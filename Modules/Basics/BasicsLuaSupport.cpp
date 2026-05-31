@@ -20,7 +20,7 @@
 
 #include <sol.hpp>
 
-#include "AnalogueInput/AnalogueInput.h"
+#include "AnalogueControl/AnalogueControl.h"
 #include "Basics.h"
 #include "InputSwitch/InputSwitch.h"
 #include "Project/Project.h"
@@ -38,7 +38,7 @@ namespace IsoRealms {
     cLuaState.getState()[bindFunction](cDefValue);
   }
   
-  template class LuaBinding<Basics::AnalogueInput>;
+  template class LuaBinding<Basics::AnalogueControl>;
   template class LuaBinding<Basics::Basics>;
   template class LuaBinding<Basics::InputSwitch>;
   template class LuaBinding<Basics::Project>;
@@ -64,22 +64,22 @@ namespace IsoRealms {
     extern "C" void __declspec(dllexport) __stdcall initLua(LuaState* luaState) {
 #endif
       sol::state& mLua = luaState->getState();
-      mLua.new_usertype<AnalogueInput>("AnalogueInput",                   "getInputsString",            &AnalogueInput::getInputsString,
-                                                                          "clearCustomInputs",          &AnalogueInput::clearCustomInputs,
-                                                                          "addCustomInput",             &AnalogueInput::addCustomInput,
-                                                                          "getMappingCount",            &AnalogueInput::getMappingCount,
-                                                                          "getMapping",                 &AnalogueInput::getMapping);
+      mLua.new_usertype<AnalogueControl>("AnalogueControl",               "getInputsString",            &AnalogueControl::getInputsString,
+                                                                          "clearCustomInputs",          &AnalogueControl::clearCustomInputs,
+                                                                          "addCustomInput",             &AnalogueControl::addCustomInput,
+                                                                          "getMappingCount",            &AnalogueControl::getMappingCount,
+                                                                          "getMapping",                 &AnalogueControl::getMapping);
       mLua.new_usertype<Basics>("Basics",                                 "getSoundVolume",             &Basics::getSoundVolume,
                                                                           "getMusicVolume",             &Basics::getMusicVolume,
                                                                           "setSoundVolume",             &Basics::setSoundVolume,
                                                                           "setMusicVolume",             &Basics::setMusicVolume,
                                                                           "reloadGlobalConfiguration",  &Basics::reloadGlobalConfiguration,
                                                                           "persistGlobalConfiguration", &Basics::persistGlobalConfiguration);
-      mLua.new_usertype<DigitalInput>("DigitalInput",                     "getInputsString",            &DigitalInput::getInputsString,
-                                                                          "clearCustomInputs",          &DigitalInput::clearCustomInputs,
-                                                                          "addCustomInput",             &DigitalInput::addCustomInput,
-                                                                          "getMappingCount",            &DigitalInput::getMappingCount,
-                                                                          "getMapping",                 &DigitalInput::getMapping);
+      mLua.new_usertype<DigitalControl>("DigitalControl",                 "getInputsString",            &DigitalControl::getInputsString,
+                                                                          "clearCustomInputs",          &DigitalControl::clearCustomInputs,
+                                                                          "addCustomInput",             &DigitalControl::addCustomInput,
+                                                                          "getMappingCount",            &DigitalControl::getMappingCount,
+                                                                          "getMapping",                 &DigitalControl::getMapping);
       mLua.new_usertype<InputSwitch>("InputSwitch",                       "setInputHandler",            &InputSwitch::setInputHandler);
       mLua.new_usertype<Project>("SubProject",                            "setRunning",                 &Project::setRunning,
                                                                           "setEditing",                 &Project::setEditing,

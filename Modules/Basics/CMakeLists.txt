@@ -17,7 +17,7 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Basics MODULE
-  AnalogueInput/AnalogueInput.cpp
+  AnalogueControl/AnalogueControl.cpp
   Assets/Client/SequenceTrack.cpp
   Assets/Fixed/AnalogueInput/DigitalToAnalogueMapping.cpp
   Assets/Fixed/SequenceTrack/SequenceTrackAction.cpp
@@ -37,7 +37,7 @@ add_library(Basics MODULE
   Assets/Fixed/SequenceTrack/SequenceTrackScreenInstance.cpp
   Assets/Registry/SequenceTrackRegistry.cpp
   BooleanTrigger/BooleanTrigger.cpp
-  DigitalInput/DigitalInput.cpp
+  DigitalControl/DigitalControl.cpp
   FileFont/FileFont.cpp
   FileSound/FileSound.cpp
   FileTexture/FileTexture.cpp

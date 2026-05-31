@@ -16,13 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "AnalogueInputMapping.h"
+#pragma once
 
-#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Assets/Type/IAnalogueInput.h"
+#include "IsoRealms/IResourceData.h"
+
+#include "Asset.h"
 
 namespace IsoRealms {
-  AnalogueInputMapping::AnalogueInputMapping(IResourceData& owner) :
-            Asset<AnalogueInputMapping, IAnalogueInputMapping, IResourceData>(owner) {
-  }
+  class AnalogueInput : public Asset<AnalogueInput, IAnalogueInput, IResourceData> {
+    public:
+    AnalogueInput(IResourceData& owner);
+  };
 }
- 

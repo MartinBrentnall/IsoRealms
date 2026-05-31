@@ -153,7 +153,7 @@ namespace IsoRealms::UI {
       }
 
       case sf::Event::JoystickButtonPressed: {
-        if (event.joystickButton.button == ButtonMapping::CIRCLE) {cDefExitAction.execute(); return true;}
+        if (event.joystickButton.button == GameControllerButton::CIRCLE) {cDefExitAction.execute(); return true;}
         break;
       }
 

@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#pragma once
+#include "DigitalInput.h"
 
-#include "IsoRealms/Assets/Type/IDigitalInputMapping.h"
-#include "IsoRealms/IResourceData.h"
-
-#include "Asset.h"
+#include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  class DigitalInputMapping : public Asset<DigitalInputMapping, IDigitalInputMapping, IResourceData> {
-    public:
-    DigitalInputMapping(IResourceData& owner);
-  };
+  DigitalInput::DigitalInput(IResourceData& owner) :
+            Asset<DigitalInput, IDigitalInput, IResourceData>(owner) {
+  }
+
+  std::string DigitalInput::getTreeItemLabel() const {
+    return Asset::getTreeItemLabel() + " (" + cAsset->getShortName() + ")";
+  }
 }
  

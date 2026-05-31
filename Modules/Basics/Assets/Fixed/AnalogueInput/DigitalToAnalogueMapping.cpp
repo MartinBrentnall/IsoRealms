@@ -24,14 +24,14 @@ namespace IsoRealms::Basics {
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner) :
             cMetadata(metadata),
             cDefName("TODO Name this mapping"),
-            cDefInput(owner),
+            cDefControl(owner),
             cDefOutputValue(0.0f) {
   }
 
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
             cMetadata(metadata),
             cDefName(object.getString(JSON_NAME)),
-            cDefInput(owner, object),
+            cDefControl(owner, object),
             cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
   }
 
@@ -40,8 +40,8 @@ namespace IsoRealms::Basics {
   }
 
   float DigitalToAnalogueMapping::getState(const sf::Event& event) const {
-    for (unsigned int i = 0; i < cDefInput.getMappingCount(); i++) {
-      std::shared_ptr<DigitalInputMapping> mInput = cDefInput.getMapping(i);
+    for (unsigned int i = 0; i < cDefControl.getMappingCount(); i++) {
+      std::shared_ptr<DigitalInput> mInput = cDefControl.getMapping(i);
       if ((*mInput)->matches(event)) {
         if ((*mInput)->getState(event)) {
           return cDefOutputValue;
@@ -52,8 +52,8 @@ namespace IsoRealms::Basics {
   }
   
   bool DigitalToAnalogueMapping::matches(const sf::Event& event) const {
-    for (unsigned int i = 0; i < cDefInput.getMappingCount(); i++) {
-      std::shared_ptr<DigitalInputMapping> mInput = cDefInput.getMapping(i);
+    for (unsigned int i = 0; i < cDefControl.getMappingCount(); i++) {
+      std::shared_ptr<DigitalInput> mInput = cDefControl.getMapping(i);
       if ((*mInput)->matches(event)) {
         return true;
       }
@@ -70,11 +70,11 @@ namespace IsoRealms::Basics {
   }
   
   void DigitalToAnalogueMapping::loadCustomMapping(JSONObject object) {
-    cDefInput.loadCustomMapping(object);
+    cDefControl.loadCustomMapping(object);
   }
 
   void DigitalToAnalogueMapping::registerAssets(ResourceAssetRegistry& assets) {
-    cDefInput.registerAssets(assets, cDefName);
+    cDefControl.registerAssets(assets, cDefName);
   }
 
   bool DigitalToAnalogueMapping::renderAssetIcon() const {
@@ -84,12 +84,12 @@ namespace IsoRealms::Basics {
   void DigitalToAnalogueMapping::saveAsset(JSONObject object) const {
     object.addString(JSON_NAME, cDefName);
     object.addFloat(JSON_TO_VALUE, cDefOutputValue);
-    cDefInput.save(object);
+    cDefControl.save(object);
   }
 
   void DigitalToAnalogueMapping::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(cMetadata.getPropertyData("Name"),    [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
-    //owner.createPropertyTreeSelector(cMetadata.getPropertyData("Input"),   &cDefInput);
+    //owner.createPropertyTreeSelector(cMetadata.getPropertyData("Control"),   &cDefControl);
     owner.createPropertyNativeFloat( cMetadata.getPropertyData("ToValue"), [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
   }
   

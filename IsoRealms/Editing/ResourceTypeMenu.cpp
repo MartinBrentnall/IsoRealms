@@ -196,6 +196,7 @@ namespace IsoRealms {
       IResource* mCreatedResource = cResourceType.createResource();
       openResourcePropertiesMenu(mCreatedResource);
     }, [](IResource* resource) {
+      Utils::renderIconAdd();
       return true;
     });
     

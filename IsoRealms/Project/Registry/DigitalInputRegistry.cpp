@@ -22,13 +22,13 @@
 
 namespace IsoRealms {
   DigitalInputRegistry::DigitalInputRegistry(Project& project) :
-            cButtonMapping(project.getMetadata()), 
-            cHatMapping(project.getMetadata()),
-            cMouseButtonMapping(project.getMetadata()),
-            cKeyMapping(project.getMetadata()) {
-    add(&cButtonMapping,      "Button",      "Button Mapping");
-    add(&cHatMapping,         "Hat",         "Hat Mapping");
-    add(&cMouseButtonMapping, "MouseButton", "Mouse Button Mapping");
-    add(&cKeyMapping,         "Key",         "Key Mapping");
+            cGameControllerButton(project.getMetadata()), 
+            cGameControllerHat(project.getMetadata()),
+            cMouseButton(project.getMetadata()),
+            cKeyboardKey(project.getMetadata()) {
+    add(&cGameControllerButton, "GameControllerButton", "Game Controller Button");
+    add(&cGameControllerHat,    "GameControllerHat",    "Game Controller Hat");
+    add(&cMouseButton,          "MouseButton",          "Mouse Button");
+    add(&cKeyboardKey,          "KeyboardKey",          "Keyboard Key");
   }
 }

@@ -16,54 +16,54 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ButtonMapping.h"
+#include "GameControllerButton.h"
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  ButtonMapping::ButtonMapping(const unsigned int button) :
+  GameControllerButton::GameControllerButton(const unsigned int button) :
           cButton(button) {
   }
 
-  ButtonMapping::ButtonMapping(const Metadata& metadata, IResourceData& owner) {
+  GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner) {
     // TODO: Implement this.
   }
 
-  ButtonMapping::ButtonMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
-          ButtonMapping(metadata, owner) {
+  GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+          GameControllerButton(metadata, owner) {
     cButton = object.getInteger(JSON_BUTTON);
   }
 
-  bool ButtonMapping::matches(const sf::Event& event) const {
+  bool GameControllerButton::matches(const sf::Event& event) const {
     return (event.type == sf::Event::JoystickButtonPressed || event.type == sf::Event::JoystickButtonReleased) && event.joystickButton.button == cButton;
   }
 
-  bool ButtonMapping::getState(const sf::Event& event) const {
+  bool GameControllerButton::getState(const sf::Event& event) const {
     return event.type == sf::Event::JoystickButtonPressed;
   }
 
-  std::string ButtonMapping::getShortName() const {
+  std::string GameControllerButton::getShortName() const {
     return "B" + Utils::toString(cButton);
   }
     
-  std::string ButtonMapping::getLongName() const {
+  std::string GameControllerButton::getLongName() const {
     return "Button " + Utils::toString(cButton);
   }
 
-  bool ButtonMapping::renderAssetIcon() const {
+  bool GameControllerButton::renderAssetIcon() const {
     return false;
   }
 
-  void ButtonMapping::saveAsset(JSONObject object) const {
+  void GameControllerButton::saveAsset(JSONObject object) const {
     object.addInteger(JSON_BUTTON, cButton);
   }
 
-  void ButtonMapping::getAssetProperties(IPropertyMaker& owner) {
+  void GameControllerButton::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
-  bool ButtonMapping::isDefaultConfiguration() const {
+  bool GameControllerButton::isDefaultConfiguration() const {
     return true;
   }
 }

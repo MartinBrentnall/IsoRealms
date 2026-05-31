@@ -35,7 +35,7 @@ namespace IsoRealms::UI {
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
-  void MenuItemDigitalInput::addMapping(std::shared_ptr<IDigitalInputMapping> input) {
+  void MenuItemDigitalInput::addMapping(std::shared_ptr<IDigitalInput> input) {
     cRuntimeMappings.emplace_back(input);
   }
   
@@ -47,7 +47,7 @@ namespace IsoRealms::UI {
     return cRuntimeMappings.size();
   }
   
-  std::shared_ptr<IDigitalInputMapping> MenuItemDigitalInput::getMapping(unsigned int index) {
+  std::shared_ptr<IDigitalInput> MenuItemDigitalInput::getMapping(unsigned int index) {
     return cRuntimeMappings[index];
   }
   
@@ -63,7 +63,7 @@ namespace IsoRealms::UI {
   
   bool MenuItemDigitalInput::input(sf::Event& event) {
     if (cRuntimeAddingMapping) {
-      std::unique_ptr<IDigitalInputMapping> mMapping = Utils::toDigitalInputMapping(cHatHandler, event);
+      std::unique_ptr<IDigitalInput> mMapping = Utils::toDigitalInputMapping(cHatHandler, event);
       if (mMapping != nullptr) {
         
         // Check if the input to map is already mapped.
@@ -103,8 +103,8 @@ namespace IsoRealms::UI {
       }
 
       case sf::Event::JoystickButtonPressed: {
-        if      (event.joystickButton.button == ButtonMapping::CROSS)  {return confirm();}
-        else if (event.joystickButton.button == ButtonMapping::SQUARE) {return remove();}
+        if      (event.joystickButton.button == GameControllerButton::CROSS)  {return confirm();}
+        else if (event.joystickButton.button == GameControllerButton::SQUARE) {return remove();}
         break;
       }
 

@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Utils.h"
 
-#include "IsoRealms/Assets/Type/IAnalogueInputMapping.h"
+#include "IsoRealms/Assets/Type/IAnalogueInput.h"
 
 namespace IsoRealms {
   class Metadata;
@@ -29,14 +29,14 @@ namespace IsoRealms {
   /**
    * A analogue input mapping to an analogue stick or similar.
    */
-  class AxisMapping : public IAnalogueInputMapping {
+  class GameControllerAxis : public IAnalogueInput {
     public:
-    AxisMapping(const Metadata& metadata, IResourceData& owner);
-    AxisMapping(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    GameControllerAxis(const Metadata& metadata, IResourceData& owner);
+    GameControllerAxis(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
-    /************************************\
-     * Implements IAnalogueInputMapping *
-    \************************************/
+    /*****************************\
+     * Implements IAnalogueInput *
+    \*****************************/
     std::string getName() const override;
     float getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
@@ -45,9 +45,9 @@ namespace IsoRealms {
     void loadCustomMapping(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
 
-    /***********************************************\
-     * Implements IAsset via IAnalogueInputMapping *
-    \***********************************************/
+    /****************************************\
+     * Implements IAsset via IAnalogueInput *
+    \****************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;

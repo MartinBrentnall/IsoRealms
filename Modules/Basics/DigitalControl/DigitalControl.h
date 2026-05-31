@@ -40,15 +40,15 @@ namespace IsoRealms::Basics {
    * when they exist, and default physical input mappings when user-defined
    * physicalinput mappings do not exist.
    */
-  class DigitalInput final : public IBoolean,
-                             public IInputHandler {
+  class DigitalControl final : public IBoolean,
+                               public IInputHandler {
     public:
 
     /**********************\
      * Resource Interface *
     \**********************/
-    DigitalInput(Basics& basics, IResourceData& data);
-    DigitalInput(Basics& basics, IResourceData& data, JSONObject object);
+    DigitalControl(Basics& basics, IResourceData& data);
+    DigitalControl(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
     void save(JSONObject object) const;
@@ -57,8 +57,8 @@ namespace IsoRealms::Basics {
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
-    DigitalInput(IResourceData& owner);
-    DigitalInput(IResourceData& owner, JSONObject object);
+    DigitalControl(IResourceData& owner);
+    DigitalControl(IResourceData& owner, JSONObject object);
 
     /*********************\
      * Module interfaces *
@@ -110,7 +110,7 @@ namespace IsoRealms::Basics {
      * @param index Index of the desired input mapping.
      * @return The physical input mapping at the specified index.
      */
-    std::shared_ptr<DigitalInputMapping> getMapping(unsigned int index) const;
+    std::shared_ptr<DigitalInput> getMapping(unsigned int index) const;
 
     /**
      * Bind the specified digital input mapping as a user-mapping to this
@@ -118,7 +118,7 @@ namespace IsoRealms::Basics {
      *
      * @param input The input to bind.
      */
-    void addCustomInput(std::shared_ptr<DigitalInputMapping> input);
+    void addCustomInput(std::shared_ptr<DigitalInput> input);
 
     /**
      * Remove all user-bound physical input mappings.
@@ -152,20 +152,20 @@ namespace IsoRealms::Basics {
     inline static const std::string JSON_TYPE     = "type";
     inline static const std::string JSON_MAPPINGS = "mappings";
 
-    class PhysicalInputMapping {
+    class InputMapping {
       public:
-      PhysicalInputMapping(std::shared_ptr<DigitalInputMapping> physicalInput);
+      InputMapping(std::shared_ptr<DigitalInput> input);
 
       bool matches(sf::Event& event) const;
       bool input(sf::Event& event);
       void reset();
       std::string getShortName() const;
-      std::shared_ptr<DigitalInputMapping> getInput() const;
+      std::shared_ptr<DigitalInput> getInput() const;
       void save(JSONObject object) const;
       void getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction);
 
       private:
-      std::shared_ptr<DigitalInputMapping> cPhysicalInput;
+      std::shared_ptr<DigitalInput> cInput;
       bool cState;
     };
 
@@ -174,14 +174,14 @@ namespace IsoRealms::Basics {
     IResourceData& cResourceData;
 
     // Definition data.
-    std::vector<std::unique_ptr<PhysicalInputMapping>> cDefMapping; /// Default input mapping.
+    std::vector<std::unique_ptr<InputMapping>> cDefMapping; /// Default input mapping.
 
     // Runtime data.
-    std::vector<std::unique_ptr<PhysicalInputMapping>> cRuntimeMapping; /// User input mapping.
-    bool cRuntimeState;                                                 /// Current state of this input.
+    std::vector<std::unique_ptr<InputMapping>> cRuntimeMapping; /// User input mapping.
+    bool cRuntimeState;                                         /// Current state of this input.
 
     // Scripting Interface.
-    LuaBinding<DigitalInput> cLuaBinding;
+    LuaBinding<DigitalControl> cLuaBinding;
 
     // Misc.
     IStateNotifier* cStateNotifier;

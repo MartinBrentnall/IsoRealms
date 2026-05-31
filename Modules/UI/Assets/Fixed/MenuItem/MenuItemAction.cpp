@@ -63,7 +63,7 @@ namespace IsoRealms::UI {
       }
 
       case sf::Event::JoystickButtonPressed: {
-        if (event.joystickButton.button == ButtonMapping::CROSS) {cDefAction.execute(); return true;}
+        if (event.joystickButton.button == GameControllerButton::CROSS) {cDefAction.execute(); return true;}
         break;
       }
 

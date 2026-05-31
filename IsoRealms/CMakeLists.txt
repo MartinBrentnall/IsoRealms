@@ -22,12 +22,12 @@ add_library(IsoRealms
   ActionContext.cpp
   Application.cpp
   Assets/Client/Action.cpp
-  Assets/Client/AnalogueInputMapping.cpp
+  Assets/Client/AnalogueInput.cpp
   Assets/Client/Binding.cpp
   Assets/Client/BindingType.cpp
   Assets/Client/Boolean.cpp
   Assets/Client/Colour.cpp
-  Assets/Client/DigitalInputMapping.cpp
+  Assets/Client/DigitalInput.cpp
   Assets/Client/Editable.cpp
   Assets/Client/File.cpp
   Assets/Client/Float.cpp
@@ -42,11 +42,11 @@ add_library(IsoRealms
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
   Assets/Client/Vertex.cpp
-  Assets/Fixed/AnalogueInput/AxisMapping.cpp
-  Assets/Fixed/DigitalInput/ButtonMapping.cpp
-  Assets/Fixed/DigitalInput/HatMapping.cpp
-  Assets/Fixed/DigitalInput/KeyMapping.cpp
-  Assets/Fixed/DigitalInput/MouseButtonMapping.cpp
+  Assets/Fixed/AnalogueInput/GameControllerAxis.cpp
+  Assets/Fixed/DigitalInput/GameControllerButton.cpp
+  Assets/Fixed/DigitalInput/GameControllerHat.cpp
+  Assets/Fixed/DigitalInput/KeyboardKey.cpp
+  Assets/Fixed/DigitalInput/MouseButton.cpp
   Assets/Literal/LiteralColour.cpp
   Assets/Literal/LiteralFloat.cpp
   Assets/Literal/LiteralString.cpp
