@@ -51,11 +51,8 @@ namespace IsoRealms {
     return UNMAPPED_KEY_PREFIX + Utils::toString(key);
   }
   
-  KeyboardKey::KeyboardKey(sf::Keyboard::Key key) :
-          cKey(key) {
-  }
-      
-  KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner) {
+  KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner) :
+          cMetadata(metadata) {
     // TODO: Implement this.
   }
 
@@ -89,7 +86,7 @@ namespace IsoRealms {
   }
 
   void KeyboardKey::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyKey(PropertyData("TODO: Key", "TODO: Description"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
+    owner.createPropertyKey(cMetadata.getPropertyData("Key"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
   }
 
   bool KeyboardKey::isDefaultConfiguration() const {

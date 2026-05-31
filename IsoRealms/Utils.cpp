@@ -635,35 +635,35 @@ namespace IsoRealms {
   }
 
   std::unique_ptr<IDigitalInput> Utils::toDigitalInputMapping(HatHandler& hatHandler, sf::Event& event) {
-    switch (event.type) {
-      case sf::Event::KeyPressed:            return std::make_unique<KeyboardKey>(event.key.code);
-      case sf::Event::JoystickButtonPressed: return std::make_unique<GameControllerButton>(event.joystickButton.button);
-      case sf::Event::JoystickMoved: {
-        if (event.joystickMove.axis == sf::Joystick::Axis::PovX) {
-          if (event.joystickMove.position < 0) {
-            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_LEFT);
-          } else if (event.joystickMove.position > 0) {
-            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_RIGHT);
-          }
-        } else if (event.joystickMove.axis == sf::Joystick::Axis::PovY) {
-#if _WIN32
-          if (event.joystickMove.position > 0) {
-            return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_UP);
-          } else if (event.joystickMove.position < 0) {
-            return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_DOWN);
-          }
-#elif __linux__
-          if (event.joystickMove.position < 0) {
-            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_UP);
-          } else if (event.joystickMove.position > 0) {
-            return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_DOWN);
-          }
-#endif
-        }
-        break;
-      }
-      default: break;
-    }
+//     switch (event.type) {
+//       case sf::Event::KeyPressed:            return std::make_unique<KeyboardKey>(event.key.code);
+//       case sf::Event::JoystickButtonPressed: return std::make_unique<GameControllerButton>(event.joystickButton.button);
+//       case sf::Event::JoystickMoved: {
+//         if (event.joystickMove.axis == sf::Joystick::Axis::PovX) {
+//           if (event.joystickMove.position < 0) {
+//             return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_LEFT);
+//           } else if (event.joystickMove.position > 0) {
+//             return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_RIGHT);
+//           }
+//         } else if (event.joystickMove.axis == sf::Joystick::Axis::PovY) {
+// #if _WIN32
+//           if (event.joystickMove.position > 0) {
+//             return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_UP);
+//           } else if (event.joystickMove.position < 0) {
+//             return std::make_unique<HatMapping>(hatHandler, HatHandler::Direction::HAT_DOWN);
+//           }
+// #elif __linux__
+//           if (event.joystickMove.position < 0) {
+//             return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_UP);
+//           } else if (event.joystickMove.position > 0) {
+//             return std::make_unique<GameControllerHat>(hatHandler, HatHandler::Direction::HAT_DOWN);
+//           }
+// #endif
+//         }
+//         break;
+//       }
+//       default: break;
+//     }
     return nullptr;
   }
 

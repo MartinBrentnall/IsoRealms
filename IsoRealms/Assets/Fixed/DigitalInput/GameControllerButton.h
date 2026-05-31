@@ -28,13 +28,6 @@ namespace IsoRealms {
    * A digital input mapping to a button on a controller.
    */
   class GameControllerButton : public IDigitalInput {
-    private:
-    inline static const std::string JSON_BUTTON = "button";
-
-    unsigned int cButton; /// The button associated with this mapping.
-    // TODO: Support inversion.
-    // TODO: Support multiple controllers.
-
     public:
 #if _WIN32
     inline static const unsigned int CROSS    = 1;
@@ -50,13 +43,6 @@ namespace IsoRealms {
     inline static const unsigned int L2       = 6;
 #endif
 
-    /**
-     * Construct a digital input mapping associated with the specified button.
-     * 
-     * @param key The button to associate this digital input mapping with.
-     */
-    GameControllerButton(const unsigned int button);
-    
     GameControllerButton(const Metadata& metadata, IResourceData& owner);
     GameControllerButton(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
@@ -75,5 +61,14 @@ namespace IsoRealms {
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
+
+    private:
+    inline static const std::string JSON_BUTTON = "button";
+
+    // External interfaces.
+    const Metadata& cMetadata;
+
+    unsigned int cButton; /// The button associated with this mapping.
+    // TODO: Support multiple controllers.
   };
 }

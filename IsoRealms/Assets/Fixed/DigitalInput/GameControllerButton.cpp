@@ -19,14 +19,12 @@
 #include "GameControllerButton.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  GameControllerButton::GameControllerButton(const unsigned int button) :
-          cButton(button) {
-  }
-
-  GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner) {
+  GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner) :
+          cMetadata(metadata) {
     // TODO: Implement this.
   }
 
@@ -60,7 +58,7 @@ namespace IsoRealms {
   }
 
   void GameControllerButton::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
+    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Button"), [this]() {return cButton;}, [this](int button) {cButton = button;});
   }
 
   bool GameControllerButton::isDefaultConfiguration() const {

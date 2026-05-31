@@ -32,27 +32,6 @@ namespace IsoRealms {
    */
   class GameControllerHat : public IDigitalInput {
     public:
-
-    /**
-     * Construct a digital input mapping with the specified properties..
-     *
-     * @param hat The hat of the mapping.
-     * @param positive If true, then state is true when input is above the
-     *                 threshold, otherwise this is reversed.
-     * @param threshold The threshold above or below which the state is true.
-     * @throws ArgumentException If the specified direction is not known.
-     */
-    GameControllerHat(HatHandler& hatHandler, const HatHandler::Direction direction);
-
-    /**
-     * Construct a digital input mapping by loading the hat properties
-     * from the specified node.
-     *
-     * @param node The node from which to read the properties.
-     * @throws ArgumentException If the specified direction is not known.
-     */
-    GameControllerHat(HatHandler& hatHandler, JSONObject object);
-
     GameControllerHat(const Metadata& metadata, IResourceData& owner);
     GameControllerHat(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
@@ -109,6 +88,8 @@ namespace IsoRealms {
       {"RightDown", HatHandler::Direction::HAT_RIGHTDOWN}
     };
 
+    // External interfaces.
+    const Metadata& cMetadata;
     HatHandler& cHatHandler;
 
     HatHandler::Direction cDirection; /// Determines the direction of true and false state.

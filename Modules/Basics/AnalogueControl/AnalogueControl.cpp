@@ -69,7 +69,7 @@ namespace IsoRealms::Basics {
       });
     }, [this]()->InputMapping& {
       std::shared_ptr<AnalogueInput> mInput = std::make_shared<AnalogueInput>(cResourceData);
-      mInput->setID("Axis");
+      mInput->setID("GameControllerAxis");
       return *cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
     });
   }

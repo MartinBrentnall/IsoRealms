@@ -19,6 +19,7 @@
 #include "MouseButton.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -50,11 +51,8 @@ namespace IsoRealms {
     return UNMAPPED_BUTTON_PREFIX + Utils::toString(button);
   }
 
-  MouseButton::MouseButton(sf::Mouse::Button button) :
-          cButton(button) {
-  }
-
-  MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner) {
+  MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner) :
+          cMetadata(metadata) {
     // TODO: Implement this.
   }
 
@@ -88,7 +86,7 @@ namespace IsoRealms {
   }
 
   void MouseButton::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
+    owner.createPropertyNativeString(cMetadata.getPropertyData("Button"), [this]() {return getShortName();}, [this](const std::string& button) {cButton = getButton(button);});
   }
 
   bool MouseButton::isDefaultConfiguration() const {

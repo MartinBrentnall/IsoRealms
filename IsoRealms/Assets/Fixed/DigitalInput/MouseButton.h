@@ -32,22 +32,6 @@ namespace IsoRealms {
    * A digital input mapping to a mouse button.
    */
   class MouseButton : public IDigitalInput {
-    private:
-    inline static const std::string JSON_BUTTON = "button";
-
-    inline static const std::string UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
-
-    inline static const std::map<std::string, sf::Mouse::Button> cButtonsByName = {
-      {"Left",         sf::Mouse::Button::Left},
-      {"Right",        sf::Mouse::Button::Right},
-      {"Middle",       sf::Mouse::Button::Middle},
-      {"ExtraButton1", sf::Mouse::Button::XButton1},
-      {"ExtraButton2", sf::Mouse::Button::XButton2}
-    };
-
-    sf::Mouse::Button cButton; /// The mouse button associated with this mapping.
-    // TODO: Support inversion.
-
     public:
 
     static sf::Mouse::Button getButton(const std::string& name);
@@ -78,6 +62,25 @@ namespace IsoRealms {
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;
     bool isDefaultConfiguration() const override;
-  };
+
+    private:
+    inline static const std::string JSON_BUTTON = "button";
+
+    inline static const std::string UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
+
+    inline static const std::map<std::string, sf::Mouse::Button> cButtonsByName = {
+      {"Left",         sf::Mouse::Button::Left},
+      {"Right",        sf::Mouse::Button::Right},
+      {"Middle",       sf::Mouse::Button::Middle},
+      {"ExtraButton1", sf::Mouse::Button::XButton1},
+      {"ExtraButton2", sf::Mouse::Button::XButton2}
+    };
+
+    // External interfaces.
+    const Metadata& cMetadata;
+
+    sf::Mouse::Button cButton; /// The mouse button associated with this mapping.
+    // TODO: Support inversion.
+};
 }
 

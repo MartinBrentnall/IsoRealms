@@ -55,13 +55,6 @@ namespace IsoRealms {
      */
     static std::string getName(const sf::Keyboard::Key& key);
     
-    /**
-     * Construct a digital input mapping associated with the specified key.
-     * 
-     * @param key The key to associate this digital input mapping with.
-     */
-    KeyboardKey(const sf::Keyboard::Key key);
-    
     KeyboardKey(const Metadata& metadata, IResourceData& owner);
     KeyboardKey(const Metadata& metadata, IResourceData& owner, JSONObject object);
 
@@ -211,6 +204,9 @@ namespace IsoRealms {
       {"KPEnter",      sf::Keyboard::Enter},
       {"KPPeriod",     sf::Keyboard::Period}
     };
+
+    // External interfaces.
+    const Metadata& cMetadata;
 
     sf::Keyboard::Key cKey; /// The key associated with this mapping.
     // TODO: Support inversion.

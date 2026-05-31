@@ -23,17 +23,8 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  GameControllerHat::GameControllerHat(HatHandler& hatHandler, const HatHandler::Direction direction) :
-          cHatHandler(hatHandler),
-          cDirection(direction) {
-  }
-
-  GameControllerHat::GameControllerHat(HatHandler& hatHandler, JSONObject object) :
-          cHatHandler(hatHandler),
-          cDirection(getDirection(object.getString(JSON_DIRECTION))) {
-  }
-
   GameControllerHat::GameControllerHat(const Metadata& metadata, IResourceData& owner) :
+          cMetadata(metadata),
           cHatHandler(owner.getProject().getApplication().getHatHandler()) {
     // TODO: Implement this.
   }
@@ -111,7 +102,7 @@ namespace IsoRealms {
   }
 
   void GameControllerHat::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
+    owner.createPropertyNativeString(cMetadata.getPropertyData("Direction"), [this]() {return getName(cDirection);}, [this](const std::string& direction) {cDirection = getDirection(direction);});
   }
 
   bool GameControllerHat::isDefaultConfiguration() const {
