@@ -19,7 +19,9 @@
 #include "GameControllerHat.h"
 
 #include "IsoRealms/Editing.h"
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -102,10 +104,22 @@ namespace IsoRealms {
   }
 
   void GameControllerHat::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("Direction"), [this]() {return getName(cDirection);}, [this](const std::string& direction) {cDirection = getDirection(direction);});
+    owner.createPropertyOptional(cMetadata.getPropertyData("Direction"), cDirectionChooser, "", []() {
+      return true;
+    }, [this](const std::string& direction) {
+      cDirection = getDirection(direction);
+    }, [this]() {
+      return getShortName();
+    });
   }
 
   bool GameControllerHat::isDefaultConfiguration() const {
     return true;
+  }
+
+  void GameControllerHat::DirectionChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    for (std::map<std::string, HatHandler::Direction>::const_iterator i = cDirectionsByName.begin(); i != cDirectionsByName.end(); i++) {
+      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
+    }
   }
 }

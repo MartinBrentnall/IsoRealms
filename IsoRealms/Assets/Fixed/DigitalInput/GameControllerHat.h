@@ -21,6 +21,7 @@
 #include <map>
 
 #include "IsoRealms/Assets/Type/IDigitalInput.h"
+#include "IsoRealms/Editing/Property/IOptionalObject.h"
 #include "IsoRealms/Input/HatHandler.h"
 
 namespace IsoRealms {
@@ -74,6 +75,11 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
+    class DirectionChooser : public IOptionalObject {
+      public:
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    };
+
     inline static const std::string JSON_DIRECTION = "direction";
 
     inline static const std::map<std::string, HatHandler::Direction> cDirectionsByName = {
@@ -91,6 +97,7 @@ namespace IsoRealms {
     // External interfaces.
     const Metadata& cMetadata;
     HatHandler& cHatHandler;
+    DirectionChooser cDirectionChooser;
 
     HatHandler::Direction cDirection; /// Determines the direction of true and false state.
   };
