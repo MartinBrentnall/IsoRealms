@@ -22,10 +22,11 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon) :
+  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :
             Property(data, resourceAccessManager, nullptr),
             cNoneLabel(noneLabel),
             cNoneIcon(noneIcon),
+            cValueGetter(valueGetter),
             cOptionalSource(optionalSource),
             cWrapperType(*this),
             cSubProperty(owner, resourceAccessManager, resourceData, data, cWrapperType),
@@ -38,12 +39,19 @@ namespace IsoRealms {
   void PropertyOptional::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
-    mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cNoneLabel);
+
+    // TODO: Probably shouldn't assume the value is none if we have a none option.
+    const std::string mLabel = hasNoneOption() ? cNoneLabel : (cValueGetter ? cValueGetter() : "");
+    mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, mLabel);
     glPushMatrix();
     glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
     glScalef(mFontSize, mFontSize, 0.0f);
-    if (!cNoneIcon()) {
-      Utils::renderIconNone();
+    if (hasNoneOption()) {
+      if (!cNoneIcon()) {
+        Utils::renderIconNone();
+      }
+    } else if (!cWrapperType.renderAssetIcon()) {
+      Utils::renderIconLeaf();
     }
     glPopMatrix();
   }
@@ -51,7 +59,8 @@ namespace IsoRealms {
   float PropertyOptional::getValueWidth(IUIStyle& style) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
-    return mFont->getWidth(mFontSize, cNoneLabel) + mFontSize * 2.25f;
+    const std::string mLabel = hasNoneOption() ? cNoneLabel : (cValueGetter ? cValueGetter() : "");
+    return mFont->getWidth(mFontSize, mLabel) + mFontSize * 2.25f;
   }
 
   void PropertyOptional::confirm(IPropertyManager& manager, float y) {
@@ -67,21 +76,35 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  bool PropertyOptional::hasNoneOption() const {
+    return !cNoneLabel.empty();
+  }
+
   PropertyOptional::OptionWrapper::OptionWrapper(PropertyOptional& parent) :
             cParent(parent) {
   }
 
   TreeItemInfo PropertyOptional::OptionWrapper::getTreeItemInfo() const {
-    return TreeItemInfo{"", cParent.cNoneLabel};
+    if (cParent.hasNoneOption()) {
+      return TreeItemInfo{"", cParent.cNoneLabel};
+    }
+    const std::string mLabel = cParent.cValueGetter();
+    return TreeItemInfo{mLabel, mLabel};
   }
 
   std::string PropertyOptional::OptionWrapper::getTreeItemLabel() const {
-    return "";
+    if (cParent.hasNoneOption()) {
+      return "";
+    }
+    return cParent.cValueGetter();
   }
 
   bool PropertyOptional::OptionWrapper::renderAssetIcon() const {
-    Utils::renderIconNone();
-    return true;
+    if (cParent.hasNoneOption()) {
+      Utils::renderIconNone();
+      return true;
+    }
+    return false;
   }
 
   bool PropertyOptional::OptionWrapper::hasConfiguration() const {
@@ -101,12 +124,14 @@ namespace IsoRealms {
   }
 
   void PropertyOptional::OptionWrapper::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-    getTreeItemInfoFunction(TreeItemInfo{"", cParent.cNoneLabel});
+    if (cParent.hasNoneOption()) {
+      getTreeItemInfoFunction(TreeItemInfo{"", cParent.cNoneLabel});
+    }
     cParent.cOptionalSource.forEachAvailableTreeItem(getTreeItemInfoFunction);
   }
 
   bool PropertyOptional::OptionWrapper::renderTreeItemIcon(const std::string& id) const {
-    if (id == "") {
+    if (id == "" && cParent.hasNoneOption()) {
       if (!cParent.cNoneIcon()) {
         Utils::renderIconNone();
       }
@@ -119,7 +144,12 @@ namespace IsoRealms {
   void PropertyOptional::OptionWrapper::setID(const std::string& id) {
     if (id != "") {
       cParent.cChoiceCallback(id);
-      cParent.cPropertyManager->refreshProperties();
+
+      // Kinda hacky because PropertyMenu crashes if we refresh, but ProjectMenu doesn't (and that's the only place we need to refresh properties)
+      // TODO: Fix the cause of the crash.
+      if (cParent.hasNoneOption()) {
+        cParent.cPropertyManager->refreshProperties();
+      }
     }
   }
 }

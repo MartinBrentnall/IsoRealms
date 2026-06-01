@@ -23,6 +23,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include "IsoRealms/Assets/Type/IDigitalInput.h"
+#include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
   class Metadata;
@@ -64,6 +65,11 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
+    class ButtonChooser : public IOptionalObject {
+      public:
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    };
+
     inline static const std::string JSON_BUTTON = "button";
 
     inline static const std::string UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
@@ -78,6 +84,7 @@ namespace IsoRealms {
 
     // External interfaces.
     const Metadata& cMetadata;
+    ButtonChooser cButtonChooser;
 
     sf::Mouse::Button cButton; /// The mouse button associated with this mapping.
     // TODO: Support inversion.

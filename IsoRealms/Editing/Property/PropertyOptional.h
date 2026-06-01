@@ -36,7 +36,7 @@ namespace IsoRealms {
 
   class PropertyOptional : public Property {
     public:
-    PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon);
+    PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -48,6 +48,8 @@ namespace IsoRealms {
     void configure(IPropertyManager& manager) override;
 
     private:
+    bool hasNoneOption() const;
+
     class OptionWrapper : public ITreeSelectorObject {
       public:
       OptionWrapper(PropertyOptional& parent);
@@ -72,6 +74,7 @@ namespace IsoRealms {
 
     std::string cNoneLabel;
     std::function<bool()> cNoneIcon;
+    std::function<std::string()> cValueGetter;
     IOptionalObject& cOptionalSource;
     OptionWrapper cWrapperType;
     PropertyTreeSelector cSubProperty;

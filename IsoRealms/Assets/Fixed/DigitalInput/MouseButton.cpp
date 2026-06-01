@@ -20,6 +20,7 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -86,10 +87,22 @@ namespace IsoRealms {
   }
 
   void MouseButton::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("Button"), [this]() {return getShortName();}, [this](const std::string& button) {cButton = getButton(button);});
+    owner.createPropertyOptional(cMetadata.getPropertyData("Button"), cButtonChooser, "", []() {
+      return true;
+    }, [this](const std::string& button) {
+      cButton = getButton(button);
+    }, [this]() {
+      return getShortName();
+    });
   }
 
   bool MouseButton::isDefaultConfiguration() const {
     return true;
+  }
+  
+  void MouseButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    for (std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.begin(); i != cButtonsByName.end(); i++) {
+      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
+    }
   }
 }
