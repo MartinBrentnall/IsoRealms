@@ -33,7 +33,6 @@ namespace IsoRealms {
     public:
     ResourceType(IResourceTypeDefinition* resourceType, Module& parent);
     void loadResource(JSONThing mInstanceThing, ProjectFile* ownerProject);
-    void loadOmission(JSONObject object, ProjectFile* ownerProject);
     void loadMetadata(JSONObject object);
     void reloadResource(const std::string& resourceName);
     bool needsSaving(const ProjectFile* savingProject) const;
@@ -65,11 +64,10 @@ namespace IsoRealms {
     class PlaceHolder {
       public:
       PlaceHolder(const std::string& id, ProjectFile* ownerProject);
-      PlaceHolder(JSONObject object, ProjectFile* ownerProject);
       std::string getID() const;
       ProjectFile* getProjectFile() const;
       bool needsSaving(const ProjectFile& savingProject) const;
-      void save(JSONArray& array, const ProjectFile& savingProject) const;
+      void save(JSONObject& object, const ProjectFile& savingProject) const;
 
       private:
       std::string cID;
@@ -78,17 +76,11 @@ namespace IsoRealms {
 
     inline static const std::string JSON_CATEGORY    = "category";
     inline static const std::string JSON_DESCRIPTION = "description";
-    inline static const std::string JSON_ID          = "id";
-    inline static const std::string JSON_INSTANCES   = "instances";
-    inline static const std::string JSON_OMISSIONS   = "omissions";
     inline static const std::string JSON_MODULES     = "modules";
-    inline static const std::string JSON_NAME        = "name";
     inline static const std::string JSON_PLURAL      = "plural";
     inline static const std::string JSON_PROJECT     = "project";
     inline static const std::string JSON_PROPERTIES  = "properties";
-    inline static const std::string JSON_RESOURCES   = "resources";
     inline static const std::string JSON_SINGULAR    = "singular";
-    inline static const std::string JSON_TYPE        = "type";
 
     Module& cParent;
     IResourceTypeDefinition* cResourceType;

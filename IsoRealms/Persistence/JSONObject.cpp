@@ -40,6 +40,11 @@ namespace IsoRealms {
     return JSONObject(cParent, cObject[name]);
   }
 
+  void JSONObject::addNull(const std::string& name) {
+    rapidjson::Value mNull;
+    cObject.AddMember(rapidjson::StringRef(name), mNull, cParent.getDocument().GetAllocator());
+  }
+
   void JSONObject::addString(const std::string& name, const std::string& value, const std::string& defaultValue) {
     if (value != defaultValue) {
       rapidjson::Value mString;

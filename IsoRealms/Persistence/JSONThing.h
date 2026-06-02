@@ -34,6 +34,7 @@ namespace IsoRealms {
     std::string getName() const;
     JSONObject getValue();
     std::string getValueAsString() const;
+    bool isNull() const;
 
     private:
     JSONDocument& cParent;

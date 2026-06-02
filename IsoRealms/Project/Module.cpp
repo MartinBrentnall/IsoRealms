@@ -142,15 +142,8 @@ namespace IsoRealms {
         throw ResourceInitException("ERROR: Module::loadResources: Resource type \"" + mResourceTypeName + "\" not known in module \"" + cName + "\".");
       }
 
-      for (JSONThing mInstanceThing : mResourceObject.getObject(JSON_INSTANCES)) {
+      for (JSONThing mInstanceThing : mResourceObject) {
         mResourceType->loadResource(mInstanceThing, ownerProject);
-      }
-
-      if (mResourceObject.hasMember(JSON_OMISSIONS)) {
-        for (JSONValue mOmissionValue : mResourceObject.getArray(JSON_OMISSIONS)) {
-          JSONObject mOmissionObject = mOmissionValue.getObject();
-          mResourceType->loadOmission(mOmissionObject, ownerProject);
-        }
       }
     }
   }

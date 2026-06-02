@@ -112,7 +112,6 @@ namespace IsoRealms {
     inline static const std::string JSON_CATEGORIES    = "categories";
     inline static const std::string JSON_CONFIGURATION = "configuration";
     inline static const std::string JSON_DESCRIPTION   = "description";
-    inline static const std::string JSON_INSTANCES     = "instances";
     inline static const std::string JSON_LONG_NAME     = "longName";
     inline static const std::string JSON_NAME          = "name";
     inline static const std::string JSON_OMISSIONS     = "omissions";

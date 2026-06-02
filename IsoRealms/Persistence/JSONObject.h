@@ -49,6 +49,7 @@ namespace IsoRealms {
     JSONObject(JSONDocument& parent, rapidjson::Value& object);
     JSONArray addArray(const std::string& name);
     JSONObject addObject(const std::string& name);
+    void addNull(const std::string& name);
     void addString(const std::string& name, const std::string& value, const std::string& defaultValue = "");
     void addInteger(const std::string& name, int value, int defaultValue = 0);
     void addFloat(const std::string& name, float value, float defaultValue = 0.0f);

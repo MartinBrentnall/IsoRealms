@@ -37,4 +37,8 @@ namespace IsoRealms {
   std::string JSONThing::getValueAsString() const {
     return cMember->value.GetString();
   }
+
+  bool JSONThing::isNull() const {
+    return cMember->value.IsNull();
+  }
 }
