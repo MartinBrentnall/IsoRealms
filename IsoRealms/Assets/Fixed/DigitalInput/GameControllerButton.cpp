@@ -18,8 +18,11 @@
  */
 #include "GameControllerButton.h"
 
+#include <string>
+
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -58,10 +61,23 @@ namespace IsoRealms {
   }
 
   void GameControllerButton::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Button"), [this]() {return cButton;}, [this](int button) {cButton = button;});
+    owner.createPropertyOptional(cMetadata.getPropertyData("Button"), cButtonChooser, "", []() {
+      return true;
+    }, [this](const std::string& button) {
+      cButton = static_cast<unsigned int>(std::stoul(button.substr(1)));
+    }, [this]() {
+      return getShortName();
+    });
   }
 
   bool GameControllerButton::isDefaultConfiguration() const {
     return true;
+  }
+
+  void GameControllerButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    for (unsigned int i = 0; i < sf::Joystick::ButtonCount; i++) {
+      const std::string mLabel = "B" + Utils::toString(i);
+      getTreeItemInfoFunction(TreeItemInfo{mLabel, mLabel});
+    }
   }
 }

@@ -23,6 +23,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 #include "IsoRealms/Assets/Type/IDigitalInput.h"
+#include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
   class Metadata;
@@ -75,6 +76,11 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
+    class KeyChooser : public IOptionalObject {
+      public:
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    };
+
     inline static const std::string JSON_WHICH = "which";
 
     inline static const std::string UNMAPPED_KEY_PREFIX = "Code ";
@@ -207,6 +213,7 @@ namespace IsoRealms {
 
     // External interfaces.
     const Metadata& cMetadata;
+    KeyChooser cKeyChooser;
 
     sf::Keyboard::Key cKey; /// The key associated with this mapping.
     // TODO: Support inversion.

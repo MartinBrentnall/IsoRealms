@@ -18,7 +18,10 @@
  */
 #pragma once
 
+#include <SFML/Window/Joystick.hpp>
+
 #include "IsoRealms/Assets/Type/IDigitalInput.h"
+#include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
   class Metadata;
@@ -63,10 +66,16 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
+    class ButtonChooser : public IOptionalObject {
+      public:
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    };
+
     inline static const std::string JSON_BUTTON = "button";
 
     // External interfaces.
     const Metadata& cMetadata;
+    ButtonChooser cButtonChooser;
 
     unsigned int cButton; /// The button associated with this mapping.
     // TODO: Support multiple controllers.

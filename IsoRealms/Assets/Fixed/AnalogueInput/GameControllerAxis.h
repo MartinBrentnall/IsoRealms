@@ -18,9 +18,12 @@
  */
 #pragma once
 
+#include <SFML/Window/Joystick.hpp>
+
 #include "IsoRealms/Utils.h"
 
 #include "IsoRealms/Assets/Type/IAnalogueInput.h"
+#include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
   class Metadata;
@@ -54,9 +57,14 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
+    class AxisChooser : public IOptionalObject {
+      public:
+      void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+    };
 
     // External interfaces.
     const Metadata& cMetadata;
+    AxisChooser cAxisChooser;
 
     // JSON members.
     inline static const std::string JSON_AXIS      = "axis";

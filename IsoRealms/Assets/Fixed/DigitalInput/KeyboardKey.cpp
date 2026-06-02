@@ -19,7 +19,8 @@
 #include "KeyboardKey.h"
 
 #include "IsoRealms/Editing.h"
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -86,10 +87,22 @@ namespace IsoRealms {
   }
 
   void KeyboardKey::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyKey(cMetadata.getPropertyData("Key"), [this]() {return getShortName();}, [this](sf::Keyboard::Key key) {cKey = key;});
+    owner.createPropertyOptional(cMetadata.getPropertyData("Key"), cKeyChooser, "", []() {
+      return true;
+    }, [this](const std::string& key) {
+      cKey = getKey(key);
+    }, [this]() {
+      return getShortName();
+    });
   }
 
   bool KeyboardKey::isDefaultConfiguration() const {
     return true;
+  }
+
+  void KeyboardKey::KeyChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    for (std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.begin(); i != cKeysByName.end(); i++) {
+      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
+    }
   }
 }

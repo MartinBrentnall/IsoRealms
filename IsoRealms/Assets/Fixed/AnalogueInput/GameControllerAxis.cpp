@@ -18,9 +18,12 @@
  */
 #include "GameControllerAxis.h"
 
+#include <string>
+
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/IResourceData.h"
 #include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
   GameControllerAxis::GameControllerAxis(const Metadata& metadata, IResourceData& owner) :
@@ -74,11 +77,24 @@ namespace IsoRealms {
   }
 
   void GameControllerAxis::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Axis"),     [this]() {return cDefAxis;},     [this](int   axis)     {cDefAxis     = axis;});
-    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("DeadZone"), [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
+    owner.createPropertyOptional(cMetadata.getPropertyData("Axis"), cAxisChooser, "", []() {
+      return true;
+    }, [this](const std::string& axis) {
+      cDefAxis = static_cast<unsigned int>(std::stoul(axis.substr(1)));
+    }, [this]() {
+      return getShortName();
+    });
+    owner.createPropertyNativeFloat(cMetadata.getPropertyData("DeadZone"), [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 
   bool GameControllerAxis::isDefaultConfiguration() const {
     return cDefAxis == 0 && cDefDeadZone == 0.16f;
+  }
+
+  void GameControllerAxis::AxisChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    for (unsigned int i = 0; i < sf::Joystick::AxisCount; i++) {
+      const std::string mLabel = "A" + Utils::toString(i);
+      getTreeItemInfoFunction(TreeItemInfo{mLabel, mLabel});
+    }
   }
 }
