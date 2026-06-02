@@ -227,16 +227,14 @@ namespace IsoRealms {
     private:
     inline static const std::string JSON_EDITOR                = "editor";
     inline static const std::string JSON_INCLUDE               = "include";
-    inline static const std::string JSON_INITIALISATION        = "initialisation";
     inline static const std::string JSON_INPUT                 = "input";
     inline static const std::string JSON_LAUNCH_CONFIGURATIONS = "launchConfigurations";
     inline static const std::string JSON_MODULES               = "modules";
     inline static const std::string JSON_NAME                  = "name";
+    inline static const std::string JSON_ON_CLOSE_REQUEST      = "onCloseRequest";
+    inline static const std::string JSON_ON_START              = "onStart";
     inline static const std::string JSON_PROJECT               = "project";
-    inline static const std::string JSON_QUIT                  = "quit";
-    inline static const std::string JSON_RESET                 = "reset";
     inline static const std::string JSON_SCREEN                = "screen";
-    inline static const std::string JSON_START                 = "start";
 
     class QuitAction : public IAction {
       public:
@@ -289,10 +287,8 @@ namespace IsoRealms {
     OwnedAsset<IResourceData, InputHandler>                  cDefInputHandler;
     OwnedAsset<IResourceData, Screen>                        cDefScreen;
     OwnedAsset<IResourceData, Editable>                      cDefDefaultEditor;
-    OwnedAsset<IActionContext, Action>                        cDefInitAction;
-    OwnedAsset<IActionContext, Action>                        cDefResetAction;
-    OwnedAsset<IActionContext, Action>                        cDefStartAction;
-    OwnedAsset<IActionContext, Action>                        cDefQuitAction;
+    OwnedAsset<IActionContext, Action>                       cDefActionOnStart;
+    OwnedAsset<IActionContext, Action>                       cDefActionOnCloseRequest;
     LuaState cLuaState;                       /// Lua State for this project.
 
     // Scripting support.

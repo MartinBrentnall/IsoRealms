@@ -42,10 +42,8 @@ namespace IsoRealms {
           cDefInputHandler(*this, cDefProjectFileStructure, *this),
           cDefScreen(*this, cDefProjectFileStructure, *this),
           cDefDefaultEditor(*this, cDefProjectFileStructure, *this),
-          cDefInitAction(*this, cDefProjectFileStructure, *this),
-          cDefResetAction(*this, cDefProjectFileStructure, *this),
-          cDefStartAction(*this, cDefProjectFileStructure, *this),
-          cDefQuitAction(*this, cDefProjectFileStructure, *this),
+          cDefActionOnStart(*this, cDefProjectFileStructure, *this),
+          cDefActionOnCloseRequest(*this, cDefProjectFileStructure, *this),
           cLuaBindingApplication(cLuaState, &application),
           cLuaBindingProject(cLuaState, this),
           cLuaBindingOptions(cLuaState, &cDefOptions),
@@ -88,10 +86,6 @@ namespace IsoRealms {
     cScreens.notifyAllScreensAdded();
 
     cProcessingInput = false;
-
-    cApplication.mainThreadInit([this]() {
-      (*cDefInitAction)->execute();
-    });
     cLoading = false;
   }
 
@@ -103,10 +97,8 @@ namespace IsoRealms {
 
     cDefScreen.init(mProjectObject, JSON_SCREEN, file);
     cDefInputHandler.init(mProjectObject, JSON_INPUT, file);
-    cDefInitAction.init(mProjectObject, JSON_INITIALISATION, file);
-    cDefResetAction.init(mProjectObject, JSON_RESET, file);
-    cDefStartAction.init(mProjectObject, JSON_START, file);
-    cDefQuitAction.init(mProjectObject, JSON_QUIT, file);
+    cDefActionOnStart.init(mProjectObject, JSON_ON_START, file);
+    cDefActionOnCloseRequest.init(mProjectObject, JSON_ON_CLOSE_REQUEST, file);
     cDefDefaultEditor.init(mProjectObject, JSON_EDITOR, file);
 
     for (JSONThing mModuleThing : mProjectObject.getObject(JSON_MODULES)) {
@@ -160,14 +152,13 @@ namespace IsoRealms {
       for (const std::unique_ptr<Module>& mModule : cDefModules) {
         mModule->reset();
       }
-      (*cDefResetAction)->execute();
-      cPostponedActions.emplace_back(***cDefStartAction);
     }
   }
   
   void Project::reset(Options& options) {
     cDefOptions = options;
     reset();
+    cPostponedActions.emplace_back(***cDefActionOnStart);
   }
 
   void Project::reset(const ProjectLaunchConfiguration* configuration) {
@@ -218,7 +209,7 @@ namespace IsoRealms {
   }
 
   void Project::requestQuit() {
-    (*cDefQuitAction)->execute();
+    (*cDefActionOnCloseRequest)->execute();
   }
 
   void Project::updateEditing(unsigned int milliseconds) {
@@ -247,10 +238,8 @@ namespace IsoRealms {
       cDefScreen.save(mProjectObject, JSON_SCREEN, file);
       cDefInputHandler.save(mProjectObject, JSON_INPUT, file);
       cDefDefaultEditor.save(mProjectObject, JSON_EDITOR, file);
-      cDefInitAction.save(mProjectObject, JSON_INITIALISATION, file);
-      cDefResetAction.save(mProjectObject, JSON_RESET, file);
-      cDefStartAction.save(mProjectObject, JSON_START, file);
-      cDefQuitAction.save(mProjectObject, JSON_QUIT, file);
+      cDefActionOnStart.save(mProjectObject, JSON_ON_START, file);
+      cDefActionOnCloseRequest.save(mProjectObject, JSON_ON_CLOSE_REQUEST, file);
 
       // Save launch configurations.
       bool mLaunchConfigurationsNeedSaving = false;
@@ -306,13 +295,11 @@ namespace IsoRealms {
         return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
       });
     });
-    cDefInitAction.getProperty(   propertyMaker, mMetadata, "OnInitialisation");
-    cDefResetAction.getProperty(  propertyMaker, mMetadata, "OnReset");
-    cDefStartAction.getProperty(  propertyMaker, mMetadata, "OnStart");
-    cDefQuitAction.getProperty(   propertyMaker, mMetadata, "OnQuit");
-    cDefInputHandler.getProperty( propertyMaker, mMetadata, "InputHandler");
-    cDefScreen.getProperty(       propertyMaker, mMetadata, "Display");
-    cDefDefaultEditor.getProperty(propertyMaker, mMetadata, "DefaultEditor");
+    cDefActionOnStart.getProperty(       propertyMaker, mMetadata, "OnStart");
+    cDefActionOnCloseRequest.getProperty(propertyMaker, mMetadata, "OnCloseRequest");
+    cDefInputHandler.getProperty(        propertyMaker, mMetadata, "InputHandler");
+    cDefScreen.getProperty(              propertyMaker, mMetadata, "Display");
+    cDefDefaultEditor.getProperty(       propertyMaker, mMetadata, "DefaultEditor");
   }
   
   IEditable* Project::getDefaultEditable() {

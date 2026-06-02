@@ -83,7 +83,9 @@ namespace IsoRealms {
     }
 
     void set(JSONObject object) {
-      cManager.getAssetManager().release(this, cAsset);
+      if (cAsset != nullptr) {
+        cManager.getAssetManager().release(this, cAsset);
+      }
       setAsset(cManager.getAssetManager().getAsset(this, object, cManager, getStateListener()));
       loadClientConfiguration(object);
     }
@@ -109,7 +111,9 @@ namespace IsoRealms {
     }
     
     void setID(const std::string& id) override {
-      cManager.getAssetManager().release(this, cAsset);
+      if (cAsset != nullptr) {
+        cManager.getAssetManager().release(this, cAsset);
+      }
       setAsset(cManager.getAssetManager().getAsset(this, id, cManager, getStateListener()));
       static_cast<DERIVED*>(this)->stateChanged();
     }

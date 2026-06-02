@@ -236,7 +236,8 @@ namespace IsoRealms::Basics {
   }
   
   void Project::resetProject() {
-    cRuntimeProject->reset();
+    Options mNoOptions;
+    cRuntimeProject->reset(mNoOptions);
   }
 
   void Project::resetLauncher(const ProjectLaunchConfiguration* launcher) {

@@ -128,7 +128,7 @@ namespace IsoRealms {
       Project mProject(*this, [&mProjectFinished](bool forceQuit) {
         mProjectFinished = true;
       }, options.getOption("file"), options.getOption("type") == "user");
-      mProject.reset();
+      mProject.reset(options);
       initMainThread();
 
       // Events might have accumulated during project construction, so lets flush it before starting.
