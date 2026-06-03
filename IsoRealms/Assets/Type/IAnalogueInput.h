@@ -74,6 +74,14 @@ namespace IsoRealms {
      */
     virtual std::string getLongName() const = 0;
 
+    /**
+     * Return the localized name of this analogue input mapping for display in
+     * the editor.
+     *
+     * @return Localized name of this analogue input mapping.
+     */
+    virtual std::string getLocalizedName() const = 0;
+
     virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
 
     virtual ~IAnalogueInput() {}

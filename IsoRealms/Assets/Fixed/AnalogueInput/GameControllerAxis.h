@@ -45,6 +45,7 @@ namespace IsoRealms {
     bool matches(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
+    std::string getLocalizedName() const override;
     void loadCustomMapping(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
 
@@ -59,7 +60,11 @@ namespace IsoRealms {
     private:
     class AxisChooser : public IOptionalObject {
       public:
+      AxisChooser(const Metadata& metadata);
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+
+      private:
+      const Metadata& cMetadata;
     };
 
     // External interfaces.
@@ -73,5 +78,7 @@ namespace IsoRealms {
     // Definition data.
     unsigned int cDefAxis; /// Axis of this mapping.
     float cDefDeadZone;    /// Dead zone of this mapping
+
+    static std::string getChoiceLabel(const Metadata& metadata, unsigned int axis);
   };
 }

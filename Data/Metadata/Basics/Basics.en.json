@@ -11,6 +11,11 @@
     "DigitalToAnalogue": {
       "description": "A mapping that converts a digital input to an analogue value.",
       "properties": {
+        "DefaultName": {"name": "Unnamed Mapping", "description": "Default name for a new digital to analogue mapping."},
+        "Name": {"name": "Name", "description": "Name of this mapping."},
+        "ToValue": {"name": "To Value", "description": "Output value when the digital input is active."},
+        "DefaultMapping": {"name": "Default Mapping", "description": "Maps a physical input that triggers this digital control."},
+        "DefaultMappingAdd": {"name": "Default Mapping", "description": "Add a physical input mapping to this digital control."}
       }
     },
     "Script": {

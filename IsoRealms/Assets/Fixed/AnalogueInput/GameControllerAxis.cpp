@@ -26,8 +26,13 @@
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
+  GameControllerAxis::AxisChooser::AxisChooser(const Metadata& metadata) :
+          cMetadata(metadata) {
+  }
+
   GameControllerAxis::GameControllerAxis(const Metadata& metadata, IResourceData& owner) :
           cMetadata(metadata),
+          cAxisChooser(metadata),
           cDefAxis(0),
           cDefDeadZone(0.16f) {
   }
@@ -58,6 +63,10 @@ namespace IsoRealms {
   std::string GameControllerAxis::getLongName() const {
     return "Axis " + Utils::toString(cDefAxis);
   }
+
+  std::string GameControllerAxis::getLocalizedName() const {
+    return getChoiceLabel(cMetadata, cDefAxis);
+  }
   
   void GameControllerAxis::loadCustomMapping(JSONObject object) {
     // Nothing to do.
@@ -82,7 +91,7 @@ namespace IsoRealms {
     }, [this](const std::string& axis) {
       cDefAxis = static_cast<unsigned int>(std::stoul(axis.substr(1)));
     }, [this]() {
-      return getShortName();
+      return getLocalizedName();
     });
     owner.createPropertyNativeFloat(cMetadata.getPropertyData("DeadZone"), [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
@@ -93,8 +102,18 @@ namespace IsoRealms {
 
   void GameControllerAxis::AxisChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (unsigned int i = 0; i < sf::Joystick::AxisCount; i++) {
-      const std::string mLabel = "A" + Utils::toString(i);
-      getTreeItemInfoFunction(TreeItemInfo{mLabel, mLabel});
+      const std::string mID = "A" + Utils::toString(i);
+      getTreeItemInfoFunction(TreeItemInfo{mID, GameControllerAxis::getChoiceLabel(cMetadata, i)});
     }
+  }
+
+  std::string GameControllerAxis::getChoiceLabel(const Metadata& metadata, unsigned int axis) {
+    const std::string mLabelTemplate = metadata.getPropertyData("AxisChoice").getName();
+    const std::string mIndex = Utils::toString(axis);
+    const std::string::size_type mPlaceholder = mLabelTemplate.find("%1");
+    if (mPlaceholder != std::string::npos) {
+      return mLabelTemplate.substr(0, mPlaceholder) + mIndex + mLabelTemplate.substr(mPlaceholder + 2);
+    }
+    return mLabelTemplate + mIndex;
   }
 }

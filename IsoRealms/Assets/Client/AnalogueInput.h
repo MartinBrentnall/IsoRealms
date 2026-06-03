@@ -27,5 +27,7 @@ namespace IsoRealms {
   class AnalogueInput : public Asset<AnalogueInput, IAnalogueInput, IResourceData> {
     public:
     AnalogueInput(IResourceData& owner);
+
+    std::string getTreeItemLabel() const override;
   };
 }

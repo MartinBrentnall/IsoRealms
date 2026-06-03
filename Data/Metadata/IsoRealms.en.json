@@ -27,6 +27,11 @@
     "ApplicationConfiguration": {"name": "Application Configuration", "description": "Overall configuration of this application."},
     "Module": {"name": "Load Module...", "description": "Load a module into this application."}
   },
+  "GameControllerAxis": {
+    "Axis": {"name": "Axis", "description": "The game controller axis associated with this analogue input mapping."},
+    "AxisChoice": {"name": "Axis %1", "description": "Game controller axis %1."},
+    "DeadZone": {"name": "Dead Zone", "description": "The dead zone of this analogue input mapping."}
+  },
   "GameControllerButton": {
     "Button": {"name": "Button", "description": "The game controller button associated with this digital input mapping."},
     "ButtonChoice": {"name": "Button %1", "description": "Game controller button %1."}

@@ -46,6 +46,7 @@ namespace IsoRealms::Basics {
     bool matches(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
+    std::string getLocalizedName() const override;
     void loadCustomMapping(JSONObject object) override;
     void registerAssets(ResourceAssetRegistry& assets) override;
 

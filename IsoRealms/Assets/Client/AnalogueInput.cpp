@@ -24,5 +24,9 @@ namespace IsoRealms {
   AnalogueInput::AnalogueInput(IResourceData& owner) :
             Asset<AnalogueInput, IAnalogueInput, IResourceData>(owner) {
   }
+
+  std::string AnalogueInput::getTreeItemLabel() const {
+    return Asset::getTreeItemLabel() + " (" + cAsset->getLocalizedName() + ")";
+  }
 }
  

@@ -23,7 +23,7 @@
 namespace IsoRealms::Basics {
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner) :
             cMetadata(metadata),
-            cDefName("TODO Name this mapping"),
+            cDefName(metadata.getPropertyData("DefaultName").getName()),
             cDefControl(owner),
             cDefOutputValue(0.0f) {
   }
@@ -62,11 +62,15 @@ namespace IsoRealms::Basics {
   }
   
   std::string DigitalToAnalogueMapping::getShortName() const {
-    return "TODO";
+    return cDefName;
   }
   
   std::string DigitalToAnalogueMapping::getLongName() const {
-    return "TODO";
+    return cDefName + " -> " + Utils::toString(cDefOutputValue);
+  }
+
+  std::string DigitalToAnalogueMapping::getLocalizedName() const {
+    return cDefName;
   }
   
   void DigitalToAnalogueMapping::loadCustomMapping(JSONObject object) {
