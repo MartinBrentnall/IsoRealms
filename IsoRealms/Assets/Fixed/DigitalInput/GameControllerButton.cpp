@@ -26,8 +26,13 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
+  GameControllerButton::ButtonChooser::ButtonChooser(const Metadata& metadata) :
+          cMetadata(metadata) {
+  }
+
   GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner) :
           cMetadata(metadata),
+          cButtonChooser(metadata),
           cButton(0) {
   }
 
@@ -52,6 +57,10 @@ namespace IsoRealms {
     return "Button " + Utils::toString(cButton);
   }
 
+  std::string GameControllerButton::getLocalizedName() const {
+    return getChoiceLabel(cMetadata, cButton);
+  }
+
   bool GameControllerButton::renderAssetIcon() const {
     return false;
   }
@@ -66,7 +75,7 @@ namespace IsoRealms {
     }, [this](const std::string& button) {
       cButton = static_cast<unsigned int>(std::stoul(button.substr(1)));
     }, [this]() {
-      return getShortName();
+      return getLocalizedName();
     });
   }
 
@@ -76,8 +85,18 @@ namespace IsoRealms {
 
   void GameControllerButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (unsigned int i = 0; i < sf::Joystick::ButtonCount; i++) {
-      const std::string mLabel = "B" + Utils::toString(i);
-      getTreeItemInfoFunction(TreeItemInfo{mLabel, mLabel});
+      const std::string mID = "B" + Utils::toString(i);
+      getTreeItemInfoFunction(TreeItemInfo{mID, GameControllerButton::getChoiceLabel(cMetadata, i)});
     }
+  }
+
+  std::string GameControllerButton::getChoiceLabel(const Metadata& metadata, unsigned int button) {
+    const std::string mLabelTemplate = metadata.getPropertyData("ButtonChoice").getName();
+    const std::string mIndex = Utils::toString(button);
+    const std::string::size_type mPlaceholder = mLabelTemplate.find("%1");
+    if (mPlaceholder != std::string::npos) {
+      return mLabelTemplate.substr(0, mPlaceholder) + mIndex + mLabelTemplate.substr(mPlaceholder + 2);
+    }
+    return mLabelTemplate + mIndex;
   }
 }

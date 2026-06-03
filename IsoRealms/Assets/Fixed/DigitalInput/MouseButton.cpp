@@ -52,8 +52,13 @@ namespace IsoRealms {
     return UNMAPPED_BUTTON_PREFIX + Utils::toString(button);
   }
 
+  MouseButton::ButtonChooser::ButtonChooser(const Metadata& metadata) :
+          cMetadata(metadata) {
+  }
+
   MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner) :
           cMetadata(metadata),
+          cButtonChooser(metadata),
           cButton(sf::Mouse::Left) {
   }
 
@@ -78,6 +83,11 @@ namespace IsoRealms {
     return getName(cButton) + " Mouse Button";
   }
 
+  std::string MouseButton::getLocalizedName() const {
+    const std::string mName = getShortName();
+    return cButtonsByName.find(mName) != cButtonsByName.end() ? cMetadata.getPropertyData(mName).getName() : mName;
+  }
+
   bool MouseButton::renderAssetIcon() const {
     return false;
   }
@@ -92,7 +102,7 @@ namespace IsoRealms {
     }, [this](const std::string& button) {
       cButton = getButton(button);
     }, [this]() {
-      return getShortName();
+      return getLocalizedName();
     });
   }
 
@@ -102,7 +112,7 @@ namespace IsoRealms {
   
   void MouseButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.begin(); i != cButtonsByName.end(); i++) {
-      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
+      getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
     }
   }
 }

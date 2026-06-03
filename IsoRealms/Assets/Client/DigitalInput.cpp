@@ -26,7 +26,7 @@ namespace IsoRealms {
   }
 
   std::string DigitalInput::getTreeItemLabel() const {
-    return Asset::getTreeItemLabel() + " (" + cAsset->getShortName() + ")";
+    return Asset::getTreeItemLabel() + " (" + cAsset->getLocalizedName() + ")";
   }
 }
  

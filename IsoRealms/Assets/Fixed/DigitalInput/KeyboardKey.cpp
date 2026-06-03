@@ -52,8 +52,13 @@ namespace IsoRealms {
     return UNMAPPED_KEY_PREFIX + Utils::toString(key);
   }
   
+  KeyboardKey::KeyChooser::KeyChooser(const Metadata& metadata) :
+          cMetadata(metadata) {
+  }
+
   KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner) :
           cMetadata(metadata),
+          cKeyChooser(metadata),
           cKey(sf::Keyboard::Enter) {
   }
 
@@ -78,6 +83,11 @@ namespace IsoRealms {
     return getName(cKey) + " Key";
   }
 
+  std::string KeyboardKey::getLocalizedName() const {
+    const std::string mName = getShortName();
+    return cKeysByName.find(mName) != cKeysByName.end() ? cMetadata.getPropertyData(mName).getName() : mName;
+  }
+
   bool KeyboardKey::renderAssetIcon() const {
     return false;
   }
@@ -92,7 +102,7 @@ namespace IsoRealms {
     }, [this](const std::string& key) {
       cKey = getKey(key);
     }, [this]() {
-      return getShortName();
+      return getLocalizedName();
     });
   }
 
@@ -102,7 +112,7 @@ namespace IsoRealms {
 
   void KeyboardKey::KeyChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.begin(); i != cKeysByName.end(); i++) {
-      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
+      getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
     }
   }
 }

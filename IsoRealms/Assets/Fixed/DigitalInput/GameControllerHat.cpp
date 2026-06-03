@@ -25,9 +25,14 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
+  GameControllerHat::DirectionChooser::DirectionChooser(const Metadata& metadata) :
+          cMetadata(metadata) {
+  }
+
   GameControllerHat::GameControllerHat(const Metadata& metadata, IResourceData& owner) :
           cMetadata(metadata),
           cHatHandler(owner.getProject().getApplication().getHatHandler()),
+          cDirectionChooser(metadata),
           cDirection(HatHandler::Direction::HAT_RIGHT) {
   }
 
@@ -78,6 +83,10 @@ namespace IsoRealms {
     return "Direction " + getName(cDirection);
   }
 
+  std::string GameControllerHat::getLocalizedName() const {
+    return cMetadata.getPropertyData(getName(cDirection)).getName();
+  }
+
   HatHandler::Direction GameControllerHat::getDirection(const std::string& name) {
     std::map<std::string, HatHandler::Direction>::const_iterator i = cDirectionsByName.find(name);
     if (i == cDirectionsByName.end()) {
@@ -109,7 +118,7 @@ namespace IsoRealms {
     }, [this](const std::string& direction) {
       cDirection = getDirection(direction);
     }, [this]() {
-      return getShortName();
+      return getLocalizedName();
     });
   }
 
@@ -119,7 +128,7 @@ namespace IsoRealms {
 
   void GameControllerHat::DirectionChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (std::map<std::string, HatHandler::Direction>::const_iterator i = cDirectionsByName.begin(); i != cDirectionsByName.end(); i++) {
-      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
+      getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
     }
   }
 }

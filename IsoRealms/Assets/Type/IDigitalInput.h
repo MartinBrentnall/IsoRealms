@@ -77,6 +77,14 @@ namespace IsoRealms {
      */
     virtual std::string getLongName() const = 0;
 
+    /**
+     * Return the localized name of this digital input mapping for display in
+     * the editor.
+     *
+     * @return Localized name of this digital input mapping.
+     */
+    virtual std::string getLocalizedName() const = 0;
+
     virtual ~IDigitalInput() {
     }
   };

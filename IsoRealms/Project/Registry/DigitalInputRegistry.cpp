@@ -22,10 +22,10 @@
 
 namespace IsoRealms {
   DigitalInputRegistry::DigitalInputRegistry(Project& project) :
-            cGameControllerButton(project.getMetadata()), 
-            cGameControllerHat(project.getMetadata()),
-            cMouseButton(project.getMetadata()),
-            cKeyboardKey(project.getMetadata()) {
+            cGameControllerButton(project.getApplication().getMetadata("GameControllerButton")),
+            cGameControllerHat(project.getApplication().getMetadata("GameControllerHat")),
+            cMouseButton(project.getApplication().getMetadata("MouseButton")),
+            cKeyboardKey(project.getApplication().getMetadata("KeyboardKey")) {
     add(&cGameControllerButton, "GameControllerButton", "Game Controller Button");
     add(&cGameControllerHat,    "GameControllerHat",    "Game Controller Hat");
     add(&cMouseButton,          "MouseButton",          "Mouse Button");

@@ -55,6 +55,7 @@ namespace IsoRealms {
     bool getState(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
+    std::string getLocalizedName() const override;
 
     /***************************************\
      * Implements IAsset via IDigitalInput *
@@ -67,7 +68,11 @@ namespace IsoRealms {
     private:
     class ButtonChooser : public IOptionalObject {
       public:
+      ButtonChooser(const Metadata& metadata);
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+
+      private:
+      const Metadata& cMetadata;
     };
 
     inline static const std::string JSON_BUTTON = "button";
