@@ -22,6 +22,7 @@
 #include <iostream>
 #include <functional>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <queue>
 #include <sstream>
@@ -56,7 +57,6 @@ namespace IsoRealms {
     private:
     inline static const std::string JSON_FULL_SCREEN = "fullScreen";
     inline static const std::string JSON_HEIGHT      = "height";
-    inline static const std::string JSON_PROPERTIES  = "properties";
     inline static const std::string JSON_SETTINGS    = "settings";
     inline static const std::string JSON_WIDTH       = "width";
 
@@ -168,7 +168,7 @@ namespace IsoRealms {
     std::mutex cCleanUpTaskMutex;
     std::queue<std::function<void()>> cMainThreadCleanUpTasks; /// Clean-up tasks to be performed on the main thread.
 
-    Metadata cMetadata;
+    std::map<std::string, std::unique_ptr<Metadata>> cMetadata;
 
     /**
      * Set the application window and OpenGL view port dimensions according to

@@ -1,8 +1,5 @@
 {
-  "properties": {
-    "ResourceName": {"name": "Name", "description": "A unique name to identify this resource.  The name is only unique to resources of the same type."},
-    "ResourceOwner": {"name": "Owner", "description": "Owning application file of this resource."},
-
+  "Application": {
     "FileStructure": {"name": "File Structure", "description": "View and manage the file structure of this application.  IsoRealms Applications can be spread across multiple files in order to facilitate reusable functionality."},
     "OnStart": {"name": "On Start", "description": "Action to perform when the application is started."},
     "OnCloseRequest": {"name": "On Close Request", "description": "Action to perform when the application is requested to close."},
@@ -27,15 +24,44 @@
     "Value": {"name": "Value", "description": "Value of this asset."},
     "Owner": {"name": "Owner", "description": "Owner of this asset."},
 
+    "ApplicationConfiguration": {"name": "Application Configuration", "description": "Overall configuration of this application."},
+    "Module": {"name": "Load Module...", "description": "Load a module into this application."}
+  },
+  "LiteralColour": {
     "Red": {"name": "Red", "description": "Red intensity of this colour."},
     "Green": {"name": "Green", "description": "Green intensity of this colour."},
     "Blue": {"name": "Blue", "description": "Blue intensity of this colour."},
     "Alpha": {"name": "Alpha", "description": "Alpha intensity of this colour."},
     "Hue": {"name": "Hue", "description": "Hue of this colour."},
     "Saturation": {"name": "Saturation", "description": "Saturation of this colour."},
-    "Lightness": {"name": "Lightness", "description": "Lightness of this colour."},
-
-    "ApplicationConfiguration": {"name": "Application Configuration", "description": "Overall configuration of this application."},
-    "ApplicationLoadModule": {"name": "Load Module...", "description": "Load a module into this application."}
+    "Lightness": {"name": "Lightness", "description": "Lightness of this colour."}
+  },
+  "LiteralFloat": {
+    "Value": {"name": "Value", "description": "Value of this asset."}
+  },
+  "LiteralInteger": {
+    "Value": {"name": "Value", "description": "Value of this asset."}
+  },
+  "LiteralString": {
+    "Value": {"name": "Value", "description": "Value of this asset."}
+  },
+  "Model": {
+    "OffsetX": {"name": "Offset X", "description": "Horizontal offset of this model."},
+    "OffsetY": {"name": "Offset Y", "description": "Vertical offset of this model."},
+    "OffsetZ": {"name": "Offset Z", "description": "Depth offset of this model."},
+    "ScaleX": {"name": "Scale X", "description": "Horizontal scale of this model."},
+    "ScaleY": {"name": "Scale Y", "description": "Vertical scale of this model."},
+    "ScaleZ": {"name": "Scale Z", "description": "Depth scale of this model."},
+    "Angle": {"name": "Angle", "description": "Yaw rotation of this model."},
+    "Tilt": {"name": "Tilt", "description": "Pitch rotation of this model."}
+  },
+  "Resource": {
+    "ResourceName": {"name": "Name", "description": "A unique name to identify this resource.  The name is only unique to resources of the same type."},
+    "ResourceOwner": {"name": "Owner", "description": "Owning application file of this resource."}
+  },
+  "Texture": {
+    "ScaleX": {"name": "Scale X", "description": "Horizontal scale of this texture."},
+    "ScaleY": {"name": "Scale Y", "description": "Vertical scale of this texture."},
+    "Angle": {"name": "Angle", "description": "Rotation of this texture."}
   }
 }

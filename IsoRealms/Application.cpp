@@ -18,12 +18,14 @@
  */
 #include "Application.h"
 
+#include "IsoRealms/Exception/ArgumentException.h"
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Persistence/ParseException.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/System.h"
@@ -100,8 +102,14 @@ namespace IsoRealms {
       mMetadataPath = "Metadata/IsoRealms.en";
     }
     JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-    JSONObject mPropertiesObject = mMetadataDocument.getObject(JSON_PROPERTIES);
-    cMetadata.load(mPropertiesObject);
+    JSONObject mRootObject(mMetadataDocument, mMetadataDocument.getDocument());
+    for (JSONThing mSectionThing : mRootObject) {
+      std::string mSectionName = mSectionThing.getName();
+      JSONObject mSectionObject = mSectionThing.getValue();
+      std::unique_ptr<Metadata> mSectionMetadata = std::make_unique<Metadata>();
+      mSectionMetadata->load(mSectionObject);
+      cMetadata[mSectionName] = std::move(mSectionMetadata);
+    }
     resizeScreen();
   }
 
@@ -539,6 +547,10 @@ namespace IsoRealms {
   }
 
   const Metadata& Application::getMetadata(const std::string& key) const {
-    return cMetadata;
+    std::map<std::string, std::unique_ptr<Metadata>>::const_iterator mIterator = cMetadata.find(key);
+    if (mIterator == cMetadata.end()) {
+      throw ArgumentException("ERROR: Application::getMetadata: Metadata for key \"" + key + "\" not found.");
+    }
+    return *mIterator->second;
   }
 }
