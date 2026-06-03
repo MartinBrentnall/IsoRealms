@@ -138,7 +138,7 @@ namespace IsoRealms {
       {"C",            sf::Keyboard::C},
       {"R",            sf::Keyboard::R},
       {"L",            sf::Keyboard::L},
-      {"/",            sf::Keyboard::Slash},
+      {"Slash",        sf::Keyboard::Slash},
       {"=",            sf::Keyboard::Equal},
       {"\\",           sf::Keyboard::BackSlash},
 
