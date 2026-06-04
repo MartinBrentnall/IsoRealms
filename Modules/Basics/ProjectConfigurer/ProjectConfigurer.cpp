@@ -37,7 +37,7 @@ namespace IsoRealms::Basics {
               cBindingEditor.setValue(nullptr);
             }),
             cLuaBinding(data.getProject().getLuaState(), this),
-            cBindingEditor(data.getProject().getLuaState(), nullptr) {
+            cBindingEditor(data.getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
   ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data, JSONObject object) :
@@ -151,13 +151,13 @@ namespace IsoRealms::Basics {
 
   std::string ProjectConfigurer::getBindingID(const IBinding* binding) const {
     if (binding == &cBindingEditor) {
-      return "editor";
+      return "Editor";
     }
     return "";
   }
 
   IBinding* ProjectConfigurer::getBinding(const std::string& id) {
-    return id == "editor" ? &cBindingEditor : nullptr;
+    return id == "Editor" ? &cBindingEditor : nullptr;
   }
 
   void ProjectConfigurer::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {

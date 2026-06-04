@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
             cDefID(""),
             cDefAction(cActionContext),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
-            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr) {
+            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -38,7 +38,7 @@ namespace IsoRealms::UI {
             cDefID(object.getString(JSON_ID)),
             cDefAction(cActionContext),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
-            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr) {
+            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr, nullptr, true) {
     cDefAction.init(object, JSON_ON_SELECTION);
   }
 
