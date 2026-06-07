@@ -69,10 +69,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void WorldView::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("World"),        cDefWorld);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Camera"),       cDefCamera);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("ZoneViewType"), cDefZoneViewType);
-    owner.createPropertyNativeFloat( metadata.getPropertyData("Zoom"),         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
+    owner.createPropertyTreeSelector("World",        cDefWorld);
+    owner.createPropertyTreeSelector("Camera",       cDefCamera);
+    owner.createPropertyTreeSelector("ZoneViewType", cDefZoneViewType);
+    owner.createPropertyNativeFloat( "Zoom",         [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
   }
 
   void WorldView::removed() {

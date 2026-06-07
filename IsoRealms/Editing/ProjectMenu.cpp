@@ -92,7 +92,7 @@ namespace IsoRealms {
     addItem(std::make_unique<MenuItemSpacer>(1.0f));
     std::vector<std::string> mUnusedModuleNames = cProject.getUnusedModuleNames();
     if (!mUnusedModuleNames.empty()) {
-      cPropertyMaker.createPropertyOptional(mMetadata.getPropertyData("Module"), cDefModuleChooser, "Load Module...", []() {
+      cPropertyMaker.createPropertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
         Utils::renderIconAdd();
         return true;
       }, [this](const std::string& value) {

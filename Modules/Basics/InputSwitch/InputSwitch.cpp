@@ -51,7 +51,7 @@ namespace IsoRealms::Basics {
   }
 
   void InputSwitch::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Value"), cDefInputHandler);
+    owner.createPropertyTreeSelector("Value", cDefInputHandler);
   }
 
   void InputSwitch::removed() {

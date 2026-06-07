@@ -56,9 +56,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Ball::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Fill"),    cDefFill);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Shine"),   cDefShine);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Outline"), cDefOutline);
+    owner.createPropertyTreeSelector("Fill",    cDefFill);
+    owner.createPropertyTreeSelector("Shine",   cDefShine);
+    owner.createPropertyTreeSelector("Outline", cDefOutline);
   }
 
   void Ball::removed() {

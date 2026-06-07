@@ -281,12 +281,12 @@ namespace IsoRealms {
 
   void Project::getProperties(IPropertyMaker& propertyMaker) {
     const Metadata& mMetadata = cApplication.getMetadata("Application");
-    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("FileStructure"), "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
+    propertyMaker.createPropertyStruct("FileStructure", "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
       cDefProjectFileStructure.getProperties(propertyMaker, mMetadata, *this, false);
     });
-    propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfigurations"), "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
-      propertyMaker.createPropertyArray(mMetadata.getPropertyData("LaunchConfigurationAdd"), cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
-        propertyMaker.createPropertyStruct(mMetadata.getPropertyData("LaunchConfiguration"), launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IPropertyMaker& propertyMaker) {
+    propertyMaker.createPropertyStruct("LaunchConfigurations", "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
+      propertyMaker.createPropertyArray("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
+        propertyMaker.createPropertyStruct("LaunchConfiguration", launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IPropertyMaker& propertyMaker) {
           launchConfiguration.getProperties(propertyMaker, mMetadata, *this);
         }, [this, &launchConfiguration]() {
           Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);

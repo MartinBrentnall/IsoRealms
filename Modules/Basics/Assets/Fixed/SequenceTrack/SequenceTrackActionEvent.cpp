@@ -42,7 +42,7 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackActionEvent::getEventProperties(IPropertyMaker& owner) {
     const Metadata& mMetadata = cParent.getMetadata();
-    owner.createPropertyTreeSelector(mMetadata.getPropertyData("Action"), cDefAction);
+    owner.createPropertyTreeSelector("Action", cDefAction);
   }
 
   void SequenceTrackActionEvent::save(JSONObject object) const {

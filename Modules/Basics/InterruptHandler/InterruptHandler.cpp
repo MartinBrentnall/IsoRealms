@@ -47,8 +47,8 @@ namespace IsoRealms::Basics {
   }
 
   void InterruptHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( metadata.getPropertyData("Action"),  cDefAction);
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("Consume"), [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;});
+    owner.createPropertyTreeSelector( "Action",  cDefAction);
+    owner.createPropertyNativeBoolean("Consume", [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;});
   }
 
   void InterruptHandler::removed() {

@@ -51,10 +51,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void TerrainState::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("State"),     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
-    owner.createPropertyTreeSelector( metadata.getPropertyData("Hint"),      cDefHintAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("Icon"),      cDefIcon);
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("IconScale"), [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, [](float value) {return value > 0.0f;});
+    owner.createPropertyNativeBoolean("State",     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    owner.createPropertyTreeSelector( "Hint",      cDefHintAction);
+    owner.createPropertyTreeSelector( "Icon",      cDefIcon);
+    owner.createPropertyNativeFloat(  "IconScale", [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, [](float value) {return value > 0.0f;});
   }
 
   void TerrainState::removed() {

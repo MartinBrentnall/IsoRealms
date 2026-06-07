@@ -47,6 +47,12 @@ namespace IsoRealms {
     }
   }
 
+  void ResourceOwner::createProperty(IPropertyMaker& owner, const std::string& key) {
+    if (cProject.getWritableProjectFileNames().size() > 1) {
+      owner.createPropertyTreeSelector(key, *this);
+    }
+  }
+
   TreeItemInfo ResourceOwner::getTreeItemInfo() const {
     std::string mResourceID = cOwner->getName();
     std::optional<TreeItemInfo> mFound;

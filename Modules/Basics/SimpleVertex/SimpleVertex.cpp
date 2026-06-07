@@ -61,9 +61,9 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleVertex::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(metadata.getPropertyData("X"), [this]() {return cDefX;}, [this](float value) {cDefX = value;});
-    owner.createPropertyNativeFloat(metadata.getPropertyData("Y"), [this]() {return cDefY;}, [this](float value) {cDefY = value;});
-    owner.createPropertyNativeFloat(metadata.getPropertyData("Z"), [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
+    owner.createPropertyNativeFloat("X", [this]() {return cDefX;}, [this](float value) {cDefX = value;});
+    owner.createPropertyNativeFloat("Y", [this]() {return cDefY;}, [this](float value) {cDefY = value;});
+    owner.createPropertyNativeFloat("Z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
   }
 
   void SimpleVertex::removed() {

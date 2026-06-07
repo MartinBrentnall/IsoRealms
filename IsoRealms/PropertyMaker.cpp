@@ -23,6 +23,7 @@
 #include "Editing/IDialogManager.h"
 #include "Editing/Property/IPropertyManager.h"
 #include "IResourceData.h"
+#include "Metadata.h"
 #include "Project/Project.h"
 #include "Project/Registry/IAssetProvider.h"
 
@@ -30,6 +31,7 @@ namespace IsoRealms {
   PropertyMaker::PropertyMaker(Application& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager) :
             cApplication(application),
             cParent(parent),
+            cMetadata(parent.getMetadata()),
             cProperties(properties),
             cDialogManager(dialogManager) {
   }
@@ -108,6 +110,78 @@ namespace IsoRealms {
 
   void PropertyMaker::createPropertyTreeSelector(const PropertyData& metadata, ITreeSelectorObject& item, std::function<void()> removeFunction) {
     cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, *this, cParent, metadata, item, removeFunction));
+  }
+
+  void PropertyMaker::createPropertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) {
+    createPropertyAdd(cMetadata.getPropertyData(key), value, addPropertyFunction);
+  }
+
+  void PropertyMaker::createPropertyCode(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) {
+    createPropertyCode(cMetadata.getPropertyData(key), getter, setter, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyColourChannel(const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) {
+    createPropertyColourChannel(cMetadata.getPropertyData(key), valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback);
+  }
+
+  void PropertyMaker::createPropertyColourHue(const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
+    createPropertyColourHue(cMetadata.getPropertyData(key), valueFunction, saturation, lightness, alpha, confirmationCallback);
+  }
+
+  void PropertyMaker::createPropertyColourLightness(const std::string& key, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) {
+    createPropertyColourLightness(cMetadata.getPropertyData(key), valueFunction, hue, saturation, alpha, confirmationCallback);
+  }
+
+  void PropertyMaker::createPropertyColourSaturation(const std::string& key, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
+    createPropertyColourSaturation(cMetadata.getPropertyData(key), valueFunction, hue, lightness, alpha, confirmationCallback);
+  }
+
+  void PropertyMaker::createPropertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) {
+    createPropertyCondition(cMetadata.getPropertyData(key), availableElements, getter, setter);
+  }
+
+  void PropertyMaker::createPropertyEditor(const std::string& key, IEditable* editable) {
+    createPropertyEditor(cMetadata.getPropertyData(key), editable);
+  }
+
+  void PropertyMaker::createPropertyKey(const std::string& key, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) {
+    createPropertyKey(cMetadata.getPropertyData(key), getter, setter, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyList(const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) {
+    createPropertyList(cMetadata.getPropertyData(key), options, getter, setter, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyNativeBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, std::function<void()> removeFunction) {
+    createPropertyNativeBoolean(cMetadata.getPropertyData(key), getter, setter, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyNativeFloat(const std::string& key, std::function<float()> getter, std::function<void(float)> setter, std::function<bool(float)> validityChecker, std::function<void()> removeFunction) {
+    createPropertyNativeFloat(cMetadata.getPropertyData(key), getter, setter, validityChecker, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyNativeInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, std::function<bool(int)> validityChecker, std::function<void()> removeFunction) {
+    createPropertyNativeInteger(cMetadata.getPropertyData(key), getter, setter, validityChecker, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyNativeString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
+    createPropertyNativeString(cMetadata.getPropertyData(key), getter, setter, validityChecker, removeFunction, confirmCustom);
+  }
+
+  void PropertyMaker::createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
+    createPropertyNativeUnsignedInteger(cMetadata.getPropertyData(key), getter, setter, validityChecker, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter) {
+    createPropertyOptional(cMetadata.getPropertyData(key), optionalSource, noneLabel, noneIcon, choiceCallback, valueGetter);
+  }
+
+  void PropertyMaker::createPropertyStruct(const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction) {
+    createPropertyStruct(cMetadata.getPropertyData(key), value, subProperties, removeFunction);
+  }
+
+  void PropertyMaker::createPropertyTreeSelector(const std::string& key, ITreeSelectorObject& item, std::function<void()> removeFunction) {
+    createPropertyTreeSelector(cMetadata.getPropertyData(key), item, removeFunction);
   }
 
   bool PropertyMaker::isResourceReadOnly() const {

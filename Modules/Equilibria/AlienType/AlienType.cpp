@@ -74,14 +74,14 @@ namespace IsoRealms::Equilibria {
   }
 
   void AlienType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"),   cDefModel);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Target"),       cDefTarget);
-    owner.createPropertyNativeFloat( metadata.getPropertyData("Acceleration"), [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
-    owner.createPropertyNativeFloat( metadata.getPropertyData("Friction"),     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
-    owner.createPropertyNativeFloat( metadata.getPropertyData("SpinSpeed"),    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-    owner.createPropertyNativeFloat( metadata.getPropertyData("Height"),       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
-    owner.createPropertyNativeFloat( metadata.getPropertyData("Radius"),       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
-    owner.createPropertyNativeFloat( metadata.getPropertyData("HugThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
+    owner.createPropertyTreeSelector("Appearance",   cDefModel);
+    owner.createPropertyTreeSelector("Target",       cDefTarget);
+    owner.createPropertyNativeFloat( "Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
+    owner.createPropertyNativeFloat( "Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
+    owner.createPropertyNativeFloat( "SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    owner.createPropertyNativeFloat( "Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
+    owner.createPropertyNativeFloat( "Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
+    owner.createPropertyNativeFloat( "HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
   }
 
   void AlienType::removed() {

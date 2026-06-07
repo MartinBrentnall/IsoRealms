@@ -62,10 +62,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void BoundaryHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Entity"),   cDefObjectType);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Boundary"), cDefBoundaryType);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnEntry"),  cDefEnteredAction);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnExit"),   cDefExitedAction);
+    owner.createPropertyTreeSelector("Entity",   cDefObjectType);
+    owner.createPropertyTreeSelector("Boundary", cDefBoundaryType);
+    owner.createPropertyTreeSelector("OnEntry",  cDefEnteredAction);
+    owner.createPropertyTreeSelector("OnExit",   cDefExitedAction);
   }
 
   void BoundaryHandler::removed() {

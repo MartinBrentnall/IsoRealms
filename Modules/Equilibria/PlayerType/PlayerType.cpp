@@ -112,35 +112,35 @@ namespace IsoRealms::Equilibria {
   void PlayerType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
 
     // Dimensions
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("Radius"),               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("Height"),               [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
+    owner.createPropertyNativeFloat(  "Radius",               [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
+    owner.createPropertyNativeFloat(  "Height",               [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
 
     // Physics
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("Acceleration"),         [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("WallBounce"),           [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("StepReach"),            [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("HugMomentumThreshold"), [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
+    owner.createPropertyNativeFloat(  "Acceleration",         [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
+    owner.createPropertyNativeFloat(  "WallBounce",           [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;});
+    owner.createPropertyNativeFloat(  "StepReach",            [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;});
+    owner.createPropertyNativeFloat(  "HugMomentumThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
 
     // appearance
-    owner.createPropertyTreeSelector( metadata.getPropertyData("Appearance"),           cDefModel);
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("SpinSpeed"),            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    owner.createPropertyTreeSelector( "Appearance",           cDefModel);
+    owner.createPropertyNativeFloat(  "SpinSpeed",            [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
 
     // Input
-    owner.createPropertyTreeSelector( metadata.getPropertyData("InputX"),               cDefInputX);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("InputY"),               cDefInputY);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("InputThrust"),          cDefInputThrust);
+    owner.createPropertyTreeSelector( "InputX",               cDefInputX);
+    owner.createPropertyTreeSelector( "InputY",               cDefInputY);
+    owner.createPropertyTreeSelector( "InputThrust",          cDefInputThrust);
 
     // Actions
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnRespawn"),            cDefRespawnAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnImpact"),             cDefFallImpactAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnBounce"),             cDefFallBounceAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnWallBounce"),         cDefWallBounceAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnLeaveSurface"),       cDefLeaveSurfaceAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnApex"      ),         cDefApexAction);
+    owner.createPropertyTreeSelector( "OnRespawn",            cDefRespawnAction);
+    owner.createPropertyTreeSelector( "OnImpact",             cDefFallImpactAction);
+    owner.createPropertyTreeSelector( "OnBounce",             cDefFallBounceAction);
+    owner.createPropertyTreeSelector( "OnWallBounce",         cDefWallBounceAction);
+    owner.createPropertyTreeSelector( "OnLeaveSurface",       cDefLeaveSurfaceAction);
+    owner.createPropertyTreeSelector( "OnApex",               cDefApexAction);
 
     // Misc
-    owner.createPropertyNativeInteger(metadata.getPropertyData("RespawnDelay"),         [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;});
-    owner.createPropertyTreeSelector( metadata.getPropertyData("ViewOrientation"),      cDefOrientation);
+    owner.createPropertyNativeInteger("RespawnDelay",         [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;});
+    owner.createPropertyTreeSelector( "ViewOrientation",      cDefOrientation);
   }
 
   void PlayerType::removed() {

@@ -21,6 +21,7 @@
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
 
 namespace IsoRealms {
+  class Metadata;
   class Application;
   class Condition;
   class ConditionElement;
@@ -56,6 +57,25 @@ namespace IsoRealms {
     void createPropertyStruct(               const PropertyData& metadata, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr) override;
     void createPropertyTreeSelector(         const PropertyData& metadata, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr) override;
 
+    void createPropertyAdd(                  const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) override;
+    void createPropertyCode(                 const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) override;
+    void createPropertyColourChannel(        const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) override;
+    void createPropertyColourHue(            const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) override;
+    void createPropertyColourLightness(      const std::string& key, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) override;
+    void createPropertyColourSaturation(     const std::string& key, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) override;
+    void createPropertyCondition(            const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) override;
+    void createPropertyEditor(               const std::string& key, IEditable* editable) override;
+    void createPropertyKey(                  const std::string& key, std::function<std::string()>  getter, std::function<void(sf::Keyboard::Key)>  setter,             std::function<void()> removeFunction = nullptr) override;
+    void createPropertyList(                 const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr) override;
+    void createPropertyNativeBoolean(        const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter,                                                                                                              std::function<void()> removeFunction = nullptr) override;
+    void createPropertyNativeFloat(          const std::string& key, std::function<float()>        getter, std::function<void(float)>              setter,             std::function<bool(float)>              validityChecker, std::function<void()> removeFunction) override;
+    void createPropertyNativeInteger(        const std::string& key, std::function<int()>          getter, std::function<void(int)>                setter,             std::function<bool(int)>                validityChecker, std::function<void()> removeFunction) override;
+    void createPropertyNativeString(         const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) override;
+    void createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker, std::function<void()> removeFunction) override;
+    void createPropertyOptional(             const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr) override;
+    void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr) override;
+    void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr) override;
+
     /*************************************\
      * Implements IResourceAccessManager *
     \*************************************/
@@ -66,6 +86,7 @@ namespace IsoRealms {
     private:
     Application& cApplication;
     IResourceData& cParent;
+    const Metadata& cMetadata;
     IPropertyManager& cProperties;
     IDialogManager& cDialogManager;
   };

@@ -60,7 +60,7 @@ namespace IsoRealms::Equilibria {
 
   void ModelCycler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      owner.createPropertyTreeSelector(metadata.getPropertyData("Model"), *mModel.get());
+      owner.createPropertyTreeSelector("Model", *mModel.get());
     }
   }
 

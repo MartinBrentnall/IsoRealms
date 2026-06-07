@@ -74,13 +74,13 @@ namespace IsoRealms::UI {
   }
 
   void Menu::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Colour"),       cDefColour);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Font"),         cDefFont);
-    owner.createPropertyNativeFloat( metadata.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyNativeFloat( metadata.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnExit"),       cDefExitAction);
+    owner.createPropertyTreeSelector("Colour",       cDefColour);
+    owner.createPropertyTreeSelector("Font",         cDefFont);
+    owner.createPropertyNativeFloat( "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    owner.createPropertyNativeFloat( "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector("OnExit",       cDefExitAction);
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      owner.createPropertyTreeSelector(metadata.getPropertyData("MenuItem"), *mItem.get());
+      owner.createPropertyTreeSelector("MenuItem", *mItem.get());
     }
   }
 

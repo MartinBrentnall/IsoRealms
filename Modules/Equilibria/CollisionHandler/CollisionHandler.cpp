@@ -63,10 +63,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void CollisionHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("EntityA"),      cDefPhysicalObjectTypeA);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("EntityB"),      cDefPhysicalObjectTypeB);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnCollision"),  cDefEnteredAction);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnSeparation"), cDefExitedAction);
+    owner.createPropertyTreeSelector("EntityA",      cDefPhysicalObjectTypeA);
+    owner.createPropertyTreeSelector("EntityB",      cDefPhysicalObjectTypeB);
+    owner.createPropertyTreeSelector("OnCollision",  cDefEnteredAction);
+    owner.createPropertyTreeSelector("OnSeparation", cDefExitedAction);
   }
 
   void CollisionHandler::removed() {

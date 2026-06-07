@@ -117,19 +117,19 @@ namespace IsoRealms::Equilibria {
   
   
   void TerrainType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("SurfaceFriction"),     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("SurfaceGrip"),         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("SurfaceBounce"),       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
-    owner.createPropertyNativeFloat(  metadata.getPropertyData("WallBounce"),          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;});
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("AllowRespawn"),        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("Solid"),               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnTouch"),             cDefContactAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("OnImpact"),            cDefImpactAction);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("AppearanceSurface"),   cDefSurfacePattern);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("AppearanceWallNorth"), cDefNorthWallPattern);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("AppearanceWallSouth"), cDefSouthWallPattern);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("AppearanceWallWest"),  cDefWestWallPattern);
-    owner.createPropertyTreeSelector( metadata.getPropertyData("AppearanceWallEast"),  cDefEastWallPattern);
+    owner.createPropertyNativeFloat(  "SurfaceFriction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
+    owner.createPropertyNativeFloat(  "SurfaceGrip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
+    owner.createPropertyNativeFloat(  "SurfaceBounce",       [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
+    owner.createPropertyNativeFloat(  "WallBounce",          [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;});
+    owner.createPropertyNativeBoolean("AllowRespawn",        [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
+    owner.createPropertyNativeBoolean("Solid",               [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
+    owner.createPropertyTreeSelector( "OnTouch",             cDefContactAction);
+    owner.createPropertyTreeSelector( "OnImpact",            cDefImpactAction);
+    owner.createPropertyTreeSelector( "AppearanceSurface",   cDefSurfacePattern);
+    owner.createPropertyTreeSelector( "AppearanceWallNorth", cDefNorthWallPattern);
+    owner.createPropertyTreeSelector( "AppearanceWallSouth", cDefSouthWallPattern);
+    owner.createPropertyTreeSelector( "AppearanceWallWest",  cDefWestWallPattern);
+    owner.createPropertyTreeSelector( "AppearanceWallEast",  cDefEastWallPattern);
   }
 
   void TerrainType::removed() {

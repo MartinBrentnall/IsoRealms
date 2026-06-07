@@ -51,7 +51,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void PickUpType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"), cDefModel);
+    owner.createPropertyTreeSelector("Appearance", cDefModel);
   }
 
   void PickUpType::removed() {

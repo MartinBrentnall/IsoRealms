@@ -67,14 +67,14 @@ namespace IsoRealms::UI {
   }
 
   void Throbber::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("Duration"),     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;});
-    owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("Spots"),        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;});
-    owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("SpotSides"),    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;});
-    owner.createPropertyNativeFloat(          metadata.getPropertyData("SpotSize"),     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;});
-    owner.createPropertyNativeFloat(          metadata.getPropertyData("ShadowOffset"), [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;});
-    owner.createPropertyTreeSelector(         metadata.getPropertyData("Colour"),       cDefColour);
-    owner.createPropertyNativeFloat(          metadata.getPropertyData("RingSize"),     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;});
-    owner.createPropertyNativeUnsignedInteger(metadata.getPropertyData("Repetitions"),  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;});
+    owner.createPropertyNativeUnsignedInteger("Duration",     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;});
+    owner.createPropertyNativeUnsignedInteger("Spots",        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;});
+    owner.createPropertyNativeUnsignedInteger("SpotSides",    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;});
+    owner.createPropertyNativeFloat(          "SpotSize",     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;});
+    owner.createPropertyNativeFloat(          "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector(         "Colour",       cDefColour);
+    owner.createPropertyNativeFloat(          "RingSize",     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;});
+    owner.createPropertyNativeUnsignedInteger("Repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;});
   }
 
   void Throbber::removed() {

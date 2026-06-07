@@ -67,7 +67,7 @@ namespace IsoRealms::UI {
   }
 
   void Layout::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyEditor(metadata.getPropertyData("Content"), this);
+    owner.createPropertyEditor("Content", this);
   }
 
   void Layout::removed() {

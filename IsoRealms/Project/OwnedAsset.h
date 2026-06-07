@@ -52,12 +52,12 @@ namespace IsoRealms {
 
     void getProperty(IPropertyMaker& owner, const Metadata& metadata, const std::string& name) {
       if (cOwner.isConfigurable()) {
-        owner.createPropertyStruct(metadata.getPropertyData(name), cAsset.getTreeItemLabel(), [this, &metadata, name](IPropertyMaker& owner) {
-          owner.createPropertyTreeSelector(metadata.getPropertyData("Value"), cAsset);
-          cOwner.createProperty(owner, metadata.getPropertyData("Owner"));
+        owner.createPropertyStruct(name, cAsset.getTreeItemLabel(), [this, &metadata, name](IPropertyMaker& owner) {
+          owner.createPropertyTreeSelector("Value", cAsset);
+          cOwner.createProperty(owner, "Owner");
         });
       } else {
-        owner.createPropertyTreeSelector(metadata.getPropertyData(name), cAsset);
+        owner.createPropertyTreeSelector(name, cAsset);
       }
     }
 

@@ -53,7 +53,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleInteger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeInteger(metadata.getPropertyData("Value"), [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
+    owner.createPropertyNativeInteger("Value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
   }
 
   void SimpleInteger::removed() {

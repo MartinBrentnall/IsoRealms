@@ -75,12 +75,12 @@ namespace IsoRealms::Basics {
   }
 
   void ProjectConfigurer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Font"),         cDefFont);
-    owner.createPropertyNativeFloat( metadata.getPropertyData("FontSize"),     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyTreeSelector(metadata.getPropertyData("CodeFont"),     cDefCodeFont);
-    owner.createPropertyNativeFloat( metadata.getPropertyData("CodeFontSize"), [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnExit"),       cDefExitAction);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnEditor"),     cDefEditorAction);
+    owner.createPropertyTreeSelector("Font",         cDefFont);
+    owner.createPropertyNativeFloat( "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    owner.createPropertyTreeSelector("CodeFont",     cDefCodeFont);
+    owner.createPropertyNativeFloat( "CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
+    owner.createPropertyTreeSelector("OnExit",       cDefExitAction);
+    owner.createPropertyTreeSelector("OnEditor",     cDefEditorAction);
     // TODO: Input configuration
   }
 

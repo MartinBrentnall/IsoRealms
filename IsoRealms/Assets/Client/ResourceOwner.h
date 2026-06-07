@@ -21,6 +21,7 @@
 #include <functional>
 #include <string>
 
+#include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
@@ -38,6 +39,7 @@ namespace IsoRealms {
     void setProjectFile(ProjectFile* owner);
     bool isConfigurable() const;
     void createProperty(IPropertyMaker& owner, const PropertyData& metadata);
+    void createProperty(IPropertyMaker& owner, const std::string& key);
 
     /**********************************\
      * Implements ITreeSelectorObject *

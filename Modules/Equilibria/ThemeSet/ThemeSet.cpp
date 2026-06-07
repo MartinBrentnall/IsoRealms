@@ -46,40 +46,40 @@ namespace IsoRealms::Equilibria {
   void ThemeSet::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     
     // Texture elements of each theme in this set.
-    owner.createPropertyStruct(metadata.getPropertyData("TextureElements"), "Edit...", [this, &metadata](IPropertyMaker& owner) {
+    owner.createPropertyStruct("TextureElements", "Edit...", [this, &metadata](IPropertyMaker& owner) {
       for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
         createTextureElementProperty(owner, metadata, mTexture.second.get());
       }
       
-      owner.createPropertyAdd(metadata.getPropertyData("TextureElementAdd"), "Add...",  [this, &owner, &metadata]() {
+      owner.createPropertyAdd("TextureElementAdd", "Add...",  [this, &owner, &metadata]() {
         return createTextureElementProperty(owner, metadata, createTexture(Utils::getAvailableKey(cTextures, "New Texture")));
       });
     });
     
     // Colour elements of each theme in this set.
-    owner.createPropertyStruct(metadata.getPropertyData("ColourElements"), "Edit...", [this, &metadata](IPropertyMaker& owner) {
+    owner.createPropertyStruct("ColourElements", "Edit...", [this, &metadata](IPropertyMaker& owner) {
       for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
         createColourElementProperty(owner, metadata, mColour.second.get());
       }
       
-      owner.createPropertyAdd(metadata.getPropertyData("ColourElementAdd"), "Add...",  [this, &owner, &metadata]() {
+      owner.createPropertyAdd("ColourElementAdd", "Add...",  [this, &owner, &metadata]() {
         return createColourElementProperty(owner, metadata, createColour(Utils::getAvailableKey(cColours, "New Colour")));
       });
     });
     
     // Actual themes in this set.
-    owner.createPropertyStruct(metadata.getPropertyData("Themes"), "Edit...", [this, &metadata](IPropertyMaker& owner) {
+    owner.createPropertyStruct("Themes", "Edit...", [this, &metadata](IPropertyMaker& owner) {
       for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
         Theme* mExistingTheme = mTheme.second.get();
-        owner.createPropertyStruct(metadata.getPropertyData("Theme"), mTheme.first, [this, &metadata, mExistingTheme](IPropertyMaker& owner) {
+        owner.createPropertyStruct("Theme", mTheme.first, [this, &metadata, mExistingTheme](IPropertyMaker& owner) {
           return mExistingTheme->getProperties(owner, metadata);
         });
       }
 
-      owner.createPropertyAdd(metadata.getPropertyData("ThemeAdd"), "Add...",  [this, &owner, &metadata]() {
+      owner.createPropertyAdd("ThemeAdd", "Add...",  [this, &owner, &metadata]() {
         std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
         Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(*this)).first->second.get();
-        return owner.createPropertyStruct(metadata.getPropertyData("Theme"), mNewThemeName, [this, &metadata, mNewTheme](IPropertyMaker& owner) {
+        return owner.createPropertyStruct("Theme", mNewThemeName, [this, &metadata, mNewTheme](IPropertyMaker& owner) {
           return mNewTheme->getProperties(owner, metadata);
         });
       });
@@ -361,7 +361,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createTextureElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeTexture* element) {
-    owner.createPropertyNativeString(metadata.getPropertyData("TextureElement"), [this, element]() {
+    owner.createPropertyNativeString("TextureElement", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
@@ -384,7 +384,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createColourElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeColour* element) {
-    owner.createPropertyNativeString(metadata.getPropertyData("ColourElement"), [this, element]() {
+    owner.createPropertyNativeString("ColourElement", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

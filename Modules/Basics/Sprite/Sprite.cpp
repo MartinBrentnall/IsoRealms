@@ -73,9 +73,9 @@ namespace IsoRealms::Basics {
   }
 
   void Sprite::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( metadata.getPropertyData("Appearance"),     cDefTexture);
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("BillboardAngle"), [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
-    owner.createPropertyNativeBoolean(metadata.getPropertyData("BillboardTilt"),  [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
+    owner.createPropertyTreeSelector( "Appearance",     cDefTexture);
+    owner.createPropertyNativeBoolean("BillboardAngle", [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
+    owner.createPropertyNativeBoolean("BillboardTilt",  [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
   }
 
   void Sprite::removed() {

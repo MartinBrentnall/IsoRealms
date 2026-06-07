@@ -68,11 +68,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Gyroscope::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Quadrant1"), cDefQuadrant[0]);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Quadrant2"), cDefQuadrant[1]);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Quadrant3"), cDefQuadrant[2]);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Quadrant4"), cDefQuadrant[3]);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Outline"),   cDefOutline);
+    owner.createPropertyTreeSelector("Quadrant1", cDefQuadrant[0]);
+    owner.createPropertyTreeSelector("Quadrant2", cDefQuadrant[1]);
+    owner.createPropertyTreeSelector("Quadrant3", cDefQuadrant[2]);
+    owner.createPropertyTreeSelector("Quadrant4", cDefQuadrant[3]);
+    owner.createPropertyTreeSelector("Outline",   cDefOutline);
   }
 
   void Gyroscope::removed() {

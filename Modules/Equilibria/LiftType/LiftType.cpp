@@ -60,9 +60,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void LiftType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("Appearance"), cDefModel);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("State"),      cDefActive);
-    owner.createPropertyTreeSelector(metadata.getPropertyData("OnMove"),     cDefTickAction);
+    owner.createPropertyTreeSelector("Appearance", cDefModel);
+    owner.createPropertyTreeSelector("State",      cDefActive);
+    owner.createPropertyTreeSelector("OnMove",     cDefTickAction);
   }
 
   void LiftType::removed() {
