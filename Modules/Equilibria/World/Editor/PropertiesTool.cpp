@@ -76,9 +76,11 @@ namespace IsoRealms::Equilibria {
 
   void PropertiesTool::Modifier::showProperties() {
     if (!cHoverObjects.empty() && !cEditingProperties) {
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldResourceOwner, [this](IPropertyMaker& owner) {
+      IWorldObject* mObject = cHoverObjects[cSelectedObject];
+      const Metadata& mMetadata = cEditor.getWorld().getEquilibria().getMetadata(mObject->getTypeName());
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldResourceOwner, mMetadata, [this](IPropertyMaker& owner) {
         cHoverObjects[cSelectedObject]->getProperties(owner);
-      }), cHoverObjects[cSelectedObject]->getTypeName() + " Configuration");
+      }), mObject->getTypeName() + " Configuration");
       cEditingProperties = true;
     }
   }

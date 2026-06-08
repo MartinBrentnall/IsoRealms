@@ -125,25 +125,26 @@ namespace IsoRealms::Basics {
     declare();
   }
 
-  void Function::getScriptProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyStruct(metadata.getPropertyData("Bindings"), "Edit...", [this, &metadata](IPropertyMaker& owner) {
+  void Function::getScriptProperties(IPropertyMaker& owner) {
+    const Metadata& mBindingMetadata = getMetadata();
+    owner.createPropertyStruct("Bindings", "Edit...", [this, &mBindingMetadata](IPropertyMaker& owner) {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        owner.createPropertyStruct(metadata.getPropertyData("Binding"), mBinding->getName(), [&mBinding, &metadata](IPropertyMaker& owner) {
-          return mBinding->getProperties(owner, metadata);
+        owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding, &mBindingMetadata](IPropertyMaker& owner) {
+          return mBinding->getProperties(owner, mBindingMetadata);
         }, [this, &mBinding]() {
           Utils::removeElementUnique(cDefBindings, mBinding.get());
         });
       }
-      owner.createPropertyAdd(metadata.getPropertyData("BindingAdd"), "New...", [this, &owner, &metadata]() {
+      owner.createPropertyAdd("BindingAdd", "New...", [this, &owner, &mBindingMetadata]() {
         Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionContext(), getNextAvailableName("newBinding"))).get();
-        return owner.createPropertyStruct(metadata.getPropertyData("Binding"), mNewBinding->getName(), [mNewBinding, &metadata](IPropertyMaker& owner) {
-          return mNewBinding->getProperties(owner, metadata);
+        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding, &mBindingMetadata](IPropertyMaker& owner) {
+          return mNewBinding->getProperties(owner, mBindingMetadata);
         }, [this, mNewBinding]() {
           Utils::removeElementUnique(cDefBindings, mNewBinding);
         });
       });
     });
-    owner.createPropertyCode(metadata.getPropertyData("Code"), [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
+    owner.createPropertyCode("Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
 
   IsoRealms::Project& Function::getProject() const {

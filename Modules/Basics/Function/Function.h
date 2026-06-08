@@ -57,7 +57,7 @@ namespace IsoRealms::Basics {
     // Constructors for use by scripts (in-line functions).
     Function(Basics& basics, IActionContext& owner);
     Function(Basics& basics, IActionContext& owner, JSONObject object, bool init);
-    void getScriptProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void getScriptProperties(IPropertyMaker& owner);
     IsoRealms::Project& getProject() const;
     IResourceData& getResourceData() const;
     void setBindingName(Binding& binding, const std::string& name);

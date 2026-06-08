@@ -666,7 +666,6 @@ namespace IsoRealms::Basics {
 
               if (cCursorTrackProperties) {
                 cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](IPropertyMaker& owner) {
-                  const Metadata& mMetadata = cSequence.getResourceData().getMetadata();
                   owner.createPropertyTreeSelector("TrackType", cSequence.getTrack(cCursorTrack.value()));
                   owner.createPropertyNativeString("TrackName", [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();

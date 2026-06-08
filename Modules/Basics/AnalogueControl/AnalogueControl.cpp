@@ -63,8 +63,8 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueControl::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(metadata.getPropertyData("DefaultMappingAdd"), cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner, &metadata](InputMapping& mapping) {
-      mapping.getProperties(owner, metadata, [this, &mapping]() {
+    owner.createPropertyArray("DefaultMappingAdd", cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner](InputMapping& mapping) {
+      mapping.getProperties(owner, [this, &mapping]() {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });
     }, [this]()->InputMapping& {
@@ -229,8 +229,8 @@ namespace IsoRealms::Basics {
     return (*cPhysicalInput)->getName();
   }
 
-  void AnalogueControl::InputMapping::getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction) {
-    owner.createPropertyTreeSelector(metadata.getPropertyData("DefaultMapping"), *cPhysicalInput, removeFunction);
+  void AnalogueControl::InputMapping::getProperties(IPropertyMaker& owner, std::function<void()> removeFunction) {
+    owner.createPropertyTreeSelector("DefaultMapping", *cPhysicalInput, removeFunction);
   }
 
   void AnalogueControl::InputMapping::reset() {

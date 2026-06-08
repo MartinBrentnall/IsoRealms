@@ -647,15 +647,14 @@ namespace IsoRealms::Equilibria {
   }
 
   void Terrain::getProperties(IPropertyMaker& owner) {
-    const Metadata& mMetadata = cZone.getWorld().getEquilibria().getMetadata("Terrain");
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
-    owner.createPropertyCondition(mMetadata.getPropertyData("Condition"), mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    owner.createPropertyCondition("Condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cZone.updateDisplayList();
     });
     if (!cZone.getWorld().isBasicProperties()) {
-      owner.createPropertyList(mMetadata.getPropertyData("Behaviour"),
+      owner.createPropertyList("Behaviour",
                                std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                         BEHAVIOUR_INVISIBLE,
                                                         BEHAVIOUR_GHOST,

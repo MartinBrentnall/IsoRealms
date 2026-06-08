@@ -62,11 +62,14 @@ namespace IsoRealms {
     object.addFloat(JSON_SCALE_Y, cDefScaleY, 1.0f);
   }
   
+  const Metadata& Texture::getPropertyMetadata() const {
+    return cManager.getProject().getApplication().getMetadata("Texture");
+  }
+
   void Texture::getClientProperties(IPropertyMaker& owner) {
-    const Metadata& mMetadata = cManager.getProject().getApplication().getMetadata("Texture");
-    owner.createPropertyNativeFloat(mMetadata.getPropertyData("ScaleX"), [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();});
-    owner.createPropertyNativeFloat(mMetadata.getPropertyData("ScaleY"), [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();});
-    owner.createPropertyNativeFloat(mMetadata.getPropertyData("Angle"),  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});
+    owner.createPropertyNativeFloat("ScaleX", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();});
+    owner.createPropertyNativeFloat("ScaleY", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();});
+    owner.createPropertyNativeFloat("Angle",  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});
   }
   
   void Texture::stateChanged() {

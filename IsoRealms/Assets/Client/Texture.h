@@ -44,6 +44,11 @@ namespace IsoRealms {
     void saveClientConfiguration(JSONObject object) const override;
     void getClientProperties(IPropertyMaker& owner) override;
 
+    /********************************************\
+     * Implements ITreeSelectorObject via Asset *
+    \********************************************/
+    const Metadata& getPropertyMetadata() const override;
+
     /****************************************\
      * Implements IStateListener<ITexture*> *
     \****************************************/

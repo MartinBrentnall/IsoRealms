@@ -79,6 +79,8 @@ namespace IsoRealms::UI {
     inline static const float DEFAULT_MAXIMUM = 1.0f;
     inline static const float DEFAULT_MINIMUM = 0.0f;
     inline static const int   DEFAULT_STEPS   = 20;
+
+    // External interfaces.
     HatHandler& cHatHandler;
 
     // Definition data.

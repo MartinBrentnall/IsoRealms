@@ -159,7 +159,7 @@ namespace IsoRealms::Basics {
       void loadCustomMapping(JSONObject object);
       void registerAssets(ResourceAssetRegistry& assets);
       std::string getName();
-      void getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction);
+      void getProperties(IPropertyMaker& owner, std::function<void()> removeFunction);
       void reset();
 
       private:

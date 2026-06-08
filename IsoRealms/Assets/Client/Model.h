@@ -47,6 +47,11 @@ namespace IsoRealms {
     void saveClientConfiguration(JSONObject object) const override;
     void getClientProperties(IPropertyMaker& owner) override;
 
+    /********************************************\
+     * Implements ITreeSelectorObject via Asset *
+    \********************************************/
+    const Metadata& getPropertyMetadata() const override;
+
     private:
     inline static const std::string JSON_OFFSET_X = "offsetX";
     inline static const std::string JSON_OFFSET_Y = "offsetY";

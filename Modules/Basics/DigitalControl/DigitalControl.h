@@ -162,7 +162,7 @@ namespace IsoRealms::Basics {
       std::string getShortName() const;
       std::shared_ptr<DigitalInput> getInput() const;
       void save(JSONObject object) const;
-      void getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction);
+      void getProperties(IPropertyMaker& owner, std::function<void()> removeFunction);
 
       private:
       std::shared_ptr<DigitalInput> cInput;
