@@ -73,10 +73,16 @@ namespace IsoRealms::Equilibria {
   void Theme::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString("ThemeName", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
     for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
-      owner.createPropertyTreeSelector(PropertyData(cThemeSet.getElement(mTexture.first), "TODO: Theme Texture Description"), mTexture.second);
+      Options mHint;
+      mHint.addOption("name", cThemeSet.getElement(mTexture.first));
+      mHint.addOption("description", "TODO: Theme Texture Description");
+      owner.createPropertyTreeSelector("TextureElement", mTexture.second, mHint);
     }
     for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
-      owner.createPropertyTreeSelector(PropertyData(cThemeSet.getElement(mColour.first), "TODO: Theme Colour Description"), mColour.second);
+      Options mHint;
+      mHint.addOption("name", cThemeSet.getElement(mColour.first));
+      mHint.addOption("description", "TODO: Theme Colour Description");
+      owner.createPropertyTreeSelector("ColourElement", mColour.second, mHint);
     }
   }
 

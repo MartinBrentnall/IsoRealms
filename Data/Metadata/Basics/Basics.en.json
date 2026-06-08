@@ -40,7 +40,8 @@
       "properties": {
         "AudioFile": {"name": "Audio File", "description": "The audio file to be played when this track is triggered."},
         "FadeIn": {"name": "Fade In", "description": "The duration of the fade in effect when playing the audio file."},
-        "FadeOut": {"name": "Fade Out", "description": "The duration of the fade out effect when stopping the audio file."}
+        "FadeOut": {"name": "Fade Out", "description": "The duration of the fade out effect when stopping the audio file."},
+        "Volume": {"name": "Volume", "description": "The volume at which the audio file is played when this track is triggered."}
       }
     },
     "SequenceTrackColour": {
