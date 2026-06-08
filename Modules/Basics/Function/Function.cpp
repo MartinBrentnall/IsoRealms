@@ -313,10 +313,10 @@ namespace IsoRealms::Basics {
 
   void Function::Call::getAssetProperties(IPropertyMaker& owner) {
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
-      std::string mArgumentName = cParent.cDefArgumentDefinitions[i]->getName();
-      std::unique_ptr<IsoRealms::Binding>& mBinding = cDefArguments[i];
-      PropertyData mArgumentData(mArgumentName, "An argument to the function.");
-      owner.createPropertyTreeSelector(mArgumentData, *mBinding);
+      Options mHint;
+      mHint.addOption("name", cParent.cDefArgumentDefinitions[i]->getName());
+      mHint.addOption("description", "An argument to the function.");
+      owner.createPropertyTreeSelector("Argument", *cDefArguments[i], mHint);
     }
   }
 

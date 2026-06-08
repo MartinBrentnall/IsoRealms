@@ -74,7 +74,7 @@ namespace IsoRealms {
     void createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker, std::function<void()> removeFunction) override;
     void createPropertyOptional(             const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr) override;
     void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr) override;
-    void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr) override;
+    void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) override;
 
     /*************************************\
      * Implements IResourceAccessManager *
@@ -89,5 +89,7 @@ namespace IsoRealms {
     const Metadata& cMetadata;
     IPropertyManager& cProperties;
     IDialogManager& cDialogManager;
+    
+    static PropertyData mergePropertyMetadata(const PropertyData& metadata, const Options& hint);
   };
 }

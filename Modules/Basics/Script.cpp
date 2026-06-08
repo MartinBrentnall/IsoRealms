@@ -134,8 +134,7 @@ namespace IsoRealms::Basics {
   }
   
   void Script::ScriptAction::getAssetProperties(IPropertyMaker& owner) {
-    const Metadata& mMetadata = cParent.cBasics.getMetadata("Script");
-    cDefFunction.getScriptProperties(owner, mMetadata);
+    cDefFunction.getScriptProperties(owner);
   }  
 
   bool Script::ScriptAction::isDefaultConfiguration() const {

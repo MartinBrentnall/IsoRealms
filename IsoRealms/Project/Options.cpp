@@ -21,6 +21,8 @@
 #include "IsoRealms/Exception/ApplicationException.h"
 
 namespace IsoRealms {
+  const Options Options::EMPTY;
+
   Options::Options() {
     // Nothing to do.
   }
@@ -44,10 +46,6 @@ namespace IsoRealms {
       }
     }
   }
-  
-  Options::Options(std::map<std::string, std::string> options) :
-            cOptions(options) {
-  }
 
   void Options::addOption(const std::string& key, const std::string& value) {
     std::map<std::string, std::string>::const_iterator mOption = cOptions.find(key);
@@ -55,6 +53,14 @@ namespace IsoRealms {
       std::cout << "WARNING: Options::addOption: Option key \"" << key << "\" already specified" << std::endl;
     }
     cOptions[key] = value;
+  }
+
+  void Options::assign(const Options& options) {
+    cOptions = options.cOptions;
+  }
+
+  void Options::clear() {
+    cOptions.clear();
   }
 
   bool Options::operator==(const Options& options) const {
@@ -68,10 +74,6 @@ namespace IsoRealms {
       }
     }
     return true;
-  }
-
-  std::map<std::string, std::string> Options::getAllOptions() const {
-    return cOptions;
   }
 
   std::string Options::getOption(const std::string& option) const {

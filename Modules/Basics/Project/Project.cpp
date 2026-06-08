@@ -246,7 +246,7 @@ namespace IsoRealms::Basics {
   
   void Project::resetOptions(Options& options) {
     if (cRuntimeLoading) {
-      cRuntimeOptions = options;
+      cRuntimeOptions.assign(options);
       cRuntimeResetPostponed = true;
     } else {
       cRuntimeProject->reset(options);

@@ -24,6 +24,7 @@
 #include "Editing/Property/IPropertyManager.h"
 #include "IResourceData.h"
 #include "Metadata.h"
+#include "Project/Options.h"
 #include "Project/Project.h"
 #include "Project/Registry/IAssetProvider.h"
 
@@ -180,8 +181,8 @@ namespace IsoRealms {
     createPropertyStruct(cMetadata.getPropertyData(key), value, subProperties, removeFunction);
   }
 
-  void PropertyMaker::createPropertyTreeSelector(const std::string& key, ITreeSelectorObject& item, std::function<void()> removeFunction) {
-    createPropertyTreeSelector(cMetadata.getPropertyData(key), item, removeFunction);
+  void PropertyMaker::createPropertyTreeSelector(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
+    createPropertyTreeSelector(mergePropertyMetadata(cMetadata.getPropertyData(key), hint), item, removeFunction);
   }
 
   bool PropertyMaker::isResourceReadOnly() const {
@@ -194,6 +195,12 @@ namespace IsoRealms {
 
   void PropertyMaker::promoteResourceToProject() {
     cParent.setOwner(cParent.getProject().getProjectFile());
+  }
+  
+  PropertyData PropertyMaker::mergePropertyMetadata(const PropertyData& metadata, const Options& hint) {
+    std::string mName = hint.getOption("name");
+    std::string mDescription = hint.getOption("description");
+    return PropertyData(mName.empty() ? metadata.getName() : mName, mDescription.empty() ? metadata.getTooltip() : mDescription);
   }
 }
 

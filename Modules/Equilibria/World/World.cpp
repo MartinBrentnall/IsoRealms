@@ -229,7 +229,7 @@ namespace IsoRealms::Equilibria {
       owner.createPropertyNativeInteger("EditingBoundaryDepth",       [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;});
       owner.createPropertyNativeInteger("EditingBoundaryHeight",      [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;});
       for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-        owner.createPropertyTreeSelector("EditingEditingTool", *cAvailableWorldEditorTools[i].get(), [this, i]() {
+        owner.createPropertyTreeSelector("EditingEditingTool", *cAvailableWorldEditorTools[i].get(), Options::EMPTY, [this, i]() {
           cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
         });
       }

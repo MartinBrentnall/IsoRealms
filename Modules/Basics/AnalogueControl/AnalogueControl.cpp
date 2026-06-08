@@ -230,7 +230,7 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueControl::InputMapping::getProperties(IPropertyMaker& owner, std::function<void()> removeFunction) {
-    owner.createPropertyTreeSelector("DefaultMapping", *cPhysicalInput, removeFunction);
+    owner.createPropertyTreeSelector("DefaultMapping", *cPhysicalInput, Options::EMPTY, removeFunction);
   }
 
   void AnalogueControl::InputMapping::reset() {

@@ -215,7 +215,7 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalControl::InputMapping::getProperties(IPropertyMaker& owner, std::function<void()> removeFunction) {
-    owner.createPropertyTreeSelector("DefaultMapping", *cInput, removeFunction);
+    owner.createPropertyTreeSelector("DefaultMapping", *cInput, Options::EMPTY, removeFunction);
   }
 
   void DigitalControl::loadCustomMapping(JSONObject object) {

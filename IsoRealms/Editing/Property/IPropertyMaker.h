@@ -27,6 +27,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include "IsoRealms/Editing/IResourceAccessManager.h"
+#include "IsoRealms/Project/Options.h"
 #include "IsoRealms/PropertyData.h"
 
 namespace IsoRealms {
@@ -79,7 +80,7 @@ namespace IsoRealms {
     virtual void createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr) = 0;
     virtual void createPropertyOptional(             const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr) = 0;
     virtual void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr) = 0;
-    virtual void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr) = 0;
+    virtual void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) = 0;
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
     void createPropertyArray(const PropertyData& metadata, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {

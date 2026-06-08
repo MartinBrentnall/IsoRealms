@@ -30,12 +30,18 @@ namespace IsoRealms {
    */
   class Options {
     public:
+    static const Options EMPTY;
+    
     Options();
     Options(int argc, char** argv);
-    Options(std::map<std::string, std::string> options);
+    Options(const Options&) = delete;
+    Options(Options&&) = delete;
+    Options& operator=(const Options&) = delete;
+    Options& operator=(Options&&) = delete;
     void addOption(const std::string& key, const std::string& value);
+    void assign(const Options& options);
+    void clear();
     bool operator==(const Options& options) const;
-    std::map<std::string, std::string> getAllOptions() const;
     std::string getOption(const std::string& key) const;
     
     private:

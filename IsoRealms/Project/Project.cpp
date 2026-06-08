@@ -159,14 +159,17 @@ namespace IsoRealms {
   }
   
   void Project::reset(Options& options) {
-    cDefOptions = options;
+    if (&cDefOptions != &options) {
+      cDefOptions.assign(options);
+    }
     reset();
     cPostponedActions.emplace_back(***cDefActionOnStart);
   }
 
   void Project::reset(const ProjectLaunchConfiguration* configuration) {
-    Options mOptions = configuration->getOptions();
-    reset(mOptions);
+    cDefOptions.clear();
+    configuration->getOptions(cDefOptions);
+    reset(cDefOptions);
   }
 
   bool Project::input(sf::Event& event) {

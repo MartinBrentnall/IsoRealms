@@ -86,12 +86,11 @@ namespace IsoRealms {
     return &project == cDefOwner.getProjectFile();
   }
 
-  Options ProjectLaunchConfiguration::getOptions() const {
-    Options mOptions;
+  void ProjectLaunchConfiguration::getOptions(Options& options) const {
+    options.clear();
     for (const std::unique_ptr<Option>& mOption : cDefOptions) {
-      mOptions.addOption(mOption->getName(), mOption->getValue());
+      options.addOption(mOption->getName(), mOption->getValue());
     }
-    return mOptions;
   }
 
   ProjectLaunchConfiguration::Option::Option(Project& parent, ProjectLaunchConfiguration& launch) :

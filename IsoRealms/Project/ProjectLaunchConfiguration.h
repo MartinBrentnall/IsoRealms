@@ -35,7 +35,7 @@ namespace IsoRealms {
     void getProperties(IPropertyMaker& owner, const Metadata& metadata, Project& project);
     void save(JSONObject object, const ProjectFile& savingProject) const;
     bool isOwnedBy(const ProjectFile& project) const;
-    Options getOptions() const;
+    void getOptions(Options& options) const;
 
     private:
     class Option {
