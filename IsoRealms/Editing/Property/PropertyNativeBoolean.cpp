@@ -18,6 +18,9 @@
  */
 #include "PropertyNativeBoolean.h"
 
+#include <stdexcept>
+
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
@@ -81,6 +84,10 @@ namespace IsoRealms {
 
   void PropertyNativeBoolean::BooleanSelection::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
+  }
+
+  const Metadata& PropertyNativeBoolean::BooleanSelection::getPropertyMetadata() const {
+    throw std::runtime_error("PropertyNativeBoolean::BooleanSelection::getPropertyMetadata: Property metadata is not available for this type.");
   }
   
   Application& PropertyNativeBoolean::BooleanSelection::getApplication() {

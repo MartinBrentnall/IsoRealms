@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include <stdexcept>
 #include <string>
 
 #include "IsoRealms/Persistence/JSONObject.h"
@@ -63,6 +64,10 @@ namespace IsoRealms {
 
     bool isHiddenProvider() const override {
       return false;
+    }
+
+    const Metadata& getMetadata() const override {
+      throw std::runtime_error("AssetSingleton::getPropertyMetadata: Property metadata is not available for this type.");
     }
 
     private:

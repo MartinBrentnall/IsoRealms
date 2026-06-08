@@ -23,9 +23,8 @@
  #include "Modules/Equilibria/World/Object/Terrain/Wall.h"
  
  namespace IsoRealms::Equilibria {
-   WallPatternComposite::WallPatternComposite(const Metadata& metadata, TerrainType& owner) :
-             cOwner(owner),
-             cMetadata(metadata) {
+   WallPatternComposite::WallPatternComposite(const Metadata& /*metadata*/, TerrainType& owner) :
+             cOwner(owner) {
      // Nothing to do.
    }
  
@@ -73,8 +72,8 @@
    }
  
    void WallPatternComposite::getAssetProperties(IPropertyMaker& owner) {
-     owner.createPropertyArray(cMetadata.getPropertyData("Patterns"), cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &owner](WallPattern& wallPattern) {
-       owner.createPropertyTreeSelector(cMetadata.getPropertyData("Pattern"), wallPattern);
+     owner.createPropertyArray("Patterns", cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &owner](WallPattern& wallPattern) {
+       owner.createPropertyTreeSelector("Pattern", wallPattern);
      }, [this]()->WallPattern& {
        return *cDefWallPatterns.emplace_back(std::make_unique<WallPattern>(cOwner.getEquilibria(), cOwner, nullptr));
      });

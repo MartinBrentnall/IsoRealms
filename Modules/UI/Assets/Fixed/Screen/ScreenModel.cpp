@@ -19,8 +19,7 @@
 #include "ScreenModel.h"
 
 namespace IsoRealms::UI {
-  ScreenModel::ScreenModel(const Metadata& metadata, IResourceData& owner) :
-            cMetadata(metadata),
+  ScreenModel::ScreenModel(const Metadata& /*metadata*/, IResourceData& owner) :
             cDefModel(owner),
             cDefModelInstance(cDefModel.createInstance()) {
   }
@@ -51,7 +50,7 @@ namespace IsoRealms::UI {
   }
 
   void ScreenModel::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Model"), cDefModel);
+    owner.createPropertyTreeSelector("Model", cDefModel);
   }
   
   bool ScreenModel::isDefaultConfiguration() const {

@@ -97,7 +97,7 @@ namespace IsoRealms {
   }
 
   void MouseButton::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyOptional(cMetadata.getPropertyData("Button"), cButtonChooser, "", []() {
+    owner.createPropertyOptional("Button", cButtonChooser, "", []() {
       return true;
     }, [this](const std::string& button) {
       cButton = getButton(button);

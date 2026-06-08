@@ -23,7 +23,8 @@
 namespace IsoRealms {
   StringRegistry::StringRegistry(Project& project) :
             AssetClientManager(&cLiteral, "Literal", "Literal"),
-            cProject(project) {
+            cProject(project),
+            cLiteral(project.getApplication().getMetadata("LiteralString")) {
 
     // Set up conversion providers.
     cConversionProviders.emplace_back(std::make_unique<Conversion<Float>>(  ":Float",   "Floats"));
@@ -91,7 +92,7 @@ namespace IsoRealms {
   }
 
   void StringRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
+    owner.createPropertyNativeString("Value", [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
   }
 
   bool StringRegistry::Literal::Instance::isDefaultConfiguration() const {

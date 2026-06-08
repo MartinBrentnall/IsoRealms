@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include <stdexcept>
+
 #include "IsoRealms/Assets/Providers/AssetSingleton.h"
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
 #include "IsoRealms/IStateListener.h"
@@ -26,6 +28,8 @@
 #include "AssetRegistry.h"
 
 namespace IsoRealms {
+  class Metadata;
+
   template <typename DERIVED, typename OWNER, typename TYPE> class AssetClientManager {
     public:
     inline static const std::string JSON_KEY = "key";
@@ -252,6 +256,14 @@ namespace IsoRealms {
     
     bool hasConfiguration(const std::string& id) const {
       return cRegistry.getProvider(id, true)->hasConfiguration();
+    }
+
+    const Metadata& getPropertyMetadata(const TYPE* asset) const {
+      IAssetProvider<OWNER, TYPE>* mProvider = getProvider(asset);
+      if (mProvider == nullptr) {
+        throw std::runtime_error("AssetClientManager::getPropertyMetadata: No provider found for specified asset.");
+      }
+      return mProvider->getMetadata();
     }
     
     AssetRegistry<OWNER, TYPE>* getRegistry() {

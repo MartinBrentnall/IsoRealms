@@ -22,7 +22,6 @@
 
 namespace IsoRealms::UI {
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cActionContext(menu.getResourceData(), *this),
             cDefID(""),
@@ -32,7 +31,6 @@ namespace IsoRealms::UI {
   }
 
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cActionContext(menu.getResourceData(), *this),
             cDefID(object.getString(JSON_ID)),
@@ -126,8 +124,8 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemLauncherList::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("OnSelection"), cDefAction);
+    owner.createPropertyNativeString("ID",          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
+    owner.createPropertyTreeSelector("OnSelection", cDefAction);
   }
 
   bool MenuItemLauncherList::isDefaultConfiguration() const {

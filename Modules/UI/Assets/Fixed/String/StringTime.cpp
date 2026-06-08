@@ -19,8 +19,7 @@
 #include "StringTime.h"
 
 namespace IsoRealms::UI {
-  StringTime::StringTime(const Metadata& metadata, IResourceData& owner) :
-            cMetadata(metadata),
+  StringTime::StringTime(const Metadata& /*metadata*/, IResourceData& owner) :
             cDefValue(owner),
             format(DEFAULT_FORMAT) {
     parseFormatString();
@@ -160,8 +159,8 @@ namespace IsoRealms::UI {
   }
 
   void StringTime::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Value"),        cDefValue);
-    owner.createPropertyNativeString(cMetadata.getPropertyData("FormatString"), [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();});
+    owner.createPropertyTreeSelector("Value",        cDefValue);
+    owner.createPropertyNativeString("FormatString", [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();});
   }
 
   bool StringTime::isDefaultConfiguration() const {

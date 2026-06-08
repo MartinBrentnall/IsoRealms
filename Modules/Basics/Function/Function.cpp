@@ -248,6 +248,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
+  const Metadata& Function::getMetadata() const {
+    return cBasics.getMetadata("Function");
+  }
+
   Function::Call::Call(Function& parent, IActionContext& owner) :
             cParent(parent),
             cOwner(owner) {

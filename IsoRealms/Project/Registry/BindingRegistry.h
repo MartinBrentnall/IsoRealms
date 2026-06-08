@@ -20,6 +20,7 @@
 
 #include <functional>
 #include <set>
+#include <stdexcept>
 
 #include "IsoRealms/Assets/Client/Action.h"
 #include "IsoRealms/Assets/Client/Boolean.h"
@@ -127,6 +128,10 @@ namespace IsoRealms {
         return true;
       }
 
+      const Metadata& getMetadata() const override {
+        throw std::runtime_error("BindingRegistry::Local::getPropertyMetadata: Property metadata is not available for this type.");
+      }
+
       private:
       inline static const std::string JSON_LOCAL = "local";
 
@@ -150,6 +155,10 @@ namespace IsoRealms {
 
       virtual bool renderIcon(Project& project, const std::string& id) const = 0;
       virtual void forEachEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const = 0;
+
+      const Metadata& getMetadata() const override {
+        throw std::runtime_error("BindingRegistry::ConversionProvider::getMetadata: Property metadata is not available for this type.");
+      }
 
       protected:
       std::string cProviderID;

@@ -53,9 +53,6 @@ namespace IsoRealms::UI {
     // JSON members.
     inline static const std::string JSON_VALUE = "value";
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
     // Definition data.
     float cDefValue; // The offset value.
   };

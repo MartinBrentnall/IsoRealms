@@ -24,7 +24,6 @@
 
 namespace IsoRealms::UI {
   LayoutOffsetLinked::LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner) :
-            cMetadata(metadata),
             cParent(owner),
             cDefLinked(nullptr),
             cDefHorizontal(false),
@@ -32,7 +31,6 @@ namespace IsoRealms::UI {
   }
   
   LayoutOffsetLinked::LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
-            cMetadata(metadata),
             cParent(owner),
             cDefLinked(nullptr),
             cDefHorizontal(object.getString(JSON_VALUE) == VALUE_WIDTH),
@@ -69,9 +67,9 @@ namespace IsoRealms::UI {
   }
   
   void LayoutOffsetLinked::getAssetProperties(IPropertyMaker& owner) {
-// TODO   owner.createPropertyList(cMetadata.getPropertyData("Orientation"), {VALUE_WIDTH, VALUE_HEIGHT}, [this]() {return cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT;}, [this](const std::string& value) {cDefHorizontal = value == VALUE_WIDTH;}));
-    owner.createPropertyList(       cMetadata.getPropertyData("LinkedTo"), cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {std::cout << "TODO: Support setting linked component!" << std::endl;});
-    owner.createPropertyNativeFloat(cMetadata.getPropertyData("Ratio"),    [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value;});
+// TODO   owner.createPropertyList("Orientation", {VALUE_WIDTH, VALUE_HEIGHT}, [this]() {return cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT;}, [this](const std::string& value) {cDefHorizontal = value == VALUE_WIDTH;}));
+    owner.createPropertyList(       "LinkedTo", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {std::cout << "TODO: Support setting linked component!" << std::endl;});
+    owner.createPropertyNativeFloat("Ratio",    [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value;});
   }
 
   bool LayoutOffsetLinked::isDefaultConfiguration() const {

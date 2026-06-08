@@ -24,7 +24,6 @@
 
 namespace IsoRealms::Equilibria {
   CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view) :
-            cMetadata(metadata),
             cParent(view),
             cDefLinkedView(view) {
   }
@@ -97,7 +96,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraLinked::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("LinkedView"), cDefLinkedView);
+    owner.createPropertyTreeSelector("LinkedView", cDefLinkedView);
   }
 
   bool CameraLinked::isDefaultConfiguration() const {

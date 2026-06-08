@@ -74,9 +74,6 @@ namespace IsoRealms::UI {
 
     // Constants.
     inline static const std::string BINDING_TYPE = "DisplayResolution";
-
-    // External interfaces.
-    const Metadata& cMetadata;
     Project& cProject;
     HatHandler& cHatHandler;
     

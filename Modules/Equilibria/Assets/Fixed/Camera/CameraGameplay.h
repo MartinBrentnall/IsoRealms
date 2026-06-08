@@ -99,10 +99,8 @@ namespace IsoRealms::Equilibria {
     inline static const int VALUE_SOUTH_EAST = 135;
     inline static const int VALUE_SOUTH_WEST = -135;
     inline static const int VALUE_INVALID    = 0;
-    
 
     // External interfaces.
-    const Metadata& cMetadata;
     WorldView& cParent; /// Parent view.
 
     LiteralFloat cPitch;

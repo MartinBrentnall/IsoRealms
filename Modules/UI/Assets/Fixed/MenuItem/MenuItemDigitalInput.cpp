@@ -22,14 +22,12 @@
 
 namespace IsoRealms::UI {
   MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
@@ -156,7 +154,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDigitalInput::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("ID"), [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
+    owner.createPropertyNativeString("ID", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
   }
 
   bool MenuItemDigitalInput::isDefaultConfiguration() const {

@@ -90,6 +90,10 @@ namespace IsoRealms::Basics {
     return true;
   }
 
+  const Metadata& Script::getMetadata() const {
+    return cBasics.getMetadata("Script");
+  }
+
   Script::ScriptAction::ScriptAction(Script& parent, IActionContext& owner, unsigned int index, JSONObject object) :
             cParent(parent),
             cDefFunction(cParent.cBasics, owner, object, false),

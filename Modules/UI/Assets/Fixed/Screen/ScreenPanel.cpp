@@ -19,8 +19,7 @@
 #include "ScreenPanel.h"
 
 namespace IsoRealms::UI {
-  ScreenPanel::ScreenPanel(const Metadata& metadata, IResourceData& owner) :
-            cMetadata(metadata),
+  ScreenPanel::ScreenPanel(const Metadata& /*metadata*/, IResourceData& owner) :
             cDefColour(owner, 0.0f, 0.0f, 1.0f),
             cDefCornerSize(0.0f) {
     initTextures(owner.getProject());
@@ -74,8 +73,8 @@ namespace IsoRealms::UI {
   }
 
   void ScreenPanel::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Colour"),     cDefColour);
-    owner.createPropertyNativeFloat( cMetadata.getPropertyData("CornerSize"), [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
+    owner.createPropertyTreeSelector("Colour",     cDefColour);
+    owner.createPropertyNativeFloat( "CornerSize", [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
   }
   
   bool ScreenPanel::isDefaultConfiguration() const {

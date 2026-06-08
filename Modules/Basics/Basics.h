@@ -73,6 +73,10 @@ namespace IsoRealms::Basics {
       return cSequenceTracks.getTreeItemInfo(asset);
     }
 
+    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* asset) const {
+      return cSequenceTracks.getPropertyMetadata(asset);
+    }
+
     template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
       cSequenceTracks.save(object, asset);
     }

@@ -48,9 +48,8 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackFloatEvent::getEventProperties(IPropertyMaker& owner) {
-    const Metadata& mMetadata = cParent.getMetadata();
-    owner.createPropertyTreeSelector( mMetadata.getPropertyData("Value"), cDefValue);
-    owner.createPropertyNativeBoolean(mMetadata.getPropertyData("Fade"),  [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
+    owner.createPropertyTreeSelector("Value", cDefValue);
+    owner.createPropertyNativeBoolean("Fade", [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
   }
 
   IFloat* SequenceTrackFloatEvent::getValue() const {

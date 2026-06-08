@@ -25,7 +25,6 @@
 
 namespace IsoRealms::Equilibria {
   SurfacePatternSplitVariant::SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner) :
-            cMetadata(metadata),
             cDefRegularPattern(owner.getEquilibria(), owner, [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefSplitAPattern( owner.getEquilibria(), owner, [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefSplitBPattern( owner.getEquilibria(), owner, [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
@@ -77,9 +76,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void SurfacePatternSplitVariant::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Regular"), cDefRegularPattern);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("SplitA"),  cDefSplitAPattern);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("SplitB"),  cDefSplitBPattern);
+    owner.createPropertyTreeSelector("Regular", cDefRegularPattern);
+    owner.createPropertyTreeSelector("SplitA",  cDefSplitAPattern);
+    owner.createPropertyTreeSelector("SplitB",  cDefSplitBPattern);
   }
 
   bool SurfacePatternSplitVariant::isDefaultConfiguration() const {

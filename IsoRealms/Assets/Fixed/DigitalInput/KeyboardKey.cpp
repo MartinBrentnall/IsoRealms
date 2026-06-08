@@ -97,7 +97,7 @@ namespace IsoRealms {
   }
 
   void KeyboardKey::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyOptional(cMetadata.getPropertyData("Key"), cKeyChooser, "", []() {
+    owner.createPropertyOptional("Key", cKeyChooser, "", []() {
       return true;
     }, [this](const std::string& key) {
       cKey = getKey(key);

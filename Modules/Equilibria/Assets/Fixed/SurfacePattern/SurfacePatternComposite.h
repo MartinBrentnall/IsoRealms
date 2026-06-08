@@ -59,7 +59,6 @@
 
      // External interfaces.
      TerrainType& cOwner;
-     const Metadata& cMetadata;
 
      // Definition data.
      std::vector<std::unique_ptr<SurfacePattern>> cDefSurfacePatterns;

@@ -18,6 +18,7 @@
  */
 #pragma once
 
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Registry/IAssetProvider.h"
 #include "IsoRealms/Utils.h"
 
@@ -57,6 +58,10 @@ namespace IsoRealms {
 
     bool isHiddenProvider() const override {
       return false;
+    }
+
+    const Metadata& getMetadata() const override {
+      return cMetadata;
     }
 
     typename std::vector<std::unique_ptr<TYPE>>::iterator begin() {

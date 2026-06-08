@@ -25,9 +25,8 @@
 #include "Modules/Equilibria/World/Object/Terrain/Surface.h"
  
 namespace IsoRealms::Equilibria {
-  SurfacePatternComposite::SurfacePatternComposite(const Metadata& metadata, TerrainType& owner) :
-            cOwner(owner),
-            cMetadata(metadata) {
+  SurfacePatternComposite::SurfacePatternComposite(const Metadata& /*metadata*/, TerrainType& owner) :
+            cOwner(owner) {
     // Nothing to do.
   }
  
@@ -90,8 +89,8 @@ namespace IsoRealms::Equilibria {
   }
  
   void SurfacePatternComposite::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyArray(cMetadata.getPropertyData("Patterns"), cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &owner](SurfacePattern& surfacePattern) {
-      owner.createPropertyTreeSelector(cMetadata.getPropertyData("Pattern"), surfacePattern);
+    owner.createPropertyArray("Patterns", cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &owner](SurfacePattern& surfacePattern) {
+      owner.createPropertyTreeSelector("Pattern", surfacePattern);
     }, [this]()->SurfacePattern& {
       return *cDefSurfacePatterns.emplace_back(std::make_unique<SurfacePattern>(cOwner.getEquilibria(), cOwner, nullptr));
     });

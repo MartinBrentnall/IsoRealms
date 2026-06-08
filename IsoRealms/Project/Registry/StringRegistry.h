@@ -20,6 +20,7 @@
 
 #include <functional>
 #include <set>
+#include <stdexcept>
 
 #include "IsoRealms/Assets/Client/Float.h"
 #include "IsoRealms/Assets/Client/Integer.h"
@@ -58,6 +59,10 @@ namespace IsoRealms {
     private:
     class Literal : public AssetLiteral<IResourceData, IString> {
       public:
+      explicit Literal(const Metadata& metadata) :
+                cMetadata(metadata) {
+      }
+
       IString* createLiteralAsset(IResourceData& owner, const std::string& value) const {
         return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
@@ -83,6 +88,10 @@ namespace IsoRealms {
 
       bool isHiddenProvider() const override {
         return false;
+      }
+
+      const Metadata& getMetadata() const override {
+        return cMetadata;
       }
 
       private:
@@ -117,6 +126,9 @@ namespace IsoRealms {
 
         std::string cValue; /// The value of this String.
       };
+
+      // External interfaces.
+      const Metadata& cMetadata;
     };
 
     class ConversionProvider : public IAssetProvider<IResourceData, IString> {
@@ -136,6 +148,10 @@ namespace IsoRealms {
 
       virtual bool renderIcon(Project& project, const std::string& id) const = 0;
       virtual void forEachEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const = 0;
+
+      const Metadata& getMetadata() const override {
+        throw std::runtime_error("StringRegistry::ConversionProvider::getPropertyMetadata: Property metadata is not available for this type.");
+      }
 
       protected:
       std::string cProviderID;

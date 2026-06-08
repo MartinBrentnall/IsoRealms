@@ -42,6 +42,7 @@ namespace IsoRealms::Basics {
     bool hasConfiguration() const override;
     bool renderAssetProviderIcon() const override;
     bool isHiddenProvider() const override;
+    const Metadata& getMetadata() const override;
     
     private:
     class ScriptAction : public IAction {

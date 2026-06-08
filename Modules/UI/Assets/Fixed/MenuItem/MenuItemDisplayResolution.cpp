@@ -22,7 +22,6 @@
 
 namespace IsoRealms::UI {
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu) :
-            cMetadata(metadata),
             cProject(menu.getResourceData().getProject()),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
@@ -31,7 +30,6 @@ namespace IsoRealms::UI {
   }
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cMetadata(metadata),
             cProject(menu.getResourceData().getProject()),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
@@ -119,8 +117,8 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDisplayResolution::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
-    owner.createPropertyNativeString(cMetadata.getPropertyData("Label"), [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
+    owner.createPropertyNativeString("ID",    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
+    owner.createPropertyNativeString("Label", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
   }
 
   bool MenuItemDisplayResolution::isDefaultConfiguration() const {

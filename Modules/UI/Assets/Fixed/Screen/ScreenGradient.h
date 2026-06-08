@@ -54,9 +54,6 @@ namespace IsoRealms::UI {
     inline static const std::string VALUE_HORIZONTAL = "Horizontal";
     inline static const std::string VALUE_VERTICAL   = "Vertical";
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
     // Definition data.
     Colour cDefColourA;
     Colour cDefColourB;

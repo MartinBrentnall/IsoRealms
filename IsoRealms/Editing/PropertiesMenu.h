@@ -19,6 +19,7 @@
 #pragma once
 
 #include "IsoRealms/IResource.h"
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/PropertyMaker.h"
 
 #include "Menu.h"
@@ -30,6 +31,7 @@ namespace IsoRealms {
                          public IPropertyManager {
     public:
     PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, const Metadata& metadata, std::function<void(IPropertyMaker& owner)> propertyFetcher);
 
     /*************************************\
      * Implements Menu<MenuItemProperty> *
@@ -52,6 +54,7 @@ namespace IsoRealms {
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
     void openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) override;
+    void openProperties(IResourceData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
     void refreshProperties() override;

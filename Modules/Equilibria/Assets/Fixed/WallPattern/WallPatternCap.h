@@ -104,9 +104,6 @@ namespace IsoRealms::Equilibria {
     inline static const std::string JSON_MIDDLE = "middle";
     inline static const std::string JSON_TOP    = "top";
  
-    // External interfaces.
-    const Metadata& cMetadata;
- 
     // Definition data.
     Texture cDefTextureBottom;
     Texture cDefTextureMiddle;

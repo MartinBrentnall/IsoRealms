@@ -18,11 +18,13 @@
  */
 #include "ColourRegistry.h"
 
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  ColourRegistry::ColourRegistry() :
-            AssetClientManager(&cLiteral, "Literal", "One-off Colour") { // TODO: Localize this.
+  ColourRegistry::ColourRegistry(Application& application) :
+            AssetClientManager(&cLiteral, "Literal", "One-off Colour"), // TODO: Localize this.
+            cLiteral(application.getMetadata("LiteralColour")) {
   }
 
   ColourRegistry::Literal::Instance::Instance(const Project& project) :
@@ -73,36 +75,36 @@ namespace IsoRealms {
     cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
     cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
 
-    owner.createPropertyColourChannel(cMetadata.getPropertyData("Red"), [this]() {return cRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, [this](const float value) {
+    owner.createPropertyColourChannel("Red", [this]() {return cRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cGreen, &cBlue, &cAlpha, [this](const float value) {
       cRed = value;
       cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
       cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
     });
-    owner.createPropertyColourChannel(cMetadata.getPropertyData("Green"), [this]() {return cGreen;}, &cRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cBlue, &cAlpha, &cRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cBlue, &cAlpha, [this](const float value) {
+    owner.createPropertyColourChannel("Green", [this]() {return cGreen;}, &cRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cBlue, &cAlpha, &cRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cBlue, &cAlpha, [this](const float value) {
       cGreen = value;
       cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
       cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
     });
-    owner.createPropertyColourChannel(cMetadata.getPropertyData("Blue"), [this]() {return cBlue;}, &cRed, &cGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cAlpha, &cRed, &cGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cAlpha, [this](const float value) {
+    owner.createPropertyColourChannel("Blue", [this]() {return cBlue;}, &cRed, &cGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cAlpha, &cRed, &cGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cAlpha, [this](const float value) {
       cBlue = value;
       cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
       cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);
     });
-    owner.createPropertyColourChannel(cMetadata.getPropertyData("Alpha"), [this]() {return cAlpha;}, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
+    owner.createPropertyColourChannel("Alpha", [this]() {return cAlpha;}, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cRed, &cGreen, &cBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
       cAlpha = value;
     });
-    owner.createPropertyColourHue(cMetadata.getPropertyData("Hue"), [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
+    owner.createPropertyColourHue("Hue", [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
       cEditingLastKnownHue = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cRed, cGreen, cBlue);
     });
-    owner.createPropertyColourSaturation(cMetadata.getPropertyData("Saturation"), [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
+    owner.createPropertyColourSaturation("Saturation", [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cAlpha, [this](const float value) {
       cEditingLastKnownSaturation = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cRed, cGreen, cBlue);
     });
-    owner.createPropertyColourLightness(cMetadata.getPropertyData("Lightness"), [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cAlpha, [this](const float value) {
+    owner.createPropertyColourLightness("Lightness", [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cAlpha, [this](const float value) {
       cEditingLastKnownLightness = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cRed, cGreen, cBlue);
     });

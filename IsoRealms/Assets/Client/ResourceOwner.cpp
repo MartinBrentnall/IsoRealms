@@ -19,7 +19,9 @@
 #include "ResourceOwner.h"
 
 #include <optional>
+#include <stdexcept>
 
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ProjectFile.h"
 
@@ -82,6 +84,10 @@ namespace IsoRealms {
 
   void ResourceOwner::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
+  }
+
+  const Metadata& ResourceOwner::getPropertyMetadata() const {
+    throw std::runtime_error("ResourceOwner does not provide property metadata.");
   }
 
   Application& ResourceOwner::getApplication() {

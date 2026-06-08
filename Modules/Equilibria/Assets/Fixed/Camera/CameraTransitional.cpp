@@ -22,7 +22,6 @@
 
 namespace IsoRealms::Equilibria {
   CameraTransitional::CameraTransitional(const Metadata& metadata, WorldView& view) :
-            cMetadata(metadata),
             cParent(view),
             cYaw(*this),
             cPitch(*this),
@@ -165,13 +164,13 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraTransitional::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(         cMetadata.getPropertyData("Start"),                cDefStart);
-    owner.createPropertyTreeSelector(         cMetadata.getPropertyData("End"),                  cDefEnd);
-    owner.createPropertyNativeUnsignedInteger(cMetadata.getPropertyData("Duration"),             [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
-    owner.createPropertyTreeSelector(         cMetadata.getPropertyData("OnDepartureFromStart"), cDefStartDepartureAction);
-    owner.createPropertyTreeSelector(         cMetadata.getPropertyData("OnArrivalAtEnd"),       cDefEndArrivalAction);
-    owner.createPropertyTreeSelector(         cMetadata.getPropertyData("OnDepartureFromEnd"),   cDefEndDepartureAction);
-    owner.createPropertyTreeSelector(         cMetadata.getPropertyData("OnArrivalAtStart"),     cDefStartArrivalAction);
+    owner.createPropertyTreeSelector(         "Start",                cDefStart);
+    owner.createPropertyTreeSelector(         "End",                  cDefEnd);
+    owner.createPropertyNativeUnsignedInteger("Duration",             [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
+    owner.createPropertyTreeSelector(         "OnDepartureFromStart", cDefStartDepartureAction);
+    owner.createPropertyTreeSelector(         "OnArrivalAtEnd",       cDefEndArrivalAction);
+    owner.createPropertyTreeSelector(         "OnDepartureFromEnd",   cDefEndDepartureAction);
+    owner.createPropertyTreeSelector(         "OnArrivalAtStart",     cDefStartArrivalAction);
   }
 
   bool CameraTransitional::isDefaultConfiguration() const {

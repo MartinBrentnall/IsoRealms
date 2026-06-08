@@ -141,7 +141,6 @@ namespace IsoRealms::Equilibria {
     };
 
     // External interfaces.
-    const Metadata& cMetadata;
     WorldView& cParent; /// Parent view.
     Yaw cYaw;
     Pitch cPitch;

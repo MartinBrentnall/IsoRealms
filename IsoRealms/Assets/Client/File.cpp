@@ -19,6 +19,7 @@
 #include "File.h"
 
 #include <optional>
+#include <stdexcept>
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
@@ -94,6 +95,10 @@ namespace IsoRealms {
 
   void File::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
+  }
+
+  const Metadata& File::getPropertyMetadata() const {
+    throw std::runtime_error("File::getPropertyMetadata: Property metadata is not available for this type.");
   }
   
   Application& File::getApplication() {

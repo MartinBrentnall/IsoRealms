@@ -30,8 +30,9 @@
 namespace IsoRealms {
   class Application;
   class IProperty;
-  class Project;
   class IPropertyMaker;
+  class Metadata;
+  class Project;
   
   class ModuleChooser : public ITreeSelectorObject,
                         public IOptionalObject {
@@ -47,6 +48,7 @@ namespace IsoRealms {
     bool hasConfiguration() const override;
     bool isDefaultConfigured() const override;
     void getAssetProperties(IPropertyMaker& owner) override;
+    const Metadata& getPropertyMetadata() const override;
     Application& getApplication() override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override; // ITreeSelectorObject, IOptionalObject
     bool renderTreeItemIcon(const std::string& id) const override;

@@ -24,7 +24,6 @@
 
 namespace IsoRealms::Equilibria {
   WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner) :
-            cMetadata(metadata),
             cDefTextureBottom(owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefTextureMiddle(owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefTextureTop(   owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
@@ -186,9 +185,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void WallPatternCap::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Top"),    cDefTextureTop);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Middle"), cDefTextureMiddle);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Bottom"), cDefTextureBottom);
+    owner.createPropertyTreeSelector("Top",    cDefTextureTop);
+    owner.createPropertyTreeSelector("Middle", cDefTextureMiddle);
+    owner.createPropertyTreeSelector("Bottom", cDefTextureBottom);
   }
 
   bool WallPatternCap::isDefaultConfiguration() const {

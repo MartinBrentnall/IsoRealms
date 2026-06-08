@@ -24,14 +24,12 @@
 
 namespace IsoRealms::UI {
   LayoutLocationRelative::LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner) :
-            cMetadata(metadata),
             cParent(owner),
             cDefRelative(nullptr),
             cDefValue(0.0f) {
   }
   
   LayoutLocationRelative::LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
-            cMetadata(metadata),
             cParent(owner),
             cDefRelative(nullptr),
             cDefValue(object.getFloat(JSON_VALUE, owner.isPositiveEdge() ? 1.0f : -1.0f)) {
@@ -64,8 +62,8 @@ namespace IsoRealms::UI {
   }
   
   void LayoutLocationRelative::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeFloat(cMetadata.getPropertyData("Value"),    [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
-    owner.createPropertyList(       cMetadata.getPropertyData("Relative"), cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;});
+    owner.createPropertyNativeFloat("Value",    [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+    owner.createPropertyList(       "Relative", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;});
   }
 
   bool LayoutLocationRelative::isDefaultConfiguration() const {

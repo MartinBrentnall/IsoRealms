@@ -22,7 +22,6 @@
 
 namespace IsoRealms::UI {
   MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefFolder(""),
@@ -33,7 +32,6 @@ namespace IsoRealms::UI {
   }
 
   MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefFolder(object.getString(JSON_FOLDER)),
@@ -134,10 +132,10 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::getAssetProperties(IPropertyMaker& owner) {
     // TODO: Change this so it uses "File" client asset.
-    owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
-    owner.createPropertyNativeString( cMetadata.getPropertyData("Folder"),      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
-    owner.createPropertyNativeBoolean(cMetadata.getPropertyData("UserData"),    [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
-    owner.createPropertyTreeSelector( cMetadata.getPropertyData("OnSelection"), cDefAction);
+    owner.createPropertyNativeString( "ID",          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
+    owner.createPropertyNativeString( "Folder",      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
+    owner.createPropertyNativeBoolean("UserData",    [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
+    owner.createPropertyTreeSelector( "OnSelection", cDefAction);
   }
 
   bool MenuItemFileList::isDefaultConfiguration() const {

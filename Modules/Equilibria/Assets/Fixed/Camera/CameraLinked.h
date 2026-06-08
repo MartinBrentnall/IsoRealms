@@ -64,8 +64,8 @@ namespace IsoRealms::Equilibria {
     
     // JSON members.
     inline static const std::string JSON_VIEW = "view";
-        
-    const Metadata& cMetadata;
+
+    // External interfaces.
     WorldView& cParent;
     
     ResourceReference<WorldView, WorldView> cDefLinkedView;

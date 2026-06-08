@@ -30,7 +30,7 @@
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style),
             cProject(project),
-            cPropertyMaker(project.getApplication(), project, *this, manager),
+            cPropertyMaker(project.getApplication(), project, project.getMetadata(), *this, manager),
             cDefModuleChooser(project) {
     refresh();
   }
@@ -106,6 +106,10 @@ namespace IsoRealms {
   }
 
   void ProjectMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
+    throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
+  }
+
+  void ProjectMenu::openProperties(IResourceData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
     throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
   }
 

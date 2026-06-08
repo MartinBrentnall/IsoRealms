@@ -113,7 +113,7 @@ namespace IsoRealms {
   }
 
   void GameControllerHat::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyOptional(cMetadata.getPropertyData("Direction"), cDirectionChooser, "", []() {
+    owner.createPropertyOptional("Direction", cDirectionChooser, "", []() {
       return true;
     }, [this](const std::string& direction) {
       cDirection = getDirection(direction);

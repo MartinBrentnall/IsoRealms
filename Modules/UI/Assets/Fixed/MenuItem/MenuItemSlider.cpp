@@ -22,7 +22,6 @@
 
 namespace IsoRealms::UI {
   MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
@@ -34,7 +33,6 @@ namespace IsoRealms::UI {
   }
 
   MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
@@ -153,12 +151,12 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemSlider::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString( cMetadata.getPropertyData("ID"),       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
-    owner.createPropertyNativeString( cMetadata.getPropertyData("Label"),    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
-    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("Minimum"),  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
-    owner.createPropertyNativeFloat(  cMetadata.getPropertyData("Maximum"),  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;});
-    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Steps"),    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;});
-    owner.createPropertyTreeSelector( cMetadata.getPropertyData("OnChange"), cDefValueChangedAction);
+    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
+    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
+    owner.createPropertyNativeFloat(  "Minimum",  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
+    owner.createPropertyNativeFloat(  "Maximum",  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;});
+    owner.createPropertyNativeInteger("Steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;});
+    owner.createPropertyTreeSelector( "OnChange", cDefValueChangedAction);
   }
 
   bool MenuItemSlider::isDefaultConfiguration() const {

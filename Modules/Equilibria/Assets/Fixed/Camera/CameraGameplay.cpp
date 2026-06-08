@@ -22,7 +22,6 @@
 
 namespace IsoRealms::Equilibria {
   CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view) :
-            cMetadata(metadata),
             cParent(view),
             cPitch(Equilibria::DEFAULT_VIEW_ANGLE_PITCH),
             cDefAngle(VALUE_NORTH_WEST),
@@ -187,11 +186,11 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraGameplay::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyList(cMetadata.getPropertyData("InitialAngle"),
+    owner.createPropertyList("InitialAngle",
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},
                              [this](const std::string& value) {cDefAngle = getDirectionValue(value);});
-    owner.createPropertyNativeInteger(cMetadata.getPropertyData("RotateDuration"), [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
+    owner.createPropertyNativeInteger("RotateDuration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
   }
 
   bool CameraGameplay::isDefaultConfiguration() const {

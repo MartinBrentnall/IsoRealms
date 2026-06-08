@@ -76,6 +76,10 @@ namespace IsoRealms::UI {
     cMenuItem->getAssetProperties(owner);
   }
 
+  const IsoRealms::Metadata& MenuItem::getPropertyMetadata() const {
+    return cUI.getPropertyMetadata(cMenuItem);
+  }
+
   bool MenuItem::renderAssetIcon() const {
     return false;
   }

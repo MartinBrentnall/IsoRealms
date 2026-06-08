@@ -92,8 +92,8 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalToAnalogueMapping::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("Name"),    [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
-    owner.createPropertyNativeFloat( cMetadata.getPropertyData("ToValue"), [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
+    owner.createPropertyNativeString("Name",    [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
+    owner.createPropertyNativeFloat( "ToValue", [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
     cDefControl.getProperties(owner, cMetadata);
   }
   

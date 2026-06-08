@@ -60,9 +60,6 @@ namespace IsoRealms::UI {
     // Constants.
     inline static const float DEFAULT_SHADOW_OFFSET = 0.2f;
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
     // Definition data.
     String cDefString;              /// String to be shown.
     Font cDefFont;                  /// Font used to render the string.

@@ -20,6 +20,7 @@
 
 #include <functional>
 #include <optional>
+#include <stdexcept>
 
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IResourceUser.h"
@@ -28,6 +29,9 @@
 #include "Project/ProjectFile.h"
 
 namespace IsoRealms {
+  class Application;
+  class Metadata;
+
   template <typename TYPE, typename MANAGER> class ResourceReference : public IResourceUser<TYPE>, 
                                                                        public ITreeSelectorObject {
     public:
@@ -97,6 +101,10 @@ namespace IsoRealms {
 
     void getAssetProperties(IPropertyMaker& owner) override {
       // TODO: Implement this.
+    }
+
+    const Metadata& getPropertyMetadata() const override {
+      throw std::runtime_error("ResourceReference::getPropertyMetadata: Property metadata is not available for this type.");
     }
 
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {

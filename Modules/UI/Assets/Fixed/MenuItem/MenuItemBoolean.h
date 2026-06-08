@@ -75,7 +75,6 @@ namespace IsoRealms::UI {
     inline static const std::string BINDING_TYPE = "Boolean";
 
     // External interfaces.
-    const Metadata& cMetadata;
     HatHandler& cHatHandler;
 
     // Definition data.

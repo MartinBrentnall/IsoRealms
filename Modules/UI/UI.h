@@ -73,6 +73,10 @@ namespace IsoRealms::UI {
       return AssetContainerTraits<TYPE>::get(*this).getTreeItemInfo(asset);
     }
 
+    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* asset) const {
+      return AssetContainerTraits<TYPE>::get(*this).getPropertyMetadata(asset);
+    }
+
     template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
       AssetContainerTraits<TYPE>::get(*this).save(object, asset);
     }

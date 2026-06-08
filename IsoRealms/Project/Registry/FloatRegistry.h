@@ -30,11 +30,12 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
+  class Application;
   class Project;
 
   class FloatRegistry : public AssetClientManager<FloatRegistry, IResourceData, IFloat> {
     public:
-    FloatRegistry();
+    FloatRegistry(Application& application);
 
     IFloat* literal(IAssetUser<IFloat>* client, IResourceData& owner, float value) {
       IFloat* mFloat = cLiteral.createLiteralAsset(owner, value);
@@ -45,6 +46,10 @@ namespace IsoRealms {
     private:
     class Literal : public AssetLiteral<IResourceData, IFloat> {
       public:
+      explicit Literal(const Metadata& metadata) :
+                cMetadata(metadata) {
+      }
+
       IFloat* createLiteralAsset(IResourceData& owner, float value) const {
         return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
@@ -70,6 +75,10 @@ namespace IsoRealms {
 
       bool isHiddenProvider() const override {
         return false;
+      }
+
+      const Metadata& getMetadata() const override {
+        return cMetadata;
       }
 
       private:
@@ -104,6 +113,9 @@ namespace IsoRealms {
 
         float cValue; /// The value of this Float.
       };
+
+      // External interfaces.
+      const Metadata& cMetadata;
     };
 
     Literal cLiteral;

@@ -19,6 +19,7 @@
 #pragma once
 
 #include <functional>
+#include <stdexcept>
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IVertex.h"
@@ -63,6 +64,10 @@ namespace IsoRealms {
 
       bool isHiddenProvider() const override {
         return false;
+      }
+
+      const Metadata& getMetadata() const override {
+        throw std::runtime_error("VertexRegistry::Literal::getPropertyMetadata: Property metadata is not available for this type.");
       }
 
       std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner, JSONObject object) const override {

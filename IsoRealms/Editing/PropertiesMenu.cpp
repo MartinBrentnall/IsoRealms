@@ -18,14 +18,19 @@
  */
 #include "PropertiesMenu.h"
 
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ResourceType.h"
 
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
-            cPropertyMaker(owner.getProject().getApplication(), owner, *this, manager),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher) :
+            PropertiesMenu(manager, style, owner, owner.getMetadata(), propertyFetcher) {
+  }
+
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, const Metadata& metadata, std::function<void(IPropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
+            cPropertyMaker(owner.getProject().getApplication(), owner, metadata, *this, manager),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
             cClosingProperty(nullptr),
@@ -254,9 +259,13 @@ namespace IsoRealms {
   }
 
   void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
+    openProperties(owner, name, owner.getMetadata(), propertyFetcher);
+  }
+
+  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](IPropertyMaker& owner) {
+    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, metadata, [this, propertyFetcher](IPropertyMaker& owner) {
       propertyFetcher(owner);
     }), name, LiteralColour(0.75f, 0.5f, 1.0f));
   }

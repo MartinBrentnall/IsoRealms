@@ -62,9 +62,6 @@ namespace IsoRealms::UI {
     static void initTextures(Project& project);
     static void renderCorner(float xStart, float xEnd, bool xFlip, float yStart, float yEnd, bool yFlip);
     static void renderRectangle(float xStart, float xEnd, float yStart, float yEnd);
-    
-    // External interfaces.
-    const Metadata& cMetadata;
 
     // Definition data.
     Colour cDefColour;    /// Colour of the panel.

@@ -24,6 +24,7 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IStateListener.h"
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
@@ -217,7 +218,11 @@ namespace IsoRealms {
         }
       }
       return cManager.getAssetManager().template isConfigurable<TYPE>(getRawID());
-    }  
+    }
+
+    const Metadata& getPropertyMetadata() const override {
+      return cManager.getAssetManager().template getPropertyMetadata<TYPE>(cAsset);
+    }
     
     protected:
     std::string getRawID() const {

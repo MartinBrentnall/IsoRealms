@@ -34,7 +34,7 @@ namespace IsoRealms {
 
   class PropertyMaker : public IPropertyMaker {
     public:
-    PropertyMaker(Application& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
+    PropertyMaker(Application& application, IResourceData& parent, const Metadata& metadata, IPropertyManager& properties, IDialogManager& dialogManager);
 
     IResourceData& getResourceData() override;
 

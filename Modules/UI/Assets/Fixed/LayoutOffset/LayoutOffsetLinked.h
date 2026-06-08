@@ -60,7 +60,6 @@ namespace IsoRealms::UI {
     inline static const std::string VALUE_WIDTH  = "Width";
 
     // External interfaces.
-    const Metadata& cMetadata;
     LayoutComponentEdge& cParent;
 
     // Definition data.

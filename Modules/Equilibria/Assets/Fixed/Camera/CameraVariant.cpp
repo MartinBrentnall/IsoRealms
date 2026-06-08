@@ -22,7 +22,6 @@
 
 namespace IsoRealms::Equilibria {
   CameraVariant::CameraVariant(const Metadata& metadata, WorldView& view) :
-            cMetadata(metadata),
             cParent(view),
             cDefYaw(view),
             cDefPitch(view),
@@ -114,10 +113,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraVariant::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Location"), cDefLocation);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Angle"),    cDefYaw);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Tilt"),     cDefPitch);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Zoom"),     cDefZoom);
+    owner.createPropertyTreeSelector("Location", cDefLocation);
+    owner.createPropertyTreeSelector("Angle",    cDefYaw);
+    owner.createPropertyTreeSelector("Tilt",     cDefPitch);
+    owner.createPropertyTreeSelector("Zoom",     cDefZoom);
   }
 
   bool CameraVariant::isDefaultConfiguration() const {

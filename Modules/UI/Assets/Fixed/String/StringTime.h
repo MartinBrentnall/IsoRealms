@@ -84,9 +84,6 @@ namespace IsoRealms::UI {
 
     inline static const std::string DEFAULT_FORMAT = "{m}:{s:02}.{ms:2}";
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
     // Definition data.
     Integer cDefValue;              /// Value in milliseconds to convert to string format.
     std::string format;         /// Format of the time.

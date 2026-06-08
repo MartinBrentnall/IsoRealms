@@ -68,9 +68,8 @@ namespace IsoRealms::Equilibria {
     inline static const std::string JSON_PITCH    = "pitch";
     inline static const std::string JSON_YAW      = "yaw";
     inline static const std::string JSON_ZOOM     = "zoom";
-    
+
     // External interfaces.
-    const Metadata& cMetadata;
     WorldView& cParent;
     
     Camera cDefYaw;

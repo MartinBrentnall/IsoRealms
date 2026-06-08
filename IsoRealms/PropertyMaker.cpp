@@ -28,10 +28,10 @@
 #include "Project/Registry/IAssetProvider.h"
 
 namespace IsoRealms {
-  PropertyMaker::PropertyMaker(Application& application, IResourceData& parent, IPropertyManager& properties, IDialogManager& dialogManager) :
+  PropertyMaker::PropertyMaker(Application& application, IResourceData& parent, const Metadata& metadata, IPropertyManager& properties, IDialogManager& dialogManager) :
             cApplication(application),
             cParent(parent),
-            cMetadata(parent.getMetadata()),
+            cMetadata(metadata),
             cProperties(properties),
             cDialogManager(dialogManager) {
   }

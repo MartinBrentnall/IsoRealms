@@ -19,8 +19,7 @@
 #include "ScreenGradient.h"
 
 namespace IsoRealms::UI {
-  ScreenGradient::ScreenGradient(const Metadata& metadata, IResourceData& owner) :
-            cMetadata(metadata),
+  ScreenGradient::ScreenGradient(const Metadata& /*metadata*/, IResourceData& owner) :
             cDefColourA(owner, 0.0f, 0.0f, 1.0f),
             cDefColourB(owner, 0.0f, 1.0f, 0.0f),
             cDefVertical(false) {
@@ -68,9 +67,9 @@ namespace IsoRealms::UI {
   }
 
   void ScreenGradient::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("ColourA"), cDefColourA);
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("ColourB"), cDefColourB);
-    owner.createPropertyList(        cMetadata.getPropertyData("Orientation"), std::vector<std::string>{
+    owner.createPropertyTreeSelector("ColourA", cDefColourA);
+    owner.createPropertyTreeSelector("ColourB", cDefColourB);
+    owner.createPropertyList(        "Orientation", std::vector<std::string>{
       VALUE_HORIZONTAL, VALUE_VERTICAL
     }, [this]() {
       return cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL;

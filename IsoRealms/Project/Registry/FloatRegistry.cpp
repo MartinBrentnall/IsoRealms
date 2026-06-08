@@ -18,11 +18,13 @@
  */
 #include "FloatRegistry.h"
 
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  FloatRegistry::FloatRegistry() :
-            AssetClientManager(&cLiteral, "Literal", "Literal") {
+  FloatRegistry::FloatRegistry(Application& application) :
+            AssetClientManager(&cLiteral, "Literal", "Literal"),
+            cLiteral(application.getMetadata("LiteralFloat")) {
   }
 
   FloatRegistry::Literal::Instance::Instance(Project& project, const float value) :
@@ -39,7 +41,7 @@ namespace IsoRealms {
   }
 
   void FloatRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeFloat(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](float value) {cValue = value;});
+    owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value;});
   }
 
   bool FloatRegistry::Literal::Instance::isDefaultConfiguration() const {

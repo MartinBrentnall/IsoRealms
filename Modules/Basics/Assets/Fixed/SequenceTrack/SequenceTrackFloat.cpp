@@ -101,7 +101,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackFloat::getEventProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("StartValue"), cDefStartValue);
+    owner.createPropertyTreeSelector("StartValue", cDefStartValue);
   }
 
   void SequenceTrackFloat::stateChanged(IFloat* value) {

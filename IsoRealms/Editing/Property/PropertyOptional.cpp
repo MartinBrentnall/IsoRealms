@@ -18,7 +18,10 @@
  */
 #include "PropertyOptional.h"
 
+#include <stdexcept>
+
 #include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
@@ -117,6 +120,10 @@ namespace IsoRealms {
 
   void PropertyOptional::OptionWrapper::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
+  }
+
+  const Metadata& PropertyOptional::OptionWrapper::getPropertyMetadata() const {
+    throw std::runtime_error("PropertyOptional::OptionWrapper::getPropertyMetadata: Property metadata is not available for this type.");
   }
 
   Application& PropertyOptional::OptionWrapper::getApplication() {

@@ -19,7 +19,9 @@
 #include "PropertyList.h"
 
 #include <optional>
+#include <stdexcept>
 
+#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/PropertyMaker.h"
 
@@ -86,6 +88,10 @@ namespace IsoRealms {
 
   void PropertyList::ListSelection::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
+  }
+
+  const Metadata& PropertyList::ListSelection::getPropertyMetadata() const {
+    throw std::runtime_error("PropertyList::ListSelection::getPropertyMetadata: Property metadata is not available for this type.");
   }
   
   Application& PropertyList::ListSelection::getApplication() {

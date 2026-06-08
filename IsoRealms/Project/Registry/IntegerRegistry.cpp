@@ -18,11 +18,13 @@
  */
 #include "IntegerRegistry.h"
 
+#include "IsoRealms/Application.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  IntegerRegistry::IntegerRegistry() :
-            AssetClientManager(&cLiteral, "Literal", "Literal") {
+  IntegerRegistry::IntegerRegistry(Application& application) :
+            AssetClientManager(&cLiteral, "Literal", "Literal"),
+            cLiteral(application.getMetadata("LiteralInteger")) {
   }
 
   IntegerRegistry::Literal::Instance::Instance(Project& project, const int value):
@@ -44,7 +46,7 @@ namespace IsoRealms {
   }
 
   void IntegerRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeInteger(cMetadata.getPropertyData("Value"), [this]() {return cValue;}, [this](int value) {cValue = value;});
+    owner.createPropertyNativeInteger("Value", [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 
   bool IntegerRegistry::Literal::Instance::isDefaultConfiguration() const {

@@ -24,7 +24,6 @@
 
 namespace IsoRealms::Equilibria {
   WallPatternTile::WallPatternTile(const Metadata& metadata, TerrainType& owner) :
-            cMetadata(metadata),
             cDefTexture(owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 
@@ -113,7 +112,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void WallPatternTile::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(cMetadata.getPropertyData("Texture"), cDefTexture);
+    owner.createPropertyTreeSelector("Texture", cDefTexture);
   }
 
   bool WallPatternTile::isDefaultConfiguration() const {

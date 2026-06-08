@@ -30,12 +30,13 @@
 #include "IAssetUser.h"
 
 namespace IsoRealms {
+  class Application;
   class IResourceData;
   class Project;
 
   class ColourRegistry : public AssetClientManager<ColourRegistry, IResourceData, IColour> {
     public:
-    ColourRegistry();
+    ColourRegistry(Application& application);
 
     IColour* literal(IAssetUser<IColour>* client, IResourceData& owner, float red, float green, float blue, float alpha) {
       IColour* mColour = cLiteral.createLiteralAsset(owner, red, green, blue, alpha);
@@ -46,6 +47,10 @@ namespace IsoRealms {
     private:
     class Literal : public AssetLiteral<IResourceData, IColour> {
       public:
+      explicit Literal(const Metadata& metadata) :
+                cMetadata(metadata) {
+      }
+
       IColour* createLiteralAsset(IResourceData& owner, float red, float green, float blue, float alpha) const {
         return addAsset([&owner, red, green, blue, alpha]() {return std::make_unique<Instance>(owner.getProject(), red, green, blue, alpha);});
       }
@@ -74,7 +79,12 @@ namespace IsoRealms {
         return false;
       }
 
+      const Metadata& getMetadata() const override {
+        return cMetadata;
+      }
+
       private:
+
       class Instance : public IColour {
         public:
         Instance(const Project& project);
@@ -116,6 +126,9 @@ namespace IsoRealms {
       inline static const std::string JSON_BLUE  = "blue";
       inline static const std::string JSON_GREEN = "green";
       inline static const std::string JSON_RED   = "red";
+      
+      // External interfaces.
+      const Metadata& cMetadata;
     };
 
     Literal cLiteral;

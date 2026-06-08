@@ -19,6 +19,7 @@
 #include "ModuleChooser.h"
 
 #include <optional>
+#include <stdexcept>
 
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Exception/InitException.h"
@@ -60,6 +61,10 @@ namespace IsoRealms {
   
   void ModuleChooser::getAssetProperties(IPropertyMaker& owner) {
     // Nothing to do.
+  }
+
+  const Metadata& ModuleChooser::getPropertyMetadata() const {
+    throw std::runtime_error("ModuleChooser does not provide property metadata.");
   }
   
   Application& ModuleChooser::getApplication() {

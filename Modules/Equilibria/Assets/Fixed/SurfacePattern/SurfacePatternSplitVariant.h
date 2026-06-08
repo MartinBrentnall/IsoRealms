@@ -59,9 +59,6 @@ namespace IsoRealms::Equilibria {
     inline static const std::string JSON_SPLIT_A = "splitA";
     inline static const std::string JSON_SPLIT_B = "splitB";
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
     // Definition data.
     SurfacePattern cDefRegularPattern;
     SurfacePattern cDefSplitAPattern;

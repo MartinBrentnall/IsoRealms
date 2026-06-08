@@ -74,7 +74,7 @@ namespace IsoRealms {
   }
 
   void PropertyTreeSelector::configure(IPropertyManager& manager) {
-    manager.openProperties(cResourceData, getPropertyName(), [this](IPropertyMaker& owner) {
+    manager.openProperties(cResourceData, getPropertyName(), cSelectedItem.getPropertyMetadata(), [this](IPropertyMaker& owner) {
       cSelectedItem.getAssetProperties(owner);
     });
   }

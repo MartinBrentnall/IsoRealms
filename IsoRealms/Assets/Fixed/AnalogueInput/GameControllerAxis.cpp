@@ -86,14 +86,14 @@ namespace IsoRealms {
   }
 
   void GameControllerAxis::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyOptional(cMetadata.getPropertyData("Axis"), cAxisChooser, "", []() {
+    owner.createPropertyOptional("Axis", cAxisChooser, "", []() {
       return true;
     }, [this](const std::string& axis) {
       cDefAxis = static_cast<unsigned int>(std::stoul(axis.substr(1)));
     }, [this]() {
       return getLocalizedName();
     });
-    owner.createPropertyNativeFloat(cMetadata.getPropertyData("DeadZone"), [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
+    owner.createPropertyNativeFloat("DeadZone", [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 
   bool GameControllerAxis::isDefaultConfiguration() const {

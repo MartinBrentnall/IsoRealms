@@ -90,9 +90,6 @@ namespace IsoRealms::Equilibria {
     // JSON members.
     inline static const std::string JSON_TEXTURE = "texture";
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
     // Definition data.
     Texture cDefTexture;
   };

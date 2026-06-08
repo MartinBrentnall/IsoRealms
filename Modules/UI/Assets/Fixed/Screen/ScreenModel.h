@@ -52,9 +52,6 @@ namespace IsoRealms::UI {
     // JSON members.
     inline static const std::string JSON_MODEL = "model";
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
     // Definition data.
     Model cDefModel;
     std::unique_ptr<ModelInstance> cDefModelInstance;

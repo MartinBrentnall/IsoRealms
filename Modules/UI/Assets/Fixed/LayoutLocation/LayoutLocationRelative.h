@@ -56,7 +56,6 @@ namespace IsoRealms::UI {
     inline static const std::string JSON_VALUE    = "value";
 
     // External interfaces.
-    const Metadata& cMetadata;
     LayoutComponentEdge& cParent;
     
     // Definition data.

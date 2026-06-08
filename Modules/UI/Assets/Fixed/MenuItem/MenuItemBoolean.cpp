@@ -22,7 +22,6 @@
 
 namespace IsoRealms::UI {
   MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(""),
             cDefLabel(""),
@@ -32,7 +31,6 @@ namespace IsoRealms::UI {
   }
 
   MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cMetadata(metadata),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
@@ -121,10 +119,10 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemBoolean::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(cMetadata.getPropertyData("ID"),         [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value;});
-    owner.createPropertyNativeString(cMetadata.getPropertyData("Label"),      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
-    owner.createPropertyNativeString(cMetadata.getPropertyData("TrueLabel"),  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});
-    owner.createPropertyNativeString(cMetadata.getPropertyData("FalseLabel"), [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value;});
+    owner.createPropertyNativeString("ID",         [this]() {return cDefID;},         [this](const std::string& value) {cDefID         = value;});
+    owner.createPropertyNativeString("Label",      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
+    owner.createPropertyNativeString("TrueLabel",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});
+    owner.createPropertyNativeString("FalseLabel", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value;});
   }
 
   bool MenuItemBoolean::isDefaultConfiguration() const {

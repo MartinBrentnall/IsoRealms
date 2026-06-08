@@ -43,6 +43,7 @@ namespace IsoRealms::UI {
     bool hasConfiguration() const override;
     bool isDefaultConfigured() const override;
     void getAssetProperties(IPropertyMaker& owner) override;
+    const IsoRealms::Metadata& getPropertyMetadata() const override;
     bool renderAssetIcon() const override;
     Application& getApplication() override;
 
