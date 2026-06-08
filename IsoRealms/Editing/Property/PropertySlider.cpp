@@ -24,12 +24,13 @@
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyManager.h"
-#include "PropertyNativeFloat.h"
 
 namespace IsoRealms {
-  PropertySlider::PropertySlider(IPropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
+  PropertySlider::PropertySlider(IPropertyMaker& owner, const std::string& key, const Metadata& metadata, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cPropertyOwner(owner),
+            cPropertyKey(key),
+            cPropertyMetadata(metadata),
             cConfirmationCallback(confirmationCallback),
             cValueFunction(valueFunction),
             cMininum(minimum),
@@ -61,13 +62,13 @@ namespace IsoRealms {
   }
   
   void PropertySlider::configure(IPropertyManager& manager) {
-    manager.openProperties(cPropertyOwner.getResourceData(), getPropertyName(), [this](IPropertyMaker& owner) {
-      owner.createPropertyNativeFloat(PropertyData("TODO: " + getPropertyName(), "TODO: Description"), [this]() {
+    manager.openProperties(cPropertyOwner.getResourceData(), getPropertyName(), cPropertyMetadata, [this](IPropertyMaker& owner) {
+      owner.createPropertyNativeFloat(cPropertyKey, [this]() {
         return cValueFunction();
       }, [this](float value) {
         cConfirmationCallback(value);
       });
-    });      
+    });
   }
 
   PropertySlider::Editor::Editor(PropertySlider& parent) :

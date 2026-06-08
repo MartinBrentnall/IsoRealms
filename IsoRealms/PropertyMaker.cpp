@@ -50,19 +50,19 @@ namespace IsoRealms {
   }
   
   void PropertyMaker::createPropertyColourChannel(const PropertyData& metadata, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourChannel>(*this, metadata, *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourChannel>(*this, "", cMetadata, metadata, *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
   }
   
   void PropertyMaker::createPropertyColourHue(const PropertyData& metadata, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourHue>(*this, metadata, *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourHue>(*this, "", cMetadata, metadata, *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
   }
   
   void PropertyMaker::createPropertyColourLightness(const PropertyData& metadata, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourLightness>(*this, metadata, *this, valueFunction, hue, saturation, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourLightness>(*this, "", cMetadata, metadata, *this, valueFunction, hue, saturation, alpha, confirmationCallback));
   }
   
   void PropertyMaker::createPropertyColourSaturation(const PropertyData& metadata, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(*this, metadata, *this, valueFunction, hue, lightness, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(*this, "", cMetadata, metadata, *this, valueFunction, hue, lightness, alpha, confirmationCallback));
   }
 
   void PropertyMaker::createPropertyCondition(const PropertyData& metadata, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) {
@@ -122,19 +122,19 @@ namespace IsoRealms {
   }
 
   void PropertyMaker::createPropertyColourChannel(const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) {
-    createPropertyColourChannel(cMetadata.getPropertyData(key), valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback);
+    cProperties.addProperty(std::make_unique<PropertyColourChannel>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
   }
 
   void PropertyMaker::createPropertyColourHue(const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    createPropertyColourHue(cMetadata.getPropertyData(key), valueFunction, saturation, lightness, alpha, confirmationCallback);
+    cProperties.addProperty(std::make_unique<PropertyColourHue>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
   }
 
   void PropertyMaker::createPropertyColourLightness(const std::string& key, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) {
-    createPropertyColourLightness(cMetadata.getPropertyData(key), valueFunction, hue, saturation, alpha, confirmationCallback);
+    cProperties.addProperty(std::make_unique<PropertyColourLightness>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, saturation, alpha, confirmationCallback));
   }
 
   void PropertyMaker::createPropertyColourSaturation(const std::string& key, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    createPropertyColourSaturation(cMetadata.getPropertyData(key), valueFunction, hue, lightness, alpha, confirmationCallback);
+    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
   }
 
   void PropertyMaker::createPropertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) {
