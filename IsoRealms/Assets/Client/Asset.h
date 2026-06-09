@@ -198,6 +198,10 @@ namespace IsoRealms {
       return cManager.getAssetManager().getTreeItemInfo(cAsset);
     }
 
+    void loadFromProperty(JSONObject object, const std::string& key) override {
+      init(object, key);
+    }
+
     std::string getTreeItemLabel() const override {
       TreeItemInfo mTreeItemInfo = getTreeItemInfo();
       std::string::size_type mLastSeparator = mTreeItemInfo.cPath.find_last_of('/');

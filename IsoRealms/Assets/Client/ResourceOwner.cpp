@@ -22,6 +22,7 @@
 #include <stdexcept>
 
 #include "IsoRealms/Metadata.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ProjectFile.h"
 
@@ -112,5 +113,9 @@ namespace IsoRealms {
 
   void ResourceOwner::setID(const std::string& id) {
     cOwner = cProject.getProjectFile(id);
+  }
+
+  void ResourceOwner::loadFromProperty(JSONObject object, const std::string& key) {
+    setID(object.getString(key));
   }
 }

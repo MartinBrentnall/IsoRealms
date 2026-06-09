@@ -64,12 +64,22 @@ namespace IsoRealms {
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
     void createPropertyArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
+      if (loadPropertyArray(key, [&]() {
+        createProperty(add());
+      })) {
+        return;
+      }
       for (const auto& mElement : container) {
         createProperty(value(mElement));
       }
       createPropertyAdd(key, "Add...", [createProperty, add]() {
         createProperty(add());
       });
+    }
+
+    protected:
+    virtual bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) {
+      return false;
     }
   };
 }

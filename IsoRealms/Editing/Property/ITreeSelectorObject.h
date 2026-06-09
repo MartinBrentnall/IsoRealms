@@ -21,6 +21,7 @@
 #include <functional>
 #include <string>
 
+#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
@@ -31,6 +32,8 @@ namespace IsoRealms {
   class ITreeSelectorObject {
     public:
     virtual ~ITreeSelectorObject() = default;
+
+    virtual void loadFromProperty(JSONObject object, const std::string& key) {}
 
     virtual std::string getTreeItemLabel() const = 0;
     virtual bool renderAssetIcon() const = 0;

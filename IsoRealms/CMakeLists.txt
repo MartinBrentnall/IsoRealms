@@ -135,6 +135,7 @@ add_library(IsoRealms
   Project/Registry/VertexRegistry.cpp
   Project/ResourceType.cpp
   PropertyData.cpp
+  PropertyLoader.cpp
   PropertyMaker.cpp
   System.cpp
   Utils.cpp
