@@ -23,7 +23,8 @@
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  Metadata::Metadata() {
+  Metadata::Metadata() :
+            cParent(nullptr) {
   }
 
   void Metadata::load(JSONObject object) {
@@ -33,9 +34,19 @@ namespace IsoRealms {
       cPropertyHelp.emplace(mPropertyID, std::make_unique<PropertyData>(mPropertyObject));
     }
   }
+
+  void Metadata::setParent(const Metadata* parent) {
+    cParent = parent;
+  }
   
   const PropertyData Metadata::getPropertyData(const std::string& key) const {
     std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
-    return mIterator == cPropertyHelp.end() ? PropertyData("TODO: Missing property for \"" + key + "\"", "TODO: Missing description for \"" + key + "\"") : *mIterator->second;
+    if (mIterator != cPropertyHelp.end()) {
+      return *mIterator->second;
+    }
+    if (cParent != nullptr) {
+      return cParent->getPropertyData(key);
+    }
+    return PropertyData("TODO: Missing property for \"" + key + "\"", "TODO: Missing description for \"" + key + "\"");
   }
 }

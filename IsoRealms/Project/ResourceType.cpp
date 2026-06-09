@@ -60,6 +60,7 @@ namespace IsoRealms {
     cDescription = object.getString(JSON_DESCRIPTION);
     JSONObject mPropertiesObject = object.getObject(JSON_PROPERTIES);
     cMetadata.load(mPropertiesObject);
+    cMetadata.setParent(&cParent.getProject().getApplication().getMetadata("Resource"));
   }
 
   void ResourceType::reloadResource(const std::string& resourceName) {

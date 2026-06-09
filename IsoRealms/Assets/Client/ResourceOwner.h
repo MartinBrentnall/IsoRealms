@@ -31,7 +31,6 @@ namespace IsoRealms {
   class Metadata;
   class Project;
   class ProjectFile;
-  class PropertyData;
 
   class ResourceOwner : public ITreeSelectorObject {
     public:
@@ -39,7 +38,6 @@ namespace IsoRealms {
     ProjectFile* getProjectFile() const;
     void setProjectFile(ProjectFile* owner);
     bool isConfigurable() const;
-    void createProperty(IPropertyMaker& owner, const PropertyData& metadata);
     void createProperty(IPropertyMaker& owner, const std::string& key);
 
     /**********************************\

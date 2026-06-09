@@ -43,12 +43,6 @@ namespace IsoRealms {
     return cProject.getWritableProjectFileNames().size() > 1;
   }
 
-  void ResourceOwner::createProperty(IPropertyMaker& owner, const PropertyData& metadata) {
-    if (cProject.getWritableProjectFileNames().size() > 1) {
-      owner.createPropertyTreeSelector(metadata, *this);
-    }
-  }
-
   void ResourceOwner::createProperty(IPropertyMaker& owner, const std::string& key) {
     if (cProject.getWritableProjectFileNames().size() > 1) {
       owner.createPropertyTreeSelector(key, *this);

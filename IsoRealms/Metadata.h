@@ -33,9 +33,11 @@ namespace IsoRealms {
     Metadata& operator=(const Metadata&) = delete;
 
     void load(JSONObject object);
+    void setParent(const Metadata* parent);
     const PropertyData getPropertyData(const std::string& key) const;
 
     private:
+    const Metadata* cParent;
     std::map<std::string, std::unique_ptr<PropertyData>> cPropertyHelp;
   };
 }

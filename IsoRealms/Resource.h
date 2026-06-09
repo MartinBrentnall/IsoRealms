@@ -29,7 +29,6 @@
 #include "Project/Registry/AssetIDException.h"
 #include "Project/ResourceAssetRegistry.h"
 #include "Project/ResourceType.h"
-#include "PropertyData.h"
 #include "Utils.h"
 
 namespace IsoRealms {
@@ -71,8 +70,7 @@ namespace IsoRealms {
     }
     
     void getProperties(IPropertyMaker& propertyMaker) override {
-      const Metadata& mMetadata = cParent.getProject().getApplication().getMetadata("Resource");
-      propertyMaker.createPropertyNativeString(mMetadata.getPropertyData("ResourceName"), [this]() {return cParent.getName(*this);}, [this](const std::string& value) {
+      propertyMaker.createPropertyNativeString("ResourceName", [this]() {return cParent.getName(*this);}, [this](const std::string& value) {
         cParent.renameUserDataDirectory(cParent.getName(*this), value);
         cParent.renameResource(this, value);
         overrideReadOnlyReferences();
@@ -93,7 +91,7 @@ namespace IsoRealms {
           confirm();
         }
       });
-      cOwnerProject.createProperty(propertyMaker, mMetadata.getPropertyData("ResourceOwner"));
+      cOwnerProject.createProperty(propertyMaker, "ResourceOwner");
       cResourceHandle.getProperties(propertyMaker, cParent.getMetadata());
     }
     
