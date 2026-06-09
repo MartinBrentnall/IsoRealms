@@ -53,7 +53,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleBoolean::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeBoolean("Value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    owner.createPropertyNativeBoolean(JSON_VALUE, [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
   }
 
   void SimpleBoolean::removed() {

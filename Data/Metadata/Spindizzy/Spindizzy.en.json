@@ -14,9 +14,9 @@
       "description": "Textures in the style of the C64 Spindizzy Ball craft.  These textures are designed to be applied to billboarded sprites.",
       "category": "Textures",
       "properties": {
-        "Fill": {"name": "Fill Colour", "description": "Main colour of this ball texture."},
-        "Shine": {"name": "Shine Colour", "description": "Colour of the 'shine' on the upper part of this ball texture."},
-        "Outline": {"name": "Outline Colour", "description": "Colour of the outline around the edge of this ball texture."}
+        "fill": {"name": "Fill Colour", "description": "Main colour of this ball texture."},
+        "shine": {"name": "Shine Colour", "description": "Colour of the 'shine' on the upper part of this ball texture."},
+        "outline": {"name": "Outline Colour", "description": "Colour of the outline around the edge of this ball texture."}
       }
     },
     "C64LiftGraphics": {
@@ -25,9 +25,9 @@
       "description": "Sets of textures intended for use as lift elements, in the style of C64 Spindizzy.",
       "category": "Textures",
       "properties": {
-        "Primary": {"name": "Primary Colour", "description": "Primary colour used in this set of textures."},
-        "Secondary": {"name": "Secondary Colour", "description": "Secondary colour used in this set of textures."},
-        "Outline": {"name": "Outline Colour", "description": "Outline colour used in this set of textures."}
+        "primary": {"name": "Primary Colour", "description": "Primary colour used in this set of textures."},
+        "secondary": {"name": "Secondary Colour", "description": "Secondary colour used in this set of textures."},
+        "outline": {"name": "Outline Colour", "description": "Outline colour used in this set of textures."}
       }
     },
     "C64TerrainGraphics": {
@@ -36,10 +36,10 @@
       "description": "Sets of texture intended to be applied to terrain elements, in the style of C64 Spindizzy.",
       "category": "Textures",
       "properties": {
-        "Floor": {"name": "Floor Colour", "description": "Colour mainly applied to textures to be used as floors."},
-        "Wall": {"name": "Wall Colour", "description": "Colour mainly applied to textures to be used as walls.  Note that this colour is mixed with the floor texture to generate a second variation of the standard wall texture for displaying at a different angle."},
-        "Grid": {"name": "Grid Colour", "description": "Colour mainly applied to the grid pattern used on walls and floors."},
-        "Highlight": {"name": "Detail Colour", "description": "Colour that adds extra variation to some textures."}
+        "floor": {"name": "Floor Colour", "description": "Colour mainly applied to textures to be used as floors."},
+        "wall": {"name": "Wall Colour", "description": "Colour mainly applied to textures to be used as walls.  Note that this colour is mixed with the floor texture to generate a second variation of the standard wall texture for displaying at a different angle."},
+        "grid": {"name": "Grid Colour", "description": "Colour mainly applied to the grid pattern used on walls and floors."},
+        "highlight": {"name": "Detail Colour", "description": "Colour that adds extra variation to some textures."}
       }
     },
     "DebrisChunk": {
@@ -48,11 +48,11 @@
       "description": "Simple tetrahedron models that can be used to represent chunks of derbis from a destroyed craft.",
       "category": "Models",
       "properties": {
-        "Side1": {"name": "Side 1 Colour", "description": "Colour of one side of this debris chunk model."},
-        "Side2": {"name": "Side 2 Colour", "description": "Colour of one side of this debris chunk model."},
-        "Side3": {"name": "Side 3 Colour", "description": "Colour of one side of this debris chunk model."},
-        "Side4": {"name": "Side 4 Colour", "description": "Colour of one side of this debris chunk model."},
-        "Outline": {"name": "Outline Colour", "description": "Colour of the outline of around the edge of this debris chunk model."}
+        "side1": {"name": "Side 1 Colour", "description": "Colour of one side of this debris chunk model."},
+        "side2": {"name": "Side 2 Colour", "description": "Colour of one side of this debris chunk model."},
+        "side3": {"name": "Side 3 Colour", "description": "Colour of one side of this debris chunk model."},
+        "side4": {"name": "Side 4 Colour", "description": "Colour of one side of this debris chunk model."},
+        "outline": {"name": "Outline Colour", "description": "Colour of the outline of around the edge of this debris chunk model."}
       }
     },
     "Gyroscope": {
@@ -61,11 +61,11 @@
       "description": "Models in the style of the C64 Spindizzy Gyroscope craft.",
       "category": "Models",
       "properties": {
-        "Quadrant1": {"name": "Quadrant 1 Colour", "description": "Colour of one quadrant of this gyroscope model."},
-        "Quadrant2": {"name": "Quadrant 2 Colour", "description": "Colour of one quadrant of this gyroscope model."},
-        "Quadrant3": {"name": "Quadrant 3 Colour", "description": "Colour of one quadrant of this gyroscope model."},
-        "Quadrant4": {"name": "Quadrant 4 Colour", "description": "Colour of one quadrant of this gyroscope model."},
-        "Outline": {"name": "Outline Colour", "description": "Colour of the outline of around the edge of this gyroscope model."}
+        "colour1": {"name": "Quadrant 1 Colour", "description": "Colour of one quadrant of this gyroscope model."},
+        "colour2": {"name": "Quadrant 2 Colour", "description": "Colour of one quadrant of this gyroscope model."},
+        "colour3": {"name": "Quadrant 3 Colour", "description": "Colour of one quadrant of this gyroscope model."},
+        "colour4": {"name": "Quadrant 4 Colour", "description": "Colour of one quadrant of this gyroscope model."},
+        "outline": {"name": "Outline Colour", "description": "Colour of the outline of around the edge of this gyroscope model."}
       }
     },
     "Jewel": {
@@ -74,9 +74,8 @@
       "description": "Models in the style of C64 Spindizzy jewels, including colour changing panels.",
       "category": "Models",
       "properties": {
-        "PanelPhase": {"name": "Panel Phase Colour", "description": "Panels of this jewel model will phase through this colour."},
-        "PanelPhaseAdd": {"name": "Panel Phase Colour", "description": "Add another panel phase colour."},
-        "Outline": {"name": "Outline Colour", "description": "Outline colour of this jewel model."}
+        "colour": {"name": "Panel Phase Colour", "description": "Panels of this jewel model will phase through this colour."},
+        "frame": {"name": "Outline Colour", "description": "Outline colour of this jewel model."}
       }
     },
     "Top": {
@@ -85,9 +84,9 @@
       "description": "Models in the style of the C64 Spindizzy Top craft.",
       "category": "Models",
       "properties": {
-        "Top": {"name": "Top Colour", "description": "Colour of the top of this model."},
-        "Side": {"name": "Side Colour", "description": "Colour of the sides of this model."},
-        "Outline": {"name": "Outline Colour", "description": "Colour of the outline around the edges of this model."}
+        "top": {"name": "Top Colour", "description": "Colour of the top of this model."},
+        "sides": {"name": "Side Colour", "description": "Colour of the sides of this model."},
+        "outline": {"name": "Outline Colour", "description": "Colour of the outline around the edges of this model."}
       }
     }
   }

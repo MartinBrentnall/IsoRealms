@@ -136,10 +136,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("Floor",     cDefFloor);
-    owner.createPropertyTreeSelector("Wall",      cDefWall);
-    owner.createPropertyTreeSelector("Grid",      cDefGrid);
-    owner.createPropertyTreeSelector("Highlight", cDefHighlight);
+    owner.createPropertyTreeSelector(JSON_FLOOR,     cDefFloor);
+    owner.createPropertyTreeSelector(JSON_WALL,      cDefWall);
+    owner.createPropertyTreeSelector(JSON_GRID,      cDefGrid);
+    owner.createPropertyTreeSelector(JSON_HIGHLIGHT, cDefHighlight);
   }
 
   void C64TerrainGraphics::removed() {

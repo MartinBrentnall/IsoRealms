@@ -111,18 +111,18 @@ namespace IsoRealms::Hue {
   }
   
   void HueManager::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString("Address", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
-    owner.createPropertyNativeString("User",    [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
-    owner.createPropertyNativeString("PSK",     [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
+    owner.createPropertyNativeString(JSON_BRIDGE, [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
+    owner.createPropertyNativeString(JSON_USER,   [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
+    owner.createPropertyNativeString(JSON_PSK,    [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
     for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-      owner.createPropertyTreeSelector("Bulb", mBulb->getColour(), Options::EMPTY, [this, &mBulb]() {
+      owner.createPropertyTreeSelector(JSON_BULBS, mBulb->getColour(), Options::EMPTY, [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       });
     }
-    owner.createPropertyAdd("Bulb", "Add...", [this, &owner, &metadata]() {
+    owner.createPropertyAdd(JSON_BULBS, "Add...", [this, &owner, &metadata]() {
       cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cResourceData, cDefBulbs.size()));
       std::unique_ptr<Bulb>& mBulb  = cDefBulbs.back();
-      return owner.createPropertyTreeSelector("Bulb", mBulb->getColour(), Options::EMPTY, [this, &mBulb]() {
+      return owner.createPropertyTreeSelector(JSON_BULBS, mBulb->getColour(), Options::EMPTY, [this, &mBulb]() {
         Utils::removeElementUnique(cDefBulbs, mBulb.get());
       });
     });

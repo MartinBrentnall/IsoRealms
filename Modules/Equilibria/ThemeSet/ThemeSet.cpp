@@ -361,7 +361,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createTextureElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeTexture* element) {
-    owner.createPropertyNativeString("TextureElement", [this, element]() {
+    owner.createPropertyNativeString(Theme::JSON_ELEMENT, [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
@@ -384,7 +384,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createColourElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeColour* element) {
-    owner.createPropertyNativeString("ColourElement", [this, element]() {
+    owner.createPropertyNativeString(Theme::JSON_ELEMENT, [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

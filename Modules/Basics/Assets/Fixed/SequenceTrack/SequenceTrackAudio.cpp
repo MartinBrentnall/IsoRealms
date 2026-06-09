@@ -85,6 +85,6 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Volume", cDefVolume);
+    owner.createPropertyTreeSelector(JSON_VOLUME, cDefVolume);
   }
 }

@@ -41,7 +41,7 @@ namespace IsoRealms {
   }
 
   void FloatRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value", [this]() {return cValue;}, [this](float value) {cValue = value;});
+    owner.createPropertyNativeFloat(JSON_VALUE, [this]() {return cValue;}, [this](float value) {cValue = value;});
   }
 
   bool FloatRegistry::Literal::Instance::isDefaultConfiguration() const {

@@ -185,9 +185,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void WallPatternCap::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Top",    cDefTextureTop);
-    owner.createPropertyTreeSelector("Middle", cDefTextureMiddle);
-    owner.createPropertyTreeSelector("Bottom", cDefTextureBottom);
+    owner.createPropertyTreeSelector(JSON_TOP,    cDefTextureTop);
+    owner.createPropertyTreeSelector(JSON_MIDDLE, cDefTextureMiddle);
+    owner.createPropertyTreeSelector(JSON_BOTTOM, cDefTextureBottom);
   }
 
   bool WallPatternCap::isDefaultConfiguration() const {

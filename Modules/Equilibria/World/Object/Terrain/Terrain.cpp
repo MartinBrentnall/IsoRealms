@@ -648,13 +648,13 @@ namespace IsoRealms::Equilibria {
 
   void Terrain::getProperties(IPropertyMaker& owner) {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
-    owner.createPropertyCondition("Condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    owner.createPropertyCondition(JSON_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cZone.updateDisplayList();
     });
     if (!cZone.getWorld().isBasicProperties()) {
-      owner.createPropertyList("Behaviour",
+      owner.createPropertyList(JSON_BEHAVIOUR,
                                std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                         BEHAVIOUR_INVISIBLE,
                                                         BEHAVIOUR_GHOST,

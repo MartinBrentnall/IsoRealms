@@ -302,12 +302,12 @@ namespace IsoRealms::UI {
   }
     
   void LayoutComponent::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString("ComponentName",   [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl;});
-    owner.createPropertyTreeSelector("Content",         cDefScreen);
-    owner.createPropertyStruct(      "ComponentLeft",   "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefLeftEdge.getProperties(  owner, metadata);});
-    owner.createPropertyStruct(      "ComponentRight",  "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefRightEdge.getProperties( owner, metadata);});
-    owner.createPropertyStruct(      "ComponentTop",    "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefTopEdge.getProperties(   owner, metadata);});
-    owner.createPropertyStruct(      "ComponentBottom", "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefBottomEdge.getProperties(owner, metadata);});
+    owner.createPropertyNativeString("ComponentName", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl;});
+    owner.createPropertyTreeSelector(JSON_SCREEN,     cDefScreen);
+    owner.createPropertyStruct(      JSON_LEFT,       "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefLeftEdge.getProperties(  owner, metadata);});
+    owner.createPropertyStruct(      JSON_RIGHT,      "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefRightEdge.getProperties( owner, metadata);});
+    owner.createPropertyStruct(      JSON_TOP,        "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefTopEdge.getProperties(   owner, metadata);});
+    owner.createPropertyStruct(      JSON_BOTTOM,     "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefBottomEdge.getProperties(owner, metadata);});
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {

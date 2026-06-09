@@ -50,7 +50,7 @@ namespace IsoRealms::UI {
   }
 
   void ScreenModel::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Model", cDefModel);
+    owner.createPropertyTreeSelector(JSON_MODEL, cDefModel);
   }
   
   bool ScreenModel::isDefaultConfiguration() const {

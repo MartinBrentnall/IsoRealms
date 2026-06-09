@@ -76,9 +76,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void SurfacePatternSplitVariant::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Regular", cDefRegularPattern);
-    owner.createPropertyTreeSelector("SplitA",  cDefSplitAPattern);
-    owner.createPropertyTreeSelector("SplitB",  cDefSplitBPattern);
+    owner.createPropertyTreeSelector(JSON_REGULAR, cDefRegularPattern);
+    owner.createPropertyTreeSelector(JSON_SPLIT_A, cDefSplitAPattern);
+    owner.createPropertyTreeSelector(JSON_SPLIT_B, cDefSplitBPattern);
   }
 
   bool SurfacePatternSplitVariant::isDefaultConfiguration() const {

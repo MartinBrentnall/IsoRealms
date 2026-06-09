@@ -68,15 +68,15 @@ namespace IsoRealms::UI {
   }
 
   void Prompt::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("Font",            cDefFont);
-    owner.createPropertyNativeFloat( "FontSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
-    owner.createPropertyNativeFloat( "ShadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
-    owner.createPropertyTreeSelector("SelectionColour", cDefSelectionColour);
-    owner.createPropertyNativeString("Message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
-    owner.createPropertyNativeString("RejectLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
-    owner.createPropertyNativeString("AcceptLabel",     [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
-    owner.createPropertyTreeSelector("OnRejection",     cDefNegativeAction);
-    owner.createPropertyTreeSelector("OnAcceptance",    cDefPositiveAction);
+    owner.createPropertyTreeSelector(JSON_FONT,             cDefFont);
+    owner.createPropertyNativeFloat( JSON_TEXT_SIZE,        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
+    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET,    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector(JSON_SELECTION_COLOUR, cDefSelectionColour);
+    owner.createPropertyNativeString(JSON_MESSAGE,          [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
+    owner.createPropertyNativeString(JSON_CANCEL_LABEL,     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
+    owner.createPropertyNativeString(JSON_CONFIRM_LABEL,    [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
+    owner.createPropertyTreeSelector(JSON_ON_CANCEL,        cDefNegativeAction);
+    owner.createPropertyTreeSelector(JSON_ON_CONFIRM,       cDefPositiveAction);
   }
 
   void Prompt::removed() {

@@ -70,7 +70,7 @@ namespace IsoRealms {
   }
 
   void GameControllerButton::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyOptional("Button", cButtonChooser, "", []() {
+    owner.createPropertyOptional(JSON_BUTTON, cButtonChooser, "", []() {
       return true;
     }, [this](const std::string& button) {
       cButton = static_cast<unsigned int>(std::stoul(button.substr(1)));

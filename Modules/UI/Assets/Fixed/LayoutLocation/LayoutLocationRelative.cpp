@@ -62,8 +62,8 @@ namespace IsoRealms::UI {
   }
   
   void LayoutLocationRelative::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value",    [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
-    owner.createPropertyList(       "Relative", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;});
+    owner.createPropertyNativeFloat(JSON_VALUE,    [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+    owner.createPropertyList(       JSON_RELATIVE, cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;});
   }
 
   bool LayoutLocationRelative::isDefaultConfiguration() const {

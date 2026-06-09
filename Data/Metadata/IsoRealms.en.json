@@ -6,12 +6,12 @@
     "InputHandler": {"name": "Input Handler", "description": "The specified input handler will handle input for this application."},
     "Display": {"name": "Display", "description": "The specified display will be shown by this application."},
     "DefaultEditor": {"name": "Default Editor", "description": "The specified default editor will be loaded when editing this application.  Note that this property has no impact on the runtime of the application."},
-    "File": {"name": "File", "description": "A file in which to data is stored for this application."},
-    "Description": {"name": "Description", "description": "Here you can describe the purpose of this file."},
-    "AllowModifications": {"name": "Allow Modifications", "description": "Specifies whether modifications are allowed to this file.  If modifications are not allowed, then resources owned by this file cannot be edited without being overridden (copied to the main application file)"},
-    "Inclusion": {"name": "Inclusion", "description": "Another file that's included within this one."},
+    "filename": {"name": "File", "description": "A file in which to data is stored for this application."},
+    "description": {"name": "Description", "description": "Here you can describe the purpose of this file."},
+    "allowModifications": {"name": "Allow Modifications", "description": "Specifies whether modifications are allowed to this file.  If modifications are not allowed, then resources owned by this file cannot be edited without being overridden (copied to the main application file)"},
+    "include": {"name": "Inclusion", "description": "Another file that's included within this one."},
 
-    "LaunchConfigurations": {"name": "Test Launch Configurations", "description": "Create and manage different launch configurations for testing this application."},
+    "launchConfigurations": {"name": "Test Launch Configurations", "description": "Create and manage different launch configurations for testing this application."},
     "LaunchConfiguration": {"name": "Launch Configuration", "description": "A launch configuration for testing this application."},
     "LaunchConfigurationAdd": {"name": "Launch Configuration", "description": "Add a launch configuration for testing this application."},
     "LaunchConfigurationName": {"name": "Name", "description": "Name of this launch configuration."},
@@ -28,16 +28,16 @@
     "Module": {"name": "Load Module...", "description": "Load a module into this application."}
   },
   "GameControllerAxis": {
-    "Axis": {"name": "Axis", "description": "The game controller axis associated with this analogue input mapping."},
+    "axis": {"name": "Axis", "description": "The game controller axis associated with this analogue input mapping."},
     "AxisChoice": {"name": "Axis %1", "description": "Game controller axis %1."},
-    "DeadZone": {"name": "Dead Zone", "description": "The dead zone of this analogue input mapping."}
+    "deadZone": {"name": "Dead Zone", "description": "The dead zone of this analogue input mapping."}
   },
   "GameControllerButton": {
-    "Button": {"name": "Button", "description": "The game controller button associated with this digital input mapping."},
+    "button": {"name": "Button", "description": "The game controller button associated with this digital input mapping."},
     "ButtonChoice": {"name": "Button %1", "description": "Game controller button %1."}
   },
   "GameControllerHat": {
-    "Direction": {"name": "Direction", "description": "The direction of the game controller hat or stick associated with this digital input mapping."},
+    "direction": {"name": "Direction", "description": "The direction of the game controller hat or stick associated with this digital input mapping."},
     "LeftUp": {"name": "Left Up", "description": "The left up hat direction."},
     "Up": {"name": "Up", "description": "The up hat direction."},
     "RightUp": {"name": "Right Up", "description": "The right up hat direction."},
@@ -49,7 +49,7 @@
     "RightDown": {"name": "Right Down", "description": "The right down hat direction."}
   },
   "KeyboardKey": {
-    "Key": {"name": "Key", "description": "The keyboard key associated with this digital input mapping."},
+    "which": {"name": "Key", "description": "The keyboard key associated with this digital input mapping."},
     "Escape": {"name": "Escape", "description": "The Escape key."},
     "F1": {"name": "F1", "description": "The F1 key."},
     "F2": {"name": "F2", "description": "The F2 key."},
@@ -155,35 +155,35 @@
     "KPPeriod": {"name": "Keypad .", "description": "The Keypad . key."}
   },
   "LiteralColour": {
-    "Red": {"name": "Red", "description": "Red intensity of this colour."},
-    "Green": {"name": "Green", "description": "Green intensity of this colour."},
-    "Blue": {"name": "Blue", "description": "Blue intensity of this colour."},
-    "Alpha": {"name": "Alpha", "description": "Alpha intensity of this colour."},
+    "red": {"name": "Red", "description": "Red intensity of this colour."},
+    "green": {"name": "Green", "description": "Green intensity of this colour."},
+    "blue": {"name": "Blue", "description": "Blue intensity of this colour."},
+    "alpha": {"name": "Alpha", "description": "Alpha intensity of this colour."},
     "Hue": {"name": "Hue", "description": "Hue of this colour."},
     "Saturation": {"name": "Saturation", "description": "Saturation of this colour."},
     "Lightness": {"name": "Lightness", "description": "Lightness of this colour."}
   },
   "LiteralFloat": {
-    "Value": {"name": "Value", "description": "Value of this asset."}
+    "value": {"name": "Value", "description": "Value of this asset."}
   },
   "LiteralInteger": {
-    "Value": {"name": "Value", "description": "Value of this asset."}
+    "value": {"name": "Value", "description": "Value of this asset."}
   },
   "LiteralString": {
-    "Value": {"name": "Value", "description": "Value of this asset."}
+    "value": {"name": "Value", "description": "Value of this asset."}
   },
   "Model": {
-    "OffsetX": {"name": "Offset X", "description": "Horizontal offset of this model."},
-    "OffsetY": {"name": "Offset Y", "description": "Vertical offset of this model."},
-    "OffsetZ": {"name": "Offset Z", "description": "Depth offset of this model."},
-    "ScaleX": {"name": "Scale X", "description": "Horizontal scale of this model."},
-    "ScaleY": {"name": "Scale Y", "description": "Vertical scale of this model."},
-    "ScaleZ": {"name": "Scale Z", "description": "Depth scale of this model."},
-    "Angle": {"name": "Angle", "description": "Yaw rotation of this model."},
-    "Tilt": {"name": "Tilt", "description": "Pitch rotation of this model."}
+    "offsetX": {"name": "Offset X", "description": "Horizontal offset of this model."},
+    "offsetY": {"name": "Offset Y", "description": "Vertical offset of this model."},
+    "offsetZ": {"name": "Offset Z", "description": "Depth offset of this model."},
+    "scaleX": {"name": "Scale X", "description": "Horizontal scale of this model."},
+    "scaleY": {"name": "Scale Y", "description": "Vertical scale of this model."},
+    "scaleZ": {"name": "Scale Z", "description": "Depth scale of this model."},
+    "yaw": {"name": "Angle", "description": "Yaw rotation of this model."},
+    "pitch": {"name": "Tilt", "description": "Pitch rotation of this model."}
   },
   "MouseButton": {
-    "Button": {"name": "Button", "description": "The mouse button associated with this digital input mapping."},
+    "button": {"name": "Button", "description": "The mouse button associated with this digital input mapping."},
     "Left": {"name": "Left", "description": "The left mouse button."},
     "Right": {"name": "Right", "description": "The right mouse button."},
     "Middle": {"name": "Middle", "description": "The middle mouse button."},
@@ -195,8 +195,8 @@
     "ResourceOwner": {"name": "Owner", "description": "Owning application file of this resource."}
   },
   "Texture": {
-    "ScaleX": {"name": "Scale X", "description": "Horizontal scale of this texture."},
-    "ScaleY": {"name": "Scale Y", "description": "Vertical scale of this texture."},
-    "Angle": {"name": "Angle", "description": "Rotation of this texture."}
+    "scaleX": {"name": "Scale X", "description": "Horizontal scale of this texture."},
+    "scaleY": {"name": "Scale Y", "description": "Vertical scale of this texture."},
+    "angle": {"name": "Angle", "description": "Rotation of this texture."}
   }
 }

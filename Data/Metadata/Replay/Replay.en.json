@@ -10,13 +10,11 @@
       "description": "Records and plays back digital and analogue inputs.",
       "properties": {
         "DigitalInput": {"name": "Digital Input", "description": "A digital input to record or playback from."},
-        "DigitalInputAdd": {"name": "Digital Input", "description": "Add a digital input to record or playback from."},
-        "DigitalInputName": {"name": "Name", "description": "Name of this digital input."},
-        "DigitalInputValue": {"name": "Value", "description": "The actual input to record."},
+        "digitalInputs": {"name": "Digital Input", "description": "Add a digital input to record or playback from."},
+        "name": {"name": "Name", "description": "Name of this digital input."},
+        "value": {"name": "Value", "description": "The actual input to record."},
         "AnalogueInput": {"name": "Analogue Input", "description": "An analogue input to record or playback from."},
-        "AnalogueInputAdd": {"name": "Analogue Input", "description": "Add an analogue input to record or playback from."},
-        "AnalogueInputName": {"name": "Name", "description": "Name of this analogue input."},
-        "AnalogueInputValue": {"name": "Value", "description": "The actual input to record."}
+        "analogueInputs": {"name": "Analogue Input", "description": "Add an analogue input to record or playback from."}
       }
     }
   }

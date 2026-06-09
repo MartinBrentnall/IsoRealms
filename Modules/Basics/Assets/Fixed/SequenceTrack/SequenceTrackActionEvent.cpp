@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackActionEvent::getEventProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Action", cDefAction);
+    owner.createPropertyTreeSelector(JSON_EXECUTE, cDefAction);
   }
 
   void SequenceTrackActionEvent::save(JSONObject object) const {

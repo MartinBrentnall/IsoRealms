@@ -75,12 +75,12 @@ namespace IsoRealms::Basics {
   }
 
   void ProjectConfigurer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("Font",         cDefFont);
-    owner.createPropertyNativeFloat( "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyTreeSelector("CodeFont",     cDefCodeFont);
-    owner.createPropertyNativeFloat( "CodeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
-    owner.createPropertyTreeSelector("OnExit",       cDefExitAction);
-    owner.createPropertyTreeSelector("OnEditor",     cDefEditorAction);
+    owner.createPropertyTreeSelector(JSON_FONT,           cDefFont);
+    owner.createPropertyNativeFloat( JSON_FONT_SIZE,      [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    owner.createPropertyTreeSelector(JSON_CODE_FONT,      cDefCodeFont);
+    owner.createPropertyNativeFloat( JSON_CODE_FONT_SIZE, [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
+    owner.createPropertyTreeSelector(JSON_ON_EXIT,        cDefExitAction);
+    owner.createPropertyTreeSelector(JSON_ON_EDITOR,      cDefEditorAction);
     // TODO: Input configuration
   }
 

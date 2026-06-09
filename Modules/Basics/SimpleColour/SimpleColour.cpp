@@ -72,28 +72,28 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleColour::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyColourChannel("Red", [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
+    owner.createPropertyColourChannel(JSON_RED, [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
       cDefRed = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourChannel("Green", [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
+    owner.createPropertyColourChannel(JSON_GREEN, [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
       cDefGreen = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourChannel("Blue", [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
+    owner.createPropertyColourChannel(JSON_BLUE, [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
       cDefBlue = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourChannel("Alpha", [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
+    owner.createPropertyColourChannel(JSON_ALPHA, [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
       cDefAlpha = value;
       resetColour();
     });

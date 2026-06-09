@@ -95,6 +95,16 @@ namespace IsoRealms::Basics {
     void deleteTrack(unsigned int track);
     void trackStateChanged(SequenceTrack& track);
 
+    // JSON members.
+    inline static const std::string JSON_INSTANCES = "instances";
+    inline static const std::string JSON_LOOP      = "loop";
+    inline static const std::string JSON_NAME      = "name";
+    inline static const std::string JSON_PLAYING   = "playing";
+    inline static const std::string JSON_SPEED     = "speed";
+    inline static const std::string JSON_TRACKS    = "tracks";
+    inline static const std::string JSON_TRACK     = "track";
+    inline static const std::string JSON_TYPE      = "type";
+
     private:
 
     class Length : public IInteger {
@@ -113,16 +123,6 @@ namespace IsoRealms::Basics {
       private:
       Sequence& cParent;
     };
-
-    // JSON members.
-    inline static const std::string JSON_INSTANCES = "instances";
-    inline static const std::string JSON_LOOP      = "loop";
-    inline static const std::string JSON_NAME      = "name";
-    inline static const std::string JSON_PLAYING   = "playing";
-    inline static const std::string JSON_SPEED     = "speed";
-    inline static const std::string JSON_TRACKS    = "tracks";
-    inline static const std::string JSON_TRACK     = "track";
-    inline static const std::string JSON_TYPE      = "type";
 
     // External interfaces.
     Basics& cBasics;

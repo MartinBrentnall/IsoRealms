@@ -60,9 +60,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void LiftType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("Appearance", cDefModel);
-    owner.createPropertyTreeSelector("State",      cDefActive);
-    owner.createPropertyTreeSelector("OnMove",     cDefTickAction);
+    owner.createPropertyTreeSelector(JSON_APPEARANCE, cDefModel);
+    owner.createPropertyTreeSelector(JSON_STATE,      cDefActive);
+    owner.createPropertyTreeSelector(JSON_ON_TICK,    cDefTickAction);
   }
 
   void LiftType::removed() {

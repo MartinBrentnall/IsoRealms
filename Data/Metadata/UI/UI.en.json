@@ -5,123 +5,123 @@
     "LayoutLocationAbsolute": {
       "description": "Positions a component edge on the screen at a location from -1.0 to +1.0.",
       "properties": {
-        "Value": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."}
+        "value": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."}
       }
     },
     "LayoutLocationRelative": {
       "description": "Positions a component edge on the screen at a location relative to another component.",
       "properties": {
-        "Value": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."},
-        "Relative": {"name": "Relative", "description": "Component to which this edge is connected."}
+        "value": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."},
+        "relative": {"name": "Relative", "description": "Component to which this edge is connected."}
       }
     },
     "LayoutOffsetAbsolute": {
       "description": "Offset a component edge using an absolute value, where the screen height is 2.0 (-1.0 to +1.0).",
       "properties": {
-        "Value": {"name": "Value", "description": "Value of this component edge as an offset from the edge of the screen, from -1.0 to +1.0 on the vertical axis, and values depending on screen aspect ratio on the horizontal axis."}
+        "value": {"name": "Value", "description": "Value of this component edge as an offset from the edge of the screen, from -1.0 to +1.0 on the vertical axis, and values depending on screen aspect ratio on the horizontal axis."}
       }
     },
     "LayoutOffsetLinked": {
       "description": "Offset a component edge by an amount proportional to the dimension of another component.",
       "properties": {
         "Orientation": {"name": "Orientation", "description": "Orientation of the linked component to use."},
-        "LinkedTo": {"name": "Linked To", "description": "The component to which this component edge offset is linked."},
-        "Ratio": {"name": "Ratio", "description": "The value of this component edge offset, where -1.0 is the top or left of the linked component, and +1.0 is the bottom or right of the linked component."}
+        "linked": {"name": "Linked To", "description": "The component to which this component edge offset is linked."},
+        "ratio": {"name": "Ratio", "description": "The value of this component edge offset, where -1.0 is the top or left of the linked component, and +1.0 is the bottom or right of the linked component."}
       }
     },
     "MenuItemAction": {
       "description": "A menu item that shows a label and performs an action when selected.",
       "properties": {
-        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
-        "Label": {"name": "Label", "description": "Label for this menu item."},
-        "OnSelect": {"name": "On Selection", "description": "Action to perform upon selecting this action menu item."}
+        "id": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "label": {"name": "Label", "description": "Label for this menu item."},
+        "onSelection": {"name": "On Selection", "description": "Action to perform upon selecting this action menu item."}
       }
     },
     "MenuItemBoolean": {
       "description": "A menu item that can be toggled between two states.",
       "properties": {
-        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
-        "Label": {"name": "Label", "description": "Label for this menu item."},
-        "TrueLabel": {"name": "True Label", "description": "Label to be shown as the value of this boolean menu item when set to true."},
-        "FalseLabel": {"name": "False Label", "description": "Label to be shown as the value of this boolean menu item when set to false."}
+        "id": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "label": {"name": "Label", "description": "Label for this menu item."},
+        "trueLabel": {"name": "True Label", "description": "Label to be shown as the value of this boolean menu item when set to true."},
+        "falseLabel": {"name": "False Label", "description": "Label to be shown as the value of this boolean menu item when set to false."}
       }
     },
     "MenuItemDigitalInput": {
       "description": "A menu item that allows a digital input to be configured.",
       "properties": {
-        "ID": {"name": "ID", "description": "Unique identifier of this menu item."}
+        "id": {"name": "ID", "description": "Unique identifier of this menu item."}
       }
     },
     "MenuItemDisplayResolution": {
       "description": "A menu item that allows a display configuration to be selected.",
       "properties": {
-        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
-        "Label": {"name": "Label", "description": "Label for this menu item."}
+        "id": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "label": {"name": "Label", "description": "Label for this menu item."}
       }
     },
     "MenuItemFileList": {
       "description": "A menu item that allows a file to be selected from a list.",
       "properties": {
-        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
-        "Folder": {"name": "Folder", "description": "Folder from which to list files in this menu."},
-        "UserData": {"name": "User Folder", "description": "Determine whether the folder is relative to program data or user data."},
-        "OnSelection": {"name": "On Selection", "description": "Action to perform upon selecting a file."}
+        "id": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "folder": {"name": "Folder", "description": "Folder from which to list files in this menu."},
+        "user": {"name": "User Folder", "description": "Determine whether the folder is relative to program data or user data."},
+        "onSelection": {"name": "On Selection", "description": "Action to perform upon selecting a file."}
       }
     },
     "MenuItemLauncherList": {
       "description": "A menu item that allows a application launcher to be selected from a list.",
       "properties": {
-        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
-        "OnSelection": {"name": "On Selection", "description": "Action to perform upon selecting an application launcher."}
+        "id": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "onSelection": {"name": "On Selection", "description": "Action to perform upon selecting an application launcher."}
       }
     },
     "MenuItemSlider": {
       "description": "A menu item that allows a value to be adjusted by a slider.",
       "properties": {
-        "ID": {"name": "ID", "description": "Unique identifier of this menu item."},
-        "Label": {"name": "Label", "description": "Label for this menu item."},
-        "Minimum": {"name": "Minimum", "description": "The minimum value of this slider."},
-        "Maximum": {"name": "Maximum", "description": "The maximum value of this slider."},
-        "Steps": {"name": "Steps", "description": "The number of steps it takes to traverse from the minimum value of this slider to the maximum value."},
-        "OnChange": {"name": "On Change", "description": "Action to perform upon changing the value of this slider."}
+        "id": {"name": "ID", "description": "Unique identifier of this menu item."},
+        "label": {"name": "Label", "description": "Label for this menu item."},
+        "minimum": {"name": "Minimum", "description": "The minimum value of this slider."},
+        "maximum": {"name": "Maximum", "description": "The maximum value of this slider."},
+        "steps": {"name": "Steps", "description": "The number of steps it takes to traverse from the minimum value of this slider to the maximum value."},
+        "onChange": {"name": "On Change", "description": "Action to perform upon changing the value of this slider."}
       }
     },
     "ScreenGradient": {
       "description": "A visual component that renders a rectangle that fades from a colour on one side to another colour on the other side.",
       "properties": {
-        "ColourA": {"name": "Colour A", "description": "Colour at the start of the gradient."},
-        "ColourB": {"name": "Colour B", "description": "Colour at the end of the gradient."},
-        "Orientation": {"name": "Orientation", "description": "Orientation of the gradient.  This can be used to create vertical or horizontal gradients."}
+        "colourA": {"name": "Colour A", "description": "Colour at the start of the gradient."},
+        "colourB": {"name": "Colour B", "description": "Colour at the end of the gradient."},
+        "orientation": {"name": "Orientation", "description": "Orientation of the gradient.  This can be used to create vertical or horizontal gradients."}
       }
     },
     "ScreenModel": {
       "description": "A visual component that renders a model.",
       "properties": {
-        "Model": {"name": "Model", "description": "Model to render."}
+        "model": {"name": "Model", "description": "Model to render."}
       }
     },
     "ScreenPanel": {
       "description": "A visual component that renders a rounded rectangle.",
       "properties": {
-        "Colour": {"name": "Colour", "description": "Colour of the panel."},
-        "CornerSize": {"name": "Corner Size", "description": "Size of the corners of the panel."}
+        "colour": {"name": "Colour", "description": "Colour of the panel."},
+        "cornerSize": {"name": "Corner Size", "description": "Size of the corners of the panel."}
       }
     },
     "ScreenText": {
       "description": "A visual component that renders text.",
       "properties": {
-        "Value": {"name": "Value", "description": "Text to render."},
-        "Font": {"name": "Font", "description": "Font to use for rendering the text."},
-        "Alignment": {"name": "Alignment", "description": "Alignment of the text."},
-        "Colour": {"name": "Colour", "description": "Colour of the text."},
-        "ShadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text."}
+        "value": {"name": "Value", "description": "Text to render."},
+        "font": {"name": "Font", "description": "Font to use for rendering the text."},
+        "alignment": {"name": "Alignment", "description": "Alignment of the text."},
+        "colour": {"name": "Colour", "description": "Colour of the text."},
+        "shadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text."}
       }
     },
     "StringTime": {
       "description": "Converts a millisecond value into a formatted time string.",
       "properties": {
-        "Value": {"name": "Value", "description": "Value to convert to a time string."},
-        "FormatString": {"name": "Format String", "description": "Format string to use for the time string."}
+        "value": {"name": "Value", "description": "Value to convert to a time string."},
+        "format": {"name": "Format String", "description": "Format string to use for the time string."}
       }
     }
   },
@@ -134,19 +134,19 @@
         "Content": {"name": "Content", "description": "Edit the content of this layout."},
         "ComponentName": {"name": "Name", "description": "Name of this component.  The name is only used when interacting with this component programmatically."},
         "ComponentType": {"name": "Content", "description": "Content of this component."},
-        "ComponentLeft": {"name": "Left", "description": "Position for the left edge of this component.  Note this can also be adjusted in the editor."},
-        "ComponentRight": {"name": "Right", "description": "Position for the right edge of this component.  Note this can also be adjusted in the editor."},
-        "ComponentTop": {"name": "Top", "description": "Position for the top edge of this component.  Note this can also be adjusted in the editor."},
-        "ComponentBottom": {"name": "Bottom", "description": "Position for the bottom edge of this component.  Note this can also be adjusted in the editor."},
-        "ComponentEdgeLocation": {"name": "Location", "description": "Location of this component edge."},
-        "ComponentEdgeOffset": {"name": "Offset", "description": "Offset of this component edge from its location."},
-        "LayoutLocationAbsoluteValue": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."},
-        "LayoutLocationRelativeValue": {"name": "Value", "description": "Location of this component edge from to the selected relative component."},
-        "LayoutLocationRelativeRelative": {"name": "Relative", "description": "Component to which this edge is connected."},
-        "LayoutOffsetAbsoluteValue": {"name": "Value", "description": "Value of this component edge as an offset from the edge of the screen, from -1.0 to +1.0 on the vertical axis, and values depending on screen aspect ratio on the horizontal axis."},
+        "left": {"name": "Left", "description": "Position for the left edge of this component.  Note this can also be adjusted in the editor."},
+        "right": {"name": "Right", "description": "Position for the right edge of this component.  Note this can also be adjusted in the editor."},
+        "top": {"name": "Top", "description": "Position for the top edge of this component.  Note this can also be adjusted in the editor."},
+        "bottom": {"name": "Bottom", "description": "Position for the bottom edge of this component.  Note this can also be adjusted in the editor."},
+        "location": {"name": "Location", "description": "Location of this component edge."},
+        "offset": {"name": "Offset", "description": "Offset of this component edge from its location."},
+        "LayoutLocationAbsolutevalue": {"name": "Value", "description": "Location of this component edge in absolute screen space from -1.0 to +1.0."},
+        "LayoutLocationRelativevalue": {"name": "Value", "description": "Location of this component edge from to the selected relative component."},
+        "LayoutLocationRelativerelative": {"name": "Relative", "description": "Component to which this edge is connected."},
+        "LayoutOffsetAbsolutevalue": {"name": "Value", "description": "Value of this component edge as an offset from the edge of the screen, from -1.0 to +1.0 on the vertical axis, and values depending on screen aspect ratio on the horizontal axis."},
         "LayoutOffsetLinkedOrientation": {"name": "Orientation", "description": "Specifies the orintation of the linked component to which the offset of this component edge applies.  This can be used for ensuring that a component maintains a specific aspect ratio when it is resized by linking the bottom edge offset of a component to the width of the same component."},
-        "LayoutOffsetLinkedLinkedTo": {"name": "Linked To", "description": "The component to which this component edge offset is linked."},
-        "LayoutOffsetLinkedValue": {"name": "Value", "description": "The value of this component edge offset, where -1.0 is the top or left of the linked component, and +1.0 is the bottom or right of the linked component."}
+        "LayoutOffsetLinkedlinked": {"name": "Linked To", "description": "The component to which this component edge offset is linked."},
+        "LayoutOffsetLinkedratio": {"name": "Value", "description": "The value of this component edge offset, where -1.0 is the top or left of the linked component, and +1.0 is the bottom or right of the linked component."}
       }
     },
     "Menu": {
@@ -154,32 +154,32 @@
       "plural": "Menus",
       "description": "Menus supporting items of various types, including actions, booleans, multiple-choice, sliders, etc.",
       "properties": {
-        "Colour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
-        "Font": {"name": "Font", "description": "Font to use for rendering the menu."},
-        "FontSize": {"name": "Font Size", "description": "Size of text when rendering the menu."},
-        "ShadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text of the menu."},
-        "OnExit": {"name": "Action on Exit", "description": "Action to perform leaving or dismissing the menu.  This is intended as a kind of \"default\" action, such as returning to the game from a pause menu"},
-        "MenuItem": {"name": "Menu Item", "description": "An item within this menu."},
+        "colour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
+        "font": {"name": "Font", "description": "Font to use for rendering the menu."},
+        "fontSize": {"name": "Font Size", "description": "Size of text when rendering the menu."},
+        "shadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text of the menu."},
+        "onExit": {"name": "Action on Exit", "description": "Action to perform leaving or dismissing the menu.  This is intended as a kind of \"default\" action, such as returning to the game from a pause menu"},
+        "item": {"name": "Menu Item", "description": "An item within this menu."},
         "MenuItemActionName": {"name": "Name", "description": "Unique name of this menu item."},
-        "MenuItemActionLabel": {"name": "Label", "description": "Label for this menu item."},
-        "MenuItemActionOnSelect": {"name": "On Selection", "description": "Action to perform upon selecting this action menu item."},
+        "MenuItemActionlabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemActiononSelection": {"name": "On Selection", "description": "Action to perform upon selecting this action menu item."},
         "MenuItemBooleanName": {"name": "Name", "description": "Unique name of this menu item."},
-        "MenuItemBooleanLabel": {"name": "Label", "description": "Label for this menu item."},
-        "MenuItemBooleanFalseLabel": {"name": "False Label", "description": "Label to be shown as the value of this boolean menu item when set to false."},
-        "MenuItemBooleanTrueLabel": {"name": "True Label", "description": "Label to be shown as the value of this boolean menu item when set to true."},
+        "MenuItemBooleanlabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemBooleanfalseLabel": {"name": "False Label", "description": "Label to be shown as the value of this boolean menu item when set to false."},
+        "MenuItemBooleantrueLabel": {"name": "True Label", "description": "Label to be shown as the value of this boolean menu item when set to true."},
         "MenuItemDigitalInputName": {"name": "Name", "description": "Unique name of this menu item."},
         "MenuItemDisplayResolutionName": {"name": "Name", "description": "Unique name of this menu item."},
-        "MenuItemDisplayResolutionLabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemDisplayResolutionlabel": {"name": "Label", "description": "Label for this menu item."},
         "MenuItemFileListName": {"name": "Name", "description": "Unique name of this menu item."},
-        "MenuItemFileListFolder": {"name": "Folder", "description": "Folder from which to list files in this menu."},
-        "MenuItemFileListUser": {"name": "User", "description": "Determine whether the folder is relative to program data or user data."},
-        "MenuItemFileListOnSelection": {"name": "", "description": "Action to perform upon selecting a file."},
+        "MenuItemFileListfolder": {"name": "Folder", "description": "Folder from which to list files in this menu."},
+        "MenuItemFileListuser": {"name": "User", "description": "Determine whether the folder is relative to program data or user data."},
+        "MenuItemFileListonSelection": {"name": "", "description": "Action to perform upon selecting a file."},
         "MenuItemSliderName": {"name": "Name", "description": "Unique name of this menu item."},
-        "MenuItemSliderLabel": {"name": "Label", "description": "Label for this menu item."},
-        "MenuItemSliderMinimum": {"name": "Minimum", "description": "The minimum value of this slider."},
-        "MenuItemSliderMaximum": {"name": "Maximum", "description": "The maximum value of this slider."},
-        "MenuItemSliderSteps": {"name": "Steps", "description": "The number of steps it takes to traverse from the minimum value of this slider to the maximum value."},
-        "MenuItemSliderOnChange": {"name": "On Change", "description": "Action to perform upon changing the value of this slider."}
+        "MenuItemSliderlabel": {"name": "Label", "description": "Label for this menu item."},
+        "MenuItemSliderminimum": {"name": "Minimum", "description": "The minimum value of this slider."},
+        "MenuItemSlidermaximum": {"name": "Maximum", "description": "The maximum value of this slider."},
+        "MenuItemSlidersteps": {"name": "Steps", "description": "The number of steps it takes to traverse from the minimum value of this slider to the maximum value."},
+        "MenuItemSlideronChange": {"name": "On Change", "description": "Action to perform upon changing the value of this slider."}
       }
     },
     "Prompt": {
@@ -187,15 +187,15 @@
       "plural": "Prompts",
       "description": "Prompts that display a message and allow the user to choose between two options, such as cancelling or confirming an action.",
       "properties": {
-        "Colour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
-        "Font": {"name": "Font", "description": "Font to use for rendering the menu."},
-        "FontSize": {"name": "Font Size", "description": "Size of text when rendering the menu."},
-        "ShadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text of the menu."},
-        "Message": {"name": "Message", "description": "Message to be displayed by this prompt informing the user of its purpose."},
-        "LabelReject": {"name": "Reject Label", "description": "Text to be displayed to indicate the choice to reject this prompt.  Note:  Good practice is to prefer more descriptive texts should as \"Don't Save\" rather than \"Cancel\""},
-        "LabelAccept": {"name": "Accept Label", "description": "Text to be displayed to indicate the choice to accept this prompt.  Note:  Good practice is to prefer more descriptive texts should as \"Save Project\" rather than \"OK\""},
-        "OnRejection": {"name": "On Rejection", "description": "Action to perform upon user selecting the rejection choice."},
-        "OnAcceptance": {"name": "On Acceptance", "description": "Action to perform upon user selecting the acceptance choice."}
+        "selectionColour": {"name": "Selection Colour", "description": "Colour to use for highlighting selected menu item."},
+        "font": {"name": "Font", "description": "Font to use for rendering the menu."},
+        "textSize": {"name": "Font Size", "description": "Size of text when rendering the menu."},
+        "shadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text of the menu."},
+        "message": {"name": "Message", "description": "Message to be displayed by this prompt informing the user of its purpose."},
+        "cancelLabel": {"name": "Reject Label", "description": "Text to be displayed to indicate the choice to reject this prompt.  Note:  Good practice is to prefer more descriptive texts should as \"Don't Save\" rather than \"Cancel\""},
+        "confirmLabel": {"name": "Accept Label", "description": "Text to be displayed to indicate the choice to accept this prompt.  Note:  Good practice is to prefer more descriptive texts should as \"Save Project\" rather than \"OK\""},
+        "onCancel": {"name": "On Rejection", "description": "Action to perform upon user selecting the rejection choice."},
+        "onConfirm": {"name": "On Acceptance", "description": "Action to perform upon user selecting the acceptance choice."}
       }
     },
     "ScreenFader": {
@@ -203,9 +203,9 @@
       "plural": "Screen Faders",
       "description": "Visual elements that fade between two different different visual elements.  This can be used to create nice visual transitions between gameplay and a pause menu, for example.",
       "properties": {
-        "ScreenA": {"name": "Screen A", "description": "First screen of this screen fader."},
-        "ScreenB": {"name": "Screen B", "description": "Second screen of this screen fader."},
-        "Transition": {"name": "Transition", "description": "Transition value of this screen fader, from 0 to 1, where 0 only shows screen A and 1 only shows screen B."}
+        "screenA": {"name": "Screen A", "description": "First screen of this screen fader."},
+        "screenB": {"name": "Screen B", "description": "Second screen of this screen fader."},
+        "transition": {"name": "Transition", "description": "Transition value of this screen fader, from 0 to 1, where 0 only shows screen A and 1 only shows screen B."}
       }
     },
     "Throbber": {
@@ -213,14 +213,14 @@
       "plural": "Throbbers",
       "description": "Animated visual elements to indicate that the application is busy.",
       "properties": {
-        "Duration": {"name": "Animation Duration", "description": "Total duration of the Throbber animation before it loops in milliseconds."},
-        "Spots": {"name": "Spots", "description": "Number of spots to animate in this Throbber."},
-        "SpotSides": {"name": "Spot Sides", "description": "Number of sides on each spot in this throbber.  You can create different spot shapes by specifying different numbers, e.g. 3 for triangles, 4 for squares, etc."},
-        "SpotSize": {"name": "Spot Size", "description": "Maximum size of each spot in this throbber."},
-        "ShadowOffset": {"name": "Spot Shadow Offset", "description": "Offset of the shadow rendered behind the spots of this throbber."},
-        "Colour": {"name": "Spot Colour", "description": "Colour of spots in this throbber."},
-        "RingSize": {"name": "Ring Size", "description": "Size of the ring of spots in this throbber, where a value of +1.0 will place spots at the top edge of the screen."},
-        "Repetitions": {"name": "Spot Animation Repetitions", "description": "Number of repeating animated patterns in around the throbber ring."}
+        "duration": {"name": "Animation Duration", "description": "Total duration of the Throbber animation before it loops in milliseconds."},
+        "spots": {"name": "Spots", "description": "Number of spots to animate in this Throbber."},
+        "spotSides": {"name": "Spot Sides", "description": "Number of sides on each spot in this throbber.  You can create different spot shapes by specifying different numbers, e.g. 3 for triangles, 4 for squares, etc."},
+        "spotRadius": {"name": "Spot Size", "description": "Maximum size of each spot in this throbber."},
+        "shadowOffset": {"name": "Spot Shadow Offset", "description": "Offset of the shadow rendered behind the spots of this throbber."},
+        "colour": {"name": "Spot Colour", "description": "Colour of spots in this throbber."},
+        "ringRadius": {"name": "Ring Size", "description": "Size of the ring of spots in this throbber, where a value of +1.0 will place spots at the top edge of the screen."},
+        "repetitions": {"name": "Spot Animation Repetitions", "description": "Number of repeating animated patterns in around the throbber ring."}
       }
     },
     "VirtualKeyboard": {

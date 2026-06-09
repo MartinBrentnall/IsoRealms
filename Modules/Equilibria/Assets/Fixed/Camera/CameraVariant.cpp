@@ -113,10 +113,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraVariant::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Location", cDefLocation);
-    owner.createPropertyTreeSelector("Angle",    cDefYaw);
-    owner.createPropertyTreeSelector("Tilt",     cDefPitch);
-    owner.createPropertyTreeSelector("Zoom",     cDefZoom);
+    owner.createPropertyTreeSelector(JSON_LOCATION, cDefLocation);
+    owner.createPropertyTreeSelector(JSON_YAW,      cDefYaw);
+    owner.createPropertyTreeSelector(JSON_PITCH,    cDefPitch);
+    owner.createPropertyTreeSelector(JSON_ZOOM,     cDefZoom);
   }
 
   bool CameraVariant::isDefaultConfiguration() const {

@@ -89,8 +89,8 @@ namespace IsoRealms::Equilibria {
   }
  
   void SurfacePatternComposite::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyArray("Patterns", cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &owner](SurfacePattern& surfacePattern) {
-      owner.createPropertyTreeSelector("Pattern", surfacePattern);
+    owner.createPropertyArray(JSON_PATTERNS, cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &owner](SurfacePattern& surfacePattern) {
+      owner.createPropertyTreeSelector(JSON_PATTERN, surfacePattern);
     }, [this]()->SurfacePattern& {
       return *cDefSurfacePatterns.emplace_back(std::make_unique<SurfacePattern>(cOwner.getEquilibria(), cOwner, nullptr));
     });

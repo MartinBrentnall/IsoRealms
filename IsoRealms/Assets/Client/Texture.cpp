@@ -67,9 +67,9 @@ namespace IsoRealms {
   }
 
   void Texture::getClientProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeFloat("ScaleX", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();});
-    owner.createPropertyNativeFloat("ScaleY", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();});
-    owner.createPropertyNativeFloat("Angle",  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});
+    owner.createPropertyNativeFloat(JSON_SCALE_X, [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();});
+    owner.createPropertyNativeFloat(JSON_SCALE_Y, [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();});
+    owner.createPropertyNativeFloat(JSON_ANGLE,   [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});
   }
   
   void Texture::stateChanged() {

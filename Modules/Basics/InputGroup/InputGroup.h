@@ -61,9 +61,6 @@ namespace IsoRealms::Basics {
     inline static const std::string JSON_INPUT  = "input";
     inline static const std::string JSON_INPUTS = "inputs";
 
-    // Property names.
-    inline static const std::string PROPERTY_INPUT_HANDLER = "Input";
-
     // External interfaces.
     IResourceData& cResource;
 

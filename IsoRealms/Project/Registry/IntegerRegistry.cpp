@@ -46,7 +46,7 @@ namespace IsoRealms {
   }
 
   void IntegerRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeInteger("Value", [this]() {return cValue;}, [this](int value) {cValue = value;});
+    owner.createPropertyNativeInteger(JSON_VALUE, [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 
   bool IntegerRegistry::Literal::Instance::isDefaultConfiguration() const {

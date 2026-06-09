@@ -290,7 +290,7 @@ namespace IsoRealms {
     propertyMaker.createPropertyStruct("FileStructure", "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
       cDefProjectFileStructure.getProperties(propertyMaker, mMetadata, *this, false);
     });
-    propertyMaker.createPropertyStruct("LaunchConfigurations", "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
+    propertyMaker.createPropertyStruct(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
       propertyMaker.createPropertyArray("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
         propertyMaker.createPropertyStruct("LaunchConfiguration", launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IPropertyMaker& propertyMaker) {
           launchConfiguration.getProperties(propertyMaker, mMetadata, *this);

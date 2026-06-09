@@ -72,8 +72,8 @@
    }
  
    void WallPatternComposite::getAssetProperties(IPropertyMaker& owner) {
-     owner.createPropertyArray("Patterns", cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &owner](WallPattern& wallPattern) {
-       owner.createPropertyTreeSelector("Pattern", wallPattern);
+     owner.createPropertyArray(JSON_PATTERNS, cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &owner](WallPattern& wallPattern) {
+       owner.createPropertyTreeSelector(JSON_PATTERN, wallPattern);
      }, [this]()->WallPattern& {
        return *cDefWallPatterns.emplace_back(std::make_unique<WallPattern>(cOwner.getEquilibria(), cOwner, nullptr));
      });

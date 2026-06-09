@@ -151,12 +151,12 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemSlider::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString( "ID",       [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
-    owner.createPropertyNativeString( "Label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
-    owner.createPropertyNativeFloat(  "Minimum",  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
-    owner.createPropertyNativeFloat(  "Maximum",  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;});
-    owner.createPropertyNativeInteger("Steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;});
-    owner.createPropertyTreeSelector( "OnChange", cDefValueChangedAction);
+    owner.createPropertyNativeString( JSON_ID,        [this]() {return cDefID;},      [this](const std::string& value) {cDefID      = value;});
+    owner.createPropertyNativeString( JSON_LABEL,     [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
+    owner.createPropertyNativeFloat(  JSON_MINIMUM,   [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
+    owner.createPropertyNativeFloat(  JSON_MAXIMUM,   [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;});
+    owner.createPropertyNativeInteger(JSON_STEPS,     [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;});
+    owner.createPropertyTreeSelector( JSON_ON_CHANGE, cDefValueChangedAction);
   }
 
   bool MenuItemSlider::isDefaultConfiguration() const {

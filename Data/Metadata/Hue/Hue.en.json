@@ -13,12 +13,11 @@
       "description": "Connects to a Hue bridge and manages the lights.",
       "category": "Hue",
       "properties": {
-        "Address": {"name": "Bridge", "description": "The bridge to connect to."},
-        "Bulbs": {"name": "Bulbs", "description": "The bulbs to manage."},
+        "bridge": {"name": "Bridge", "description": "The bridge to connect to."},
+        "bulbs": {"name": "Bulbs", "description": "The bulbs to manage."},
         "Colour": {"name": "Colour", "description": "The colour of the bulbs."},
-        "Bulb": {"name": "Bulb", "description": "Colour of the bulb."},
-        "PSK": {"name": "PSK", "description": "The PSK of the bulbs."},
-        "User": {"name": "User", "description": "The user of the bulbs."}
+        "psk": {"name": "PSK", "description": "The PSK of the bulbs."},
+        "user": {"name": "User", "description": "The user of the bulbs."}
       }
     }
   }

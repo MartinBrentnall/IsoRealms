@@ -54,7 +54,7 @@ namespace IsoRealms::Basics {
   }
 
   void FileTexture::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("File", cDefFile);
+    owner.createPropertyTreeSelector(JSON_FILENAME, cDefFile);
   }
 
   void FileTexture::removed() {

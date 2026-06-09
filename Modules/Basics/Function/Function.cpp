@@ -61,7 +61,7 @@ namespace IsoRealms::Basics {
   }
 
   void Function::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyStruct("Bindings", "Edit...", [this](IPropertyMaker& owner) {
+    owner.createPropertyStruct(JSON_BINDINGS, "Edit...", [this](IPropertyMaker& owner) {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
         owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding](IPropertyMaker& owner) {
           return mBinding->getProperties(owner);
@@ -78,7 +78,7 @@ namespace IsoRealms::Basics {
         });
       });
     });
-    owner.createPropertyStruct("Arguments", "Edit...", [this, &metadata](IPropertyMaker& owner) {
+    owner.createPropertyStruct(JSON_ARGUMENTS, "Edit...", [this, &metadata](IPropertyMaker& owner) {
       for (std::unique_ptr<ArgumentDefinition>& mArgumentDefinition : cDefArgumentDefinitions) {
         owner.createPropertyStruct("Argument", mArgumentDefinition->getName(), [this, &mArgumentDefinition, &metadata](IPropertyMaker& owner) {
           return mArgumentDefinition->getProperties(owner, metadata, *this);
@@ -96,7 +96,7 @@ namespace IsoRealms::Basics {
         });
       });
     });
-    owner.createPropertyCode("Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
+    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
 
   void Function::removed() {
@@ -126,7 +126,7 @@ namespace IsoRealms::Basics {
   }
 
   void Function::getScriptProperties(IPropertyMaker& owner) {
-    owner.createPropertyStruct("Bindings", "Edit...", [this](IPropertyMaker& owner) {
+    owner.createPropertyStruct(JSON_BINDINGS, "Edit...", [this](IPropertyMaker& owner) {
       for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
         owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding](IPropertyMaker& owner) {
           return mBinding->getProperties(owner);
@@ -143,7 +143,7 @@ namespace IsoRealms::Basics {
         });
       });
     });
-    owner.createPropertyCode("Code", [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
+    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
   }
 
   IsoRealms::Project& Function::getProject() const {
@@ -315,7 +315,7 @@ namespace IsoRealms::Basics {
       Options mHint;
       mHint.addOption("name", cParent.cDefArgumentDefinitions[i]->getName());
       mHint.addOption("description", "An argument to the function.");
-      owner.createPropertyTreeSelector("Argument", *cDefArguments[i], mHint);
+      owner.createPropertyTreeSelector(JSON_ARGUMENT, *cDefArguments[i], mHint);
     }
   }
 

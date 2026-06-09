@@ -49,11 +49,6 @@ namespace IsoRealms::Basics {
     inline static const std::string JSON_ON_BECOMING_TRUE  = "onBecomingTrue";
     inline static const std::string JSON_VALUE             = "value";
 
-    // Property names.
-    inline static const std::string PROPERTY_VALUE        = "Monitored Value";
-    inline static const std::string PROPERTY_TRUE_ACTION  = "Action on True";
-    inline static const std::string PROPERTY_FALSE_ACTION = "Action on False";
-
     // Definition data.
     Boolean cDefValue;      /// Boolean value to monitor.
     Action cDefTrueAction;  /// Action to perform when value changes to true.

@@ -71,11 +71,6 @@ namespace IsoRealms::Basics {
     inline static const std::string JSON_Y = "y";
     inline static const std::string JSON_Z = "z";
 
-    // Property names.
-    inline static const std::string PROPERTY_X = "X";
-    inline static const std::string PROPERTY_Y = "Y";
-    inline static const std::string PROPERTY_Z = "Z";
-
     // Definition data.
     float cDefX; /// Initial X value.
     float cDefY; /// Initial Y value.

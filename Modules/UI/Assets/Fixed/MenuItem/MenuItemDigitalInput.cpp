@@ -154,7 +154,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDigitalInput::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString("ID", [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
+    owner.createPropertyNativeString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
   }
 
   bool MenuItemDigitalInput::isDefaultConfiguration() const {

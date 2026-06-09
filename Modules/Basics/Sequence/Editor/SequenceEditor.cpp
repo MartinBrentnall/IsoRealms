@@ -18,6 +18,7 @@
  */
 #include "SequenceEditor.h"
 
+#include "Modules/Basics/Assets/Registry/SequenceTrackRegistry.h"
 #include "Modules/Basics/Basics.h"
 #include "Modules/Basics/Sequence/Sequence.h"
 
@@ -666,8 +667,8 @@ namespace IsoRealms::Basics {
 
               if (cCursorTrackProperties) {
                 cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](IPropertyMaker& owner) {
-                  owner.createPropertyTreeSelector("TrackType", cSequence.getTrack(cCursorTrack.value()));
-                  owner.createPropertyNativeString("TrackName", [this]() {
+                  owner.createPropertyTreeSelector(SequenceTrackRegistry::JSON_KEY, cSequence.getTrack(cCursorTrack.value()));
+                  owner.createPropertyNativeString(Sequence::JSON_NAME,             [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     cSequence.getTrack(cCursorTrack.value())->setName(name);

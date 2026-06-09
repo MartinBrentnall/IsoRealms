@@ -74,14 +74,14 @@ namespace IsoRealms::Equilibria {
   }
 
   void AlienType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("Appearance",   cDefModel);
-    owner.createPropertyTreeSelector("Target",       cDefTarget);
-    owner.createPropertyNativeFloat( "Acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
-    owner.createPropertyNativeFloat( "Friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
-    owner.createPropertyNativeFloat( "SpinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-    owner.createPropertyNativeFloat( "Height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
-    owner.createPropertyNativeFloat( "Radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
-    owner.createPropertyNativeFloat( "HugThreshold", [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
+    owner.createPropertyTreeSelector(JSON_APPEARANCE,   cDefModel);
+    owner.createPropertyTreeSelector(JSON_TARGET,       cDefTarget);
+    owner.createPropertyNativeFloat( JSON_ACCELERATION, [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
+    owner.createPropertyNativeFloat( JSON_FRICTION,     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
+    owner.createPropertyNativeFloat( JSON_SPIN_SPEED,   [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    owner.createPropertyNativeFloat( JSON_HEIGHT,       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
+    owner.createPropertyNativeFloat( JSON_RADIUS,       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
+    owner.createPropertyNativeFloat( JSON_HUG_MOMENTUM, [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
   }
 
   void AlienType::removed() {

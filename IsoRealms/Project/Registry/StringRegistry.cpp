@@ -92,7 +92,7 @@ namespace IsoRealms {
   }
 
   void StringRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString("Value", [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
+    owner.createPropertyNativeString(JSON_VALUE, [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
   }
 
   bool StringRegistry::Literal::Instance::isDefaultConfiguration() const {

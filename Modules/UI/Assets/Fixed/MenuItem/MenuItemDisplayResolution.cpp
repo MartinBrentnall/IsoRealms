@@ -117,8 +117,8 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDisplayResolution::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString("ID",    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
-    owner.createPropertyNativeString("Label", [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
+    owner.createPropertyNativeString(JSON_ID,    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
+    owner.createPropertyNativeString(JSON_LABEL, [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
   }
 
   bool MenuItemDisplayResolution::isDefaultConfiguration() const {

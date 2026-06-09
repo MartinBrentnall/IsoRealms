@@ -52,7 +52,7 @@ namespace IsoRealms::UI {
   }
   
   void LayoutLocationAbsolute::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeFloat("Value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+    owner.createPropertyNativeFloat(JSON_VALUE, [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 
   bool LayoutLocationAbsolute::isDefaultConfiguration() const {

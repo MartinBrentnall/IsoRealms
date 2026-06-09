@@ -12,59 +12,59 @@
       "description": "A mapping that converts a digital input to an analogue value.",
       "properties": {
         "DefaultName": {"name": "Unnamed Mapping", "description": "Default name for a new digital to analogue mapping."},
-        "Name": {"name": "Name", "description": "Name of this mapping."},
-        "ToValue": {"name": "To Value", "description": "Output value when the digital input is active."},
+        "name": {"name": "Name", "description": "Name of this mapping."},
+        "toValue": {"name": "To Value", "description": "Output value when the digital input is active."},
         "DefaultMapping": {"name": "Default Mapping", "description": "Maps a physical input that triggers this digital control."},
-        "DefaultMappingAdd": {"name": "Default Mapping", "description": "Add a physical input mapping to this digital control."}
+        "mappings": {"name": "Default Mapping", "description": "Add a physical input mapping to this digital control."}
       }
     },
     "Script": {
       "description": "Script written in Lua.",
       "properties": {
-        "Bindings": {"name": "Bindings", "description": "Bind IsoRealms objects to Lua variables for use in this function."},
+        "bindings": {"name": "Bindings", "description": "Bind IsoRealms objects to Lua variables for use in this function."},
         "Binding": {"name": "Binding", "description": "Binds an IsoRealm objects to a Lua variable for use in this function."},
-        "BindingValue": {"name": "What", "description": "The IsoRealms object to bind."},
-        "BindingName": {"name": "Name", "description": "Lua variable name for the bound object."},
+        "to": {"name": "What", "description": "The IsoRealms object to bind."},
+        "variable": {"name": "Name", "description": "Lua variable name for the bound object."},
         "BindingAdd": {"name": "Binding", "description": "Add a binding to this function."},
-        "Code": {"name": "Code", "description": "The Lua code of this script."}
+        "code": {"name": "Code", "description": "The Lua code of this script."}
       }
     },
     "SequenceTrackAction": {
       "description": "A track that can be used to trigger actions.",
       "properties": {
-        "Action": {"name": "Action", "description": "The action to be triggered when this track is triggered."}
+        "execute": {"name": "Action", "description": "The action to be triggered when this track is triggered."}
       }
     },
     "SequenceTrackAudio": {
       "description": "A track that can be used to play audio.",
       "properties": {
-        "AudioFile": {"name": "Audio File", "description": "The audio file to be played when this track is triggered."},
-        "FadeIn": {"name": "Fade In", "description": "The duration of the fade in effect when playing the audio file."},
-        "FadeOut": {"name": "Fade Out", "description": "The duration of the fade out effect when stopping the audio file."},
-        "Volume": {"name": "Volume", "description": "The volume at which the audio file is played when this track is triggered."}
+        "value": {"name": "Audio File", "description": "The audio file to be played when this track is triggered."},
+        "fadeIn": {"name": "Fade In", "description": "The duration of the fade in effect when playing the audio file."},
+        "fadeOut": {"name": "Fade Out", "description": "The duration of the fade out effect when stopping the audio file."},
+        "volume": {"name": "Volume", "description": "The volume at which the audio file is played when this track is triggered."}
       }
     },
     "SequenceTrackColour": {
       "description": "A track that can be used to change a colour.",
       "properties": {
-        "StartColour": {"name": "Start Colour", "description": "The colour to be set at the start of this track."},
-        "Colour": {"name": "Colour", "description": "The colour to be set when this track is triggered."},
-        "Fade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous colour to this one, or just change immediately."}
+        "start": {"name": "Start Colour", "description": "The colour to be set at the start of this track."},
+        "target": {"name": "Colour", "description": "The colour to be set when this track is triggered."},
+        "fade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous colour to this one, or just change immediately."}
       }
     },
     "SequenceTrackFloat": {
       "description": "A track that can be used to change a float value.",
       "properties": {
-        "StartValue": {"name": "Start Value", "description": "The float value to be set at the start of this track."},
-        "Value": {"name": "Value", "description": "The float value to be set when this track is triggered."},
-        "Fade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous value to this one, or just change immediately."}
+        "start": {"name": "Start Value", "description": "The float value to be set at the start of this track."},
+        "value": {"name": "Value", "description": "The float value to be set when this track is triggered."},
+        "fade": {"name": "Fade", "description": "Determines whether to fade gradually from the previous value to this one, or just change immediately."}
       }
     },
     "SequenceTrackScreen": {
       "description": "A track that can be used to change a screen.",
       "properties": {
-        "StartScreen": {"name": "Start Screen", "description": "The screen to be displayed at the start of this track."},
-        "Screen": {"name": "Screen", "description": "The screen to be displayed when this track is triggered."}
+        "start": {"name": "Start Screen", "description": "The screen to be displayed at the start of this track."},
+        "screen": {"name": "Screen", "description": "The screen to be displayed when this track is triggered."}
       }
     }
   },
@@ -76,7 +76,7 @@
       "category": "Input",
       "properties": {
         "DefaultMapping": {"name": "Default Mapping", "description": "Maps a physical input that contributes to this analogue control."},
-        "DefaultMappingAdd": {"name": "Default Mapping", "description": "Add a physical input mapping to this analogue control."}
+        "mappings": {"name": "Default Mapping", "description": "Add a physical input mapping to this analogue control."}
       }
     },
     "BooleanTrigger": {
@@ -85,9 +85,9 @@
       "description": "Trigger actions upon changes of boolean values.",
       "category": "Logic",
       "properties": {
-        "Value": {"name": "Value", "description": "Boolean value on which changes will trigger actions."},
-        "OnTrue": {"name": "Action on True", "description": "Action to perform on value becoming TRUE."},
-        "OnFalse": {"name": "Action on False", "description": "Action to perform on value becoming FALSE."}
+        "value": {"name": "Value", "description": "Boolean value on which changes will trigger actions."},
+        "onBecomingTrue": {"name": "Action on True", "description": "Action to perform on value becoming TRUE."},
+        "onBecomingFalse": {"name": "Action on False", "description": "Action to perform on value becoming FALSE."}
       }
     },
     "DigitalControl": {
@@ -97,7 +97,7 @@
       "category": "Input",
       "properties": {
         "DefaultMapping": {"name": "Default Mapping", "description": "Maps a physical input that triggers this digital control."},
-        "DefaultMappingAdd": {"name": "Default Mapping", "description": "Add a physical input mapping to this digital control."}
+        "mappings": {"name": "Default Mapping", "description": "Add a physical input mapping to this digital control."}
       }
     },
     "Font": {
@@ -106,12 +106,12 @@
       "description": "Fonts loaded from TrueType (*.ttf) files.",
       "category": "Primitives",
       "properties": {
-        "File": {"name": "File", "description": "TrueType (*.ttf) file from which to load the font."},
-        "Detail": {"name": "Detail", "description": "Resolution of the font, higher being more detailed.  TODO: Explain this better."},
-        "Scale": {"name": "Scale", "description": "Scaling of the font.  TODO: Explain the purpose of this."},
-        "XOffset": {"name": "X Offset", "description": "Tune the horizontal position of all text using this font."},
-        "YOffset": {"name": "Y Offset", "description": "Tune the vertical position of all text using this font."},
-        "LineSpacing": {"name": "Line Spacing", "description": "Tune the amount of space between lines of all text using this font."}
+        "filename": {"name": "File", "description": "TrueType (*.ttf) file from which to load the font."},
+        "detail": {"name": "Detail", "description": "Resolution of the font, higher being more detailed.  TODO: Explain this better."},
+        "scale": {"name": "Scale", "description": "Scaling of the font.  TODO: Explain the purpose of this."},
+        "offsetX": {"name": "X Offset", "description": "Tune the horizontal position of all text using this font."},
+        "offsetY": {"name": "Y Offset", "description": "Tune the vertical position of all text using this font."},
+        "lineSpacing": {"name": "Line Spacing", "description": "Tune the amount of space between lines of all text using this font."}
       }
     },
     "Sound": {
@@ -120,7 +120,7 @@
       "description": "Sounds loaded from supported audio files.",
       "category": "Primitives",
       "properties": {
-        "File": {"name": "File", "description": "Supported audio file from which to load the sound."}
+        "filename": {"name": "File", "description": "Supported audio file from which to load the sound."}
       }
     },
     "Texture": {
@@ -129,7 +129,7 @@
       "description": "Textures loaded from supported image files.",
       "category": "Primitives",
       "properties": {
-        "File": {"name": "File", "description": "Supported image file from which to load the texture."}
+        "filename": {"name": "File", "description": "Supported image file from which to load the texture."}
       }
     },
     "Function": {
@@ -138,18 +138,18 @@
       "description": "Reusable parameterized functions written in Lua.",
       "category": "Logic",
       "properties": {
-        "Bindings": {"name": "Bindings", "description": "Bind IsoRealms objects to Lua variables for use in this function."},
+        "bindings": {"name": "Bindings", "description": "Bind IsoRealms objects to Lua variables for use in this function."},
         "Binding": {"name": "Binding", "description": "Binds an IsoRealms objects to a Lua variable for use in this function."},
-        "BindingValue": {"name": "What", "description": "The IsoRealms object to bind."},
-        "BindingName": {"name": "Name", "description": "Lua variable name for the bound object."},
+        "to": {"name": "What", "description": "The IsoRealms object to bind."},
+        "variable": {"name": "Name", "description": "Lua variable name for the bound object."},
         "BindingAdd": {"name": "Binding", "description": "Add a binding to this function."},
-        "Arguments": {"name": "Arguments", "description": "Bind IsoRealms objects to Lua variables for use in this function.  Each object to bind is selected when calling the function."},
+        "arguments": {"name": "Arguments", "description": "Bind IsoRealms objects to Lua variables for use in this function.  Each object to bind is selected when calling the function."},
         "Argument": {"name": "Argument", "description": "Binds an IsoRealms object to a Lua variables for use in this function.  The object to bind is selected when calling the function."},
-        "ArgumentType": {"name": "Type", "description": "The type of IsoRealms object to be bound to this argument."},
-        "ArgumentName": {"name": "Name", "description": "Lua variable name for the bound object."},
-        "ArgumentLuaName": {"name": "Lua Name", "description": "Lua variable name for the bound object."},
+        "type": {"name": "Type", "description": "The type of IsoRealms object to be bound to this argument."},
+        "name": {"name": "Name", "description": "Lua variable name for the bound object."},
+        "luaName": {"name": "Lua Name", "description": "Lua variable name for the bound object."},
         "ArgumentAdd": {"name": "Argument", "description": "Add an argument to this function."},
-        "Code": {"name": "Code", "description": "The Lua code of this function."}
+        "code": {"name": "Code", "description": "The Lua code of this function."}
       }
     },
     "InputGroup": {
@@ -158,8 +158,8 @@
       "description": "Combine many input handlers into a single group.",
       "category": "Input",
       "properties": {
-        "InputHandler": {"name": "Input Handler", "description": "This input handler will handle inputs as part of this group."},
-        "InputHandlerAdd": {"name": "Input Handler", "description": "Add an input handler to this group."}
+        "input": {"name": "Input Handler", "description": "This input handler will handle inputs as part of this group."},
+        "inputs": {"name": "Input Handler", "description": "Add an input handler to this group."}
       }
     },
     "InputSwitch": {
@@ -168,7 +168,7 @@
       "description": "Swap between different input handlers.",
       "category": "Input",
       "properties": {
-        "Value": {"name": "Initial Value", "description": "Default input handler for this switch."}
+        "value": {"name": "Initial Value", "description": "Default input handler for this switch."}
       }
     },
     "InterruptHandler": {
@@ -177,8 +177,8 @@
       "description": "Trigger actions when the user performs any active input, such as clicking a mouse button or pressing any key.  This can be useful for interrupting demos or splash screens.",
       "category": "Input",
       "properties": {
-        "Action": {"name": "Action", "description": "Action to be performed upon triggering of this interrupt handler."},
-        "Consume": {"name": "Consume Input", "description": "Determines whether the input event should be consumed by this interrupt handler.  If true, then the input event will not be passed to further input handlers."}
+        "onInput": {"name": "Action", "description": "Action to be performed upon triggering of this interrupt handler."},
+        "consume": {"name": "Consume Input", "description": "Determines whether the input event should be consumed by this interrupt handler.  If true, then the input event will not be passed to further input handlers."}
       }
     },
     "Project": {
@@ -195,12 +195,12 @@
       "description": "Utility for editing a project.",
       "category": "System",
       "properties": {
-        "NormalFont": {"name": "Normal Font", "description": "Font used for menus, labels, values, etc."},
-        "NormalFontSize": {"name": "Normal Font Size", "description": "Size of the font used for menus, labels, values, etc."},
-        "CodeFont": {"name": "Code Font", "description": "Font used for code (functions, scripts, etc.)"},
-        "CodeFontSize": {"name": "Code Font Size", "description": "Size of the font used for code."},
-        "OnExit": {"name": "Action on Exit", "description": "Action to perform upon leaving the project configurer."},
-        "OnEditor": {"name": "Action on Editor", "description": "Action to perform upon starting an editor."}
+        "font": {"name": "Normal Font", "description": "Font used for menus, labels, values, etc."},
+        "fontSize": {"name": "Normal Font Size", "description": "Size of the font used for menus, labels, values, etc."},
+        "codeFont": {"name": "Code Font", "description": "Font used for code (functions, scripts, etc.)"},
+        "codeFontSize": {"name": "Code Font Size", "description": "Size of the font used for code."},
+        "onExit": {"name": "Action on Exit", "description": "Action to perform upon leaving the project configurer."},
+        "onEditor": {"name": "Action on Editor", "description": "Action to perform upon starting an editor."}
       }
     },
     "Sequence": {
@@ -210,16 +210,14 @@
       "category": "Logic",
       "properties": {
         "Content": {"name": "Content", "description": "The content of this sequence."},
-        "Playing": {"name": "Playing", "description": "Determines whether the sequence is already playing when the app is started."},
-        "Loop": {"name": "Loop", "description": "Determines whether the sequence starts again from the beginning when reaching the end.  If a sequence does not loop, then it stops when reaching the end."},
-        "Speed": {"name": "Speed", "description": "The speed factor at which this sequence plays, where 1.0 is normal speed."},
+        "playing": {"name": "Playing", "description": "Determines whether the sequence is already playing when the app is started."},
+        "loop": {"name": "Loop", "description": "Determines whether the sequence starts again from the beginning when reaching the end.  If a sequence does not loop, then it stops when reaching the end."},
+        "speed": {"name": "Speed", "description": "The speed factor at which this sequence plays, where 1.0 is normal speed."},
         "Instance": {"name": "Instance", "description": "An instance of the sequence."},
         "InstanceAdd": {"name": "Instance", "description": "Create an instance of this sequence."},
-        "InstanceName": {"name": "Name", "description": "The name of this sequence instance."},
-        "InstanceStartTime": {"name": "Start Time", "description": "The starting point within the sequence of this instance."},
-        "InstanceSpeed": {"name": "Speed", "description": "The speed at which this instance of the sequence plays."},
-        "TrackType": {"name": "Type", "description": "The type of this track."},
-        "TrackName": {"name": "Name", "description": "The name of this track."}
+        "name": {"name": "Name", "description": "The name of this sequence instance or track."},
+        "startTime": {"name": "Start Time", "description": "The starting point within the sequence of this instance."},
+        "key": {"name": "Type", "description": "The type of this track."}
       }
     },
     "Boolean": {
@@ -228,7 +226,7 @@
       "description": "Boolean variables.",
       "category": "Primitives",
       "properties": {
-        "Value": {"name": "Value", "description": "Initial value of this boolean variable."}
+        "value": {"name": "Value", "description": "Initial value of this boolean variable."}
       }
     },
     "Colour": {
@@ -237,10 +235,10 @@
       "description": "Colour variables and constants.",
       "category": "Primitives",
       "properties": {
-        "Red": {"name": "Red", "description": "Initial red value of this colour."},
-        "Green": {"name": "Green", "description": "Initial green value of this colour."},
-        "Blue": {"name": "Blue", "description": "Initial blue value of this colour."},
-        "Alpha": {"name": "Alpha", "description": "Initial alpha value of this colour."},
+        "red": {"name": "Red", "description": "Initial red value of this colour."},
+        "green": {"name": "Green", "description": "Initial green value of this colour."},
+        "blue": {"name": "Blue", "description": "Initial blue value of this colour."},
+        "alpha": {"name": "Alpha", "description": "Initial alpha value of this colour."},
         "Hue": {"name": "Hue", "description": "Initial hue value of this colour."},
         "Saturation": {"name": "Saturation", "description": "Initial saturation value of this colour."},
         "Lightness": {"name": "Lightness", "description": "Initial lightness value of this colour."}
@@ -252,7 +250,7 @@
       "description": "Decimal number variables and constants.",
       "category": "Primitives",
       "properties": {
-        "Value": {"name": "Value", "description": "Initial value of this decimal number variable."}
+        "value": {"name": "Value", "description": "Initial value of this decimal number variable."}
       }
     },
     "Integer": {
@@ -261,7 +259,7 @@
       "description": "Whole number variables and constants.",
       "category": "Primitives",
       "properties": {
-        "Value": {"name": "Value", "description": "Initial value of this whole number variable."}
+        "value": {"name": "Value", "description": "Initial value of this whole number variable."}
       }
     },
     "String": {
@@ -270,7 +268,7 @@
       "description": "Text string variables and constants.",
       "category": "Primitives",
       "properties": {
-        "Value": {"name": "Value", "description": "Initial value of this text string variable."}
+        "value": {"name": "Value", "description": "Initial value of this text string variable."}
       }
     },
     "Vertex": {
@@ -279,9 +277,9 @@
       "description": "Vertex variables and constants.",
       "category": "Primitives",
       "properties": {
-        "X": {"name": "X", "description": "Initial X value of this vertex variable."},
-        "Y": {"name": "Y", "description": "Initial Y value of this vertex variable."},
-        "Z": {"name": "Z", "description": "Initial Z value of this vertex variable."}
+        "x": {"name": "X", "description": "Initial X value of this vertex variable."},
+        "y": {"name": "Y", "description": "Initial Y value of this vertex variable."},
+        "z": {"name": "Z", "description": "Initial Z value of this vertex variable."}
       }
     },
     "Sprite": {
@@ -290,9 +288,9 @@
       "description": "2D sprite models in various forms.",
       "category": "Primitives",
       "properties": {
-        "Appearance": {"name": "Appearance", "description": "Texture to be used for this sprite."},
-        "BillboardAngle": {"name": "Billboard Angle", "description": "Sprite rotates to face the opposite direction of the camera.  This is useful for sprites in 3D environments that need to look the same from all sides, such as trees."},
-        "BillboardTilt": {"name": "Billboard Tilt", "description": "Sprite tilts to face the opposite direction of the camera.  This is useful for sprite in 3D environments that need to look the same from above and below, such as balls."}
+        "texture": {"name": "Appearance", "description": "Texture to be used for this sprite."},
+        "billboardYaw": {"name": "Billboard Angle", "description": "Sprite rotates to face the opposite direction of the camera.  This is useful for sprites in 3D environments that need to look the same from all sides, such as trees."},
+        "billboardPitch": {"name": "Billboard Tilt", "description": "Sprite tilts to face the opposite direction of the camera.  This is useful for sprite in 3D environments that need to look the same from above and below, such as balls."}
       }
     }
   }

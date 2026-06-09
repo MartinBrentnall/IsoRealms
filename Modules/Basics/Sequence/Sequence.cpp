@@ -86,10 +86,10 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyEditor(       "Content", this);
-    owner.createPropertyNativeBoolean("Playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
-    owner.createPropertyNativeBoolean("Loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
-    owner.createPropertyTreeSelector( "Speed",   cDefSpeed);
+    owner.createPropertyEditor(       "Content",    this);
+    owner.createPropertyNativeBoolean(JSON_PLAYING, [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
+    owner.createPropertyNativeBoolean(JSON_LOOP,    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
+    owner.createPropertyTreeSelector(JSON_SPEED,    cDefSpeed);
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       owner.createPropertyStruct("Instance", mEntry.first, [this, &mEntry, &metadata](IPropertyMaker& owner) {
         mEntry.second->getProperties(owner, metadata);

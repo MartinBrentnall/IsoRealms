@@ -68,8 +68,8 @@ namespace IsoRealms::UI {
   
   void LayoutOffsetLinked::getAssetProperties(IPropertyMaker& owner) {
 // TODO   owner.createPropertyList("Orientation", {VALUE_WIDTH, VALUE_HEIGHT}, [this]() {return cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT;}, [this](const std::string& value) {cDefHorizontal = value == VALUE_WIDTH;}));
-    owner.createPropertyList(       "LinkedTo", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {std::cout << "TODO: Support setting linked component!" << std::endl;});
-    owner.createPropertyNativeFloat("Ratio",    [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value;});
+    owner.createPropertyList(       JSON_LINKED, cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {std::cout << "TODO: Support setting linked component!" << std::endl;});
+    owner.createPropertyNativeFloat(JSON_RATIO,  [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value;});
   }
 
   bool LayoutOffsetLinked::isDefaultConfiguration() const {

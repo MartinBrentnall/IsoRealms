@@ -164,13 +164,13 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraTransitional::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(         "Start",                cDefStart);
-    owner.createPropertyTreeSelector(         "End",                  cDefEnd);
-    owner.createPropertyNativeUnsignedInteger("Duration",             [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
-    owner.createPropertyTreeSelector(         "OnDepartureFromStart", cDefStartDepartureAction);
-    owner.createPropertyTreeSelector(         "OnArrivalAtEnd",       cDefEndArrivalAction);
-    owner.createPropertyTreeSelector(         "OnDepartureFromEnd",   cDefEndDepartureAction);
-    owner.createPropertyTreeSelector(         "OnArrivalAtStart",     cDefStartArrivalAction);
+    owner.createPropertyTreeSelector(         JSON_START,              cDefStart);
+    owner.createPropertyTreeSelector(         JSON_END,                cDefEnd);
+    owner.createPropertyNativeUnsignedInteger(JSON_DURATION,           [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;});
+    owner.createPropertyTreeSelector(         JSON_ON_START_DEPARTURE, cDefStartDepartureAction);
+    owner.createPropertyTreeSelector(         JSON_ON_END_ARRIVAL,     cDefEndArrivalAction);
+    owner.createPropertyTreeSelector(         JSON_ON_END_DEPARTURE,   cDefEndDepartureAction);
+    owner.createPropertyTreeSelector(         JSON_ON_START_ARRIVAL,   cDefStartArrivalAction);
   }
 
   bool CameraTransitional::isDefaultConfiguration() const {

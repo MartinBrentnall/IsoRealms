@@ -112,7 +112,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void WallPatternTile::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Texture", cDefTexture);
+    owner.createPropertyTreeSelector(JSON_TEXTURE, cDefTexture);
   }
 
   bool WallPatternTile::isDefaultConfiguration() const {

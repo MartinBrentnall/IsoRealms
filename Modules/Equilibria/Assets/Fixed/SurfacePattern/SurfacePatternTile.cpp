@@ -138,7 +138,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void SurfacePatternTile::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Texture", cDefTexture);
+    owner.createPropertyTreeSelector(JSON_TEXTURE, cDefTexture);
   }
 
   bool SurfacePatternTile::isDefaultConfiguration() const {

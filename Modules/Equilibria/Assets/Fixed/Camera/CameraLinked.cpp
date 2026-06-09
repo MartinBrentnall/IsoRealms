@@ -96,7 +96,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraLinked::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("LinkedView", cDefLinkedView);
+    owner.createPropertyTreeSelector(JSON_VIEW, cDefLinkedView);
   }
 
   bool CameraLinked::isDefaultConfiguration() const {

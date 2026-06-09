@@ -104,7 +104,7 @@ namespace IsoRealms::Basics {
   }
   
   void Binding::getProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("BindingValue", cDefValue);
-    owner.createPropertyNativeString("BindingName",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
+    owner.createPropertyTreeSelector(JSON_TO,       cDefValue);
+    owner.createPropertyNativeString(JSON_VARIABLE, [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
   }
 }

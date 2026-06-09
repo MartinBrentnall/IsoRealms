@@ -61,7 +61,7 @@ namespace IsoRealms::Basics {
   }
 
   void FileSound::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("File", cDefFile);
+    owner.createPropertyTreeSelector(JSON_FILENAME, cDefFile);
   }
 
   void FileSound::removed() {

@@ -76,7 +76,7 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalControl::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray("DefaultMappingAdd", cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner](InputMapping& mapping) {
+    owner.createPropertyArray(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner](InputMapping& mapping) {
       mapping.getProperties(owner, [this, &mapping]() {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });

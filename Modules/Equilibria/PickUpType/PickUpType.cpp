@@ -51,7 +51,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void PickUpType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("Appearance", cDefModel);
+    owner.createPropertyTreeSelector(JSON_APPEARANCE, cDefModel);
   }
 
   void PickUpType::removed() {

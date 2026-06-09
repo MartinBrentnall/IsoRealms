@@ -74,13 +74,13 @@ namespace IsoRealms::UI {
   }
 
   void Menu::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("Colour",       cDefColour);
-    owner.createPropertyTreeSelector("Font",         cDefFont);
-    owner.createPropertyNativeFloat( "FontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyNativeFloat( "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
-    owner.createPropertyTreeSelector("OnExit",       cDefExitAction);
+    owner.createPropertyTreeSelector(JSON_COLOUR,        cDefColour);
+    owner.createPropertyTreeSelector(JSON_FONT,          cDefFont);
+    owner.createPropertyNativeFloat( JSON_FONT_SIZE,     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector(JSON_ON_EXIT,       cDefExitAction);
     for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      owner.createPropertyTreeSelector("MenuItem", *mItem.get());
+      owner.createPropertyTreeSelector(JSON_ITEM, *mItem.get());
     }
   }
 

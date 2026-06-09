@@ -151,12 +151,12 @@ namespace IsoRealms::Basics {
   }
 
   void FileFont::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( "File",        cDefFilename);
-    owner.createPropertyNativeInteger("Detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;});
-    owner.createPropertyNativeFloat(  "Scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
-    owner.createPropertyNativeFloat(  "XOffset",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
-    owner.createPropertyNativeFloat(  "YOffset",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
-    owner.createPropertyNativeFloat(  "LineSpacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
+    owner.createPropertyTreeSelector( JSON_FILENAME,     cDefFilename);
+    owner.createPropertyNativeInteger(JSON_DETAIL,       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;});
+    owner.createPropertyNativeFloat(  JSON_SCALE,        [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
+    owner.createPropertyNativeFloat(  JSON_OFFSET_X,     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
+    owner.createPropertyNativeFloat(  JSON_OFFSET_Y,     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
+    owner.createPropertyNativeFloat(  JSON_LINE_SPACING, [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
   }
 
   void FileFont::removed() {

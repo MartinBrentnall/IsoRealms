@@ -111,9 +111,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudioEvent::getEventProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("AudioFile", cDefFile);
-    owner.createPropertyNativeInteger("FadeIn", [this]() {return cDefFadeIn;}, [this](unsigned int value) {cDefFadeIn = value; return true;});
-    owner.createPropertyNativeInteger("FadeOut", [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
+    owner.createPropertyTreeSelector(JSON_FILE, cDefFile);
+    owner.createPropertyNativeInteger(JSON_FADE_IN, [this]() {return cDefFadeIn;}, [this](unsigned int value) {cDefFadeIn = value; return true;});
+    owner.createPropertyNativeInteger(JSON_FADE_OUT, [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
   }
 
   SequenceTrackAudioEvent::End* SequenceTrackAudioEvent::getEndEvent() {

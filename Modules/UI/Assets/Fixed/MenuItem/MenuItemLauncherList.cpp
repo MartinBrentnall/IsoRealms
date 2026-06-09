@@ -124,8 +124,8 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemLauncherList::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString("ID",          [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
-    owner.createPropertyTreeSelector("OnSelection", cDefAction);
+    owner.createPropertyNativeString(JSON_ID,           [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
+    owner.createPropertyTreeSelector(JSON_ON_SELECTION, cDefAction);
   }
 
   bool MenuItemLauncherList::isDefaultConfiguration() const {

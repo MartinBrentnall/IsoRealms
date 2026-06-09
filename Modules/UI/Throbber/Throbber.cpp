@@ -67,14 +67,14 @@ namespace IsoRealms::UI {
   }
 
   void Throbber::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeUnsignedInteger("Duration",     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;});
-    owner.createPropertyNativeUnsignedInteger("Spots",        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;});
-    owner.createPropertyNativeUnsignedInteger("SpotSides",    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;});
-    owner.createPropertyNativeFloat(          "SpotSize",     [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;});
-    owner.createPropertyNativeFloat(          "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;});
-    owner.createPropertyTreeSelector(         "Colour",       cDefColour);
-    owner.createPropertyNativeFloat(          "RingSize",     [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;});
-    owner.createPropertyNativeUnsignedInteger("Repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;});
+    owner.createPropertyNativeUnsignedInteger(JSON_DURATION,      [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;});
+    owner.createPropertyNativeUnsignedInteger(JSON_SPOTS,         [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;});
+    owner.createPropertyNativeUnsignedInteger(JSON_SPOT_SIDES,    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;});
+    owner.createPropertyNativeFloat(          JSON_SPOT_RADIUS,   [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;});
+    owner.createPropertyNativeFloat(          JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector(         JSON_COLOUR,        cDefColour);
+    owner.createPropertyNativeFloat(          JSON_RING_RADIUS,   [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;});
+    owner.createPropertyNativeUnsignedInteger(JSON_REPETITIONS,   [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;});
   }
 
   void Throbber::removed() {

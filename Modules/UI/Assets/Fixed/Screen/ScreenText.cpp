@@ -58,11 +58,11 @@ namespace IsoRealms::UI {
   }
 
   void ScreenText::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector("Value",        cDefString);
-    owner.createPropertyTreeSelector("Font",         cDefFont);
-    owner.createPropertyList(        "Alignment",    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
-    owner.createPropertyTreeSelector("Colour",       cDefColour);
-    owner.createPropertyNativeFloat( "ShadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
+    owner.createPropertyTreeSelector(JSON_VALUE,         cDefString);
+    owner.createPropertyTreeSelector(JSON_FONT,          cDefFont);
+    owner.createPropertyList(        JSON_ALIGNMENT,     std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
+    owner.createPropertyTreeSelector(JSON_COLOUR,        cDefColour);
+    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
   }
   
   bool ScreenText::isDefaultConfiguration() const {

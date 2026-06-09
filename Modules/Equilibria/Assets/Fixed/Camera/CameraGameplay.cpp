@@ -186,11 +186,11 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraGameplay::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyList("InitialAngle",
+    owner.createPropertyList(JSON_DIRECTION,
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},
                              [this](const std::string& value) {cDefAngle = getDirectionValue(value);});
-    owner.createPropertyNativeInteger("RotateDuration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
+    owner.createPropertyNativeInteger(JSON_ROTATE_DURATION, [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
   }
 
   bool CameraGameplay::isDefaultConfiguration() const {
