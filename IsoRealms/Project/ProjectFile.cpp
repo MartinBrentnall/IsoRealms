@@ -110,7 +110,7 @@ namespace IsoRealms {
         } else {
           cAllowModifications = true;
         }
-      });
+      }, true);
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
       owner.createPropertyStruct(JSON_INCLUDE, mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](IPropertyMaker& owner) {

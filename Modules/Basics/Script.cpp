@@ -55,7 +55,7 @@ namespace IsoRealms::Basics {
   }
 
   IAction* Script::getAsset(IActionContext& owner, JSONObject object) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex(), object);
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;

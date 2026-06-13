@@ -20,7 +20,7 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackFloat::SequenceTrackFloat(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence),
+            SequenceTrackBase(sequence.getResourceData(), sequence),
             cMetadata(metadata),
             cDefStartValue(sequence.getResourceData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
@@ -89,7 +89,8 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackFloat::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
+    owner.createPropertyTreeSelector(JSON_START, cDefStartValue);
+    getBaseProperties(owner);
   }
 
   unsigned int SequenceTrackFloat::getTime() const {

@@ -24,17 +24,14 @@ namespace IsoRealms::UI {
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu) :
             cProject(menu.getResourceData().getProject()),
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cMenu(menu),
             cDefID(""),
             cDefLabel(""),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cProject(menu.getResourceData().getProject()),
-            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
-            cDefID(object.getString(JSON_ID)),
-            cDefLabel(object.getString(JSON_LABEL)),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            MenuItemDisplayResolution(metadata, menu) {
   }
 
   void MenuItemDisplayResolution::setValue(DisplayResolution resolution) {
@@ -117,7 +114,10 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDisplayResolution::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(JSON_ID,    [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
+    owner.createPropertyNativeString(JSON_ID,    [this]() {return cDefID;},    [this](const std::string& value) {
+      cDefID = value;
+      cMenu.getResourceData().reregisterAssets();
+    });
     owner.createPropertyNativeString(JSON_LABEL, [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
   }
 

@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
 
   SequenceTrackScreenEvent::SequenceTrackScreenEvent(SequenceTrackScreen& parent, IResourceData& owner, JSONObject object) :
             SequenceTrackScreenEvent(parent, owner, object.getInteger(JSON_DURATION)) {
-    cDefScreen.init(object, JSON_SCREEN);
   }
 
   void SequenceTrackScreenEvent::save(JSONObject object) const {
@@ -46,6 +45,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackScreenEvent::getEventProperties(IPropertyMaker& owner) {
+    owner.createPropertyNativeInteger(JSON_DURATION, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
     owner.createPropertyTreeSelector(JSON_SCREEN, cDefScreen);
   }
 

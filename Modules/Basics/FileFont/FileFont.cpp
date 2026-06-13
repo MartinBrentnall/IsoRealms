@@ -20,7 +20,9 @@
 
 namespace IsoRealms::Basics {
   FileFont::FileFont(Basics& basics, IResourceData& data) :
-            cDefFilename(data.getProject()),
+            cDefFilename(data.getProject(), [this, &data]() {
+              reloadData(data.getProject());
+            }),
             cDefDetail(DEFAULT_DETAIL),
             cDefLineSpacing(DEFAULT_LINE_SPACING),
             cDefScale(DEFAULT_SCALE),
@@ -29,106 +31,6 @@ namespace IsoRealms::Basics {
             cProcessedGLListBase(0) {
   }
   
-  FileFont::FileFont(Basics& basics, IResourceData& data, JSONObject object) :
-            FileFont(basics, data) {
-    cDefFilename.load(JSON_FILENAME, object);
-    cDefDetail = object.getInteger(JSON_DETAIL, DEFAULT_DETAIL);
-    cDefLineSpacing = object.getFloat(JSON_LINE_SPACING, DEFAULT_LINE_SPACING);
-    cDefScale = object.getFloat(JSON_SCALE, DEFAULT_SCALE);
-    cDefOffsetX = object.getFloat(JSON_OFFSET_X);
-    cDefOffsetY = object.getFloat(JSON_OFFSET_Y);
-
-    data.getProject().getApplication().mainThreadInit([this]() {
-      FT_Library mFTLibrary;
-      if (FT_Init_FreeType(&mFTLibrary)) {
-        throw std::runtime_error("FT_Init_FreeType failed");
-      }
-
-      FT_Face mFTFace;
-      std::string mFontLocation = cDefFilename.getPath();
-      if (FT_New_Face(mFTLibrary, mFontLocation.c_str(), 0, &mFTFace)) {
-        throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
-      }
-
-      // Set the character size (1 pixel is 64 units)
-      FT_Set_Char_Size(mFTFace, cDefDetail << 6, cDefDetail << 6, 96, 96);
-
-      // Allocate memory for OpenGL stuff we're creating.
-      cProcessedGLListBase = glGenLists(128);
-      glGenTextures(128, cProcessedTextureIDs);
-
-      // Create each of the fonts display lists.
-      for (unsigned char i = 0; i < 128; i++) {
-        if (FT_Load_Glyph(mFTFace, FT_Get_Char_Index(mFTFace, i), FT_LOAD_DEFAULT)) {
-          throw std::runtime_error("FT_Load_Glyph failed");
-        }
-
-        // Move the face's glyph into a Glyph object.
-        FT_Glyph mFTGlyph;
-        if (FT_Get_Glyph(mFTFace->glyph, &mFTGlyph)) {
-          throw std::runtime_error("FT_Get_Glyph failed");
-        }
-
-        // Convert the glyph to a bitmap.
-        FT_Glyph_To_Bitmap(&mFTGlyph, ft_render_mode_normal, 0, 1);
-        FT_BitmapGlyph mFTBitmapGlyph = (FT_BitmapGlyph) mFTGlyph; // TODO: I don't like this C-style cast.
-
-        unsigned int width = Utils::nextPowerOfTwo(mFTBitmapGlyph->bitmap.width);
-        unsigned int height = Utils::nextPowerOfTwo(mFTBitmapGlyph->bitmap.rows);
-
-        // Allocate memory for the texture data.
-        std::unique_ptr<GLubyte[]> mExpandedData = std::make_unique<GLubyte[]>(2 * width * height);
-
-        // Fill in the data for the expanded bitmap.
-        for (unsigned int j = 0; j < height; j++) {
-          for (unsigned int i = 0; i < width; i++) {
-            mExpandedData[2 * (i + j * width)] = mExpandedData[2 * (i + j * width) + 1] = (i >= mFTBitmapGlyph->bitmap.width || j >= mFTBitmapGlyph->bitmap.rows) ? 0 : mFTBitmapGlyph->bitmap.buffer[i + mFTBitmapGlyph->bitmap.width * j];
-          }
-        }
-
-        // Set up some texture paramaters.
-        glBindTexture(GL_TEXTURE_2D, cProcessedTextureIDs[static_cast<int>(i)]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-        // Create the texture.
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, mExpandedData.get());
-
-        // Create the display list
-        glNewList(cProcessedGLListBase + i, GL_COMPILE);
-        glBindTexture(GL_TEXTURE_2D, cProcessedTextureIDs[static_cast<int>(i)]);
-
-        // Move to the side slightly for spacing between characters.
-        float mScale = cDefDetail / 2.0f;
-        glTranslatef(mFTBitmapGlyph->left / mScale, 0, 0);
-
-        // Move down slightly for characters that go below the line (g, y, q, etc.).
-        glPushMatrix();
-        glTranslatef(0, (int) (mFTBitmapGlyph->top - mFTBitmapGlyph->bitmap.rows) / mScale, 0);
-
-        // Crop empty space from the characters (Store in x and y).
-        float mX = (float) mFTBitmapGlyph->bitmap.width / (float) width;
-        float mY = (float) mFTBitmapGlyph->bitmap.rows / (float) height;
-
-        // Ensure proper alignment of texture and draw it.
-        glBegin(GL_QUADS);
-        glTexCoord2d(mX, mY); glVertex2f(mFTBitmapGlyph->bitmap.width / mScale, 0);
-        glTexCoord2d(mX, 0);  glVertex2f(mFTBitmapGlyph->bitmap.width / mScale, mFTBitmapGlyph->bitmap.rows / mScale);
-        glTexCoord2d(0,  0);  glVertex2f(0,                                     mFTBitmapGlyph->bitmap.rows / mScale);
-        glTexCoord2d(0,  mY); glVertex2f(0,                                     0);
-        glEnd();
-        glPopMatrix();
-        glTranslatef((mFTFace->glyph->advance.x >> 6) / mScale, 0, 0);
-        glEndList();
-
-        // Store the width of the character
-        cProcessedWidths[static_cast<int>(i)] = (((mFTFace->glyph->advance.x >> 6) / mScale) + mFTBitmapGlyph->left / mScale);
-      }
-      FT_Done_Face(mFTFace);
-      FT_Done_FreeType(mFTLibrary);
-    });
-  }
-
   void FileFont::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IFont>(this, "", "Fonts");
   }
@@ -152,11 +54,11 @@ namespace IsoRealms::Basics {
 
   void FileFont::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector( JSON_FILENAME,     cDefFilename);
-    owner.createPropertyNativeInteger(JSON_DETAIL,       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;});
-    owner.createPropertyNativeFloat(  JSON_SCALE,        [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;});
+    owner.createPropertyNativeInteger(JSON_DETAIL,       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;}, DEFAULT_DETAIL);
+    owner.createPropertyNativeFloat(  JSON_SCALE,        [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;}, DEFAULT_SCALE);
     owner.createPropertyNativeFloat(  JSON_OFFSET_X,     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
     owner.createPropertyNativeFloat(  JSON_OFFSET_Y,     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
-    owner.createPropertyNativeFloat(  JSON_LINE_SPACING, [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;});
+    owner.createPropertyNativeFloat(  JSON_LINE_SPACING, [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;}, DEFAULT_LINE_SPACING);
   }
 
   void FileFont::removed() {
@@ -269,5 +171,97 @@ namespace IsoRealms::Basics {
 
   bool FileFont::isDefaultConfiguration() const {
     return true;
+  }
+
+  void FileFont::reloadData(Project& project) {
+    project.getApplication().mainThreadInit([this]() {
+      FT_Library mFTLibrary;
+      if (FT_Init_FreeType(&mFTLibrary)) {
+        throw std::runtime_error("FT_Init_FreeType failed");
+      }
+
+      FT_Face mFTFace;
+      std::string mFontLocation = cDefFilename.getPath();
+      if (FT_New_Face(mFTLibrary, mFontLocation.c_str(), 0, &mFTFace)) {
+        throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
+      }
+
+      // Set the character size (1 pixel is 64 units)
+      FT_Set_Char_Size(mFTFace, cDefDetail << 6, cDefDetail << 6, 96, 96);
+
+      // Allocate memory for OpenGL stuff we're creating.
+      cProcessedGLListBase = glGenLists(128);
+      glGenTextures(128, cProcessedTextureIDs);
+
+      // Create each of the fonts display lists.
+      for (unsigned char i = 0; i < 128; i++) {
+        if (FT_Load_Glyph(mFTFace, FT_Get_Char_Index(mFTFace, i), FT_LOAD_DEFAULT)) {
+          throw std::runtime_error("FT_Load_Glyph failed");
+        }
+
+        // Move the face's glyph into a Glyph object.
+        FT_Glyph mFTGlyph;
+        if (FT_Get_Glyph(mFTFace->glyph, &mFTGlyph)) {
+          throw std::runtime_error("FT_Get_Glyph failed");
+        }
+
+        // Convert the glyph to a bitmap.
+        FT_Glyph_To_Bitmap(&mFTGlyph, ft_render_mode_normal, 0, 1);
+        FT_BitmapGlyph mFTBitmapGlyph = (FT_BitmapGlyph) mFTGlyph; // TODO: I don't like this C-style cast.
+
+        unsigned int width = Utils::nextPowerOfTwo(mFTBitmapGlyph->bitmap.width);
+        unsigned int height = Utils::nextPowerOfTwo(mFTBitmapGlyph->bitmap.rows);
+
+        // Allocate memory for the texture data.
+        std::unique_ptr<GLubyte[]> mExpandedData = std::make_unique<GLubyte[]>(2 * width * height);
+
+        // Fill in the data for the expanded bitmap.
+        for (unsigned int j = 0; j < height; j++) {
+          for (unsigned int i = 0; i < width; i++) {
+            mExpandedData[2 * (i + j * width)] = mExpandedData[2 * (i + j * width) + 1] = (i >= mFTBitmapGlyph->bitmap.width || j >= mFTBitmapGlyph->bitmap.rows) ? 0 : mFTBitmapGlyph->bitmap.buffer[i + mFTBitmapGlyph->bitmap.width * j];
+          }
+        }
+
+        // Set up some texture paramaters.
+        glBindTexture(GL_TEXTURE_2D, cProcessedTextureIDs[static_cast<int>(i)]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+        // Create the texture.
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, mExpandedData.get());
+
+        // Create the display list
+        glNewList(cProcessedGLListBase + i, GL_COMPILE);
+        glBindTexture(GL_TEXTURE_2D, cProcessedTextureIDs[static_cast<int>(i)]);
+
+        // Move to the side slightly for spacing between characters.
+        float mScale = cDefDetail / 2.0f;
+        glTranslatef(mFTBitmapGlyph->left / mScale, 0, 0);
+
+        // Move down slightly for characters that go below the line (g, y, q, etc.).
+        glPushMatrix();
+        glTranslatef(0, (int) (mFTBitmapGlyph->top - mFTBitmapGlyph->bitmap.rows) / mScale, 0);
+
+        // Crop empty space from the characters (Store in x and y).
+        float mX = (float) mFTBitmapGlyph->bitmap.width / (float) width;
+        float mY = (float) mFTBitmapGlyph->bitmap.rows / (float) height;
+
+        // Ensure proper alignment of texture and draw it.
+        glBegin(GL_QUADS);
+        glTexCoord2d(mX, mY); glVertex2f(mFTBitmapGlyph->bitmap.width / mScale, 0);
+        glTexCoord2d(mX, 0);  glVertex2f(mFTBitmapGlyph->bitmap.width / mScale, mFTBitmapGlyph->bitmap.rows / mScale);
+        glTexCoord2d(0,  0);  glVertex2f(0,                                     mFTBitmapGlyph->bitmap.rows / mScale);
+        glTexCoord2d(0,  mY); glVertex2f(0,                                     0);
+        glEnd();
+        glPopMatrix();
+        glTranslatef((mFTFace->glyph->advance.x >> 6) / mScale, 0, 0);
+        glEndList();
+
+        // Store the width of the character
+        cProcessedWidths[static_cast<int>(i)] = (((mFTFace->glyph->advance.x >> 6) / mScale) + mFTBitmapGlyph->left / mScale);
+      }
+      FT_Done_Face(mFTFace);
+      FT_Done_FreeType(mFTLibrary);
+    });
   }
 }

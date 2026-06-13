@@ -33,13 +33,6 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
             
-  Top::Top(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            Top(spindizzy, data) {
-    cDefColourTop.init(object, JSON_TOP);
-    cDefColourSide.init(object, JSON_SIDES);
-    cDefColourOutline.init(object, JSON_OUTLINE);
-  }
-
   void Top::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Spindizzy Top Models");
   }

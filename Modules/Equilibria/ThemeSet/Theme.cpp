@@ -70,20 +70,29 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  void Theme::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(ThemeSet::JSON_ID, [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
-    for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
-      Options mHint;
-      mHint.addOption("name", cThemeSet.getElement(mTexture.first));
-      mHint.addOption("description", "TODO: Theme Texture Description");
-      owner.createPropertyTreeSelector(JSON_TEXTURE, mTexture.second, mHint);
-    }
-    for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
-      Options mHint;
-      mHint.addOption("name", cThemeSet.getElement(mColour.first));
-      mHint.addOption("description", "TODO: Theme Colour Description");
-      owner.createPropertyTreeSelector(JSON_COLOUR, mColour.second, mHint);
-    }
+  void Theme::getProperties(IPropertyMaker& owner) {
+    owner.createPropertyNativeString(ThemeSet::JSON_ID, [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
+    Options mContainerHint;
+    mContainerHint.addOption(Options::PROPERTY_SCOPED,  "true");
+    mContainerHint.addOption(Options::PROPERTY_NO_EDIT, "true");
+    owner.createPropertyStruct(ThemeSet::JSON_TEXTURES, "", [this](IPropertyMaker& owner) {
+      for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
+        std::string mName = cThemeSet.getElement(mTexture.first);
+        Options mTextureHint;
+        mTextureHint.addOption("name", mName);
+        mTextureHint.addOption("description", "TODO: Theme Texture Description");
+        owner.createPropertyTreeSelector(mName, mTexture.second, mTextureHint);
+      }
+    }, nullptr, mContainerHint);
+    owner.createPropertyStruct(ThemeSet::JSON_COLOURS, "", [this](IPropertyMaker& owner) {
+      for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
+        std::string mName = cThemeSet.getElement(mColour.first);
+        Options mColourHint;
+        mColourHint.addOption("name", mName);
+        mColourHint.addOption("description", "TODO: Theme Colour Description");
+        owner.createPropertyTreeSelector(mName, mColour.second, mColourHint);
+      }
+    }, nullptr, mContainerHint);
   }
 
   void Theme::themeTextureAdded(ThemeTexture* texture) {

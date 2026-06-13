@@ -30,7 +30,6 @@ namespace IsoRealms::Basics {
 
   SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, JSONObject object) :
             SequenceTrackFloatEvent(parent, owner, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
-    cDefValue.init(object, JSON_VALUE);
   }
 
   void SequenceTrackFloatEvent::save(JSONObject object) const {
@@ -48,8 +47,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackFloatEvent::getEventProperties(IPropertyMaker& owner) {
+    owner.createPropertyNativeInteger(JSON_DURATION, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
     owner.createPropertyTreeSelector(JSON_VALUE, cDefValue);
-    owner.createPropertyNativeBoolean(JSON_FADE, [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;});
+    owner.createPropertyNativeBoolean(JSON_FADE, [this]() {return cDefFade;}, [this](bool value) {cDefFade = value;}, true);
   }
 
   IFloat* SequenceTrackFloatEvent::getValue() const {

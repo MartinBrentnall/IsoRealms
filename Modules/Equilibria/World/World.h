@@ -52,7 +52,6 @@ namespace IsoRealms::Equilibria {
      * Resource interface *
     \**********************/
     World(Equilibria& equilibria, IResourceData& data);
-    World(Equilibria& equilibria, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -192,6 +191,7 @@ namespace IsoRealms::Equilibria {
     /************************\
      * Implements IEditable *
     \************************/
+    void load(IResourceData& resourceData, JSONObject object) override;
     IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;

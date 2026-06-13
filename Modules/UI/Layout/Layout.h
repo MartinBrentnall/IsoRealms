@@ -39,7 +39,6 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Layout(UI& ui, IResourceData& data);
-    Layout(UI& ui, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -65,6 +64,7 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IEditable *
     \************************/
+    void load(IResourceData& resourceData, JSONObject object) override;
     IEditableScreen* createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) override;
 
     /*********************\

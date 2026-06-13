@@ -31,17 +31,6 @@ namespace IsoRealms::Equilibria {
             cDefExitedAction(cActionContext) {
   }
 
-  BoundaryHandler::BoundaryHandler(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            BoundaryHandler(equilibria, data) {
-    cDefBoundaryType.init(object, JSON_BOUNDARY);
-    cDefObjectType.init(object, JSON_OBJECT);
-    cDefEnteredAction.init(object, JSON_ON_ENTRY);
-    cDefExitedAction.init(object, JSON_ON_EXIT);
-    equilibria.getProject().init([this, &equilibria]() {
-      equilibria.added(this);
-    });
-  }
-
   void BoundaryHandler::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
@@ -66,6 +55,12 @@ namespace IsoRealms::Equilibria {
     owner.createPropertyTreeSelector(JSON_BOUNDARY, cDefBoundaryType);
     owner.createPropertyTreeSelector(JSON_ON_ENTRY, cDefEnteredAction);
     owner.createPropertyTreeSelector(JSON_ON_EXIT,  cDefExitedAction);
+
+    if (owner.loadsPersistedValues()) {
+      cEquilibria.getProject().init([this]() {
+        cEquilibria.added(this);
+      });
+    }
   }
 
   void BoundaryHandler::removed() {

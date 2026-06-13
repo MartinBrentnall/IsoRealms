@@ -28,13 +28,6 @@ namespace IsoRealms::UI {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  VirtualKeyboard::VirtualKeyboard(UI& ui, IResourceData& data, JSONObject object) :
-                   VirtualKeyboard(ui, data) {
-    cDefSelectionColour.init(object, JSON_SELECTION_COLOUR);
-    cDefFont.init(object, JSON_FONT);
-    cDefConfirmAction.init(object, JSON_ON_CONFIRM);
-  }
-
   void VirtualKeyboard::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Presentation");
     assets.add<IScreen>(this, "", "Presentation");

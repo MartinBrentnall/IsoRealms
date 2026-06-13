@@ -98,6 +98,7 @@ namespace IsoRealms {
     Project& getAssetManager() override;
     IActionContext& getDummyActionContext() override;
     const Metadata& getMetadata() const override;
+    void reregisterAssets() override;
 
     /*****************************\
      * Implements IActionContext *

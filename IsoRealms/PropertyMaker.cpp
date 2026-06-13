@@ -78,39 +78,49 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyKey>(cMetadata.getPropertyData(key), *this, getter, setter, removeFunction));
   }
 
-  void PropertyMaker::createPropertyList(const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyList(const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, const std::string& defaultValue, std::function<void()> removeFunction) {
     cProperties.addProperty(std::make_unique<PropertyList>(*this, *this, cParent.getProject(), cMetadata.getPropertyData(key), options, getter, setter, removeFunction));
   }
 
-  void PropertyMaker::createPropertyNativeBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyNativeBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
     cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(*this, cMetadata.getPropertyData(key), *this, getter, setter, cParent.getProject(), removeFunction));
   }
 
-  void PropertyMaker::createPropertyNativeFloat(const std::string& key, std::function<float()> getter, std::function<void(float)> setter, std::function<bool(float)> validityChecker, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyNativeFloat(const std::string& key, std::function<float()> getter, std::function<void(float)> setter, float defaultValue, std::function<bool(float)> validityChecker, std::function<void()> removeFunction) {
     cProperties.addProperty(std::make_unique<PropertyNativeFloat>(cMetadata.getPropertyData(key), *this, getter, validityChecker, setter, removeFunction));
   }
 
-  void PropertyMaker::createPropertyNativeInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, std::function<bool(int)> validityChecker, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyNativeInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, int defaultValue, std::function<bool(int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
+    if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
+      return;
+    }
     cProperties.addProperty(std::make_unique<PropertyNativeInteger>(cMetadata.getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
   }
 
-  void PropertyMaker::createPropertyNativeString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
+  void PropertyMaker::createPropertyNativeString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
     cProperties.addProperty(std::make_unique<PropertyNativeString>(cMetadata.getPropertyData(key), *this, getter, setter, validityChecker, removeFunction, confirmCustom));
   }
 
-  void PropertyMaker::createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
     cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cMetadata.getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
   }
 
-  void PropertyMaker::createPropertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter) {
+  void PropertyMaker::createPropertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter, const Options& hint) {
     cProperties.addProperty(std::make_unique<PropertyOptional>(*this, *this, cParent, cMetadata.getPropertyData(key), choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
   }
 
-  void PropertyMaker::createPropertyStruct(const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction) {
+  void PropertyMaker::createPropertyStruct(const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction, const Options& hint) {
+    if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
+      subProperties(*this);
+      return;
+    }
     cProperties.addProperty(std::make_unique<PropertyStruct>(*this, cMetadata.getPropertyData(key), *this, value, subProperties, removeFunction));
   }
 
   void PropertyMaker::createPropertyTreeSelector(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
+    if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
+      return;
+    }
     cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, *this, cParent, mergePropertyMetadata(cMetadata.getPropertyData(key), hint), item, removeFunction));
   }
 

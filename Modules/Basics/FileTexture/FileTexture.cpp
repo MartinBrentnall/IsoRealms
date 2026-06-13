@@ -20,13 +20,9 @@
 
 namespace IsoRealms::Basics {
   FileTexture::FileTexture(Basics& basics, IResourceData& data) :
-            cDefFile(data.getProject()) {
-  }
-
-  FileTexture::FileTexture(Basics& basics, IResourceData& data, JSONObject object) :
-            FileTexture(basics, data) {
-    cDefFile.load(JSON_FILENAME, object);
-    reloadData(data.getProject());
+            cDefFile(data.getProject(), [this, &data]() {
+              reloadData(data.getProject());
+            }) {
   }
 
   void FileTexture::registerAssets(ResourceAssetRegistry& assets) {

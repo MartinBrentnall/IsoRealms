@@ -71,6 +71,9 @@ namespace IsoRealms::UI {
     // Constants.
     inline static const std::string BINDING_TYPE = "Action";
     
+    // External interfaces.
+    Menu& cMenu;
+    
     // Definition data.
     std::string cDefID;    /// ID of this menu item for binding.
     std::string cDefLabel; /// Label to show for this menu item.

@@ -25,18 +25,6 @@ namespace IsoRealms::Replay {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Replayer::Replayer(Replay& replay, IResourceData& data, JSONObject object) :
-            Replayer(replay, data) {
-
-    // Read configuration.
-    for (JSONValue mDigitalInputValue : object.getArray(JSON_DIGITAL_INPUTS)) {
-      cDefDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, data, mDigitalInputValue.getObject()));
-    }
-    for (JSONValue mAnalogueInputValue : object.getArray(JSON_ANALOGUE_INPUTS)) {
-      cDefAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, data, mAnalogueInputValue.getObject()));
-    }
-  }
-
   void Replayer::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Replayer");
     for (std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
@@ -196,6 +184,7 @@ namespace IsoRealms::Replay {
               if (cParent.cRuntimeState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
+              cStateNotifier->stateChanged();
             }),
             cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(false) {
@@ -225,7 +214,7 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::DigitalInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    owner.createPropertyNativeString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
     owner.createPropertyTreeSelector(JSON_VALUE, cDefActualInput);
   }
   
@@ -270,6 +259,7 @@ namespace IsoRealms::Replay {
               if (cParent.cRuntimeState == State::RECORDING) {
                 cParent.writeEvent(cRuntimeID, value);
               }
+              cStateNotifier->stateChanged();
             }),
             cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(0.0f) {
@@ -299,7 +289,7 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::AnalogueInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    owner.createPropertyNativeString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
     owner.createPropertyTreeSelector(JSON_VALUE, cDefActualInput);
   }
       

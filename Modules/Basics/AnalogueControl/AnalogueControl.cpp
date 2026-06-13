@@ -20,6 +20,8 @@
 
 #include "Modules/Basics/Basics.h"
 
+#include "IsoRealms/Project/Options.h"
+
 namespace IsoRealms::Basics {
   AnalogueControl::AnalogueControl(Basics& basics, IResourceData& data) :
              cResourceData(data),
@@ -230,7 +232,10 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueControl::InputMapping::getProperties(IPropertyMaker& owner, std::function<void()> removeFunction) {
-    owner.createPropertyTreeSelector("DefaultMapping", *cPhysicalInput, Options::EMPTY, removeFunction);
+    Options mHint;
+    mHint.addOption(Options::PROPERTY_INLINE, "true");
+    mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
+    owner.createPropertyTreeSelector("DefaultMapping", *cPhysicalInput, mHint, removeFunction);
   }
 
   void AnalogueControl::InputMapping::reset() {

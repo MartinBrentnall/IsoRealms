@@ -48,7 +48,6 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     DigitalControl(Basics& basics, IResourceData& data);
-    DigitalControl(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
     void save(JSONObject object) const;

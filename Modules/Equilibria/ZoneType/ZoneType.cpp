@@ -28,10 +28,6 @@ namespace IsoRealms::Equilibria {
     cEquilibria.added(this);
   }
   
-  ZoneType::ZoneType(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            ZoneType(equilibria, data) {
-  }
-
   void ZoneType::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }

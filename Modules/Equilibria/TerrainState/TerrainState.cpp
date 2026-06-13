@@ -23,12 +23,6 @@ namespace IsoRealms::Equilibria {
             TerrainState(data, true, 1.0f) {
   }
 
-  TerrainState::TerrainState(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            TerrainState(data, object.getBoolean(JSON_STATE), object.getFloat(JSON_ICON_SCALE, 1.0f)) {
-    cDefIcon.init(object, JSON_ICON);
-    cDefHintAction.init(object, JSON_HINT);
-  }
-
   void TerrainState::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBoolean>(this, "", "Equilibria Terrain States");
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Terrain States");
@@ -54,7 +48,7 @@ namespace IsoRealms::Equilibria {
     owner.createPropertyNativeBoolean(JSON_STATE,      [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
     owner.createPropertyTreeSelector( JSON_HINT,       cDefHintAction);
     owner.createPropertyTreeSelector( JSON_ICON,       cDefIcon);
-    owner.createPropertyNativeFloat(  JSON_ICON_SCALE, [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, [](float value) {return value > 0.0f;});
+    owner.createPropertyNativeFloat(  JSON_ICON_SCALE, [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, 1.0f, [](float value) {return value > 0.0f;});
   }
 
   void TerrainState::removed() {

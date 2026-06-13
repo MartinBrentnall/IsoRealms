@@ -26,8 +26,7 @@ namespace IsoRealms::UI {
             cUI(ui) {
   }
   
-  Layout::Layout(UI& ui, IResourceData& data, JSONObject object) :
-            Layout(ui, data) {
+  void Layout::load(IResourceData& resourceData, JSONObject object) {
     for (JSONValue mComponentValue : object.getArray(JSON_COMPONENTS)) {
       JSONObject mComponentObject = mComponentValue.getObject();
       std::string mComponentName = mComponentObject.getString(JSON_ID);

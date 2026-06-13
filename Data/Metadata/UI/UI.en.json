@@ -159,6 +159,7 @@
         "fontSize": {"name": "Font Size", "description": "Size of text when rendering the menu."},
         "shadowOffset": {"name": "Shadow Offset", "description": "Offset of the shadow rendered behind the text of the menu."},
         "onExit": {"name": "Action on Exit", "description": "Action to perform leaving or dismissing the menu.  This is intended as a kind of \"default\" action, such as returning to the game from a pause menu"},
+        "options": {"name": "Menu Item", "description": "Add an item to this menu."},
         "item": {"name": "Menu Item", "description": "An item within this menu."},
         "MenuItemActionName": {"name": "Name", "description": "Unique name of this menu item."},
         "MenuItemActionlabel": {"name": "Label", "description": "Label for this menu item."},

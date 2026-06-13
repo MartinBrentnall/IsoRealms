@@ -37,13 +37,6 @@ namespace IsoRealms::Basics {
 
   SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, JSONObject object) :
             SequenceTrackAudioEvent(parent, owner, object.getInteger(JSON_TIME)) {
-    cDefFile.load(JSON_FILE, object);
-    cDefFadeIn = object.getInteger(JSON_FADE_IN);
-    cDefFadeOut = object.getInteger(JSON_FADE_OUT);
-    std::string mResource = cDefFile.getPath();
-    if (!cMusic.openFromFile(mResource)) {
-      std::cout << "WARNING: SequenceTrackAudioEvent::SequenceTrackAudioEvent: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
-    }
   }
 
   void SequenceTrackAudioEvent::updateVolume(float volume) {
@@ -111,6 +104,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudioEvent::getEventProperties(IPropertyMaker& owner) {
+    owner.createPropertyNativeInteger(JSON_TIME, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
     owner.createPropertyTreeSelector(JSON_FILE, cDefFile);
     owner.createPropertyNativeInteger(JSON_FADE_IN, [this]() {return cDefFadeIn;}, [this](unsigned int value) {cDefFadeIn = value; return true;});
     owner.createPropertyNativeInteger(JSON_FADE_OUT, [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});

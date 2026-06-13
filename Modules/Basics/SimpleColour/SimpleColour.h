@@ -37,7 +37,6 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     SimpleColour(Basics& basics, IResourceData& data);
-    SimpleColour(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

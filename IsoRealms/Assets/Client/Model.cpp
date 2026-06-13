@@ -98,9 +98,9 @@ namespace IsoRealms {
     owner.createPropertyNativeFloat(JSON_OFFSET_X, [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
     owner.createPropertyNativeFloat(JSON_OFFSET_Y, [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});
     owner.createPropertyNativeFloat(JSON_OFFSET_Z, [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value;});
-    owner.createPropertyNativeFloat(JSON_SCALE_X,  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value;});
-    owner.createPropertyNativeFloat(JSON_SCALE_Y,  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value;});
-    owner.createPropertyNativeFloat(JSON_SCALE_Z,  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value;});
+    owner.createPropertyNativeFloat(JSON_SCALE_X,  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value;}, 1.0f);
+    owner.createPropertyNativeFloat(JSON_SCALE_Y,  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value;}, 1.0f);
+    owner.createPropertyNativeFloat(JSON_SCALE_Z,  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value;}, 1.0f);
     owner.createPropertyNativeFloat(JSON_YAW,      [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value;});
     owner.createPropertyNativeFloat(JSON_PITCH,    [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value;});
   }

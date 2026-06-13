@@ -28,19 +28,6 @@ namespace IsoRealms::UI {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Prompt::Prompt(UI& ui, IResourceData& data, JSONObject object) :
-            Prompt(ui, data) {
-    cDefTextSize     = object.getFloat(JSON_TEXT_SIZE,     DEFAULT_TEXT_SIZE);
-    cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
-    cDefMessage      = object.getString(JSON_MESSAGE);
-    cDefNegativeText = object.getString(JSON_CANCEL_LABEL);
-    cDefPositiveText = object.getString(JSON_CONFIRM_LABEL);
-    cDefSelectionColour.init(object, JSON_SELECTION_COLOUR);
-    cDefFont.init(object, JSON_FONT);
-    cDefNegativeAction.init(object, JSON_ON_CANCEL);
-    cDefPositiveAction.init(object, JSON_ON_CONFIRM);
-  }
-
   void Prompt::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Prompts");
     assets.add<IScreen>(this, "", "Prompts");
@@ -69,8 +56,8 @@ namespace IsoRealms::UI {
 
   void Prompt::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(JSON_FONT,             cDefFont);
-    owner.createPropertyNativeFloat( JSON_TEXT_SIZE,        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;});
-    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET,    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;});
+    owner.createPropertyNativeFloat( JSON_TEXT_SIZE,        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;}, DEFAULT_TEXT_SIZE);
+    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET,    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
     owner.createPropertyTreeSelector(JSON_SELECTION_COLOUR, cDefSelectionColour);
     owner.createPropertyNativeString(JSON_MESSAGE,          [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
     owner.createPropertyNativeString(JSON_CANCEL_LABEL,     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});

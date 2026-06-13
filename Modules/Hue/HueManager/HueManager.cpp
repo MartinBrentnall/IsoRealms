@@ -23,70 +23,6 @@ namespace IsoRealms::Hue {
             cResourceData(data) {
   }
   
-  HueManager::HueManager(Hue& hue, IResourceData& data, JSONObject object) :
-            HueManager(hue, data) {
-    cDefBridgeAddress = object.getString(JSON_BRIDGE);
-    cDefBridgeUser    = object.getString(JSON_USER);
-    cDefBridgePSK     = object.getString(JSON_PSK);
-
-    for (JSONValue mBulbValue : object.getArray(JSON_BULBS)) {
-      cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, data, cDefBulbs.size(), mBulbValue.getObject()));
-    }
-
-    RESTInit();
-    cREST.init(cDefBridgeAddress.c_str(), SSL_PORT, cDefBridgeUser.c_str(), DEBUG_LEVEL);
-
-    std::cout << "Getting entertainment areas" << std::endl;
-    std::vector<EntertainmentArea*> mEntertainmentAreas;
-    cREST.getEntertainmentAreas(&mEntertainmentAreas);
-    if (mEntertainmentAreas.size() <= 0) {
-      cREST.cleanup();
-      RESTCleanup();
-      // FIXME:TripPlayer: throw
-      throw ArgumentException("ERROR: HueManager::HueManager: No entertainement areas found.");
-    }
-
-    /* Count how many lights are in the entertainment area */
-    int mLightCount = 0;
-    for (int i = 0; i < MAX_LIGHTS_PER_AREA; ++i) {
-      if (mEntertainmentAreas[0]->cLightIDs[i] == 0) {
-        break;
-      }
-      mLightCount++;
-    }
-
-    if (mLightCount == 0) {
-      cREST.cleanup();
-      RESTCleanup();
-      throw ArgumentException("ERROR: HueManager::HueManager: No lights found in entertainement area \"" + mEntertainmentAreas[0]->cName + "\".");
-    }
-
-    // Activate the entertainment area
-    std::cout << "Enabling entertainment area [" << mEntertainmentAreas[0]->cName << "]" << std::endl;
-    cREST.activateStream(mEntertainmentAreas[0]->cID);
-
-    /* Initialise hue entertainment */
-    cEntertainment.init(mLightCount);
-
-    /* Assign the light ID (as returned by the bridge) to each light to be controlled (0..n) */
-    for (int i = 0; i < mLightCount; i++) {
-      cEntertainment.setLightID(i, mEntertainmentAreas[0]->cLightIDs[i]);
-    }
-
-    /* Connect to bridge using DTLS */
-    std::cout << "Making DTLS connection to bridge: " << cDefBridgeUser << "  " << cDefBridgePSK << std::endl;
-    cDTLS.init(cDefBridgeUser.c_str(), cDefBridgePSK.c_str(), DEBUG_LEVEL);
-    int retval = cDTLS.connect(cDefBridgeAddress.c_str(), DTLS_PORT);
-    if (retval) {
-      cREST.cleanup();
-      RESTCleanup();
-      cDTLS.cleanup();
-      cEntertainment.cleanup();
-      throw ArgumentException("ERROR: HueManager::HueManager: Failed to make DTLS connection to bridge (returned: " + Utils::toString(retval) + ").");
-    }
-    printf("Running...\n");
-  }
-
   void HueManager::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
@@ -114,18 +50,69 @@ namespace IsoRealms::Hue {
     owner.createPropertyNativeString(JSON_BRIDGE, [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
     owner.createPropertyNativeString(JSON_USER,   [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
     owner.createPropertyNativeString(JSON_PSK,    [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
-    for (std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-      owner.createPropertyTreeSelector(JSON_BULBS, mBulb->getColour(), Options::EMPTY, [this, &mBulb]() {
-        Utils::removeElementUnique(cDefBulbs, mBulb.get());
+    owner.createPropertyArray(JSON_BULBS, cDefBulbs, [](const std::unique_ptr<Bulb>& bulb) -> Bulb& {return *bulb;}, [this, &owner, &metadata](Bulb& bulb) {
+      bulb.getProperties(owner, metadata, [this, &bulb]() {
+        Utils::removeElementUnique(cDefBulbs, &bulb);
       });
-    }
-    owner.createPropertyAdd(JSON_BULBS, "Add...", [this, &owner, &metadata]() {
-      cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cResourceData, cDefBulbs.size()));
-      std::unique_ptr<Bulb>& mBulb  = cDefBulbs.back();
-      return owner.createPropertyTreeSelector(JSON_BULBS, mBulb->getColour(), Options::EMPTY, [this, &mBulb]() {
-        Utils::removeElementUnique(cDefBulbs, mBulb.get());
-      });
+    }, [this]() -> Bulb& {
+      return *cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cResourceData, static_cast<int>(cDefBulbs.size())));
     });
+
+    // If we are loading persisted values, we need to initialize the REST client.
+    if (owner.loadsPersistedValues()) {
+      RESTInit();
+      cREST.init(cDefBridgeAddress.c_str(), SSL_PORT, cDefBridgeUser.c_str(), DEBUG_LEVEL);
+  
+      std::cout << "Getting entertainment areas" << std::endl;
+      std::vector<EntertainmentArea*> mEntertainmentAreas;
+      cREST.getEntertainmentAreas(&mEntertainmentAreas);
+      if (mEntertainmentAreas.size() <= 0) {
+        cREST.cleanup();
+        RESTCleanup();
+        // FIXME:TripPlayer: throw
+        throw ArgumentException("ERROR: HueManager::HueManager: No entertainement areas found.");
+      }
+  
+      /* Count how many lights are in the entertainment area */
+      int mLightCount = 0;
+      for (int i = 0; i < MAX_LIGHTS_PER_AREA; ++i) {
+        if (mEntertainmentAreas[0]->cLightIDs[i] == 0) {
+          break;
+        }
+        mLightCount++;
+      }
+  
+      if (mLightCount == 0) {
+        cREST.cleanup();
+        RESTCleanup();
+        throw ArgumentException("ERROR: HueManager::HueManager: No lights found in entertainement area \"" + mEntertainmentAreas[0]->cName + "\".");
+      }
+  
+      // Activate the entertainment area
+      std::cout << "Enabling entertainment area [" << mEntertainmentAreas[0]->cName << "]" << std::endl;
+      cREST.activateStream(mEntertainmentAreas[0]->cID);
+  
+      /* Initialise hue entertainment */
+      cEntertainment.init(mLightCount);
+  
+      /* Assign the light ID (as returned by the bridge) to each light to be controlled (0..n) */
+      for (int i = 0; i < mLightCount; i++) {
+        cEntertainment.setLightID(i, mEntertainmentAreas[0]->cLightIDs[i]);
+      }
+  
+      /* Connect to bridge using DTLS */
+      std::cout << "Making DTLS connection to bridge: " << cDefBridgeUser << "  " << cDefBridgePSK << std::endl;
+      cDTLS.init(cDefBridgeUser.c_str(), cDefBridgePSK.c_str(), DEBUG_LEVEL);
+      int retval = cDTLS.connect(cDefBridgeAddress.c_str(), DTLS_PORT);
+      if (retval) {
+        cREST.cleanup();
+        RESTCleanup();
+        cDTLS.cleanup();
+        cEntertainment.cleanup();
+        throw ArgumentException("ERROR: HueManager::HueManager: Failed to make DTLS connection to bridge (returned: " + Utils::toString(retval) + ").");
+      }
+      printf("Running...\n");
+    }
   }
 
   void HueManager::removed() {
@@ -168,6 +155,10 @@ namespace IsoRealms::Hue {
   
   void HueManager::Bulb::save(JSONObject object) {
     cDefColour.save(object, JSON_COLOUR);
+  }
+
+  void HueManager::Bulb::getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction) {
+    owner.createPropertyTreeSelector(JSON_COLOUR, cDefColour, Options::EMPTY, removeFunction);
   }
 
   Colour& HueManager::Bulb::getColour() {

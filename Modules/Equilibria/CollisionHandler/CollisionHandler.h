@@ -40,7 +40,6 @@ namespace IsoRealms::Equilibria {
      * Resource Interface *
     \**********************/
     CollisionHandler(Equilibria& equilibria, IResourceData& data);
-    CollisionHandler(Equilibria& equilibria, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

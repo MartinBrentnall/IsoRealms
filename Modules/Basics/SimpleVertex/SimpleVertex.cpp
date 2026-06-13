@@ -30,17 +30,6 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
 
-  SimpleVertex::SimpleVertex(Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleVertex(basics, data) {
-    cRuntimeX = cDefX = object.getFloat(JSON_X);
-    cRuntimeY = cDefY = object.getFloat(JSON_Y);
-    cRuntimeZ = cDefZ = object.getFloat(JSON_Z);
-
-    data.getProject().init([this]() {
-      cStateNotifier->stateChanged();
-    });
-  }
-
   void SimpleVertex::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IVertex>(this, "", "Simple Vertices");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Vertices");

@@ -26,15 +26,6 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleFloat::SimpleFloat(Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleFloat(basics, data) {
-    cRuntimeValue = cDefValue = object.getFloat(JSON_VALUE);
-
-    data.getProject().init([this]() {
-      cStateNotifier->stateChanged();
-    });
-  }
-
   void SimpleFloat::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IFloat>(this, "", "Simple Floats");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Floats");

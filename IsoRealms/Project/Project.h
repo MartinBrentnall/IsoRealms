@@ -91,7 +91,7 @@ namespace IsoRealms {
     void save(const std::string& file);
     void save(const ProjectFile& file) const;
     bool isUser();
-    void getProperties(IPropertyMaker& propertyMaker);
+    void getProperties(IPropertyMaker& propertyMaker, ProjectFile* loadOwner = nullptr);
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
     
@@ -125,6 +125,7 @@ namespace IsoRealms {
     
     // Functions used by module client assets.
     bool isLoading() const;
+    bool areResourcesLoaded() const;
     void execute(IAction& action);
 
     IEventBindings* getEventBindings() const;
@@ -219,7 +220,8 @@ namespace IsoRealms {
     Project& getAssetManager() override;
     IActionContext& getDummyActionContext() override;
     const Metadata& getMetadata() const override;
-    
+    void reregisterAssets() override;
+
     /*****************************\
      * Implements IActionContext * TODO: Should these be here???
     \*****************************/

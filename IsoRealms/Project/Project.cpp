@@ -24,6 +24,7 @@
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/PropertyData.h"
+#include "IsoRealms/PropertyLoader.h"
 
 #include "Module.h"
 
@@ -98,11 +99,8 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
     mOpenedDocuments.emplace_back(std::move(mProjectDocument));
 
-    cDefScreen.init(mProjectObject, JSON_SCREEN, file);
-    cDefInputHandler.init(mProjectObject, JSON_INPUT, file);
-    cDefActionOnStart.init(mProjectObject, JSON_ON_START, file);
-    cDefActionOnCloseRequest.init(mProjectObject, JSON_ON_CLOSE_REQUEST, file);
-    cDefDefaultEditor.init(mProjectObject, JSON_EDITOR, file);
+    PropertyLoader mLoader(*this, mProjectObject);
+    getProperties(mLoader, &file);
 
     for (JSONThing mModuleThing : mProjectObject.getObject(JSON_MODULES)) {
       std::string mModuleName = mModuleThing.getName();
@@ -285,27 +283,29 @@ namespace IsoRealms {
     return cDefProjectFileStructure.cFile.isUser();
   }
 
-  void Project::getProperties(IPropertyMaker& propertyMaker) {
+  void Project::getProperties(IPropertyMaker& propertyMaker, ProjectFile* loadOwner) {
     const Metadata& mMetadata = cApplication.getMetadata("Application");
-    propertyMaker.createPropertyStruct("FileStructure", "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
-      cDefProjectFileStructure.getProperties(propertyMaker, mMetadata, *this, false);
-    });
-    propertyMaker.createPropertyStruct(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
-      propertyMaker.createPropertyArray("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
-        propertyMaker.createPropertyStruct("LaunchConfiguration", launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IPropertyMaker& propertyMaker) {
-          launchConfiguration.getProperties(propertyMaker, mMetadata, *this);
-        }, [this, &launchConfiguration]() {
-          Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
-        });
-      }, [this]()->ProjectLaunchConfiguration& {
-        return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
+    if (!propertyMaker.loadsPersistedValues()) {
+      propertyMaker.createPropertyStruct("FileStructure", "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
+        cDefProjectFileStructure.getProperties(propertyMaker, mMetadata, *this, false);
       });
-    });
-    cDefActionOnStart.getProperty(       propertyMaker, mMetadata, "OnStart");
-    cDefActionOnCloseRequest.getProperty(propertyMaker, mMetadata, "OnCloseRequest");
-    cDefInputHandler.getProperty(        propertyMaker, mMetadata, "InputHandler");
-    cDefScreen.getProperty(              propertyMaker, mMetadata, "Display");
-    cDefDefaultEditor.getProperty(       propertyMaker, mMetadata, "DefaultEditor");
+      propertyMaker.createPropertyStruct(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
+        propertyMaker.createPropertyArray("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
+          propertyMaker.createPropertyStruct("LaunchConfiguration", launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IPropertyMaker& propertyMaker) {
+            launchConfiguration.getProperties(propertyMaker, mMetadata, *this);
+          }, [this, &launchConfiguration]() {
+            Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
+          });
+        }, [this]()->ProjectLaunchConfiguration& {
+          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
+        });
+      });
+    }
+    cDefActionOnStart.getProperty(       propertyMaker, mMetadata, JSON_ON_START,        loadOwner);
+    cDefActionOnCloseRequest.getProperty(propertyMaker, mMetadata, JSON_ON_CLOSE_REQUEST, loadOwner);
+    cDefInputHandler.getProperty(        propertyMaker, mMetadata, JSON_INPUT,           loadOwner);
+    cDefScreen.getProperty(              propertyMaker, mMetadata, JSON_SCREEN,          loadOwner);
+    cDefDefaultEditor.getProperty(       propertyMaker, mMetadata, JSON_EDITOR,          loadOwner);
   }
   
   IEditable* Project::getDefaultEditable() {
@@ -455,6 +455,10 @@ namespace IsoRealms {
   bool Project::isLoading() const {
     return cLoading;
   }
+
+  bool Project::areResourcesLoaded() const {
+    return cResourcesLoaded;
+  }
   
   void Project::execute(IAction& action) {
     if (cProcessingInput || cLoading) {
@@ -558,6 +562,10 @@ namespace IsoRealms {
 
   const Metadata& Project::getMetadata() const {
     return cApplication.getMetadata("Application");
+  }
+
+  void Project::reregisterAssets() {
+    // Nothing to do.
   }
 
   IResourceData& Project::getResourceData() {

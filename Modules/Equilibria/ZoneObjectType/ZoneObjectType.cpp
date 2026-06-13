@@ -28,24 +28,6 @@ namespace IsoRealms::Equilibria {
             cAssets(equilibria) {
   }
   
-  ZoneObjectType::ZoneObjectType(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            ZoneObjectType(equilibria, data) {
-//     for (OMNode& mNode : node) {
-//       std::string mTag = mNode.getName();
-//       if (mTag == AG_TRAIT) {
-//         std::string mTraitID = mNode.getAttribute(JSON_ID);
-//         IZoneObjectTypeTrait* mTrait = cEquilibria.createZoneObjectTypeTrait(mNode, this);
-//         cDefTypeTraits.emplace(mTraitID, mTrait);
-//       } else {
-//         throw ResourceInitException("ERROR: ZoneObjectType::ZoneObjectType: Unknown tag \"" + mTag + "\"");
-//       }
-//     }
-    cDefRuntimeRendererID = object.getString(JSON_RUNTIME_RENDERER);
-    cDefEditingRendererID = object.getString(JSON_EDITING_RENDERER);
-    cDefRuntimeProcessorID = object.getString(JSON_RUNTIME_PROCESSOR);
-    cDefEditingProcessorID = object.getString(JSON_EDITING_PROCESSOR);
-  }
-
   void ZoneObjectType::registerAssets(ResourceAssetRegistry& assets) {
     // TODO
   }

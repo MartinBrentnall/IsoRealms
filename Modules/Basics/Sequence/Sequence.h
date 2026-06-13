@@ -38,7 +38,6 @@ namespace IsoRealms::Basics {
   class Sequence final : public IEditable {
     public:
     Sequence(Basics& basics, IResourceData& data);
-    Sequence(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -72,6 +71,7 @@ namespace IsoRealms::Basics {
     /************************\
      * Implements IEditable *
     \************************/
+    void load(IResourceData& resourceData, JSONObject object) override;
     IEditableScreen* createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;

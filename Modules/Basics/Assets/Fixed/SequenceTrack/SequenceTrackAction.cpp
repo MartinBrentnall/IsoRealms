@@ -20,7 +20,7 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackAction::SequenceTrackAction(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence),
+            SequenceTrackBase(sequence.getResourceData(), sequence),
             cMetadata(metadata) {
   }
   
@@ -61,6 +61,6 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAction::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
+    getBaseProperties(owner);
   }
 }

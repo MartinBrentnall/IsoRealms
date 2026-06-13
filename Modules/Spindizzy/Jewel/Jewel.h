@@ -35,7 +35,6 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     Jewel(Spindizzy& spindizzy, IResourceData& data);
-    Jewel(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -67,7 +66,7 @@ namespace IsoRealms::Spindizzy {
       void save(JSONObject object) const;
       const Colour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
-      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction);
       
       private:
       
@@ -109,6 +108,8 @@ namespace IsoRealms::Spindizzy {
       float cProgress; /// Value from 0.0 to < cColoursCycle.size() to determine the actual current panel colour of this model instance.
     };
 
+    void randomizeInstances();
+
     // JSON members.
     inline static const std::string JSON_COLOUR        = "colour";
     inline static const std::string JSON_CYCLE_COLOURS = "cycleColours";
@@ -122,11 +123,13 @@ namespace IsoRealms::Spindizzy {
     Project& cProject; // Required for pre-rendering.
 
     // Definition data.
-    std::vector<std::unique_ptr<Instance>> cInstances;       /// Model instances.  Each instance has a different position.
-    Colour cColourFrame;                                     /// Colour of the frame.
-    std::vector<std::unique_ptr<CycleColour>> cColoursCycle; /// Ordered cycle colours of panel.
-    float cCycleSpeed;                                       /// Cycle speed for colours.
+    Colour cDefColourFrame;                                     /// Colour of the frame.
+    std::vector<std::unique_ptr<CycleColour>> cDefColoursCycle; /// Ordered cycle colours of panel.
+    float cDefCycleSpeed;                                       /// Cycle speed for colours.
     
+    // Runtime data.
+    std::vector<std::unique_ptr<Instance>> cInstances;       /// Model instances.  Each instance has a different position.
+
     // Editing data.
     std::unique_ptr<Instance> cSampleModel;
   };

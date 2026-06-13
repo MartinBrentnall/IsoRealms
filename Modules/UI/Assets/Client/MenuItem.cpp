@@ -39,6 +39,10 @@ namespace IsoRealms::UI {
     cMenuItem = cUI.getAsset(this, mAssetObject, owner);
   }
 
+  void MenuItem::loadFromProperty(JSONObject object, const std::string& key, const Options& hint) {
+    set(object, key, cOwner);
+  }
+
   void MenuItem::setID(const std::string& id) {
     // TODO: Implement this.
   }

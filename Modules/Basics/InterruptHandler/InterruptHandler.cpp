@@ -23,12 +23,6 @@ namespace IsoRealms::Basics {
             cDefAction(data.getDummyActionContext()) {
   }
   
-  InterruptHandler::InterruptHandler(Basics& basics, IResourceData& data, JSONObject object) :
-            InterruptHandler(basics, data) {
-    cDefAction.init(object, JSON_ON_INPUT);
-    cDefConsume = object.getBoolean(JSON_CONSUME, true);
-  }
-
   void InterruptHandler::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Interrupt Handlers");
   }
@@ -48,7 +42,7 @@ namespace IsoRealms::Basics {
 
   void InterruptHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector( JSON_ON_INPUT, cDefAction);
-    owner.createPropertyNativeBoolean(JSON_CONSUME,  [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;});
+    owner.createPropertyNativeBoolean(JSON_CONSUME,  [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;}, true);
   }
 
   void InterruptHandler::removed() {

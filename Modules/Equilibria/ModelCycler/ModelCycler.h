@@ -35,7 +35,6 @@ namespace IsoRealms::Equilibria {
      * Resource Interface *
     \**********************/
     ModelCycler(Equilibria& equilibria, IResourceData& data);
-    ModelCycler(Equilibria& equilibria, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -54,7 +53,11 @@ namespace IsoRealms::Equilibria {
     \***********************/
     void next();
     void previous();
+
     private:
+    void rebuildOffsetModels();
+    void refreshAssetRegistration();
+    void clampRuntimeCycleIndex();
 
     // JSON members.
     inline static const std::string JSON_MODEL  = "model";
@@ -127,6 +130,10 @@ namespace IsoRealms::Equilibria {
       // Runtime data.
       std::vector<std::unique_ptr<Instance>> cRuntimeInstances; /// Instances created from this offset.
     };
+
+    // External interfaces.
+    Equilibria& cEquilibria;
+    IResourceData& cResourceData;
 
     // Definition data.
     std::vector<std::unique_ptr<Model>> cDefModels;

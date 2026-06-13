@@ -42,23 +42,6 @@ namespace IsoRealms::Equilibria {
             cDefImpactAction(data.getDummyActionContext()) {
   }
   
-  TerrainType::TerrainType(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            TerrainType(equilibria, data) {
-    cDefSolid = object.getBoolean(JSON_SOLID);
-    cDefSurfaceBounce = object.getFloat(JSON_FLOOR_BOUNCE);
-    cDefWallBounce = object.getFloat(JSON_WALL_BOUNCE, DEFAULT_WALL_BOUNCE);
-    cDefRespawnAllowed = object.getBoolean(JSON_ALLOW_RESPAWN);
-    cDefSurfaceGrip = object.getFloat(JSON_GRIP);
-    cDefSurfaceFriction = object.getFloat(JSON_FRICTION);
-    cDefContactAction.init(object, JSON_ON_TOUCH);
-    cDefImpactAction.init(object, JSON_ON_IMPACT);
-    cDefWestWallPattern.init(object, JSON_WEST_WALL);
-    cDefEastWallPattern.init(object, JSON_EAST_WALL);
-    cDefSouthWallPattern.init(object, JSON_SOUTH_WALL);
-    cDefNorthWallPattern.init(object, JSON_NORTH_WALL);
-    cDefSurfacePattern.init(object, JSON_SURFACE);
-  }
-
   void TerrainType::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
@@ -120,7 +103,7 @@ namespace IsoRealms::Equilibria {
     owner.createPropertyNativeFloat(  JSON_FRICTION,      [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
     owner.createPropertyNativeFloat(  JSON_GRIP,          [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
     owner.createPropertyNativeFloat(  JSON_FLOOR_BOUNCE,  [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
-    owner.createPropertyNativeFloat(  JSON_WALL_BOUNCE,   [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;});
+    owner.createPropertyNativeFloat(  JSON_WALL_BOUNCE,   [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;}, DEFAULT_WALL_BOUNCE);
     owner.createPropertyNativeBoolean(JSON_ALLOW_RESPAWN, [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
     owner.createPropertyNativeBoolean(JSON_SOLID,         [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
     owner.createPropertyTreeSelector( JSON_ON_TOUCH,      cDefContactAction);

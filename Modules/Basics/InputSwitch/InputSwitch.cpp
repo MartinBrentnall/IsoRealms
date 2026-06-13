@@ -25,14 +25,6 @@ namespace IsoRealms::Basics {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  InputSwitch::InputSwitch(Basics& basics, IResourceData& data, JSONObject object) :
-            InputSwitch(basics, data) {
-    cDefInputHandler.init(object, JSON_VALUE);
-    data.getProject().init([this]() {
-      cRuntimeInputHandler = *cDefInputHandler;
-    });
-  }
-
   void InputSwitch::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Input Switches");
     assets.add<IBinding>(&cLuaBinding, "", "Input Switches");

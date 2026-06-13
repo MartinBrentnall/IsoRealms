@@ -20,7 +20,7 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackScreen::SequenceTrackScreen(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence),
+            SequenceTrackBase(sequence.getResourceData(), sequence),
             cMetadata(metadata),
             cDefStartScreen(sequence.getResourceData()) {
   }
@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
             SequenceTrackBase(sequence.getResourceData(), sequence, object),
             cMetadata(metadata),
             cDefStartScreen(sequence.getResourceData()) {
-    cDefStartScreen.init(object, JSON_START);
   }
 
   const Screen& SequenceTrackScreen::getStartScreen() const {
@@ -75,7 +74,8 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackScreen::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
+    owner.createPropertyTreeSelector(JSON_START, cDefStartScreen);
+    getBaseProperties(owner);
   }
 
   unsigned int SequenceTrackScreen::getTime() const {

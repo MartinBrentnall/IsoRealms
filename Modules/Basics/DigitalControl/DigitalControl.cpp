@@ -43,10 +43,6 @@ namespace IsoRealms::Basics {
             DigitalControl(data) {
   }
   
-  DigitalControl::DigitalControl(Basics& basics, IResourceData& data, JSONObject object) :
-            DigitalControl(data, object) {
-  }
-
   void DigitalControl::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IBoolean>(this,         "", "Digital Inputs");
     assets.add<IInputHandler>(            this,         "", "Digital Inputs");
@@ -215,7 +211,10 @@ namespace IsoRealms::Basics {
   }
 
   void DigitalControl::InputMapping::getProperties(IPropertyMaker& owner, std::function<void()> removeFunction) {
-    owner.createPropertyTreeSelector("DefaultMapping", *cInput, Options::EMPTY, removeFunction);
+    Options mHint;
+    mHint.addOption(Options::PROPERTY_INLINE, "true");
+    mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
+    owner.createPropertyTreeSelector("DefaultMapping", *cInput, mHint, removeFunction);
   }
 
   void DigitalControl::loadCustomMapping(JSONObject object) {

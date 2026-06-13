@@ -34,15 +34,6 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
 
-  Gyroscope::Gyroscope(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            Gyroscope(spindizzy, data) {
-    cDefQuadrant[0].init(object, JSON_COLOUR_1);
-    cDefQuadrant[1].init(object, JSON_COLOUR_2);
-    cDefQuadrant[2].init(object, JSON_COLOUR_3);
-    cDefQuadrant[3].init(object, JSON_COLOUR_4);
-    cDefOutline.init(object, JSON_OUTLINE);
-  }
-
   void Gyroscope::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Spindizzy Gyroscope Models");
   }

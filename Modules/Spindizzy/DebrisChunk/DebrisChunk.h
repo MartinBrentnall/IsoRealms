@@ -39,7 +39,6 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     DebrisChunk(Spindizzy& spindizzy, IResourceData& data);
-    DebrisChunk(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

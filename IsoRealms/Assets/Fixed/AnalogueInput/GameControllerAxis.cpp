@@ -22,6 +22,7 @@
 
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
 #include "IsoRealms/IResourceData.h"
+#include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
@@ -86,13 +87,18 @@ namespace IsoRealms {
   }
 
   void GameControllerAxis::getAssetProperties(IPropertyMaker& owner) {
+    Options mNoEdit;
+    mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
+    Options mNoPersist;
+    mNoPersist.addOption(Options::PROPERTY_NO_PERSIST, "true");
+    owner.createPropertyNativeInteger(JSON_AXIS, [this]() {return cDefAxis;}, [this](int axis) {cDefAxis = axis;}, 0, [](int) {return true;}, nullptr, mNoEdit);
     owner.createPropertyOptional(JSON_AXIS, cAxisChooser, "", []() {
       return true;
     }, [this](const std::string& axis) {
       cDefAxis = static_cast<unsigned int>(std::stoul(axis.substr(1)));
     }, [this]() {
       return getLocalizedName();
-    });
+    }, mNoPersist);
     owner.createPropertyNativeFloat(JSON_DEAD_ZONE, [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 

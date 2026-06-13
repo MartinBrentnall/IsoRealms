@@ -74,7 +74,7 @@ namespace IsoRealms {
     }
     
     void init(JSONThing thing) {
-      if (cManager.getProject().isLoading()) {
+      if (cManager.getProject().isLoading() && !cManager.getProject().areResourcesLoaded()) {
         cManager.getProject().init([this, thing]() {
           set(thing);
         });
@@ -97,12 +97,22 @@ namespace IsoRealms {
     }
 
     void init(JSONObject object, const std::string& member) {
-      if (cManager.getProject().isLoading()) {
+      if (cManager.getProject().isLoading() && !cManager.getProject().areResourcesLoaded()) {
         cManager.getProject().init([this, object, member]() {
           set(object, member);
         });
       } else {
         set(object, member);
+      }
+    }
+
+    void init(JSONObject object) {
+      if (cManager.getProject().isLoading() && !cManager.getProject().areResourcesLoaded()) {
+        cManager.getProject().init([this, object]() {
+          set(object);
+        });
+      } else {
+        set(object);
       }
     }
     
@@ -198,8 +208,20 @@ namespace IsoRealms {
       return cManager.getAssetManager().getTreeItemInfo(cAsset);
     }
 
-    void loadFromProperty(JSONObject object, const std::string& key) override {
-      init(object, key);
+    void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override {
+      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true") {
+        set(object, key);
+      } else {
+        init(object, key);
+      }
+    }
+
+    void loadFromProperty(JSONObject object, const Options& hint) override {
+      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true") {
+        set(object);
+      } else {
+        init(object);
+      }
     }
 
     std::string getTreeItemLabel() const override {
@@ -227,7 +249,7 @@ namespace IsoRealms {
     const Metadata& getPropertyMetadata() const override {
       return cManager.getAssetManager().template getPropertyMetadata<TYPE>(cAsset);
     }
-    
+
     protected:
     std::string getRawID() const {
       return cManager.getAssetManager().getTreeItemInfo(cAsset).cID;
@@ -264,7 +286,7 @@ namespace IsoRealms {
         static_cast<DERIVED*>(this)->notifyAssetChanged(cAsset, asset);
       }
       cAsset = asset;
-    }
+    }    
 
     Asset(Asset<DERIVED, TYPE, MANAGER> const& asset) = delete;
     Asset& operator=(Asset<DERIVED, TYPE, MANAGER> const& asset) = delete;

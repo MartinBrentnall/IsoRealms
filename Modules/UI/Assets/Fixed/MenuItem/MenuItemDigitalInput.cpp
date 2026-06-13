@@ -23,14 +23,13 @@
 namespace IsoRealms::UI {
   MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu) :
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cMenu(menu),
             cDefID(""),
             cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
   }
 
   MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
-            cDefID(object.getString(JSON_ID)),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            MenuItemDigitalInput(metadata, menu) {  
   }
 
   void MenuItemDigitalInput::addMapping(std::shared_ptr<IDigitalInput> input) {
@@ -50,7 +49,9 @@ namespace IsoRealms::UI {
   }
   
   void MenuItemDigitalInput::registerAssets(ResourceAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Digital Inputs");
+    if (!cDefID.empty()) {
+      assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Digital Inputs");
+    }
   }
   
   void MenuItemDigitalInput::reset() {
@@ -154,7 +155,10 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDigitalInput::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
+    owner.createPropertyNativeString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {
+      cDefID = value;
+      cMenu.getResourceData().reregisterAssets();
+    });
   }
 
   bool MenuItemDigitalInput::isDefaultConfiguration() const {

@@ -36,6 +36,7 @@
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/IActionContext.h"
+#include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
@@ -256,7 +257,12 @@ namespace IsoRealms {
         }
 
         void getWrappedProperties(IPropertyMaker& owner) override {
-          return cDefValue.getAssetProperties(owner);
+          Options mHint;
+          mHint.addOption(Options::PROPERTY_NO_EDIT, "true");
+          owner.createPropertyTreeSelector(JSON_ASSET, cDefValue, mHint);
+          if (!owner.loadsPersistedValues()) {
+            cDefValue.getAssetProperties(owner);
+          }
         }
 
         bool renderAssetIcon() const override {

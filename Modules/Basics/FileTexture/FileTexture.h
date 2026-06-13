@@ -36,7 +36,6 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     FileTexture(Basics& basics, IResourceData& data);
-    FileTexture(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

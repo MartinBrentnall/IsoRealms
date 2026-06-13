@@ -51,7 +51,6 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     FileFont(Basics& basics, IResourceData& data);
-    FileFont(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -99,5 +98,10 @@ namespace IsoRealms::Basics {
     GLuint cProcessedGLListBase;    /// Holds the first display list id.
     GLuint cProcessedTextureIDs[128]; /// Texture ID for each character.
     double cProcessedWidths[128];   /// Widths of each character allows us to calculate string widths.
+
+    /**********************\
+     * Internal Functions *
+    \**********************/
+    void reloadData(Project& project);
   };
 }

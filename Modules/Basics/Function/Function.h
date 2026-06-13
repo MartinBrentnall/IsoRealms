@@ -122,6 +122,7 @@ namespace IsoRealms::Basics {
     Project& cProject;
     Basics& cBasics;
     IResourceData& cResourceData;
+    IActionContext& cDefActionContext;
     sol::state& cDefLuaState; /// The Lua state machine.
     
     // Definition data.
@@ -147,6 +148,7 @@ namespace IsoRealms::Basics {
     }
 
     unsigned int getDynamicBindingIndex(const std::string& name);
+    void addBindingPropertyArray(IPropertyMaker& owner, bool init);
     void declare();
     void revoke();
   };

@@ -40,7 +40,6 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Menu(UI& ui, IResourceData& data);
-    Menu(UI& ui, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -97,6 +96,7 @@ namespace IsoRealms::UI {
     inline static const float DEFAULT_SHADOW_OFFSET = 0.008f;
 
     // External interfaces.
+    UI& cUI;
     IResourceData& cResourceData;
 
     // Definition data.

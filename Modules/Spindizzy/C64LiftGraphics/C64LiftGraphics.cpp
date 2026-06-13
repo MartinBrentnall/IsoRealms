@@ -39,13 +39,6 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
   
-  C64LiftGraphics::C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            C64LiftGraphics(spindizzy, data) {
-    cDefOutline.init(object, JSON_OUTLINE);
-    cDefPrimary.init(object, JSON_PRIMARY);
-    cDefSecondary.init(object, JSON_SECONDARY);
-  }
-
   void C64LiftGraphics::registerAssets(ResourceAssetRegistry& assets) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mPair : cTextures) {
       assets.add<ITexture>(mPair.second.get(), mPair.first, "Spindizzy Lift Textures");

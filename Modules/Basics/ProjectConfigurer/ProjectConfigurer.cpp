@@ -40,16 +40,6 @@ namespace IsoRealms::Basics {
             cBindingEditor(data.getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
-  ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data, JSONObject object) :
-            ProjectConfigurer(basics, data) {
-    cDefFontSize = object.getFloat(JSON_FONT_SIZE);
-    cDefCodeFontSize = object.getFloat(JSON_CODE_FONT_SIZE);
-    cDefFont.init(object, JSON_FONT);
-    cDefCodeFont.init(object, JSON_CODE_FONT);
-    cDefExitAction.init(object, JSON_ON_EXIT);
-    cDefEditorAction.init(object, JSON_ON_EDITOR);
-  }
-
   void ProjectConfigurer::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Project Configurers");
     assets.add<IInputHandler>(this, "", "Project Configurers");

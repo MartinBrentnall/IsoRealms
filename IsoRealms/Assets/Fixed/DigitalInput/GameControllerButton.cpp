@@ -22,6 +22,7 @@
 
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
+#include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Utils.h"
 
@@ -70,13 +71,18 @@ namespace IsoRealms {
   }
 
   void GameControllerButton::getAssetProperties(IPropertyMaker& owner) {
+    Options mNoEdit;
+    mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
+    Options mNoPersist;
+    mNoPersist.addOption(Options::PROPERTY_NO_PERSIST, "true");
+    owner.createPropertyNativeInteger(JSON_BUTTON, [this]() {return static_cast<int>(cButton);}, [this](int button) {cButton = static_cast<unsigned int>(button);}, 0, [](int) {return true;}, nullptr, mNoEdit);
     owner.createPropertyOptional(JSON_BUTTON, cButtonChooser, "", []() {
       return true;
     }, [this](const std::string& button) {
       cButton = static_cast<unsigned int>(std::stoul(button.substr(1)));
     }, [this]() {
       return getLocalizedName();
-    });
+    }, mNoPersist);
   }
 
   bool GameControllerButton::isDefaultConfiguration() const {

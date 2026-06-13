@@ -28,13 +28,6 @@ namespace IsoRealms::Basics {
     cDefProject.addScreenListener(this);
   }
   
-  Sprite::Sprite(Basics& basics, IResourceData& data, JSONObject object) :
-            Sprite(basics, data) {
-    cDefTexture.init(object, JSON_TEXTURE);
-    cDefBillboardYaw   = object.getBoolean(JSON_BILLBOARD_YAW);
-    cDefBillboardPitch = object.getBoolean(JSON_BILLBOARD_PITCH);
-  }
-
   void Sprite::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Sprite Models");
   }

@@ -202,7 +202,7 @@
       "category": "Graphics",
       "properties": {
         "model": {"name": "Model", "description": "A model to cycle through within this set."},
-        "ModelAdd": {"name": "Model", "description": "Add another model to cycle through within this set."}
+        "models": {"name": "Model", "description": "Add another model to cycle through within this set."}
       }
     },
     "PickUp": {

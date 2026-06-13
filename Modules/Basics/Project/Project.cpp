@@ -41,17 +41,6 @@ namespace IsoRealms::Basics {
     cRuntimeProject = cRuntimeProjectLoader->getLoadedProject();
   }
   
-  Project::Project(Basics& basics, IResourceData& data, JSONObject object) :
-            Project(basics, data) {
-    cDefProjectPath = object.getString(JSON_FILE);
-    cDefProjectUser = object.getBoolean(JSON_USER);
-    cDefRunning = object.getBoolean(JSON_RUNNING);
-    cDefEditing = object.getBoolean(JSON_EDITING);
-    cDefEndAction.init(object, JSON_ON_FINISH);
-    cDefErrorAction.init(object, JSON_ON_ERROR);
-    cDefReadyAction.init(object, JSON_ON_READY);
-  }
-
   void Project::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Projects");
     assets.add<IInputHandler>(this, "", "Projects");
@@ -77,7 +66,13 @@ namespace IsoRealms::Basics {
   }
 
   void Project::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    // Nothing to do.
+    owner.createPropertyNativeString( JSON_FILE,      [this]() {return cDefProjectPath;}, [this](const std::string& value) {cDefProjectPath = value;});
+    owner.createPropertyNativeBoolean(JSON_USER,      [this]() {return cDefProjectUser;}, [this](bool value)               {cDefProjectUser = value;});
+    owner.createPropertyNativeBoolean(JSON_RUNNING,   [this]() {return cDefRunning;},     [this](bool value)               {cDefRunning     = value;});
+    owner.createPropertyNativeBoolean(JSON_EDITING,   [this]() {return cDefEditing;},     [this](bool value)               {cDefEditing     = value;});
+    owner.createPropertyTreeSelector( JSON_ON_FINISH, cDefEndAction);
+    owner.createPropertyTreeSelector( JSON_ON_ERROR,  cDefErrorAction);
+    owner.createPropertyTreeSelector( JSON_ON_READY,  cDefReadyAction);
   }
 
   void Project::removed() {

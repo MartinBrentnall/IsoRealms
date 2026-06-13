@@ -27,26 +27,11 @@ namespace IsoRealms::Equilibria {
             cDefWorld(*this),
             cDefCamera(*this),
             cDefZoneViewType(*this),
-            cDefZoom(1.0f),
+            cDefZoom(DEFAULT_ZOOM),
             cRuntimeZone(nullptr),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
     
-  WorldView::WorldView(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            WorldView(equilibria, data) {
-    cDefZoom = object.getFloat(JSON_ZOOM, 1.0f);
-    cDefCamera.set(object, JSON_CAMERA);
-    cDefZoneViewType.set(object, JSON_TYPE);
-    data.getProject().init([this, object]() {
-      cDefWorld.setID(object.getString(JSON_WORLD));
-      cDefWorld->registerView(*this);
-      std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
-      for (std::unique_ptr<Zone>& mZone : mZones) {
-        addZoneView(mZone.get());
-      }
-    });
-  }
-
   void WorldView::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Equilibria World Views");
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/World Views");
@@ -55,7 +40,7 @@ namespace IsoRealms::Equilibria {
 
   void WorldView::save(JSONObject object) const {
     cDefWorld.save(object, JSON_WORLD);
-    object.addFloat(JSON_ZOOM, cDefZoom, 1.0f);
+    object.addFloat(JSON_ZOOM, cDefZoom, DEFAULT_ZOOM);
     cDefCamera.save(object, JSON_CAMERA);
     cDefZoneViewType.save(object, JSON_TYPE);
   }
@@ -69,10 +54,22 @@ namespace IsoRealms::Equilibria {
   }
 
   void WorldView::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_WORLD,  cDefWorld);
-    owner.createPropertyTreeSelector(JSON_CAMERA, cDefCamera);
-    owner.createPropertyTreeSelector(JSON_TYPE,   cDefZoneViewType);
-    owner.createPropertyNativeFloat( JSON_ZOOM,   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
+    Options mHint;
+    mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
+    owner.createPropertyTreeSelector(JSON_WORLD,  cDefWorld,        mHint);
+    owner.createPropertyTreeSelector(JSON_CAMERA, cDefCamera,       mHint);
+    owner.createPropertyTreeSelector(JSON_TYPE,   cDefZoneViewType, mHint);
+    owner.createPropertyNativeFloat( JSON_ZOOM,   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
+
+    if (owner.loadsPersistedValues()) {
+      cResourceData.getProject().init([this]() {
+        cDefWorld->registerView(*this);
+        std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
+        for (std::unique_ptr<Zone>& mZone : mZones) {
+          addZoneView(mZone.get());
+        }
+      });
+    }
   }
 
   void WorldView::removed() {

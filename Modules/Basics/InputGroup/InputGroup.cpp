@@ -23,13 +23,6 @@ namespace IsoRealms::Basics {
             cResource(data) {
   }
   
-  InputGroup::InputGroup(Basics& basics, IResourceData& data, JSONObject object) :
-            InputGroup(basics, data) {
-    for (JSONValue mInputValue : object.getArray(JSON_INPUTS)) {
-      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(data)).get()->init(mInputValue.getObject(), JSON_INPUT);
-    }
-  }
-
   void InputGroup::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Input Groups");
   }

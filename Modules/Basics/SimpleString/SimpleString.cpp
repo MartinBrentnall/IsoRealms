@@ -26,15 +26,6 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleString::SimpleString(Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleString(basics, data) {
-    cRuntimeValue = cDefValue = object.getString(JSON_VALUE);
-
-    data.getProject().init([this]() {
-      cStateNotifier->stateChanged();
-    });
-  }
-
   void SimpleString::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IString>(this, "", "Simple Strings");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Strings");

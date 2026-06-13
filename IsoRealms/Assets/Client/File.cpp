@@ -58,6 +58,10 @@ namespace IsoRealms {
     JSONObject mFileObject = object.getObject(name);
     cPath = mFileObject.getString(JSON_PATH);
     cUser = mFileObject.getBoolean(JSON_USER);
+
+    if (cChangeCallback) {
+      cChangeCallback();
+    }
   }
   
   void File::save(const std::string& name, JSONObject object) const {
@@ -129,10 +133,13 @@ namespace IsoRealms {
     } else {
 //    TODO  throw ArgumentException("Unsupported File ID \"" + id + "\"");
     }
-    cChangeCallback();
+
+    if (cChangeCallback) {
+      cChangeCallback();
+    }
   }
 
-  void File::loadFromProperty(JSONObject object, const std::string& key) {
+  void File::loadFromProperty(JSONObject object, const std::string& key, const Options& hint) {
     load(key, object);
   }
   

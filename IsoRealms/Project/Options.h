@@ -31,6 +31,21 @@ namespace IsoRealms {
   class Options {
     public:
     static const Options EMPTY;
+
+    /** Hint option: value is persisted inline in the current load object (see PropertyLoader). */
+    inline static const std::string PROPERTY_INLINE = "inline";
+
+    /** Hint option: load reference and properties immediately instead of deferring to project init. */
+    inline static const std::string PROPERTY_IMMEDIATE = "immediate";
+
+    /** Hint option: property is not loaded or saved via the property system. */
+    inline static const std::string PROPERTY_NO_PERSIST = "noPersist";
+
+    /** Hint option: property is not shown or editable in the editor. */
+    inline static const std::string PROPERTY_NO_EDIT = "noEdit";
+
+    /** Hint option: JSON member name under which nested struct properties are loaded and saved. */
+    inline static const std::string PROPERTY_SCOPED = "scoped";
     
     Options();
     Options(int argc, char** argv);

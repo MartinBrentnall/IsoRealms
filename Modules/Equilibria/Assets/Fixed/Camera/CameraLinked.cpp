@@ -30,9 +30,6 @@ namespace IsoRealms::Equilibria {
   
   CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view, JSONObject object) :
             CameraLinked(metadata, view) {
-    view.getEquilibria().getProject().init([this, object]() {
-      cDefLinkedView.setID(object.getString(JSON_VIEW));
-    });
   }
 
   void CameraLinked::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {

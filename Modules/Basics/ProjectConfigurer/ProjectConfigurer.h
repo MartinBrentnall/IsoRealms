@@ -38,7 +38,6 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     ProjectConfigurer(Basics& basics, IResourceData& data);
-    ProjectConfigurer(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

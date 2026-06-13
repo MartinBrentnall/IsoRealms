@@ -36,16 +36,6 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
 
-  DebrisChunk::DebrisChunk(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            DebrisChunk(spindizzy, data) {
-    cDefOutline.init(object, JSON_OUTLINE);
-    cDefOutlineWidth = object.getFloat(JSON_OUTLINE_WIDTH, DEFAULT_OUTLINE_WIDTH);
-    cDefSide[0].init(object, JSON_SIDE_1);
-    cDefSide[1].init(object, JSON_SIDE_2);
-    cDefSide[2].init(object, JSON_SIDE_3);
-    cDefSide[3].init(object, JSON_SIDE_4);
-  }
-
   void DebrisChunk::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Spindizzy Debris Chunks");
   }

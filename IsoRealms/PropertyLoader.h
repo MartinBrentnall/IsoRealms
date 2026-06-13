@@ -42,8 +42,16 @@ namespace IsoRealms {
   class PropertyLoader : public IPropertyMaker {
     public:
     PropertyLoader(IResourceData& resourceData, JSONObject object);
+    PropertyLoader(IResourceData& resourceData, std::vector<JSONObject> objects);
 
     IResourceData& getResourceData() override;
+
+    // TODO: Replace this function with a hint or something more elegant.
+    bool loadsPersistedValues() const override {
+      return true;
+    }
+
+    bool hasPersistedMember(const std::string& key) const override;
 
     void createPropertyAdd(                  const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) override;
     void createPropertyCode(                 const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) override;
@@ -54,14 +62,14 @@ namespace IsoRealms {
     void createPropertyCondition(            const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) override;
     void createPropertyEditor(               const std::string& key, IEditable* editable) override;
     void createPropertyKey(                  const std::string& key, std::function<std::string()>  getter, std::function<void(sf::Keyboard::Key)>  setter,             std::function<void()> removeFunction = nullptr) override;
-    void createPropertyList(                 const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr) override;
-    void createPropertyNativeBoolean(        const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter,                                                                                                              std::function<void()> removeFunction = nullptr) override;
-    void createPropertyNativeFloat(          const std::string& key, std::function<float()>        getter, std::function<void(float)>              setter,             std::function<bool(float)>              validityChecker, std::function<void()> removeFunction) override;
-    void createPropertyNativeInteger(        const std::string& key, std::function<int()>          getter, std::function<void(int)>                setter,             std::function<bool(int)>                validityChecker, std::function<void()> removeFunction) override;
-    void createPropertyNativeString(         const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) override;
-    void createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker, std::function<void()> removeFunction) override;
-    void createPropertyOptional(             const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr) override;
-    void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr) override;
+    void createPropertyList(                 const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, const std::string& defaultValue, std::function<void()> removeFunction) override;
+    void createPropertyNativeBoolean(        const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue,                                                          std::function<void()> removeFunction) override;
+    void createPropertyNativeFloat(          const std::string& key, std::function<float()>        getter, std::function<void(float)>              setter, float              defaultValue, std::function<bool(float)>              validityChecker, std::function<void()> removeFunction) override;
+    void createPropertyNativeInteger(        const std::string& key, std::function<int()>          getter, std::function<void(int)>                setter, int                defaultValue, std::function<bool(int)>                validityChecker, std::function<void()> removeFunction, const Options& hint = Options::EMPTY) override;
+    void createPropertyNativeString(         const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) override;
+    void createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter, unsigned int       defaultValue, std::function<bool(unsigned int)>       validityChecker, std::function<void()> removeFunction) override;
+    void createPropertyOptional(             const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr, const Options& hint = Options::EMPTY) override;
+    void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) override;
     void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) override;
 
     /*************************************\
@@ -73,13 +81,16 @@ namespace IsoRealms {
 
     protected:
     bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) override;
+    bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<unsigned int(const JSONObject&)>& matchIndex, const std::function<void(unsigned int index)>& loadElement) override;
 
     private:
     IResourceData& cResourceData;
     std::vector<JSONObject> cObjects;
 
+    const JSONObject& currentObject() const;
     JSONObject& currentObject();
     void pushObject(JSONObject object);
     void popObject();
+    void loadTreeSelectorAssetProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint);
   };
 }

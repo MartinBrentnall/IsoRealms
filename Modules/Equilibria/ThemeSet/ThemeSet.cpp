@@ -20,6 +20,8 @@
 
 #include "Modules/Equilibria/Equilibria.h"
 
+#include "IsoRealms/PropertyLoader.h"
+
 namespace IsoRealms::Equilibria {
   ThemeSet::ThemeSet(Equilibria& equilibria, IResourceData& data) :
             cEquilibria(equilibria),
@@ -31,59 +33,39 @@ namespace IsoRealms::Equilibria {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
 
-  ThemeSet::ThemeSet(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            ThemeSet(equilibria, data) {
-    for (JSONValue mThemeValue : object.getArray(JSON_THEMES)) {
-      JSONObject mThemeObject = mThemeValue.getObject();
-      cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(*this, mThemeObject);
-    }
-
-    data.getProject().init([this]() {
-      setNextTheme();
-    });
-  }
-
   void ThemeSet::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    
-    // Texture elements of each theme in this set.
-    owner.createPropertyStruct("TextureElements", "Edit...", [this, &metadata](IPropertyMaker& owner) {
-      for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
-        createTextureElementProperty(owner, metadata, mTexture.second.get());
-      }
-      
-      owner.createPropertyAdd("TextureElementAdd", "Add...",  [this, &owner, &metadata]() {
-        return createTextureElementProperty(owner, metadata, createTexture(Utils::getAvailableKey(cTextures, "New Texture")));
-      });
-    });
-    
-    // Colour elements of each theme in this set.
-    owner.createPropertyStruct("ColourElements", "Edit...", [this, &metadata](IPropertyMaker& owner) {
-      for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
-        createColourElementProperty(owner, metadata, mColour.second.get());
-      }
-      
-      owner.createPropertyAdd("ColourElementAdd", "Add...",  [this, &owner, &metadata]() {
-        return createColourElementProperty(owner, metadata, createColour(Utils::getAvailableKey(cColours, "New Colour")));
-      });
-    });
-    
-    // Actual themes in this set.
-    owner.createPropertyStruct("Themes", "Edit...", [this, &metadata](IPropertyMaker& owner) {
-      for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
-        Theme* mExistingTheme = mTheme.second.get();
-        owner.createPropertyStruct("Theme", mTheme.first, [this, &metadata, mExistingTheme](IPropertyMaker& owner) {
-          return mExistingTheme->getProperties(owner, metadata);
-        });
-      }
 
-      owner.createPropertyAdd("ThemeAdd", "Add...",  [this, &owner, &metadata]() {
-        std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
-        Theme* mNewTheme = cThemes.emplace(mNewThemeName, std::make_unique<Theme>(*this)).first->second.get();
-        return owner.createPropertyStruct("Theme", mNewThemeName, [this, &metadata, mNewTheme](IPropertyMaker& owner) {
-          return mNewTheme->getProperties(owner, metadata);
-        });
-      });
+    // Texture elements.
+    owner.createPropertyArray("textures", cTextures, [](const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mTexture) -> ThemeTexture& {return *mTexture.second;}, [this, &owner](ThemeTexture& texture) {
+      createTextureElementProperty(owner, &texture);
+    }, [this]() -> ThemeTexture& {
+      return *createTexture(getAvailableTextureElementKey());
     });
+
+    // Colour elements.
+    owner.createPropertyArray("colours", cColours, [](const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mColour) -> ThemeColour& {return *mColour.second;}, [this, &owner](ThemeColour& colour) {
+      createColourElementProperty(owner, &colour);
+    }, [this]() -> ThemeColour& {
+      return *createColour(getAvailableColourElementKey());
+    });
+
+    // Themes.
+    owner.createPropertyArray(JSON_THEMES, cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &owner](Theme& theme) {
+      owner.createPropertyStruct("Theme", getName(&theme), [&theme](IPropertyMaker& owner) {
+        theme.getProperties(owner);
+      }, [this, &theme]() {
+        cThemes.erase(getName(&theme));
+      });
+    }, [this]() -> Theme& {
+      std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
+      return *cThemes.emplace(mNewThemeName, std::make_unique<Theme>(*this)).first->second;
+    });
+
+    if (owner.loadsPersistedValues()) {
+      cEquilibria.getProject().init([this]() {
+        setNextTheme();
+      });
+    }
   }
 
   bool ThemeSet::renderIcon() {
@@ -141,6 +123,14 @@ namespace IsoRealms::Equilibria {
     }
   }
   
+  std::string ThemeSet::getAvailableTextureElementKey() {
+    return Utils::getAvailableKey(cTextures, "New Texture");
+  }
+
+  std::string ThemeSet::getAvailableColourElementKey() {
+    return Utils::getAvailableKey(cColours, "New Colour");
+  }
+
   ThemeTexture* ThemeSet::createTexture(const std::string& type) {
     std::map<std::string, std::unique_ptr<ThemeTexture>>::iterator i = cTextures.find(type);
     if (i == cTextures.end()) {
@@ -210,6 +200,9 @@ namespace IsoRealms::Equilibria {
 
   void ThemeSet::setName(Theme& theme, const std::string& name) {
     std::string mOldName = getName(&theme);
+    if (mOldName == name) {
+      return;
+    }
     cThemes.emplace(name, std::move(cThemes[mOldName]));
     cThemes.erase(mOldName);
   }
@@ -360,7 +353,7 @@ namespace IsoRealms::Equilibria {
     }
   }
   
-  void ThemeSet::createTextureElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeTexture* element) {
+  void ThemeSet::createTextureElementProperty(IPropertyMaker& owner, ThemeTexture* element) {
     owner.createPropertyNativeString(Theme::JSON_ELEMENT, [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
@@ -369,7 +362,7 @@ namespace IsoRealms::Equilibria {
       std::string mOldName = getElement(element);
       cTextures.emplace(value, std::move(cTextures[mOldName]));
       cTextures.erase(mOldName);
-    }, [this, element](const std::string& value) {
+    }, "", [this, element](const std::string& value) {
 
       // Check the element name is not already in use.
       for (std::pair<std::string const, std::unique_ptr<ThemeTexture>>& mTexture : cTextures) {
@@ -383,7 +376,7 @@ namespace IsoRealms::Equilibria {
     });
   }
   
-  void ThemeSet::createColourElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeColour* element) {
+  void ThemeSet::createColourElementProperty(IPropertyMaker& owner, ThemeColour* element) {
     owner.createPropertyNativeString(Theme::JSON_ELEMENT, [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
@@ -392,7 +385,7 @@ namespace IsoRealms::Equilibria {
       std::string mOldName = getElement(element);
       cColours.emplace(value, std::move(cColours[mOldName]));
       cColours.erase(mOldName);
-    }, [this, element](const std::string& value) {
+    }, "", [this, element](const std::string& value) {
       for (std::pair<std::string const, std::unique_ptr<ThemeColour>>& mColour : cColours) {
         if (mColour.first == value) {
           return mColour.second.get() == element;

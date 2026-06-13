@@ -25,11 +25,12 @@
 #include <algorithm>
 
 #include "IsoRealms/IResourceTypeDefinition.h"
-#include "IsoRealms/Resource.h"
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/ProjectFile.h"
 #include "IsoRealms/Project/ResourceType.h"
+#include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/Resource.h"
 
 // Forward declarations
 namespace IsoRealms {
@@ -46,10 +47,6 @@ namespace IsoRealms {
       public:
       ResourceInfo(ResourceType& parent, MODULE& module, ProjectFile* ownerProject) :
                 cResource(parent, module, ownerProject) {
-      }
-      
-      ResourceInfo(ResourceType& parent, MODULE& module, ProjectFile* ownerProject, JSONObject object) :
-                cResource(parent, module, ownerProject, object) {
       }
       
       Resource<MODULE, TYPE>* getResourceForUser(IResourceUser<TYPE>* user) {
@@ -147,7 +144,9 @@ namespace IsoRealms {
     }
     
     IResource* loadResource(ResourceType& parent, const std::string& name, JSONObject object, ProjectFile* ownerProject) override {
-      IResource* mResource = cResources.emplace(name, std::make_unique<ResourceInfo>(parent, cModule, ownerProject, object)).first->second->getResource();
+      Resource<MODULE, TYPE>* mResource = cResources.emplace(name, std::make_unique<ResourceInfo>(parent, cModule, ownerProject)).first->second->getResource();
+      PropertyLoader mLoader(mResource->getResourceData(), object);
+      mResource->getResource()->getProperties(mLoader, parent.getMetadata());
       mResource->registerAssets();
       return mResource;
     }

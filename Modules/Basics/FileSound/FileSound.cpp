@@ -25,15 +25,11 @@ namespace IsoRealms::Basics {
 
   FileSound::FileSound(Basics& basics, IResourceData& data) :
             cDefBasics(basics),
-            cDefFile(data.getProject()) {
+            cDefFile(data.getProject(), [this]() {
+              reloadData();
+            }) {
   }
   
-  FileSound::FileSound(Basics& basics, IResourceData& data, JSONObject object) :
-            FileSound(basics, data) {
-    cDefFile.load(JSON_FILENAME, object);
-    reloadData();
-  }
-
   void FileSound::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IAction>(this, "", "Play a Sound");
   }

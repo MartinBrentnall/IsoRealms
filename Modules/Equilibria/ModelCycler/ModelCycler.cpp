@@ -18,22 +18,19 @@
  */
 #include "ModelCycler.h"
 
+#include "Modules/Equilibria/Equilibria.h"
+
+#include "IsoRealms/PropertyLoader.h"
+
 namespace IsoRealms::Equilibria {
   ModelCycler::ModelCycler(Equilibria& equilibria, IResourceData& data) :
+            cEquilibria(equilibria),
+            cResourceData(data),
             cRuntimeCycleIndex(0),
             cLuaBinding(data.getProject().getLuaState(), this),
             cEditingIconCycle(0) {
   }
   
-  ModelCycler::ModelCycler(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            ModelCycler(equilibria, data) {
-    unsigned int mIndex = 0;
-    for (JSONValue mModelValue : object.getArray(JSON_MODELS)) {
-      cDefModels.emplace_back(std::make_unique<Model>(data))->init(mModelValue.getObject(), JSON_MODEL);
-      cOffsetModels.emplace_back(std::make_unique<Offset>(*this, mIndex++));
-    }
-  }
-
   void ModelCycler::registerAssets(ResourceAssetRegistry& assets) {
     for (unsigned int i = 0; i < cOffsetModels.size(); i++) {
       assets.add<IModel>(cOffsetModels[i].get(), std::to_string(i), "Cycleable Models");
@@ -59,9 +56,28 @@ namespace IsoRealms::Equilibria {
   }
 
   void ModelCycler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      owner.createPropertyTreeSelector(JSON_MODEL, *mModel.get());
+    owner.createPropertyArray(JSON_MODELS, cDefModels, [](const std::unique_ptr<Model>& mModel) -> Model& {return *mModel;}, [this, &owner](Model& model) {
+      owner.createPropertyTreeSelector(JSON_MODEL, model, Options::EMPTY, [this, &model]() {
+        Utils::removeElementUnique(cDefModels, &model);
+        rebuildOffsetModels();
+        refreshAssetRegistration();
+      });
+    }, [this]() -> Model& {
+      Model& mModel = *cDefModels.emplace_back(std::make_unique<Model>(cResourceData));
+      rebuildOffsetModels();
+      return mModel;
+    });
+  }
+
+  void ModelCycler::rebuildOffsetModels() {
+    cOffsetModels.clear();
+    for (unsigned int i = 0; i < cDefModels.size(); i++) {
+      cOffsetModels.emplace_back(std::make_unique<Offset>(*this, i));
     }
+  }
+
+  void ModelCycler::refreshAssetRegistration() {
+    ResourceContainerTraits<ModelCycler>::get(cEquilibria).refreshAssetRegistration(*this);
   }
 
   void ModelCycler::removed() {

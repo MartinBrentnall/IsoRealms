@@ -29,13 +29,6 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
   
-  Ball::Ball(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            Ball(spindizzy, data) {
-    cDefFill.init(object, JSON_FILL);
-    cDefOutline.init(object, JSON_OUTLINE);
-    cDefShine.init(object, JSON_SHINE);
-  }
-
   void Ball::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<ITexture>(this, "", "Spindizzy Ball Craft Textures");
   }

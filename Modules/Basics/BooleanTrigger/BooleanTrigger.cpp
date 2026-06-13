@@ -27,13 +27,6 @@ namespace IsoRealms::Basics {
             cDefFalseAction(data.getDummyActionContext()) {
   }
   
-  BooleanTrigger::BooleanTrigger(Basics& basics, IResourceData& data, JSONObject object) :
-            BooleanTrigger(basics, data) {
-    cDefValue.init(object, JSON_VALUE);
-    cDefTrueAction.init(object, JSON_ON_BECOMING_TRUE);
-    cDefFalseAction.init(object, JSON_ON_BECOMING_FALSE);
-  }
-
   void BooleanTrigger::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }

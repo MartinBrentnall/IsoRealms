@@ -32,17 +32,6 @@ namespace IsoRealms::Equilibria {
     cDefPhysicalObjectTypeB.addNotifyAssetChangedFunction(this);
   }
 
-  CollisionHandler::CollisionHandler(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            CollisionHandler(equilibria, data) {
-    cDefPhysicalObjectTypeA.init(object, JSON_OBJECT_A);
-    cDefPhysicalObjectTypeB.init(object, JSON_OBJECT_B);
-    cDefEnteredAction.init(object, JSON_ON_COLLISION);
-    cDefExitedAction.init(object, JSON_ON_PARTING);
-    equilibria.getProject().init([this, &equilibria]() {
-      equilibria.added(this);
-    });
-  }
-
   void CollisionHandler::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }
@@ -67,6 +56,12 @@ namespace IsoRealms::Equilibria {
     owner.createPropertyTreeSelector(JSON_OBJECT_B,     cDefPhysicalObjectTypeB);
     owner.createPropertyTreeSelector(JSON_ON_COLLISION, cDefEnteredAction);
     owner.createPropertyTreeSelector(JSON_ON_PARTING,   cDefExitedAction);
+
+    if (owner.loadsPersistedValues()) {
+      cEquilibria.getProject().init([this]() {
+        cEquilibria.added(this);
+      });
+    }
   }
 
   void CollisionHandler::removed() {

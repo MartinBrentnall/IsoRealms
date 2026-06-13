@@ -47,7 +47,6 @@ namespace IsoRealms::Hue {
      * Resource Interface *
     \**********************/
     HueManager(Hue& hue, IResourceData& data);
-    HueManager(Hue& hue, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);
@@ -285,7 +284,8 @@ namespace IsoRealms::Hue {
       void save(JSONObject object);
       Colour& getColour();
       void sync();
-      
+      void getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction);
+
       private:
       HueManager& cParent;
       int cDefID;

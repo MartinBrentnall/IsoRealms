@@ -30,7 +30,6 @@ namespace IsoRealms::Equilibria {
   class ThemeSet {
     public:
     ThemeSet(Equilibria& equilibria, IResourceData& data);
-    ThemeSet(Equilibria& equilibria, IResourceData& data, JSONObject object);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     bool renderIcon();
     void hintInUse(bool inUse);
@@ -68,6 +67,11 @@ namespace IsoRealms::Equilibria {
     void setNextTheme();
     void setPreviousTheme();
 
+    std::string getAvailableTextureElementKey();
+    std::string getAvailableColourElementKey();
+    void createTextureElementProperty(IPropertyMaker& owner, ThemeTexture* element);
+    void createColourElementProperty(IPropertyMaker& owner, ThemeColour* element);
+
     float getAnimation();
     ITexture* getPreviousTexture(ThemeTexture* texture);
     ITexture* getCurrentTexture(ThemeTexture* texture);
@@ -75,8 +79,10 @@ namespace IsoRealms::Equilibria {
     IColour* getCurrentColour(ThemeColour* colour);
 
     // JSON strings
-    inline static const std::string JSON_ID     = "id";
-    inline static const std::string JSON_THEMES = "themes";
+    inline static const std::string JSON_COLOURS  = "colours";
+    inline static const std::string JSON_ID       = "id";
+    inline static const std::string JSON_TEXTURES = "textures";
+    inline static const std::string JSON_THEMES   = "themes";
 
     private:
     inline static const unsigned int ICON_TRANSITION_TIME = 500;
@@ -98,8 +104,5 @@ namespace IsoRealms::Equilibria {
     unsigned int cThemeIcon;
 
     LuaBinding<ThemeSet> cLuaBinding;
-    
-    void createTextureElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeTexture* element);
-    void createColourElementProperty(IPropertyMaker& owner, const Metadata& metadata, ThemeColour* element);
   };
 }

@@ -39,7 +39,6 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data);
-    C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
     void save(JSONObject object) const;
     bool renderIcon();

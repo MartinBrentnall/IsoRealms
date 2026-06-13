@@ -28,13 +28,6 @@ namespace IsoRealms::UI {
             cRuntimeScreenB(data.getProject(), 2560, 1440, true, true, true) {
   }
   
-  ScreenFader::ScreenFader(UI& ui, IResourceData& data, JSONObject object) :
-            ScreenFader(ui, data) {
-    cDefScreenA.init(object, JSON_SCREEN_A);
-    cDefScreenB.init(object, JSON_SCREEN_B);
-    cDefTransition.init(object, JSON_TRANSITION);
-  }
-
   void ScreenFader::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Screen Faders");
   }

@@ -18,8 +18,12 @@
  */
 #include "Menu.h"
 
+#include "IsoRealms/PropertyLoader.h"
+#include "Modules/UI/UI.h"
+
 namespace IsoRealms::UI {
   Menu::Menu(UI& ui, IResourceData& data) :
+            cUI(ui),
             cResourceData(data),
             cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefExitAction(data.getDummyActionContext()),
@@ -31,18 +35,6 @@ namespace IsoRealms::UI {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Menu::Menu(UI& ui, IResourceData& data, JSONObject object) :
-            Menu(ui, data) {
-    for (JSONValue mOptionValue : object.getArray(JSON_OPTIONS)) {
-      cDefItems.emplace_back(std::make_unique<MenuItem>(ui, *this)).get()->set(mOptionValue.getObject(), JSON_ITEM, *this);
-    }
-    cDefColour.init(object, JSON_COLOUR);
-    cDefFont.init(object, JSON_FONT);
-    cDefExitAction.init(object, JSON_ON_EXIT);
-    cDefFontSize = object.getFloat(JSON_FONT_SIZE, DEFAULT_FONT_SIZE);
-    cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
-  }
-
   void Menu::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IScreen>(static_cast<IScreen*>(this), "", "Menus");
     assets.add<IInputHandler>(static_cast<IInputHandler*>(this), "", "Menus");
@@ -76,12 +68,18 @@ namespace IsoRealms::UI {
   void Menu::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(JSON_COLOUR,        cDefColour);
     owner.createPropertyTreeSelector(JSON_FONT,          cDefFont);
-    owner.createPropertyNativeFloat( JSON_FONT_SIZE,     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;});
+    owner.createPropertyNativeFloat( JSON_FONT_SIZE,     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;}, DEFAULT_FONT_SIZE);
+    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
     owner.createPropertyTreeSelector(JSON_ON_EXIT,       cDefExitAction);
-    for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      owner.createPropertyTreeSelector(JSON_ITEM, *mItem.get());
-    }
+    owner.createPropertyArray(JSON_OPTIONS, cDefItems, [](const std::unique_ptr<MenuItem>& mItem) -> MenuItem& {return *mItem;}, [this, &owner](MenuItem& item) {
+      Options mHint;
+      mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
+      owner.createPropertyTreeSelector(JSON_ITEM, item, mHint, [this, &item]() {
+        Utils::removeElementUnique(cDefItems, &item);
+      });
+    }, [this]() -> MenuItem& {
+      return *cDefItems.emplace_back(std::make_unique<MenuItem>(cUI, *this));
+    });
   }
 
   void Menu::removed() {

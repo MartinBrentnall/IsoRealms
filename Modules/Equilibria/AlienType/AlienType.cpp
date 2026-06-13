@@ -37,18 +37,6 @@ namespace IsoRealms::Equilibria {
     cEquilibria.added(this);
   }
   
-  AlienType::AlienType(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            AlienType(equilibria, data) {
-    cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
-    cDefFriction = object.getFloat(JSON_FRICTION, DEFAULT_FRICTION);
-    cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
-    cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
-    cDefRadius = object.getFloat(JSON_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = object.getFloat(JSON_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefTarget.init(object, JSON_TARGET);
-    cDefModel.init(object, JSON_APPEARANCE);
-  }
-
   void AlienType::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Aliens");
   }
@@ -76,12 +64,12 @@ namespace IsoRealms::Equilibria {
   void AlienType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector(JSON_APPEARANCE,   cDefModel);
     owner.createPropertyTreeSelector(JSON_TARGET,       cDefTarget);
-    owner.createPropertyNativeFloat( JSON_ACCELERATION, [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
-    owner.createPropertyNativeFloat( JSON_FRICTION,     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;});
+    owner.createPropertyNativeFloat( JSON_ACCELERATION, [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
+    owner.createPropertyNativeFloat( JSON_FRICTION,     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;}, DEFAULT_FRICTION);
     owner.createPropertyNativeFloat( JSON_SPIN_SPEED,   [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-    owner.createPropertyNativeFloat( JSON_HEIGHT,       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
-    owner.createPropertyNativeFloat( JSON_RADIUS,       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
-    owner.createPropertyNativeFloat( JSON_HUG_MOMENTUM, [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
+    owner.createPropertyNativeFloat( JSON_HEIGHT,       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
+    owner.createPropertyNativeFloat( JSON_RADIUS,       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
+    owner.createPropertyNativeFloat( JSON_HUG_MOMENTUM, [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
   }
 
   void AlienType::removed() {

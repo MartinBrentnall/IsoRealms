@@ -30,7 +30,6 @@ namespace IsoRealms::Basics {
 
   SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, JSONObject object) :
             SequenceTrackColourEvent(parent, owner, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
-    cDefTarget.init(object, JSON_TARGET);
   }
 
   void SequenceTrackColourEvent::save(JSONObject object) const {
@@ -48,8 +47,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackColourEvent::getEventProperties(IPropertyMaker& owner) {
+    owner.createPropertyNativeInteger(JSON_DURATION, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
     owner.createPropertyTreeSelector(JSON_TARGET, cDefTarget);
-    owner.createPropertyNativeBoolean(JSON_FADE, [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;});
+    owner.createPropertyNativeBoolean(JSON_FADE, [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;}, true);
   }
 
   const IColour* SequenceTrackColourEvent::getColour() const {

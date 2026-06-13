@@ -115,7 +115,7 @@ namespace IsoRealms {
     cOwner = cProject.getProjectFile(id);
   }
 
-  void ResourceOwner::loadFromProperty(JSONObject object, const std::string& key) {
+  void ResourceOwner::loadFromProperty(JSONObject object, const std::string& key, const Options& hint) {
     setID(object.getString(key));
   }
 }

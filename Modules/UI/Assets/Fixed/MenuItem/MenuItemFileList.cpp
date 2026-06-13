@@ -23,6 +23,7 @@
 namespace IsoRealms::UI {
   MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu) :
             cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cMenu(menu),
             cDefID(""),
             cDefFolder(""),
             cDefUser(false),
@@ -32,14 +33,7 @@ namespace IsoRealms::UI {
   }
 
   MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
-            cDefID(object.getString(JSON_ID)),
-            cDefFolder(object.getString(JSON_FOLDER)),
-            cDefUser(object.getBoolean(JSON_USER)),
-            cDefAction(menu.getResourceData().getDummyActionContext()),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
-            cSelectedFile(*this) {
-    cDefAction.init(object, JSON_ON_SELECTION);
+            MenuItemFileList(metadata, menu) {
   }
 
   void MenuItemFileList::refresh() {
@@ -132,7 +126,10 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::getAssetProperties(IPropertyMaker& owner) {
     // TODO: Change this so it uses "File" client asset.
-    owner.createPropertyNativeString( JSON_ID,           [this]() {return cDefID;},     [this](const std::string& value) {cDefID     = value;});
+    owner.createPropertyNativeString( JSON_ID,           [this]() {return cDefID;},     [this](const std::string& value) {
+      cDefID = value;
+      cMenu.getResourceData().reregisterAssets();
+    });
     owner.createPropertyNativeString( JSON_FOLDER,       [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
     owner.createPropertyNativeBoolean(JSON_USER,         [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
     owner.createPropertyTreeSelector( JSON_ON_SELECTION, cDefAction);

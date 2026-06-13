@@ -41,5 +41,6 @@ namespace IsoRealms {
     virtual Project& getAssetManager() = 0;
     virtual IActionContext& getDummyActionContext() = 0;
     virtual const Metadata& getMetadata() const = 0;
+    virtual void reregisterAssets() = 0;
   };
 }

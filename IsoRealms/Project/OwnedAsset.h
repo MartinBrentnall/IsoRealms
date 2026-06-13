@@ -24,6 +24,8 @@
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
 
 namespace IsoRealms {
+  class ProjectFile;
+
   template <typename OWNER, typename TYPE> class OwnedAsset {
     public:
     OwnedAsset(Project& project, ProjectFile& ownerProject, OWNER& owner) :
@@ -50,7 +52,15 @@ namespace IsoRealms {
       }
     }
 
-    void getProperty(IPropertyMaker& owner, const Metadata& metadata, const std::string& name) {
+    void getProperty(IPropertyMaker& owner, const Metadata& metadata, const std::string& name, ProjectFile* loadOwner = nullptr) {
+      if (owner.loadsPersistedValues()) {
+        if (loadOwner != nullptr && !cInit && owner.hasPersistedMember(name)) {
+          owner.createPropertyTreeSelector(name, cAsset);
+          cOwner.setProjectFile(loadOwner);
+          cInit = true;
+        }
+        return;
+      }
       if (cOwner.isConfigurable()) {
         owner.createPropertyStruct(name, cAsset.getTreeItemLabel(), [this, &metadata, name](IPropertyMaker& owner) {
           owner.createPropertyTreeSelector("Value", cAsset);

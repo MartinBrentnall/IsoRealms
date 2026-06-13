@@ -35,7 +35,6 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     ScreenFader(UI& ui, IResourceData& data);
-    ScreenFader(UI& ui, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

@@ -157,8 +157,7 @@ namespace IsoRealms {
       glHint(GL_POINT_SMOOTH, GL_DONT_CARE);
       glHint(GL_LINE_SMOOTH, GL_DONT_CARE);
       glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
-      #define GL_MULTISAMPLE_ARB 0x809D
-      glDisable( GL_MULTISAMPLE_ARB);
+      glDisable(0x809D); // GL_MULTISAMPLE_ARB
 
       while (!mProjectFinished) {
         int mCurrentTime = mClock.getElapsedTime().asMilliseconds();

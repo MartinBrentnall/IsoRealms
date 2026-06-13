@@ -330,6 +330,10 @@ namespace IsoRealms {
     return cModuleMetadata;
   }
 
+  void Module::reregisterAssets() {
+    // Nothing to do.
+  }
+
   IResourceData& Module::getResourceData() {
     return *this;
   }

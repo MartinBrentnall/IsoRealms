@@ -53,29 +53,6 @@ namespace IsoRealms::Equilibria {
     cEquilibria.added(this);
   }
 
-  PlayerType::PlayerType(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            PlayerType(equilibria, data) {
-    cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
-    cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_ACCELERATION);
-    cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
-    cDefStepReach = object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH);
-    cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
-    cDefRadius = object.getFloat(JSON_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = object.getFloat(JSON_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefRespawnDelay = object.getInteger(JSON_RESPAWN_DELAY, DEFAULT_RESPAWN_DELAY);
-    cDefModel.init(object, JSON_APPEARANCE);
-    cDefInputThrust.init(object, JSON_THRUST_INPUT);
-    cDefInputX.init(object, JSON_X_INPUT);
-    cDefInputY.init(object, JSON_Y_INPUT);
-    cDefOrientation.init(object, JSON_ORIENTATION);
-    cDefFallImpactAction.init(object, JSON_ON_FALL_IMPACT);
-    cDefFallBounceAction.init(object, JSON_ON_FALL_BOUNCE);
-    cDefWallBounceAction.init(object, JSON_ON_WALL_BOUNCE);
-    cDefRespawnAction.init(object, JSON_ON_RESPAWN);
-    cDefLeaveSurfaceAction.init(object, JSON_ON_LEAVE_SURFACE);
-    cDefApexAction.init(object, JSON_ON_APEX);
-  }
-
   void PlayerType::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Players");
   }
@@ -112,14 +89,14 @@ namespace IsoRealms::Equilibria {
   void PlayerType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
 
     // Dimensions
-    owner.createPropertyNativeFloat(  JSON_RADIUS,           [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;});
-    owner.createPropertyNativeFloat(  JSON_HEIGHT,           [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;});
+    owner.createPropertyNativeFloat(  JSON_RADIUS,           [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
+    owner.createPropertyNativeFloat(  JSON_HEIGHT,           [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
 
     // Physics
-    owner.createPropertyNativeFloat(  JSON_ACCELERATION,     [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;});
-    owner.createPropertyNativeFloat(  JSON_BOUNCE_FACTOR,    [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;});
-    owner.createPropertyNativeFloat(  JSON_STEP_REACH,       [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;});
-    owner.createPropertyNativeFloat(  JSON_HUG_MOMENTUM,     [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;});
+    owner.createPropertyNativeFloat(  JSON_ACCELERATION,     [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
+    owner.createPropertyNativeFloat(  JSON_BOUNCE_FACTOR,    [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;}, DEFAULT_BOUNCE_FACTOR);
+    owner.createPropertyNativeFloat(  JSON_STEP_REACH,       [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;}, DEFAULT_STEP_REACH);
+    owner.createPropertyNativeFloat(  JSON_HUG_MOMENTUM,     [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
 
     // appearance
     owner.createPropertyTreeSelector( JSON_APPEARANCE,       cDefModel);
@@ -139,7 +116,7 @@ namespace IsoRealms::Equilibria {
     owner.createPropertyTreeSelector( JSON_ON_APEX,          cDefApexAction);
 
     // Misc
-    owner.createPropertyNativeInteger(JSON_RESPAWN_DELAY,    [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;});
+    owner.createPropertyNativeInteger(JSON_RESPAWN_DELAY,    [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;}, DEFAULT_RESPAWN_DELAY);
     owner.createPropertyTreeSelector( JSON_ORIENTATION,      cDefOrientation);
   }
 

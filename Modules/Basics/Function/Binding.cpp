@@ -18,6 +18,8 @@
  */
 #include "Binding.h"
 
+#include "IsoRealms/Project/Options.h"
+
 #include "Function.h"
 
 namespace IsoRealms::Basics {
@@ -39,17 +41,6 @@ namespace IsoRealms::Basics {
             //   }
             //   cParent.setBindingName(*this, mStrippedID);
             // }) {
-  }
-
-  Binding::Binding(Function& parent, IActionContext& owner, bool init, JSONObject object) :
-            Binding(parent, owner, object.getString(JSON_VARIABLE)) {
-    if (object.hasMember(JSON_TO)) {
-      if (init) {
-        cDefValue.init(object, JSON_TO);
-      } else {
-        cDefValue.set(object, JSON_TO);
-      }
-    }
   }
 
   void Binding::setName(const std::string& name) {
@@ -103,8 +94,12 @@ namespace IsoRealms::Basics {
 //     }
   }
   
-  void Binding::getProperties(IPropertyMaker& owner) {
-    owner.createPropertyTreeSelector(JSON_TO,       cDefValue);
-    owner.createPropertyNativeString(JSON_VARIABLE, [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
+  void Binding::getProperties(IPropertyMaker& owner, bool init) {
+    Options mHint;
+    if (!init) {
+      mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
+    }
+    owner.createPropertyTreeSelector(JSON_TO, cDefValue, mHint);
+    owner.createPropertyNativeString(JSON_VARIABLE, [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
   }
 }

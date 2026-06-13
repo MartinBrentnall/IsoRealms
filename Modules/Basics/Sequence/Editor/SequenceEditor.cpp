@@ -672,7 +672,7 @@ namespace IsoRealms::Basics {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     cSequence.getTrack(cCursorTrack.value())->setName(name);
-                  }, [this](const std::string& name) {
+                  }, "", [this](const std::string& name) {
                     for (int i = 0; i < static_cast<int>(cSequence.getTrackCount()); i++) {
                       if (i != cCursorTrack.value() && name == cSequence.getTrack(i)->getName()) {
                         return false;

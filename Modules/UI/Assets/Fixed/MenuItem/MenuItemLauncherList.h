@@ -98,6 +98,7 @@ namespace IsoRealms::UI {
 
     // External Interfaces.
     HatHandler& cHatHandler;
+    Menu& cMenu;
 
     // Action client.
     ActionContext cActionContext;

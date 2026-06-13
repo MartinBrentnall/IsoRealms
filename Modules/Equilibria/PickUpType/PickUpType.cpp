@@ -29,11 +29,6 @@ namespace IsoRealms::Equilibria {
     cEquilibria.added(this);
   }
   
-  PickUpType::PickUpType(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            PickUpType(equilibria, data) {
-    cDefModel.init(object, JSON_APPEARANCE);
-  }
-
   void PickUpType::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }

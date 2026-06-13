@@ -22,6 +22,7 @@
 
 namespace IsoRealms::UI {
   MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu) :
+            cMenu(menu),
             cDefID(""),
             cDefLabel(""),
             cDefAction(menu.getResourceData().getDummyActionContext()),
@@ -29,11 +30,7 @@ namespace IsoRealms::UI {
   }
 
   MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu, JSONObject object) :
-            cDefID(object.getString(JSON_ID)),
-            cDefLabel(object.getString(JSON_LABEL)),
-            cDefAction(menu.getResourceData().getDummyActionContext()),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
-    cDefAction.init(object, JSON_ON_SELECTION);
+            MenuItemAction(metadata, menu) {
   }
 
   void MenuItemAction::setValue(const std::string& value) {
@@ -118,7 +115,10 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemAction::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(JSON_ID,           [this]() {return cDefID;},    [this](const std::string& value) {cDefID    = value;});
+    owner.createPropertyNativeString(JSON_ID,           [this]() {return cDefID;},    [this](const std::string& value) {
+      cDefID    = value;
+      cMenu.getResourceData().reregisterAssets();
+    });
     owner.createPropertyNativeString(JSON_LABEL,        [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
     owner.createPropertyTreeSelector(JSON_ON_SELECTION, cDefAction);
   }

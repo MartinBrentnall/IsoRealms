@@ -138,6 +138,20 @@ namespace IsoRealms {
       cManager.setOwner(owner);
     }
 
+    void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override {
+      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true" || cManager.getProject().areResourcesLoaded()) {
+        setID(object.getString(key));
+      } else {
+        cManager.getProject().init([this, object, key]() {
+          setID(object.getString(key));
+        });
+      }
+    }
+
+    void loadFromProperty(JSONObject object, const Options& hint) override {
+      throw std::runtime_error("ResourceReference::loadFromProperty: Not implemented.");
+    }
+
     private:
 
     // External interfaces.

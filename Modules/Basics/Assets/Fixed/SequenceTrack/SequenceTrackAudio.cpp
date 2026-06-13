@@ -23,7 +23,7 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackAudio::SequenceTrackAudio(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence),
+            SequenceTrackBase(sequence.getResourceData(), sequence),
             cMetadata(metadata),
             cDefVolume(sequence.getResourceData(), 1.0f) {
   }
@@ -86,5 +86,6 @@ namespace IsoRealms::Basics {
 
   void SequenceTrackAudio::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyTreeSelector(JSON_VOLUME, cDefVolume);
+    getBaseProperties(owner);
   }
 }

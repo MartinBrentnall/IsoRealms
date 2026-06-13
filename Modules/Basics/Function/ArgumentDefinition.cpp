@@ -66,7 +66,7 @@ namespace IsoRealms::Basics {
   }
 
   void ArgumentDefinition::getProperties(IPropertyMaker& owner, const Metadata& metadata, Function& parent) {
-    owner.createPropertyNativeString(JSON_NAME,     [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    owner.createPropertyNativeString(JSON_NAME,     [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
     owner.createPropertyTreeSelector(JSON_TYPE,     cDefType);
     owner.createPropertyNativeString(JSON_LUA_NAME, [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
   }

@@ -64,15 +64,6 @@ namespace IsoRealms::Spindizzy {
     cProject.addScreenListener(this);
   }
   
-  C64TerrainGraphics::C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data, JSONObject object) :
-            C64TerrainGraphics(spindizzy, data) {
-    cDefFloor.init(object, JSON_FLOOR);
-    cDefWall.init(object, JSON_WALL);
-    cDefGrid.init(object, JSON_GRID);
-    cDefHighlight.init(object, JSON_HIGHLIGHT);
-    setNeedsFullRedraw();
-  }
-
   void C64TerrainGraphics::registerAssets(ResourceAssetRegistry& assets) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
       assets.add<ITexture>(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
@@ -140,6 +131,9 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyTreeSelector(JSON_WALL,      cDefWall);
     owner.createPropertyTreeSelector(JSON_GRID,      cDefGrid);
     owner.createPropertyTreeSelector(JSON_HIGHLIGHT, cDefHighlight);
+
+    // TODO: This is a hack to reload the textures when the properties are loaded.
+    setNeedsFullRedraw();
   }
 
   void C64TerrainGraphics::removed() {

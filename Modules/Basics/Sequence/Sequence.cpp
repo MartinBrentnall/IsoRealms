@@ -23,6 +23,7 @@
 #include "Modules/Basics/Basics.h"
 
 #include "Editor/SequenceEditor.h"
+#include "IsoRealms/PropertyLoader.h"
 #include "SequenceInstance.h"
 
 namespace IsoRealms::Basics {
@@ -36,19 +37,8 @@ namespace IsoRealms::Basics {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  Sequence::Sequence(Basics& basics, IResourceData& data, JSONObject object) :
-            Sequence(basics, data) {
-    cDefPlaying = object.getBoolean(JSON_PLAYING);
-    cDefLoop = object.getBoolean(JSON_LOOP);
-    cDefSpeed.init(object, JSON_SPEED);
-    for (JSONValue mTrackValue : object.getArray(JSON_TRACKS)) {
-      cDefTracks.emplace_back(std::make_unique<SequenceTrack>(*this));
-      cDefTracks.back()->set(mTrackValue.getObject(), JSON_TRACK);
-    }
-    for (JSONValue mInstanceValue : object.getArray(JSON_INSTANCES)) {
-      JSONObject mInstanceObject = mInstanceValue.getObject();
-      cDefInstances.emplace(mInstanceObject.getString(JSON_NAME), std::make_unique<SequenceInstance>(*this, mInstanceObject));
-    }
+  void Sequence::load(IResourceData& resourceData, JSONObject object) {
+    // Nothing to do.
   }
 
   void Sequence::registerAssets(ResourceAssetRegistry& assets) {
@@ -90,23 +80,35 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeBoolean(JSON_PLAYING, [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
     owner.createPropertyNativeBoolean(JSON_LOOP,    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
     owner.createPropertyTreeSelector(JSON_SPEED,    cDefSpeed);
-    for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      owner.createPropertyStruct("Instance", mEntry.first, [this, &mEntry, &metadata](IPropertyMaker& owner) {
-        mEntry.second->getProperties(owner, metadata);
-      }, [this, &mEntry]() {
-        cDefInstances.erase(mEntry.first);
+    owner.createPropertyArray(JSON_INSTANCES, cDefInstances, [](const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry) -> SequenceInstance& {return *mEntry.second;}, [this, &owner, &metadata](SequenceInstance& instance) {
+      owner.createPropertyStruct("Instance", getInstanceName(instance), [this, &instance, &metadata](IPropertyMaker& owner) {
+        instance.getProperties(owner, metadata);
+      }, [this, &instance]() {
+        cDefInstances.erase(getInstanceName(instance));
       });
-    }
-    owner.createPropertyAdd("InstanceAdd", "Add...", [this, &owner, &metadata]() {
+    }, [this]() -> SequenceInstance& {
       std::string mKey = Utils::getAvailableKey(cDefInstances, "Instance");
-      std::unique_ptr<SequenceInstance>& mInstance = cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
-      // mInstance->registerAssets(assets, mKey);
-      owner.createPropertyStruct("Instance", "Edit...", [this, &mInstance, &metadata](IPropertyMaker& owner) {
-        mInstance->getProperties(owner, metadata);
-      }, [this, mKey]() {
-        cDefInstances.erase(mKey);
-      });
+      return *cDefInstances.emplace(mKey, std::make_unique<SequenceInstance>(*this)).first->second;
     });
+
+    // Tracks.
+    owner.createPropertyArray(JSON_TRACKS, cDefTracks, [](const std::unique_ptr<SequenceTrack>& mTrack) -> SequenceTrack& {return *mTrack;}, [this, &owner, &metadata](SequenceTrack& track) {
+      Options mHint;
+      mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
+      owner.createPropertyTreeSelector(JSON_TRACK, track, mHint);
+      track.stateChanged();
+    }, [this]() -> SequenceTrack& {
+      SequenceTrack* mTrack = cDefTracks.emplace_back(std::make_unique<SequenceTrack>(*this)).get();
+      for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
+        ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance(*mEntry.second.get());
+        mEntry.second->addTrackInstance(mTrackInstance);
+      }
+      return *mTrack;
+    });
+
+    if (owner.loadsPersistedValues()) {
+      cResourceData.reregisterAssets();
+    }
   }
 
   void Sequence::removed() {
@@ -168,6 +170,9 @@ namespace IsoRealms::Basics {
 
   void Sequence::setInstanceName(SequenceInstance& instance, const std::string& name) {
     std::string mOldName = getInstanceName(instance);
+    if (mOldName == name) {
+      return;
+    }
     cDefInstances.emplace(name, std::move(cDefInstances[mOldName]));
     cDefInstances.erase(mOldName);
     refreshAssetRegistration();

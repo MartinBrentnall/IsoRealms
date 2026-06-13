@@ -35,22 +35,6 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleColour::SimpleColour(Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleColour(basics, data) {
-    cRuntimeRed   = cDefRed   = object.getFloat(JSON_RED);
-    cRuntimeGreen = cDefGreen = object.getFloat(JSON_GREEN);
-    cRuntimeBlue  = cDefBlue  = object.getFloat(JSON_BLUE);
-    cRuntimeAlpha = cDefAlpha = object.getFloat(JSON_ALPHA);
-
-    cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
-    cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
-    cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
-
-    data.getProject().init([this]() {
-      cStateNotifier->stateChanged();
-    });
-  }
-
   void SimpleColour::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IColour>(this, "", "Fixed Colours");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Colours"); // TODO: Localize this.
@@ -179,6 +163,8 @@ namespace IsoRealms::Basics {
     cRuntimeGreen = cDefGreen;
     cRuntimeBlue  = cDefBlue;
     cRuntimeAlpha = cDefAlpha;
-    cStateNotifier->stateChanged();
+    if (cStateNotifier != nullptr) {
+      cStateNotifier->stateChanged();
+    }
   }
 }

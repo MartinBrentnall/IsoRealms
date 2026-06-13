@@ -26,7 +26,6 @@ namespace IsoRealms::Basics {
   class Binding {
     public:
     Binding(Function& parent, IActionContext& owner, const std::string& name);
-    Binding(Function& parent, IActionContext& owner, bool init, JSONObject object);
     void setName(const std::string& name);
     std::string getName() const;
     std::string getType() const;
@@ -37,7 +36,7 @@ namespace IsoRealms::Basics {
     void saveCall(JSONObject object, const std::string& attributeName) const;
     IBinding* getValue() const;
     void release();
-    void getProperties(IPropertyMaker& owner);
+    void getProperties(IPropertyMaker& owner, bool init);
 
     private:
 

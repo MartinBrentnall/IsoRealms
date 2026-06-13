@@ -29,17 +29,16 @@ namespace IsoRealms::Basics {
 
   template <typename DERIVED, typename EVENT, typename INSTANCE> class SequenceTrackBase : public ISequenceTrack {
     public:
-    SequenceTrackBase(Sequence& sequence) :
+    SequenceTrackBase(IResourceData& owner, Sequence& sequence) :
               cSequence(sequence),
+              cOwner(owner),
               cDefName("Unnamed Track") {
     }
 
     SequenceTrackBase(IResourceData& owner, Sequence& sequence, JSONObject object) :
               cSequence(sequence),
+              cOwner(owner),
               cDefName(object.getString(JSON_NAME)) {
-      for (JSONValue mEventValue : object.getArray(JSON_EVENTS)) {
-        cDefEvents.push_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), owner, mEventValue.getObject()));
-      }
     }
 
     /*****************************\
@@ -130,6 +129,17 @@ namespace IsoRealms::Basics {
       return cInstances.emplace_back(std::make_unique<INSTANCE>(static_cast<DERIVED&>(*this), sequenceInstance)).get();
     }
 
+    void getBaseProperties(IPropertyMaker& owner) {
+      owner.createPropertyNativeString(JSON_NAME, [this]() {return cDefName;}, [this](const std::string& name) {
+        cDefName = name;
+      });
+      owner.createPropertyArray(JSON_EVENTS, cDefEvents, [](const std::unique_ptr<EVENT>& mEvent) -> EVENT& {return *mEvent;}, [this, &owner](EVENT& event) {
+        event.getEventProperties(owner);
+      }, [this]() -> EVENT& {
+        return *cDefEvents.emplace_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), cOwner, 0));
+      });
+    }
+
     /****************************************\
      * Implements IAsset via ISequenceTrack *
     \****************************************/
@@ -160,6 +170,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     Sequence& cSequence;
+    IResourceData& cOwner;
 
     // Definition data.
     std::string cDefName;

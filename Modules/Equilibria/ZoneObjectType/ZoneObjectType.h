@@ -39,7 +39,6 @@ namespace IsoRealms::Equilibria {
      * Resource Interface *
     \**********************/
     ZoneObjectType(Equilibria& equilibria, IResourceData& data);
-    ZoneObjectType(Equilibria& equilibria, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
     void save(JSONObject object) const;
     void hintInUse(bool inUse);

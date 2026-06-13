@@ -19,6 +19,7 @@
 #pragma once
 
 #include <functional>
+#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -36,12 +37,22 @@ namespace IsoRealms {
   class IOptionalObject;
   class IResourceData;
   class ITreeSelectorObject;
+  class JSONObject;
 
   class IPropertyMaker : public IResourceAccessManager {
     public:
     virtual ~IPropertyMaker() = default;
 
     virtual IResourceData& getResourceData() = 0;
+
+    virtual bool loadsPersistedValues() const {
+      return false;
+    }
+
+    // TODO: Replace this function with a hint.
+    virtual bool hasPersistedMember(const std::string& key) const {
+      return false;
+    }
 
     virtual void createPropertyAdd(                  const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) = 0;
     virtual void createPropertyCode(                 const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) = 0;
@@ -52,14 +63,14 @@ namespace IsoRealms {
     virtual void createPropertyCondition(            const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) = 0;
     virtual void createPropertyEditor(               const std::string& key, IEditable* editable) = 0;
     virtual void createPropertyKey(                  const std::string& key, std::function<std::string()>  getter, std::function<void(sf::Keyboard::Key)>  setter,             std::function<void()> removeFunction = nullptr) = 0;
-    virtual void createPropertyList(                 const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr) = 0;
-    virtual void createPropertyNativeBoolean(        const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter,                                                                                                              std::function<void()> removeFunction = nullptr) = 0;
-    virtual void createPropertyNativeFloat(          const std::string& key, std::function<float()>        getter, std::function<void(float)>              setter,             std::function<bool(float)>              validityChecker = [](float)              {return true;}, std::function<void()> removeFunction = nullptr) = 0;
-    virtual void createPropertyNativeInteger(        const std::string& key, std::function<int()>          getter, std::function<void(int)>                setter,             std::function<bool(int)>                validityChecker = [](int)                {return true;}, std::function<void()> removeFunction = nullptr) = 0;
-    virtual void createPropertyNativeString(         const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom = nullptr) = 0;
-    virtual void createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter,             std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr) = 0;
-    virtual void createPropertyOptional(             const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr) = 0;
-    virtual void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr) = 0;
+    virtual void createPropertyList(                 const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, const std::string& defaultValue = "", std::function<void()> removeFunction = nullptr) = 0;
+    virtual void createPropertyNativeBoolean(        const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue = false,                                                                                                  std::function<void()> removeFunction = nullptr) = 0;
+    virtual void createPropertyNativeFloat(          const std::string& key, std::function<float()>        getter, std::function<void(float)>              setter, float              defaultValue = 0.0f,  std::function<bool(float)>              validityChecker = [](float)              {return true;}, std::function<void()> removeFunction = nullptr) = 0;
+    virtual void createPropertyNativeInteger(        const std::string& key, std::function<int()>          getter, std::function<void(int)>                setter, int                defaultValue = 0,     std::function<bool(int)>                validityChecker = [](int)                {return true;}, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) = 0;
+    virtual void createPropertyNativeString(         const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter, const std::string& defaultValue = "",    std::function<bool(const std::string&)> validityChecker = [](const std::string&) {return true;}, std::function<void()> removeFunction = nullptr, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom = nullptr) = 0;
+    virtual void createPropertyNativeUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter, unsigned int       defaultValue = 0,     std::function<bool(unsigned int)>       validityChecker = [](unsigned int)       {return true;}, std::function<void()> removeFunction = nullptr) = 0;
+    virtual void createPropertyOptional(             const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter = nullptr, const Options& hint = Options::EMPTY) = 0;
+    virtual void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) = 0;
     virtual void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) = 0;
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
@@ -77,8 +88,29 @@ namespace IsoRealms {
       });
     }
 
+    template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename MATCH_INDEX_FUNC>
+    void createPropertyFixedArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, MATCH_INDEX_FUNC matchIndex) {
+      const unsigned int mCount = static_cast<unsigned int>(std::distance(std::begin(container), std::end(container)));
+      std::function<void(unsigned int)> mCreateAtIndex = [&](unsigned int mIndex) {
+        auto mElement = std::begin(container);
+        std::advance(mElement, mIndex);
+        createProperty(value(*mElement), mIndex);
+      };
+      if (loadFixedPropertyArray(key, mCount, matchIndex, mCreateAtIndex)) {
+        return;
+      }
+      unsigned int mIndex = 0;
+      for (typename CONTAINER::const_reference mElement : container) {
+        createProperty(value(mElement), mIndex++);
+      }
+    }
+
     protected:
     virtual bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) {
+      return false;
+    }
+
+    virtual bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<unsigned int(const JSONObject&)>& matchIndex, const std::function<void(unsigned int index)>& loadElement) {
       return false;
     }
   };

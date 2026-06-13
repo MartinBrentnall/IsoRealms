@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
 
   SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, JSONObject object) :
             SequenceTrackActionEvent(parent, owner, object.getInteger(JSON_DELAY)) {
-    cDefAction.init(object, JSON_EXECUTE);
   }
 
   unsigned int SequenceTrackActionEvent::getTime() const {
@@ -41,6 +40,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackActionEvent::getEventProperties(IPropertyMaker& owner) {
+    owner.createPropertyNativeInteger(JSON_DELAY, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
     owner.createPropertyTreeSelector(JSON_EXECUTE, cDefAction);
   }
 

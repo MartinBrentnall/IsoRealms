@@ -78,6 +78,7 @@ namespace IsoRealms::UI {
     // External interfaces.
     Project& cProject;
     HatHandler& cHatHandler;
+    Menu& cMenu;
     
     // Definition data.
     std::string cDefID;    /// ID of this menu item for binding.

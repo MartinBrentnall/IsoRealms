@@ -40,7 +40,7 @@ namespace IsoRealms {
   }
 
   void ProjectLaunchConfiguration::getProperties(IPropertyMaker& owner, const Metadata& metadata, Project& project) {
-    owner.createPropertyNativeString("LaunchConfigurationName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
+    owner.createPropertyNativeString("LaunchConfigurationName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
     owner.createPropertyTreeSelector("LaunchConfigurationOwner", cDefOwner);
     owner.createPropertyArray(       "LaunchConfigurationOptionAdd", cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &owner, &metadata](Option& option) {
       owner.createPropertyStruct(    "LaunchConfigurationOption", option.getName(), [this, &metadata, &option](IPropertyMaker& owner) {
@@ -113,7 +113,7 @@ namespace IsoRealms {
   }
 
   void ProjectLaunchConfiguration::Option::getProperties(IPropertyMaker& owner, const Metadata& metadata, ProjectLaunchConfiguration& launch) {
-    owner.createPropertyNativeString("LaunchConfigurationOptionName",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
+    owner.createPropertyNativeString("LaunchConfigurationOptionName",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
     owner.createPropertyTreeSelector("LaunchConfigurationOptionValue", cDefValue);
   }
 

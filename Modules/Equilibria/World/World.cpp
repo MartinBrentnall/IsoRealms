@@ -65,10 +65,9 @@ namespace IsoRealms::Equilibria {
     added(cEquilibria.getAsset<IPhysicalObjectType>(&cDummyPhysicalObjectTypeUser, "None", cEquilibria));
   }
 
-  World::World(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            World(equilibria, data) {
+  void World::load(IResourceData& resourceData, JSONObject object) {
     for (JSONValue mDebrisGeneratorValue : object.getArray(JSON_DEBRIS_GENERATORS)) {
-      cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorValue.getObject(), data));
+      cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorValue.getObject(), resourceData));
     }
 
     for (JSONValue mPlayerValue : object.getArray(JSON_PLAYERS)) {
@@ -79,15 +78,10 @@ namespace IsoRealms::Equilibria {
       cDefZones.emplace_back(std::make_unique<Zone>(*this, mZoneValue.getObject()));
     }
 
-    cDefSurfaceAccelerationFactor = object.getFloat(JSON_SLOPE_FORCE);
-    cDefGravity                   = object.getFloat(JSON_GRAVITY);
-    cDefBounceTime                = object.getInteger(JSON_BOUNCE_CONTROL, DEFAULT_BOUNCE_CONTROL);
-    cEditorBasicProperties        = object.getBoolean(JSON_BASIC_PROPERTIES);
-
-    data.getProject().init([this, &data]() {
+    resourceData.getProject().init([this, &resourceData]() {
 
       // Try to open terrain cache
-      std::string mCachePath = cResourceData.getPath("Terrain.cache", data.getProject().isUser());
+      std::string mCachePath = cResourceData.getPath("Terrain.cache", resourceData.getProject().isUser());
 //      std::cout << "Cache path: " << mCachePath << std::endl;
       std::ifstream mCache(mCachePath, std::ios::binary);
       bool mUsingCache = false;
@@ -118,30 +112,12 @@ namespace IsoRealms::Equilibria {
           mZone->initialiseTerrain();
 //        });
         }
-//         Application& mApplication = data.getProject().getApplication();
+//         Application& mApplication = resourceData.getProject().getApplication();
 //         mApplication.executeAndWait(mTask);
 //         std::cout << "INFO: World::World: Updating cache..." << std::endl;
         updateCache();
       }
       cRuntimeZonesToInitialise.clear();
-    });
-
-    cAutomaticZoneXSize = object.getInteger(JSON_AUTOMATIC_ZONE_X_SIZE, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
-    cAutomaticZoneYSize = object.getInteger(JSON_AUTOMATIC_ZONE_Y_SIZE, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
-    cAutomaticZoneZSize = object.getInteger(JSON_AUTOMATIC_ZONE_Z_SIZE, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
-    cEditorMinX = object.getInteger(JSON_EDITOR_MIN_X, DEFAULT_EDITOR_MIN_X);
-    cEditorMaxX = object.getInteger(JSON_EDITOR_MAX_X, DEFAULT_EDITOR_MAX_X);
-    cEditorMinY = object.getInteger(JSON_EDITOR_MIN_Y, DEFAULT_EDITOR_MIN_Y);
-    cEditorMaxY = object.getInteger(JSON_EDITOR_MAX_Y, DEFAULT_EDITOR_MAX_Y);
-    cEditorMinZ = object.getInteger(JSON_EDITOR_MIN_Z, DEFAULT_EDITOR_MIN_Z);
-    cEditorMaxZ = object.getInteger(JSON_EDITOR_MAX_Z, DEFAULT_EDITOR_MAX_Z);
-    cDefaultWorldEditorTool.init(object, JSON_DEFAULT_WORLD_EDITOR_TOOL);
-    data.getProject().init([this, object]() {
-      cAutomaticZoneManagementType.setID(object.getString(JSON_AUTOMATIC_ZONE_MANAGEMENT));
-      cDefaultThemeSet.setID(object.getString(JSON_DEFAULT_THEME_SET));
-      for (JSONValue mEditingToolValue : object.getArray(JSON_EDITOR_TOOLS)) {
-        cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(cEquilibria)).get()->set(mEditingToolValue.getObject(), JSON_EDITOR_TOOL);
-      }
     });
   }
 
@@ -211,30 +187,30 @@ namespace IsoRealms::Equilibria {
   }
 
   void World::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
+    owner.createPropertyEditor("Content", this);
     owner.createPropertyNativeFloat(    JSON_GRAVITY,                    [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
     owner.createPropertyNativeFloat(    JSON_SLOPE_FORCE,                [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
-    owner.createPropertyNativeInteger(  JSON_BOUNCE_CONTROL,                 [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;});
+    owner.createPropertyNativeInteger(  JSON_BOUNCE_CONTROL,                 [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;}, DEFAULT_BOUNCE_CONTROL);
     owner.createPropertyStruct(         "Editing", "Edit...",         [this, &metadata](IPropertyMaker& owner) {
       owner.createPropertyNativeBoolean(JSON_BASIC_PROPERTIES,  [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
-      owner.createPropertyNativeInteger(JSON_AUTOMATIC_ZONE_X_SIZE,    [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;});
-      owner.createPropertyNativeInteger(JSON_AUTOMATIC_ZONE_Y_SIZE,   [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;});
-      owner.createPropertyNativeInteger(JSON_AUTOMATIC_ZONE_Z_SIZE,   [this]() {return cAutomaticZoneZSize;},           [this](int   value) {cAutomaticZoneZSize           = value;});
+      owner.createPropertyNativeInteger(JSON_AUTOMATIC_ZONE_X_SIZE,    [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;}, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
+      owner.createPropertyNativeInteger(JSON_AUTOMATIC_ZONE_Y_SIZE,   [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
+      owner.createPropertyNativeInteger(JSON_AUTOMATIC_ZONE_Z_SIZE,   [this]() {return cAutomaticZoneZSize;},           [this](int   value) {cAutomaticZoneZSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
       owner.createPropertyTreeSelector( JSON_AUTOMATIC_ZONE_MANAGEMENT,   cAutomaticZoneManagementType);
       owner.createPropertyTreeSelector( JSON_DEFAULT_THEME_SET, cDefaultThemeSet);
       owner.createPropertyTreeSelector( JSON_DEFAULT_WORLD_EDITOR_TOOL,  cDefaultWorldEditorTool);
-      owner.createPropertyNativeInteger(JSON_EDITOR_MIN_X,        [this]() {return cEditorMinX;},                   [this](int   value) {cEditorMinX                   = value;});
-      owner.createPropertyNativeInteger(JSON_EDITOR_MAX_X,        [this]() {return cEditorMaxX;},                   [this](int   value) {cEditorMaxX                   = value;});
-      owner.createPropertyNativeInteger(JSON_EDITOR_MIN_Y,       [this]() {return cEditorMinY;},                   [this](int   value) {cEditorMinY                   = value;});
-      owner.createPropertyNativeInteger(JSON_EDITOR_MAX_Y,       [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;});
-      owner.createPropertyNativeInteger(JSON_EDITOR_MIN_Z,       [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;});
-      owner.createPropertyNativeInteger(JSON_EDITOR_MAX_Z,      [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;});
+      owner.createPropertyNativeInteger(JSON_EDITOR_MIN_X,        [this]() {return cEditorMinX;},                   [this](int   value) {cEditorMinX                   = value;}, DEFAULT_EDITOR_MIN_X);
+      owner.createPropertyNativeInteger(JSON_EDITOR_MAX_X,        [this]() {return cEditorMaxX;},                   [this](int   value) {cEditorMaxX                   = value;}, DEFAULT_EDITOR_MAX_X);
+      owner.createPropertyNativeInteger(JSON_EDITOR_MIN_Y,       [this]() {return cEditorMinY;},                   [this](int   value) {cEditorMinY                   = value;}, DEFAULT_EDITOR_MIN_Y);
+      owner.createPropertyNativeInteger(JSON_EDITOR_MAX_Y,       [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;}, DEFAULT_EDITOR_MAX_Y);
+      owner.createPropertyNativeInteger(JSON_EDITOR_MIN_Z,       [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;}, DEFAULT_EDITOR_MIN_Z);
+      owner.createPropertyNativeInteger(JSON_EDITOR_MAX_Z,      [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;}, DEFAULT_EDITOR_MAX_Z);
       for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
         owner.createPropertyTreeSelector(JSON_EDITOR_TOOL, *cAvailableWorldEditorTools[i].get(), Options::EMPTY, [this, i]() {
           cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
         });
       }
     });
-    owner.createPropertyEditor("Content", this);
   }
 
   void World::removed() {

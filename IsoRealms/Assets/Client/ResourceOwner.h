@@ -55,7 +55,7 @@ namespace IsoRealms {
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     bool renderTreeItemIcon(const std::string& id) const override;
     void setID(const std::string& id) override;
-    void loadFromProperty(JSONObject object, const std::string& key) override;
+    void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override;
 
     private:
     Project& cProject;

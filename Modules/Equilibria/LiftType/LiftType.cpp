@@ -29,13 +29,6 @@ namespace IsoRealms::Equilibria {
             cDefTickAction(data.getDummyActionContext()) {
   }
   
-  LiftType::LiftType(Equilibria& equilibria, IResourceData& data, JSONObject object) :
-            LiftType(equilibria, data) {
-    cDefModel.init(object, JSON_APPEARANCE);
-    cDefActive.init(object, JSON_STATE);
-    cDefTickAction.init(object, JSON_ON_TICK);
-  }
-
   void LiftType::registerAssets(ResourceAssetRegistry& assets) {
     // Nothing to do.
   }

@@ -76,7 +76,7 @@ namespace IsoRealms {
         overrideReadOnlyReferences();
         registerAssets();
         cParent.registerModuleAssets();
-      }, [this](const std::string& value) {
+      }, "", [this](const std::string& value) {
         return cParent.forEachResource([this, &value](IResource* mResource) {
           return mResource->getName() != value || mResource == this;
         });
@@ -213,6 +213,10 @@ namespace IsoRealms {
 
     const Metadata& getMetadata() const override {
       return cParent.getMetadata();
+    }
+
+    void reregisterAssets() override {
+      registerAssets();
     }
 
     IEventBindings* getBindingRegistry() override {

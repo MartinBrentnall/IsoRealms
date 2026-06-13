@@ -26,15 +26,6 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleInteger::SimpleInteger(Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleInteger(basics, data) {
-    cRuntimeValue = cDefValue = object.getInteger(JSON_VALUE);
-
-    data.getProject().init([this]() {
-      cStateNotifier->stateChanged();
-    });
-  }
-
   void SimpleInteger::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IInteger>(this, "", "Simple Integers");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Integers");

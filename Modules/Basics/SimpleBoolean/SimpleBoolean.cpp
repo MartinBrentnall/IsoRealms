@@ -26,15 +26,6 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  SimpleBoolean::SimpleBoolean(Basics& basics, IResourceData& data, JSONObject object) :
-            SimpleBoolean(basics, data) {
-    cRuntimeValue = cDefValue = object.getBoolean(JSON_VALUE);
-
-    data.getProject().init([this]() {
-      cStateNotifier->stateChanged();
-    });
-  }
-
   void SimpleBoolean::registerAssets(ResourceAssetRegistry& assets) {
     cStateNotifier = assets.add<IBoolean>(this, "", "Simple Booleans");
     assets.add<IBinding>(&cLuaBinding, "", "Simple Booleans");

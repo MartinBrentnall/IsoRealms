@@ -19,6 +19,9 @@
 #include "Function.h"
 
 #include <sol.hpp>
+#include <unordered_map>
+
+#include "IsoRealms/PropertyLoader.h"
 
 #include "Modules/Basics/Basics.h"
 
@@ -28,7 +31,9 @@ namespace IsoRealms::Basics {
   }
     
   Function::Function(Basics& basics, IResourceData& data, JSONObject object) :
-            Function(basics, data.getDummyActionContext(), object, true) {
+            Function(basics, data.getDummyActionContext()) {
+    PropertyLoader mLoader(data, object);
+    getProperties(mLoader, cResourceData.getMetadata());
   }
 
   void Function::registerAssets(ResourceAssetRegistry& assets) {
@@ -61,42 +66,23 @@ namespace IsoRealms::Basics {
   }
 
   void Function::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyStruct(JSON_BINDINGS, "Edit...", [this](IPropertyMaker& owner) {
-      for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding](IPropertyMaker& owner) {
-          return mBinding->getProperties(owner);
-        }, [this, &mBinding]() {
-          Utils::removeElementUnique(cDefBindings, mBinding.get());
-        });
-      }
-      owner.createPropertyAdd("BindingAdd", "New...", [this, &owner]() {
-        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionContext(), getNextAvailableName("newBinding"))).get();
-        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding](IPropertyMaker& owner) {
-          return mNewBinding->getProperties(owner);
-        }, [this, mNewBinding]() {
-          Utils::removeElementUnique(cDefBindings, mNewBinding);
-        });
+    addBindingPropertyArray(owner, true);
+    owner.createPropertyArray(JSON_ARGUMENTS, cDefArgumentDefinitions, [](const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition) -> ArgumentDefinition& {return *mArgumentDefinition;}, [this, &owner, &metadata](ArgumentDefinition& argumentDefinition) {
+      owner.createPropertyStruct("Argument", argumentDefinition.getName(), [&argumentDefinition, this, &metadata](IPropertyMaker& owner) {
+        argumentDefinition.getProperties(owner, metadata, *this);
+      }, [this, &argumentDefinition]() {
+        Utils::removeElementUnique(cDefArgumentDefinitions, &argumentDefinition);
       });
+    }, [this]() -> ArgumentDefinition& {
+      std::string mName = getNextAvailableName("newArgument");
+      return *cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mName, mName));
     });
-    owner.createPropertyStruct(JSON_ARGUMENTS, "Edit...", [this, &metadata](IPropertyMaker& owner) {
-      for (std::unique_ptr<ArgumentDefinition>& mArgumentDefinition : cDefArgumentDefinitions) {
-        owner.createPropertyStruct("Argument", mArgumentDefinition->getName(), [this, &mArgumentDefinition, &metadata](IPropertyMaker& owner) {
-          return mArgumentDefinition->getProperties(owner, metadata, *this);
-        }, [this, &mArgumentDefinition]() {
-          Utils::removeElementUnique(cDefArgumentDefinitions, mArgumentDefinition.get());
-        });
-      }
-      owner.createPropertyAdd("ArgumentAdd", "New...", [this, &owner, &metadata]() {
-        std::string mNewArgumentName = getNextAvailableName("newArgument");
-        ArgumentDefinition* mNewArgumentDefinition = cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mNewArgumentName, mNewArgumentName)).get();
-        return owner.createPropertyStruct("Argument", mNewArgumentDefinition->getName(), [this, mNewArgumentDefinition, &metadata](IPropertyMaker& owner) {
-          return mNewArgumentDefinition->getProperties(owner, metadata, *this);
-        }, [this, mNewArgumentDefinition]() {
-          Utils::removeElementUnique(cDefArgumentDefinitions, mNewArgumentDefinition);
-        });
-      });
+    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
+      cDefCode = value;
     });
-    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
+    if (owner.loadsPersistedValues()) {
+      declare();
+    }
   }
 
   void Function::removed() {
@@ -107,43 +93,41 @@ namespace IsoRealms::Basics {
             cProject(basics.getProject()),
             cBasics(basics),
             cResourceData(owner.getResourceData()),
+            cDefActionContext(owner),
             cDefLuaState(basics.getProject().getLuaState().getState()),
             cDefID(basics.getAvailableFunctionID()) {
   }
 
   Function::Function(Basics& basics, IActionContext& owner, JSONObject object, bool init) :
             Function(basics, owner) {
+    PropertyLoader mLoader(cResourceData, object);
     if (init) {
-      for (JSONValue mArgumentValue : object.getArray(JSON_ARGUMENTS)) {
-        cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mArgumentValue.getObject()));
-      }
+      getProperties(mLoader, cResourceData.getMetadata());
+    } else {
+      getScriptProperties(mLoader);
     }
-    for (JSONValue mBindingValue : object.getArray(JSON_BINDINGS)) {
-      cDefBindings.emplace_back(std::make_unique<Binding>(*this, owner, init, mBindingValue.getObject()));
-    }
-    cDefCode = object.getString(JSON_CODE);
-    declare();
+  }
+
+  void Function::addBindingPropertyArray(IPropertyMaker& owner, bool init) {
+    owner.createPropertyArray(JSON_BINDINGS, cDefBindings, [](const std::unique_ptr<Binding>& mBinding) -> Binding& {return *mBinding;}, [this, &owner, init](Binding& binding) {
+      owner.createPropertyStruct("Binding", binding.getName(), [&binding, init](IPropertyMaker& owner) {
+        binding.getProperties(owner, init);
+      }, [this, &binding]() {
+        Utils::removeElementUnique(cDefBindings, &binding);
+      });
+    }, [this]() -> Binding& {
+      return *cDefBindings.emplace_back(std::make_unique<Binding>(*this, cDefActionContext, getNextAvailableName("newBinding")));
+    });
   }
 
   void Function::getScriptProperties(IPropertyMaker& owner) {
-    owner.createPropertyStruct(JSON_BINDINGS, "Edit...", [this](IPropertyMaker& owner) {
-      for (std::unique_ptr<Binding>& mBinding : cDefBindings) {
-        owner.createPropertyStruct("Binding", mBinding->getName(), [&mBinding](IPropertyMaker& owner) {
-          return mBinding->getProperties(owner);
-        }, [this, &mBinding]() {
-          Utils::removeElementUnique(cDefBindings, mBinding.get());
-        });
-      }
-      owner.createPropertyAdd("BindingAdd", "New...", [this, &owner]() {
-        Binding* mNewBinding = cDefBindings.emplace_back(std::make_unique<Binding>(*this, cResourceData.getDummyActionContext(), getNextAvailableName("newBinding"))).get();
-        return owner.createPropertyStruct("Binding", mNewBinding->getName(), [mNewBinding](IPropertyMaker& owner) {
-          return mNewBinding->getProperties(owner);
-        }, [this, mNewBinding]() {
-          Utils::removeElementUnique(cDefBindings, mNewBinding);
-        });
-      });
+    addBindingPropertyArray(owner, false);
+    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
+      cDefCode = value;
     });
-    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {cDefCode = value;});
+    if (owner.loadsPersistedValues()) {
+      declare();
+    }
   }
 
   IsoRealms::Project& Function::getProject() const {
@@ -274,7 +258,7 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::execute() {
-//    std::cout << "Executing function \"" << cParent.cResourceData.getResourceName() << "\" on behalf of owner \"" << cOwner.getResourceData().getResourceID() << "\"" << std::endl;
+    // std::cout << "Executing function \"" << cParent.cResourceData.getResourceName() << "\" on behalf of owner \"" << cOwner.getResourceData().getResourceID() << "\"" << std::endl;
 //    std::cout << "===============================================================================" << std::endl << cParent.cDefCode << std::endl;
     for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
       std::string mBindFunctionName = "func" + Utils::toString(cParent.cDefID) + "_arg" + Utils::toString(i);
@@ -294,6 +278,7 @@ namespace IsoRealms::Basics {
       sol::error mError = mResult;
       std::cout << std::endl;
       std::cout << "Function \"" << cParent.cDefID << "\" failed: " << mError.what() << std::endl;
+      std::cout << "Function code: " << std::endl << cParent.cDefCode << std::endl;
     }
   }
 
@@ -311,12 +296,18 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::getAssetProperties(IPropertyMaker& owner) {
+    std::unordered_map<std::string, unsigned int> mArgumentIndices;
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
-      Options mHint;
-      mHint.addOption("name", cParent.cDefArgumentDefinitions[i]->getName());
-      mHint.addOption("description", "An argument to the function.");
-      owner.createPropertyTreeSelector(JSON_ARGUMENT, *cDefArguments[i], mHint);
+      mArgumentIndices.emplace(cParent.cDefArgumentDefinitions[i]->getName(), i);
     }
+    owner.createPropertyFixedArray(JSON_BINDINGS, cDefArguments, [](const std::unique_ptr<IsoRealms::Binding>& binding) -> IsoRealms::Binding& {return *binding;}, [this, &owner](IsoRealms::Binding& binding, unsigned int index) {
+      Options mHint;
+      mHint.addOption("name", cParent.cDefArgumentDefinitions[index]->getName());
+      mHint.addOption("description", "An argument to the function.");
+      owner.createPropertyTreeSelector(JSON_TO, binding, mHint);
+    }, [mArgumentIndices](const JSONObject& loadObject) -> unsigned int {
+      return mArgumentIndices.at(loadObject.getString(JSON_ARGUMENT));
+    });
   }
 
   bool Function::Call::isDefaultConfiguration() const {
