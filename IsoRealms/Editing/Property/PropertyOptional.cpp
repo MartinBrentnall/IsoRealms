@@ -25,7 +25,7 @@
 #include "IsoRealms/PropertyMaker.h"
 
 namespace IsoRealms {
-  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :
+  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :
             Property(data, resourceAccessManager, nullptr),
             cNoneLabel(noneLabel),
             cNoneIcon(noneIcon),

@@ -26,7 +26,7 @@ namespace IsoRealms {
 
     class IMenuItem : public IAsset {
       public:
-      virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
+      virtual void registerAssets(ComponentAssetRegistry& assets) = 0;
       virtual void reset() = 0;
       virtual bool input(sf::Event& event) = 0;
       virtual void selectTop() = 0;

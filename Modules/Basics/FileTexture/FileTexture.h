@@ -26,17 +26,17 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a texture loaded from an image file.  File type
+   * Component definition for a texture loaded from an image file.  File type
    * support is provided by SFML.
    */
   class FileTexture final : public ITexture {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    FileTexture(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    FileTexture(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

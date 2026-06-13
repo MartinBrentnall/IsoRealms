@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #ifdef __linux__
 #include <dlfcn.h>
 #endif
@@ -34,9 +34,9 @@
 #include <set>
 
 #include "Project.h"
-#include "ResourceAssetRegistry.h"
+#include "ComponentAssetRegistry.h"
 
-#include "IsoRealms/IResourceTypeRegistry.h"
+#include "IsoRealms/IComponentTypeRegistry.h"
 
 namespace IsoRealms {
   class IModuleHandle;
@@ -44,17 +44,17 @@ namespace IsoRealms {
   class JSONObject;
   class LuaState;
   class Project;
-  class ResourceType;
+  class ComponentType;
 
-  class Module : public IResourceTypeRegistry,
-                 public IResourceData,
+  class Module : public IComponentTypeRegistry,
+                 public IComponentData,
                  public IActionContext {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
     static std::string getMetadataPath(const std::string& name);
 
-    void loadResources(JSONObject object, ProjectFile* ownerProject);
+    void loadComponents(JSONObject object, ProjectFile* ownerProject);
     void registerAssets();
     bool needsSaving(const ProjectFile* savingProject) const;
     void save(JSONObject object, const ProjectFile* savingProject) const;
@@ -67,15 +67,15 @@ namespace IsoRealms {
     std::string getLongName() const;
     std::string getDescription() const;
     std::string getCategoryDescription(const std::string& key) const;
-    std::vector<ResourceType*> getResourceTypes();
+    std::vector<ComponentType*> getComponentTypes();
 
-    /************************************\
-     * Implements IResourceTypeRegistry *
-    \************************************/
-    void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id) override;
+    /*************************************\
+     * Implements IComponentTypeRegistry *
+    \*************************************/
+    void add(IComponentTypeDefinition* resourceTypeDefinition, const std::string& id) override;
     const Metadata& getAssetMetadata(const std::string& key) const override;
     
-    std::string getName(const ResourceType* resourceType) const;
+    std::string getName(const ComponentType* resourceType) const;
     std::string getPath();
     std::string getDataPath(bool user);
     ProjectFile* getProjectFile();
@@ -83,11 +83,11 @@ namespace IsoRealms {
     void renameUserDataDirectory(const std::string& path, const std::string& oldName, const std::string& newName);
     std::string getProjectPathPrefix(bool user);
     
-    /****************************\
-     * Implements IResourceData *
-    \****************************/
-    std::string getResourceID() const override;
-    std::string getResourceName() const override;
+    /*****************************\
+     * Implements IComponentData *
+    \*****************************/
+    std::string getComponentID() const override;
+    std::string getComponentName() const override;
     std::string getPath(const std::string& file, bool user) const override;
     void makeUserDataDirectory() override;
     bool isIncluded() const override;
@@ -103,7 +103,7 @@ namespace IsoRealms {
     /*****************************\
      * Implements IActionContext *
     \*****************************/
-    IResourceData& getResourceData() override;
+    IComponentData& getComponentData() override;
     IEventBindings* getBindingRegistry() override;
 
     virtual ~Module();
@@ -117,12 +117,12 @@ namespace IsoRealms {
     inline static const std::string JSON_NAME          = "name";
     inline static const std::string JSON_OMISSIONS     = "omissions";
     inline static const std::string JSON_PROPERTIES    = "properties";
-    inline static const std::string JSON_RESOURCES     = "resources";
+    inline static const std::string JSON_COMPONENTS     = "components";
     inline static const std::string JSON_TYPE          = "type";
 
     Project& cProject;
-    ResourceAssetRegistry cModuleAssetRegistry;
-    std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
+    ComponentAssetRegistry cModuleAssetRegistry;
+    std::map<std::string, std::unique_ptr<ComponentType>> cComponentTypes;
     std::string cName;
     std::string cLongName;
     ProjectFile* cOwnerProject;
@@ -136,7 +136,7 @@ namespace IsoRealms {
 #elif _WIN32
     HINSTANCE cModuleHandle;
 #endif
-    ResourceType* getResourceType(const std::string& id);
+    ComponentType* getComponentType(const std::string& id);
 
     /**
      * Casts a void* to the FUNC type.  Compilation will fail if compiled for a

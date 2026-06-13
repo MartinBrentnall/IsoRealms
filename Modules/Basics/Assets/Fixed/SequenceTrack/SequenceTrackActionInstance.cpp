@@ -42,7 +42,7 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void SequenceTrackActionInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void SequenceTrackActionInstance::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
 }

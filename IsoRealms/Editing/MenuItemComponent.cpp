@@ -16,50 +16,50 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "MenuItemResource.h"
+#include "MenuItemComponent.h"
 
 #include "IsoRealms/Utils.h"
 
 #include "IUIStyle.h"
 
 namespace IsoRealms {
-  MenuItemResource::MenuItemResource(std::variant<IResource*, std::string> resource, std::function<void(IResource* resource)> action, std::function<bool(IResource* resource)> icon) : 
-            cResource(resource),
+  MenuItemComponent::MenuItemComponent(std::variant<IComponent*, std::string> component, std::function<void(IComponent* component)> action, std::function<bool(IComponent* component)> icon) : 
+            cComponent(component),
             cAction(action),
             cIcon(icon) {
   }
 
-  IResource* MenuItemResource::getResource() const {
-    if (std::holds_alternative<IResource*>(cResource)) {
-      return std::get<IResource*>(cResource);
+  IComponent* MenuItemComponent::getComponent() const {
+    if (std::holds_alternative<IComponent*>(cComponent)) {
+      return std::get<IComponent*>(cComponent);
     } else {
       return nullptr;
     }
   }
   
-  std::string MenuItemResource::getLabel() const {
-    if (std::holds_alternative<IResource*>(cResource)) {
-      IResource* mResource = std::get<IResource*>(cResource);
-      return mResource->getName();
+  std::string MenuItemComponent::getLabel() const {
+    if (std::holds_alternative<IComponent*>(cComponent)) {
+      IComponent* mComponent = std::get<IComponent*>(cComponent);
+      return mComponent->getName();
     } else {
-      return std::get<std::string>(cResource);
+      return std::get<std::string>(cComponent);
     }
   }
   
-  float MenuItemResource::getWidth(IUIStyle& style) const {
+  float MenuItemComponent::getWidth(IUIStyle& style) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
     return mFont->getWidth(mFontSize, getLabel()) + mFontSize * 2.25f;
   }
 
-  void MenuItemResource::render(IUIStyle& style, float y, float xRemoveOffset, float aspectRatio) const {
+  void MenuItemComponent::render(IUIStyle& style, float y, float xRemoveOffset, float aspectRatio) const {
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
-    if (!std::holds_alternative<IResource*>(cResource) && !cAction) { // TODO: This is pretty shitty code.
+    if (!std::holds_alternative<IComponent*>(cComponent) && !cAction) { // TODO: This is pretty shitty code.
       glColor3f(0.4f, 0.4f, 0.4f);
     }
     mFont->print(-1.0f * aspectRatio + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, getLabel());
-    if (getResource() != nullptr) {
+    if (getComponent() != nullptr) {
       glPushMatrix();
       glTranslatef(-1.0f * aspectRatio + xRemoveOffset + mFontSize, y + mFontSize, 0.0f);
       glScalef(mFontSize * 0.7f, mFontSize * 0.7f, 0.0f);
@@ -75,18 +75,18 @@ namespace IsoRealms {
 
     glTranslatef(-1.0f * aspectRatio + mFontSize, y + mFontSize, 0.0f);
     glScalef(mFontSize, mFontSize, 0.0f);
-    if (!cIcon(getResource())) {
+    if (!cIcon(getComponent())) {
       Utils::renderIconBranch();
     }
     
     glColor3f(1.0f, 1.0f, 1.0f);
   }
 
-  bool MenuItemResource::input(UISignalID id) {
+  bool MenuItemComponent::input(UISignalID id) {
     switch (id) {
       case UISignalID::CONFIRM:
         if (cAction) {
-          cAction(getResource());
+          cAction(getComponent());
         }
         return true;
 
@@ -97,20 +97,20 @@ namespace IsoRealms {
     return false;
   }
   
-  bool MenuItemResource::isResource() const {
-    return getResource() != nullptr;
+  bool MenuItemComponent::isComponent() const {
+    return getComponent() != nullptr;
   }
 
-  bool MenuItemResource::isAddResource() const {
-    return getResource() == nullptr && cAction; // TODO: This code is pretty shitty.
+  bool MenuItemComponent::isAddComponent() const {
+    return getComponent() == nullptr && cAction; // TODO: This code is pretty shitty.
   }
 
-  bool MenuItemResource::isPlaceHolder() const {
-    return getResource() == nullptr && !cAction; // TODO: This code is pretty shitty.
+  bool MenuItemComponent::isPlaceHolder() const {
+    return getComponent() == nullptr && !cAction; // TODO: This code is pretty shitty.
   }
 
-  std::string MenuItemResource::getTooltip() const {
-    return "Menu Item Resource";
+  std::string MenuItemComponent::getTooltip() const {
+    return "Menu Item Component";
   }
 }
 

@@ -27,7 +27,7 @@
 
 namespace IsoRealms {
   class Metadata;
-  class IResourceData;
+  class IComponentData;
 
   /**
    * A digital input mapping to a mouse button.
@@ -45,8 +45,8 @@ namespace IsoRealms {
      */
     MouseButton(const sf::Mouse::Button button);
 
-    MouseButton(const Metadata& metadata, IResourceData& owner);
-    MouseButton(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    MouseButton(const Metadata& metadata, IComponentData& owner);
+    MouseButton(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /****************************\
      * Implements IDigitalInput *

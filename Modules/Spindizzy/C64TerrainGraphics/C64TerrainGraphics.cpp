@@ -21,7 +21,7 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  C64TerrainGraphics::C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data) :
+  C64TerrainGraphics::C64TerrainGraphics(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
             cDefaultYaw(data, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),
             cDefFloor(data,     1.0f, 1.0f, 1.0f, 1.0f, [this]() {setNeedsFullRedraw();}),
@@ -64,7 +64,7 @@ namespace IsoRealms::Spindizzy {
     cProject.addScreenListener(this);
   }
   
-  void C64TerrainGraphics::registerAssets(ResourceAssetRegistry& assets) {
+  void C64TerrainGraphics::registerAssets(ComponentAssetRegistry& assets) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
       assets.add<ITexture>(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
     }

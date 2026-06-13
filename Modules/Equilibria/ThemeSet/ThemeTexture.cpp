@@ -26,7 +26,7 @@ namespace IsoRealms::Equilibria {
             cTexture(nullptr) {
   }
 
-  void ThemeTexture::registerAssets(ResourceAssetRegistry& assets, const std::string& id) {
+  void ThemeTexture::registerAssets(ComponentAssetRegistry& assets, const std::string& id) {
     cStateNotifier = assets.add<ITexture>(this, id, "Equilibria/Theme Textures");
   }
   

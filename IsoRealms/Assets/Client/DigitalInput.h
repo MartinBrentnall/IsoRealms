@@ -19,14 +19,14 @@
 #pragma once
 
 #include "IsoRealms/Assets/Type/IDigitalInput.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class DigitalInput : public Asset<DigitalInput, IDigitalInput, IResourceData> {
+  class DigitalInput : public Asset<DigitalInput, IDigitalInput, IComponentData> {
     public:
-    DigitalInput(IResourceData& owner);
+    DigitalInput(IComponentData& owner);
 
     std::string getTreeItemLabel() const override;
   };

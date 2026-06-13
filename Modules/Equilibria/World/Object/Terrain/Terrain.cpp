@@ -84,7 +84,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void Terrain::save(JSONObject object, int originX, int originY, int originZ) {
-    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getResourceID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getComponentID(cDefType));
     object.addString(JSON_BEHAVIOUR,          getBehaviourString());
     object.addInteger(JSON_X,                 cDefStartX      - originX);
     object.addInteger(JSON_Y,                 cDefStartY      - originY);

@@ -22,27 +22,27 @@
 #include <functional>
 
 namespace IsoRealms {
+  class ComponentType;
   class File;
   class IAssetRegistry;
-  class IResource;
+  class IComponent;
   class ModuleOptions;
   class Project;
-  class ResourceType;
   class ProjectFile;
   class JSONObject;
   class JSONArray;
 
-  class IResourceTypeDefinition {
+  class IComponentTypeDefinition {
     public:
-    virtual IResource* createResource(ResourceType& parent, const std::string& name, ProjectFile* ownerProject) = 0;
-    virtual IResource* loadResource(ResourceType& parent, const std::string& name, JSONObject object, ProjectFile* ownerProject) = 0;
-    virtual void deleteResource(IResource* resource) = 0;
-    virtual void renameResource(IResource* resource, const std::string& name) = 0;
-    virtual IResource* getResource2(const std::string& name, bool required = true) const = 0;
-    virtual std::vector<std::string> getAvailableResources() const = 0;
-    virtual const std::string& getResourceID(const IResource& resource) const = 0;
+    virtual IComponent* createComponent(ComponentType& parent, const std::string& name, ProjectFile* ownerProject) = 0;
+    virtual IComponent* loadComponent(ComponentType& parent, const std::string& name, JSONObject object, ProjectFile* ownerProject) = 0;
+    virtual void deleteComponent(IComponent* component) = 0;
+    virtual void renameComponent(IComponent* component, const std::string& name) = 0;
+    virtual IComponent* getComponent2(const std::string& name, bool required = true) const = 0;
+    virtual std::vector<std::string> getAvailableComponents() const = 0;
+    virtual const std::string& getComponentID(const IComponent& component) const = 0;
     virtual bool needsSaving(const ProjectFile* savingProject) const = 0;
     virtual void save(JSONObject& object, const ProjectFile* savingProject) = 0;
-    virtual bool forEachResource(std::function<bool(IResource*)> func) = 0;
+    virtual bool forEachComponent(std::function<bool(IComponent*)> func) = 0;
   };
 }

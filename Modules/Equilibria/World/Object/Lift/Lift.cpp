@@ -88,7 +88,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void Lift::save(JSONObject object, int x, int y, int z) {
-    object.addString(JSON_TYPE,          cZone.getWorld().getEquilibria().getResourceID(cDefType));
+    object.addString(JSON_TYPE,          cZone.getWorld().getEquilibria().getComponentID(cDefType));
     object.addInteger(JSON_X,            cDefX - x);
     object.addInteger(JSON_Y,            cDefY - y);
     object.addInteger(JSON_Z,            cDefZ - z);

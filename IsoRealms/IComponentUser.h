@@ -18,26 +18,23 @@
  */
 #pragma once
 
-#include <exception>
-#include <iostream>
-#include <string>
-
 namespace IsoRealms {
+  class ProjectFile;
   
   /**
-   * Exception to be thrown when attempting to assign an ID that cannot be
-   * used to an asset.
+   * Interface to be implemented by classes that use components, to be notified
+   * of changes to the components that they are using.
    */
-  class ResourceInitException : public std::exception {
-    private:
-    const std::string cWhat;
-    
+  template <typename TYPE> class IComponentUser {
     public:
-    ResourceInitException(const std::string& what);
-    
-    /*****************************\
-     * Implements std::exception *
-    \*****************************/
-    const char* what() const noexcept override;
+      
+    /**
+     * To be called when a resource is about to be destructed.
+     * 
+     * @param resource The resource that is about to be destructed.
+     */
+    virtual void relinquish(TYPE* component) = 0;
+    virtual bool isReadOnly() const = 0;
+    virtual void setOwner(ProjectFile* owner) = 0;
   };
 }

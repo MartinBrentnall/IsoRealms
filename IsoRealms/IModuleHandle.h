@@ -24,41 +24,41 @@
 namespace IsoRealms {
   class JSONObject;
   class IProperty;
-  class IResourceTypeRegistry;
+  class IComponentTypeRegistry;
   class LuaState;
   class ModuleOptions;
   class Project;
-  class ResourceAssetRegistry;
+  class ComponentAssetRegistry;
 
   class IModuleHandle {
     public:
-    virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
+    virtual void registerAssets(ComponentAssetRegistry& assets) = 0;
     virtual void updateInputs(unsigned int milliseconds) = 0;
     virtual void updateRuntime(unsigned int milliseconds) = 0;
     virtual void updateEditing(unsigned int milliseconds) = 0;
     virtual void reset() = 0;
 
-    template <typename RESOURCE_TYPE_DEFINITION> void updateInputs2(RESOURCE_TYPE_DEFINITION& resources, int milliseconds) {
-      for (auto* mResource : resources) {
-        mResource->updateInputs(milliseconds);
+    template <typename COMPONENT_TYPE_DEFINITION> void updateInputs2(COMPONENT_TYPE_DEFINITION& resources, int milliseconds) {
+      for (auto* mComponent : resources) {
+        mComponent->updateInputs(milliseconds);
       }
     }
     
-    template <typename RESOURCE_TYPE_DEFINITION> void updateRuntime2(RESOURCE_TYPE_DEFINITION& resources, int milliseconds) {
-      for (auto* mResource : resources) {
-        mResource->updateRuntime(milliseconds);
+    template <typename COMPONENT_TYPE_DEFINITION> void updateRuntime2(COMPONENT_TYPE_DEFINITION& resources, int milliseconds) {
+      for (auto* mComponent : resources) {
+        mComponent->updateRuntime(milliseconds);
       }
     }
     
-    template <typename RESOURCE_TYPE_DEFINITION> void updateEditing2(RESOURCE_TYPE_DEFINITION& resources, int milliseconds) {
-      for (auto* mResource : resources) {
-        mResource->updateEditing(milliseconds);
+    template <typename COMPONENT_TYPE_DEFINITION> void updateEditing2(COMPONENT_TYPE_DEFINITION& resources, int milliseconds) {
+      for (auto* mComponent : resources) {
+        mComponent->updateEditing(milliseconds);
       }
     }
     
-    template <typename RESOURCE_TYPE_DEFINITION> void reset2(RESOURCE_TYPE_DEFINITION& resources) {
-      for (auto* mResource : resources) {
-        mResource->reset();
+    template <typename COMPONENT_TYPE_DEFINITION> void reset2(COMPONENT_TYPE_DEFINITION& resources) {
+      for (auto* mComponent : resources) {
+        mComponent->reset();
       }
     }
     
@@ -66,11 +66,11 @@ namespace IsoRealms {
   };
 
 #if __linux__
-  typedef IModuleHandle* createModule(Project* project, IResourceTypeRegistry* resourceTypeRegistry);
+  typedef IModuleHandle* createModule(Project* project, IComponentTypeRegistry* resourceTypeRegistry);
   typedef void destroyModule(IModuleHandle* module);
   typedef void initLuaInterfaces(LuaState* luaState);
 #elif _WIN32
-  typedef IModuleHandle* (__stdcall* createModule)(Project* project, IResourceTypeRegistry* resourceTypeRegistry);
+  typedef IModuleHandle* (__stdcall* createModule)(Project* project, IComponentTypeRegistry* resourceTypeRegistry);
   typedef void (__stdcall* destroyModule)(IModuleHandle* module);
   typedef void (__stdcall* initLuaInterfaces)(LuaState* luaState);
 #endif

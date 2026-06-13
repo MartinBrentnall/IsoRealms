@@ -26,18 +26,18 @@ namespace IsoRealms::Basics {
   class Basics;
   
   /**
-   * Resource definition for an iso-realms project, allowing projects to be
+   * Component definition for an iso-realms project, allowing projects to be
    * nested.
    */
   class Project final : public IInputHandler,
                         public IScreen {
     public:
     
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Project(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Project(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);  
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

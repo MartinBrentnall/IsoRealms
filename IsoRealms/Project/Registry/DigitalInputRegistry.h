@@ -21,7 +21,7 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IDigitalInput.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerButton.h"
 #include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerHat.h"
 #include "IsoRealms/Assets/Fixed/DigitalInput/KeyboardKey.h"
@@ -31,15 +31,15 @@
 #include "AssetClientManager.h"
 
 namespace IsoRealms {
-  class DigitalInputRegistry : public AssetClientManager<DigitalInputRegistry, IResourceData, IDigitalInput> {
+  class DigitalInputRegistry : public AssetClientManager<DigitalInputRegistry, IComponentData, IDigitalInput> {
     public:
     DigitalInputRegistry(Project& project);
  
     private:
-    AssetInstanced<IResourceData, IDigitalInput, GameControllerButton> cGameControllerButton;
-    AssetInstanced<IResourceData, IDigitalInput, GameControllerHat>    cGameControllerHat;
-    AssetInstanced<IResourceData, IDigitalInput, MouseButton>          cMouseButton;
-    AssetInstanced<IResourceData, IDigitalInput, KeyboardKey>          cKeyboardKey;
+    AssetInstanced<IComponentData, IDigitalInput, GameControllerButton> cGameControllerButton;
+    AssetInstanced<IComponentData, IDigitalInput, GameControllerHat>    cGameControllerHat;
+    AssetInstanced<IComponentData, IDigitalInput, MouseButton>          cMouseButton;
+    AssetInstanced<IComponentData, IDigitalInput, KeyboardKey>          cKeyboardKey;
   };
 }
  

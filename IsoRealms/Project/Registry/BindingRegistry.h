@@ -176,7 +176,7 @@ namespace IsoRealms {
         if constexpr (std::is_same_v<OWNER, IActionContext>) {
           return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner, object)).first->get();
         } else {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner.getResourceData(), object)).first->get();
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner.getComponentData(), object)).first->get();
         }
       }
 
@@ -184,7 +184,7 @@ namespace IsoRealms {
         if constexpr (std::is_same_v<OWNER, IActionContext>) {
           return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner)).first->get();
         } else {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner.getResourceData())).first->get();
+          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner.getComponentData())).first->get();
         }
       }
 

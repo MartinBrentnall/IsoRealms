@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a model composed of a quad with a specified
+   * Component definition for a model composed of a quad with a specified
    * texture applied to it.  The model can be configured to behave in various
    * ways according to the view within a 3D environment.
    */
@@ -33,11 +33,11 @@ namespace IsoRealms::Basics {
                        public IScreenListener {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Sprite(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Sprite(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

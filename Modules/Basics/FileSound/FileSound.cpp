@@ -23,14 +23,14 @@
 namespace IsoRealms::Basics {
   std::mutex FileSound::cRuntimeLoadMutex;
 
-  FileSound::FileSound(Basics& basics, IResourceData& data) :
+  FileSound::FileSound(Basics& basics, IComponentData& data) :
             cDefBasics(basics),
             cDefFile(data.getProject(), [this]() {
               reloadData();
             }) {
   }
   
-  void FileSound::registerAssets(ResourceAssetRegistry& assets) {
+  void FileSound::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IAction>(this, "", "Play a Sound");
   }
   
@@ -95,9 +95,9 @@ namespace IsoRealms::Basics {
 
   void FileSound::reloadData() {
     std::lock_guard<std::mutex> mLockGuard(cRuntimeLoadMutex);
-    std::string mResource = cDefFile.getPath();
-    if (!cRuntimeSoundData.loadFromFile(mResource)) {
-      std::cout << "WARNING: FileSound::reloadData: Unable to sound data from file \"" << mResource << "\"" << std::endl;
+    std::string mComponent = cDefFile.getPath();
+    if (!cRuntimeSoundData.loadFromFile(mComponent)) {
+      std::cout << "WARNING: FileSound::reloadData: Unable to sound data from file \"" << mComponent << "\"" << std::endl;
     }
   }
 }

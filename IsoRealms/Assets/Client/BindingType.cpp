@@ -21,12 +21,12 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  BindingType::BindingType(IResourceData& owner, std::function<void()> listener) :
-            Asset<BindingType, IBindingType, IResourceData>(owner),
+  BindingType::BindingType(IComponentData& owner, std::function<void()> listener) :
+            Asset<BindingType, IBindingType, IComponentData>(owner),
             cListener(listener) {
   }
 

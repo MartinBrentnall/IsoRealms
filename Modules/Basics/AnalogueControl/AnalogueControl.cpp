@@ -23,13 +23,13 @@
 #include "IsoRealms/Project/Options.h"
 
 namespace IsoRealms::Basics {
-  AnalogueControl::AnalogueControl(Basics& basics, IResourceData& data) :
-             cResourceData(data),
+  AnalogueControl::AnalogueControl(Basics& basics, IComponentData& data) :
+             cComponentData(data),
              cRuntimeState(false),
              cLuaBinding(basics.getProject().getLuaState(), this) {
   }
 
-  AnalogueControl::AnalogueControl(Basics& basics, IResourceData& data, JSONObject object) :
+  AnalogueControl::AnalogueControl(Basics& basics, IComponentData& data, JSONObject object) :
             AnalogueControl(basics, data) {
     for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingValue.getObject();
@@ -39,7 +39,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueControl::registerAssets(ResourceAssetRegistry& assets) {
+  void AnalogueControl::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IFloat>(static_cast<IFloat*>(this), "", "Analogue Inputs");
     assets.add<IInputHandler>(static_cast<IInputHandler*>(this), "", "Analogue Inputs");
     assets.add<IBinding>(&cLuaBinding, "", "Analogue Inputs");
@@ -62,7 +62,7 @@ namespace IsoRealms::Basics {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });
     }, [this]()->InputMapping& {
-      std::shared_ptr<AnalogueInput> mInput = std::make_shared<AnalogueInput>(cResourceData);
+      std::shared_ptr<AnalogueInput> mInput = std::make_shared<AnalogueInput>(cComponentData);
       mInput->setID("GameControllerAxis");
       return *cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
     });
@@ -207,7 +207,7 @@ namespace IsoRealms::Basics {
     (*cPhysicalInput)->loadCustomMapping(object);
   }
 
-  void AnalogueControl::InputMapping::registerAssets(ResourceAssetRegistry& assets) {
+  void AnalogueControl::InputMapping::registerAssets(ComponentAssetRegistry& assets) {
     (*cPhysicalInput)->registerAssets(assets);
   }
   

@@ -20,7 +20,7 @@
 #include "UI.h"
 
 namespace IsoRealms::UI {
-  UI::UI(Project& project, IResourceTypeRegistry& registry):
+  UI::UI(Project& project, IComponentTypeRegistry& registry):
                     cProject(project),
                     cModule(registry),
                     cLayoutLocations(registry),
@@ -31,18 +31,18 @@ namespace IsoRealms::UI {
                     cProviderScreenPanel(registry.getAssetMetadata("ScreenPanel")),
                     cProviderScreenText(registry.getAssetMetadata("ScreenText")),
                     cProviderStringTime(registry.getAssetMetadata("StringTime")),
-                    cResourceTypeLayout(*this),
-                    cResourceTypeMenu(*this),
-                    cResourceTypePrompt(*this),
-                    cResourceTypeScreenFader(*this),
-                    cResourceTypeThrobber(*this),
-                    cResourceTypeVirtualKeyboard(*this) {
-    registry.add(&cResourceTypeLayout,          "Layout");
-    registry.add(&cResourceTypeMenu,            "Menu");
-    registry.add(&cResourceTypePrompt,          "Prompt");
-    registry.add(&cResourceTypeScreenFader,     "ScreenFader");
-    registry.add(&cResourceTypeThrobber,        "Throbber");
-    registry.add(&cResourceTypeVirtualKeyboard, "VirtualKeyboard");
+                    cComponentTypeLayout(*this),
+                    cComponentTypeMenu(*this),
+                    cComponentTypePrompt(*this),
+                    cComponentTypeScreenFader(*this),
+                    cComponentTypeThrobber(*this),
+                    cComponentTypeVirtualKeyboard(*this) {
+    registry.add(&cComponentTypeLayout,          "Layout");
+    registry.add(&cComponentTypeMenu,            "Menu");
+    registry.add(&cComponentTypePrompt,          "Prompt");
+    registry.add(&cComponentTypeScreenFader,     "ScreenFader");
+    registry.add(&cComponentTypeThrobber,        "Throbber");
+    registry.add(&cComponentTypeVirtualKeyboard, "VirtualKeyboard");
   }
 
   const Metadata& UI::getMetadata(const std::string& key) const {
@@ -64,7 +64,7 @@ namespace IsoRealms::UI {
   void UI::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
-  void UI::registerAssets(ResourceAssetRegistry& assets) {
+  void UI::registerAssets(ComponentAssetRegistry& assets) {
     assets.addProvider(&cProviderScreenGradient, SCREEN_GRADIENT, "A Rectangle Gradient");
     assets.addProvider(&cProviderScreenModel,    SCREEN_MODEL,    "A 3D Model");
     assets.addProvider(&cProviderScreenPanel,    SCREEN_PANEL,    "A Rounded Rectangle");
@@ -77,26 +77,26 @@ namespace IsoRealms::UI {
   }
   
   void UI::updateRuntime(unsigned int milliseconds) {
-    updateRuntime2(cResourceTypeMenu,            milliseconds);
-    updateRuntime2(cResourceTypeThrobber,        milliseconds);
-    updateRuntime2(cResourceTypeVirtualKeyboard, milliseconds);
+    updateRuntime2(cComponentTypeMenu,            milliseconds);
+    updateRuntime2(cComponentTypeThrobber,        milliseconds);
+    updateRuntime2(cComponentTypeVirtualKeyboard, milliseconds);
     for (std::unique_ptr<ScreenModel>& mScreenModel : cProviderScreenModel) {
       mScreenModel->updateRuntime(milliseconds);
     }
   }
   
   void UI::updateEditing(unsigned int milliseconds) {
-    updateEditing2(cResourceTypeLayout, milliseconds);
+    updateEditing2(cComponentTypeLayout, milliseconds);
     for (std::unique_ptr<ScreenModel>& mScreenModel : cProviderScreenModel) {
       mScreenModel->updateEditing(milliseconds);
     }
   }
   
   void UI::reset() {
-    reset2(cResourceTypeLayout);
-    reset2(cResourceTypeMenu);
-    reset2(cResourceTypePrompt);
-    reset2(cResourceTypeVirtualKeyboard);
+    reset2(cComponentTypeLayout);
+    reset2(cComponentTypeMenu);
+    reset2(cComponentTypePrompt);
+    reset2(cComponentTypeVirtualKeyboard);
   }  
   
   std::mutex cModuleInstantiationMutex;
@@ -104,9 +104,9 @@ namespace IsoRealms::UI {
 }
  
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IComponentTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IComponentTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::UI::UI> mModule = std::make_unique<IsoRealms::UI::UI>(*project, *registry);
   {

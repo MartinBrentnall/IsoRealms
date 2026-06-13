@@ -143,7 +143,7 @@
       }
     }
   },
-  "resources": {
+  "components": {
     "Alien": {
       "singular": "Alien",
       "plural": "Aliens",
@@ -344,7 +344,7 @@
     "ZoneObject": {
       "singular": "Entity",
       "plural": "Entities",
-      "description": "Object types with behaviour that can be customized via the application of various \"traits\".  This is an experimental type of resource that implements an Entity-Component-System design.  It is intended to replace the existing fixed object types, such as lifts, aliens, pick-ups, etc. with a single resource type that includes enough flexibility to cover all of these functionalities and much more.  This resource type is experimental and unused in the existing game.",
+      "description": "Object types with behaviour that can be customized via the application of various \"traits\".  This is an experimental type of resource that implements an Entity-Component-System design.  It is intended to replace the existing fixed object types, such as lifts, aliens, pick-ups, etc. with a single component type that includes enough flexibility to cover all of these functionalities and much more.  This component type is experimental and unused in the existing game.",
       "category": "Elements",
       "properties": {
       }

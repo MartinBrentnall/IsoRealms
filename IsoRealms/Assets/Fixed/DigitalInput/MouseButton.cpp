@@ -56,13 +56,13 @@ namespace IsoRealms {
           cMetadata(metadata) {
   }
 
-  MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner) :
+  MouseButton::MouseButton(const Metadata& metadata, IComponentData& owner) :
           cMetadata(metadata),
           cButtonChooser(metadata),
           cButton(sf::Mouse::Left) {
   }
 
-  MouseButton::MouseButton(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  MouseButton::MouseButton(const Metadata& metadata, IComponentData& owner, JSONObject object) :
           MouseButton(metadata, owner) {
     cButton = getButton(object.getString(JSON_BUTTON));
   }

@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
   /**
-   * Resource definition for textures to be used as lifts.  Generates nice
+   * Component definition for textures to be used as lifts.  Generates nice
    * textures in total for twelve lift types (three textures are intended to
    * be rotated 180 degrees for an additional three).  The colours used for the
    * nine textures are configurable.
@@ -35,11 +35,11 @@ namespace IsoRealms::Spindizzy {
   class C64LiftGraphics final {
     public:
     
-    /**********************\
-     * Resource interface *
-    \**********************/
-    C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
+    /***********************\
+     * Component interface *
+    \***********************/
+    C64LiftGraphics(Spindizzy& spindizzy, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);  
     bool renderIcon();
     void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

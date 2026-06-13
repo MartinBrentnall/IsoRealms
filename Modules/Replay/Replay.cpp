@@ -19,21 +19,21 @@
 #include "Replay.h"
 
 namespace IsoRealms::Replay {
-  Replay::Replay(Project& project, IResourceTypeRegistry& registry):
-                    cResourceTypeReplayer(*this) {
-    registry.add(&cResourceTypeReplayer, "Replayer");
+  Replay::Replay(Project& project, IComponentTypeRegistry& registry):
+                    cComponentTypeReplayer(*this) {
+    registry.add(&cComponentTypeReplayer, "Replayer");
   }
 
-  void Replay::registerAssets(ResourceAssetRegistry& assets) {
+  void Replay::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
   
   void Replay::updateInputs(unsigned int milliseconds) {
-    updateInputs2(cResourceTypeReplayer, milliseconds);
+    updateInputs2(cComponentTypeReplayer, milliseconds);
   }
   
   void Replay::updateRuntime(unsigned int milliseconds) {
-    updateRuntime2(cResourceTypeReplayer, milliseconds);
+    updateRuntime2(cComponentTypeReplayer, milliseconds);
   }
   
   void Replay::updateEditing(unsigned int milliseconds) {
@@ -41,7 +41,7 @@ namespace IsoRealms::Replay {
   }
   
   void Replay::reset() {
-    reset2(cResourceTypeReplayer);
+    reset2(cComponentTypeReplayer);
   }  
   
   std::mutex cModuleInstantiationMutex;
@@ -49,9 +49,9 @@ namespace IsoRealms::Replay {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IComponentTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IComponentTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Replay::Replay> mModule = std::make_unique<IsoRealms::Replay::Replay>(*project, *registry);
   {

@@ -32,7 +32,7 @@ namespace IsoRealms::Equilibria {
   class Equilibria;
 
   /**
-   * Resource definition for a type of pick up.  The appearance of pick-ups of
+   * Component definition for a type of pick up.  The appearance of pick-ups of
    * this type is configurable, and pick-up instances provide boundaries for
    * interaction with movable objects (e.g. players).
    */
@@ -40,11 +40,11 @@ namespace IsoRealms::Equilibria {
                            public IWorldEditorTool {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    PickUpType(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    PickUpType(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -69,7 +69,7 @@ namespace IsoRealms::Equilibria {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;

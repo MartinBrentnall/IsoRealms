@@ -540,8 +540,8 @@ namespace IsoRealms::UI {
   void LayoutEditor::openProperties() {
     if (cSelectedComponent != nullptr) {
       cDialogManager.getProject().updateLater([this]() {
-        cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getResourceData(), [this](IPropertyMaker& owner) {
-          const Metadata& mMetadata = cLayout.getResourceData().getMetadata();
+        cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getComponentData(), [this](IPropertyMaker& owner) {
+          const Metadata& mMetadata = cLayout.getComponentData().getMetadata();
           cSelectedComponent->getProperties(owner, mMetadata);
           cEditingProperties = true;
           cCursorSpeedX = 0.0f;

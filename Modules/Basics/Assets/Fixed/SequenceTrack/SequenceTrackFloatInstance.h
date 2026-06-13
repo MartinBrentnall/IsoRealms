@@ -42,7 +42,7 @@ namespace IsoRealms::Basics {
     /*************************************\
      * Implements ISequenceTrackInstance *
     \*************************************/
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) override;
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) override;
 
     /*********************\
      * Implements IFloat *

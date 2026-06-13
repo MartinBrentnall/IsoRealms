@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteral.h"
 #include "IsoRealms/Assets/Type/IFloat.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
@@ -33,24 +33,24 @@ namespace IsoRealms {
   class Application;
   class Project;
 
-  class FloatRegistry : public AssetClientManager<FloatRegistry, IResourceData, IFloat> {
+  class FloatRegistry : public AssetClientManager<FloatRegistry, IComponentData, IFloat> {
     public:
     FloatRegistry(Application& application);
 
-    IFloat* literal(IAssetUser<IFloat>* client, IResourceData& owner, float value) {
+    IFloat* literal(IAssetUser<IFloat>* client, IComponentData& owner, float value) {
       IFloat* mFloat = cLiteral.createLiteralAsset(owner, value);
       registerClient(client, &cLiteral, mFloat);
       return mFloat;
     }
 
     private:
-    class Literal : public AssetLiteral<IResourceData, IFloat> {
+    class Literal : public AssetLiteral<IComponentData, IFloat> {
       public:
       explicit Literal(const Metadata& metadata) :
                 cMetadata(metadata) {
       }
 
-      IFloat* createLiteralAsset(IResourceData& owner, float value) const {
+      IFloat* createLiteralAsset(IComponentData& owner, float value) const {
         return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
 
@@ -61,11 +61,11 @@ namespace IsoRealms {
         return true;
       }
 
-      std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner) const override {
+      std::unique_ptr<IFloat> createLiteralAsset(IComponentData& owner) const override {
         return std::make_unique<Instance>(owner.getProject(), 0.0f);
       }
 
-      std::unique_ptr<IFloat> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
+      std::unique_ptr<IFloat> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(owner.getProject(), object.getFloat(JSON_VALUE));
       }
 

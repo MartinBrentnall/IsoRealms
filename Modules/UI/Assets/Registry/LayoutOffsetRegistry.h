@@ -30,7 +30,7 @@ namespace IsoRealms::UI {
 
   class LayoutOffsetRegistry : public AssetClientManager<LayoutOffsetRegistry, LayoutComponentEdge, ILayoutOffset> {
     public:
-    LayoutOffsetRegistry(IResourceTypeRegistry& registry);
+    LayoutOffsetRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<LayoutComponentEdge, ILayoutOffset, LayoutOffsetAbsolute> cAbsolute;

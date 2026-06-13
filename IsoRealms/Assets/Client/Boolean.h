@@ -21,21 +21,21 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IBoolean.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Boolean : public Asset<Boolean, IBoolean, IResourceData>,
+  class Boolean : public Asset<Boolean, IBoolean, IComponentData>,
                   public IStateListener {
     public:
-    Boolean(IResourceData& owner, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
+    Boolean(IComponentData& owner, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
 
-    /*********************************************\
-     * Implements Asset<IBoolean, IResourceData> *
-    \*********************************************/
-    IBoolean* createDefaultAsset(IResourceData& owner);
+    /**********************************************\
+     * Implements Asset<IBoolean, IComponentData> *
+    \**********************************************/
+    IBoolean* createDefaultAsset(IComponentData& owner);
 
     /*****************************\
      * Implements IStateListener *

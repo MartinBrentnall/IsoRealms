@@ -24,18 +24,18 @@ namespace IsoRealms::Equilibria {
   class Equilibria;
 
   /**
-   * Resource definition for a model that can be dynamically cycled through
+   * Component definition for a model that can be dynamically cycled through
    * multiple selected models.  The cycle function is achieved through the
    * scripting interface.
    */
   class ModelCycler final {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    ModelCycler(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    ModelCycler(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -128,7 +128,7 @@ namespace IsoRealms::Equilibria {
 
     // External interfaces.
     Equilibria& cEquilibria;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
     std::vector<std::unique_ptr<Model>> cDefModels;

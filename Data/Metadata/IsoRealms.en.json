@@ -190,9 +190,9 @@
     "ExtraButton1": {"name": "Extra Button 1", "description": "The first extra mouse button."},
     "ExtraButton2": {"name": "Extra Button 2", "description": "The second extra mouse button."}
   },
-  "Resource": {
-    "ResourceName": {"name": "Name", "description": "A unique name to identify this resource.  The name is only unique to resources of the same type."},
-    "ResourceOwner": {"name": "Owner", "description": "Owning application file of this resource."}
+  "Component": {
+    "ComponentName": {"name": "Name", "description": "A unique name to identify this component.  The name is only unique to components of the same type."},
+    "ComponentOwner": {"name": "Owner", "description": "Owning application file of this component."}
   },
   "Texture": {
     "scaleX": {"name": "Scale X", "description": "Horizontal scale of this texture."},

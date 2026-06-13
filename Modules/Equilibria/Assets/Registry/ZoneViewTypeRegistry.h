@@ -30,7 +30,7 @@
 namespace IsoRealms::Equilibria {
   class ZoneViewTypeRegistry : public AssetClientManager<ZoneViewTypeRegistry, WorldView, IZoneViewType> {
     public:
-    ZoneViewTypeRegistry(IResourceTypeRegistry& registry);
+    ZoneViewTypeRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<WorldView, IZoneViewType, ZoneViewTypeActual>   cActual;

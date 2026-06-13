@@ -21,7 +21,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyNativeUnsignedInteger::PropertyNativeUnsignedInteger(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) :
+  PropertyNativeUnsignedInteger::PropertyNativeUnsignedInteger(const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) :
             PropertyInputField(data, resourceAccessManager, Utils::toString(getter()), removeFunction),
             cValidityChecker(validityChecker),
             cSetter(setter) {

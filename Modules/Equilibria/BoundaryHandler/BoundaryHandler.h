@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
   class World;
 
   /**
-   * Resource definition triggering actions when objects cross boundaries.
+   * Component definition triggering actions when objects cross boundaries.
    * For each boundary handler, an entry and exit action may be configured
    * upon an object of a specified type crossing a boundary of a specified
    * type.
@@ -37,11 +37,11 @@ namespace IsoRealms::Equilibria {
   class BoundaryHandler final : public IEventBindings {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    BoundaryHandler(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    BoundaryHandler(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

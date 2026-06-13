@@ -21,19 +21,19 @@
  #include <functional>
  
  #include "IsoRealms/Assets/Type/IAnalogueInput.h"
- #include "IsoRealms/IResourceData.h"
+ #include "IsoRealms/IComponentData.h"
  #include "IsoRealms/Assets/Fixed/AnalogueInput/GameControllerAxis.h"
  #include "IsoRealms/Assets/Providers/AssetInstanced.h"
  
  #include "AssetClientManager.h"
  
  namespace IsoRealms {
-   class AnalogueInputRegistry : public AssetClientManager<AnalogueInputRegistry, IResourceData, IAnalogueInput> {
+   class AnalogueInputRegistry : public AssetClientManager<AnalogueInputRegistry, IComponentData, IAnalogueInput> {
      public:
      AnalogueInputRegistry(Project& project);
   
      private:
-     AssetInstanced<IResourceData, IAnalogueInput, GameControllerAxis> cGameControllerAxis;
+     AssetInstanced<IComponentData, IAnalogueInput, GameControllerAxis> cGameControllerAxis;
    };
  }
   

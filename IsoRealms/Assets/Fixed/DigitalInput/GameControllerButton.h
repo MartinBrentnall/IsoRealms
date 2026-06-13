@@ -25,7 +25,7 @@
 
 namespace IsoRealms {
   class Metadata;
-  class IResourceData;
+  class IComponentData;
 
   /**
    * A digital input mapping to a button on a controller.
@@ -46,8 +46,8 @@ namespace IsoRealms {
     inline static const unsigned int L2       = 6;
 #endif
 
-    GameControllerButton(const Metadata& metadata, IResourceData& owner);
-    GameControllerButton(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    GameControllerButton(const Metadata& metadata, IComponentData& owner);
+    GameControllerButton(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /****************************\
      * Implements IDigitalInput *

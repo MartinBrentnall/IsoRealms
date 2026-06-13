@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IAction.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"

@@ -28,9 +28,9 @@
 namespace IsoRealms {
   class Condition;
   class ConditionElement;
+  class IComponentData;
   class IEditable;
   class IOptionalObject;
-  class IResourceData;
   class ITreeSelectorObject;
 
   /**
@@ -40,9 +40,9 @@ namespace IsoRealms {
    */
   class PropertySaver : public IPropertyMaker {
     public:
-    PropertySaver(IResourceData& resourceData, JSONObject object);
+    PropertySaver(IComponentData& resourceData, JSONObject object);
 
-    IResourceData& getResourceData() override;
+    IComponentData& getComponentData() override;
 
     bool savesPersistedValues() const override {
       return true;
@@ -67,12 +67,12 @@ namespace IsoRealms {
     void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) override;
     void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) override;
 
-    /*************************************\
-     * Implements IResourceAccessManager *
-    \*************************************/
+    /**************************************\
+     * Implements IComponentAccessManager *
+    \**************************************/
     void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) override;
-    bool isResourceReadOnly() const override;
-    void promoteResourceToProject() override;
+    bool isComponentReadOnly() const override;
+    void promoteComponentToProject() override;
 
     protected:
     bool beginSavePropertyArray(const std::string& key) override;
@@ -81,7 +81,7 @@ namespace IsoRealms {
     void endSavePropertyArray() override;
 
     private:
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
     std::vector<JSONObject> cObjects;
     std::vector<std::string> cSaveArrayKeys;
 

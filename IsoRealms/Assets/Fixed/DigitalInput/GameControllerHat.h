@@ -26,15 +26,15 @@
 
 namespace IsoRealms {
   class Metadata;
-  class IResourceData;
+  class IComponentData;
 
   /**
    * A digital input mapping to an analogue stick or similar.
    */
   class GameControllerHat : public IDigitalInput {
     public:
-    GameControllerHat(const Metadata& metadata, IResourceData& owner);
-    GameControllerHat(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    GameControllerHat(const Metadata& metadata, IComponentData& owner);
+    GameControllerHat(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**
      * Retrieve the direction of the specified name.  The key is always such that it

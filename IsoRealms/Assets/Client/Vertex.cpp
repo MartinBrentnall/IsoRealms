@@ -19,15 +19,15 @@
 #include "Vertex.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Vertex::Vertex(IResourceData& owner) :
-            Asset<Vertex, IVertex, IResourceData>(owner, owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f)) {
+  Vertex::Vertex(IComponentData& owner) :
+            Asset<Vertex, IVertex, IComponentData>(owner, owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f)) {
   }
 
-  IVertex* Vertex::createDefaultAsset(IResourceData& owner) {
+  IVertex* Vertex::createDefaultAsset(IComponentData& owner) {
     return owner.getAssetManager().createLiteralVertex(this, owner, 0.0f, 0.0f, 0.0f);
   }
 }

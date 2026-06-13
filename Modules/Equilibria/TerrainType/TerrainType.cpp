@@ -23,9 +23,9 @@
 #include "Modules/Equilibria/ZoneType/ZoneType.h"
 
 namespace IsoRealms::Equilibria {
-  TerrainType::TerrainType(Equilibria& equilibria, IResourceData& data) :
+  TerrainType::TerrainType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cResourceData(data),
+            cComponentData(data),
             cAssets(equilibria),
             cDefSurfaceFriction(0.0f),
             cDefSurfaceGrip(0.0f),
@@ -42,7 +42,7 @@ namespace IsoRealms::Equilibria {
             cDefImpactAction(data.getDummyActionContext()) {
   }
   
-  void TerrainType::registerAssets(ResourceAssetRegistry& assets) {
+  void TerrainType::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
 
@@ -159,8 +159,8 @@ namespace IsoRealms::Equilibria {
     return cEquilibria;
   }
 
-  IResourceData& TerrainType::getResourceData() {
-    return cResourceData;
+  IComponentData& TerrainType::getComponentData() {
+    return cComponentData;
   }
 
   void TerrainType::executeContactScript() {
@@ -200,7 +200,7 @@ namespace IsoRealms::Equilibria {
   }
 
 
-  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 

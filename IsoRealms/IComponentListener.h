@@ -18,12 +18,11 @@
  */
 #pragma once
 
-#include <set>
-#include <string>
+namespace IsoRealms {
+  class IComponent;
 
-#include "Assets/Type/IScreenListener.h"
-#include "Editing/Property/IProperty.h"
-#include "Exception/ResourceInitException.h"
-#include "IModuleHandle.h"
-#include "IResourceData.h"
-#include "Project/Registry/IAssetUser.h"
+  class IComponentListener {
+    public:
+    virtual void componentRemoved(IComponent* component) = 0;
+  };
+}

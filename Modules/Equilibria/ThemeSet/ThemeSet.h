@@ -29,11 +29,11 @@ namespace IsoRealms::Equilibria {
 
   class ThemeSet {
     public:
-    ThemeSet(Equilibria& equilibria, IResourceData& data);
+    ThemeSet(Equilibria& equilibria, IComponentData& data);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     bool renderIcon();
     void hintInUse(bool inUse);
-    void registerAssets(ResourceAssetRegistry& assets);
+    void registerAssets(ComponentAssetRegistry& assets);
     void removed();
 
     bool hasReadOnlyReferences() const;
@@ -61,7 +61,7 @@ namespace IsoRealms::Equilibria {
     void applyDefaultTheme();
     Theme* getDefaultTheme();
     Equilibria& getEquilibria();
-    IResourceData& getResourceData();
+    IComponentData& getComponentData();
 
     void setNextTheme();
     void setPreviousTheme();
@@ -83,7 +83,7 @@ namespace IsoRealms::Equilibria {
 
     // External interfaces.
     Equilibria& cEquilibria;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
     std::map<std::string, std::unique_ptr<Theme>> cThemes;

@@ -19,14 +19,14 @@
 #include "SimpleInteger.h"
 
 namespace IsoRealms::Basics {
-  SimpleInteger::SimpleInteger(Basics& basics, IResourceData& data) :
+  SimpleInteger::SimpleInteger(Basics& basics, IComponentData& data) :
             cDefValue(0),
             cRuntimeValue(0),
             cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  void SimpleInteger::registerAssets(ResourceAssetRegistry& assets) {
+  void SimpleInteger::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IInteger>(this, "", "Simple Integers");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Integers");
   }

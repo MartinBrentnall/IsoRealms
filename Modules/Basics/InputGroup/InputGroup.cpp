@@ -19,11 +19,11 @@
 #include "InputGroup.h"
 
 namespace IsoRealms::Basics {
-  InputGroup::InputGroup(Basics& basics, IResourceData& data) :
-            cResource(data) {
+  InputGroup::InputGroup(Basics& basics, IComponentData& data) :
+            cComponentData(data) {
   }
   
-  void InputGroup::registerAssets(ResourceAssetRegistry& assets) {
+  void InputGroup::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Input Groups");
   }
 
@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
         Utils::removeElementUnique(cDefInputHandlers, &inputHandler);
       });
     }, [this]()->InputHandler& {
-      return *cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cResource));
+      return *cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cComponentData));
     });
   }
 

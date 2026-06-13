@@ -26,18 +26,18 @@ namespace IsoRealms::Equilibria {
   class Equilibria;
 
   /**
-   * Resource definition for a terrain state.  A terrain state may be used to
+   * Component definition for a terrain state.  A terrain state may be used to
    * control the presence of terrain objects via conditions.
    */
   class TerrainState final : public IBoolean,
                              public IScreen {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    TerrainState(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    TerrainState(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -84,7 +84,7 @@ namespace IsoRealms::Equilibria {
     private:
     
     // External interfaces.
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
     ConditionElement cDefConditionElement; /// Condition element representing this terrain state.
@@ -105,6 +105,6 @@ namespace IsoRealms::Equilibria {
      * @param name ID of this terrain state.
      * @param value initial value of this terrain state.
      */
-    TerrainState(IResourceData& owner, bool value, float iconScale);
+    TerrainState(IComponentData& owner, bool value, float iconScale);
   };
 }

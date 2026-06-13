@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/Metadata.h"
-#include "IsoRealms/Assets/Client/ResourceOwner.h"
+#include "IsoRealms/Assets/Client/ComponentOwner.h"
 #include "IsoRealms/Types.h"
 
 #include "Options.h"
@@ -55,7 +55,7 @@ namespace IsoRealms {
     inline static const std::string JSON_OPTIONS = "options";
 
     std::string cDefName;
-    ResourceOwner cDefOwner;
+    ComponentOwner cDefOwner;
     std::vector<std::unique_ptr<Option>> cDefOptions;
 
     bool isOptionNameUsed(const std::string& name, Option* option) const;

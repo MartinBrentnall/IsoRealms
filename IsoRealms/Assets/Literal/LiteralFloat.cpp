@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {

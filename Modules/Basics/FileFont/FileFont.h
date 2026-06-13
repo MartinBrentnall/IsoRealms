@@ -41,17 +41,17 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a font loaded from a true-type font file.
+   * Component definition for a font loaded from a true-type font file.
    */
   class FileFont final : public IFont {
 
     public:
     
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    FileFont(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
+    /***********************\
+     * Component Interface *
+    \***********************/
+    FileFont(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);  
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

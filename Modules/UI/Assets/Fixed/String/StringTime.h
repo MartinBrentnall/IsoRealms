@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
 
     // Constructors.
-    StringTime(const Metadata& metadata, IResourceData& owner);
-    StringTime(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    StringTime(const Metadata& metadata, IComponentData& owner);
+    StringTime(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**********************\
      * Implements IString *

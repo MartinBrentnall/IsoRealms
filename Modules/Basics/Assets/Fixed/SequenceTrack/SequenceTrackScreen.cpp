@@ -20,15 +20,15 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackScreen::SequenceTrackScreen(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence.getResourceData(), sequence),
+            SequenceTrackBase(sequence.getComponentData(), sequence),
             cMetadata(metadata),
-            cDefStartScreen(sequence.getResourceData()) {
+            cDefStartScreen(sequence.getComponentData()) {
   }
 
   SequenceTrackScreen::SequenceTrackScreen(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getResourceData(), sequence, object),
+            SequenceTrackBase(sequence.getComponentData(), sequence, object),
             cMetadata(metadata),
-            cDefStartScreen(sequence.getResourceData()) {
+            cDefStartScreen(sequence.getComponentData()) {
   }
 
   const Screen& SequenceTrackScreen::getStartScreen() const {

@@ -86,9 +86,9 @@ namespace IsoRealms {
         std::cout << "WARNING: AbstractAssetRegistry::addProvider: Category cannot be empty." << std::endl;
       }
       registerAsset(provider);
-      std::string mResourceID = cManager.getResourceID();
-      std::string mName = cManager.getResourceName();
-      return cManager.getAssetManager().template add<TYPE>(provider, assetID == "" ? mResourceID : mResourceID + "/" + assetID, 
+      std::string mComponentID = cManager.getComponentID();
+      std::string mName = cManager.getComponentName();
+      return cManager.getAssetManager().template add<TYPE>(provider, assetID == "" ? mComponentID : mComponentID + "/" + assetID, 
                                                                      mName == ""   ? category
                                                                    : assetID == "" ? category + "/" + mName 
                                                                    :                 category + "/" + mName + "/" + assetID);
@@ -99,11 +99,11 @@ namespace IsoRealms {
         std::cout << "WARNING: AbstractAssetRegistry::add: Category cannot be empty." << std::endl;
       }
       registerAsset(asset);
-      std::string mResourceID = cManager.getResourceID();
-      std::string mName = cManager.getResourceName();
-      return cManager.getAssetManager().template add<TYPE>(asset, mResourceID == "" ? assetID
-                                                                : assetID     == "" ? mResourceID
-                                                                :                     mResourceID + "/" + assetID,
+      std::string mComponentID = cManager.getComponentID();
+      std::string mName = cManager.getComponentName();
+      return cManager.getAssetManager().template add<TYPE>(asset, mComponentID == "" ? assetID
+                                                                : assetID      == "" ? mComponentID
+                                                                :                      mComponentID + "/" + assetID,
                                                                   assetID == "" ? category + "/" + mName 
                                                                                 : category + "/" + mName + "/" + assetID);
     }

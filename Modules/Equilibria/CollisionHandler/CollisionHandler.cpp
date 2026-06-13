@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/CollisionHandler/CollisionHandlerInstance.h"
 
 namespace IsoRealms::Equilibria {
-  CollisionHandler::CollisionHandler(Equilibria& equilibria, IResourceData& data) :
+  CollisionHandler::CollisionHandler(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cDefPhysicalObjectTypeA(equilibria),
             cDefPhysicalObjectTypeB(equilibria),
@@ -32,7 +32,7 @@ namespace IsoRealms::Equilibria {
     cDefPhysicalObjectTypeB.addNotifyAssetChangedFunction(this);
   }
 
-  void CollisionHandler::registerAssets(ResourceAssetRegistry& assets) {
+  void CollisionHandler::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
 

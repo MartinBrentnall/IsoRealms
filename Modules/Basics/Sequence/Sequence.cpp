@@ -27,9 +27,9 @@
 #include "SequenceInstance.h"
 
 namespace IsoRealms::Basics {
-  Sequence::Sequence(Basics& basics, IResourceData& data) :
+  Sequence::Sequence(Basics& basics, IComponentData& data) :
             cBasics(basics),
-            cResourceData(data),
+            cComponentData(data),
             cDefPlaying(false),
             cDefLoop(false),
             cDefSpeed(data, 1.0f),
@@ -37,15 +37,15 @@ namespace IsoRealms::Basics {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  void Sequence::load(IResourceData& resourceData, JSONObject object) {
+  void Sequence::load(IComponentData& resourceData, JSONObject object) {
     // Nothing to do.
   }
 
-  void Sequence::save(IResourceData& resourceData, JSONObject object) const {
+  void Sequence::save(IComponentData& resourceData, JSONObject object) const {
     // Nothing to do.
   }
 
-  void Sequence::registerAssets(ResourceAssetRegistry& assets) {
+  void Sequence::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Sequences");
     assets.add<IInteger>(&cExposedLength, "Length", "Sequences");
     assets.add<IEditable>(this, "", "Sequences");
@@ -94,7 +94,7 @@ namespace IsoRealms::Basics {
     });
 
     if (owner.loadsPersistedValues()) {
-      cResourceData.reregisterAssets();
+      cComponentData.reregisterAssets();
     }
   }
 
@@ -111,11 +111,11 @@ namespace IsoRealms::Basics {
   }
 
   bool Sequence::isReadOnly() const {
-    return cResourceData.isReadOnly();
+    return cComponentData.isReadOnly();
   }
 
   void Sequence::setOwner(ProjectFile* owner) {
-    cResourceData.setOwner(owner);
+    cComponentData.setOwner(owner);
   }
 
   void Sequence::updateRuntime(unsigned int milliseconds) {
@@ -147,8 +147,8 @@ namespace IsoRealms::Basics {
     return cBasics;
   }
 
-  IResourceData& Sequence::getResourceData() {
-    return cResourceData;
+  IComponentData& Sequence::getComponentData() {
+    return cComponentData;
   }
 
   std::string Sequence::getInstanceName(SequenceInstance& instance) const {

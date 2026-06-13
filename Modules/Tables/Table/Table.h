@@ -30,12 +30,12 @@ namespace IsoRealms::Tables {
   class Table {
     public:
     
-    /**********************\
-     * Resource interface *
-    \**********************/
-    Table(Tables& tables, IResourceData& data);
-    Table(Tables& tables, IResourceData& data, JSONObject object);
-    void registerAssets(ResourceAssetRegistry& assets);  
+    /***********************\
+     * Component interface *
+    \***********************/
+    Table(Tables& tables, IComponentData& data);
+    Table(Tables& tables, IComponentData& data, JSONObject object);
+    void registerAssets(ComponentAssetRegistry& assets);  
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

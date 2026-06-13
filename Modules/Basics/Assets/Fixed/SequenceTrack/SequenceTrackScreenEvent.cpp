@@ -21,13 +21,13 @@
 #include "SequenceTrackScreen.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackScreenEvent::SequenceTrackScreenEvent(SequenceTrackScreen& parent, IResourceData& owner, unsigned int time) :
+  SequenceTrackScreenEvent::SequenceTrackScreenEvent(SequenceTrackScreen& parent, IComponentData& owner, unsigned int time) :
             cParent(parent),
             cDefTime(time),
             cDefScreen(owner) {
   }
 
-  SequenceTrackScreenEvent::SequenceTrackScreenEvent(SequenceTrackScreen& parent, IResourceData& owner, JSONObject object) :
+  SequenceTrackScreenEvent::SequenceTrackScreenEvent(SequenceTrackScreen& parent, IComponentData& owner, JSONObject object) :
             SequenceTrackScreenEvent(parent, owner, object.getInteger(JSON_DURATION)) {
   }
 

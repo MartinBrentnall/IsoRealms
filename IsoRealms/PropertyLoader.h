@@ -31,7 +31,7 @@ namespace IsoRealms {
   class ConditionElement;
   class IEditable;
   class IOptionalObject;
-  class IResourceData;
+  class IComponentData;
   class ITreeSelectorObject;
 
   /**
@@ -41,10 +41,10 @@ namespace IsoRealms {
    */
   class PropertyLoader : public IPropertyMaker {
     public:
-    PropertyLoader(IResourceData& resourceData, JSONObject object);
-    PropertyLoader(IResourceData& resourceData, std::vector<JSONObject> objects);
+    PropertyLoader(IComponentData& resourceData, JSONObject object);
+    PropertyLoader(IComponentData& resourceData, std::vector<JSONObject> objects);
 
-    IResourceData& getResourceData() override;
+    IComponentData& getComponentData() override;
 
     // TODO: Replace this function with a hint or something more elegant.
     bool loadsPersistedValues() const override {
@@ -72,19 +72,19 @@ namespace IsoRealms {
     void createPropertyStruct(               const std::string& key, const std::string& value, std::function<void(IPropertyMaker&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) override;
     void createPropertyTreeSelector(         const std::string& key, ITreeSelectorObject& item, const Options& hint = Options::EMPTY, std::function<void()> removeFunction = nullptr) override;
 
-    /*************************************\
-     * Implements IResourceAccessManager *
-    \*************************************/
+    /**************************************\
+     * Implements IComponentAccessManager *
+    \**************************************/
     void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) override;
-    bool isResourceReadOnly() const override;
-    void promoteResourceToProject() override;
+    bool isComponentReadOnly() const override;
+    void promoteComponentToProject() override;
 
     protected:
     bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) override;
     bool loadFixedPropertyArray(const std::string& key, unsigned int count, const std::function<unsigned int(const JSONObject&)>& matchIndex, const std::function<void(unsigned int index)>& loadElement) override;
 
     private:
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
     std::vector<JSONObject> cObjects;
 
     const JSONObject& currentObject() const;

@@ -19,7 +19,7 @@
 #include "BooleanTrigger.h"
 
 namespace IsoRealms::Basics {
-  BooleanTrigger::BooleanTrigger(Basics& basics, IResourceData& data) :
+  BooleanTrigger::BooleanTrigger(Basics& basics, IComponentData& data) :
             cDefValue(data, false, [this](bool value) {
               (value ? cDefTrueAction : cDefFalseAction).execute();
             }),
@@ -27,7 +27,7 @@ namespace IsoRealms::Basics {
             cDefFalseAction(data.getDummyActionContext()) {
   }
   
-  void BooleanTrigger::registerAssets(ResourceAssetRegistry& assets) {
+  void BooleanTrigger::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
   

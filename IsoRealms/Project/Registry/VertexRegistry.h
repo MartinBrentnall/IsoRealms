@@ -23,27 +23,27 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IVertex.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class VertexRegistry : public AssetClientManager<VertexRegistry, IResourceData, IVertex> {
+  class VertexRegistry : public AssetClientManager<VertexRegistry, IComponentData, IVertex> {
     public:
     VertexRegistry();
 
-    IVertex* literal(IAssetUser<IVertex>* client, IResourceData& owner, float x, float y, float z) {
+    IVertex* literal(IAssetUser<IVertex>* client, IComponentData& owner, float x, float y, float z) {
       IVertex* mVertex = cLiteral.createLiteralAsset(owner, x, y, z);
       registerClient(client, &cLiteral, mVertex);
       return mVertex;
     }
 
     private:
-    class Literal : public AssetLiteral<IResourceData, IVertex> {
+    class Literal : public AssetLiteral<IComponentData, IVertex> {
       public:
-      IVertex* createLiteralAsset(IResourceData& owner, float x, float y, float z) const {
+      IVertex* createLiteralAsset(IComponentData& owner, float x, float y, float z) const {
         return addAsset([x, y, z]() {return std::make_unique<Instance>(x, y, z);});
       }
 
@@ -54,7 +54,7 @@ namespace IsoRealms {
         return true;
       }
 
-      std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner) const override {
+      std::unique_ptr<IVertex> createLiteralAsset(IComponentData& owner) const override {
         return std::make_unique<Instance>(0.0f, 0.0f, 0.0f);
       }
 
@@ -70,7 +70,7 @@ namespace IsoRealms {
         throw std::runtime_error("VertexRegistry::Literal::getPropertyMetadata: Property metadata is not available for this type.");
       }
 
-      std::unique_ptr<IVertex> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
+      std::unique_ptr<IVertex> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(object.getFloat(JSON_X), object.getFloat(JSON_Y), object.getFloat(JSON_Z));
       }
 

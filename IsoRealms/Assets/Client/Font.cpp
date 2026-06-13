@@ -19,11 +19,11 @@
 #include "Font.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Font::Font(IResourceData& owner) :
-            Asset<Font, IFont, IResourceData>(owner) {
+  Font::Font(IComponentData& owner) :
+            Asset<Font, IFont, IComponentData>(owner) {
   }
 }

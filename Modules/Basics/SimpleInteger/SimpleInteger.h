@@ -24,16 +24,16 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a simple integer variable.
+   * Component definition for a simple integer variable.
    */
   class SimpleInteger final : public IInteger {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    SimpleInteger(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /********** ************\
+     * Component Interface *
+    \***********************/
+    SimpleInteger(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

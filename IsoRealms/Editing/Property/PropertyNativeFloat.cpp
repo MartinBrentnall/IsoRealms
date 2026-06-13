@@ -18,11 +18,11 @@
  */
 #include "PropertyNativeFloat.h"
 
-#include "IsoRealms/Editing/IResourceAccessManager.h"
+#include "IsoRealms/Editing/IComponentAccessManager.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyNativeFloat::PropertyNativeFloat(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<float()> getter, std::function<bool(float)> validityChecker, std::function<void(float)> setter, std::function<void()> removeFunction) :
+  PropertyNativeFloat::PropertyNativeFloat(const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> getter, std::function<bool(float)> validityChecker, std::function<void(float)> setter, std::function<void()> removeFunction) :
             PropertyInputField(data, resourceAccessManager, Utils::toString(getter()), removeFunction),
             cValidityChecker(validityChecker),
             cSetter(setter) {

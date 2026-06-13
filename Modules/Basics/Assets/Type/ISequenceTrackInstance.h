@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
       *
       * @param assets Interface for asset registration.
       */
-    virtual void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) = 0;
+    virtual void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) = 0;
 
     /**
       * Forward this track and perform processing according to events within

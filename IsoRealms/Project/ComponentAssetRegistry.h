@@ -27,22 +27,22 @@
  
 namespace IsoRealms {
   using AssetVariant = std::variant<IAssetProvider<IActionContext, IAction>*,
-                                    IAssetProvider<IResourceData,  IAnalogueInput>*,
+                                    IAssetProvider<IComponentData, IAnalogueInput>*,
                                     IAssetProvider<IActionContext, IBinding>*,
-                                    IAssetProvider<IResourceData,  IBindingType>*,
-                                    IAssetProvider<IResourceData,  IBoolean>*,
-                                    IAssetProvider<IResourceData,  IColour>*,
-                                    IAssetProvider<IResourceData,  IDigitalInput>*,
-                                    IAssetProvider<IResourceData,  IEditable>*,
-                                    IAssetProvider<IResourceData,  IFont>*,
-                                    IAssetProvider<IResourceData,  IFloat>*,
-                                    IAssetProvider<IResourceData,  IInputHandler>*,
-                                    IAssetProvider<IResourceData,  IInteger>*,
-                                    IAssetProvider<IResourceData,  IModel>*,
-                                    IAssetProvider<IResourceData,  IScreen>*,
-                                    IAssetProvider<IResourceData,  IString>*,
-                                    IAssetProvider<IResourceData,  ITexture>*,
-                                    IAssetProvider<IResourceData,  IVertex>*,
+                                    IAssetProvider<IComponentData, IBindingType>*,
+                                    IAssetProvider<IComponentData, IBoolean>*,
+                                    IAssetProvider<IComponentData, IColour>*,
+                                    IAssetProvider<IComponentData, IDigitalInput>*,
+                                    IAssetProvider<IComponentData, IEditable>*,
+                                    IAssetProvider<IComponentData, IFont>*,
+                                    IAssetProvider<IComponentData, IFloat>*,
+                                    IAssetProvider<IComponentData, IInputHandler>*,
+                                    IAssetProvider<IComponentData, IInteger>*,
+                                    IAssetProvider<IComponentData, IModel>*,
+                                    IAssetProvider<IComponentData, IScreen>*,
+                                    IAssetProvider<IComponentData, IString>*,
+                                    IAssetProvider<IComponentData, ITexture>*,
+                                    IAssetProvider<IComponentData, IVertex>*,
                                     IAction*,
                                     IAnalogueInput*,
                                     IBinding*,
@@ -60,13 +60,13 @@ namespace IsoRealms {
                                     IString*,
                                     ITexture*,
                                     IVertex*>;
-  class ResourceAssetRegistry : public AbstractAssetRegistry<AssetVariant, IResourceData> {
+  class ComponentAssetRegistry : public AbstractAssetRegistry<AssetVariant, IComponentData> {
     public:
-    ResourceAssetRegistry(IResourceData& manager) :
-              AbstractAssetRegistry<AssetVariant, IResourceData>(manager) {
+    ComponentAssetRegistry(IComponentData& manager) :
+              AbstractAssetRegistry<AssetVariant, IComponentData>(manager) {
     }
 
-    ~ResourceAssetRegistry() {
+    ~ComponentAssetRegistry() {
       clear();
     }
   };

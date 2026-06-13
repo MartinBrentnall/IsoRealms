@@ -64,7 +64,7 @@ namespace IsoRealms::Equilibria {
   }
   
   std::string ZoneObjectTypeTraitBoundary::getBoundaryTypeID() const {
-    return "ZoneObject/" + cDefType.getEquilibria().getResourceID(&cDefType) + "/" + cDefType.getID(this);
+    return "ZoneObject/" + cDefType.getEquilibria().getComponentID(&cDefType) + "/" + cDefType.getID(this);
   }
   
   IBinding* ZoneObjectTypeTraitBoundary::getBounderyTypeBinding(const std::string& id) const {

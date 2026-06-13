@@ -21,12 +21,12 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  Layout::Layout(UI& ui, IResourceData& data) :
-            cResourceData(data),
+  Layout::Layout(UI& ui, IComponentData& data) :
+            cComponentData(data),
             cUI(ui) {
   }
   
-  void Layout::load(IResourceData& resourceData, JSONObject object) {
+  void Layout::load(IComponentData& resourceData, JSONObject object) {
     for (JSONValue mComponentValue : object.getArray(JSON_COMPONENTS)) {
       JSONObject mComponentObject = mComponentValue.getObject();
       std::string mComponentName = mComponentObject.getString(JSON_ID);
@@ -39,7 +39,7 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::save(IResourceData& resourceData, JSONObject object) const {
+  void Layout::save(IComponentData& resourceData, JSONObject object) const {
     JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
     for (LayoutComponent* mComponent : cComponentsByOrder) {
       JSONObject mComponentObject = mComponentsArray.addObject();
@@ -48,7 +48,7 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::registerAssets(ResourceAssetRegistry& assets) {
+  void Layout::registerAssets(ComponentAssetRegistry& assets) {
     assets.add(static_cast<IEditable*>(this), "", "Screen Layouts");
     assets.add(static_cast<IScreen*>(this), "", "Screen Layouts");
     for (std::pair<const std::string, LayoutComponent>& mComponent : cComponentsByName) {
@@ -176,8 +176,8 @@ namespace IsoRealms::UI {
     return cUI;
   }
 
-  IResourceData& Layout::getResourceData() {
-    return cResourceData;
+  IComponentData& Layout::getComponentData() {
+    return cComponentData;
   }
 
   LayoutComponent* Layout::createComponent(float x1, float y1, float x2, float y2, float aspectRatio) {

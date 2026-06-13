@@ -19,13 +19,13 @@
 #include "Replayer.h"
 
 namespace IsoRealms::Replay {
-  Replayer::Replayer(Replay& replay, IResourceData& data) :
-            cResource(data),
+  Replayer::Replayer(Replay& replay, IComponentData& data) :
+            cComponentData(data),
             cRuntimeState(State::INACTIVE),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  void Replayer::registerAssets(ResourceAssetRegistry& assets) {
+  void Replayer::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Replayer");
     for (std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
       mInput->registerAssets(assets);
@@ -52,7 +52,7 @@ namespace IsoRealms::Replay {
         // TODO: Adjust ID's.
       });
     }, [this]()->DigitalInput& {
-      return *cDefDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, cResource));
+      return *cDefDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, cComponentData));
       // TODO: Adjust ID's.
     });
     owner.createPropertyArray("analogueInputs", cDefAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &owner, &metadata](AnalogueInput& analogueInput) {
@@ -63,7 +63,7 @@ namespace IsoRealms::Replay {
         // TODO: Adjust ID's.
       });
     }, [this]()->AnalogueInput& {
-      return *cDefAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, cResource));
+      return *cDefAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, cComponentData));
       // TODO: Adjust ID's.
     });
   }
@@ -142,7 +142,7 @@ namespace IsoRealms::Replay {
   
   void Replayer::setRecording(const std::string& file) {
     cRuntimeState = State::RECORDING;
-    Project& mProject = cResource.getProject();
+    Project& mProject = cComponentData.getProject();
     mProject.makeUserDataDirectory();
     std::string mFilename = mProject.getDataPath(true) + "/" + file;
     if (cRuntimeRecordingOutput.is_open()) {
@@ -153,7 +153,7 @@ namespace IsoRealms::Replay {
 
   void Replayer::setReplaying(const std::string& file, bool user) {
     cRuntimeState = State::REPLAYING;
-    Project& mProject = cResource.getProject();
+    Project& mProject = cComponentData.getProject();
     std::string mFilename = mProject.getDataPath(user) + "/" + file;
     cRuntimeRecordedInput = std::ifstream(mFilename, std::ios::binary);
 
@@ -165,7 +165,7 @@ namespace IsoRealms::Replay {
     cRuntimeState = State::INACTIVE;
   }
 
-  Replayer::DigitalInput::DigitalInput(Replayer& parent, IResourceData& data) :
+  Replayer::DigitalInput::DigitalInput(Replayer& parent, IComponentData& data) :
             cParent(parent),
             cDefActualInput(data, false, [this](bool value) {
               if (cParent.cRuntimeState == State::RECORDING) {
@@ -177,7 +177,7 @@ namespace IsoRealms::Replay {
             cRuntimeRecordedInput(false) {
   }
   
-  Replayer::DigitalInput::DigitalInput(Replayer& parent, IResourceData& data, JSONObject object) :
+  Replayer::DigitalInput::DigitalInput(Replayer& parent, IComponentData& data, JSONObject object) :
             cParent(parent),
             cDefName(object.getString(JSON_NAME)),
             cDefActualInput(data, false, [this](bool value) {
@@ -191,7 +191,7 @@ namespace IsoRealms::Replay {
     cDefActualInput.init(object, JSON_VALUE);
   }
   
-  void Replayer::DigitalInput::registerAssets(ResourceAssetRegistry& assets) {
+  void Replayer::DigitalInput::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IBoolean>(this, cDefName, "Replayer Digital Input");
   }
 
@@ -240,7 +240,7 @@ namespace IsoRealms::Replay {
     return true;
   }
   
-  Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IResourceData& data) :
+  Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IComponentData& data) :
             cParent(parent),
             cDefActualInput(data, 0.0f, [this](float value) {
               if (cParent.cRuntimeState == State::RECORDING) {
@@ -252,7 +252,7 @@ namespace IsoRealms::Replay {
             cRuntimeRecordedInput(0.0f) {
   }
   
-  Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IResourceData& data, JSONObject object) :
+  Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IComponentData& data, JSONObject object) :
             cParent(parent),
             cDefName(object.getString(JSON_NAME)),
             cDefActualInput(data, 0.0f, [this](float value) {
@@ -266,7 +266,7 @@ namespace IsoRealms::Replay {
     cDefActualInput.init(object, JSON_VALUE);
   }
   
-  void Replayer::AnalogueInput::registerAssets(ResourceAssetRegistry& assets) {
+  void Replayer::AnalogueInput::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IFloat>(this, cDefName, "Replayer Analogue Input");
   }
 

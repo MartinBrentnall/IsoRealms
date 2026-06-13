@@ -19,13 +19,13 @@
 #include "InputSwitch.h"
 
 namespace IsoRealms::Basics {
-  InputSwitch::InputSwitch(Basics& basics, IResourceData& data) :
+  InputSwitch::InputSwitch(Basics& basics, IComponentData& data) :
             cDefInputHandler(data),
             cRuntimeInputHandler(*cDefInputHandler),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  void InputSwitch::registerAssets(ResourceAssetRegistry& assets) {
+  void InputSwitch::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Input Switches");
     assets.add<IBinding>(&cLuaBinding, "", "Input Switches");
   }

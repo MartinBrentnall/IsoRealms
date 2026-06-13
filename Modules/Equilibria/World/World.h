@@ -43,16 +43,16 @@ namespace IsoRealms::Equilibria {
   class WorldEditor;
 
   /**
-   * Resource definition for a world.
+   * Component definition for a world.
    */
   class World final : public IEditable {
     public:
     
-    /**********************\
-     * Resource interface *
-    \**********************/
-    World(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component interface *
+    \***********************/
+    World(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -80,7 +80,7 @@ namespace IsoRealms::Equilibria {
     void reset();
     
     // General functions.
-    IResourceData& getResourceData();
+    IComponentData& getComponentData();
     void renderRuntime();
     Equilibria& getEquilibria() const;
     std::vector<std::unique_ptr<Zone>>& getZones();
@@ -146,7 +146,7 @@ namespace IsoRealms::Equilibria {
     int getMaxZ() const;
     IWorldEditorTool* getDefaultWorldEditorTool();
     ThemeSet* getDefaultThemeSet();
-    std::vector<IWorldEditorToolInstance*> createToolSet(WorldEditor& editor, IResourceData& owner);
+    std::vector<IWorldEditorToolInstance*> createToolSet(WorldEditor& editor, IComponentData& owner);
 
     // Object drawing functions (used for editing).
     Alien*      draw(AlienType&      type, const WorldEditorCursorCell& cell, IScreen& screen);
@@ -190,8 +190,8 @@ namespace IsoRealms::Equilibria {
     /************************\
      * Implements IEditable *
     \************************/
-    void load(IResourceData& resourceData, JSONObject object) override;
-    void save(IResourceData& resourceData, JSONObject object) const override;
+    void load(IComponentData& resourceData, JSONObject object) override;
+    void save(IComponentData& resourceData, JSONObject object) const override;
     IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
@@ -244,7 +244,7 @@ namespace IsoRealms::Equilibria {
 
     // External interfaces.
     Equilibria& cEquilibria;        /// Equilibria module reference.
-    IResourceData& cResourceData; /// Access to world surface cache on disk.
+    IComponentData& cComponentData; /// Access to world surface cache on disk.
 
     // Fixed sub-components.
     TerrainProcessor cDefPhysicalSurfaceProcessor; /// Processor for physical surfaces.
@@ -276,8 +276,8 @@ namespace IsoRealms::Equilibria {
 
     // Editor configuration.
     bool cEditorBasicProperties;
-    ResourceReference<ThemeSet, World> cDefaultThemeSet;
-    ResourceReference<ZoneType, World> cAutomaticZoneManagementType;
+    ComponentReference<ThemeSet, World> cDefaultThemeSet;
+    ComponentReference<ZoneType, World> cAutomaticZoneManagementType;
     WorldEditorTool cDefaultWorldEditorTool;
     int cAutomaticZoneXSize;
     int cAutomaticZoneYSize;

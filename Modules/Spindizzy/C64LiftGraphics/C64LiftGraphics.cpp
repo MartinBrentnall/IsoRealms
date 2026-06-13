@@ -21,7 +21,7 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  C64LiftGraphics::C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data) :
+  C64LiftGraphics::C64LiftGraphics(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
             cDefPrimary(data,   1.0f, 1.0f, 1.0f, 1.0f, [this]() {setNeedsRedrawing();}),
             cDefSecondary(data, 0.5f, 0.5f, 0.5f, 1.0f, [this]() {setNeedsRedrawing();}),
@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
   
-  void C64LiftGraphics::registerAssets(ResourceAssetRegistry& assets) {
+  void C64LiftGraphics::registerAssets(ComponentAssetRegistry& assets) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mPair : cTextures) {
       assets.add<ITexture>(mPair.second.get(), mPair.first, "Spindizzy Lift Textures");
     }

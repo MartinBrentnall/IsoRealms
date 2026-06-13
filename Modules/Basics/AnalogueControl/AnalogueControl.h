@@ -28,7 +28,7 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for an analogue input.  Each analogue input may be
+   * Component definition for an analogue input.  Each analogue input may be
    * bound to multiple physical inputs.  The analogue input is implemented as
    * an Input Handler and its state is exposed as a Float and via a state
    * notifier.
@@ -45,12 +45,12 @@ namespace IsoRealms::Basics {
                                 public IInputHandler {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    AnalogueControl(Basics& basics, IResourceData& data);
-    AnalogueControl(Basics& basics, IResourceData& data, JSONObject object);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    AnalogueControl(Basics& basics, IComponentData& data);
+    AnalogueControl(Basics& basics, IComponentData& data, JSONObject object);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -152,7 +152,7 @@ namespace IsoRealms::Basics {
       std::shared_ptr<AnalogueInput> getInput() const;
       void save(JSONObject object) const;
       void loadCustomMapping(JSONObject object);
-      void registerAssets(ResourceAssetRegistry& assets);
+      void registerAssets(ComponentAssetRegistry& assets);
       std::string getName();
       void getProperties(IPropertyMaker& owner, std::function<void()> removeFunction);
       void reset();
@@ -163,7 +163,7 @@ namespace IsoRealms::Basics {
     };
 
     // External interfaces.
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
     std::vector<std::unique_ptr<InputMapping>> cDefMapping; /// Default input mapping.

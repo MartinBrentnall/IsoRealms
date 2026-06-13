@@ -21,22 +21,22 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/ITexture.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Texture : public Asset<Texture, ITexture, IResourceData>,
+  class Texture : public Asset<Texture, ITexture, IComponentData>,
                   public IStateListener {
     public:
-    Texture(IResourceData& owner, std::function<void()> listener = nullptr);
+    Texture(IComponentData& owner, std::function<void()> listener = nullptr);
 
     void coord(float x, float y) const;
 
-    /*********************************************\
-     * Implements Asset<ITexture, IResourceData> *
-    \*********************************************/
+    /**********************************************\
+     * Implements Asset<ITexture, IComponentData> *
+    \**********************************************/
     bool hasClientConfiguration() const;
     bool isDefaultConfiguration() const;
 

@@ -68,7 +68,7 @@
       }
     }
   },
-  "resources": {
+  "components": {
     "AnalogueControl": {
       "singular": "Analogue Control",
       "plural": "Analogue Controls",

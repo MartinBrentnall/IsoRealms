@@ -19,7 +19,7 @@
 #include "DebrisGenerator.h"
 
 namespace IsoRealms::Equilibria {
-  DebrisGenerator::DebrisGenerator(JSONObject object, IResourceData& owner) :
+  DebrisGenerator::DebrisGenerator(JSONObject object, IComponentData& owner) :
             cDefID(object.getString(JSON_ID)),
             cDefModel(owner),
             cDefLifeTime(object.getInteger(JSON_LIFE, DEFAULT_LIFE)),
@@ -30,7 +30,7 @@ namespace IsoRealms::Equilibria {
     cDefModel.init(object, JSON_APPEARANCE);
   }
 
-  void DebrisGenerator::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void DebrisGenerator::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     assets.add<IBinding>(&cLuaBinding, parentID + "/" + cDefID, "Debris Generators");
   }
   

@@ -19,7 +19,7 @@
 #include "VirtualKeyboard.h"
 
 namespace IsoRealms::UI {
-  VirtualKeyboard::VirtualKeyboard(UI& ui, IResourceData& data) :
+  VirtualKeyboard::VirtualKeyboard(UI& ui, IComponentData& data) :
             cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefConfirmAction(data.getDummyActionContext()),
             cDefSelectionColour(data, 1.0f, 0.0f, 1.0f),
@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  void VirtualKeyboard::registerAssets(ResourceAssetRegistry& assets) {
+  void VirtualKeyboard::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Presentation");
     assets.add<IScreen>(this, "", "Presentation");
     assets.add<IString>(this, "", "Presentation");

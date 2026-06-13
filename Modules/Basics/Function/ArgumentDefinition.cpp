@@ -25,7 +25,7 @@ namespace IsoRealms::Basics {
             cParent(parent),
             cDefName(name),
             cDefLuaName(luaName),
-            cDefType(parent.getResourceData(), [this]() {
+            cDefType(parent.getComponentData(), [this]() {
               std::string mNewBindingID = cDefType.getTreeItemInfo().cID;
               std::size_t mLastSeparator = mNewBindingID.rfind('/');
               if (mLastSeparator != std::string::npos) {

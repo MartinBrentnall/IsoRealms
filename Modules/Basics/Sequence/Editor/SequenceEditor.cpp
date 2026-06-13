@@ -666,7 +666,7 @@ namespace IsoRealms::Basics {
               }
 
               if (cCursorTrackProperties) {
-                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](IPropertyMaker& owner) {
+                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IPropertyMaker& owner) {
                   owner.createPropertyTreeSelector(SequenceTrackRegistry::JSON_KEY, cSequence.getTrack(cCursorTrack.value()));
                   owner.createPropertyNativeString("name",             [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
@@ -684,11 +684,11 @@ namespace IsoRealms::Basics {
                 cEditingProperties = true;
               } else {
                 if (cCursorEvent == nullptr) {
-                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getResourceData(), std::round(cCursorTimeline.value()));
+                  cCursorEvent = cSequence.getTrack(cCursorTrack.value())->createEvent(cSequence.getComponentData(), std::round(cCursorTimeline.value()));
                 }
 
                 if (cCursorEvent != nullptr) {
-                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](IPropertyMaker& owner) {
+                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IPropertyMaker& owner) {
                     return cCursorEvent->getEventProperties(owner);
                   }), "Event Configuration");
                   cEditingProperties = true;

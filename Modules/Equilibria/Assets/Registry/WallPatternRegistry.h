@@ -32,7 +32,7 @@
 namespace IsoRealms::Equilibria {
   class WallPatternRegistry : public AssetClientManager<WallPatternRegistry, TerrainType, IWallPattern> {
     public:
-    WallPatternRegistry(IResourceTypeRegistry& registry);
+    WallPatternRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<TerrainType, IWallPattern, WallPatternCap>       cCapped;

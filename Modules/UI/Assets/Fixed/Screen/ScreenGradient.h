@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
 
     // Constructors.
-    ScreenGradient(const Metadata& metadata, IResourceData& owner);
-    ScreenGradient(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    ScreenGradient(const Metadata& metadata, IComponentData& owner);
+    ScreenGradient(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *

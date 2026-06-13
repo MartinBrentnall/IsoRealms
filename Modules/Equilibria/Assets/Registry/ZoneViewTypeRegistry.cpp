@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneViewTypeRegistry::ZoneViewTypeRegistry(IResourceTypeRegistry& registry) :
+  ZoneViewTypeRegistry::ZoneViewTypeRegistry(IComponentTypeRegistry& registry) :
             cActual(registry.getAssetMetadata("ZoneViewTypeActual")),
             cOverview(registry.getAssetMetadata("ZoneViewTypeOverview")) {
     add(&cActual,   "Actual",   "Actual");

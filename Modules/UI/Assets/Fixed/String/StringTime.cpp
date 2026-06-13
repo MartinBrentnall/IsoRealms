@@ -19,13 +19,13 @@
 #include "StringTime.h"
 
 namespace IsoRealms::UI {
-  StringTime::StringTime(const Metadata& /*metadata*/, IResourceData& owner) :
+  StringTime::StringTime(const Metadata& /*metadata*/, IComponentData& owner) :
             cDefValue(owner),
             format(DEFAULT_FORMAT) {
     parseFormatString();
   }
 
-  StringTime::StringTime(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  StringTime::StringTime(const Metadata& metadata, IComponentData& owner, JSONObject object) :
             StringTime(metadata, owner) {
     cDefValue.set(object, JSON_VALUE);
     format = object.getString(JSON_FORMAT, DEFAULT_FORMAT);

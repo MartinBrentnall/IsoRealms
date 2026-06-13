@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenModel(const Metadata& metadata, IResourceData& owner);
-    ScreenModel(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    ScreenModel(const Metadata& metadata, IComponentData& owner);
+    ScreenModel(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);

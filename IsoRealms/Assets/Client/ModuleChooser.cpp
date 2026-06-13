@@ -23,7 +23,7 @@
 
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Exception/InitException.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/Project.h"
 

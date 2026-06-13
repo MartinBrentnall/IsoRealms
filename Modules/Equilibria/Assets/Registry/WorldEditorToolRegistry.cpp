@@ -23,7 +23,7 @@ namespace IsoRealms::Equilibria {
             AssetClientManager(&cDummy) {
   }
 
-  IWorldEditorToolInstance* WorldEditorToolRegistry::Dummy::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* WorldEditorToolRegistry::Dummy::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return nullptr;
   }
 

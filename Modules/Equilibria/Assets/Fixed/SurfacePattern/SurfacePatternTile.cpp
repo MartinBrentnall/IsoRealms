@@ -25,7 +25,7 @@
 
 namespace IsoRealms::Equilibria {
   SurfacePatternTile::SurfacePatternTile(const Metadata& metadata, TerrainType& owner) :
-            cDefTexture(owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
+            cDefTexture(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 
   SurfacePatternTile::SurfacePatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object) :

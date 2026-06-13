@@ -56,13 +56,13 @@ namespace IsoRealms {
           cMetadata(metadata) {
   }
 
-  KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner) :
+  KeyboardKey::KeyboardKey(const Metadata& metadata, IComponentData& owner) :
           cMetadata(metadata),
           cKeyChooser(metadata),
           cKey(sf::Keyboard::Enter) {
   }
 
-  KeyboardKey::KeyboardKey(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  KeyboardKey::KeyboardKey(const Metadata& metadata, IComponentData& owner, JSONObject object) :
           KeyboardKey(metadata, owner) {
     cKey = getKey(object.getString(JSON_WHICH));
   }

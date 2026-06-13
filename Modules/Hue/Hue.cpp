@@ -19,12 +19,12 @@
 #include "Hue.h"
 
 namespace IsoRealms::Hue {
-  Hue::Hue(Project& project, IResourceTypeRegistry* registry) :
-                    cResourceTypeHueManager(*this) {
-    registry->add(&cResourceTypeHueManager, "HueManager");
+  Hue::Hue(Project& project, IComponentTypeRegistry* registry) :
+                    cComponentTypeHueManager(*this) {
+    registry->add(&cComponentTypeHueManager, "HueManager");
   }
 
-  void Hue::registerAssets(ResourceAssetRegistry& assets) {
+  void Hue::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
   
@@ -33,11 +33,11 @@ namespace IsoRealms::Hue {
   }
   
   void Hue::updateRuntime(unsigned int milliseconds) {
-    updateRuntime2(cResourceTypeHueManager, milliseconds);
+    updateRuntime2(cComponentTypeHueManager, milliseconds);
   }
   
   void Hue::updateEditing(unsigned int milliseconds) {
-    updateEditing2(cResourceTypeHueManager, milliseconds);
+    updateEditing2(cComponentTypeHueManager, milliseconds);
   }
   
   void Hue::reset() {
@@ -49,9 +49,9 @@ namespace IsoRealms::Hue {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IComponentTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IComponentTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Hue::Hue> mModule = std::make_unique<IsoRealms::Hue::Hue>(*project, registry);
   {

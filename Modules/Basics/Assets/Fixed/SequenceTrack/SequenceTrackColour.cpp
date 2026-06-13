@@ -22,15 +22,15 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence.getResourceData(), sequence),
+            SequenceTrackBase(sequence.getComponentData(), sequence),
             cMetadata(metadata),
-            cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
+            cDefInitColour(sequence.getComponentData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
 
   SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getResourceData(), sequence, object),
+            SequenceTrackBase(sequence.getComponentData(), sequence, object),
             cMetadata(metadata),
-            cDefInitColour(sequence.getResourceData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
+            cDefInitColour(sequence.getComponentData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
 
   const Colour& SequenceTrackColour::getStartColour() const {

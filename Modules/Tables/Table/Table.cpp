@@ -19,11 +19,11 @@
 #include "Table.h"
 
 namespace IsoRealms::Tables {
-  Table::Table(Tables& tables, IResourceData& data) :
+  Table::Table(Tables& tables, IComponentData& data) :
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
 
-  Table::Table(Tables& tables, IResourceData& data, JSONObject object) :
+  Table::Table(Tables& tables, IComponentData& data, JSONObject object) :
             Table(tables, data) {
     for (JSONValue mFieldValue : object.getArray("fields")) {
       cDefFields.emplace_back(Field(mFieldValue.getObject()));
@@ -33,7 +33,7 @@ namespace IsoRealms::Tables {
     }
   }
 
-  void Table::registerAssets(ResourceAssetRegistry& assets) {
+  void Table::registerAssets(ComponentAssetRegistry& assets) {
     // TODO: Implement this.
   }
   

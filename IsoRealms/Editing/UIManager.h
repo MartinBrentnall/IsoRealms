@@ -26,7 +26,7 @@
 #include "IsoRealms/Assets/Type/IEditable.h"
 #include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/ComponentDefinition.h"
 
 #include "IDialogManager.h"
 #include "IUIScreen.h"

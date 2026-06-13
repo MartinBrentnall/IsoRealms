@@ -22,15 +22,15 @@
 
 namespace IsoRealms::UI {
   MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu) :
-            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
             cDefID(""),
             cDefLabel(""),
             cDefMinimum(DEFAULT_MINIMUM),
             cDefMaximum(DEFAULT_MAXIMUM),
             cDefSteps(DEFAULT_STEPS),
-            cDefValueChangedAction(menu.getResourceData().getDummyActionContext()),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            cDefValueChangedAction(menu.getComponentData().getDummyActionContext()),
+            cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 
   MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -45,7 +45,7 @@ namespace IsoRealms::UI {
     return cRuntimeValue;
   }
 
-  void MenuItemSlider::registerAssets(ResourceAssetRegistry& assets) {
+  void MenuItemSlider::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Sliders");
   }
   
@@ -146,7 +146,7 @@ namespace IsoRealms::UI {
   void MenuItemSlider::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString( JSON_ID,        [this]() {return cDefID;},      [this](const std::string& value) {
       cDefID = value;
-      cMenu.getResourceData().reregisterAssets();
+      cMenu.getComponentData().reregisterAssets();
     });
     owner.createPropertyNativeString( JSON_LABEL,     [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
     owner.createPropertyNativeFloat(  JSON_MINIMUM,   [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});

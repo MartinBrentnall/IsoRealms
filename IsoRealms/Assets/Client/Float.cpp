@@ -19,17 +19,17 @@
 #include "Float.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Float::Float(IResourceData& owner, float defaultValue, std::function<void(float)> listener) :
-            Asset<Float, IFloat, IResourceData>(owner, owner.getAssetManager().createLiteralFloat(this, owner, defaultValue)),
+  Float::Float(IComponentData& owner, float defaultValue, std::function<void(float)> listener) :
+            Asset<Float, IFloat, IComponentData>(owner, owner.getAssetManager().createLiteralFloat(this, owner, defaultValue)),
             cDefaultValue(defaultValue),
             cListener(listener) {
   }
 
-  IFloat* Float::createDefaultAsset(IResourceData& owner) {
+  IFloat* Float::createDefaultAsset(IComponentData& owner) {
     return owner.getAssetManager().createLiteralFloat(this, owner, cDefaultValue);
   }
   

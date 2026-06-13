@@ -23,7 +23,7 @@
 #include <stdexcept>
 
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
-#include "IsoRealms/IResourceUser.h"
+#include "IsoRealms/IComponentUser.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 #include "Project/ProjectFile.h"
@@ -32,59 +32,59 @@ namespace IsoRealms {
   class Application;
   class Metadata;
 
-  template <typename TYPE, typename MANAGER> class ResourceReference : public IResourceUser<TYPE>, 
-                                                                       public ITreeSelectorObject {
+  template <typename TYPE, typename MANAGER> class ComponentReference : public IComponentUser<TYPE>, 
+                                                                        public ITreeSelectorObject {
     public:
-    ResourceReference(MANAGER& manager) :
+    ComponentReference(MANAGER& manager) :
               cManager(manager),
-              cDefResource(nullptr) {
+              cDefComponent(nullptr) {
     }
 
-    ResourceReference(MANAGER& manager, TYPE* resource) :
+    ComponentReference(MANAGER& manager, TYPE* component) :
               cManager(manager),
-              cDefResource(resource) {
+              cDefComponent(component) {
     }
 
-    virtual ~ResourceReference() {
+    virtual ~ComponentReference() {
     }
 
     TYPE* get() const {
-      return cDefResource;
+      return cDefComponent;
     }
 
     TYPE* operator->() const {
-      return cDefResource;
+      return cDefComponent;
     }
 
     void setID(const std::string& id) override {
-      if (cDefResource != nullptr) {
-        cManager.getAssetManager().release(this, cDefResource);
+      if (cDefComponent != nullptr) {
+        cManager.getAssetManager().release(this, cDefComponent);
       }
 
       if (id == "") {
-        cDefResource = nullptr;
+        cDefComponent = nullptr;
       } else {
-        cDefResource = cManager.getAssetManager().template get<TYPE>(this, id);
+        cDefComponent = cManager.getAssetManager().template get<TYPE>(this, id);
       }
     }
 
     void save(JSONObject object, const std::string& name) const {
-      object.addString(name, cManager.getAssetManager().getResourceID(cDefResource));
+      object.addString(name, cManager.getAssetManager().getComponentID(cDefComponent));
     }
 
     TreeItemInfo getTreeItemInfo() const override {
-      std::string mResourceID = cManager.getAssetManager().getResourceID(cDefResource);
+      std::string mComponentID = cManager.getAssetManager().getComponentID(cDefComponent);
       std::optional<TreeItemInfo> mFound;
-      forEachAvailableTreeItem([&mFound, &mResourceID](const TreeItemInfo& mTreeItemInfo) {
-        if (mTreeItemInfo.cID == mResourceID) {
+      forEachAvailableTreeItem([&mFound, &mComponentID](const TreeItemInfo& mTreeItemInfo) {
+        if (mTreeItemInfo.cID == mComponentID) {
           mFound = mTreeItemInfo;
         }
       });
-      return mFound.value_or(TreeItemInfo{mResourceID, mResourceID});
+      return mFound.value_or(TreeItemInfo{mComponentID, mComponentID});
     }
 
     std::string getTreeItemLabel() const override {
-      return cManager.getAssetManager().getResourceID(cDefResource);
+      return cManager.getAssetManager().getComponentID(cDefComponent);
     }
 
     bool renderAssetIcon() const override {
@@ -104,12 +104,12 @@ namespace IsoRealms {
     }
 
     const Metadata& getPropertyMetadata() const override {
-      throw std::runtime_error("ResourceReference::getPropertyMetadata: Property metadata is not available for this type.");
+      throw std::runtime_error("ComponentReference::getPropertyMetadata: Property metadata is not available for this type.");
     }
 
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {
-      for (const std::string& mResourceID : cManager.getAssetManager().template getAvailableResources<TYPE>()) {
-        getTreeItemInfoFunction(TreeItemInfo{mResourceID, mResourceID});
+      for (const std::string& mComponentID : cManager.getAssetManager().template getAvailableComponents<TYPE>()) {
+        getTreeItemInfoFunction(TreeItemInfo{mComponentID, mComponentID});
       }
     }
 
@@ -121,12 +121,12 @@ namespace IsoRealms {
       return cManager.getProject().getApplication();
     }
 
-    /**********************************\
-     * Implements IResourceUser<TYPE> *
-    \**********************************/
+    /***********************************\
+     * Implements IComponentUser<TYPE> *
+    \***********************************/
     void relinquish(TYPE* asset) override {
-      if (cDefResource == asset) {
-        cDefResource = nullptr;
+      if (cDefComponent == asset) {
+        cDefComponent = nullptr;
       }
     }
 
@@ -139,7 +139,7 @@ namespace IsoRealms {
     }
 
     void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override {
-      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true" || cManager.getProject().areResourcesLoaded()) {
+      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true" || cManager.getProject().areComponentsLoaded()) {
         setID(object.getString(key));
       } else {
         cManager.getProject().init([this, object, key]() {
@@ -149,7 +149,7 @@ namespace IsoRealms {
     }
 
     void loadFromProperty(JSONObject object, const Options& hint) override {
-      throw std::runtime_error("ResourceReference::loadFromProperty: Not implemented.");
+      throw std::runtime_error("ComponentReference::loadFromProperty: Not implemented.");
     }
 
     void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override {
@@ -162,6 +162,6 @@ namespace IsoRealms {
     MANAGER& cManager;
 
     // Definition data.
-    TYPE* cDefResource;
+    TYPE* cDefComponent;
   };
 }

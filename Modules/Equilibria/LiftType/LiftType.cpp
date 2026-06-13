@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  LiftType::LiftType(Equilibria& equilibria, IResourceData& data) :
+  LiftType::LiftType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),
             cDefModel(data),
@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
             cDefTickAction(data.getDummyActionContext()) {
   }
   
-  void LiftType::registerAssets(ResourceAssetRegistry& assets) {
+  void LiftType::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
     
@@ -80,7 +80,7 @@ namespace IsoRealms::Equilibria {
     return cDefModel.createInstance();
   }
 
-  IWorldEditorToolInstance* LiftType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* LiftType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 

@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IBoolean.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
@@ -32,12 +32,12 @@
 namespace IsoRealms {
   class Project;
 
-  class BooleanRegistry : public AssetClientManager<BooleanRegistry, IResourceData, IBoolean> {
+  class BooleanRegistry : public AssetClientManager<BooleanRegistry, IComponentData, IBoolean> {
     public:
     BooleanRegistry();
 
-    IBoolean* literal(IAssetUser<IBoolean>* client, IResourceData& owner, bool value) {
-      IAssetProvider<IResourceData, IBoolean>* mProvider = cRegistry.getProvider(value ? "True" : "False", true);
+    IBoolean* literal(IAssetUser<IBoolean>* client, IComponentData& owner, bool value) {
+      IAssetProvider<IComponentData, IBoolean>* mProvider = cRegistry.getProvider(value ? "True" : "False", true);
       IBoolean* mBoolean = mProvider->getAsset(owner);
       registerClient(client, mProvider, mBoolean);
       return mBoolean;

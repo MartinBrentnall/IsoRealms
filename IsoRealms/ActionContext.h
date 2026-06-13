@@ -27,7 +27,7 @@ namespace IsoRealms {
 
   class ActionContext : public IActionContext {
     public:
-    ActionContext(IResourceData& resource, IEventBindings& bindingRegistry);
+    ActionContext(IComponentData& componentData, IEventBindings& bindingRegistry);
 
     /*****************************\
      * Implements IActionContext *
@@ -36,11 +36,11 @@ namespace IsoRealms {
     void setOwner(ProjectFile* owner) override;
     Project& getProject() override;
     Project& getAssetManager() override;
-    IResourceData& getResourceData() override;
+    IComponentData& getComponentData() override;
     IEventBindings* getBindingRegistry() override;
     
     private:
-    IResourceData& cResource;
+    IComponentData& cComponentData;
     IEventBindings& cBindingRegistry;
   };
 }

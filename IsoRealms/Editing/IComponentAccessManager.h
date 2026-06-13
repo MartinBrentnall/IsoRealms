@@ -18,15 +18,13 @@
  */
 #pragma once
 
-#include <string>
+#include <functional>
 
 namespace IsoRealms {
-  class IResourceTypeDefinition;
-  class Metadata;
-
-  class IResourceTypeRegistry {
+  class IComponentAccessManager {
     public:
-    virtual void add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id) = 0;
-    virtual const Metadata& getAssetMetadata(const std::string& key) const = 0;
+    virtual void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) = 0;
+    virtual bool isComponentReadOnly() const = 0;
+    virtual void promoteComponentToProject() = 0;
   };
 }

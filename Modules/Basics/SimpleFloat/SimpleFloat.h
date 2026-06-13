@@ -26,16 +26,16 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a simple Float variable.
+   * Component definition for a simple Float variable.
    */
   class SimpleFloat final : public IFloat {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    SimpleFloat(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    SimpleFloat(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

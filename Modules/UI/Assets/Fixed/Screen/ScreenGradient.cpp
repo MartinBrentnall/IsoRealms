@@ -19,13 +19,13 @@
 #include "ScreenGradient.h"
 
 namespace IsoRealms::UI {
-  ScreenGradient::ScreenGradient(const Metadata& /*metadata*/, IResourceData& owner) :
+  ScreenGradient::ScreenGradient(const Metadata& /*metadata*/, IComponentData& owner) :
             cDefColourA(owner, 0.0f, 0.0f, 1.0f),
             cDefColourB(owner, 0.0f, 1.0f, 0.0f),
             cDefVertical(false) {
   }
 
-  ScreenGradient::ScreenGradient(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  ScreenGradient::ScreenGradient(const Metadata& metadata, IComponentData& owner, JSONObject object) :
             ScreenGradient(metadata, owner) {
     cDefColourA.set(object, JSON_COLOUR_A);
     cDefColourB.set(object, JSON_COLOUR_B);

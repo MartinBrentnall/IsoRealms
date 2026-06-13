@@ -46,11 +46,11 @@ namespace IsoRealms::Equilibria {
 //           std::string mTraitID = mNode.getAttribute(JSON_ID);
 //           std::map<std::string, std::unique_ptr<IZoneObjectTrait>>::iterator mIterator = cDefTraits.find(mTraitID);
 //           if (mIterator == cDefTraits.end()) {
-//             throw ResourceInitException("ERROR: ZoneObject::ZoneObject: No trait found for trait ID \"" + mTraitID + "\"");
+//             throw ComponentInitException("ERROR: ZoneObject::ZoneObject: No trait found for trait ID \"" + mTraitID + "\"");
 //           }
 //           mIterator->second->load(mNode);
 //         } else {
-//           throw ResourceInitException("ERROR: ZoneObject::ZoneObject: Unknown tag \"" + mTag + "\"");
+//           throw ComponentInitException("ERROR: ZoneObject::ZoneObject: Unknown tag \"" + mTag + "\"");
 //         }
 //       }
 //       cDefRuntimeRenderer = getRenderer(cDefType->getRuntimeRendererID());
@@ -75,7 +75,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void ZoneObject::save(JSONObject object) const {
-    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getResourceID(cDefType));
+    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getComponentID(cDefType));
     JSONArray mTraitsArray = object.addArray("traits");
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       if (mPair.second->hasConfiguration()) {

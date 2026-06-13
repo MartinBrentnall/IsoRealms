@@ -38,7 +38,7 @@ namespace IsoRealms {
     return nullptr;
   }
 
-  IStateNotifier* ScreenRegistry::add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& path, bool stateChanges) {
+  IStateNotifier* ScreenRegistry::add(IAssetProvider<IComponentData, IScreen>* provider, const std::string& id, const std::string& path, bool stateChanges) {
     return AssetClientManager::add(provider, id, path, stateChanges);
   }
 

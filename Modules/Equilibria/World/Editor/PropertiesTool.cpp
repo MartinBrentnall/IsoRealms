@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  IWorldEditorToolInstance* PropertiesTool::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* PropertiesTool::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingModifiers.emplace_back(std::make_unique<Modifier>(*this, owner, editor)).get();
   }
 
@@ -44,9 +44,9 @@ namespace IsoRealms::Equilibria {
     return true;
   }
 
-  PropertiesTool::Modifier::Modifier(PropertiesTool& parent, IResourceData& owner, WorldEditor& editor) :
+  PropertiesTool::Modifier::Modifier(PropertiesTool& parent, IComponentData& owner, WorldEditor& editor) :
             cParent(parent),
-            cWorldResourceOwner(owner),
+            cWorldComponentOwner(owner),
             cEditor(editor),
             cSelectedObject(0),
             cEditingProperties(false),
@@ -78,7 +78,7 @@ namespace IsoRealms::Equilibria {
     if (!cHoverObjects.empty() && !cEditingProperties) {
       IWorldObject* mObject = cHoverObjects[cSelectedObject];
       const Metadata& mMetadata = cEditor.getWorld().getEquilibria().getMetadata(mObject->getTypeName());
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldResourceOwner, mMetadata, [this](IPropertyMaker& owner) {
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldComponentOwner, mMetadata, [this](IPropertyMaker& owner) {
         cHoverObjects[cSelectedObject]->getProperties(owner);
       }), mObject->getTypeName() + " Configuration");
       cEditingProperties = true;

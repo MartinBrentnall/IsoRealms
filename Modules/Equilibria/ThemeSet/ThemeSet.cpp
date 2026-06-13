@@ -23,9 +23,9 @@
 #include "IsoRealms/PropertyLoader.h"
 
 namespace IsoRealms::Equilibria {
-  ThemeSet::ThemeSet(Equilibria& equilibria, IResourceData& data) :
+  ThemeSet::ThemeSet(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cResourceData(data),
+            cComponentData(data),
             cDefaultTheme(nullptr),
             cAnimation(0),
             cPause(0),
@@ -76,7 +76,7 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void ThemeSet::registerAssets(ResourceAssetRegistry& assets) {
+  void ThemeSet::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Theme Sets");
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
       mPair.second->registerAssets(assets, mPair.first);
@@ -87,11 +87,11 @@ namespace IsoRealms::Equilibria {
   }
 
   bool ThemeSet::hasReadOnlyReferences() const {
-    return cEquilibria.hasReadOnlyResourceReferences(this);
+    return cEquilibria.hasReadOnlyComponentReferences(this);
   }
 
   void ThemeSet::overrideReadOnlyReferences() {
-    cEquilibria.overrideReadOnlyResourceReferences(this);
+    cEquilibria.overrideReadOnlyComponentReferences(this);
   }
   
   void ThemeSet::updateEditing(unsigned int milliseconds) {
@@ -316,8 +316,8 @@ namespace IsoRealms::Equilibria {
     return cEquilibria;
   }
 
-  IResourceData& ThemeSet::getResourceData() {
-    return cResourceData;
+  IComponentData& ThemeSet::getComponentData() {
+    return cComponentData;
   }
 
   void ThemeSet::setNextTheme() {

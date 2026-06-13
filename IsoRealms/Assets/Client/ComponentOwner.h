@@ -33,9 +33,9 @@ namespace IsoRealms {
   class Project;
   class ProjectFile;
 
-  class ResourceOwner : public ITreeSelectorObject {
+  class ComponentOwner : public ITreeSelectorObject {
     public:
-    ResourceOwner(Project& project, ProjectFile* owner);
+    ComponentOwner(Project& project, ProjectFile* owner);
     ProjectFile* getProjectFile() const;
     void setProjectFile(ProjectFile* owner);
     bool isConfigurable() const;

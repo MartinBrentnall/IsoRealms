@@ -35,7 +35,7 @@
 namespace IsoRealms::Equilibria {
   class ZoneObjectTypeTraitRegistry : public AssetClientManager<ZoneObjectTypeTraitRegistry, ZoneObjectType, IZoneObjectTypeTrait> {
     public:
-    ZoneObjectTypeTraitRegistry(IResourceTypeRegistry& registry);
+    ZoneObjectTypeTraitRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitBoundary>     cBoundary;

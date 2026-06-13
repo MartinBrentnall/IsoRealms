@@ -31,7 +31,7 @@ namespace IsoRealms::Basics {
     updateScreen();
   }
 
-  void SequenceTrackScreenInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void SequenceTrackScreenInstance::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     assets.add<IScreen>(this, parentID + "/" + cParent.getName(), "Sequences");
   }
 

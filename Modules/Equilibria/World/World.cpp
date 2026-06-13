@@ -23,9 +23,9 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  World::World(Equilibria& equilibria, IResourceData& data) :
+  World::World(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cResourceData(data),
+            cComponentData(data),
             cDefPhysicalSurfaceProcessor(true),
             cDefVisualSurfaceProcessor(false),
             cEditorBasicProperties(false),
@@ -65,7 +65,7 @@ namespace IsoRealms::Equilibria {
     added(cEquilibria.getAsset<IPhysicalObjectType>(&cDummyPhysicalObjectTypeUser, "None", cEquilibria));
   }
 
-  void World::load(IResourceData& resourceData, JSONObject object) {
+  void World::load(IComponentData& resourceData, JSONObject object) {
     for (JSONValue mDebrisGeneratorValue : object.getArray(JSON_DEBRIS_GENERATORS)) {
       cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorValue.getObject(), resourceData));
     }
@@ -81,7 +81,7 @@ namespace IsoRealms::Equilibria {
     resourceData.getProject().init([this, &resourceData]() {
 
       // Try to open terrain cache
-      std::string mCachePath = cResourceData.getPath("Terrain.cache", resourceData.getProject().isUser());
+      std::string mCachePath = cComponentData.getPath("Terrain.cache", resourceData.getProject().isUser());
 //      std::cout << "Cache path: " << mCachePath << std::endl;
       std::ifstream mCache(mCachePath, std::ios::binary);
       bool mUsingCache = false;
@@ -121,7 +121,7 @@ namespace IsoRealms::Equilibria {
     });
   }
 
-  void World::save(IResourceData& resourceData, JSONObject object) const {
+  void World::save(IComponentData& resourceData, JSONObject object) const {
     JSONArray mDebrisGeneratorsArray = object.addArray(JSON_DEBRIS_GENERATORS);
     JSONArray mPlayersArray = object.addArray(JSON_PLAYERS);
     JSONArray mZonesArray = object.addArray(JSON_ZONES);
@@ -139,7 +139,7 @@ namespace IsoRealms::Equilibria {
     updateCache();
   }
 
-  void World::registerAssets(ResourceAssetRegistry& assets) {
+  void World::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IEditable>(this, "", "Equilibria Worlds");
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Worlds");
     for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
@@ -201,19 +201,19 @@ namespace IsoRealms::Equilibria {
   }
 
   bool World::isReadOnly() const {
-    return cResourceData.isReadOnly();
+    return cComponentData.isReadOnly();
   }
 
   void World::setOwner(ProjectFile* owner) {
-    cResourceData.setOwner(owner);
+    cComponentData.setOwner(owner);
   }
 
   bool World::hasReadOnlyReferences() const {
-    return cEquilibria.hasReadOnlyResourceReferences(this);
+    return cEquilibria.hasReadOnlyComponentReferences(this);
   }
 
   void World::overrideReadOnlyReferences() {
-    cEquilibria.overrideReadOnlyResourceReferences(this);
+    cEquilibria.overrideReadOnlyComponentReferences(this);
   }
 
   void World::updateRuntime(unsigned int milliseconds) {
@@ -249,8 +249,8 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  IResourceData& World::getResourceData() {
-    return cResourceData;
+  IComponentData& World::getComponentData() {
+    return cComponentData;
   }
 
   void World::renderRuntime() {
@@ -569,7 +569,7 @@ namespace IsoRealms::Equilibria {
     return cDefaultThemeSet.get();
   }
 
-  std::vector<IWorldEditorToolInstance*> World::createToolSet(WorldEditor& editor, IResourceData& owner) {
+  std::vector<IWorldEditorToolInstance*> World::createToolSet(WorldEditor& editor, IComponentData& owner) {
     std::vector<IWorldEditorToolInstance*> mTools;
     for (std::unique_ptr<WorldEditorTool>& mTool : cAvailableWorldEditorTools) {
       mTools.emplace_back((*mTool)->createToolInstance(editor, owner));
@@ -854,9 +854,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void World::updateCache() const {
-    if (!cResourceData.isIncluded() && cEquilibria.getProject().isUser()) {
-      cResourceData.makeUserDataDirectory();
-      std::string mCachePath = cResourceData.getPath("Terrain.cache", true);
+    if (!cComponentData.isIncluded() && cEquilibria.getProject().isUser()) {
+      cComponentData.makeUserDataDirectory();
+      std::string mCachePath = cComponentData.getPath("Terrain.cache", true);
 //      std::cout << "CACHE PATH: " << mCachePath << std::endl;
       std::ofstream mCacheOutput(mCachePath, std::ios::out | std::ios::binary);
       if (!mCacheOutput) {

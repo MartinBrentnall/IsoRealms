@@ -20,16 +20,16 @@
 
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Project.h"
-#include "IsoRealms/Project/ResourceType.h"
+#include "IsoRealms/Project/ComponentType.h"
 
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher) :
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher) :
             PropertiesMenu(manager, style, owner, owner.getMetadata(), propertyFetcher) {
   }
 
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, const Metadata& metadata, std::function<void(IPropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, const Metadata& metadata, std::function<void(IPropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
             cPropertyMaker(owner.getProject().getApplication(), owner, metadata, *this, manager),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
@@ -258,11 +258,11 @@ namespace IsoRealms {
     }
   }
 
-  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
     openProperties(owner, name, owner.getMetadata(), propertyFetcher);
   }
 
-  void PropertiesMenu::openProperties(IResourceData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
     mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, metadata, [this, propertyFetcher](IPropertyMaker& owner) {

@@ -37,7 +37,7 @@ namespace IsoRealms::Equilibria {
     cDefZoom.set(object, JSON_ZOOM);
   }
 
-  void CameraVariant::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void CameraVariant::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     cDefYaw->registerAssets(     assets, parentID + "/Yaw");
     cDefPitch->registerAssets(   assets, parentID + "/Pitch");
     cDefLocation->registerAssets(assets, parentID + "/Location");

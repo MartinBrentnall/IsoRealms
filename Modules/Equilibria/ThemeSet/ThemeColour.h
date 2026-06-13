@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
   class ThemeColour : public IColour {
     public:
     ThemeColour(ThemeSet& parent);
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& idd);
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& idd);
       
     void set(IColour* colour);
 

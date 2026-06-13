@@ -21,7 +21,7 @@
 #include "LayoutLocationRegistry.h"
 
 namespace IsoRealms::UI {
-  LayoutLocationRegistry::LayoutLocationRegistry(IResourceTypeRegistry& registry) :
+  LayoutLocationRegistry::LayoutLocationRegistry(IComponentTypeRegistry& registry) :
             cAbsolute(registry.getAssetMetadata("LayoutLocationAbsolute")),
             cRelative(registry.getAssetMetadata("LayoutLocationRelative")) {
     add(&cAbsolute, "Absolute", "UI");

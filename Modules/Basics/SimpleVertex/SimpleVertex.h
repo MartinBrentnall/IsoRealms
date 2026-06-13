@@ -24,16 +24,16 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a simple Vertex variable.
+   * Component definition for a simple Vertex variable.
    */
   class SimpleVertex final : public IVertex {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    SimpleVertex(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    SimpleVertex(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

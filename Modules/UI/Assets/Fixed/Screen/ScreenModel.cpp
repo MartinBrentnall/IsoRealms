@@ -19,12 +19,12 @@
 #include "ScreenModel.h"
 
 namespace IsoRealms::UI {
-  ScreenModel::ScreenModel(const Metadata& /*metadata*/, IResourceData& owner) :
+  ScreenModel::ScreenModel(const Metadata& /*metadata*/, IComponentData& owner) :
             cDefModel(owner),
             cDefModelInstance(cDefModel.createInstance()) {
   }
   
-  ScreenModel::ScreenModel(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  ScreenModel::ScreenModel(const Metadata& metadata, IComponentData& owner, JSONObject object) :
             ScreenModel(metadata, owner) {
     cDefModel.set(object, JSON_MODEL);
   }

@@ -33,7 +33,7 @@ namespace IsoRealms::Equilibria {
   class World;
   
   /**
-   * Resource definition for a type of zone.  The appearance of zones as
+   * Component definition for a type of zone.  The appearance of zones as
    * depicted by the world overview is configurable, and pick-up instances
    * provide boundaries for interaction with movable objects (e.g. players).
    */
@@ -41,11 +41,11 @@ namespace IsoRealms::Equilibria {
                    public IWorldEditorTool {
     public:
     
-    /**********************\
-     * Resource interface *
-    \**********************/
-    ZoneType(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
+    /***********************\
+     * Component interface *
+    \***********************/
+    ZoneType(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);  
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -70,7 +70,7 @@ namespace IsoRealms::Equilibria {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;

@@ -21,14 +21,14 @@
 #include "SequenceTrackFloat.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, unsigned int time, bool fade) :
+  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IComponentData& owner, unsigned int time, bool fade) :
             cParent(parent),
             cDefTime(time),
             cDefValue(owner, 0.0f),
             cDefFade(fade) {
   }
 
-  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, JSONObject object) :
+  SequenceTrackFloatEvent::SequenceTrackFloatEvent(SequenceTrackFloat& parent, IComponentData& owner, JSONObject object) :
             SequenceTrackFloatEvent(parent, owner, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
   }
 

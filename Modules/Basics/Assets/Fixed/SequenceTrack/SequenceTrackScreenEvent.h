@@ -29,8 +29,8 @@ namespace IsoRealms::Basics {
 
   class SequenceTrackScreenEvent : public ISequenceTrackEvent {
     public:
-    SequenceTrackScreenEvent(SequenceTrackScreen& parent, IResourceData& owner, unsigned int time);
-    SequenceTrackScreenEvent(SequenceTrackScreen& parent, IResourceData& owner, JSONObject object);
+    SequenceTrackScreenEvent(SequenceTrackScreen& parent, IComponentData& owner, unsigned int time);
+    SequenceTrackScreenEvent(SequenceTrackScreen& parent, IComponentData& owner, JSONObject object);
 
     void save(JSONObject object) const;
     IScreen* getScreen() const;

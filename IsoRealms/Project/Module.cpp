@@ -20,13 +20,13 @@
 
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/Exception/InitException.h"
-#include "IsoRealms/Exception/ResourceInitException.h"
+#include "IsoRealms/Exception/ComponentInitException.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/System.h"
 
-#include "ResourceType.h"
+#include "ComponentType.h"
 
 namespace IsoRealms {
   Module::Module(const std::string& name, Project& project, LuaState* luaState) :
@@ -98,11 +98,11 @@ namespace IsoRealms {
     // Create the module.
     cModule = mCreateFunction(&project, this);
 
-    // Load the resource type metadata.  This needs to be done after the module is created.
-    JSONObject mResourceTypesObject = mMetadataDocument.getObject(JSON_RESOURCES);
-    for (std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      JSONObject mResourceTypeObject = mResourceTypesObject.getObject(mResourceType.first);
-      mResourceType.second->loadMetadata(mResourceTypeObject);
+    // Load the component type metadata.  This needs to be done after the module is created.
+    JSONObject mComponentTypesObject = mMetadataDocument.getObject(JSON_COMPONENTS);
+    for (std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
+      JSONObject mComponentTypeObject = mComponentTypesObject.getObject(mComponentType.first);
+      mComponentType.second->loadMetadata(mComponentTypeObject);
     }
   }
 
@@ -129,21 +129,21 @@ namespace IsoRealms {
     return mMetadataPath;
   }
 
-  void Module::loadResources(JSONObject object, ProjectFile* ownerProject) {
-    for (JSONThing mResourceThing : object) {
-      JSONObject mResourceObject = mResourceThing.getValue();
-      std::string mResourceTypeName = mResourceThing.getName();
-      ResourceType* mResourceType = getResourceType(mResourceTypeName);
-      if (mResourceType == nullptr) {
-        std::cout << "ERROR: Module::loadResources: Resource type \"" << mResourceTypeName << "\" not known in module \"" << cName << "\".  Available resources:" << std::endl;
-        for (std::pair<const std::string, std::unique_ptr<ResourceType>>& mDebugResource : cResourceTypes) {
-          std::cout << "  " << mDebugResource.first << std::endl;
+  void Module::loadComponents(JSONObject object, ProjectFile* ownerProject) {
+    for (JSONThing mComponentThing : object) {
+      JSONObject mComponentObject = mComponentThing.getValue();
+      std::string mComponentTypeName = mComponentThing.getName();
+      ComponentType* mComponentType = getComponentType(mComponentTypeName);
+      if (mComponentType == nullptr) {
+        std::cout << "ERROR: Module::loadComponents: Component type \"" << mComponentTypeName << "\" not known in module \"" << cName << "\".  Available components:" << std::endl;
+        for (std::pair<const std::string, std::unique_ptr<ComponentType>>& mDebugComponent : cComponentTypes) {
+          std::cout << "  " << mDebugComponent.first << std::endl;
         }
-        throw ResourceInitException("ERROR: Module::loadResources: Resource type \"" + mResourceTypeName + "\" not known in module \"" + cName + "\".");
+        throw ComponentInitException("ERROR: Module::loadComponents: Component type \"" + mComponentTypeName + "\" not known in module \"" + cName + "\".");
       }
 
-      for (JSONThing mInstanceThing : mResourceObject) {
-        mResourceType->loadResource(mInstanceThing, ownerProject);
+      for (JSONThing mInstanceThing : mComponentObject) {
+        mComponentType->loadComponent(mInstanceThing, ownerProject);
       }
     }
   }
@@ -155,8 +155,8 @@ namespace IsoRealms {
   }
 
   bool Module::needsSaving(const ProjectFile* savingProject) const {
-    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      if (mResourceType.second->needsSaving(savingProject)) {
+    for (const std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
+      if (mComponentType.second->needsSaving(savingProject)) {
         return true;
       }
     }
@@ -166,10 +166,10 @@ namespace IsoRealms {
   void Module::save(JSONObject object, const ProjectFile* savingProject) const {
     JSONObject mModuleObject = object.addObject(cName);
 
-    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      if (mResourceType.second->needsSaving(savingProject)) {
-        JSONObject mResourceTypeObject = mModuleObject.addObject(mResourceType.first);
-        mResourceType.second->save(mResourceTypeObject, savingProject);
+    for (const std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
+      if (mComponentType.second->needsSaving(savingProject)) {
+        JSONObject mComponentTypeObject = mModuleObject.addObject(mComponentType.first);
+        mComponentType.second->save(mComponentTypeObject, savingProject);
       }
     }
   }
@@ -190,20 +190,20 @@ namespace IsoRealms {
     cModule->reset();
   }
   
-  ResourceType* Module::getResourceType(const std::string& id) {
-    std::map<std::string, std::unique_ptr<ResourceType>>::iterator mResourceType = cResourceTypes.find(id);
-    if (mResourceType == cResourceTypes.end()) {
+  ComponentType* Module::getComponentType(const std::string& id) {
+    std::map<std::string, std::unique_ptr<ComponentType>>::iterator mComponentType = cComponentTypes.find(id);
+    if (mComponentType == cComponentTypes.end()) {
       return nullptr;
     }
-    return mResourceType->second.get();
+    return mComponentType->second.get();
   }
 
-  void Module::add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id) {
-    ResourceType* mResourceType = getResourceType(id);
-    if (mResourceType != nullptr) {
-      throw ArgumentException("ERROR: Module::add: Cannot add resource type definition because there is already a resource type definition of ID \"" + id + "\".");
+  void Module::add(IComponentTypeDefinition* resourceTypeDefinition, const std::string& id) {
+    ComponentType* mComponentType = getComponentType(id);
+    if (mComponentType != nullptr) {
+      throw ArgumentException("ERROR: Module::add: Cannot add component type definition because there is already a component type definition of ID \"" + id + "\".");
     }
-    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, *this);
+    cComponentTypes[id] = std::make_unique<ComponentType>(resourceTypeDefinition, *this);
   }
 
   const Metadata& Module::getAssetMetadata(const std::string& key) const {
@@ -238,21 +238,21 @@ namespace IsoRealms {
     return it->second;
   }
 
-  std::vector<ResourceType*> Module::getResourceTypes() {
-    std::vector<ResourceType*> mResourceTypes;
-    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      mResourceTypes.emplace_back(mResourceType.second.get());
+  std::vector<ComponentType*> Module::getComponentTypes() {
+    std::vector<ComponentType*> mComponentTypes;
+    for (const std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
+      mComponentTypes.emplace_back(mComponentType.second.get());
     }
-    return mResourceTypes;
+    return mComponentTypes;
   }
 
-  std::string Module::getName(const ResourceType* resourceType) const {
-    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      if (mResourceType.second.get() == resourceType) {
-        return mResourceType.first;
+  std::string Module::getName(const ComponentType* resourceType) const {
+    for (const std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
+      if (mComponentType.second.get() == resourceType) {
+        return mComponentType.first;
       }
     }
-    throw ArgumentException("ERROR: Module::getName: Specified resource type not found in this module.");
+    throw ArgumentException("ERROR: Module::getName: Specified component type not found in this module.");
   }
 
   std::string Module::getPath() {
@@ -279,14 +279,14 @@ namespace IsoRealms {
     return cProject.getProjectPathPrefix(user);
   }
 
-  /****************************\
-   * Implements IResourceData *
-  \****************************/
-  std::string Module::getResourceID() const {
+  /*****************************\
+   * Implements IComponentData *
+  \*****************************/
+  std::string Module::getComponentID() const {
     return cName;
   }
 
-  std::string Module::getResourceName() const {
+  std::string Module::getComponentName() const {
     return "";
   }
 
@@ -334,7 +334,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  IResourceData& Module::getResourceData() {
+  IComponentData& Module::getComponentData() {
     return *this;
   }
 

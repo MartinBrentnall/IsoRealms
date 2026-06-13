@@ -22,14 +22,14 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  PickUpType::PickUpType(Equilibria& equilibria, IResourceData& data) :
+  PickUpType::PickUpType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),
             cDefModel(data) {
     cEquilibria.added(this);
   }
   
-  void PickUpType::registerAssets(ResourceAssetRegistry& assets) {
+  void PickUpType::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
 
@@ -69,7 +69,7 @@ namespace IsoRealms::Equilibria {
   }
 
   std::string PickUpType::getBoundaryTypeID() const {
-    return "PickUp/" + cEquilibria.getResourceID(this);
+    return "PickUp/" + cEquilibria.getComponentID(this);
   }
   
   IBinding* PickUpType::getBounderyTypeBinding(const std::string& id) const {
@@ -84,7 +84,7 @@ namespace IsoRealms::Equilibria {
     cEquilibria.getTreeItemsPickUp(getTreeItemInfoFunction);
   }
 
-  IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 

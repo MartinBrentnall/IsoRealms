@@ -26,16 +26,16 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
   /**
-   * Resource definition for a ball craft texture, with configurable colours.
+   * Component definition for a ball craft texture, with configurable colours.
    */
   class Ball final : public ITexture {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Ball(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Ball(Spindizzy& spindizzy, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -54,7 +54,7 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
-    // Resource definition constants.
+    // Component definition constants.
     inline static const float CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
     Project& cProject;

@@ -19,14 +19,14 @@
 #include "SimpleString.h"
 
 namespace IsoRealms::Basics {
-  SimpleString::SimpleString(Basics& basics, IResourceData& data) :
+  SimpleString::SimpleString(Basics& basics, IComponentData& data) :
             cDefValue(""),
             cRuntimeValue(""),
             cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  void SimpleString::registerAssets(ResourceAssetRegistry& assets) {
+  void SimpleString::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IString>(this, "", "Simple Strings");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Strings");
   }

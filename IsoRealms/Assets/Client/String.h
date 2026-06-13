@@ -21,21 +21,21 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IString.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class String : public Asset<String, IString, IResourceData> {
+  class String : public Asset<String, IString, IComponentData> {
     public:
-    String(IResourceData& owner);
+    String(IComponentData& owner);
 
     TreeItemInfo getTreeItemInfo() const override;
     bool hasClientConfiguration() const;
 
-    /********************************************\
-     * Implements Asset<IString, IResourceData> *
-    \********************************************/
-    IString* createDefaultAsset(IResourceData& owner);
+    /*********************************************\
+     * Implements Asset<IString, IComponentData> *
+    \*********************************************/
+    IString* createDefaultAsset(IComponentData& owner);
   };
 }

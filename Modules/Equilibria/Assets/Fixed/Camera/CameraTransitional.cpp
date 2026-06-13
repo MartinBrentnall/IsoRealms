@@ -29,10 +29,10 @@ namespace IsoRealms::Equilibria {
             cDefStart(view),
             cDefEnd(view),
             cDefDuration(DEFAULT_DURATION),
-            cDefStartDepartureAction(view.getResourceData().getDummyActionContext()),
-            cDefStartArrivalAction(view.getResourceData().getDummyActionContext()),
-            cDefEndDepartureAction(view.getResourceData().getDummyActionContext()),
-            cDefEndArrivalAction(view.getResourceData().getDummyActionContext()),
+            cDefStartDepartureAction(view.getComponentData().getDummyActionContext()),
+            cDefStartArrivalAction(view.getComponentData().getDummyActionContext()),
+            cDefEndDepartureAction(view.getComponentData().getDummyActionContext()),
+            cDefEndArrivalAction(view.getComponentData().getDummyActionContext()),
             cRuntimeYawStateNotifier(nullptr),
             cLuaBinding(view.getEquilibria().getProject().getLuaState(), this) {
   }
@@ -56,7 +56,7 @@ namespace IsoRealms::Equilibria {
     cRuntimeEnd = true;
   }
     
-  void CameraTransitional::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void CameraTransitional::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     cRuntimeYawStateNotifier = assets.add<IFloat>(&cYaw, parentID + "/Yaw", "Cameras");
     assets.add<IFloat>(&cPitch, parentID + "/Pitch", "Cameras");
     assets.add<IFloat>(&cTransition, parentID + "/Transition", "Cameras");

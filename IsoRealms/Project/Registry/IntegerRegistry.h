@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteral.h"
 #include "IsoRealms/Assets/Type/IInteger.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
@@ -33,24 +33,24 @@ namespace IsoRealms {
   class Application;
   class Project;
 
-  class IntegerRegistry : public AssetClientManager<IntegerRegistry, IResourceData, IInteger> {
+  class IntegerRegistry : public AssetClientManager<IntegerRegistry, IComponentData, IInteger> {
     public:
     IntegerRegistry(Application& application);
 
-    IInteger* literal(IAssetUser<IInteger>* client, IResourceData& owner, int value) {
+    IInteger* literal(IAssetUser<IInteger>* client, IComponentData& owner, int value) {
       IInteger* mInteger = cLiteral.createLiteralAsset(owner, value);
       registerClient(client, &cLiteral, mInteger);
       return mInteger;
     }
 
     private:
-    class Literal : public AssetLiteral<IResourceData, IInteger> {
+    class Literal : public AssetLiteral<IComponentData, IInteger> {
       public:
       explicit Literal(const Metadata& metadata) :
                 cMetadata(metadata) {
       }
 
-      IInteger* createLiteralAsset(IResourceData& owner, int value) const {
+      IInteger* createLiteralAsset(IComponentData& owner, int value) const {
         return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
 
@@ -61,11 +61,11 @@ namespace IsoRealms {
         return true;
       }
 
-      std::unique_ptr<IInteger> createLiteralAsset(IResourceData& owner) const override {
+      std::unique_ptr<IInteger> createLiteralAsset(IComponentData& owner) const override {
         return std::make_unique<Instance>(owner.getProject(), 0);
       }
 
-      std::unique_ptr<IInteger> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
+      std::unique_ptr<IInteger> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(owner.getProject(), object.getInteger(JSON_VALUE));
       }
 

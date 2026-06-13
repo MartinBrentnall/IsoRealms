@@ -24,16 +24,16 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a simple Boolean variable.
+   * Component definition for a simple Boolean variable.
    */
   class SimpleBoolean final : public IBoolean {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    SimpleBoolean(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    SimpleBoolean(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

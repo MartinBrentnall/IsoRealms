@@ -35,19 +35,19 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a Lua function.  Each action (call) derived from a
+   * Component definition for a Lua function.  Each action (call) derived from a
    * function may override dynamic bindings with their own values.  This class
    * also facilitates scripting (in-line functions) via the Script type.
    */
   class Function final : public IAssetProvider<IActionContext, IAction> {
     public:
     
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Function(Basics& basics, IResourceData& data);
-    Function(Basics& basics, IResourceData& data, JSONObject object);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Function(Basics& basics, IComponentData& data);
+    Function(Basics& basics, IComponentData& data, JSONObject object);
+    void registerAssets(ComponentAssetRegistry& assets);
     bool renderIcon() const;
     void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -58,7 +58,7 @@ namespace IsoRealms::Basics {
     Function(Basics& basics, IActionContext& owner, JSONObject object, bool init);
     void getScriptProperties(IPropertyMaker& owner);
     IsoRealms::Project& getProject() const;
-    IResourceData& getResourceData() const;
+    IComponentData& getComponentData() const;
     void setBindingName(Binding& binding, const std::string& name);
     bool isBindingNameAllowed(Binding& binding, const std::string& name);
     void setArgumentDefinitionName(ArgumentDefinition& argumentDefinition, const std::string& name);
@@ -115,7 +115,7 @@ namespace IsoRealms::Basics {
     // External interfaces.
     Project& cProject;
     Basics& cBasics;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
     IActionContext& cDefActionContext;
     sol::state& cDefLuaState; /// The Lua state machine.
     

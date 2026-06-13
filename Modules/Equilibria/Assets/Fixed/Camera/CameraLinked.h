@@ -38,7 +38,7 @@ namespace IsoRealms::Equilibria {
     /**********************\
      * Implements ICamera *
     \**********************/
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) override;
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) override;
     void updateRuntime(unsigned int milliseconds) override;
     void reset() override;
     const IFloat* getYaw() const override;
@@ -68,6 +68,6 @@ namespace IsoRealms::Equilibria {
     // External interfaces.
     WorldView& cParent;
     
-    ResourceReference<WorldView, WorldView> cDefLinkedView;
+    ComponentReference<WorldView, WorldView> cDefLinkedView;
   };
 }

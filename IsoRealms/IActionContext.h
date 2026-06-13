@@ -21,8 +21,8 @@
 #include <string>
 
 namespace IsoRealms {
+  class IComponentData;
   class IEventBindings;
-  class IResourceData;
   class Project;
   class ProjectFile;
 
@@ -32,7 +32,7 @@ namespace IsoRealms {
     virtual void setOwner(ProjectFile* owner) = 0;
     virtual Project& getProject() = 0;
     virtual Project& getAssetManager() = 0;
-    virtual IResourceData& getResourceData() = 0;
+    virtual IComponentData& getComponentData() = 0;
     virtual IEventBindings* getBindingRegistry() = 0;
   };
 }

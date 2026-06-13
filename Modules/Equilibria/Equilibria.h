@@ -50,7 +50,7 @@
 
 namespace IsoRealms::Equilibria {
   template <typename TYPE> struct AssetContainerTraits;
-  template <typename TYPE> struct ResourceContainerTraits;
+  template <typename TYPE> struct ComponentContainerTraits;
 
   class Equilibria : public IModuleHandle {
     public:
@@ -69,7 +69,7 @@ namespace IsoRealms::Equilibria {
     }
 
     // Module constructor.
-    Equilibria(Project& project, IResourceTypeRegistry& registry);
+    Equilibria(Project& project, IComponentTypeRegistry& registry);
     const Metadata& getMetadata(const std::string& key) const;
 
     void init(std::function<void()> initialiser);
@@ -92,61 +92,61 @@ namespace IsoRealms::Equilibria {
       AssetContainerTraits<TYPE>::get(*this).remove(asset);
     }
 
-    template <typename TYPE> TYPE* get(IResourceUser<TYPE>* user, const std::string& id) {
-      return ResourceContainerTraits<TYPE>::get(*this).getResourceForClient(user, id);
+    template <typename TYPE> TYPE* get(IComponentUser<TYPE>* user, const std::string& id) {
+      return ComponentContainerTraits<TYPE>::get(*this).getComponentForClient(user, id);
     }
 
-    template <typename TYPE> void release(IResourceUser<TYPE>* user, TYPE* resource) {
-      ResourceContainerTraits<TYPE>::get(*this).release(user, resource);
+    template <typename TYPE> void release(IComponentUser<TYPE>* user, TYPE* component) {
+      ComponentContainerTraits<TYPE>::get(*this).release(user, component);
     }
 
-    template <typename TYPE> std::string getResourceID(const TYPE* resource) const {
-      return ResourceContainerTraits<TYPE>::get(*this).getID(resource);
+    template <typename TYPE> std::string getComponentID(const TYPE* component) const {
+      return ComponentContainerTraits<TYPE>::get(*this).getID(component);
     }
 
-    template <typename TYPE> std::vector<std::string> getAvailableResources() const {
-      return ResourceContainerTraits<TYPE>::get(*this).getAvailableResources();
+    template <typename TYPE> std::vector<std::string> getAvailableComponents() const {
+      return ComponentContainerTraits<TYPE>::get(*this).getAvailableComponents();
     }
 
-    template <typename TYPE> bool isReadOnly(const TYPE* resource) const {
-      return ResourceContainerTraits<TYPE>::get(*this).isReadOnly(resource);
+    template <typename TYPE> bool isReadOnly(const TYPE* component) const {
+      return ComponentContainerTraits<TYPE>::get(*this).isReadOnly(component);
     }
 
-    template <typename TYPE> void setOwner(const TYPE* resource, ProjectFile* owner) {
-      ResourceContainerTraits<TYPE>::get(*this).setOwner(resource, owner);
+    template <typename TYPE> void setOwner(const TYPE* component, ProjectFile* owner) {
+      ComponentContainerTraits<TYPE>::get(*this).setOwner(component, owner);
     }
 
-    template <typename TYPE> bool hasReadOnlyResourceReferences(const TYPE* resource) const {
-      return ResourceContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(resource);
+    template <typename TYPE> bool hasReadOnlyComponentReferences(const TYPE* component) const {
+      return ComponentContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(component);
     }
 
-    template <typename TYPE> void overrideReadOnlyResourceReferences(const TYPE* resource) {
-      ResourceContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(resource);
+    template <typename TYPE> void overrideReadOnlyComponentReferences(const TYPE* component) {
+      ComponentContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(component);
     }
 
-    template <typename TYPE> bool isUsedInReadOnlyWorld(const TYPE& resource) const {
-      for (World* mWorld : cResourceWorld) {
-        if (cResourceWorld.isReadOnly(mWorld) && mWorld->isUsed(resource)) {
-          std::cout << "isUsedInReadOnlyWorld: " << cResourceWorld.getID(mWorld) << std::endl;
+    template <typename TYPE> bool isUsedInReadOnlyWorld(const TYPE& component) const {
+      for (World* mWorld : cComponentWorld) {
+        if (cComponentWorld.isReadOnly(mWorld) && mWorld->isUsed(component)) {
+          std::cout << "isUsedInReadOnlyWorld: " << cComponentWorld.getID(mWorld) << std::endl;
           return true;
         }
       }
       return false;
     }
 
-    template <typename TYPE> void overrideReadOnlyWorlds(const TYPE& resource) {
-      for (World* mWorld : cResourceWorld) {
-        if (cResourceWorld.isReadOnly(mWorld) && mWorld->isUsed(resource)) {
-          std::cout << "overrideReadOnlyWorlds: " << cResourceWorld.getID(mWorld) << std::endl;
-          cResourceWorld.setOwner(mWorld, cProject.getProjectFile());
+    template <typename TYPE> void overrideReadOnlyWorlds(const TYPE& component) {
+      for (World* mWorld : cComponentWorld) {
+        if (cComponentWorld.isReadOnly(mWorld) && mWorld->isUsed(component)) {
+          std::cout << "overrideReadOnlyWorlds: " << cComponentWorld.getID(mWorld) << std::endl;
+          cComponentWorld.setOwner(mWorld, cProject.getProjectFile());
         }
       }
     }
 
-    std::string getResourceID() const;
-    std::string getResourceName() const;
+    std::string getComponentID() const;
+    std::string getComponentName() const;
     
-    // Resource removal.
+    // Component removal.
     void removeAll(AlienType*      type);
     void removeAll(LiftType*       type);
     void removeAll(PickUpType*     type);
@@ -245,7 +245,7 @@ namespace IsoRealms::Equilibria {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ResourceAssetRegistry& assets) override;
+    void registerAssets(ComponentAssetRegistry& assets) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
@@ -296,7 +296,7 @@ namespace IsoRealms::Equilibria {
 
     // External interfaces.
     Project& cProject;
-    IResourceTypeRegistry& cModule;
+    IComponentTypeRegistry& cModule;
 
     // Basic world editing tools.
     DeleteTool     cToolDelete;
@@ -315,21 +315,21 @@ namespace IsoRealms::Equilibria {
     ZoneObjectTypeTraitRegistry cZoneObjectTypeTraits;
     ZoneViewTypeRegistry        cZoneViewTypes;
 
-    // Resource type definitions.
-    ResourceTypeDefinition<Equilibria, AlienType>        cResourceAlien;
-    ResourceTypeDefinition<Equilibria, BoundaryHandler>  cResourceBoundaryHandler;
-    ResourceTypeDefinition<Equilibria, CollisionHandler> cResourceCollisionHandler;
-    ResourceTypeDefinition<Equilibria, LiftType>         cResourceLift;
-    ResourceTypeDefinition<Equilibria, ModelCycler>      cResourceModelCycler;
-    ResourceTypeDefinition<Equilibria, PickUpType>       cResourcePickUp;
-    ResourceTypeDefinition<Equilibria, PlayerType>       cResourcePlayer;
-    ResourceTypeDefinition<Equilibria, TerrainType>      cResourceTerrain;
-    ResourceTypeDefinition<Equilibria, TerrainState>     cResourceTerrainState;
-    ResourceTypeDefinition<Equilibria, ThemeSet>         cResourceThemeSet;
-    ResourceTypeDefinition<Equilibria, World>            cResourceWorld;
-    ResourceTypeDefinition<Equilibria, WorldView>        cResourceWorldView;
-    ResourceTypeDefinition<Equilibria, ZoneType>         cResourceZone;
-    ResourceTypeDefinition<Equilibria, ZoneObjectType>   cResourceZoneObject;
+    // Component type definitions.
+    ComponentTypeDefinition<Equilibria, AlienType>        cComponentAlien;
+    ComponentTypeDefinition<Equilibria, BoundaryHandler>  cComponentBoundaryHandler;
+    ComponentTypeDefinition<Equilibria, CollisionHandler> cComponentCollisionHandler;
+    ComponentTypeDefinition<Equilibria, LiftType>         cComponentLift;
+    ComponentTypeDefinition<Equilibria, ModelCycler>      cComponentModelCycler;
+    ComponentTypeDefinition<Equilibria, PickUpType>       cComponentPickUp;
+    ComponentTypeDefinition<Equilibria, PlayerType>       cComponentPlayer;
+    ComponentTypeDefinition<Equilibria, TerrainType>      cComponentTerrain;
+    ComponentTypeDefinition<Equilibria, TerrainState>     cComponentTerrainState;
+    ComponentTypeDefinition<Equilibria, ThemeSet>         cComponentThemeSet;
+    ComponentTypeDefinition<Equilibria, World>            cComponentWorld;
+    ComponentTypeDefinition<Equilibria, WorldView>        cComponentWorldView;
+    ComponentTypeDefinition<Equilibria, ZoneType>         cComponentZone;
+    ComponentTypeDefinition<Equilibria, ZoneObjectType>   cComponentZoneObject;
 
     // Runtime data.
     bool cRuntimePaused;
@@ -382,7 +382,7 @@ namespace IsoRealms::Equilibria {
     std::map<std::string, IBinding*> cRuntimeZoneBindings2;
 
     template <class TYPE> friend struct AssetContainerTraits;
-    template <class TYPE> friend struct ResourceContainerTraits;
+    template <class TYPE> friend struct ComponentContainerTraits;
   };
 
   template<> struct AssetContainerTraits<IBoundaryType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cBoundaryTypes;       }};
@@ -394,18 +394,18 @@ namespace IsoRealms::Equilibria {
   template<> struct AssetContainerTraits<IZoneObjectTypeTrait> {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cZoneObjectTypeTraits;}};
   template<> struct AssetContainerTraits<IZoneViewType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cZoneViewTypes;       }};
 
-  template<> struct ResourceContainerTraits<AlienType>          {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceAlien;             }};
-  template<> struct ResourceContainerTraits<BoundaryHandler>    {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceBoundaryHandler;   }};
-  template<> struct ResourceContainerTraits<CollisionHandler>   {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceCollisionHandler;  }};
-  template<> struct ResourceContainerTraits<LiftType>           {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceLift;              }};
-  template<> struct ResourceContainerTraits<ModelCycler>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceModelCycler;      }};
-  template<> struct ResourceContainerTraits<PickUpType>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourcePickUp;            }};
-  template<> struct ResourceContainerTraits<PlayerType>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourcePlayer;            }};
-  template<> struct ResourceContainerTraits<TerrainType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceTerrain;           }};
-  template<> struct ResourceContainerTraits<TerrainState>       {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceTerrainState;      }};
-  template<> struct ResourceContainerTraits<ThemeSet>           {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceThemeSet;          }};
-  template<> struct ResourceContainerTraits<World>              {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceWorld;             }};
-  template<> struct ResourceContainerTraits<WorldView>          {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceWorldView;         }};
-  template<> struct ResourceContainerTraits<ZoneType>           {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceZone;              }};
-  template<> struct ResourceContainerTraits<ZoneObjectType>     {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cResourceZoneObject;        }};
+  template<> struct ComponentContainerTraits<AlienType>          {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentAlien;             }};
+  template<> struct ComponentContainerTraits<BoundaryHandler>    {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentBoundaryHandler;   }};
+  template<> struct ComponentContainerTraits<CollisionHandler>   {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentCollisionHandler;  }};
+  template<> struct ComponentContainerTraits<LiftType>           {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentLift;              }};
+  template<> struct ComponentContainerTraits<ModelCycler>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentModelCycler;      }};
+  template<> struct ComponentContainerTraits<PickUpType>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentPickUp;            }};
+  template<> struct ComponentContainerTraits<PlayerType>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentPlayer;            }};
+  template<> struct ComponentContainerTraits<TerrainType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentTerrain;           }};
+  template<> struct ComponentContainerTraits<TerrainState>       {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentTerrainState;      }};
+  template<> struct ComponentContainerTraits<ThemeSet>           {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentThemeSet;          }};
+  template<> struct ComponentContainerTraits<World>              {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentWorld;             }};
+  template<> struct ComponentContainerTraits<WorldView>          {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentWorldView;         }};
+  template<> struct ComponentContainerTraits<ZoneType>           {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentZone;              }};
+  template<> struct ComponentContainerTraits<ZoneObjectType>     {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentZoneObject;        }};
 }

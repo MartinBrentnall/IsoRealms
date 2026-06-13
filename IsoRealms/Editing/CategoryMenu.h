@@ -18,15 +18,15 @@
  */
 #pragma once
 
-#include "IsoRealms/IResource.h"
+#include "IsoRealms/IComponent.h"
 
 #include "ActionMenu.h"
-#include "ResourceTypeMenu.h"
+#include "ComponentTypeMenu.h"
 
 namespace IsoRealms {
 
   /**
-   * UI screen for allowing navigation of Resource Types within a specified
+   * UI screen for allowing navigation of Component Types within a specified
    * project category.
    */
   class CategoryMenu : public ActionMenu {

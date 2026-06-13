@@ -21,13 +21,13 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  Model::Model(IResourceData& owner) :
-            Asset<Model, IModel, IResourceData>(owner) {
+  Model::Model(IComponentData& owner) :
+            Asset<Model, IModel, IComponentData>(owner) {
   }
 
   std::unique_ptr<ModelInstance> Model::createInstance() {

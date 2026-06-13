@@ -26,18 +26,18 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
   /**
-   * Resource definition for a gyroscope craft model, where the colour of each
+   * Component definition for a gyroscope craft model, where the colour of each
    * quadrant and the outline is configurable.
    */
   class Gyroscope final : public IModel,
                           public IModelInstance {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Gyroscope(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Gyroscope(Spindizzy& spindizzy, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
-    // Resource definition constants.
+    // Component definition constants.
     inline static const float CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0); /// Degrees for each segment of a rendered circle.
     inline static const float SPINDLE_WIDTH     = 0.03f;
     inline static const float WIDTH             = 0.33f;

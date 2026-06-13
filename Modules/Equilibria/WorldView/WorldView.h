@@ -34,16 +34,16 @@ namespace IsoRealms::Equilibria {
   class Equilibria;
 
   /**
-   * Resource definition for a view of a Equilibria world.
+   * Component definition for a view of a Equilibria world.
    */
   class WorldView final : public IScreen {
     public:
     
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    WorldView(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    WorldView(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -69,7 +69,7 @@ namespace IsoRealms::Equilibria {
     void removeZoneView(Zone* zone);
     World* getWorld() const;
     Equilibria& getEquilibria();
-    IResourceData& getResourceData();
+    IComponentData& getComponentData();
     ICamera* getCamera();
 
     /***********************\
@@ -124,10 +124,10 @@ namespace IsoRealms::Equilibria {
     
     // External interfaces.
     Equilibria& cEquilibria;      /// Equilibria module reference.
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
-    ResourceReference<World, WorldView> cDefWorld; /// World being viewed.
+    ComponentReference<World, WorldView> cDefWorld; /// World being viewed.
     Camera cDefCamera;                             /// Camera for this view.
     ZoneViewType cDefZoneViewType;                 /// The type of representation of zones within this view.
     float cDefZoom;                                /// Zoom adjustment.

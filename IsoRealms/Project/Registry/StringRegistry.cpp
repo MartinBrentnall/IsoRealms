@@ -36,11 +36,11 @@ namespace IsoRealms {
     }
   }
 
-  IString* StringRegistry::get(IAssetUser<IString>* client, IResourceData& owner, JSONObject object, IStateListener* listener, bool required) {
+  IString* StringRegistry::get(IAssetUser<IString>* client, IComponentData& owner, JSONObject object, IStateListener* listener, bool required) {
     return AssetClientManager::get(client, owner, object, listener, required);
   }
 
-  IString* StringRegistry::get(IAssetUser<IString>* client, IResourceData& owner, const std::string& id, IStateListener* listener) {
+  IString* StringRegistry::get(IAssetUser<IString>* client, IComponentData& owner, const std::string& id, IStateListener* listener) {
     for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
       if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
         JSONDocument mDocument;

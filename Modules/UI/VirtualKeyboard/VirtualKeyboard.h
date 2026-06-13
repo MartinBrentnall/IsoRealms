@@ -24,7 +24,7 @@ namespace IsoRealms::UI {
   class UI;
   
   /**
-   * Resource definition for a virtual keyboard that enables the input of
+   * Component definition for a virtual keyboard that enables the input of
    * strings via other input methods.
    */
   class VirtualKeyboard final : public IInputHandler,
@@ -32,11 +32,11 @@ namespace IsoRealms::UI {
                                 public IString {
     public:
     
-    /**********************\
-     * Resource interface *
-    \**********************/
-    VirtualKeyboard(UI& ui, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component interface *
+    \***********************/
+    VirtualKeyboard(UI& ui, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

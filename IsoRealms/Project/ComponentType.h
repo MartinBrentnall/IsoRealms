@@ -21,36 +21,36 @@
 #include <set>
 #include <string>
 
-#include "IsoRealms/IResource.h"
-#include "IsoRealms/IResourceTypeDefinition.h"
+#include "IsoRealms/IComponent.h"
+#include "IsoRealms/IComponentTypeDefinition.h"
 #include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 
 namespace IsoRealms {
   class Module;
 
-  class ResourceType {
+  class ComponentType {
     public:
-    ResourceType(IResourceTypeDefinition* resourceType, Module& parent);
-    void loadResource(JSONThing mInstanceThing, ProjectFile* ownerProject);
+    ComponentType(IComponentTypeDefinition* resourceType, Module& parent);
+    void loadComponent(JSONThing mInstanceThing, ProjectFile* ownerProject);
     void loadMetadata(JSONObject object);
-    void reloadResource(const std::string& resourceName);
+    void reloadComponent(const std::string& resourceName);
     bool needsSaving(const ProjectFile* savingProject) const;
     void save(JSONObject& object, const ProjectFile* savingProject);
 
     std::string const getPlural() const;
     std::string const getSingular() const;
-    bool forEachResource(std::function<bool(IResource*)> resourceFunction);
-    const std::set<std::string> getDeletedResources();
-    IResource* createResource();
-    void renameResource(IResource* resource, const std::string& name);
-    void deleteResource(IResource* resource);
-    void createOverriddenResource(IResource* resource);
+    bool forEachComponent(std::function<bool(IComponent*)> resourceFunction);
+    const std::set<std::string> getDeletedComponents();
+    IComponent* createComponent();
+    void renameComponent(IComponent* component, const std::string& name);
+    void deleteComponent(IComponent* component);
+    void createOverriddenComponent(IComponent* component);
     void registerModuleAssets();
     std::string getPath();
-    const std::string& getName(const IResource& resource) const;
+    const std::string& getName(const IComponent& component) const;
     std::string getDataPath(bool user);
-    std::string getResourcePath();
+    std::string getComponentPath();
     ProjectFile* getProjectFile();
     void makeUserDataDirectory(const std::string& resourceName);
     void renameUserDataDirectory(const std::string& oldName, const std::string& newName);
@@ -83,9 +83,9 @@ namespace IsoRealms {
     inline static const std::string JSON_SINGULAR    = "singular";
 
     Module& cParent;
-    IResourceTypeDefinition* cResourceType;
-    std::set<std::unique_ptr<PlaceHolder>> cOmittedResources;
-    std::vector<std::unique_ptr<PlaceHolder>> cOverriddenResources;
+    IComponentTypeDefinition* cComponentType;
+    std::set<std::unique_ptr<PlaceHolder>> cOmittedComponents;
+    std::vector<std::unique_ptr<PlaceHolder>> cOverriddenComponents;
     std::string cSingular;
     std::string cPlural;
     std::string cCategory;

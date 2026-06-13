@@ -22,14 +22,14 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IFont.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class FontRegistry : public AssetClientManager<FontRegistry, IResourceData, IFont> {
+  class FontRegistry : public AssetClientManager<FontRegistry, IComponentData, IFont> {
     public:
     FontRegistry();
 
@@ -50,6 +50,6 @@ namespace IsoRealms {
       bool isDefaultConfiguration() const override;
     };
 
-    AssetLiteralDummy<IResourceData, IFont, Dummy> cNone;
+    AssetLiteralDummy<IComponentData, IFont, Dummy> cNone;
   };
 }

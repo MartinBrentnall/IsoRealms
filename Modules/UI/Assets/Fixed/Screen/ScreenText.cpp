@@ -19,7 +19,7 @@
 #include "ScreenText.h"
 
 namespace IsoRealms::UI {
-  ScreenText::ScreenText(const Metadata& /*metadata*/, IResourceData& owner) :
+  ScreenText::ScreenText(const Metadata& /*metadata*/, IComponentData& owner) :
             cDefString(owner),
             cDefFont(owner),
             cDefColour(owner, 1.0f, 1.0f, 1.0f),
@@ -27,7 +27,7 @@ namespace IsoRealms::UI {
             cDefShadowOffset(DEFAULT_SHADOW_OFFSET) {
   }
   
-  ScreenText::ScreenText(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  ScreenText::ScreenText(const Metadata& metadata, IComponentData& owner, JSONObject object) :
             ScreenText(metadata, owner) {
     std::string mAlignment = object.getString(JSON_ALIGNMENT);
     setAlignment(mAlignment);

@@ -22,7 +22,7 @@
 #include "Editing.h"
 #include "Editing/IDialogManager.h"
 #include "Editing/Property/IPropertyManager.h"
-#include "IResourceData.h"
+#include "IComponentData.h"
 #include "Metadata.h"
 #include "Project/Options.h"
 #include "Project/Project.h"
@@ -30,7 +30,7 @@
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  PropertyMaker::PropertyMaker(Application& application, IResourceData& parent, const Metadata& metadata, IPropertyManager& properties, IDialogManager& dialogManager) :
+  PropertyMaker::PropertyMaker(Application& application, IComponentData& parent, const Metadata& metadata, IPropertyManager& properties, IDialogManager& dialogManager) :
             cApplication(application),
             cParent(parent),
             cMetadata(metadata),
@@ -38,7 +38,7 @@ namespace IsoRealms {
             cDialogManager(dialogManager) {
   }
 
-  IResourceData& PropertyMaker::getResourceData() {
+  IComponentData& PropertyMaker::getComponentData() {
     return cParent;
   }
 
@@ -124,7 +124,7 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, *this, cParent, mergePropertyMetadata(cMetadata.getPropertyData(key), hint), item, removeFunction));
   }
 
-  bool PropertyMaker::isResourceReadOnly() const {
+  bool PropertyMaker::isComponentReadOnly() const {
     return cParent.isReadOnly();
   }
 
@@ -132,7 +132,7 @@ namespace IsoRealms {
     cDialogManager.confirm(message, confirm, cancel);
   }
 
-  void PropertyMaker::promoteResourceToProject() {
+  void PropertyMaker::promoteComponentToProject() {
     cParent.setOwner(cParent.getProject().getProjectFile());
   }
   

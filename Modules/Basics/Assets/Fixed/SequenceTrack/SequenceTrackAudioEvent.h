@@ -47,8 +47,8 @@ namespace IsoRealms::Basics {
       SequenceTrackAudioEvent& cParent;
     };
 
-    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, unsigned int time);
-    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, JSONObject object);
+    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, unsigned int time);
+    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, JSONObject object);
 
     End* getEndEvent();
 

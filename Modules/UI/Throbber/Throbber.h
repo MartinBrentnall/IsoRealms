@@ -30,18 +30,18 @@ namespace IsoRealms::UI {
   class UI;
 
   /**
-   * Resource definition for a visual indication that the application is busy,
+   * Component definition for a visual indication that the application is busy,
    * known as a throbber.  This throbber shows an animated ring of spots, where
    * several aspects of its appearance are configurable.
    */
   class Throbber final : public IScreen {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Throbber(UI& ui, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Throbber(UI& ui, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

@@ -25,18 +25,18 @@
 namespace IsoRealms::Hue {
   class Hue : public IModuleHandle {
     public:
-    Hue(Project& project, IResourceTypeRegistry* registry);
+    Hue(Project& project, IComponentTypeRegistry* registry);
 
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ResourceAssetRegistry& assets) override;
+    void registerAssets(ComponentAssetRegistry& assets) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
     
     private:
-    ResourceTypeDefinition<Hue, HueManager> cResourceTypeHueManager;
+    ComponentTypeDefinition<Hue, HueManager> cComponentTypeHueManager;
   };
 }

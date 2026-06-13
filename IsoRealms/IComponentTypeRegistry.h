@@ -18,31 +18,15 @@
  */
 #pragma once
 
-#include <memory>
 #include <string>
-#include <vector>
 
 namespace IsoRealms {
-  class JSONObject;
-  class IResourceData;
-  class Project;
-  class ProjectFile;
-  class IPropertyMaker;
+  class IComponentTypeDefinition;
+  class Metadata;
 
-  class IResource {
+  class IComponentTypeRegistry {
     public:
-    virtual const std::string& getName() const = 0;
-    virtual bool isReadOnly() const = 0;
-    virtual bool needsSaving(const ProjectFile* savingProject) = 0;
-    virtual void registerAssets() = 0;
-    virtual bool renderIcon() = 0;
-    virtual void getProperties(IPropertyMaker& propertyMaker) = 0;
-    virtual IResourceData& getResourceData() = 0;
-    virtual bool hasReadOnlyReferences() const = 0;
-    virtual void overrideReadOnlyReferences() = 0;
-    virtual ProjectFile* getProjectFile() const = 0;
-//    virtual void hintInUse(bool inUse) = 0;
-    
-    virtual ~IResource() {}
+    virtual void add(IComponentTypeDefinition* resourceTypeDefinition, const std::string& id) = 0;
+    virtual const Metadata& getAssetMetadata(const std::string& key) const = 0;
   };
 }

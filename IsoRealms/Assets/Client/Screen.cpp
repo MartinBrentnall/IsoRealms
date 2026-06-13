@@ -19,11 +19,11 @@
 #include "Screen.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Screen::Screen(IResourceData& owner) : 
-            Asset<Screen, IScreen, IResourceData>(owner) {
+  Screen::Screen(IComponentData& owner) : 
+            Asset<Screen, IScreen, IComponentData>(owner) {
   }
 }

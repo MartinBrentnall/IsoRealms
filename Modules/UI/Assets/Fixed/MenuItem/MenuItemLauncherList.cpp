@@ -22,13 +22,13 @@
 
 namespace IsoRealms::UI {
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu) :
-            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
-            cActionContext(menu.getResourceData(), *this),
+            cActionContext(menu.getComponentData(), *this),
             cDefID("Unnamed Launcher List"),
             cDefAction(cActionContext),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this),
-            cLauncherBinding(menu.getResourceData().getProject().getLuaState(), nullptr, nullptr, true) {
+            cLuaBinding(menu.getComponentData().getProject().getLuaState(), this),
+            cLauncherBinding(menu.getComponentData().getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
   MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -42,7 +42,7 @@ namespace IsoRealms::UI {
     }
   }
 
-  void MenuItemLauncherList::registerAssets(ResourceAssetRegistry& assets) {
+  void MenuItemLauncherList::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Launcher Lists");
   }
 
@@ -121,7 +121,7 @@ namespace IsoRealms::UI {
   void MenuItemLauncherList::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {
       cDefID = value;
-      cMenu.getResourceData().reregisterAssets();
+      cMenu.getComponentData().reregisterAssets();
     });
     owner.createPropertyTreeSelector(JSON_ON_SELECTION, cDefAction);
   }

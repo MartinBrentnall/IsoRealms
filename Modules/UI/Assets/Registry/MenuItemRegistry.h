@@ -35,7 +35,7 @@ namespace IsoRealms::UI {
 
   class MenuItemRegistry : public AssetClientManager<MenuItemRegistry, Menu, IMenuItem> {
     public:
-    MenuItemRegistry(IResourceTypeRegistry& registry);
+    MenuItemRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<Menu, IMenuItem, MenuItemAction>            cAction;

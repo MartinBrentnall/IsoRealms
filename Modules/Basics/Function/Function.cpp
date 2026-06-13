@@ -26,17 +26,17 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  Function::Function(Basics& basics, IResourceData& data) :
+  Function::Function(Basics& basics, IComponentData& data) :
             Function(basics, data.getDummyActionContext()) {
   }
     
-  Function::Function(Basics& basics, IResourceData& data, JSONObject object) :
+  Function::Function(Basics& basics, IComponentData& data, JSONObject object) :
             Function(basics, data.getDummyActionContext()) {
     PropertyLoader mLoader(data, object);
-    getProperties(mLoader, cResourceData.getMetadata());
+    getProperties(mLoader, cComponentData.getMetadata());
   }
 
-  void Function::registerAssets(ResourceAssetRegistry& assets) {
+  void Function::registerAssets(ComponentAssetRegistry& assets) {
     assets.addProvider<IActionContext, IAction>(this, "", "Call a Function");
   }
     
@@ -75,7 +75,7 @@ namespace IsoRealms::Basics {
   Function::Function(Basics& basics, IActionContext& owner) :
             cProject(basics.getProject()),
             cBasics(basics),
-            cResourceData(owner.getResourceData()),
+            cComponentData(owner.getComponentData()),
             cDefActionContext(owner),
             cDefLuaState(basics.getProject().getLuaState().getState()),
             cDefID(basics.getAvailableFunctionID()) {
@@ -83,9 +83,9 @@ namespace IsoRealms::Basics {
 
   Function::Function(Basics& basics, IActionContext& owner, JSONObject object, bool init) :
             Function(basics, owner) {
-    PropertyLoader mLoader(cResourceData, object);
+    PropertyLoader mLoader(cComponentData, object);
     if (init) {
-      getProperties(mLoader, cResourceData.getMetadata());
+      getProperties(mLoader, cComponentData.getMetadata());
     } else {
       getScriptProperties(mLoader);
     }
@@ -117,8 +117,8 @@ namespace IsoRealms::Basics {
     return cProject;
   }
 
-  IResourceData& Function::getResourceData() const {
-    return cResourceData;
+  IComponentData& Function::getComponentData() const {
+    return cComponentData;
   }
 
   void Function::setBindingName(Binding& binding, const std::string& name) {
@@ -216,7 +216,7 @@ namespace IsoRealms::Basics {
   }
 
   const Metadata& Function::getMetadata() const {
-    return cResourceData.getMetadata();
+    return cComponentData.getMetadata();
   }
 
   Function::Call::Call(Function& parent, IActionContext& owner) :
@@ -241,7 +241,7 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::execute() {
-    // std::cout << "Executing function \"" << cParent.cResourceData.getResourceName() << "\" on behalf of owner \"" << cOwner.getResourceData().getResourceID() << "\"" << std::endl;
+    // std::cout << "Executing function \"" << cParent.cComponentData.getComponentName() << "\" on behalf of owner \"" << cOwner.getComponentData().getComponentID() << "\"" << std::endl;
 //    std::cout << "===============================================================================" << std::endl << cParent.cDefCode << std::endl;
     for (unsigned int i = 0; i < cParent.cDefBindings.size(); i++) {
       std::string mBindFunctionName = "func" + Utils::toString(cParent.cDefID) + "_arg" + Utils::toString(i);

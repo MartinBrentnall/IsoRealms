@@ -43,11 +43,11 @@ namespace IsoRealms::Hue {
   class HueManager final {
     public:
         
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    HueManager(Hue& hue, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    HueManager(Hue& hue, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -273,8 +273,8 @@ namespace IsoRealms::Hue {
   
     class Bulb {
       public:
-      Bulb(HueManager& parent, IResourceData& data, int id);
-      Bulb(HueManager& parent, IResourceData& data, int id, JSONObject object);
+      Bulb(HueManager& parent, IComponentData& data, int id);
+      Bulb(HueManager& parent, IComponentData& data, int id, JSONObject object);
       void save(JSONObject object);
       Colour& getColour();
       void sync();
@@ -287,7 +287,7 @@ namespace IsoRealms::Hue {
     };
     
     // External interfaces.
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     std::string cDefBridgeAddress;
     std::string cDefBridgeUser;

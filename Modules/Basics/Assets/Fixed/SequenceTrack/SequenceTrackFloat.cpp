@@ -20,15 +20,15 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackFloat::SequenceTrackFloat(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence.getResourceData(), sequence),
+            SequenceTrackBase(sequence.getComponentData(), sequence),
             cMetadata(metadata),
-            cDefStartValue(sequence.getResourceData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
+            cDefStartValue(sequence.getComponentData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
 
   SequenceTrackFloat::SequenceTrackFloat(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getResourceData(), sequence, object),
+            SequenceTrackBase(sequence.getComponentData(), sequence, object),
             cMetadata(metadata),
-            cDefStartValue(sequence.getResourceData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
+            cDefStartValue(sequence.getComponentData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
     cDefStartValue.init(object, JSON_START);
   }
 

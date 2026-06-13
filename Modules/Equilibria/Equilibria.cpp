@@ -19,7 +19,7 @@
 #include "Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  Equilibria::Equilibria(Project& project, IResourceTypeRegistry& registry) :
+  Equilibria::Equilibria(Project& project, IComponentTypeRegistry& registry) :
                     cProject(project),
                     cModule(registry),
                     cToolDelete(),
@@ -32,20 +32,20 @@ namespace IsoRealms::Equilibria {
                     cWallPatterns(registry),
                     cZoneObjectTypeTraits(registry),
                     cZoneViewTypes(registry),
-                    cResourceAlien(*this),
-                    cResourceBoundaryHandler(*this),
-                    cResourceCollisionHandler(*this),
-                    cResourceLift(*this),
-                    cResourceModelCycler(*this),
-                    cResourcePickUp(*this),
-                    cResourcePlayer(*this),
-                    cResourceTerrain(*this),
-                    cResourceTerrainState(*this),
-                    cResourceThemeSet(*this),
-                    cResourceWorld(*this),
-                    cResourceWorldView(*this),
-                    cResourceZone(*this),
-                    cResourceZoneObject(*this),
+                    cComponentAlien(*this),
+                    cComponentBoundaryHandler(*this),
+                    cComponentCollisionHandler(*this),
+                    cComponentLift(*this),
+                    cComponentModelCycler(*this),
+                    cComponentPickUp(*this),
+                    cComponentPlayer(*this),
+                    cComponentTerrain(*this),
+                    cComponentTerrainState(*this),
+                    cComponentThemeSet(*this),
+                    cComponentWorld(*this),
+                    cComponentWorldView(*this),
+                    cComponentZone(*this),
+                    cComponentZoneObject(*this),
                     cRuntimePaused(false),
                     cBindingTypeTerrainState("TerrainState", "Equilibria/Terrain States"),
                     cRuntimeParameterPlayer(project.getLuaState(), nullptr, nullptr, true),
@@ -53,20 +53,20 @@ namespace IsoRealms::Equilibria {
                     cRuntimeParameterZone1( project.getLuaState(), nullptr, nullptr, true),
                     cRuntimeParameterZone2( project.getLuaState(), nullptr, nullptr, true),
                     cLuaBinding(project.getLuaState(), this) {
-    registry.add(&cResourceAlien,            "Alien");
-    registry.add(&cResourceBoundaryHandler,  "BoundaryHandler");
-    registry.add(&cResourceCollisionHandler, "CollisionHandler");
-    registry.add(&cResourceLift,             "Lift");
-    registry.add(&cResourceModelCycler,      "ModelCycler");
-    registry.add(&cResourcePickUp,           "PickUp");
-    registry.add(&cResourcePlayer,           "Player");
-    registry.add(&cResourceTerrain,          "Terrain");
-    registry.add(&cResourceTerrainState,     "TerrainState");
-    registry.add(&cResourceThemeSet,         "ThemeSet");
-    registry.add(&cResourceWorld,            "World");
-    registry.add(&cResourceWorldView,        "WorldView");
-    registry.add(&cResourceZone,             "Zone");
-    registry.add(&cResourceZoneObject,       "ZoneObject");
+    registry.add(&cComponentAlien,            "Alien");
+    registry.add(&cComponentBoundaryHandler,  "BoundaryHandler");
+    registry.add(&cComponentCollisionHandler, "CollisionHandler");
+    registry.add(&cComponentLift,             "Lift");
+    registry.add(&cComponentModelCycler,      "ModelCycler");
+    registry.add(&cComponentPickUp,           "PickUp");
+    registry.add(&cComponentPlayer,           "Player");
+    registry.add(&cComponentTerrain,          "Terrain");
+    registry.add(&cComponentTerrainState,     "TerrainState");
+    registry.add(&cComponentThemeSet,         "ThemeSet");
+    registry.add(&cComponentWorld,            "World");
+    registry.add(&cComponentWorldView,        "WorldView");
+    registry.add(&cComponentZone,             "Zone");
+    registry.add(&cComponentZoneObject,       "ZoneObject");
   }
   
   const Metadata& Equilibria::getMetadata(const std::string& key) const {
@@ -92,52 +92,52 @@ namespace IsoRealms::Equilibria {
   void Equilibria::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
-  std::string Equilibria::getResourceID() const {
+  std::string Equilibria::getComponentID() const {
     return ""; // TODO: Implement this.
   }
 
-  std::string Equilibria::getResourceName() const {
+  std::string Equilibria::getComponentName() const {
     return ""; // TODO: Implement this.
   }
 
   void Equilibria::removeAll(AlienType* type) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeAll(type);
     }
   }
   
   void Equilibria::removeAll(LiftType* type) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeAll(type);
     }
   }
   
   void Equilibria::removeAll(PickUpType* type) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeAll(type);
     }
   }
   
   void Equilibria::removeAll(PlayerType* type) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeAll(type);
     }
   }
   
   void Equilibria::removeAll(TerrainType* type) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeAll(type);
     }
   }
   
   void Equilibria::removeAll(ZoneType* type) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeAll(type);
     }
   }
   
   void Equilibria::removeAll(ZoneObjectType* type) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeAll(type);
     }
   }
@@ -153,50 +153,50 @@ namespace IsoRealms::Equilibria {
 
   std::vector<IBoundaryType*> Equilibria::getAllBoundaryTypeObjects() {
     std::vector<IBoundaryType*> mTypes;
-    for (PickUpType* mType : cResourcePickUp) {mTypes.push_back(mType);}
-    for (ZoneType*   mType : cResourceZone)   {mTypes.push_back(mType);}
+    for (PickUpType* mType : cComponentPickUp) {mTypes.push_back(mType);}
+    for (ZoneType*   mType : cComponentZone)   {mTypes.push_back(mType);}
     return mTypes;
   }
 
   std::vector<IPhysicalObjectType*> Equilibria::getAllPhysicalObjectTypeObjects() {
     std::vector<IPhysicalObjectType*> mTypes;
-    for (AlienType*  mType : cResourceAlien)  {mTypes.push_back(mType);}
-    for (PlayerType* mType : cResourcePlayer) {mTypes.push_back(mType);}
+    for (AlienType*  mType : cComponentAlien)  {mTypes.push_back(mType);}
+    for (PlayerType* mType : cComponentPlayer) {mTypes.push_back(mType);}
     return mTypes;
   }  
 
   void Equilibria::physicalObjectTypeChanged(CollisionHandler* handler, const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->physicalObjectTypeChanged(handler, oldPhysicalObjectType, newPhysicalObjectType);
     }
   }
 
   void Equilibria::added(BoundaryHandler* handler) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->addBoundaryHandler(handler->createInstance(mWorld));
     }
   }
 
   void Equilibria::added(CollisionHandler* handler) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->addCollisionHandler(handler->createInstance(mWorld));
     }
   }
 
   void Equilibria::added(IBoundaryType* boundaryType) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->added(boundaryType);
     }
   }
 
   void Equilibria::added(IPhysicalObjectType* physicalObjectType) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->added(physicalObjectType);
     }
   }
 
   void Equilibria::added(Zone* zone) {
-    for (WorldView* mWorldView : cResourceWorldView) {
+    for (WorldView* mWorldView : cComponentWorldView) {
       if (mWorldView->getWorld() == &zone->getWorld()) {
         zone->registerView(*mWorldView);
         mWorldView->addZoneView(zone);
@@ -205,32 +205,32 @@ namespace IsoRealms::Equilibria {
   }
 
   void Equilibria::removed(BoundaryHandler* handler) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeBoundaryHandler(handler);
     }
   }
 
   void Equilibria::removed(CollisionHandler* handler) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removeCollisionHandler(handler);
     }
   }
 
   void Equilibria::removed(IBoundaryType* boundaryType) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removed(boundaryType);
     }
   }
   
   void Equilibria::removed(IPhysicalObjectType* physicalObjectType) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->removed(physicalObjectType);
     }
   }
   
   void Equilibria::removed(Zone* zone) {
     zone->removed();
-    for (WorldView* mWorldView : cResourceWorldView) {
+    for (WorldView* mWorldView : cComponentWorldView) {
       if (mWorldView->getWorld() == &zone->getWorld()) {
         mWorldView->removeZoneView(zone);
       }
@@ -239,14 +239,14 @@ namespace IsoRealms::Equilibria {
 
   std::vector<ConditionElement*> Equilibria::getTerrainStateConditionElements() {
     std::vector<ConditionElement*> mConditionElements;
-    for (TerrainState* mTerrainState : cResourceTerrainState) {
+    for (TerrainState* mTerrainState : cComponentTerrainState) {
       mConditionElements.push_back(&mTerrainState->getConditionElement());
     }
     return mConditionElements;
   }
 
   TerrainState* Equilibria::getTerrainState(IBoolean* input) {
-    for (TerrainState* mTerrainState : cResourceTerrainState) {
+    for (TerrainState* mTerrainState : cComponentTerrainState) {
       if (mTerrainState == input) {
         return mTerrainState;
       }
@@ -255,25 +255,25 @@ namespace IsoRealms::Equilibria {
   }
 
   void Equilibria::setAllThemesInUse(bool inUse) {
-    for (ThemeSet* mThemeSet : cResourceThemeSet) {
+    for (ThemeSet* mThemeSet : cComponentThemeSet) {
       mThemeSet->hintInUse(inUse);
     }
   }
 
   void Equilibria::setNextTheme() {
-    for (ThemeSet* mThemeSet : cResourceThemeSet) {
+    for (ThemeSet* mThemeSet : cComponentThemeSet) {
       mThemeSet->setNextTheme();
     }
   }
 
   void Equilibria::setPreviousTheme() {
-    for (ThemeSet* mThemeSet : cResourceThemeSet) {
+    for (ThemeSet* mThemeSet : cComponentThemeSet) {
       mThemeSet->setPreviousTheme();
     }
   }
 
   void Equilibria::applyDefaultThemes() {
-    for (ThemeSet* mThemeSet : cResourceThemeSet) {
+    for (ThemeSet* mThemeSet : cComponentThemeSet) {
       mThemeSet->applyDefaultTheme();
     }
   }
@@ -291,35 +291,35 @@ namespace IsoRealms::Equilibria {
     return cRuntimePaused;
   }
 
-  void Equilibria::registerAssets(ResourceAssetRegistry& assets) {
+  void Equilibria::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBindingType>(&cBindingTypeTerrainState, "Terrain State", "Terrain States");
 
     // Bind the module.
     assets.add<IBinding>(&cLuaBinding, "", "Modules/Equilibria");
     
-    for (AlienType* mResource : cResourceAlien) {
-      mResource->registerAssets("Alien/" + getResourceID(mResource));
+    for (AlienType* mComponent : cComponentAlien) {
+      mComponent->registerAssets("Alien/" + getComponentID(mComponent));
     }
-    for (LiftType* mResource : cResourceLift) {
-      mResource->registerAssets("Lift/" + getResourceID(mResource));
+    for (LiftType* mComponent : cComponentLift) {
+      mComponent->registerAssets("Lift/" + getComponentID(mComponent));
     }
-    for (PickUpType* mResource : cResourcePickUp) {
-      mResource->registerAssets("PickUp/" + getResourceID(mResource));
+    for (PickUpType* mComponent : cComponentPickUp) {
+      mComponent->registerAssets("PickUp/" + getComponentID(mComponent));
     }
-    for (PlayerType* mResource : cResourcePlayer) {
-      mResource->registerAssets("Player/" + getResourceID(mResource));
+    for (PlayerType* mComponent : cComponentPlayer) {
+      mComponent->registerAssets("Player/" + getComponentID(mComponent));
     }
-    for (TerrainType* mResource : cResourceTerrain) {
-      mResource->registerAssets("Terrain/" + getResourceID(mResource));
+    for (TerrainType* mComponent : cComponentTerrain) {
+      mComponent->registerAssets("Terrain/" + getComponentID(mComponent));
     }
-    for (WorldView* mResource : cResourceWorldView) {
-      mResource->registerAssets("WorldView/" + getResourceID(mResource));
+    for (WorldView* mComponent : cComponentWorldView) {
+      mComponent->registerAssets("WorldView/" + getComponentID(mComponent));
     }
-    for (ZoneType* mResource : cResourceZone) {
-      mResource->registerAssets("Zone/" + getResourceID(mResource));
+    for (ZoneType* mComponent : cComponentZone) {
+      mComponent->registerAssets("Zone/" + getComponentID(mComponent));
     }
-    for (ZoneObjectType* mResource : cResourceZoneObject) {
-      mResource->registerAssets("ZoneObject/" + getResourceID(mResource));
+    for (ZoneObjectType* mComponent : cComponentZoneObject) {
+      mComponent->registerAssets("ZoneObject/" + getComponentID(mComponent));
     }
     add<IWorldEditorTool>(&cToolDelete,     TOOL_DELETE,      TOOL_DELETE);
     add<IWorldEditorTool>(&cToolProperties, TOOL_PROPERTIES,  TOOL_PROPERTIES);
@@ -333,23 +333,23 @@ namespace IsoRealms::Equilibria {
   }
   
   void Equilibria::updateRuntime(unsigned int milliseconds) {
-    updateRuntime2(cResourceWorld,     milliseconds);
-    updateRuntime2(cResourceWorldView, milliseconds);
+    updateRuntime2(cComponentWorld,     milliseconds);
+    updateRuntime2(cComponentWorldView, milliseconds);
   }
   
   void Equilibria::updateEditing(unsigned int milliseconds) {
-    updateEditing2(cResourceModelCycler, milliseconds);
-    updateEditing2(cResourceThemeSet,    milliseconds);
-    updateEditing2(cResourceWorld,       milliseconds);
+    updateEditing2(cComponentModelCycler, milliseconds);
+    updateEditing2(cComponentThemeSet,    milliseconds);
+    updateEditing2(cComponentWorld,       milliseconds);
   }
   
   void Equilibria::reset() {
-    reset2(cResourceAlien);
-    reset2(cResourceModelCycler);
-    reset2(cResourcePlayer);
-    reset2(cResourceTerrainState);
-    reset2(cResourceWorld);
-    reset2(cResourceWorldView);
+    reset2(cComponentAlien);
+    reset2(cComponentModelCycler);
+    reset2(cComponentPlayer);
+    reset2(cComponentTerrainState);
+    reset2(cComponentWorld);
+    reset2(cComponentWorldView);
   }  
   
   void Equilibria::remove(IWorldEditorTool* asset) {
@@ -512,7 +512,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void Equilibria::stateChanged(ITexture* asset) {
-    for (World* mWorld : cResourceWorld) {
+    for (World* mWorld : cComponentWorld) {
       mWorld->updateDisplayLists();
     }
   }
@@ -569,9 +569,9 @@ namespace IsoRealms::Equilibria {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IComponentTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IComponentTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Equilibria::Equilibria> mModule = std::make_unique<IsoRealms::Equilibria::Equilibria>(*project, *registry);
   {

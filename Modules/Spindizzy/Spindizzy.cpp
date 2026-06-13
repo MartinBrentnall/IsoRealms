@@ -19,24 +19,24 @@
 #include "Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  Spindizzy::Spindizzy(Project& project, IResourceTypeRegistry& registry) :
-                    cResourceBall(*this),
-                    cResourceC64LiftGraphics(*this),
-                    cResourceC64TerrainGraphics(*this),
-                    cResourceDebrisChunk(*this),
-                    cResourceGyroscope(*this),
-                    cResourceJewel(*this),
-                    cResourceTop(*this) {
-    registry.add(&cResourceBall,               "Ball");
-    registry.add(&cResourceC64LiftGraphics,    "C64LiftGraphics");
-    registry.add(&cResourceC64TerrainGraphics, "C64TerrainGraphics");
-    registry.add(&cResourceDebrisChunk,        "DebrisChunk");
-    registry.add(&cResourceGyroscope,          "Gyroscope");
-    registry.add(&cResourceJewel,              "Jewel");
-    registry.add(&cResourceTop,                "Top");
+  Spindizzy::Spindizzy(Project& project, IComponentTypeRegistry& registry) :
+                    cComponentBall(*this),
+                    cComponentC64LiftGraphics(*this),
+                    cComponentC64TerrainGraphics(*this),
+                    cComponentDebrisChunk(*this),
+                    cComponentGyroscope(*this),
+                    cComponentJewel(*this),
+                    cComponentTop(*this) {
+    registry.add(&cComponentBall,               "Ball");
+    registry.add(&cComponentC64LiftGraphics,    "C64LiftGraphics");
+    registry.add(&cComponentC64TerrainGraphics, "C64TerrainGraphics");
+    registry.add(&cComponentDebrisChunk,        "DebrisChunk");
+    registry.add(&cComponentGyroscope,          "Gyroscope");
+    registry.add(&cComponentJewel,              "Jewel");
+    registry.add(&cComponentTop,                "Top");
   }
   
-  void Spindizzy::registerAssets(ResourceAssetRegistry& assets) {
+  void Spindizzy::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
 
@@ -49,10 +49,10 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Spindizzy::updateEditing(unsigned int milliseconds) {
-    updateEditing2(cResourceDebrisChunk, milliseconds);
-    updateEditing2(cResourceGyroscope,   milliseconds);
-    updateEditing2(cResourceJewel,       milliseconds);
-    updateEditing2(cResourceTop,         milliseconds);
+    updateEditing2(cComponentDebrisChunk, milliseconds);
+    updateEditing2(cComponentGyroscope,   milliseconds);
+    updateEditing2(cComponentJewel,       milliseconds);
+    updateEditing2(cComponentTop,         milliseconds);
   }
   
   void Spindizzy::reset() {
@@ -64,9 +64,9 @@ namespace IsoRealms::Spindizzy {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IComponentTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IComponentTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Spindizzy::Spindizzy> mModule = std::make_unique<IsoRealms::Spindizzy::Spindizzy>(*project, *registry);
   {

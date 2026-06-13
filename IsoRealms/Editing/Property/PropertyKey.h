@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class PropertyKey : public Property {
     public:
-    PropertyKey(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyKey(const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction = nullptr);
       
     /************************\
      * Implements IProperty *

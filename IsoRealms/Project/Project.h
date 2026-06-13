@@ -24,11 +24,11 @@
 #include <set>
 #include <string>
 
-#include "IsoRealms/Assets/Client/ResourceOwner.h"
+#include "IsoRealms/Assets/Client/ComponentOwner.h"
 #include "IsoRealms/Assets/IEventBindings.h"
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Editing.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Lua/LuaBinding.h"
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
@@ -68,7 +68,7 @@ namespace IsoRealms {
    * Project acts as a container for the assets of the application, and
    * provides control over execution of the application.
    */
-  class Project : public IResourceData,
+  class Project : public IComponentData,
                   public IActionContext {
     public:
     
@@ -125,7 +125,7 @@ namespace IsoRealms {
     
     // Functions used by module client assets.
     bool isLoading() const;
-    bool areResourcesLoaded() const;
+    bool areComponentsLoaded() const;
     void execute(IAction& action);
 
     IEventBindings* getEventBindings() const;
@@ -191,12 +191,12 @@ namespace IsoRealms {
       AssetContainerTraits<TYPE>::get(*this).addStateChangeListener(asset, listener);
     }  
   
-    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value);
-    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IResourceData& owner, float red, float green, float blue, float alpha);
-    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IResourceData& owner, float value);
-    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, int value);
-    IString*  createLiteralString( IAssetUser<IString>*  user, IResourceData& owner, const std::string& value);
-    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IResourceData& owner, float x, float y, float z);
+    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IComponentData& owner, bool value);
+    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IComponentData& owner, float red, float green, float blue, float alpha);
+    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IComponentData& owner, float value);
+    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IComponentData& owner, int value);
+    IString*  createLiteralString( IAssetUser<IString>*  user, IComponentData& owner, const std::string& value);
+    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IComponentData& owner, float x, float y, float z);
 
     /***********************\
      * Scripting interface *
@@ -205,11 +205,11 @@ namespace IsoRealms {
     std::string getUserDataPath();
     std::string getDataPath(bool user);
 
-    /****************************\
-     * Implements IResourceData * TODO: Should these be here???
-    \****************************/
-    std::string getResourceID() const override;
-    std::string getResourceName() const override;
+    /*****************************\
+     * Implements IComponentData * TODO: Should these be here???
+    \*****************************/
+    std::string getComponentID() const override;
+    std::string getComponentName() const override;
     std::string getPath(const std::string& file, bool user) const override;
     void makeUserDataDirectory() override;
     bool isIncluded() const override;
@@ -225,7 +225,7 @@ namespace IsoRealms {
     /*****************************\
      * Implements IActionContext * TODO: Should these be here???
     \*****************************/
-    IResourceData& getResourceData() override;
+    IComponentData& getComponentData() override;
     IEventBindings* getBindingRegistry() override;
     
     template <typename TYPE> friend struct AssetContainerTraits;
@@ -290,9 +290,9 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<Module>>                     cDefModules;
     ProjectFile                                              cDefProjectFileStructure;
     std::vector<std::unique_ptr<ProjectLaunchConfiguration>> cDefTestLaunchConfigurations;
-    OwnedAsset<IResourceData, InputHandler>                  cDefInputHandler;
-    OwnedAsset<IResourceData, Screen>                        cDefScreen;
-    OwnedAsset<IResourceData, Editable>                      cDefDefaultEditor;
+    OwnedAsset<IComponentData, InputHandler>                  cDefInputHandler;
+    OwnedAsset<IComponentData, Screen>                        cDefScreen;
+    OwnedAsset<IComponentData, Editable>                      cDefDefaultEditor;
     OwnedAsset<IActionContext, Action>                       cDefActionOnStart;
     OwnedAsset<IActionContext, Action>                       cDefActionOnCloseRequest;
     LuaState cLuaState;                       /// Lua State for this project.
@@ -307,7 +307,7 @@ namespace IsoRealms {
     std::queue<std::function<void()>> cUpdateTasks;          /// Postponed update functions.  Called after other update functions.
 
     // Runtime state of the Project.
-    bool cResourcesLoaded;                   /// Indicates that resource loading from modules has completed.
+    bool cComponentsLoaded;                   /// Indicates that resource loading from modules has completed.
     bool cLoading;                           /// Indicates that loading is in progress.
     bool cProcessingInput;                   /// Flag is set when processing input to indicate that actions should be postponed.
     std::vector<IAction*> cPostponedActions; /// List of postponed actions to be executed at next update cycle.
@@ -318,7 +318,7 @@ namespace IsoRealms {
     QuitAction cQuitAction;
 
     // Private functions.
-    std::vector<std::unique_ptr<JSONDocument>> loadResources(ProjectFile& file);
+    std::vector<std::unique_ptr<JSONDocument>> loadComponents(ProjectFile& file);
     Module* getModule(const std::string& name);
     void updateTasks();
     void saveRecursive(const ProjectFile& file) const;

@@ -29,7 +29,7 @@ namespace IsoRealms {
 
   class PropertyNativeBoolean : public Property {
     public:
-    PropertyNativeBoolean(IPropertyMaker& owner, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction = nullptr);
+    PropertyNativeBoolean(IPropertyMaker& owner, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *

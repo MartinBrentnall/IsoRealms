@@ -19,12 +19,12 @@
 #include "Colour.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Colour::Colour(IResourceData& owner, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
-            Asset<Colour, IColour, IResourceData>(owner, owner.getAssetManager().createLiteralColour(this, owner, defaultRed, defaultGreen, defaultBlue, defaultAlpha)),
+  Colour::Colour(IComponentData& owner, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha, std::function<void()> listener) :
+            Asset<Colour, IColour, IComponentData>(owner, owner.getAssetManager().createLiteralColour(this, owner, defaultRed, defaultGreen, defaultBlue, defaultAlpha)),
             cDefaultRed(defaultRed),
             cDefaultGreen(defaultGreen),
             cDefaultBlue(defaultBlue),
@@ -32,7 +32,7 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  IColour* Colour::createDefaultAsset(IResourceData& owner) {
+  IColour* Colour::createDefaultAsset(IComponentData& owner) {
     return owner.getAssetManager().createLiteralColour(this, owner, cDefaultRed, cDefaultGreen, cDefaultBlue, cDefaultAlpha);
   }
   

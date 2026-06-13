@@ -19,12 +19,12 @@
 #include "Tables.h"
 
 namespace IsoRealms::Tables {
-  Tables::Tables(Project& project, IResourceTypeRegistry& registry):
-                    cResourceTypeTable(*this) {
-    registry.add(&cResourceTypeTable, "Table");
+  Tables::Tables(Project& project, IComponentTypeRegistry& registry):
+                    cComponentTypeTable(*this) {
+    registry.add(&cComponentTypeTable, "Table");
   }
 
-  void Tables::registerAssets(ResourceAssetRegistry& assets) {
+  void Tables::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
   
@@ -49,9 +49,9 @@ namespace IsoRealms::Tables {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IComponentTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IComponentTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Tables::Tables> mModule = std::make_unique<IsoRealms::Tables::Tables>(*project, *registry);
   {

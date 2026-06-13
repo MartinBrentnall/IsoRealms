@@ -19,7 +19,7 @@
 #include "SimpleColour.h"
 
 namespace IsoRealms::Basics {
-  SimpleColour::SimpleColour(Basics& basics, IResourceData& data) :
+  SimpleColour::SimpleColour(Basics& basics, IComponentData& data) :
             cDefRed(0.0f),
             cDefGreen(0.0f),
             cDefBlue(0.0f),
@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
   
-  void SimpleColour::registerAssets(ResourceAssetRegistry& assets) {
+  void SimpleColour::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IColour>(this, "", "Fixed Colours");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Colours"); // TODO: Localize this.
   }

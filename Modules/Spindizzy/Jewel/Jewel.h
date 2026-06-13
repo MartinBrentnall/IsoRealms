@@ -31,11 +31,11 @@ namespace IsoRealms::Spindizzy {
   class Jewel final : public IModel {
     public:
       
-    /**********************\
-     * Resource interface *
-    \**********************/
-    Jewel(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component interface *
+    \***********************/
+    Jewel(Spindizzy& spindizzy, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -59,8 +59,8 @@ namespace IsoRealms::Spindizzy {
     private:
     class CycleColour {
       public:
-      CycleColour(Jewel& parent, IResourceData& owner);
-      CycleColour(Jewel& parent, IResourceData& owner, JSONObject object);
+      CycleColour(Jewel& parent, IComponentData& owner);
+      CycleColour(Jewel& parent, IComponentData& owner, JSONObject object);
 
       void save(JSONObject object) const;
       const Colour* getColour() const;

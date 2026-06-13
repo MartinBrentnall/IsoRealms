@@ -23,15 +23,15 @@
 #include "IsoRealms/PropertyLoader.h"
 
 namespace IsoRealms::Equilibria {
-  ModelCycler::ModelCycler(Equilibria& equilibria, IResourceData& data) :
+  ModelCycler::ModelCycler(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cResourceData(data),
+            cComponentData(data),
             cRuntimeCycleIndex(0),
             cLuaBinding(data.getProject().getLuaState(), this),
             cEditingIconCycle(0) {
   }
   
-  void ModelCycler::registerAssets(ResourceAssetRegistry& assets) {
+  void ModelCycler::registerAssets(ComponentAssetRegistry& assets) {
     for (unsigned int i = 0; i < cOffsetModels.size(); i++) {
       assets.add<IModel>(cOffsetModels[i].get(), std::to_string(i), "Cycleable Models");
     }
@@ -55,7 +55,7 @@ namespace IsoRealms::Equilibria {
         refreshAssetRegistration();
       });
     }, [this]() -> Model& {
-      Model& mModel = *cDefModels.emplace_back(std::make_unique<Model>(cResourceData));
+      Model& mModel = *cDefModels.emplace_back(std::make_unique<Model>(cComponentData));
       rebuildOffsetModels();
       return mModel;
     });
@@ -69,7 +69,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void ModelCycler::refreshAssetRegistration() {
-    ResourceContainerTraits<ModelCycler>::get(cEquilibria).refreshAssetRegistration(*this);
+    ComponentContainerTraits<ModelCycler>::get(cEquilibria).refreshAssetRegistration(*this);
   }
 
   void ModelCycler::removed() {

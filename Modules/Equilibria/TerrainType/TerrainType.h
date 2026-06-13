@@ -38,11 +38,11 @@ namespace IsoRealms::Equilibria {
   class TerrainType : public IWorldEditorTool {
     public:
     
-    /**********************\
-     * Resource interface *
-    \**********************/
-    TerrainType(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component interface *
+    \***********************/
+    TerrainType(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -73,7 +73,7 @@ namespace IsoRealms::Equilibria {
     Project& getProject();
     Equilibria& getEquilibria() const;
     Equilibria& getAssetManager();
-    IResourceData& getResourceData();
+    IComponentData& getComponentData();
     void executeContactScript();
     void executeImpactScript();
     float getSurfaceFriction() const;
@@ -89,7 +89,7 @@ namespace IsoRealms::Equilibria {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;
@@ -135,7 +135,7 @@ namespace IsoRealms::Equilibria {
 
     // External interfaces.
     Equilibria& cEquilibria;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Asset registry.
     EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.

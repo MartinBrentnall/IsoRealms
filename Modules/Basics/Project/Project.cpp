@@ -19,7 +19,7 @@
 #include "Project.h"
 
 namespace IsoRealms::Basics {
-  Project::Project(Basics& basics, IResourceData& data) :
+  Project::Project(Basics& basics, IComponentData& data) :
             cProject(data.getProject()),
             cDefReadyAction(data.getDummyActionContext()),
             cDefEndAction(data.getDummyActionContext()),
@@ -41,7 +41,7 @@ namespace IsoRealms::Basics {
     cRuntimeProject = cRuntimeProjectLoader->getLoadedProject();
   }
   
-  void Project::registerAssets(ResourceAssetRegistry& assets) {
+  void Project::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Projects");
     assets.add<IInputHandler>(this, "", "Projects");
     assets.add<IBinding>(&cLuaBinding, "", "Projects");

@@ -26,7 +26,7 @@ namespace IsoRealms::Equilibria {
   class ThemeTexture : public ITexture {
     public:
     ThemeTexture(ThemeSet& parent);
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& id);
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& id);
       
     void set(ITexture* texture);
 

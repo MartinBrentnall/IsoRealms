@@ -28,7 +28,7 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a digital input.  Each digital input may be bound
+   * Component definition for a digital input.  Each digital input may be bound
    * to multiple physical inputs.  The digital input is implemented as an Input
    * Handler and its state is exposed as a Boolean and via a state notifier.
    *
@@ -44,19 +44,19 @@ namespace IsoRealms::Basics {
                                public IInputHandler {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    DigitalControl(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    DigitalControl(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
-    DigitalControl(IResourceData& owner);
-    DigitalControl(IResourceData& owner, JSONObject object);
+    DigitalControl(IComponentData& owner);
+    DigitalControl(IComponentData& owner, JSONObject object);
 
     /*********************\
      * Module interfaces *
@@ -168,7 +168,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     Project& cProject;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
     std::vector<std::unique_ptr<InputMapping>> cDefMapping; /// Default input mapping.

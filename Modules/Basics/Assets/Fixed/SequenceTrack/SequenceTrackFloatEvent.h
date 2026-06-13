@@ -29,8 +29,8 @@ namespace IsoRealms::Basics {
 
   class SequenceTrackFloatEvent : public ISequenceTrackEvent {
     public:
-    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, unsigned int time, bool fade = true);
-    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IResourceData& owner, JSONObject object);
+    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IComponentData& owner, unsigned int time, bool fade = true);
+    SequenceTrackFloatEvent(SequenceTrackFloat& parent, IComponentData& owner, JSONObject object);
 
     void save(JSONObject object) const;
     IFloat* getValue() const;

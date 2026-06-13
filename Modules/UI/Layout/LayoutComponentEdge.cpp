@@ -36,15 +36,15 @@ namespace IsoRealms::UI {
   }
 
   Project& LayoutComponentEdge::getProject() const {
-    return cDefParent.getLayout().getResourceData().getProject();
+    return cDefParent.getLayout().getComponentData().getProject();
   }
 
   bool LayoutComponentEdge::isReadOnly() const {
-    return cDefParent.getLayout().getResourceData().isReadOnly();
+    return cDefParent.getLayout().getComponentData().isReadOnly();
   }
 
   void LayoutComponentEdge::setOwner(ProjectFile* owner) {
-    cDefParent.getLayout().getResourceData().setOwner(owner);
+    cDefParent.getLayout().getComponentData().setOwner(owner);
   }
 
   LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag) :

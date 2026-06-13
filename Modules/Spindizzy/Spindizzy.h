@@ -30,7 +30,7 @@
 
 namespace IsoRealms::Spindizzy {
   template <typename TYPE> struct AssetContainerTraits;
-  template <typename TYPE> struct ResourceContainerTraits;
+  template <typename TYPE> struct ComponentContainerTraits;
 
   class Spindizzy : public IModuleHandle {
     public:
@@ -40,12 +40,12 @@ namespace IsoRealms::Spindizzy {
     inline static const double DEFAULT_VIEW_ANGLE_YAW   = -45.0;
     
     // Module constructor.
-    Spindizzy(Project& project, IResourceTypeRegistry& registry);
+    Spindizzy(Project& project, IComponentTypeRegistry& registry);
 
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ResourceAssetRegistry& assets) override;
+    void registerAssets(ComponentAssetRegistry& assets) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
@@ -53,25 +53,25 @@ namespace IsoRealms::Spindizzy {
 
     private:
 
-    // Resource type definitions.
-    ResourceTypeDefinition<Spindizzy, Ball>               cResourceBall;
-    ResourceTypeDefinition<Spindizzy, C64LiftGraphics>    cResourceC64LiftGraphics;
-    ResourceTypeDefinition<Spindizzy, C64TerrainGraphics> cResourceC64TerrainGraphics;
-    ResourceTypeDefinition<Spindizzy, DebrisChunk>        cResourceDebrisChunk;
-    ResourceTypeDefinition<Spindizzy, Gyroscope>          cResourceGyroscope;
-    ResourceTypeDefinition<Spindizzy, Jewel>              cResourceJewel;
-    ResourceTypeDefinition<Spindizzy, Top>                cResourceTop;
+    // Component type definitions.
+    ComponentTypeDefinition<Spindizzy, Ball>               cComponentBall;
+    ComponentTypeDefinition<Spindizzy, C64LiftGraphics>    cComponentC64LiftGraphics;
+    ComponentTypeDefinition<Spindizzy, C64TerrainGraphics> cComponentC64TerrainGraphics;
+    ComponentTypeDefinition<Spindizzy, DebrisChunk>        cComponentDebrisChunk;
+    ComponentTypeDefinition<Spindizzy, Gyroscope>          cComponentGyroscope;
+    ComponentTypeDefinition<Spindizzy, Jewel>              cComponentJewel;
+    ComponentTypeDefinition<Spindizzy, Top>                cComponentTop;
 
     // Scripting support.
     template <class TYPE> friend struct AssetContainerTraits;
-    template <class TYPE> friend struct ResourceContainerTraits;
+    template <class TYPE> friend struct ComponentContainerTraits;
   };
 
-  template<> struct ResourceContainerTraits<Ball>               {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceBall;              }};
-  template<> struct ResourceContainerTraits<C64LiftGraphics>    {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceC64LiftGraphics;   }};
-  template<> struct ResourceContainerTraits<C64TerrainGraphics> {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceC64TerrainGraphics;}};
-  template<> struct ResourceContainerTraits<DebrisChunk>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceDebrisChunk;       }};
-  template<> struct ResourceContainerTraits<Gyroscope>          {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceGyroscope;         }};
-  template<> struct ResourceContainerTraits<Jewel>              {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceJewel;             }};
-  template<> struct ResourceContainerTraits<Top>                {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cResourceTop;               }};
+  template<> struct ComponentContainerTraits<Ball>               {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cComponentBall;              }};
+  template<> struct ComponentContainerTraits<C64LiftGraphics>    {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cComponentC64LiftGraphics;   }};
+  template<> struct ComponentContainerTraits<C64TerrainGraphics> {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cComponentC64TerrainGraphics;}};
+  template<> struct ComponentContainerTraits<DebrisChunk>        {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cComponentDebrisChunk;       }};
+  template<> struct ComponentContainerTraits<Gyroscope>          {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cComponentGyroscope;         }};
+  template<> struct ComponentContainerTraits<Jewel>              {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cComponentJewel;             }};
+  template<> struct ComponentContainerTraits<Top>                {template <typename SPINDIZZY> static auto& get(SPINDIZZY& spindizzy) {return spindizzy.cComponentTop;               }};
 }

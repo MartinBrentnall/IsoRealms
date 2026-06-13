@@ -21,7 +21,7 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  Jewel::Jewel(Spindizzy& spindizzy, IResourceData& data) :
+  Jewel::Jewel(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
             cDefColourFrame(data, 1.0f, 1.0f, 0.0f),
             cDefCycleSpeed(DEFAULT_CYCLE_SPEED) {
@@ -37,7 +37,7 @@ namespace IsoRealms::Spindizzy {
         }
       });
     }, [this, &owner]() -> CycleColour& {
-      IResourceData& mData = owner.getResourceData();
+      IComponentData& mData = owner.getComponentData();
       CycleColour& mCycleColour = *cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, mData));
       randomizeInstances();
       return mCycleColour;
@@ -48,7 +48,7 @@ namespace IsoRealms::Spindizzy {
     // If we are loading persisted values, we need to create a default cycle colour if none exists.
     if (owner.loadsPersistedValues()) {
       if (cDefColoursCycle.size() == 0) {
-        cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, owner.getResourceData()));
+        cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, owner.getComponentData()));
       }
     }
   }
@@ -105,16 +105,16 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
-  void Jewel::registerAssets(ResourceAssetRegistry& assets) {
+  void Jewel::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Spindizzy Jewel Models");
   }
   
-  Jewel::CycleColour::CycleColour(Jewel& parent, IResourceData& data) :
+  Jewel::CycleColour::CycleColour(Jewel& parent, IComponentData& data) :
             cParent(parent),
             cDefColour(data, 1.0f, 0.0f, 1.0f) {
   }
 
-  Jewel::CycleColour::CycleColour(Jewel& parent, IResourceData& data, JSONObject object) :
+  Jewel::CycleColour::CycleColour(Jewel& parent, IComponentData& data, JSONObject object) :
             CycleColour(parent, data) {
     cDefColour.init(object, JSON_COLOUR);
   }

@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/BoundaryHandler/BoundaryHandlerInstance.h"
 
 namespace IsoRealms::Equilibria {
-  BoundaryHandler::BoundaryHandler(Equilibria& equilibria, IResourceData& data) :
+  BoundaryHandler::BoundaryHandler(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cActionContext(data, *this),
             cDefBoundaryType(equilibria),
@@ -31,7 +31,7 @@ namespace IsoRealms::Equilibria {
             cDefExitedAction(cActionContext) {
   }
 
-  void BoundaryHandler::registerAssets(ResourceAssetRegistry& assets) {
+  void BoundaryHandler::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
 

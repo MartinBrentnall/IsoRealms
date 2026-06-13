@@ -29,17 +29,17 @@ namespace IsoRealms::UI {
   class UI;
   
   /**
-   * Resource for an interactive prompt with two choices.
+   * Component for an interactive prompt with two choices.
    */
   class Prompt final : public IInputHandler,
                        public IScreen {
     public:
     
-    /**********************\
-     * Resource Interface *
-    \**********************/    
-    Prompt(UI& ui, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/    
+    Prompt(UI& ui, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

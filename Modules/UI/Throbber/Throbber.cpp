@@ -19,7 +19,7 @@
 #include "Throbber.h"
 
 namespace IsoRealms::UI {
-  Throbber::Throbber(UI& ui, IResourceData& data) :
+  Throbber::Throbber(UI& ui, IComponentData& data) :
             cDefDuration(DEFAULT_DURATION),
             cDefRepetitions(DEFAULT_REPETITIONS),
             cDefSpots(DEFAULT_SPOTS),
@@ -31,7 +31,7 @@ namespace IsoRealms::UI {
     cRuntimeAnimation = 0U;
   }
 
-  void Throbber::registerAssets(ResourceAssetRegistry& assets) {
+  void Throbber::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Throbbers");
   }
 

@@ -74,7 +74,7 @@ namespace IsoRealms {
     }
     
     void init(JSONThing thing) {
-      if (cManager.getProject().isLoading() && !cManager.getProject().areResourcesLoaded()) {
+      if (cManager.getProject().isLoading() && !cManager.getProject().areComponentsLoaded()) {
         cManager.getProject().init([this, thing]() {
           set(thing);
         });
@@ -97,7 +97,7 @@ namespace IsoRealms {
     }
 
     void init(JSONObject object, const std::string& member) {
-      if (cManager.getProject().isLoading() && !cManager.getProject().areResourcesLoaded()) {
+      if (cManager.getProject().isLoading() && !cManager.getProject().areComponentsLoaded()) {
         cManager.getProject().init([this, object, member]() {
           set(object, member);
         });
@@ -107,7 +107,7 @@ namespace IsoRealms {
     }
 
     void init(JSONObject object) {
-      if (cManager.getProject().isLoading() && !cManager.getProject().areResourcesLoaded()) {
+      if (cManager.getProject().isLoading() && !cManager.getProject().areComponentsLoaded()) {
         cManager.getProject().init([this, object]() {
           set(object);
         });

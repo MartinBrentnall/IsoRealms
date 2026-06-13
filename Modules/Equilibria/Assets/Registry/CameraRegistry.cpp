@@ -21,7 +21,7 @@
  #include "CameraRegistry.h"
 
 namespace IsoRealms::Equilibria {
-  CameraRegistry::CameraRegistry(IResourceTypeRegistry& registry) :
+  CameraRegistry::CameraRegistry(IComponentTypeRegistry& registry) :
             cGameplay(registry.getAssetMetadata("CameraGameplay")),
             cLinked(registry.getAssetMetadata("CameraLinked")),
             cOverview(registry.getAssetMetadata("CameraOverview")),

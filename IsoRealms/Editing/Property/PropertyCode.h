@@ -36,7 +36,7 @@ namespace IsoRealms {
 
   class PropertyCode : public Property {
     public:
-    PropertyCode(Project& project, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyCode(Project& project, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *

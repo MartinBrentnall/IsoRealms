@@ -22,64 +22,64 @@ namespace IsoRealms::Basics {
   float Basics::cSoundVolume = 1.0f;
   float Basics::cMusicVolume = 1.0f;
 
-  Basics::Basics(IsoRealms::Project& project, IResourceTypeRegistry& registry):
+  Basics::Basics(IsoRealms::Project& project, IComponentTypeRegistry& registry):
                     cProject(project),
                     cModule(registry),
                     cActionScript(*this),
                     cSequenceTracks(registry),
-                    cResourceTypeAnalogueControl(*this),
-                    cResourceTypeBooleanTrigger(*this),
-                    cResourceTypeDigitalControl(*this),
-                    cResourceTypeFileFont(*this),
-                    cResourceTypeFileSound(*this),
-                    cResourceTypeFileTexture(*this),
-                    cResourceTypeFunction(*this),
-                    cResourceTypeInputGroup(*this),
-                    cResourceTypeInputSwitch(*this),
-                    cResourceTypeInterruptHandler(*this),
-                    cResourceTypeProject(*this),
-                    cResourceTypeProjectConfigurer(*this),
-                    cResourceTypeSequence(*this),
-                    cResourceTypeSimpleBoolean(*this),
-                    cResourceTypeSimpleColour(*this),
-                    cResourceTypeSimpleFloat(*this),
-                    cResourceTypeSimpleInteger(*this),
-                    cResourceTypeSimpleString(*this),
-                    cResourceTypeSimpleVertex(*this),
-                    cResourceTypeSprite(*this),
+                    cComponentTypeAnalogueControl(*this),
+                    cComponentTypeBooleanTrigger(*this),
+                    cComponentTypeDigitalControl(*this),
+                    cComponentTypeFileFont(*this),
+                    cComponentTypeFileSound(*this),
+                    cComponentTypeFileTexture(*this),
+                    cComponentTypeFunction(*this),
+                    cComponentTypeInputGroup(*this),
+                    cComponentTypeInputSwitch(*this),
+                    cComponentTypeInterruptHandler(*this),
+                    cComponentTypeProject(*this),
+                    cComponentTypeProjectConfigurer(*this),
+                    cComponentTypeSequence(*this),
+                    cComponentTypeSimpleBoolean(*this),
+                    cComponentTypeSimpleColour(*this),
+                    cComponentTypeSimpleFloat(*this),
+                    cComponentTypeSimpleInteger(*this),
+                    cComponentTypeSimpleString(*this),
+                    cComponentTypeSimpleVertex(*this),
+                    cComponentTypeSprite(*this),
                     cDigitalToAnalogueMapping(registry.getAssetMetadata("DigitalToAnalogue")),
                     cLuaBinding(project.getLuaState(), this) {
-    registry.add(&cResourceTypeAnalogueControl,   "AnalogueControl");
-    registry.add(&cResourceTypeBooleanTrigger,    "BooleanTrigger");
-    registry.add(&cResourceTypeDigitalControl,    "DigitalControl");
-    registry.add(&cResourceTypeFileFont,          "Font");
-    registry.add(&cResourceTypeFileSound,         "Sound");
-    registry.add(&cResourceTypeFileTexture,       "Texture");
-    registry.add(&cResourceTypeFunction,          "Function");
-    registry.add(&cResourceTypeInputGroup,        "InputGroup");
-    registry.add(&cResourceTypeInputSwitch,       "InputSwitch");
-    registry.add(&cResourceTypeInterruptHandler,  "InterruptHandler");
-    registry.add(&cResourceTypeProject,           "Project");
-    registry.add(&cResourceTypeProjectConfigurer, "ProjectConfigurer");
-    registry.add(&cResourceTypeSequence,          "Sequence");
-    registry.add(&cResourceTypeSimpleBoolean,     "Boolean");
-    registry.add(&cResourceTypeSimpleColour,      "Colour");
-    registry.add(&cResourceTypeSimpleFloat,       "Float");
-    registry.add(&cResourceTypeSimpleInteger,     "Integer");
-    registry.add(&cResourceTypeSimpleString,      "String");
-    registry.add(&cResourceTypeSimpleVertex,      "Vertex");
-    registry.add(&cResourceTypeSprite,            "Sprite");
+    registry.add(&cComponentTypeAnalogueControl,   "AnalogueControl");
+    registry.add(&cComponentTypeBooleanTrigger,    "BooleanTrigger");
+    registry.add(&cComponentTypeDigitalControl,    "DigitalControl");
+    registry.add(&cComponentTypeFileFont,          "Font");
+    registry.add(&cComponentTypeFileSound,         "Sound");
+    registry.add(&cComponentTypeFileTexture,       "Texture");
+    registry.add(&cComponentTypeFunction,          "Function");
+    registry.add(&cComponentTypeInputGroup,        "InputGroup");
+    registry.add(&cComponentTypeInputSwitch,       "InputSwitch");
+    registry.add(&cComponentTypeInterruptHandler,  "InterruptHandler");
+    registry.add(&cComponentTypeProject,           "Project");
+    registry.add(&cComponentTypeProjectConfigurer, "ProjectConfigurer");
+    registry.add(&cComponentTypeSequence,          "Sequence");
+    registry.add(&cComponentTypeSimpleBoolean,     "Boolean");
+    registry.add(&cComponentTypeSimpleColour,      "Colour");
+    registry.add(&cComponentTypeSimpleFloat,       "Float");
+    registry.add(&cComponentTypeSimpleInteger,     "Integer");
+    registry.add(&cComponentTypeSimpleString,      "String");
+    registry.add(&cComponentTypeSimpleVertex,      "Vertex");
+    registry.add(&cComponentTypeSprite,            "Sprite");
   }
 
   void Basics::refreshAssetRegistration(Sequence& sequence) {
-    cResourceTypeSequence.refreshAssetRegistration(sequence);
+    cComponentTypeSequence.refreshAssetRegistration(sequence);
   }
 
   const Metadata& Basics::getMetadata(const std::string& key) const {
     return cModule.getAssetMetadata(key);
   }
 
-  void Basics::registerAssets(ResourceAssetRegistry& assets) {
+  void Basics::registerAssets(ComponentAssetRegistry& assets) {
     assets.addProvider(&cActionScript, ACTION_SCRIPT, "Run a Script");
     assets.add<IBinding>(&cLuaBinding, "",            "Modules/Basics");
     assets.addProvider(&cDigitalToAnalogueMapping, "DigitalToAnalogue", "Digital to Analogue Mapping");
@@ -90,26 +90,26 @@ namespace IsoRealms::Basics {
   }
   
   void Basics::updateRuntime(unsigned int milliseconds) {
-    updateRuntime2(cResourceTypeProject,           milliseconds);
-    updateRuntime2(cResourceTypeProjectConfigurer, milliseconds);
-    updateRuntime2(cResourceTypeSequence,          milliseconds);
+    updateRuntime2(cComponentTypeProject,           milliseconds);
+    updateRuntime2(cComponentTypeProjectConfigurer, milliseconds);
+    updateRuntime2(cComponentTypeSequence,          milliseconds);
   }
   
   void Basics::updateEditing(unsigned int milliseconds) {
-    updateEditing2(cResourceTypeSequence, milliseconds);
+    updateEditing2(cComponentTypeSequence, milliseconds);
   }
   
   void Basics::reset() {
-    reset2(cResourceTypeDigitalControl);
-    reset2(cResourceTypeInputSwitch);
-    reset2(cResourceTypeProject);
-    reset2(cResourceTypeSequence);
-    reset2(cResourceTypeSimpleBoolean);
-    reset2(cResourceTypeSimpleColour);
-    reset2(cResourceTypeSimpleFloat);
-    reset2(cResourceTypeSimpleInteger);
-    reset2(cResourceTypeSimpleString);
-    reset2(cResourceTypeSimpleVertex);
+    reset2(cComponentTypeDigitalControl);
+    reset2(cComponentTypeInputSwitch);
+    reset2(cComponentTypeProject);
+    reset2(cComponentTypeSequence);
+    reset2(cComponentTypeSimpleBoolean);
+    reset2(cComponentTypeSimpleColour);
+    reset2(cComponentTypeSimpleFloat);
+    reset2(cComponentTypeSimpleInteger);
+    reset2(cComponentTypeSimpleString);
+    reset2(cComponentTypeSimpleVertex);
   }  
   
   IsoRealms::Project& Basics::getProject() const {
@@ -123,7 +123,7 @@ namespace IsoRealms::Basics {
       mAvailableIDChanged = false;
 
       // Check if the function ID is in use by a user function.
-      for (Function* mFunction : cResourceTypeFunction) {
+      for (Function* mFunction : cComponentTypeFunction) {
         if (mFunction->getID() == mAvailableID) {
           mAvailableID++;
           mAvailableIDChanged = true;
@@ -149,7 +149,7 @@ namespace IsoRealms::Basics {
       for (JSONValue mDigitalInputMappingValue : mModuleSettingsObject.getArray(JSON_DIGITAL_INPUT_MAPPINGS)) {
         JSONObject mDigitalInputMappingObject = mDigitalInputMappingValue.getObject();
         std::string mInputID = mDigitalInputMappingObject.getString(JSON_ID);
-        DigitalControl* mDigitalInput = cResourceTypeDigitalControl.getResource(mInputID);
+        DigitalControl* mDigitalInput = cComponentTypeDigitalControl.getComponent(mInputID);
         if (mDigitalInput == nullptr) {
           throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Digital input \"" + mInputID + "\" not found.");
         }
@@ -158,7 +158,7 @@ namespace IsoRealms::Basics {
       for (JSONValue mAnalogueInputMappingValue : mModuleSettingsObject.getArray(JSON_ANALOGUE_INPUT_MAPPINGS)) {
         JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingValue.getObject();
         std::string mInputID = mAnalogueInputMappingObject.getString(JSON_ID);
-        AnalogueControl* mAnalogueInput = cResourceTypeAnalogueControl.getResource(mInputID);
+        AnalogueControl* mAnalogueInput = cComponentTypeAnalogueControl.getComponent(mInputID);
         if (mAnalogueInput == nullptr) {
           throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Analogue input \"" + mInputID + "\" not found.");
         }
@@ -173,15 +173,15 @@ namespace IsoRealms::Basics {
     mModuleSettingsObject.addFloat(JSON_SOUND_VOLUME, getSoundVolume());
     mModuleSettingsObject.addFloat(JSON_MUSIC_VOLUME, getMusicVolume());
     JSONArray mDigitalInputMappingArray = mModuleSettingsObject.addArray(JSON_DIGITAL_INPUT_MAPPINGS);
-    for (DigitalControl* mDigitalInput : cResourceTypeDigitalControl) {
+    for (DigitalControl* mDigitalInput : cComponentTypeDigitalControl) {
       JSONObject mDigitalInputMappingObject = mDigitalInputMappingArray.addObject();
-      mDigitalInputMappingObject.addString(JSON_ID, cResourceTypeDigitalControl.getID(mDigitalInput));
+      mDigitalInputMappingObject.addString(JSON_ID, cComponentTypeDigitalControl.getID(mDigitalInput));
       mDigitalInput->saveCustomMapping(mDigitalInputMappingObject);
     }
     JSONArray mAnalogueInputMappingArray = mModuleSettingsObject.addArray(JSON_ANALOGUE_INPUT_MAPPINGS);
-    for (AnalogueControl* mAnalogueInput : cResourceTypeAnalogueControl) {
+    for (AnalogueControl* mAnalogueInput : cComponentTypeAnalogueControl) {
       JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingArray.addObject();
-      mAnalogueInputMappingObject.addString(JSON_ID, cResourceTypeAnalogueControl.getID(mAnalogueInput));
+      mAnalogueInputMappingObject.addString(JSON_ID, cComponentTypeAnalogueControl.getID(mAnalogueInput));
       mAnalogueInput->saveCustomMapping(mAnalogueInputMappingObject);
     }
     mModuleSettingsDocument.save(GLOBAL_CONFIGURATION_FILE);
@@ -195,7 +195,7 @@ namespace IsoRealms::Basics {
     cSoundVolume = std::clamp(volume, 0.0f, 1.0f);
 
     // TODO: If multiple projects are loaded, this will only affect the current one.
-    for (FileSound* mFileSound : cResourceTypeFileSound) {
+    for (FileSound* mFileSound : cComponentTypeFileSound) {
       mFileSound->setVolume(cSoundVolume);
     }
   }
@@ -213,9 +213,9 @@ namespace IsoRealms::Basics {
 }
 
 #ifdef __linux__
-extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IResourceTypeRegistry* registry) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::Project* project, IsoRealms::IComponentTypeRegistry* registry) {
 #elif _WIN32
-extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IResourceTypeRegistry * registry) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::Project * project, IsoRealms::IComponentTypeRegistry * registry) {
 #endif
   std::unique_ptr<IsoRealms::Basics::Basics> mModule = std::make_unique<IsoRealms::Basics::Basics>(*project, *registry);
   {

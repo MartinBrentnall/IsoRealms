@@ -22,14 +22,14 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IInputHandler.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class InputHandlerRegistry : public AssetClientManager<InputHandlerRegistry, IResourceData, IInputHandler> {
+  class InputHandlerRegistry : public AssetClientManager<InputHandlerRegistry, IComponentData, IInputHandler> {
     public:
     InputHandlerRegistry();
 
@@ -48,6 +48,6 @@ namespace IsoRealms {
       bool isDefaultConfiguration() const override;
     };
 
-    AssetLiteralDummy<IResourceData, IInputHandler, Dummy> cNone;
+    AssetLiteralDummy<IComponentData, IInputHandler, Dummy> cNone;
   };
 }

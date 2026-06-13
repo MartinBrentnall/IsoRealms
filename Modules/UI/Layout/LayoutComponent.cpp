@@ -25,7 +25,7 @@
 namespace IsoRealms::UI {
   LayoutComponent::LayoutComponent(Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio) :
             cLayout(layout),
-            cDefScreen(layout.getResourceData()),
+            cDefScreen(layout.getComponentData()),
             cDefLeftEdge(*this, aspectRatio, std::min(x1, x2)),
             cDefRightEdge(*this, aspectRatio, std::max(x1, x2)),
             cDefBottomEdge(*this, 1.0f, std::min(y1, y2)),
@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
 
   LayoutComponent::LayoutComponent(Layout& layout, JSONObject object) :
             cLayout(layout),
-            cDefScreen(layout.getResourceData()),
+            cDefScreen(layout.getComponentData()),
             cDefLeftEdge(*this, object, JSON_LEFT),
             cDefRightEdge(*this, object, JSON_RIGHT),
             cDefBottomEdge(*this, object, JSON_BOTTOM),
@@ -50,7 +50,7 @@ namespace IsoRealms::UI {
     cRuntimeScreen = *cDefScreen;
   }
   
-  void LayoutComponent::registerAssets(ResourceAssetRegistry& assets, const std::string& name) {
+  void LayoutComponent::registerAssets(ComponentAssetRegistry& assets, const std::string& name) {
     assets.add<IBinding>(&cLuaBinding, name, "Layout Components");
   }
   

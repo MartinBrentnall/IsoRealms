@@ -27,6 +27,7 @@ add_library(IsoRealms
   Assets/Client/BindingType.cpp
   Assets/Client/Boolean.cpp
   Assets/Client/Colour.cpp
+  Assets/Client/ComponentOwner.cpp
   Assets/Client/DigitalInput.cpp
   Assets/Client/Editable.cpp
   Assets/Client/File.cpp
@@ -37,7 +38,6 @@ add_library(IsoRealms
   Assets/Client/Model.cpp
   Assets/Client/ModelInstance.cpp
   Assets/Client/ModuleChooser.cpp
-  Assets/Client/ResourceOwner.cpp
   Assets/Client/Screen.cpp
   Assets/Client/String.cpp
   Assets/Client/Texture.cpp
@@ -66,10 +66,10 @@ add_library(IsoRealms
   Editing/CategoryMenu.cpp
   Editing/ProjectMenu.cpp
   Editing/PropertiesMenu.cpp
-  Editing/ResourceTypeMenu.cpp
+  Editing/ComponentTypeMenu.cpp
   Editing/MenuItemAction.cpp
   Editing/MenuItemLoadModule.cpp
-  Editing/MenuItemResource.cpp
+  Editing/MenuItemComponent.cpp
   Editing/MenuItemModule.cpp
   Editing/MenuItemProperty.cpp
   Editing/MenuItemSpacer.cpp
@@ -100,7 +100,7 @@ add_library(IsoRealms
   Exception/ArgumentException.cpp
   Exception/IllegalStateException.cpp
   Exception/InitException.cpp
-  Exception/ResourceInitException.cpp
+  Exception/ComponentInitException.cpp
   Input/HatHandler.cpp
   Metadata.cpp
   Persistence/JSONArray.cpp
@@ -133,7 +133,7 @@ add_library(IsoRealms
   Project/Registry/StringRegistry.cpp
   Project/Registry/TextureRegistry.cpp
   Project/Registry/VertexRegistry.cpp
-  Project/ResourceType.cpp
+  Project/ComponentType.cpp
   PropertyData.cpp
   PropertyLoader.cpp
   PropertyMaker.cpp

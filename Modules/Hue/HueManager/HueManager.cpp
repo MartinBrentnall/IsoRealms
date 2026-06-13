@@ -19,11 +19,11 @@
 #include "HueManager.h"
 
 namespace IsoRealms::Hue {
-  HueManager::HueManager(Hue& hue, IResourceData& data) :
-            cResourceData(data) {
+  HueManager::HueManager(Hue& hue, IComponentData& data) :
+            cComponentData(data) {
   }
   
-  void HueManager::registerAssets(ResourceAssetRegistry& assets) {
+  void HueManager::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
 
@@ -44,7 +44,7 @@ namespace IsoRealms::Hue {
         Utils::removeElementUnique(cDefBulbs, &bulb);
       });
     }, [this]() -> Bulb& {
-      return *cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cResourceData, static_cast<int>(cDefBulbs.size())));
+      return *cDefBulbs.emplace_back(std::make_unique<Bulb>(*this, cComponentData, static_cast<int>(cDefBulbs.size())));
     });
 
     // If we are loading persisted values, we need to initialize the REST client.
@@ -131,13 +131,13 @@ namespace IsoRealms::Hue {
     // FIXME:TripPlayer: Implement this
   }
   
-  HueManager::Bulb::Bulb(HueManager& parent, IResourceData& data, int id) :
+  HueManager::Bulb::Bulb(HueManager& parent, IComponentData& data, int id) :
             cParent(parent),
             cDefID(id),
             cDefColour(data, 1.0f, 1.0f, 1.0f) {
   }
   
-  HueManager::Bulb::Bulb(HueManager& parent, IResourceData& data, int id, JSONObject object) :
+  HueManager::Bulb::Bulb(HueManager& parent, IComponentData& data, int id, JSONObject object) :
             Bulb(parent, data, id) {
     cDefColour.init(object, JSON_COLOUR);
   }

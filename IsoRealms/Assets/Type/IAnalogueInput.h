@@ -25,7 +25,7 @@
 #include "IAsset.h"
 
 namespace IsoRealms {
-  class ResourceAssetRegistry;
+  class ComponentAssetRegistry;
 
   /**
    * Interface to a analogue input mapping on which input events can be tested
@@ -82,7 +82,7 @@ namespace IsoRealms {
      */
     virtual std::string getLocalizedName() const = 0;
 
-    virtual void registerAssets(ResourceAssetRegistry& assets) = 0;
+    virtual void registerAssets(ComponentAssetRegistry& assets) = 0;
 
     virtual ~IAnalogueInput() {}
   };

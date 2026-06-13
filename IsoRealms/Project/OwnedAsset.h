@@ -77,7 +77,7 @@ namespace IsoRealms {
 
     private:
     TYPE cAsset;
-    ResourceOwner cOwner;
+    ComponentOwner cOwner;
     bool cInit; // TODO: I think this should be part of the local loading process, not a field here.
   };
 }

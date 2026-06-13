@@ -26,7 +26,7 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for an input handler that performs an action upon any
+   * Component definition for an input handler that performs an action upon any
    * active input, such as a mouse button, key press, or game controller
    * button.  The action is not performed on inputs that are considered
    * passive such as mouse movements and analogue stick movements.
@@ -36,8 +36,8 @@ namespace IsoRealms::Basics {
    */
   class InterruptHandler final : public IInputHandler {
     public:
-    InterruptHandler(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    InterruptHandler(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

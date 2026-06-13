@@ -25,8 +25,8 @@ namespace IsoRealms::Replay {
 
   class Replayer final {
     public:
-    Replayer(Replay& replay, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    Replayer(Replay& replay, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     bool renderIcon() const;
     void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -60,9 +60,9 @@ namespace IsoRealms::Replay {
 
     class DigitalInput : public IBoolean {
       public:
-      DigitalInput(Replayer& parent, IResourceData& data);
-      DigitalInput(Replayer& parent, IResourceData& data, JSONObject object);
-      void registerAssets(ResourceAssetRegistry& assets);
+      DigitalInput(Replayer& parent, IComponentData& data);
+      DigitalInput(Replayer& parent, IComponentData& data, JSONObject object);
+      void registerAssets(ComponentAssetRegistry& assets);
       void save(JSONObject object) const;
       void getProperties(IPropertyMaker& owner, const Metadata& metadata);
       void reset();
@@ -95,9 +95,9 @@ namespace IsoRealms::Replay {
     
     class AnalogueInput : public IFloat {
       public:
-      AnalogueInput(Replayer& parent, IResourceData& data);
-      AnalogueInput(Replayer& parent, IResourceData& data, JSONObject object);
-      void registerAssets(ResourceAssetRegistry& assets);
+      AnalogueInput(Replayer& parent, IComponentData& data);
+      AnalogueInput(Replayer& parent, IComponentData& data, JSONObject object);
+      void registerAssets(ComponentAssetRegistry& assets);
       void save(JSONObject object) const;
       void getProperties(IPropertyMaker& owner, const Metadata& metadata);
       void reset();
@@ -139,7 +139,7 @@ namespace IsoRealms::Replay {
     inline static const std::string JSON_VALUE = "value";
 
     // External interfaces.
-    IResourceData& cResource;
+    IComponentData& cComponentData;
 
     // Definition data.
     std::vector<std::unique_ptr<DigitalInput>> cDefDigitalInputs;

@@ -19,7 +19,7 @@
 #include "SimpleVertex.h"
 
 namespace IsoRealms::Basics {
-  SimpleVertex::SimpleVertex(Basics& basics, IResourceData& data) :
+  SimpleVertex::SimpleVertex(Basics& basics, IComponentData& data) :
             cDefX(0.0),
             cDefY(0.0),
             cDefZ(0.0),
@@ -30,7 +30,7 @@ namespace IsoRealms::Basics {
             cStateNotifier(nullptr) {
   }
 
-  void SimpleVertex::registerAssets(ResourceAssetRegistry& assets) {
+  void SimpleVertex::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IVertex>(this, "", "Simple Vertices");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Vertices");
   }

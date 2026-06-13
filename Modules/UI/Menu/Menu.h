@@ -29,18 +29,18 @@ namespace IsoRealms::UI {
   class UI;
   
   /**
-   * Resource definition for a menu that can be configured to provide various
+   * Component definition for a menu that can be configured to provide various
    * settings and actions.
    */
   class Menu final : public IInputHandler,
                      public IScreen {
     public:
     
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Menu(UI& ui, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Menu(UI& ui, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -53,8 +53,8 @@ namespace IsoRealms::UI {
     void reset();
 
     // Interface to be used by menu items.
-    IResourceData& getResourceData();
-    const IResourceData& getResourceData() const;
+    IComponentData& getComponentData();
+    const IComponentData& getComponentData() const;
     const Font& getFont() const;
     float getFontSize() const;
     float getShadowOffset() const;
@@ -86,7 +86,7 @@ namespace IsoRealms::UI {
 
     // External interfaces.
     UI& cUI;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
     HatHandler& cHatHandler;

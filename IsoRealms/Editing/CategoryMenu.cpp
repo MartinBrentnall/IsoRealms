@@ -20,19 +20,19 @@
 
 #include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/Project.h"
-#include "IsoRealms/Project/ResourceType.h"
+#include "IsoRealms/Project/ComponentType.h"
 
 #include "MenuItemAction.h"
 
 namespace IsoRealms {
   CategoryMenu::CategoryMenu(UIManager& manager, IUIStyle& style, Project& project, Module* module, const std::string& category) : ActionMenu(manager, style) {
-    std::vector<ResourceType*> mResourceTypes = module->getResourceTypes();
-    for (ResourceType* mResourceType : mResourceTypes) {
-      if (category == mResourceType->getCategory()) {
-        std::string mResourceTypeName = mResourceType->getPlural();
-        std::string mResourceTypeTooltip = mResourceType->getDescription();
-        addItem(std::make_unique<MenuItemAction>(mResourceTypeName, mResourceTypeTooltip, [this, &manager, &style, mResourceType]() {
-          manager.openUI(std::make_unique<ResourceTypeMenu>(manager, style, *mResourceType), mResourceType->getPlural());
+    std::vector<ComponentType*> mComponentTypes = module->getComponentTypes();
+    for (ComponentType* mComponentType : mComponentTypes) {
+      if (category == mComponentType->getCategory()) {
+        std::string mComponentTypeName = mComponentType->getPlural();
+        std::string mComponentTypeTooltip = mComponentType->getDescription();
+        addItem(std::make_unique<MenuItemAction>(mComponentTypeName, mComponentTypeTooltip, [this, &manager, &style, mComponentType]() {
+          manager.openUI(std::make_unique<ComponentTypeMenu>(manager, style, *mComponentType), mComponentType->getPlural());
         }));
       }
     }

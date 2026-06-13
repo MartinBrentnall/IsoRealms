@@ -24,7 +24,7 @@
 
 namespace IsoRealms::Equilibria {
   ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type) :
-            cDefTarget(type.getResourceData()) {
+            cDefTarget(type.getComponentData()) {
   }
 
   ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :

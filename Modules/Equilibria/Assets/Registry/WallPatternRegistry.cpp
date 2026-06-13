@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  WallPatternRegistry::WallPatternRegistry(IResourceTypeRegistry& registry) :
+  WallPatternRegistry::WallPatternRegistry(IComponentTypeRegistry& registry) :
             cCapped(registry.getAssetMetadata("WallPatternCap")),
             cComposite(registry.getAssetMetadata("WallPatternComposite")),
             cOutline(registry.getAssetMetadata("WallPatternOutline")),

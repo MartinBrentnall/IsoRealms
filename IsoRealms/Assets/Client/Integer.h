@@ -21,18 +21,18 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IInteger.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Integer : public Asset<Integer, IInteger, IResourceData> {
+  class Integer : public Asset<Integer, IInteger, IComponentData> {
     public:
-    Integer(IResourceData& owner);
+    Integer(IComponentData& owner);
 
-    /*********************************************\
-     * Implements Asset<IInteger, IResourceData> *
-    \*********************************************/
-    IInteger* createDefaultAsset(IResourceData& owner);
+    /**********************************************\
+     * Implements Asset<IInteger, IComponentData> *
+    \**********************************************/
+    IInteger* createDefaultAsset(IComponentData& owner);
   };
 }

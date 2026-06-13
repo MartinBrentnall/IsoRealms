@@ -23,7 +23,7 @@
 #include <vector>
 #include <string>
 
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 namespace IsoRealms {
   class IEditable;
@@ -36,8 +36,8 @@ namespace IsoRealms {
   class IPropertyManager {
     public:
     virtual void addProperty(std::unique_ptr<IProperty> property) = 0;
-    virtual void openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) = 0;
-    virtual void openProperties(IResourceData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) = 0;
+    virtual void openProperties(IComponentData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) = 0;
+    virtual void openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) = 0;
     virtual void edit(std::unique_ptr<IPropertyEditor> editor) = 0;
     virtual void edit(IEditable* editor) = 0;
     virtual void refreshProperties() = 0;

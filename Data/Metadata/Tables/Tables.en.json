@@ -3,7 +3,7 @@
   "description": "Functionality for creating and managing data tables.",
   "assets": {
   },
-  "resources": {
+  "components": {
     "Table": {
       "singular": "Table",
       "plural": "Tables",

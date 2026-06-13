@@ -19,12 +19,12 @@
 #include "String.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  String::String(IResourceData& owner) :
-            Asset<String, IString, IResourceData>(owner, owner.getAssetManager().createLiteralString(this, owner, "")) {
+  String::String(IComponentData& owner) :
+            Asset<String, IString, IComponentData>(owner, owner.getAssetManager().createLiteralString(this, owner, "")) {
   }
 
   TreeItemInfo String::getTreeItemInfo() const {
@@ -32,14 +32,14 @@ namespace IsoRealms {
     if (!mConversionPath.empty()) {
       return TreeItemInfo{mConversionPath, mConversionPath};
     }
-    return Asset<String, IString, IResourceData>::getTreeItemInfo();
+    return Asset<String, IString, IComponentData>::getTreeItemInfo();
   }
 
   bool String::hasClientConfiguration() const {
     return cAsset->isConfigurable() || cManager.getAssetManager().isConfigurable<IString>(getRawID());
   }  
 
-  IString* String::createDefaultAsset(IResourceData& owner) {
+  IString* String::createDefaultAsset(IComponentData& owner) {
     return owner.getAssetManager().createLiteralString(this, owner, "");
   }
 }

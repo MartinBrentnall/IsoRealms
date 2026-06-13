@@ -19,13 +19,13 @@
 #include "FileTexture.h"
 
 namespace IsoRealms::Basics {
-  FileTexture::FileTexture(Basics& basics, IResourceData& data) :
+  FileTexture::FileTexture(Basics& basics, IComponentData& data) :
             cDefFile(data.getProject(), [this, &data]() {
               reloadData(data.getProject());
             }) {
   }
 
-  void FileTexture::registerAssets(ResourceAssetRegistry& assets) {
+  void FileTexture::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<ITexture>(this, "", "Textures from Image Files"); // TODO: Localize this.
   }
   

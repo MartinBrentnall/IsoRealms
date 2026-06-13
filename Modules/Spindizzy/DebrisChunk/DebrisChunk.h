@@ -26,7 +26,7 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
   /**
-   * Resource definition for a model that can be used to represent a chunk
+   * Component definition for a model that can be used to represent a chunk
    * of debris from a broken craft or other object.  Specifically, it is a
    * tetrahedron with configurable colours for the outline and for each of its
    * four faces.
@@ -35,11 +35,11 @@ namespace IsoRealms::Spindizzy {
                             public IModelInstance {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    DebrisChunk(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    DebrisChunk(Spindizzy& spindizzy, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

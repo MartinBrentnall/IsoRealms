@@ -21,7 +21,7 @@
 #include <string>
 
 #include "IsoRealms/Editing/Property/IPropertyMaker.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
@@ -31,14 +31,14 @@ namespace IsoRealms {
           cMetadata(metadata) {
   }
 
-  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IResourceData& owner) :
+  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IComponentData& owner) :
           cMetadata(metadata),
           cAxisChooser(metadata),
           cDefAxis(0),
           cDefDeadZone(0.16f) {
   }
 
-  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IComponentData& owner, JSONObject object) :
           GameControllerAxis(metadata, owner) {
     cDefAxis = object.getInteger(JSON_AXIS);
     cDefDeadZone = object.getFloat(JSON_DEAD_ZONE);
@@ -73,7 +73,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void GameControllerAxis::registerAssets(ResourceAssetRegistry& assets) {
+  void GameControllerAxis::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
 

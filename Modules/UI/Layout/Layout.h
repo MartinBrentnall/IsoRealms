@@ -35,11 +35,11 @@ namespace IsoRealms::UI {
                        public IEditable {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    Layout(UI& ui, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
+    /***********************\
+     * Component Interface *
+    \***********************/
+    Layout(UI& ui, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);  
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -63,15 +63,15 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IEditable *
     \************************/
-    void load(IResourceData& resourceData, JSONObject object) override;
-    void save(IResourceData& resourceData, JSONObject object) const override;
+    void load(IComponentData& resourceData, JSONObject object) override;
+    void save(IComponentData& resourceData, JSONObject object) const override;
     IEditableScreen* createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) override;
 
     /*********************\
      * Editing Interface *
     \*********************/
     UI& getUI() const;
-    IResourceData& getResourceData();
+    IComponentData& getComponentData();
     LayoutComponent* createComponent(float x1, float y1, float x2, float y2, float aspectRatio);
     LayoutComponent* createComponent(JSONObject& object);
     void deleteComponent(LayoutComponent* component);
@@ -95,7 +95,7 @@ namespace IsoRealms::UI {
     inline static const std::string JSON_ID         = "id";
 
     // External interfaces.
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
     UI& cUI;
 
     // Definition data.

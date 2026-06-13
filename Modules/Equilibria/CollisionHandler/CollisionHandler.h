@@ -28,7 +28,7 @@ namespace IsoRealms::Equilibria {
   class World;
 
   /**
-   * Resource definition triggering actions when objects go into and out of
+   * Component definition triggering actions when objects go into and out of
    * proximity with each other.  For each collision handler, an entry and exit
    * action may be configured to be triggered when an object of a one type
    * goes into/out of proximity of an object of another type.
@@ -36,11 +36,11 @@ namespace IsoRealms::Equilibria {
   class CollisionHandler final : public IPhysicalObjectTypeListener {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    CollisionHandler(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    CollisionHandler(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

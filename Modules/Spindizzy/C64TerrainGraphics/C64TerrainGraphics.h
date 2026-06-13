@@ -29,8 +29,8 @@ namespace IsoRealms::Spindizzy {
   class C64TerrainGraphics : public ITextureUseListener,
                              public IScreenListener {
     public:
-    C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    C64TerrainGraphics(Spindizzy& spindizzy, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

@@ -28,15 +28,15 @@
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Assets/Type/IFont.h"
 #include "IsoRealms/Common/ScreenArea.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/PropertyMaker.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyTreeSelector::PropertyTreeSelector(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
+  PropertyTreeSelector::PropertyTreeSelector(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cPropertyOwner(owner),
-            cResourceData(resourceData),
+            cComponentData(resourceData),
             cSelectedItem(item),
             cValueLabel(cSelectedItem.getTreeItemLabel()) {
   }
@@ -74,7 +74,7 @@ namespace IsoRealms {
   }
 
   void PropertyTreeSelector::configure(IPropertyManager& manager) {
-    manager.openProperties(cResourceData, getPropertyName(), cSelectedItem.getPropertyMetadata(), [this](IPropertyMaker& owner) {
+    manager.openProperties(cComponentData, getPropertyName(), cSelectedItem.getPropertyMetadata(), [this](IPropertyMaker& owner) {
       cSelectedItem.getAssetProperties(owner);
     });
   }

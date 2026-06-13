@@ -32,7 +32,7 @@
 namespace IsoRealms::Equilibria {
   class SurfacePatternRegistry : public AssetClientManager<SurfacePatternRegistry, TerrainType, ISurfacePattern> {
     public:
-    SurfacePatternRegistry(IResourceTypeRegistry& registry);
+    SurfacePatternRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<TerrainType, ISurfacePattern, SurfacePatternComposite>    cComposite;

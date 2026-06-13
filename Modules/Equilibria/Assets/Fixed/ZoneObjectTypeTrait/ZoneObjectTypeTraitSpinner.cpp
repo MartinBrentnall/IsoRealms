@@ -24,7 +24,7 @@
 
 namespace IsoRealms::Equilibria {
   ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type) :
-            cDefModel(type.getResourceData()) {
+            cDefModel(type.getComponentData()) {
   }
 
   ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :

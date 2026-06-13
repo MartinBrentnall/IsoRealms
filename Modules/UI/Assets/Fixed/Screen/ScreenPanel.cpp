@@ -19,13 +19,13 @@
 #include "ScreenPanel.h"
 
 namespace IsoRealms::UI {
-  ScreenPanel::ScreenPanel(const Metadata& /*metadata*/, IResourceData& owner) :
+  ScreenPanel::ScreenPanel(const Metadata& /*metadata*/, IComponentData& owner) :
             cDefColour(owner, 0.0f, 0.0f, 1.0f),
             cDefCornerSize(0.0f) {
     initTextures(owner.getProject());
   }
   
-  ScreenPanel::ScreenPanel(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  ScreenPanel::ScreenPanel(const Metadata& metadata, IComponentData& owner, JSONObject object) :
             ScreenPanel(metadata, owner) {
     cDefColour.set(object, JSON_COLOUR);
     cDefCornerSize = object.getFloat(JSON_CORNER_SIZE);

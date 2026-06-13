@@ -19,7 +19,7 @@
 #include "Ball.h"
 
 namespace IsoRealms::Spindizzy {
-  Ball::Ball(Spindizzy& spindizzy, IResourceData& data) :
+  Ball::Ball(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
             cDefFill(data, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutline(data, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
   
-  void Ball::registerAssets(ResourceAssetRegistry& assets) {
+  void Ball::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<ITexture>(this, "", "Spindizzy Ball Craft Textures");
   }
   

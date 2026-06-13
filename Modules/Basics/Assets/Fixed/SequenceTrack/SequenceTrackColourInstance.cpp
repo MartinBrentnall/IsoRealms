@@ -53,7 +53,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void SequenceTrackColourInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void SequenceTrackColourInstance::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     cStateNotifier = assets.add<IColour>(this, parentID + "/" + cParent.getName(), "Colours animated from Sequences"); // TODO: Localize this.
   }
 

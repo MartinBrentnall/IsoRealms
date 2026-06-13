@@ -27,23 +27,23 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "IsoRealms/Editing/IResourceAccessManager.h"
+#include "IsoRealms/Editing/IComponentAccessManager.h"
 #include "IsoRealms/Project/Options.h"
 
 namespace IsoRealms {
   class Condition;
   class ConditionElement;
+  class IComponentData;
   class IEditable;
   class IOptionalObject;
-  class IResourceData;
   class ITreeSelectorObject;
   class JSONObject;
 
-  class IPropertyMaker : public IResourceAccessManager {
+  class IPropertyMaker : public IComponentAccessManager {
     public:
     virtual ~IPropertyMaker() = default;
 
-    virtual IResourceData& getResourceData() = 0;
+    virtual IComponentData& getComponentData() = 0;
 
     virtual bool loadsPersistedValues() const {
       return false;

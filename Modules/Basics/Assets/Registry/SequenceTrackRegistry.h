@@ -33,7 +33,7 @@ namespace IsoRealms::Basics {
 
   class SequenceTrackRegistry : public AssetClientManager<SequenceTrackRegistry, Sequence, ISequenceTrack> {
     public:
-    SequenceTrackRegistry(IResourceTypeRegistry& registry);
+    SequenceTrackRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<Sequence, ISequenceTrack, SequenceTrackAction> cAction;

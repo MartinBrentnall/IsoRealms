@@ -31,15 +31,15 @@ namespace IsoRealms {
   }
   
   template class BindingRegistry::Conversion<IActionContext, Action>::Instance<IActionContext, Action>;
-  template class BindingRegistry::Conversion<IResourceData,  Boolean>::Instance<IResourceData, Boolean>;  
-  template class BindingRegistry::Conversion<IResourceData,  Colour>::Instance<IResourceData, Colour>;
-  template class BindingRegistry::Conversion<IResourceData,  Float>::Instance<IResourceData, Float>;  
-  template class BindingRegistry::Conversion<IResourceData,  Font>::Instance<IResourceData, Font>;  
-  template class BindingRegistry::Conversion<IResourceData,  InputHandler>::Instance<IResourceData, InputHandler>;  
-  template class BindingRegistry::Conversion<IResourceData,  Integer>::Instance<IResourceData, Integer>;  
-  template class BindingRegistry::Conversion<IResourceData,  Screen>::Instance<IResourceData, Screen>;  
-  template class BindingRegistry::Conversion<IResourceData,  String>::Instance<IResourceData, String>;  
-  template class BindingRegistry::Conversion<IResourceData,  Vertex>::Instance<IResourceData, Vertex>;  
+  template class BindingRegistry::Conversion<IComponentData, Boolean>::Instance<IComponentData, Boolean>;  
+  template class BindingRegistry::Conversion<IComponentData, Colour>::Instance<IComponentData, Colour>;
+  template class BindingRegistry::Conversion<IComponentData, Float>::Instance<IComponentData, Float>;  
+  template class BindingRegistry::Conversion<IComponentData, Font>::Instance<IComponentData, Font>;  
+  template class BindingRegistry::Conversion<IComponentData, InputHandler>::Instance<IComponentData, InputHandler>;  
+  template class BindingRegistry::Conversion<IComponentData, Integer>::Instance<IComponentData, Integer>;  
+  template class BindingRegistry::Conversion<IComponentData, Screen>::Instance<IComponentData, Screen>;  
+  template class BindingRegistry::Conversion<IComponentData, String>::Instance<IComponentData, String>;  
+  template class BindingRegistry::Conversion<IComponentData, Vertex>::Instance<IComponentData, Vertex>;  
   
   BindingRegistry::BindingRegistry(Project& project) :
             AssetClientManager(&cDummy),
@@ -47,15 +47,15 @@ namespace IsoRealms {
 
     // Set up conversion providers.
     cConversionProviders.emplace_back(std::make_unique<Conversion<IActionContext, Action>>(      ":Action",       "Core Assets/Actions"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Boolean>>(     ":Boolean",      "Core Assets/Booleans"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Colour>>(      ":Colour",       "Core Assets/Colours"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Float>>(       ":Float",        "Core Assets/Floats"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Font>>(        ":Font",         "Core Assets/Fonts"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, InputHandler>>(":InputHandler", "Core Assets/Input Handlers"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Integer>>(     ":Integer",      "Core Assets/Integers"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Screen>>(      ":Screen",       "Core Assets/Screens"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, String>>(      ":String",       "Core Assets/Strings"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IResourceData, Vertex>>(      ":Vertex",       "Core Assets/Vertices"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Boolean>>(     ":Boolean",      "Core Assets/Booleans"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Colour>>(      ":Colour",       "Core Assets/Colours"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Float>>(       ":Float",        "Core Assets/Floats"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Font>>(        ":Font",         "Core Assets/Fonts"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, InputHandler>>(":InputHandler", "Core Assets/Input Handlers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Integer>>(     ":Integer",      "Core Assets/Integers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Screen>>(      ":Screen",       "Core Assets/Screens"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, String>>(      ":String",       "Core Assets/Strings"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Vertex>>(      ":Vertex",       "Core Assets/Vertices"));
             
     // Support local bindings.
     add(&cLocals, "~", "Local");

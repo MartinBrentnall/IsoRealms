@@ -31,13 +31,13 @@ namespace IsoRealms {
           cMetadata(metadata) {
   }
 
-  GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner) :
+  GameControllerButton::GameControllerButton(const Metadata& metadata, IComponentData& owner) :
           cMetadata(metadata),
           cButtonChooser(metadata),
           cButton(0) {
   }
 
-  GameControllerButton::GameControllerButton(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  GameControllerButton::GameControllerButton(const Metadata& metadata, IComponentData& owner, JSONObject object) :
           GameControllerButton(metadata, owner) {
     cButton = object.getInteger(JSON_BUTTON);
   }

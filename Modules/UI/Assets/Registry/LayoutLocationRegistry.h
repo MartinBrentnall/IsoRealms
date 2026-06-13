@@ -30,7 +30,7 @@ namespace IsoRealms::UI {
 
   class LayoutLocationRegistry : public AssetClientManager<LayoutLocationRegistry, LayoutComponentEdge, ILayoutLocation> {
     public:
-    LayoutLocationRegistry(IResourceTypeRegistry& registry);
+    LayoutLocationRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<LayoutComponentEdge, ILayoutLocation, LayoutLocationAbsolute> cAbsolute;

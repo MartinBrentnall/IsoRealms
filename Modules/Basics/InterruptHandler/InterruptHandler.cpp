@@ -19,11 +19,11 @@
 #include "InterruptHandler.h"
 
 namespace IsoRealms::Basics {
-  InterruptHandler::InterruptHandler(Basics& basics, IResourceData& data) :
+  InterruptHandler::InterruptHandler(Basics& basics, IComponentData& data) :
             cDefAction(data.getDummyActionContext()) {
   }
   
-  void InterruptHandler::registerAssets(ResourceAssetRegistry& assets) {
+  void InterruptHandler::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Interrupt Handlers");
   }
   

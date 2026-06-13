@@ -19,14 +19,14 @@
 #include "SimpleBoolean.h"
 
 namespace IsoRealms::Basics {
-  SimpleBoolean::SimpleBoolean(Basics& basics, IResourceData& data) :
+  SimpleBoolean::SimpleBoolean(Basics& basics, IComponentData& data) :
             cDefValue(false),
             cRuntimeValue(false),
             cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  void SimpleBoolean::registerAssets(ResourceAssetRegistry& assets) {
+  void SimpleBoolean::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IBoolean>(this, "", "Simple Booleans");
     assets.add<IBinding>(&cLuaBinding, "", "Simple Booleans");
   }

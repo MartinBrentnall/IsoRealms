@@ -32,8 +32,8 @@ namespace IsoRealms::Basics {
 
   class SequenceTrackActionEvent final : public ISequenceTrackEvent {
     public:
-    SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, unsigned int time);
-    SequenceTrackActionEvent(SequenceTrackAction& parent, IResourceData& owner, JSONObject object);
+    SequenceTrackActionEvent(SequenceTrackAction& parent, IComponentData& owner, unsigned int time);
+    SequenceTrackActionEvent(SequenceTrackAction& parent, IComponentData& owner, JSONObject object);
 
     void save(JSONObject object) const;
     void execute();

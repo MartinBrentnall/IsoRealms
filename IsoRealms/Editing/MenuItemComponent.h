@@ -22,30 +22,30 @@
 #include <string>
 #include <variant>
 
-#include "IsoRealms/IResource.h"
+#include "IsoRealms/IComponent.h"
 #include "IsoRealms/Types.h"
 
 #include "UISignalID.h"
 
 namespace IsoRealms {
-  class MenuItemResource {
+  class MenuItemComponent {
     public:
-    MenuItemResource(std::variant<IResource*, std::string> resource, std::function<void(IResource* resource)> action, std::function<bool(IResource* resource)> icon);
+    MenuItemComponent(std::variant<IComponent*, std::string> component, std::function<void(IComponent* component)> action, std::function<bool(IComponent* component)> icon);
 
-    IResource* getResource() const;
+    IComponent* getComponent() const;
     float getWidth(IUIStyle& style) const;
     void render(IUIStyle& style, float y, float xRemoveOffset, float aspectRatio) const;
     bool input(UISignalID id);
-    bool isResource() const;
-    bool isAddResource() const;
+    bool isComponent() const;
+    bool isAddComponent() const;
     bool isPlaceHolder() const;
     std::string getTooltip() const;
     std::string getLabel() const;
 
     private:
-    std::variant<IResource*, std::string> cResource;
-    std::function<void(IResource*)> cAction;
-    std::function<bool(IResource*)> cIcon;
+    std::variant<IComponent*, std::string> cComponent;
+    std::function<void(IComponent*)> cAction;
+    std::function<bool(IComponent*)> cIcon;
   };
 }
 

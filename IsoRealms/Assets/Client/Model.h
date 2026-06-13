@@ -21,15 +21,15 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IModel.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 #include "ModelInstance.h"
 
 namespace IsoRealms {
-  class Model : public Asset<Model, IModel, IResourceData> {
+  class Model : public Asset<Model, IModel, IComponentData> {
     public:
-    Model(IResourceData& owner);
+    Model(IComponentData& owner);
 
     std::unique_ptr<ModelInstance> createInstance();
     bool renderIcon() const;
@@ -37,9 +37,9 @@ namespace IsoRealms {
     void notifyDestruction(ModelInstance* instance);
     void applyTransformation() const;
 
-    /*********************************************\
-     * Implements Asset<IInteger, IResourceData> *
-    \*********************************************/
+    /********************************************\
+     * Implements Asset<IModel, IComponentData> *
+    \********************************************/
     bool hasClientConfiguration() const;
     bool isDefaultConfiguration() const;
 

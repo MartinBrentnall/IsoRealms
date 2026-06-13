@@ -18,33 +18,33 @@
  */
 #include "ActionContext.h"
 
-#include "IResourceData.h"
+#include "IComponentData.h"
 #include "Project/Project.h"
 
 namespace IsoRealms {
-  ActionContext::ActionContext(IResourceData& resource, IEventBindings& bindingRegistry) :
-            cResource(resource),
+  ActionContext::ActionContext(IComponentData& componentData, IEventBindings& bindingRegistry) :
+            cComponentData(componentData),
             cBindingRegistry(bindingRegistry) {
   }
   
   bool ActionContext::isReadOnly() const {
-    return cResource.isReadOnly();
+    return cComponentData.isReadOnly();
   }
   
   void ActionContext::setOwner(ProjectFile* owner) {
-    cResource.setOwner(owner);
+    cComponentData.setOwner(owner);
   }
   
   Project& ActionContext::getProject() {
-    return cResource.getProject();
+    return cComponentData.getProject();
   }
   
   Project& ActionContext::getAssetManager() {
-    return cResource.getAssetManager();
+    return cComponentData.getAssetManager();
   }
 
-  IResourceData& ActionContext::getResourceData() {
-    return cResource;
+  IComponentData& ActionContext::getComponentData() {
+    return cComponentData;
   }
 
   IEventBindings* ActionContext::getBindingRegistry() {

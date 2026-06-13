@@ -32,13 +32,13 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a sequence.  The Sequence supports various types
+   * Component definition for a sequence.  The Sequence supports various types
    * of track that play in tandem, each of which may do something different.
    */
   class Sequence final : public IEditable {
     public:
-    Sequence(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    Sequence(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     void reset();
 
     Basics& getBasics() const;
-    IResourceData& getResourceData();
+    IComponentData& getComponentData();
     bool isPlaying() const;
     bool isLooped() const;
     std::string getInstanceName(SequenceInstance& instance) const;
@@ -70,8 +70,8 @@ namespace IsoRealms::Basics {
     /************************\
      * Implements IEditable *
     \************************/
-    void load(IResourceData& resourceData, JSONObject object) override;
-    void save(IResourceData& resourceData, JSONObject object) const override;
+    void load(IComponentData& resourceData, JSONObject object) override;
+    void save(IComponentData& resourceData, JSONObject object) const override;
     IEditableScreen* createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
@@ -116,7 +116,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     Basics& cBasics;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Definition data.
     std::vector<std::unique_ptr<SequenceTrack>> cDefTracks; /// Tracks in this sequence.

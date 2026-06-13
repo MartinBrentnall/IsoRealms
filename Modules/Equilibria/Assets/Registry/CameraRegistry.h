@@ -33,7 +33,7 @@
 namespace IsoRealms::Equilibria {
   class CameraRegistry : public AssetClientManager<CameraRegistry, WorldView, ICamera> {
     public:
-    CameraRegistry(IResourceTypeRegistry& registry);
+    CameraRegistry(IComponentTypeRegistry& registry);
 
     private:
     AssetInstanced<WorldView, ICamera, CameraGameplay>     cGameplay;

@@ -26,7 +26,7 @@
 #include "Condition/Condition.h"
 #include "Editing/Property/ITreeSelectorObject.h"
 #include "Exception/ArgumentException.h"
-#include "IResourceData.h"
+#include "IComponentData.h"
 #include "Project/Project.h"
 #include "Utils.h"
 
@@ -46,8 +46,8 @@ namespace IsoRealms {
       }
     }
 
-    void deferDuringLoad(IResourceData& resourceData, std::function<void()> task) {
-      if (resourceData.getProject().isLoading() && !resourceData.getProject().areResourcesLoaded()) {
+    void deferDuringLoad(IComponentData& resourceData, std::function<void()> task) {
+      if (resourceData.getProject().isLoading() && !resourceData.getProject().areComponentsLoaded()) {
         resourceData.getProject().init(std::move(task));
       } else {
         task();
@@ -55,18 +55,18 @@ namespace IsoRealms {
     }
   }
 
-  PropertyLoader::PropertyLoader(IResourceData& resourceData, JSONObject object) :
-            cResourceData(resourceData) {
+  PropertyLoader::PropertyLoader(IComponentData& resourceData, JSONObject object) :
+            cComponentData(resourceData) {
     cObjects.push_back(object);
   }
 
-  PropertyLoader::PropertyLoader(IResourceData& resourceData, std::vector<JSONObject> objects) :
-            cResourceData(resourceData),
+  PropertyLoader::PropertyLoader(IComponentData& resourceData, std::vector<JSONObject> objects) :
+            cComponentData(resourceData),
             cObjects(std::move(objects)) {
   }
 
-  IResourceData& PropertyLoader::getResourceData() {
-    return cResourceData;
+  IComponentData& PropertyLoader::getComponentData() {
+    return cComponentData;
   }
 
   JSONObject& PropertyLoader::currentObject() {
@@ -100,12 +100,12 @@ namespace IsoRealms {
     std::vector<JSONObject> mObjectStack = cObjects;
     mObjectStack.push_back(object);
     ITreeSelectorObject* mItem = &item;
-    IResourceData* mResourceData = &cResourceData;
-    std::function<void()> mLoad = [mResourceData, mObjectStack = std::move(mObjectStack), mItem]() {
-      PropertyLoader mLoader(*mResourceData, mObjectStack);
+    IComponentData* mComponentData = &cComponentData;
+    std::function<void()> mLoad = [mComponentData, mObjectStack = std::move(mObjectStack), mItem]() {
+      PropertyLoader mLoader(*mComponentData, mObjectStack);
       mItem->getAssetProperties(mLoader);
     };
-    deferDuringLoad(cResourceData, std::move(mLoad));
+    deferDuringLoad(cComponentData, std::move(mLoad));
   }
 
   bool PropertyLoader::loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) {
@@ -163,7 +163,7 @@ namespace IsoRealms {
   }
 
   void PropertyLoader::createPropertyEditor(const std::string& key, IEditable* editable) {
-    editable->load(cResourceData, currentObject());
+    editable->load(cComponentData, currentObject());
   }
 
   void PropertyLoader::createPropertyKey(const std::string& key, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) {
@@ -241,11 +241,11 @@ namespace IsoRealms {
     confirm();
   }
 
-  bool PropertyLoader::isResourceReadOnly() const {
+  bool PropertyLoader::isComponentReadOnly() const {
     return false;
   }
 
-  void PropertyLoader::promoteResourceToProject() {
+  void PropertyLoader::promoteComponentToProject() {
     // Nothing to do.
   }
 }

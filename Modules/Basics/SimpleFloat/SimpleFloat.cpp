@@ -19,14 +19,14 @@
 #include "SimpleFloat.h"
 
 namespace IsoRealms::Basics {
-  SimpleFloat::SimpleFloat(Basics& basics, IResourceData& data) :
+  SimpleFloat::SimpleFloat(Basics& basics, IComponentData& data) :
             cDefValue(0.0f),
             cRuntimeValue(0.0f),
             cLuaBinding(data.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
   
-  void SimpleFloat::registerAssets(ResourceAssetRegistry& assets) {
+  void SimpleFloat::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IFloat>(this, "", "Simple Floats");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Floats");
   }

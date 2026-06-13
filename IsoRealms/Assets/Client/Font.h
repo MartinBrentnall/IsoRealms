@@ -21,13 +21,13 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IFont.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Font : public Asset<Font, IFont, IResourceData> {
+  class Font : public Asset<Font, IFont, IComponentData> {
     public:
-    Font(IResourceData& owner);
+    Font(IComponentData& owner);
   };
 }

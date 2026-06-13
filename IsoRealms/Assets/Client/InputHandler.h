@@ -21,13 +21,13 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IInputHandler.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class InputHandler : public Asset<InputHandler, IInputHandler, IResourceData> {
+  class InputHandler : public Asset<InputHandler, IInputHandler, IComponentData> {
     public:
-    InputHandler(IResourceData& owner);
+    InputHandler(IComponentData& owner);
   };
 }

@@ -50,7 +50,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void SequenceTrackFloatInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void SequenceTrackFloatInstance::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     cStateNotifier = assets.add<IFloat>(this, parentID + "/" + cParent.getName(), "Sequences");
   }
 

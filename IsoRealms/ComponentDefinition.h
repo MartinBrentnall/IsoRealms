@@ -18,13 +18,12 @@
  */
 #pragma once
 
-#include <functional>
+#include <set>
+#include <string>
 
-namespace IsoRealms {
-  class IResourceAccessManager {
-    public:
-    virtual void confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) = 0;
-    virtual bool isResourceReadOnly() const = 0;
-    virtual void promoteResourceToProject() = 0;
-  };
-}
+#include "Assets/Type/IScreenListener.h"
+#include "Editing/Property/IProperty.h"
+#include "Exception/ComponentInitException.h"
+#include "IModuleHandle.h"
+#include "IComponentData.h"
+#include "Project/Registry/IAssetUser.h"

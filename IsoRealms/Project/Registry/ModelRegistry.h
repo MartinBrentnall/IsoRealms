@@ -22,14 +22,14 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IModel.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class ModelRegistry : public AssetClientManager<ModelRegistry, IResourceData, IModel> {
+  class ModelRegistry : public AssetClientManager<ModelRegistry, IComponentData, IModel> {
     public:
     ModelRegistry();
 
@@ -61,6 +61,6 @@ namespace IsoRealms {
       static Instance DUMMY;
     };
 
-    AssetLiteralDummy<IResourceData, IModel, Dummy> cNone;
+    AssetLiteralDummy<IComponentData, IModel, Dummy> cNone;
   };
 }

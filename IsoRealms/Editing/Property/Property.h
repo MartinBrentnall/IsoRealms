@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 
-#include "IsoRealms/Editing/IResourceAccessManager.h"
+#include "IsoRealms/Editing/IComponentAccessManager.h"
 #include "IsoRealms/PropertyData.h"
 
 #include "IProperty.h"
@@ -30,7 +30,7 @@
 namespace IsoRealms {
   class Property : public IProperty {
     public:
-    Property(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<void()> removeFunction);
+    Property(const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<void()> removeFunction);
     void confirmAccess(std::function<void()> confirm, std::function<void()> cancel);
 
     /************************\
@@ -43,7 +43,7 @@ namespace IsoRealms {
 
     private:
     PropertyData cData;
-    IResourceAccessManager& cConfirmationManager;
+    IComponentAccessManager& cConfirmationManager;
     const std::function<void()> cRemoveFunction;
   };
 }

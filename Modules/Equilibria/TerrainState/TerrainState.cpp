@@ -19,11 +19,11 @@
 #include "TerrainState.h"
 
 namespace IsoRealms::Equilibria {
-  TerrainState::TerrainState(Equilibria& equilibria, IResourceData& data) :
+  TerrainState::TerrainState(Equilibria& equilibria, IComponentData& data) :
             TerrainState(data, true, 1.0f) {
   }
 
-  void TerrainState::registerAssets(ResourceAssetRegistry& assets) {
+  void TerrainState::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBoolean>(this, "", "Equilibria Terrain States");
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Terrain States");
   }
@@ -91,11 +91,11 @@ namespace IsoRealms::Equilibria {
     cRuntimeValue = value;
   }
 
-  TerrainState::TerrainState(IResourceData& owner, bool state, float iconScale) :
-            cResourceData(owner),
+  TerrainState::TerrainState(IComponentData& owner, bool state, float iconScale) :
+            cComponentData(owner),
             cDefConditionElement([this]() {
-              std::string mResourceID = cResourceData.getResourceID();
-              return mResourceID.substr(mResourceID.find_last_of('/') + 1);
+              std::string mComponentID = cComponentData.getComponentID();
+              return mComponentID.substr(mComponentID.find_last_of('/') + 1);
             }, *this, this),
             cDefValue(state),
             cDefHintAction(owner.getDummyActionContext()),

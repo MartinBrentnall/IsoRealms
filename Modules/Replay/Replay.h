@@ -28,18 +28,18 @@
 namespace IsoRealms::Replay {
   class Replay : public IModuleHandle {
     public:
-    Replay(Project& project, IResourceTypeRegistry& registry);
+    Replay(Project& project, IComponentTypeRegistry& registry);
 
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ResourceAssetRegistry& assets) override;
+    void registerAssets(ComponentAssetRegistry& assets) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
         
     private:
-    ResourceTypeDefinition<Replay, Replayer> cResourceTypeReplayer;
+    ComponentTypeDefinition<Replay, Replayer> cComponentTypeReplayer;
   };
 }

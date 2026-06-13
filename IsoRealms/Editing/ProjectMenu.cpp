@@ -20,7 +20,7 @@
 
 #include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/Project.h"  
-#include "IsoRealms/Project/ResourceType.h"
+#include "IsoRealms/Project/ComponentType.h"
 
 #include "MenuItemAction.h"
 #include "MenuItemLoadModule.h"
@@ -50,9 +50,9 @@ namespace IsoRealms {
     // Build a map of categories within each module.
     std::map<Module*, std::set<std::string>> mCategoriesByModule;  
     for (const std::unique_ptr<Module>& mModule : cProject.getModules()) {
-      std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
-      for (ResourceType* mResourceType : mResourceTypes) {
-        mCategoriesByModule[mModule.get()].insert(mResourceType->getCategory());
+      std::vector<ComponentType*> mComponentTypes = mModule->getComponentTypes();
+      for (ComponentType* mComponentType : mComponentTypes) {
+        mCategoriesByModule[mModule.get()].insert(mComponentType->getCategory());
       }
     }
 
@@ -75,14 +75,14 @@ namespace IsoRealms {
         }
       }
 
-      // Add a menu item for each resource type within the module that does not have a category.
-      std::vector<ResourceType*> mResourceTypes = mModule->getResourceTypes();
-      for (ResourceType* mResourceType : mResourceTypes) {
-        if (mResourceType->getCategory().empty()) {
-          std::string mResourceTypeName = mResourceType->getPlural();
-          std::string mResourceTypeTooltip = mResourceType->getDescription();
-          addItem(std::make_unique<MenuItemAction>(mResourceTypeName, mResourceTypeTooltip, [this, &mManager, &mStyle, mResourceType]() {
-            mManager.openUI(std::make_unique<ResourceTypeMenu>(mManager, mStyle, *mResourceType), mResourceType->getPlural());
+      // Add a menu item for each component type within the module that does not have a category.
+      std::vector<ComponentType*> mComponentTypes = mModule->getComponentTypes();
+      for (ComponentType* mComponentType : mComponentTypes) {
+        if (mComponentType->getCategory().empty()) {
+          std::string mComponentTypeName = mComponentType->getPlural();
+          std::string mComponentTypeTooltip = mComponentType->getDescription();
+          addItem(std::make_unique<MenuItemAction>(mComponentTypeName, mComponentTypeTooltip, [this, &mManager, &mStyle, mComponentType]() {
+            mManager.openUI(std::make_unique<ComponentTypeMenu>(mManager, mStyle, *mComponentType), mComponentType->getPlural());
           }, 1));
         }
       }
@@ -105,11 +105,11 @@ namespace IsoRealms {
     addItem(std::make_unique<MenuItemLoadModule>(*this, std::move(property)));
   }
 
-  void ProjectMenu::openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
     throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
   }
 
-  void ProjectMenu::openProperties(IResourceData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
     throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
   }
 

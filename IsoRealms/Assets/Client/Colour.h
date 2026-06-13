@@ -21,21 +21,21 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IColour.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Colour : public Asset<Colour, IColour, IResourceData>,
+  class Colour : public Asset<Colour, IColour, IComponentData>,
                  public IStateListener {
     public:
-    Colour(IResourceData& owner, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 1.0f, std::function<void()> listener = nullptr);
+    Colour(IComponentData& owner, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 1.0f, std::function<void()> listener = nullptr);
 
-    /****************************************************\
-     * Implements Asset<Colour, IColour, IResourceData> *
-    \****************************************************/
-    IColour* createDefaultAsset(IResourceData& owner);
+    /*****************************************************\
+     * Implements Asset<Colour, IColour, IComponentData> *
+    \*****************************************************/
+    IColour* createDefaultAsset(IComponentData& owner);
 
     /***************************************\
      * Implements IStateListener<IColour*> *

@@ -28,16 +28,16 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a simple Colour variable.
+   * Component definition for a simple Colour variable.
    */
   class SimpleColour final : public IColour {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    SimpleColour(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    SimpleColour(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

@@ -27,15 +27,15 @@
 
 namespace IsoRealms {
   class Metadata;
-  class IResourceData;
+  class IComponentData;
 
   /**
    * A analogue input mapping to an analogue stick or similar.
    */
   class GameControllerAxis : public IAnalogueInput {
     public:
-    GameControllerAxis(const Metadata& metadata, IResourceData& owner);
-    GameControllerAxis(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    GameControllerAxis(const Metadata& metadata, IComponentData& owner);
+    GameControllerAxis(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /*****************************\
      * Implements IAnalogueInput *
@@ -47,7 +47,7 @@ namespace IsoRealms {
     std::string getLongName() const override;
     std::string getLocalizedName() const override;
     void loadCustomMapping(JSONObject object) override;
-    void registerAssets(ResourceAssetRegistry& assets) override;
+    void registerAssets(ComponentAssetRegistry& assets) override;
 
     /****************************************\
      * Implements IAsset via IAnalogueInput *

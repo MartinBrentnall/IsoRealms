@@ -26,7 +26,7 @@ namespace IsoRealms::Equilibria {
           cDefType(type) {
   }
 
-  IWorldEditorToolInstance* ZoneTool::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* ZoneTool::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cInstances.emplace_back(std::make_unique<Instance>(*this, editor)).get();
   }
 

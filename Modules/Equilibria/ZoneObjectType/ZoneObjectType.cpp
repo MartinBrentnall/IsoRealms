@@ -22,13 +22,13 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectType::ZoneObjectType(Equilibria& equilibria, IResourceData& data) :
+  ZoneObjectType::ZoneObjectType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),  
-            cResourceData(data),
+            cComponentData(data),
             cAssets(equilibria) {
   }
   
-  void ZoneObjectType::registerAssets(ResourceAssetRegistry& assets) {
+  void ZoneObjectType::registerAssets(ComponentAssetRegistry& assets) {
     // TODO
   }
     
@@ -71,8 +71,8 @@ namespace IsoRealms::Equilibria {
     return cEquilibria;
   }
 
-  IResourceData& ZoneObjectType::getResourceData() {
-    return cResourceData;
+  IComponentData& ZoneObjectType::getComponentData() {
+    return cComponentData;
   }
   
   void ZoneObjectType::registerEditor(IZoneObjectTraitEditor* editor) {
@@ -126,7 +126,7 @@ namespace IsoRealms::Equilibria {
     return cDefEditingProcessorID;
   }
 
-  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 

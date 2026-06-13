@@ -73,10 +73,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void PickUp::save(JSONObject object, int x, int y, int z) const {
-    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getResourceID(cDefType));
-    object.addInteger(JSON_X,    cDefX - x);
-    object.addInteger(JSON_Y,    cDefY - y);
-    object.addInteger(JSON_Z,    cDefZ - z);
+    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getComponentID(cDefType));
+    object.addInteger(JSON_X,   cDefX - x);
+    object.addInteger(JSON_Y,   cDefY - y);
+    object.addInteger(JSON_Z,   cDefZ - z);
   }
 
   bool PickUp::isType(const PickUpType* const type) const {

@@ -51,7 +51,7 @@ namespace IsoRealms {
           cLuaBindingApplication(cLuaState, &application),
           cLuaBindingProject(cLuaState, this),
           cLuaBindingOptions(cLuaState, &cDefOptions),
-          cResourcesLoaded(false),
+          cComponentsLoaded(false),
           cLoading(false),
           cProcessingInput(false),
           cRuntimeUpdatingRuntime(false),
@@ -69,12 +69,12 @@ namespace IsoRealms {
     cProcessingInput = true;
     cDefProjectFileStructure.rename(file, user);
 
-    // Load modules and any resources declared within them
-    std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(cDefProjectFileStructure);
+    // Load modules and any components declared within them
+    std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadComponents(cDefProjectFileStructure);
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
       mModule->registerAssets();
     }
-    cResourcesLoaded = true;
+    cComponentsLoaded = true;
 
     // Initialise everything
     for (unsigned int j = 0; j < cInitialisers.size(); j++) {
@@ -93,7 +93,7 @@ namespace IsoRealms {
     cLoading = false;
   }
 
-  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(ProjectFile& file) {
+  std::vector<std::unique_ptr<JSONDocument>> Project::loadComponents(ProjectFile& file) {
     std::unique_ptr<JSONDocument> mProjectDocument = std::make_unique<JSONDocument>(file.cFile);
     JSONObject mProjectObject = mProjectDocument->getObject(JSON_PROJECT);
     std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
@@ -117,14 +117,14 @@ namespace IsoRealms {
       JSONObject mModuleObject = mModuleThing.getValue();
       std::string mModuleName = mModuleThing.getName();
       Module* mModule = getModule(mModuleName);
-      mModule->loadResources(mModuleObject, &file);
+      mModule->loadComponents(mModuleObject, &file);
     }
 
     file.setDescription(mProjectObject);
     for (JSONValue mIncludeValue : mProjectObject.getArray(JSON_INCLUDE)) {
       JSONObject mIncludeObject = mIncludeValue.getObject();
       ProjectFile* mIncludedProject = file.cInclusions.emplace_back(std::make_unique<ProjectFile>(*this, mIncludeObject)).get();
-      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(*mIncludedProject);
+      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadComponents(*mIncludedProject);
       mOpenedDocuments.insert(mOpenedDocuments.end(), std::make_move_iterator(mMoreOpenedDocuments.begin()), std::make_move_iterator(mMoreOpenedDocuments.end()));
     }
     return mOpenedDocuments;
@@ -415,8 +415,8 @@ namespace IsoRealms {
 //       std::cout << "DEBUG!" << std::endl;
 //     }
 
-    if (cResourcesLoaded) {
-      throw ArgumentException("ERROR: Project::init: Resource initialisation is not allowed at this stage");
+    if (cComponentsLoaded) {
+      throw ArgumentException("ERROR: Project::init: Component initialisation is not allowed at this stage");
     }
     cInitialisers.push_back(initialiser);
   }
@@ -456,8 +456,8 @@ namespace IsoRealms {
     return cLoading;
   }
 
-  bool Project::areResourcesLoaded() const {
-    return cResourcesLoaded;
+  bool Project::areComponentsLoaded() const {
+    return cComponentsLoaded;
   }
   
   void Project::execute(IAction& action) {
@@ -476,27 +476,27 @@ namespace IsoRealms {
     cLuaState.setCurrentEventBindings(eventBindings);
   }
 
-  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IResourceData& owner, bool value) {
+  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IComponentData& owner, bool value) {
     return cBooleans.literal(user, owner, value);
   }
   
-  IColour* Project::createLiteralColour(IAssetUser<IColour>* user, IResourceData& owner, float red, float green, float blue, float alpha) {
+  IColour* Project::createLiteralColour(IAssetUser<IColour>* user, IComponentData& owner, float red, float green, float blue, float alpha) {
     return cColours.literal(user, owner, red, green, blue, alpha);
   }
   
-  IFloat* Project::createLiteralFloat(IAssetUser<IFloat>* user, IResourceData& owner, float value) {
+  IFloat* Project::createLiteralFloat(IAssetUser<IFloat>* user, IComponentData& owner, float value) {
     return cFloats.literal(user, owner, value);
   }
   
-  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IResourceData& owner, int value) {
+  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IComponentData& owner, int value) {
     return cIntegers.literal(user, owner, value);
   }
   
-  IString* Project::createLiteralString(IAssetUser<IString>* user, IResourceData& owner, const std::string& value) {
+  IString* Project::createLiteralString(IAssetUser<IString>* user, IComponentData& owner, const std::string& value) {
     return cStrings.literal(user, owner, value);
   }
   
-  IVertex*  Project::createLiteralVertex(IAssetUser<IVertex>* user, IResourceData& owner, float x, float y, float z) {
+  IVertex*  Project::createLiteralVertex(IAssetUser<IVertex>* user, IComponentData& owner, float x, float y, float z) {
     return cVertices.literal(user, owner, x, y, z);
   }
 
@@ -516,11 +516,11 @@ namespace IsoRealms {
     return getProjectPathPrefix(user) + mDataPath;
   }
 
-  std::string Project::getResourceID() const {
+  std::string Project::getComponentID() const {
     return ""; // TODO: Implement this.
   }
 
-  std::string Project::getResourceName() const {
+  std::string Project::getComponentName() const {
     return ""; // TODO: Implement this.
   }
 
@@ -568,7 +568,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  IResourceData& Project::getResourceData() {
+  IComponentData& Project::getComponentData() {
     return *this;
   }
 

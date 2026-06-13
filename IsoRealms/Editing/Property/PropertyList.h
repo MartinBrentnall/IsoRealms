@@ -30,7 +30,7 @@ namespace IsoRealms {
   
   class PropertyList : public Property {
     public:
-    PropertyList(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyList(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *

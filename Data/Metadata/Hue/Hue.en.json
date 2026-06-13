@@ -6,7 +6,7 @@
   },
   "assets": {
   },
-  "resources": {
+  "components": {
     "HueManager": {
       "singular": "Hue Manager",
       "plural": "Hue Managers",

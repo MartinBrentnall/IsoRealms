@@ -24,7 +24,7 @@
 
 namespace IsoRealms::Equilibria {
   ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type) :
-            cDefModel(type.getResourceData()) {
+            cDefModel(type.getComponentData()) {
   }
 
   ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :

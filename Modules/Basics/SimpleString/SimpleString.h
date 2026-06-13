@@ -24,16 +24,16 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a simple String variable.
+   * Component definition for a simple String variable.
    */
   class SimpleString final : public IString {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    SimpleString(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    SimpleString(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

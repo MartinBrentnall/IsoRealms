@@ -16,16 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ResourceInitException.h"
+#include "ComponentInitException.h"
 
 namespace IsoRealms {
-  ResourceInitException::ResourceInitException(const std::string& what) :
+  ComponentInitException::ComponentInitException(const std::string& what) :
           cWhat(what) {
     std::cout << "Constructed exception:" << std::endl;
     std::cout << cWhat << std::endl;
   }
   
-  const char* ResourceInitException::what() const noexcept {
+  const char* ComponentInitException::what() const noexcept {
     return cWhat.c_str();
   }
 }

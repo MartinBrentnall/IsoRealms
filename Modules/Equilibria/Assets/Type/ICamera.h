@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
 
   class ICamera : public IAsset {
     public:
-    virtual void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) = 0;
+    virtual void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) = 0;
     virtual void updateRuntime(unsigned int milliseconds) = 0;
     virtual void reset() = 0;
     virtual const IFloat* getYaw() const = 0;

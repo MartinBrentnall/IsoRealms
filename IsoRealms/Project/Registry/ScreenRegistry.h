@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IScreenListener.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Utils.h"
 
@@ -33,7 +33,7 @@
 namespace IsoRealms {
   class Project;
 
-  class ScreenRegistry : public AssetClientManager<ScreenRegistry, IResourceData, IScreen> {
+  class ScreenRegistry : public AssetClientManager<ScreenRegistry, IComponentData, IScreen> {
     private:
     class Proxy;
 
@@ -78,7 +78,7 @@ namespace IsoRealms {
     }
 
     IStateNotifier* add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges);
-    IStateNotifier* add(IAssetProvider<IResourceData, IScreen>* provider, const std::string& id, const std::string& category, bool stateChanges);
+    IStateNotifier* add(IAssetProvider<IComponentData, IScreen>* provider, const std::string& id, const std::string& category, bool stateChanges);
 
     // void remove(IScreen* asset) {
     //   std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mProxy = cProxyMapping.find(asset);
@@ -165,7 +165,7 @@ namespace IsoRealms {
     };
 
     Project& cProject;
-    AssetLiteralDummy<IResourceData, IScreen, Dummy> cNone;
+    AssetLiteralDummy<IComponentData, IScreen, Dummy> cNone;
     std::map<IScreen*, std::unique_ptr<Proxy>> cProxyMapping;
     std::vector<IScreenListener*> cListeners;
   };

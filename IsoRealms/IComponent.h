@@ -18,23 +18,31 @@
  */
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 namespace IsoRealms {
+  class JSONObject;
+  class IComponentData;
+  class Project;
   class ProjectFile;
-  
-  /**
-   * Interface to be implemented by classes that use resources, to be notified
-   * of changes to the resources that they are using.
-   */
-  template <typename TYPE> class IResourceUser {
+  class IPropertyMaker;
+
+  class IComponent {
     public:
-      
-    /**
-     * To be called when a resource is about to be destructed.
-     * 
-     * @param resource The resource that is about to be destructed.
-     */
-    virtual void relinquish(TYPE* resource) = 0;
+    virtual const std::string& getName() const = 0;
     virtual bool isReadOnly() const = 0;
-    virtual void setOwner(ProjectFile* owner) = 0;
+    virtual bool needsSaving(const ProjectFile* savingProject) = 0;
+    virtual void registerAssets() = 0;
+    virtual bool renderIcon() = 0;
+    virtual void getProperties(IPropertyMaker& propertyMaker) = 0;
+    virtual IComponentData& getComponentData() = 0;
+    virtual bool hasReadOnlyReferences() const = 0;
+    virtual void overrideReadOnlyReferences() = 0;
+    virtual ProjectFile* getProjectFile() const = 0;
+//    virtual void hintInUse(bool inUse) = 0;
+    
+    virtual ~IComponent() {}
   };
 }

@@ -25,7 +25,7 @@
 
 namespace IsoRealms {
   class IDialogManager;
-  class IResourceData;
+  class IComponentData;
   class Project;
 
   /**
@@ -37,12 +37,12 @@ namespace IsoRealms {
     /**
      * Load complex editor content that cannot be represented as simple properties.
      */
-    virtual void load(IResourceData& resourceData, JSONObject object) {}
+    virtual void load(IComponentData& resourceData, JSONObject object) {}
 
     /**
      * Persist complex editor content that cannot be represented as simple properties.
      */
-    virtual void save(IResourceData& resourceData, JSONObject object) const {}
+    virtual void save(IComponentData& resourceData, JSONObject object) const {}
 
     /**
      * Create a screen to edit this editable.

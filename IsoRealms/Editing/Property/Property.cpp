@@ -19,7 +19,7 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  Property::Property(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<void()> removeFunction) :
+  Property::Property(const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<void()> removeFunction) :
             cData(data),
             cConfirmationManager(resourceAccessManager),
             cRemoveFunction(removeFunction) {
@@ -30,9 +30,9 @@ namespace IsoRealms {
   }
 
   void Property::confirmAccess(std::function<void()> confirm, std::function<void()> cancel) {
-    if (cConfirmationManager.isResourceReadOnly()) {
-      cConfirmationManager.confirm("TODO: The resource you're modifying is read-only.  In order to modify this resource, it will need to be promoted to the main project file.", [this, confirm]() {
-        cConfirmationManager.promoteResourceToProject();
+    if (cConfirmationManager.isComponentReadOnly()) {
+      cConfirmationManager.confirm("TODO: The component you're modifying is read-only.  In order to modify this resource, it will need to be promoted to the main project file.", [this, confirm]() {
+        cConfirmationManager.promoteComponentToProject();
         confirm();
       }, [this, cancel]() {
         cancel();

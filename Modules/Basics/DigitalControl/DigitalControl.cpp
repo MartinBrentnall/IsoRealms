@@ -21,15 +21,15 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  DigitalControl::DigitalControl(IResourceData& owner) :
+  DigitalControl::DigitalControl(IComponentData& owner) :
             cProject(owner.getProject()),
-            cResourceData(owner),
+            cComponentData(owner),
             cRuntimeState(false),
             cLuaBinding(owner.getProject().getLuaState(), this),
             cStateNotifier(nullptr) {
   }
 
-  DigitalControl::DigitalControl(IResourceData& owner, JSONObject object) :
+  DigitalControl::DigitalControl(IComponentData& owner, JSONObject object) :
             DigitalControl(owner) {
     for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingValue.getObject();
@@ -39,17 +39,17 @@ namespace IsoRealms::Basics {
     }
   }
 
-  DigitalControl::DigitalControl(Basics& basics, IResourceData& data) :
+  DigitalControl::DigitalControl(Basics& basics, IComponentData& data) :
             DigitalControl(data) {
   }
   
-  void DigitalControl::registerAssets(ResourceAssetRegistry& assets) {
+  void DigitalControl::registerAssets(ComponentAssetRegistry& assets) {
     cStateNotifier = assets.add<IBoolean>(this,         "", "Digital Inputs");
     assets.add<IInputHandler>(            this,         "", "Digital Inputs");
     assets.add<IBinding>(                 &cLuaBinding, "", "Digital Inputs");
   }
 
-  void DigitalControl::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void DigitalControl::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     cStateNotifier = assets.add<IBoolean>(this,         parentID, "Digital Inputs");
     assets.add<IInputHandler>(            this,         parentID, "Digital Inputs");
     assets.add<IBinding>(                 &cLuaBinding, parentID, "Digital Inputs");
@@ -69,7 +69,7 @@ namespace IsoRealms::Basics {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });
     }, [this]()->InputMapping& {
-      std::shared_ptr<DigitalInput> mInput = std::make_shared<DigitalInput>(cResourceData);
+      std::shared_ptr<DigitalInput> mInput = std::make_shared<DigitalInput>(cComponentData);
       mInput->setID("KeyboardKey");
       return *cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
     });
@@ -213,7 +213,7 @@ namespace IsoRealms::Basics {
     cRuntimeMapping.clear();
     for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingObject = mMappingsValue.getObject();
-      std::shared_ptr<DigitalInput> mInput = std::make_shared<DigitalInput>(cResourceData);
+      std::shared_ptr<DigitalInput> mInput = std::make_shared<DigitalInput>(cComponentData);
       mInput->set(mMappingObject);
       cRuntimeMapping.emplace_back(std::make_unique<InputMapping>(mInput));
     }

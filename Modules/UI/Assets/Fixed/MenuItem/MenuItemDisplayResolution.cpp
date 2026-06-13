@@ -22,12 +22,12 @@
 
 namespace IsoRealms::UI {
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu) :
-            cProject(menu.getResourceData().getProject()),
-            cHatHandler(menu.getResourceData().getProject().getApplication().getHatHandler()),
+            cProject(menu.getComponentData().getProject()),
+            cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
             cDefID(""),
             cDefLabel(""),
-            cLuaBinding(menu.getResourceData().getProject().getLuaState(), this) {
+            cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 
   MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object) :
@@ -42,7 +42,7 @@ namespace IsoRealms::UI {
     return cRuntimeResolutions[cRuntimeSelectedResolution];
   }
 
-  void MenuItemDisplayResolution::registerAssets(ResourceAssetRegistry& assets) {
+  void MenuItemDisplayResolution::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Display Resolutions");
   }
   
@@ -116,7 +116,7 @@ namespace IsoRealms::UI {
   void MenuItemDisplayResolution::getAssetProperties(IPropertyMaker& owner) {
     owner.createPropertyNativeString(JSON_ID,    [this]() {return cDefID;},    [this](const std::string& value) {
       cDefID = value;
-      cMenu.getResourceData().reregisterAssets();
+      cMenu.getComponentData().reregisterAssets();
     });
     owner.createPropertyNativeString(JSON_LABEL, [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
   }

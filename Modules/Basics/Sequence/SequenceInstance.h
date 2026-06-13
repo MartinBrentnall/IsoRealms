@@ -39,7 +39,7 @@ namespace IsoRealms::Basics {
 
     Sequence& getSequence() const;
 
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID);
     void stopPreview();
     void setPreviewPosition(long position);
     void update(unsigned int milliseconds);

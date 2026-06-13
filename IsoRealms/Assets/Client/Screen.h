@@ -21,13 +21,13 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IScreen.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Screen : public Asset<Screen, IScreen, IResourceData> {
+  class Screen : public Asset<Screen, IScreen, IComponentData> {
     public:
-    Screen(IResourceData& owner);
+    Screen(IComponentData& owner);
   };
 }

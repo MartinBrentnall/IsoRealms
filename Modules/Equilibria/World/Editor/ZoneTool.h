@@ -37,7 +37,7 @@ namespace IsoRealms::Equilibria {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;

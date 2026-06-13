@@ -21,14 +21,14 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner) :
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner) :
             cMetadata(metadata),
             cDefName(metadata.getPropertyData("DefaultName").getName()),
             cDefControl(owner),
             cDefOutputValue(0.0f) {
   }
 
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner, JSONObject object) :
             cMetadata(metadata),
             cDefName(object.getString(JSON_NAME)),
             cDefControl(owner, object),
@@ -77,7 +77,7 @@ namespace IsoRealms::Basics {
     cDefControl.loadCustomMapping(object);
   }
 
-  void DigitalToAnalogueMapping::registerAssets(ResourceAssetRegistry& assets) {
+  void DigitalToAnalogueMapping::registerAssets(ComponentAssetRegistry& assets) {
     cDefControl.registerAssets(assets, cDefName);
   }
 

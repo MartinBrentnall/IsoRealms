@@ -24,7 +24,7 @@ namespace IsoRealms {
   class ProjectFile;
   
   /**
-   * Interface to be implemented by resources that use assets, to be notified
+   * Interface to be implemented by components that use assets, to be notified
    * of changes to the assets that they are using.
    */
   template <typename TYPE> class IAssetUser {

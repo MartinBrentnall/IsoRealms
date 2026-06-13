@@ -21,7 +21,7 @@
 #include "SequenceTrackRegistry.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackRegistry::SequenceTrackRegistry(IResourceTypeRegistry& registry) :
+  SequenceTrackRegistry::SequenceTrackRegistry(IComponentTypeRegistry& registry) :
             cAction(registry.getAssetMetadata("SequenceTrackAction")),
             cAudio(registry.getAssetMetadata("SequenceTrackAudio")),
             cColour(registry.getAssetMetadata("SequenceTrackColour")),

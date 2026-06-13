@@ -19,7 +19,7 @@
 #include "Prompt.h"
 
 namespace IsoRealms::UI {
-  Prompt::Prompt(UI& ui, IResourceData& data) :
+  Prompt::Prompt(UI& ui, IComponentData& data) :
             cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefFont(data),
             cDefSelectionColour(data, 1.0f, 1.0f, 1.0f),
@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  void Prompt::registerAssets(ResourceAssetRegistry& assets) {
+  void Prompt::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Prompts");
     assets.add<IScreen>(this, "", "Prompts");
     assets.add<IBinding>(&cLuaBinding, "", "Prompts");

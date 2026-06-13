@@ -26,18 +26,18 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition dispatches inputs to multiple input handlers.  When
+   * Component definition dispatches inputs to multiple input handlers.  When
    * an input handler consumes an input, it is not passed to any further
    * input handlers.
    */
   class InputGroup final : public IInputHandler {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    InputGroup(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    InputGroup(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     private:
     
     // External interfaces.
-    IResourceData& cResource;
+    IComponentData& cComponentData;
 
     // Definition data.
     std::vector<std::unique_ptr<InputHandler>> cDefInputHandlers; /// Collection of input handlers.

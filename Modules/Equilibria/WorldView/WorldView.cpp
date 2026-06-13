@@ -21,9 +21,9 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  WorldView::WorldView(Equilibria& equilibria, IResourceData& data) :
+  WorldView::WorldView(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cResourceData(data),
+            cComponentData(data),
             cDefWorld(*this),
             cDefCamera(*this),
             cDefZoneViewType(*this),
@@ -32,7 +32,7 @@ namespace IsoRealms::Equilibria {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
     
-  void WorldView::registerAssets(ResourceAssetRegistry& assets) {
+  void WorldView::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Equilibria World Views");
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/World Views");
     cDefCamera->registerAssets(assets, "Camera");
@@ -55,7 +55,7 @@ namespace IsoRealms::Equilibria {
     owner.createPropertyNativeFloat( "zoom",   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
 
     if (owner.loadsPersistedValues()) {
-      cResourceData.getProject().init([this]() {
+      cComponentData.getProject().init([this]() {
         cDefWorld->registerView(*this);
         std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
         for (std::unique_ptr<Zone>& mZone : mZones) {
@@ -74,15 +74,15 @@ namespace IsoRealms::Equilibria {
   }
 
   Project& WorldView::getProject() const {
-    return cResourceData.getProject();
+    return cComponentData.getProject();
   }
 
   bool WorldView::isReadOnly() const {
-    return cResourceData.isReadOnly();
+    return cComponentData.isReadOnly();
   }
 
   void WorldView::setOwner(ProjectFile* owner) {
-    cResourceData.setOwner(owner);
+    cComponentData.setOwner(owner);
   }
 
   void WorldView::updateRuntime(unsigned int milliseconds) {
@@ -123,8 +123,8 @@ namespace IsoRealms::Equilibria {
     return cEquilibria;
   }
 
-  IResourceData& WorldView::getResourceData() {
-    return cResourceData;
+  IComponentData& WorldView::getComponentData() {
+    return cComponentData;
   }
 
   ICamera* WorldView::getCamera() {

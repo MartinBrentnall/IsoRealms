@@ -31,7 +31,7 @@ namespace IsoRealms::Equilibria {
             CameraOverview(metadata, view) {
   }
 
-  void CameraOverview::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void CameraOverview::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     // Nothing to do.
   }
 

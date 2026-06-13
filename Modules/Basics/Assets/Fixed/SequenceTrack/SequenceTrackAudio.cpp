@@ -23,15 +23,15 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackAudio::SequenceTrackAudio(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence.getResourceData(), sequence),
+            SequenceTrackBase(sequence.getComponentData(), sequence),
             cMetadata(metadata),
-            cDefVolume(sequence.getResourceData(), 1.0f) {
+            cDefVolume(sequence.getComponentData(), 1.0f) {
   }
 
   SequenceTrackAudio::SequenceTrackAudio(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getResourceData(), sequence, object),
+            SequenceTrackBase(sequence.getComponentData(), sequence, object),
             cMetadata(metadata),
-            cDefVolume(sequence.getResourceData(), 1.0f) {
+            cDefVolume(sequence.getComponentData(), 1.0f) {
     cDefVolume.init(object, JSON_VOLUME);
   }
 

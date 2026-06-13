@@ -21,21 +21,21 @@
 #include "SequenceTrackAudio.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, unsigned int time) :
+  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, unsigned int time) :
               cParent(parent),
               cEnd(*this),
               cDefTime(time),
               cDefFadeIn(0),
               cDefFadeOut(0),
               cDefFile(owner.getProject(), [this]() {
-                std::string mResource = cDefFile.getPath();
-                if (!cMusic.openFromFile(mResource)) {
+                std::string mComponent = cDefFile.getPath();
+                if (!cMusic.openFromFile(mComponent)) {
                   std::cout << "WARNING: SequenceTrackAudioEvent::SequenceTrackAudioEvent: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
                 }
               }) {
   }
 
-  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IResourceData& owner, JSONObject object) :
+  SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, JSONObject object) :
             SequenceTrackAudioEvent(parent, owner, object.getInteger(JSON_TIME)) {
   }
 

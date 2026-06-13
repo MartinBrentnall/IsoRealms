@@ -26,14 +26,14 @@ namespace IsoRealms::Spindizzy {
   class Spindizzy;
 
   /**
-   * Resource definition for a top craft model, where the colour of the top,
+   * Component definition for a top craft model, where the colour of the top,
    * sides, and outline is configurable.
    */
   class Top final : public IModel,
                     public IModelInstance {
     public:
-    Top(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    Top(Spindizzy& spindizzy, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
     
     private:
     
-    // Resource definition constants.
+    // Component definition constants.
     inline static const float OUTLINE        = 0.82f;
     inline static const float SPINDLE_WIDTH  = 0.03f;
     inline static const float SPINDLE_HEIGHT = 0.25f;

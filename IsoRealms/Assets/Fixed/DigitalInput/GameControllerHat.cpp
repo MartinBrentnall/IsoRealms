@@ -29,14 +29,14 @@ namespace IsoRealms {
           cMetadata(metadata) {
   }
 
-  GameControllerHat::GameControllerHat(const Metadata& metadata, IResourceData& owner) :
+  GameControllerHat::GameControllerHat(const Metadata& metadata, IComponentData& owner) :
           cMetadata(metadata),
           cHatHandler(owner.getProject().getApplication().getHatHandler()),
           cDirectionChooser(metadata),
           cDirection(HatHandler::Direction::HAT_RIGHT) {
   }
 
-  GameControllerHat::GameControllerHat(const Metadata& metadata, IResourceData& owner, JSONObject object) :
+  GameControllerHat::GameControllerHat(const Metadata& metadata, IComponentData& owner, JSONObject object) :
           GameControllerHat(metadata, owner) {
     cDirection = getDirection(object.getString(JSON_DIRECTION));
   }

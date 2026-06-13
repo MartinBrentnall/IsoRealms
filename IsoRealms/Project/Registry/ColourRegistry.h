@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteral.h"
 #include "IsoRealms/Assets/Type/IColour.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
@@ -31,27 +31,27 @@
 
 namespace IsoRealms {
   class Application;
-  class IResourceData;
+  class IComponentData;
   class Project;
 
-  class ColourRegistry : public AssetClientManager<ColourRegistry, IResourceData, IColour> {
+  class ColourRegistry : public AssetClientManager<ColourRegistry, IComponentData, IColour> {
     public:
     ColourRegistry(Application& application);
 
-    IColour* literal(IAssetUser<IColour>* client, IResourceData& owner, float red, float green, float blue, float alpha) {
+    IColour* literal(IAssetUser<IColour>* client, IComponentData& owner, float red, float green, float blue, float alpha) {
       IColour* mColour = cLiteral.createLiteralAsset(owner, red, green, blue, alpha);
       registerClient(client, &cLiteral, mColour);
       return mColour;
     }
 
     private:
-    class Literal : public AssetLiteral<IResourceData, IColour> {
+    class Literal : public AssetLiteral<IComponentData, IColour> {
       public:
       explicit Literal(const Metadata& metadata) :
                 cMetadata(metadata) {
       }
 
-      IColour* createLiteralAsset(IResourceData& owner, float red, float green, float blue, float alpha) const {
+      IColour* createLiteralAsset(IComponentData& owner, float red, float green, float blue, float alpha) const {
         return addAsset([&owner, red, green, blue, alpha]() {return std::make_unique<Instance>(owner.getProject(), red, green, blue, alpha);});
       }
 
@@ -62,11 +62,11 @@ namespace IsoRealms {
         return true;
       }
 
-      std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner) const override {
+      std::unique_ptr<IColour> createLiteralAsset(IComponentData& owner) const override {
         return std::make_unique<Instance>(owner.getProject());
       }
 
-      std::unique_ptr<IColour> createLiteralAsset(IResourceData& owner, JSONObject object) const override {
+      std::unique_ptr<IColour> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(owner.getProject(), object.getFloat(JSON_RED), object.getFloat(JSON_GREEN), object.getFloat(JSON_BLUE), object.getFloat(JSON_ALPHA));
       }
 

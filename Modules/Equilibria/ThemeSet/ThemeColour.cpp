@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
             cLuaBinding(parent.getEquilibria().getProject().getLuaState(), this) {
   }
 
-  void ThemeColour::registerAssets(ResourceAssetRegistry& assets, const std::string& id) {
+  void ThemeColour::registerAssets(ComponentAssetRegistry& assets, const std::string& id) {
     assets.add<IColour>(this, id, "Colours from Equilibria Themes"); // TODO: Localize this.
     assets.add<IBinding>(&cLuaBinding, "ThemeColour/" + id, "Equilibria/Theme Colours");
   }

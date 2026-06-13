@@ -33,7 +33,7 @@ namespace IsoRealms::UI {
     LayoutComponent(Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio);
     LayoutComponent(Layout& layout, JSONObject object);
     void reset();
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& name);
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& name);
     void render(float scale, float aspectRatio);
     void renderRegion(float scale, float aspectRatio);
     void renderEditor(float scale, float aspectRatio);

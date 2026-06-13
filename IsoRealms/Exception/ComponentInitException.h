@@ -18,11 +18,26 @@
  */
 #pragma once
 
-namespace IsoRealms {
-  class IResource;
+#include <exception>
+#include <iostream>
+#include <string>
 
-  class IResourceListener {
+namespace IsoRealms {
+  
+  /**
+   * Exception to be thrown when attempting to assign an ID that cannot be
+   * used to an asset.
+   */
+  class ComponentInitException : public std::exception {
+    private:
+    const std::string cWhat;
+    
     public:
-    virtual void resourceRemoved(IResource* resource) = 0;
+    ComponentInitException(const std::string& what);
+    
+    /*****************************\
+     * Implements std::exception *
+    \*****************************/
+    const char* what() const noexcept override;
   };
 }

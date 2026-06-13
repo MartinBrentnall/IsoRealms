@@ -21,8 +21,8 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  DigitalInput::DigitalInput(IResourceData& owner) :
-            Asset<DigitalInput, IDigitalInput, IResourceData>(owner) {
+  DigitalInput::DigitalInput(IComponentData& owner) :
+            Asset<DigitalInput, IDigitalInput, IComponentData>(owner) {
   }
 
   std::string DigitalInput::getTreeItemLabel() const {

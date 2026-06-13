@@ -46,7 +46,7 @@ namespace IsoRealms::UI {
 
   class UI : public IModuleHandle {
     public:
-    UI(Project& project, IResourceTypeRegistry& registry);
+    UI(Project& project, IComponentTypeRegistry& registry);
 
     // Interface access (used by all).
     const Metadata& getMetadata(const std::string& key) const;
@@ -59,7 +59,7 @@ namespace IsoRealms::UI {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ResourceAssetRegistry& assets) override;
+    void registerAssets(ComponentAssetRegistry& assets) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
@@ -115,7 +115,7 @@ namespace IsoRealms::UI {
 
     // External interfaces.
     Project& cProject;
-    IResourceTypeRegistry& cModule;
+    IComponentTypeRegistry& cModule;
 
     // Asset registries
     LayoutLocationRegistry cLayoutLocations;
@@ -123,19 +123,19 @@ namespace IsoRealms::UI {
     MenuItemRegistry       cMenuItems;
 
     // Built-in providers for ad-hoc screens.
-    AssetInstanced<IResourceData, IScreen, ScreenGradient> cProviderScreenGradient;
-    AssetInstanced<IResourceData, IScreen, ScreenModel>    cProviderScreenModel;
-    AssetInstanced<IResourceData, IScreen, ScreenPanel>    cProviderScreenPanel;
-    AssetInstanced<IResourceData, IScreen, ScreenText>     cProviderScreenText;
+    AssetInstanced<IComponentData, IScreen, ScreenGradient> cProviderScreenGradient;
+    AssetInstanced<IComponentData, IScreen, ScreenModel>    cProviderScreenModel;
+    AssetInstanced<IComponentData, IScreen, ScreenPanel>    cProviderScreenPanel;
+    AssetInstanced<IComponentData, IScreen, ScreenText>     cProviderScreenText;
 
-    AssetInstanced<IResourceData, IString, StringTime> cProviderStringTime;
+    AssetInstanced<IComponentData, IString, StringTime> cProviderStringTime;
 
-    ResourceTypeDefinition<UI, Layout>          cResourceTypeLayout;
-    ResourceTypeDefinition<UI, Menu>            cResourceTypeMenu;
-    ResourceTypeDefinition<UI, Prompt>          cResourceTypePrompt;
-    ResourceTypeDefinition<UI, ScreenFader>     cResourceTypeScreenFader;
-    ResourceTypeDefinition<UI, Throbber>        cResourceTypeThrobber;
-    ResourceTypeDefinition<UI, VirtualKeyboard> cResourceTypeVirtualKeyboard;
+    ComponentTypeDefinition<UI, Layout>          cComponentTypeLayout;
+    ComponentTypeDefinition<UI, Menu>            cComponentTypeMenu;
+    ComponentTypeDefinition<UI, Prompt>          cComponentTypePrompt;
+    ComponentTypeDefinition<UI, ScreenFader>     cComponentTypeScreenFader;
+    ComponentTypeDefinition<UI, Throbber>        cComponentTypeThrobber;
+    ComponentTypeDefinition<UI, VirtualKeyboard> cComponentTypeVirtualKeyboard;
 
     template <class TYPE> friend struct AssetContainerTraits;
   };

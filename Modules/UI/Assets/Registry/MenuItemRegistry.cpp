@@ -21,7 +21,7 @@
 #include "MenuItemRegistry.h"
 
 namespace IsoRealms::UI {
-  MenuItemRegistry::MenuItemRegistry(IResourceTypeRegistry& registry) :
+  MenuItemRegistry::MenuItemRegistry(IComponentTypeRegistry& registry) :
             cAction(registry.getAssetMetadata("MenuItemAction")),
             cBoolean(registry.getAssetMetadata("MenuItemBoolean")),
             cDigitalInput(registry.getAssetMetadata("MenuItemDigitalInput")),

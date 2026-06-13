@@ -27,7 +27,7 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyCode::PropertyCode(Project& project, const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) :
+  PropertyCode::PropertyCode(Project& project, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cProject(project),
             cGetter(getter),

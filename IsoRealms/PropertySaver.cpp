@@ -21,16 +21,16 @@
 #include "Assets/Type/IEditable.h"
 #include "Condition/Condition.h"
 #include "Editing/Property/ITreeSelectorObject.h"
-#include "IResourceData.h"
+#include "IComponentData.h"
 
 namespace IsoRealms {
-  PropertySaver::PropertySaver(IResourceData& resourceData, JSONObject object) :
-            cResourceData(resourceData) {
+  PropertySaver::PropertySaver(IComponentData& resourceData, JSONObject object) :
+            cComponentData(resourceData) {
     cObjects.push_back(object);
   }
 
-  IResourceData& PropertySaver::getResourceData() {
-    return cResourceData;
+  IComponentData& PropertySaver::getComponentData() {
+    return cComponentData;
   }
 
   JSONObject& PropertySaver::currentObject() {
@@ -69,7 +69,7 @@ namespace IsoRealms {
 
   void PropertySaver::saveTreeSelectorAssetProperties(const ITreeSelectorObject& item, JSONObject object, const Options& hint) const {
     if (item.hasConfiguration()) {
-      PropertySaver mSaver(cResourceData, object);
+      PropertySaver mSaver(cComponentData, object);
       const_cast<ITreeSelectorObject&>(item).getAssetProperties(mSaver);
     }
   }
@@ -106,7 +106,7 @@ namespace IsoRealms {
   }
 
   void PropertySaver::createPropertyEditor(const std::string& key, IEditable* editable) {
-    editable->save(cResourceData, currentObject());
+    editable->save(cComponentData, currentObject());
   }
 
   void PropertySaver::createPropertyKey(const std::string& key, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) {
@@ -179,11 +179,11 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  bool PropertySaver::isResourceReadOnly() const {
+  bool PropertySaver::isComponentReadOnly() const {
     return false;
   }
 
-  void PropertySaver::promoteResourceToProject() {
+  void PropertySaver::promoteComponentToProject() {
     // Nothing to do.
   }
 }

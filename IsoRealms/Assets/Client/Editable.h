@@ -21,13 +21,13 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IEditable.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Editable : public Asset<Editable, IEditable, IResourceData> {
+  class Editable : public Asset<Editable, IEditable, IComponentData> {
     public:
-    Editable(IResourceData& owner);
+    Editable(IComponentData& owner);
   };
 }

@@ -21,7 +21,7 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  Top::Top(Spindizzy& spindizzy, IResourceData& data) :
+  Top::Top(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
             cDefColourTop(    data, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefColourSide(   data, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
@@ -33,7 +33,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
             
-  void Top::registerAssets(ResourceAssetRegistry& assets) {
+  void Top::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Spindizzy Top Models");
   }
     

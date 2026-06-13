@@ -19,11 +19,11 @@
 #include "InputHandler.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  InputHandler::InputHandler(IResourceData& owner) :
-            Asset<InputHandler, IInputHandler, IResourceData>(owner) {
+  InputHandler::InputHandler(IComponentData& owner) :
+            Asset<InputHandler, IInputHandler, IComponentData>(owner) {
   }
 }

@@ -20,17 +20,17 @@
 #include "Boolean.h"
 
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Boolean::Boolean(IResourceData& owner, bool defaultValue, std::function<void(bool)> listener) :
-            Asset<Boolean, IBoolean, IResourceData>(owner, owner.getAssetManager().createLiteralBoolean(this, owner, defaultValue)),
+  Boolean::Boolean(IComponentData& owner, bool defaultValue, std::function<void(bool)> listener) :
+            Asset<Boolean, IBoolean, IComponentData>(owner, owner.getAssetManager().createLiteralBoolean(this, owner, defaultValue)),
             cDefaultValue(defaultValue),
             cListener(listener) {
   }
 
-  IBoolean* Boolean::createDefaultAsset(IResourceData& owner) {
+  IBoolean* Boolean::createDefaultAsset(IComponentData& owner) {
     return owner.getAssetManager().createLiteralBoolean(this, owner, cDefaultValue);
   }
 

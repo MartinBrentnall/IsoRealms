@@ -29,17 +29,17 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource definition for a sound loaded from a file that can be played as
+   * Component definition for a sound loaded from a file that can be played as
    * an action.  File type support is provided by SFML.
    */
   class FileSound final : public IAction {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    FileSound(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    FileSound(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

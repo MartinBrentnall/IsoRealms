@@ -22,14 +22,14 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IBindingType.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
 #include "IAssetUser.h"
 
 namespace IsoRealms {
-  class BindingTypeRegistry : public AssetClientManager<BindingTypeRegistry, IResourceData, IBindingType> {
+  class BindingTypeRegistry : public AssetClientManager<BindingTypeRegistry, IComponentData, IBindingType> {
     public:
     BindingTypeRegistry();
 
@@ -67,7 +67,7 @@ namespace IsoRealms {
       bool isDefaultConfiguration() const override;
     };
 
-    AssetLiteralDummy<IResourceData, IBindingType, Dummy> cDummy;
+    AssetLiteralDummy<IComponentData, IBindingType, Dummy> cDummy;
     Literal cActions;
     Literal cBooleans;
     Literal cColours;

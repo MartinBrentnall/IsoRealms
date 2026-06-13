@@ -3,7 +3,7 @@
   "description": "Functionality for recording and playing back inputs.",
   "assets": {
   },
-  "resources": {
+  "components": {
     "Replayer": {
       "singular": "Replayer",
       "plural": "Replayers",

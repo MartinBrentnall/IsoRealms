@@ -24,9 +24,9 @@
 
 namespace IsoRealms::Equilibria {
   WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner) :
-            cDefTextureBottom(owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
-            cDefTextureMiddle(owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
-            cDefTextureTop(   owner.getResourceData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
+            cDefTextureBottom(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
+            cDefTextureMiddle(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
+            cDefTextureTop(   owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 
   WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner, JSONObject object) :

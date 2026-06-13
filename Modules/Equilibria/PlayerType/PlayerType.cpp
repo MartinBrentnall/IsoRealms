@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  PlayerType::PlayerType(Equilibria& equilibria, IResourceData& data) :
+  PlayerType::PlayerType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),
             cWallBounceActionContext(data, cWallBounceBindings),
@@ -53,7 +53,7 @@ namespace IsoRealms::Equilibria {
     cEquilibria.added(this);
   }
 
-  void PlayerType::registerAssets(ResourceAssetRegistry& assets) {
+  void PlayerType::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Players");
   }
 
@@ -203,7 +203,7 @@ namespace IsoRealms::Equilibria {
   }
 
   std::string PlayerType::getPhysicalObjectTypeID() const {
-    return cEquilibria.getResourceID(this);
+    return cEquilibria.getComponentID(this);
   }
   
   std::string PlayerType::getPhysicalObjectTypeBindingID(const IBinding* binding) const {
@@ -214,7 +214,7 @@ namespace IsoRealms::Equilibria {
     cEquilibria.getTreeItemsPlayer(getTreeItemInfoFunction);
   }
 
-  IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 

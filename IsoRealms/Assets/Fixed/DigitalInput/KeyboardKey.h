@@ -27,7 +27,7 @@
 
 namespace IsoRealms {
   class Metadata;
-  class IResourceData;
+  class IComponentData;
 
   /**
    * A digital input mapping to a key on a keyboard.
@@ -56,8 +56,8 @@ namespace IsoRealms {
      */
     static std::string getName(const sf::Keyboard::Key& key);
     
-    KeyboardKey(const Metadata& metadata, IResourceData& owner);
-    KeyboardKey(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    KeyboardKey(const Metadata& metadata, IComponentData& owner);
+    KeyboardKey(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /****************************\
      * Implements IDigitalInput *

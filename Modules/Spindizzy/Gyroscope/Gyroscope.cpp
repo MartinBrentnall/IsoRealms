@@ -21,7 +21,7 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  Gyroscope::Gyroscope(Spindizzy& spindizzy, IResourceData& data) :
+  Gyroscope::Gyroscope(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
             cDefQuadrant{Colour(data, 1.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
                          Colour(data, 1.0f, 1.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
@@ -34,7 +34,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
 
-  void Gyroscope::registerAssets(ResourceAssetRegistry& assets) {
+  void Gyroscope::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Spindizzy Gyroscope Models");
   }
     

@@ -22,7 +22,7 @@
 
 #include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
 #include "IsoRealms/Assets/Type/IEditable.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
 #include "AssetClientManager.h"
@@ -31,7 +31,7 @@
 namespace IsoRealms {
   class Project;
 
-  class EditableRegistry : public AssetClientManager<EditableRegistry, IResourceData, IEditable> {
+  class EditableRegistry : public AssetClientManager<EditableRegistry, IComponentData, IEditable> {
     public:
     EditableRegistry();
 
@@ -79,6 +79,6 @@ namespace IsoRealms {
       static Instance DUMMY; /// Dummy editable screen.
     };
 
-    AssetLiteralDummy<IResourceData, IEditable, Dummy> cNone;
+    AssetLiteralDummy<IComponentData, IEditable, Dummy> cNone;
   };
 }

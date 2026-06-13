@@ -26,7 +26,7 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Resource that enables configuration of an IsoRealms project.
+   * Component that enables configuration of an IsoRealms project.
    */
   class ProjectConfigurer final : public IScreen,
                                   public IInputHandler,
@@ -34,11 +34,11 @@ namespace IsoRealms::Basics {
                                   public IEventBindings {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    ProjectConfigurer(Basics& basics, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    ProjectConfigurer(Basics& basics, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

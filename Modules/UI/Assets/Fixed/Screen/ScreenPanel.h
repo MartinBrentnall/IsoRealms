@@ -28,8 +28,8 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenPanel(const Metadata& metadata, IResourceData& owner);
-    ScreenPanel(const Metadata& metadata, IResourceData& owner, JSONObject object);
+    ScreenPanel(const Metadata& metadata, IComponentData& owner);
+    ScreenPanel(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *

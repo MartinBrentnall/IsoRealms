@@ -19,7 +19,7 @@
 #include "ScreenFader.h"
 
 namespace IsoRealms::UI {
-  ScreenFader::ScreenFader(UI& ui, IResourceData& data) :
+  ScreenFader::ScreenFader(UI& ui, IComponentData& data) :
             cProject(data.getProject()),
             cDefScreenA(data),
             cDefScreenB(data),
@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
             cRuntimeScreenB(data.getProject(), 2560, 1440, true, true, true) {
   }
   
-  void ScreenFader::registerAssets(ResourceAssetRegistry& assets) {
+  void ScreenFader::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Screen Faders");
   }
   

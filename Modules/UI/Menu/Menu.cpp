@@ -22,9 +22,9 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  Menu::Menu(UI& ui, IResourceData& data) :
+  Menu::Menu(UI& ui, IComponentData& data) :
             cUI(ui),
-            cResourceData(data),
+            cComponentData(data),
             cHatHandler(data.getProject().getApplication().getHatHandler()),
             cDefExitAction(data.getDummyActionContext()),
             cDefFont(data),
@@ -35,7 +35,7 @@ namespace IsoRealms::UI {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  void Menu::registerAssets(ResourceAssetRegistry& assets) {
+  void Menu::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IScreen>(static_cast<IScreen*>(this), "", "Menus");
     assets.add<IInputHandler>(static_cast<IInputHandler*>(this), "", "Menus");
     assets.add<IBinding>(&cLuaBinding, "", "Menus");
@@ -97,12 +97,12 @@ namespace IsoRealms::UI {
     }
   }
 
-  IResourceData& Menu::getResourceData() {
-    return cResourceData;
+  IComponentData& Menu::getComponentData() {
+    return cComponentData;
   }
 
-  const IResourceData& Menu::getResourceData() const {
-    return cResourceData;
+  const IComponentData& Menu::getComponentData() const {
+    return cComponentData;
   }
 
   const Font& Menu::getFont() const {

@@ -47,7 +47,7 @@
 namespace IsoRealms::Basics {
   class Basics : public IModuleHandle {
     public:
-    Basics(IsoRealms::Project& project, IResourceTypeRegistry& registry);
+    Basics(IsoRealms::Project& project, IComponentTypeRegistry& registry);
 
     void refreshAssetRegistration(Sequence& sequence);
 
@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ResourceAssetRegistry& assets) override;
+    void registerAssets(ComponentAssetRegistry& assets) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
@@ -129,35 +129,35 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     IsoRealms::Project& cProject;
-    IResourceTypeRegistry& cModule;
+    IComponentTypeRegistry& cModule;
     
     Script cActionScript;
 
     // Asset registries
     SequenceTrackRegistry cSequenceTracks;
 
-    ResourceTypeDefinition<Basics, AnalogueControl>   cResourceTypeAnalogueControl;
-    ResourceTypeDefinition<Basics, BooleanTrigger>    cResourceTypeBooleanTrigger;
-    ResourceTypeDefinition<Basics, DigitalControl>    cResourceTypeDigitalControl;
-    ResourceTypeDefinition<Basics, FileFont>          cResourceTypeFileFont;
-    ResourceTypeDefinition<Basics, FileSound>         cResourceTypeFileSound;
-    ResourceTypeDefinition<Basics, FileTexture>       cResourceTypeFileTexture;
-    ResourceTypeDefinition<Basics, Function>          cResourceTypeFunction;
-    ResourceTypeDefinition<Basics, InputGroup>        cResourceTypeInputGroup;
-    ResourceTypeDefinition<Basics, InputSwitch>       cResourceTypeInputSwitch;
-    ResourceTypeDefinition<Basics, InterruptHandler>  cResourceTypeInterruptHandler;
-    ResourceTypeDefinition<Basics, Project>           cResourceTypeProject;
-    ResourceTypeDefinition<Basics, ProjectConfigurer> cResourceTypeProjectConfigurer;
-    ResourceTypeDefinition<Basics, Sequence>          cResourceTypeSequence;
-    ResourceTypeDefinition<Basics, SimpleBoolean>     cResourceTypeSimpleBoolean;
-    ResourceTypeDefinition<Basics, SimpleColour>      cResourceTypeSimpleColour;
-    ResourceTypeDefinition<Basics, SimpleFloat>       cResourceTypeSimpleFloat;
-    ResourceTypeDefinition<Basics, SimpleInteger>     cResourceTypeSimpleInteger;
-    ResourceTypeDefinition<Basics, SimpleString>      cResourceTypeSimpleString;
-    ResourceTypeDefinition<Basics, SimpleVertex>      cResourceTypeSimpleVertex;
-    ResourceTypeDefinition<Basics, Sprite>            cResourceTypeSprite;
+    ComponentTypeDefinition<Basics, AnalogueControl>   cComponentTypeAnalogueControl;
+    ComponentTypeDefinition<Basics, BooleanTrigger>    cComponentTypeBooleanTrigger;
+    ComponentTypeDefinition<Basics, DigitalControl>    cComponentTypeDigitalControl;
+    ComponentTypeDefinition<Basics, FileFont>          cComponentTypeFileFont;
+    ComponentTypeDefinition<Basics, FileSound>         cComponentTypeFileSound;
+    ComponentTypeDefinition<Basics, FileTexture>       cComponentTypeFileTexture;
+    ComponentTypeDefinition<Basics, Function>          cComponentTypeFunction;
+    ComponentTypeDefinition<Basics, InputGroup>        cComponentTypeInputGroup;
+    ComponentTypeDefinition<Basics, InputSwitch>       cComponentTypeInputSwitch;
+    ComponentTypeDefinition<Basics, InterruptHandler>  cComponentTypeInterruptHandler;
+    ComponentTypeDefinition<Basics, Project>           cComponentTypeProject;
+    ComponentTypeDefinition<Basics, ProjectConfigurer> cComponentTypeProjectConfigurer;
+    ComponentTypeDefinition<Basics, Sequence>          cComponentTypeSequence;
+    ComponentTypeDefinition<Basics, SimpleBoolean>     cComponentTypeSimpleBoolean;
+    ComponentTypeDefinition<Basics, SimpleColour>      cComponentTypeSimpleColour;
+    ComponentTypeDefinition<Basics, SimpleFloat>       cComponentTypeSimpleFloat;
+    ComponentTypeDefinition<Basics, SimpleInteger>     cComponentTypeSimpleInteger;
+    ComponentTypeDefinition<Basics, SimpleString>      cComponentTypeSimpleString;
+    ComponentTypeDefinition<Basics, SimpleVertex>      cComponentTypeSimpleVertex;
+    ComponentTypeDefinition<Basics, Sprite>            cComponentTypeSprite;
 
-    AssetInstanced<IResourceData, IAnalogueInput, DigitalToAnalogueMapping> cDigitalToAnalogueMapping;
+    AssetInstanced<IComponentData, IAnalogueInput, DigitalToAnalogueMapping> cDigitalToAnalogueMapping;
 
     LuaBinding<Basics> cLuaBinding;
 

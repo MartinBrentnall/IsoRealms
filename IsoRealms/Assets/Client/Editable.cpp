@@ -21,11 +21,11 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Editable::Editable(IResourceData& owner) :
-            Asset<Editable, IEditable, IResourceData>(owner) {
+  Editable::Editable(IComponentData& owner) :
+            Asset<Editable, IEditable, IComponentData>(owner) {
   }
 }

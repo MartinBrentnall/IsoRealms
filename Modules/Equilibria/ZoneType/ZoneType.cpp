@@ -22,13 +22,13 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneType::ZoneType(Equilibria& equilibria, IResourceData& data) :
+  ZoneType::ZoneType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria) {
     cEquilibria.added(this);
   }
   
-  void ZoneType::registerAssets(ResourceAssetRegistry& assets) {
+  void ZoneType::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
   
@@ -61,13 +61,13 @@ namespace IsoRealms::Equilibria {
   }
 
   bool ZoneType::hasReadOnlyReferences() const {
-    return cAssets.hasReadOnlyReferences() || cEquilibria.hasReadOnlyResourceReferences(this);
+    return cAssets.hasReadOnlyReferences() || cEquilibria.hasReadOnlyComponentReferences(this);
     // TODO: return cEquilibria.isUsedInReadOnlyWorld(*this);
   }
 
   void ZoneType::overrideReadOnlyReferences() {
     cAssets.overrideReadOnlyReferences();
-    cEquilibria.overrideReadOnlyResourceReferences(this);
+    cEquilibria.overrideReadOnlyComponentReferences(this);
     // TODO: cEquilibria.overrideReadOnlyWorlds(*this);
   }
 
@@ -85,7 +85,7 @@ namespace IsoRealms::Equilibria {
   }
   
   std::string ZoneType::getBoundaryTypeID() const {
-    return "Zone/" + cEquilibria.getResourceID(this);
+    return "Zone/" + cEquilibria.getComponentID(this);
   }  
   
   IBinding* ZoneType::getBounderyTypeBinding(const std::string& id) const {
@@ -100,7 +100,7 @@ namespace IsoRealms::Equilibria {
     cEquilibria.getTreeItemsZone(getTreeItemInfoFunction);
   }
 
-  IWorldEditorToolInstance* ZoneType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* ZoneType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 

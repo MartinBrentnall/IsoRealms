@@ -589,9 +589,9 @@ namespace IsoRealms::Equilibria {
   void Zone::save(JSONObject object) {
     Equilibria& mEquilibria = cDefWorld.getEquilibria();
 
-    object.addString(JSON_TYPE, mEquilibria.getResourceID(cDefType));
+    object.addString(JSON_TYPE, mEquilibria.getComponentID(cDefType));
     if (cDefThemeSet != nullptr) {
-      object.addString(JSON_THEME_SET, mEquilibria.getResourceID(cDefThemeSet));
+      object.addString(JSON_THEME_SET, mEquilibria.getComponentID(cDefThemeSet));
       object.addString(JSON_THEME,     cDefThemeSet->getName(cDefTheme));
     }
     object.addBoolean(JSON_VISITED, cDefVisited);

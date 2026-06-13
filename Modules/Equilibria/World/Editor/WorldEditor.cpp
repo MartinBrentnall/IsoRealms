@@ -82,7 +82,7 @@ namespace IsoRealms::Equilibria {
             cPreviousX(0),
             cPreviousY(0),
             cWorld(world),
-            cToolbar(world.createToolSet(*this, cWorld.getResourceData()), [this](IWorldEditorToolInstance* tool) {
+            cToolbar(world.createToolSet(*this, cWorld.getComponentData()), [this](IWorldEditorToolInstance* tool) {
               if (cSelectedTool != nullptr) {
                 cSelectedTool->processCursorMovement(&cLocation, nullptr);
               }

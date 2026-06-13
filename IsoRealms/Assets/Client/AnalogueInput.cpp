@@ -21,8 +21,8 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  AnalogueInput::AnalogueInput(IResourceData& owner) :
-            Asset<AnalogueInput, IAnalogueInput, IResourceData>(owner) {
+  AnalogueInput::AnalogueInput(IComponentData& owner) :
+            Asset<AnalogueInput, IAnalogueInput, IComponentData>(owner) {
   }
 
   std::string AnalogueInput::getTreeItemLabel() const {

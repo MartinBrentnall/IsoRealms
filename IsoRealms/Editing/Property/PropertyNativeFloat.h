@@ -25,11 +25,11 @@
 #include "PropertyInputField.h"
 
 namespace IsoRealms {
-  class IResourceAccessManager;
+  class IComponentAccessManager;
 
   class PropertyNativeFloat : public PropertyInputField {
     public:
-    PropertyNativeFloat(const PropertyData& data, IResourceAccessManager& resourceAccessManager, std::function<float()> getter, std::function<bool(float)> validityChecker, std::function<void(float)> setter, std::function<void()> removeFunction = nullptr);
+    PropertyNativeFloat(const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> getter, std::function<bool(float)> validityChecker, std::function<void(float)> setter, std::function<void()> removeFunction = nullptr);
 
     protected:
     

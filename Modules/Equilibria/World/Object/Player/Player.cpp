@@ -55,7 +55,7 @@ namespace IsoRealms::Equilibria {
     });
   }
 
-  void Player::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void Player::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     assets.add<IVertex>(&cRuntimePhysicsObject.cLocation, parentID, "Equilibria Players");
     assets.add<IBinding>(&cLuaBinding,                    parentID, "Equilibria/Players");
   }
@@ -79,10 +79,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void Player::save(JSONObject object) const {
-    object.addString(JSON_TYPE, cDefWorld.getEquilibria().getResourceID(cDefType));
-    object.addFloat(JSON_X, cDefX);
-    object.addFloat(JSON_Y, cDefY);
-    object.addFloat(JSON_Z, cDefZ);
+    object.addString(JSON_TYPE, cDefWorld.getEquilibria().getComponentID(cDefType));
+    object.addFloat (JSON_X,    cDefX);
+    object.addFloat (JSON_Y,    cDefY);
+    object.addFloat (JSON_Z,    cDefZ);
   }
 
   bool Player::isType(const PlayerType* const type) const {

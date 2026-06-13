@@ -90,7 +90,7 @@ namespace IsoRealms::Basics {
     cSequenceInstance.setPreviewPosition(cParent.getRealEvents()[track]->getTime());
   }
 
-  void SequenceTrackAudioInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void SequenceTrackAudioInstance::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     std::string mPath = parentID + "/" + cParent.getName();
     assets.add<IBinding>(&cLuaBinding,      mPath,                             "Sequences");
     assets.add<IString>(&cExposedName,      mPath + "/Audio Name",             "SequenceTrackAudio");

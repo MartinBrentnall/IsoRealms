@@ -19,7 +19,7 @@
 #include "FileFont.h"
 
 namespace IsoRealms::Basics {
-  FileFont::FileFont(Basics& basics, IResourceData& data) :
+  FileFont::FileFont(Basics& basics, IComponentData& data) :
             cDefFilename(data.getProject(), [this, &data]() {
               reloadData(data.getProject());
             }),
@@ -31,7 +31,7 @@ namespace IsoRealms::Basics {
             cProcessedGLListBase(0) {
   }
   
-  void FileFont::registerAssets(ResourceAssetRegistry& assets) {
+  void FileFont::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IFont>(this, "", "Fonts");
   }
   

@@ -27,12 +27,12 @@ namespace IsoRealms::Equilibria {
             cThemeSet(themeSet) {
     std::vector<ThemeTexture*> mThemeTextures = themeSet.getThemeTextures();
     for (ThemeTexture* mThemeTexture : mThemeTextures) {
-      cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(themeSet.getResourceData()));
+      cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(themeSet.getComponentData()));
     }
 
     std::vector<ThemeColour*> mThemeColours = themeSet.getThemeColours();
     for (ThemeColour* mThemeColour : mThemeColours) {
-      cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(themeSet.getResourceData()));
+      cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(themeSet.getComponentData()));
     }
   }
   
@@ -41,13 +41,13 @@ namespace IsoRealms::Equilibria {
     for (JSONValue mTextureValue : object.getArray(JSON_TEXTURES)) {
       JSONObject mTextureObject = mTextureValue.getObject();
       ThemeTexture* mThemeTexture = cThemeSet.createTexture(mTextureObject.getString(JSON_ELEMENT));
-      cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(themeSet.getResourceData())).first->second.init(mTextureObject, JSON_TEXTURE);
+      cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(themeSet.getComponentData())).first->second.init(mTextureObject, JSON_TEXTURE);
     }
 
     for (JSONValue mColourValue : object.getArray(JSON_COLOURS)) {
       JSONObject mColourObject = mColourValue.getObject();
       ThemeColour* mThemeColour = cThemeSet.createColour(mColourObject.getString(JSON_ELEMENT));
-      cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(themeSet.getResourceData(), 1.0f, 0.0f, 1.0f)).first->second.init(mColourObject, JSON_COLOUR);
+      cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(themeSet.getComponentData(), 1.0f, 0.0f, 1.0f)).first->second.init(mColourObject, JSON_COLOUR);
     }
 
     cThemeSet.getEquilibria().getProject().init([this]() {
@@ -96,11 +96,11 @@ namespace IsoRealms::Equilibria {
   }
 
   void Theme::themeTextureAdded(ThemeTexture* texture) {
-    cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(texture), std::forward_as_tuple(cThemeSet.getResourceData()));
+    cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(texture), std::forward_as_tuple(cThemeSet.getComponentData()));
   }
 
   void Theme::themeColourAdded(ThemeColour* colour) {
-    cColours.emplace(std::piecewise_construct, std::forward_as_tuple(colour), std::forward_as_tuple(cThemeSet.getResourceData()));
+    cColours.emplace(std::piecewise_construct, std::forward_as_tuple(colour), std::forward_as_tuple(cThemeSet.getComponentData()));
   }
 
   void Theme::set() {
@@ -150,7 +150,7 @@ namespace IsoRealms::Equilibria {
 //   void Theme::assetChanged(ITexture* texture) {
 //     for (std::map<ThemeTexture*, ITexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
 //       if (texture == i->second) {
-//         cResources->notifyChange(i->first);
+//         cComponents->notifyChange(i->first);
 //       }
 //     }  
 //   }

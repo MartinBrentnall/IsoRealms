@@ -28,7 +28,7 @@
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Editing/Choice.h"
-#include "IsoRealms/Editing/IResourceAccessManager.h"
+#include "IsoRealms/Editing/IComponentAccessManager.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Editing/UISignalID.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
@@ -39,11 +39,11 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  class IResourceData;
+  class IComponentData;
 
   class PropertyTreeSelector : public Property {
     public:
-    PropertyTreeSelector(IPropertyMaker& owner, IResourceAccessManager& resourceAccessManager, IResourceData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr);
+    PropertyTreeSelector(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction = nullptr);
 
     std::string getValue();
 
@@ -187,7 +187,7 @@ namespace IsoRealms {
     };
 
     IPropertyMaker& cPropertyOwner;
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
     ITreeSelectorObject& cSelectedItem;
     std::string cValueLabel;
   };

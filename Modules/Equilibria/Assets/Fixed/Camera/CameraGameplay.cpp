@@ -86,7 +86,7 @@ namespace IsoRealms::Equilibria {
     }
   }
   
-  void CameraGameplay::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void CameraGameplay::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     cStateNotifier = assets.add<IFloat>(this,         parentID + "/ViewYaw",   "Gameplay Cameras");
     assets.add<IFloat>(                 &cPitch,      parentID + "/ViewPitch", "Gameplay Cameras");
     assets.add<IBinding>(               &cLuaBinding, parentID,                "Gameplay Cameras");

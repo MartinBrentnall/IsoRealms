@@ -7,7 +7,7 @@
   },
   "assets": {
   },
-  "resources": {
+  "components": {
     "Ball": {
       "singular": "Ball Sprite",
       "plural": "Ball Sprites",

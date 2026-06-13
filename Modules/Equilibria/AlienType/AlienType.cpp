@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  AlienType::AlienType(Equilibria& equilibria, IResourceData& data) :
+  AlienType::AlienType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cAssets(equilibria),
             cDefModel(data),
@@ -37,7 +37,7 @@ namespace IsoRealms::Equilibria {
     cEquilibria.added(this);
   }
   
-  void AlienType::registerAssets(ResourceAssetRegistry& assets) {
+  void AlienType::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Aliens");
   }
     
@@ -125,7 +125,7 @@ namespace IsoRealms::Equilibria {
   }
 
   std::string AlienType::getPhysicalObjectTypeID() const {
-    return cEquilibria.getResourceID(this);
+    return cEquilibria.getComponentID(this);
   }
 
   IBinding* AlienType::getPhysicalObjectTypeBinding(const std::string& id) const {
@@ -140,7 +140,7 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 

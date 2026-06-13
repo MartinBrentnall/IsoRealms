@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  IWorldEditorToolInstance* DeleteTool::createToolInstance(WorldEditor& editor, IResourceData& owner) {
+  IWorldEditorToolInstance* DeleteTool::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingErasers.emplace_back(std::make_unique<Eraser>(*this, editor)).get();
   }
 

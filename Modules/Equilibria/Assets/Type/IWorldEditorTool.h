@@ -30,7 +30,7 @@ namespace IsoRealms::Equilibria {
    */
   class IWorldEditorTool : public IAsset {
     public:
-    virtual IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) = 0;
+    virtual IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) = 0;
     
     virtual ~IWorldEditorTool() {}
   };

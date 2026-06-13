@@ -19,7 +19,7 @@
 #include "DebrisChunk.h"
 
 namespace IsoRealms::Spindizzy {
-  DebrisChunk::DebrisChunk(Spindizzy& spindizzy, IResourceData& data) :
+  DebrisChunk::DebrisChunk(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
             cDefSide{Colour(data, 1.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
                      Colour(data, 1.0f, 1.0f, 0.0f, 1.0f, [this]() {setNeedsRedrawing();}),
@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
 
-  void DebrisChunk::registerAssets(ResourceAssetRegistry& assets) {
+  void DebrisChunk::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Spindizzy Debris Chunks");
   }
 

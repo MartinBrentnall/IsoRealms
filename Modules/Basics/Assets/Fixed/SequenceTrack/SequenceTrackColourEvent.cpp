@@ -21,14 +21,14 @@
 #include "SequenceTrackColour.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, unsigned int time, bool fade) :
+  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IComponentData& owner, unsigned int time, bool fade) :
             cParent(parent),
             cDefTime(time),
             cDefTarget(owner, 1.0f, 0.0f, 0.0f),
             cDefFade(fade) {
   }
 
-  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IResourceData& owner, JSONObject object) :
+  SequenceTrackColourEvent::SequenceTrackColourEvent(SequenceTrackColour& parent, IComponentData& owner, JSONObject object) :
             SequenceTrackColourEvent(parent, owner, object.getInteger(JSON_DURATION), object.getBoolean(JSON_FADE, true)) {
   }
 

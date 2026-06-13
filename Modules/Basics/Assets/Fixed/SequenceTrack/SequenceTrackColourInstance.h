@@ -40,9 +40,9 @@ namespace IsoRealms::Basics {
     void stateChanged(IColour* colour);
 
     /*************************************\
-      * Implements ISequenceTrackInstance *
+     * Implements ISequenceTrackInstance *
     \*************************************/
-    void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) override;
+    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) override;
 
     /**********************\
       * Implements IColour *

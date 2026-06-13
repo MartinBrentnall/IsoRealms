@@ -29,13 +29,13 @@ namespace IsoRealms::Basics {
 
   template <typename DERIVED, typename EVENT, typename INSTANCE> class SequenceTrackBase : public ISequenceTrack {
     public:
-    SequenceTrackBase(IResourceData& owner, Sequence& sequence) :
+    SequenceTrackBase(IComponentData& owner, Sequence& sequence) :
               cSequence(sequence),
               cOwner(owner),
               cDefName("Unnamed Track") {
     }
 
-    SequenceTrackBase(IResourceData& owner, Sequence& sequence, JSONObject object) :
+    SequenceTrackBase(IComponentData& owner, Sequence& sequence, JSONObject object) :
               cSequence(sequence),
               cOwner(owner),
               cDefName(object.getString(JSON_NAME)) {
@@ -64,7 +64,7 @@ namespace IsoRealms::Basics {
       return cDefName;
     }
 
-    ISequenceTrackEvent* createEvent(IResourceData& owner, unsigned int time) override {
+    ISequenceTrackEvent* createEvent(IComponentData& owner, unsigned int time) override {
       ISequenceTrackEvent* mTrackSpecificEvent = static_cast<DERIVED*>(this)->getEvent(time);
       if (mTrackSpecificEvent != nullptr) {
         return mTrackSpecificEvent;
@@ -170,7 +170,7 @@ namespace IsoRealms::Basics {
 
     // External interfaces.
     Sequence& cSequence;
-    IResourceData& cOwner;
+    IComponentData& cOwner;
 
     // Definition data.
     std::string cDefName;

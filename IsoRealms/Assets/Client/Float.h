@@ -21,21 +21,21 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IFloat.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class Float : public Asset<Float, IFloat, IResourceData>,
+  class Float : public Asset<Float, IFloat, IComponentData>,
                 public IStateListener {
     public:
-    Float(IResourceData& owner, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
+    Float(IComponentData& owner, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
 
-    /*******************************************\
-     * Implements Asset<IFloat, IResourceData> *
-    \*******************************************/
-    IFloat* createDefaultAsset(IResourceData& owner);
+    /********************************************\
+     * Implements Asset<IFloat, IComponentData> *
+    \********************************************/
+    IFloat* createDefaultAsset(IComponentData& owner);
 
     /**************************************\
      * Implements IStateListener<IFloat*> *

@@ -21,18 +21,18 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IVertex.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
-namespace IsoRealms {
-  class Vertex : public Asset<Vertex, IVertex, IResourceData> {
+namespace IsoRealms { 
+  class Vertex : public Asset<Vertex, IVertex, IComponentData> {
     public:
-    Vertex(IResourceData& owner);
+    Vertex(IComponentData& owner);
 
-    /********************************************\
-     * Implements Asset<IVertex, IResourceData> *
-    \********************************************/
-    IVertex* createDefaultAsset(IResourceData& owner);
+    /*********************************************\
+     * Implements Asset<IVertex, IComponentData> *
+    \*********************************************/
+    IVertex* createDefaultAsset(IComponentData& owner);
   };
 }

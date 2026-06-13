@@ -35,11 +35,11 @@ namespace IsoRealms::Equilibria {
   class ZoneObjectType : public IWorldEditorTool {
     public:
 
-    /**********************\
-     * Resource Interface *
-    \**********************/
-    ZoneObjectType(Equilibria& equilibria, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);
+    /***********************\
+     * Component Interface *
+    \***********************/
+    ZoneObjectType(Equilibria& equilibria, IComponentData& data);
+    void registerAssets(ComponentAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -55,7 +55,7 @@ namespace IsoRealms::Equilibria {
 
     // Interface to be used by trait types.
     Equilibria& getEquilibria();
-    IResourceData& getResourceData();
+    IComponentData& getComponentData();
     void registerEditor(IZoneObjectTraitEditor* editor);
     IBinding* getBinding(const std::string& id) const;
     std::string getBindingID(const IBinding* binding) const;
@@ -71,7 +71,7 @@ namespace IsoRealms::Equilibria {
     /*******************************\
      * Implements IWorldEditorTool *
     \*******************************/
-    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IResourceData& owner) override;
+    IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void getAssetProperties(IPropertyMaker& owner) override;
@@ -110,7 +110,7 @@ namespace IsoRealms::Equilibria {
 
     // External interfaces.
     Equilibria& cEquilibria; /// Equilibria module reference.
-    IResourceData& cResourceData;
+    IComponentData& cComponentData;
 
     // Asset registry.
     EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.

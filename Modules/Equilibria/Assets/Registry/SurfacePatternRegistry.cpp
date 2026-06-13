@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  SurfacePatternRegistry::SurfacePatternRegistry(IResourceTypeRegistry& registry) :
+  SurfacePatternRegistry::SurfacePatternRegistry(IComponentTypeRegistry& registry) :
             cComposite(registry.getAssetMetadata("SurfacePatternComposite")), 
             cOutline(registry.getAssetMetadata("SurfacePatternOutline")),
             cSplitVariant(registry.getAssetMetadata("SurfacePatternSplitVariant")),

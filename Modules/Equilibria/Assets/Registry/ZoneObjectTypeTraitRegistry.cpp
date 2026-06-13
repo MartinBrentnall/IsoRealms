@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitRegistry::ZoneObjectTypeTraitRegistry(IResourceTypeRegistry& registry) :
+  ZoneObjectTypeTraitRegistry::ZoneObjectTypeTraitRegistry(IComponentTypeRegistry& registry) :
             cBoundary(registry.getAssetMetadata("ZoneObjectTypeTraitBoundary")),
             cCellLocation(registry.getAssetMetadata("ZoneObjectTypeTraitCellLocation")),
             cChaser(registry.getAssetMetadata("ZoneObjectTypeTraitChaser")),

@@ -125,7 +125,7 @@
       }
     }
   },
-  "resources": {
+  "components": {
     "Layout": {
       "singular": "Layout",
       "plural": "Layouts",

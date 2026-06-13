@@ -20,15 +20,15 @@
 
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  Integer::Integer(IResourceData& owner) :
-            Asset<Integer, IInteger, IResourceData>(owner, owner.getAssetManager().createLiteralInteger(this, owner, 0)) {
+  Integer::Integer(IComponentData& owner) :
+            Asset<Integer, IInteger, IComponentData>(owner, owner.getAssetManager().createLiteralInteger(this, owner, 0)) {
   }
 
-  IInteger* Integer::createDefaultAsset(IResourceData& owner) {
+  IInteger* Integer::createDefaultAsset(IComponentData& owner) {
     return owner.getAssetManager().createLiteralInteger(this, owner, 0);
   }
 }

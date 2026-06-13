@@ -21,18 +21,18 @@
 #include <functional>
 
 #include "IsoRealms/Assets/Type/IBindingType.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 
 #include "Asset.h"
 
 namespace IsoRealms {
-  class BindingType : public Asset<BindingType, IBindingType, IResourceData> {
+  class BindingType : public Asset<BindingType, IBindingType, IComponentData> {
     public:
-    BindingType(IResourceData& owner, std::function<void()> listener);
+    BindingType(IComponentData& owner, std::function<void()> listener);
 
-    /*************************************************\
-     * Implements Asset<IBindingType, IResourceData> *
-    \*************************************************/
+    /**************************************************\
+     * Implements Asset<IBindingType, IComponentData> *
+    \**************************************************/
     void stateChanged() override;
 
     private:

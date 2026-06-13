@@ -19,7 +19,7 @@
 #include "Sprite.h"
 
 namespace IsoRealms::Basics {
-  Sprite::Sprite(Basics& basics, IResourceData& data) :
+  Sprite::Sprite(Basics& basics, IComponentData& data) :
             cDefProject(data.getProject()),
             cDefTexture(data),
             cDefBillboardYaw(false),
@@ -28,7 +28,7 @@ namespace IsoRealms::Basics {
     cDefProject.addScreenListener(this);
   }
   
-  void Sprite::registerAssets(ResourceAssetRegistry& assets) {
+  void Sprite::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IModel>(this, "", "Sprite Models");
   }
 

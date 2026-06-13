@@ -61,7 +61,7 @@ namespace IsoRealms::Basics {
     return cParent;
   }
 
-  void SequenceInstance::registerAssets(ResourceAssetRegistry& assets, const std::string& parentID) {
+  void SequenceInstance::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
     assets.add<IInteger>(&cExposedPosition,  parentID + "/Position",  "Sequences");
     assets.add<IInteger>(&cExposedRemaining, parentID + "/Remaining", "Sequences");
     assets.add<IBinding>(&cLuaBinding,       parentID,                "Sequences");

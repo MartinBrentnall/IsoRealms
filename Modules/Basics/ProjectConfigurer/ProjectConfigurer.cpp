@@ -21,7 +21,7 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  ProjectConfigurer::ProjectConfigurer(Basics& basics, IResourceData& data) :
+  ProjectConfigurer::ProjectConfigurer(Basics& basics, IComponentData& data) :
             cActionContext(data, *this),
             cDefFont(data),
             cDefCodeFont(data),
@@ -40,7 +40,7 @@ namespace IsoRealms::Basics {
             cBindingEditor(data.getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
-  void ProjectConfigurer::registerAssets(ResourceAssetRegistry& assets) {
+  void ProjectConfigurer::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Project Configurers");
     assets.add<IInputHandler>(this, "", "Project Configurers");
     assets.add<IBinding>(&cLuaBinding, "", "Project Configurers");

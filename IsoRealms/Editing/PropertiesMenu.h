@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/IResource.h"
+#include "IsoRealms/IComponent.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/PropertyMaker.h"
 
@@ -30,8 +30,8 @@ namespace IsoRealms {
   class PropertiesMenu : public Menu<MenuItemProperty>,
                          public IPropertyManager {
     public:
-    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher);
-    PropertiesMenu(UIManager& manager, IUIStyle& style, IResourceData& owner, const Metadata& metadata, std::function<void(IPropertyMaker& owner)> propertyFetcher);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, const Metadata& metadata, std::function<void(IPropertyMaker& owner)> propertyFetcher);
 
     /*************************************\
      * Implements Menu<MenuItemProperty> *
@@ -53,8 +53,8 @@ namespace IsoRealms {
      * Implements IPropertyManager *
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
-    void openProperties(IResourceData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) override;
-    void openProperties(IResourceData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) override;
+    void openProperties(IComponentData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) override;
+    void openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
     void refreshProperties() override;

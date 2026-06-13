@@ -21,13 +21,13 @@
 #include "IsoRealms/Editing/Property/IProperty.h"
 #include "IsoRealms/Editing/Property/IPropertyManager.h"
 #include "IsoRealms/Editing/Property/PropertyNativeFloat.h"
-#include "IsoRealms/IResourceData.h"
+#include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  Texture::Texture(IResourceData& owner, std::function<void()> listener) :
-            Asset<Texture, ITexture, IResourceData>(owner),
+  Texture::Texture(IComponentData& owner, std::function<void()> listener) :
+            Asset<Texture, ITexture, IComponentData>(owner),
             cListener(listener),
             cDefScaleX(1.0f),
             cDefScaleY(1.0f),
