@@ -48,7 +48,6 @@ namespace IsoRealms::Hue {
     \**********************/
     HueManager(Hue& hue, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -65,12 +64,7 @@ namespace IsoRealms::Hue {
 
     
     private:
-    inline static const std::string JSON_BRIDGE = "bridge";
-    inline static const std::string JSON_BULBS  = "bulbs";
     inline static const std::string JSON_COLOUR = "colour";
-    inline static const std::string JSON_ID     = "id";
-    inline static const std::string JSON_PSK    = "psk";
-    inline static const std::string JSON_USER   = "user";
 
     inline static const int HUE_DTLS_MAX_PAYLOAD_SIZE = 1350;
     inline static const int HUE_DTLS_STATE_INIT       = 10;

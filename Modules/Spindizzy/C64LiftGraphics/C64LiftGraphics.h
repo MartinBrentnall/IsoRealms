@@ -40,7 +40,6 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     C64LiftGraphics(Spindizzy& spindizzy, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
     bool renderIcon();
     void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -80,11 +79,7 @@ namespace IsoRealms::Spindizzy {
     inline static const std::string ASSET_ID_STATE_9_AND_10 = "State 9 and 10";
     inline static const std::string ASSET_ID_STATE_11       = "State 11";
     
-    // JSON members.
-    inline static const std::string JSON_OUTLINE   = "outline";
-    inline static const std::string JSON_PRIMARY   = "primary";
-    inline static const std::string JSON_SECONDARY = "secondary";
-
+    //  External interfaces.
     Project& cProject;
 
     // Definition data.

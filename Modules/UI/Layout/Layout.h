@@ -40,7 +40,6 @@ namespace IsoRealms::UI {
     \**********************/
     Layout(UI& ui, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

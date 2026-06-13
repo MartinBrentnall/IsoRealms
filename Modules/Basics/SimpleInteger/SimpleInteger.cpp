@@ -31,10 +31,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Integers");
   }
   
-  void SimpleInteger::save(JSONObject object) const {
-    object.addInteger(JSON_VALUE, cDefValue);
-  }
-
   void SimpleInteger::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -44,7 +40,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleInteger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeInteger(JSON_VALUE, [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
+    owner.createPropertyNativeInteger("value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
   }
 
   void SimpleInteger::removed() {

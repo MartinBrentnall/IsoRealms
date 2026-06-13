@@ -31,12 +31,6 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
-  void BooleanTrigger::save(JSONObject object) const {
-    cDefValue.save(object, JSON_VALUE);
-    cDefTrueAction.save(object, JSON_ON_BECOMING_TRUE);
-    cDefFalseAction.save(object, JSON_ON_BECOMING_FALSE);
-  }
-
   void BooleanTrigger::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -46,9 +40,9 @@ namespace IsoRealms::Basics {
   }
 
   void BooleanTrigger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_VALUE,             cDefValue);
-    owner.createPropertyTreeSelector(JSON_ON_BECOMING_TRUE,  cDefTrueAction);
-    owner.createPropertyTreeSelector(JSON_ON_BECOMING_FALSE, cDefFalseAction);
+    owner.createPropertyTreeSelector("value",           cDefValue);
+    owner.createPropertyTreeSelector("onBecomingTrue",  cDefTrueAction);
+    owner.createPropertyTreeSelector("onBecomingFalse", cDefFalseAction);
   }
 
   void BooleanTrigger::removed() {

@@ -33,12 +33,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
     
-  void LiftType::save(JSONObject object) const {
-    cDefModel.save(object, JSON_APPEARANCE);
-    cDefActive.save(object, JSON_STATE);
-    cDefTickAction.save(object, JSON_ON_TICK);
-  }
-
   void LiftType::hintInUse(bool inUse) {
     // Nothing to do. TODO?
   }
@@ -53,9 +47,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void LiftType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_APPEARANCE, cDefModel);
-    owner.createPropertyTreeSelector(JSON_STATE,      cDefActive);
-    owner.createPropertyTreeSelector(JSON_ON_TICK,    cDefTickAction);
+    owner.createPropertyTreeSelector("appearance", cDefModel);
+    owner.createPropertyTreeSelector("state",      cDefActive);
+    owner.createPropertyTreeSelector("onTick",     cDefTickAction);
   }
 
   void LiftType::removed() {

@@ -50,7 +50,7 @@ namespace IsoRealms::Equilibria {
     });
 
     // Themes.
-    owner.createPropertyArray(JSON_THEMES, cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &owner](Theme& theme) {
+    owner.createPropertyArray("themes", cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &owner](Theme& theme) {
       owner.createPropertyStruct("Theme", getName(&theme), [&theme](IPropertyMaker& owner) {
         theme.getProperties(owner);
       }, [this, &theme]() {
@@ -72,15 +72,6 @@ namespace IsoRealms::Equilibria {
     return false;
   }
   
-  void ThemeSet::save(JSONObject object) const {
-    JSONArray mThemesArray = object.addArray(JSON_THEMES);
-    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
-      JSONObject mThemeObject = mThemesArray.addObject();
-      mThemeObject.addString(JSON_ID, mTheme.first);
-      mTheme.second->save(mThemeObject);
-    }
-  }
-
   void ThemeSet::removed() {
     // Nothing to do.
   }

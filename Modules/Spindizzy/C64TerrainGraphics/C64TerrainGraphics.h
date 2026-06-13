@@ -31,7 +31,6 @@ namespace IsoRealms::Spindizzy {
     public:
     C64TerrainGraphics(Spindizzy& spindizzy, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -89,11 +88,6 @@ namespace IsoRealms::Spindizzy {
     inline static const std::string ASSET_ID_WALL_VARIANT_CAP               = "Wall Plain Variant Cap";
     inline static const std::string ASSET_ID_WALL_VARIANT_MIDDLE            = "Wall Plain Variant Middle";
     inline static const std::string ASSET_ID_WALL_ICE                       = "Wall Ice";
-
-    inline static const std::string JSON_FLOOR     = "floor";
-    inline static const std::string JSON_GRID      = "grid";
-    inline static const std::string JSON_HIGHLIGHT = "highlight";
-    inline static const std::string JSON_WALL      = "wall";
 
     class OrientedTexture : public ITexture {
       public:

@@ -668,7 +668,7 @@ namespace IsoRealms::Basics {
               if (cCursorTrackProperties) {
                 cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getResourceData(), [this](IPropertyMaker& owner) {
                   owner.createPropertyTreeSelector(SequenceTrackRegistry::JSON_KEY, cSequence.getTrack(cCursorTrack.value()));
-                  owner.createPropertyNativeString(Sequence::JSON_NAME,             [this]() {
+                  owner.createPropertyNativeString("name",             [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     cSequence.getTrack(cCursorTrack.value())->setName(name);

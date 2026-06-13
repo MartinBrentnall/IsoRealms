@@ -39,8 +39,7 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/    
     Prompt(UI& ui, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
+    void registerAssets(ResourceAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -71,17 +70,6 @@ namespace IsoRealms::UI {
     bool isDefaultConfiguration() const override;
 
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_CANCEL_LABEL     = "cancelLabel";
-    inline static const std::string JSON_CONFIRM_LABEL    = "confirmLabel";
-    inline static const std::string JSON_FONT             = "font";
-    inline static const std::string JSON_MESSAGE          = "message";
-    inline static const std::string JSON_ON_CANCEL        = "onCancel";
-    inline static const std::string JSON_ON_CONFIRM       = "onConfirm";
-    inline static const std::string JSON_SELECTION_COLOUR = "selectionColour";
-    inline static const std::string JSON_SHADOW_OFFSET    = "shadowOffset";
-    inline static const std::string JSON_TEXT_SIZE        = "textSize";
 
     inline static const float DEFAULT_SHADOW_OFFSET = 0.008f;
     inline static const float DEFAULT_TEXT_SIZE     = 0.05f;

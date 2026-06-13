@@ -51,11 +51,6 @@ namespace IsoRealms::Equilibria {
     
     private:
     
-    // JSON members.
-    inline static const std::string JSON_X = "x";
-    inline static const std::string JSON_Y = "y";
-    inline static const std::string JSON_Z = "z";
-
     // Definition data.
     ZoneObject& cDefObject; /// Object to which this location belongs.
     int cDefX;              /// Cell location on the X axis.

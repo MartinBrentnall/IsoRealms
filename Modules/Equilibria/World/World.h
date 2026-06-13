@@ -53,7 +53,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     World(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -216,28 +215,10 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    inline static const std::string JSON_BASIC_PROPERTIES  = "basicProperties";
-    inline static const std::string JSON_BOUNCE_CONTROL    = "bounceControl";
     inline static const std::string JSON_DEBRIS_GENERATORS = "debrisGenerators";
-    inline static const std::string JSON_GRAVITY           = "gravity";
     inline static const std::string JSON_PLAYERS           = "players";
-    inline static const std::string JSON_SLOPE_FORCE       = "slopeForce";
     inline static const std::string JSON_ZONES             = "zones";
 
-    inline static const std::string JSON_AUTOMATIC_ZONE_MANAGEMENT = "automaticZoneManagement";
-    inline static const std::string JSON_AUTOMATIC_ZONE_X_SIZE     = "automaticZoneXSize";
-    inline static const std::string JSON_AUTOMATIC_ZONE_Y_SIZE     = "automaticZoneYSize";
-    inline static const std::string JSON_AUTOMATIC_ZONE_Z_SIZE     = "automaticZoneZSize";
-    inline static const std::string JSON_DEFAULT_THEME_SET         = "defaultThemeSet";
-    inline static const std::string JSON_DEFAULT_WORLD_EDITOR_TOOL = "defaultWorldEditorTool";
-    inline static const std::string JSON_EDITOR_MAX_X              = "editorMaxX";
-    inline static const std::string JSON_EDITOR_MAX_Y              = "editorMaxY";
-    inline static const std::string JSON_EDITOR_MAX_Z              = "editorMaxZ";
-    inline static const std::string JSON_EDITOR_MIN_X              = "editorMinX";
-    inline static const std::string JSON_EDITOR_MIN_Y              = "editorMinY";
-    inline static const std::string JSON_EDITOR_MIN_Z              = "editorMinZ";
-    inline static const std::string JSON_EDITOR_TOOL               = "editorTool";
-    inline static const std::string JSON_EDITOR_TOOLS              = "editorTools";
 
     inline static const unsigned int DEFAULT_BOUNCE_CONTROL = 10;
     

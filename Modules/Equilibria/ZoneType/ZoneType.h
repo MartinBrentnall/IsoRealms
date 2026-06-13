@@ -46,7 +46,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     ZoneType(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);

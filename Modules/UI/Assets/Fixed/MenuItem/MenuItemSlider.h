@@ -71,7 +71,6 @@ namespace IsoRealms::UI {
     inline static const std::string JSON_MINIMUM   = "minimum";
     inline static const std::string JSON_ON_CHANGE = "onChange";
     inline static const std::string JSON_STEPS     = "steps";
-    inline static const std::string JSON_TYPE      = "type";
 
     // Constants.
     inline static const std::string BINDING_TYPE = "Slider";

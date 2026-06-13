@@ -55,14 +55,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(                 &cLuaBinding, parentID, "Digital Inputs");
   }
   
-  void DigitalControl::save(JSONObject object) const {
-    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
-    for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
-      JSONObject mMappingObject = mMappingsArray.addObject();
-      mMapping->save(mMappingObject);
-    }
-  }
-
   void DigitalControl::hintInUse(bool inUse) {
     // Nothing to do.
   }

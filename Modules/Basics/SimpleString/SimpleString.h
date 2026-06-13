@@ -34,7 +34,6 @@ namespace IsoRealms::Basics {
     \**********************/
     SimpleString(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -62,10 +61,7 @@ namespace IsoRealms::Basics {
     void setValue(const std::string& value);
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_VALUE = "value";
-
+    
     // Definition data.
     std::string cDefValue;     /// Initial configured value.
 

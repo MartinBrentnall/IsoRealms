@@ -31,10 +31,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Floats");
   }
   
-  void SimpleFloat::save(JSONObject object) const {
-    object.addFloat(JSON_VALUE, cDefValue);
-  }
-
   void SimpleFloat::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -44,7 +40,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleFloat::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(JSON_VALUE, [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+    owner.createPropertyNativeFloat("value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 
   void SimpleFloat::removed() {

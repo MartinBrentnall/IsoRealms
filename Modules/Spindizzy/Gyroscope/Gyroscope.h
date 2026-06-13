@@ -38,7 +38,6 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     Gyroscope(Spindizzy& spindizzy, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -66,14 +65,7 @@ namespace IsoRealms::Spindizzy {
     void render() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_COLOUR_1 = "colour1";
-    inline static const std::string JSON_COLOUR_2 = "colour2";
-    inline static const std::string JSON_COLOUR_3 = "colour3";
-    inline static const std::string JSON_COLOUR_4 = "colour4";
-    inline static const std::string JSON_OUTLINE  = "outline";
-
+    
     // Resource definition constants.
     inline static const float CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0); /// Degrees for each segment of a rendered circle.
     inline static const float SPINDLE_WIDTH     = 0.03f;

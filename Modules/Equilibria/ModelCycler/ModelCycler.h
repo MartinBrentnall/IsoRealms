@@ -36,7 +36,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     ModelCycler(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -58,11 +57,7 @@ namespace IsoRealms::Equilibria {
     void rebuildOffsetModels();
     void refreshAssetRegistration();
     void clampRuntimeCycleIndex();
-
-    // JSON members.
-    inline static const std::string JSON_MODEL  = "model";
-    inline static const std::string JSON_MODELS = "models";
-
+    
     /**
      * An output "Offset" model is created for each input model configured
      * within this model cycler.

@@ -39,7 +39,6 @@ namespace IsoRealms::Basics {
     public:
     Sequence(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -95,16 +94,6 @@ namespace IsoRealms::Basics {
     void refreshAssetRegistration();
     void deleteTrack(unsigned int track);
     void trackStateChanged(SequenceTrack& track);
-
-    // JSON members.
-    inline static const std::string JSON_INSTANCES = "instances";
-    inline static const std::string JSON_LOOP      = "loop";
-    inline static const std::string JSON_NAME      = "name";
-    inline static const std::string JSON_PLAYING   = "playing";
-    inline static const std::string JSON_SPEED     = "speed";
-    inline static const std::string JSON_TRACKS    = "tracks";
-    inline static const std::string JSON_TRACK     = "track";
-    inline static const std::string JSON_TYPE      = "type";
 
     private:
 

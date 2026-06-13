@@ -34,10 +34,6 @@ namespace IsoRealms::Basics {
     assets.add<IAction>(this, "", "Play a Sound");
   }
   
-  void FileSound::save(JSONObject object) const {
-    cDefFile.save(JSON_FILENAME, object);
-  }
-
   void FileSound::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -57,7 +53,7 @@ namespace IsoRealms::Basics {
   }
 
   void FileSound::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_FILENAME, cDefFile);
+    owner.createPropertyTreeSelector("filename", cDefFile);
   }
 
   void FileSound::removed() {

@@ -48,7 +48,6 @@ namespace IsoRealms::Basics {
     Function(Basics& basics, IResourceData& data);
     Function(Basics& basics, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -83,15 +82,10 @@ namespace IsoRealms::Basics {
     private:
     
     // JSON members.
-    inline static const std::string JSON_ARGUMENT      = "argument";
-    inline static const std::string JSON_ARGUMENTS     = "arguments";
-    inline static const std::string JSON_BINDINGS      = "bindings";
-    inline static const std::string JSON_CODE          = "code";
-    inline static const std::string JSON_DEFAULT_VALUE = "defaultValue";
-    inline static const std::string JSON_ID            = "id";
-    inline static const std::string JSON_TO            = "to";
-    inline static const std::string JSON_TYPE          = "type";
-    inline static const std::string JSON_VARIABLE      = "variable";
+    inline static const std::string JSON_ARGUMENT = "argument";
+    inline static const std::string JSON_BINDINGS = "bindings";
+    inline static const std::string JSON_CODE     = "code";
+    inline static const std::string JSON_TO       = "to";
 
     // Private types.
     class Call : public IAction {

@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
 
   ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
             ZoneObjectTypeTraitSpinner(metadata, type) {
-    cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED);
+    cDefSpinSpeed = object.getFloat("spinSpeed");
     cDefLocationID = object.getString(JSON_LOCATION);
     cDefModel.init(object, JSON_MODEL);
   }

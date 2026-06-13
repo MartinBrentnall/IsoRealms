@@ -35,12 +35,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Vertices");
   }
 
-  void SimpleVertex::save(JSONObject object) const {
-    object.addFloat(JSON_X, cDefX);
-    object.addFloat(JSON_Y, cDefY);
-    object.addFloat(JSON_Z, cDefZ);
-  }
-
   void SimpleVertex::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -50,9 +44,9 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleVertex::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(JSON_X, [this]() {return cDefX;}, [this](float value) {cDefX = value;});
-    owner.createPropertyNativeFloat(JSON_Y, [this]() {return cDefY;}, [this](float value) {cDefY = value;});
-    owner.createPropertyNativeFloat(JSON_Z, [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
+    owner.createPropertyNativeFloat("x", [this]() {return cDefX;}, [this](float value) {cDefX = value;});
+    owner.createPropertyNativeFloat("y", [this]() {return cDefY;}, [this](float value) {cDefY = value;});
+    owner.createPropertyNativeFloat("z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
   }
 
   void SimpleVertex::removed() {

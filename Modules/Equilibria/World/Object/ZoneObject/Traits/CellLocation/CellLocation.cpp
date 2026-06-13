@@ -34,9 +34,9 @@ namespace IsoRealms::Equilibria {
   
   void CellLocation::save(JSONObject object) const {
     Zone& mZone = cDefObject.getZone();
-    object.addInteger(JSON_X, cDefX - mZone.getStartX());
-    object.addInteger(JSON_Y, cDefY - mZone.getStartY());
-    object.addInteger(JSON_Z, cDefZ - mZone.getStartZ());
+    object.addInteger("x", cDefX - mZone.getStartX());
+    object.addInteger("y", cDefY - mZone.getStartY());
+    object.addInteger("z", cDefZ - mZone.getStartZ());
   }
 
   bool CellLocation::hasConfiguration() const {

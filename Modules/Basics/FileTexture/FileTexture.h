@@ -37,7 +37,6 @@ namespace IsoRealms::Basics {
     \**********************/
     FileTexture(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -57,10 +56,7 @@ namespace IsoRealms::Basics {
     ~FileTexture();
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_FILENAME = "filename";
-
+    
     // Definition data.
     File cDefFile; /// Filename containing the image create a texture from.
 

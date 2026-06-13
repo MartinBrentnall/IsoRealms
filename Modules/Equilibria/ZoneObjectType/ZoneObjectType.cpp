@@ -32,16 +32,6 @@ namespace IsoRealms::Equilibria {
     // TODO
   }
     
-  void ZoneObjectType::save(JSONObject object) const {
-    JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
-    for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {
-      JSONObject mTraitObject = mTraitsArray.addObject();
-      mTraitObject.addString(JSON_ID, mPair.first);
-//      mTraitObject.addString(JSON_TYPE, cEquilibria.getID(mPair.second));
-      mPair.second->save(mTraitObject);
-    }
-  }
-
   void ZoneObjectType::hintInUse(bool inUse) {
     // Nothing to do.
   }

@@ -134,9 +134,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceInstance::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString( Sequence::JSON_NAME, [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, "", [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
-    owner.createPropertyNativeInteger(JSON_START_TIME,     [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
-    owner.createPropertyNativeFloat(  JSON_SPEED,          [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;}, 1.0f);
+    owner.createPropertyNativeString( "name",          [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, "", [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
+    owner.createPropertyNativeInteger(JSON_START_TIME, [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
+    owner.createPropertyNativeFloat(  JSON_SPEED,      [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;}, 1.0f);
   }
 
   void SequenceInstance::play() {

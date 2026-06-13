@@ -35,12 +35,6 @@ namespace IsoRealms::UI {
     assets.add<IBinding>(&cLuaBinding, "", "Virtual Keyboards");
   }
   
-  void VirtualKeyboard::save(JSONObject object) const {
-    cDefSelectionColour.save(object, JSON_SELECTION_COLOUR);
-    cDefFont.save(object, JSON_FONT);
-    cDefConfirmAction.save(object, JSON_ON_CONFIRM);
-  }
-
   void VirtualKeyboard::hintInUse(bool inUse) {
     // Nothing to do.
   }

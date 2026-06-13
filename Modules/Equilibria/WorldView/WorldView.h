@@ -44,7 +44,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     WorldView(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -119,12 +118,7 @@ namespace IsoRealms::Equilibria {
       std::unique_ptr<IZoneView> cView;      
     };
 
-    // JSON members.
-    inline static const float       DEFAULT_ZOOM  = 1.0f;
-    inline static const std::string JSON_CAMERA = "camera";
-    inline static const std::string JSON_TYPE   = "type";
-    inline static const std::string JSON_WORLD  = "world";
-    inline static const std::string JSON_ZOOM   = "zoom";
+    inline static const float DEFAULT_ZOOM  = 1.0f;
 
     inline static const std::string TYPE_ZONE_VIEW = "ZoneView";
     

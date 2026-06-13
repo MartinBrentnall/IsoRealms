@@ -27,14 +27,6 @@ namespace IsoRealms::Basics {
     assets.add<IInputHandler>(this, "", "Input Groups");
   }
 
-  void InputGroup::save(JSONObject object) const {
-    JSONArray mInputsArray = object.addArray(JSON_INPUTS);
-    for (const std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
-      JSONObject mInputObject = mInputsArray.addObject();
-      mInputHandler->save(mInputObject, JSON_INPUT);
-    }
-  }
-
   void InputGroup::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -44,8 +36,8 @@ namespace IsoRealms::Basics {
   }
 
   void InputGroup::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(JSON_INPUTS, cDefInputHandlers, [](const std::unique_ptr<InputHandler>& i)->InputHandler& {return *i;}, [this, &owner, &metadata](InputHandler& inputHandler) {
-      owner.createPropertyTreeSelector(JSON_INPUT, inputHandler, Options::EMPTY, [this, &inputHandler]() {
+    owner.createPropertyArray("inputs", cDefInputHandlers, [](const std::unique_ptr<InputHandler>& i)->InputHandler& {return *i;}, [this, &owner, &metadata](InputHandler& inputHandler) {
+      owner.createPropertyTreeSelector("input", inputHandler, Options::EMPTY, [this, &inputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, &inputHandler);
       });
     }, [this]()->InputHandler& {

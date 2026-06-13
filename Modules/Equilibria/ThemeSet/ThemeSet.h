@@ -33,7 +33,6 @@ namespace IsoRealms::Equilibria {
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     bool renderIcon();
     void hintInUse(bool inUse);
-    void save(JSONObject object) const;
     void registerAssets(ResourceAssetRegistry& assets);
     void removed();
 
@@ -77,12 +76,6 @@ namespace IsoRealms::Equilibria {
     ITexture* getCurrentTexture(ThemeTexture* texture);
     IColour* getPreviousColour(ThemeColour* colour);
     IColour* getCurrentColour(ThemeColour* colour);
-
-    // JSON strings
-    inline static const std::string JSON_COLOURS  = "colours";
-    inline static const std::string JSON_ID       = "id";
-    inline static const std::string JSON_TEXTURES = "textures";
-    inline static const std::string JSON_THEMES   = "themes";
 
     private:
     inline static const unsigned int ICON_TRANSITION_TIME = 500;

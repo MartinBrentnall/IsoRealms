@@ -27,17 +27,6 @@ namespace IsoRealms::Hue {
     // Nothing to do.
   }
 
-  void HueManager::save(JSONObject object) const {
-    object.addString(JSON_BRIDGE, cDefBridgeAddress);
-    object.addString(JSON_PSK,    cDefBridgePSK);
-    object.addString(JSON_USER,   cDefBridgeUser);
-    JSONArray mBulbsArray = object.addArray(JSON_BULBS);
-    for (const std::unique_ptr<Bulb>& mBulb : cDefBulbs) {
-      JSONObject mBulbObject = mBulbsArray.addObject();
-      mBulb->save(mBulbObject);
-    }
-  }
-
   void HueManager::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -47,10 +36,10 @@ namespace IsoRealms::Hue {
   }
   
   void HueManager::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(JSON_BRIDGE, [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
-    owner.createPropertyNativeString(JSON_USER,   [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
-    owner.createPropertyNativeString(JSON_PSK,    [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
-    owner.createPropertyArray(JSON_BULBS, cDefBulbs, [](const std::unique_ptr<Bulb>& bulb) -> Bulb& {return *bulb;}, [this, &owner, &metadata](Bulb& bulb) {
+    owner.createPropertyNativeString("bridge", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
+    owner.createPropertyNativeString("user",   [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
+    owner.createPropertyNativeString("psk",    [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
+    owner.createPropertyArray("bulbs", cDefBulbs, [](const std::unique_ptr<Bulb>& bulb) -> Bulb& {return *bulb;}, [this, &owner, &metadata](Bulb& bulb) {
       bulb.getProperties(owner, metadata, [this, &bulb]() {
         Utils::removeElementUnique(cDefBulbs, &bulb);
       });

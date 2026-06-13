@@ -44,19 +44,6 @@ namespace IsoRealms::UI {
     }
   }
   
-  void Menu::save(JSONObject object) const {
-    cDefColour.save(object, JSON_COLOUR);
-    cDefFont.save(object, JSON_FONT);
-    cDefExitAction.save(object, JSON_ON_EXIT);
-    object.addFloat(JSON_FONT_SIZE, cDefFontSize, DEFAULT_FONT_SIZE);
-    object.addFloat(JSON_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
-    JSONArray mOptionsArray = object.addArray(JSON_OPTIONS);
-    for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
-      JSONObject mOptionObject = mOptionsArray.addObject();
-      mItem->save(mOptionObject, JSON_ITEM);
-    }
-  }
-
   void Menu::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -66,15 +53,15 @@ namespace IsoRealms::UI {
   }
 
   void Menu::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_COLOUR,        cDefColour);
-    owner.createPropertyTreeSelector(JSON_FONT,          cDefFont);
-    owner.createPropertyNativeFloat( JSON_FONT_SIZE,     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;}, DEFAULT_FONT_SIZE);
-    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
-    owner.createPropertyTreeSelector(JSON_ON_EXIT,       cDefExitAction);
-    owner.createPropertyArray(JSON_OPTIONS, cDefItems, [](const std::unique_ptr<MenuItem>& mItem) -> MenuItem& {return *mItem;}, [this, &owner](MenuItem& item) {
+    owner.createPropertyTreeSelector("colour",       cDefColour);
+    owner.createPropertyTreeSelector("font",         cDefFont);
+    owner.createPropertyNativeFloat( "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;}, DEFAULT_FONT_SIZE);
+    owner.createPropertyNativeFloat( "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    owner.createPropertyTreeSelector("onExit",       cDefExitAction);
+    owner.createPropertyArray(       "options",      cDefItems, [](const std::unique_ptr<MenuItem>& mItem) -> MenuItem& {return *mItem;}, [this, &owner](MenuItem& item) {
       Options mHint;
       mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-      owner.createPropertyTreeSelector(JSON_ITEM, item, mHint, [this, &item]() {
+      owner.createPropertyTreeSelector("item", item, mHint, [this, &item]() {
         Utils::removeElementUnique(cDefItems, &item);
       });
     }, [this]() -> MenuItem& {

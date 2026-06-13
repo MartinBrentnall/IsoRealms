@@ -25,10 +25,10 @@ namespace IsoRealms::Tables {
 
   Table::Table(Tables& tables, IResourceData& data, JSONObject object) :
             Table(tables, data) {
-    for (JSONValue mFieldValue : object.getArray(JSON_FIELDS)) {
+    for (JSONValue mFieldValue : object.getArray("fields")) {
       cDefFields.emplace_back(Field(mFieldValue.getObject()));
     }
-    for (JSONValue mRecordValue : object.getArray(JSON_RECORDS)) {
+    for (JSONValue mRecordValue : object.getArray("records")) {
       cDefRecords.emplace_back(Record(*this, mRecordValue.getArray()));
     }
   }
@@ -37,10 +37,6 @@ namespace IsoRealms::Tables {
     // TODO: Implement this.
   }
   
-  void Table::save(JSONObject object) const {
-    // TODO: Implement this.
-  }
-
   bool Table::renderIcon() {
     return false;
   }
@@ -58,8 +54,8 @@ namespace IsoRealms::Tables {
   }
   
   Table::Field::Field(JSONObject object) :
-            cName(object.getString(JSON_FIELD_NAME)),
-            cType(object.getString(JSON_FIELD_TYPE) == FIELD_TYPE_INTEGER ? FieldType::INTEGER : FieldType::STRING) {
+            cName(object.getString("name")),
+            cType(object.getString("type") == FIELD_TYPE_INTEGER ? FieldType::INTEGER : FieldType::STRING) {
   }
   
   Table::Value::Value(FieldType type, JSONValue value) {

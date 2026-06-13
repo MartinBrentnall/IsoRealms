@@ -42,7 +42,6 @@ namespace IsoRealms::UI {
     \**********************/
     Throbber(UI& ui, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -63,17 +62,7 @@ namespace IsoRealms::UI {
     bool isDefaultConfiguration() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_COLOUR        = "colour";
-    inline static const std::string JSON_DURATION      = "duration";
-    inline static const std::string JSON_REPETITIONS   = "repetitions";
-    inline static const std::string JSON_RING_RADIUS   = "ringRadius";
-    inline static const std::string JSON_SHADOW_OFFSET = "shadowOffset";
-    inline static const std::string JSON_SPOT_RADIUS   = "spotRadius";
-    inline static const std::string JSON_SPOT_SIDES    = "spotSides";
-    inline static const std::string JSON_SPOTS         = "spots";
-
+    
     // Default values.
     inline static const unsigned int DEFAULT_DURATION      = 2000U;
     inline static const unsigned int DEFAULT_REPETITIONS   = 1U;

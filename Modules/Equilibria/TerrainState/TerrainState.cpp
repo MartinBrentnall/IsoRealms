@@ -28,13 +28,6 @@ namespace IsoRealms::Equilibria {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Terrain States");
   }
 
-  void TerrainState::save(JSONObject object) const {
-    object.addBoolean(JSON_STATE, cDefValue);
-    cDefIcon.save(object, JSON_ICON);
-    object.addFloat(JSON_ICON_SCALE, cDefIconScale);
-    cDefHintAction.save(object, JSON_HINT);
-  }
-
   void TerrainState::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -45,10 +38,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void TerrainState::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeBoolean(JSON_STATE,      [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
-    owner.createPropertyTreeSelector( JSON_HINT,       cDefHintAction);
-    owner.createPropertyTreeSelector( JSON_ICON,       cDefIcon);
-    owner.createPropertyNativeFloat(  JSON_ICON_SCALE, [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, 1.0f, [](float value) {return value > 0.0f;});
+    owner.createPropertyNativeBoolean("state",     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    owner.createPropertyTreeSelector( "hint",      cDefHintAction);
+    owner.createPropertyTreeSelector( "icon",      cDefIcon);
+    owner.createPropertyNativeFloat(  "iconScale", [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, 1.0f, [](float value) {return value > 0.0f;});
   }
 
   void TerrainState::removed() {

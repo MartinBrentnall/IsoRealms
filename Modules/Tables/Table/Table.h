@@ -36,7 +36,6 @@ namespace IsoRealms::Tables {
     Table(Tables& tables, IResourceData& data);
     Table(Tables& tables, IResourceData& data, JSONObject object);
     void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -50,10 +49,6 @@ namespace IsoRealms::Tables {
 //    insertRecordAt(Record& record, int index);
     
     private:
-    inline static const std::string JSON_FIELD_NAME = "name";
-    inline static const std::string JSON_FIELD_TYPE = "type";
-    inline static const std::string JSON_FIELDS     = "fields";
-    inline static const std::string JSON_RECORDS    = "records";
 
     inline static const std::string FIELD_TYPE_INTEGER = "Integer";
     inline static const std::string FIELD_TYPE_STRING  = "String";

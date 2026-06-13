@@ -36,7 +36,6 @@ namespace IsoRealms::Basics {
     \**********************/
     InputSwitch(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -63,10 +62,7 @@ namespace IsoRealms::Basics {
     void setInputHandler(IInputHandler* inputHandler);
     
     private:
-
-    // JSON members.
-    inline static const std::string JSON_VALUE = "value";
-
+    
     // Definition data.
     InputHandler cDefInputHandler;       /// Initial value.
 

@@ -48,7 +48,6 @@ namespace IsoRealms::Equilibria {
     private:
     
     // JSON members.
-    inline static const std::string JSON_OBJECT = "object";
     inline static const std::string JSON_TARGET = "target";
 
     // Definition data.

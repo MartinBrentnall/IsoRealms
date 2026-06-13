@@ -33,12 +33,6 @@ namespace IsoRealms::Spindizzy {
     assets.add<ITexture>(this, "", "Spindizzy Ball Craft Textures");
   }
   
-  void Ball::save(JSONObject object) const {
-    cDefFill.save(object, JSON_FILL);
-    cDefOutline.save(object, JSON_OUTLINE);
-    cDefShine.save(object, JSON_SHINE);
-  }
-
   void Ball::hintInUse(bool inUse) {
     cTexture.hintTextureInUse(inUse);
   }
@@ -49,9 +43,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Ball::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_FILL,    cDefFill);
-    owner.createPropertyTreeSelector(JSON_SHINE,   cDefShine);
-    owner.createPropertyTreeSelector(JSON_OUTLINE, cDefOutline);
+    owner.createPropertyTreeSelector("fill",    cDefFill);
+    owner.createPropertyTreeSelector("shine",   cDefShine);
+    owner.createPropertyTreeSelector("outline", cDefOutline);
   }
 
   void Ball::removed() {

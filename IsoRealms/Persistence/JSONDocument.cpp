@@ -45,8 +45,11 @@ namespace IsoRealms {
   }
 
   JSONObject JSONDocument::addObject(const std::string& name) {
+    rapidjson::Document::AllocatorType& mAllocator = cDocument.GetAllocator();
+    rapidjson::Value mName;
+    mName.SetString(name.c_str(), static_cast<rapidjson::SizeType>(name.length()), mAllocator);
     rapidjson::Value mObject(rapidjson::kObjectType);
-    cDocument.AddMember(rapidjson::StringRef(name), mObject, cDocument.GetAllocator());
+    cDocument.AddMember(mName, mObject, mAllocator);
     return JSONObject(*this, cDocument[name]);
   }
 

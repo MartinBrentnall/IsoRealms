@@ -33,10 +33,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void PickUpType::save(JSONObject object) const {
-    cDefModel.save(object, JSON_APPEARANCE);
-  }
-
   void PickUpType::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -46,7 +42,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void PickUpType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_APPEARANCE, cDefModel);
+    owner.createPropertyTreeSelector("appearance", cDefModel);
   }
 
   void PickUpType::removed() {

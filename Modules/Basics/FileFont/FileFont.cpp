@@ -35,15 +35,6 @@ namespace IsoRealms::Basics {
     assets.add<IFont>(this, "", "Fonts");
   }
   
-  void FileFont::save(JSONObject object) const {
-    cDefFilename.save(JSON_FILENAME, object);
-    object.addInteger(JSON_DETAIL, cDefDetail, DEFAULT_DETAIL);
-    object.addFloat(JSON_LINE_SPACING, cDefLineSpacing, DEFAULT_LINE_SPACING);
-    object.addFloat(JSON_SCALE, cDefScale, DEFAULT_SCALE);
-    object.addFloat(JSON_OFFSET_X, cDefOffsetX);
-    object.addFloat(JSON_OFFSET_Y, cDefOffsetY);
-  }
-
   void FileFont::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -53,12 +44,12 @@ namespace IsoRealms::Basics {
   }
 
   void FileFont::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( JSON_FILENAME,     cDefFilename);
-    owner.createPropertyNativeInteger(JSON_DETAIL,       [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;}, DEFAULT_DETAIL);
-    owner.createPropertyNativeFloat(  JSON_SCALE,        [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;}, DEFAULT_SCALE);
-    owner.createPropertyNativeFloat(  JSON_OFFSET_X,     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
-    owner.createPropertyNativeFloat(  JSON_OFFSET_Y,     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
-    owner.createPropertyNativeFloat(  JSON_LINE_SPACING, [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;}, DEFAULT_LINE_SPACING);
+    owner.createPropertyTreeSelector( "filename",    cDefFilename);
+    owner.createPropertyNativeInteger("detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;}, DEFAULT_DETAIL);
+    owner.createPropertyNativeFloat(  "scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;}, DEFAULT_SCALE);
+    owner.createPropertyNativeFloat(  "offsetX",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
+    owner.createPropertyNativeFloat(  "offsetY",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
+    owner.createPropertyNativeFloat(  "lineSpacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;}, DEFAULT_LINE_SPACING);
   }
 
   void FileFont::removed() {

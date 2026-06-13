@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void Jewel::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(JSON_CYCLE_COLOURS, cDefColoursCycle, [](const std::unique_ptr<CycleColour>& cycleColour) -> CycleColour& {return *cycleColour;}, [this, &owner, &metadata](CycleColour& cycleColour) {
+    owner.createPropertyArray("cycleColours", cDefColoursCycle, [](const std::unique_ptr<CycleColour>& cycleColour) -> CycleColour& {return *cycleColour;}, [this, &owner, &metadata](CycleColour& cycleColour) {
       cycleColour.getProperties(owner, metadata, [this, &cycleColour]() {
         if (cDefColoursCycle.size() > 1) {
           Utils::removeElementUnique(cDefColoursCycle, &cycleColour);
@@ -42,8 +42,8 @@ namespace IsoRealms::Spindizzy {
       randomizeInstances();
       return mCycleColour;
     });
-    owner.createPropertyTreeSelector(JSON_FRAME, cDefColourFrame);
-    owner.createPropertyNativeFloat(JSON_CYCLE_SPEED, [this]() {return cDefCycleSpeed;}, [this](float value) {cDefCycleSpeed = value;}, DEFAULT_CYCLE_SPEED);
+    owner.createPropertyTreeSelector("frame", cDefColourFrame);
+    owner.createPropertyNativeFloat("cycleSpeed", [this]() {return cDefCycleSpeed;}, [this](float value) {cDefCycleSpeed = value;}, DEFAULT_CYCLE_SPEED);
 
     // If we are loading persisted values, we need to create a default cycle colour if none exists.
     if (owner.loadsPersistedValues()) {
@@ -68,16 +68,6 @@ namespace IsoRealms::Spindizzy {
     cSampleModel->update(milliseconds);
   }
   
-  void Jewel::save(JSONObject object) const {
-    cDefColourFrame.save(object, JSON_FRAME);
-    object.addFloat(JSON_CYCLE_SPEED, cDefCycleSpeed, DEFAULT_CYCLE_SPEED);
-    JSONArray mCycleColoursArray = object.addArray(JSON_CYCLE_COLOURS);
-    for (const std::unique_ptr<CycleColour>& mCycleColour : cDefColoursCycle) {
-      JSONObject mCycleColourObject =  mCycleColoursArray.addObject();
-      mCycleColour->save(mCycleColourObject);
-    }
-  }
-
   IModelInstance* Jewel::createModel() {
     return cInstances.emplace_back(std::make_unique<Instance>(*this, cProject)).get();
   }

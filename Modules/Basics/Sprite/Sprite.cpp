@@ -32,12 +32,6 @@ namespace IsoRealms::Basics {
     assets.add<IModel>(this, "", "Sprite Models");
   }
 
-  void Sprite::save(JSONObject object) const {
-    cDefTexture.save(object, JSON_TEXTURE);
-    object.addBoolean(JSON_BILLBOARD_YAW, cDefBillboardYaw);
-    object.addBoolean(JSON_BILLBOARD_PITCH, cDefBillboardPitch);
-  }
-
   void Sprite::hintInUse(bool inUse) {
     cDefTexture->hintTextureInUse(inUse);
   }
@@ -66,9 +60,9 @@ namespace IsoRealms::Basics {
   }
 
   void Sprite::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( JSON_TEXTURE, cDefTexture);
-    owner.createPropertyNativeBoolean(JSON_BILLBOARD_YAW, [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
-    owner.createPropertyNativeBoolean(JSON_BILLBOARD_PITCH, [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
+    owner.createPropertyTreeSelector( "texture",        cDefTexture);
+    owner.createPropertyNativeBoolean("billboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
+    owner.createPropertyNativeBoolean("billboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
   }
 
   void Sprite::removed() {

@@ -38,14 +38,6 @@ namespace IsoRealms::Spindizzy {
     assets.add<IModel>(this, "", "Spindizzy Gyroscope Models");
   }
     
-  void Gyroscope::save(JSONObject object) const {
-    cDefQuadrant[0].save(object, JSON_COLOUR_1);
-    cDefQuadrant[1].save(object, JSON_COLOUR_2);
-    cDefQuadrant[2].save(object, JSON_COLOUR_3);
-    cDefQuadrant[3].save(object, JSON_COLOUR_4);
-    cDefOutline.save(object, JSON_OUTLINE);
-  }
-
   void Gyroscope::hintInUse(bool inUse) {
     cTexture.hintTextureInUse(inUse);
   }
@@ -59,11 +51,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Gyroscope::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_COLOUR_1, cDefQuadrant[0]);
-    owner.createPropertyTreeSelector(JSON_COLOUR_2, cDefQuadrant[1]);
-    owner.createPropertyTreeSelector(JSON_COLOUR_3, cDefQuadrant[2]);
-    owner.createPropertyTreeSelector(JSON_COLOUR_4, cDefQuadrant[3]);
-    owner.createPropertyTreeSelector(JSON_OUTLINE,  cDefOutline);
+    owner.createPropertyTreeSelector("colour1", cDefQuadrant[0]);
+    owner.createPropertyTreeSelector("colour2", cDefQuadrant[1]);
+    owner.createPropertyTreeSelector("colour3", cDefQuadrant[2]);
+    owner.createPropertyTreeSelector("colour4", cDefQuadrant[3]);
+    owner.createPropertyTreeSelector("outline", cDefOutline);
   }
 
   void Gyroscope::removed() {

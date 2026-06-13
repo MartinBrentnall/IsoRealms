@@ -30,7 +30,7 @@ namespace IsoRealms::Equilibria {
   ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
             ZoneObjectTypeTraitChaser(metadata, type) {
     cDefTarget.init(object, JSON_TARGET);
-    cDefObjectID = object.getString(JSON_OBJECT);
+    cDefObjectID = object.getString("object");
   }
 
   const Vertex& ZoneObjectTypeTraitChaser::getTarget() const {

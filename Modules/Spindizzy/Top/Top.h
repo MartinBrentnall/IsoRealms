@@ -34,7 +34,6 @@ namespace IsoRealms::Spindizzy {
     public:
     Top(Spindizzy& spindizzy, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -62,12 +61,7 @@ namespace IsoRealms::Spindizzy {
     void render() const override;
     
     private:
-
-    // JSON members.
-    inline static const std::string JSON_OUTLINE = "outline";
-    inline static const std::string JSON_SIDES   = "sides";
-    inline static const std::string JSON_TOP     = "top";
-
+    
     // Resource definition constants.
     inline static const float OUTLINE        = 0.82f;
     inline static const float SPINDLE_WIDTH  = 0.03f;

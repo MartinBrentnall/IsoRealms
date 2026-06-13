@@ -23,57 +23,72 @@
 #include "JSONThing.h"
 
 namespace IsoRealms {
+  namespace {
+    rapidjson::Value copiedMemberName(const std::string& name, rapidjson::Document::AllocatorType& allocator) {
+      rapidjson::Value mName;
+      mName.SetString(name.c_str(), static_cast<rapidjson::SizeType>(name.length()), allocator);
+      return mName;
+    }
+  }
+
   JSONObject::JSONObject(JSONDocument& parent, rapidjson::Value& object) :
             cParent(parent),
             cObject(object) {
   }
 
   JSONArray JSONObject::addArray(const std::string& name) {
+    rapidjson::Document::AllocatorType& mAllocator = cParent.getDocument().GetAllocator();
     rapidjson::Value mArray(rapidjson::kArrayType);
-    cObject.AddMember(rapidjson::StringRef(name), mArray, cParent.getDocument().GetAllocator());
+    cObject.AddMember(copiedMemberName(name, mAllocator), mArray, mAllocator);
     return JSONArray(cParent, cObject[name]);
   }
 
   JSONObject JSONObject::addObject(const std::string& name) {
+    rapidjson::Document::AllocatorType& mAllocator = cParent.getDocument().GetAllocator();
     rapidjson::Value mObject(rapidjson::kObjectType);
-    cObject.AddMember(rapidjson::StringRef(name), mObject, cParent.getDocument().GetAllocator());
+    cObject.AddMember(copiedMemberName(name, mAllocator), mObject, mAllocator);
     return JSONObject(cParent, cObject[name]);
   }
 
   void JSONObject::addNull(const std::string& name) {
+    rapidjson::Document::AllocatorType& mAllocator = cParent.getDocument().GetAllocator();
     rapidjson::Value mNull;
-    cObject.AddMember(rapidjson::StringRef(name), mNull, cParent.getDocument().GetAllocator());
+    cObject.AddMember(copiedMemberName(name, mAllocator), mNull, mAllocator);
   }
 
   void JSONObject::addString(const std::string& name, const std::string& value, const std::string& defaultValue) {
     if (value != defaultValue) {
+      rapidjson::Document::AllocatorType& mAllocator = cParent.getDocument().GetAllocator();
       rapidjson::Value mString;
-      mString.SetString(value.c_str(), value.length(), cParent.getDocument().GetAllocator());
-      cObject.AddMember(rapidjson::StringRef(name), mString, cParent.getDocument().GetAllocator());
+      mString.SetString(value.c_str(), value.length(), mAllocator);
+      cObject.AddMember(copiedMemberName(name, mAllocator), mString, mAllocator);
     }
   }
 
   void JSONObject::addInteger(const std::string& name, int value, int defaultValue) {
     if (value != defaultValue) {
+      rapidjson::Document::AllocatorType& mAllocator = cParent.getDocument().GetAllocator();
       rapidjson::Value mInteger;
       mInteger = value;
-      cObject.AddMember(rapidjson::StringRef(name), mInteger, cParent.getDocument().GetAllocator());
+      cObject.AddMember(copiedMemberName(name, mAllocator), mInteger, mAllocator);
     }
   }
 
   void JSONObject::addFloat(const std::string& name, float value, float defaultValue) {
     if (value != defaultValue) {
+      rapidjson::Document::AllocatorType& mAllocator = cParent.getDocument().GetAllocator();
       rapidjson::Value mFloat;
       mFloat = value;
-      cObject.AddMember(rapidjson::StringRef(name), mFloat, cParent.getDocument().GetAllocator());
+      cObject.AddMember(copiedMemberName(name, mAllocator), mFloat, mAllocator);
     }
   }
 
   void JSONObject::addBoolean(const std::string& name, bool value, bool defaultValue) {
     if (value != defaultValue) {
+      rapidjson::Document::AllocatorType& mAllocator = cParent.getDocument().GetAllocator();
       rapidjson::Value mBoolean;
       mBoolean = value;
-      cObject.AddMember(rapidjson::StringRef(name), mBoolean, cParent.getDocument().GetAllocator());
+      cObject.AddMember(copiedMemberName(name, mAllocator), mBoolean, mAllocator);
     }
   }
 

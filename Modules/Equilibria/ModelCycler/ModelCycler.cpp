@@ -38,14 +38,6 @@ namespace IsoRealms::Equilibria {
     assets.add<IBinding>(&cLuaBinding, "", "Cycleable Models");
   }
   
-  void ModelCycler::save(JSONObject object) const {
-    JSONArray mModelArray = object.addArray(JSON_MODELS);
-    for (const std::unique_ptr<Model>& mModel : cDefModels) {
-      JSONObject mModelObject = mModelArray.addObject();
-      mModel->save(mModelObject, JSON_MODEL);
-    }
-  }
-
   void ModelCycler::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -56,8 +48,8 @@ namespace IsoRealms::Equilibria {
   }
 
   void ModelCycler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(JSON_MODELS, cDefModels, [](const std::unique_ptr<Model>& mModel) -> Model& {return *mModel;}, [this, &owner](Model& model) {
-      owner.createPropertyTreeSelector(JSON_MODEL, model, Options::EMPTY, [this, &model]() {
+    owner.createPropertyArray("models", cDefModels, [](const std::unique_ptr<Model>& mModel) -> Model& {return *mModel;}, [this, &owner](Model& model) {
+      owner.createPropertyTreeSelector("model", model, Options::EMPTY, [this, &model]() {
         Utils::removeElementUnique(cDefModels, &model);
         rebuildOffsetModels();
         refreshAssetRegistration();

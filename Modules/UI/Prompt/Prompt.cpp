@@ -34,18 +34,6 @@ namespace IsoRealms::UI {
     assets.add<IBinding>(&cLuaBinding, "", "Prompts");
   }
   
-  void Prompt::save(JSONObject object) const {
-    object.addFloat(JSON_TEXT_SIZE,      cDefTextSize,     DEFAULT_TEXT_SIZE);
-    object.addFloat(JSON_SHADOW_OFFSET,  cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
-    object.addString(JSON_MESSAGE,       cDefMessage);
-    object.addString(JSON_CANCEL_LABEL,  cDefNegativeText);
-    object.addString(JSON_CONFIRM_LABEL, cDefPositiveText);
-    cDefSelectionColour.save(object, JSON_SELECTION_COLOUR);
-    cDefFont.save(object, JSON_FONT);
-    cDefPositiveAction.save(object, JSON_ON_CONFIRM);
-    cDefNegativeAction.save(object, JSON_ON_CANCEL);
-  }
-
   void Prompt::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -55,15 +43,15 @@ namespace IsoRealms::UI {
   }
 
   void Prompt::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_FONT,             cDefFont);
-    owner.createPropertyNativeFloat( JSON_TEXT_SIZE,        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;}, DEFAULT_TEXT_SIZE);
-    owner.createPropertyNativeFloat( JSON_SHADOW_OFFSET,    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
-    owner.createPropertyTreeSelector(JSON_SELECTION_COLOUR, cDefSelectionColour);
-    owner.createPropertyNativeString(JSON_MESSAGE,          [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
-    owner.createPropertyNativeString(JSON_CANCEL_LABEL,     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
-    owner.createPropertyNativeString(JSON_CONFIRM_LABEL,    [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
-    owner.createPropertyTreeSelector(JSON_ON_CANCEL,        cDefNegativeAction);
-    owner.createPropertyTreeSelector(JSON_ON_CONFIRM,       cDefPositiveAction);
+    owner.createPropertyTreeSelector("font",            cDefFont);
+    owner.createPropertyNativeFloat( "textSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;}, DEFAULT_TEXT_SIZE);
+    owner.createPropertyNativeFloat( "shadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    owner.createPropertyTreeSelector("selectionColour", cDefSelectionColour);
+    owner.createPropertyNativeString("message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
+    owner.createPropertyNativeString("cancelLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
+    owner.createPropertyNativeString("confirmLabel",    [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
+    owner.createPropertyTreeSelector("onCancel",        cDefNegativeAction);
+    owner.createPropertyTreeSelector("onConfirm",       cDefPositiveAction);
   }
 
   void Prompt::removed() {

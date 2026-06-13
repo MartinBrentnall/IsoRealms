@@ -49,7 +49,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     PlayerType(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -105,27 +104,6 @@ namespace IsoRealms::Equilibria {
     bool isDefaultConfiguration() const override;
 
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_ACCELERATION     = "acceleration";
-    inline static const std::string JSON_APPEARANCE       = "appearance";
-    inline static const std::string JSON_BOUNCE_FACTOR    = "bounceFactor";
-    inline static const std::string JSON_HEIGHT           = "height";
-    inline static const std::string JSON_HUG_MOMENTUM     = "hugMomentum";
-    inline static const std::string JSON_ON_APEX          = "onApex";
-    inline static const std::string JSON_ON_FALL_BOUNCE   = "onFallBounce";
-    inline static const std::string JSON_ON_FALL_IMPACT   = "onFallImpact";
-    inline static const std::string JSON_ON_LEAVE_SURFACE = "onLeaveSurface";
-    inline static const std::string JSON_ON_WALL_BOUNCE   = "onWallBounce";
-    inline static const std::string JSON_ON_RESPAWN       = "onRespawn";
-    inline static const std::string JSON_ORIENTATION      = "orientation";
-    inline static const std::string JSON_RADIUS           = "radius";
-    inline static const std::string JSON_RESPAWN_DELAY    = "respawnDelay";
-    inline static const std::string JSON_SPIN_SPEED       = "spinSpeed";
-    inline static const std::string JSON_STEP_REACH       = "stepReach";
-    inline static const std::string JSON_THRUST_INPUT     = "thrustInput";
-    inline static const std::string JSON_X_INPUT          = "xInput";
-    inline static const std::string JSON_Y_INPUT          = "yInput";
 
     inline static const float DEFAULT_ACCELERATION  = 0.0000265f;
     inline static const float DEFAULT_BOUNCE_FACTOR = 1.0f;

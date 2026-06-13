@@ -35,19 +35,6 @@ namespace IsoRealms::Replay {
     }
   }
   
-  void Replayer::save(JSONObject object) const {
-    JSONArray mDigitalInputsArray = object.addArray(JSON_DIGITAL_INPUTS);
-    for (const std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
-      JSONObject mDigitalInputObject = mDigitalInputsArray.addObject();
-      mInput->save(mDigitalInputObject);
-    }
-    JSONArray mAnalogueInputsArray = object.addArray(JSON_ANALOGUE_INPUTS);
-    for (const std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
-      JSONObject mAnalogueInputObject = mAnalogueInputsArray.addObject();
-      mInput->save(mAnalogueInputObject);
-    }
-  }
-  
   bool Replayer::renderIcon() const {
     return false;
   }
@@ -57,7 +44,7 @@ namespace IsoRealms::Replay {
   }
   
   void Replayer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(JSON_DIGITAL_INPUTS, cDefDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &owner, &metadata](DigitalInput& digitalInput) {
+    owner.createPropertyArray("digitalInputs", cDefDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &owner, &metadata](DigitalInput& digitalInput) {
       owner.createPropertyStruct("DigitalInput", digitalInput.getName(), [&metadata, &digitalInput](IPropertyMaker& owner) {
         digitalInput.getProperties(owner, metadata);
       }, [this, &digitalInput]() {
@@ -68,7 +55,7 @@ namespace IsoRealms::Replay {
       return *cDefDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, cResource));
       // TODO: Adjust ID's.
     });
-    owner.createPropertyArray(JSON_ANALOGUE_INPUTS, cDefAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &owner, &metadata](AnalogueInput& analogueInput) {
+    owner.createPropertyArray("analogueInputs", cDefAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &owner, &metadata](AnalogueInput& analogueInput) {
       owner.createPropertyStruct("AnalogueInput", analogueInput.getName(), [&metadata, &analogueInput](IPropertyMaker& owner) {
         analogueInput.getProperties(owner, metadata);
       }, [this, &analogueInput]() {

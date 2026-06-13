@@ -88,7 +88,7 @@ namespace IsoRealms::Basics {
   void DigitalToAnalogueMapping::saveAsset(JSONObject object) const {
     object.addString(JSON_NAME, cDefName);
     object.addFloat(JSON_TO_VALUE, cDefOutputValue);
-    cDefControl.save(object);
+//    cDefControl.save(object);
   }
 
   void DigitalToAnalogueMapping::getAssetProperties(IPropertyMaker& owner) {

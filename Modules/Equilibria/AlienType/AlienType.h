@@ -43,7 +43,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     AlienType(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -94,16 +93,6 @@ namespace IsoRealms::Equilibria {
     bool isDefaultConfiguration() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_ACCELERATION = "acceleration";
-    inline static const std::string JSON_APPEARANCE   = "appearance";
-    inline static const std::string JSON_FRICTION     = "friction";
-    inline static const std::string JSON_HEIGHT       = "height";
-    inline static const std::string JSON_HUG_MOMENTUM = "hugMomentum";
-    inline static const std::string JSON_RADIUS       = "radius";
-    inline static const std::string JSON_SPIN_SPEED   = "spinSpeed";
-    inline static const std::string JSON_TARGET       = "target";
 
     inline static const float DEFAULT_ACCELERATION = 0.0000215f;
     inline static const float DEFAULT_HEIGHT       = 1.7f;

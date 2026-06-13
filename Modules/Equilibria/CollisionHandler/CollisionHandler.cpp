@@ -36,13 +36,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void CollisionHandler::save(JSONObject object) const {
-    cDefPhysicalObjectTypeA.save(object, JSON_OBJECT_A);
-    cDefPhysicalObjectTypeB.save(object, JSON_OBJECT_B);
-    cDefEnteredAction.save(object, JSON_ON_COLLISION);
-    cDefExitedAction.save(object, JSON_ON_PARTING);
-  }
-
   void CollisionHandler::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -52,10 +45,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void CollisionHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_OBJECT_A,     cDefPhysicalObjectTypeA);
-    owner.createPropertyTreeSelector(JSON_OBJECT_B,     cDefPhysicalObjectTypeB);
-    owner.createPropertyTreeSelector(JSON_ON_COLLISION, cDefEnteredAction);
-    owner.createPropertyTreeSelector(JSON_ON_PARTING,   cDefExitedAction);
+    owner.createPropertyTreeSelector("objectA",     cDefPhysicalObjectTypeA);
+    owner.createPropertyTreeSelector("objectB",     cDefPhysicalObjectTypeB);
+    owner.createPropertyTreeSelector("onCollision", cDefEnteredAction);
+    owner.createPropertyTreeSelector("onParting",   cDefExitedAction);
 
     if (owner.loadsPersistedValues()) {
       cEquilibria.getProject().init([this]() {

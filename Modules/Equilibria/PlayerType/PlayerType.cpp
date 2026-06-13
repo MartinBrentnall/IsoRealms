@@ -57,28 +57,6 @@ namespace IsoRealms::Equilibria {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Players");
   }
 
-  void PlayerType::save(JSONObject object) const {
-    object.addFloat(JSON_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
-    object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
-    object.addFloat(JSON_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
-    object.addFloat(JSON_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
-    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    object.addFloat(JSON_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
-    object.addInteger(JSON_RESPAWN_DELAY, cDefRespawnDelay, DEFAULT_RESPAWN_DELAY);
-    cDefModel.save(object, JSON_APPEARANCE);
-    cDefRespawnAction.save(object, JSON_ON_RESPAWN);
-    cDefInputThrust.save(object, JSON_THRUST_INPUT);
-    cDefInputX.save(object, JSON_X_INPUT);
-    cDefInputY.save(object, JSON_Y_INPUT);
-    cDefFallImpactAction.save(object, JSON_ON_FALL_IMPACT);
-    cDefFallBounceAction.save(object, JSON_ON_FALL_BOUNCE);
-    cDefWallBounceAction.save(object, JSON_ON_WALL_BOUNCE);
-    cDefOrientation.save(object, JSON_ORIENTATION);
-    cDefLeaveSurfaceAction.save(object, JSON_ON_LEAVE_SURFACE);
-    cDefApexAction.save(object, JSON_ON_APEX);
-  }
-
   void PlayerType::hintInUse(bool inUse) {
   }
 
@@ -89,35 +67,35 @@ namespace IsoRealms::Equilibria {
   void PlayerType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
 
     // Dimensions
-    owner.createPropertyNativeFloat(  JSON_RADIUS,           [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
-    owner.createPropertyNativeFloat(  JSON_HEIGHT,           [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
+    owner.createPropertyNativeFloat(  "radius",         [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
+    owner.createPropertyNativeFloat(  "height",         [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
 
     // Physics
-    owner.createPropertyNativeFloat(  JSON_ACCELERATION,     [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
-    owner.createPropertyNativeFloat(  JSON_BOUNCE_FACTOR,    [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;}, DEFAULT_BOUNCE_FACTOR);
-    owner.createPropertyNativeFloat(  JSON_STEP_REACH,       [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;}, DEFAULT_STEP_REACH);
-    owner.createPropertyNativeFloat(  JSON_HUG_MOMENTUM,     [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
+    owner.createPropertyNativeFloat(  "acceleration",   [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
+    owner.createPropertyNativeFloat(  "bounceFactor",   [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;}, DEFAULT_BOUNCE_FACTOR);
+    owner.createPropertyNativeFloat(  "stepReach",      [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;}, DEFAULT_STEP_REACH);
+    owner.createPropertyNativeFloat(  "hugMomentum",    [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
 
     // appearance
-    owner.createPropertyTreeSelector( JSON_APPEARANCE,       cDefModel);
-    owner.createPropertyNativeFloat(  JSON_SPIN_SPEED,       [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    owner.createPropertyTreeSelector( "appearance",     cDefModel);
+    owner.createPropertyNativeFloat(  "spinSpeed",      [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
 
     // Input
-    owner.createPropertyTreeSelector( JSON_X_INPUT,          cDefInputX);
-    owner.createPropertyTreeSelector( JSON_Y_INPUT,          cDefInputY);
-    owner.createPropertyTreeSelector( JSON_THRUST_INPUT,     cDefInputThrust);
+    owner.createPropertyTreeSelector( "xInput",         cDefInputX);
+    owner.createPropertyTreeSelector( "yInput",         cDefInputY);
+    owner.createPropertyTreeSelector( "thrustInput",    cDefInputThrust);
 
     // Actions
-    owner.createPropertyTreeSelector( JSON_ON_RESPAWN,       cDefRespawnAction);
-    owner.createPropertyTreeSelector( JSON_ON_FALL_IMPACT,   cDefFallImpactAction);
-    owner.createPropertyTreeSelector( JSON_ON_FALL_BOUNCE,   cDefFallBounceAction);
-    owner.createPropertyTreeSelector( JSON_ON_WALL_BOUNCE,   cDefWallBounceAction);
-    owner.createPropertyTreeSelector( JSON_ON_LEAVE_SURFACE, cDefLeaveSurfaceAction);
-    owner.createPropertyTreeSelector( JSON_ON_APEX,          cDefApexAction);
+    owner.createPropertyTreeSelector( "onRespawn",      cDefRespawnAction);
+    owner.createPropertyTreeSelector( "onFallImpact",   cDefFallImpactAction);
+    owner.createPropertyTreeSelector( "onFallBounce",   cDefFallBounceAction);
+    owner.createPropertyTreeSelector( "onWallBounce",   cDefWallBounceAction);
+    owner.createPropertyTreeSelector( "onLeaveSurface", cDefLeaveSurfaceAction);
+    owner.createPropertyTreeSelector( "onApex",         cDefApexAction);
 
     // Misc
-    owner.createPropertyNativeInteger(JSON_RESPAWN_DELAY,    [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;}, DEFAULT_RESPAWN_DELAY);
-    owner.createPropertyTreeSelector( JSON_ORIENTATION,      cDefOrientation);
+    owner.createPropertyNativeInteger("respawnDelay",   [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;}, DEFAULT_RESPAWN_DELAY);
+    owner.createPropertyTreeSelector( "orientation",    cDefOrientation);
   }
 
   void PlayerType::removed() {

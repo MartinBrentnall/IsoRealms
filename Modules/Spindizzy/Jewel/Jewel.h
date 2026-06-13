@@ -35,8 +35,7 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     Jewel(Spindizzy& spindizzy, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
+    void registerAssets(ResourceAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -112,9 +111,6 @@ namespace IsoRealms::Spindizzy {
 
     // JSON members.
     inline static const std::string JSON_COLOUR        = "colour";
-    inline static const std::string JSON_CYCLE_COLOURS = "cycleColours";
-    inline static const std::string JSON_CYCLE_SPEED   = "cycleSpeed";
-    inline static const std::string JSON_FRAME         = "frame";
 
     // Default values.
     inline static const float DEFAULT_CYCLE_SPEED = 0.001f;

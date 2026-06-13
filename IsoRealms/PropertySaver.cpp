@@ -164,9 +164,6 @@ namespace IsoRealms {
   }
 
   void PropertySaver::createPropertyTreeSelector(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
-    if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
-      return;
-    }
     if (hint.getOption(Options::PROPERTY_INLINE) == "true") {
       item.saveToProperty(currentObject(), hint);
       saveTreeSelectorAssetProperties(item, currentObject(), hint);

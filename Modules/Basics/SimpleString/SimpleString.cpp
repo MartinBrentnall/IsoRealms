@@ -31,10 +31,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Strings");
   }
   
-  void SimpleString::save(JSONObject object) const {
-    object.addString(JSON_VALUE, cDefValue);
-  }
-
   void SimpleString::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -44,7 +40,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleString::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(JSON_VALUE, [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
+    owner.createPropertyNativeString("value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
   }
 
   void SimpleString::removed() {

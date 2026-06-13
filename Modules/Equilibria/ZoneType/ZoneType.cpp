@@ -32,10 +32,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
   
-  void ZoneType::save(JSONObject object) const {
-    // Nothing to do.
-  }
-
   void ZoneType::hintInUse(bool inUse) {
     // Nothing to do.
   }

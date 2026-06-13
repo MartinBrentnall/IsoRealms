@@ -34,7 +34,6 @@ namespace IsoRealms::Basics {
     \**********************/
     SimpleVertex(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -64,12 +63,7 @@ namespace IsoRealms::Basics {
     void setZ(double z);
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_X = "x";
-    inline static const std::string JSON_Y = "y";
-    inline static const std::string JSON_Z = "z";
-
+    
     // Definition data.
     float cDefX; /// Initial X value.
     float cDefY; /// Initial Y value.

@@ -30,10 +30,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Input Switches");
   }
   
-  void InputSwitch::save(JSONObject object) const {
-    cDefInputHandler.save(object, JSON_VALUE);
-  }
-
   void InputSwitch::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -43,7 +39,7 @@ namespace IsoRealms::Basics {
   }
 
   void InputSwitch::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_VALUE, cDefInputHandler);
+    owner.createPropertyTreeSelector("value", cDefInputHandler);
   }
 
   void InputSwitch::removed() {

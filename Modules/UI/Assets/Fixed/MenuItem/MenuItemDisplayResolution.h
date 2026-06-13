@@ -70,7 +70,6 @@ namespace IsoRealms::UI {
     // JSON members.
     inline static const std::string JSON_ID    = "id";
     inline static const std::string JSON_LABEL = "label";
-    inline static const std::string JSON_TYPE  = "type";
 
     // Constants.
     inline static const std::string BINDING_TYPE = "DisplayResolution";

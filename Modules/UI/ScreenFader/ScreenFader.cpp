@@ -32,12 +32,6 @@ namespace IsoRealms::UI {
     assets.add<IScreen>(this, "", "Screen Faders");
   }
   
-  void ScreenFader::save(JSONObject object) const {
-    cDefScreenA.save(object, JSON_SCREEN_A);
-    cDefScreenB.save(object, JSON_SCREEN_B);
-    cDefTransition.save(object, JSON_TRANSITION);
-  }
-
   void ScreenFader::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -47,9 +41,9 @@ namespace IsoRealms::UI {
   }
 
   void ScreenFader::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_SCREEN_A,   cDefScreenA);
-    owner.createPropertyTreeSelector(JSON_SCREEN_B,   cDefScreenB);
-    owner.createPropertyTreeSelector(JSON_TRANSITION, cDefTransition);
+    owner.createPropertyTreeSelector("screenA",    cDefScreenA);
+    owner.createPropertyTreeSelector("screenB",    cDefScreenB);
+    owner.createPropertyTreeSelector("transition", cDefTransition);
   }
 
   void ScreenFader::removed() {

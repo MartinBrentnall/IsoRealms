@@ -100,19 +100,19 @@ namespace IsoRealms::Equilibria {
   
   
   void TerrainType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(  JSON_FRICTION,      [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
-    owner.createPropertyNativeFloat(  JSON_GRIP,          [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
-    owner.createPropertyNativeFloat(  JSON_FLOOR_BOUNCE,  [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
-    owner.createPropertyNativeFloat(  JSON_WALL_BOUNCE,   [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;}, DEFAULT_WALL_BOUNCE);
-    owner.createPropertyNativeBoolean(JSON_ALLOW_RESPAWN, [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
-    owner.createPropertyNativeBoolean(JSON_SOLID,         [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
-    owner.createPropertyTreeSelector( JSON_ON_TOUCH,      cDefContactAction);
-    owner.createPropertyTreeSelector( JSON_ON_IMPACT,     cDefImpactAction);
-    owner.createPropertyTreeSelector( JSON_SURFACE,       cDefSurfacePattern);
-    owner.createPropertyTreeSelector( JSON_NORTH_WALL,    cDefNorthWallPattern);
-    owner.createPropertyTreeSelector( JSON_SOUTH_WALL,    cDefSouthWallPattern);
-    owner.createPropertyTreeSelector( JSON_WEST_WALL,     cDefWestWallPattern);
-    owner.createPropertyTreeSelector( JSON_EAST_WALL,     cDefEastWallPattern);
+    owner.createPropertyNativeFloat(  "friction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
+    owner.createPropertyNativeFloat(  "grip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
+    owner.createPropertyNativeFloat(  "floorBounce",  [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
+    owner.createPropertyNativeFloat(  "wallBounce",   [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;}, DEFAULT_WALL_BOUNCE);
+    owner.createPropertyNativeBoolean("allowRespawn", [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
+    owner.createPropertyNativeBoolean("solid",        [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
+    owner.createPropertyTreeSelector( "onTouch",      cDefContactAction);
+    owner.createPropertyTreeSelector( "onImpact",     cDefImpactAction);
+    owner.createPropertyTreeSelector( "surface",      cDefSurfacePattern);
+    owner.createPropertyTreeSelector( "northWall",    cDefNorthWallPattern);
+    owner.createPropertyTreeSelector( "southWall",    cDefSouthWallPattern);
+    owner.createPropertyTreeSelector( "westWall",     cDefWestWallPattern);
+    owner.createPropertyTreeSelector( "eastWall",     cDefEastWallPattern);
   }
 
   void TerrainType::removed() {
@@ -193,22 +193,6 @@ namespace IsoRealms::Equilibria {
 
   bool TerrainType::isSolid() const {
     return cDefSolid;
-  }
-
-  void TerrainType::save(JSONObject object) const {
-    object.addBoolean(JSON_SOLID, cDefSolid);
-    object.addFloat(JSON_FRICTION, cDefSurfaceFriction);
-    object.addFloat(JSON_GRIP, cDefSurfaceGrip);
-    object.addFloat(JSON_FLOOR_BOUNCE, cDefSurfaceBounce);
-    object.addFloat(JSON_WALL_BOUNCE, cDefWallBounce, DEFAULT_WALL_BOUNCE);
-    object.addBoolean(JSON_ALLOW_RESPAWN, cDefRespawnAllowed);
-    cDefImpactAction.save(object, JSON_ON_IMPACT);
-    cDefContactAction.save(object, JSON_ON_TOUCH);
-    cDefSurfacePattern.save(object, JSON_SURFACE);
-    cDefWestWallPattern.save(object, JSON_EAST_WALL);
-    cDefEastWallPattern.save(object, JSON_WEST_WALL);
-    cDefSouthWallPattern.save(object, JSON_SOUTH_WALL);
-    cDefNorthWallPattern.save(object, JSON_NORTH_WALL);
   }
 
   std::vector<ConditionElement*> TerrainType::getTerrainStateConditionElements() {

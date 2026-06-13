@@ -36,7 +36,6 @@ namespace IsoRealms::UI {
     \**********************/
     ScreenFader(UI& ui, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -52,12 +51,7 @@ namespace IsoRealms::UI {
     bool isDefaultConfiguration() const override;
     
     private:
-
-    // JSON members.
-    inline static const std::string JSON_SCREEN_A   = "screenA";
-    inline static const std::string JSON_SCREEN_B   = "screenB";
-    inline static const std::string JSON_TRANSITION = "transition";
-
+    
     // External interfaces.
     Project& cProject;
 

@@ -47,16 +47,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Projects");
   }
   
-  void Project::save(JSONObject object) const {
-    object.addString(JSON_FILE, cDefProjectPath);
-    object.addBoolean(JSON_USER, cDefProjectUser);
-    object.addBoolean(JSON_RUNNING, cDefRunning);
-    object.addBoolean(JSON_EDITING, cDefEditing);
-    cDefEndAction.save(object, JSON_ON_FINISH);
-    cDefErrorAction.save(object, JSON_ON_ERROR);
-    cDefReadyAction.save(object, JSON_ON_READY);
-  }
-
   void Project::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -66,13 +56,13 @@ namespace IsoRealms::Basics {
   }
 
   void Project::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString( JSON_FILE,      [this]() {return cDefProjectPath;}, [this](const std::string& value) {cDefProjectPath = value;});
-    owner.createPropertyNativeBoolean(JSON_USER,      [this]() {return cDefProjectUser;}, [this](bool value)               {cDefProjectUser = value;});
-    owner.createPropertyNativeBoolean(JSON_RUNNING,   [this]() {return cDefRunning;},     [this](bool value)               {cDefRunning     = value;});
-    owner.createPropertyNativeBoolean(JSON_EDITING,   [this]() {return cDefEditing;},     [this](bool value)               {cDefEditing     = value;});
-    owner.createPropertyTreeSelector( JSON_ON_FINISH, cDefEndAction);
-    owner.createPropertyTreeSelector( JSON_ON_ERROR,  cDefErrorAction);
-    owner.createPropertyTreeSelector( JSON_ON_READY,  cDefReadyAction);
+    owner.createPropertyNativeString( "file",     [this]() {return cDefProjectPath;}, [this](const std::string& value) {cDefProjectPath = value;});
+    owner.createPropertyNativeBoolean("user",     [this]() {return cDefProjectUser;}, [this](bool value)               {cDefProjectUser = value;});
+    owner.createPropertyNativeBoolean("running",  [this]() {return cDefRunning;},     [this](bool value)               {cDefRunning     = value;});
+    owner.createPropertyNativeBoolean("editing",  [this]() {return cDefEditing;},     [this](bool value)               {cDefEditing     = value;});
+    owner.createPropertyTreeSelector( "onFinish", cDefEndAction);
+    owner.createPropertyTreeSelector( "onError",  cDefErrorAction);
+    owner.createPropertyTreeSelector( "onReady",  cDefReadyAction);
   }
 
   void Project::removed() {

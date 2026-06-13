@@ -40,7 +40,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     ZoneObjectType(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -79,15 +78,6 @@ namespace IsoRealms::Equilibria {
     bool isDefaultConfiguration() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_EDITING_PROCESSOR = "editingProcessor";
-    inline static const std::string JSON_EDITING_RENDERER  = "editingRenderer";
-    inline static const std::string JSON_ID                = "id";
-    inline static const std::string JSON_RUNTIME_PROCESSOR = "runtimeProcessor";
-    inline static const std::string JSON_RUNTIME_RENDERER  = "runtimeRenderer";
-    inline static const std::string JSON_TRAITS            = "traits";
-    inline static const std::string JSON_TYPE              = "type";
 
     inline static const std::string BIND_TO_TRAIT = "Trait";
     inline static const std::string BIND_TO_ZONE  = "Zone";

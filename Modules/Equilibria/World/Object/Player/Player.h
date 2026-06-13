@@ -110,7 +110,6 @@ namespace IsoRealms::Equilibria {
     };
     
     // JSON members.
-    inline static const std::string JSON_ID   = "id";
     inline static const std::string JSON_TYPE = "type";
     inline static const std::string JSON_X    = "x";
     inline static const std::string JSON_Y    = "y";

@@ -40,23 +40,6 @@ namespace IsoRealms::Basics {
     assets.addProvider<IActionContext, IAction>(this, "", "Call a Function");
   }
     
-  void Function::save(JSONObject object, bool script) const {
-    JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
-    for (const std::unique_ptr<Binding>& mBinding : cDefBindings) {
-      JSONObject mBindingObject = mBindingsArray.addObject();
-      mBinding->save(mBindingObject, JSON_VARIABLE, JSON_TO); // TODO: JSON_TO is handled elsewhere!
-    }
-
-    if (!script) {
-      JSONArray mArgumentsArray = object.addArray(JSON_ARGUMENTS);
-      for (const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition : cDefArgumentDefinitions) {
-        JSONObject mArgumentObject = mArgumentsArray.addObject();
-        mArgumentDefinition->save(mArgumentObject);
-      }
-    }
-    object.addString(JSON_CODE, cDefCode);
-  }
-
   void Function::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -67,7 +50,7 @@ namespace IsoRealms::Basics {
 
   void Function::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     addBindingPropertyArray(owner, true);
-    owner.createPropertyArray(JSON_ARGUMENTS, cDefArgumentDefinitions, [](const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition) -> ArgumentDefinition& {return *mArgumentDefinition;}, [this, &owner, &metadata](ArgumentDefinition& argumentDefinition) {
+    owner.createPropertyArray("arguments", cDefArgumentDefinitions, [](const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition) -> ArgumentDefinition& {return *mArgumentDefinition;}, [this, &owner, &metadata](ArgumentDefinition& argumentDefinition) {
       owner.createPropertyStruct("Argument", argumentDefinition.getName(), [&argumentDefinition, this, &metadata](IPropertyMaker& owner) {
         argumentDefinition.getProperties(owner, metadata, *this);
       }, [this, &argumentDefinition]() {

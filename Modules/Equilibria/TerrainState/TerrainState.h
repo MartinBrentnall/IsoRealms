@@ -38,7 +38,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     TerrainState(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -83,13 +82,7 @@ namespace IsoRealms::Equilibria {
     void setValue(bool value);
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_HINT       = "hint";
-    inline static const std::string JSON_ICON       = "icon";
-    inline static const std::string JSON_ICON_SCALE = "iconScale";
-    inline static const std::string JSON_STATE      = "state";
-
+    
     // External interfaces.
     IResourceData& cResourceData;
 

@@ -40,8 +40,7 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Menu(UI& ui, IResourceData& data);
-    void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
+    void registerAssets(ResourceAssetRegistry& assets);
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -81,16 +80,6 @@ namespace IsoRealms::UI {
     bool isDefaultConfiguration() const override;
 
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_COLOUR        = "colour";
-    inline static const std::string JSON_FONT          = "font";
-    inline static const std::string JSON_FONT_SIZE     = "fontSize";
-    inline static const std::string JSON_ITEM          = "item";
-    inline static const std::string JSON_ON_EXIT       = "onExit";
-    inline static const std::string JSON_OPTIONS       = "options";
-    inline static const std::string JSON_SHADOW_OFFSET = "shadowOffset";
-    inline static const std::string JSON_TYPE          = "type";
 
     inline static const float DEFAULT_FONT_SIZE     = 0.05f;
     inline static const float DEFAULT_SHADOW_OFFSET = 0.008f;

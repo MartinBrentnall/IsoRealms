@@ -37,7 +37,6 @@ namespace IsoRealms::UI {
     \**********************/
     VirtualKeyboard(UI& ui, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -81,11 +80,6 @@ namespace IsoRealms::UI {
     inline static const unsigned int ROWS              = 3;
     inline static const unsigned int COLUMNS           = 10;
     inline static const unsigned int CARET_BLINK_DELAY = 200;
-    
-    // JSON members.
-    inline static const std::string JSON_FONT             = "font";
-    inline static const std::string JSON_ON_CONFIRM       = "onConfirm";
-    inline static const std::string JSON_SELECTION_COLOUR = "selectionColour";
 
     // External interfaces.
     HatHandler& cHatHandler;

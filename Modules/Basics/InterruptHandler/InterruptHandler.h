@@ -38,7 +38,6 @@ namespace IsoRealms::Basics {
     public:
     InterruptHandler(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -55,11 +54,7 @@ namespace IsoRealms::Basics {
     bool isDefaultConfiguration() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_CONSUME  = "consume";
-    inline static const std::string JSON_ON_INPUT = "onInput";
-
+    
     // Definition data.
     Action cDefAction;
     bool cDefConsume;

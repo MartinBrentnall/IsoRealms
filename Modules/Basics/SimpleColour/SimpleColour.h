@@ -38,7 +38,6 @@ namespace IsoRealms::Basics {
     \**********************/
     SimpleColour(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -70,13 +69,7 @@ namespace IsoRealms::Basics {
     void setAlpha(float value);
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_RED   = "red";
-    inline static const std::string JSON_GREEN = "green";
-    inline static const std::string JSON_BLUE  = "blue";
-    inline static const std::string JSON_ALPHA = "alpha";
-
+    
     // Definition data.
     float cDefRed;   /// Initial red intensity.
     float cDefGreen; /// Initial green intensity.

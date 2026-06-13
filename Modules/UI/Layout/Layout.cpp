@@ -56,16 +56,6 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::save(JSONObject object) const {
-    JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
-    for (LayoutComponent* mComponent : cComponentsByOrder) {
-      JSONObject mComponentObject = mComponentsArray.addObject();
-      std::string mComponentName = getName(mComponent);
-      mComponentObject.addString(JSON_ID, mComponentName);
-      mComponent->save(mComponentObject);
-    }
-  }
-
   void Layout::hintInUse(bool inUse) {
     // Nothing to do.
   }

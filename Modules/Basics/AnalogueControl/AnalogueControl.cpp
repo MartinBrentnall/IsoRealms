@@ -48,14 +48,6 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueControl::save(JSONObject object) const {
-    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
-    for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
-      JSONObject mMappingObject = mMappingsArray.addObject();
-      mMapping->save(mMappingObject);
-    }
-  }
-
   void AnalogueControl::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -164,9 +156,9 @@ namespace IsoRealms::Basics {
     cRuntimeMapping.clear();
     for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
       JSONObject mMappingsObject = mMappingsValue.getObject();
-      std::string mMappingType = mMappingsObject.getString(JSON_TYPE);
-      if (mMappingType == JSON_INPUT) {
-        std::string mInputID = mMappingsObject.getString(JSON_ID);
+      std::string mMappingType = mMappingsObject.getString("type");
+      if (mMappingType == "Input") {
+        std::string mInputID = mMappingsObject.getString("id");
         for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
           if (mMapping->getName() == mInputID) {
             mMapping->loadCustomMapping(mMappingsObject);

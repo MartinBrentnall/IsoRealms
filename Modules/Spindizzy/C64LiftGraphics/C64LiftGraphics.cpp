@@ -45,12 +45,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void C64LiftGraphics::save(JSONObject object) const {
-    cDefOutline.save(object, JSON_OUTLINE);
-    cDefPrimary.save(object, JSON_PRIMARY);
-    cDefSecondary.save(object, JSON_SECONDARY);
-  }
-
   void C64LiftGraphics::hintInUse(bool inUse) {
     for (const std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
       mTexture.second->hintTextureInUse(inUse);
@@ -74,9 +68,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64LiftGraphics::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_PRIMARY,   cDefPrimary);
-    owner.createPropertyTreeSelector(JSON_SECONDARY, cDefSecondary);
-    owner.createPropertyTreeSelector(JSON_OUTLINE,   cDefOutline);
+    owner.createPropertyTreeSelector("primary",   cDefPrimary);
+    owner.createPropertyTreeSelector("secondary", cDefSecondary);
+    owner.createPropertyTreeSelector("outline",   cDefOutline);
   }
 
   void C64LiftGraphics::removed() {

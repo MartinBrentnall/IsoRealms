@@ -73,13 +73,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void C64TerrainGraphics::save(JSONObject object) const {
-    cDefFloor.save(object, JSON_FLOOR);
-    cDefWall.save(object, JSON_WALL);
-    cDefGrid.save(object, JSON_GRID);
-    cDefHighlight.save(object, JSON_HIGHLIGHT);
-  }
-
   void C64TerrainGraphics::hintInUse(bool inUse) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
       mTexture.second->hintTextureInUse(inUse);
@@ -127,10 +120,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_FLOOR,     cDefFloor);
-    owner.createPropertyTreeSelector(JSON_WALL,      cDefWall);
-    owner.createPropertyTreeSelector(JSON_GRID,      cDefGrid);
-    owner.createPropertyTreeSelector(JSON_HIGHLIGHT, cDefHighlight);
+    owner.createPropertyTreeSelector("floor",     cDefFloor);
+    owner.createPropertyTreeSelector("wall",      cDefWall);
+    owner.createPropertyTreeSelector("grid",      cDefGrid);
+    owner.createPropertyTreeSelector("highlight", cDefHighlight);
 
     // TODO: This is a hack to reload the textures when the properties are loaded.
     setNeedsFullRedraw();

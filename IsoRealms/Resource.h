@@ -119,10 +119,6 @@ namespace IsoRealms {
       cResourceHandle.hintInUse(inUse);
     }
 
-    void save(JSONObject object) override {
-      cResourceHandle.save(object);
-    }
-
     bool isResource(const RESOURCE* resource) const {
       return resource == &cResourceHandle;
     }

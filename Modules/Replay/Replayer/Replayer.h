@@ -27,7 +27,6 @@ namespace IsoRealms::Replay {
     public:
     Replayer(Replay& replay, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -136,10 +135,8 @@ namespace IsoRealms::Replay {
     };
     
     // JSON constants.
-    inline static const std::string JSON_ANALOGUE_INPUTS = "analogueInputs";
-    inline static const std::string JSON_DIGITAL_INPUTS  = "digitalInputs";
-    inline static const std::string JSON_NAME            = "name";
-    inline static const std::string JSON_VALUE           = "value";
+    inline static const std::string JSON_NAME  = "name";
+    inline static const std::string JSON_VALUE = "value";
 
     // External interfaces.
     IResourceData& cResource;

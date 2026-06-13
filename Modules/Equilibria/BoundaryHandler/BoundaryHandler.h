@@ -42,7 +42,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     BoundaryHandler(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -63,12 +62,6 @@ namespace IsoRealms::Equilibria {
     void releaseBinding(const IBinding* asset) override;
     
     private:
-
-    // JSON members.
-    inline static const std::string JSON_BOUNDARY = "boundary";
-    inline static const std::string JSON_OBJECT   = "object";
-    inline static const std::string JSON_ON_ENTRY = "onEntry";
-    inline static const std::string JSON_ON_EXIT  = "onExit";
 
     inline static const std::string BIND_TO_BOUNDARY = "Boundary";
     inline static const std::string BIND_TO_OBJECT   = "Object";

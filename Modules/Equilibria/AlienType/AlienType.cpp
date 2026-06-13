@@ -41,17 +41,6 @@ namespace IsoRealms::Equilibria {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Aliens");
   }
     
-  void AlienType::save(JSONObject object) const {
-    cDefModel.save(object, JSON_APPEARANCE);
-    cDefTarget.save(object, JSON_TARGET);
-    object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
-    object.addFloat(JSON_FRICTION, cDefFriction, DEFAULT_ACCELERATION);
-    object.addFloat(JSON_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
-    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    object.addFloat(JSON_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
-  }
-
   void AlienType::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -62,14 +51,14 @@ namespace IsoRealms::Equilibria {
   }
 
   void AlienType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_APPEARANCE,   cDefModel);
-    owner.createPropertyTreeSelector(JSON_TARGET,       cDefTarget);
-    owner.createPropertyNativeFloat( JSON_ACCELERATION, [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
-    owner.createPropertyNativeFloat( JSON_FRICTION,     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;}, DEFAULT_FRICTION);
-    owner.createPropertyNativeFloat( JSON_SPIN_SPEED,   [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-    owner.createPropertyNativeFloat( JSON_HEIGHT,       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
-    owner.createPropertyNativeFloat( JSON_RADIUS,       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
-    owner.createPropertyNativeFloat( JSON_HUG_MOMENTUM, [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
+    owner.createPropertyTreeSelector("appearance",   cDefModel);
+    owner.createPropertyTreeSelector("target",       cDefTarget);
+    owner.createPropertyNativeFloat( "acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
+    owner.createPropertyNativeFloat( "friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;}, DEFAULT_FRICTION);
+    owner.createPropertyNativeFloat( "spinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    owner.createPropertyNativeFloat( "height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
+    owner.createPropertyNativeFloat( "radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
+    owner.createPropertyNativeFloat( "hugMomentum",  [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
   }
 
   void AlienType::removed() {

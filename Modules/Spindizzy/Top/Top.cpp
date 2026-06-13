@@ -37,12 +37,6 @@ namespace IsoRealms::Spindizzy {
     assets.add<IModel>(this, "", "Spindizzy Top Models");
   }
     
-  void Top::save(JSONObject object) const {
-    cDefColourTop.save(object, JSON_TOP);
-    cDefColourSide.save(object, JSON_SIDES);
-    cDefColourOutline.save(object, JSON_OUTLINE);
-  }
-
   void Top::hintInUse(bool inUse) {
     cRuntimeTextureSide.hintTextureInUse(inUse);
     cRuntimeTextureTop.hintTextureInUse(inUse);
@@ -57,9 +51,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Top::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_TOP,     cDefColourTop);
-    owner.createPropertyTreeSelector(JSON_SIDES,   cDefColourSide);
-    owner.createPropertyTreeSelector(JSON_OUTLINE, cDefColourOutline);
+    owner.createPropertyTreeSelector("top",     cDefColourTop);
+    owner.createPropertyTreeSelector("sides",   cDefColourSide);
+    owner.createPropertyTreeSelector("outline", cDefColourOutline);
   }
 
   void Top::removed() {

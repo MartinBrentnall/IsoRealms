@@ -35,19 +35,13 @@ namespace IsoRealms::Basics {
     \**********************/
     BooleanTrigger(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
     
     private:
-
-    // JSON members.
-    inline static const std::string JSON_ON_BECOMING_FALSE = "onBecomingFalse";
-    inline static const std::string JSON_ON_BECOMING_TRUE  = "onBecomingTrue";
-    inline static const std::string JSON_VALUE             = "value";
-
+    
     // Definition data.
     Boolean cDefValue;      /// Boolean value to monitor.
     Action cDefTrueAction;  /// Action to perform when value changes to true.

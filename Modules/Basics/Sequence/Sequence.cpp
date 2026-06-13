@@ -54,23 +54,6 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void Sequence::save(JSONObject object) const {
-    object.addBoolean(JSON_PLAYING, cDefPlaying);
-    object.addBoolean(JSON_LOOP, cDefLoop);
-    cDefSpeed.save(object, JSON_SPEED);
-    JSONArray mTrackArray = object.addArray(JSON_TRACKS);
-    for (const std::unique_ptr<SequenceTrack>& mTrack : cDefTracks) {
-      JSONObject mTrackObject = mTrackArray.addObject();
-      mTrack->save(mTrackObject, JSON_TRACK);
-    }
-    JSONArray mInstanceArray = object.addArray(JSON_INSTANCES);
-    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      JSONObject mInstanceObject = mInstanceArray.addObject();
-      mInstanceObject.addString(JSON_NAME, mEntry.first);
-      mEntry.second->save(mInstanceObject);
-    }
-  }
-
   void Sequence::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -80,11 +63,11 @@ namespace IsoRealms::Basics {
   }
 
   void Sequence::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyEditor(       "Content",    this);
-    owner.createPropertyNativeBoolean(JSON_PLAYING, [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
-    owner.createPropertyNativeBoolean(JSON_LOOP,    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
-    owner.createPropertyTreeSelector(JSON_SPEED,    cDefSpeed);
-    owner.createPropertyArray(JSON_INSTANCES, cDefInstances, [](const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry) -> SequenceInstance& {return *mEntry.second;}, [this, &owner, &metadata](SequenceInstance& instance) {
+    owner.createPropertyEditor(       "Content", this);
+    owner.createPropertyNativeBoolean("playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
+    owner.createPropertyNativeBoolean("loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
+    owner.createPropertyTreeSelector( "speed",   cDefSpeed);
+    owner.createPropertyArray("instances", cDefInstances, [](const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry) -> SequenceInstance& {return *mEntry.second;}, [this, &owner, &metadata](SequenceInstance& instance) {
       owner.createPropertyStruct("Instance", getInstanceName(instance), [this, &instance, &metadata](IPropertyMaker& owner) {
         instance.getProperties(owner, metadata);
       }, [this, &instance]() {
@@ -96,10 +79,10 @@ namespace IsoRealms::Basics {
     });
 
     // Tracks.
-    owner.createPropertyArray(JSON_TRACKS, cDefTracks, [](const std::unique_ptr<SequenceTrack>& mTrack) -> SequenceTrack& {return *mTrack;}, [this, &owner, &metadata](SequenceTrack& track) {
+    owner.createPropertyArray("tracks", cDefTracks, [](const std::unique_ptr<SequenceTrack>& mTrack) -> SequenceTrack& {return *mTrack;}, [this, &owner, &metadata](SequenceTrack& track) {
       Options mHint;
       mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-      owner.createPropertyTreeSelector(JSON_TRACK, track, mHint);
+      owner.createPropertyTreeSelector("track", track, mHint);
       track.stateChanged();
     }, [this]() -> SequenceTrack& {
       SequenceTrack* mTrack = cDefTracks.emplace_back(std::make_unique<SequenceTrack>(*this)).get();

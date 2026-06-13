@@ -76,7 +76,7 @@ namespace IsoRealms::Equilibria {
 
   void ZoneObject::save(JSONObject object) const {
     object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getResourceID(cDefType));
-    JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
+    JSONArray mTraitsArray = object.addArray("traits");
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       if (mPair.second->hasConfiguration()) {
         JSONObject mTraitObject = mTraitsArray.addObject();

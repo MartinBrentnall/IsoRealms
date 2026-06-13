@@ -40,15 +40,6 @@ namespace IsoRealms::Spindizzy {
     assets.add<IModel>(this, "", "Spindizzy Debris Chunks");
   }
 
-  void DebrisChunk::save(JSONObject object) const {
-    cDefOutline.save(object, JSON_OUTLINE);
-    object.addFloat(JSON_OUTLINE_WIDTH, cDefOutlineWidth, DEFAULT_OUTLINE_WIDTH);
-    cDefSide[0].save(object, JSON_SIDE_1);
-    cDefSide[1].save(object, JSON_SIDE_2);
-    cDefSide[2].save(object, JSON_SIDE_3);
-    cDefSide[3].save(object, JSON_SIDE_4);
-  }
-
   void DebrisChunk::hintInUse(bool inUse) {
     for (ITexture& mTexture : cTextures) {
       mTexture.hintTextureInUse(inUse);
@@ -64,11 +55,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   void DebrisChunk::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_SIDE_1,   cDefSide[0]);
-    owner.createPropertyTreeSelector(JSON_SIDE_2,   cDefSide[1]);
-    owner.createPropertyTreeSelector(JSON_SIDE_3,   cDefSide[2]);
-    owner.createPropertyTreeSelector(JSON_SIDE_4,   cDefSide[3]);
-    owner.createPropertyTreeSelector(JSON_OUTLINE,  cDefOutline);
+    owner.createPropertyTreeSelector("side1",   cDefSide[0]);
+    owner.createPropertyTreeSelector("side2",   cDefSide[1]);
+    owner.createPropertyTreeSelector("side3",   cDefSide[2]);
+    owner.createPropertyTreeSelector("side4",   cDefSide[3]);
+    owner.createPropertyTreeSelector("outline", cDefOutline);
   }
 
   void DebrisChunk::removed() {

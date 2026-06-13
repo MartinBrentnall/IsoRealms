@@ -39,7 +39,6 @@ namespace IsoRealms::Basics {
     \**********************/
     ProjectConfigurer(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -92,15 +91,7 @@ namespace IsoRealms::Basics {
     IDialogManager& getDialogManager();
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_CODE_FONT      = "codeFont";
-    inline static const std::string JSON_CODE_FONT_SIZE = "codeFontSize";
-    inline static const std::string JSON_FONT           = "font";
-    inline static const std::string JSON_FONT_SIZE      = "fontSize";
-    inline static const std::string JSON_ON_EDITOR      = "onEditor";
-    inline static const std::string JSON_ON_EXIT        = "onExit";
-
+    
     // Action client.
     ActionContext cActionContext;
 

@@ -130,7 +130,7 @@ namespace IsoRealms::Basics {
   }
 
   void Script::ScriptAction::saveAsset(JSONObject object) const {
-    cDefFunction.save(object, true);
+    // cDefFunction.save(object, true);
   }
   
   void Script::ScriptAction::getAssetProperties(IPropertyMaker& owner) {

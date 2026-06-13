@@ -46,7 +46,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     LiftType(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);  
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -73,12 +72,7 @@ namespace IsoRealms::Equilibria {
     bool isDefaultConfiguration() const override;
 
     private:  
-
-    // JSON members.
-    inline static const std::string JSON_APPEARANCE = "appearance";
-    inline static const std::string JSON_ON_TICK    = "onTick";
-    inline static const std::string JSON_STATE      = "state";
-
+    
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:

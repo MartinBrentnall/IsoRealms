@@ -50,7 +50,6 @@ namespace IsoRealms::Basics {
     DigitalControl(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
     void registerAssets(ResourceAssetRegistry& assets, const std::string& parentID);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -148,7 +147,6 @@ namespace IsoRealms::Basics {
     private:
 
     // JSON members.
-    inline static const std::string JSON_TYPE     = "type";
     inline static const std::string JSON_MAPPINGS = "mappings";
 
     class InputMapping {

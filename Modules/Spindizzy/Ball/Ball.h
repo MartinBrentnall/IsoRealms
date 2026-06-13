@@ -36,7 +36,6 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     Ball(Spindizzy& spindizzy, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -54,12 +53,7 @@ namespace IsoRealms::Spindizzy {
     bool isDefaultConfiguration() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_FILL    = "fill";
-    inline static const std::string JSON_OUTLINE = "outline";
-    inline static const std::string JSON_SHINE   = "shine";
-
+    
     // Resource definition constants.
     inline static const float CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 

@@ -38,7 +38,6 @@ namespace IsoRealms::Basics {
     \**********************/
     Sprite(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -71,12 +70,7 @@ namespace IsoRealms::Basics {
     ~Sprite();
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_BILLBOARD_PITCH = "billboardPitch";
-    inline static const std::string JSON_BILLBOARD_YAW   = "billboardYaw";
-    inline static const std::string JSON_TEXTURE         = "texture";
-
+    
     // System.
     Project& cDefProject;   /// Hosting project.
 

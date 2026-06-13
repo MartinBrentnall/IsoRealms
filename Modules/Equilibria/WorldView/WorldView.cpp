@@ -38,13 +38,6 @@ namespace IsoRealms::Equilibria {
     cDefCamera->registerAssets(assets, "Camera");
   }
 
-  void WorldView::save(JSONObject object) const {
-    cDefWorld.save(object, JSON_WORLD);
-    object.addFloat(JSON_ZOOM, cDefZoom, DEFAULT_ZOOM);
-    cDefCamera.save(object, JSON_CAMERA);
-    cDefZoneViewType.save(object, JSON_TYPE);
-  }
-
   void WorldView::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -56,10 +49,10 @@ namespace IsoRealms::Equilibria {
   void WorldView::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    owner.createPropertyTreeSelector(JSON_WORLD,  cDefWorld,        mHint);
-    owner.createPropertyTreeSelector(JSON_CAMERA, cDefCamera,       mHint);
-    owner.createPropertyTreeSelector(JSON_TYPE,   cDefZoneViewType, mHint);
-    owner.createPropertyNativeFloat( JSON_ZOOM,   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
+    owner.createPropertyTreeSelector("world",  cDefWorld,        mHint);
+    owner.createPropertyTreeSelector("camera", cDefCamera,       mHint);
+    owner.createPropertyTreeSelector("type",   cDefZoneViewType, mHint);
+    owner.createPropertyNativeFloat( "zoom",   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
 
     if (owner.loadsPersistedValues()) {
       cResourceData.getProject().init([this]() {

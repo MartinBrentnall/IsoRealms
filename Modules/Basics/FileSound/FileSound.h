@@ -40,7 +40,6 @@ namespace IsoRealms::Basics {
     \**********************/
     FileSound(Basics& basics, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -59,10 +58,7 @@ namespace IsoRealms::Basics {
     bool isDefaultConfiguration() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_FILENAME = "filename";
-
+    
     // External interfaces.
     Basics& cDefBasics; /// Module holding the global sound volume.
     

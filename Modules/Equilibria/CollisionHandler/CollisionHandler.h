@@ -41,7 +41,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     CollisionHandler(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -59,13 +58,7 @@ namespace IsoRealms::Equilibria {
     void physicalObjectTypeChanged(const IPhysicalObjectType* oldPhysicalObjectType, const IPhysicalObjectType* newPhysicalObjectType) override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_OBJECT_A     = "objectA";
-    inline static const std::string JSON_OBJECT_B     = "objectB";
-    inline static const std::string JSON_ON_COLLISION = "onCollision";
-    inline static const std::string JSON_ON_PARTING   = "onParting";
-
+    
     // External interfaces.
     Equilibria& cEquilibria;
 

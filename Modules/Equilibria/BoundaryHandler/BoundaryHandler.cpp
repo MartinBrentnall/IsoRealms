@@ -35,13 +35,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void BoundaryHandler::save(JSONObject object) const {
-    cDefBoundaryType.save(object, JSON_BOUNDARY);
-    cDefObjectType.save(object, JSON_OBJECT);
-    cDefEnteredAction.save(object, JSON_ON_ENTRY);
-    cDefExitedAction.save(object, JSON_ON_EXIT);
-  }
-
   void BoundaryHandler::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -51,10 +44,10 @@ namespace IsoRealms::Equilibria {
   }
 
   void BoundaryHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_OBJECT,   cDefObjectType);
-    owner.createPropertyTreeSelector(JSON_BOUNDARY, cDefBoundaryType);
-    owner.createPropertyTreeSelector(JSON_ON_ENTRY, cDefEnteredAction);
-    owner.createPropertyTreeSelector(JSON_ON_EXIT,  cDefExitedAction);
+    owner.createPropertyTreeSelector("object",   cDefObjectType);
+    owner.createPropertyTreeSelector("boundary", cDefBoundaryType);
+    owner.createPropertyTreeSelector("onEntry",  cDefEnteredAction);
+    owner.createPropertyTreeSelector("onExit",   cDefExitedAction);
 
     if (owner.loadsPersistedValues()) {
       cEquilibria.getProject().init([this]() {

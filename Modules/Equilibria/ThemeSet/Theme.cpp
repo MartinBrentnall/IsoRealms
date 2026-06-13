@@ -71,11 +71,11 @@ namespace IsoRealms::Equilibria {
   }
 
   void Theme::getProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(ThemeSet::JSON_ID, [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
+    owner.createPropertyNativeString("id", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
     Options mContainerHint;
     mContainerHint.addOption(Options::PROPERTY_SCOPED,  "true");
     mContainerHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-    owner.createPropertyStruct(ThemeSet::JSON_TEXTURES, "", [this](IPropertyMaker& owner) {
+    owner.createPropertyStruct("textures", "", [this](IPropertyMaker& owner) {
       for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
         std::string mName = cThemeSet.getElement(mTexture.first);
         Options mTextureHint;
@@ -84,7 +84,7 @@ namespace IsoRealms::Equilibria {
         owner.createPropertyTreeSelector(mName, mTexture.second, mTextureHint);
       }
     }, nullptr, mContainerHint);
-    owner.createPropertyStruct(ThemeSet::JSON_COLOURS, "", [this](IPropertyMaker& owner) {
+    owner.createPropertyStruct("colours", "", [this](IPropertyMaker& owner) {
       for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
         std::string mName = cThemeSet.getElement(mColour.first);
         Options mColourHint;

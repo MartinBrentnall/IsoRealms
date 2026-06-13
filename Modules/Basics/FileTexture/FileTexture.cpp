@@ -29,10 +29,6 @@ namespace IsoRealms::Basics {
     assets.add<ITexture>(this, "", "Textures from Image Files"); // TODO: Localize this.
   }
   
-  void FileTexture::save(JSONObject object) const {
-    cDefFile.save(JSON_FILENAME, object);
-  }
-
   void FileTexture::hintInUse(bool inUse) {
     // Nothing to do
   }
@@ -50,7 +46,7 @@ namespace IsoRealms::Basics {
   }
 
   void FileTexture::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_FILENAME, cDefFile);
+    owner.createPropertyTreeSelector("filename", cDefFile);
   }
 
   void FileTexture::removed() {

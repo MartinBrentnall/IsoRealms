@@ -31,10 +31,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Simple Booleans");
   }
 
-  void SimpleBoolean::save(JSONObject object) const {
-    object.addBoolean(JSON_VALUE, cDefValue);
-  }
-
   void SimpleBoolean::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -44,7 +40,7 @@ namespace IsoRealms::Basics {
   }
 
   void SimpleBoolean::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeBoolean(JSON_VALUE, [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    owner.createPropertyNativeBoolean("value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
   }
 
   void SimpleBoolean::removed() {

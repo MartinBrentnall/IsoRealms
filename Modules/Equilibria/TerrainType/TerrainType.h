@@ -43,7 +43,6 @@ namespace IsoRealms::Equilibria {
     \**********************/
     TerrainType(Equilibria& equilibria, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -97,22 +96,7 @@ namespace IsoRealms::Equilibria {
     bool isDefaultConfiguration() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_ALLOW_RESPAWN = "allowRespawn";
-    inline static const std::string JSON_EAST_WALL     = "eastWall";
-    inline static const std::string JSON_FLOOR_BOUNCE  = "floorBounce";
-    inline static const std::string JSON_FRICTION      = "friction";
-    inline static const std::string JSON_GRIP          = "grip";
-    inline static const std::string JSON_NORTH_WALL    = "northWall";
-    inline static const std::string JSON_ON_IMPACT     = "onImpact";
-    inline static const std::string JSON_ON_TOUCH      = "onTouch";
-    inline static const std::string JSON_SOLID         = "solid";
-    inline static const std::string JSON_SOUTH_WALL    = "southWall";
-    inline static const std::string JSON_SURFACE       = "surface";
-    inline static const std::string JSON_WALL_BOUNCE   = "wallBounce";
-    inline static const std::string JSON_WEST_WALL     = "westWall";
-
+    
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {
       public:

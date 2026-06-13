@@ -40,7 +40,6 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     DebrisChunk(Spindizzy& spindizzy, IResourceData& data);
     void registerAssets(ResourceAssetRegistry& assets);
-    void save(JSONObject object) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
@@ -68,15 +67,7 @@ namespace IsoRealms::Spindizzy {
     void render() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_OUTLINE       = "outline";
-    inline static const std::string JSON_OUTLINE_WIDTH = "outlineWidth";
-    inline static const std::string JSON_SIDE_1        = "side1";
-    inline static const std::string JSON_SIDE_2        = "side2";
-    inline static const std::string JSON_SIDE_3        = "side3";
-    inline static const std::string JSON_SIDE_4        = "side4";
-
+    
     // Default constants.
     inline static const float DEFAULT_OUTLINE_WIDTH = 0.18f;
 
