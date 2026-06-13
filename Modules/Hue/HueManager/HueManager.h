@@ -48,10 +48,7 @@ namespace IsoRealms::Hue {
     \***********************/
     HueManager(Hue& hue, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);
-    void hintInUse(bool inUse);
-    bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     virtual ~HueManager();
 

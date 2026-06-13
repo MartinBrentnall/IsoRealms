@@ -68,14 +68,6 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  bool ThemeSet::renderIcon() {
-    return false;
-  }
-  
-  void ThemeSet::removed() {
-    // Nothing to do.
-  }
-
   void ThemeSet::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Theme Sets");
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {

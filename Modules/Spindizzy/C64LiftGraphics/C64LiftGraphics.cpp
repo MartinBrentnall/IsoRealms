@@ -72,10 +72,6 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyTreeSelector("secondary", cDefSecondary);
     owner.createPropertyTreeSelector("outline",   cDefOutline);
   }
-
-  void C64LiftGraphics::removed() {
-    // Nothing to do.
-  }
   
   void C64LiftGraphics::generateTextures() {
     glPushAttrib(GL_TRANSFORM_BIT);

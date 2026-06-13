@@ -128,10 +128,6 @@ namespace IsoRealms::Spindizzy {
     // TODO: This is a hack to reload the textures when the properties are loaded.
     setNeedsFullRedraw();
   }
-
-  void C64TerrainGraphics::removed() {
-    // Nothing to do.
-  }
   
   void C64TerrainGraphics::hintTextureUsed(ITexture* texture, bool inUse) {
     if (cTexturesInUseCount == 0 && inUse && (!cChangedAngles.empty() || cNeedsFullRedraw)) {

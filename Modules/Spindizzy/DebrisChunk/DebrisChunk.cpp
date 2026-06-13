@@ -62,10 +62,6 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyTreeSelector("outline", cDefOutline);
   }
 
-  void DebrisChunk::removed() {
-    // Nothing to do.
-  }
-
   void DebrisChunk::updateEditing(unsigned int milliseconds) {
     cEditingIconRotation += 0.1f * milliseconds;
   }

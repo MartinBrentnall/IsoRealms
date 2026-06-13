@@ -46,14 +46,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Project Configurers");
   }
 
-  void ProjectConfigurer::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool ProjectConfigurer::renderIcon() const {
-    return false;
-  }
-
   void ProjectConfigurer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("font",         cDefFont);
     owner.createPropertyNativeFloat( "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
@@ -62,10 +54,6 @@ namespace IsoRealms::Basics {
     owner.createPropertyTreeSelector("onExit",       cDefExitAction);
     owner.createPropertyTreeSelector("onEditor",     cDefEditorAction);
     // TODO: Input configuration
-  }
-
-  void ProjectConfigurer::removed() {
-    // Nothing to do.
   }
 
   void ProjectConfigurer::updateRuntime(unsigned int milliseconds) {
@@ -77,7 +65,7 @@ namespace IsoRealms::Basics {
   }
 
   bool ProjectConfigurer::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void ProjectConfigurer::saveAsset(JSONObject object) const {

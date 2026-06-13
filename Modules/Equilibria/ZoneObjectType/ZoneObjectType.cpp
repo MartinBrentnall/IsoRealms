@@ -31,20 +31,8 @@ namespace IsoRealms::Equilibria {
   void ZoneObjectType::registerAssets(ComponentAssetRegistry& assets) {
     // TODO
   }
-    
-  void ZoneObjectType::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool ZoneObjectType::renderIcon() const {
-    return false; // TODO
-  }
 
   void ZoneObjectType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    // Nothing to do.
-  }
-
-  void ZoneObjectType::removed() {
     // Nothing to do.
   }
 
@@ -156,7 +144,7 @@ namespace IsoRealms::Equilibria {
   }
 
   bool ZoneObjectType::Pen::renderIcon(float yaw) const {
-    return cParent.renderIcon();
+    return false;
   }
 
   void ZoneObjectType::Pen::renderEditingPreview() const {

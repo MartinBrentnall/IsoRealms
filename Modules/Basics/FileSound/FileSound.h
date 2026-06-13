@@ -40,10 +40,8 @@ namespace IsoRealms::Basics {
     \***********************/
     FileSound(Basics& basics, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);
-    void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     // Interface called by module when adjusting global sound volume.
     void setVolume(float volume);

@@ -37,10 +37,8 @@ namespace IsoRealms::Basics {
     \***********************/
     FileTexture(Basics& basics, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);
-    void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     /***********************\
      * Implements ITexture *

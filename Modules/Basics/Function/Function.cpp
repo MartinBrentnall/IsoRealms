@@ -40,9 +40,6 @@ namespace IsoRealms::Basics {
     assets.addProvider<IActionContext, IAction>(this, "", "Call a Function");
   }
     
-  void Function::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
   
   bool Function::renderIcon() const {
     return renderAssetProviderIcon();
@@ -68,9 +65,6 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void Function::removed() {
-    // Nothing to do.
-  }
   
   Function::Function(Basics& basics, IActionContext& owner) :
             cProject(basics.getProject()),

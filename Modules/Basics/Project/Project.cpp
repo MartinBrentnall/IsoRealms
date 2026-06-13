@@ -46,14 +46,6 @@ namespace IsoRealms::Basics {
     assets.add<IInputHandler>(this, "", "Projects");
     assets.add<IBinding>(&cLuaBinding, "", "Projects");
   }
-  
-  void Project::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool Project::renderIcon() const {
-    return false;
-  }
 
   void Project::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString( "file",     [this]() {return cDefProjectPath;}, [this](const std::string& value) {cDefProjectPath = value;});
@@ -63,10 +55,6 @@ namespace IsoRealms::Basics {
     owner.createPropertyTreeSelector( "onFinish", cDefEndAction);
     owner.createPropertyTreeSelector( "onError",  cDefErrorAction);
     owner.createPropertyTreeSelector( "onReady",  cDefReadyAction);
-  }
-
-  void Project::removed() {
-    // Nothing to do.
   }
   
   void Project::reset() {

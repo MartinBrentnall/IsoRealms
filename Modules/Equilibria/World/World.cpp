@@ -153,14 +153,6 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  void World::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool World::renderIcon() {
-    return false;
-  }
-
   void World::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyEditor("Content", this);
     owner.createPropertyNativeFloat(    "gravity",                 [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
@@ -188,9 +180,6 @@ namespace IsoRealms::Equilibria {
     });
   }
 
-  void World::removed() {
-    // Nothing to do.
-  }
 
   Equilibria& World::getAssetManager() {
     return cEquilibria;

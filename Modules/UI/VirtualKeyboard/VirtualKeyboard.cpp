@@ -34,20 +34,8 @@ namespace IsoRealms::UI {
     assets.add<IString>(this, "", "Presentation");
     assets.add<IBinding>(&cLuaBinding, "", "Virtual Keyboards");
   }
-  
-  void VirtualKeyboard::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool VirtualKeyboard::renderIcon() const {
-    return false;
-  }
 
   void VirtualKeyboard::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    // Nothing to do.
-  }
-
-  void VirtualKeyboard::removed() {
     // Nothing to do.
   }
 

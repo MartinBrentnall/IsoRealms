@@ -30,21 +30,9 @@ namespace IsoRealms::Basics {
     cStateNotifier = assets.add<IString>(this, "", "Simple Strings");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Strings");
   }
-  
-  void SimpleString::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool SimpleString::renderIcon() const {
-    return false;
-  }
 
   void SimpleString::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString("value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
-  }
-
-  void SimpleString::removed() {
-    // Nothing to do.
   }
 
   void SimpleString::reset() {
@@ -56,7 +44,7 @@ namespace IsoRealms::Basics {
   }
 
   bool SimpleString::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void SimpleString::saveAsset(JSONObject object) const {

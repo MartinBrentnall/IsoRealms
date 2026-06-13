@@ -33,10 +33,6 @@ namespace IsoRealms::Basics {
   void FileSound::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IAction>(this, "", "Play a Sound");
   }
-  
-  void FileSound::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
 
   bool FileSound::renderIcon() const {
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -54,10 +50,6 @@ namespace IsoRealms::Basics {
 
   void FileSound::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("filename", cDefFile);
-  }
-
-  void FileSound::removed() {
-    // Nothing to do.
   }
 
   void FileSound::setVolume(float volume) {

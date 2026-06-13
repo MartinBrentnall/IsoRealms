@@ -39,7 +39,6 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     /***********************\
      * Implements ITexture *

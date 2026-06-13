@@ -28,10 +28,6 @@ namespace IsoRealms::Basics {
   void FileTexture::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<ITexture>(this, "", "Textures from Image Files"); // TODO: Localize this.
   }
-  
-  void FileTexture::hintInUse(bool inUse) {
-    // Nothing to do
-  }
 
   bool FileTexture::renderIcon() const {
     set();
@@ -49,9 +45,6 @@ namespace IsoRealms::Basics {
     owner.createPropertyTreeSelector("filename", cDefFile);
   }
 
-  void FileTexture::removed() {
-    // Nothing to do.
-  }
 
   void FileTexture::set() const {
     glGetError(); // TODO: Suppresses SFML picking up an error from somewhere else.  Need to find where other error comes from.

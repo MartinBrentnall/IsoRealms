@@ -57,9 +57,6 @@ namespace IsoRealms::Equilibria {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Players");
   }
 
-  void PlayerType::hintInUse(bool inUse) {
-  }
-
   bool PlayerType::renderIcon() const {
     return cDefModel.renderIcon();
   }

@@ -30,21 +30,9 @@ namespace IsoRealms::Basics {
     cStateNotifier = assets.add<IInteger>(this, "", "Simple Integers");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Integers");
   }
-  
-  void SimpleInteger::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool SimpleInteger::renderIcon() const {
-    return false;
-  }
 
   void SimpleInteger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeInteger("value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
-  }
-
-  void SimpleInteger::removed() {
-    // Nothing to do.
   }
 
   void SimpleInteger::reset() {
@@ -56,7 +44,7 @@ namespace IsoRealms::Basics {
   }
 
   bool SimpleInteger::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void SimpleInteger::saveAsset(JSONObject object) const {

@@ -52,10 +52,7 @@ namespace IsoRealms::Basics {
     \***********************/
     FileFont(Basics& basics, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);  
-    void hintInUse(bool inUse);
-    bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     ~FileFont();
 

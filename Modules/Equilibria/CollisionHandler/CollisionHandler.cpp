@@ -36,14 +36,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void CollisionHandler::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool CollisionHandler::renderIcon() {
-    return false;
-  }
-
   void CollisionHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("objectA",     cDefPhysicalObjectTypeA);
     owner.createPropertyTreeSelector("objectB",     cDefPhysicalObjectTypeB);

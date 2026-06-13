@@ -28,10 +28,6 @@ namespace IsoRealms::Equilibria {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Terrain States");
   }
 
-  void TerrainState::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
   bool TerrainState::renderIcon() const {
     cDefIcon->renderScreen(1.0f, 1.0f);
     return true;
@@ -42,10 +38,6 @@ namespace IsoRealms::Equilibria {
     owner.createPropertyTreeSelector( "hint",      cDefHintAction);
     owner.createPropertyTreeSelector( "icon",      cDefIcon);
     owner.createPropertyNativeFloat(  "iconScale", [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, 1.0f, [](float value) {return value > 0.0f;});
-  }
-
-  void TerrainState::removed() {
-    // Nothing to do.
   }
   
   void TerrainState::reset() {

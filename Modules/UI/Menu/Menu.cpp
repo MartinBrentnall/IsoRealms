@@ -43,14 +43,6 @@ namespace IsoRealms::UI {
       (*mMenuItem)->registerAssets(assets);
     }
   }
-  
-  void Menu::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool Menu::renderIcon() const {
-    return false;
-  }
 
   void Menu::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("colour",       cDefColour);
@@ -67,10 +59,6 @@ namespace IsoRealms::UI {
     }, [this]() -> MenuItem& {
       return *cDefItems.emplace_back(std::make_unique<MenuItem>(cUI, *this));
     });
-  }
-
-  void Menu::removed() {
-    // Nothing to do.
   }
   
   void Menu::updateRuntime(unsigned int milliseconds) {

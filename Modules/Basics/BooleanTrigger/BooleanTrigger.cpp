@@ -30,22 +30,11 @@ namespace IsoRealms::Basics {
   void BooleanTrigger::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
-  
-  void BooleanTrigger::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
 
-  bool BooleanTrigger::renderIcon() const {
-    return false;
-  }
 
   void BooleanTrigger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("value",           cDefValue);
     owner.createPropertyTreeSelector("onBecomingTrue",  cDefTrueAction);
     owner.createPropertyTreeSelector("onBecomingFalse", cDefFalseAction);
-  }
-
-  void BooleanTrigger::removed() {
-    // Nothing to do.
   }
 }

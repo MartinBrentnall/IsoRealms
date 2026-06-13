@@ -35,22 +35,10 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Vertices");
   }
 
-  void SimpleVertex::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool SimpleVertex::renderIcon() const {
-    return false;
-  }
-
   void SimpleVertex::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeFloat("x", [this]() {return cDefX;}, [this](float value) {cDefX = value;});
     owner.createPropertyNativeFloat("y", [this]() {return cDefY;}, [this](float value) {cDefY = value;});
     owner.createPropertyNativeFloat("z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
-  }
-
-  void SimpleVertex::removed() {
-    // Nothing to do.
   }
 
   void SimpleVertex::reset() {
@@ -72,7 +60,7 @@ namespace IsoRealms::Basics {
   }
 
   bool SimpleVertex::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void SimpleVertex::saveAsset(JSONObject object) const {

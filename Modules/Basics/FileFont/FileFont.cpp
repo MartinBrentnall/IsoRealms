@@ -34,14 +34,7 @@ namespace IsoRealms::Basics {
   void FileFont::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IFont>(this, "", "Fonts");
   }
-  
-  void FileFont::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool FileFont::renderIcon() const {
-    return false;
-  }
+    
 
   void FileFont::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector( "filename",    cDefFilename);
@@ -50,10 +43,6 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeFloat(  "offsetX",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
     owner.createPropertyNativeFloat(  "offsetY",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
     owner.createPropertyNativeFloat(  "lineSpacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;}, DEFAULT_LINE_SPACING);
-  }
-
-  void FileFont::removed() {
-    // Nothing to do.
   }
   
   FileFont::~FileFont() {
@@ -149,7 +138,7 @@ namespace IsoRealms::Basics {
   }
 
   bool FileFont::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void FileFont::saveAsset(JSONObject object) const {

@@ -55,13 +55,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(                 &cLuaBinding, parentID, "Digital Inputs");
   }
   
-  void DigitalControl::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool DigitalControl::renderIcon() const {
-    return false;
-  }
 
   void DigitalControl::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyArray(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner](InputMapping& mapping) {
@@ -75,9 +68,6 @@ namespace IsoRealms::Basics {
     });
   }
 
-  void DigitalControl::removed() {
-    // Nothing to do.
-  }
 
   void DigitalControl::reset() {
     cRuntimeState = false;
@@ -123,7 +113,7 @@ namespace IsoRealms::Basics {
   }
 
   bool DigitalControl::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void DigitalControl::saveAsset(JSONObject object) const {

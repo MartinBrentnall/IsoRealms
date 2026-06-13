@@ -33,14 +33,6 @@ namespace IsoRealms::UI {
     assets.add<IScreen>(this, "", "Prompts");
     assets.add<IBinding>(&cLuaBinding, "", "Prompts");
   }
-  
-  void Prompt::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool Prompt::renderIcon() const {
-    return false;
-  }
 
   void Prompt::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("font",            cDefFont);
@@ -52,10 +44,6 @@ namespace IsoRealms::UI {
     owner.createPropertyNativeString("confirmLabel",    [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
     owner.createPropertyTreeSelector("onCancel",        cDefNegativeAction);
     owner.createPropertyTreeSelector("onConfirm",       cDefPositiveAction);
-  }
-
-  void Prompt::removed() {
-    // Nothing to do.
   }
   
   void Prompt::reset() {

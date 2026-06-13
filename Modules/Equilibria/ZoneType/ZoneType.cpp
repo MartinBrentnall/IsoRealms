@@ -31,10 +31,6 @@ namespace IsoRealms::Equilibria {
   void ZoneType::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
-  
-  void ZoneType::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
 
   bool ZoneType::renderIcon() const {
     glBindTexture(GL_TEXTURE_2D, 0);

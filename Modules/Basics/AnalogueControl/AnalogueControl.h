@@ -51,11 +51,7 @@ namespace IsoRealms::Basics {
     AnalogueControl(Basics& basics, IComponentData& data);
     AnalogueControl(Basics& basics, IComponentData& data, JSONObject object);
     void registerAssets(ComponentAssetRegistry& assets);
-    void hintInUse(bool inUse);
-    bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
-
     /*********************\
      * Implements IFloat *
     \*********************/

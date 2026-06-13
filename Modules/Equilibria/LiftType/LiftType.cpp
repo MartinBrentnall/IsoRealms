@@ -32,10 +32,6 @@ namespace IsoRealms::Equilibria {
   void LiftType::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
-    
-  void LiftType::hintInUse(bool inUse) {
-    // Nothing to do. TODO?
-  }
   
   bool LiftType::renderIcon() const {
     glRotatef(Equilibria::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);

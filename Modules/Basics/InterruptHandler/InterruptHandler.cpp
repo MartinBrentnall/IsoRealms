@@ -26,22 +26,10 @@ namespace IsoRealms::Basics {
   void InterruptHandler::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IInputHandler>(this, "", "Interrupt Handlers");
   }
-  
-  void InterruptHandler::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool InterruptHandler::renderIcon() const {
-    return false;
-  }
 
   void InterruptHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector( "onInput", cDefAction);
     owner.createPropertyNativeBoolean("consume", [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;}, true);
-  }
-
-  void InterruptHandler::removed() {
-    // Nothing to do.
   }
 
   bool InterruptHandler::input(sf::Event& event) {
@@ -66,7 +54,7 @@ namespace IsoRealms::Basics {
   }
 
   bool InterruptHandler::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void InterruptHandler::saveAsset(JSONObject object) const {

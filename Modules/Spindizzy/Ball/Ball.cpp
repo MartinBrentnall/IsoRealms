@@ -48,10 +48,6 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyTreeSelector("outline", cDefOutline);
   }
 
-  void Ball::removed() {
-    // Nothing to do.
-  }
-
   void Ball::set() const {
     cTexture.set();
   }

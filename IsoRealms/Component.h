@@ -40,6 +40,18 @@ namespace IsoRealms {
     {type.overrideReadOnlyReferences()} -> std::convertible_to<void>;
   };
 
+  template <typename TYPE> concept HasHintInUse = requires(TYPE type, bool inUse) {
+    {type.hintInUse(inUse)} -> std::same_as<void>;
+  };
+
+  template <typename TYPE> concept HasRenderIcon = requires(TYPE type) {
+    {type.renderIcon()} -> std::convertible_to<bool>;
+  };
+
+  template <typename TYPE> concept HasRemoved = requires(TYPE type) {
+    {type.removed()} -> std::same_as<void>;
+  };
+
   template <typename MODULE, typename TYPE> class Component : public IComponent,
                                                                  public IComponentData,
                                                                  public IActionContext {
@@ -96,12 +108,18 @@ namespace IsoRealms {
     }
     
     void removed() {
-      cComponentHandle.removed();
+      if constexpr (HasRemoved<TYPE>) {
+        cComponentHandle.removed();
+      }
     }
 
     bool renderIcon() override {
       glPushMatrix();
-      if (!cComponentHandle.renderIcon()) {
+      bool mRendered = false;
+      if constexpr (HasRenderIcon<TYPE>) {
+        mRendered = cComponentHandle.renderIcon();
+      }
+      if (!mRendered) {
         Utils::renderIconLeaf();
       }
       glPopMatrix();
@@ -116,7 +134,9 @@ namespace IsoRealms {
     }
     
     void hintInUse(bool inUse) {
-      cComponentHandle.hintInUse(inUse);
+      if constexpr (HasHintInUse<TYPE>) {
+        cComponentHandle.hintInUse(inUse);
+      }
     }
 
     bool isComponent(const TYPE* component) const {

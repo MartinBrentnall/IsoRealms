@@ -43,7 +43,6 @@ namespace IsoRealms::Spindizzy {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     /*********************\
      * Module interfaces *

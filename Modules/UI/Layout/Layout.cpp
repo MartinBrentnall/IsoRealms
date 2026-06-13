@@ -56,20 +56,8 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool Layout::renderIcon() const {
-    return false;
-  }
-
   void Layout::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyEditor("Content", this);
-  }
-
-  void Layout::removed() {
-    // Nothing to do.
   }
 
   void Layout::updateEditing(unsigned int milliseconds) {
@@ -91,7 +79,7 @@ namespace IsoRealms::UI {
   }
 
   bool Layout::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void Layout::saveAsset(JSONObject object) const {

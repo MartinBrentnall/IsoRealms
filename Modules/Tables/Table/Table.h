@@ -36,11 +36,8 @@ namespace IsoRealms::Tables {
     Table(Tables& tables, IComponentData& data);
     Table(Tables& tables, IComponentData& data, JSONObject object);
     void registerAssets(ComponentAssetRegistry& assets);  
-    void hintInUse(bool inUse);
-    bool renderIcon();
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
-    
+
     /***********************\
      * Scripting Interface *
     \***********************/

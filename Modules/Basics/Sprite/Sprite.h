@@ -41,7 +41,6 @@ namespace IsoRealms::Basics {
     void hintInUse(bool inUse);
     bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     /*********************\
      * Implements IModel *

@@ -31,23 +31,11 @@ namespace IsoRealms::UI {
   void ScreenFader::registerAssets(ComponentAssetRegistry& assets) {
     assets.add<IScreen>(this, "", "Screen Faders");
   }
-  
-  void ScreenFader::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool ScreenFader::renderIcon() const {
-    return false;
-  }
 
   void ScreenFader::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("screenA",    cDefScreenA);
     owner.createPropertyTreeSelector("screenB",    cDefScreenB);
     owner.createPropertyTreeSelector("transition", cDefTransition);
-  }
-
-  void ScreenFader::removed() {
-    // Nothing to do.
   }
 
   void ScreenFader::renderScreen(float scale, float aspectRatio) const {

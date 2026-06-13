@@ -50,10 +50,7 @@ namespace IsoRealms::Basics {
     DigitalControl(Basics& basics, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);
     void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID);
-    void hintInUse(bool inUse);
-    bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     DigitalControl(IComponentData& owner);
     DigitalControl(IComponentData& owner, JSONObject object);

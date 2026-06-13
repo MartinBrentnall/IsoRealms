@@ -27,10 +27,7 @@ namespace IsoRealms::Replay {
     public:
     Replayer(Replay& replay, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);
-    bool renderIcon() const;
-    void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     /*********************\
      * Module interfaces *

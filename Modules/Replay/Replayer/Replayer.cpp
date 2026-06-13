@@ -35,14 +35,6 @@ namespace IsoRealms::Replay {
     }
   }
   
-  bool Replayer::renderIcon() const {
-    return false;
-  }
-  
-  void Replayer::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
   void Replayer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyArray("digitalInputs", cDefDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &owner, &metadata](DigitalInput& digitalInput) {
       owner.createPropertyStruct("DigitalInput", digitalInput.getName(), [&metadata, &digitalInput](IPropertyMaker& owner) {
@@ -66,10 +58,6 @@ namespace IsoRealms::Replay {
       return *cDefAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, cComponentData));
       // TODO: Adjust ID's.
     });
-  }
-
-  void Replayer::removed() {
-    // Nothing to do.
   }
   
   void Replayer::updateInputs(unsigned int milliseconds) {

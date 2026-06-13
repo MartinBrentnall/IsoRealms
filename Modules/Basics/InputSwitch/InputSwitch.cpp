@@ -29,21 +29,9 @@ namespace IsoRealms::Basics {
     assets.add<IInputHandler>(this, "", "Input Switches");
     assets.add<IBinding>(&cLuaBinding, "", "Input Switches");
   }
-  
-  void InputSwitch::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool InputSwitch::renderIcon() const {
-    return false;
-  }
 
   void InputSwitch::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("value", cDefInputHandler);
-  }
-
-  void InputSwitch::removed() {
-    // Nothing to do.
   }
 
   void InputSwitch::reset() {
@@ -64,7 +52,7 @@ namespace IsoRealms::Basics {
   }
 
   bool InputSwitch::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void InputSwitch::saveAsset(JSONObject object) const {

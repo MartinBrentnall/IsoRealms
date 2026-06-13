@@ -38,10 +38,7 @@ namespace IsoRealms::Basics {
     \***********************/
     InputGroup(Basics& basics, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);
-    void hintInUse(bool inUse);
-    bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     /****************************\
      * Implements IInputHandler *

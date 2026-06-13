@@ -60,10 +60,6 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Jewel::removed() {
-    // Nothing to do.
-  }
-
   void Jewel::updateEditing(unsigned int milliseconds) {
     cSampleModel->update(milliseconds);
   }
@@ -99,10 +95,6 @@ namespace IsoRealms::Spindizzy {
 
   bool Jewel::isDefaultConfiguration() const {
     return true;
-  }
-
-  void Jewel::hintInUse(bool inUse) {
-    // Nothing to do.
   }
   
   void Jewel::registerAssets(ComponentAssetRegistry& assets) {

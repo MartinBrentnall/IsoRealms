@@ -33,10 +33,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void PickUpType::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
   bool PickUpType::renderIcon() const {
     return cDefModel.renderIcon();
   }

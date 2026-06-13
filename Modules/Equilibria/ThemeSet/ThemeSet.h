@@ -31,10 +31,8 @@ namespace IsoRealms::Equilibria {
     public:
     ThemeSet(Equilibria& equilibria, IComponentData& data);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    bool renderIcon();
     void hintInUse(bool inUse);
     void registerAssets(ComponentAssetRegistry& assets);
-    void removed();
 
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();

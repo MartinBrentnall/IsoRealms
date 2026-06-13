@@ -44,10 +44,7 @@ namespace IsoRealms::Equilibria {
     \***********************/
     WorldView(Equilibria& equilibria, IComponentData& data);
     void registerAssets(ComponentAssetRegistry& assets);
-    void hintInUse(bool inUse);
-    bool renderIcon() const;
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     /***************************\
      * Asset client interfaces *

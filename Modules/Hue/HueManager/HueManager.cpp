@@ -26,14 +26,6 @@ namespace IsoRealms::Hue {
   void HueManager::registerAssets(ComponentAssetRegistry& assets) {
     // Nothing to do.
   }
-
-  void HueManager::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool HueManager::renderIcon() {
-    return false;
-  }
   
   void HueManager::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeString("bridge", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
@@ -102,10 +94,6 @@ namespace IsoRealms::Hue {
       }
       printf("Running...\n");
     }
-  }
-
-  void HueManager::removed() {
-    // Nothing to do.
   }
 
   HueManager::~HueManager() {

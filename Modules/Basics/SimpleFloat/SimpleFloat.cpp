@@ -30,21 +30,9 @@ namespace IsoRealms::Basics {
     cStateNotifier = assets.add<IFloat>(this, "", "Simple Floats");
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Floats");
   }
-  
-  void SimpleFloat::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool SimpleFloat::renderIcon() const {
-    return false;
-  }
 
   void SimpleFloat::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeFloat("value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
-  }
-
-  void SimpleFloat::removed() {
-    // Nothing to do.
   }
   
   void SimpleFloat::reset() {
@@ -56,7 +44,7 @@ namespace IsoRealms::Basics {
   }
 
   bool SimpleFloat::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void SimpleFloat::saveAsset(JSONObject object) const {

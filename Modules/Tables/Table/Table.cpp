@@ -36,21 +36,9 @@ namespace IsoRealms::Tables {
   void Table::registerAssets(ComponentAssetRegistry& assets) {
     // TODO: Implement this.
   }
-  
-  bool Table::renderIcon() {
-    return false;
-  }
-
-  void Table::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
 
   void Table::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     // TODO: Implement this.
-  }
-
-  void Table::removed() {
-    // Nothing to do.
   }
   
   Table::Field::Field(JSONObject object) :

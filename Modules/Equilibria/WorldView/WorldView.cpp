@@ -38,14 +38,6 @@ namespace IsoRealms::Equilibria {
     cDefCamera->registerAssets(assets, "Camera");
   }
 
-  void WorldView::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-  
-  bool WorldView::renderIcon() const {
-    return false;
-  }
-
   void WorldView::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
@@ -63,10 +55,6 @@ namespace IsoRealms::Equilibria {
         }
       });
     }
-  }
-
-  void WorldView::removed() {
-    // Nothing to do.
   }
 
   Equilibria& WorldView::getAssetManager() {

@@ -49,9 +49,7 @@ namespace IsoRealms::Basics {
     Function(Basics& basics, IComponentData& data, JSONObject object);
     void registerAssets(ComponentAssetRegistry& assets);
     bool renderIcon() const;
-    void hintInUse(bool inUse);
     void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-    void removed();
 
     // Constructors for use by scripts (in-line functions).
     Function(Basics& basics, IActionContext& owner);

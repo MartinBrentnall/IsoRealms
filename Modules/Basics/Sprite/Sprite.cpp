@@ -65,9 +65,6 @@ namespace IsoRealms::Basics {
     owner.createPropertyNativeBoolean("billboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
   }
 
-  void Sprite::removed() {
-    // Nothing to do.
-  }
 
   IModelInstance* Sprite::createModel() {
     return this;

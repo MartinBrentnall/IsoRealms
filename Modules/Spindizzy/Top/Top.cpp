@@ -56,10 +56,6 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyTreeSelector("outline", cDefColourOutline);
   }
 
-  void Top::removed() {
-    // Nothing to do.
-  }
-
   void Top::updateEditing(unsigned int milliseconds) {
     cEditingIconAngle -= 0.25f * milliseconds;
   }

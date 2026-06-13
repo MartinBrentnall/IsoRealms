@@ -40,10 +40,6 @@ namespace IsoRealms::Basics {
     assets.add<IBinding>(&cLuaBinding, "", "Variables/Colours"); // TODO: Localize this.
   }
 
-  void SimpleColour::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
   bool SimpleColour::renderIcon() const {
     return renderAssetIcon();
   }
@@ -91,9 +87,6 @@ namespace IsoRealms::Basics {
     });
   }
 
-  void SimpleColour::removed() {
-    // Nothing to do.
-  }
 
   void SimpleColour::reset() {
     resetColour();

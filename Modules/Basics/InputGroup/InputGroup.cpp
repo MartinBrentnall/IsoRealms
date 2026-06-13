@@ -27,14 +27,6 @@ namespace IsoRealms::Basics {
     assets.add<IInputHandler>(this, "", "Input Groups");
   }
 
-  void InputGroup::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool InputGroup::renderIcon() const {
-    return false;
-  }
-
   void InputGroup::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyArray("inputs", cDefInputHandlers, [](const std::unique_ptr<InputHandler>& i)->InputHandler& {return *i;}, [this, &owner, &metadata](InputHandler& inputHandler) {
       owner.createPropertyTreeSelector("input", inputHandler, Options::EMPTY, [this, &inputHandler]() {
@@ -43,10 +35,6 @@ namespace IsoRealms::Basics {
     }, [this]()->InputHandler& {
       return *cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cComponentData));
     });
-  }
-
-  void InputGroup::removed() {
-    // Nothing to do.
   }
 
   bool InputGroup::input(sf::Event& event) {
@@ -65,7 +53,7 @@ namespace IsoRealms::Basics {
   }
 
   bool InputGroup::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void InputGroup::saveAsset(JSONObject object) const {

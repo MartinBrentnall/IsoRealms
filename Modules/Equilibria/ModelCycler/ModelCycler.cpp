@@ -37,10 +37,6 @@ namespace IsoRealms::Equilibria {
     }
     assets.add<IBinding>(&cLuaBinding, "", "Cycleable Models");
   }
-  
-  void ModelCycler::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
 
   bool ModelCycler::renderIcon() {
     unsigned int mIndex = cEditingIconCycle / 500;
@@ -70,10 +66,6 @@ namespace IsoRealms::Equilibria {
 
   void ModelCycler::refreshAssetRegistration() {
     ComponentContainerTraits<ModelCycler>::get(cEquilibria).refreshAssetRegistration(*this);
-  }
-
-  void ModelCycler::removed() {
-    // Nothing to do.
   }
   
   void ModelCycler::updateEditing(unsigned int milliseconds) {

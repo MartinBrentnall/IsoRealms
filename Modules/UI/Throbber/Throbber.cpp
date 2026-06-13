@@ -35,14 +35,6 @@ namespace IsoRealms::UI {
     assets.add<IScreen>(this, "", "Throbbers");
   }
 
-  void Throbber::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool Throbber::renderIcon() const {
-    return false;
-  }
-
   void Throbber::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyNativeUnsignedInteger("duration",     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;}, DEFAULT_DURATION);
     owner.createPropertyNativeUnsignedInteger("spots",         [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;}, DEFAULT_SPOTS);
@@ -52,10 +44,6 @@ namespace IsoRealms::UI {
     owner.createPropertyTreeSelector(         "colour",       cDefColour);
     owner.createPropertyNativeFloat(          "ringRadius",   [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;}, DEFAULT_RING_RADIUS);
     owner.createPropertyNativeUnsignedInteger("repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;}, DEFAULT_REPETITIONS);
-  }
-
-  void Throbber::removed() {
-    // Nothing to do.
   }
 
   void Throbber::updateRuntime(unsigned int milliseconds) {

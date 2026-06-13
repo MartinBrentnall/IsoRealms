@@ -53,14 +53,6 @@ namespace IsoRealms::Basics {
       mEntry.second->registerAssets(assets, mEntry.first);
     }
   }
-  
-  void Sequence::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool Sequence::renderIcon() const {
-    return false;
-  }
 
   void Sequence::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyEditor(       "Content", this);
@@ -96,10 +88,6 @@ namespace IsoRealms::Basics {
     if (owner.loadsPersistedValues()) {
       cComponentData.reregisterAssets();
     }
-  }
-
-  void Sequence::removed() {
-    // Nothing to do.
   }
 
   Basics& Sequence::getAssetManager() {
@@ -184,7 +172,7 @@ namespace IsoRealms::Basics {
   }
 
   bool Sequence::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void Sequence::saveAsset(JSONObject object) const {

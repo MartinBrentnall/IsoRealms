@@ -48,13 +48,7 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueControl::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
 
-  bool AnalogueControl::renderIcon() const {
-    return false;
-  }
 
   void AnalogueControl::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyArray(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner](InputMapping& mapping) {
@@ -68,9 +62,6 @@ namespace IsoRealms::Basics {
     });
   }
 
-  void AnalogueControl::removed() {
-    // Nothing to do.
-  }
 
   float AnalogueControl::getValue() const {
     return cRuntimeState;
@@ -105,7 +96,7 @@ namespace IsoRealms::Basics {
   }
 
   bool AnalogueControl::renderAssetIcon() const {
-    return renderIcon();
+    return false;
   }
 
   void AnalogueControl::saveAsset(JSONObject object) const {

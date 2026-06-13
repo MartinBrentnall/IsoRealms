@@ -41,9 +41,6 @@ namespace IsoRealms::Equilibria {
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Aliens");
   }
     
-  void AlienType::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
   
   bool AlienType::renderIcon() const {
     glColor3f(1.0f, 1.0f, 1.0f);

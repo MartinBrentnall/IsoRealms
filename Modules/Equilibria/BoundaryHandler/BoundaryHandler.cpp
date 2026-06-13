@@ -35,14 +35,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void BoundaryHandler::hintInUse(bool inUse) {
-    // Nothing to do.
-  }
-
-  bool BoundaryHandler::renderIcon() {
-    return false;
-  }
-
   void BoundaryHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("object",   cDefObjectType);
     owner.createPropertyTreeSelector("boundary", cDefBoundaryType);

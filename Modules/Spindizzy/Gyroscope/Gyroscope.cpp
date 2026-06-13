@@ -57,10 +57,6 @@ namespace IsoRealms::Spindizzy {
     owner.createPropertyTreeSelector("colour4", cDefQuadrant[3]);
     owner.createPropertyTreeSelector("outline", cDefOutline);
   }
-
-  void Gyroscope::removed() {
-    // Nothing to do.
-  }
   
   void Gyroscope::updateEditing(unsigned int milliseconds) {
     cEditingIconRotation -= 0.5f * milliseconds;
