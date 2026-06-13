@@ -118,4 +118,8 @@ namespace IsoRealms {
   void ResourceOwner::loadFromProperty(JSONObject object, const std::string& key, const Options& hint) {
     setID(object.getString(key));
   }
+
+  void ResourceOwner::saveToProperty(JSONObject object, const std::string& key, const Options& hint) const {
+    object.addString(key, cOwner->getName());
+  }
 }

@@ -81,6 +81,10 @@ namespace IsoRealms {
     return cObject.HasMember(name);
   }
 
+  JSONArray JSONObject::getArray(const std::string& name) {
+    return JSONArray(cParent, cObject[name]);
+  }
+
   JSONArray JSONObject::getArray(const std::string& name) const {
     return JSONArray(cParent, cObject[name]);
   }

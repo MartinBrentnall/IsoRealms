@@ -39,6 +39,15 @@ namespace IsoRealms::UI {
     }
   }
 
+  void Layout::save(IResourceData& resourceData, JSONObject object) const {
+    JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
+    for (LayoutComponent* mComponent : cComponentsByOrder) {
+      JSONObject mComponentObject = mComponentsArray.addObject();
+      mComponentObject.addString(JSON_ID, getName(mComponent));
+      mComponent->save(mComponentObject);
+    }
+  }
+
   void Layout::registerAssets(ResourceAssetRegistry& assets) {
     assets.add(static_cast<IEditable*>(this), "", "Screen Layouts");
     assets.add(static_cast<IScreen*>(this), "", "Screen Layouts");

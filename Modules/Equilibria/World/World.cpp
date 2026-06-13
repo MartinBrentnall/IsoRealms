@@ -121,6 +121,24 @@ namespace IsoRealms::Equilibria {
     });
   }
 
+  void World::save(IResourceData& resourceData, JSONObject object) const {
+    JSONArray mDebrisGeneratorsArray = object.addArray(JSON_DEBRIS_GENERATORS);
+    JSONArray mPlayersArray = object.addArray(JSON_PLAYERS);
+    JSONArray mZonesArray = object.addArray(JSON_ZONES);
+
+    for (const std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
+      mDebrisGenerator->save(mDebrisGeneratorsArray.addObject());
+    }
+    for (const std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->save(mPlayersArray.addObject());
+    }
+    for (const std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->save(mZonesArray.addObject());
+    }
+
+    updateCache();
+  }
+
   void World::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IEditable>(this, "", "Equilibria Worlds");
     assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Worlds");

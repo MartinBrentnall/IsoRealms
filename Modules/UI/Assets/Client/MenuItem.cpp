@@ -43,6 +43,10 @@ namespace IsoRealms::UI {
     set(object, key, cOwner);
   }
 
+  void MenuItem::saveToProperty(JSONObject object, const std::string& key, const Options& hint) const {
+    save(object, key);
+  }
+
   void MenuItem::setID(const std::string& id) {
     // TODO: Implement this.
   }

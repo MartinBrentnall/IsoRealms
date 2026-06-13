@@ -55,6 +55,7 @@ namespace IsoRealms {
     void addFloat(const std::string& name, float value, float defaultValue = 0.0f);
     void addBoolean(const std::string& name, bool value, bool defaultValue = false);
     bool hasMember(const std::string& name) const;
+    JSONArray getArray(const std::string& name);
     JSONArray getArray(const std::string& name) const;
     JSONObject getObject(const std::string& name) const;
     std::string getString(const std::string& name, const std::string& defaultValue = "") const;

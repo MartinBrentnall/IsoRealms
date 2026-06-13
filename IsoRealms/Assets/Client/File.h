@@ -60,6 +60,7 @@ namespace IsoRealms {
     bool renderTreeItemIcon(const std::string& id) const override;
     void setID(const std::string& id) override;
     void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override;
+    void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override;
 
     private:
     inline static const std::string LOCATION_PREFIX_USER    = "User";

@@ -36,6 +36,8 @@ namespace IsoRealms {
 
     virtual void loadFromProperty(JSONObject object, const std::string& key, const Options& hint = Options::EMPTY) {}
     virtual void loadFromProperty(JSONObject object, const Options& hint = Options::EMPTY) {}
+    virtual void saveToProperty(JSONObject object, const std::string& key, const Options& hint = Options::EMPTY) const {}
+    virtual void saveToProperty(JSONObject object, const Options& hint = Options::EMPTY) const {}
 
     virtual std::string getTreeItemLabel() const = 0;
     virtual bool renderAssetIcon() const = 0;

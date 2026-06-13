@@ -137,6 +137,7 @@ add_library(IsoRealms
   PropertyData.cpp
   PropertyLoader.cpp
   PropertyMaker.cpp
+  PropertySaver.cpp
   System.cpp
   Utils.cpp
 )

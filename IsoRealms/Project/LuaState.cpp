@@ -105,7 +105,7 @@ namespace IsoRealms {
                                                           "addFloat",             &JSONObject::addFloat,
                                                           "addBoolean",           &JSONObject::addBoolean,
                                                           "getObject",            &JSONObject::getObject,
-                                                          "getArray",             &JSONObject::getArray,
+                                                          "getArray",             static_cast<JSONArray (JSONObject::*)(const std::string&) const>(&JSONObject::getArray),
                                                           "getString",            &JSONObject::getString,
                                                           "getInteger",           &JSONObject::getInteger,
                                                           "getFloat",             &JSONObject::getFloat,

@@ -49,6 +49,10 @@ namespace IsoRealms {
       return false;
     }
 
+    virtual bool savesPersistedValues() const {
+      return false;
+    }
+
     // TODO: Replace this function with a hint.
     virtual bool hasPersistedMember(const std::string& key) const {
       return false;
@@ -75,6 +79,15 @@ namespace IsoRealms {
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
     void createPropertyArray(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
+      if (beginSavePropertyArray(key)) {
+        for (const auto& mElement : container) {
+          beginSavePropertyArrayElement();
+          createProperty(value(mElement));
+          endSavePropertyArrayElement();
+        }
+        endSavePropertyArray();
+        return;
+      }
       if (loadPropertyArray(key, [&]() {
         createProperty(add());
       })) {
@@ -96,6 +109,16 @@ namespace IsoRealms {
         std::advance(mElement, mIndex);
         createProperty(value(*mElement), mIndex);
       };
+      if (beginSavePropertyArray(key)) {
+        unsigned int mIndex = 0;
+        for (typename CONTAINER::const_reference mElement : container) {
+          beginSavePropertyArrayElement();
+          createProperty(value(mElement), mIndex++);
+          endSavePropertyArrayElement();
+        }
+        endSavePropertyArray();
+        return;
+      }
       if (loadFixedPropertyArray(key, mCount, matchIndex, mCreateAtIndex)) {
         return;
       }
@@ -106,6 +129,19 @@ namespace IsoRealms {
     }
 
     protected:
+    virtual bool beginSavePropertyArray(const std::string& key) {
+      return false;
+    }
+
+    virtual void beginSavePropertyArrayElement() {
+    }
+
+    virtual void endSavePropertyArrayElement() {
+    }
+
+    virtual void endSavePropertyArray() {
+    }
+
     virtual bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) {
       return false;
     }

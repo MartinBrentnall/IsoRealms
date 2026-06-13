@@ -152,6 +152,10 @@ namespace IsoRealms {
       throw std::runtime_error("ResourceReference::loadFromProperty: Not implemented.");
     }
 
+    void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override {
+      save(object, key);
+    }
+
     private:
 
     // External interfaces.

@@ -224,6 +224,17 @@ namespace IsoRealms {
       }
     }
 
+    void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override {
+      JSONObject mAssetObject = object.addObject(key);
+      saveClientConfiguration(mAssetObject);
+      mAssetObject.addString("key", getRawID());
+    }
+
+    void saveToProperty(JSONObject object, const Options& hint) const override {
+      saveClientConfiguration(object);
+      object.addString("key", getRawID());
+    }
+
     std::string getTreeItemLabel() const override {
       TreeItemInfo mTreeItemInfo = getTreeItemInfo();
       std::string::size_type mLastSeparator = mTreeItemInfo.cPath.find_last_of('/');

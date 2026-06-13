@@ -142,6 +142,10 @@ namespace IsoRealms {
   void File::loadFromProperty(JSONObject object, const std::string& key, const Options& hint) {
     load(key, object);
   }
+
+  void File::saveToProperty(JSONObject object, const std::string& key, const Options& hint) const {
+    save(key, object);
+  }
   
   void File::getFilesAt(const std::string& path, const std::string& prefix, std::vector<std::string>& list) {
     std::cout << "Getting files at path: \"" << path << "\"..." << std::endl;

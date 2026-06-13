@@ -41,6 +41,10 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
+  void Sequence::save(IResourceData& resourceData, JSONObject object) const {
+    // Nothing to do.
+  }
+
   void Sequence::registerAssets(ResourceAssetRegistry& assets) {
     assets.add<IBinding>(&cLuaBinding, "", "Sequences");
     assets.add<IInteger>(&cExposedLength, "Length", "Sequences");

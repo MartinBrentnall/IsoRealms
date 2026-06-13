@@ -61,6 +61,10 @@ namespace IsoRealms {
         }
         return;
       }
+      if (owner.savesPersistedValues()) {
+        owner.createPropertyTreeSelector(name, cAsset);
+        return;
+      }
       if (cOwner.isConfigurable()) {
         owner.createPropertyStruct(name, cAsset.getTreeItemLabel(), [this, &metadata, name](IPropertyMaker& owner) {
           owner.createPropertyTreeSelector("Value", cAsset);

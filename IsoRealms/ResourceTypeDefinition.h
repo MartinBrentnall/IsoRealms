@@ -30,6 +30,7 @@
 #include "IsoRealms/Project/ProjectFile.h"
 #include "IsoRealms/Project/ResourceType.h"
 #include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/PropertySaver.h"
 #include "IsoRealms/Resource.h"
 
 // Forward declarations
@@ -162,9 +163,11 @@ namespace IsoRealms {
   
     void save(JSONObject& object, const ProjectFile* savingProject) override {
       for (const std::unique_ptr<ResourceInfo>& mResourceInfo : cResources | std::views::values) {
-        if (mResourceInfo->getResource()->needsSaving(savingProject)) {
-          JSONObject mResourceObject = object.addObject(mResourceInfo->getResource()->getName());
-          mResourceInfo->getResource()->save(mResourceObject);
+        Resource<MODULE, TYPE>* mResource = mResourceInfo->getResource();
+        if (mResource->needsSaving(savingProject)) {
+          JSONObject mResourceObject = object.addObject(mResource->getName());
+          PropertySaver mSaver(mResource->getResourceData(), mResourceObject);
+          mResource->getResource()->getProperties(mSaver, mResource->getResourceData().getMetadata());
         }
       }
     }
