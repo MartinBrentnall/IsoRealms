@@ -44,9 +44,9 @@ namespace IsoRealms::UI {
     bool renderTreeItemIcon(const std::string& id) const override;
     bool hasConfiguration() const override;
     bool isDefaultConfigured() const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
+    void getTreeItemProperties(IPropertyMaker& owner) override;
     const IsoRealms::Metadata& getPropertyMetadata() const override;
-    bool renderAssetIcon() const override;
+    bool renderTreeItemIcon() const override;
     Application& getApplication() override;
 
     IMenuItem* operator->() const {

@@ -92,7 +92,7 @@ namespace IsoRealms {
   void PropertyLoader::loadTreeSelectorAssetProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint) {
     if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true") {
       pushObject(object);
-      item.getAssetProperties(*this);
+      item.getTreeItemProperties(*this);
       popObject();
       return;
     }
@@ -103,7 +103,7 @@ namespace IsoRealms {
     IComponentData* mComponentData = &cComponentData;
     std::function<void()> mLoad = [mComponentData, mObjectStack = std::move(mObjectStack), mItem]() {
       PropertyLoader mLoader(*mComponentData, mObjectStack);
-      mItem->getAssetProperties(mLoader);
+      mItem->getTreeItemProperties(mLoader);
     };
     deferDuringLoad(cComponentData, std::move(mLoad));
   }

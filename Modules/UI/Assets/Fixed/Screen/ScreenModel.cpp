@@ -42,7 +42,7 @@ namespace IsoRealms::UI {
   }
 
   bool ScreenModel::renderAssetIcon() const {
-    return cDefModel.renderAssetIcon();
+    return cDefModel.renderTreeItemIcon();
   }
   
   void ScreenModel::saveAsset(JSONObject object) const {

@@ -65,7 +65,7 @@ namespace IsoRealms {
     return cOwner->getName();
   }
 
-  bool ComponentOwner::renderAssetIcon() const {
+  bool ComponentOwner::renderTreeItemIcon() const {
     return false;
   }
 
@@ -77,7 +77,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void ComponentOwner::getAssetProperties(IPropertyMaker& owner) {
+  void ComponentOwner::getTreeItemProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

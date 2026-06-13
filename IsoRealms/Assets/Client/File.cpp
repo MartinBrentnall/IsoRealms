@@ -85,7 +85,7 @@ namespace IsoRealms {
     return cPath;
   }
   
-  bool File::renderAssetIcon() const {
+  bool File::renderTreeItemIcon() const {
     return false;
   }
   
@@ -97,7 +97,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void File::getAssetProperties(IPropertyMaker& owner) {
+  void File::getTreeItemProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

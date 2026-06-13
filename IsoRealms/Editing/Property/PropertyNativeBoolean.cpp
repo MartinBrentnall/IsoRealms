@@ -65,7 +65,7 @@ namespace IsoRealms {
     return cGetter() ? "True" : "False";
   } 
   
-  bool PropertyNativeBoolean::BooleanSelection::renderAssetIcon() const {
+  bool PropertyNativeBoolean::BooleanSelection::renderTreeItemIcon() const {
     if (cGetter()) {
       Utils::renderIconTick();
     } else {
@@ -82,7 +82,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyNativeBoolean::BooleanSelection::getAssetProperties(IPropertyMaker& owner) {
+  void PropertyNativeBoolean::BooleanSelection::getTreeItemProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

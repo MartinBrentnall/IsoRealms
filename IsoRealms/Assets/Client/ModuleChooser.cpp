@@ -47,7 +47,7 @@ namespace IsoRealms {
     return "";
   }
   
-  bool ModuleChooser::renderAssetIcon() const {
+  bool ModuleChooser::renderTreeItemIcon() const {
     return false;
   }
   
@@ -59,7 +59,7 @@ namespace IsoRealms {
     return true;
   }
   
-  void ModuleChooser::getAssetProperties(IPropertyMaker& owner) {
+  void ModuleChooser::getTreeItemProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

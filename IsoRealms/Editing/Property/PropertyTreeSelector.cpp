@@ -52,7 +52,7 @@ namespace IsoRealms {
     glPushMatrix();
     glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
     glScalef(mFontSize, mFontSize, 0.0f);
-    if (!cSelectedItem.renderAssetIcon()) {
+    if (!cSelectedItem.renderTreeItemIcon()) {
       Utils::renderIconLeaf();
     }
     glPopMatrix();
@@ -75,7 +75,7 @@ namespace IsoRealms {
 
   void PropertyTreeSelector::configure(IPropertyManager& manager) {
     manager.openProperties(cComponentData, getPropertyName(), cSelectedItem.getPropertyMetadata(), [this](IPropertyMaker& owner) {
-      cSelectedItem.getAssetProperties(owner);
+      cSelectedItem.getTreeItemProperties(owner);
     });
   }
 

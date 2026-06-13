@@ -261,12 +261,12 @@ namespace IsoRealms {
           mHint.addOption(Options::PROPERTY_NO_EDIT, "true");
           owner.createPropertyTreeSelector(JSON_ASSET, cDefValue, mHint);
           if (!owner.loadsPersistedValues()) {
-            cDefValue.getAssetProperties(owner);
+            cDefValue.getTreeItemProperties(owner);
           }
         }
 
         bool renderAssetIcon() const override {
-          return cDefValue.renderAssetIcon();
+          return cDefValue.renderTreeItemIcon();
         }
 
         void saveAsset(JSONObject object) const override {

@@ -74,7 +74,7 @@ namespace IsoRealms {
     return cGetter();
   }
 
-  bool PropertyList::ListSelection::renderAssetIcon() const {
+  bool PropertyList::ListSelection::renderTreeItemIcon() const {
     return false;
   }
 
@@ -86,7 +86,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyList::ListSelection::getAssetProperties(IPropertyMaker& owner) {
+  void PropertyList::ListSelection::getTreeItemProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 

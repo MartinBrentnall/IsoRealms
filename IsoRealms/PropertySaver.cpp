@@ -70,7 +70,7 @@ namespace IsoRealms {
   void PropertySaver::saveTreeSelectorAssetProperties(const ITreeSelectorObject& item, JSONObject object, const Options& hint) const {
     if (item.hasConfiguration()) {
       PropertySaver mSaver(cComponentData, object);
-      const_cast<ITreeSelectorObject&>(item).getAssetProperties(mSaver);
+      const_cast<ITreeSelectorObject&>(item).getTreeItemProperties(mSaver);
     }
   }
 

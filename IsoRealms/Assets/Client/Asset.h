@@ -139,12 +139,12 @@ namespace IsoRealms {
       save(mAssetObject);
     }
 
-    void getAssetProperties(IPropertyMaker& owner) override {
+    void getTreeItemProperties(IPropertyMaker& owner) override {
       getClientProperties(owner);
       cAsset->getAssetProperties(owner);
     }
 
-    bool renderAssetIcon() const override {
+    bool renderTreeItemIcon() const override {
       return cAsset->renderAssetIcon();
     }
 
@@ -194,7 +194,7 @@ namespace IsoRealms {
 
     bool renderTreeItemIcon(const std::string& id) const override {
       if (id == getRawID()) {
-        return renderAssetIcon();
+        return renderTreeItemIcon();
       }
       
       return cManager.getAssetManager().template renderIcon<TYPE>(id);

@@ -80,7 +80,7 @@ namespace IsoRealms::UI {
     return true;
   }
 
-  void MenuItem::getAssetProperties(IPropertyMaker& owner) {
+  void MenuItem::getTreeItemProperties(IPropertyMaker& owner) {
     cMenuItem->getAssetProperties(owner);
   }
 
@@ -88,7 +88,7 @@ namespace IsoRealms::UI {
     return cUI.getPropertyMetadata(cMenuItem);
   }
 
-  bool MenuItem::renderAssetIcon() const {
+  bool MenuItem::renderTreeItemIcon() const {
     return false;
   }
 

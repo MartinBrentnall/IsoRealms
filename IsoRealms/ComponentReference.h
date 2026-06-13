@@ -87,7 +87,7 @@ namespace IsoRealms {
       return cManager.getAssetManager().getComponentID(cDefComponent);
     }
 
-    bool renderAssetIcon() const override {
+    bool renderTreeItemIcon() const override {
       return false; // TODO: Implement this.
     }
 
@@ -99,7 +99,7 @@ namespace IsoRealms {
       return false; // TODO: Implement this.
     }
 
-    void getAssetProperties(IPropertyMaker& owner) override {
+    void getTreeItemProperties(IPropertyMaker& owner) override {
       // TODO: Implement this.
     }
 

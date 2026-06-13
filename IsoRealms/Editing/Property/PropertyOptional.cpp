@@ -53,7 +53,7 @@ namespace IsoRealms {
       if (!cNoneIcon()) {
         Utils::renderIconNone();
       }
-    } else if (!cWrapperType.renderAssetIcon()) {
+    } else if (!cWrapperType.renderTreeItemIcon()) {
       Utils::renderIconLeaf();
     }
     glPopMatrix();
@@ -102,7 +102,7 @@ namespace IsoRealms {
     return cParent.cValueGetter();
   }
 
-  bool PropertyOptional::OptionWrapper::renderAssetIcon() const {
+  bool PropertyOptional::OptionWrapper::renderTreeItemIcon() const {
     if (cParent.hasNoneOption()) {
       Utils::renderIconNone();
       return true;
@@ -118,7 +118,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyOptional::OptionWrapper::getAssetProperties(IPropertyMaker& owner) {
+  void PropertyOptional::OptionWrapper::getTreeItemProperties(IPropertyMaker& owner) {
     // Nothing to do.
   }
 
