@@ -47,7 +47,7 @@ namespace IsoRealms::Equilibria {
 
     private:
     ThemeSet& cParent;
-    IColour* cColour;
+    IColour* cColour = nullptr;
 
     LuaBinding<ThemeColour> cLuaBinding;
   };

@@ -26,8 +26,7 @@ namespace IsoRealms::Basics {
   SequenceTrackColourInstance::SequenceTrackColourInstance(SequenceTrackColour& parent, SequenceInstance& sequenceInstance) :
             SequenceTrackInstanceBase(parent.getRealEvents()),
             cParent(parent),
-            cRuntimeColour(),
-            cStateNotifier(nullptr) {
+            cRuntimeColour() {
   }
 
   void SequenceTrackColourInstance::positionChanged() {

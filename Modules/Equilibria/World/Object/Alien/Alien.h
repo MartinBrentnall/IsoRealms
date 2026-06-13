@@ -110,13 +110,13 @@ namespace IsoRealms::Equilibria {
     Zone& cZone; /// Zone to which this alien belongs.
     
     // Definition data
-    AlienType* cDefType;                        /// Type of this alien.
-    MovementHandler* cDefMovementHandler;       /// Handles movement of this alien (saves a runtime map lookup from World).
-    std::unique_ptr<ModelInstance> cDefModel;   /// Visual representation of this alien.
-    int cDefX;                                  /// Starting X position of this alien.
-    int cDefY;                                  /// Starting Y position of this alien.
-    int cDefZ;                                  /// Starting Z position of this alien.
-    InfiniteSurface cDefSurfaceOutsideHomeZone; /// Invisible infinity surface traversed by the alien when it leaves its home zone.
+    AlienType* cDefType                      = nullptr; /// Type of this alien.
+    MovementHandler* cDefMovementHandler     = nullptr; /// Handles movement of this alien (saves a runtime map lookup from World).
+    std::unique_ptr<ModelInstance> cDefModel = nullptr; /// Visual representation of this alien.
+    int cDefX;                                          /// Starting X position of this alien.
+    int cDefY;                                          /// Starting Y position of this alien.
+    int cDefZ;                                          /// Starting Z position of this alien.
+    InfiniteSurface cDefSurfaceOutsideHomeZone;         /// Invisible infinity surface traversed by the alien when it leaves its home zone.
 
     // Runtime data
     PhysicsObject cRuntimePhysicsObject; /// Physical runtime state of this alien.

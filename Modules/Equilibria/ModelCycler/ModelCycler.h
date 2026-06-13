@@ -133,13 +133,13 @@ namespace IsoRealms::Equilibria {
     std::vector<std::unique_ptr<Offset>> cOffsetModels;
 
     // Runtime data.
-    unsigned int cRuntimeCycleIndex;
+    unsigned int cRuntimeCycleIndex = 0;
 
     // Scripting interface.
     LuaBinding<ModelCycler> cLuaBinding;
 
     // Editing data.
-    unsigned int cEditingIconCycle;
+    unsigned int cEditingIconCycle = 0;
   };
 }
 

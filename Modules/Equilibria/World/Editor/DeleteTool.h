@@ -61,7 +61,7 @@ namespace IsoRealms::Equilibria {
       DeleteTool& cParent;
       WorldEditor& cEditor;
       std::vector<IWorldObject*> cHoverObjects;
-      int cSelectedObject;
+      int cSelectedObject = 0;
       void removeSelectedObject();
     };
 

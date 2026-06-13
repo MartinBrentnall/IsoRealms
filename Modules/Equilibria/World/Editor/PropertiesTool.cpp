@@ -48,8 +48,6 @@ namespace IsoRealms::Equilibria {
             cParent(parent),
             cWorldComponentOwner(owner),
             cEditor(editor),
-            cSelectedObject(0),
-            cEditingProperties(false),
             cPropertiesUI(editor.getWorld().getEquilibria().getProject(), *this, [this]() { // TODO: Am I passing the right project here????
               cEditingProperties = false;
             }, [](IEditable* editor) {

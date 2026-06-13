@@ -24,10 +24,6 @@ namespace IsoRealms::UI {
   MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu) :
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
-            cDefID(""),
-            cDefLabel(""),
-            cDefLabelFalse(""),
-            cDefLabelTrue(""),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 

@@ -24,9 +24,7 @@ namespace IsoRealms::Basics {
   DigitalControl::DigitalControl(IComponentData& owner) :
             cProject(owner.getProject()),
             cComponentData(owner),
-            cRuntimeState(false),
-            cLuaBinding(owner.getProject().getLuaState(), this),
-            cStateNotifier(nullptr) {
+            cLuaBinding(owner.getProject().getLuaState(), this) {
   }
 
   DigitalControl::DigitalControl(IComponentData& owner, JSONObject object) :
@@ -161,8 +159,7 @@ namespace IsoRealms::Basics {
   }
 
   DigitalControl::InputMapping::InputMapping(std::shared_ptr<DigitalInput> input) :
-            cInput(input),
-            cState(false) {
+            cInput(input) {
   }
 
   bool DigitalControl::InputMapping::matches(sf::Event& event) const {

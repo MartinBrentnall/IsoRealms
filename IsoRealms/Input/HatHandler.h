@@ -25,19 +25,19 @@
 namespace IsoRealms {
   class HatHandler {
     private:
-    bool cUpPressed;
-    bool cDownPressed;
-    bool cLeftPressed;
-    bool cRightPressed;
-    bool cUpReleased;
-    bool cDownReleased;
-    bool cLeftReleased;
-    bool cRightReleased;
+    bool cUpPressed = false;
+    bool cDownPressed = false;
+    bool cLeftPressed = false;
+    bool cRightPressed = false;
+    bool cUpReleased = false;
+    bool cDownReleased = false;
+    bool cLeftReleased = false;
+    bool cRightReleased = false;
 
-    bool cPressedUp;
-    bool cPressedDown;
-    bool cPressedLeft;
-    bool cPressedRight;
+    bool cPressedUp = false;
+    bool cPressedDown = false;
+    bool cPressedLeft = false;
+    bool cPressedRight = false;
 
     void pressUp(bool up);
     void pressDown(bool down);

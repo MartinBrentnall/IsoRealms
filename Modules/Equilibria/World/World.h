@@ -244,8 +244,8 @@ namespace IsoRealms::Equilibria {
     IComponentData& cComponentData; /// Access to world surface cache on disk.
 
     // Fixed sub-components.
-    TerrainProcessor cDefPhysicalSurfaceProcessor; /// Processor for physical surfaces.
-    TerrainProcessor cDefVisualSurfaceProcessor;   /// Processor for rendered surfaces.
+    TerrainProcessor cDefPhysicalSurfaceProcessor = true;  /// Processor for physical surfaces.
+    TerrainProcessor cDefVisualSurfaceProcessor   = false; /// Processor for rendered surfaces.
     
     // Definition data.
     float cDefSurfaceAccelerationFactor;                                /// Factor for moving object acceleration on slopes in this world.
@@ -272,19 +272,19 @@ namespace IsoRealms::Equilibria {
     std::set<Zone*> cRuntimeZonesToInitialise;                                                      /// Zones flagged for terrain initialisation.
 
     // Editor configuration.
-    bool cEditorBasicProperties;
+    bool cEditorBasicProperties = false;
     ComponentReference<ThemeSet, World> cDefaultThemeSet;
     ComponentReference<ZoneType, World> cAutomaticZoneManagementType;
     WorldEditorTool cDefaultWorldEditorTool;
-    int cAutomaticZoneXSize;
-    int cAutomaticZoneYSize;
-    int cAutomaticZoneZSize;
-    int cEditorMinX;
-    int cEditorMaxX;
-    int cEditorMinY;
-    int cEditorMaxY;
-    int cEditorMinZ;
-    int cEditorMaxZ;
+    int cAutomaticZoneXSize = DEFAULT_AUTOMATIC_ZONE_X_SIZE;
+    int cAutomaticZoneYSize = DEFAULT_AUTOMATIC_ZONE_Y_SIZE;
+    int cAutomaticZoneZSize = DEFAULT_AUTOMATIC_ZONE_Z_SIZE;
+    int cEditorMinX = DEFAULT_EDITOR_MIN_X;
+    int cEditorMaxX = DEFAULT_EDITOR_MAX_X;
+    int cEditorMinY = DEFAULT_EDITOR_MIN_Y;
+    int cEditorMaxY = DEFAULT_EDITOR_MAX_Y;
+    int cEditorMinZ = DEFAULT_EDITOR_MIN_Z;
+    int cEditorMaxZ = DEFAULT_EDITOR_MAX_Z;
     std::vector<std::unique_ptr<WorldEditorTool>> cAvailableWorldEditorTools;
 
     // Editing data.

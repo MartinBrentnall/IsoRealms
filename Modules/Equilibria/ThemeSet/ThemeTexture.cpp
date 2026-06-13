@@ -22,8 +22,7 @@
 
 namespace IsoRealms::Equilibria {
   ThemeTexture::ThemeTexture(ThemeSet& parent) :
-            cParent(parent),
-            cTexture(nullptr) {
+            cParent(parent) {
   }
 
   void ThemeTexture::registerAssets(ComponentAssetRegistry& assets, const std::string& id) {

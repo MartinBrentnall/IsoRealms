@@ -60,15 +60,15 @@ namespace IsoRealms::Basics {
     private:
     
     // Definition data
-    float cDefValue;
+    float cDefValue = 0.0f;
 
     // Runtime data
-    float cRuntimeValue;
+    float cRuntimeValue = 0.0f;
 
     // Scripting Interface.
     LuaBinding<SimpleFloat> cLuaBinding;
 
     // Misc.
-    IStateNotifier* cStateNotifier;
+    IStateNotifier* cStateNotifier = nullptr;
   };
 }

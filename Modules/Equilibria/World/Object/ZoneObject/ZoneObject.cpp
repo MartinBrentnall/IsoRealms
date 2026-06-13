@@ -32,8 +32,7 @@ namespace IsoRealms::Equilibria {
   }
 
   ZoneObject::ZoneObject(Zone& zone, JSONObject object) :
-            cZone(zone),
-            cDefType(nullptr) {
+            cZone(zone) {
     std::cout << "TODO: ZoneObject::ZoneObject" << std::endl;
 //     cZone.getWorld().getEquilibria()->getProject()->init([this, &node]() {
 //       cDefType = cZone.getWorld().getEquilibria()->getZoneObjectType(node.getAttribute(JSON_TYPE));

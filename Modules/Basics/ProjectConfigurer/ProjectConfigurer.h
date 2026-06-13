@@ -95,8 +95,8 @@ namespace IsoRealms::Basics {
     // Definition data.
     Font cDefFont;
     Font cDefCodeFont;
-    float cDefFontSize;
-    float cDefCodeFontSize;
+    float cDefFontSize     = 0.03f;
+    float cDefCodeFontSize = 0.02f;
     Action cDefExitAction;
     Action cDefEditorAction;
 

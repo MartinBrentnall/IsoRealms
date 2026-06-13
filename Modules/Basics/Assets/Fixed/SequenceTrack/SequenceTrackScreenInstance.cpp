@@ -23,8 +23,7 @@
 namespace IsoRealms::Basics {
   SequenceTrackScreenInstance::SequenceTrackScreenInstance(SequenceTrackScreen& parent, SequenceInstance& sequenceInstance) :
             SequenceTrackInstanceBase(parent.getRealEvents()),
-            cParent(parent),
-            cRuntimeScreen(nullptr) {
+            cParent(parent) {
   }
 
   void SequenceTrackScreenInstance::positionChanged() {

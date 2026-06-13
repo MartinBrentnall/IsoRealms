@@ -24,9 +24,6 @@ namespace IsoRealms::UI {
   MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu) :
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
-            cDefID(""),
-            cDefFolder(""),
-            cDefUser(false),
             cDefAction(menu.getComponentData().getDummyActionContext()),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this),
             cSelectedFile(*this) {

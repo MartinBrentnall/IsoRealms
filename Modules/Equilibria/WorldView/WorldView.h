@@ -125,13 +125,13 @@ namespace IsoRealms::Equilibria {
 
     // Definition data.
     ComponentReference<World, WorldView> cDefWorld; /// World being viewed.
-    Camera cDefCamera;                             /// Camera for this view.
-    ZoneViewType cDefZoneViewType;                 /// The type of representation of zones within this view.
-    float cDefZoom;                                /// Zoom adjustment.
+    Camera cDefCamera;                              /// Camera for this view.
+    ZoneViewType cDefZoneViewType;                  /// The type of representation of zones within this view.
+    float cDefZoom = DEFAULT_ZOOM;                  /// Zoom adjustment.
     
     // Runtime data.
     std::vector<std::unique_ptr<ZoneView>> cRuntimeZoneViews; /// Representation of zones within this view.
-    Zone* cRuntimeZone;                                       /// Zone to be rendered in play mode.
+    Zone* cRuntimeZone = nullptr;                             /// Zone to be rendered in play mode.
 
     LuaBinding<WorldView> cLuaBinding;
   };

@@ -94,17 +94,17 @@ namespace IsoRealms::Equilibria {
     Zone& cZone; /// Zone to which this lift belongs.
     
     // Definition values
-    LiftType* cDefType;                       /// Type of this lift.
-    std::unique_ptr<ModelInstance> cDefModel; /// Visual representation of this lift.
-    int cDefX;                                /// X position of this lift.
-    int cDefY;                                /// Y position of this lift.
-    int cDefZ;                                /// Starting Z position of this lift.
-    int cDefTop;                              /// Highest Z position of this lift.
-    int cDefBottom;                           /// Lowest Z position of this lift.
-    int cDefTopPause;                         /// Time in milliseconds to pause at the highest Z position.
-    int cDefBottomPause;                      /// Time in milliseconds to pause at the lowest Z position.
-    int cDefSpeedUp;                          /// Speed at which this lift moves upwards.
-    int cDefSpeedDown;                        /// Speed at which this lift moves downwards.
+    LiftType* cDefType                       = nullptr; /// Type of this lift.
+    std::unique_ptr<ModelInstance> cDefModel = nullptr; /// Visual representation of this lift.
+    int cDefX;                                          /// X position of this lift.
+    int cDefY;                                          /// Y position of this lift.
+    int cDefZ;                                          /// Starting Z position of this lift.
+    int cDefTop;                                        /// Highest Z position of this lift.
+    int cDefBottom;                                     /// Lowest Z position of this lift.
+    int cDefTopPause;                                   /// Time in milliseconds to pause at the highest Z position.
+    int cDefBottomPause;                                /// Time in milliseconds to pause at the lowest Z position.
+    int cDefSpeedUp;                                    /// Speed at which this lift moves upwards.
+    int cDefSpeedDown;                                  /// Speed at which this lift moves downwards.
     
     // Runtime values
     struct LiftValues {

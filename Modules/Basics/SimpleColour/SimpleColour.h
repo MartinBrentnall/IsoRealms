@@ -69,16 +69,16 @@ namespace IsoRealms::Basics {
     private:
     
     // Definition data.
-    float cDefRed;   /// Initial red intensity.
-    float cDefGreen; /// Initial green intensity.
-    float cDefBlue;  /// Initial blue intensity.
-    float cDefAlpha; /// Initial alpha intensity.
+    float cDefRed   = 0.0f; /// Initial red intensity.
+    float cDefGreen = 0.0f; /// Initial green intensity.
+    float cDefBlue  = 0.0f; /// Initial blue intensity.
+    float cDefAlpha = 0.0f; /// Initial alpha intensity.
 
     // Runtime data.
-    float cRuntimeRed;   /// Current red intensity.
-    float cRuntimeGreen; /// Current green intensity.
-    float cRuntimeBlue;  /// Current blue intensity.
-    float cRuntimeAlpha; /// Current alpha intensity.
+    float cRuntimeRed   = 0.0f; /// Current red intensity.
+    float cRuntimeGreen = 0.0f; /// Current green intensity.
+    float cRuntimeBlue  = 0.0f; /// Current blue intensity.
+    float cRuntimeAlpha = 0.0f; /// Current alpha intensity.
 
     // Editing data.
     float cEditingLastKnownHue;        /// Last known hue value.
@@ -89,7 +89,7 @@ namespace IsoRealms::Basics {
     LuaBinding<SimpleColour> cLuaBinding;
 
     // Misc.
-    IStateNotifier* cStateNotifier;
+    IStateNotifier* cStateNotifier = nullptr;
 
     // Private functions.
     void resetColour();

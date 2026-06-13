@@ -31,7 +31,6 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-
   void BooleanTrigger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
     owner.createPropertyTreeSelector("value",           cDefValue);
     owner.createPropertyTreeSelector("onBecomingTrue",  cDefTrueAction);

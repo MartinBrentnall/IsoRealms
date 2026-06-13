@@ -70,7 +70,7 @@ namespace IsoRealms {
 
       PropertyInputField& cParent;
       unsigned int cCaret;
-      float cErrorAnimation;
+      float cErrorAnimation = 1.0f;
 
       void moveCaretLeft();
       void moveCaretRight();

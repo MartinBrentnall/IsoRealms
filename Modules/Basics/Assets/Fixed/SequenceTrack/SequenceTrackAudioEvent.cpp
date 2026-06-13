@@ -22,17 +22,15 @@
 
 namespace IsoRealms::Basics {
   SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, unsigned int time) :
-              cParent(parent),
-              cEnd(*this),
-              cDefTime(time),
-              cDefFadeIn(0),
-              cDefFadeOut(0),
-              cDefFile(owner.getProject(), [this]() {
-                std::string mComponent = cDefFile.getPath();
-                if (!cMusic.openFromFile(mComponent)) {
-                  std::cout << "WARNING: SequenceTrackAudioEvent::SequenceTrackAudioEvent: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
-                }
-              }) {
+            cParent(parent),
+            cEnd(*this),
+            cDefTime(time),
+            cDefFile(owner.getProject(), [this]() {
+              std::string mComponent = cDefFile.getPath();
+              if (!cMusic.openFromFile(mComponent)) {
+                std::cout << "WARNING: SequenceTrackAudioEvent::SequenceTrackAudioEvent: File \"" << cDefFile.getPath() << "\" could not be opened" << std::endl;
+              }
+            }) {
   }
 
   SequenceTrackAudioEvent::SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, JSONObject object) :

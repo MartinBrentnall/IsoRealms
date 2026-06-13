@@ -55,7 +55,7 @@ namespace IsoRealms {
 
     File cFile;
     std::string cDefID;
-    bool cAllowModifications;
+    bool cAllowModifications = true;
     std::vector<std::unique_ptr<ProjectFile>> cInclusions;
   };
 }

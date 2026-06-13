@@ -47,8 +47,6 @@ namespace IsoRealms::Equilibria {
 
   PickUp::PickUp(Zone& zone, JSONObject object) :
             cZone(zone),
-            cDefType(nullptr),
-            cDefModel(nullptr),
             cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
             cDefY(object.getInteger(JSON_Y) + cZone.getStartY()),
             cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),

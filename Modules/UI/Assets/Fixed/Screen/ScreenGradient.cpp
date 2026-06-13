@@ -21,8 +21,7 @@
 namespace IsoRealms::UI {
   ScreenGradient::ScreenGradient(const Metadata& /*metadata*/, IComponentData& owner) :
             cDefColourA(owner, 0.0f, 0.0f, 1.0f),
-            cDefColourB(owner, 0.0f, 1.0f, 0.0f),
-            cDefVertical(false) {
+            cDefColourB(owner, 0.0f, 1.0f, 0.0f) {
   }
 
   ScreenGradient::ScreenGradient(const Metadata& metadata, IComponentData& owner, JSONObject object) :

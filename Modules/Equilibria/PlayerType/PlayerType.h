@@ -182,25 +182,25 @@ namespace IsoRealms::Equilibria {
     PlayerBindings cPlayerBindings;
 
     // Definition data.
-    float   cDefAcceleration;     /// Initial speed of movement.
-    float   cDefSpinSpeed;        /// Initial speed at which the player spins while moving.
-    float   cDefBounceFactor;     /// Initial factor by which the player bounces on a bouncy surface.
-    float   cDefStepReach;        /// Initial maximum height the player can "step" upwards.
-    float   cDefHeight;           /// Height of the player.
-    float   cDefRadius;           /// Radius of the player.
-    float   cDefHugMomentum;      /// Hug momentum of the player.
-    int     cDefRespawnDelay;     /// How long it takes the player to respawn in ms.
-    Model   cDefModel;            /// Visual representation of the player.
-    Boolean cDefInputThrust;      /// Input for thrust (double speed movement).
-    Float   cDefInputX;           /// Input for movement on the X-axis.
-    Float   cDefInputY;           /// Input for movement on the Y-axis.
-    Float   cDefOrientation;      /// Orientation of the view transforms movement input. // TODO: Should we maybe handle this somewhere else?
-    Action  cDefRespawnAction;    /// Action to perform upon respawning.
-    Action  cDefFallImpactAction; /// Action to perform upon impact with a surface.
-    Action  cDefFallBounceAction; /// Action to perform upon bouncing from a surface.
-    Action  cDefWallBounceAction; /// Action to perform upon bouncing from a wall.
-    Action  cDefLeaveSurfaceAction; /// Action to perform upon leaving a surface.
-    Action  cDefApexAction; /// Action to perform upon reaching the apex of a jump.
+    float   cDefAcceleration = DEFAULT_ACCELERATION;  /// Initial speed of movement.
+    float   cDefSpinSpeed    = DEFAULT_SPIN_SPEED;    /// Initial speed at which the player spins while moving.
+    float   cDefBounceFactor = DEFAULT_BOUNCE_FACTOR; /// Initial factor by which the player bounces on a bouncy surface.
+    float   cDefStepReach    = DEFAULT_STEP_REACH;    /// Initial maximum height the player can "step" upwards.
+    float   cDefHeight       = DEFAULT_HEIGHT;        /// Height of the player.
+    float   cDefRadius       = DEFAULT_RADIUS;        /// Radius of the player.
+    float   cDefHugMomentum  = DEFAULT_HUG_MOMENTUM;  /// Hug momentum of the player.
+    int     cDefRespawnDelay = DEFAULT_RESPAWN_DELAY; /// How long it takes the player to respawn in ms.
+    Model   cDefModel;                                /// Visual representation of the player.
+    Boolean cDefInputThrust;                          /// Input for thrust (double speed movement).
+    Float   cDefInputX;                               /// Input for movement on the X-axis.
+    Float   cDefInputY;                               /// Input for movement on the Y-axis.
+    Float   cDefOrientation;                          /// Orientation of the view transforms movement input. // TODO: Should we maybe handle this somewhere else?
+    Action  cDefRespawnAction;                        /// Action to perform upon respawning.
+    Action  cDefFallImpactAction;                     /// Action to perform upon impact with a surface.
+    Action  cDefFallBounceAction;                     /// Action to perform upon bouncing from a surface.
+    Action  cDefWallBounceAction;                     /// Action to perform upon bouncing from a wall.
+    Action  cDefLeaveSurfaceAction;                   /// Action to perform upon leaving a surface.
+    Action  cDefApexAction;                           /// Action to perform upon reaching the apex of a jump.
 
     // Runtime data.
     float cRuntimeSpinSpeed;      /// Current speed at which the player spins while moving.

@@ -24,11 +24,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  LiteralColour::LiteralColour() :
-            cRed(  0.0f),
-            cGreen(0.0f),
-            cBlue( 0.0f),
-            cAlpha(1.0f) {
+  LiteralColour::LiteralColour() {
   }
 
   LiteralColour::LiteralColour(const IColour& colour, const float intensity) :

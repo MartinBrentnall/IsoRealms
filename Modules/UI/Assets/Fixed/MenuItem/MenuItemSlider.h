@@ -84,12 +84,12 @@ namespace IsoRealms::UI {
     Menu& cMenu;
 
     // Definition data.
-    std::string cDefID;            /// ID of this menu item for binding.
-    std::string cDefLabel;         /// Label to show for this menu item.
-    float cDefMinimum;             /// Minimum allowed value of this slider.
-    float cDefMaximum;             /// Maximum allowed value of this slider.
-    int cDefSteps;                 /// Number of steps within this slider.
-    Action cDefValueChangedAction; /// Action that changing the value of the slider will trigger.
+    std::string cDefID;                  /// ID of this menu item for binding.
+    std::string cDefLabel;               /// Label to show for this menu item.
+    float cDefMinimum = DEFAULT_MINIMUM; /// Minimum allowed value of this slider.
+    float cDefMaximum = DEFAULT_MAXIMUM; /// Maximum allowed value of this slider.
+    int cDefSteps     = DEFAULT_STEPS;   /// Number of steps within this slider.
+    Action cDefValueChangedAction;       /// Action that changing the value of the slider will trigger.
     
     // Runtime data.
     float cRuntimeValue; /// Current value of this slider.

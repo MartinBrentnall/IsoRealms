@@ -22,13 +22,8 @@ namespace IsoRealms::Equilibria {
   WallTemplate::WallTemplate(int x, int y, WallSegment* segment, std::optional<Condition>& condition, Wall::Direction facing) :
             cX(x),
             cY(y),
-            cLength(1),
             cFacing(facing),
-            cBottomHeightStart(segment->getBottomStart()),
-            cBottomHeightSlope(segment->getBottomEnd() - cBottomHeightStart),
-            cTopHeightStart(segment->getTopStart()),
-            cTopHeightSlope(segment->getTopEnd() - cTopHeightStart),
-            cCondition(condition) {
+            cBottomHeightStart(segment->getBottomStart()), cBottomHeightSlope(segment->getBottomEnd() - cBottomHeightStart), cTopHeightStart(segment->getTopStart()), cTopHeightSlope(segment->getTopEnd() - cTopHeightStart), cCondition(condition) {
   }
 
   bool WallTemplate::unite(WallSegment* segment, std::optional<Condition>& condition) {

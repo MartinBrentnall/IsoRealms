@@ -86,10 +86,10 @@ namespace IsoRealms {
     bool isDefaultConfiguration() const override;
 
     private:
-    float cRed;   /// Red intensity
-    float cGreen; /// Green intensity
-    float cBlue;  /// Blue intensity
-    float cAlpha; /// Alpha intensity
+    float cRed   = 0.0f; /// Red intensity
+    float cGreen = 0.0f; /// Green intensity
+    float cBlue  = 0.0f; /// Blue intensity
+    float cAlpha = 1.0f; /// Alpha intensity
 
     // Editing data.
     float cEditingLastKnownHue;        /// Last known hue value.

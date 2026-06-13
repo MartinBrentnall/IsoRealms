@@ -901,12 +901,8 @@ namespace IsoRealms::Hue {
   std::string HueManager::REST::getUploadData() {
     return cUploadData;
   }
-  
-  HueManager::Entertainment::Entertainment() :
-    cLightCount(0),
-    cData(nullptr),
-    cBufferSize(0),
-    cBuffer(nullptr) {
+
+  HueManager::Entertainment::Entertainment() {
   }
 
   int HueManager::Entertainment::init(int lightCount) {

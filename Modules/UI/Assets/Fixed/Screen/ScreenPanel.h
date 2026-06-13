@@ -64,7 +64,7 @@ namespace IsoRealms::UI {
     static void renderRectangle(float xStart, float xEnd, float yStart, float yEnd);
 
     // Definition data.
-    Colour cDefColour;    /// Colour of the panel.
-    float cDefCornerSize; /// Size of the panel corner.
+    Colour cDefColour;           /// Colour of the panel.
+    float cDefCornerSize = 0.0f; /// Size of the panel corner.
   };
 }

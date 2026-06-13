@@ -437,7 +437,6 @@ namespace IsoRealms {
 
   UIManager::UIScreen::UIScreen(std::unique_ptr<IUIScreen> screen, const std::string& breadCrum, const IColour& breadCrumbColour) :
             cScreen(std::move(screen)),
-            cSlideAnimation(1000),
             cBreadCrumb(breadCrum),
             cBreadCrumbColour(breadCrumbColour) {
   }

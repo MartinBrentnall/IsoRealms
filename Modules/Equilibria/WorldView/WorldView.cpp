@@ -27,8 +27,6 @@ namespace IsoRealms::Equilibria {
             cDefWorld(*this),
             cDefCamera(*this),
             cDefZoneViewType(*this),
-            cDefZoom(DEFAULT_ZOOM),
-            cRuntimeZone(nullptr),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
     

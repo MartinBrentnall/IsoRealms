@@ -20,10 +20,7 @@
 
 namespace IsoRealms::Basics {
   SimpleInteger::SimpleInteger(Basics& basics, IComponentData& data) :
-            cDefValue(0),
-            cRuntimeValue(0),
-            cLuaBinding(data.getProject().getLuaState(), this),
-            cStateNotifier(nullptr) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
   void SimpleInteger::registerAssets(ComponentAssetRegistry& assets) {

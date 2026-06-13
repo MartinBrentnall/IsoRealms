@@ -25,8 +25,6 @@ namespace IsoRealms::Basics {
             cActionContext(data, *this),
             cDefFont(data),
             cDefCodeFont(data),
-            cDefFontSize(0.03f),
-            cDefCodeFontSize(0.02f),
             cDefExitAction(cActionContext),
             cDefEditorAction(cActionContext),
             cProjectConfigurationUI(data.getProject(), *this, [this]() {

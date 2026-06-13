@@ -70,6 +70,6 @@ namespace IsoRealms::Basics {
     // Definition data.
     std::string cDefName;       /// Name of this mapping.
     DigitalControl cDefControl; /// Digital control to be converted.
-    float cDefOutputValue;      /// Output value when the digital input is on (otherwise 0.0f).
+    float cDefOutputValue = 0.0f;      /// Output value when the digital input is on (otherwise 0.0f).
   };
 }

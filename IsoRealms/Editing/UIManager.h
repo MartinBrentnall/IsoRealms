@@ -70,7 +70,7 @@ namespace IsoRealms {
       void updateSlideInactive(unsigned int milliseconds);
 
       std::unique_ptr<IUIScreen> cScreen;
-      int cSlideAnimation;
+      int cSlideAnimation = 1000;
       std::string cBreadCrumb;
       LiteralColour cBreadCrumbColour;
     };
@@ -88,7 +88,7 @@ namespace IsoRealms {
       }
 
       std::string cText;
-      int cSlideAnimation;
+      int cSlideAnimation = 1000;
     };
     
     class ButtonState {

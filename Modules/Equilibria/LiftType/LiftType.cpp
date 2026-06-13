@@ -98,8 +98,7 @@ namespace IsoRealms::Equilibria {
 
   LiftType::Pen::Pen(LiftType& parent, WorldEditor& editor) :
             cParent(parent),
-            cEditor(editor),
-            cPinnedZone(nullptr) {
+            cEditor(editor) {
   }
 
   bool LiftType::Pen::isTool(IWorldEditorTool* tool) const {

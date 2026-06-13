@@ -98,11 +98,11 @@ namespace IsoRealms::Equilibria {
     Zone& cZone; /// Zone to which this pick up belongs.
     
     // Definition data.
-    PickUpType* cDefType;                     /// Type of this pick up.
-    std::unique_ptr<ModelInstance> cDefModel; /// Visual representation of this pick up.
-    int cDefX;                                /// X axis location of this pick up.
-    int cDefY;                                /// Y axis location of this pick up.
-    int cDefZ;                                /// Z axis location of this pick up.
+    PickUpType* cDefType                     = nullptr; /// Type of this pick up.
+    std::unique_ptr<ModelInstance> cDefModel = nullptr; /// Visual representation of this pick up.
+    int cDefX;                                          /// X axis location of this pick up.
+    int cDefY;                                          /// Y axis location of this pick up.
+    int cDefZ;                                          /// Z axis location of this pick up.
 
     // Runtime data.
     mutable bool cRuntimePresent; /// Flag is set when the pick up is present (not picked up).

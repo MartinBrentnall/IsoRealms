@@ -332,7 +332,7 @@ namespace IsoRealms::Equilibria {
     ComponentTypeDefinition<Equilibria, ZoneObjectType>   cComponentZoneObject;
 
     // Runtime data.
-    bool cRuntimePaused;
+    bool cRuntimePaused = false;
     
     class EquilibriaBindingType : public IBindingType {
       public:
@@ -368,7 +368,7 @@ namespace IsoRealms::Equilibria {
       Equilibria& cEquilibria;
     };
 
-    EquilibriaBindingType cBindingTypeTerrainState;
+    EquilibriaBindingType cBindingTypeTerrainState{"TerrainState", "Equilibria/Terrain States"};
 
     // Event bindings.
     LuaBinding<Player> cRuntimeParameterPlayer;

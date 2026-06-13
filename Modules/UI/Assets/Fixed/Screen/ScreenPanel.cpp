@@ -20,8 +20,7 @@
 
 namespace IsoRealms::UI {
   ScreenPanel::ScreenPanel(const Metadata& /*metadata*/, IComponentData& owner) :
-            cDefColour(owner, 0.0f, 0.0f, 1.0f),
-            cDefCornerSize(0.0f) {
+            cDefColour(owner, 0.0f, 0.0f, 1.0f) {
     initTextures(owner.getProject());
   }
   

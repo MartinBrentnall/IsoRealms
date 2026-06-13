@@ -67,8 +67,8 @@ namespace IsoRealms::Equilibria {
       private:
       ZoneTool& cParent;
       WorldEditor& cEditor;
-      Zone* cHoverZone;
-      Zone* cSelectedZone;
+      Zone* cHoverZone    = nullptr;
+      Zone* cSelectedZone = nullptr;
     };
 
     // Definition data.

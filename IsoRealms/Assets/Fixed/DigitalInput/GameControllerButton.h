@@ -82,7 +82,7 @@ namespace IsoRealms {
     const Metadata& cMetadata;
     ButtonChooser cButtonChooser;
 
-    unsigned int cButton; /// The button associated with this mapping.
+    unsigned int cButton = 0; /// The button associated with this mapping.
     // TODO: Support multiple controllers.
     
     static std::string getChoiceLabel(const Metadata& metadata, unsigned int button);

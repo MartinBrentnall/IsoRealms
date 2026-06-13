@@ -70,14 +70,14 @@ namespace IsoRealms::UI {
     inline static const unsigned int DEFAULT_SPOTS         = 8U;
 
     // Definition data.
-    unsigned int cDefDuration;    /// Duration of the animation loop in milliseconds.
-    unsigned int cDefRepetitions; /// Number of animation repetitions along the spots.
-    unsigned int cDefSpots;       /// Number of spots to render.
-    unsigned int cDefSpotSides;   /// Number of sides of each spot.
-    float cDefSpotRadius;         /// Radius of spots at their largest.
-    float cDefRingRadius;         /// Radius of ring of spots from the center of the screen.
-    float cDefShadowOffset;       /// Offset for the shadow of the ring.
-    Colour cDefColour;            /// Colour of the throbber.
+    unsigned int cDefDuration    = DEFAULT_DURATION;      /// Duration of the animation loop in milliseconds.
+    unsigned int cDefRepetitions = DEFAULT_REPETITIONS;   /// Number of animation repetitions along the spots.
+    unsigned int cDefSpots       = DEFAULT_SPOTS;         /// Number of spots to render.
+    unsigned int cDefSpotSides   = DEFAULT_SPOT_SIDES;    /// Number of sides of each spot.
+    float cDefSpotRadius         = DEFAULT_SPOT_RADIUS;   /// Radius of spots at their largest.
+    float cDefRingRadius         = DEFAULT_RING_RADIUS;   /// Radius of ring of spots from the center of the screen.
+    float cDefShadowOffset       = DEFAULT_SHADOW_OFFSET; /// Offset for the shadow of the ring.
+    Colour cDefColour;                                    /// Colour of the throbber.
 
     // Runtime data
     unsigned int cRuntimeAnimation; /// Animation value for the throbber.

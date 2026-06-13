@@ -24,11 +24,7 @@
 #include "Modules/Equilibria/TerrainType/TerrainType.h"
 
 namespace IsoRealms::Equilibria {
-  TerrainBrush::TerrainBrush() :
-            cRuntimeEditing(false),
-            cRuntimeCursorX(0.0),
-            cRuntimeCursorY(0.0),
-            cDefAnalogueSensitivity(10) {
+  TerrainBrush::TerrainBrush() {
     reset();
   }
 

@@ -85,8 +85,8 @@ namespace IsoRealms {
       bool cValue; /// The value of this Boolean.
     };
 
-    LiteralBoolean cLiteralFalse;
-    LiteralBoolean cLiteralTrue;
+    LiteralBoolean cLiteralFalse = false;
+    LiteralBoolean cLiteralTrue  = true;
   };
 }
 

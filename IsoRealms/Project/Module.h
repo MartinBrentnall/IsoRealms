@@ -125,7 +125,7 @@ namespace IsoRealms {
     std::map<std::string, std::unique_ptr<ComponentType>> cComponentTypes;
     std::string cName;
     std::string cLongName;
-    ProjectFile* cOwnerProject;
+    ProjectFile* cOwnerProject = nullptr;
     std::string cDescription;
     std::map<std::string, std::unique_ptr<Metadata>> cAssetMetadata;
     std::map<std::string, std::string> cCategoryDescriptions;

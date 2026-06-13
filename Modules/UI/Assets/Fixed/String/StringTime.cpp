@@ -20,8 +20,7 @@
 
 namespace IsoRealms::UI {
   StringTime::StringTime(const Metadata& /*metadata*/, IComponentData& owner) :
-            cDefValue(owner),
-            format(DEFAULT_FORMAT) {
+            cDefValue(owner) {
     parseFormatString();
   }
 

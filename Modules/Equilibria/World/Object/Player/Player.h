@@ -116,13 +116,13 @@ namespace IsoRealms::Equilibria {
     inline static const std::string JSON_Z    = "z";
 
     // Definition data.
-    World&                         cDefWorld;           /// World to which is player belongs.
-    PlayerType*                    cDefType;            /// Type of this player.
-    MovementHandler*               cDefMovementHandler; /// Handles movement of this player (saves a runtime map lookup from World).
-    std::unique_ptr<ModelInstance> cDefModel;           /// Visual representation of this player.
-    double                         cDefX;               /// Starting X position of this player.
-    double                         cDefY;               /// Starting Y position of this player.
-    double                         cDefZ;               /// Starting Z position of this player.
+    World&                         cDefWorld;                     /// World to which is player belongs.
+    PlayerType*                    cDefType            = nullptr; /// Type of this player.
+    MovementHandler*               cDefMovementHandler = nullptr; /// Handles movement of this player (saves a runtime map lookup from World).
+    std::unique_ptr<ModelInstance> cDefModel           = nullptr; /// Visual representation of this player.
+    double                         cDefX;                         /// Starting X position of this player.
+    double                         cDefY;                         /// Starting Y position of this player.
+    double                         cDefZ;                         /// Starting Z position of this player.
     
     // Runtime data
     PhysicsObject           cRuntimePhysicsObject;    /// Physical runtime state of this player.

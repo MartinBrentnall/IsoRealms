@@ -52,8 +52,8 @@ namespace IsoRealms {
 
     private:
     ComponentType& cComponentType;
-    float cRemoveButtonOffset;
-    bool cDeleteSelected;
+    float cRemoveButtonOffset = 0.0f;
+    bool cDeleteSelected      = false;
 
     std::unique_ptr<Choice> cConfirmSelection;
     std::unique_ptr<Choice> cClosedConfirmSelection;

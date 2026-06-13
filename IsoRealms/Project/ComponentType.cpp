@@ -28,8 +28,7 @@
 namespace IsoRealms {
   ComponentType::ComponentType(IComponentTypeDefinition* resourceType, Module& parent) :
             cParent(parent),
-            cComponentType(resourceType),
-            cCategory("None") {
+            cComponentType(resourceType) {
   }
 
   void ComponentType::loadComponent(JSONThing mInstanceThing, ProjectFile* ownerProject) {

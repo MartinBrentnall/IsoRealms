@@ -105,9 +105,9 @@ namespace IsoRealms::UI {
       
       private:
       LayoutEditor& cParent;
-      float cPinnedX;
-      float cPinnedY;
-      bool cPinSet;
+      float cPinnedX = 0.0f;
+      float cPinnedY = 0.0f;
+      bool cPinSet = false;
     };
     
     class PropertiesTool : public ILayoutTool {
@@ -142,9 +142,9 @@ namespace IsoRealms::UI {
       
       private:
       LayoutEditor& cParent;
-      bool cResizingHorizontal;
+      bool cResizingHorizontal = false;
       float cResizingFixedHorizontal;
-      bool cResizingVertical;
+      bool cResizingVertical = false;
       float cResizingFixedVertical;
       Handle cMovingHandle;
     };
@@ -164,9 +164,9 @@ namespace IsoRealms::UI {
       
       private:
       LayoutEditor& cParent;
-      bool cResizingHorizontal;
+      bool cResizingHorizontal = false;
       float cResizingFixedHorizontal;
-      bool cResizingVertical;
+      bool cResizingVertical = false;
       float cResizingFixedVertical;
       Handle cMovingHandle;
     };
@@ -234,7 +234,7 @@ namespace IsoRealms::UI {
 
     IAction* cExitAction;
 
-    bool cHasFocus;
+    bool cHasFocus = true;
 
     DrawTool cDrawTool;
     PropertiesTool cPropertiesTool;
@@ -245,7 +245,7 @@ namespace IsoRealms::UI {
     CopyTool cCopyTool;
 
     Layout& cLayout;
-    LayoutComponent* cSelectedComponent;
+    LayoutComponent* cSelectedComponent = nullptr;
     Handle cSelectedComponentClosestHandle;
     float cSelectedComponentLeft;
     float cSelectedComponentRight;

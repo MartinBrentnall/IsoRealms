@@ -160,7 +160,7 @@ namespace IsoRealms::Basics {
 
       private:
       std::shared_ptr<DigitalInput> cInput;
-      bool cState;
+      bool cState = false;
     };
 
     // External interfaces.
@@ -172,12 +172,12 @@ namespace IsoRealms::Basics {
 
     // Runtime data.
     std::vector<std::unique_ptr<InputMapping>> cRuntimeMapping; /// User input mapping.
-    bool cRuntimeState;                                         /// Current state of this input.
+    bool cRuntimeState = false;                                         /// Current state of this input.
 
     // Scripting Interface.
     LuaBinding<DigitalControl> cLuaBinding;
 
     // Misc.
-    IStateNotifier* cStateNotifier;
+    IStateNotifier* cStateNotifier = nullptr;
   };
 }

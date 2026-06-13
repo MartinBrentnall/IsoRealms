@@ -60,7 +60,7 @@ namespace IsoRealms::Basics {
     float cRuntimeValue;
 
     // Misc.
-    IStateNotifier* cStateNotifier;
+    IStateNotifier* cStateNotifier = nullptr;
 
     // Internal funcctions.
     void updateValue();

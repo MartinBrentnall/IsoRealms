@@ -62,7 +62,7 @@ namespace IsoRealms::Basics {
     SequenceTrackScreen& cParent;
 
     // Runtime data.
-    IScreen* cRuntimeScreen;
+    IScreen* cRuntimeScreen = nullptr;
 
     // Internal functions.
     void updateScreen();

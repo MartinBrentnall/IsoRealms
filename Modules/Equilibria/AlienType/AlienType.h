@@ -131,14 +131,14 @@ namespace IsoRealms::Equilibria {
     EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
 
     // Definition data
-    Model cDefModel;          /// Visual representation of this alien type.
-    Vertex cDefTarget;        /// Target that aliens of this type move towards.
-    float cDefAcceleration;   /// Acceleration factor of aliens of this type.
-    float cDefFriction;       /// Friction factor of aliens of this type.
-    float cDefSpinSpeed;      /// Initial spin speed of aliens of this type.
-    float cDefHeight;         /// Height of aliens of this type.
-    float cDefRadius;         /// Radius of aliens of this type.
-    float cDefHugMomentum;    /// Hug momentum of aliens of this type.
+    Model cDefModel;                               /// Visual representation of this alien type.
+    Vertex cDefTarget;                             /// Target that aliens of this type move towards.
+    float cDefAcceleration = DEFAULT_ACCELERATION; /// Acceleration factor of aliens of this type.
+    float cDefFriction     = DEFAULT_FRICTION;     /// Friction factor of aliens of this type.
+    float cDefSpinSpeed    = DEFAULT_SPIN_SPEED;   /// Initial spin speed of aliens of this type.
+    float cDefHeight       = DEFAULT_HEIGHT;       /// Height of aliens of this type.
+    float cDefRadius       = DEFAULT_RADIUS;       /// Radius of aliens of this type.
+    float cDefHugMomentum  = DEFAULT_HUG_MOMENTUM; /// Hug momentum of aliens of this type.
 
     // Runtime data
     float cRuntimeSpinSpeed; /// Current spin speed of aliens of this type.

@@ -65,21 +65,10 @@ namespace IsoRealms {
   void PropertyCode::configure(IPropertyManager& manager) {
     // Nothing to do.
   }
-  
+
   PropertyCode::Editor::Editor(PropertyCode& parent) :
             cParent(parent),
-            cEditingCode(parent.cGetter()),
-            cCaret(0),
-            cMouseSelecting(false),
-            cLineStartIndex(0),
-            cLine(0),
-            cCaretXPosition(0.0f),
-            cSelection(0),
-            cCaretOffsetX(0),
-            cScrollX(0.0f), 
-            cScrollY(0.0f),
-            cOpenness(0),
-            cClosing(false) {
+            cEditingCode(parent.cGetter()) {
   }
 
   void PropertyCode::Editor::render(IUIStyle& style, float y, float x, float aspectRatio) const {

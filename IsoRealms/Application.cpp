@@ -31,8 +31,7 @@
 #include "IsoRealms/System.h"
 
 namespace IsoRealms {
-  Application::Application() :
-            cReleaseThreads(false) {
+  Application::Application() {
 
     // Construct the application thread pool.
     cWorkingThreads = 0;

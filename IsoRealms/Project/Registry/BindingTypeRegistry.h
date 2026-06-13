@@ -68,15 +68,15 @@ namespace IsoRealms {
     };
 
     AssetLiteralDummy<IComponentData, IBindingType, Dummy> cDummy;
-    Literal cActions;
-    Literal cBooleans;
-    Literal cColours;
-    Literal cFloats;
-    Literal cFonts;
-    Literal cInputHandlers;
-    Literal cIntegers;
-    Literal cScreens;
-    Literal cStrings;
-    Literal cVertices;
+    Literal cActions{      ":Action",       "Core Assets/Actions"};
+    Literal cBooleans{     ":Boolean",      "Core Assets/Booleans"};
+    Literal cColours{      ":Colour",       "Core Assets/Colours"};
+    Literal cFloats{       ":Float",        "Core Assets/Floats"};
+    Literal cFonts{        ":Font",         "Core Assets/Fonts"};
+    Literal cInputHandlers{":InputHandler", "Core Assets/Input Handlers"};
+    Literal cIntegers{     ":Integer",      "Core Assets/Integers"};
+    Literal cScreens{      ":Screen",       "Core Assets/Screens"};
+    Literal cStrings{      ":String",       "Core Assets/Strings"};
+    Literal cVertices{     ":Vertex",       "Core Assets/Vertices"};
   };
 }

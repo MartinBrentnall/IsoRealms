@@ -20,14 +20,7 @@
 
 namespace IsoRealms::Basics {
   SimpleVertex::SimpleVertex(Basics& basics, IComponentData& data) :
-            cDefX(0.0),
-            cDefY(0.0),
-            cDefZ(0.0),
-            cRuntimeX(0.0),
-            cRuntimeY(0.0),
-            cRuntimeZ(0.0),
-            cLuaBinding(data.getProject().getLuaState(), this),
-            cStateNotifier(nullptr) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
 
   void SimpleVertex::registerAssets(ComponentAssetRegistry& assets) {

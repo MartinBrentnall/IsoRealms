@@ -20,17 +20,7 @@
 
 namespace IsoRealms {
   BindingTypeRegistry::BindingTypeRegistry() :
-            AssetClientManager(&cDummy, "Any"),
-            cActions(      ":Action",       "Core Assets/Actions"),
-            cBooleans(     ":Boolean",      "Core Assets/Booleans"),
-            cColours(      ":Colour",       "Core Assets/Colours"),
-            cFloats(       ":Float",        "Core Assets/Floats"),
-            cFonts(        ":Font",         "Core Assets/Fonts"),
-            cInputHandlers(":InputHandler", "Core Assets/Input Handlers"),
-            cIntegers(     ":Integer",      "Core Assets/Integers"),
-            cScreens(      ":Screen",       "Core Assets/Screens"),
-            cStrings(      ":String",       "Core Assets/Strings"),
-            cVertices(     ":Vertex",       "Core Assets/Vertices") {
+            AssetClientManager(&cDummy, "Any") {
     add(&cActions,       "Action",        "Actions");
     add(&cBooleans,      "Boolean",       "Booleans");
     add(&cColours,       "Colour",        "Colours");

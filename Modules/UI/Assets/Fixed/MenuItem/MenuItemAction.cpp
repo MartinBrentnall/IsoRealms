@@ -23,8 +23,6 @@
 namespace IsoRealms::UI {
   MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu) :
             cMenu(menu),
-            cDefID(""),
-            cDefLabel(""),
             cDefAction(menu.getComponentData().getDummyActionContext()),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }

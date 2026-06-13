@@ -28,12 +28,10 @@ namespace IsoRealms::Equilibria {
             cTransition(*this),
             cDefStart(view),
             cDefEnd(view),
-            cDefDuration(DEFAULT_DURATION),
             cDefStartDepartureAction(view.getComponentData().getDummyActionContext()),
             cDefStartArrivalAction(view.getComponentData().getDummyActionContext()),
             cDefEndDepartureAction(view.getComponentData().getDummyActionContext()),
             cDefEndArrivalAction(view.getComponentData().getDummyActionContext()),
-            cRuntimeYawStateNotifier(nullptr),
             cLuaBinding(view.getEquilibria().getProject().getLuaState(), this) {
   }
   

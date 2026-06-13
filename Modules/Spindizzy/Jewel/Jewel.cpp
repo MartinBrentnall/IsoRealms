@@ -23,8 +23,7 @@
 namespace IsoRealms::Spindizzy {
   Jewel::Jewel(Spindizzy& spindizzy, IComponentData& data) :
             cProject(data.getProject()),
-            cDefColourFrame(data, 1.0f, 1.0f, 0.0f),
-            cDefCycleSpeed(DEFAULT_CYCLE_SPEED) {
+            cDefColourFrame(data, 1.0f, 1.0f, 0.0f) {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
   }
   

@@ -147,18 +147,18 @@ namespace IsoRealms::Equilibria {
     Transition cTransition;
 
     // Definition data.
-    Camera cDefStart;              /// Camera to start transition at.
-    Camera cDefEnd;                /// Camera to end transition at.
-    unsigned int cDefDuration;       /// Duration of transition animation between overview and play mode.
-    Action cDefStartDepartureAction; /// Action to execute when animation departs from the start camera.
-    Action cDefStartArrivalAction;   /// Action to execute when animation arrives at the start camera.
-    Action cDefEndDepartureAction;   /// Action to execute when animation departs from the end camera.
-    Action cDefEndArrivalAction;     /// Action to execute when animation arrives at the end camera.
+    Camera cDefStart;                             /// Camera to start transition at.
+    Camera cDefEnd;                               /// Camera to end transition at.
+    unsigned int cDefDuration = DEFAULT_DURATION; /// Duration of transition animation between overview and play mode.
+    Action cDefStartDepartureAction;              /// Action to execute when animation departs from the start camera.
+    Action cDefStartArrivalAction;                /// Action to execute when animation arrives at the start camera.
+    Action cDefEndDepartureAction;                /// Action to execute when animation departs from the end camera.
+    Action cDefEndArrivalAction;                  /// Action to execute when animation arrives at the end camera.
     
     // Runtime data.
-    bool cRuntimeEnd;                         /// True when animating towards (or at) end camera, false when animating towards (or at) start camera.
-    unsigned int cRuntimeAnimation;           /// Animates movement between start and end camera.
-    IStateNotifier* cRuntimeYawStateNotifier; /// Anything interested in knowing when the Yaw changes will be notified via this.
+    bool cRuntimeEnd;                                   /// True when animating towards (or at) end camera, false when animating towards (or at) start camera.
+    unsigned int cRuntimeAnimation;                     /// Animates movement between start and end camera.
+    IStateNotifier* cRuntimeYawStateNotifier = nullptr; /// Anything interested in knowing when the Yaw changes will be notified via this.
 
     // Scripting support.
     LuaBinding<CameraTransitional> cLuaBinding; /// Allow transitional cameras to be bound to lua variables.

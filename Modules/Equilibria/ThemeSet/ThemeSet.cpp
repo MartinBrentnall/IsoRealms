@@ -26,10 +26,6 @@ namespace IsoRealms::Equilibria {
   ThemeSet::ThemeSet(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cComponentData(data),
-            cDefaultTheme(nullptr),
-            cAnimation(0),
-            cPause(0),
-            cThemeIcon(0),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
 

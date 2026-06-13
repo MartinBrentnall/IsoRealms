@@ -59,7 +59,7 @@ namespace IsoRealms::UI {
     LayoutComponentEdge& cParent;
     
     // Definition data.
-    LayoutComponent* cDefRelative; /// Component to which this location is related.
-    float cDefValue;               /// Relative position to the related component, from -1.0f to +1.0f.
+    LayoutComponent* cDefRelative = nullptr; /// Component to which this location is related.
+    float cDefValue = 0.0f;                  /// Relative position to the related component, from -1.0f to +1.0f.
   };
 }

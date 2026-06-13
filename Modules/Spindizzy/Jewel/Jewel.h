@@ -119,7 +119,7 @@ namespace IsoRealms::Spindizzy {
     // Definition data.
     Colour cDefColourFrame;                                     /// Colour of the frame.
     std::vector<std::unique_ptr<CycleColour>> cDefColoursCycle; /// Ordered cycle colours of panel.
-    float cDefCycleSpeed;                                       /// Cycle speed for colours.
+    float cDefCycleSpeed = DEFAULT_CYCLE_SPEED;                 /// Cycle speed for colours.
     
     // Runtime data.
     std::vector<std::unique_ptr<Instance>> cInstances;       /// Model instances.  Each instance has a different position.

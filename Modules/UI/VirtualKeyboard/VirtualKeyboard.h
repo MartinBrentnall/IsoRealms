@@ -87,11 +87,11 @@ namespace IsoRealms::UI {
     Font cDefFont;              /// Font used to render the virtual keyboard.
     
     // Runtime data.
-    std::string cRuntimeValue;     /// The value entered using this virtual keyboard.
-    unsigned int cRuntimeSelected; /// The index of the selected character on this virtual keyboard.
-    bool cRuntimeControllerCaps;   /// Capslock triggered from a controller.
-    bool cRuntimeCaretVisible;     /// Controls blinking of the caret.
-    int cRuntimeCaretBlinkDelay;   /// Delay until the blink status changes.
+    std::string cRuntimeValue;           /// The value entered using this virtual keyboard.
+    unsigned int cRuntimeSelected;       /// The index of the selected character on this virtual keyboard.
+    bool cRuntimeControllerCaps = false; /// Capslock triggered from a controller.
+    bool cRuntimeCaretVisible;           /// Controls blinking of the caret.
+    int cRuntimeCaretBlinkDelay;         /// Delay until the blink status changes.
       
     // Scripting support.
     LuaBinding<VirtualKeyboard> cLuaBinding; /// Allow virtual keyboards to be bound to lua variables.

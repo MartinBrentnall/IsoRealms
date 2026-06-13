@@ -57,7 +57,7 @@ namespace IsoRealms::UI {
     // Definition data.
     Colour cDefColourA;
     Colour cDefColourB;
-    bool cDefVertical;
+    bool cDefVertical = false;
   };
 }
 

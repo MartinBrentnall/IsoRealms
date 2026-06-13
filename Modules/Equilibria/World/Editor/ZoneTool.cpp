@@ -48,9 +48,7 @@ namespace IsoRealms::Equilibria {
 
   ZoneTool::Instance::Instance(ZoneTool& parent, WorldEditor& editor) :
             cParent(parent),
-            cEditor(editor),
-            cHoverZone(nullptr),
-            cSelectedZone(nullptr) {
+            cEditor(editor) {
   }
 
   bool ZoneTool::Instance::inputTool(sf::Event& event) {

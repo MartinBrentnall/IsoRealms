@@ -25,7 +25,6 @@ namespace IsoRealms::UI {
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
             cActionContext(menu.getComponentData(), *this),
-            cDefID("Unnamed Launcher List"),
             cDefAction(cActionContext),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this),
             cLauncherBinding(menu.getComponentData().getProject().getLuaState(), nullptr, nullptr, true) {

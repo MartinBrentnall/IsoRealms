@@ -96,12 +96,12 @@ namespace IsoRealms::Basics {
     Action cDefReadyAction;
     Action cDefEndAction;
     Action cDefErrorAction;
-    bool cDefRunning;
-    bool cDefEditing;
+    bool cDefRunning = false;
+    bool cDefEditing = false;
 
     // Runtime data
     std::unique_ptr<ProjectLoader> cRuntimeProjectLoader;            /// Contains the project currently being loaded.
-    IsoRealms::Project* cRuntimeProject;                             /// The currently loaded project.
+    IsoRealms::Project* cRuntimeProject = nullptr;                             /// The currently loaded project.
     std::vector<std::unique_ptr<ProjectLoader>> cRuntimeOldProjects; /// Projects abandoned before construction completed (can't destroy while construction threads are still inside).
     bool cRuntimeLoading;                                            /// True 
     bool cRuntimeRunning;
@@ -110,7 +110,7 @@ namespace IsoRealms::Basics {
     std::mutex cProjectDestructionMutex;
     bool cRuntimeIgnoreTasks;
     Options cRuntimeOptions;
-    bool cRuntimeResetPostponed;
+    bool cRuntimeResetPostponed = false;
 
     // Misc.
     LuaBinding<Project> cLuaBinding;

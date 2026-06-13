@@ -28,7 +28,7 @@ namespace IsoRealms::Equilibria {
     private:
     int cX;
     int cY;
-    int cLength;
+    int cLength = 1;
     Wall::Direction cFacing;
     int cBottomHeightStart;
     int cBottomHeightSlope;

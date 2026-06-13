@@ -87,12 +87,12 @@ namespace IsoRealms::Equilibria {
     std::map<std::string, std::unique_ptr<Theme>> cThemes;
     std::map<std::string, std::unique_ptr<ThemeTexture>> cTextures;
     std::map<std::string, std::unique_ptr<ThemeColour>> cColours;
-    Theme* cDefaultTheme;
+    Theme* cDefaultTheme = nullptr;
 
     // Editor icon animation
-    int cAnimation;
-    int cPause;
-    unsigned int cThemeIcon;
+    int cAnimation          = 0;
+    int cPause              = 0;
+    unsigned int cThemeIcon = 0;
 
     LuaBinding<ThemeSet> cLuaBinding;
   };

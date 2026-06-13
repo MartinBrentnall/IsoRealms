@@ -23,10 +23,9 @@
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  ComponentTypeMenu::ComponentTypeMenu(UIManager& manager, IUIStyle& style, ComponentType& resourceType) : Menu(manager, style),
-            cComponentType(resourceType),
-            cRemoveButtonOffset(0.0f),
-            cDeleteSelected(false) {
+  ComponentTypeMenu::ComponentTypeMenu(UIManager& manager, IUIStyle& style, ComponentType& resourceType) :
+            Menu(manager, style),
+            cComponentType(resourceType) {
     refresh();
   }
 

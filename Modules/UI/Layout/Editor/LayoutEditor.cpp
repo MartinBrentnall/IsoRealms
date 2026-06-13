@@ -22,10 +22,9 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
+LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
             cHatHandler(layout.getUI().getProject().getApplication().getHatHandler()),
             cDialogManager(dialogManager),
-            cHasFocus(true),
             cDrawTool(*this),
             cPropertiesTool(*this),
             cLocationTool(*this),
@@ -34,8 +33,7 @@ namespace IsoRealms::UI {
             cOrderingTool(*this),
             cCopyTool(*this),
             cLayout(layout),
-            cSelectedComponent(nullptr),
-            cToolbar({&cDrawTool, &cPropertiesTool, &cLocationTool, &cOffsetTool, &cDeleteTool, &cOrderingTool, &cCopyTool}, [this](ILayoutTool* tool) {
+            cToolbar( {&cDrawTool, &cPropertiesTool, &cLocationTool, &cOffsetTool, &cDeleteTool, &cOrderingTool, &cCopyTool}, [this](ILayoutTool* tool) {
               cSelectedTool = tool;
             }, [this](ILayoutTool* tool) {
               tool->renderIcon();
@@ -719,10 +717,7 @@ namespace IsoRealms::UI {
   }
 
   LayoutEditor::DrawTool::DrawTool(LayoutEditor& parent) :
-            cParent(parent),
-            cPinnedX(0.0f), 
-            cPinnedY(0.0f),
-            cPinSet(false) {
+            cParent(parent) {
   }
   
   bool LayoutEditor::DrawTool::input(sf::Event& event) {
@@ -834,11 +829,9 @@ namespace IsoRealms::UI {
   bool LayoutEditor::PropertiesTool::isTool(ILayoutTool* tool) const {
     return this == tool;
   }
-  
+
   LayoutEditor::LocationTool::LocationTool(LayoutEditor& parent) :
-            cParent(parent),
-            cResizingHorizontal(false),
-            cResizingVertical(false) {
+            cParent(parent) {
   }
   
   bool LayoutEditor::LocationTool::input(sf::Event& event) {

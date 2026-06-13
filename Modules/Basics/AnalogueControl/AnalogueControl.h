@@ -155,7 +155,7 @@ namespace IsoRealms::Basics {
 
       private:
       std::shared_ptr<AnalogueInput> cPhysicalInput;
-      float cState;
+      float cState = 0.0f;
     };
 
     // External interfaces.
@@ -166,7 +166,7 @@ namespace IsoRealms::Basics {
 
     // Runtime data.
     std::vector<std::unique_ptr<InputMapping>> cRuntimeMapping; /// User input mapping.
-    float cRuntimeState;                                        /// Current state of this input.
+    float cRuntimeState = false;                                        /// Current state of this input.
 
     // Scripting Interface.
     LuaBinding<AnalogueControl> cLuaBinding;

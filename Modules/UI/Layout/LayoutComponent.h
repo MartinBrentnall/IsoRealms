@@ -92,7 +92,7 @@ namespace IsoRealms::UI {
     LayoutComponentEdge cDefTopEdge;
     
     // Runtime data.
-    IScreen* cRuntimeScreen;
+    IScreen* cRuntimeScreen = nullptr;
     
     // Scripting support.
     LuaBinding<LayoutComponent> cLuaBinding;

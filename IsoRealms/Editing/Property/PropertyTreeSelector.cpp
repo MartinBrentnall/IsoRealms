@@ -82,10 +82,7 @@ namespace IsoRealms {
   PropertyTreeSelector::Editor::Editor(PropertyTreeSelector& parent, IUIStyle& style, float y, float width, float height) :
             cParent(parent),
             cStyle(style),
-            cY(y),
-            cOpenness(0),
-            cClosing(false),
-            cPathBarWidth(0.0f) {
+            cY(y) {
     cBackArrowSize.init(0.0f);
 
     TreeItemInfo mTreeItemInfo = cParent.cSelectedItem.getTreeItemInfo();
@@ -277,9 +274,9 @@ namespace IsoRealms {
   }
 
   PropertyTreeSelector::Editor::Menu::Menu(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry) :
+            cSelectedIndex(0),
             cParent(parent),
-            cPath(path),
-            cSelectedIndex(0) {
+            cPath(path) {
     std::string mSelectedPath = currentEntry.cPath;
     std::set<std::string> mFolders;
     std::vector<TreeItemInfo> mProviders;

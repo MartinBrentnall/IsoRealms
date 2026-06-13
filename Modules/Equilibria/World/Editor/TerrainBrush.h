@@ -78,10 +78,10 @@ namespace IsoRealms::Equilibria {
 
     // Editing
     // TODO: Maybe we can make some kind of generic cursor class out of the following fields
-    bool cRuntimeEditing;
-    double cRuntimeCursorX;
-    double cRuntimeCursorY;
-    int cDefAnalogueSensitivity; // TODO: This should be global?
+    bool cRuntimeEditing        = false;
+    double cRuntimeCursorX      = 0.0;
+    double cRuntimeCursorY      = 0.0;
+    int cDefAnalogueSensitivity = 10; // TODO: This should be global?
 
     bool lowerSelected();
     bool raiseSelected();

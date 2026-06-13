@@ -21,10 +21,7 @@
 namespace IsoRealms::Basics {
   Sprite::Sprite(Basics& basics, IComponentData& data) :
             cDefProject(data.getProject()),
-            cDefTexture(data),
-            cDefBillboardYaw(false),
-            cDefBillboardPitch(false),
-            cRuntimeScreen(nullptr) {
+            cDefTexture(data) {
     cDefProject.addScreenListener(this);
   }
   

@@ -50,6 +50,6 @@ namespace IsoRealms {
     
     private:
     std::unique_ptr<sol::state> cLua; /// The Lua state machine.
-    IEventBindings* cCurrentEventBindings;
+    IEventBindings* cCurrentEventBindings = nullptr;
   };
 }

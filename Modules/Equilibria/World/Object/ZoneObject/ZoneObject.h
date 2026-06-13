@@ -112,7 +112,7 @@ namespace IsoRealms::Equilibria {
     Zone& cZone; /// Zone to which this object belongs.
     
     // Definition data
-    ZoneObjectType* cDefType;                                            /// Type of this object.
+    ZoneObjectType* cDefType = nullptr;                                            /// Type of this object.
     std::map<std::string, std::unique_ptr<IZoneObjectTrait>> cDefTraits; /// Traits of this object.
     IRenderer* cDefRuntimeRenderer;                                      /// Visual representation of this object while playing.
     IRenderer* cDefEditingRenderer;                                      /// Visual representation of this object while editing.

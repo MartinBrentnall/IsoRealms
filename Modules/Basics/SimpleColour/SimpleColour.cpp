@@ -20,19 +20,10 @@
 
 namespace IsoRealms::Basics {
   SimpleColour::SimpleColour(Basics& basics, IComponentData& data) :
-            cDefRed(0.0f),
-            cDefGreen(0.0f),
-            cDefBlue(0.0f),
-            cDefAlpha(0.0f),
-            cRuntimeRed(0.0f),
-            cRuntimeGreen(0.0f),
-            cRuntimeBlue(0.0f),
-            cRuntimeAlpha(0.0f),
             cEditingLastKnownHue(Utils::getHue(cDefRed, cDefGreen, cDefBlue)),
             cEditingLastKnownSaturation(Utils::getSaturation(cDefRed, cDefGreen, cDefBlue)),
             cEditingLastKnownLightness(Utils::getLightness(cDefRed, cDefGreen, cDefBlue)),
-            cLuaBinding(data.getProject().getLuaState(), this),
-            cStateNotifier(nullptr) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
   void SimpleColour::registerAssets(ComponentAssetRegistry& assets) {

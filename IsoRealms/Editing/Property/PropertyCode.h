@@ -81,26 +81,26 @@ namespace IsoRealms {
 
       PropertyCode& cParent;
       std::string cEditingCode;
-      unsigned int cCaret;
-      bool cMouseSelecting;
+      unsigned int cCaret = 0;
+      bool cMouseSelecting = false;
 
       // Cached calculated values.
-      unsigned int cLineStartIndex;
-      unsigned int cLine;
-      float cCaretXPosition;        /// Remembers cursor X position when navigating up and down.
-      unsigned int cSelection;
-      float cCaretOffsetX;
+      unsigned int cLineStartIndex = 0;
+      unsigned int cLine = 0;
+      float cCaretXPosition = 0.0f;        /// Remembers cursor X position when navigating up and down.
+      unsigned int cSelection = 0;
+      float cCaretOffsetX = 0;
       
-      AnimatedFloat cScrollX;
-      AnimatedFloat cScrollY;      
+      AnimatedFloat cScrollX = 0.0f;
+      AnimatedFloat cScrollY = 0.0f;      
 
       // Editing code.
       std::string cClipboard;
       std::stack<Edit> cUndoStack;
       std::stack<Edit> cRedoStack;
 
-      int cOpenness;
-      bool cClosing;
+      int cOpenness = 0;
+      bool cClosing = false;
       std::unique_ptr<Choice> cConfirmationSelection;
       std::unique_ptr<Choice> cClosedConfirmationSelection;
 

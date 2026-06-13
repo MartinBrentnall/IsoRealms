@@ -22,8 +22,7 @@
 
 namespace IsoRealms {
   ProjectFile::ProjectFile(Project& project) :
-              cFile(project),
-              cAllowModifications(true) {
+            cFile(project) {
   }
 
   ProjectFile::ProjectFile(Project& project, const std::string& filename, bool user) :

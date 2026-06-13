@@ -76,8 +76,8 @@ namespace IsoRealms {
     inline static const std::string JSON_DEAD_ZONE = "deadZone";
 
     // Definition data.
-    unsigned int cDefAxis; /// Axis of this mapping.
-    float cDefDeadZone;    /// Dead zone of this mapping
+    unsigned int cDefAxis = 0;     /// Axis of this mapping.
+    float cDefDeadZone    = 0.16f; /// Dead zone of this mapping
 
     static std::string getChoiceLabel(const Metadata& metadata, unsigned int axis);
   };

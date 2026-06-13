@@ -24,7 +24,6 @@ namespace IsoRealms::UI {
             cDefConfirmAction(data.getDummyActionContext()),
             cDefSelectionColour(data, 1.0f, 0.0f, 1.0f),
             cDefFont(data),
-            cRuntimeControllerCaps(false),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   

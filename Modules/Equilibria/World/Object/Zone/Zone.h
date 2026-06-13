@@ -190,15 +190,15 @@ namespace IsoRealms::Equilibria {
 
     // Definition data
     World& cDefWorld;                                  /// World to which this zone belongs.
-    ZoneType* cDefType;                                /// The type of this zone.
+    ZoneType* cDefType = nullptr;                      /// The type of this zone.
     int cDefStartX;                                    /// Start X position of this zone.
     int cDefEndX;                                      /// End X position of this zone.
     int cDefStartY;                                    /// Start Y position of this zone.
     int cDefEndY;                                      /// End Y position of this zone.
     int cDefStartZ;                                    /// Start Z position of this zone.
     int cDefEndZ;                                      /// End Z position of this zone.
-    ThemeSet* cDefThemeSet;                            /// Set from which a theme is taken for this zone.
-    Theme* cDefTheme;                                  /// Theme applied to elements within this zone.
+    ThemeSet* cDefThemeSet = nullptr;                  /// Set from which a theme is taken for this zone.
+    Theme* cDefTheme = nullptr;                        /// Theme applied to elements within this zone.
     std::vector<std::unique_ptr<Terrain>> cDefTerrain; /// Terrain in this zone.
     std::vector<std::unique_ptr<Lift>> cDefLifts;      /// Lifts in this zone.
     std::vector<std::unique_ptr<PickUp>> cDefPickUps;  /// Pick ups in this zone.

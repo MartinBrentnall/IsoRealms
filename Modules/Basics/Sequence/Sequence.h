@@ -117,8 +117,8 @@ namespace IsoRealms::Basics {
 
     // Definition data.
     std::vector<std::unique_ptr<SequenceTrack>> cDefTracks; /// Tracks in this sequence.
-    bool cDefPlaying;                                       /// Initial state of this sequence.
-    bool cDefLoop;                                          /// Sequence should loop upon reaching the end.
+    bool cDefPlaying = false;                               /// Initial state of this sequence.
+    bool cDefLoop    = false;                               /// Sequence should loop upon reaching the end.
     Float cDefSpeed;                                        /// Play at multiple speed of specified value.
     std::map<std::string, std::unique_ptr<SequenceInstance>> cDefInstances;      /// Instances of this sequence.
 

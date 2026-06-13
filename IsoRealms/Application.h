@@ -160,7 +160,7 @@ namespace IsoRealms {
     unsigned int cWorkingThreads;                  /// Count for the number of working threads.
     std::condition_variable cTriggerCondition;     /// Condition to be triggered to begin execution of all tasks within the the task queue.
     std::mutex cTaskMutex;                         /// Mutex controls access to the task queue.
-    bool cReleaseThreads;                          /// Set when the application is terminating to release all threads.
+    bool cReleaseThreads = false;                  /// Set when the application is terminating to release all threads.
 
     // Input.
     HatHandler cHatHandler;

@@ -30,12 +30,10 @@ namespace IsoRealms {
   GameControllerAxis::AxisChooser::AxisChooser(const Metadata& metadata) :
           cMetadata(metadata) {
   }
-
+  
   GameControllerAxis::GameControllerAxis(const Metadata& metadata, IComponentData& owner) :
-          cMetadata(metadata),
-          cAxisChooser(metadata),
-          cDefAxis(0),
-          cDefDeadZone(0.16f) {
+            cMetadata(metadata),
+            cAxisChooser(metadata) {
   }
 
   GameControllerAxis::GameControllerAxis(const Metadata& metadata, IComponentData& owner, JSONObject object) :

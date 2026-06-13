@@ -57,15 +57,15 @@ namespace IsoRealms::Basics {
 
     private:
     // Definition data.
-    bool cDefValue;     /// Initial value.
+    bool cDefValue = false;     /// Initial value.
 
     // Runtime data.
-    bool cRuntimeValue; /// Current value.
+    bool cRuntimeValue = false; /// Current value.
 
     // Scripting Interface.
     LuaBinding<SimpleBoolean> cLuaBinding;
 
     // Misc.
-    IStateNotifier* cStateNotifier;
+    IStateNotifier* cStateNotifier = nullptr;
   };
 }

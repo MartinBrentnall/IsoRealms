@@ -20,10 +20,7 @@
 
 namespace IsoRealms::Basics {
   SimpleString::SimpleString(Basics& basics, IComponentData& data) :
-            cDefValue(""),
-            cRuntimeValue(""),
-            cLuaBinding(data.getProject().getLuaState(), this),
-            cStateNotifier(nullptr) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
   void SimpleString::registerAssets(ComponentAssetRegistry& assets) {

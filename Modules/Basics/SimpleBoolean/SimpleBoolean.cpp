@@ -20,10 +20,7 @@
 
 namespace IsoRealms::Basics {
   SimpleBoolean::SimpleBoolean(Basics& basics, IComponentData& data) :
-            cDefValue(false),
-            cRuntimeValue(false),
-            cLuaBinding(data.getProject().getLuaState(), this),
-            cStateNotifier(nullptr) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
   void SimpleBoolean::registerAssets(ComponentAssetRegistry& assets) {

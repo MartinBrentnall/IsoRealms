@@ -23,8 +23,7 @@
 namespace IsoRealms::Basics {
   SequenceTrackFloatInstance::SequenceTrackFloatInstance(SequenceTrackFloat& parent, SequenceInstance& sequenceInstance) :
             SequenceTrackInstanceBase(parent.getRealEvents()),
-            cParent(parent),
-            cStateNotifier(nullptr) {
+            cParent(parent) {
   }
 
   void SequenceTrackFloatInstance::positionChanged() {

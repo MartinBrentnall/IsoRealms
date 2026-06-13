@@ -24,7 +24,6 @@ namespace IsoRealms::UI {
   MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu) :
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
-            cDefID(""),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 

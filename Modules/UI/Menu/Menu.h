@@ -91,11 +91,11 @@ namespace IsoRealms::UI {
     Action cDefExitAction;                            /// Action to perform when leaving this menu.
     Font cDefFont;                                    /// Font used for rendering items in this menu.
     Colour cDefColour;                                /// Colour used for highlighting selections in this menu.
-    float cDefFontSize;                               /// Size of fonts in this menu.
-    float cDefShadowOffset;                           /// Shadow offset for rendering items in this menu.
+    float cDefFontSize = DEFAULT_FONT_SIZE;                               /// Size of fonts in this menu.
+    float cDefShadowOffset = DEFAULT_SHADOW_OFFSET;                           /// Shadow offset for rendering items in this menu.
     
     // Runtime data.
-    unsigned int cRuntimeSelectedItem; /// Current selected menu item index.
+    unsigned int cRuntimeSelectedItem = 996; /// Current selected menu item index.
     float cRuntimeScroll;              /// Value used for animating menu scrolling.
     
     // Scripting support.

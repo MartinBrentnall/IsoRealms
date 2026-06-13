@@ -69,14 +69,7 @@ namespace IsoRealms {
    * Editor *
   \**********/
   PropertyCondition::Editor::Editor(PropertyCondition& parent) :
-            cParent(parent),
-            cSelectedElement(0),
-            cSelectionHeight(0.0f),
-            cSelectionDepth(0.0f),
-            cSelectedNotGate(false),
-            cShowingConditionPalette(false),
-            cOpenness(0),
-            cClosing(false) {
+            cParent(parent) {
     cConditionDiagram = std::make_unique<ResultOutput>(*this);
     cConditionDiagram->setInput(getConditionDiagram(*this, cParent.cGetter(), cConditionDiagram.get()));
     updatePosition(true);

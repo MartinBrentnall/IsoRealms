@@ -106,8 +106,8 @@ namespace IsoRealms::Equilibria {
     LiteralFloat cPitch;
 
     // Definition data.
-    float cDefAngle;          /// Initial angle value.
-    int cDefRollDuration;     /// Millisecond duration of transition to a new angle.
+    float cDefAngle      = VALUE_NORTH_WEST; /// Initial angle value.
+    int cDefRollDuration = DEFAULT_DURATION; /// Millisecond duration of transition to a new angle.
 
     // Runtime data.
     float cRuntimePreviousValue;   /// Angle from which view is rotating.
@@ -118,7 +118,7 @@ namespace IsoRealms::Equilibria {
     float cCachedZLocation;
     float cCachedXZoom;
     float cCachedYZoom;
-    ICameraListener* cListener;
+    ICameraListener* cListener = nullptr;
 
     LuaBinding<CameraGameplay> cLuaBinding;
     IStateNotifier* cStateNotifier;

@@ -53,8 +53,8 @@ namespace IsoRealms {
     Project& cProject;
     int cWidth;
     int cHeight;
-    GLuint cTexture;
-    GLuint cFrameBuffer;
+    GLuint cTexture     = 0;
+    GLuint cFrameBuffer = 0;
     std::vector<ITextureUseListener*> cUseListeners;
   };
 }

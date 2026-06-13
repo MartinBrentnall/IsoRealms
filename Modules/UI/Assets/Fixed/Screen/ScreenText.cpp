@@ -23,8 +23,7 @@ namespace IsoRealms::UI {
             cDefString(owner),
             cDefFont(owner),
             cDefColour(owner, 1.0f, 1.0f, 1.0f),
-            cDefAlignment(IFont::Alignment::LEFT),
-            cDefShadowOffset(DEFAULT_SHADOW_OFFSET) {
+            cDefAlignment(IFont::Alignment::LEFT) {
   }
   
   ScreenText::ScreenText(const Metadata& metadata, IComponentData& owner, JSONObject object) :

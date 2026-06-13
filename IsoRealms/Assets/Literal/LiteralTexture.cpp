@@ -27,9 +27,7 @@ namespace IsoRealms {
   LiteralTexture::LiteralTexture(Project& project, int width, int height, bool clampX, bool clampY, bool depth) :
             cProject(project),
             cWidth(width),
-            cHeight(height),
-            cTexture(0),
-            cFrameBuffer(0) {
+            cHeight(height) {
     project.getApplication().mainThreadAlloc([this]() {
       glGenTextures(1, &cTexture);
     });

@@ -55,8 +55,7 @@ namespace IsoRealms {
   }
 
   LuaState::LuaState() :
-            cLua(std::make_unique<sol::state>()),
-            cCurrentEventBindings(nullptr) {
+            cLua(std::make_unique<sol::state>()) {
     
     // Open Lua Libraries.
     cLua->open_libraries(sol::lib::base);

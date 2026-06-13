@@ -23,20 +23,17 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  
-
-
   Terrain::Terrain(Zone& zone, JSONObject object) :
             cZone(zone),
-            cDefType(nullptr),
             cDefStartX(object.getInteger(JSON_X) + cZone.getStartX()),
             cDefStartY(object.getInteger(JSON_Y) + cZone.getStartY()),
-            cDefStartZ(object.getInteger(JSON_Z) + cZone.getStartZ() - 1), //(object.getInteger(JSON_HEIGHT) < 0 ? 0 : 1)),
+            cDefStartZ(object.getInteger(JSON_Z) + cZone.getStartZ() - 1),
+            //(object.getInteger(JSON_HEIGHT) < 0 ? 0 : 1)),
             cDefEndX(cDefStartX + object.getInteger(JSON_WIDTH) - 1),
             cDefEndY(cDefStartY + object.getInteger(JSON_LENGTH) - 1),
             cDefEndZ(cDefStartZ + object.getInteger(JSON_HEIGHT)),
-            cDefCornerHeight{{object.getInteger(JSON_SOUTH_WEST_CORNER), object.getInteger(JSON_NORTH_WEST_CORNER)},
-                             {object.getInteger(JSON_SOUTH_EAST_CORNER), object.getInteger(JSON_NORTH_EAST_CORNER)}},
+            cDefCornerHeight {{object.getInteger(JSON_SOUTH_WEST_CORNER), object.getInteger(JSON_NORTH_WEST_CORNER)},
+                              {object.getInteger(JSON_SOUTH_EAST_CORNER), object.getInteger(JSON_NORTH_EAST_CORNER)}},
             cDefFlags(getBehaviourFlags(object.getString(JSON_BEHAVIOUR))
                    | (object.getBoolean(JSON_STEPPED_BOTTOM)    ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)
                    | (object.getBoolean(JSON_ALTERNATIVE_SPLIT) ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)) {

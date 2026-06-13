@@ -24,15 +24,11 @@
 
 namespace IsoRealms::UI {
   LayoutOffsetLinked::LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner) :
-            cParent(owner),
-            cDefLinked(nullptr),
-            cDefHorizontal(false),
-            cDefRatio(0.0f) {
+            cParent(owner) {
   }
-  
+
   LayoutOffsetLinked::LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
             cParent(owner),
-            cDefLinked(nullptr),
             cDefHorizontal(object.getString(JSON_VALUE) == VALUE_WIDTH),
             cDefRatio(object.getFloat(JSON_RATIO, owner.isPositiveEdge() ? 1.0f : -1.0f)) {
     std::string mLinkedName = object.getString(JSON_LINKED);

@@ -88,7 +88,7 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<PlaceHolder>> cOverriddenComponents;
     std::string cSingular;
     std::string cPlural;
-    std::string cCategory;
+    std::string cCategory = "None";
     std::string cDescription;
     Metadata cMetadata;
   };

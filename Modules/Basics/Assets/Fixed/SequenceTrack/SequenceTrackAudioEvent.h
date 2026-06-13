@@ -83,8 +83,8 @@ namespace IsoRealms::Basics {
     End cEnd;
 
     unsigned int cDefTime;
-    unsigned int cDefFadeIn;
-    unsigned int cDefFadeOut;
+    unsigned int cDefFadeIn  = 0;
+    unsigned int cDefFadeOut = 0;
     File cDefFile;
 
 

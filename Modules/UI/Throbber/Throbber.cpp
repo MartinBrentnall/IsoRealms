@@ -20,13 +20,6 @@
 
 namespace IsoRealms::UI {
   Throbber::Throbber(UI& ui, IComponentData& data) :
-            cDefDuration(DEFAULT_DURATION),
-            cDefRepetitions(DEFAULT_REPETITIONS),
-            cDefSpots(DEFAULT_SPOTS),
-            cDefSpotSides(DEFAULT_SPOT_SIDES),
-            cDefSpotRadius(DEFAULT_SPOT_RADIUS),
-            cDefRingRadius(DEFAULT_RING_RADIUS),
-            cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
             cDefColour(data, 1.0f, 0.0f, 1.0f) {
     cRuntimeAnimation = 0U;
   }

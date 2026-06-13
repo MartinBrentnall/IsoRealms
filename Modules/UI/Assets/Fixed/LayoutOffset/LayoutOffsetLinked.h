@@ -63,8 +63,8 @@ namespace IsoRealms::UI {
     LayoutComponentEdge& cParent;
 
     // Definition data.
-    LayoutComponent* cDefLinked;
-    bool cDefHorizontal;
-    float cDefRatio;
+    LayoutComponent* cDefLinked = nullptr;
+    bool cDefHorizontal = false;
+    float cDefRatio = 0.0f;
   };
 }

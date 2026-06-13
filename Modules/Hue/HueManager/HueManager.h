@@ -242,11 +242,11 @@ namespace IsoRealms::Hue {
         uint16_t cBlue;
       } __attribute__((packed));
 
-      int cLightCount;
+      int cLightCount = 0;
       MessageHeader cHeader;
-      MessageData* cData;
-      int cBufferSize;
-      void* cBuffer;
+      MessageData* cData = nullptr;
+      int cBufferSize = 0;
+      void* cBuffer = nullptr;
 
       public:
       Entertainment();

@@ -23,8 +23,7 @@
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  Metadata::Metadata() :
-            cParent(nullptr) {
+  Metadata::Metadata() {
   }
 
   void Metadata::load(JSONObject object) {

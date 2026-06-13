@@ -24,10 +24,6 @@ namespace IsoRealms::Basics {
             cDefReadyAction(data.getDummyActionContext()),
             cDefEndAction(data.getDummyActionContext()),
             cDefErrorAction(data.getDummyActionContext()),
-            cDefRunning(false),
-            cDefEditing(false),
-            cRuntimeProject(nullptr),
-            cRuntimeResetPostponed(false),
             cLuaBinding(data.getProject().getLuaState(), this) {
     cRuntimeProjectLoader = std::make_unique<ProjectLoader>([this](bool quitRequestGranted) {
       cRuntimeRunning = false;

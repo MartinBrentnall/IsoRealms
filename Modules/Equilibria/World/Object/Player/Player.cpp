@@ -36,12 +36,9 @@ namespace IsoRealms::Equilibria {
             cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType->renderAssetIcon();}) {
     reset();
   }
-
+  
   Player::Player(World& world, JSONObject object) :
             cDefWorld(world),
-            cDefType(nullptr),
-            cDefMovementHandler(nullptr),
-            cDefModel(nullptr),
             cDefX(object.getFloat(JSON_X)),
             cDefY(object.getFloat(JSON_Y)),
             cDefZ(object.getFloat(JSON_Z)),

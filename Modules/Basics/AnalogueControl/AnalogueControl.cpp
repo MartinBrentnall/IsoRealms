@@ -24,9 +24,8 @@
 
 namespace IsoRealms::Basics {
   AnalogueControl::AnalogueControl(Basics& basics, IComponentData& data) :
-             cComponentData(data),
-             cRuntimeState(false),
-             cLuaBinding(basics.getProject().getLuaState(), this) {
+            cComponentData(data),
+            cLuaBinding(basics.getProject().getLuaState(), this) {
   }
 
   AnalogueControl::AnalogueControl(Basics& basics, IComponentData& data, JSONObject object) :
@@ -173,10 +172,8 @@ namespace IsoRealms::Basics {
 //       mMapping->save(node);
 //     }
   }
-
-  AnalogueControl::InputMapping::InputMapping(std::shared_ptr<AnalogueInput> physicalInput) :
-            cPhysicalInput(physicalInput),
-            cState(0.0f) {
+AnalogueControl::InputMapping::InputMapping(std::shared_ptr<AnalogueInput> physicalInput) :
+            cPhysicalInput(physicalInput) {
   }
 
   bool AnalogueControl::InputMapping::matches(sf::Event& event) const {

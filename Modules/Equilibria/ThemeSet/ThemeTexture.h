@@ -45,7 +45,7 @@ namespace IsoRealms::Equilibria {
 
     private:
     ThemeSet& cParent;
-    ITexture* cTexture;
+    ITexture* cTexture = nullptr;
     IStateNotifier* cStateNotifier;
   };
 }

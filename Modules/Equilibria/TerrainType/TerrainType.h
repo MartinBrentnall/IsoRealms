@@ -119,9 +119,9 @@ namespace IsoRealms::Equilibria {
       private:
       TerrainType& cParent;
       WorldEditor& cEditor;
-      Zone* cPinnedZone;
+      Zone* cPinnedZone = nullptr;
       WorldEditorCursorCell cPinnedLocation;
-      bool cDrawingNegation;
+      bool cDrawingNegation = false;
       bool cDrawingSteppedBase;
 
       void draw();
@@ -141,12 +141,12 @@ namespace IsoRealms::Equilibria {
     EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
 
     // Properties
-    float cDefSurfaceFriction;
-    float cDefSurfaceGrip;
-    float cDefSurfaceBounce;
-    float cDefWallBounce;
-    bool cDefRespawnAllowed;
-    bool cDefSolid;
+    float cDefSurfaceFriction = 0.0f;
+    float cDefSurfaceGrip     = 0.0f;
+    float cDefSurfaceBounce   = 0.0f;
+    float cDefWallBounce      = DEFAULT_WALL_BOUNCE;
+    bool cDefRespawnAllowed   = true;
+    bool cDefSolid            = false;
     SurfacePattern cDefSurfacePattern;
     WallPattern cDefWestWallPattern;
     WallPattern cDefEastWallPattern;

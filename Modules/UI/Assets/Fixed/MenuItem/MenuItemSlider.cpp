@@ -24,11 +24,6 @@ namespace IsoRealms::UI {
   MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu) :
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
-            cDefID(""),
-            cDefLabel(""),
-            cDefMinimum(DEFAULT_MINIMUM),
-            cDefMaximum(DEFAULT_MAXIMUM),
-            cDefSteps(DEFAULT_STEPS),
             cDefValueChangedAction(menu.getComponentData().getDummyActionContext()),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }

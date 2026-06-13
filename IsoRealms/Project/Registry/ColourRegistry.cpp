@@ -28,11 +28,7 @@ namespace IsoRealms {
   }
 
   ColourRegistry::Literal::Instance::Instance(const Project& project) :
-            cMetadata(project.getApplication().getMetadata("LiteralColour")),
-            cRed(  0.0f),
-            cGreen(0.0f),
-            cBlue( 0.0f),
-            cAlpha(1.0f) {
+            cMetadata(project.getApplication().getMetadata("LiteralColour")) {
   }
 
   ColourRegistry::Literal::Instance::Instance(const Project& project, const float red, const float green, const float blue, const float alpha) :

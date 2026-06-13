@@ -94,7 +94,7 @@ namespace IsoRealms::Equilibria {
       private:
       LiftType& cParent;
       WorldEditor& cEditor;
-      Zone* cPinnedZone;                     /// Zone in which drawing a lift of this type is currently taking place.
+      Zone* cPinnedZone = nullptr;           /// Zone in which drawing a lift of this type is currently taking place.
       WorldEditorCursorCell cPinnedLocation; /// Pinned initial location for a lift being drawn.
       std::optional<int> cPinnedRange;       /// Pinned movement range for a lift being drawn.
     

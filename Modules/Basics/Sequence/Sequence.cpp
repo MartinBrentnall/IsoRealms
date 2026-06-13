@@ -30,8 +30,6 @@ namespace IsoRealms::Basics {
   Sequence::Sequence(Basics& basics, IComponentData& data) :
             cBasics(basics),
             cComponentData(data),
-            cDefPlaying(false),
-            cDefLoop(false),
             cDefSpeed(data, 1.0f),
             cExposedLength(*this),
             cLuaBinding(data.getProject().getLuaState(), this) {

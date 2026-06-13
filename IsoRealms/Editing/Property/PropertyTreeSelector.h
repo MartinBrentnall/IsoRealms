@@ -137,7 +137,7 @@ namespace IsoRealms {
         Editor& cParent;
         std::string cPath;
         std::vector<std::unique_ptr<IMenuEntry>> cMenuItems;
-        unsigned int cSelectedIndex;
+        unsigned int cSelectedIndex = 0;
         AnimatedFloat cSelectedItem;
       };
 
@@ -172,8 +172,8 @@ namespace IsoRealms {
       AnimatedFloat cHeight;
       AnimatedFloat cSelectionWidth;
       AnimatedFloat cBackArrowSize;
-      int cOpenness;
-      bool cClosing;
+      int cOpenness = 0;
+      bool cClosing = false;
       std::vector<std::unique_ptr<MenuScroller>> cMenus;
       std::vector<std::unique_ptr<MenuScroller>> cClosedMenus;
       std::unique_ptr<Choice> cConfirmSelection;
@@ -183,7 +183,7 @@ namespace IsoRealms {
       std::string cActivePath;
       std::string cInactivePath;
       float cActivePartWidth;
-      AnimatedFloat cPathBarWidth;
+      AnimatedFloat cPathBarWidth = 0.0f;
     };
 
     IPropertyMaker& cPropertyOwner;

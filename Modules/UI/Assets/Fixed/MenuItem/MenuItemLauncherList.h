@@ -104,8 +104,8 @@ namespace IsoRealms::UI {
     ActionContext cActionContext;
 
     // Definition data.
-    std::string cDefID; /// ID of this menu item for binding.
-    Action cDefAction;  /// Action that confirming a launcher selection will trigger.
+    std::string cDefID = "Unnamed Launcher List"; /// ID of this menu item for binding.
+    Action cDefAction;                            /// Action that confirming a launcher selection will trigger.
 
     // Runtime data.
     std::vector<std::unique_ptr<Launcher>> cRuntimeLaunchers; /// List of launchers that can be selected.

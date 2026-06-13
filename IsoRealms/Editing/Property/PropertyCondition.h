@@ -188,16 +188,16 @@ namespace IsoRealms {
       };
       
       PropertyCondition& cParent;
-      AnimatedFloat cSelectedElement; // TODO: AnimatedInteger
+      AnimatedFloat cSelectedElement = 0; // TODO: AnimatedInteger
       std::unique_ptr<ResultOutput> cConditionDiagram;
       IFunctionInput* cSelectedInput;
-      AnimatedFloat cSelectionHeight;
-      AnimatedFloat cSelectionDepth;
-      bool cSelectedNotGate;
-      bool cShowingConditionPalette;
+      AnimatedFloat cSelectionHeight = 0.0f;
+      AnimatedFloat cSelectionDepth = 0.0f;
+      bool cSelectedNotGate = false;
+      bool cShowingConditionPalette = false;
 
-      int cOpenness;
-      bool cClosing;
+      int cOpenness = 0;
+      bool cClosing = false;
 
       void showConditionPalette(bool isAnd);
       void showConditionPalette(ConditionElement* element);

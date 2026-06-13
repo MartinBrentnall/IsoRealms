@@ -24,9 +24,6 @@ namespace IsoRealms::Equilibria {
   CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view) :
             cParent(view),
             cPitch(Equilibria::DEFAULT_VIEW_ANGLE_PITCH),
-            cDefAngle(VALUE_NORTH_WEST),
-            cDefRollDuration(DEFAULT_DURATION),
-            cListener(nullptr),
             cLuaBinding(view.getEquilibria().getProject().getLuaState(), this) {
   }
   

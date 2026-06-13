@@ -45,8 +45,7 @@ namespace IsoRealms::Equilibria {
 
   DeleteTool::Eraser::Eraser(DeleteTool& parent, WorldEditor& editor) :
             cParent(parent),
-            cEditor(editor),
-            cSelectedObject(0) {
+            cEditor(editor) {
   }
 
   bool DeleteTool::Eraser::inputTool(sf::Event& event) {

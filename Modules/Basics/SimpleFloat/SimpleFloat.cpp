@@ -20,10 +20,7 @@
 
 namespace IsoRealms::Basics {
   SimpleFloat::SimpleFloat(Basics& basics, IComponentData& data) :
-            cDefValue(0.0f),
-            cRuntimeValue(0.0f),
-            cLuaBinding(data.getProject().getLuaState(), this),
-            cStateNotifier(nullptr) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
   void SimpleFloat::registerAssets(ComponentAssetRegistry& assets) {

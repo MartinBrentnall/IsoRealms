@@ -22,9 +22,7 @@
 
 namespace IsoRealms {
   BooleanRegistry::BooleanRegistry() :
-            AssetClientManager(&cLiteralFalse, "False", "False"),
-            cLiteralFalse(false),
-            cLiteralTrue(true) {
+            AssetClientManager(&cLiteralFalse, "False", "False") {
     add(&cLiteralTrue, "True", "True");
   }
 }

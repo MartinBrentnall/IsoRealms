@@ -25,7 +25,6 @@
 namespace IsoRealms::Equilibria {
   ThemeColour::ThemeColour(ThemeSet& parent) :
             cParent(parent),
-            cColour(nullptr),
             cLuaBinding(parent.getEquilibria().getProject().getLuaState(), this) {
   }
 

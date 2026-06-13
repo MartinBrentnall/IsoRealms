@@ -23,24 +23,12 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  World::World(Equilibria& equilibria, IComponentData& data) :
+World::World(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cComponentData(data),
-            cDefPhysicalSurfaceProcessor(true),
-            cDefVisualSurfaceProcessor(false),
-            cEditorBasicProperties(false),
             cDefaultThemeSet(*this),
             cAutomaticZoneManagementType(*this),
             cDefaultWorldEditorTool(equilibria),
-            cAutomaticZoneXSize(DEFAULT_AUTOMATIC_ZONE_X_SIZE),
-            cAutomaticZoneYSize(DEFAULT_AUTOMATIC_ZONE_Y_SIZE),
-            cAutomaticZoneZSize(DEFAULT_AUTOMATIC_ZONE_Z_SIZE),
-            cEditorMinX(DEFAULT_EDITOR_MIN_X),
-            cEditorMaxX(DEFAULT_EDITOR_MAX_X),
-            cEditorMinY(DEFAULT_EDITOR_MIN_Y),
-            cEditorMaxY(DEFAULT_EDITOR_MAX_Y),
-            cEditorMinZ(DEFAULT_EDITOR_MIN_Z),
-            cEditorMaxZ(DEFAULT_EDITOR_MAX_Z),
             cLuaBinding(data.getProject().getLuaState(), this) {
     // Physical object types.
     std::vector<IPhysicalObjectType*> mPhysicalObjectTypes = cEquilibria.getAllPhysicalObjectTypeObjects();

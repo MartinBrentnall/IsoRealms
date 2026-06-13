@@ -58,15 +58,15 @@ namespace IsoRealms::Basics {
     private:
     
     // Definition data.
-    int cDefValue;     /// Initial configured value.
+    int cDefValue = 0;     /// Initial configured value.
 
     // Runtime data.
-    int cRuntimeValue; /// Current value at runtime.
+    int cRuntimeValue = 0; /// Current value at runtime.
 
     // Scripting Interface.
     LuaBinding<SimpleInteger> cLuaBinding;
 
     // Misc.
-    IStateNotifier* cStateNotifier;
+    IStateNotifier* cStateNotifier = nullptr;
   };
 }

@@ -29,9 +29,6 @@ namespace IsoRealms::UI {
             cDefExitAction(data.getDummyActionContext()),
             cDefFont(data),
             cDefColour(data, 1.0f, 1.0f, 1.0f),
-            cDefFontSize(DEFAULT_FONT_SIZE),
-            cDefShadowOffset(DEFAULT_SHADOW_OFFSET),
-            cRuntimeSelectedItem(996),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   

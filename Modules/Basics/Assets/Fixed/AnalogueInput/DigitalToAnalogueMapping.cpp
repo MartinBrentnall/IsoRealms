@@ -24,8 +24,7 @@ namespace IsoRealms::Basics {
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner) :
             cMetadata(metadata),
             cDefName(metadata.getPropertyData("DefaultName").getName()),
-            cDefControl(owner),
-            cDefOutputValue(0.0f) {
+            cDefControl(owner) {
   }
 
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner, JSONObject object) :

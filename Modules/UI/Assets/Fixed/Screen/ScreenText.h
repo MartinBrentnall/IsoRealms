@@ -61,11 +61,11 @@ namespace IsoRealms::UI {
     inline static const float DEFAULT_SHADOW_OFFSET = 0.2f;
 
     // Definition data.
-    String cDefString;              /// String to be shown.
-    Font cDefFont;                  /// Font used to render the string.
-    Colour cDefColour;              /// The colour to use.
-    IFont::Alignment cDefAlignment; /// Alignment to the screen.
-    float cDefShadowOffset;         /// Shadow offset value.
+    String cDefString;                              /// String to be shown.
+    Font cDefFont;                                  /// Font used to render the string.
+    Colour cDefColour;                              /// The colour to use.
+    IFont::Alignment cDefAlignment;                 /// Alignment to the screen.
+    float cDefShadowOffset = DEFAULT_SHADOW_OFFSET; /// Shadow offset value.
     
     std::string getAlignment() const;
     void setAlignment(const std::string& alignment);

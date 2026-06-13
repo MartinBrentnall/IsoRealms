@@ -67,8 +67,7 @@ namespace IsoRealms {
 
   PropertyInputField::Editor::Editor(PropertyInputField& parent) :
             cParent(parent),
-            cCaret(cParent.cValue.length()),
-            cErrorAnimation(1.0f) {
+            cCaret(cParent.cValue.length()) {
   }
 
   void PropertyInputField::Editor::render(IUIStyle& style, float y, float x, float aspectRatio) const {

@@ -248,7 +248,7 @@ namespace IsoRealms::Equilibria {
     Zone& cZone;
     
     // Definition data.
-    TerrainType* cDefType;
+    TerrainType* cDefType = nullptr;
     int cDefStartX;
     int cDefStartY;
     int cDefStartZ;

@@ -27,13 +27,7 @@ namespace IsoRealms::Equilibria {
             cEquilibria(equilibria),
             cComponentData(data),
             cAssets(equilibria),
-            cDefSurfaceFriction(0.0f),
-            cDefSurfaceGrip(0.0f),
-            cDefSurfaceBounce(0.0f),
-            cDefWallBounce(DEFAULT_WALL_BOUNCE),
-            cDefRespawnAllowed(true),
-            cDefSolid(false),
-            cDefSurfacePattern(  equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
+            cDefSurfacePattern( equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
             cDefWestWallPattern( equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
             cDefEastWallPattern( equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
             cDefSouthWallPattern(equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
@@ -219,12 +213,9 @@ namespace IsoRealms::Equilibria {
   bool TerrainType::isDefaultConfiguration() const {
     return true;
   }
-
-  TerrainType::Pen::Pen(TerrainType& parent, WorldEditor& editor) :
+TerrainType::Pen::Pen(TerrainType& parent, WorldEditor& editor) :
             cParent(parent),
-            cEditor(editor),
-            cPinnedZone(nullptr),
-            cDrawingNegation(false) {
+            cEditor(editor) {
   }
 
   void TerrainType::Pen::draw() {

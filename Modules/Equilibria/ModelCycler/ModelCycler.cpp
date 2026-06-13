@@ -26,9 +26,7 @@ namespace IsoRealms::Equilibria {
   ModelCycler::ModelCycler(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cComponentData(data),
-            cRuntimeCycleIndex(0),
-            cLuaBinding(data.getProject().getLuaState(), this),
-            cEditingIconCycle(0) {
+            cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
   void ModelCycler::registerAssets(ComponentAssetRegistry& assets) {

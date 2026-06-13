@@ -143,7 +143,7 @@ namespace IsoRealms::Replay {
     std::vector<std::unique_ptr<AnalogueInput>> cDefAnalogueInputs;
 
     // Runtime data.
-    State cRuntimeState;                   /// Current state of the replayer.
+    State cRuntimeState = State::INACTIVE; /// Current state of the replayer.
     unsigned int cRuntimeElapsedTime;      /// Elapsed time since the start of the recording or replay.
     InputEvent cRuntimeNextEvent;          /// Next event to be processed.
     std::ifstream cRuntimeRecordedInput;   /// Stream for reading the recorded input.

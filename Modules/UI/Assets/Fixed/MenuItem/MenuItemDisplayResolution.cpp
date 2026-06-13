@@ -25,8 +25,6 @@ namespace IsoRealms::UI {
             cProject(menu.getComponentData().getProject()),
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
-            cDefID(""),
-            cDefLabel(""),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 

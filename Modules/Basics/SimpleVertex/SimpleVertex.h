@@ -62,19 +62,19 @@ namespace IsoRealms::Basics {
     private:
     
     // Definition data.
-    float cDefX; /// Initial X value.
-    float cDefY; /// Initial Y value.
-    float cDefZ; /// Initial Z value.
+    float cDefX = 0.0; /// Initial X value.
+    float cDefY = 0.0; /// Initial Y value.
+    float cDefZ = 0.0; /// Initial Z value.
 
     // Runtime data.
-    double cRuntimeX; /// Current X value.
-    double cRuntimeY; /// Current Y value.
-    double cRuntimeZ; /// Current Z value.
+    double cRuntimeX = 0.0; /// Current X value.
+    double cRuntimeY = 0.0; /// Current Y value.
+    double cRuntimeZ = 0.0; /// Current Z value.
 
     // Scripting Interface.
     LuaBinding<SimpleVertex> cLuaBinding;
 
     // Misc.
-    IStateNotifier* cStateNotifier;
+    IStateNotifier* cStateNotifier = nullptr;
   };
 }

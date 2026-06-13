@@ -76,8 +76,8 @@ namespace IsoRealms::Equilibria {
       IComponentData& cWorldComponentOwner;
       WorldEditor& cEditor;
       std::vector<IWorldObject*> cHoverObjects;
-      int cSelectedObject;
-      bool cEditingProperties;
+      int cSelectedObject     = 0;
+      bool cEditingProperties = false;
       UIManager cPropertiesUI;
 
       void showProperties();

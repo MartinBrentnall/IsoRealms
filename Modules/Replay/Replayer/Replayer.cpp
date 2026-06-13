@@ -21,7 +21,6 @@
 namespace IsoRealms::Replay {
   Replayer::Replayer(Replay& replay, IComponentData& data) :
             cComponentData(data),
-            cRuntimeState(State::INACTIVE),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   

@@ -32,8 +32,7 @@ namespace IsoRealms {
   Module::Module(const std::string& name, Project& project, LuaState* luaState) :
             cProject(project),
             cModuleAssetRegistry(*this),
-            cName(name),
-            cOwnerProject(nullptr) {
+            cName(name) {
     std::string mModulePath = "IsoRealms-" + name;
     if (!System::moduleExists(mModulePath, false)) {
       throw InitException("ERROR: Module::Module: Specified module \"" + mModulePath + "\" not found");

@@ -62,15 +62,12 @@ namespace IsoRealms::Equilibria {
 
   Zone::Zone(World& world, JSONObject object) :
             cDefWorld(world),
-            cDefType(nullptr),
             cDefStartX(object.getInteger(JSON_X)),
-            cDefEndX(object.getInteger(JSON_WIDTH)  + cDefStartX - 1),
+            cDefEndX(object.getInteger(JSON_WIDTH) + cDefStartX - 1),
             cDefStartY(object.getInteger(JSON_Y)),
             cDefEndY(object.getInteger(JSON_LENGTH) + cDefStartY - 1),
             cDefStartZ(object.getInteger(JSON_Z)),
             cDefEndZ(object.getInteger(JSON_HEIGHT) + cDefStartZ - 1),
-            cDefThemeSet(nullptr),
-            cDefTheme(nullptr),
             cDefVisited(object.getBoolean(JSON_VISITED)) {
     if (object.hasMember(JSON_ALIENS)) {
       for (JSONValue mAlienValue : object.getArray(JSON_ALIENS)) {

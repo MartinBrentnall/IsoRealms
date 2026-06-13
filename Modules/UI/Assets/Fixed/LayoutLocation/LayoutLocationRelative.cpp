@@ -24,14 +24,11 @@
 
 namespace IsoRealms::UI {
   LayoutLocationRelative::LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner) :
-            cParent(owner),
-            cDefRelative(nullptr),
-            cDefValue(0.0f) {
+            cParent(owner) {
   }
-  
+
   LayoutLocationRelative::LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
             cParent(owner),
-            cDefRelative(nullptr),
             cDefValue(object.getFloat(JSON_VALUE, owner.isPositiveEdge() ? 1.0f : -1.0f)) {
     cDefRelative = cParent.getComponent().getLayout().getComponent(object.getString(JSON_RELATIVE));
   }

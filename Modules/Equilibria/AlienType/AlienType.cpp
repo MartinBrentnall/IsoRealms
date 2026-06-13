@@ -27,12 +27,6 @@ namespace IsoRealms::Equilibria {
             cAssets(equilibria),
             cDefModel(data),
             cDefTarget(data),
-            cDefAcceleration(DEFAULT_ACCELERATION),
-            cDefFriction(DEFAULT_FRICTION),
-            cDefSpinSpeed(DEFAULT_SPIN_SPEED),
-            cDefHeight(DEFAULT_HEIGHT),
-            cDefRadius(DEFAULT_RADIUS),
-            cDefHugMomentum(DEFAULT_HUG_MOMENTUM),
             cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
     cEquilibria.added(this);
   }

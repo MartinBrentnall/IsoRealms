@@ -74,12 +74,12 @@ namespace IsoRealms::Basics {
     Project& cDefProject;   /// Hosting project.
 
     // Definition data.
-    Texture cDefTexture;     /// Texture applied to this sprite.
-    bool cDefBillboardYaw;   /// Rotate the sprite according to the yaw of the current view.
-    bool cDefBillboardPitch; /// Tilt the sprite according to the pitch of the current view.
+    Texture cDefTexture;             /// Texture applied to this sprite.
+    bool cDefBillboardYaw   = false; /// Rotate the sprite according to the yaw of the current view.
+    bool cDefBillboardPitch = false; /// Tilt the sprite according to the pitch of the current view.
 
     // Runtime data.
-    const IScreen* cRuntimeScreen; /// Screen in which the sprite is being rendered.
+    const IScreen* cRuntimeScreen = nullptr; /// Screen in which the sprite is being rendered.
 
     /**********************\
      * Internal Functions *

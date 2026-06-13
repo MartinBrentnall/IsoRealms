@@ -30,11 +30,10 @@ namespace IsoRealms {
   GameControllerButton::ButtonChooser::ButtonChooser(const Metadata& metadata) :
           cMetadata(metadata) {
   }
-
+  
   GameControllerButton::GameControllerButton(const Metadata& metadata, IComponentData& owner) :
-          cMetadata(metadata),
-          cButtonChooser(metadata),
-          cButton(0) {
+            cMetadata(metadata),
+            cButtonChooser(metadata) {
   }
 
   GameControllerButton::GameControllerButton(const Metadata& metadata, IComponentData& owner, JSONObject object) :

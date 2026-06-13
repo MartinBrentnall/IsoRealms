@@ -30,7 +30,6 @@ namespace IsoRealms::UI {
             cDefRightEdge(*this, aspectRatio, std::max(x1, x2)),
             cDefBottomEdge(*this, 1.0f, std::min(y1, y2)),
             cDefTopEdge(*this, 1.0f, std::max(y1, y2)),
-            cRuntimeScreen(nullptr),
             cLuaBinding(layout.getUI().getProject().getLuaState(), this) {
   }
 
@@ -41,7 +40,6 @@ namespace IsoRealms::UI {
             cDefRightEdge(*this, object, JSON_RIGHT),
             cDefBottomEdge(*this, object, JSON_BOTTOM),
             cDefTopEdge(*this, object, JSON_TOP),
-            cRuntimeScreen(nullptr),
             cLuaBinding(layout.getUI().getProject().getLuaState(), this) {
     cDefScreen.init(object, JSON_SCREEN);
   }

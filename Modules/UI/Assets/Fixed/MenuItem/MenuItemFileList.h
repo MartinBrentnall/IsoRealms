@@ -117,7 +117,7 @@ namespace IsoRealms::UI {
     // Definition data.
     std::string cDefID;     /// ID of this menu item for binding.
     std::string cDefFolder; /// Path of folder to list files from.
-    bool cDefUser;   /// True: path is relative to user data folder.  False: path is relative to program data folder.
+    bool cDefUser = false;  /// True: path is relative to user data folder.  False: path is relative to program data folder.
     Action cDefAction;      /// Action that confirming a file selection will trigger.
     
     // Runtime data.

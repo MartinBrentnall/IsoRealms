@@ -19,19 +19,7 @@
 #include "HatHandler.h"
 
 namespace IsoRealms {
-  HatHandler::HatHandler() :
-            cUpPressed(false),
-            cDownPressed(false),
-            cLeftPressed(false),
-            cRightPressed(false),
-            cUpReleased(false),
-            cDownReleased(false),
-            cLeftReleased(false),
-            cRightReleased(false),
-            cPressedUp(false),
-            cPressedDown(false),
-            cPressedLeft(false),
-            cPressedRight(false) {
+  HatHandler::HatHandler() {
   }
 
   void HatHandler::pressLeft(bool left) {
