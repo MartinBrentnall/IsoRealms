@@ -47,9 +47,4 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitMovable::createTrait(ZoneObject& object) {
     return std::make_unique<Movable>(object, *this);
   }
-
-  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitMovable(metadata, type) {
-    cDefInitialLocationID = object.getString(JSON_LOCATION);
-  }
 }

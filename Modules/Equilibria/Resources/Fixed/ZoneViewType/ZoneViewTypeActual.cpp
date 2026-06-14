@@ -37,9 +37,4 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneView> ZoneViewTypeActual::createZoneView(Zone* zone) {
     return std::make_unique<ZoneViewActual>();
   }
-
-  ZoneViewTypeActual::ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView, JSONObject object) :
-            ZoneViewTypeActual(metadata, worldView) {
-    // Nothing to do.
-  }
 }

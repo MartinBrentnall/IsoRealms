@@ -57,10 +57,4 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitModel::createTrait(ZoneObject& object) {
     return std::make_unique<Model>(object, *this);
   }
-
-  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitModel(metadata, type) {
-    cDefLocationID = object.getString(JSON_LOCATION);
-    cDefModel.init(object, JSON_MODEL);
-  }
 }

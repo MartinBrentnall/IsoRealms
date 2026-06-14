@@ -55,10 +55,4 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneView> ZoneViewTypeOverview::createZoneView(Zone* zone) {
     return std::make_unique<ZoneViewOverview>(cWorldView, *this, zone);
   }
-
-  ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView, JSONObject object) :
-            ZoneViewTypeOverview(metadata, worldView) {
-    cDefColour.init(object, JSON_COLOUR);
-  }
-
 }

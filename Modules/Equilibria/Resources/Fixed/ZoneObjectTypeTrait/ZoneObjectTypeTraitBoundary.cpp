@@ -78,11 +78,4 @@ namespace IsoRealms::Equilibria {
   void ZoneObjectTypeTraitBoundary::forEachAvailableBoundaryTypeTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     // TODO: Implement this.
   }
-
-  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitBoundary(metadata, type) {
-    cDefInitiallyEnabled = object.getBoolean(JSON_ENABLED, true);
-    cDefStartID = object.getString(JSON_START);
-    cDefEndID = object.getString(JSON_END, cDefStartID);
-  }
 }

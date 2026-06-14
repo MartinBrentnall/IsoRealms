@@ -274,9 +274,9 @@ namespace IsoRealms {
   }
 
   PropertyTreeSelector::Editor::Menu::Menu(Editor& parent, const std::string& path, const TreeItemInfo& currentEntry) :
-            cSelectedIndex(0),
             cParent(parent),
-            cPath(path) {
+            cPath(path),
+            cSelectedIndex(0) {
     std::string mSelectedPath = currentEntry.cPath;
     std::set<std::string> mFolders;
     std::vector<TreeItemInfo> mProviders;

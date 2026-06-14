@@ -85,15 +85,4 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitPhysics::createTrait(ZoneObject& object) {
     return std::make_unique<Physics>(object, *this);
   }
-
-  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitPhysics(metadata, type) {
-    cDefMovableID = object.getString(JSON_CONTROLS);
-    cDefStepReach = object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH);
-    cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
-    cDefRadius = object.getFloat(JSON_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = object.getFloat(JSON_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_BOUNCE_FACTOR);
-    cDefUseNonSolid = object.getBoolean(JSON_USE_NON_SOLID, DEFAULT_USE_NON_SOLID);
-  }
 }

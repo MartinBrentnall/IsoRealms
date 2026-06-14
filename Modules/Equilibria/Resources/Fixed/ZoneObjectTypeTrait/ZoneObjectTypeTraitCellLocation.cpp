@@ -99,8 +99,4 @@ namespace IsoRealms::Equilibria {
   double ZoneObjectTypeTraitCellLocation::getSnapInterval() const {
     return 1.0;
   }
-
-  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitCellLocation(metadata, type) {
-  }
 }

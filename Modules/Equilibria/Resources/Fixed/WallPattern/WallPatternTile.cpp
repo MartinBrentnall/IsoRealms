@@ -114,10 +114,4 @@ namespace IsoRealms::Equilibria {
   bool WallPatternTile::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  WallPatternTile::WallPatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternTile(metadata, owner) {
-    cDefTexture.set(object, JSON_TEXTURE);
-  }
-
 }

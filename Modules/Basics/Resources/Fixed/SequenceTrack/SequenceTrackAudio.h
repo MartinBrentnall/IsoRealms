@@ -37,6 +37,7 @@ namespace IsoRealms::Basics {
   class SequenceTrackAudio final : public SequenceTrackBase<SequenceTrackAudio, SequenceTrackAudioEvent, SequenceTrackAudioInstance> {
     public:
     SequenceTrackAudio(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackAudio(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     float getVolume() const;
     const Metadata& getMetadata() const;

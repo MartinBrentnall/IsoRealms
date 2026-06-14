@@ -57,11 +57,4 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitSpinner::createTrait(ZoneObject& object) {
     return std::make_unique<Spinner>(object, *this);
   }
-
-  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitSpinner(metadata, type) {
-    cDefSpinSpeed = object.getFloat("spinSpeed");
-    cDefLocationID = object.getString(JSON_LOCATION);
-    cDefModel.init(object, JSON_MODEL);
-  }
 }

@@ -137,18 +137,13 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  SurfacePatternTile::SurfacePatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            SurfacePatternTile(metadata, owner) {
-    cDefTexture.set(object, JSON_TEXTURE);
-  }
-
-std::vector<std::unique_ptr<IVisualElement>> SurfacePatternTile::getStaticVisuals(SplitSurface* surface) {
+  std::vector<std::unique_ptr<IVisualElement>> SurfacePatternTile::getStaticVisuals(SplitSurface* surface) {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     mVisuals.emplace_back(std::make_unique<SurfacePatternSplitSurface>(*this, surface));
     return mVisuals;
   }
 
-void SurfacePatternTile::render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heightNE, bool alternativeSplit) const {
+  void SurfacePatternTile::render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heightNE, bool alternativeSplit) const {
     float mHeightNW = (z + heightNW) * 0.5f;
     float mHeightNE = (z + heightNE) * 0.5f;
     float mHeightSE = (z + heightSE) * 0.5f;

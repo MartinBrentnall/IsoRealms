@@ -140,9 +140,4 @@ namespace IsoRealms::Equilibria {
   bool WallPatternOutline::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  WallPatternOutline::WallPatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternOutline(metadata, owner) {
-    // Nothing to do.
-  }
 }

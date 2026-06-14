@@ -259,11 +259,4 @@ namespace IsoRealms::Equilibria {
   void WallPatternCap::SectionTop::prepareVisual() {
     // Nothing to do
   }
-
-  WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternCap(metadata, owner) {
-    cDefTextureBottom.set(object, JSON_BOTTOM);
-    cDefTextureMiddle.set(object, JSON_MIDDLE);
-    cDefTextureTop.set(object, JSON_TOP);
-  }
 }

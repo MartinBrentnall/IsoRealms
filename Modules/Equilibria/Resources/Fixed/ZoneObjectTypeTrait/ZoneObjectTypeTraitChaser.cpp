@@ -52,10 +52,4 @@ namespace IsoRealms::Equilibria {
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitChaser::createTrait(ZoneObject& object) {
     return std::make_unique<Chaser>(object, *this);
   }
-
-  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitChaser(metadata, type) {
-    cDefTarget.init(object, JSON_TARGET);
-    cDefObjectID = object.getString("object");
-  }
 }

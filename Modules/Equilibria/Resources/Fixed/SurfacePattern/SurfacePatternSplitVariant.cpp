@@ -71,18 +71,11 @@ namespace IsoRealms::Equilibria {
     return false; // TODO: Implement
   }
 
-  SurfacePatternSplitVariant::SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            SurfacePatternSplitVariant(metadata, owner) {
-    cDefRegularPattern.set(object, JSON_REGULAR);
-    cDefSplitAPattern.set(object, JSON_SPLIT_A);
-    cDefSplitBPattern.set(object, JSON_SPLIT_B);
-  }
-
-std::vector<std::unique_ptr<IVisualElement>> SurfacePatternSplitVariant::getStaticVisuals(SplitSurface* surface) {
+  std::vector<std::unique_ptr<IVisualElement>> SurfacePatternSplitVariant::getStaticVisuals(SplitSurface* surface) {
     return (surface->isAlternativeSplit() ? cDefSplitBPattern : cDefSplitAPattern)->getStaticVisuals(surface);
   }
 
-void SurfacePatternSplitVariant::render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heightNE, bool alternativeSplit) const {
+  void SurfacePatternSplitVariant::render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heightNE, bool alternativeSplit) const {
     (alternativeSplit ? cDefSplitBPattern : cDefSplitAPattern)->render(x, y, z, heightSW, heightSE, heightNW, heightNE, alternativeSplit);
   }
 }

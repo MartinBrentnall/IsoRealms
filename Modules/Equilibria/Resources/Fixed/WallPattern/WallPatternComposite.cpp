@@ -70,12 +70,4 @@ namespace IsoRealms::Equilibria {
   bool WallPatternComposite::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  WallPatternComposite::WallPatternComposite(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternComposite(metadata, owner) {
-    for (JSONValue mPatternValue : object.getArray(JSON_PATTERNS)) {
-      JSONObject mPatternObject = mPatternValue.getObject();
-      cDefWallPatterns.emplace_back(std::make_unique<WallPattern>(owner.getEquilibria(), owner, nullptr)).get()->set(mPatternObject, JSON_PATTERN);
-    }
-  }
 }

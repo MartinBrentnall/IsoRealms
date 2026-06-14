@@ -130,18 +130,13 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  SurfacePatternOutline::SurfacePatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            SurfacePatternOutline(metadata, owner) {
-    // Nothing to do.
-  }
-
-std::vector<std::unique_ptr<IVisualElement>> SurfacePatternOutline::getStaticVisuals(SplitSurface* surface) {
+  std::vector<std::unique_ptr<IVisualElement>> SurfacePatternOutline::getStaticVisuals(SplitSurface* surface) {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     mVisuals.emplace_back(std::make_unique<SurfacePatternSplitSurface>(*this, surface));
     return mVisuals;
   }
 
-void SurfacePatternOutline::render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heightNE, bool alternativeSplit) const {
+  void SurfacePatternOutline::render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heightNE, bool alternativeSplit) const {
     float mHeightNW = (z + heightNW) * 0.5f;
     float mHeightNE = (z + heightNE) * 0.5f;
     float mHeightSE = (z + heightSE) * 0.5f;
