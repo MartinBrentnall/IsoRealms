@@ -48,12 +48,11 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     DigitalControl(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-
     DigitalControl(IComponentData& owner);
     DigitalControl(IComponentData& owner, JSONObject object);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
+    void publish(ResourcePublisher& publisher, const std::string& parentID);
 
     /*********************\
      * Module interfaces *
@@ -70,14 +69,6 @@ namespace IsoRealms::Basics {
     \****************************/
     bool input(sf::Event& event) override;
     void resetInput() override;
-
-    /***********************\
-     * Implements multiple *
-    \***********************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -156,7 +147,7 @@ namespace IsoRealms::Basics {
       std::string getShortName() const;
       std::shared_ptr<DigitalInput> getInput() const;
       void save(JSONObject object) const;
-      void getProperties(IPropertyMaker& owner, std::function<void()> removeFunction);
+      void define(IComponentDefiner& definer, std::function<void()> removeFunction);
 
       private:
       std::shared_ptr<DigitalInput> cInput;

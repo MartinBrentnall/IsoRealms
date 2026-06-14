@@ -32,11 +32,11 @@
 
 namespace IsoRealms {
   class Project;
-  class IPropertyMaker;
+  class IComponentDefiner;
 
   class PropertyOptional : public Property {
     public:
-    PropertyOptional(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter = nullptr);
+    PropertyOptional(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -62,7 +62,7 @@ namespace IsoRealms {
       bool renderTreeItemIcon() const override;
       bool hasConfiguration() const override;
       bool isDefaultConfigured() const override;
-      void getTreeItemProperties(IPropertyMaker& owner) override;
+      void getTreeItemProperties(IComponentDefiner& definer) override;
       const Metadata& getPropertyMetadata() const override;
       Application& getApplication() override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;

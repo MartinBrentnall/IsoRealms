@@ -22,14 +22,14 @@ namespace IsoRealms::Basics {
   SimpleString::SimpleString(Basics& basics, IComponentData& data) :
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void SimpleString::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IString>(this, "", "Simple Strings");
-    assets.add<IBinding>(&cLuaBinding, "", "Variables/Strings");
+
+  void SimpleString::define(IComponentDefiner& definer) {
+    definer.propertyString("value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
   }
 
-  void SimpleString::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString("value", [this]() {return cDefValue;}, [this](const std::string& value) {cDefValue = value;});
+  void SimpleString::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IString>(this, "", "Simple Strings");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Variables/Strings");
   }
 
   void SimpleString::reset() {
@@ -38,22 +38,6 @@ namespace IsoRealms::Basics {
   
   std::string SimpleString::getValue() const {
     return cRuntimeValue;
-  }
-
-  bool SimpleString::renderAssetIcon() const {
-    return false;
-  }
-
-  void SimpleString::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SimpleString::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SimpleString::isDefaultConfiguration() const {
-    return true;
   }
 
   std::string SimpleString::getConversionPath() const {

@@ -39,10 +39,10 @@ namespace IsoRealms::Spindizzy {
      * Component interface *
     \***********************/
     C64LiftGraphics(Spindizzy& spindizzy, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);  
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     bool renderIcon();
     void hintInUse(bool inUse);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     private:
     
@@ -67,16 +67,16 @@ namespace IsoRealms::Spindizzy {
     inline static const float DIAMOND_SQUARE_COLOUR_OUTER  = 0.62f;
     inline static const float DIAMOND_SQUARE_COLOUR_INNER  = 0.48f;
 
-    // Texture asset ID's.
-    inline static const std::string ASSET_ID_ALWAYS_ON      = "Always On";
-    inline static const std::string ASSET_ID_STATE_1_AND_2  = "State 1 and 2";
-    inline static const std::string ASSET_ID_STATE_3        = "State 3";
-    inline static const std::string ASSET_ID_STATE_4        = "State 4";
-    inline static const std::string ASSET_ID_STATE_5_AND_6  = "State 5 and 6";
-    inline static const std::string ASSET_ID_STATE_7        = "State 7";
-    inline static const std::string ASSET_ID_STATE_8        = "State 8";
-    inline static const std::string ASSET_ID_STATE_9_AND_10 = "State 9 and 10";
-    inline static const std::string ASSET_ID_STATE_11       = "State 11";
+    // Texture resource ID's.
+    inline static const std::string RESOURCE_ID_ALWAYS_ON      = "Always On";
+    inline static const std::string RESOURCE_ID_STATE_1_AND_2  = "State 1 and 2";
+    inline static const std::string RESOURCE_ID_STATE_3        = "State 3";
+    inline static const std::string RESOURCE_ID_STATE_4        = "State 4";
+    inline static const std::string RESOURCE_ID_STATE_5_AND_6  = "State 5 and 6";
+    inline static const std::string RESOURCE_ID_STATE_7        = "State 7";
+    inline static const std::string RESOURCE_ID_STATE_8        = "State 8";
+    inline static const std::string RESOURCE_ID_STATE_9_AND_10 = "State 9 and 10";
+    inline static const std::string RESOURCE_ID_STATE_11       = "State 11";
     
     //  External interfaces.
     Project& cProject;

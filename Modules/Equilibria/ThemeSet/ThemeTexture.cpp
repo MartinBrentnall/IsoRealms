@@ -25,8 +25,8 @@ namespace IsoRealms::Equilibria {
             cParent(parent) {
   }
 
-  void ThemeTexture::registerAssets(ComponentAssetRegistry& assets, const std::string& id) {
-    cStateNotifier = assets.add<ITexture>(this, id, "Equilibria/Theme Textures");
+  void ThemeTexture::publish(ResourcePublisher& publisher, const std::string& id) {
+    cStateNotifier = publisher.publish<ITexture>(this, id, "Equilibria/Theme Textures");
   }
   
   void ThemeTexture::notifyChange() {
@@ -55,17 +55,5 @@ namespace IsoRealms::Equilibria {
   
   void ThemeTexture::coord(float x, float y) const {
     cTexture->coord(x, y);
-  }
-
-  void ThemeTexture::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ThemeTexture::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ThemeTexture::isDefaultConfiguration() const {
-    return true;
   }
 }

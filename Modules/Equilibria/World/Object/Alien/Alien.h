@@ -94,7 +94,7 @@ namespace IsoRealms::Equilibria {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    void getProperties(IPropertyMaker& owner) override;
+    void define(IComponentDefiner& definer) override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 

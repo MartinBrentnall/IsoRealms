@@ -18,13 +18,13 @@
  */
 #include "Utils.h"
 
-#include "IsoRealms/Assets/Literal/LiteralVertex.h"
+#include "IsoRealms/Resources/Literal/LiteralVertex.h"
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/Application.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerButton.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerHat.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/KeyboardKey.h"
-#include "IsoRealms/Assets/Type/IDigitalInput.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/GameControllerButton.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/GameControllerHat.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/KeyboardKey.h"
+#include "IsoRealms/Resources/Type/IDigitalInput.h"
 #include "IsoRealms/Types.h"
 #include "IsoRealms/System.h"
 

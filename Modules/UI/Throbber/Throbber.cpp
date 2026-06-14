@@ -24,21 +24,21 @@ namespace IsoRealms::UI {
     cRuntimeAnimation = 0U;
   }
 
-  void Throbber::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IScreen>(this, "", "Throbbers");
+  void Throbber::define(IComponentDefiner& definer) {
+    definer.propertyUnsignedInteger("duration",     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;}, DEFAULT_DURATION);
+    definer.propertyUnsignedInteger("spots",        [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;}, DEFAULT_SPOTS);
+    definer.propertyUnsignedInteger("spotSides",    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;}, DEFAULT_SPOT_SIDES);
+    definer.propertyFloat(          "spotRadius",   [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;}, DEFAULT_SPOT_RADIUS);
+    definer.propertyFloat(          "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyResource(       "colour",       cDefColour);
+    definer.propertyFloat(          "ringRadius",   [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;}, DEFAULT_RING_RADIUS);
+    definer.propertyUnsignedInteger("repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;}, DEFAULT_REPETITIONS);
   }
 
-  void Throbber::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeUnsignedInteger("duration",     [this]() {return cDefDuration;},     [this](unsigned int value) {cDefDuration     = value;}, DEFAULT_DURATION);
-    owner.createPropertyNativeUnsignedInteger("spots",         [this]() {return cDefSpots;},        [this](unsigned int value) {cDefSpots        = value;}, DEFAULT_SPOTS);
-    owner.createPropertyNativeUnsignedInteger("spotSides",    [this]() {return cDefSpotSides;},    [this](unsigned int value) {cDefSpotSides    = value;}, DEFAULT_SPOT_SIDES);
-    owner.createPropertyNativeFloat(          "spotRadius",   [this]() {return cDefSpotRadius;},   [this](float        value) {cDefSpotRadius   = value;}, DEFAULT_SPOT_RADIUS);
-    owner.createPropertyNativeFloat(          "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float        value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
-    owner.createPropertyTreeSelector(         "colour",       cDefColour);
-    owner.createPropertyNativeFloat(          "ringRadius",   [this]() {return cDefRingRadius;},   [this](float        value) {cDefRingRadius   = value;}, DEFAULT_RING_RADIUS);
-    owner.createPropertyNativeUnsignedInteger("repetitions",  [this]() {return cDefRepetitions;},  [this](unsigned int value) {cDefRepetitions  = value;}, DEFAULT_REPETITIONS);
+  void Throbber::publish(ResourcePublisher& publisher) {
+    publisher.publish<IScreen>(this, "", "Throbbers");
   }
-
+  
   void Throbber::updateRuntime(unsigned int milliseconds) {
     cRuntimeAnimation += milliseconds;
     while (cRuntimeAnimation >= cDefDuration) {
@@ -54,22 +54,6 @@ namespace IsoRealms::UI {
     }
     cDefColour->set();
     render(0.0f, 0.0f);
-  }
-
-  bool Throbber::renderAssetIcon() const {
-    return false;
-  }
-
-  void Throbber::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Throbber::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Throbber::isDefaultConfiguration() const {
-    return true;
   }
 
   void Throbber::render(float xOffset, float yOffset) const {

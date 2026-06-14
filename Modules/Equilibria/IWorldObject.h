@@ -28,7 +28,7 @@ namespace IsoRealms::Equilibria {
     virtual bool contains(const LiteralVertex& location) const = 0;
     virtual void renderSelectionHighlight() const = 0;
     virtual void remove() = 0;
-    virtual void getProperties(IPropertyMaker& owner) = 0;
+    virtual void define(IComponentDefiner& definer) = 0;
     virtual std::string getTypeName() const = 0;
     virtual Zone& getObjectZone() = 0;
 

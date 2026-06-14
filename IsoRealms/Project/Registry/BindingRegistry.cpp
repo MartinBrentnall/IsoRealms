@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/ComponentEditor.h"
 #include "IsoRealms/Project/Project.h"
 
 #include <sol.hpp>
@@ -42,20 +42,20 @@ namespace IsoRealms {
   template class BindingRegistry::Conversion<IComponentData, Vertex>::Instance<IComponentData, Vertex>;  
   
   BindingRegistry::BindingRegistry(Project& project) :
-            AssetClientManager(&cDummy),
+            ResourceClientManager(&cDummy),
             cProject(project) {
 
     // Set up conversion providers.
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IActionContext, Action>>(      ":Action",       "Core Assets/Actions"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Boolean>>(     ":Boolean",      "Core Assets/Booleans"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Colour>>(      ":Colour",       "Core Assets/Colours"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Float>>(       ":Float",        "Core Assets/Floats"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Font>>(        ":Font",         "Core Assets/Fonts"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, InputHandler>>(":InputHandler", "Core Assets/Input Handlers"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Integer>>(     ":Integer",      "Core Assets/Integers"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Screen>>(      ":Screen",       "Core Assets/Screens"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, String>>(      ":String",       "Core Assets/Strings"));
-    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Vertex>>(      ":Vertex",       "Core Assets/Vertices"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IActionContext, Action>>(      ":Action",       "Core Resources/Actions"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Boolean>>(     ":Boolean",      "Core Resources/Booleans"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Colour>>(      ":Colour",       "Core Resources/Colours"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Float>>(       ":Float",        "Core Resources/Floats"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Font>>(        ":Font",         "Core Resources/Fonts"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, InputHandler>>(":InputHandler", "Core Resources/Input Handlers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Integer>>(     ":Integer",      "Core Resources/Integers"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Screen>>(      ":Screen",       "Core Resources/Screens"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, String>>(      ":String",       "Core Resources/Strings"));
+    cConversionProviders.emplace_back(std::make_unique<Conversion<IComponentData, Vertex>>(      ":Vertex",       "Core Resources/Vertices"));
             
     // Support local bindings.
     add(&cLocals, "~", "Local");
@@ -66,12 +66,12 @@ namespace IsoRealms {
     }
   }
 
-  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionContext& owner, JSONObject object, IStateListener* listener, bool required) {
+  IBinding* BindingRegistry::get(IResourceUser<IBinding>* client, IActionContext& owner, JSONObject object, IStateListener* listener, bool required) {
     cLocals.setBindings(owner.getBindingRegistry());
-    return AssetClientManager::get(client, owner, object, listener, required);
+    return ResourceClientManager::get(client, owner, object, listener, required);
   }
 
-  IBinding* BindingRegistry::get(IAssetUser<IBinding>* client, IActionContext& owner, const std::string& id, IStateListener* listener) {
+  IBinding* BindingRegistry::get(IResourceUser<IBinding>* client, IActionContext& owner, const std::string& id, IStateListener* listener) {
     cLocals.setBindings(owner.getBindingRegistry());
 
     for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
@@ -79,10 +79,10 @@ namespace IsoRealms {
         JSONDocument mDocument;
         JSONObject mConversionProviderObject = mDocument.addObject("temp");
         mConversionProviderObject.addString(JSON_KEY, mConversionProvider->getProviderID());
-        JSONObject mAssetObject = mConversionProviderObject.addObject(JSON_ASSET);
-        mAssetObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
+        JSONObject mResourceObject = mConversionProviderObject.addObject(JSON_RESOURCE);
+        mResourceObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
 
-        return AssetClientManager::get(client, owner, mConversionProviderObject, listener, true);
+        return ResourceClientManager::get(client, owner, mConversionProviderObject, listener, true);
       }
     }
 
@@ -92,13 +92,13 @@ namespace IsoRealms {
       mEventRelated.addString(JSON_KEY, "~");
       mEventRelated.addString("local", id.substr(2));
 
-      return AssetClientManager::get(client, owner, mEventRelated, listener, true);
+      return ResourceClientManager::get(client, owner, mEventRelated, listener, true);
     }
-    return AssetClientManager::get(client, owner, id, listener);
+    return ResourceClientManager::get(client, owner, id, listener);
   }
 
   void BindingRegistry::forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
-    AssetClientManager::forEachEntry(getTreeItemInfoFunction);
+    ResourceClientManager::forEachEntry(getTreeItemInfoFunction);
 
     for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
       mConversionProvider->forEachEntry(cProject, getTreeItemInfoFunction);
@@ -113,7 +113,7 @@ namespace IsoRealms {
         return mConversionProvider->renderIcon(cProject, id);
       }
     }
-    return AssetClientManager::renderIcon(id);
+    return ResourceClientManager::renderIcon(id);
   }
 
   void BindingRegistry::Dummy::bind(const std::string& function) const {
@@ -140,24 +140,12 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void BindingRegistry::Dummy::getWrappedProperties(IPropertyMaker& owner) {
+  void BindingRegistry::Dummy::getWrappedProperties(IComponentDefiner& definer) {
     // Nothing to do.
   }
 
-  bool BindingRegistry::Dummy::renderAssetIcon() const {
+  bool BindingRegistry::Dummy::renderResourceIcon() const {
     Utils::renderIconNone();
-    return true;
-  }
-
-  void BindingRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void BindingRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool BindingRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 

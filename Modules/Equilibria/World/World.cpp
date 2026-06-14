@@ -18,8 +18,8 @@
  */
 #include "World.h"
 
-#include "Modules/Equilibria/Assets/Type/IPhysicalObjectType.h"
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/Resources/Type/IPhysicalObjectType.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
@@ -50,7 +50,7 @@ World::World(Equilibria& equilibria, IComponentData& data) :
     });
 
     // Dummy physical object type.
-    added(cEquilibria.getAsset<IPhysicalObjectType>(&cDummyPhysicalObjectTypeUser, "None", cEquilibria));
+    added(cEquilibria.getResource<IPhysicalObjectType>(&cDummyPhysicalObjectTypeUser, "None", cEquilibria));
   }
 
   void World::load(IComponentData& resourceData, JSONObject object) {
@@ -127,49 +127,48 @@ World::World(Equilibria& equilibria, IComponentData& data) :
     updateCache();
   }
 
-  void World::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IEditable>(this, "", "Equilibria Worlds");
-    assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Worlds");
-    for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
-      mDebrisGenerator->registerAssets(assets, "DebrisGenerator");
-    }
-    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
-      mPlayer->registerAssets(assets, "Player");
-    }
-    for (std::unique_ptr<Zone>& mZone : cDefZones) {
-      mZone->registerAssets();
-    }
-  }
-
-  void World::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyEditor("Content", this);
-    owner.createPropertyNativeFloat(    "gravity",                 [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
-    owner.createPropertyNativeFloat(    "slopeForce",              [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
-    owner.createPropertyNativeInteger(  "bounceControl",           [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;}, DEFAULT_BOUNCE_CONTROL);
-    owner.createPropertyStruct(         "Editing", "Edit...",      [this, &metadata](IPropertyMaker& owner) {
-      owner.createPropertyNativeBoolean("basicProperties",         [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
-      owner.createPropertyNativeInteger("automaticZoneXSize",      [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;}, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
-      owner.createPropertyNativeInteger("automaticZoneYSize",      [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
-      owner.createPropertyNativeInteger("automaticZoneZSize",      [this]() {return cAutomaticZoneZSize;},           [this](int   value) {cAutomaticZoneZSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
-      owner.createPropertyTreeSelector( "automaticZoneManagement", cAutomaticZoneManagementType);
-      owner.createPropertyTreeSelector( "defaultThemeSet",         cDefaultThemeSet);
-      owner.createPropertyTreeSelector( "defaultWorldEditorTool",  cDefaultWorldEditorTool);
-      owner.createPropertyNativeInteger("editorMinX",              [this]() {return cEditorMinX;},                   [this](int   value) {cEditorMinX                   = value;}, DEFAULT_EDITOR_MIN_X);
-      owner.createPropertyNativeInteger("editorMaxX",              [this]() {return cEditorMaxX;},                   [this](int   value) {cEditorMaxX                   = value;}, DEFAULT_EDITOR_MAX_X);
-      owner.createPropertyNativeInteger("editorMinY",              [this]() {return cEditorMinY;},                   [this](int   value) {cEditorMinY                   = value;}, DEFAULT_EDITOR_MIN_Y);
-      owner.createPropertyNativeInteger("editorMaxY",              [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;}, DEFAULT_EDITOR_MAX_Y);
-      owner.createPropertyNativeInteger("editorMinZ",              [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;}, DEFAULT_EDITOR_MIN_Z);
-      owner.createPropertyNativeInteger("editorMaxZ",              [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;}, DEFAULT_EDITOR_MAX_Z);
+  void World::define(IComponentDefiner& definer) {
+    definer.propertyEditor("Content", this);
+    definer.propertyFloat(            "gravity",                 [this]() {return cDefGravity;},                   [this](float value) {cDefGravity                   = value;});
+    definer.propertyFloat(            "slopeForce",              [this]() {return cDefSurfaceAccelerationFactor;}, [this](float value) {cDefSurfaceAccelerationFactor = value;});
+    definer.propertyInteger(          "bounceControl",           [this]() {return cDefBounceTime;},                [this](bool  value) {cDefBounceTime                = value;}, DEFAULT_BOUNCE_CONTROL);
+    definer.scope(                    "Editing", "Edit...",      [this](IComponentDefiner& editingDefiner) {
+      editingDefiner.propertyBoolean( "basicProperties",         [this]() {return !cEditorBasicProperties;},       [this](bool  value) {cEditorBasicProperties        = !value;});
+      editingDefiner.propertyInteger( "automaticZoneXSize",      [this]() {return cAutomaticZoneXSize;},           [this](int   value) {cAutomaticZoneXSize           = value;}, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
+      editingDefiner.propertyInteger( "automaticZoneYSize",      [this]() {return cAutomaticZoneYSize;},           [this](int   value) {cAutomaticZoneYSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
+      editingDefiner.propertyInteger( "automaticZoneZSize",      [this]() {return cAutomaticZoneZSize;},           [this](int   value) {cAutomaticZoneZSize           = value;}, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
+      editingDefiner.propertyResource("automaticZoneManagement", cAutomaticZoneManagementType);
+      editingDefiner.propertyResource("defaultThemeSet",         cDefaultThemeSet);
+      editingDefiner.propertyResource("defaultWorldEditorTool",  cDefaultWorldEditorTool);
+      editingDefiner.propertyInteger( "editorMinX",              [this]() {return cEditorMinX;},                   [this](int   value) {cEditorMinX                   = value;}, DEFAULT_EDITOR_MIN_X);
+      editingDefiner.propertyInteger( "editorMaxX",              [this]() {return cEditorMaxX;},                   [this](int   value) {cEditorMaxX                   = value;}, DEFAULT_EDITOR_MAX_X);
+      editingDefiner.propertyInteger( "editorMinY",              [this]() {return cEditorMinY;},                   [this](int   value) {cEditorMinY                   = value;}, DEFAULT_EDITOR_MIN_Y);
+      editingDefiner.propertyInteger( "editorMaxY",              [this]() {return cEditorMaxY;},                   [this](int   value) {cEditorMaxY                   = value;}, DEFAULT_EDITOR_MAX_Y);
+      editingDefiner.propertyInteger( "editorMinZ",              [this]() {return cEditorMinZ;},                   [this](int   value) {cEditorMinZ                   = value;}, DEFAULT_EDITOR_MIN_Z);
+      editingDefiner.propertyInteger( "editorMaxZ",              [this]() {return cEditorMaxZ;},                   [this](int   value) {cEditorMaxZ                   = value;}, DEFAULT_EDITOR_MAX_Z);
       for (unsigned int i = 0; i < cAvailableWorldEditorTools.size(); i++) {
-        owner.createPropertyTreeSelector("editorTool", *cAvailableWorldEditorTools[i].get(), Options::EMPTY, [this, i]() {
+        editingDefiner.propertyResource("editorTool", *cAvailableWorldEditorTools[i].get(), Options::EMPTY, [this, i]() {
           cAvailableWorldEditorTools.erase(cAvailableWorldEditorTools.begin() + i);
         });
       }
     });
   }
 
+  void World::publish(ResourcePublisher& publisher) {
+    publisher.publish<IEditable>(this, "", "Equilibria Worlds");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Equilibria/Worlds");
+    for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
+      mDebrisGenerator->publish(publisher, "DebrisGenerator");
+    }
+    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->publish(publisher, "Player");
+    }
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->publish();
+    }
+  }
 
-  Equilibria& World::getAssetManager() {
+  Equilibria& World::getResourceManager() {
     return cEquilibria;
   }
 
@@ -780,23 +779,7 @@ World::World(Equilibria& equilibria, IComponentData& data) :
     return mReturnValue;
   }
 
-  bool World::renderAssetIcon() const {
-    return false;
-  }
-
-  void World::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void World::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool World::isDefaultConfiguration() const {
-    return true;
-  }
-
-  void World::DummyPhysicalObjectTypeUser::relinquish(IPhysicalObjectType* asset) {
+  void World::DummyPhysicalObjectTypeUser::relinquish(IPhysicalObjectType* resource) {
     // Nothing to do.
   }
 

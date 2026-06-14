@@ -18,7 +18,7 @@
  */
 #include "MenuItemProperty.h"
 
-#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Resources/Type/IFont.h"
 
 #include "IUIStyle.h"
 

@@ -51,8 +51,8 @@ namespace IsoRealms::Equilibria {
     void removed();
 
     void copy(Zone* zone);
-
-    void registerAssets();
+    
+    void publish();
     
     //
     void registerView(IScreen& screen);

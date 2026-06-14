@@ -23,12 +23,12 @@ namespace IsoRealms::Equilibria {
   }
 
   WallColumn::WallColumn(WallSegment* segment, std::optional<Condition>& condition) :
-              cCondition(condition) {
+            cCondition(condition) {
     cSegments.emplace_back(std::make_unique<WallSegment>(*segment));
   }
 
   WallColumn::WallColumn(WallColumn* column, std::optional<Condition>& condition) :
-              cCondition(condition) {
+            cCondition(condition) {
     for (unsigned int i = 0; i < column->cSegments.size(); i++) {
       cSegments.emplace_back(std::make_unique<WallSegment>(*column->cSegments[i]));
     }

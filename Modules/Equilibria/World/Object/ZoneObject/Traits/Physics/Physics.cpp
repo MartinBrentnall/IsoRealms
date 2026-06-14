@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 #include "Modules/Equilibria/World/Object/ZoneObject/ZoneObject.h"
 #include "Modules/Equilibria/World/World.h"
-#include "Modules/Equilibria/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitPhysics.h"
+#include "Modules/Equilibria/Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitPhysics.h"
 
 namespace IsoRealms::Equilibria {
   Physics::Physics(ZoneObject& object, ZoneObjectTypeTraitPhysics& type) :
@@ -35,7 +35,7 @@ namespace IsoRealms::Equilibria {
     });
   }
   
-  void Physics::registerAssets(ITraitRegistry& registry) {
+  void Physics::publish(ITraitRegistry& registry) {
     registry.registerPhysics(this);
     registry.registerProcessor(this);
   }

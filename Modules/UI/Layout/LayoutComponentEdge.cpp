@@ -30,8 +30,24 @@ namespace IsoRealms::UI {
             cDefOffset(*this) {
     setLocation(aspectRatio, value);
   }
-  
-  UI& LayoutComponentEdge::getAssetManager() {
+
+  LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag) :
+            LayoutComponentEdge(parent, 1.0f, 0.0f) {
+    JSONObject mEdgeObject = object.getObject(tag);
+    if (mEdgeObject.hasMember(JSON_LOCATION)) {
+      cDefLocation.init(mEdgeObject, JSON_LOCATION);
+    }
+    if (mEdgeObject.hasMember(JSON_OFFSET)) {
+      cDefOffset.init(mEdgeObject, JSON_OFFSET);
+    }
+  }
+
+  void LayoutComponentEdge::define(IComponentDefiner& definer) {
+    definer.propertyResource(JSON_LOCATION, cDefLocation);
+    definer.propertyResource(JSON_OFFSET,   cDefOffset);
+  }
+
+  UI& LayoutComponentEdge::getResourceManager() {
     return cDefParent.getLayout().getUI();
   }
 
@@ -46,18 +62,6 @@ namespace IsoRealms::UI {
   void LayoutComponentEdge::setOwner(ProjectFile* owner) {
     cDefParent.getLayout().getComponentData().setOwner(owner);
   }
-
-  LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag) :
-            LayoutComponentEdge(parent, 1.0f, 0.0f) {
-    JSONObject mEdgeObject = object.getObject(tag);
-    if (mEdgeObject.hasMember(JSON_LOCATION)) {
-      cDefLocation.init(mEdgeObject, JSON_LOCATION);
-    }
-    if (mEdgeObject.hasMember(JSON_OFFSET)) {
-      cDefOffset.init(mEdgeObject, JSON_OFFSET);
-    }
-  }
-
   void LayoutComponentEdge::setLocation(float aspectRatio, float value) {
     cDefLocation->setAbsolute(aspectRatio, value - cDefOffset->getOffset(aspectRatio));
   }
@@ -87,12 +91,6 @@ namespace IsoRealms::UI {
     cDefLocation.save(mEdgeObject, JSON_LOCATION);
     cDefOffset.save(mEdgeObject, JSON_OFFSET);
   }
-  
-  void LayoutComponentEdge::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector(JSON_LOCATION, cDefLocation);
-    owner.createPropertyTreeSelector(JSON_OFFSET,   cDefOffset);
-  }
-
   void LayoutComponentEdge::renderRelation(float aspectRatio) const {
     cDefLocation->renderRelation(aspectRatio);
     cDefOffset->renderRelation(aspectRatio);

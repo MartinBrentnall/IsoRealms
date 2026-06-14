@@ -58,22 +58,22 @@ namespace IsoRealms {
 
     void setID(const std::string& id) override {
       if (cDefComponent != nullptr) {
-        cManager.getAssetManager().release(this, cDefComponent);
+        cManager.getResourceManager().release(this, cDefComponent);
       }
 
       if (id == "") {
         cDefComponent = nullptr;
       } else {
-        cDefComponent = cManager.getAssetManager().template get<TYPE>(this, id);
+        cDefComponent = cManager.getResourceManager().template get<TYPE>(this, id);
       }
     }
 
     void save(JSONObject object, const std::string& name) const {
-      object.addString(name, cManager.getAssetManager().getComponentID(cDefComponent));
+      object.addString(name, cManager.getResourceManager().getComponentID(cDefComponent));
     }
 
     TreeItemInfo getTreeItemInfo() const override {
-      std::string mComponentID = cManager.getAssetManager().getComponentID(cDefComponent);
+      std::string mComponentID = cManager.getResourceManager().getComponentID(cDefComponent);
       std::optional<TreeItemInfo> mFound;
       forEachAvailableTreeItem([&mFound, &mComponentID](const TreeItemInfo& mTreeItemInfo) {
         if (mTreeItemInfo.cID == mComponentID) {
@@ -84,7 +84,7 @@ namespace IsoRealms {
     }
 
     std::string getTreeItemLabel() const override {
-      return cManager.getAssetManager().getComponentID(cDefComponent);
+      return cManager.getResourceManager().getComponentID(cDefComponent);
     }
 
     bool renderTreeItemIcon() const override {
@@ -99,7 +99,7 @@ namespace IsoRealms {
       return false; // TODO: Implement this.
     }
 
-    void getTreeItemProperties(IPropertyMaker& owner) override {
+    void getTreeItemProperties(IComponentDefiner& definer) override {
       // TODO: Implement this.
     }
 
@@ -108,7 +108,7 @@ namespace IsoRealms {
     }
 
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {
-      for (const std::string& mComponentID : cManager.getAssetManager().template getAvailableComponents<TYPE>()) {
+      for (const std::string& mComponentID : cManager.getResourceManager().template getAvailableComponents<TYPE>()) {
         getTreeItemInfoFunction(TreeItemInfo{mComponentID, mComponentID});
       }
     }
@@ -124,8 +124,8 @@ namespace IsoRealms {
     /***********************************\
      * Implements IComponentUser<TYPE> *
     \***********************************/
-    void relinquish(TYPE* asset) override {
-      if (cDefComponent == asset) {
+    void relinquish(TYPE* resource) override {
+      if (cDefComponent == resource) {
         cDefComponent = nullptr;
       }
     }

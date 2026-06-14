@@ -30,18 +30,13 @@ namespace IsoRealms::Equilibria {
             cDefEnteredAction(cActionContext),
             cDefExitedAction(cActionContext) {
   }
+void BoundaryHandler::define(IComponentDefiner& definer) {
+    definer.propertyResource("object",   cDefObjectType);
+    definer.propertyResource("boundary", cDefBoundaryType);
+    definer.propertyResource("onEntry",  cDefEnteredAction);
+    definer.propertyResource("onExit",   cDefExitedAction);
 
-  void BoundaryHandler::registerAssets(ComponentAssetRegistry& assets) {
-    // Nothing to do.
-  }
-
-  void BoundaryHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("object",   cDefObjectType);
-    owner.createPropertyTreeSelector("boundary", cDefBoundaryType);
-    owner.createPropertyTreeSelector("onEntry",  cDefEnteredAction);
-    owner.createPropertyTreeSelector("onExit",   cDefExitedAction);
-
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       cEquilibria.getProject().init([this]() {
         cEquilibria.added(this);
       });
@@ -98,7 +93,7 @@ namespace IsoRealms::Equilibria {
     return "";
   }
   
-  void BoundaryHandler::releaseBinding(const IBinding* asset) {
+  void BoundaryHandler::releaseBinding(const IBinding* resource) {
     // Nothing to do.
   }
 }

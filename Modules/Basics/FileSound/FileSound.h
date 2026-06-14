@@ -39,10 +39,10 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     FileSound(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-
+    
     // Interface called by module when adjusting global sound volume.
     void setVolume(float volume);
 
@@ -50,10 +50,7 @@ namespace IsoRealms::Basics {
      * Implements IAction *
     \**********************/
     void execute() override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    bool renderResourceIcon() const override;
 
     private:
     

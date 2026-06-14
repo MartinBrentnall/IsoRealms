@@ -23,7 +23,7 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Basics/Assets/Client/SequenceTrack.h"
+#include "Modules/Basics/Resources/Client/SequenceTrack.h"
 
 #include "Editor/SequenceEditor.h"
 #include "SequenceInstance.h"
@@ -38,13 +38,13 @@ namespace IsoRealms::Basics {
   class Sequence final : public IEditable {
     public:
     Sequence(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
 
-    /***************************\
-     * Asset client interfaces *
-    \***************************/
-    Basics& getAssetManager();
+    /******************************\
+     * Resource client interfaces *
+    \******************************/
+    Basics& getResourceManager();
     IsoRealms::Project& getProject() const;
     bool isReadOnly() const;
     void setOwner(ProjectFile* owner);
@@ -70,10 +70,6 @@ namespace IsoRealms::Basics {
     void load(IComponentData& resourceData, JSONObject object) override;
     void save(IComponentData& resourceData, JSONObject object) const override;
     IEditableScreen* createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     void resetSequence();
     void stopPreview();
@@ -88,7 +84,7 @@ namespace IsoRealms::Basics {
     SequenceTrack& getTrack(unsigned int track) const;
     unsigned int getDuration() const;
     void addTrack();
-    void refreshAssetRegistration();
+    void refreshResourceRegistration();
     void deleteTrack(unsigned int track);
     void trackStateChanged(SequenceTrack& track);
 
@@ -102,11 +98,7 @@ namespace IsoRealms::Basics {
         * Implements IInteger *
       \***********************/
       int getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-
+      
       private:
       Sequence& cParent;
     };

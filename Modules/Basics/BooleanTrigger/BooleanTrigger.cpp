@@ -26,14 +26,10 @@ namespace IsoRealms::Basics {
             cDefTrueAction(data.getDummyActionContext()),
             cDefFalseAction(data.getDummyActionContext()) {
   }
-  
-  void BooleanTrigger::registerAssets(ComponentAssetRegistry& assets) {
-    // Nothing to do.
-  }
 
-  void BooleanTrigger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("value",           cDefValue);
-    owner.createPropertyTreeSelector("onBecomingTrue",  cDefTrueAction);
-    owner.createPropertyTreeSelector("onBecomingFalse", cDefFalseAction);
+  void BooleanTrigger::define(IComponentDefiner& definer) {
+    definer.propertyResource("value",           cDefValue);
+    definer.propertyResource("onBecomingTrue",  cDefTrueAction);
+    definer.propertyResource("onBecomingFalse", cDefFalseAction);
   }
 }

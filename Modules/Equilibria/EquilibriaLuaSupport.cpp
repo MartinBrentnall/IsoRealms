@@ -20,7 +20,7 @@
 
 #include <sol.hpp>
 
-#include "Assets/Fixed/ZoneViewType/ZoneViewOverview.h"
+#include "Resources/Fixed/ZoneViewType/ZoneViewOverview.h"
 #include "AlienType/AlienType.h"
 #include "PlayerType/PlayerType.h"
 #include "Equilibria.h"

@@ -21,8 +21,8 @@
 #include "IsoRealms.h"
 
 #include "AnalogueControl/AnalogueControl.h"
-#include "Assets/Fixed/AnalogueInput/DigitalToAnalogueMapping.h"
-#include "Assets/Registry/SequenceTrackRegistry.h"
+#include "Resources/Fixed/AnalogueInput/DigitalToAnalogueMapping.h"
+#include "Resources/Registry/SequenceTrackRegistry.h"
 #include "BooleanTrigger/BooleanTrigger.h"
 #include "DigitalControl/DigitalControl.h"
 #include "FileFont/FileFont.h"
@@ -49,14 +49,14 @@ namespace IsoRealms::Basics {
     public:
     Basics(IsoRealms::Project& project, IComponentTypeRegistry& registry);
 
-    void refreshAssetRegistration(Sequence& sequence);
+    void refreshResourceRegistration(Sequence& sequence);
 
     const Metadata& getMetadata(const std::string& key) const;
 
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ComponentAssetRegistry& assets) override;
+    void publish(ResourcePublisher& publisher) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
@@ -65,20 +65,20 @@ namespace IsoRealms::Basics {
     IsoRealms::Project& getProject() const;
     unsigned int getAvailableFunctionID() const;
 
-    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
-      cSequenceTracks.release(user, asset);
+    template <typename TYPE> void release(IResourceUser<TYPE>* user, TYPE* resource) {
+      cSequenceTracks.release(user, resource);
     }
 
-    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* asset) const {
-      return cSequenceTracks.getTreeItemInfo(asset);
+    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* resource) const {
+      return cSequenceTracks.getTreeItemInfo(resource);
     }
 
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* asset) const {
-      return cSequenceTracks.getPropertyMetadata(asset);
+    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
+      return cSequenceTracks.getPropertyMetadata(resource);
     }
 
-    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
-      cSequenceTracks.save(object, asset);
+    template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
+      cSequenceTracks.save(object, resource);
     }
 
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& f) const {
@@ -93,15 +93,15 @@ namespace IsoRealms::Basics {
       return cSequenceTracks.hasConfiguration(id);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IResourceUser<TYPE>* user, OWNER& owner) {
       return cSequenceTracks.getDefault(user, owner);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
       return cSequenceTracks.get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
       return cSequenceTracks.get(user, owner, object, listener, required);
     }
 
@@ -133,7 +133,7 @@ namespace IsoRealms::Basics {
     
     Script cActionScript;
 
-    // Asset registries
+    // Resource registries
     SequenceTrackRegistry cSequenceTracks;
 
     ComponentTypeDefinition<Basics, AnalogueControl>   cComponentTypeAnalogueControl;
@@ -157,7 +157,7 @@ namespace IsoRealms::Basics {
     ComponentTypeDefinition<Basics, SimpleVertex>      cComponentTypeSimpleVertex;
     ComponentTypeDefinition<Basics, Sprite>            cComponentTypeSprite;
 
-    AssetInstanced<IComponentData, IAnalogueInput, DigitalToAnalogueMapping> cDigitalToAnalogueMapping;
+    ResourceInstanced<IComponentData, IAnalogueInput, DigitalToAnalogueMapping> cDigitalToAnalogueMapping;
 
     LuaBinding<Basics> cLuaBinding;
 

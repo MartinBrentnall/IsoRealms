@@ -18,8 +18,8 @@
  */
 #include "ConditionElement.h"
 
-#include "IsoRealms/Assets/Type/IBoolean.h"
-#include "IsoRealms/Assets/Type/IScreen.h"
+#include "IsoRealms/Resources/Type/IBoolean.h"
+#include "IsoRealms/Resources/Type/IScreen.h"
 
 namespace IsoRealms {
   ConditionElement::ConditionElement(std::function<std::string()> nameFunction, IScreen& icon, IBoolean* input) :

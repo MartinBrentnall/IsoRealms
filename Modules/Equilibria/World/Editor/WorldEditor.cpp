@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 
 namespace IsoRealms::Equilibria {
-  WorldEditor::WorldEditor(Project& assets, World& world, IDialogManager& dialogManager) :
+  WorldEditor::WorldEditor(Project& project, World& world, IDialogManager& dialogManager) :
             cAnalogueInputsByName({
               {"MoveViewIn",      &cDistanceInSpeed},
               {"MoveViewOut",     &cDistanceOutSpeed},
@@ -99,10 +99,10 @@ namespace IsoRealms::Equilibria {
     IWorldEditorTool* mDefaultTool = world.getDefaultWorldEditorTool();
     cToolbar.selectInstance(mDefaultTool);
 
-    // TODO: I think 'assets' is wrong... should be local assets, not the whole project.
-    cScreenYawNotifier   = assets.add<IFloat>(&cScreenYaw,   "EditorYaw",   "System");
-    cScreenPitchNotifier = assets.add<IFloat>(&cScreenPitch, "EditorPitch", "System");
-    assets.add<IScreen>(this, "Editor", "External"); // TODO: Should have a unique name in case multple instances
+    // TODO: I think 'project' is wrong... should be local resources, not the whole project.
+    cScreenYawNotifier   = project.add<IFloat>(&cScreenYaw,   "EditorYaw",   "System");
+    cScreenPitchNotifier = project.add<IFloat>(&cScreenPitch, "EditorPitch", "System");
+    project.add<IScreen>(this, "Editor", "External"); // TODO: Should have a unique name in case multple instances
     cProxyScreen = world.getEquilibria().getProject().getScreenProxy(this);
   }
 
@@ -201,10 +201,6 @@ namespace IsoRealms::Equilibria {
   }
 
   TerrainBrush& WorldEditor::getTerrainBrush() {
-    return cTerrainBrush;
-  }
-
-  const TerrainBrush& WorldEditor::getTerrainBrush() const {
     return cTerrainBrush;
   }
 
@@ -421,22 +417,6 @@ namespace IsoRealms::Equilibria {
     glPopAttrib();
   }
 
-  bool WorldEditor::renderAssetIcon() const {
-    return false;
-  }
-
-  void WorldEditor::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void WorldEditor::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool WorldEditor::isDefaultConfiguration() const {
-    return true;
-  }
-
   void WorldEditor::notifyVisible() {
     cWorld.getEquilibria().setAllThemesInUse(true);
   }
@@ -523,6 +503,24 @@ namespace IsoRealms::Equilibria {
     }
   }
 
+  void WorldEditor::move(float x, float y, float z) {
+    LiteralVertex mNewLocation;
+    mNewLocation.x = std::clamp(cLocation.x + x, static_cast<double>(cWorld.getMinX()), static_cast<double>(cWorld.getMaxX()));
+    mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld.getMinY()), static_cast<double>(cWorld.getMaxY()));
+    mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld.getMinZ()), static_cast<double>(cWorld.getMaxZ()));
+    double mSnapInterval = cSelectedTool != nullptr ? cSelectedTool->getSnapInterval() : 1.0;
+    if (isCursorLocked() || (std::abs(x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get())) {
+      mNewLocation.x = Utils::round(mNewLocation.x, mSnapInterval, cXDirection);
+    }
+    if (isCursorLocked() || (std::abs(y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get())) {
+      mNewLocation.y = Utils::round(mNewLocation.y, mSnapInterval, cYDirection);
+    }
+    if (isCursorLocked() || (std::abs(z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get())) {
+      mNewLocation.z = Utils::round(mNewLocation.z, mSnapInterval, cZDirection);
+    }
+    cLocation = mNewLocation;
+  }
+
   void WorldEditor::rotate(float rotate, float tilt) {
     cTilt += tilt * 0.3f;
     cRotation += rotate * 0.3f;
@@ -548,24 +546,6 @@ namespace IsoRealms::Equilibria {
     return !cHasFocus || (cSelectedTool != nullptr ? cSelectedTool->isCursorLocked() : false);
   }
 
-  void WorldEditor::move(float x, float y, float z) {
-    LiteralVertex mNewLocation;
-    mNewLocation.x = std::clamp(cLocation.x + x, static_cast<double>(cWorld.getMinX()), static_cast<double>(cWorld.getMaxX()));
-    mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld.getMinY()), static_cast<double>(cWorld.getMaxY()));
-    mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld.getMinZ()), static_cast<double>(cWorld.getMaxZ()));
-    double mSnapInterval = cSelectedTool != nullptr ? cSelectedTool->getSnapInterval() : 1.0;
-    if (isCursorLocked() || (std::abs(x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get())) {
-      mNewLocation.x = Utils::round(mNewLocation.x, mSnapInterval, cXDirection);
-    }
-    if (isCursorLocked() || (std::abs(y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get())) {
-      mNewLocation.y = Utils::round(mNewLocation.y, mSnapInterval, cYDirection);
-    }
-    if (isCursorLocked() || (std::abs(z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get())) {
-      mNewLocation.z = Utils::round(mNewLocation.z, mSnapInterval, cZDirection);
-    }
-    cLocation = mNewLocation;
-  }
-
   World& WorldEditor::getWorld() const {
     return cWorld;
   }
@@ -576,22 +556,6 @@ namespace IsoRealms::Equilibria {
 
   float WorldEditor::ScreenFloat::getValue() const {
     return *cValue;
-  }
-
-  bool WorldEditor::ScreenFloat::renderAssetIcon() const {
-    return false;
-  }
-
-  void WorldEditor::ScreenFloat::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void WorldEditor::ScreenFloat::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool WorldEditor::ScreenFloat::isDefaultConfiguration() const {
-    return true;
   }
 
   IScreen* WorldEditor::screen() {

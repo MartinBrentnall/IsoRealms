@@ -28,9 +28,9 @@ namespace IsoRealms::Equilibria {
             cLuaBinding(parent.getEquilibria().getProject().getLuaState(), this) {
   }
 
-  void ThemeColour::registerAssets(ComponentAssetRegistry& assets, const std::string& id) {
-    assets.add<IColour>(this, id, "Colours from Equilibria Themes"); // TODO: Localize this.
-    assets.add<IBinding>(&cLuaBinding, "ThemeColour/" + id, "Equilibria/Theme Colours");
+  void ThemeColour::publish(ResourcePublisher& publisher, const std::string& id) {
+    publisher.publish<IColour>(this, id, "Colours from Equilibria Themes"); // TODO: Localize this.
+    publisher.publish<IBinding>(&cLuaBinding, "ThemeColour/" + id, "Equilibria/Theme Colours");
   }
   
   void ThemeColour::set(IColour* colour) {
@@ -51,18 +51,6 @@ namespace IsoRealms::Equilibria {
 
   float ThemeColour::getAlpha() const {
     return cColour != nullptr ? cColour->getAlpha() : 0.0f;
-  }
-
-  void ThemeColour::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ThemeColour::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ThemeColour::isDefaultConfiguration() const {
-    return true;
   }
 
   void ThemeColour::set() const {

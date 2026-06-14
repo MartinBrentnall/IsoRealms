@@ -27,23 +27,23 @@ namespace IsoRealms::UI {
             cDefPositiveAction(data.getDummyActionContext()),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void Prompt::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IInputHandler>(this, "", "Prompts");
-    assets.add<IScreen>(this, "", "Prompts");
-    assets.add<IBinding>(&cLuaBinding, "", "Prompts");
-  }
 
-  void Prompt::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("font",            cDefFont);
-    owner.createPropertyNativeFloat( "textSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;}, DEFAULT_TEXT_SIZE);
-    owner.createPropertyNativeFloat( "shadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
-    owner.createPropertyTreeSelector("selectionColour", cDefSelectionColour);
-    owner.createPropertyNativeString("message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
-    owner.createPropertyNativeString("cancelLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
-    owner.createPropertyNativeString("confirmLabel",    [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
-    owner.createPropertyTreeSelector("onCancel",        cDefNegativeAction);
-    owner.createPropertyTreeSelector("onConfirm",       cDefPositiveAction);
+  void Prompt::define(IComponentDefiner& definer) {
+    definer.propertyResource("font",            cDefFont);
+    definer.propertyFloat(   "textSize",        [this]() {return cDefTextSize;},     [this](float              value) {cDefTextSize     = value;}, DEFAULT_TEXT_SIZE);
+    definer.propertyFloat(   "shadowOffset",    [this]() {return cDefShadowOffset;}, [this](float              value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyResource("selectionColour", cDefSelectionColour);
+    definer.propertyString(  "message",         [this]() {return cDefMessage;},      [this](const std::string& value) {cDefMessage      = value;});
+    definer.propertyString(  "cancelLabel",     [this]() {return cDefNegativeText;}, [this](const std::string& value) {cDefNegativeText = value;});
+    definer.propertyString(  "confirmLabel",    [this]() {return cDefPositiveText;}, [this](const std::string& value) {cDefPositiveText = value;});
+    definer.propertyResource("onCancel",        cDefNegativeAction);
+    definer.propertyResource("onConfirm",       cDefPositiveAction);
+  }
+  
+  void Prompt::publish(ResourcePublisher& publisher) {
+    publisher.publish<IInputHandler>(this, "", "Prompts");
+    publisher.publish<IScreen>(this, "", "Prompts");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Prompts");
   }
   
   void Prompt::reset() {
@@ -89,21 +89,5 @@ namespace IsoRealms::UI {
     Utils::shadowPrint( 0.0f,                 0.0f, **cDefFont, cDefTextSize,                                                        mWhite, cDefShadowOffset, IFont::Alignment::CENTER, cDefMessage);
     Utils::shadowPrint(-0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize, !cRuntimePositiveHighlighted ? **cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::LEFT,   cDefNegativeText);
     Utils::shadowPrint( 0.5f, -cDefTextSize * 2.0f, **cDefFont, cDefTextSize,  cRuntimePositiveHighlighted ? **cDefSelectionColour : mWhite, cDefShadowOffset, IFont::Alignment::RIGHT,  cDefPositiveText);
-  }
-
-  bool Prompt::renderAssetIcon() const {
-    return false;
-  }
-
-  void Prompt::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Prompt::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Prompt::isDefaultConfiguration() const {
-    return true;
   }
 }

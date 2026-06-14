@@ -19,12 +19,12 @@
 #include "Project.h"
 
 #include "IsoRealms/Application.h"
-#include "IsoRealms/Assets/Type/IScreenListener.h"
+#include "IsoRealms/Resources/Type/IScreenListener.h"
 #include "IsoRealms/DisplayResolution.h"
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/PropertyData.h"
-#include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/ComponentLoader.h"
 
 #include "Module.h"
 
@@ -72,7 +72,7 @@ namespace IsoRealms {
     // Load modules and any components declared within them
     std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadComponents(cDefProjectFileStructure);
     for (const std::unique_ptr<Module>& mModule : cDefModules) {
-      mModule->registerAssets();
+      mModule->publish();
     }
     cComponentsLoaded = true;
 
@@ -99,7 +99,7 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
     mOpenedDocuments.emplace_back(std::move(mProjectDocument));
 
-    PropertyLoader mLoader(*this, mProjectObject);
+    ComponentLoader mLoader(*this, mProjectObject);
     getProperties(mLoader, &file);
 
     for (JSONThing mModuleThing : mProjectObject.getObject(JSON_MODULES)) {
@@ -238,7 +238,7 @@ namespace IsoRealms {
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
       file.save(mProjectObject);
 
-      // Save project used assets
+      // Save project used resources
       cDefScreen.save(mProjectObject, JSON_SCREEN, file);
       cDefInputHandler.save(mProjectObject, JSON_INPUT, file);
       cDefDefaultEditor.save(mProjectObject, JSON_EDITOR, file);
@@ -283,16 +283,16 @@ namespace IsoRealms {
     return cDefProjectFileStructure.cFile.isUser();
   }
 
-  void Project::getProperties(IPropertyMaker& propertyMaker, ProjectFile* loadOwner) {
+  void Project::getProperties(IComponentDefiner& definer, ProjectFile* loadOwner) {
     const Metadata& mMetadata = cApplication.getMetadata("Application");
-    if (!propertyMaker.loadsPersistedValues()) {
-      propertyMaker.createPropertyStruct("FileStructure", "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
-        cDefProjectFileStructure.getProperties(propertyMaker, mMetadata, *this, false);
+    if (!definer.loadsPersistedValues()) {
+      definer.scope("FileStructure", "Edit...", [this, &mMetadata](IComponentDefiner& definer) {
+        cDefProjectFileStructure.getProperties(definer, mMetadata, *this, false);
       });
-      propertyMaker.createPropertyStruct(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this, &mMetadata](IPropertyMaker& propertyMaker) {
-        propertyMaker.createPropertyArray("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &propertyMaker, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
-          propertyMaker.createPropertyStruct("LaunchConfiguration", launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IPropertyMaker& propertyMaker) {
-            launchConfiguration.getProperties(propertyMaker, mMetadata, *this);
+      definer.scope(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this, &mMetadata](IComponentDefiner& definer) {
+        definer.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &definer, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
+          definer.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IComponentDefiner& definer) {
+            launchConfiguration.getProperties(definer, mMetadata, *this);
           }, [this, &launchConfiguration]() {
             Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
           });
@@ -301,11 +301,11 @@ namespace IsoRealms {
         });
       });
     }
-    cDefActionOnStart.getProperty(       propertyMaker, mMetadata, JSON_ON_START,        loadOwner);
-    cDefActionOnCloseRequest.getProperty(propertyMaker, mMetadata, JSON_ON_CLOSE_REQUEST, loadOwner);
-    cDefInputHandler.getProperty(        propertyMaker, mMetadata, JSON_INPUT,           loadOwner);
-    cDefScreen.getProperty(              propertyMaker, mMetadata, JSON_SCREEN,          loadOwner);
-    cDefDefaultEditor.getProperty(       propertyMaker, mMetadata, JSON_EDITOR,          loadOwner);
+    cDefActionOnStart.getProperty(       definer, mMetadata, JSON_ON_START,        loadOwner);
+    cDefActionOnCloseRequest.getProperty(definer, mMetadata, JSON_ON_CLOSE_REQUEST, loadOwner);
+    cDefInputHandler.getProperty(        definer, mMetadata, JSON_INPUT,           loadOwner);
+    cDefScreen.getProperty(              definer, mMetadata, JSON_SCREEN,          loadOwner);
+    cDefDefaultEditor.getProperty(       definer, mMetadata, JSON_EDITOR,          loadOwner);
   }
   
   IEditable* Project::getDefaultEditable() {
@@ -318,7 +318,7 @@ namespace IsoRealms {
 
   Module* Project::loadModule(const std::string& moduleName) {
     Module* mModule = cDefModules.emplace_back(std::make_unique<Module>(moduleName, *this, &cLuaState)).get();
-    mModule->registerAssets();
+    mModule->publish();
     return mModule;
   }
 
@@ -476,27 +476,27 @@ namespace IsoRealms {
     cLuaState.setCurrentEventBindings(eventBindings);
   }
 
-  IBoolean* Project::createLiteralBoolean(IAssetUser<IBoolean>* user, IComponentData& owner, bool value) {
+  IBoolean* Project::createLiteralBoolean(IResourceUser<IBoolean>* user, IComponentData& owner, bool value) {
     return cBooleans.literal(user, owner, value);
   }
   
-  IColour* Project::createLiteralColour(IAssetUser<IColour>* user, IComponentData& owner, float red, float green, float blue, float alpha) {
+  IColour* Project::createLiteralColour(IResourceUser<IColour>* user, IComponentData& owner, float red, float green, float blue, float alpha) {
     return cColours.literal(user, owner, red, green, blue, alpha);
   }
   
-  IFloat* Project::createLiteralFloat(IAssetUser<IFloat>* user, IComponentData& owner, float value) {
+  IFloat* Project::createLiteralFloat(IResourceUser<IFloat>* user, IComponentData& owner, float value) {
     return cFloats.literal(user, owner, value);
   }
   
-  IInteger* Project::createLiteralInteger(IAssetUser<IInteger>* user, IComponentData& owner, int value) {
+  IInteger* Project::createLiteralInteger(IResourceUser<IInteger>* user, IComponentData& owner, int value) {
     return cIntegers.literal(user, owner, value);
   }
   
-  IString* Project::createLiteralString(IAssetUser<IString>* user, IComponentData& owner, const std::string& value) {
+  IString* Project::createLiteralString(IResourceUser<IString>* user, IComponentData& owner, const std::string& value) {
     return cStrings.literal(user, owner, value);
   }
   
-  IVertex*  Project::createLiteralVertex(IAssetUser<IVertex>* user, IComponentData& owner, float x, float y, float z) {
+  IVertex*  Project::createLiteralVertex(IResourceUser<IVertex>* user, IComponentData& owner, float x, float y, float z) {
     return cVertices.literal(user, owner, x, y, z);
   }
 
@@ -552,7 +552,7 @@ namespace IsoRealms {
     return *this;
   }
 
-  Project& Project::getAssetManager() {
+  Project& Project::getResourceManager() {
     return *this;
   }
 
@@ -564,7 +564,7 @@ namespace IsoRealms {
     return cApplication.getMetadata("Application");
   }
 
-  void Project::reregisterAssets() {
+  void Project::republish() {
     // Nothing to do.
   }
 
@@ -584,19 +584,5 @@ namespace IsoRealms {
     cParent.finish(true);
   }
 
-  bool Project::QuitAction::renderAssetIcon() const {
-    return false;
-  }
-
-  void Project::QuitAction::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Project::QuitAction::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
   
-  bool Project::QuitAction::isDefaultConfiguration() const {
-    return true;
-  }
 }

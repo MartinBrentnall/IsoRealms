@@ -33,7 +33,6 @@ namespace IsoRealms::UI {
     LayoutComponent(Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio);
     LayoutComponent(Layout& layout, JSONObject object);
     void reset();
-    void registerAssets(ComponentAssetRegistry& assets, const std::string& name);
     void render(float scale, float aspectRatio);
     void renderRegion(float scale, float aspectRatio);
     void renderEditor(float scale, float aspectRatio);
@@ -65,7 +64,8 @@ namespace IsoRealms::UI {
     Layout& getLayout();
     std::string getName() const;
     std::vector<std::string> getAvailableComponentNames();
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher, const std::string& name);
 
     /***********************\
      * Scripting Interface *

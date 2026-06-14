@@ -20,7 +20,7 @@
 
 #include "LuaState.h"
 
-#include "IsoRealms/Assets/IEventBindings.h"
+#include "IsoRealms/Resources/IEventBindings.h"
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Editing/IDialogManager.h"
 #include "IsoRealms/Project/Project.h"

@@ -51,9 +51,8 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     FileFont(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);  
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);  
     ~FileFont();
 
     /********************\
@@ -63,11 +62,7 @@ namespace IsoRealms::Basics {
     float getWidth(float, const std::string& text) override;
     float getHeight(float, const std::string& text) override;
     unsigned int getChar(float, float, const std::string& text) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
+    
     private:
 
     inline static const int DEFAULT_DETAIL         = 64;

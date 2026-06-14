@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/Resources/Type/IBinding.h"
 #include "IsoRealms/Project/LuaState.h"
 
 namespace sol {
@@ -48,22 +48,14 @@ namespace IsoRealms {
     /***********************\
      * Implements IBinding *
     \***********************/    
-    bool renderAssetIcon() const override {
+    bool renderResourceIcon() const override {
       return cIcon != nullptr ? cIcon() : false;
     }
 
-    void saveAsset(JSONObject object) const override {
+    void saveResource(JSONObject object) const override {
       if (cEvent) {
         object.addString(JSON_LOCAL, cLuaState.getBindingID(this));
       }
-    }
-
-    void getAssetProperties(IPropertyMaker& owner) override {
-      // Nothing to do.
-    }
-
-    bool isDefaultConfiguration() const override {
-      return true; // TODO?
     }
 
     void bind(const std::string& bindFunction) const override;
@@ -88,7 +80,7 @@ namespace IsoRealms {
       // Nothing to do.
     }
 
-    void getWrappedProperties(IPropertyMaker& owner) override {
+    void getWrappedProperties(IComponentDefiner& definer) override {
       // Nothing to do.
     }
 

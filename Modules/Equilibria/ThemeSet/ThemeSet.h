@@ -30,10 +30,10 @@ namespace IsoRealms::Equilibria {
   class ThemeSet {
     public:
     ThemeSet(Equilibria& equilibria, IComponentData& data);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     void hintInUse(bool inUse);
-    void registerAssets(ComponentAssetRegistry& assets);
-
+    
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
 
@@ -66,8 +66,8 @@ namespace IsoRealms::Equilibria {
 
     std::string getAvailableTextureElementKey();
     std::string getAvailableColourElementKey();
-    void createTextureElementProperty(IPropertyMaker& owner, ThemeTexture* element);
-    void createColourElementProperty(IPropertyMaker& owner, ThemeColour* element);
+    void createTextureElementProperty(IComponentDefiner& definer, ThemeTexture* element);
+    void createColourElementProperty(IComponentDefiner& definer, ThemeColour* element);
 
     float getAnimation();
     ITexture* getPreviousTexture(ThemeTexture* texture);

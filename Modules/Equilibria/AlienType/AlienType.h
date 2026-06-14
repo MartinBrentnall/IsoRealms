@@ -23,9 +23,9 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Type/IPhysicalObjectType.h"
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Equilibria/EquilibriaAssetRegistry.h"
+#include "Modules/Equilibria/Resources/Type/IPhysicalObjectType.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/EquilibriaResourceRegistry.h"
 
 namespace IsoRealms::Equilibria {
   class Equilibria;
@@ -42,11 +42,12 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     AlienType(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
+    void publish(const std::string& parentID);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
-
+    
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
 
@@ -56,7 +57,6 @@ namespace IsoRealms::Equilibria {
     void reset();
 
     // Interface to be used by module.
-    void registerAssets(const std::string& parentID);
     
     // Interface to be used by alien instances.
     std::unique_ptr<ModelInstance> createModel();
@@ -86,10 +86,7 @@ namespace IsoRealms::Equilibria {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    bool renderResourceIcon() const override;
 
     private:
 
@@ -128,7 +125,7 @@ namespace IsoRealms::Equilibria {
     Equilibria& cEquilibria; /// Equilibria module reference.
 
     // Asset registry.
-    EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
+    EquilibriaResourceRegistry cResources; /// Equilibria resource registry.
 
     // Definition data
     Model cDefModel;                               /// Visual representation of this alien type.

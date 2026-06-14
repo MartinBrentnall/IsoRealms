@@ -643,15 +643,15 @@ namespace IsoRealms::Equilibria {
     cZone.remove(this);
   }
 
-  void Terrain::getProperties(IPropertyMaker& owner) {
+  void Terrain::define(IComponentDefiner& definer) {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
-    owner.createPropertyCondition(JSON_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    definer.propertyCondition(JSON_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cZone.updateDisplayList();
     });
     if (!cZone.getWorld().isBasicProperties()) {
-      owner.createPropertyList(JSON_BEHAVIOUR,
+      definer.propertyList(JSON_BEHAVIOUR,
                                std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                         BEHAVIOUR_INVISIBLE,
                                                         BEHAVIOUR_GHOST,

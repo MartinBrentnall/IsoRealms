@@ -24,7 +24,7 @@ namespace IsoRealms::Replay {
     registry.add(&cComponentTypeReplayer, "Replayer");
   }
 
-  void Replay::registerAssets(ComponentAssetRegistry& assets) {
+  void Replay::publish(ResourcePublisher& publisher) {
     // Nothing to do.
   }
   

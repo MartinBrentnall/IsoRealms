@@ -20,19 +20,19 @@
 
 #include <stdexcept>
 
-#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Resources/Type/IFont.h"
 #include "IsoRealms/Metadata.h"
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/ComponentEditor.h"
 
 namespace IsoRealms {
-  PropertyOptional::PropertyOptional(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :
+  PropertyOptional::PropertyOptional(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :
             Property(data, resourceAccessManager, nullptr),
             cNoneLabel(noneLabel),
             cNoneIcon(noneIcon),
             cValueGetter(valueGetter),
             cOptionalSource(optionalSource),
             cWrapperType(*this),
-            cSubProperty(owner, resourceAccessManager, resourceData, data, cWrapperType),
+            cSubProperty(definer, resourceAccessManager, resourceData, data, cWrapperType),
             cChoiceCallback(choiceCallback),
             cPropertyManager(nullptr),
             cProject(project),
@@ -118,7 +118,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyOptional::OptionWrapper::getTreeItemProperties(IPropertyMaker& owner) {
+  void PropertyOptional::OptionWrapper::getTreeItemProperties(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

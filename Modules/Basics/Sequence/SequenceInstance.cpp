@@ -61,12 +61,18 @@ namespace IsoRealms::Basics {
     return cParent;
   }
 
-  void SequenceInstance::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
-    assets.add<IInteger>(&cExposedPosition,  parentID + "/Position",  "Sequences");
-    assets.add<IInteger>(&cExposedRemaining, parentID + "/Remaining", "Sequences");
-    assets.add<IBinding>(&cLuaBinding,       parentID,                "Sequences");
+  void SequenceInstance::define(IComponentDefiner& definer) {
+    definer.propertyString( "name",          [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, "", [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
+    definer.propertyInteger(JSON_START_TIME, [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
+    definer.propertyFloat(  JSON_SPEED,      [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;}, 1.0f);
+  }
+
+  void SequenceInstance::publish(ResourcePublisher& publisher, const std::string& parentID) {
+    publisher.publish<IInteger>(&cExposedPosition,  parentID + "/Position",  "Sequences");
+    publisher.publish<IInteger>(&cExposedRemaining, parentID + "/Remaining", "Sequences");
+    publisher.publish<IBinding>(&cLuaBinding,       parentID,                "Sequences");
     for (ISequenceTrackInstance* mTrack : cTrackInstances) {
-      mTrack->registerAssets(assets, parentID);
+      mTrack->publish(publisher, parentID);
     }
   }
 
@@ -133,12 +139,6 @@ namespace IsoRealms::Basics {
     object.addFloat(JSON_SPEED, cDefSpeed, 1.0f);
   }
 
-  void SequenceInstance::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString( "name",          [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, "", [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
-    owner.createPropertyNativeInteger(JSON_START_TIME, [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
-    owner.createPropertyNativeFloat(  JSON_SPEED,      [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;}, 1.0f);
-  }
-
   void SequenceInstance::play() {
     cRuntimePlaying = true;
   }
@@ -168,22 +168,6 @@ namespace IsoRealms::Basics {
     return cParent.cRuntimePosition;
   }
 
-  bool SequenceInstance::Position::renderAssetIcon() const {
-    return false;
-  }
-
-  void SequenceInstance::Position::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SequenceInstance::Position::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SequenceInstance::Position::isDefaultConfiguration() const {
-    return true;
-  }
-
   SequenceInstance::Remaining::Remaining(SequenceInstance& parent) :
             cParent(parent) {
   }
@@ -192,19 +176,4 @@ namespace IsoRealms::Basics {
     return -cParent.cRuntimePosition + cParent.cParent.getDuration();
   }
 
-  bool SequenceInstance::Remaining::renderAssetIcon() const {
-    return false;
-  }
-
-  void SequenceInstance::Remaining::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SequenceInstance::Remaining::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SequenceInstance::Remaining::isDefaultConfiguration() const {
-    return true;
-  }
 }

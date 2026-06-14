@@ -18,7 +18,7 @@
  */
 #include "JSONDocument.h"
 
-#include "IsoRealms/Assets/Client/File.h"
+#include "IsoRealms/Resources/Client/File.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Utils.h"
 

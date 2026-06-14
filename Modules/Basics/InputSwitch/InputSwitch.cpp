@@ -24,14 +24,14 @@ namespace IsoRealms::Basics {
             cRuntimeInputHandler(*cDefInputHandler),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void InputSwitch::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IInputHandler>(this, "", "Input Switches");
-    assets.add<IBinding>(&cLuaBinding, "", "Input Switches");
+
+  void InputSwitch::define(IComponentDefiner& definer) {
+    definer.propertyResource("value", cDefInputHandler);
   }
 
-  void InputSwitch::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("value", cDefInputHandler);
+  void InputSwitch::publish(ResourcePublisher& publisher) {
+    publisher.publish<IInputHandler>(this, "", "Input Switches");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Input Switches");
   }
 
   void InputSwitch::reset() {
@@ -49,22 +49,6 @@ namespace IsoRealms::Basics {
     if (cRuntimeInputHandler != nullptr) {
       cRuntimeInputHandler->resetInput();
     }
-  }
-
-  bool InputSwitch::renderAssetIcon() const {
-    return false;
-  }
-
-  void InputSwitch::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void InputSwitch::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool InputSwitch::isDefaultConfiguration() const {
-    return true;
   }
 
   void InputSwitch::setInputHandler(IInputHandler* inputHandler) {

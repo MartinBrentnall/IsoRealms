@@ -29,31 +29,30 @@ namespace IsoRealms::Spindizzy {
             cDefGrid(data,      0.3f, 0.3f, 0.3f, 1.0f, [this]() {setNeedsFullRedraw();}),
             cDefHighlight(data, 0.0f, 0.0f, 0.0f, 1.0f, [this]() {setNeedsFullRedraw();}) {
 
-
     cTexturesInUseCount = 0;
     
-    cTextures[        ASSET_ID_SURFACE_PLAIN]                  = createTexture();
-    cTextures[        ASSET_ID_SURFACE_PLAIN_SPLIT]            = createTexture();
-    cTextures[        ASSET_ID_SURFACE_ARROW]                  = createTexture();
-    cTextures[        ASSET_ID_SURFACE_TRAMPOLINE]             = createTexture();
-    cTextures[        ASSET_ID_SURFACE_ICE_OR_WATER]           = createTexture();
-    cTextures[        ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES]  = createTexture();
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2]  = createOrientedTexture();
-    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_3]       = createTexture();
-    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_4]       = createTexture();
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6]  = createOrientedTexture();
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_7]       = createOrientedTexture();
-    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_8]       = createTexture();
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10] = createOrientedTexture();
-    cTextures[        ASSET_ID_SURFACE_ACTIVATE_STATE_11]      = createTexture();
-    cOrientedTextures[ASSET_ID_WALL_PLAIN_CAP]                 = createOrientedTexture();
-    cOrientedTextures[ASSET_ID_WALL_PLAIN_MIDDLE]              = createOrientedTexture();
-    cOrientedTextures[ASSET_ID_WALL_VARIANT_CAP]               = createOrientedTexture();
-    cOrientedTextures[ASSET_ID_WALL_VARIANT_MIDDLE]            = createOrientedTexture();
-    cTextures[        ASSET_ID_WALL_ICE]                       = createTexture();
+    cTextures[        RESOURCE_ID_SURFACE_PLAIN]                  = createTexture();
+    cTextures[        RESOURCE_ID_SURFACE_PLAIN_SPLIT]            = createTexture();
+    cTextures[        RESOURCE_ID_SURFACE_ARROW]                  = createTexture();
+    cTextures[        RESOURCE_ID_SURFACE_TRAMPOLINE]             = createTexture();
+    cTextures[        RESOURCE_ID_SURFACE_ICE_OR_WATER]           = createTexture();
+    cTextures[        RESOURCE_ID_SURFACE_DEACTIVATE_ALL_STATES]  = createTexture();
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_1_OR_2]  = createOrientedTexture();
+    cTextures[        RESOURCE_ID_SURFACE_ACTIVATE_STATE_3]       = createTexture();
+    cTextures[        RESOURCE_ID_SURFACE_ACTIVATE_STATE_4]       = createTexture();
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_5_OR_6]  = createOrientedTexture();
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_7]       = createOrientedTexture();
+    cTextures[        RESOURCE_ID_SURFACE_ACTIVATE_STATE_8]       = createTexture();
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_9_OR_10] = createOrientedTexture();
+    cTextures[        RESOURCE_ID_SURFACE_ACTIVATE_STATE_11]      = createTexture();
+    cOrientedTextures[RESOURCE_ID_WALL_PLAIN_CAP]                 = createOrientedTexture();
+    cOrientedTextures[RESOURCE_ID_WALL_PLAIN_MIDDLE]              = createOrientedTexture();
+    cOrientedTextures[RESOURCE_ID_WALL_VARIANT_CAP]               = createOrientedTexture();
+    cOrientedTextures[RESOURCE_ID_WALL_VARIANT_MIDDLE]            = createOrientedTexture();
+    cTextures[        RESOURCE_ID_WALL_ICE]                       = createTexture();
 
     for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      bool mClamp = mOrientedTexture.first == ASSET_ID_WALL_VARIANT_CAP || mOrientedTexture.first == ASSET_ID_WALL_PLAIN_CAP;
+      bool mClamp = mOrientedTexture.first == RESOURCE_ID_WALL_VARIANT_CAP || mOrientedTexture.first == RESOURCE_ID_WALL_PLAIN_CAP;
       mOrientedTexture.second->addOrientation(*cDefaultYaw, cProject, mClamp);
     }
     cUniqueViews.insert(*cDefaultYaw);
@@ -63,13 +62,25 @@ namespace IsoRealms::Spindizzy {
 
     cProject.addScreenListener(this);
   }
+
+  void C64TerrainGraphics::define(IComponentDefiner& definer) {
+    definer.propertyResource("floor",     cDefFloor);
+    definer.propertyResource("wall",      cDefWall);
+    definer.propertyResource("grid",      cDefGrid);
+    definer.propertyResource("highlight", cDefHighlight);
+
+    // TODO: This is a hack to reload the textures when the properties are loaded.
+    if (definer.loadsPersistedValues()) {
+      setNeedsFullRedraw();
+    }
+  }
   
-  void C64TerrainGraphics::registerAssets(ComponentAssetRegistry& assets) {
+  void C64TerrainGraphics::publish(ResourcePublisher& publisher) {
     for (std::pair<const std::string, std::unique_ptr<LiteralTexture>>& mTexture : cTextures) {
-      assets.add<ITexture>(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
+      publisher.publish<ITexture>(mTexture.second.get(), mTexture.first, "Spindizzy Terrain Textures");
     }
     for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-      assets.add<ITexture>(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
+      publisher.publish<ITexture>(mOrientedTexture.second.get(), mOrientedTexture.first, "Spindizzy Terrain Textures");
     }
   }
 
@@ -83,7 +94,7 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW,   0.0f, 0.0f, 1.0f);
     glScalef(1.4f, 1.4f, 1.4f);
-    cTextures[ASSET_ID_SURFACE_ARROW]->set();
+    cTextures[RESOURCE_ID_SURFACE_ARROW]->set();
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f,  0.5f, 0.25f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f, -0.5f, 0.25f);
@@ -91,7 +102,7 @@ namespace IsoRealms::Spindizzy {
     glTexCoord2f(0.0f, 0.0f); glVertex3f( 0.5f,  0.5f, 0.25f);
     glEnd();
     
-    cOrientedTextures[ASSET_ID_WALL_PLAIN_CAP]->set();
+    cOrientedTextures[RESOURCE_ID_WALL_PLAIN_CAP]->set();
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex3f(-0.5f, -0.5f,  0.25f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f(-0.5f, -0.5f,  0.0f);
@@ -104,7 +115,7 @@ namespace IsoRealms::Spindizzy {
     glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.0f);
     glEnd();
     
-    cOrientedTextures[ASSET_ID_WALL_VARIANT_CAP]->set();
+    cOrientedTextures[RESOURCE_ID_WALL_VARIANT_CAP]->set();
     glBegin(GL_QUADS);
     glTexCoord2f(1.0f, 0.0f); glVertex3f( 0.5f, -0.5f,  0.25f);
     glTexCoord2f(1.0f, 1.0f); glVertex3f( 0.5f, -0.5f,  0.0f);
@@ -117,16 +128,6 @@ namespace IsoRealms::Spindizzy {
     glTexCoord2f(0.0f, 1.0f); glVertex3f( 0.5f,  0.5f,  0.0f);
     glEnd();
     return true;
-  }
-
-  void C64TerrainGraphics::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("floor",     cDefFloor);
-    owner.createPropertyTreeSelector("wall",      cDefWall);
-    owner.createPropertyTreeSelector("grid",      cDefGrid);
-    owner.createPropertyTreeSelector("highlight", cDefHighlight);
-
-    // TODO: This is a hack to reload the textures when the properties are loaded.
-    setNeedsFullRedraw();
   }
   
   void C64TerrainGraphics::hintTextureUsed(ITexture* texture, bool inUse) {
@@ -146,12 +147,12 @@ namespace IsoRealms::Spindizzy {
   }
 
   void C64TerrainGraphics::screenAdded(const IScreen* screen) {
-    const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat asset!?
+    const IFloat* mAngle = screen->getYaw(); // TODO: What happens if the screen gets assigned a different IFloat resource!?
     if (mAngle != nullptr) {
       cTextureStateListeners.push_back(std::make_unique<TextureStateListener>(*this, mAngle));
       cProject.addStateChangeListener(mAngle, cTextureStateListeners.back().get());
       for (std::pair<const std::string, std::unique_ptr<OrientedTexture>>& mOrientedTexture : cOrientedTextures) {
-        bool mClamp = mOrientedTexture.first == ASSET_ID_WALL_VARIANT_CAP || mOrientedTexture.first == ASSET_ID_WALL_PLAIN_CAP;
+        bool mClamp = mOrientedTexture.first == RESOURCE_ID_WALL_VARIANT_CAP || mOrientedTexture.first == RESOURCE_ID_WALL_PLAIN_CAP;
         mOrientedTexture.second->addOrientation(mAngle, cProject, mClamp);
       }
       cUniqueViews.insert(mAngle);
@@ -397,18 +398,18 @@ namespace IsoRealms::Spindizzy {
     if (mAngle > 180.0f) {
       mAngle -= 360.0f;
     }
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2 ]->setRenderTarget(angle); renderSwitchDiamondHalf(mAngle);
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6 ]->setRenderTarget(angle); renderSwitchSquareHalf( mAngle);
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_7      ]->setRenderTarget(angle); renderSwitchSquareBoth( mAngle);
-    cOrientedTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10]->setRenderTarget(angle); renderSwitchCircleHalf( mAngle);
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_1_OR_2 ]->setRenderTarget(angle); renderSwitchDiamondHalf(mAngle);
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_5_OR_6 ]->setRenderTarget(angle); renderSwitchSquareHalf( mAngle);
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_7      ]->setRenderTarget(angle); renderSwitchSquareBoth( mAngle);
+    cOrientedTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_9_OR_10]->setRenderTarget(angle); renderSwitchCircleHalf( mAngle);
     float mInterpolation = std::abs(mAngle / 90.0f);
     if (mInterpolation > 1.0f) {
       mInterpolation -= ((mInterpolation - 1.0f) * 2.0f);
     }
-    cOrientedTextures[ASSET_ID_WALL_PLAIN_CAP     ]->setRenderTarget(angle); renderWallCap(mInterpolation);
-    cOrientedTextures[ASSET_ID_WALL_PLAIN_MIDDLE  ]->setRenderTarget(angle); renderWallMiddle(mInterpolation);
-    cOrientedTextures[ASSET_ID_WALL_VARIANT_CAP   ]->setRenderTarget(angle); renderWallCap(std::abs(mInterpolation - 1.0f));
-    cOrientedTextures[ASSET_ID_WALL_VARIANT_MIDDLE]->setRenderTarget(angle); renderWallMiddle(std::abs(mInterpolation - 1.0f));
+    cOrientedTextures[RESOURCE_ID_WALL_PLAIN_CAP     ]->setRenderTarget(angle); renderWallCap(mInterpolation);
+    cOrientedTextures[RESOURCE_ID_WALL_PLAIN_MIDDLE  ]->setRenderTarget(angle); renderWallMiddle(mInterpolation);
+    cOrientedTextures[RESOURCE_ID_WALL_VARIANT_CAP   ]->setRenderTarget(angle); renderWallCap(std::abs(mInterpolation - 1.0f));
+    cOrientedTextures[RESOURCE_ID_WALL_VARIANT_MIDDLE]->setRenderTarget(angle); renderWallMiddle(std::abs(mInterpolation - 1.0f));
   }
 
   void C64TerrainGraphics::generateTextures() {
@@ -422,17 +423,17 @@ namespace IsoRealms::Spindizzy {
       generateOrientedTextures(mView);
     }
 
-    cTextures[ASSET_ID_SURFACE_PLAIN                ]->setRenderTarget(); renderPlain();
-    cTextures[ASSET_ID_SURFACE_PLAIN_SPLIT          ]->setRenderTarget(); renderSplitPlain();
-    cTextures[ASSET_ID_SURFACE_ARROW                ]->setRenderTarget(); renderArrow();
-    cTextures[ASSET_ID_SURFACE_TRAMPOLINE           ]->setRenderTarget(); renderTrampoline();
-    cTextures[ASSET_ID_SURFACE_ICE_OR_WATER         ]->setRenderTarget(); renderIce();
-    cTextures[ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES]->setRenderTarget(); renderSwitchDiamondNone();
-    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_3     ]->setRenderTarget(); renderSwitchDiamondBoth(0.0f);
-    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_4     ]->setRenderTarget(); renderSwitchSquare(0.0f);
-    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_8     ]->setRenderTarget(); renderSwitchCircle(0.0f);
-    cTextures[ASSET_ID_SURFACE_ACTIVATE_STATE_11    ]->setRenderTarget(); renderSwitchCircleBoth();
-    cTextures[ASSET_ID_WALL_ICE                     ]->setRenderTarget(); renderIceWall();
+    cTextures[RESOURCE_ID_SURFACE_PLAIN                ]->setRenderTarget(); renderPlain();
+    cTextures[RESOURCE_ID_SURFACE_PLAIN_SPLIT          ]->setRenderTarget(); renderSplitPlain();
+    cTextures[RESOURCE_ID_SURFACE_ARROW                ]->setRenderTarget(); renderArrow();
+    cTextures[RESOURCE_ID_SURFACE_TRAMPOLINE           ]->setRenderTarget(); renderTrampoline();
+    cTextures[RESOURCE_ID_SURFACE_ICE_OR_WATER         ]->setRenderTarget(); renderIce();
+    cTextures[RESOURCE_ID_SURFACE_DEACTIVATE_ALL_STATES]->setRenderTarget(); renderSwitchDiamondNone();
+    cTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_3     ]->setRenderTarget(); renderSwitchDiamondBoth(0.0f);
+    cTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_4     ]->setRenderTarget(); renderSwitchSquare(0.0f);
+    cTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_8     ]->setRenderTarget(); renderSwitchCircle(0.0f);
+    cTextures[RESOURCE_ID_SURFACE_ACTIVATE_STATE_11    ]->setRenderTarget(); renderSwitchCircleBoth();
+    cTextures[RESOURCE_ID_WALL_ICE                     ]->setRenderTarget(); renderIceWall();
 
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -472,11 +473,11 @@ namespace IsoRealms::Spindizzy {
       cChangedAngles.clear();
     });
   }
-  
+
   C64TerrainGraphics::OrientedTexture::OrientedTexture() {
     cCurrentTexture = nullptr;
   }
-    
+
   void C64TerrainGraphics::OrientedTexture::addOrientation(const IFloat* angle, Project& project, bool clamp) {
     if (cTextures.find(angle) == cTextures.end()) {
       cTextures[angle] = std::make_unique<LiteralTexture>(project, 128, 128, false, clamp);
@@ -485,59 +486,46 @@ namespace IsoRealms::Spindizzy {
       }
     }
   }
-  
+
   void C64TerrainGraphics::OrientedTexture::setRenderTarget(const IFloat* angle) {
     std::map<const IFloat*, std::unique_ptr<LiteralTexture>>::iterator mTexture = cTextures.find(angle);
     if (mTexture != cTextures.end()) {
       mTexture->second->setRenderTarget();
     }
   }
-  
+
   void C64TerrainGraphics::OrientedTexture::setScreen(const IFloat* angle) {
     std::map<const IFloat*, std::unique_ptr<LiteralTexture>>::iterator mTexture = cTextures.find(angle);
     if (mTexture != cTextures.end()) {
       cCurrentTexture = mTexture->second.get();
     }
   }
-  
+
   void C64TerrainGraphics::OrientedTexture::addUseListener(ITextureUseListener* listener) {
     cListeners.insert(listener);
   }
-  
+
   ITexture* C64TerrainGraphics::OrientedTexture::getTexture() {
     return cCurrentTexture;
   }
-  
+
   void C64TerrainGraphics::OrientedTexture::set() const {
     cCurrentTexture->set();
   }
-  
+
   void C64TerrainGraphics::OrientedTexture::hintTextureInUse(bool inUse) {
     cCurrentTexture->hintTextureInUse(inUse); // TODO: Should do all texture and not just the current one?
   }
-  
+
   void C64TerrainGraphics::OrientedTexture::coord(float x, float y) const {
     glTexCoord2f(x, y);
-  }
-
-  void C64TerrainGraphics::OrientedTexture::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void C64TerrainGraphics::OrientedTexture::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool C64TerrainGraphics::OrientedTexture::isDefaultConfiguration() const {
-    return true;
   }
 
   C64TerrainGraphics::TextureStateListener::TextureStateListener(C64TerrainGraphics& parent, const IFloat* angle) :
             cParent(parent),
             cAngle(angle) {
   }
-  
-  
+
   void C64TerrainGraphics::TextureStateListener::stateChanged() {
     cParent.stateChanged(cAngle);
   }

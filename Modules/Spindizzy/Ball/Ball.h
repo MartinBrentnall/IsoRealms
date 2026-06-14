@@ -35,10 +35,10 @@ namespace IsoRealms::Spindizzy {
      * Component Interface *
     \***********************/
     Ball(Spindizzy& spindizzy, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     void hintInUse(bool);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /***********************\
      * Implements ITexture *
@@ -47,9 +47,6 @@ namespace IsoRealms::Spindizzy {
     void hintTextureInUse(bool) override;
     ITexture* getTexture() override;
     void coord(float x, float y) const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     private:
     

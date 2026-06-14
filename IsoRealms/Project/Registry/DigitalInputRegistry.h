@@ -20,26 +20,26 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Type/IDigitalInput.h"
+#include "IsoRealms/Resources/Type/IDigitalInput.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerButton.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/GameControllerHat.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/KeyboardKey.h"
-#include "IsoRealms/Assets/Fixed/DigitalInput/MouseButton.h"
-#include "IsoRealms/Assets/Providers/AssetInstanced.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/GameControllerButton.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/GameControllerHat.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/KeyboardKey.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/MouseButton.h"
+#include "IsoRealms/Resources/Providers/ResourceInstanced.h"
 
-#include "AssetClientManager.h"
+#include "ResourceClientManager.h"
 
 namespace IsoRealms {
-  class DigitalInputRegistry : public AssetClientManager<DigitalInputRegistry, IComponentData, IDigitalInput> {
+  class DigitalInputRegistry : public ResourceClientManager<DigitalInputRegistry, IComponentData, IDigitalInput> {
     public:
     DigitalInputRegistry(Project& project);
  
     private:
-    AssetInstanced<IComponentData, IDigitalInput, GameControllerButton> cGameControllerButton;
-    AssetInstanced<IComponentData, IDigitalInput, GameControllerHat>    cGameControllerHat;
-    AssetInstanced<IComponentData, IDigitalInput, MouseButton>          cMouseButton;
-    AssetInstanced<IComponentData, IDigitalInput, KeyboardKey>          cKeyboardKey;
+    ResourceInstanced<IComponentData, IDigitalInput, GameControllerButton> cGameControllerButton;
+    ResourceInstanced<IComponentData, IDigitalInput, GameControllerHat>    cGameControllerHat;
+    ResourceInstanced<IComponentData, IDigitalInput, MouseButton>          cMouseButton;
+    ResourceInstanced<IComponentData, IDigitalInput, KeyboardKey>          cKeyboardKey;
   };
 }
  

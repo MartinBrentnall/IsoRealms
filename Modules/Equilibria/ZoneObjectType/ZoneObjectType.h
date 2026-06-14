@@ -22,9 +22,9 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Equilibria/Assets/Type/IZoneObjectTypeTrait.h"
-#include "Modules/Equilibria/EquilibriaAssetRegistry.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/Resources/Type/IZoneObjectTypeTrait.h"
+#include "Modules/Equilibria/EquilibriaResourceRegistry.h"
 
 #include "IZoneObjectTraitEditor.h"
 
@@ -39,16 +39,12 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     ZoneObjectType(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-
+    void define(IComponentDefiner& definer);
+    void publish(const std::string& parentID);
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
 
     ~ZoneObjectType();
-    
-    // Interface to be used by module.
-    void registerAssets(const std::string& parentID);
 
     // Interface to be used by trait types.
     Equilibria& getEquilibria();
@@ -69,10 +65,6 @@ namespace IsoRealms::Equilibria {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     private:
 
@@ -109,8 +101,8 @@ namespace IsoRealms::Equilibria {
     Equilibria& cEquilibria; /// Equilibria module reference.
     IComponentData& cComponentData;
 
-    // Asset registry.
-    EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
+    // Resource registry.
+    EquilibriaResourceRegistry cResources; /// Equilibria resource registry.
 
     // Definition data.
     std::map<std::string, IZoneObjectTypeTrait*> cDefTypeTraits; /// Traits of this object type.

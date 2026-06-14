@@ -42,10 +42,6 @@ namespace IsoRealms::UI {
     bool input(sf::Event& event) override;
     void resetInput() override;
     void renderScreen(float scale, float aspectRatio) const override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
     void notifyVisible() override;
     void notifyHidden() override;
     void notifyLostFocus() override;

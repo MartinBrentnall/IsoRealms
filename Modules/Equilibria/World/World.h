@@ -22,9 +22,9 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Client/WorldEditorTool.h"
-#include "Modules/Equilibria/Assets/Type/IBoundaryType.h"
-#include "Modules/Equilibria/Assets/Type/IPhysicalObjectType.h"
+#include "Modules/Equilibria/Resources/Client/WorldEditorTool.h"
+#include "Modules/Equilibria/Resources/Type/IBoundaryType.h"
+#include "Modules/Equilibria/Resources/Type/IPhysicalObjectType.h"
 #include "Modules/Equilibria/BoundaryHandler/BoundaryHandler.h"
 #include "Modules/Equilibria/BoundaryHandler/BoundaryHandlerInstance.h"
 #include "Modules/Equilibria/CollisionHandler/CollisionHandlerInstance.h"
@@ -52,10 +52,10 @@ namespace IsoRealms::Equilibria {
      * Component interface *
     \***********************/
     World(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
 
-    Equilibria& getAssetManager();
+    Equilibria& getResourceManager();
     Project& getProject() const;
     bool isReadOnly() const;
     void setOwner(ProjectFile* owner);
@@ -65,7 +65,7 @@ namespace IsoRealms::Equilibria {
         return mZone->isUsed(resource);
       });
     }
-  
+
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
 
@@ -190,18 +190,14 @@ namespace IsoRealms::Equilibria {
     void load(IComponentData& resourceData, JSONObject object) override;
     void save(IComponentData& resourceData, JSONObject object) const override;
     IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
-    class DummyPhysicalObjectTypeUser : public IAssetUser<IPhysicalObjectType> {
+    class DummyPhysicalObjectTypeUser : public IResourceUser<IPhysicalObjectType> {
       public:
 
-      /**********************************************\
-       * Implements IAssetUser<IPhysicalObjectType> *
-      \**********************************************/
-      void relinquish(IPhysicalObjectType* asset) override;
+      /*************************************************\
+       * Implements IResourceUser<IPhysicalObjectType> *
+      \*************************************************/
+      void relinquish(IPhysicalObjectType* resource) override;
       bool isReadOnly() const override;
       void setOwner(ProjectFile* owner) override;
     };
@@ -215,7 +211,6 @@ namespace IsoRealms::Equilibria {
     inline static const std::string JSON_DEBRIS_GENERATORS = "debrisGenerators";
     inline static const std::string JSON_PLAYERS           = "players";
     inline static const std::string JSON_ZONES             = "zones";
-
 
     inline static const unsigned int DEFAULT_BOUNCE_CONTROL = 10;
     

@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   ModelRegistry::ModelRegistry() :
-            AssetClientManager(&cNone) {
+            ResourceClientManager(&cNone) {
   }
 
   IModelInstance* ModelRegistry::Dummy::createModel() {
@@ -31,20 +31,8 @@ namespace IsoRealms {
     return false;
   }
 
-  bool ModelRegistry::Dummy::renderAssetIcon() const {
+  bool ModelRegistry::Dummy::renderResourceIcon() const {
     Utils::renderIconNone();
-    return true;
-  }
-
-  void ModelRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ModelRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ModelRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 

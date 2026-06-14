@@ -38,8 +38,8 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     ProjectConfigurer(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
 
     /*********************\
      * Module interfaces *
@@ -50,11 +50,7 @@ namespace IsoRealms::Basics {
      * Implements IScreen *
     \**********************/
     void renderScreen(float scale, float aspectRatio) const override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
+    
     /****************************\
      * Implements IInputHandler *
     \****************************/
@@ -76,7 +72,7 @@ namespace IsoRealms::Basics {
     std::string getBindingID(const IBinding* binding) const override;
     IBinding* getBinding(const std::string& id) override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-    void releaseBinding(const IBinding* asset) override;
+    void releaseBinding(const IBinding* resource) override;
     
     /***********************\
      * Scripting Interface *

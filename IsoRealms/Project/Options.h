@@ -32,7 +32,7 @@ namespace IsoRealms {
     public:
     static const Options EMPTY;
 
-    /** Hint option: value is persisted inline in the current load object (see PropertyLoader). */
+    /** Hint option: value is persisted inline in the current load object (see ComponentLoader). */
     inline static const std::string PROPERTY_INLINE = "inline";
 
     /** Hint option: load reference and properties immediately instead of deferring to project init. */

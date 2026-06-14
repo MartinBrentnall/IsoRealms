@@ -29,9 +29,13 @@ namespace IsoRealms::Basics {
               reloadData();
             }) {
   }
-  
-  void FileSound::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IAction>(this, "", "Play a Sound");
+
+  void FileSound::define(IComponentDefiner& definer) {
+    definer.propertyResource("filename", cDefFile);
+  }
+
+  void FileSound::publish(ResourcePublisher& publisher) {
+    publisher.publish<IAction>(this, "", "Play a Sound");
   }
 
   bool FileSound::renderIcon() const {
@@ -47,11 +51,7 @@ namespace IsoRealms::Basics {
     glColor3f(1.0f, 1.0f, 1.0f);
     return true;
   }
-
-  void FileSound::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("filename", cDefFile);
-  }
-
+  
   void FileSound::setVolume(float volume) {
     for (sf::Sound& mSound : cRuntimeSounds) {
       mSound.setVolume(volume * 100.0f);
@@ -69,20 +69,8 @@ namespace IsoRealms::Basics {
     }
   }
 
-  bool FileSound::renderAssetIcon() const {
+  bool FileSound::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void FileSound::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void FileSound::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool FileSound::isDefaultConfiguration() const {
-    return true;
   }
 
   void FileSound::reloadData() {

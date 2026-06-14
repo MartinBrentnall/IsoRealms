@@ -149,7 +149,6 @@ namespace IsoRealms::Equilibria {
     glLineWidth(1.0);
   }
 
-
   void Lift::renderEditingArrow() const {
     float mLineRadius = 0.5f * 0.5;
     float mArrowOffset = 0.5f * 0.5;
@@ -541,17 +540,17 @@ namespace IsoRealms::Equilibria {
     cZone.remove(this);
   }
 
-  void Lift::getProperties(IPropertyMaker& owner) {
+  void Lift::define(IComponentDefiner& definer) {
     if (cZone.getWorld().isBasicProperties()) {
-      owner.createPropertyNativeBoolean("Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
+      definer.propertyBoolean("Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
         cDefTopPause = value ? 1500 : 0;
         cDefBottomPause = value ? 1500 : 0;
       });
     } else {
-      owner.createPropertyNativeInteger(JSON_BOTTOM_PAUSE, [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value;});
-      owner.createPropertyNativeInteger(JSON_TOP_PAUSE,    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value;});
-      owner.createPropertyNativeInteger(JSON_UP_SPEED,     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value;});
-      owner.createPropertyNativeInteger(JSON_DOWN_SPEED,   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value;});
+      definer.propertyInteger(JSON_BOTTOM_PAUSE, [this]() {return cDefTopPause;},    [this](int value) {cDefTopPause    = value;});
+      definer.propertyInteger(JSON_TOP_PAUSE,    [this]() {return cDefBottomPause;}, [this](int value) {cDefBottomPause = value;});
+      definer.propertyInteger(JSON_UP_SPEED,     [this]() {return cDefSpeedUp;},     [this](int value) {cDefSpeedUp     = value;});
+      definer.propertyInteger(JSON_DOWN_SPEED,   [this]() {return cDefSpeedDown;},   [this](int value) {cDefSpeedDown   = value;});
     }
   }
 

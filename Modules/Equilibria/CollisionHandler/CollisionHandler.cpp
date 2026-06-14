@@ -28,21 +28,17 @@ namespace IsoRealms::Equilibria {
             cDefPhysicalObjectTypeB(equilibria),
             cDefEnteredAction(data.getDummyActionContext()),
             cDefExitedAction(data.getDummyActionContext()) {
-    cDefPhysicalObjectTypeA.addNotifyAssetChangedFunction(this);
-    cDefPhysicalObjectTypeB.addNotifyAssetChangedFunction(this);
+    cDefPhysicalObjectTypeA.addNotifyResourceChangedFunction(this);
+    cDefPhysicalObjectTypeB.addNotifyResourceChangedFunction(this);
   }
 
-  void CollisionHandler::registerAssets(ComponentAssetRegistry& assets) {
-    // Nothing to do.
-  }
+  void CollisionHandler::define(IComponentDefiner& definer) {
+    definer.propertyResource("objectA",     cDefPhysicalObjectTypeA);
+    definer.propertyResource("objectB",     cDefPhysicalObjectTypeB);
+    definer.propertyResource("onCollision", cDefEnteredAction);
+    definer.propertyResource("onParting",   cDefExitedAction);
 
-  void CollisionHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("objectA",     cDefPhysicalObjectTypeA);
-    owner.createPropertyTreeSelector("objectB",     cDefPhysicalObjectTypeB);
-    owner.createPropertyTreeSelector("onCollision", cDefEnteredAction);
-    owner.createPropertyTreeSelector("onParting",   cDefExitedAction);
-
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       cEquilibria.getProject().init([this]() {
         cEquilibria.added(this);
       });
@@ -51,8 +47,8 @@ namespace IsoRealms::Equilibria {
 
   void CollisionHandler::removed() {
     cEquilibria.removed(this);
-    cDefPhysicalObjectTypeA.removeNotifyAssetChangedFunction(this);
-    cDefPhysicalObjectTypeB.removeNotifyAssetChangedFunction(this);
+    cDefPhysicalObjectTypeA.removeNotifyResourceChangedFunction(this);
+    cDefPhysicalObjectTypeB.removeNotifyResourceChangedFunction(this);
   }
 
   const PhysicalObjectType* CollisionHandler::getPhysicalObjectTypeA() const {

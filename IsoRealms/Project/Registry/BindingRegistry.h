@@ -22,25 +22,25 @@
 #include <set>
 #include <stdexcept>
 
-#include "IsoRealms/Assets/Client/Action.h"
-#include "IsoRealms/Assets/Client/Boolean.h"
-#include "IsoRealms/Assets/Client/Colour.h"
-#include "IsoRealms/Assets/Client/Float.h"
-#include "IsoRealms/Assets/Client/Font.h"
-#include "IsoRealms/Assets/Client/InputHandler.h"
-#include "IsoRealms/Assets/Client/Integer.h"
-#include "IsoRealms/Assets/Client/Screen.h"
-#include "IsoRealms/Assets/Client/String.h"
-#include "IsoRealms/Assets/Client/Vertex.h"
-#include "IsoRealms/Assets/IEventBindings.h"
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/Resources/Client/Action.h"
+#include "IsoRealms/Resources/Client/Boolean.h"
+#include "IsoRealms/Resources/Client/Colour.h"
+#include "IsoRealms/Resources/Client/Float.h"
+#include "IsoRealms/Resources/Client/Font.h"
+#include "IsoRealms/Resources/Client/InputHandler.h"
+#include "IsoRealms/Resources/Client/Integer.h"
+#include "IsoRealms/Resources/Client/Screen.h"
+#include "IsoRealms/Resources/Client/String.h"
+#include "IsoRealms/Resources/Client/Vertex.h"
+#include "IsoRealms/Resources/IEventBindings.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IBinding.h"
 #include "IsoRealms/IActionContext.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace sol {
   class state;
@@ -53,11 +53,11 @@ namespace IsoRealms {
   template <typename FROM> bool renderProviderIcon(Project& project, const std::string& id);
   template <typename FROM> void forEachProviderEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction, const std::string& providerID, const std::string& conversionPath);
 
-  class BindingRegistry : public AssetClientManager<BindingRegistry, IActionContext, IBinding> {
+  class BindingRegistry : public ResourceClientManager<BindingRegistry, IActionContext, IBinding> {
     public:
     BindingRegistry(Project& project);
-    IBinding* get(IAssetUser<IBinding>* client, IActionContext& owner, JSONObject object, IStateListener* listener, bool required);
-    IBinding* get(IAssetUser<IBinding>* client, IActionContext& owner, const std::string& id, IStateListener* listener);
+    IBinding* get(IResourceUser<IBinding>* client, IActionContext& owner, JSONObject object, IStateListener* listener, bool required);
+    IBinding* get(IResourceUser<IBinding>* client, IActionContext& owner, const std::string& id, IStateListener* listener);
 
     void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override; 
     bool renderIcon(const std::string& id) const override;
@@ -75,15 +75,12 @@ namespace IsoRealms {
       bool isConfigurable() const override;
       TreeItemInfo getTreeItemInfo() const override;
       void set(const std::string& id) override;
-      void getWrappedProperties(IPropertyMaker& owner) override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      void getWrappedProperties(IComponentDefiner& definer) override;
       std::string getConversionPath() const override;
+      bool renderResourceIcon() const override;
     };
 
-    class Local final : public IAssetProvider<IActionContext, IBinding> {
+    class Local final : public IResourceProvider<IActionContext, IBinding> {
       public:
       Local() :
                 cRuntimeLocals(nullptr) {
@@ -93,27 +90,27 @@ namespace IsoRealms {
         cRuntimeLocals = locals;
       }
 
-      /************************************************\
-       * Implements IAssetProvider<Project, IBinding> *
-      \************************************************/
-      IBinding* getAsset(IActionContext& owner) override {
+      /***************************************************\
+       * Implements IResourceProvider<Project, IBinding> *
+      \***************************************************/
+      IBinding* getResource(IActionContext& owner) override {
         return nullptr; // TODO: Implement this.
       }
 
-      IBinding* getAsset(IActionContext& owner, JSONObject object) override {
+      IBinding* getResource(IActionContext& owner, JSONObject object) override {
         std::string mLocalBindingID = object.getString(JSON_LOCAL);
         if (cRuntimeLocals == nullptr) {
-          std::cout << "WARNING: BindingRegistry::Local::getAsset: No action-specific bindings provided for this action (looking for \"" << mLocalBindingID << "\")." << std::endl;
+          std::cout << "WARNING: BindingRegistry::Local::getResource: No action-specific bindings provided for this action (looking for \"" << mLocalBindingID << "\")." << std::endl;
           return nullptr;
         }
         IBinding* mBinding = cRuntimeLocals->getBinding(mLocalBindingID);
         if (mBinding == nullptr) {
-          std::cout << "WARNING: BindingRegistry::Local::getAsset: Local binding \"" << mLocalBindingID << "\" not found." << std::endl;
+          std::cout << "WARNING: BindingRegistry::Local::getResource: Local binding \"" << mLocalBindingID << "\" not found." << std::endl;
         }
         return mBinding;
       }
 
-      void releaseAsset(const IBinding* asset) override {
+      void releaseResource(const IBinding* resource) override {
         // TODO: Implement this.
       }
 
@@ -121,7 +118,7 @@ namespace IsoRealms {
         return false;
       }
 
-      bool renderAssetProviderIcon() const override {
+      bool renderResourceProviderIcon() const override {
         return false;
       }
 
@@ -139,7 +136,7 @@ namespace IsoRealms {
       IEventBindings* cRuntimeLocals;
     };
 
-    class ConversionProvider : public IAssetProvider<IActionContext, IBinding> {
+    class ConversionProvider : public IResourceProvider<IActionContext, IBinding> {
       public:
       ConversionProvider(const std::string& providerID, const std::string& conversionPath) :
                 cProviderID(providerID),
@@ -172,7 +169,7 @@ namespace IsoRealms {
                 ConversionProvider(providerID, conversionPath) {
       }
 
-      IBinding* getAsset(IActionContext& owner, JSONObject object) override {
+      IBinding* getResource(IActionContext& owner, JSONObject object) override {
         if constexpr (std::is_same_v<OWNER, IActionContext>) {
           return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner, object)).first->get();
         } else {
@@ -180,7 +177,7 @@ namespace IsoRealms {
         }
       }
 
-      IBinding* getAsset(IActionContext& owner) override {
+      IBinding* getResource(IActionContext& owner) override {
         if constexpr (std::is_same_v<OWNER, IActionContext>) {
           return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner)).first->get();
         } else {
@@ -188,9 +185,9 @@ namespace IsoRealms {
         }
       }
 
-      void releaseAsset(const IBinding* asset) override {
+      void releaseResource(const IBinding* resource) override {
         for (const std::unique_ptr<IBinding>& mBinding : cInstances) {
-          if (mBinding.get() == asset) {
+          if (mBinding.get() == resource) {
             cInstances.erase(mBinding);
             return;
           }
@@ -201,7 +198,7 @@ namespace IsoRealms {
         return false;
       }
 
-      bool renderAssetProviderIcon() const override {
+      bool renderResourceProviderIcon() const override {
         return false;
       }
 
@@ -228,7 +225,7 @@ namespace IsoRealms {
 
         Instance(Conversion& parent, OWNER2& owner, JSONObject object) :
                   Instance(parent, owner) {
-          cDefValue.set(object, JSON_ASSET);
+          cDefValue.set(object, JSON_RESOURCE);
         }
 
         /***********************\
@@ -256,25 +253,21 @@ namespace IsoRealms {
           cDefValue.setID(id);
         }
 
-        void getWrappedProperties(IPropertyMaker& owner) override {
+        void getWrappedProperties(IComponentDefiner& definer) override {
           Options mHint;
           mHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-          owner.createPropertyTreeSelector(JSON_ASSET, cDefValue, mHint);
-          if (!owner.loadsPersistedValues()) {
-            cDefValue.getTreeItemProperties(owner);
+          definer.propertyResource(JSON_RESOURCE, cDefValue, mHint);
+          if (!definer.loadsPersistedValues()) {
+            cDefValue.getTreeItemProperties(definer);
           }
         }
 
-        bool renderAssetIcon() const override {
+        bool renderResourceIcon() const override {
           return cDefValue.renderTreeItemIcon();
         }
 
-        void saveAsset(JSONObject object) const override {
-          cDefValue.save(object, JSON_ASSET);
-        }
-
-        void getAssetProperties(IPropertyMaker& owner) override {
-          // Nothing to do.
+        void saveResource(JSONObject object) const override {
+          cDefValue.save(object, JSON_RESOURCE);
         }
 
         bool isDefaultConfiguration() const override {
@@ -295,14 +288,14 @@ namespace IsoRealms {
       mutable std::set<std::unique_ptr<IBinding>> cInstances;
     };
 
-    inline static const std::string JSON_ASSET = "asset";
-    inline static const std::string JSON_VALUE = "value";
+    inline static const std::string JSON_RESOURCE = "asset";
+    inline static const std::string JSON_VALUE    = "value";
     
     // External interfaces.
     Project& cProject;
 
-    AssetLiteralDummy<IActionContext, IBinding, Dummy> cDummy;
-    Local                                             cLocals;
-    std::vector<std::unique_ptr<ConversionProvider>>  cConversionProviders;
+    ResourceLiteralDummy<IActionContext, IBinding, Dummy> cDummy;
+    Local                                                 cLocals;
+    std::vector<std::unique_ptr<ConversionProvider>>      cConversionProviders;
   };
 }

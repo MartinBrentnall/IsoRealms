@@ -26,7 +26,7 @@ namespace IsoRealms::Equilibria {
   class ThemeTexture : public ITexture {
     public:
     ThemeTexture(ThemeSet& parent);
-    void registerAssets(ComponentAssetRegistry& assets, const std::string& id);
+    void publish(ResourcePublisher& publisher, const std::string& id);
       
     void set(ITexture* texture);
 
@@ -39,9 +39,6 @@ namespace IsoRealms::Equilibria {
     void set() const override;
     void hintTextureInUse(bool) override;
     void coord(float x, float y) const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     private:
     ThemeSet& cParent;

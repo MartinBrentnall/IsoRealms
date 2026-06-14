@@ -94,12 +94,12 @@ namespace IsoRealms::Basics {
 //     }
   }
   
-  void Binding::getProperties(IPropertyMaker& owner, bool init) {
+  void Binding::getProperties(IComponentDefiner& definer, bool init) {
     Options mHint;
     if (!init) {
       mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
     }
-    owner.createPropertyTreeSelector(JSON_TO, cDefValue, mHint);
-    owner.createPropertyNativeString(JSON_VARIABLE, [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
+    definer.propertyResource(JSON_TO, cDefValue, mHint);
+    definer.propertyString(JSON_VARIABLE, [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
   }
 }

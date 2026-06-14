@@ -32,56 +32,56 @@ endif(OPENGL_FOUND)
 
 add_library(Equilibria MODULE
   AlienType/AlienType.cpp
-  Assets/Client/BoundaryType.cpp
-  Assets/Client/Camera.cpp
-  Assets/Client/PhysicalObjectType.cpp
-  Assets/Client/SurfacePattern.cpp
-  Assets/Client/WallPattern.cpp
-  Assets/Client/WorldEditorTool.cpp
-  Assets/Client/ZoneViewType.cpp
-  Assets/Fixed/Camera/CameraGameplay.cpp
-  Assets/Fixed/Camera/CameraLinked.cpp
-  Assets/Fixed/Camera/CameraOverview.cpp
-  Assets/Fixed/Camera/CameraTransitional.cpp
-  Assets/Fixed/Camera/CameraVariant.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternComposite.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternOutline.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternSplitVariant.cpp
-  Assets/Fixed/SurfacePattern/SurfacePatternTile.cpp
-  Assets/Fixed/WallPattern/WallPatternCap.cpp
-  Assets/Fixed/WallPattern/WallPatternComposite.cpp
-  Assets/Fixed/WallPattern/WallPatternOutline.cpp
-  Assets/Fixed/WallPattern/WallPatternTile.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitCellLocation.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitModel.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitPhysics.cpp
-  Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitSpinner.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewActual.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewOverview.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewTypeActual.cpp
-  Assets/Fixed/ZoneViewType/ZoneViewTypeOverview.cpp
-  Assets/Registry/BoundaryTypeRegistry.cpp
-  Assets/Registry/CameraRegistry.cpp
-  Assets/Registry/PhysicalObjectTypeRegistry.cpp
-  Assets/Registry/SurfacePatternRegistry.cpp
-  Assets/Registry/WallPatternRegistry.cpp
-  Assets/Registry/WorldEditorToolRegistry.cpp
-  Assets/Registry/ZoneObjectTypeTraitRegistry.cpp
-  Assets/Registry/ZoneViewTypeRegistry.cpp
   BoundaryHandler/BoundaryHandler.cpp
   BoundaryHandler/BoundaryHandlerInstance.cpp
   CollisionHandler/CollisionHandler.cpp
   CollisionHandler/CollisionHandlerInstance.cpp
+  Equilibria.cpp
+  EquilibriaLuaSupport.cpp
   InfiniteSurface.cpp
   LiftType/LiftType.cpp
   ModelCycler/ModelCycler.cpp
   PickUpType/PickUpType.cpp
   PlayerType/PlayerType.cpp
-  Equilibria.cpp
-  EquilibriaLuaSupport.cpp
+  Resources/Client/BoundaryType.cpp
+  Resources/Client/Camera.cpp
+  Resources/Client/PhysicalObjectType.cpp
+  Resources/Client/SurfacePattern.cpp
+  Resources/Client/WallPattern.cpp
+  Resources/Client/WorldEditorTool.cpp
+  Resources/Client/ZoneViewType.cpp
+  Resources/Fixed/Camera/CameraGameplay.cpp
+  Resources/Fixed/Camera/CameraLinked.cpp
+  Resources/Fixed/Camera/CameraOverview.cpp
+  Resources/Fixed/Camera/CameraTransitional.cpp
+  Resources/Fixed/Camera/CameraVariant.cpp
+  Resources/Fixed/SurfacePattern/SurfacePatternComposite.cpp
+  Resources/Fixed/SurfacePattern/SurfacePatternOutline.cpp
+  Resources/Fixed/SurfacePattern/SurfacePatternSplitVariant.cpp
+  Resources/Fixed/SurfacePattern/SurfacePatternTile.cpp
+  Resources/Fixed/WallPattern/WallPatternCap.cpp
+  Resources/Fixed/WallPattern/WallPatternComposite.cpp
+  Resources/Fixed/WallPattern/WallPatternOutline.cpp
+  Resources/Fixed/WallPattern/WallPatternTile.cpp
+  Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.cpp
+  Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitCellLocation.cpp
+  Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.cpp
+  Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitModel.cpp
+  Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.cpp
+  Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitPhysics.cpp
+  Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitSpinner.cpp
+  Resources/Fixed/ZoneViewType/ZoneViewActual.cpp
+  Resources/Fixed/ZoneViewType/ZoneViewOverview.cpp
+  Resources/Fixed/ZoneViewType/ZoneViewTypeActual.cpp
+  Resources/Fixed/ZoneViewType/ZoneViewTypeOverview.cpp
+  Resources/Registry/BoundaryTypeRegistry.cpp
+  Resources/Registry/CameraRegistry.cpp
+  Resources/Registry/PhysicalObjectTypeRegistry.cpp
+  Resources/Registry/SurfacePatternRegistry.cpp
+  Resources/Registry/WallPatternRegistry.cpp
+  Resources/Registry/WorldEditorToolRegistry.cpp
+  Resources/Registry/ZoneObjectTypeTraitRegistry.cpp
+  Resources/Registry/ZoneViewTypeRegistry.cpp
   TerrainType/TerrainType.cpp
   TerrainState/TerrainState.cpp
   ThemeSet/Theme.cpp

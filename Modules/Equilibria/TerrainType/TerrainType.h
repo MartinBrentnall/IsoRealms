@@ -24,10 +24,10 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Client/SurfacePattern.h"
-#include "Modules/Equilibria/Assets/Client/WallPattern.h"
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Equilibria/EquilibriaAssetRegistry.h"
+#include "Modules/Equilibria/Resources/Client/SurfacePattern.h"
+#include "Modules/Equilibria/Resources/Client/WallPattern.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/EquilibriaResourceRegistry.h"
 #include "Modules/Equilibria/WorldEditorCursorCell.h"
 
 namespace IsoRealms::Equilibria {
@@ -42,37 +42,27 @@ namespace IsoRealms::Equilibria {
      * Component interface *
     \***********************/
     TerrainType(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(const std::string& parentID);
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
-    
+
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
-    
+
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
     void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
-
-    // Interface to be used by module.
-    void registerAssets(const std::string& parentID);
-    
-    
-    
-    
-    
-    
-    
 
     ISurfacePattern* getSurfacePattern() const;
     IWallPattern* getWestWallPattern() const;
     IWallPattern* getEastWallPattern() const;
     IWallPattern* getSouthWallPattern() const;
     IWallPattern* getNorthWallPattern() const;
-    
+
     Project& getProject();
     Equilibria& getEquilibria() const;
-    Equilibria& getAssetManager();
+    Equilibria& getResourceManager();
     IComponentData& getComponentData();
     void executeContactScript();
     void executeImpactScript();
@@ -90,11 +80,8 @@ namespace IsoRealms::Equilibria {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
+    bool renderResourceIcon() const override;
+    
     private:
     
     // Internal classes.
@@ -137,8 +124,8 @@ namespace IsoRealms::Equilibria {
     Equilibria& cEquilibria;
     IComponentData& cComponentData;
 
-    // Asset registry.
-    EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
+    // Resource registry.
+    EquilibriaResourceRegistry cResources; /// Equilibria resource registry.
 
     // Properties
     float cDefSurfaceFriction = 0.0f;

@@ -24,36 +24,35 @@
 namespace IsoRealms::Equilibria {
   AlienType::AlienType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cAssets(equilibria),
+            cResources(equilibria),
             cDefModel(data),
             cDefTarget(data),
-            cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
+            cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderResourceIcon();}) {
     cEquilibria.added(this);
   }
-  
-  void AlienType::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Aliens");
+
+  void AlienType::define(IComponentDefiner& definer) {
+    definer.propertyResource("appearance",   cDefModel);
+    definer.propertyResource("target",       cDefTarget);
+    definer.propertyFloat(   "acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
+    definer.propertyFloat(   "friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;}, DEFAULT_FRICTION);
+    definer.propertyFloat(   "spinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+    definer.propertyFloat(   "height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
+    definer.propertyFloat(   "radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
+    definer.propertyFloat(   "hugMomentum",  [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
   }
-    
-  
+
+  void AlienType::publish(ResourcePublisher& publisher) {
+    publisher.publish<IBinding>(&cLuaBinding, "", "Equilibria/Aliens");
+  }
+
   bool AlienType::renderIcon() const {
     glColor3f(1.0f, 1.0f, 1.0f);
     return cDefModel.renderIcon();
   }
 
-  void AlienType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("appearance",   cDefModel);
-    owner.createPropertyTreeSelector("target",       cDefTarget);
-    owner.createPropertyNativeFloat( "acceleration", [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
-    owner.createPropertyNativeFloat( "friction",     [this]() {return cDefFriction;},     [this](float value) {cDefFriction     = value;}, DEFAULT_FRICTION);
-    owner.createPropertyNativeFloat( "spinSpeed",    [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-    owner.createPropertyNativeFloat( "height",       [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
-    owner.createPropertyNativeFloat( "radius",       [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
-    owner.createPropertyNativeFloat( "hugMomentum",  [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
-  }
-
   void AlienType::removed() {
-    cAssets.clear();
+    cResources.clear();
     cEquilibria.removeAll(this);
     cEquilibria.removed(this);
   }
@@ -70,9 +69,9 @@ namespace IsoRealms::Equilibria {
     cRuntimeSpinSpeed = cDefSpinSpeed;
   }
 
-  void AlienType::registerAssets(const std::string& parentID) {
-    cAssets.add(static_cast<IWorldEditorTool*>(   this), parentID, "Alien Types");
-    cAssets.add(static_cast<IPhysicalObjectType*>(this), parentID, "Alien Types");
+  void AlienType::publish(const std::string& parentID) {
+    cResources.publish(static_cast<IWorldEditorTool*>(   this), parentID, "Alien Types");
+    cResources.publish(static_cast<IPhysicalObjectType*>(this), parentID, "Alien Types");
   }  
   
   std::unique_ptr<ModelInstance> AlienType::createModel() {
@@ -135,20 +134,8 @@ namespace IsoRealms::Equilibria {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
-  bool AlienType::renderAssetIcon() const {
+  bool AlienType::renderResourceIcon() const {
     return cDefModel.renderIcon();
-  }
-
-  void AlienType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void AlienType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool AlienType::isDefaultConfiguration() const {
-    return true;
   }
 
   AlienType::Pen::Pen(AlienType& parent, WorldEditor& editor) :

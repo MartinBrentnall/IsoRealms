@@ -20,16 +20,16 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IInputHandler.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IInputHandler.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
-  class InputHandlerRegistry : public AssetClientManager<InputHandlerRegistry, IComponentData, IInputHandler> {
+  class InputHandlerRegistry : public ResourceClientManager<InputHandlerRegistry, IComponentData, IInputHandler> {
     public:
     InputHandlerRegistry();
 
@@ -42,12 +42,9 @@ namespace IsoRealms {
       \****************************/
       bool input(sf::Event& event) override;
       void resetInput() override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      bool renderResourceIcon() const override;
     };
 
-    AssetLiteralDummy<IComponentData, IInputHandler, Dummy> cNone;
+    ResourceLiteralDummy<IComponentData, IInputHandler, Dummy> cNone;
   };
 }

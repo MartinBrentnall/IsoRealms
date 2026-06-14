@@ -22,17 +22,17 @@
 #include <set>
 #include <stdexcept>
 
-#include "IsoRealms/Assets/Client/Float.h"
-#include "IsoRealms/Assets/Client/Integer.h"
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IString.h"
+#include "IsoRealms/Resources/Client/Float.h"
+#include "IsoRealms/Resources/Client/Integer.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IString.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/ComponentEditor.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
   class Project;
@@ -41,48 +41,48 @@ namespace IsoRealms {
   template <typename FROM> bool renderProviderIcon(Project& project, const std::string& id);
   template <typename FROM> void forEachProviderEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction, const std::string& providerID, const std::string& conversionPath);
 
-  class StringRegistry : public AssetClientManager<StringRegistry, IComponentData, IString> {
+  class StringRegistry : public ResourceClientManager<StringRegistry, IComponentData, IString> {
     public:
     StringRegistry(Project& project);
-    IString* get(IAssetUser<IString>* client, IComponentData& owner, JSONObject object, IStateListener* listener, bool required);
-    IString* get(IAssetUser<IString>* client, IComponentData& owner, const std::string& id, IStateListener* listener);
+    IString* get(IResourceUser<IString>* client, IComponentData& owner, JSONObject object, IStateListener* listener, bool required);
+    IString* get(IResourceUser<IString>* client, IComponentData& owner, const std::string& id, IStateListener* listener);
 
     void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override; 
     bool renderIcon(const std::string& id) const override;
 
-    IString* literal(IAssetUser<IString>* client, IComponentData& owner, const std::string& value) {
-      IString* mString = cLiteral.createLiteralAsset(owner, value);
+    IString* literal(IResourceUser<IString>* client, IComponentData& owner, const std::string& value) {
+      IString* mString = cLiteral.createLiteralResource(owner, value);
       registerClient(client, &cLiteral, mString);
       return mString;
     }
 
     private:
-    class Literal : public AssetLiteral<IComponentData, IString> {
+    class Literal : public ResourceLiteral<IComponentData, IString> {
       public:
       explicit Literal(const Metadata& metadata) :
                 cMetadata(metadata) {
       }
 
-      IString* createLiteralAsset(IComponentData& owner, const std::string& value) const {
-        return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
+      IString* createLiteralResource(IComponentData& owner, const std::string& value) const {
+        return addResource([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
 
-      /************************************\
-      * Implements AssetLiteral<IString> *
-      \************************************/
+      /***************************************\
+       * Implements ResourceLiteral<IString> *
+      \***************************************/
       bool hasConfiguration() const override {
         return true;
       }
 
-      std::unique_ptr<IString> createLiteralAsset(IComponentData& owner) const override {
+      std::unique_ptr<IString> createLiteralResource(IComponentData& owner) const override {
         return std::make_unique<Instance>(owner.getProject(), "");
       }
 
-      std::unique_ptr<IString> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
+      std::unique_ptr<IString> createLiteralResource(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(owner.getProject(), object.getString(JSON_VALUE));
       }
 
-      bool renderAssetProviderIcon() const override {
+      bool renderResourceProviderIcon() const override {
         return false;
       }
 
@@ -109,12 +109,11 @@ namespace IsoRealms {
         \**********************/
         std::string getValue() const override;
 
-        /**********************************\
-         * Implements IAsset from IString *
-        \**********************************/
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        void getAssetProperties(IPropertyMaker& owner) override;
+        /*************************************\
+         * Implements IResource from IString *
+        \*************************************/
+        void getResourceProperties(IComponentDefiner& definer) override;
+        void saveResource(JSONObject object) const override;
         bool isDefaultConfiguration() const override;
         std::string getConversionPath() const override;
         bool isConfigurable() const override;
@@ -131,7 +130,7 @@ namespace IsoRealms {
       const Metadata& cMetadata;
     };
 
-    class ConversionProvider : public IAssetProvider<IComponentData, IString> {
+    class ConversionProvider : public IResourceProvider<IComponentData, IString> {
       public:
       ConversionProvider(const std::string& providerID, const std::string& conversionPath) :
                 cProviderID(providerID),
@@ -164,18 +163,18 @@ namespace IsoRealms {
                 ConversionProvider(providerID, conversionPath) {
       }
 
-      IString* getAsset(IComponentData& owner, JSONObject object) override {
-        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(*this, owner, object)).first->get();
+      IString* getResource(IComponentData& owner, JSONObject object) override {
+        return cConvertedResources.emplace(std::make_unique<Instance<FROM>>(*this, owner, object)).first->get();
       }
 
-      IString* getAsset(IComponentData& owner) override {
-        return cConvertedAssets.emplace(std::make_unique<Instance<FROM>>(*this, owner)).first->get();
+      IString* getResource(IComponentData& owner) override {
+        return cConvertedResources.emplace(std::make_unique<Instance<FROM>>(*this, owner)).first->get();
       }
 
-      void releaseAsset(const IString* asset) override {
-        for (const std::unique_ptr<IString>& mString : cConvertedAssets) {
-          if (mString.get() == asset) {
-            cConvertedAssets.erase(mString);
+      void releaseResource(const IString* resource) override {
+        for (const std::unique_ptr<IString>& mString : cConvertedResources) {
+          if (mString.get() == resource) {
+            cConvertedResources.erase(mString);
             return;
           }
         }
@@ -185,7 +184,7 @@ namespace IsoRealms {
         return false;
       }
 
-      bool renderAssetProviderIcon() const override {
+      bool renderResourceProviderIcon() const override {
         return false;
       }
 
@@ -211,7 +210,7 @@ namespace IsoRealms {
 
         Instance(Conversion& parent, IComponentData& owner, JSONObject object) :
                   Instance(parent, owner) {
-          cDefValue.set(object, JSON_ASSET);
+          cDefValue.set(object, JSON_RESOURCE);
         }
 
         /**********************\
@@ -221,16 +220,8 @@ namespace IsoRealms {
           return Utils::toString(cDefValue->getValue());
         }
 
-        bool renderAssetIcon() const override {
-          return false;
-        }
-
-        void saveAsset(JSONObject object) const override {
-          cDefValue.save(object, JSON_ASSET);
-        }
-
-        void getAssetProperties(IPropertyMaker& owner) override {
-          // Nothing to do.
+        void saveResource(JSONObject object) const override {
+          cDefValue.save(object, JSON_RESOURCE);
         }
 
         bool isDefaultConfiguration() const override {
@@ -247,18 +238,18 @@ namespace IsoRealms {
         }
 
         private:
-        inline static const std::string JSON_ASSET = "asset";
+        inline static const std::string JSON_RESOURCE = "asset";
 
         // External interfaces.
         Conversion& cParent;
 
         TYPE cDefValue;
       };
-      mutable std::set<std::unique_ptr<IString>> cConvertedAssets;
+      mutable std::set<std::unique_ptr<IString>> cConvertedResources;
     };
 
-    inline static const std::string JSON_ASSET = "asset";
-    inline static const std::string JSON_VALUE = "value";
+    inline static const std::string JSON_RESOURCE = "asset";
+    inline static const std::string JSON_VALUE    = "value";
     
     // External interfaces.
     Project& cProject;
@@ -267,5 +258,4 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<ConversionProvider>> cConversionProviders;
   };
 }
-
 

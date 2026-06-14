@@ -27,20 +27,20 @@ namespace IsoRealms::Basics {
   /**
    * Fixed resource definition for scripts (in-line functions).
    */
-  class Script : public IAssetProvider<IActionContext, IAction> {
+  class Script : public IResourceProvider<IActionContext, IAction> {
     public:
     Script(Basics& basics);
 
     unsigned int getNextAvailableFunctionID(unsigned int functionID) const;
 
-    /******************************************************\
-     * Implements IAssetProvider<IActionContext, IAction> *
-    \******************************************************/
-    IAction* getAsset(IActionContext& owner, JSONObject object) override;
-    IAction* getAsset(IActionContext& owner) override;
-    void releaseAsset(const IAction* asset) override;
+    /*********************************************************\
+     * Implements IResourceProvider<IActionContext, IAction> *
+    \*********************************************************/
+    IAction* getResource(IActionContext& owner, JSONObject object) override;
+    IAction* getResource(IActionContext& owner) override;
+    void releaseResource(const IAction* resource) override;
     bool hasConfiguration() const override;
-    bool renderAssetProviderIcon() const override;
+    bool renderResourceProviderIcon() const override;
     bool isHiddenProvider() const override;
     const Metadata& getMetadata() const override;
     
@@ -58,11 +58,9 @@ namespace IsoRealms::Basics {
        * Implements IAction *
       \**********************/
       void execute() override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-
+      bool renderResourceIcon() const override;
+      void getResourceProperties(IComponentDefiner& definer) override;
+      
       private:
       
       // Definition data.

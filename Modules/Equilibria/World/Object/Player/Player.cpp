@@ -33,7 +33,7 @@ namespace IsoRealms::Equilibria {
             cDefY(Utils::round(y, 0.5, 0.0)),
             cDefZ(Utils::round(z, 0.5, 0.0)),
             cRuntimePhysicsObject(cDefWorld.getEquilibria(), this),
-            cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType->renderAssetIcon();}) {
+            cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType->renderResourceIcon();}) {
     reset();
   }
   
@@ -43,7 +43,7 @@ namespace IsoRealms::Equilibria {
             cDefY(object.getFloat(JSON_Y)),
             cDefZ(object.getFloat(JSON_Z)),
             cRuntimePhysicsObject(cDefWorld.getEquilibria(), this),
-            cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType->renderAssetIcon();}) {
+            cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType->renderResourceIcon();}) {
     cDefWorld.getEquilibria().getProject().init([this, object]() {
       cDefType = cDefWorld.getEquilibria().get<PlayerType>(nullptr, object.getString(JSON_TYPE));
       cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
@@ -52,9 +52,9 @@ namespace IsoRealms::Equilibria {
     });
   }
 
-  void Player::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
-    assets.add<IVertex>(&cRuntimePhysicsObject.cLocation, parentID, "Equilibria Players");
-    assets.add<IBinding>(&cLuaBinding,                    parentID, "Equilibria/Players");
+  void Player::publish(ResourcePublisher& publisher, const std::string& parentID) {
+    publisher.publish<IVertex>(&cRuntimePhysicsObject.cLocation, parentID, "Equilibria Players");
+    publisher.publish<IBinding>(&cLuaBinding,                    parentID, "Equilibria/Players");
   }
   
   void Player::reset() {

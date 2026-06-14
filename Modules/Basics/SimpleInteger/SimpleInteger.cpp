@@ -22,14 +22,14 @@ namespace IsoRealms::Basics {
   SimpleInteger::SimpleInteger(Basics& basics, IComponentData& data) :
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void SimpleInteger::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IInteger>(this, "", "Simple Integers");
-    assets.add<IBinding>(&cLuaBinding, "", "Variables/Integers");
+
+  void SimpleInteger::define(IComponentDefiner& definer) {
+    definer.propertyInteger("value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
   }
 
-  void SimpleInteger::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeInteger("value", [this]() {return cDefValue;}, [this](int value) {cDefValue = value; return true;});
+  void SimpleInteger::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IInteger>(this, "", "Simple Integers");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Variables/Integers");
   }
 
   void SimpleInteger::reset() {
@@ -38,22 +38,6 @@ namespace IsoRealms::Basics {
   
   int SimpleInteger::getValue() const {
     return cRuntimeValue;
-  }
-
-  bool SimpleInteger::renderAssetIcon() const {
-    return false;
-  }
-
-  void SimpleInteger::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SimpleInteger::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SimpleInteger::isDefaultConfiguration() const {
-    return true;
   }
 
   void SimpleInteger::setValue(int value) {

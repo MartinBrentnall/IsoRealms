@@ -35,9 +35,9 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     ModelCycler(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     bool renderIcon();
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *
@@ -53,7 +53,7 @@ namespace IsoRealms::Equilibria {
 
     private:
     void rebuildOffsetModels();
-    void refreshAssetRegistration();
+    void refreshResourceRegistration();
     void clampRuntimeCycleIndex();
     
     /**
@@ -82,10 +82,7 @@ namespace IsoRealms::Equilibria {
       \*********************/
       IModelInstance* createModel() override;
       bool renderPreview() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      bool renderResourceIcon() const override;
 
       private:
       ModelCycler& cParent; /// Parent model cycler.

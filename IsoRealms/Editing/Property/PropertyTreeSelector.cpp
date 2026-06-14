@@ -26,16 +26,16 @@
 #include <GL/glew.h>
 
 #include "IsoRealms/Application.h"
-#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Resources/Type/IFont.h"
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/ComponentEditor.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyTreeSelector::PropertyTreeSelector(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
+  PropertyTreeSelector::PropertyTreeSelector(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
-            cPropertyOwner(owner),
+            cPropertyOwner(definer),
             cComponentData(resourceData),
             cSelectedItem(item),
             cValueLabel(cSelectedItem.getTreeItemLabel()) {
@@ -74,8 +74,8 @@ namespace IsoRealms {
   }
 
   void PropertyTreeSelector::configure(IPropertyManager& manager) {
-    manager.openProperties(cComponentData, getPropertyName(), cSelectedItem.getPropertyMetadata(), [this](IPropertyMaker& owner) {
-      cSelectedItem.getTreeItemProperties(owner);
+    manager.openProperties(cComponentData, getPropertyName(), cSelectedItem.getPropertyMetadata(), [this](IComponentDefiner& definer) {
+      cSelectedItem.getTreeItemProperties(definer);
     });
   }
 

@@ -36,7 +36,7 @@ namespace IsoRealms::Spindizzy {
     registry.add(&cComponentTop,                "Top");
   }
   
-  void Spindizzy::registerAssets(ComponentAssetRegistry& assets) {
+  void Spindizzy::publish(ResourcePublisher& publisher) {
     // Nothing to do.
   }
 

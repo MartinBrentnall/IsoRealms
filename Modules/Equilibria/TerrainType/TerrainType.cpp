@@ -26,7 +26,7 @@ namespace IsoRealms::Equilibria {
   TerrainType::TerrainType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
             cComponentData(data),
-            cAssets(equilibria),
+            cResources(equilibria),
             cDefSurfacePattern( equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
             cDefWestWallPattern( equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
             cDefEastWallPattern( equilibria, *this, [&equilibria]() {equilibria.stateChanged(nullptr);}),
@@ -35,78 +35,21 @@ namespace IsoRealms::Equilibria {
             cDefContactAction(data.getDummyActionContext()),
             cDefImpactAction(data.getDummyActionContext()) {
   }
-  
-  void TerrainType::registerAssets(ComponentAssetRegistry& assets) {
-    // Nothing to do.
-  }
 
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  void TerrainType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat(  "friction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
-    owner.createPropertyNativeFloat(  "grip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
-    owner.createPropertyNativeFloat(  "floorBounce",  [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
-    owner.createPropertyNativeFloat(  "wallBounce",   [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;}, DEFAULT_WALL_BOUNCE);
-    owner.createPropertyNativeBoolean("allowRespawn", [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
-    owner.createPropertyNativeBoolean("solid",        [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
-    owner.createPropertyTreeSelector( "onTouch",      cDefContactAction);
-    owner.createPropertyTreeSelector( "onImpact",     cDefImpactAction);
-    owner.createPropertyTreeSelector( "surface",      cDefSurfacePattern);
-    owner.createPropertyTreeSelector( "northWall",    cDefNorthWallPattern);
-    owner.createPropertyTreeSelector( "southWall",    cDefSouthWallPattern);
-    owner.createPropertyTreeSelector( "westWall",     cDefWestWallPattern);
-    owner.createPropertyTreeSelector( "eastWall",     cDefEastWallPattern);
+  void TerrainType::define(IComponentDefiner& definer) {
+    definer.propertyFloat(  "friction",     [this]() {return cDefSurfaceFriction;}, [this](float value) {cDefSurfaceFriction = value;});
+    definer.propertyFloat(  "grip",         [this]() {return cDefSurfaceGrip;},     [this](float value) {cDefSurfaceGrip     = value;});
+    definer.propertyFloat(  "floorBounce",  [this]() {return cDefSurfaceBounce;},   [this](float value) {cDefSurfaceBounce   = value;});
+    definer.propertyFloat(  "wallBounce",   [this]() {return cDefWallBounce;},      [this](float value) {cDefWallBounce      = value;}, DEFAULT_WALL_BOUNCE);
+    definer.propertyBoolean("allowRespawn", [this]() {return cDefRespawnAllowed;},  [this](bool  value) {cDefRespawnAllowed  = value;});
+    definer.propertyBoolean("solid",        [this]() {return cDefSolid;},           [this](bool  value) {cDefSolid           = value;});
+    definer.propertyResource( "onTouch",      cDefContactAction);
+    definer.propertyResource( "onImpact",     cDefImpactAction);
+    definer.propertyResource( "surface",      cDefSurfacePattern);
+    definer.propertyResource( "northWall",    cDefNorthWallPattern);
+    definer.propertyResource( "southWall",    cDefSouthWallPattern);
+    definer.propertyResource( "westWall",     cDefWestWallPattern);
+    definer.propertyResource( "eastWall",     cDefEastWallPattern);
   }
 
   void TerrainType::removed() {
@@ -149,7 +92,7 @@ namespace IsoRealms::Equilibria {
     return cEquilibria;
   }
 
-  Equilibria& TerrainType::getAssetManager() {
+  Equilibria& TerrainType::getResourceManager() {
     return cEquilibria;
   }
 
@@ -193,27 +136,15 @@ namespace IsoRealms::Equilibria {
     return cEquilibria.getTerrainStateConditionElements();
   }
 
-
   IWorldEditorToolInstance* TerrainType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
-  bool TerrainType::renderAssetIcon() const {
+  bool TerrainType::renderResourceIcon() const {
     return renderIcon();
   }
 
-  void TerrainType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void TerrainType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool TerrainType::isDefaultConfiguration() const {
-    return true;
-  }
-TerrainType::Pen::Pen(TerrainType& parent, WorldEditor& editor) :
+  TerrainType::Pen::Pen(TerrainType& parent, WorldEditor& editor) :
             cParent(parent),
             cEditor(editor) {
   }
@@ -383,7 +314,7 @@ TerrainType::Pen::Pen(TerrainType& parent, WorldEditor& editor) :
   void TerrainType::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
-  void TerrainType::registerAssets(const std::string& parentID) {
-    cAssets.add(static_cast<IWorldEditorTool*>(this), parentID, "Terrain Types");
+  void TerrainType::publish(const std::string& parentID) {
+    cResources.publish(static_cast<IWorldEditorTool*>(this), parentID, "Terrain Types");
   }  
 }

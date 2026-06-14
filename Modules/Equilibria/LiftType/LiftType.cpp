@@ -23,16 +23,18 @@
 namespace IsoRealms::Equilibria {
   LiftType::LiftType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cAssets(equilibria),
+            cResources(equilibria),
             cDefModel(data),
             cDefActive(data, true),
             cDefTickAction(data.getDummyActionContext()) {
   }
-  
-  void LiftType::registerAssets(ComponentAssetRegistry& assets) {
-    // Nothing to do.
+
+  void LiftType::define(IComponentDefiner& definer) {
+    definer.propertyResource("appearance", cDefModel);
+    definer.propertyResource("state",      cDefActive);
+    definer.propertyResource("onTick",     cDefTickAction);
   }
-  
+
   bool LiftType::renderIcon() const {
     glRotatef(Equilibria::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glScalef(0.8f, 0.8f, 0.8f);
@@ -40,12 +42,6 @@ namespace IsoRealms::Equilibria {
     glColor3f(1.0f, 1.0f, 1.0f);
     cDefModel.renderIcon();
     return true;
-  }
-
-  void LiftType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("appearance", cDefModel);
-    owner.createPropertyTreeSelector("state",      cDefActive);
-    owner.createPropertyTreeSelector("onTick",     cDefTickAction);
   }
 
   void LiftType::removed() {
@@ -60,8 +56,8 @@ namespace IsoRealms::Equilibria {
     cEquilibria.overrideReadOnlyWorlds(*this);
   }
 
-  void LiftType::registerAssets(const std::string& parentID) {
-    cAssets.add<IWorldEditorTool>(this, parentID, "Lift Types");
+  void LiftType::publish(const std::string& parentID) {
+    cResources.publish<IWorldEditorTool>(this, parentID, "Lift Types");
   }  
   
   bool LiftType::isActive() {
@@ -80,20 +76,8 @@ namespace IsoRealms::Equilibria {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
-  bool LiftType::renderAssetIcon() const {
+  bool LiftType::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void LiftType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void LiftType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool LiftType::isDefaultConfiguration() const {
-    return true;
   }
 
   LiftType::Pen::Pen(LiftType& parent, WorldEditor& editor) :

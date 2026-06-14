@@ -18,7 +18,7 @@
  */
 #include "Movable.h"
 
-#include "Modules/Equilibria/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.h"
+#include "Modules/Equilibria/Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitMovable.h"
 #include "Modules/Equilibria/Equilibria.h"
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 #include "Modules/Equilibria/World/Object/ZoneObject/ZoneObject.h"
@@ -33,7 +33,7 @@ namespace IsoRealms::Equilibria {
     });
   }
   
-  void Movable::registerAssets(ITraitRegistry& registry) {
+  void Movable::publish(ITraitRegistry& registry) {
     registry.registerLocation(this);
     registry.registerMovable(this);
   }

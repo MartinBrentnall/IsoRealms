@@ -1,0 +1,82 @@
+/*
+ * Copyright 2025 Martin Brentnall
+ *
+ * This file is part of IsoRealms.
+ *
+ * IsoRealms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IsoRealms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <GL/glew.h>
+#include <string>
+
+#include "IsoRealms.h"
+
+#include "Modules/UI/Resources/Type/IMenuItem.h"
+
+namespace IsoRealms::UI {
+
+  /**
+   * Menu item that triggers an action upon confirmation.
+   */
+  class MenuItemAction final : public IMenuItem {
+    public:
+    MenuItemAction(const Metadata& metadata, Menu& menu);
+    MenuItemAction(const Metadata& metadata, Menu& menu, JSONObject object);
+
+    /***********************\
+     * Scripting Interface *
+    \***********************/
+    void setValue(const std::string& value);
+
+    /************************\
+     * Implements IMenuItem *
+    \************************/
+    void getResourceProperties(IComponentDefiner& definer) override;
+    bool isDefaultConfiguration() const override;
+    void publish(ResourcePublisher& publisher) override;
+    void reset() override;
+    bool input(sf::Event& event) override;
+    void selectTop() override;
+    void selectBottom() override;
+    void render(float aspectRatio, float y, bool selected, const Menu& menu) const override;
+    float getHeight(const Menu& menu) const override;
+    float getSelectedY(const Menu& menu) const override;
+    std::string getTreeItemLabel() const override;
+
+    private:
+
+    // JSON members.
+    inline static const std::string JSON_ID           = "id";
+    inline static const std::string JSON_LABEL        = "label";
+    inline static const std::string JSON_ON_SELECTION = "onSelection";
+
+    // Constants.
+    inline static const std::string BINDING_TYPE = "Action";
+    
+    // External interfaces.
+    Menu& cMenu;
+    
+    // Definition data.
+    std::string cDefID;    /// ID of this menu item for binding.
+    std::string cDefLabel; /// Label to show for this menu item.
+    Action cDefAction;     /// Action that confirming this menu item will trigger.
+    
+    // Runtime data.
+    std::string cRuntimeValue; /// TODO: What's this used for?
+    
+    // Scripting support.
+    LuaBinding<MenuItemAction> cLuaBinding; /// Allows menu item actions to be bound to lua variables.
+  };
+}

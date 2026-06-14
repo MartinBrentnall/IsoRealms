@@ -20,26 +20,26 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IScreenListener.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IScreenListener.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetListener.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceListener.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
   class Project;
 
-  class ScreenRegistry : public AssetClientManager<ScreenRegistry, IComponentData, IScreen> {
+  class ScreenRegistry : public ResourceClientManager<ScreenRegistry, IComponentData, IScreen> {
     private:
     class Proxy;
 
     public:
     ScreenRegistry(Project& project) :
-              AssetClientManager(&cNone),
+              ResourceClientManager(&cNone),
               cProject(project) {
     }
 
@@ -77,29 +77,29 @@ namespace IsoRealms {
       Utils::removeElement(cListeners, listener);
     }
 
-    IStateNotifier* add(IScreen* asset, const std::string& id, const std::string& category, bool stateChanges);
-    IStateNotifier* add(IAssetProvider<IComponentData, IScreen>* provider, const std::string& id, const std::string& category, bool stateChanges);
+    IStateNotifier* add(IScreen* resource, const std::string& id, const std::string& category, bool stateChanges);
+    IStateNotifier* add(IResourceProvider<IComponentData, IScreen>* provider, const std::string& id, const std::string& category, bool stateChanges);
 
-    // void remove(IScreen* asset) {
-    //   std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mProxy = cProxyMapping.find(asset);
+    // void remove(IScreen* resource) {
+    //   std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mProxy = cProxyMapping.find(resource);
     //   if (mProxy == cProxyMapping.end()) {
-    //     throw ArgumentException("ERROR: Project::remove: Proxy for specified screen asset not found.");
+    //     throw ArgumentException("ERROR: Project::remove: Proxy for specified screen resource not found.");
     //   }
     //   cScreens.remove(mProxy->second.get());
     // }
     //
-    // bool hasReadOnlyReferences(IScreen* asset) const {
-    //   std::map<IScreen*, std::unique_ptr<Proxy>>::const_iterator mProxy = cProxyMapping.find(asset);
+    // bool hasReadOnlyReferences(IScreen* resource) const {
+    //   std::map<IScreen*, std::unique_ptr<Proxy>>::const_iterator mProxy = cProxyMapping.find(resource);
     //   if (mProxy == cProxyMapping.end()) {
-    //     throw ArgumentException("ERROR: Project::remove: Proxy for specified screen asset not found.");
+    //     throw ArgumentException("ERROR: Project::remove: Proxy for specified screen resource not found.");
     //   }
     //   return cScreens.hasReadOnlyReferences(mProxy->second.get());
     // }
     //
-    // void overrideReadOnlyReferences(IScreen* asset, ProjectFile* owner) {
-    //   std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mProxy = cProxyMapping.find(asset);
+    // void overrideReadOnlyReferences(IScreen* resource, ProjectFile* owner) {
+    //   std::map<IScreen*, std::unique_ptr<Proxy>>::iterator mProxy = cProxyMapping.find(resource);
     //   if (mProxy == cProxyMapping.end()) {
-    //     throw ArgumentException("ERROR: Project::remove: Proxy for specified screen asset not found.");
+    //     throw ArgumentException("ERROR: Project::remove: Proxy for specified screen resource not found.");
     //   }
     //   cScreens.overrideReadOnlyReferences(mProxy->second.get(), owner);
     // }
@@ -122,16 +122,8 @@ namespace IsoRealms {
         cParent.renderScreen(cScreen, scale, aspectRatio);
       }
 
-      bool renderAssetIcon() const override {
-        return cScreen->renderAssetIcon();
-      }
-
-      void saveAsset(JSONObject object) const override {
-        // Nothing to do.
-      }
-
-      void getAssetProperties(IPropertyMaker& owner) override {
-        // Nothing to do.
+      bool renderResourceIcon() const override {
+        return cScreen->renderResourceIcon();
       }
 
       bool isDefaultConfiguration() const override {
@@ -158,14 +150,11 @@ namespace IsoRealms {
       * Implements IScreen *
       \**********************/
       void renderScreen(float scale, float aspectRatio) const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      bool renderResourceIcon() const override;
     };
 
     Project& cProject;
-    AssetLiteralDummy<IComponentData, IScreen, Dummy> cNone;
+    ResourceLiteralDummy<IComponentData, IScreen, Dummy> cNone;
     std::map<IScreen*, std::unique_ptr<Proxy>> cProxyMapping;
     std::vector<IScreenListener*> cListeners;
   };

@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Literal/LiteralVertex.h"
+#include "IsoRealms/Resources/Literal/LiteralVertex.h"
 
 namespace IsoRealms {
   class CollisionData {

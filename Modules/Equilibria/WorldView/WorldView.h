@@ -22,12 +22,12 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Client/Camera.h"
-#include "Modules/Equilibria/Assets/Client/ZoneViewType.h"
-#include "Modules/Equilibria/Assets/Type/ICamera.h"
-#include "Modules/Equilibria/Assets/Type/IZoneView.h"
-#include "Modules/Equilibria/Assets/Type/IZoneViewType.h"
-#include "Modules/Equilibria/EquilibriaAssetRegistry.h"
+#include "Modules/Equilibria/Resources/Client/Camera.h"
+#include "Modules/Equilibria/Resources/Client/ZoneViewType.h"
+#include "Modules/Equilibria/Resources/Type/ICamera.h"
+#include "Modules/Equilibria/Resources/Type/IZoneView.h"
+#include "Modules/Equilibria/Resources/Type/IZoneViewType.h"
+#include "Modules/Equilibria/EquilibriaResourceRegistry.h"
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
@@ -43,13 +43,14 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     WorldView(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
+    void publish(const std::string& parentID);
 
-    /***************************\
-     * Asset client interfaces *
-    \***************************/
-    Equilibria& getAssetManager();
+    /******************************\
+     * Resource client interfaces *
+    \******************************/
+    Equilibria& getResourceManager();
     Project& getProject() const;
     bool isReadOnly() const;
     void setOwner(ProjectFile* owner);
@@ -61,7 +62,6 @@ namespace IsoRealms::Equilibria {
     void reset();
 
     // Interface to be used by Equilibria.
-    void registerAssets(const std::string& parentID);
     void addZoneView(Zone* zone);
     void removeZoneView(Zone* zone);
     World* getWorld() const;
@@ -81,32 +81,8 @@ namespace IsoRealms::Equilibria {
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
 
-    /*********************\
-     * Implements IAsset *
-    \*********************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
     private:
 
-    class Pitch : public IFloat {
-      public:
-      Pitch(WorldView& parent);
-
-      /*********************\
-       * Implements IFloat *
-      \*********************/
-      float getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-
-      private:
-      WorldView& cDefParent;
-    };
-    
     class ZoneView {
       public:
       ZoneView(Zone* zone, std::unique_ptr<IZoneView> view);

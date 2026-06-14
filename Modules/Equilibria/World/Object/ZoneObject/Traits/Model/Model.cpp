@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 #include "Modules/Equilibria/World/Object/ZoneObject/ZoneObject.h"
 #include "Modules/Equilibria/World/World.h"
-#include "Modules/Equilibria/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitModel.h"
+#include "Modules/Equilibria/Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitModel.h"
 
 namespace IsoRealms::Equilibria {
   Model::Model(ZoneObject& object, ZoneObjectTypeTraitModel& type) :
@@ -35,17 +35,17 @@ namespace IsoRealms::Equilibria {
     });
   }
   
+  void Model::publish(ITraitRegistry& registry) {
+    registry.registerRenderer(this);
+    registry.registerProcessor(this);
+  }
+  
   void Model::setEnabled(bool enabled) {
     cRuntimeEnabled = enabled;
   }
   
   bool Model::isEnabled() const {
     return cRuntimeEnabled;
-  }
-  
-  void Model::registerAssets(ITraitRegistry& registry) {
-    registry.registerRenderer(this);
-    registry.registerProcessor(this);
   }
   
   void Model::save(JSONObject object) const {

@@ -33,19 +33,15 @@ namespace IsoRealms::Tables {
     }
   }
 
-  void Table::registerAssets(ComponentAssetRegistry& assets) {
+  void Table::define(IComponentDefiner& definer) {
     // TODO: Implement this.
   }
 
-  void Table::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    // TODO: Implement this.
-  }
-  
   Table::Field::Field(JSONObject object) :
             cName(object.getString("name")),
             cType(object.getString("type") == FIELD_TYPE_INTEGER ? FieldType::INTEGER : FieldType::STRING) {
   }
-  
+
   Table::Value::Value(FieldType type, JSONValue value) {
     switch (type) {
       case FieldType::INTEGER: {cValue = value.getInteger();                       break;}
@@ -61,7 +57,7 @@ namespace IsoRealms::Tables {
   std::string Table::Value::getString() const {
     return std::get<std::string>(cValue);
   }
-  
+
   Table::Record::Record(Table& parent, JSONArray records) {
     for (JSONValue mRecordValue : records) {
       cValues.emplace_back(Value(parent.cDefFields[cValues.size()].cType, mRecordValue));

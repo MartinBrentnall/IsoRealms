@@ -18,7 +18,7 @@
  */
 #include "PropertyEditor.h"
 
-#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Resources/Type/IFont.h"
 #include "IsoRealms/Editing/IUIStyle.h"
 #include "IsoRealms/Utils.h"
 

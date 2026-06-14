@@ -20,7 +20,7 @@
 
 #include "Modules/Equilibria/Equilibria.h"
 
-#include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/ComponentLoader.h"
 
 namespace IsoRealms::Equilibria {
   ModelCycler::ModelCycler(Equilibria& equilibria, IComponentData& data) :
@@ -28,31 +28,31 @@ namespace IsoRealms::Equilibria {
             cComponentData(data),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void ModelCycler::registerAssets(ComponentAssetRegistry& assets) {
-    for (unsigned int i = 0; i < cOffsetModels.size(); i++) {
-      assets.add<IModel>(cOffsetModels[i].get(), std::to_string(i), "Cycleable Models");
-    }
-    assets.add<IBinding>(&cLuaBinding, "", "Cycleable Models");
-  }
 
-  bool ModelCycler::renderIcon() {
-    unsigned int mIndex = cEditingIconCycle / 500;
-    return cDefModels[mIndex]->renderIcon();
-  }
-
-  void ModelCycler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray("models", cDefModels, [](const std::unique_ptr<Model>& mModel) -> Model& {return *mModel;}, [this, &owner](Model& model) {
-      owner.createPropertyTreeSelector("model", model, Options::EMPTY, [this, &model]() {
+  void ModelCycler::define(IComponentDefiner& definer) {
+    definer.array("models", cDefModels, [](const std::unique_ptr<Model>& mModel) -> Model& {return *mModel;}, [this, &definer](Model& model) {
+      definer.propertyResource("model", model, Options::EMPTY, [this, &model]() {
         Utils::removeElementUnique(cDefModels, &model);
         rebuildOffsetModels();
-        refreshAssetRegistration();
+        refreshResourceRegistration();
       });
     }, [this]() -> Model& {
       Model& mModel = *cDefModels.emplace_back(std::make_unique<Model>(cComponentData));
       rebuildOffsetModels();
       return mModel;
     });
+  }
+
+  void ModelCycler::publish(ResourcePublisher& publisher) {
+    for (unsigned int i = 0; i < cOffsetModels.size(); i++) {
+      publisher.publish<IModel>(cOffsetModels[i].get(), std::to_string(i), "Cycleable Models");
+    }
+    publisher.publish<IBinding>(&cLuaBinding, "", "Cycleable Models");
+  }
+
+  bool ModelCycler::renderIcon() {
+    unsigned int mIndex = cEditingIconCycle / 500;
+    return cDefModels[mIndex]->renderIcon();
   }
 
   void ModelCycler::rebuildOffsetModels() {
@@ -62,8 +62,8 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  void ModelCycler::refreshAssetRegistration() {
-    ComponentContainerTraits<ModelCycler>::get(cEquilibria).refreshAssetRegistration(*this);
+  void ModelCycler::refreshResourceRegistration() {
+    ComponentContainerTraits<ModelCycler>::get(cEquilibria).refreshResourceRegistration(*this);
   }
   
   void ModelCycler::updateEditing(unsigned int milliseconds) {
@@ -106,20 +106,8 @@ namespace IsoRealms::Equilibria {
     return cParent.cDefModels[cDefOffset]->renderPreview();
   }
 
-  bool ModelCycler::Offset::renderAssetIcon() const {
+  bool ModelCycler::Offset::renderResourceIcon() const {
     return cParent.cDefModels[cDefOffset]->renderIcon();
-  }
-
-  void ModelCycler::Offset::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ModelCycler::Offset::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ModelCycler::Offset::isDefaultConfiguration() const {
-    return true;
   }
 
   ModelCycler::Offset::Instance::Instance(Offset& parent) :

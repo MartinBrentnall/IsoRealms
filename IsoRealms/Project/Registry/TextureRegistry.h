@@ -20,17 +20,17 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Literal/LiteralTexture.h"
-#include "IsoRealms/Assets/Providers/TextureLiteralDummy.h"
-#include "IsoRealms/Assets/Type/ITexture.h"
+#include "IsoRealms/Resources/Literal/LiteralTexture.h"
+#include "IsoRealms/Resources/Providers/TextureLiteralDummy.h"
+#include "IsoRealms/Resources/Type/ITexture.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
-  class TextureRegistry : public AssetClientManager<TextureRegistry, IComponentData, ITexture> {
+  class TextureRegistry : public ResourceClientManager<TextureRegistry, IComponentData, ITexture> {
     public:
     TextureRegistry(Project& project);
 
@@ -46,10 +46,7 @@ namespace IsoRealms {
       void set() const override;
       void hintTextureInUse(bool) override;
       void coord(float x, float y) const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-
+      
       private:
       LiteralTexture cDummyTexture;
     };

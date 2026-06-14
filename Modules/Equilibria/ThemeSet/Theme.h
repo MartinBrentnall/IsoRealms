@@ -35,10 +35,9 @@ namespace IsoRealms::Equilibria {
     Theme(ThemeSet& themeSet, JSONObject object);
 
     void save(JSONObject object) const;
-    void getProperties(IPropertyMaker& owner);
+    void define(IComponentDefiner& definer);
     void themeTextureAdded(ThemeTexture* texture);
     void themeColourAdded(ThemeColour* colour);
-
 
     ITexture* getTexture(ThemeTexture* texture);
     void removeTexture(ThemeTexture* texture);

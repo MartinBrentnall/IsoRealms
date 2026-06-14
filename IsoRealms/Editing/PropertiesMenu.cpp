@@ -25,12 +25,12 @@
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IPropertyMaker& owner)> propertyFetcher) :
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher) :
             PropertiesMenu(manager, style, owner, owner.getMetadata(), propertyFetcher) {
   }
 
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, const Metadata& metadata, std::function<void(IPropertyMaker& owner)> propertyFetcher) : Menu(manager, style),
-            cPropertyMaker(owner.getProject().getApplication(), owner, metadata, *this, manager),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, const Metadata& metadata, std::function<void(IComponentDefiner& definer)> propertyFetcher) : Menu(manager, style),
+            cComponentEditor(owner.getProject().getApplication(), owner, metadata, *this, manager),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
             cClosingProperty(nullptr),
@@ -258,15 +258,15 @@ namespace IsoRealms {
     }
   }
 
-  void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) {
     openProperties(owner, name, owner.getMetadata(), propertyFetcher);
   }
 
-  void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IComponentDefiner&)> propertyFetcher) {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, metadata, [this, propertyFetcher](IPropertyMaker& owner) {
-      propertyFetcher(owner);
+    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, metadata, [this, propertyFetcher](IComponentDefiner& definer) {
+      propertyFetcher(definer);
     }), name, LiteralColour(0.75f, 0.5f, 1.0f));
   }
   
@@ -283,7 +283,7 @@ namespace IsoRealms {
     cEditingProperty = nullptr;
     cClosingProperty = nullptr;
     cFetching = true;
-    cPropertyFetcher(cPropertyMaker);
+    cPropertyFetcher(cComponentEditor);
     cFetching = false;
     recalculateColumnWidths();
   }

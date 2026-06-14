@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 #include "Modules/Equilibria/World/Object/ZoneObject/ZoneObject.h"
 #include "Modules/Equilibria/World/World.h"
-#include "Modules/Equilibria/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.h"
+#include "Modules/Equilibria/Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitBoundary.h"
 
 namespace IsoRealms::Equilibria {
   Boundary::Boundary(ZoneObjectTypeTraitBoundary& type, ZoneObject& object) :
@@ -43,17 +43,17 @@ namespace IsoRealms::Equilibria {
       cDefObject.getZone().getWorld().registerBoundary(&cDefType, this, cRuntimeXStart, cRuntimeXEnd, cRuntimeYStart, cRuntimeYEnd);
     });
   }
-
+  
+  void Boundary::publish(ITraitRegistry& registry) {
+    // Nothing to do.
+  }
+  
   void Boundary::setEnabled(bool enabled) {
     cRuntimeEnabled = enabled;
   }
   
   bool Boundary::isEnabled() const {
     return cRuntimeEnabled;
-  }
-  
-  void Boundary::registerAssets(ITraitRegistry& registry) {
-    // Nothing to do.
   }
   
   void Boundary::save(JSONObject object) const {
@@ -91,8 +91,4 @@ namespace IsoRealms::Equilibria {
   void Boundary::unbindValues() {
     // TODO: Implement this.
   }
-
-//   IBinding* Boundary::getBoundaryBinding(const std::string& id) const {
-//     return cDefObject.getObjectBinding(id);
-//   }
 }

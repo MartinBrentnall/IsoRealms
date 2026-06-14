@@ -25,7 +25,7 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
 #include "Modules/Equilibria/World/World.h"
 #include "Modules/Equilibria/WorldEditorCursorCell.h"
 
@@ -55,10 +55,6 @@ namespace IsoRealms::Equilibria {
     bool input(sf::Event& event) override;
     void resetInput() override;
     void renderScreen(float scale, float aspectRatio) const override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
     void notifyVisible() override;
     void notifyHidden() override;
     void notifyLostFocus() override;
@@ -87,10 +83,6 @@ namespace IsoRealms::Equilibria {
        * Implements IFloat *
       \*********************/
       float getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
     };
 
     const std::map<std::string, EditorAnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.

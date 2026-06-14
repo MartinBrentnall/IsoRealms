@@ -28,11 +28,11 @@ namespace IsoRealms {
   class LuaState;
   class ModuleOptions;
   class Project;
-  class ComponentAssetRegistry;
+  class ResourcePublisher;
 
   class IModuleHandle {
     public:
-    virtual void registerAssets(ComponentAssetRegistry& assets) = 0;
+    virtual void publish(ResourcePublisher& publisher) = 0;
     virtual void updateInputs(unsigned int milliseconds) = 0;
     virtual void updateRuntime(unsigned int milliseconds) = 0;
     virtual void updateEditing(unsigned int milliseconds) = 0;

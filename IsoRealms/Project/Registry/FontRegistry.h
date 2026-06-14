@@ -20,16 +20,16 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IFont.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
-  class FontRegistry : public AssetClientManager<FontRegistry, IComponentData, IFont> {
+  class FontRegistry : public ResourceClientManager<FontRegistry, IComponentData, IFont> {
     public:
     FontRegistry();
 
@@ -44,12 +44,9 @@ namespace IsoRealms {
       float getWidth(float size, const std::string& text) override;
       float getHeight(float size, const std::string& text) override;
       unsigned int getChar(float position, float size, const std::string& text) override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      bool renderResourceIcon() const override;
     };
 
-    AssetLiteralDummy<IComponentData, IFont, Dummy> cNone;
+    ResourceLiteralDummy<IComponentData, IFont, Dummy> cNone;
   };
 }

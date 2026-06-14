@@ -42,9 +42,10 @@ namespace IsoRealms::Basics {
             }) {
   }
 
-  ArgumentDefinition::ArgumentDefinition(Function& parent, JSONObject object) :
-            ArgumentDefinition(parent, object.getString(JSON_NAME), object.getString(JSON_LUA_NAME)) {
-    cDefType.init(object, JSON_TYPE);
+  void ArgumentDefinition::define(IComponentDefiner& definer, Function& parent) {
+    definer.propertyString(JSON_NAME,     [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    definer.propertyResource(JSON_TYPE,     cDefType);
+    definer.propertyString(JSON_LUA_NAME, [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
   }
 
   void ArgumentDefinition::save(JSONObject object) const {
@@ -64,13 +65,6 @@ namespace IsoRealms::Basics {
   const BindingType* ArgumentDefinition::getType() const {
     return &cDefType;
   }
-
-  void ArgumentDefinition::getProperties(IPropertyMaker& owner, const Metadata& metadata, Function& parent) {
-    owner.createPropertyNativeString(JSON_NAME,     [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
-    owner.createPropertyTreeSelector(JSON_TYPE,     cDefType);
-    owner.createPropertyNativeString(JSON_LUA_NAME, [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
-  }
-
   void ArgumentDefinition::saveCall(JSONObject object, const std::string& attributeName) const {
     object.addString(attributeName, cDefName);
   }
@@ -94,4 +88,3 @@ namespace IsoRealms::Basics {
     return mFunction;
   }
 }
-

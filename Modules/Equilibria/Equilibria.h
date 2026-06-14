@@ -20,19 +20,19 @@
 
 #include "IsoRealms.h"
 
-#include "Assets/Registry/BoundaryTypeRegistry.h"
-#include "Assets/Registry/CameraRegistry.h"
-#include "Assets/Registry/PhysicalObjectTypeRegistry.h"
-#include "Assets/Registry/SurfacePatternRegistry.h"
-#include "Assets/Registry/WallPatternRegistry.h"
-#include "Assets/Registry/WorldEditorToolRegistry.h"
-#include "Assets/Registry/ZoneObjectTypeTraitRegistry.h"
-#include "Assets/Registry/ZoneViewTypeRegistry.h"
+#include "Resources/Registry/BoundaryTypeRegistry.h"
+#include "Resources/Registry/CameraRegistry.h"
+#include "Resources/Registry/PhysicalObjectTypeRegistry.h"
+#include "Resources/Registry/SurfacePatternRegistry.h"
+#include "Resources/Registry/WallPatternRegistry.h"
+#include "Resources/Registry/WorldEditorToolRegistry.h"
+#include "Resources/Registry/ZoneObjectTypeTraitRegistry.h"
+#include "Resources/Registry/ZoneViewTypeRegistry.h"
 
 #include "AlienType/AlienType.h"
 #include "BoundaryHandler/BoundaryHandler.h"
 #include "CollisionHandler/CollisionHandler.h"
-#include "IsoRealms/Assets/IEventBindings.h"
+#include "IsoRealms/Resources/IEventBindings.h"
 #include "LiftType/LiftType.h"
 #include "ModelCycler/ModelCycler.h"
 #include "PickUpType/PickUpType.h"
@@ -49,7 +49,7 @@
 #include "ZoneType/ZoneType.h"
 
 namespace IsoRealms::Equilibria {
-  template <typename TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct ResourceContainerTraits;
   template <typename TYPE> struct ComponentContainerTraits;
 
   class Equilibria : public IModuleHandle {
@@ -76,7 +76,7 @@ namespace IsoRealms::Equilibria {
   
     // Interface access (used by all).
     Project& getProject() const;
-    Equilibria& getAssetManager();
+    Equilibria& getResourceManager();
 
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
     void setOwner(ProjectFile* owner); // TODO: Probably shouldn't be here.
@@ -84,12 +84,12 @@ namespace IsoRealms::Equilibria {
     std::vector<IBoundaryType*>       getAllBoundaryTypeObjects();
     std::vector<IPhysicalObjectType*> getAllPhysicalObjectTypeObjects();
 
-    template <typename TYPE, typename THING> IStateNotifier* add(THING* asset, const std::string& id, const std::string& category = "") {
-      return AssetContainerTraits<TYPE>::get(*this).add(asset, id, category, true);
+    template <typename TYPE, typename THING> IStateNotifier* add(THING* resource, const std::string& id, const std::string& category = "") {
+      return ResourceContainerTraits<TYPE>::get(*this).add(resource, id, category, true);
     }
 
-    template <typename TYPE, typename THING> void remove(THING* asset) {
-      AssetContainerTraits<TYPE>::get(*this).remove(asset);
+    template <typename TYPE, typename THING> void remove(THING* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).remove(resource);
     }
 
     template <typename TYPE> TYPE* get(IComponentUser<TYPE>* user, const std::string& id) {
@@ -156,52 +156,52 @@ namespace IsoRealms::Equilibria {
     void removeAll(ZoneType*       type);
 
     // Module type removal.
-    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
-      AssetContainerTraits<TYPE>::get(*this).release(user, asset);
+    template <typename TYPE> void release(IResourceUser<TYPE>* user, TYPE* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).release(user, resource);
     }
 
-    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getTreeItemInfo(asset);
+    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getTreeItemInfo(resource);
     }
 
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getPropertyMetadata(asset);
+    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
     }
 
-    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
-      AssetContainerTraits<TYPE>::get(*this).save(object, asset);
+    template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
+      ResourceContainerTraits<TYPE>::get(*this).save(object, resource);
     }
 
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& f) const {
-      AssetContainerTraits<TYPE>::get(*this).forEachEntry(f);
+      ResourceContainerTraits<TYPE>::get(*this).forEachEntry(f);
     }
 
     template <typename TYPE> bool renderIcon(const std::string& id) const {
-      return AssetContainerTraits<TYPE>::get(*this).renderIcon(id);
+      return ResourceContainerTraits<TYPE>::get(*this).renderIcon(id);
     }
 
     template <typename TYPE> bool isConfigurable(const std::string& id) const {
-      return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+      return ResourceContainerTraits<TYPE>::get(*this).hasConfiguration(id);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
-      return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IResourceUser<TYPE>* user, OWNER& owner) {
+      return ResourceContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
-      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
+      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
-      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
+      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
-    template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(asset);
+    template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(resource);
     }
    
-    template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* asset) {
-      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, cProject.getProjectFile());
+    template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(resource, cProject.getProjectFile());
     }
     
 
@@ -245,15 +245,15 @@ namespace IsoRealms::Equilibria {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ComponentAssetRegistry& assets) override;
+    void publish(ResourcePublisher& publisher) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
 
-    void remove(IWorldEditorTool* asset);
+    void remove(IWorldEditorTool* resource);
     
-    void remove(WorldEditorTool& asset);
+    void remove(WorldEditorTool& resource);
 
     void addZoneBinding(IBinding* binding1, IBinding* binding2, const std::string& id);
 
@@ -278,7 +278,7 @@ namespace IsoRealms::Equilibria {
     /****************************************\
      * Implements IStateListener<ITexture*> *
     \****************************************/
-    void stateChanged(ITexture* asset);
+    void stateChanged(ITexture* resource);
 
     private:
 
@@ -305,7 +305,7 @@ namespace IsoRealms::Equilibria {
     ZoneTool       cToolMoveZone;
     ZoneTool       cToolDeleteZone;
     
-    // Equilibria Assets.
+    // Equilibria Resources.
     BoundaryTypeRegistry        cBoundaryTypes;
     CameraRegistry              cCameras;
     PhysicalObjectTypeRegistry  cPhysicalObjectTypes;
@@ -343,10 +343,6 @@ namespace IsoRealms::Equilibria {
       \**************************/
       std::string getBindingTypeID() const override;
       std::string getBindingTypeRootFolder() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
 
       private:
       std::string cTypeName;
@@ -362,7 +358,7 @@ namespace IsoRealms::Equilibria {
       \*****************************/
       IBinding* getBinding(const std::string& id) override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-      void releaseBinding(const IBinding* asset) override;
+      void releaseBinding(const IBinding* resource) override;
 
       private:
       Equilibria& cEquilibria;
@@ -381,18 +377,18 @@ namespace IsoRealms::Equilibria {
     std::map<std::string, IBinding*> cRuntimeZoneBindings1;
     std::map<std::string, IBinding*> cRuntimeZoneBindings2;
 
-    template <class TYPE> friend struct AssetContainerTraits;
+    template <class TYPE> friend struct ResourceContainerTraits;
     template <class TYPE> friend struct ComponentContainerTraits;
   };
 
-  template<> struct AssetContainerTraits<IBoundaryType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cBoundaryTypes;       }};
-  template<> struct AssetContainerTraits<ICamera>              {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cCameras;             }};
-  template<> struct AssetContainerTraits<IPhysicalObjectType>  {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cPhysicalObjectTypes; }};
-  template<> struct AssetContainerTraits<ISurfacePattern>      {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cSurfacePatterns;     }};
-  template<> struct AssetContainerTraits<IWallPattern>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cWallPatterns;        }};
-  template<> struct AssetContainerTraits<IWorldEditorTool>     {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cWorldEditorTools;    }};
-  template<> struct AssetContainerTraits<IZoneObjectTypeTrait> {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cZoneObjectTypeTraits;}};
-  template<> struct AssetContainerTraits<IZoneViewType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cZoneViewTypes;       }};
+  template<> struct ResourceContainerTraits<IBoundaryType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cBoundaryTypes;       }};
+  template<> struct ResourceContainerTraits<ICamera>              {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cCameras;             }};
+  template<> struct ResourceContainerTraits<IPhysicalObjectType>  {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cPhysicalObjectTypes; }};
+  template<> struct ResourceContainerTraits<ISurfacePattern>      {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cSurfacePatterns;     }};
+  template<> struct ResourceContainerTraits<IWallPattern>         {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cWallPatterns;        }};
+  template<> struct ResourceContainerTraits<IWorldEditorTool>     {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cWorldEditorTools;    }};
+  template<> struct ResourceContainerTraits<IZoneObjectTypeTrait> {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cZoneObjectTypeTraits;}};
+  template<> struct ResourceContainerTraits<IZoneViewType>        {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cZoneViewTypes;       }};
 
   template<> struct ComponentContainerTraits<AlienType>          {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentAlien;             }};
   template<> struct ComponentContainerTraits<BoundaryHandler>    {template <typename EQUILIBRIA> static auto& get(EQUILIBRIA& equilibria) {return equilibria.cComponentBoundaryHandler;   }};

@@ -23,9 +23,9 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Type/IBoundaryType.h"
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Equilibria/EquilibriaAssetRegistry.h"
+#include "Modules/Equilibria/Resources/Type/IBoundaryType.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/EquilibriaResourceRegistry.h"
 #include "Modules/Equilibria/WorldEditorCursorCell.h"
 
 namespace IsoRealms::Equilibria {
@@ -45,22 +45,22 @@ namespace IsoRealms::Equilibria {
      * Component interface *
     \***********************/
     ZoneType(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);  
+    void define(IComponentDefiner& definer);
+    void publish(const std::string& parentID);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
 
     // Interface to be used by module.
-    void registerAssets(const std::string& parentID);
     void registerZoneProperty(const std::string& id, IBinding* property);
     void unregisterZoneProperty(const std::string& id);
     
     /****************************\
      * Implements IBoundaryType *
     \****************************/
+    bool renderResourceIcon() const override;
     std::string getBoundaryTypeID() const override;
     IBinding* getBounderyTypeBinding(const std::string& id) const override;
     std::string getBoundaryTypeBindingID(const IBinding* binding) const override;
@@ -70,11 +70,7 @@ namespace IsoRealms::Equilibria {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
+    
     private:
 
     // Internal classes.
@@ -106,8 +102,8 @@ namespace IsoRealms::Equilibria {
     // External interfaces.
     Equilibria& cEquilibria;   /// Equilibria module reference.
     
-    // Asset registry.
-    EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
+    // Resource registry.
+    EquilibriaResourceRegistry cResources; /// Equilibria resource registry.
 
     // Action parameters.
 //     LuaBinding<Zone> cRuntimeParameterZone;           /// Parameter for a zone itself.

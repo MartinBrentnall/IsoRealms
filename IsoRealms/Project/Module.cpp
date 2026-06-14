@@ -31,7 +31,7 @@
 namespace IsoRealms {
   Module::Module(const std::string& name, Project& project, LuaState* luaState) :
             cProject(project),
-            cModuleAssetRegistry(*this),
+            cModuleResourceRegistry(*this),
             cName(name) {
     std::string mModulePath = "IsoRealms-" + name;
     if (!System::moduleExists(mModulePath, false)) {
@@ -72,7 +72,7 @@ namespace IsoRealms {
     std::string mMetadataPath = getMetadataPath(cName);
     JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
     
-    // Load the module and asset metadata.  This needs to be done before the module is created.
+    // Load the module and resource metadata.  This needs to be done before the module is created.
     cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
     cLongName = mMetadataDocument.hasMember(JSON_LONG_NAME) ? mMetadataDocument.getString(JSON_LONG_NAME) : cName;
 
@@ -85,13 +85,13 @@ namespace IsoRealms {
       }
     }
 
-    JSONObject mAssetsObject = mMetadataDocument.getObject(JSON_ASSETS);
-    for (JSONThing mAssetThing : mAssetsObject) {
-      JSONObject mAssetObject = mAssetThing.getValue();
-      std::string mAssetName = mAssetThing.getName();
-      cAssetMetadata[mAssetName] = std::make_unique<Metadata>();
-      JSONObject mPropertiesObject = mAssetObject.getObject(JSON_PROPERTIES);
-      cAssetMetadata[mAssetName]->load(mPropertiesObject);
+    JSONObject mResourcesObject = mMetadataDocument.getObject(JSON_RESOURCES);
+    for (JSONThing mResourceThing : mResourcesObject) {
+      JSONObject mResourceObject = mResourceThing.getValue();
+      std::string mResourceName = mResourceThing.getName();
+      cResourceMetadata[mResourceName] = std::make_unique<Metadata>();
+      JSONObject mPropertiesObject = mResourceObject.getObject(JSON_PROPERTIES);
+      cResourceMetadata[mResourceName]->load(mPropertiesObject);
     }
 
     // Create the module.
@@ -147,10 +147,10 @@ namespace IsoRealms {
     }
   }
 
-  void Module::registerAssets() {
+  void Module::publish() {
 
     // TODO: I don't remember why this is separate from the constructor.
-    cModule->registerAssets(cModuleAssetRegistry);
+    cModule->publish(cModuleResourceRegistry);
   }
 
   bool Module::needsSaving(const ProjectFile* savingProject) const {
@@ -205,14 +205,14 @@ namespace IsoRealms {
     cComponentTypes[id] = std::make_unique<ComponentType>(resourceTypeDefinition, *this);
   }
 
-  const Metadata& Module::getAssetMetadata(const std::string& key) const {
-    std::map<std::string, std::unique_ptr<Metadata>>::const_iterator it = cAssetMetadata.find(key);
-    if (it == cAssetMetadata.end()) {
-      std::cout << "ERROR: Module::getAssetMetadata: Asset metadata for key \"" << key << "\" not found in module \"" << cName << "\"." << std::endl;
-      for (const std::pair<const std::string, std::unique_ptr<Metadata>>& mAssetMetadata : cAssetMetadata) {
-        std::cout << "  " << mAssetMetadata.first << std::endl;
+  const Metadata& Module::getResourceMetadata(const std::string& key) const {
+    std::map<std::string, std::unique_ptr<Metadata>>::const_iterator it = cResourceMetadata.find(key);
+    if (it == cResourceMetadata.end()) {
+      std::cout << "ERROR: Module::getResourceMetadata: Resource metadata for key \"" << key << "\" not found in module \"" << cName << "\"." << std::endl;
+      for (const std::pair<const std::string, std::unique_ptr<Metadata>>& mResourceMetadata : cResourceMetadata) {
+        std::cout << "  " << mResourceMetadata.first << std::endl;
       }
-      throw ArgumentException("ERROR: Module::getAssetMetadata: Asset metadata for key \"" + key + "\" not found in module \"" + cName + "\".");
+      throw ArgumentException("ERROR: Module::getResourceMetadata: Resource metadata for key \"" + key + "\" not found in module \"" + cName + "\".");
     }
     return *it->second;
   }
@@ -317,7 +317,7 @@ namespace IsoRealms {
     return cProject;
   }
 
-  Project& Module::getAssetManager() {
+  Project& Module::getResourceManager() {
     return cProject;
   }
 
@@ -329,7 +329,7 @@ namespace IsoRealms {
     return cModuleMetadata;
   }
 
-  void Module::reregisterAssets() {
+  void Module::republish() {
     // Nothing to do.
   }
 

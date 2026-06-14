@@ -70,27 +70,27 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  void Theme::getProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString("id", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
+  void Theme::define(IComponentDefiner& definer) {
+    definer.propertyString("id", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
     Options mContainerHint;
     mContainerHint.addOption(Options::PROPERTY_SCOPED,  "true");
     mContainerHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-    owner.createPropertyStruct("textures", "", [this](IPropertyMaker& owner) {
+    definer.scope("textures", "", [this](IComponentDefiner& definer) {
       for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
         std::string mName = cThemeSet.getElement(mTexture.first);
         Options mTextureHint;
         mTextureHint.addOption("name", mName);
         mTextureHint.addOption("description", "TODO: Theme Texture Description");
-        owner.createPropertyTreeSelector(mName, mTexture.second, mTextureHint);
+        definer.propertyResource(mName, mTexture.second, mTextureHint);
       }
     }, nullptr, mContainerHint);
-    owner.createPropertyStruct("colours", "", [this](IPropertyMaker& owner) {
+    definer.scope("colours", "", [this](IComponentDefiner& definer) {
       for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
         std::string mName = cThemeSet.getElement(mColour.first);
         Options mColourHint;
         mColourHint.addOption("name", mName);
         mColourHint.addOption("description", "TODO: Theme Colour Description");
-        owner.createPropertyTreeSelector(mName, mColour.second, mColourHint);
+        definer.propertyResource(mName, mColour.second, mColourHint);
       }
     }, nullptr, mContainerHint);
   }

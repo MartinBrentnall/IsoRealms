@@ -21,7 +21,7 @@
 #include <sol.hpp>
 #include <unordered_map>
 
-#include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/ComponentLoader.h"
 
 #include "Modules/Basics/Basics.h"
 
@@ -32,24 +32,15 @@ namespace IsoRealms::Basics {
     
   Function::Function(Basics& basics, IComponentData& data, JSONObject object) :
             Function(basics, data.getDummyActionContext()) {
-    PropertyLoader mLoader(data, object);
-    getProperties(mLoader, cComponentData.getMetadata());
+    ComponentLoader mLoader(data, object);
+    define(mLoader);
   }
 
-  void Function::registerAssets(ComponentAssetRegistry& assets) {
-    assets.addProvider<IActionContext, IAction>(this, "", "Call a Function");
-  }
-    
-  
-  bool Function::renderIcon() const {
-    return renderAssetProviderIcon();
-  }
-
-  void Function::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    addBindingPropertyArray(owner, true);
-    owner.createPropertyArray("arguments", cDefArgumentDefinitions, [](const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition) -> ArgumentDefinition& {return *mArgumentDefinition;}, [this, &owner, &metadata](ArgumentDefinition& argumentDefinition) {
-      owner.createPropertyStruct("Argument", argumentDefinition.getName(), [&argumentDefinition, this, &metadata](IPropertyMaker& owner) {
-        argumentDefinition.getProperties(owner, metadata, *this);
+  void Function::define(IComponentDefiner& definer) {
+    addBindingPropertyArray(definer, true);
+    definer.array("arguments", cDefArgumentDefinitions, [](const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition) -> ArgumentDefinition& {return *mArgumentDefinition;}, [this, &definer](ArgumentDefinition& argumentDefinition) {
+      definer.scope("Argument", argumentDefinition.getName(), [&argumentDefinition, this](IComponentDefiner& editingDefiner) {
+        argumentDefinition.define(editingDefiner, *this);
       }, [this, &argumentDefinition]() {
         Utils::removeElementUnique(cDefArgumentDefinitions, &argumentDefinition);
       });
@@ -57,15 +48,22 @@ namespace IsoRealms::Basics {
       std::string mName = getNextAvailableName("newArgument");
       return *cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mName, mName));
     });
-    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
+    definer.propertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
       cDefCode = value;
     });
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       declare();
     }
   }
 
-  
+  void Function::publish(ResourcePublisher& publisher) {
+    publisher.publishProvider<IActionContext, IAction>(this, "", "Call a Function");
+  }
+
+  bool Function::renderIcon() const {
+    return renderResourceProviderIcon();
+  }
+
   Function::Function(Basics& basics, IActionContext& owner) :
             cProject(basics.getProject()),
             cBasics(basics),
@@ -77,18 +75,18 @@ namespace IsoRealms::Basics {
 
   Function::Function(Basics& basics, IActionContext& owner, JSONObject object, bool init) :
             Function(basics, owner) {
-    PropertyLoader mLoader(cComponentData, object);
+    ComponentLoader mLoader(cComponentData, object);
     if (init) {
-      getProperties(mLoader, cComponentData.getMetadata());
+      define(mLoader);
     } else {
       getScriptProperties(mLoader);
     }
   }
 
-  void Function::addBindingPropertyArray(IPropertyMaker& owner, bool init) {
-    owner.createPropertyArray(JSON_BINDINGS, cDefBindings, [](const std::unique_ptr<Binding>& mBinding) -> Binding& {return *mBinding;}, [this, &owner, init](Binding& binding) {
-      owner.createPropertyStruct("Binding", binding.getName(), [&binding, init](IPropertyMaker& owner) {
-        binding.getProperties(owner, init);
+  void Function::addBindingPropertyArray(IComponentDefiner& definer, bool init) {
+    definer.array(JSON_BINDINGS, cDefBindings, [](const std::unique_ptr<Binding>& mBinding) -> Binding& {return *mBinding;}, [this, &definer, init](Binding& binding) {
+      definer.scope("Binding", binding.getName(), [&binding, init](IComponentDefiner& editingDefiner) {
+        binding.getProperties(editingDefiner, init);
       }, [this, &binding]() {
         Utils::removeElementUnique(cDefBindings, &binding);
       });
@@ -97,12 +95,12 @@ namespace IsoRealms::Basics {
     });
   }
 
-  void Function::getScriptProperties(IPropertyMaker& owner) {
-    addBindingPropertyArray(owner, false);
-    owner.createPropertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
+  void Function::getScriptProperties(IComponentDefiner& definer) {
+    addBindingPropertyArray(definer, false);
+    definer.propertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
       cDefCode = value;
     });
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       declare();
     }
   }
@@ -164,21 +162,21 @@ namespace IsoRealms::Basics {
     return cDefID;
   }
 
-  IAction* Function::getAsset(IActionContext& owner, JSONObject object) {
+  IAction* Function::getResource(IActionContext& owner, JSONObject object) {
     std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner, object);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
   }
 
-  IAction* Function::getAsset(IActionContext& owner) {
+  IAction* Function::getResource(IActionContext& owner) {
     std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
   }  
 
-  void Function::releaseAsset(const IAction* asset) {
+  void Function::releaseResource(const IAction* asset) {
     std::map<const IAction*, std::unique_ptr<Call>>::iterator mInstance = cInstances.find(asset);
     if (mInstance == cInstances.end()) {
       throw std::invalid_argument("Specified action isn't derived from this function");
@@ -190,7 +188,7 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  bool Function::renderAssetProviderIcon() const {
+  bool Function::renderResourceProviderIcon() const {
     glBindTexture(GL_TEXTURE_2D, 0);
     glLineWidth(4.0f);
     glColor3f(1.0f, 1.0f, 0.5f);
@@ -259,11 +257,11 @@ namespace IsoRealms::Basics {
     }
   }
 
-  bool Function::Call::renderAssetIcon() const {
+  bool Function::Call::renderResourceIcon() const {
     return cParent.renderIcon();
   }
 
-  void Function::Call::saveAsset(JSONObject object) const {
+  void Function::Call::saveResource(JSONObject object) const {
     JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
     for (unsigned int i = 0; i < cDefArguments.size(); i++) {
       JSONObject mBindingObject =  mBindingsArray.addObject();
@@ -272,16 +270,16 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void Function::Call::getAssetProperties(IPropertyMaker& owner) {
+  void Function::Call::getResourceProperties(IComponentDefiner& definer) {
     std::unordered_map<std::string, unsigned int> mArgumentIndices;
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
       mArgumentIndices.emplace(cParent.cDefArgumentDefinitions[i]->getName(), i);
     }
-    owner.createPropertyFixedArray(JSON_BINDINGS, cDefArguments, [](const std::unique_ptr<IsoRealms::Binding>& binding) -> IsoRealms::Binding& {return *binding;}, [this, &owner](IsoRealms::Binding& binding, unsigned int index) {
+    definer.fixedArray(JSON_BINDINGS, cDefArguments, [](const std::unique_ptr<IsoRealms::Binding>& binding) -> IsoRealms::Binding& {return *binding;}, [this, &definer](IsoRealms::Binding& binding, unsigned int index) {
       Options mHint;
       mHint.addOption("name", cParent.cDefArgumentDefinitions[index]->getName());
       mHint.addOption("description", "An argument to the function.");
-      owner.createPropertyTreeSelector(JSON_TO, binding, mHint);
+      definer.propertyResource(JSON_TO, binding, mHint);
     }, [mArgumentIndices](const JSONObject& loadObject) -> unsigned int {
       return mArgumentIndices.at(loadObject.getString(JSON_ARGUMENT));
     });

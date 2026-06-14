@@ -36,8 +36,16 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
 
-  void DebrisChunk::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IModel>(this, "", "Spindizzy Debris Chunks");
+  void DebrisChunk::define(IComponentDefiner& definer) {
+    definer.propertyResource("side1",   cDefSide[0]);
+    definer.propertyResource("side2",   cDefSide[1]);
+    definer.propertyResource("side3",   cDefSide[2]);
+    definer.propertyResource("side4",   cDefSide[3]);
+    definer.propertyResource("outline", cDefOutline);
+  }
+
+  void DebrisChunk::publish(ResourcePublisher& publisher) {
+    publisher.publish<IModel>(this, "", "Spindizzy Debris Chunks");
   }
 
   void DebrisChunk::hintInUse(bool inUse) {
@@ -54,14 +62,6 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  void DebrisChunk::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("side1",   cDefSide[0]);
-    owner.createPropertyTreeSelector("side2",   cDefSide[1]);
-    owner.createPropertyTreeSelector("side3",   cDefSide[2]);
-    owner.createPropertyTreeSelector("side4",   cDefSide[3]);
-    owner.createPropertyTreeSelector("outline", cDefOutline);
-  }
-
   void DebrisChunk::updateEditing(unsigned int milliseconds) {
     cEditingIconRotation += 0.1f * milliseconds;
   }
@@ -74,20 +74,8 @@ namespace IsoRealms::Spindizzy {
     return renderIcon();
   }
 
-  bool DebrisChunk::renderAssetIcon() const {
+  bool DebrisChunk::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void DebrisChunk::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void DebrisChunk::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool DebrisChunk::isDefaultConfiguration() const {
-    return true;
   }
 
   void DebrisChunk::update(unsigned int milliseconds) {

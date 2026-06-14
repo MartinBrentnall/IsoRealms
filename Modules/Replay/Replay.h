@@ -33,7 +33,7 @@ namespace IsoRealms::Replay {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ComponentAssetRegistry& assets) override;
+    void publish(ResourcePublisher& publisher) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;

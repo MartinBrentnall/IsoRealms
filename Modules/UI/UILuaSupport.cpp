@@ -20,13 +20,13 @@
 
 #include <sol.hpp>
 
-#include "Assets/Fixed/MenuItem/MenuItemAction.h"
-#include "Assets/Fixed/MenuItem/MenuItemBoolean.h"
-#include "Assets/Fixed/MenuItem/MenuItemDigitalInput.h"
-#include "Assets/Fixed/MenuItem/MenuItemDisplayResolution.h"
-#include "Assets/Fixed/MenuItem/MenuItemFileList.h"
-#include "Assets/Fixed/MenuItem/MenuItemLauncherList.h"
-#include "Assets/Fixed/MenuItem/MenuItemSlider.h"
+#include "Resources/Fixed/MenuItem/MenuItemAction.h"
+#include "Resources/Fixed/MenuItem/MenuItemBoolean.h"
+#include "Resources/Fixed/MenuItem/MenuItemDigitalInput.h"
+#include "Resources/Fixed/MenuItem/MenuItemDisplayResolution.h"
+#include "Resources/Fixed/MenuItem/MenuItemFileList.h"
+#include "Resources/Fixed/MenuItem/MenuItemLauncherList.h"
+#include "Resources/Fixed/MenuItem/MenuItemSlider.h"
 #include "Layout/LayoutComponent.h"
 #include "Menu/Menu.h"
 #include "Prompt/Prompt.h"

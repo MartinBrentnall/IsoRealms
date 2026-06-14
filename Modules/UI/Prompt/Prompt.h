@@ -39,8 +39,8 @@ namespace IsoRealms::UI {
      * Component Interface *
     \***********************/    
     Prompt(UI& ui, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
 
     /*********************\
      * Module interfaces *
@@ -57,14 +57,6 @@ namespace IsoRealms::UI {
      * Implements IScreen *
     \*********************/
     void renderScreen(float scale, float aspectRatio) const override;
-
-    /*********************\
-     * Implements IAsset *
-    \*********************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     private:
 

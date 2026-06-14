@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   FontRegistry::FontRegistry() :
-            AssetClientManager(&cNone) {
+            ResourceClientManager(&cNone) {
   }
 
   void FontRegistry::Dummy::print(float x, float y, float size, IFont::Alignment Alignment, const std::string& text) {
@@ -39,20 +39,8 @@ namespace IsoRealms {
     return 0;
   }
 
-  bool FontRegistry::Dummy::renderAssetIcon() const {
+  bool FontRegistry::Dummy::renderResourceIcon() const {
     Utils::renderIconNone();
-    return true;
-  }
-
-  void FontRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void FontRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool FontRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 }

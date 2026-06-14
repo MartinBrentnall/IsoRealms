@@ -22,14 +22,14 @@ namespace IsoRealms::Basics {
   SimpleFloat::SimpleFloat(Basics& basics, IComponentData& data) :
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void SimpleFloat::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IFloat>(this, "", "Simple Floats");
-    assets.add<IBinding>(&cLuaBinding, "", "Variables/Floats");
+
+  void SimpleFloat::define(IComponentDefiner& definer) {
+    definer.propertyFloat("value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 
-  void SimpleFloat::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat("value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+  void SimpleFloat::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IFloat>(this, "", "Simple Floats");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Variables/Floats");
   }
   
   void SimpleFloat::reset() {
@@ -38,22 +38,6 @@ namespace IsoRealms::Basics {
 
   float SimpleFloat::getValue() const {
     return cRuntimeValue;
-  }
-
-  bool SimpleFloat::renderAssetIcon() const {
-    return false;
-  }
-
-  void SimpleFloat::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SimpleFloat::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SimpleFloat::isDefaultConfiguration() const {
-    return true;
   }
 
   void SimpleFloat::setValue(float value) {

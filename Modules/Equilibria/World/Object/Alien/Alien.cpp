@@ -49,7 +49,7 @@ namespace IsoRealms::Equilibria {
             cRuntimePhysicsObject(zone.getWorld().getEquilibria(), this) {
     reset();
   }
-  
+
   Alien::Alien(Zone& zone, JSONObject object) :
             cZone(zone),
             cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
@@ -63,6 +63,10 @@ namespace IsoRealms::Equilibria {
       cDefModel = cDefType->createModel();
       reset();
     });
+  }
+
+  void Alien::define(IComponentDefiner& definer) {
+    // Nothing to do.
   }
 
   void Alien::reset() {
@@ -229,11 +233,7 @@ namespace IsoRealms::Equilibria {
   void Alien::remove() {
     cZone.remove(this);
   }
-
-  void Alien::getProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
+  
   std::string Alien::getTypeName() const {
     return "Alien";
   }
@@ -241,4 +241,5 @@ namespace IsoRealms::Equilibria {
   Zone& Alien::getObjectZone() {
     return cZone;
   }
+
 }

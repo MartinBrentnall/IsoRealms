@@ -38,20 +38,9 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueControl::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IFloat>(static_cast<IFloat*>(this), "", "Analogue Inputs");
-    assets.add<IInputHandler>(static_cast<IInputHandler*>(this), "", "Analogue Inputs");
-    assets.add<IBinding>(&cLuaBinding, "", "Analogue Inputs");
-    for (std::unique_ptr<InputMapping>& mInput : cDefMapping) {
-      mInput->registerAssets(assets);
-    }
-  }
-
-
-
-  void AnalogueControl::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner](InputMapping& mapping) {
-      mapping.getProperties(owner, [this, &mapping]() {
+  void AnalogueControl::define(IComponentDefiner& definer) {
+    definer.array(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &definer](InputMapping& mapping) {
+      mapping.define(definer, [this, &mapping]() {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });
     }, [this]()->InputMapping& {
@@ -61,6 +50,14 @@ namespace IsoRealms::Basics {
     });
   }
 
+  void AnalogueControl::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IFloat>(static_cast<IFloat*>(this), "", "Analogue Inputs");
+    publisher.publish<IInputHandler>(static_cast<IInputHandler*>(this), "", "Analogue Inputs");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Analogue Inputs");
+    for (std::unique_ptr<InputMapping>& mInput : cDefMapping) {
+      mInput->publish(publisher);
+    }
+  }
 
   float AnalogueControl::getValue() const {
     return cRuntimeState;
@@ -92,22 +89,6 @@ namespace IsoRealms::Basics {
     for (std::unique_ptr<InputMapping>& mInput : mMapping) {
       mInput->reset();
     }
-  }
-
-  bool AnalogueControl::renderAssetIcon() const {
-    return false;
-  }
-
-  void AnalogueControl::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void AnalogueControl::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool AnalogueControl::isDefaultConfiguration() const {
-    return true;
   }
 
   std::string AnalogueControl::getInputsString() const {
@@ -195,8 +176,8 @@ AnalogueControl::InputMapping::InputMapping(std::shared_ptr<AnalogueInput> physi
     (*cPhysicalInput)->loadCustomMapping(object);
   }
 
-  void AnalogueControl::InputMapping::registerAssets(ComponentAssetRegistry& assets) {
-    (*cPhysicalInput)->registerAssets(assets);
+  void AnalogueControl::InputMapping::publish(ResourcePublisher& publisher) {
+    (*cPhysicalInput)->publish(publisher);
   }
   
   std::string AnalogueControl::InputMapping::getShortName() const {
@@ -211,11 +192,11 @@ AnalogueControl::InputMapping::InputMapping(std::shared_ptr<AnalogueInput> physi
     return (*cPhysicalInput)->getName();
   }
 
-  void AnalogueControl::InputMapping::getProperties(IPropertyMaker& owner, std::function<void()> removeFunction) {
+  void AnalogueControl::InputMapping::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_INLINE, "true");
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    owner.createPropertyTreeSelector("DefaultMapping", *cPhysicalInput, mHint, removeFunction);
+    definer.propertyResource("DefaultMapping", *cPhysicalInput, mHint, removeFunction);
   }
 
   void AnalogueControl::InputMapping::reset() {

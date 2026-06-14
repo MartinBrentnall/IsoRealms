@@ -20,15 +20,15 @@
 
 #include <string>
 
-#include "Assets/Client/ComponentOwner.h"
-#include "Editing/Property/IPropertyMaker.h"
+#include "Resources/Client/ComponentOwner.h"
+#include "Editing/Property/IComponentDefiner.h"
 #include "Editing/Property/PropertyNativeString.h"
 #include "IActionContext.h"
 #include "IComponent.h"
 #include "IComponentData.h"
-#include "Project/ComponentAssetRegistry.h"
+#include "Project/ResourcePublisher.h"
 #include "Project/ComponentType.h"
-#include "Project/Registry/AssetIDException.h"
+#include "Project/Registry/ResourceIDException.h"
 #include "Utils.h"
 
 namespace IsoRealms {
@@ -52,6 +52,10 @@ namespace IsoRealms {
     {type.removed()} -> std::same_as<void>;
   };
 
+  template <typename TYPE> concept HasPublish = requires(TYPE type, ResourcePublisher& publisher) {
+    {type.publish(publisher)} -> std::same_as<void>;
+  };
+
   template <typename MODULE, typename TYPE> class Component : public IComponent,
                                                                  public IComponentData,
                                                                  public IActionContext {
@@ -60,14 +64,14 @@ namespace IsoRealms {
               cParent(parent),
               cOwnerProject(parent.getProject(), ownerProject),
               cComponentHandle(module, static_cast<IComponentData&>(*this)),
-              cAssetRegistry(*this) {
+              cPublisher(*this) {
     }
     
     Component(ComponentType& parent, MODULE& module, ProjectFile* ownerProject, JSONObject object) :
               cParent(parent),
               cOwnerProject(parent.getProject(), ownerProject),
               cComponentHandle(module, static_cast<IComponentData&>(*this), object),
-              cAssetRegistry(*this) {
+              cPublisher(*this) {
     }
 
     TYPE* getComponent() {
@@ -81,20 +85,20 @@ namespace IsoRealms {
       return cParent.getName(*this);
     }
     
-    void getProperties(IPropertyMaker& propertyMaker) override {
-      propertyMaker.createPropertyNativeString("ComponentName", [this]() {return cParent.getName(*this);}, [this](const std::string& value) {
+    void define(IComponentDefiner& definer) override {
+      definer.propertyString("ComponentName", [this]() {return cParent.getName(*this);}, [this](const std::string& value) {
         cParent.renameUserDataDirectory(cParent.getName(*this), value);
         cParent.renameComponent(this, value);
         overrideReadOnlyReferences();
-        registerAssets();
-        cParent.registerModuleAssets();
+        publish();
+        cParent.publishModuleResources();
       }, "", [this](const std::string& value) {
         return cParent.forEachComponent([this, &value](IComponent* mComponent) {
           return mComponent->getName() != value || mComponent == this;
         });
-      }, nullptr, [this, &propertyMaker](std::function<void()> confirm, std::function<void()> cancel) {
+      }, nullptr, [this, &definer](std::function<void()> confirm, std::function<void()> cancel) {
         if (hasReadOnlyReferences()) {
-          propertyMaker.confirm("TODO: This component is referenced by read-only components.  Renaming it will promote any read-only components referencing this one and make them writable.", [this, confirm]() {
+          definer.confirm("TODO: This component is referenced by read-only components.  Renaming it will promote any read-only components referencing this one and make them writable.", [this, confirm]() {
             confirm();
           }, [this, cancel]() {
             cancel();
@@ -103,8 +107,8 @@ namespace IsoRealms {
           confirm();
         }
       });
-      cOwnerProject.createProperty(propertyMaker, "ComponentOwner");
-      cComponentHandle.getProperties(propertyMaker, cParent.getMetadata());
+      cOwnerProject.createProperty(definer, "ComponentOwner");
+      cComponentHandle.define(definer);
     }
     
     void removed() {
@@ -143,8 +147,10 @@ namespace IsoRealms {
       return component == &cComponentHandle;
     }
     
-    void registerAssets() override {
-      cComponentHandle.registerAssets(cAssetRegistry);
+    void publish() override {
+      if constexpr (HasPublish<TYPE>) {
+        cComponentHandle.publish(cPublisher);
+      }
     }
 
     bool needsSaving(const ProjectFile* savingProject) override {
@@ -161,14 +167,14 @@ namespace IsoRealms {
           return true;
         }
       }
-      return cAssetRegistry.hasReadOnlyReferences();
+      return cPublisher.hasReadOnlyReferences();
     }
 
     void overrideReadOnlyReferences() override {
       if constexpr (HasOverrideReadOnlyReferences<TYPE>) {
         cComponentHandle.overrideReadOnlyReferences();
       }
-      cAssetRegistry.overrideReadOnlyReferences();
+      cPublisher.overrideReadOnlyReferences();
     }
 
     ProjectFile* getProjectFile() const override {
@@ -219,7 +225,7 @@ namespace IsoRealms {
       return cParent.getProject();
     }
 
-    Project& getAssetManager() override {
+    Project& getResourceManager() override {
       return cParent.getProject();
     }
 
@@ -231,8 +237,8 @@ namespace IsoRealms {
       return cParent.getMetadata();
     }
 
-    void reregisterAssets() override {
-      registerAssets();
+    void republish() override {
+      publish();
     }
 
     IEventBindings* getBindingRegistry() override {
@@ -247,6 +253,6 @@ namespace IsoRealms {
     // Structures.
     ComponentOwner cOwnerProject;
     TYPE cComponentHandle;
-    ComponentAssetRegistry cAssetRegistry;
+    ResourcePublisher cPublisher;
   };
 }

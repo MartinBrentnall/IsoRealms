@@ -29,7 +29,7 @@ namespace IsoRealms {
 
   class PropertyNativeBoolean : public Property {
     public:
-    PropertyNativeBoolean(IPropertyMaker& owner, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction = nullptr);
+    PropertyNativeBoolean(IComponentDefiner& definer, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction = nullptr);
 
     /************************\
      * Implements IProperty *
@@ -53,7 +53,7 @@ namespace IsoRealms {
       bool renderTreeItemIcon() const override;
       bool hasConfiguration() const override;
       bool isDefaultConfigured() const override;
-      void getTreeItemProperties(IPropertyMaker& owner) override;
+      void getTreeItemProperties(IComponentDefiner& definer) override;
       const Metadata& getPropertyMetadata() const override;
       Application& getApplication() override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;

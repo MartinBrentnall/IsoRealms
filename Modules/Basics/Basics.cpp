@@ -47,7 +47,7 @@ namespace IsoRealms::Basics {
                     cComponentTypeSimpleString(*this),
                     cComponentTypeSimpleVertex(*this),
                     cComponentTypeSprite(*this),
-                    cDigitalToAnalogueMapping(registry.getAssetMetadata("DigitalToAnalogue")),
+                    cDigitalToAnalogueMapping(registry.getResourceMetadata("DigitalToAnalogue")),
                     cLuaBinding(project.getLuaState(), this) {
     registry.add(&cComponentTypeAnalogueControl,   "AnalogueControl");
     registry.add(&cComponentTypeBooleanTrigger,    "BooleanTrigger");
@@ -71,18 +71,18 @@ namespace IsoRealms::Basics {
     registry.add(&cComponentTypeSprite,            "Sprite");
   }
 
-  void Basics::refreshAssetRegistration(Sequence& sequence) {
-    cComponentTypeSequence.refreshAssetRegistration(sequence);
+  void Basics::publish(ResourcePublisher& publisher) {
+    publisher.publishProvider(&cActionScript, ACTION_SCRIPT, "Run a Script");
+    publisher.publish<IBinding>(&cLuaBinding, "",            "Modules/Basics");
+    publisher.publishProvider(&cDigitalToAnalogueMapping, "DigitalToAnalogue", "Digital to Analogue Mapping");
+  }
+  
+  void Basics::refreshResourceRegistration(Sequence& sequence) {
+    cComponentTypeSequence.refreshResourceRegistration(sequence);
   }
 
   const Metadata& Basics::getMetadata(const std::string& key) const {
-    return cModule.getAssetMetadata(key);
-  }
-
-  void Basics::registerAssets(ComponentAssetRegistry& assets) {
-    assets.addProvider(&cActionScript, ACTION_SCRIPT, "Run a Script");
-    assets.add<IBinding>(&cLuaBinding, "",            "Modules/Basics");
-    assets.addProvider(&cDigitalToAnalogueMapping, "DigitalToAnalogue", "Digital to Analogue Mapping");
+    return cModule.getResourceMetadata(key);
   }
   
   void Basics::updateInputs(unsigned int milliseconds) {

@@ -38,44 +38,27 @@ namespace IsoRealms::Basics {
             cBindingEditor(data.getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
-  void ProjectConfigurer::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IScreen>(this, "", "Project Configurers");
-    assets.add<IInputHandler>(this, "", "Project Configurers");
-    assets.add<IBinding>(&cLuaBinding, "", "Project Configurers");
-  }
-
-  void ProjectConfigurer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("font",         cDefFont);
-    owner.createPropertyNativeFloat( "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
-    owner.createPropertyTreeSelector("codeFont",     cDefCodeFont);
-    owner.createPropertyNativeFloat( "codeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
-    owner.createPropertyTreeSelector("onExit",       cDefExitAction);
-    owner.createPropertyTreeSelector("onEditor",     cDefEditorAction);
+  void ProjectConfigurer::define(IComponentDefiner& definer) {
+    definer.propertyResource("font",         cDefFont);
+    definer.propertyFloat(   "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;});
+    definer.propertyResource("codeFont",     cDefCodeFont);
+    definer.propertyFloat(   "codeFontSize", [this]() {return cDefCodeFontSize;}, [this](float value) {cDefCodeFontSize = value;});
+    definer.propertyResource("onExit",       cDefExitAction);
+    definer.propertyResource("onEditor",     cDefEditorAction);
     // TODO: Input configuration
   }
 
+  void ProjectConfigurer::publish(ResourcePublisher& publisher) {
+    publisher.publish<IScreen>(this, "", "Project Configurers");
+    publisher.publish<IInputHandler>(this, "", "Project Configurers");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Project Configurers");
+  }
   void ProjectConfigurer::updateRuntime(unsigned int milliseconds) {
     cProjectConfigurationUI.update(milliseconds);
   }
     
   void ProjectConfigurer::renderScreen(float scale, float aspectRatio) const {
     cProjectConfigurationUI.render(aspectRatio);
-  }
-
-  bool ProjectConfigurer::renderAssetIcon() const {
-    return false;
-  }
-
-  void ProjectConfigurer::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ProjectConfigurer::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ProjectConfigurer::isDefaultConfiguration() const {
-    return true;
   }
 
   bool ProjectConfigurer::input(sf::Event& event) {
@@ -130,7 +113,7 @@ namespace IsoRealms::Basics {
     getTreeItemInfoFunction(TreeItemInfo{"editor", "editor"});
   }
 
-  void ProjectConfigurer::releaseBinding(const IBinding* asset) {
+  void ProjectConfigurer::releaseBinding(const IBinding* resource) {
     // Nothing to do.
   }
 

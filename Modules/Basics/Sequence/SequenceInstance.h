@@ -23,7 +23,7 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Basics/Assets/Client/SequenceTrack.h"
+#include "Modules/Basics/Resources/Client/SequenceTrack.h"
 
 namespace IsoRealms::Basics {
   class Sequence;
@@ -39,13 +39,13 @@ namespace IsoRealms::Basics {
 
     Sequence& getSequence() const;
 
-    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID);
     void stopPreview();
     void setPreviewPosition(long position);
     void update(unsigned int milliseconds);
     void updatePreview(unsigned int milliseconds);
     void save(JSONObject object) const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher, const std::string& parentID);
 
     /***********************\
      * Scripting Interface *
@@ -67,13 +67,9 @@ namespace IsoRealms::Basics {
       Position(SequenceInstance& parent);
 
       /***********************\
-        * Implements IInteger *
+       * Implements IInteger *
       \***********************/
       int getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
 
       private:
       SequenceInstance& cParent;
@@ -84,14 +80,10 @@ namespace IsoRealms::Basics {
       Remaining(SequenceInstance& parent);
 
       /***********************\
-        * Implements IInteger *
+       * Implements IInteger *
       \***********************/
       int getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-
+      
       private:
       SequenceInstance& cParent;
     };

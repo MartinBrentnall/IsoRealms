@@ -20,57 +20,57 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteral.h"
-#include "IsoRealms/Assets/Type/IColour.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteral.h"
+#include "IsoRealms/Resources/Type/IColour.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
   class Application;
   class IComponentData;
   class Project;
 
-  class ColourRegistry : public AssetClientManager<ColourRegistry, IComponentData, IColour> {
+  class ColourRegistry : public ResourceClientManager<ColourRegistry, IComponentData, IColour> {
     public:
     ColourRegistry(Application& application);
 
-    IColour* literal(IAssetUser<IColour>* client, IComponentData& owner, float red, float green, float blue, float alpha) {
-      IColour* mColour = cLiteral.createLiteralAsset(owner, red, green, blue, alpha);
+    IColour* literal(IResourceUser<IColour>* client, IComponentData& owner, float red, float green, float blue, float alpha) {
+      IColour* mColour = cLiteral.createLiteralResource(owner, red, green, blue, alpha);
       registerClient(client, &cLiteral, mColour);
       return mColour;
     }
 
     private:
-    class Literal : public AssetLiteral<IComponentData, IColour> {
+    class Literal : public ResourceLiteral<IComponentData, IColour> {
       public:
       explicit Literal(const Metadata& metadata) :
                 cMetadata(metadata) {
       }
 
-      IColour* createLiteralAsset(IComponentData& owner, float red, float green, float blue, float alpha) const {
-        return addAsset([&owner, red, green, blue, alpha]() {return std::make_unique<Instance>(owner.getProject(), red, green, blue, alpha);});
+      IColour* createLiteralResource(IComponentData& owner, float red, float green, float blue, float alpha) const {
+        return addResource([&owner, red, green, blue, alpha]() {return std::make_unique<Instance>(owner.getProject(), red, green, blue, alpha);});
       }
 
-      /************************************\
-      * Implements AssetLiteral<IColour> *
-      \************************************/
+      /***************************************\
+       * Implements ResourceLiteral<IColour> *
+      \***************************************/
       bool hasConfiguration() const override {
         return true;
       }
 
-      std::unique_ptr<IColour> createLiteralAsset(IComponentData& owner) const override {
+      std::unique_ptr<IColour> createLiteralResource(IComponentData& owner) const override {
         return std::make_unique<Instance>(owner.getProject());
       }
 
-      std::unique_ptr<IColour> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
+      std::unique_ptr<IColour> createLiteralResource(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(owner.getProject(), object.getFloat(JSON_RED), object.getFloat(JSON_GREEN), object.getFloat(JSON_BLUE), object.getFloat(JSON_ALPHA));
       }
 
-      bool renderAssetProviderIcon() const override {
+      bool renderResourceProviderIcon() const override {
         Utils::renderIconCustom();
         return true;
       }
@@ -99,13 +99,13 @@ namespace IsoRealms {
         float getBlue() const override;
         float getAlpha() const override;
 
-        /**********************************\
-         * Implements IAsset from IColour *
-        \**********************************/
-        void saveAsset(JSONObject object) const override;
-        void getAssetProperties(IPropertyMaker& owner) override;
+        /*************************************\
+         * Implements IResource from IColour *
+        \*************************************/
+        void saveResource(JSONObject object) const override;
+        void getResourceProperties(IComponentDefiner& definer) override;
         bool isDefaultConfiguration() const override;
-
+    
         private:
 
         // External interfaces.

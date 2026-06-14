@@ -23,21 +23,21 @@ namespace IsoRealms::Equilibria {
             TerrainState(data, true, 1.0f) {
   }
 
-  void TerrainState::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IBoolean>(this, "", "Equilibria Terrain States");
-    assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Terrain States");
+  void TerrainState::define(IComponentDefiner& definer) {
+    definer.propertyBoolean( "state",     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+    definer.propertyResource("hint",      cDefHintAction);
+    definer.propertyResource("icon",      cDefIcon);
+    definer.propertyFloat(   "iconScale", [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, 1.0f, [](float value) {return value > 0.0f;});
+  }
+
+  void TerrainState::publish(ResourcePublisher& publisher) {
+    publisher.publish<IBoolean>(this, "", "Equilibria Terrain States");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Equilibria/Terrain States");
   }
 
   bool TerrainState::renderIcon() const {
     cDefIcon->renderScreen(1.0f, 1.0f);
     return true;
-  }
-
-  void TerrainState::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeBoolean("state",     [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
-    owner.createPropertyTreeSelector( "hint",      cDefHintAction);
-    owner.createPropertyTreeSelector( "icon",      cDefIcon);
-    owner.createPropertyNativeFloat(  "iconScale", [this]() {return cDefIconScale;}, [this](float value) {cDefIconScale = value;}, 1.0f, [](float value) {return value > 0.0f;});
   }
   
   void TerrainState::reset() {
@@ -63,20 +63,8 @@ namespace IsoRealms::Equilibria {
     glPopMatrix();
   }
 
-  bool TerrainState::renderAssetIcon() const {
+  bool TerrainState::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void TerrainState::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void TerrainState::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool TerrainState::isDefaultConfiguration() const {
-    return true;
   }
 
   void TerrainState::setValue(bool value) {
@@ -94,6 +82,6 @@ namespace IsoRealms::Equilibria {
             cDefIcon(owner),
             cDefIconScale(iconScale),
             cRuntimeValue(state),
-            cLuaBinding(owner.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
+            cLuaBinding(owner.getProject().getLuaState(), this, [this]() {return renderResourceIcon();}) {
   }
 }

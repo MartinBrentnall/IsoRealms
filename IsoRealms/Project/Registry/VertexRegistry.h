@@ -21,44 +21,44 @@
 #include <functional>
 #include <stdexcept>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IVertex.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IVertex.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
-  class VertexRegistry : public AssetClientManager<VertexRegistry, IComponentData, IVertex> {
+  class VertexRegistry : public ResourceClientManager<VertexRegistry, IComponentData, IVertex> {
     public:
     VertexRegistry();
 
-    IVertex* literal(IAssetUser<IVertex>* client, IComponentData& owner, float x, float y, float z) {
-      IVertex* mVertex = cLiteral.createLiteralAsset(owner, x, y, z);
+    IVertex* literal(IResourceUser<IVertex>* client, IComponentData& owner, float x, float y, float z) {
+      IVertex* mVertex = cLiteral.createLiteralResource(owner, x, y, z);
       registerClient(client, &cLiteral, mVertex);
       return mVertex;
     }
 
     private:
-    class Literal : public AssetLiteral<IComponentData, IVertex> {
+    class Literal : public ResourceLiteral<IComponentData, IVertex> {
       public:
-      IVertex* createLiteralAsset(IComponentData& owner, float x, float y, float z) const {
-        return addAsset([x, y, z]() {return std::make_unique<Instance>(x, y, z);});
+      IVertex* createLiteralResource(IComponentData& owner, float x, float y, float z) const {
+        return addResource([x, y, z]() {return std::make_unique<Instance>(x, y, z);});
       }
 
-      /************************************\
-      * Implements AssetLiteral<IVertex> *
-      \************************************/
+      /***************************************\
+       * Implements ResourceLiteral<IVertex> *
+      \***************************************/
       bool hasConfiguration() const override {
         return true;
       }
 
-      std::unique_ptr<IVertex> createLiteralAsset(IComponentData& owner) const override {
+      std::unique_ptr<IVertex> createLiteralResource(IComponentData& owner) const override {
         return std::make_unique<Instance>(0.0f, 0.0f, 0.0f);
       }
 
-      bool renderAssetProviderIcon() const override {
+      bool renderResourceProviderIcon() const override {
         return false;
       }
 
@@ -70,7 +70,7 @@ namespace IsoRealms {
         throw std::runtime_error("VertexRegistry::Literal::getPropertyMetadata: Property metadata is not available for this type.");
       }
 
-      std::unique_ptr<IVertex> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
+      std::unique_ptr<IVertex> createLiteralResource(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(object.getFloat(JSON_X), object.getFloat(JSON_Y), object.getFloat(JSON_Z));
       }
 
@@ -97,12 +97,10 @@ namespace IsoRealms {
         double getY() const override;
         double getZ() const override;
 
-        /**********************************\
-         * Implements IAsset from IVertex *
-        \**********************************/
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        void getAssetProperties(IPropertyMaker& owner) override;
+        /*************************************\
+         * Implements IResource from IVertex *
+        \*************************************/
+        void saveResource(JSONObject object) const override;
         bool isDefaultConfiguration() const override;
       };
     };

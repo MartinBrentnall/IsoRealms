@@ -24,8 +24,8 @@
 namespace IsoRealms {
   class ComponentType;
   class File;
-  class IAssetRegistry;
   class IComponent;
+  class IResourceRegistry;
   class ModuleOptions;
   class Project;
   class ProjectFile;

@@ -30,10 +30,10 @@ namespace IsoRealms::Spindizzy {
                              public IScreenListener {
     public:
     C64TerrainGraphics(Spindizzy& spindizzy, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     void hintInUse(bool inUse);
     bool renderIcon();
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /**********************************\
      * Implements ITextureUseListener *
@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     /**************************************\
      * Implements IStateListener<IFloat*> *
     \**************************************/
-    void stateChanged(const IFloat* asset);
+    void stateChanged(const IFloat* resource);
 
     /******************************\
      * Implements IScreenListener *
@@ -68,25 +68,25 @@ namespace IsoRealms::Spindizzy {
     inline static const float CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
     inline static const float MAX_LUMINANCE_ADJUSTMENT     = 0.3f;
 
-    inline static const std::string ASSET_ID_SURFACE_PLAIN                  = "Surface Plain";
-    inline static const std::string ASSET_ID_SURFACE_PLAIN_SPLIT            = "Surface Plain Split";
-    inline static const std::string ASSET_ID_SURFACE_ARROW                  = "Surface Arrow";
-    inline static const std::string ASSET_ID_SURFACE_ICE_OR_WATER           = "Surface Ice or Water";
-    inline static const std::string ASSET_ID_SURFACE_TRAMPOLINE             = "Surface Trampoline";
-    inline static const std::string ASSET_ID_SURFACE_DEACTIVATE_ALL_STATES  = "Surface Deactivate All States";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_1_OR_2  = "Surface Activate State 1 or 2";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_3       = "Surface Activate State 3";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_4       = "Surface Activate State 4";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_5_OR_6  = "Surface Activate State 5 or 6";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_7       = "Surface Activate State 7";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_8       = "Surface Activate State 8";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_9_OR_10 = "Surface Activate State 9 or 10";
-    inline static const std::string ASSET_ID_SURFACE_ACTIVATE_STATE_11      = "Surface Activate State 11";
-    inline static const std::string ASSET_ID_WALL_PLAIN_CAP                 = "Wall Plain Cap";
-    inline static const std::string ASSET_ID_WALL_PLAIN_MIDDLE              = "Wall Plain Middle";
-    inline static const std::string ASSET_ID_WALL_VARIANT_CAP               = "Wall Plain Variant Cap";
-    inline static const std::string ASSET_ID_WALL_VARIANT_MIDDLE            = "Wall Plain Variant Middle";
-    inline static const std::string ASSET_ID_WALL_ICE                       = "Wall Ice";
+    inline static const std::string RESOURCE_ID_SURFACE_PLAIN                  = "Surface Plain";
+    inline static const std::string RESOURCE_ID_SURFACE_PLAIN_SPLIT            = "Surface Plain Split";
+    inline static const std::string RESOURCE_ID_SURFACE_ARROW                  = "Surface Arrow";
+    inline static const std::string RESOURCE_ID_SURFACE_ICE_OR_WATER           = "Surface Ice or Water";
+    inline static const std::string RESOURCE_ID_SURFACE_TRAMPOLINE             = "Surface Trampoline";
+    inline static const std::string RESOURCE_ID_SURFACE_DEACTIVATE_ALL_STATES  = "Surface Deactivate All States";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_1_OR_2  = "Surface Activate State 1 or 2";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_3       = "Surface Activate State 3";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_4       = "Surface Activate State 4";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_5_OR_6  = "Surface Activate State 5 or 6";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_7       = "Surface Activate State 7";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_8       = "Surface Activate State 8";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_9_OR_10 = "Surface Activate State 9 or 10";
+    inline static const std::string RESOURCE_ID_SURFACE_ACTIVATE_STATE_11      = "Surface Activate State 11";
+    inline static const std::string RESOURCE_ID_WALL_PLAIN_CAP                 = "Wall Plain Cap";
+    inline static const std::string RESOURCE_ID_WALL_PLAIN_MIDDLE              = "Wall Plain Middle";
+    inline static const std::string RESOURCE_ID_WALL_VARIANT_CAP               = "Wall Plain Variant Cap";
+    inline static const std::string RESOURCE_ID_WALL_VARIANT_MIDDLE            = "Wall Plain Variant Middle";
+    inline static const std::string RESOURCE_ID_WALL_ICE                       = "Wall Ice";
 
     class OrientedTexture : public ITexture {
       public:
@@ -106,10 +106,7 @@ namespace IsoRealms::Spindizzy {
       void set() const override;
       void hintTextureInUse(bool inUse) override;
       void coord(float x, float y) const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-
+      
       private:
       std::map<const IFloat*, std::unique_ptr<LiteralTexture>> cTextures;
       std::set<ITextureUseListener*> cListeners;

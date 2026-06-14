@@ -28,12 +28,12 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  class IPropertyMaker;
+  class IComponentDefiner;
   class Metadata;
 
   class PropertySlider : public Property {
     public:
-    PropertySlider(IPropertyMaker& owner, const std::string& key, const Metadata& metadata, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> valueFunction, float min, float max, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction);
+    PropertySlider(IComponentDefiner& definer, const std::string& key, const Metadata& metadata, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> valueFunction, float min, float max, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction);
     
     /************************\
      * Implements IProperty *
@@ -64,7 +64,7 @@ namespace IsoRealms {
 
     inline static const float WIDTH = 0.7f;
 
-    IPropertyMaker& cPropertyOwner;
+    IComponentDefiner& cPropertyOwner;
     const std::string cPropertyKey;
     const Metadata& cPropertyMetadata;
 

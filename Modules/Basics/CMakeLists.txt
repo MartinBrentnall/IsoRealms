@@ -18,24 +18,6 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Basics MODULE
   AnalogueControl/AnalogueControl.cpp
-  Assets/Client/SequenceTrack.cpp
-  Assets/Fixed/AnalogueInput/DigitalToAnalogueMapping.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackAction.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackActionEvent.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackActionInstance.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackAudio.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackAudioEvent.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackAudioInstance.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackColour.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackColourEvent.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackColourInstance.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackFloat.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackFloatEvent.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackFloatInstance.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackScreen.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackScreenEvent.cpp
-  Assets/Fixed/SequenceTrack/SequenceTrackScreenInstance.cpp
-  Assets/Registry/SequenceTrackRegistry.cpp
   BooleanTrigger/BooleanTrigger.cpp
   DigitalControl/DigitalControl.cpp
   FileFont/FileFont.cpp
@@ -50,6 +32,24 @@ add_library(Basics MODULE
   Project/Project.cpp
   Project/ProjectLoader.cpp
   ProjectConfigurer/ProjectConfigurer.cpp
+  Resources/Client/SequenceTrack.cpp
+  Resources/Fixed/AnalogueInput/DigitalToAnalogueMapping.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackAction.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackActionEvent.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackActionInstance.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackAudio.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackAudioEvent.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackAudioInstance.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackColour.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackColourEvent.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackColourInstance.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackFloat.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackFloatEvent.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackFloatInstance.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackScreen.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackScreenEvent.cpp
+  Resources/Fixed/SequenceTrack/SequenceTrackScreenInstance.cpp
+  Resources/Registry/SequenceTrackRegistry.cpp
   Sequence/Editor/SequenceEditor.cpp
   Sequence/Sequence.cpp
   Sequence/SequenceInstance.cpp

@@ -24,7 +24,7 @@ namespace IsoRealms::Hue {
     registry->add(&cComponentTypeHueManager, "HueManager");
   }
 
-  void Hue::registerAssets(ComponentAssetRegistry& assets) {
+  void Hue::publish(ResourcePublisher& publisher) {
     // Nothing to do.
   }
   

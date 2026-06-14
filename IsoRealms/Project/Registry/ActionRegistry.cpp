@@ -20,27 +20,15 @@
 
 namespace IsoRealms {
   ActionRegistry::ActionRegistry() :
-            AssetClientManager(&cLiteral) {
+            ResourceClientManager(&cLiteral) {
   }
 
   void ActionRegistry::Dummy::execute() {
     // Do nothing.
   }
 
-  bool ActionRegistry::Dummy::renderAssetIcon() const {
+  bool ActionRegistry::Dummy::renderResourceIcon() const {
     Utils::renderIconNone();
-    return true;
-  }
-
-  void ActionRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ActionRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ActionRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 }

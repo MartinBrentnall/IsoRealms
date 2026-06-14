@@ -243,8 +243,8 @@ namespace IsoRealms {
     UIManager& mManager = getUIManager();
     IUIStyle& mStyle = getStyle();
     std::string mComponentName = component->getName();
-    mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, component->getComponentData(), [component](IPropertyMaker& owner) {
-      component->getProperties(owner);
+    mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, component->getComponentData(), [component](IComponentDefiner& definer) {
+      component->define(definer);
     }), mComponentName, LiteralColour(1.0f, 1.0f, 0.5f));
   }
 }

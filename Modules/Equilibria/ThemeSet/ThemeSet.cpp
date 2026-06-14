@@ -20,7 +20,7 @@
 
 #include "Modules/Equilibria/Equilibria.h"
 
-#include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/ComponentLoader.h"
 
 namespace IsoRealms::Equilibria {
   ThemeSet::ThemeSet(Equilibria& equilibria, IComponentData& data) :
@@ -29,26 +29,26 @@ namespace IsoRealms::Equilibria {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
 
-  void ThemeSet::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
+  void ThemeSet::define(IComponentDefiner& definer) {
 
     // Texture elements.
-    owner.createPropertyArray("textures", cTextures, [](const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mTexture) -> ThemeTexture& {return *mTexture.second;}, [this, &owner](ThemeTexture& texture) {
-      createTextureElementProperty(owner, &texture);
+    definer.array("textures", cTextures, [](const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mTexture) -> ThemeTexture& {return *mTexture.second;}, [this, &definer](ThemeTexture& texture) {
+      createTextureElementProperty(definer, &texture);
     }, [this]() -> ThemeTexture& {
       return *createTexture(getAvailableTextureElementKey());
     });
 
     // Colour elements.
-    owner.createPropertyArray("colours", cColours, [](const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mColour) -> ThemeColour& {return *mColour.second;}, [this, &owner](ThemeColour& colour) {
-      createColourElementProperty(owner, &colour);
+    definer.array("colours", cColours, [](const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mColour) -> ThemeColour& {return *mColour.second;}, [this, &definer](ThemeColour& colour) {
+      createColourElementProperty(definer, &colour);
     }, [this]() -> ThemeColour& {
       return *createColour(getAvailableColourElementKey());
     });
 
     // Themes.
-    owner.createPropertyArray("themes", cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &owner](Theme& theme) {
-      owner.createPropertyStruct("Theme", getName(&theme), [&theme](IPropertyMaker& owner) {
-        theme.getProperties(owner);
+    definer.array("themes", cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &definer](Theme& theme) {
+      definer.scope("Theme", getName(&theme), [&theme](IComponentDefiner& definer) {
+        theme.define(definer);
       }, [this, &theme]() {
         cThemes.erase(getName(&theme));
       });
@@ -57,20 +57,20 @@ namespace IsoRealms::Equilibria {
       return *cThemes.emplace(mNewThemeName, std::make_unique<Theme>(*this)).first->second;
     });
 
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       cEquilibria.getProject().init([this]() {
         setNextTheme();
       });
     }
   }
 
-  void ThemeSet::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Theme Sets");
+  void ThemeSet::publish(ResourcePublisher& publisher) {
+    publisher.publish<IBinding>(&cLuaBinding, "", "Equilibria/Theme Sets");
     for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
-      mPair.second->registerAssets(assets, mPair.first);
+      mPair.second->publish(publisher, mPair.first);
     }
     for (const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mPair : cColours) {
-      mPair.second->registerAssets(assets, mPair.first);
+      mPair.second->publish(publisher, mPair.first);
     }
   }
 
@@ -332,8 +332,8 @@ namespace IsoRealms::Equilibria {
     }
   }
   
-  void ThemeSet::createTextureElementProperty(IPropertyMaker& owner, ThemeTexture* element) {
-    owner.createPropertyNativeString(Theme::JSON_ELEMENT, [this, element]() {
+  void ThemeSet::createTextureElementProperty(IComponentDefiner& definer, ThemeTexture* element) {
+    definer.propertyString(Theme::JSON_ELEMENT, [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
@@ -355,8 +355,8 @@ namespace IsoRealms::Equilibria {
     });
   }
   
-  void ThemeSet::createColourElementProperty(IPropertyMaker& owner, ThemeColour* element) {
-    owner.createPropertyNativeString(Theme::JSON_ELEMENT, [this, element]() {
+  void ThemeSet::createColourElementProperty(IComponentDefiner& definer, ThemeColour* element) {
+    definer.propertyString(Theme::JSON_ELEMENT, [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

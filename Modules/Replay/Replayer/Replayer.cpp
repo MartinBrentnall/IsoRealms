@@ -23,21 +23,11 @@ namespace IsoRealms::Replay {
             cComponentData(data),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void Replayer::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Replayer");
-    for (std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
-      mInput->registerAssets(assets);
-    }
-    for (std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
-      mInput->registerAssets(assets);
-    }
-  }
-  
-  void Replayer::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray("digitalInputs", cDefDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &owner, &metadata](DigitalInput& digitalInput) {
-      owner.createPropertyStruct("DigitalInput", digitalInput.getName(), [&metadata, &digitalInput](IPropertyMaker& owner) {
-        digitalInput.getProperties(owner, metadata);
+
+  void Replayer::define(IComponentDefiner& definer) {
+    definer.array("digitalInputs", cDefDigitalInputs, [](const std::unique_ptr<DigitalInput>& i)->DigitalInput& {return *i;}, [this, &definer](DigitalInput& digitalInput) {
+      definer.scope("DigitalInput", digitalInput.getName(), [&digitalInput](IComponentDefiner& editingDefiner) {
+        digitalInput.define(editingDefiner);
       }, [this, &digitalInput]() {
         Utils::removeElementUnique(cDefDigitalInputs, &digitalInput);
         // TODO: Adjust ID's.
@@ -46,9 +36,9 @@ namespace IsoRealms::Replay {
       return *cDefDigitalInputs.emplace_back(std::make_unique<DigitalInput>(*this, cComponentData));
       // TODO: Adjust ID's.
     });
-    owner.createPropertyArray("analogueInputs", cDefAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &owner, &metadata](AnalogueInput& analogueInput) {
-      owner.createPropertyStruct("AnalogueInput", analogueInput.getName(), [&metadata, &analogueInput](IPropertyMaker& owner) {
-        analogueInput.getProperties(owner, metadata);
+    definer.array("analogueInputs", cDefAnalogueInputs, [](const std::unique_ptr<AnalogueInput>& i)->AnalogueInput& {return *i;}, [this, &definer](AnalogueInput& analogueInput) {
+      definer.scope("AnalogueInput", analogueInput.getName(), [&analogueInput](IComponentDefiner& editingDefiner) {
+        analogueInput.define(editingDefiner);
       }, [this, &analogueInput]() {
         Utils::removeElementUnique(cDefAnalogueInputs, &analogueInput);
         // TODO: Adjust ID's.
@@ -57,6 +47,16 @@ namespace IsoRealms::Replay {
       return *cDefAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>(*this, cComponentData));
       // TODO: Adjust ID's.
     });
+  }
+
+  void Replayer::publish(ResourcePublisher& publisher) {
+    publisher.publish<IBinding>(&cLuaBinding, "", "Replayer");
+    for (std::unique_ptr<DigitalInput>& mInput : cDefDigitalInputs) {
+      mInput->publish(publisher);
+    }
+    for (std::unique_ptr<AnalogueInput>& mInput : cDefAnalogueInputs) {
+      mInput->publish(publisher);
+    }
   }
   
   void Replayer::updateInputs(unsigned int milliseconds) {
@@ -163,7 +163,7 @@ namespace IsoRealms::Replay {
             cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(false) {
   }
-  
+
   Replayer::DigitalInput::DigitalInput(Replayer& parent, IComponentData& data, JSONObject object) :
             cParent(parent),
             cDefName(object.getString(JSON_NAME)),
@@ -178,8 +178,8 @@ namespace IsoRealms::Replay {
     cDefActualInput.init(object, JSON_VALUE);
   }
   
-  void Replayer::DigitalInput::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IBoolean>(this, cDefName, "Replayer Digital Input");
+  void Replayer::DigitalInput::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IBoolean>(this, cDefName, "Replayer Digital Input");
   }
 
   void Replayer::DigitalInput::save(JSONObject object) const {
@@ -187,9 +187,9 @@ namespace IsoRealms::Replay {
     cDefActualInput.save(object, JSON_VALUE);
   }
   
-  void Replayer::DigitalInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
-    owner.createPropertyTreeSelector(JSON_VALUE, cDefActualInput);
+  void Replayer::DigitalInput::define(IComponentDefiner& definer) {
+    definer.propertyString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    definer.propertyResource(JSON_VALUE, cDefActualInput);
   }
   
   void Replayer::DigitalInput::reset() {
@@ -210,23 +210,7 @@ namespace IsoRealms::Replay {
   bool Replayer::DigitalInput::getValue() const {
     return cParent.cRuntimeState == State::REPLAYING ? cRuntimeRecordedInput : cDefActualInput->getValue();
   }
-  
-  bool Replayer::DigitalInput::renderAssetIcon() const {
-    return false;
-  }
-  
-  void Replayer::DigitalInput::saveAsset(JSONObject object) const {
-    // TODO: Implement this.
-  }
-  
-  void Replayer::DigitalInput::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-  
-  bool Replayer::DigitalInput::isDefaultConfiguration() const {
-    return true;
-  }
-  
+
   Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IComponentData& data) :
             cParent(parent),
             cDefActualInput(data, 0.0f, [this](float value) {
@@ -238,7 +222,7 @@ namespace IsoRealms::Replay {
             cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
             cRuntimeRecordedInput(0.0f) {
   }
-  
+
   Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IComponentData& data, JSONObject object) :
             cParent(parent),
             cDefName(object.getString(JSON_NAME)),
@@ -253,8 +237,8 @@ namespace IsoRealms::Replay {
     cDefActualInput.init(object, JSON_VALUE);
   }
   
-  void Replayer::AnalogueInput::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IFloat>(this, cDefName, "Replayer Analogue Input");
+  void Replayer::AnalogueInput::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IFloat>(this, cDefName, "Replayer Analogue Input");
   }
 
   void Replayer::AnalogueInput::save(JSONObject object) const {
@@ -262,9 +246,9 @@ namespace IsoRealms::Replay {
     cDefActualInput.save(object, JSON_VALUE);
   }
   
-  void Replayer::AnalogueInput::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
-    owner.createPropertyTreeSelector(JSON_VALUE, cDefActualInput);
+  void Replayer::AnalogueInput::define(IComponentDefiner& definer) {
+    definer.propertyString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    definer.propertyResource(JSON_VALUE, cDefActualInput);
   }
       
   void Replayer::AnalogueInput::reset() {
@@ -285,23 +269,7 @@ namespace IsoRealms::Replay {
   float Replayer::AnalogueInput::getValue() const {
     return cParent.cRuntimeState == State::REPLAYING ? cRuntimeRecordedInput : cDefActualInput->getValue();
   }
-  
-  bool Replayer::AnalogueInput::renderAssetIcon() const {
-    return false;
-  }
-  
-  void Replayer::AnalogueInput::saveAsset(JSONObject object) const {
-    // TODO: Implement this.
-  }
-  
-  void Replayer::AnalogueInput::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-  
-  bool Replayer::AnalogueInput::isDefaultConfiguration() const {
-    return true;
-  }
-  
+
   void Replayer::readEvent() {
     if (cRuntimeRecordedInput.eof()) {
       // TODO: Action on end of recording???

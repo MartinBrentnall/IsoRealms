@@ -68,7 +68,7 @@ namespace IsoRealms::Equilibria {
   }
   
   const Metadata& Equilibria::getMetadata(const std::string& key) const {
-    return cModule.getAssetMetadata(key);
+    return cModule.getResourceMetadata(key);
   }
 
   void Equilibria::init(std::function<void()> initialiser) {
@@ -79,7 +79,7 @@ namespace IsoRealms::Equilibria {
     return cProject;
   }
 
-  Equilibria& Equilibria::getAssetManager() {
+  Equilibria& Equilibria::getResourceManager() {
     return *this;
   }
 
@@ -140,14 +140,14 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-//   void Equilibria::remove(IAssetProvider<IBoundaryType>*        provider) {cBoundaryTypes.remove(       provider);}
-//   void Equilibria::remove(IAssetProvider<ICamera>*              provider) {cCameras.remove(             provider);}
-//   void Equilibria::remove(IAssetProvider<IPhysicalObjectType>*  provider) {cPhysicalObjectTypes.remove( provider);}
-//   void Equilibria::remove(IAssetProvider<ISurfacePattern>*      provider) {cSurfacePatterns.remove(     provider);}
-//   void Equilibria::remove(IAssetProvider<IWallPattern>*         provider) {cWallPatterns.remove(        provider);}
-//   void Equilibria::remove(IAssetProvider<IWorldEditorTool>*     provider) {cWorldEditorTools.remove(    provider);}
-//   void Equilibria::remove(IAssetProvider<IZoneObjectTypeTrait>* provider) {cZoneObjectTypeTraits.remove(provider);}
-//   void Equilibria::remove(IAssetProvider<IZoneViewType>*        provider) {cZoneViewTypes.remove(       provider);}
+//   void Equilibria::remove(IResourceProvider<IBoundaryType>*        provider) {cBoundaryTypes.remove(       provider);}
+//   void Equilibria::remove(IResourceProvider<ICamera>*              provider) {cCameras.remove(             provider);}
+//   void Equilibria::remove(IResourceProvider<IPhysicalObjectType>*  provider) {cPhysicalObjectTypes.remove( provider);}
+//   void Equilibria::remove(IResourceProvider<ISurfacePattern>*      provider) {cSurfacePatterns.remove(     provider);}
+//   void Equilibria::remove(IResourceProvider<IWallPattern>*         provider) {cWallPatterns.remove(        provider);}
+//   void Equilibria::remove(IResourceProvider<IWorldEditorTool>*     provider) {cWorldEditorTools.remove(    provider);}
+//   void Equilibria::remove(IResourceProvider<IZoneObjectTypeTrait>* provider) {cZoneObjectTypeTraits.remove(provider);}
+//   void Equilibria::remove(IResourceProvider<IZoneViewType>*        provider) {cZoneViewTypes.remove(       provider);}
 
   std::vector<IBoundaryType*> Equilibria::getAllBoundaryTypeObjects() {
     std::vector<IBoundaryType*> mTypes;
@@ -289,35 +289,35 @@ namespace IsoRealms::Equilibria {
     return cRuntimePaused;
   }
 
-  void Equilibria::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IBindingType>(&cBindingTypeTerrainState, "Terrain State", "Terrain States");
+  void Equilibria::publish(ResourcePublisher& publisher) {
+    publisher.publish<IBindingType>(&cBindingTypeTerrainState, "Terrain State", "Terrain States");
 
     // Bind the module.
-    assets.add<IBinding>(&cLuaBinding, "", "Modules/Equilibria");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Modules/Equilibria");
     
     for (AlienType* mComponent : cComponentAlien) {
-      mComponent->registerAssets("Alien/" + getComponentID(mComponent));
+      mComponent->publish("Alien/" + getComponentID(mComponent));
     }
     for (LiftType* mComponent : cComponentLift) {
-      mComponent->registerAssets("Lift/" + getComponentID(mComponent));
+      mComponent->publish("Lift/" + getComponentID(mComponent));
     }
     for (PickUpType* mComponent : cComponentPickUp) {
-      mComponent->registerAssets("PickUp/" + getComponentID(mComponent));
+      mComponent->publish("PickUp/" + getComponentID(mComponent));
     }
     for (PlayerType* mComponent : cComponentPlayer) {
-      mComponent->registerAssets("Player/" + getComponentID(mComponent));
+      mComponent->publish("Player/" + getComponentID(mComponent));
     }
     for (TerrainType* mComponent : cComponentTerrain) {
-      mComponent->registerAssets("Terrain/" + getComponentID(mComponent));
+      mComponent->publish("Terrain/" + getComponentID(mComponent));
     }
     for (WorldView* mComponent : cComponentWorldView) {
-      mComponent->registerAssets("WorldView/" + getComponentID(mComponent));
+      mComponent->publish("WorldView/" + getComponentID(mComponent));
     }
     for (ZoneType* mComponent : cComponentZone) {
-      mComponent->registerAssets("Zone/" + getComponentID(mComponent));
+      mComponent->publish("Zone/" + getComponentID(mComponent));
     }
     for (ZoneObjectType* mComponent : cComponentZoneObject) {
-      mComponent->registerAssets("ZoneObject/" + getComponentID(mComponent));
+      mComponent->publish("ZoneObject/" + getComponentID(mComponent));
     }
     add<IWorldEditorTool>(&cToolDelete,     TOOL_DELETE,      TOOL_DELETE);
     add<IWorldEditorTool>(&cToolProperties, TOOL_PROPERTIES,  TOOL_PROPERTIES);
@@ -526,22 +526,6 @@ namespace IsoRealms::Equilibria {
 
   std::string Equilibria::EquilibriaBindingType::getBindingTypeRootFolder() const {
     return cRootFolder;
-  }
-
-  bool Equilibria::EquilibriaBindingType::renderAssetIcon() const {
-    return false;
-  }
-
-  void Equilibria::EquilibriaBindingType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Equilibria::EquilibriaBindingType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Equilibria::EquilibriaBindingType::isDefaultConfiguration() const {
-    return true;
   }
 
   Equilibria::EventBindingsPlayerWallBounce::EventBindingsPlayerWallBounce(Equilibria& equilibria) :

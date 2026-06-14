@@ -24,11 +24,11 @@
 namespace IsoRealms::Equilibria {
   ZoneType::ZoneType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cAssets(equilibria) {
+            cResources(equilibria) {
     cEquilibria.added(this);
   }
-  
-  void ZoneType::registerAssets(ComponentAssetRegistry& assets) {
+
+  void ZoneType::define(IComponentDefiner& definer) {
     // Nothing to do.
   }
 
@@ -47,29 +47,25 @@ namespace IsoRealms::Equilibria {
     return true;
   }
 
-  void ZoneType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    // Nothing to do.
-  }
-
   void ZoneType::removed() {
     cEquilibria.removeAll(this);
     cEquilibria.removed(this);
   }
 
   bool ZoneType::hasReadOnlyReferences() const {
-    return cAssets.hasReadOnlyReferences() || cEquilibria.hasReadOnlyComponentReferences(this);
+    return cResources.hasReadOnlyReferences() || cEquilibria.hasReadOnlyComponentReferences(this);
     // TODO: return cEquilibria.isUsedInReadOnlyWorld(*this);
   }
 
   void ZoneType::overrideReadOnlyReferences() {
-    cAssets.overrideReadOnlyReferences();
+    cResources.overrideReadOnlyReferences();
     cEquilibria.overrideReadOnlyComponentReferences(this);
     // TODO: cEquilibria.overrideReadOnlyWorlds(*this);
   }
 
-  void ZoneType::registerAssets(const std::string& parentID) {
-    cAssets.add<IWorldEditorTool>(this, parentID, "Zone Types");
-    cAssets.add<IBoundaryType>(   this, parentID, "Zone Types");
+  void ZoneType::publish(const std::string& parentID) {
+    cResources.publish<IWorldEditorTool>(this, parentID, "Zone Types");
+    cResources.publish<IBoundaryType>(   this, parentID, "Zone Types");
   }  
   
   void ZoneType::registerZoneProperty(const std::string& id, IBinding* property) {
@@ -100,20 +96,8 @@ namespace IsoRealms::Equilibria {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
-  bool ZoneType::renderAssetIcon() const {
+  bool ZoneType::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void ZoneType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ZoneType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ZoneType::isDefaultConfiguration() const {
-    return true;
   }
 
   ZoneType::Pen::Pen(ZoneType& parent, WorldEditor& editor) :

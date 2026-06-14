@@ -172,7 +172,7 @@ namespace IsoRealms::Equilibria {
     cZone.remove(this);
   }
 
-  void PickUp::getProperties(IPropertyMaker& owner) {
+  void PickUp::define(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

@@ -117,9 +117,9 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  void Zone::registerAssets() {
+  void Zone::publish() {
     for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {
-      mObject->registerAssets();
+      mObject->publish();
     }
   }
   

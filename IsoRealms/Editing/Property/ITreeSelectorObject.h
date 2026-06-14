@@ -27,7 +27,7 @@
 
 namespace IsoRealms {
   class Application;
-  class IPropertyMaker;
+  class IComponentDefiner;
   class Metadata;
 
   class ITreeSelectorObject {
@@ -42,7 +42,7 @@ namespace IsoRealms {
     virtual std::string getTreeItemLabel() const = 0;
     virtual bool renderTreeItemIcon() const = 0;
     virtual bool hasConfiguration() const = 0;
-    virtual void getTreeItemProperties(IPropertyMaker& owner) = 0;
+    virtual void getTreeItemProperties(IComponentDefiner& definer) = 0;
     virtual const Metadata& getPropertyMetadata() const = 0;
     virtual TreeItemInfo getTreeItemInfo() const = 0;
     virtual Application& getApplication() = 0;

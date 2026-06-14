@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   VertexRegistry::VertexRegistry() :
-            AssetClientManager(&cLiteral, "Literal", "Literal") {
+            ResourceClientManager(&cLiteral, "Literal", "Literal") {
   }
 
   VertexRegistry::Literal::Instance::Instance() {
@@ -44,18 +44,10 @@ namespace IsoRealms {
     return z;
   }
 
-  bool VertexRegistry::Literal::Instance::renderAssetIcon() const {
-    return false;
-  }
-
-  void VertexRegistry::Literal::Instance::saveAsset(JSONObject object) const {
+  void VertexRegistry::Literal::Instance::saveResource(JSONObject object) const {
     object.addFloat(JSON_X, x);
     object.addFloat(JSON_Y, y);
     object.addFloat(JSON_Z, z);
-  }
-
-  void VertexRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
   }
 
   bool VertexRegistry::Literal::Instance::isDefaultConfiguration() const {

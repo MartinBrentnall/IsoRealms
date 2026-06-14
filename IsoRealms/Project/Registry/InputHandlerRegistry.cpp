@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   InputHandlerRegistry::InputHandlerRegistry() :
-            AssetClientManager(&cNone) {
+            ResourceClientManager(&cNone) {
   }
 
   bool InputHandlerRegistry::Dummy::input(sf::Event& event) {
@@ -31,20 +31,8 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  bool InputHandlerRegistry::Dummy::renderAssetIcon() const {
+  bool InputHandlerRegistry::Dummy::renderResourceIcon() const {
     Utils::renderIconNone();
-    return true;
-  }
-
-  void InputHandlerRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void InputHandlerRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool InputHandlerRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 }

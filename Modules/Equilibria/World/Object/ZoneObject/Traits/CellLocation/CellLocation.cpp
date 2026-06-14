@@ -28,7 +28,7 @@ namespace IsoRealms::Equilibria {
             cDefZ(z) {
   }
   
-  void CellLocation::registerAssets(ITraitRegistry& registry) {
+  void CellLocation::publish(ITraitRegistry& registry) {
     registry.registerLocation(this);
   }
   

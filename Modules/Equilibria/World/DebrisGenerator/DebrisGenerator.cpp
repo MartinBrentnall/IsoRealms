@@ -30,8 +30,8 @@ namespace IsoRealms::Equilibria {
     cDefModel.init(object, JSON_APPEARANCE);
   }
 
-  void DebrisGenerator::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
-    assets.add<IBinding>(&cLuaBinding, parentID + "/" + cDefID, "Debris Generators");
+  void DebrisGenerator::publish(ResourcePublisher& publisher, const std::string& parentID) {
+    publisher.publish<IBinding>(&cLuaBinding, parentID + "/" + cDefID, "Debris Generators");
   }
   
   void DebrisGenerator::updateRuntime(unsigned int milliseconds) {

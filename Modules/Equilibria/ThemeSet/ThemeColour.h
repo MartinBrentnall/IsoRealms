@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
   class ThemeColour : public IColour {
     public:
     ThemeColour(ThemeSet& parent);
-    void registerAssets(ComponentAssetRegistry& assets, const std::string& idd);
+    void publish(ResourcePublisher& publisher, const std::string& idd);
       
     void set(IColour* colour);
 
@@ -41,10 +41,7 @@ namespace IsoRealms::Equilibria {
     float getGreen() const override;
     float getBlue() const override;
     float getAlpha() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
+    
     private:
     ThemeSet& cParent;
     IColour* cColour = nullptr;

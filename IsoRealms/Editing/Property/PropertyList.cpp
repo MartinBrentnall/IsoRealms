@@ -23,13 +23,13 @@
 
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Project.h"
-#include "IsoRealms/PropertyMaker.h"
+#include "IsoRealms/ComponentEditor.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(IPropertyMaker& owner, IComponentAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+  PropertyList::PropertyList(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(project, options, getter, setter),
-            cInternalProperty(owner, resourceAccessManager, owner.getComponentData(), data, cInternalSelection, removeFunction) {
+            cInternalProperty(definer, resourceAccessManager, definer.getComponentData(), data, cInternalSelection, removeFunction) {
   }
   
   void PropertyList::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {
@@ -86,7 +86,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyList::ListSelection::getTreeItemProperties(IPropertyMaker& owner) {
+  void PropertyList::ListSelection::getTreeItemProperties(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

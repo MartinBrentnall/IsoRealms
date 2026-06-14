@@ -30,7 +30,7 @@
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style),
             cProject(project),
-            cPropertyMaker(project.getApplication(), project, project.getMetadata(), *this, manager),
+            cComponentEditor(project.getApplication(), project, project.getMetadata(), *this, manager),
             cDefModuleChooser(project) {
     refresh();
   }
@@ -42,8 +42,8 @@ namespace IsoRealms {
     IUIStyle& mStyle = getStyle();
     const Metadata& mMetadata = cProject.getMetadata();
     addItem(std::make_unique<MenuItemAction>(mMetadata.getPropertyData("ApplicationConfiguration"), [this, &mManager, &mStyle, &mMetadata]() {
-      mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](IPropertyMaker& owner) {
-        cProject.getProperties(owner);
+      mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](IComponentDefiner& definer) {
+        cProject.getProperties(definer);
       }), mMetadata.getPropertyData("ApplicationConfiguration").getName());
     }));
 
@@ -92,7 +92,7 @@ namespace IsoRealms {
     addItem(std::make_unique<MenuItemSpacer>(1.0f));
     std::vector<std::string> mUnusedModuleNames = cProject.getUnusedModuleNames();
     if (!mUnusedModuleNames.empty()) {
-      cPropertyMaker.createPropertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
+      cComponentEditor.propertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
         Utils::renderIconAdd();
         return true;
       }, [this](const std::string& value) {
@@ -105,11 +105,11 @@ namespace IsoRealms {
     addItem(std::make_unique<MenuItemLoadModule>(*this, std::move(property)));
   }
 
-  void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) {
     throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
   }
 
-  void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IPropertyMaker&)> propertyFetcher) {
+  void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IComponentDefiner&)> propertyFetcher) {
     throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
   }
 

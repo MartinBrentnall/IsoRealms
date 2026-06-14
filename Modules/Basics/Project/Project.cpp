@@ -36,21 +36,21 @@ namespace IsoRealms::Basics {
     cRuntimeProjectLoader->newProject(mApplication);
     cRuntimeProject = cRuntimeProjectLoader->getLoadedProject();
   }
-  
-  void Project::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IScreen>(this, "", "Projects");
-    assets.add<IInputHandler>(this, "", "Projects");
-    assets.add<IBinding>(&cLuaBinding, "", "Projects");
-  }
 
-  void Project::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString( "file",     [this]() {return cDefProjectPath;}, [this](const std::string& value) {cDefProjectPath = value;});
-    owner.createPropertyNativeBoolean("user",     [this]() {return cDefProjectUser;}, [this](bool value)               {cDefProjectUser = value;});
-    owner.createPropertyNativeBoolean("running",  [this]() {return cDefRunning;},     [this](bool value)               {cDefRunning     = value;});
-    owner.createPropertyNativeBoolean("editing",  [this]() {return cDefEditing;},     [this](bool value)               {cDefEditing     = value;});
-    owner.createPropertyTreeSelector( "onFinish", cDefEndAction);
-    owner.createPropertyTreeSelector( "onError",  cDefErrorAction);
-    owner.createPropertyTreeSelector( "onReady",  cDefReadyAction);
+  void Project::define(IComponentDefiner& definer) {
+    definer.propertyString(  "file",     [this]() {return cDefProjectPath;}, [this](const std::string& value) {cDefProjectPath = value;});
+    definer.propertyBoolean( "user",     [this]() {return cDefProjectUser;}, [this](bool value)               {cDefProjectUser = value;});
+    definer.propertyBoolean( "running",  [this]() {return cDefRunning;},     [this](bool value)               {cDefRunning     = value;});
+    definer.propertyBoolean( "editing",  [this]() {return cDefEditing;},     [this](bool value)               {cDefEditing     = value;});
+    definer.propertyResource("onFinish", cDefEndAction);
+    definer.propertyResource("onError",  cDefErrorAction);
+    definer.propertyResource("onReady",  cDefReadyAction);
+  }
+  
+  void Project::publish(ResourcePublisher& publisher) {
+    publisher.publish<IScreen>(this, "", "Projects");
+    publisher.publish<IInputHandler>(this, "", "Projects");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Projects");
   }
   
   void Project::reset() {
@@ -276,21 +276,5 @@ namespace IsoRealms::Basics {
         cRuntimeProject->render(aspectRatio);
       }
     }
-  }
-
-  bool Project::renderAssetIcon() const {
-    return false;
-  }
-
-  void Project::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Project::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Project::isDefaultConfiguration() const {
-    return true;
   }
 }

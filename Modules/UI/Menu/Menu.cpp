@@ -18,7 +18,7 @@
  */
 #include "Menu.h"
 
-#include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/ComponentLoader.h"
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
@@ -31,31 +31,31 @@ namespace IsoRealms::UI {
             cDefColour(data, 1.0f, 1.0f, 1.0f),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void Menu::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IScreen>(static_cast<IScreen*>(this), "", "Menus");
-    assets.add<IInputHandler>(static_cast<IInputHandler*>(this), "", "Menus");
-    assets.add<IBinding>(&cLuaBinding, "", "Menus");
-    for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
-      (*mMenuItem)->registerAssets(assets);
-    }
-  }
 
-  void Menu::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("colour",       cDefColour);
-    owner.createPropertyTreeSelector("font",         cDefFont);
-    owner.createPropertyNativeFloat( "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;}, DEFAULT_FONT_SIZE);
-    owner.createPropertyNativeFloat( "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
-    owner.createPropertyTreeSelector("onExit",       cDefExitAction);
-    owner.createPropertyArray(       "options",      cDefItems, [](const std::unique_ptr<MenuItem>& mItem) -> MenuItem& {return *mItem;}, [this, &owner](MenuItem& item) {
+  void Menu::define(IComponentDefiner& definer) {
+    definer.propertyResource("colour",       cDefColour);
+    definer.propertyResource("font",         cDefFont);
+    definer.propertyFloat(   "fontSize",     [this]() {return cDefFontSize;},     [this](float value) {cDefFontSize     = value;}, DEFAULT_FONT_SIZE);
+    definer.propertyFloat(   "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyResource("onExit",       cDefExitAction);
+    definer.array(           "options",      cDefItems, [](const std::unique_ptr<MenuItem>& mItem) -> MenuItem& {return *mItem;}, [this, &definer](MenuItem& item) {
       Options mHint;
       mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-      owner.createPropertyTreeSelector("item", item, mHint, [this, &item]() {
+      definer.propertyResource("item", item, mHint, [this, &item]() {
         Utils::removeElementUnique(cDefItems, &item);
       });
     }, [this]() -> MenuItem& {
       return *cDefItems.emplace_back(std::make_unique<MenuItem>(cUI, *this));
     });
+  }
+  
+  void Menu::publish(ResourcePublisher& publisher) {
+    publisher.publish<IScreen>(static_cast<IScreen*>(this), "", "Menus");
+    publisher.publish<IInputHandler>(static_cast<IInputHandler*>(this), "", "Menus");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Menus");
+    for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
+      (*mMenuItem)->publish(publisher);
+    }
   }
   
   void Menu::updateRuntime(unsigned int milliseconds) {
@@ -83,10 +83,6 @@ namespace IsoRealms::UI {
   }
 
   IComponentData& Menu::getComponentData() {
-    return cComponentData;
-  }
-
-  const IComponentData& Menu::getComponentData() const {
     return cComponentData;
   }
 
@@ -150,22 +146,6 @@ namespace IsoRealms::UI {
       (*cDefItems[i])->render(aspectRatio, mPositionY, cRuntimeSelectedItem == i, *this);
       mPositionY -= (*cDefItems[i])->getHeight(*this);
     }
-  }
-
-  bool Menu::renderAssetIcon() const {
-    return false;
-  }
-
-  void Menu::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Menu::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Menu::isDefaultConfiguration() const {
-    return true;
   }
 
   void Menu::up() {

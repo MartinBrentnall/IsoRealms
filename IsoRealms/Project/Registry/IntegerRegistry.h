@@ -20,56 +20,56 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteral.h"
-#include "IsoRealms/Assets/Type/IInteger.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteral.h"
+#include "IsoRealms/Resources/Type/IInteger.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
   class Application;
   class Project;
 
-  class IntegerRegistry : public AssetClientManager<IntegerRegistry, IComponentData, IInteger> {
+  class IntegerRegistry : public ResourceClientManager<IntegerRegistry, IComponentData, IInteger> {
     public:
     IntegerRegistry(Application& application);
 
-    IInteger* literal(IAssetUser<IInteger>* client, IComponentData& owner, int value) {
-      IInteger* mInteger = cLiteral.createLiteralAsset(owner, value);
+    IInteger* literal(IResourceUser<IInteger>* client, IComponentData& owner, int value) {
+      IInteger* mInteger = cLiteral.createLiteralResource(owner, value);
       registerClient(client, &cLiteral, mInteger);
       return mInteger;
     }
 
     private:
-    class Literal : public AssetLiteral<IComponentData, IInteger> {
+    class Literal : public ResourceLiteral<IComponentData, IInteger> {
       public:
       explicit Literal(const Metadata& metadata) :
                 cMetadata(metadata) {
       }
 
-      IInteger* createLiteralAsset(IComponentData& owner, int value) const {
-        return addAsset([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
+      IInteger* createLiteralResource(IComponentData& owner, int value) const {
+        return addResource([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
 
-      /*************************************\
-      * Implements AssetLiteral<IInteger> *
-      \*************************************/
+      /****************************************\
+       * Implements ResourceLiteral<IInteger> *
+      \****************************************/
       bool hasConfiguration() const override {
         return true;
       }
 
-      std::unique_ptr<IInteger> createLiteralAsset(IComponentData& owner) const override {
+      std::unique_ptr<IInteger> createLiteralResource(IComponentData& owner) const override {
         return std::make_unique<Instance>(owner.getProject(), 0);
       }
 
-      std::unique_ptr<IInteger> createLiteralAsset(IComponentData& owner, JSONObject object) const override {
+      std::unique_ptr<IInteger> createLiteralResource(IComponentData& owner, JSONObject object) const override {
         return std::make_unique<Instance>(owner.getProject(), object.getInteger(JSON_VALUE));
       }
 
-      bool renderAssetProviderIcon() const override {
+      bool renderResourceProviderIcon() const override {
         return false;
       }
 
@@ -94,14 +94,13 @@ namespace IsoRealms {
         \***********************/
         int getValue() const override;
 
-        /***********************************\
-         * Implements IAsset from IInteger *
-        \***********************************/
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        void getAssetProperties(IPropertyMaker& owner) override;
+        /***************(((********************\
+         * Implements IResource from IInteger *
+        \************(((***********************/
+        void saveResource(JSONObject object) const override;
+        void getResourceProperties(IComponentDefiner& definer) override;
         bool isDefaultConfiguration() const override;
-
+        
         private:
 
         // External interfaces.

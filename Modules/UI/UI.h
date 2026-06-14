@@ -26,14 +26,14 @@
 
 #include "IsoRealms.h"
 
-#include "Assets/Registry/LayoutLocationRegistry.h"
-#include "Assets/Registry/LayoutOffsetRegistry.h"
-#include "Assets/Registry/MenuItemRegistry.h"
-#include "Assets/Fixed/Screen/ScreenGradient.h"
-#include "Assets/Fixed/Screen/ScreenModel.h"
-#include "Assets/Fixed/Screen/ScreenPanel.h"
-#include "Assets/Fixed/Screen/ScreenText.h"
-#include "Assets/Fixed/String/StringTime.h"
+#include "Resources/Registry/LayoutLocationRegistry.h"
+#include "Resources/Registry/LayoutOffsetRegistry.h"
+#include "Resources/Registry/MenuItemRegistry.h"
+#include "Resources/Fixed/Screen/ScreenGradient.h"
+#include "Resources/Fixed/Screen/ScreenModel.h"
+#include "Resources/Fixed/Screen/ScreenPanel.h"
+#include "Resources/Fixed/Screen/ScreenText.h"
+#include "Resources/Fixed/String/StringTime.h"
 #include "Layout/Layout.h"
 #include "Menu/Menu.h"
 #include "Prompt/Prompt.h"
@@ -42,7 +42,7 @@
 #include "VirtualKeyboard/VirtualKeyboard.h"
 
 namespace IsoRealms::UI {
-  template <typename TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct ResourceContainerTraits;
 
   class UI : public IModuleHandle {
     public:
@@ -50,7 +50,7 @@ namespace IsoRealms::UI {
 
     // Interface access (used by all).
     const Metadata& getMetadata(const std::string& key) const;
-    UI& getAssetManager();
+    UI& getResourceManager();
     Project& getProject() const;
     
     bool isReadOnly() const; // TODO: Probably shouldn't be here.
@@ -59,50 +59,50 @@ namespace IsoRealms::UI {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ComponentAssetRegistry& assets) override;
+    void publish(ResourcePublisher& publisher) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
     void reset() override;
     
-    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
-      AssetContainerTraits<TYPE>::get(*this).release(user, asset);
+    template <typename TYPE> void release(IResourceUser<TYPE>* user, TYPE* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).release(user, resource);
     }
 
-    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getTreeItemInfo(asset);
+    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getTreeItemInfo(resource);
     }
 
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getPropertyMetadata(asset);
+    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
     }
 
-    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
-      AssetContainerTraits<TYPE>::get(*this).save(object, asset);
+    template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
+      ResourceContainerTraits<TYPE>::get(*this).save(object, resource);
     }
 
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& treeItemInfoFunction) const {
-      AssetContainerTraits<TYPE>::get(*this).forEachEntry(treeItemInfoFunction);
+      ResourceContainerTraits<TYPE>::get(*this).forEachEntry(treeItemInfoFunction);
     }
 
     template <typename TYPE> bool renderIcon(const std::string& id) const {
-      return AssetContainerTraits<TYPE>::get(*this).renderIcon(id);
+      return ResourceContainerTraits<TYPE>::get(*this).renderIcon(id);
     }
 
     template <typename TYPE> bool isConfigurable(const std::string& id) const {
-      return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+      return ResourceContainerTraits<TYPE>::get(*this).hasConfiguration(id);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
-      return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IResourceUser<TYPE>* user, OWNER& owner) {
+      return ResourceContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
-      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
+      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
-      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
+      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
     private:
@@ -117,18 +117,18 @@ namespace IsoRealms::UI {
     Project& cProject;
     IComponentTypeRegistry& cModule;
 
-    // Asset registries
+    // Resource registries
     LayoutLocationRegistry cLayoutLocations;
     LayoutOffsetRegistry   cLayoutOffsets;
     MenuItemRegistry       cMenuItems;
 
     // Built-in providers for ad-hoc screens.
-    AssetInstanced<IComponentData, IScreen, ScreenGradient> cProviderScreenGradient;
-    AssetInstanced<IComponentData, IScreen, ScreenModel>    cProviderScreenModel;
-    AssetInstanced<IComponentData, IScreen, ScreenPanel>    cProviderScreenPanel;
-    AssetInstanced<IComponentData, IScreen, ScreenText>     cProviderScreenText;
+    ResourceInstanced<IComponentData, IScreen, ScreenGradient> cProviderScreenGradient;
+    ResourceInstanced<IComponentData, IScreen, ScreenModel>    cProviderScreenModel;
+    ResourceInstanced<IComponentData, IScreen, ScreenPanel>    cProviderScreenPanel;
+    ResourceInstanced<IComponentData, IScreen, ScreenText>     cProviderScreenText;
 
-    AssetInstanced<IComponentData, IString, StringTime> cProviderStringTime;
+    ResourceInstanced<IComponentData, IString, StringTime> cProviderStringTime;
 
     ComponentTypeDefinition<UI, Layout>          cComponentTypeLayout;
     ComponentTypeDefinition<UI, Menu>            cComponentTypeMenu;
@@ -137,10 +137,10 @@ namespace IsoRealms::UI {
     ComponentTypeDefinition<UI, Throbber>        cComponentTypeThrobber;
     ComponentTypeDefinition<UI, VirtualKeyboard> cComponentTypeVirtualKeyboard;
 
-    template <class TYPE> friend struct AssetContainerTraits;
+    template <class TYPE> friend struct ResourceContainerTraits;
   };
 
-  template<> struct AssetContainerTraits<ILayoutLocation> {template <typename UI> static auto& get(UI& ui) {return ui.cLayoutLocations;}};
-  template<> struct AssetContainerTraits<ILayoutOffset>   {template <typename UI> static auto& get(UI& ui) {return ui.cLayoutOffsets;  }};
-  template<> struct AssetContainerTraits<IMenuItem>       {template <typename UI> static auto& get(UI& ui) {return ui.cMenuItems;      }};
+  template<> struct ResourceContainerTraits<ILayoutLocation> {template <typename UI> static auto& get(UI& ui) {return ui.cLayoutLocations;}};
+  template<> struct ResourceContainerTraits<ILayoutOffset>   {template <typename UI> static auto& get(UI& ui) {return ui.cLayoutOffsets;  }};
+  template<> struct ResourceContainerTraits<IMenuItem>       {template <typename UI> static auto& get(UI& ui) {return ui.cMenuItems;      }};
 }

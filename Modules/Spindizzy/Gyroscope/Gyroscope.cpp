@@ -34,8 +34,16 @@ namespace IsoRealms::Spindizzy {
     setNeedsRedrawing();
   }
 
-  void Gyroscope::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IModel>(this, "", "Spindizzy Gyroscope Models");
+  void Gyroscope::define(IComponentDefiner& definer) {
+    definer.propertyResource("colour1", cDefQuadrant[0]);
+    definer.propertyResource("colour2", cDefQuadrant[1]);
+    definer.propertyResource("colour3", cDefQuadrant[2]);
+    definer.propertyResource("colour4", cDefQuadrant[3]);
+    definer.propertyResource("outline", cDefOutline);
+  }
+
+  void Gyroscope::publish(ResourcePublisher& publisher) {
+    publisher.publish<IModel>(this, "", "Spindizzy Gyroscope Models");
   }
     
   void Gyroscope::hintInUse(bool inUse) {
@@ -48,14 +56,6 @@ namespace IsoRealms::Spindizzy {
     glRotatef(cEditingIconRotation,  0.0f, 0.0f, 1.0f);
     glScalef(3.0f, 3.0f, 3.0f);
     return renderPreview();
-  }
-
-  void Gyroscope::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("colour1", cDefQuadrant[0]);
-    owner.createPropertyTreeSelector("colour2", cDefQuadrant[1]);
-    owner.createPropertyTreeSelector("colour3", cDefQuadrant[2]);
-    owner.createPropertyTreeSelector("colour4", cDefQuadrant[3]);
-    owner.createPropertyTreeSelector("outline", cDefOutline);
   }
   
   void Gyroscope::updateEditing(unsigned int milliseconds) {
@@ -71,20 +71,8 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  bool Gyroscope::renderAssetIcon() const {
+  bool Gyroscope::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void Gyroscope::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Gyroscope::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Gyroscope::isDefaultConfiguration() const {
-    return true;
   }
 
   void Gyroscope::update(unsigned int milliseconds) {

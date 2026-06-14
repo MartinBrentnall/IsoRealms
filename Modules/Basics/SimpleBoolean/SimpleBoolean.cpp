@@ -22,14 +22,14 @@ namespace IsoRealms::Basics {
   SimpleBoolean::SimpleBoolean(Basics& basics, IComponentData& data) :
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void SimpleBoolean::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IBoolean>(this, "", "Simple Booleans");
-    assets.add<IBinding>(&cLuaBinding, "", "Simple Booleans");
+
+  void SimpleBoolean::define(IComponentDefiner& definer) {
+    definer.propertyBoolean("value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
   }
 
-  void SimpleBoolean::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeBoolean("value", [this]() {return cDefValue;}, [this](bool value) {cDefValue = value;});
+  void SimpleBoolean::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IBoolean>(this, "", "Simple Booleans");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Simple Booleans");
   }
 
   void SimpleBoolean::reset() {
@@ -38,22 +38,6 @@ namespace IsoRealms::Basics {
     
   bool SimpleBoolean::getValue() const {
     return cRuntimeValue;
-  }
-
-  bool SimpleBoolean::renderAssetIcon() const {
-    return false;
-  }
-
-  void SimpleBoolean::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SimpleBoolean::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SimpleBoolean::isDefaultConfiguration() const {
-    return true;
   }
 
   void SimpleBoolean::setValue(bool value) {

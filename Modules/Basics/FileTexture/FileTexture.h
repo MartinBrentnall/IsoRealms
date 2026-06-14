@@ -36,9 +36,9 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     FileTexture(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /***********************\
      * Implements ITexture *
@@ -47,9 +47,6 @@ namespace IsoRealms::Basics {
     void hintTextureInUse(bool inUse) override;
     ITexture* getTexture() override;
     void coord(float x, float y) const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     ~FileTexture();
 

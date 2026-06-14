@@ -20,16 +20,16 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IBindingType.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IBindingType.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
-  class BindingTypeRegistry : public AssetClientManager<BindingTypeRegistry, IComponentData, IBindingType> {
+  class BindingTypeRegistry : public ResourceClientManager<BindingTypeRegistry, IComponentData, IBindingType> {
     public:
     BindingTypeRegistry();
 
@@ -43,11 +43,7 @@ namespace IsoRealms {
       \***********************/
       std::string getBindingTypeID() const override;
       std::string getBindingTypeRootFolder() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-
+      
       private:
       std::string cType;
       std::string cRootFolder;
@@ -61,22 +57,18 @@ namespace IsoRealms {
       \***********************/
       std::string getBindingTypeID() const override;
       std::string getBindingTypeRootFolder() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
     };
 
-    AssetLiteralDummy<IComponentData, IBindingType, Dummy> cDummy;
-    Literal cActions{      ":Action",       "Core Assets/Actions"};
-    Literal cBooleans{     ":Boolean",      "Core Assets/Booleans"};
-    Literal cColours{      ":Colour",       "Core Assets/Colours"};
-    Literal cFloats{       ":Float",        "Core Assets/Floats"};
-    Literal cFonts{        ":Font",         "Core Assets/Fonts"};
-    Literal cInputHandlers{":InputHandler", "Core Assets/Input Handlers"};
-    Literal cIntegers{     ":Integer",      "Core Assets/Integers"};
-    Literal cScreens{      ":Screen",       "Core Assets/Screens"};
-    Literal cStrings{      ":String",       "Core Assets/Strings"};
-    Literal cVertices{     ":Vertex",       "Core Assets/Vertices"};
+    ResourceLiteralDummy<IComponentData, IBindingType, Dummy> cDummy;
+    Literal cActions{      ":Action",       "Core Resources/Actions"};
+    Literal cBooleans{     ":Boolean",      "Core Resources/Booleans"};
+    Literal cColours{      ":Colour",       "Core Resources/Colours"};
+    Literal cFloats{       ":Float",        "Core Resources/Floats"};
+    Literal cFonts{        ":Font",         "Core Resources/Fonts"};
+    Literal cInputHandlers{":InputHandler", "Core Resources/Input Handlers"};
+    Literal cIntegers{     ":Integer",      "Core Resources/Integers"};
+    Literal cScreens{      ":Screen",       "Core Resources/Screens"};
+    Literal cStrings{      ":String",       "Core Resources/Strings"};
+    Literal cVertices{     ":Vertex",       "Core Resources/Vertices"};
   };
 }

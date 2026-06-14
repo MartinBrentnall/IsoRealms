@@ -24,7 +24,7 @@ namespace IsoRealms::Basics {
   class Basics;
 
   /**
-   * Component definition monitors a Boolean asset for changes and executes
+   * Component definition monitors a Boolean resource for changes and executes
    * actions when the monitored value changes to true/false.
    */
   class BooleanTrigger final {
@@ -34,8 +34,8 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     BooleanTrigger(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    
     private:
     
     // Definition data.

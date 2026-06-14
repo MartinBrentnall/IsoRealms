@@ -34,7 +34,7 @@
 #include <set>
 
 #include "Project.h"
-#include "ComponentAssetRegistry.h"
+#include "ResourcePublisher.h"
 
 #include "IsoRealms/IComponentTypeRegistry.h"
 
@@ -55,7 +55,7 @@ namespace IsoRealms {
     static std::string getMetadataPath(const std::string& name);
 
     void loadComponents(JSONObject object, ProjectFile* ownerProject);
-    void registerAssets();
+    void publish();
     bool needsSaving(const ProjectFile* savingProject) const;
     void save(JSONObject object, const ProjectFile* savingProject) const;
     void getProperties();
@@ -73,7 +73,7 @@ namespace IsoRealms {
      * Implements IComponentTypeRegistry *
     \*************************************/
     void add(IComponentTypeDefinition* resourceTypeDefinition, const std::string& id) override;
-    const Metadata& getAssetMetadata(const std::string& key) const override;
+    const Metadata& getResourceMetadata(const std::string& key) const override;
     
     std::string getName(const ComponentType* resourceType) const;
     std::string getPath();
@@ -95,10 +95,10 @@ namespace IsoRealms {
     void setOwner(ProjectFile* owner) override;
     Project& getProject() override;
     const Project& getProject() const override;
-    Project& getAssetManager() override;
+    Project& getResourceManager() override;
     IActionContext& getDummyActionContext() override;
     const Metadata& getMetadata() const override;
-    void reregisterAssets() override;
+    void republish() override;
 
     /*****************************\
      * Implements IActionContext *
@@ -109,7 +109,7 @@ namespace IsoRealms {
     virtual ~Module();
 
     private:
-    inline static const std::string JSON_ASSETS        = "assets";
+    inline static const std::string JSON_RESOURCES     = "assets";
     inline static const std::string JSON_CATEGORIES    = "categories";
     inline static const std::string JSON_CONFIGURATION = "configuration";
     inline static const std::string JSON_DESCRIPTION   = "description";
@@ -117,17 +117,17 @@ namespace IsoRealms {
     inline static const std::string JSON_NAME          = "name";
     inline static const std::string JSON_OMISSIONS     = "omissions";
     inline static const std::string JSON_PROPERTIES    = "properties";
-    inline static const std::string JSON_COMPONENTS     = "components";
+    inline static const std::string JSON_COMPONENTS    = "components";
     inline static const std::string JSON_TYPE          = "type";
 
     Project& cProject;
-    ComponentAssetRegistry cModuleAssetRegistry;
+    ResourcePublisher cModuleResourceRegistry;
     std::map<std::string, std::unique_ptr<ComponentType>> cComponentTypes;
     std::string cName;
     std::string cLongName;
     ProjectFile* cOwnerProject = nullptr;
     std::string cDescription;
-    std::map<std::string, std::unique_ptr<Metadata>> cAssetMetadata;
+    std::map<std::string, std::unique_ptr<Metadata>> cResourceMetadata;
     std::map<std::string, std::string> cCategoryDescriptions;
     Metadata cModuleMetadata;
     IModuleHandle* cModule;

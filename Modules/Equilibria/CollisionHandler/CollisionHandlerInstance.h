@@ -22,7 +22,7 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Type/IPhysicalObjectType.h"
+#include "Modules/Equilibria/Resources/Type/IPhysicalObjectType.h"
 #include "Modules/Equilibria/World/Common/IMovementListener.h"
 #include "Modules/Equilibria/World/Common/IPhysicalObject.h"
 

@@ -40,23 +40,10 @@ namespace IsoRealms::Basics {
   DigitalControl::DigitalControl(Basics& basics, IComponentData& data) :
             DigitalControl(data) {
   }
-  
-  void DigitalControl::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IBoolean>(this,         "", "Digital Inputs");
-    assets.add<IInputHandler>(            this,         "", "Digital Inputs");
-    assets.add<IBinding>(                 &cLuaBinding, "", "Digital Inputs");
-  }
 
-  void DigitalControl::registerAssets(ComponentAssetRegistry& assets, const std::string& parentID) {
-    cStateNotifier = assets.add<IBoolean>(this,         parentID, "Digital Inputs");
-    assets.add<IInputHandler>(            this,         parentID, "Digital Inputs");
-    assets.add<IBinding>(                 &cLuaBinding, parentID, "Digital Inputs");
-  }
-  
-
-  void DigitalControl::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &owner](InputMapping& mapping) {
-      mapping.getProperties(owner, [this, &mapping]() {
+  void DigitalControl::define(IComponentDefiner& definer) {
+    definer.array(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &definer](InputMapping& mapping) {
+      mapping.define(definer, [this, &mapping]() {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });
     }, [this]()->InputMapping& {
@@ -66,6 +53,17 @@ namespace IsoRealms::Basics {
     });
   }
 
+  void DigitalControl::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IBoolean>(this,         "", "Digital Inputs");
+    publisher.publish<IInputHandler>(            this,         "", "Digital Inputs");
+    publisher.publish<IBinding>(                 &cLuaBinding, "", "Digital Inputs");
+  }
+
+  void DigitalControl::publish(ResourcePublisher& publisher, const std::string& parentID) {
+    cStateNotifier = publisher.publish<IBoolean>(this,         parentID, "Digital Inputs");
+    publisher.publish<IInputHandler>(            this,         parentID, "Digital Inputs");
+    publisher.publish<IBinding>(                 &cLuaBinding, parentID, "Digital Inputs");
+  }
 
   void DigitalControl::reset() {
     cRuntimeState = false;
@@ -108,22 +106,6 @@ namespace IsoRealms::Basics {
     for (std::unique_ptr<InputMapping>& mInput : mMapping) {
       mInput->reset();
     }
-  }
-
-  bool DigitalControl::renderAssetIcon() const {
-    return false;
-  }
-
-  void DigitalControl::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void DigitalControl::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool DigitalControl::isDefaultConfiguration() const {
-    return true;
   }
 
   std::string DigitalControl::getInputsString() const {
@@ -189,11 +171,11 @@ namespace IsoRealms::Basics {
     cInput->save(object);
   }
 
-  void DigitalControl::InputMapping::getProperties(IPropertyMaker& owner, std::function<void()> removeFunction) {
+  void DigitalControl::InputMapping::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_INLINE, "true");
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    owner.createPropertyTreeSelector("DefaultMapping", *cInput, mHint, removeFunction);
+    definer.propertyResource("DefaultMapping", *cInput, mHint, removeFunction);
   }
 
   void DigitalControl::loadCustomMapping(JSONObject object) {

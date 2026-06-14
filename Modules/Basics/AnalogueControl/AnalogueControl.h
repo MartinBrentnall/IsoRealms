@@ -50,8 +50,9 @@ namespace IsoRealms::Basics {
     \***********************/
     AnalogueControl(Basics& basics, IComponentData& data);
     AnalogueControl(Basics& basics, IComponentData& data, JSONObject object);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
+
     /*********************\
      * Implements IFloat *
     \*********************/
@@ -62,14 +63,6 @@ namespace IsoRealms::Basics {
     \****************************/
     bool input(sf::Event& event) override;
     void resetInput() override;
-
-    /*********************\
-     * Implements IAsset *
-    \*********************/
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *
@@ -148,9 +141,9 @@ namespace IsoRealms::Basics {
       std::shared_ptr<AnalogueInput> getInput() const;
       void save(JSONObject object) const;
       void loadCustomMapping(JSONObject object);
-      void registerAssets(ComponentAssetRegistry& assets);
+      void define(IComponentDefiner& definer, std::function<void()> removeFunction);
+      void publish(ResourcePublisher& publisher);
       std::string getName();
-      void getProperties(IPropertyMaker& owner, std::function<void()> removeFunction);
       void reset();
 
       private:

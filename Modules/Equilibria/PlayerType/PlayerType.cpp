@@ -25,7 +25,7 @@
 namespace IsoRealms::Equilibria {
   PlayerType::PlayerType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cAssets(equilibria),
+            cResources(equilibria),
             cWallBounceActionContext(data, cWallBounceBindings),
             cPlayerActionContext(data, cPlayerBindings),
             cWallBounceBindings(*this),
@@ -41,50 +41,50 @@ namespace IsoRealms::Equilibria {
             cDefWallBounceAction(cWallBounceActionContext),
             cDefLeaveSurfaceAction(cPlayerActionContext),
             cDefApexAction(cPlayerActionContext),
-            cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderAssetIcon();}) {
+            cLuaBinding(data.getProject().getLuaState(), this, [this]() {return renderResourceIcon();}) {
     cEquilibria.added(this);
   }
 
-  void PlayerType::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Equilibria/Players");
+  void PlayerType::define(IComponentDefiner& definer) {
+
+    // Dimensions
+    definer.propertyFloat(   "radius",         [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
+    definer.propertyFloat(   "height",         [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
+
+    // Physics
+    definer.propertyFloat(   "acceleration",   [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
+    definer.propertyFloat(   "bounceFactor",   [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;}, DEFAULT_BOUNCE_FACTOR);
+    definer.propertyFloat(   "stepReach",      [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;}, DEFAULT_STEP_REACH);
+    definer.propertyFloat(   "hugMomentum",    [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
+
+    // appearance
+    definer.propertyResource("appearance",     cDefModel);
+    definer.propertyFloat(   "spinSpeed",      [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
+
+    // Input
+    definer.propertyResource("xInput",         cDefInputX);
+    definer.propertyResource("yInput",         cDefInputY);
+    definer.propertyResource("thrustInput",    cDefInputThrust);
+
+    // Actions
+    definer.propertyResource("onRespawn",      cDefRespawnAction);
+    definer.propertyResource("onFallImpact",   cDefFallImpactAction);
+    definer.propertyResource("onFallBounce",   cDefFallBounceAction);
+    definer.propertyResource("onWallBounce",   cDefWallBounceAction);
+    definer.propertyResource("onLeaveSurface", cDefLeaveSurfaceAction);
+    definer.propertyResource("onApex",         cDefApexAction);
+
+    // Misc
+    definer.propertyInteger( "respawnDelay",   [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;}, DEFAULT_RESPAWN_DELAY);
+    definer.propertyResource("orientation",    cDefOrientation);
+  }
+
+  void PlayerType::publish(ResourcePublisher& publisher) {
+    publisher.publish<IBinding>(&cLuaBinding, "", "Equilibria/Players");
   }
 
   bool PlayerType::renderIcon() const {
     return cDefModel.renderIcon();
-  }
-
-  void PlayerType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-
-    // Dimensions
-    owner.createPropertyNativeFloat(  "radius",         [this]() {return cDefRadius;},       [this](float value) {cDefRadius       = value;}, DEFAULT_RADIUS);
-    owner.createPropertyNativeFloat(  "height",         [this]() {return cDefHeight;},       [this](float value) {cDefHeight       = value;}, DEFAULT_HEIGHT);
-
-    // Physics
-    owner.createPropertyNativeFloat(  "acceleration",   [this]() {return cDefAcceleration;}, [this](float value) {cDefAcceleration = value;}, DEFAULT_ACCELERATION);
-    owner.createPropertyNativeFloat(  "bounceFactor",   [this]() {return cDefBounceFactor;}, [this](float value) {cDefBounceFactor = value;}, DEFAULT_BOUNCE_FACTOR);
-    owner.createPropertyNativeFloat(  "stepReach",      [this]() {return cDefStepReach;},    [this](float value) {cDefStepReach    = value;}, DEFAULT_STEP_REACH);
-    owner.createPropertyNativeFloat(  "hugMomentum",    [this]() {return cDefHugMomentum;},  [this](float value) {cDefHugMomentum  = value;}, DEFAULT_HUG_MOMENTUM);
-
-    // appearance
-    owner.createPropertyTreeSelector( "appearance",     cDefModel);
-    owner.createPropertyNativeFloat(  "spinSpeed",      [this]() {return cDefSpinSpeed;},    [this](float value) {cDefSpinSpeed    = value;});
-
-    // Input
-    owner.createPropertyTreeSelector( "xInput",         cDefInputX);
-    owner.createPropertyTreeSelector( "yInput",         cDefInputY);
-    owner.createPropertyTreeSelector( "thrustInput",    cDefInputThrust);
-
-    // Actions
-    owner.createPropertyTreeSelector( "onRespawn",      cDefRespawnAction);
-    owner.createPropertyTreeSelector( "onFallImpact",   cDefFallImpactAction);
-    owner.createPropertyTreeSelector( "onFallBounce",   cDefFallBounceAction);
-    owner.createPropertyTreeSelector( "onWallBounce",   cDefWallBounceAction);
-    owner.createPropertyTreeSelector( "onLeaveSurface", cDefLeaveSurfaceAction);
-    owner.createPropertyTreeSelector( "onApex",         cDefApexAction);
-
-    // Misc
-    owner.createPropertyNativeInteger("respawnDelay",   [this]() {return cDefRespawnDelay;}, [this](int   value) {cDefRespawnDelay = value;}, DEFAULT_RESPAWN_DELAY);
-    owner.createPropertyTreeSelector( "orientation",    cDefOrientation);
   }
 
   void PlayerType::removed() {
@@ -96,9 +96,9 @@ namespace IsoRealms::Equilibria {
     cRuntimeSpinSpeed = cDefSpinSpeed;
   }
   
-  void PlayerType::registerAssets(const std::string& parentID) {
-    cAssets.add<IWorldEditorTool>(   this, parentID, "Player Types");
-    cAssets.add<IPhysicalObjectType>(this, parentID, "Player Types");
+  void PlayerType::publish(const std::string& parentID) {
+    cResources.publish<IWorldEditorTool>(   this, parentID, "Player Types");
+    cResources.publish<IPhysicalObjectType>(this, parentID, "Player Types");
   }  
   
   std::unique_ptr<ModelInstance> PlayerType::createModel() {
@@ -207,20 +207,8 @@ namespace IsoRealms::Equilibria {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
-  bool PlayerType::renderAssetIcon() const {
+  bool PlayerType::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void PlayerType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void PlayerType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool PlayerType::isDefaultConfiguration() const {
-    return true;
   }
 
   IBinding* PlayerType::getPhysicalObjectTypeBinding(const std::string& id) const {

@@ -94,13 +94,13 @@ namespace IsoRealms {
     cFile.setPath(name, user);
   }
 
-  void ProjectFile::getProperties(IPropertyMaker& owner, const Metadata& metadata, Project& project, bool inclusion) {
-    owner.createPropertyTreeSelector(JSON_FILENAME, cFile);
-    owner.createPropertyNativeString(JSON_DESCRIPTION, [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
+  void ProjectFile::getProperties(IComponentDefiner& definer, const Metadata& metadata, Project& project, bool inclusion) {
+    definer.propertyResource(JSON_FILENAME,    cFile);
+    definer.propertyString(  JSON_DESCRIPTION, [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
-      owner.createPropertyNativeBoolean(JSON_ALLOW_MODIFICATION, [this]() {return cAllowModifications;}, [this, &owner, &project](bool value) {
+      definer.propertyBoolean(JSON_ALLOW_MODIFICATION, [this]() {return cAllowModifications;}, [this, &definer, &project](bool value) {
         if (!value) {
-          owner.confirm("Setting this file to read-only will cause it to be saved as it is currently.  Are you sure you want to do this?", [this, &project]() {
+          definer.confirm("Setting this file to read-only will cause it to be saved as it is currently.  Are you sure you want to do this?", [this, &project]() {
             project.save(*this);
             cAllowModifications = false;
           }, []() {
@@ -112,16 +112,16 @@ namespace IsoRealms {
       }, true);
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      owner.createPropertyStruct(JSON_INCLUDE, mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](IPropertyMaker& owner) {
-        mInclusion->getProperties(owner, metadata, project, true);
+      definer.scope(JSON_INCLUDE, mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](IComponentDefiner& definer) {
+        mInclusion->getProperties(definer, metadata, project, true);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
       });
     }
-    owner.createPropertyAdd(JSON_INCLUDE, "Add...", [this, &owner, &metadata, &project]() {
+    definer.propertyAdd(JSON_INCLUDE, "Add...", [this, &definer, &metadata, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      owner.createPropertyStruct(JSON_INCLUDE, mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &metadata, &project](IPropertyMaker& owner) {
-        mNewInclusion->getProperties(owner, metadata, project, true);
+      definer.scope(JSON_INCLUDE, mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &metadata, &project](IComponentDefiner& definer) {
+        mNewInclusion->getProperties(definer, metadata, project, true);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);
       });

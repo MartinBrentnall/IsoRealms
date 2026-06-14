@@ -54,30 +54,30 @@ namespace IsoRealms::Basics {
     return mAvailableIndex;
   }
 
-  IAction* Script::getAsset(IActionContext& owner, JSONObject object) {
+  IAction* Script::getResource(IActionContext& owner, JSONObject object) {
     std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
 
-  IAction* Script::getAsset(IActionContext& owner) {
+  IAction* Script::getResource(IActionContext& owner) {
     std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(*this, owner, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
-  
-  void Script::releaseAsset(const IAction* asset) {
-    std::map<const IAction*, std::unique_ptr<ScriptAction>>::iterator mScriptAction = cDefScriptActions.find(asset);
+
+  void Script::releaseResource(const IAction* resource) {
+    std::map<const IAction*, std::unique_ptr<ScriptAction>>::iterator mScriptAction = cDefScriptActions.find(resource);
     if (mScriptAction == cDefScriptActions.end()) {
       throw ArgumentException("ERROR: Script::destroyAction: Script of specified action not found.");
     }
     mScriptAction->second->destroyInternalAction();
-    cDefScriptActions.erase(asset);
+    cDefScriptActions.erase(resource);
   }
 
-  bool Script::renderAssetProviderIcon() const {
+  bool Script::renderResourceProviderIcon() const {
     Utils::renderIconTerminal();
     return true;
   }
@@ -97,19 +97,19 @@ namespace IsoRealms::Basics {
   Script::ScriptAction::ScriptAction(Script& parent, IActionContext& owner, unsigned int index, JSONObject object) :
             cParent(parent),
             cDefFunction(cParent.cBasics, owner, object, false),
-            cDefAction(cDefFunction.getAsset(owner, object)),
+            cDefAction(cDefFunction.getResource(owner, object)),
             cDefIndex(index) {
   }
 
   Script::ScriptAction::ScriptAction(Script& parent, IActionContext& owner, unsigned int index) :
             cParent(parent),
             cDefFunction(cParent.cBasics, owner),
-            cDefAction(cDefFunction.getAsset(owner)),
+            cDefAction(cDefFunction.getResource(owner)),
             cDefIndex(index) {
   }
 
   void Script::ScriptAction::destroyInternalAction() {
-    cDefFunction.releaseAsset(cDefAction);
+    cDefFunction.releaseResource(cDefAction);
   }
 
   unsigned int Script::ScriptAction::getFunctionID() const {
@@ -124,20 +124,12 @@ namespace IsoRealms::Basics {
     cDefAction->execute();
   }
   
-  bool Script::ScriptAction::renderAssetIcon() const {
+  bool Script::ScriptAction::renderResourceIcon() const {
     Utils::renderIconTerminal();
     return true;
   }
-
-  void Script::ScriptAction::saveAsset(JSONObject object) const {
-    // cDefFunction.save(object, true);
-  }
   
-  void Script::ScriptAction::getAssetProperties(IPropertyMaker& owner) {
-    cDefFunction.getScriptProperties(owner);
-  }  
-
-  bool Script::ScriptAction::isDefaultConfiguration() const {
-    return true;
+  void Script::ScriptAction::getResourceProperties(IComponentDefiner& definer) {
+    cDefFunction.getScriptProperties(definer);
   }
 }

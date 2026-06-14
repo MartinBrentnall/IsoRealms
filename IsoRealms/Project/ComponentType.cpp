@@ -169,8 +169,8 @@ namespace IsoRealms {
     cOverriddenComponents.push_back(std::make_unique<PlaceHolder>(component->getName(), component->getProjectFile()));
   }
 
-  void ComponentType::registerModuleAssets() {
-    cParent.registerAssets();
+  void ComponentType::publishModuleResources() {
+    cParent.publish();
   }
   
   std::string ComponentType::getPath() {

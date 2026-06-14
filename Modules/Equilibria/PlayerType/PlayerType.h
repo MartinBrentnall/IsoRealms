@@ -27,10 +27,10 @@
 
 #include "IsoRealms.h"
 
-#include "IsoRealms/Assets/IEventBindings.h"
-#include "Modules/Equilibria/Assets/Type/IPhysicalObjectType.h"
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Equilibria/EquilibriaAssetRegistry.h"
+#include "IsoRealms/Resources/IEventBindings.h"
+#include "Modules/Equilibria/Resources/Type/IPhysicalObjectType.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/EquilibriaResourceRegistry.h"
 
 namespace IsoRealms::Equilibria {
   class IEquilibriaRegistry;
@@ -48,18 +48,16 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     PlayerType(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
+    void publish(const std::string& parentID);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     /*********************\
      * Module interfaces *
     \*********************/
     void reset();
-
-    // Interface to be used by module.
-    void registerAssets(const std::string& parentID);
 
     // Internal interface.
     std::unique_ptr<ModelInstance> createModel();
@@ -97,10 +95,7 @@ namespace IsoRealms::Equilibria {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    bool renderResourceIcon() const override;
 
     private:
 
@@ -172,8 +167,8 @@ namespace IsoRealms::Equilibria {
     // External interfaces.
     Equilibria& cEquilibria;     /// Equilibria module reference.
 
-    // Asset registry.
-    EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
+    // Resource registry.
+    EquilibriaResourceRegistry cResources; /// Equilibria resource registry.
 
     // Action contexts.
     ActionContext cWallBounceActionContext;

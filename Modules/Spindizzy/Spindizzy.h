@@ -29,7 +29,7 @@
 #include "Top/Top.h"
 
 namespace IsoRealms::Spindizzy {
-  template <typename TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct ResourceContainerTraits;
   template <typename TYPE> struct ComponentContainerTraits;
 
   class Spindizzy : public IModuleHandle {
@@ -45,7 +45,7 @@ namespace IsoRealms::Spindizzy {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void registerAssets(ComponentAssetRegistry& assets) override;
+    void publish(ResourcePublisher& publisher) override;
     void updateInputs(unsigned int milliseconds) override;
     void updateRuntime(unsigned int milliseconds) override;
     void updateEditing(unsigned int milliseconds) override;
@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
     ComponentTypeDefinition<Spindizzy, Top>                cComponentTop;
 
     // Scripting support.
-    template <class TYPE> friend struct AssetContainerTraits;
+    template <class TYPE> friend struct ResourceContainerTraits;
     template <class TYPE> friend struct ComponentContainerTraits;
   };
 

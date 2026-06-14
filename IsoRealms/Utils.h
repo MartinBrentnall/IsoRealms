@@ -29,7 +29,7 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "IsoRealms/Assets/Type/IFont.h"
+#include "IsoRealms/Resources/Type/IFont.h"
 #include "IsoRealms/Exception/ArgumentException.h"
 
 namespace IsoRealms {

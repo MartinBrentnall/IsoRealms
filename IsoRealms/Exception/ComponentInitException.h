@@ -26,7 +26,7 @@ namespace IsoRealms {
   
   /**
    * Exception to be thrown when attempting to assign an ID that cannot be
-   * used to an asset.
+   * used to an resource.
    */
   class ComponentInitException : public std::exception {
     private:

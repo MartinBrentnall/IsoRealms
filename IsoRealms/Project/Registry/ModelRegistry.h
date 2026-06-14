@@ -20,16 +20,16 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IModel.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IModel.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
-  class ModelRegistry : public AssetClientManager<ModelRegistry, IComponentData, IModel> {
+  class ModelRegistry : public ResourceClientManager<ModelRegistry, IComponentData, IModel> {
     public:
     ModelRegistry();
 
@@ -38,14 +38,11 @@ namespace IsoRealms {
       public:
 
       /*********************\
-      * Implements IModel *
+       * Implements IModel *
       \*********************/
       IModelInstance* createModel() override;
       bool renderPreview() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      bool renderResourceIcon() const override;
 
       private:
       class Instance : public IModelInstance {
@@ -61,6 +58,6 @@ namespace IsoRealms {
       static Instance DUMMY;
     };
 
-    AssetLiteralDummy<IComponentData, IModel, Dummy> cNone;
+    ResourceLiteralDummy<IComponentData, IModel, Dummy> cNone;
   };
 }

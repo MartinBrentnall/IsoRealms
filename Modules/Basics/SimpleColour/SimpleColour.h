@@ -37,9 +37,9 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     SimpleColour(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *
@@ -54,9 +54,6 @@ namespace IsoRealms::Basics {
     float getGreen() const override;
     float getBlue() const override;
     float getAlpha() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     /***********************\
      * Scripting Interface *

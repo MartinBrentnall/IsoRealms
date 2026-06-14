@@ -20,27 +20,15 @@
 
 namespace IsoRealms {
   EditableRegistry::EditableRegistry() :
-            AssetClientManager(&cNone) {
+            ResourceClientManager(&cNone) {
   }
 
   IEditableScreen* EditableRegistry::Dummy::createEditableScreen(Project* project, IDialogManager& dialogManager) {
     return &DUMMY;
   }
 
-  bool EditableRegistry::Dummy::renderAssetIcon() const {
+  bool EditableRegistry::Dummy::renderResourceIcon() const {
     Utils::renderIconNone();
-    return true;
-  }
-
-  void EditableRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void EditableRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool EditableRegistry::Dummy::isDefaultConfiguration() const {
     return true;
   }
 
@@ -106,22 +94,6 @@ namespace IsoRealms {
 
   void EditableRegistry::Dummy::Instance::resetInput() {
     // Nothing to do.
-  }
-
-  bool EditableRegistry::Dummy::Instance::renderAssetIcon() const {
-    return false;
-  }
-
-  void EditableRegistry::Dummy::Instance::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void EditableRegistry::Dummy::Instance::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool EditableRegistry::Dummy::Instance::isDefaultConfiguration() const {
-    return true;
   }
 
   EditableRegistry::Dummy::Instance EditableRegistry::Dummy::DUMMY;

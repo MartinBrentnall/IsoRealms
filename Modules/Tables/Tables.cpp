@@ -24,7 +24,7 @@ namespace IsoRealms::Tables {
     registry.add(&cComponentTypeTable, "Table");
   }
 
-  void Tables::registerAssets(ComponentAssetRegistry& assets) {
+  void Tables::publish(ResourcePublisher& publisher) {
     // Nothing to do.
   }
   

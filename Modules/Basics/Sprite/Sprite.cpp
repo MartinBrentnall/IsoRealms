@@ -24,9 +24,15 @@ namespace IsoRealms::Basics {
             cDefTexture(data) {
     cDefProject.addScreenListener(this);
   }
-  
-  void Sprite::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IModel>(this, "", "Sprite Models");
+
+  void Sprite::define(IComponentDefiner& definer) {
+    definer.propertyResource("texture",        cDefTexture);
+    definer.propertyBoolean( "billboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
+    definer.propertyBoolean( "billboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
+  }
+
+  void Sprite::publish(ResourcePublisher& publisher) {
+    publisher.publish<IModel>(this, "", "Sprite Models");
   }
 
   void Sprite::hintInUse(bool inUse) {
@@ -56,13 +62,6 @@ namespace IsoRealms::Basics {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  void Sprite::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( "texture",        cDefTexture);
-    owner.createPropertyNativeBoolean("billboardYaw",   [this]() {return cDefBillboardYaw;},   [this](bool value) {cDefBillboardYaw   = value;});
-    owner.createPropertyNativeBoolean("billboardPitch", [this]() {return cDefBillboardPitch;}, [this](bool value) {cDefBillboardPitch = value;});
-  }
-
-
   IModelInstance* Sprite::createModel() {
     return this;
   }
@@ -74,20 +73,8 @@ namespace IsoRealms::Basics {
     return true;
   }
 
-  bool Sprite::renderAssetIcon() const {
+  bool Sprite::renderResourceIcon() const {
     render(1.0f);
-    return true;
-  }
-
-  void Sprite::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Sprite::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Sprite::isDefaultConfiguration() const {
     return true;
   }
 

@@ -23,7 +23,7 @@
 #include <set>
 #include <string>
 
-#include "IsoRealms/Assets/Client/File.h"
+#include "IsoRealms/Resources/Client/File.h"
 #include "IsoRealms/Persistence/JSONArray.h"
 
 namespace IsoRealms {
@@ -41,7 +41,7 @@ namespace IsoRealms {
     std::vector<std::string> getNames() const;
     void getNames(std::vector<std::string>& names) const;
     ProjectFile* getFile(const std::string& id);
-    void getProperties(IPropertyMaker& owner, const Metadata& Metadata, Project& project, bool topFile);
+    void getProperties(IComponentDefiner& definer, const Metadata& Metadata, Project& project, bool topFile);
     void rename(const std::string name, bool user);
     void save(JSONObject object) const;
     void saveInclusion(JSONObject object) const;

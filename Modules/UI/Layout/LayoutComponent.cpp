@@ -48,8 +48,8 @@ namespace IsoRealms::UI {
     cRuntimeScreen = *cDefScreen;
   }
   
-  void LayoutComponent::registerAssets(ComponentAssetRegistry& assets, const std::string& name) {
-    assets.add<IBinding>(&cLuaBinding, name, "Layout Components");
+  void LayoutComponent::publish(ResourcePublisher& publisher, const std::string& name) {
+    publisher.publish<IBinding>(&cLuaBinding, name, "Layout Components");
   }
   
   void LayoutComponent::render(float scale, float aspectRatio) {
@@ -299,19 +299,18 @@ namespace IsoRealms::UI {
     return cLayout.getAvailableRelativeNames(this);
   }
     
-  void LayoutComponent::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString("ComponentName", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl;});
-    owner.createPropertyTreeSelector(JSON_SCREEN,     cDefScreen);
-    owner.createPropertyStruct(      JSON_LEFT,       "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefLeftEdge.getProperties(  owner, metadata);});
-    owner.createPropertyStruct(      JSON_RIGHT,      "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefRightEdge.getProperties( owner, metadata);});
-    owner.createPropertyStruct(      JSON_TOP,        "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefTopEdge.getProperties(   owner, metadata);});
-    owner.createPropertyStruct(      JSON_BOTTOM,     "Edit...", [this, &metadata](IPropertyMaker& owner) {return cDefBottomEdge.getProperties(owner, metadata);});
+  void LayoutComponent::define(IComponentDefiner& definer) {
+    definer.propertyString(  "ComponentName", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl;});
+    definer.propertyResource(JSON_SCREEN,     cDefScreen);
+    definer.scope(           JSON_LEFT,       "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefLeftEdge.define(editingDefiner);});
+    definer.scope(           JSON_RIGHT,      "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefRightEdge.define(editingDefiner);});
+    definer.scope(           JSON_TOP,        "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefTopEdge.define(editingDefiner);});
+    definer.scope(           JSON_BOTTOM,     "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefBottomEdge.define(editingDefiner);});
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {
     cRuntimeScreen = screen;
   }
-    
 
   // void LayoutComponent::testHandlePick(float xPick, float yPick, float x, float y, float radius, LayoutComponent::Handle handle) {
   //   if (CollisionUtils::contains(xPick, yPick, x - radius, x + radius, y - radius, y + radius)) {

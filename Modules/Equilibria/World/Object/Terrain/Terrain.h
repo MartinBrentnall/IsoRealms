@@ -55,8 +55,6 @@ namespace IsoRealms::Equilibria {
     inline static const unsigned char CACHE_CONDITION_ELEMENT = 6; /// Signifies the beginning of a condition element name.
     inline static const unsigned char CACHE_CONDITION_END     = 7; /// Signifies the end of a (sub-)condition.
 
-    
-
     /**
      * Construct terrain from the specified arguments.
      *
@@ -191,7 +189,7 @@ namespace IsoRealms::Equilibria {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    void getProperties(IPropertyMaker& owner) override;
+    void define(IComponentDefiner& definer) override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 

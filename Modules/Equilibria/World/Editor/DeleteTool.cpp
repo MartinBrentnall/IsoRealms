@@ -26,20 +26,8 @@ namespace IsoRealms::Equilibria {
     return cEditingErasers.emplace_back(std::make_unique<Eraser>(*this, editor)).get();
   }
 
-  bool DeleteTool::renderAssetIcon() const {
+  bool DeleteTool::renderResourceIcon() const {
     Utils::renderIconNone();
-    return true;
-  }
-
-  void DeleteTool::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void DeleteTool::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool DeleteTool::isDefaultConfiguration() const {
     return true;
   }
 
@@ -125,7 +113,7 @@ namespace IsoRealms::Equilibria {
   }
 
   bool DeleteTool::Eraser::renderIcon(float yaw) const {
-    return cParent.renderAssetIcon();
+    return cParent.renderResourceIcon();
   }
 
   void DeleteTool::Eraser::updateUI(unsigned int milliseconds) {

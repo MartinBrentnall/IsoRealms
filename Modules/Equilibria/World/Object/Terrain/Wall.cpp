@@ -19,7 +19,7 @@
 #include "Wall.h"
 
 #include "Modules/Equilibria/Equilibria.h"
-#include "Modules/Equilibria/Assets/Type/IWallPattern.h"
+#include "Modules/Equilibria/Resources/Type/IWallPattern.h"
 #include "Modules/Equilibria/TerrainType/TerrainType.h"
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 

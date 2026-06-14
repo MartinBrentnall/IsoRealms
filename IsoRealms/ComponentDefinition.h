@@ -21,9 +21,9 @@
 #include <set>
 #include <string>
 
-#include "Assets/Type/IScreenListener.h"
+#include "Resources/Type/IScreenListener.h"
 #include "Editing/Property/IProperty.h"
 #include "Exception/ComponentInitException.h"
 #include "IModuleHandle.h"
 #include "IComponentData.h"
-#include "Project/Registry/IAssetUser.h"
+#include "Project/Registry/IResourceUser.h"

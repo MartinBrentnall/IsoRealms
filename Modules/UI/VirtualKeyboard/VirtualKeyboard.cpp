@@ -26,16 +26,16 @@ namespace IsoRealms::UI {
             cDefFont(data),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void VirtualKeyboard::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IInputHandler>(this, "", "Presentation");
-    assets.add<IScreen>(this, "", "Presentation");
-    assets.add<IString>(this, "", "Presentation");
-    assets.add<IBinding>(&cLuaBinding, "", "Virtual Keyboards");
+
+  void VirtualKeyboard::define(IComponentDefiner& definer) {
+    // Nothing to do.
   }
 
-  void VirtualKeyboard::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    // Nothing to do.
+  void VirtualKeyboard::publish(ResourcePublisher& publisher) {
+    publisher.publish<IInputHandler>(this, "", "Presentation");
+    publisher.publish<IScreen>(this, "", "Presentation");
+    publisher.publish<IString>(this, "", "Presentation");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Virtual Keyboards");
   }
 
   void VirtualKeyboard::updateRuntime(unsigned int milliseconds) {
@@ -147,22 +147,6 @@ namespace IsoRealms::UI {
 
   std::string VirtualKeyboard::getValue() const {
     return cRuntimeValue;
-  }
-
-  bool VirtualKeyboard::renderAssetIcon() const {
-    return false;
-  }
-
-  void VirtualKeyboard::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void VirtualKeyboard::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool VirtualKeyboard::isDefaultConfiguration() const {
-    return true;
   }
 
   std::string VirtualKeyboard::getConversionPath() const {

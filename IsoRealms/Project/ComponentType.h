@@ -46,7 +46,7 @@ namespace IsoRealms {
     void renameComponent(IComponent* component, const std::string& name);
     void deleteComponent(IComponent* component);
     void createOverriddenComponent(IComponent* component);
-    void registerModuleAssets();
+    void publishModuleResources();
     std::string getPath();
     const std::string& getName(const IComponent& component) const;
     std::string getDataPath(bool user);

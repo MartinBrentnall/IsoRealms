@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Type/IBoolean.h"
+#include "IsoRealms/Resources/Type/IBoolean.h"
 
 namespace IsoRealms {
   template <typename PARENT, typename SIGNAL> class EditorDigitalInput {

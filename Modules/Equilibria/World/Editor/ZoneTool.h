@@ -20,7 +20,7 @@
 
 #include <algorithm>
 
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
 #include "Modules/Equilibria/IWorldObject.h"
 
 namespace IsoRealms::Equilibria {
@@ -38,10 +38,7 @@ namespace IsoRealms::Equilibria {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    bool renderResourceIcon() const override;
 
     private:
 

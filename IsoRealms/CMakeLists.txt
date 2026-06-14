@@ -21,37 +21,6 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(IsoRealms
   ActionContext.cpp
   Application.cpp
-  Assets/Client/Action.cpp
-  Assets/Client/AnalogueInput.cpp
-  Assets/Client/Binding.cpp
-  Assets/Client/BindingType.cpp
-  Assets/Client/Boolean.cpp
-  Assets/Client/Colour.cpp
-  Assets/Client/ComponentOwner.cpp
-  Assets/Client/DigitalInput.cpp
-  Assets/Client/Editable.cpp
-  Assets/Client/File.cpp
-  Assets/Client/Float.cpp
-  Assets/Client/Font.cpp
-  Assets/Client/InputHandler.cpp
-  Assets/Client/Integer.cpp
-  Assets/Client/Model.cpp
-  Assets/Client/ModelInstance.cpp
-  Assets/Client/ModuleChooser.cpp
-  Assets/Client/Screen.cpp
-  Assets/Client/String.cpp
-  Assets/Client/Texture.cpp
-  Assets/Client/Vertex.cpp
-  Assets/Fixed/AnalogueInput/GameControllerAxis.cpp
-  Assets/Fixed/DigitalInput/GameControllerButton.cpp
-  Assets/Fixed/DigitalInput/GameControllerHat.cpp
-  Assets/Fixed/DigitalInput/KeyboardKey.cpp
-  Assets/Fixed/DigitalInput/MouseButton.cpp
-  Assets/Literal/LiteralColour.cpp
-  Assets/Literal/LiteralFloat.cpp
-  Assets/Literal/LiteralString.cpp
-  Assets/Literal/LiteralTexture.cpp
-  Assets/Literal/LiteralVertex.cpp
   Collision/CollisionData.cpp
   Collision/CollisionUtils.cpp
   Common/AnimatedFloat.cpp
@@ -60,6 +29,9 @@ add_library(IsoRealms
   Common/ScreenArea.cpp
   Condition/Condition.cpp
   Condition/ConditionElement.cpp
+  ComponentLoader.cpp
+  ComponentEditor.cpp
+  ComponentSaver.cpp
   DisplayResolution.cpp
   Editing/ActionMenu.cpp
   Editing/Choice.cpp
@@ -115,7 +87,6 @@ add_library(IsoRealms
   Project/Project.cpp
   Project/ProjectFile.cpp
   Project/ProjectLaunchConfiguration.cpp
-  Project/Registry/AssetIDException.cpp
   Project/Registry/ActionRegistry.cpp
   Project/Registry/AnalogueInputRegistry.cpp
   Project/Registry/BooleanRegistry.cpp
@@ -129,15 +100,44 @@ add_library(IsoRealms
   Project/Registry/InputHandlerRegistry.cpp
   Project/Registry/IntegerRegistry.cpp
   Project/Registry/ModelRegistry.cpp
+  Project/Registry/ResourceIDException.cpp
   Project/Registry/ScreenRegistry.cpp
   Project/Registry/StringRegistry.cpp
   Project/Registry/TextureRegistry.cpp
   Project/Registry/VertexRegistry.cpp
   Project/ComponentType.cpp
   PropertyData.cpp
-  PropertyLoader.cpp
-  PropertyMaker.cpp
-  PropertySaver.cpp
+  Resources/Client/Action.cpp
+  Resources/Client/AnalogueInput.cpp
+  Resources/Client/Binding.cpp
+  Resources/Client/BindingType.cpp
+  Resources/Client/Boolean.cpp
+  Resources/Client/Colour.cpp
+  Resources/Client/ComponentOwner.cpp
+  Resources/Client/DigitalInput.cpp
+  Resources/Client/Editable.cpp
+  Resources/Client/File.cpp
+  Resources/Client/Float.cpp
+  Resources/Client/Font.cpp
+  Resources/Client/InputHandler.cpp
+  Resources/Client/Integer.cpp
+  Resources/Client/Model.cpp
+  Resources/Client/ModelInstance.cpp
+  Resources/Client/ModuleChooser.cpp
+  Resources/Client/Screen.cpp
+  Resources/Client/String.cpp
+  Resources/Client/Texture.cpp
+  Resources/Client/Vertex.cpp
+  Resources/Fixed/AnalogueInput/GameControllerAxis.cpp
+  Resources/Fixed/DigitalInput/GameControllerButton.cpp
+  Resources/Fixed/DigitalInput/GameControllerHat.cpp
+  Resources/Fixed/DigitalInput/KeyboardKey.cpp
+  Resources/Fixed/DigitalInput/MouseButton.cpp
+  Resources/Literal/LiteralColour.cpp
+  Resources/Literal/LiteralFloat.cpp
+  Resources/Literal/LiteralString.cpp
+  Resources/Literal/LiteralTexture.cpp
+  Resources/Literal/LiteralVertex.cpp
   System.cpp
   Utils.cpp
 )

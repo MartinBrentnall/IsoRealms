@@ -35,8 +35,7 @@ namespace IsoRealms::Tables {
     \***********************/
     Table(Tables& tables, IComponentData& data);
     Table(Tables& tables, IComponentData& data, JSONObject object);
-    void registerAssets(ComponentAssetRegistry& assets);  
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
 
     /***********************\
      * Scripting Interface *

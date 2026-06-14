@@ -1,0 +1,51 @@
+/*
+ * Copyright 2025 Martin Brentnall
+ *
+ * This file is part of IsoRealms.
+ *
+ * IsoRealms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IsoRealms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "SequenceTrackActionEvent.h"
+
+#include "SequenceTrackAction.h"
+
+namespace IsoRealms::Basics {
+  SequenceTrackActionEvent::SequenceTrackActionEvent(SequenceTrackAction& parent, IComponentData& owner, unsigned int time) :
+            cParent(parent),
+            cDefAction(owner.getDummyActionContext()),
+            cDefTime(time) {
+  }
+
+  unsigned int SequenceTrackActionEvent::getTime() const {
+    return cDefTime;
+  }
+
+  void SequenceTrackActionEvent::setTime(unsigned int time) {
+    cDefTime = time;
+  }
+
+  void SequenceTrackActionEvent::getEventProperties(IComponentDefiner& definer) {
+    definer.propertyInteger(JSON_DELAY, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
+    definer.propertyResource(JSON_EXECUTE, cDefAction);
+  }
+
+  void SequenceTrackActionEvent::save(JSONObject object) const {
+    object.addInteger(JSON_DELAY, cDefTime);
+    cDefAction.save(object, JSON_EXECUTE);
+  }
+
+  void SequenceTrackActionEvent::execute() {
+    cDefAction.execute();
+  }
+}

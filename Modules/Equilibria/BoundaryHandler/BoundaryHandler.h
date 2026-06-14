@@ -20,8 +20,8 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Client/BoundaryType.h"
-#include "Modules/Equilibria/Assets/Client/PhysicalObjectType.h"
+#include "Modules/Equilibria/Resources/Client/BoundaryType.h"
+#include "Modules/Equilibria/Resources/Client/PhysicalObjectType.h"
 
 namespace IsoRealms::Equilibria {
   class BoundaryHandlerInstance;
@@ -41,8 +41,7 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     BoundaryHandler(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
     void removed();
 
     // Boundary handler interface.
@@ -57,7 +56,7 @@ namespace IsoRealms::Equilibria {
     IBinding* getBinding(const std::string& id) override;
     std::string getBindingID(const IBinding* binding) const override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-    void releaseBinding(const IBinding* asset) override;
+    void releaseBinding(const IBinding* resource) override;
     
     private:
 

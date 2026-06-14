@@ -25,8 +25,12 @@ namespace IsoRealms::Basics {
             }) {
   }
 
-  void FileTexture::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<ITexture>(this, "", "Textures from Image Files"); // TODO: Localize this.
+  void FileTexture::define(IComponentDefiner& definer) {
+    definer.propertyResource("filename", cDefFile);
+  }
+
+  void FileTexture::publish(ResourcePublisher& publisher) {
+    publisher.publish<ITexture>(this, "", "Textures from Image Files"); // TODO: Localize this.
   }
 
   bool FileTexture::renderIcon() const {
@@ -40,11 +44,6 @@ namespace IsoRealms::Basics {
     glEnd();
     return true;
   }
-
-  void FileTexture::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("filename", cDefFile);
-  }
-
 
   void FileTexture::set() const {
     glGetError(); // TODO: Suppresses SFML picking up an error from somewhere else.  Need to find where other error comes from.
@@ -61,18 +60,6 @@ namespace IsoRealms::Basics {
 
   void FileTexture::coord(float x, float y) const {
     glTexCoord2f(x, y);
-  }
-
-  void FileTexture::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void FileTexture::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool FileTexture::isDefaultConfiguration() const {
-    return true;
   }
 
   void FileTexture::reloadData(Project& project) {

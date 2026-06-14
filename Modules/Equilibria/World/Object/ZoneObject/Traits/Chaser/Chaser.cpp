@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 #include "Modules/Equilibria/World/Object/ZoneObject/ZoneObject.h"
-#include "Modules/Equilibria/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.h"
+#include "Modules/Equilibria/Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitChaser.h"
 
 namespace IsoRealms::Equilibria {
   Chaser::Chaser(ZoneObject& object, ZoneObjectTypeTraitChaser& type) :
@@ -32,7 +32,7 @@ namespace IsoRealms::Equilibria {
     });
   }
 
-  void Chaser::registerAssets(ITraitRegistry& registry) {
+  void Chaser::publish(ITraitRegistry& registry) {
     registry.registerProcessor(this);
   }
 

@@ -29,12 +29,11 @@ namespace IsoRealms::Basics {
   class ArgumentDefinition final {
     public:
     ArgumentDefinition(Function& parent, const std::string& name, const std::string& luaName);
-    ArgumentDefinition(Function& parent, JSONObject object);
     void save(JSONObject object) const;
     void setName(const std::string& name);
     std::string getName() const;
     const BindingType* getType() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata, Function& parent);
+    void define(IComponentDefiner& definer, Function& parent);
     void saveCall(JSONObject object, const std::string& attributeName) const;
     std::string getInitCode() const;
     std::string getCode(unsigned int functionID, unsigned int arg) const;

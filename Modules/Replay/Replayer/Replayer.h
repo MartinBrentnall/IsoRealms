@@ -26,8 +26,8 @@ namespace IsoRealms::Replay {
   class Replayer final {
     public:
     Replayer(Replay& replay, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
 
     /*********************\
      * Module interfaces *
@@ -59,9 +59,9 @@ namespace IsoRealms::Replay {
       public:
       DigitalInput(Replayer& parent, IComponentData& data);
       DigitalInput(Replayer& parent, IComponentData& data, JSONObject object);
-      void registerAssets(ComponentAssetRegistry& assets);
+      void define(IComponentDefiner& definer);
+      void publish(ResourcePublisher& publisher);
       void save(JSONObject object) const;
-      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
       void reset();
       void setRecordedState(bool state);
       std::string getName() const;
@@ -70,11 +70,7 @@ namespace IsoRealms::Replay {
        * Implements IBoolean *
       \***********************/
       bool getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-      
+
       private:
       
       // External interfaces.
@@ -94,9 +90,9 @@ namespace IsoRealms::Replay {
       public:
       AnalogueInput(Replayer& parent, IComponentData& data);
       AnalogueInput(Replayer& parent, IComponentData& data, JSONObject object);
-      void registerAssets(ComponentAssetRegistry& assets);
+      void define(IComponentDefiner& definer);
+      void publish(ResourcePublisher& publisher);
       void save(JSONObject object) const;
-      void getProperties(IPropertyMaker& owner, const Metadata& metadata);
       void reset();
       void setRecordedState(float state);
       std::string getName() const;
@@ -105,11 +101,6 @@ namespace IsoRealms::Replay {
        * Implements IFloat *
       \*********************/
       float getValue() const override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
-      
       private:
       
       // External interfaces.

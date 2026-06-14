@@ -28,24 +28,24 @@ namespace IsoRealms::Spindizzy {
             cNeedsRedrawing(false) {
     setNeedsRedrawing();
   }
-  
-  void Ball::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<ITexture>(this, "", "Spindizzy Ball Craft Textures");
+
+  void Ball::define(IComponentDefiner& definer) {
+    definer.propertyResource("fill",    cDefFill);
+    definer.propertyResource("shine",   cDefShine);
+    definer.propertyResource("outline", cDefOutline);
   }
-  
+
+  void Ball::publish(ResourcePublisher& publisher) {
+    publisher.publish<ITexture>(this, "", "Spindizzy Ball Craft Textures");
+  }
+
   void Ball::hintInUse(bool inUse) {
     cTexture.hintTextureInUse(inUse);
   }
 
   bool Ball::renderIcon() const {
     glEnable(GL_ALPHA_TEST);
-    return cTexture.renderAssetIcon();
-  }
-
-  void Ball::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("fill",    cDefFill);
-    owner.createPropertyTreeSelector("shine",   cDefShine);
-    owner.createPropertyTreeSelector("outline", cDefOutline);
+    return cTexture.renderResourceIcon();
   }
 
   void Ball::set() const {
@@ -62,18 +62,6 @@ namespace IsoRealms::Spindizzy {
 
   void Ball::coord(float x, float y) const {
     glTexCoord2f(x, y);
-  }
-
-  void Ball::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Ball::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Ball::isDefaultConfiguration() const {
-    return true;
   }
 
   void Ball::updateTexture() {

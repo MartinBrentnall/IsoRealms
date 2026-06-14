@@ -1,0 +1,56 @@
+/*
+ * Copyright 2025 Martin Brentnall
+ *
+ * This file is part of IsoRealms.
+ *
+ * IsoRealms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IsoRealms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <GL/glew.h>
+
+#include <iostream>
+#include <vector>
+
+#include "IsoRealms/Resources/Type/ITexture.h"
+
+namespace IsoRealms {
+  class ITextureUseListener;
+  class Project;
+
+  class LiteralTexture : public ITexture {
+    public:
+    LiteralTexture(Project& project, int width, int height, bool clampX = false, bool clampY = false, bool depth = false);
+    
+    void setRenderTarget() const;
+    void addUseListener(ITextureUseListener* listener);
+
+    /***********************\
+     * Implements ITexture *
+    \***********************/
+    ITexture* getTexture() override;
+    void set() const override;
+    void hintTextureInUse(bool) override;
+    void coord(float x, float y) const override;
+    ~LiteralTexture();
+
+    private:
+    Project& cProject;
+    int cWidth;
+    int cHeight;
+    GLuint cTexture     = 0;
+    GLuint cFrameBuffer = 0;
+    std::vector<ITextureUseListener*> cUseListeners;
+  };
+}

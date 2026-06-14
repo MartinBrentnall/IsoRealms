@@ -19,7 +19,7 @@
 #include "Dummy.h"
 
 namespace IsoRealms::Equilibria {
-  void Dummy::registerAssets(ITraitRegistry& registry) {
+  void Dummy::publish(ITraitRegistry& registry) {
     // Nothing to do.
   }
 

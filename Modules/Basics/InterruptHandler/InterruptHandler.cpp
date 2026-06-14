@@ -22,14 +22,14 @@ namespace IsoRealms::Basics {
   InterruptHandler::InterruptHandler(Basics& basics, IComponentData& data) :
             cDefAction(data.getDummyActionContext()) {
   }
-  
-  void InterruptHandler::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IInputHandler>(this, "", "Interrupt Handlers");
+
+  void InterruptHandler::define(IComponentDefiner& definer) {
+    definer.propertyResource( "onInput", cDefAction);
+    definer.propertyBoolean("consume", [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;}, true);
   }
 
-  void InterruptHandler::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( "onInput", cDefAction);
-    owner.createPropertyNativeBoolean("consume", [this]() {return cDefConsume;}, [this](bool value) {cDefConsume = value;}, true);
+  void InterruptHandler::publish(ResourcePublisher& publisher) {
+    publisher.publish<IInputHandler>(this, "", "Interrupt Handlers");
   }
 
   bool InterruptHandler::input(sf::Event& event) {
@@ -51,21 +51,5 @@ namespace IsoRealms::Basics {
 
   void InterruptHandler::resetInput() {
     // Nothing to do.
-  }
-
-  bool InterruptHandler::renderAssetIcon() const {
-    return false;
-  }
-
-  void InterruptHandler::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void InterruptHandler::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool InterruptHandler::isDefaultConfiguration() const {
-    return true;
   }
 }

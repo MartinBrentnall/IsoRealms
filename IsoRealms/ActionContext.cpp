@@ -39,8 +39,8 @@ namespace IsoRealms {
     return cComponentData.getProject();
   }
   
-  Project& ActionContext::getAssetManager() {
-    return cComponentData.getAssetManager();
+  Project& ActionContext::getResourceManager() {
+    return cComponentData.getResourceManager();
   }
 
   IComponentData& ActionContext::getComponentData() {

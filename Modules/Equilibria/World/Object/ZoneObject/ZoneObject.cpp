@@ -37,7 +37,7 @@ namespace IsoRealms::Equilibria {
 //     cZone.getWorld().getEquilibria()->getProject()->init([this, &node]() {
 //       cDefType = cZone.getWorld().getEquilibria()->getZoneObjectType(node.getAttribute(JSON_TYPE));
 //       cDefTraits = cDefType->createTraits(*this);
-//       registerAssets();
+//       publish();
 //
 //       for (OMNode& mNode : node) {
 //         std::string mTag = mNode.getName();
@@ -60,10 +60,14 @@ namespace IsoRealms::Equilibria {
 //     });
   }
 
-  void ZoneObject::registerAssets() {
+  void ZoneObject::define(IComponentDefiner& definer) {
+    // Nothing to do.
+  }
+
+  void ZoneObject::publish() {
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       TraitRegistry mLocalRegistry(*this, mPair.first);
-      mPair.second->registerAssets(mLocalRegistry);
+      mPair.second->publish(mLocalRegistry);
     }
   }
   
@@ -233,10 +237,6 @@ namespace IsoRealms::Equilibria {
 
   void ZoneObject::remove() {
     cZone.remove(this);
-  }
-
-  void ZoneObject::getProperties(IPropertyMaker& owner) {
-    // Nothing to do.
   }
 
   std::string ZoneObject::getTypeName() const {

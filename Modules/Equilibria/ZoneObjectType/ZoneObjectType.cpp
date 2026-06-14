@@ -25,14 +25,10 @@ namespace IsoRealms::Equilibria {
   ZoneObjectType::ZoneObjectType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),  
             cComponentData(data),
-            cAssets(equilibria) {
-  }
-  
-  void ZoneObjectType::registerAssets(ComponentAssetRegistry& assets) {
-    // TODO
+            cResources(equilibria) {
   }
 
-  void ZoneObjectType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
+  void ZoneObjectType::define(IComponentDefiner& definer) {
     // Nothing to do.
   }
 
@@ -48,10 +44,10 @@ namespace IsoRealms::Equilibria {
     cEquilibria.removeAll(this);
   }
   
-  void ZoneObjectType::registerAssets(const std::string& parentID) {
-    cAssets.add<IWorldEditorTool>(this, parentID, "Zone Object Types");
+  void ZoneObjectType::publish(const std::string& parentID) {
+    cResources.publish<IWorldEditorTool>(this, parentID, "Zone Object Types");
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {
-      mPair.second->registerAssets(cAssets, parentID + "/" + mPair.first);
+      mPair.second->publish(cResources, parentID + "/" + mPair.first);
     }
   }  
   
@@ -116,22 +112,6 @@ namespace IsoRealms::Equilibria {
 
   IWorldEditorToolInstance* ZoneObjectType::createToolInstance(WorldEditor& editor, IComponentData& owner) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
-  }
-
-  bool ZoneObjectType::renderAssetIcon() const {
-    return false;
-  }
-
-  void ZoneObjectType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ZoneObjectType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ZoneObjectType::isDefaultConfiguration() const {
-    return true;
   }
 
   ZoneObjectType::Pen::Pen(ZoneObjectType& parent, WorldEditor& editor) :

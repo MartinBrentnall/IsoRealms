@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   StringRegistry::StringRegistry(Project& project) :
-            AssetClientManager(&cLiteral, "Literal", "Literal"),
+            ResourceClientManager(&cLiteral, "Literal", "Literal"),
             cProject(project),
             cLiteral(project.getApplication().getMetadata("LiteralString")) {
 
@@ -36,27 +36,27 @@ namespace IsoRealms {
     }
   }
 
-  IString* StringRegistry::get(IAssetUser<IString>* client, IComponentData& owner, JSONObject object, IStateListener* listener, bool required) {
-    return AssetClientManager::get(client, owner, object, listener, required);
+  IString* StringRegistry::get(IResourceUser<IString>* client, IComponentData& owner, JSONObject object, IStateListener* listener, bool required) {
+    return ResourceClientManager::get(client, owner, object, listener, required);
   }
 
-  IString* StringRegistry::get(IAssetUser<IString>* client, IComponentData& owner, const std::string& id, IStateListener* listener) {
+  IString* StringRegistry::get(IResourceUser<IString>* client, IComponentData& owner, const std::string& id, IStateListener* listener) {
     for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
       if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
         JSONDocument mDocument;
         JSONObject mConversionProviderObject = mDocument.addObject("temp");
         mConversionProviderObject.addString(JSON_KEY, mConversionProvider->getProviderID());
-        JSONObject mAssetObject = mConversionProviderObject.addObject(JSON_ASSET);
-        mAssetObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
+        JSONObject mResourceObject = mConversionProviderObject.addObject(JSON_RESOURCE);
+        mResourceObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
 
-        return AssetClientManager::get(client, owner, mConversionProviderObject, listener, true);
+        return ResourceClientManager::get(client, owner, mConversionProviderObject, listener, true);
       }
     }
-    return AssetClientManager::get(client, owner, id, listener);
+    return ResourceClientManager::get(client, owner, id, listener);
   }
 
   void StringRegistry::forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
-    AssetClientManager::forEachEntry(getTreeItemInfoFunction);
+    ResourceClientManager::forEachEntry(getTreeItemInfoFunction);
 
     for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
       mConversionProvider->forEachEntry(cProject, getTreeItemInfoFunction);
@@ -71,7 +71,7 @@ namespace IsoRealms {
         return mConversionProvider->renderIcon(cProject, id);
       }
     }
-    return AssetClientManager::renderIcon(id);
+    return ResourceClientManager::renderIcon(id);
   }
 
   StringRegistry::Literal::Instance::Instance(Project& project, const std::string& value) :
@@ -87,12 +87,8 @@ namespace IsoRealms {
     return cValue;
   }
 
-  bool StringRegistry::Literal::Instance::renderAssetIcon() const {
-    return false;
-  }
-
-  void StringRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeString(JSON_VALUE, [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
+  void StringRegistry::Literal::Instance::getResourceProperties(IComponentDefiner& definer) {
+    definer.propertyString(JSON_VALUE, [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
   }
 
   bool StringRegistry::Literal::Instance::isDefaultConfiguration() const {
@@ -107,7 +103,7 @@ namespace IsoRealms {
     return false;
   }
 
-  void StringRegistry::Literal::Instance::saveAsset(JSONObject object) const {
+  void StringRegistry::Literal::Instance::saveResource(JSONObject object) const {
     object.addString(JSON_VALUE, cValue);
   }
 }

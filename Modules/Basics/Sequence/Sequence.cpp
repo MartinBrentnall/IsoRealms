@@ -23,7 +23,7 @@
 #include "Modules/Basics/Basics.h"
 
 #include "Editor/SequenceEditor.h"
-#include "IsoRealms/PropertyLoader.h"
+#include "IsoRealms/ComponentLoader.h"
 #include "SequenceInstance.h"
 
 namespace IsoRealms::Basics {
@@ -34,32 +34,15 @@ namespace IsoRealms::Basics {
             cExposedLength(*this),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-  
-  void Sequence::load(IComponentData& resourceData, JSONObject object) {
-    // Nothing to do.
-  }
 
-  void Sequence::save(IComponentData& resourceData, JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Sequence::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IBinding>(&cLuaBinding, "", "Sequences");
-    assets.add<IInteger>(&cExposedLength, "Length", "Sequences");
-    assets.add<IEditable>(this, "", "Sequences");
-    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
-      mEntry.second->registerAssets(assets, mEntry.first);
-    }
-  }
-
-  void Sequence::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyEditor(       "Content", this);
-    owner.createPropertyNativeBoolean("playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
-    owner.createPropertyNativeBoolean("loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
-    owner.createPropertyTreeSelector( "speed",   cDefSpeed);
-    owner.createPropertyArray("instances", cDefInstances, [](const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry) -> SequenceInstance& {return *mEntry.second;}, [this, &owner, &metadata](SequenceInstance& instance) {
-      owner.createPropertyStruct("Instance", getInstanceName(instance), [this, &instance, &metadata](IPropertyMaker& owner) {
-        instance.getProperties(owner, metadata);
+  void Sequence::define(IComponentDefiner& definer) {
+    definer.propertyEditor(  "Content", this);
+    definer.propertyBoolean( "playing", [this]() {return cDefPlaying;}, [this](bool value) {cDefPlaying = value;});
+    definer.propertyBoolean( "loop",    [this]() {return cDefLoop;},    [this](bool value) {cDefLoop    = value;});
+    definer.propertyResource("speed",   cDefSpeed);
+    definer.array("instances", cDefInstances, [](const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry) -> SequenceInstance& {return *mEntry.second;}, [this, &definer](SequenceInstance& instance) {
+      definer.scope("Instance", getInstanceName(instance), [this, &instance](IComponentDefiner& definer) {
+        instance.define(definer);
       }, [this, &instance]() {
         cDefInstances.erase(getInstanceName(instance));
       });
@@ -69,10 +52,10 @@ namespace IsoRealms::Basics {
     });
 
     // Tracks.
-    owner.createPropertyArray("tracks", cDefTracks, [](const std::unique_ptr<SequenceTrack>& mTrack) -> SequenceTrack& {return *mTrack;}, [this, &owner, &metadata](SequenceTrack& track) {
+    definer.array("tracks", cDefTracks, [](const std::unique_ptr<SequenceTrack>& mTrack) -> SequenceTrack& {return *mTrack;}, [this, &definer](SequenceTrack& track) {
       Options mHint;
       mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-      owner.createPropertyTreeSelector("track", track, mHint);
+      definer.propertyResource("track", track, mHint);
       track.stateChanged();
     }, [this]() -> SequenceTrack& {
       SequenceTrack* mTrack = cDefTracks.emplace_back(std::make_unique<SequenceTrack>(*this)).get();
@@ -83,12 +66,29 @@ namespace IsoRealms::Basics {
       return *mTrack;
     });
 
-    if (owner.loadsPersistedValues()) {
-      cComponentData.reregisterAssets();
+    if (definer.loadsPersistedValues()) {
+      cComponentData.republish();
     }
   }
 
-  Basics& Sequence::getAssetManager() {
+  void Sequence::publish(ResourcePublisher& publisher) {
+    publisher.publish<IBinding>(&cLuaBinding, "", "Sequences");
+    publisher.publish<IInteger>(&cExposedLength, "Length", "Sequences");
+    publisher.publish<IEditable>(this, "", "Sequences");
+    for (const std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
+      mEntry.second->publish(publisher, mEntry.first);
+    }
+  }
+  
+  void Sequence::load(IComponentData& resourceData, JSONObject object) {
+    // Nothing to do.
+  }
+
+  void Sequence::save(IComponentData& resourceData, JSONObject object) const {
+    // Nothing to do.
+  }
+  
+  Basics& Sequence::getResourceManager() {
     return cBasics;
   }
 
@@ -148,7 +148,7 @@ namespace IsoRealms::Basics {
     }
     cDefInstances.emplace(name, std::move(cDefInstances[mOldName]));
     cDefInstances.erase(mOldName);
-    refreshAssetRegistration();
+    refreshResourceRegistration();
   }
 
   bool Sequence::isInstanceNameAllowed(SequenceInstance& instance, const std::string& name) {
@@ -167,22 +167,6 @@ namespace IsoRealms::Basics {
     IEditableScreen* mReturnValue = mScreen.get();
     cEditors[mReturnValue] = std::move(mScreen);
     return mReturnValue;
-  }
-
-  bool Sequence::renderAssetIcon() const {
-    return false;
-  }
-
-  void Sequence::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Sequence::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Sequence::isDefaultConfiguration() const {
-    return true;
   }
 
   void Sequence::resetSequence() {
@@ -239,11 +223,11 @@ namespace IsoRealms::Basics {
       ISequenceTrackInstance* mTrackInstance = (*mTrack)->createTrackInstance(*mEntry.second.get());
       mEntry.second->addTrackInstance(mTrackInstance);
     }
-    refreshAssetRegistration();
+    refreshResourceRegistration();
   }
 
-  void Sequence::refreshAssetRegistration() {
-    cBasics.refreshAssetRegistration(*this);
+  void Sequence::refreshResourceRegistration() {
+    cBasics.refreshResourceRegistration(*this);
   }
 
   void Sequence::deleteTrack(unsigned int track) {
@@ -251,7 +235,7 @@ namespace IsoRealms::Basics {
     for (std::pair<const std::string, std::unique_ptr<SequenceInstance>>& mEntry : cDefInstances) {
       mEntry.second->deleteTrackInstance(track);
     }
-    refreshAssetRegistration();
+    refreshResourceRegistration();
   }
 
   void Sequence::trackStateChanged(SequenceTrack& track) {
@@ -260,7 +244,7 @@ namespace IsoRealms::Basics {
       ISequenceTrackInstance* mTrackInstance = track->createTrackInstance(*mEntry.second.get());
       mEntry.second->refreshTrackInstance(mTrackInstance, mTrackIndex);
     }
-    refreshAssetRegistration();
+    refreshResourceRegistration();
   }
 
   Sequence::Length::Length(Sequence& parent) :
@@ -269,22 +253,6 @@ namespace IsoRealms::Basics {
 
   int Sequence::Length::getValue() const {
     return cParent.getDuration();
-  }
-
-  bool Sequence::Length::renderAssetIcon() const {
-    return false;
-  }
-
-  void Sequence::Length::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Sequence::Length::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Sequence::Length::isDefaultConfiguration() const {
-    return true;
   }
 
   void Sequence::process(unsigned int milliseconds) {

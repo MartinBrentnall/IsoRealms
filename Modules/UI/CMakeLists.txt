@@ -24,34 +24,34 @@ else(LUA_FOUND)
 endif(LUA_FOUND)
 
 add_library(UI MODULE
-  Assets/Client/LayoutLocation.cpp
-  Assets/Client/LayoutOffset.cpp
-  Assets/Client/MenuItem.cpp
-  Assets/Registry/LayoutLocationRegistry.cpp
-  Assets/Registry/LayoutOffsetRegistry.cpp
-  Assets/Registry/MenuItemRegistry.cpp
-  Assets/Fixed/LayoutOffset/LayoutOffsetAbsolute.cpp
-  Assets/Fixed/LayoutOffset/LayoutOffsetLinked.cpp
-  Assets/Fixed/LayoutLocation/LayoutLocationAbsolute.cpp
-  Assets/Fixed/LayoutLocation/LayoutLocationRelative.cpp
-  Assets/Fixed/MenuItem/MenuItemAction.cpp
-  Assets/Fixed/MenuItem/MenuItemBoolean.cpp
-  Assets/Fixed/MenuItem/MenuItemDigitalInput.cpp
-  Assets/Fixed/MenuItem/MenuItemDisplayResolution.cpp
-  Assets/Fixed/MenuItem/MenuItemFileList.cpp
-  Assets/Fixed/MenuItem/MenuItemLauncherList.cpp
-  Assets/Fixed/MenuItem/MenuItemSlider.cpp
-  Assets/Fixed/Screen/ScreenGradient.cpp
-  Assets/Fixed/Screen/ScreenModel.cpp
-  Assets/Fixed/Screen/ScreenPanel.cpp
-  Assets/Fixed/Screen/ScreenText.cpp
-  Assets/Fixed/String/StringTime.cpp
   Layout/Editor/LayoutEditor.cpp
   Layout/Layout.cpp
   Layout/LayoutComponent.cpp
   Layout/LayoutComponentEdge.cpp
   Menu/Menu.cpp
   Prompt/Prompt.cpp
+  Resources/Client/LayoutLocation.cpp
+  Resources/Client/LayoutOffset.cpp
+  Resources/Client/MenuItem.cpp
+  Resources/Registry/LayoutLocationRegistry.cpp
+  Resources/Registry/LayoutOffsetRegistry.cpp
+  Resources/Registry/MenuItemRegistry.cpp
+  Resources/Fixed/LayoutOffset/LayoutOffsetAbsolute.cpp
+  Resources/Fixed/LayoutOffset/LayoutOffsetLinked.cpp
+  Resources/Fixed/LayoutLocation/LayoutLocationAbsolute.cpp
+  Resources/Fixed/LayoutLocation/LayoutLocationRelative.cpp
+  Resources/Fixed/MenuItem/MenuItemAction.cpp
+  Resources/Fixed/MenuItem/MenuItemBoolean.cpp
+  Resources/Fixed/MenuItem/MenuItemDigitalInput.cpp
+  Resources/Fixed/MenuItem/MenuItemDisplayResolution.cpp
+  Resources/Fixed/MenuItem/MenuItemFileList.cpp
+  Resources/Fixed/MenuItem/MenuItemLauncherList.cpp
+  Resources/Fixed/MenuItem/MenuItemSlider.cpp
+  Resources/Fixed/Screen/ScreenGradient.cpp
+  Resources/Fixed/Screen/ScreenModel.cpp
+  Resources/Fixed/Screen/ScreenPanel.cpp
+  Resources/Fixed/Screen/ScreenText.cpp
+  Resources/Fixed/String/StringTime.cpp
   ScreenFader/ScreenFader.cpp
   Throbber/Throbber.cpp
   VirtualKeyboard/VirtualKeyboard.cpp

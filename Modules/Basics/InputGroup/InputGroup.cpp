@@ -22,19 +22,19 @@ namespace IsoRealms::Basics {
   InputGroup::InputGroup(Basics& basics, IComponentData& data) :
             cComponentData(data) {
   }
-  
-  void InputGroup::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IInputHandler>(this, "", "Input Groups");
-  }
 
-  void InputGroup::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray("inputs", cDefInputHandlers, [](const std::unique_ptr<InputHandler>& i)->InputHandler& {return *i;}, [this, &owner, &metadata](InputHandler& inputHandler) {
-      owner.createPropertyTreeSelector("input", inputHandler, Options::EMPTY, [this, &inputHandler]() {
+  void InputGroup::define(IComponentDefiner& definer) {
+    definer.array("inputs", cDefInputHandlers, [](const std::unique_ptr<InputHandler>& i)->InputHandler& {return *i;}, [this, &definer](InputHandler& inputHandler) {
+      definer.propertyResource("input", inputHandler, Options::EMPTY, [this, &inputHandler]() {
         Utils::removeElementUnique(cDefInputHandlers, &inputHandler);
       });
     }, [this]()->InputHandler& {
       return *cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(cComponentData));
     });
+  }
+
+  void InputGroup::publish(ResourcePublisher& publisher) {
+    publisher.publish<IInputHandler>(this, "", "Input Groups");
   }
 
   bool InputGroup::input(sf::Event& event) {
@@ -50,21 +50,5 @@ namespace IsoRealms::Basics {
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
       (*mInputHandler)->resetInput();
     }
-  }
-
-  bool InputGroup::renderAssetIcon() const {
-    return false;
-  }
-
-  void InputGroup::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void InputGroup::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool InputGroup::isDefaultConfiguration() const {
-    return true;
   }
 }

@@ -20,7 +20,7 @@
 
 namespace IsoRealms {
   BindingTypeRegistry::BindingTypeRegistry() :
-            AssetClientManager(&cDummy, "Any") {
+            ResourceClientManager(&cDummy, "Any") {
     add(&cActions,       "Action",        "Actions");
     add(&cBooleans,      "Boolean",       "Booleans");
     add(&cColours,       "Colour",        "Colours");
@@ -46,43 +46,11 @@ namespace IsoRealms {
     return cRootFolder;
   }
 
-  bool BindingTypeRegistry::Literal::renderAssetIcon() const {
-    return false;
-  }
-
-  void BindingTypeRegistry::Literal::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void BindingTypeRegistry::Literal::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool BindingTypeRegistry::Literal::isDefaultConfiguration() const {
-    return true;
-  }
-
   std::string BindingTypeRegistry::Dummy::getBindingTypeID() const {
     return "";
   }
 
   std::string BindingTypeRegistry::Dummy::getBindingTypeRootFolder() const {
     return "";
-  }
-
-  bool BindingTypeRegistry::Dummy::renderAssetIcon() const {
-    return false;
-  }
-
-  void BindingTypeRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void BindingTypeRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool BindingTypeRegistry::Dummy::isDefaultConfiguration() const {
-    return true;
   }
 }

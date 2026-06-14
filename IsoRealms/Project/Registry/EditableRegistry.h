@@ -20,18 +20,18 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IEditable.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IEditable.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
   class Project;
 
-  class EditableRegistry : public AssetClientManager<EditableRegistry, IComponentData, IEditable> {
+  class EditableRegistry : public ResourceClientManager<EditableRegistry, IComponentData, IEditable> {
     public:
     EditableRegistry();
 
@@ -43,10 +43,7 @@ namespace IsoRealms {
       * Implements IEditable *
       \************************/
       IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      bool renderResourceIcon() const override;
 
       private:
       class Instance : public IEditableScreen {
@@ -71,14 +68,10 @@ namespace IsoRealms {
         const IFloat* getPitch() const override;
         bool input(sf::Event& event) override;
         void resetInput() override;
-        bool renderAssetIcon() const override;
-        void saveAsset(JSONObject object) const override;
-        void getAssetProperties(IPropertyMaker& owner) override;
-        bool isDefaultConfiguration() const override;
       };
       static Instance DUMMY; /// Dummy editable screen.
     };
 
-    AssetLiteralDummy<IComponentData, IEditable, Dummy> cNone;
+    ResourceLiteralDummy<IComponentData, IEditable, Dummy> cNone;
   };
 }

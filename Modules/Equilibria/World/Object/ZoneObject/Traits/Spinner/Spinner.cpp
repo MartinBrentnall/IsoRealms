@@ -22,7 +22,7 @@
 #include "Modules/Equilibria/World/Object/Zone/Zone.h"
 #include "Modules/Equilibria/World/Object/ZoneObject/ZoneObject.h"
 #include "Modules/Equilibria/World/World.h"
-#include "Modules/Equilibria/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitSpinner.h"
+#include "Modules/Equilibria/Resources/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitSpinner.h"
 
 namespace IsoRealms::Equilibria {
   Spinner::Spinner(ZoneObject& object, ZoneObjectTypeTraitSpinner& type) :
@@ -35,17 +35,17 @@ namespace IsoRealms::Equilibria {
     });
   }
   
+  void Spinner::publish(ITraitRegistry& registry) {
+    registry.registerRenderer(this);
+    registry.registerProcessor(this);
+  }
+  
   void Spinner::setEnabled(bool enabled) {
     cRuntimeEnabled = enabled;
   }
   
   bool Spinner::isEnabled() const {
     return cRuntimeEnabled;
-  }
-  
-  void Spinner::registerAssets(ITraitRegistry& registry) {
-    registry.registerRenderer(this);
-    registry.registerProcessor(this);
   }
   
   void Spinner::save(JSONObject object) const {

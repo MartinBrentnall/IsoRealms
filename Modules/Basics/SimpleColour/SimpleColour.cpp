@@ -26,58 +26,57 @@ namespace IsoRealms::Basics {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
   
-  void SimpleColour::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IColour>(this, "", "Fixed Colours");
-    assets.add<IBinding>(&cLuaBinding, "", "Variables/Colours"); // TODO: Localize this.
-  }
-
-  bool SimpleColour::renderIcon() const {
-    return renderAssetIcon();
-  }
-
-  void SimpleColour::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyColourChannel("red", [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
+  void SimpleColour::define(IComponentDefiner& definer) {
+    definer.propertyColourChannel("red", [this]() {return cDefRed;}, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefGreen, &cDefBlue, &cDefAlpha, [this](const float value) {
       cDefRed = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourChannel("green", [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
+    definer.propertyColourChannel("green", [this]() {return cDefGreen;}, &cDefRed, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, &cDefRed, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefBlue, &cDefAlpha, [this](const float value) {
       cDefGreen = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourChannel("blue", [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
+    definer.propertyColourChannel("blue", [this]() {return cDefBlue;}, &cDefRed, &cDefGreen, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefAlpha, &cDefRed, &cDefGreen, &PropertyColourChannel::MAX_CHANNEL_VALUE, &cDefAlpha, [this](const float value) {
       cDefBlue = value;
       cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
       cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourChannel("alpha", [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
+    definer.propertyColourChannel("alpha", [this]() {return cDefAlpha;}, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MIN_CHANNEL_VALUE, &cDefRed, &cDefGreen, &cDefBlue, &PropertyColourChannel::MAX_CHANNEL_VALUE, [this](const float value) {
       cDefAlpha = value;
       resetColour();
     });
-    owner.createPropertyColourHue("Hue", [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
+    definer.propertyColourHue("Hue", [this]() {return cEditingLastKnownHue;}, &cEditingLastKnownSaturation, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
       cEditingLastKnownHue = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourSaturation("Saturation", [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
+    definer.propertyColourSaturation("Saturation", [this]() {return cEditingLastKnownSaturation;}, &cEditingLastKnownHue, &cEditingLastKnownLightness, &cDefAlpha, [this](const float value) {
       cEditingLastKnownSaturation = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
-    owner.createPropertyColourLightness("Lightness", [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cDefAlpha, [this](const float value) {
+    definer.propertyColourLightness("Lightness", [this]() {return cEditingLastKnownLightness;}, &cEditingLastKnownHue, &cEditingLastKnownSaturation, &cDefAlpha, [this](const float value) {
       cEditingLastKnownLightness = value;
       Utils::calculateColour(cEditingLastKnownHue, cEditingLastKnownSaturation, cEditingLastKnownLightness, cDefRed, cDefGreen, cDefBlue);
       resetColour();
     });
   }
 
+  void SimpleColour::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IColour>(this, "", "Fixed Colours");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Variables/Colours"); // TODO: Localize this.
+  }
+
+  bool SimpleColour::renderIcon() const {
+    return renderResourceIcon();
+  }
 
   void SimpleColour::reset() {
     resetColour();
@@ -101,18 +100,6 @@ namespace IsoRealms::Basics {
 
   float SimpleColour::getAlpha() const {
     return cRuntimeAlpha;
-  }
-
-  void SimpleColour::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SimpleColour::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SimpleColour::isDefaultConfiguration() const {
-    return true;
   }
 
   void SimpleColour::setRed(float value) {

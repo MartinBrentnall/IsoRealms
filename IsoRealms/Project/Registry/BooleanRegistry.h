@@ -20,25 +20,25 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IBoolean.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IBoolean.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
   class Project;
 
-  class BooleanRegistry : public AssetClientManager<BooleanRegistry, IComponentData, IBoolean> {
+  class BooleanRegistry : public ResourceClientManager<BooleanRegistry, IComponentData, IBoolean> {
     public:
     BooleanRegistry();
 
-    IBoolean* literal(IAssetUser<IBoolean>* client, IComponentData& owner, bool value) {
-      IAssetProvider<IComponentData, IBoolean>* mProvider = cRegistry.getProvider(value ? "True" : "False", true);
-      IBoolean* mBoolean = mProvider->getAsset(owner);
+    IBoolean* literal(IResourceUser<IBoolean>* client, IComponentData& owner, bool value) {
+      IResourceProvider<IComponentData, IBoolean>* mProvider = cRegistry.getProvider(value ? "True" : "False", true);
+      IBoolean* mBoolean = mProvider->getResource(owner);
       registerClient(client, mProvider, mBoolean);
       return mBoolean;
     }
@@ -57,27 +57,15 @@ namespace IsoRealms {
         return cValue;
       }
 
-      /***********************************\
-       * Implements IAsset from IBoolean *
-      \***********************************/
-      bool renderAssetIcon() const override {
+      /**************************************\
+       * Implements IResource from IBoolean *
+      \**************************************/
+      bool renderResourceIcon() const override {
         if (cValue) {
           Utils::renderIconTick();
         } else {
           Utils::renderIconNone();
         }
-        return true;
-      }
-
-      void saveAsset(JSONObject object) const override {
-        // Nothing to do.
-      }
-
-      void getAssetProperties(IPropertyMaker& owner) override {
-        // Nothing to do.
-      }
-
-      bool isDefaultConfiguration() const override {
         return true;
       }
 

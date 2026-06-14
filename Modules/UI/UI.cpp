@@ -26,11 +26,11 @@ namespace IsoRealms::UI {
                     cLayoutLocations(registry),
                     cLayoutOffsets(registry),
                     cMenuItems(registry),
-                    cProviderScreenGradient(registry.getAssetMetadata("ScreenGradient")),
-                    cProviderScreenModel(registry.getAssetMetadata("ScreenModel")),
-                    cProviderScreenPanel(registry.getAssetMetadata("ScreenPanel")),
-                    cProviderScreenText(registry.getAssetMetadata("ScreenText")),
-                    cProviderStringTime(registry.getAssetMetadata("StringTime")),
+                    cProviderScreenGradient(registry.getResourceMetadata("ScreenGradient")),
+                    cProviderScreenModel(registry.getResourceMetadata("ScreenModel")),
+                    cProviderScreenPanel(registry.getResourceMetadata("ScreenPanel")),
+                    cProviderScreenText(registry.getResourceMetadata("ScreenText")),
+                    cProviderStringTime(registry.getResourceMetadata("StringTime")),
                     cComponentTypeLayout(*this),
                     cComponentTypeMenu(*this),
                     cComponentTypePrompt(*this),
@@ -46,10 +46,10 @@ namespace IsoRealms::UI {
   }
 
   const Metadata& UI::getMetadata(const std::string& key) const {
-    return cModule.getAssetMetadata(key);
+    return cModule.getResourceMetadata(key);
   }
 
-  UI& UI::getAssetManager() {
+  UI& UI::getResourceManager() {
     return *this;
   }
 
@@ -64,12 +64,12 @@ namespace IsoRealms::UI {
   void UI::setOwner(ProjectFile* owner) {
   } // TODO: Probably shouldn't be here.
 
-  void UI::registerAssets(ComponentAssetRegistry& assets) {
-    assets.addProvider(&cProviderScreenGradient, SCREEN_GRADIENT, "A Rectangle Gradient");
-    assets.addProvider(&cProviderScreenModel,    SCREEN_MODEL,    "A 3D Model");
-    assets.addProvider(&cProviderScreenPanel,    SCREEN_PANEL,    "A Rounded Rectangle");
-    assets.addProvider(&cProviderScreenText,     SCREEN_TEXT,     "A Text Label or Value");
-    assets.addProvider(&cProviderStringTime,     STRING_TIME,     "A Time Value");
+  void UI::publish(ResourcePublisher& publisher) {
+    publisher.publishProvider(&cProviderScreenGradient, SCREEN_GRADIENT, "A Rectangle Gradient");
+    publisher.publishProvider(&cProviderScreenModel,    SCREEN_MODEL,    "A 3D Model");
+    publisher.publishProvider(&cProviderScreenPanel,    SCREEN_PANEL,    "A Rounded Rectangle");
+    publisher.publishProvider(&cProviderScreenText,     SCREEN_TEXT,     "A Text Label or Value");
+    publisher.publishProvider(&cProviderStringTime,     STRING_TIME,     "A Time Value");
   }
   
   void UI::updateInputs(unsigned int milliseconds) {

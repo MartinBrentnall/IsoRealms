@@ -29,22 +29,16 @@ namespace IsoRealms::Equilibria {
             cDefZoneViewType(*this),
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
-    
-  void WorldView::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IScreen>(this, "", "Equilibria World Views");
-    assets.add<IBinding>(&cLuaBinding, "", "Equilibria/World Views");
-    cDefCamera->registerAssets(assets, "Camera");
-  }
 
-  void WorldView::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
+  void WorldView::define(IComponentDefiner& definer) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    owner.createPropertyTreeSelector("world",  cDefWorld,        mHint);
-    owner.createPropertyTreeSelector("camera", cDefCamera,       mHint);
-    owner.createPropertyTreeSelector("type",   cDefZoneViewType, mHint);
-    owner.createPropertyNativeFloat( "zoom",   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
+    definer.propertyResource("world",  cDefWorld,        mHint);
+    definer.propertyResource("camera", cDefCamera,       mHint);
+    definer.propertyResource("type",   cDefZoneViewType, mHint);
+    definer.propertyFloat(   "zoom",   [this]() {return cDefZoom;}, [this](float value) {cDefZoom = value;}, DEFAULT_ZOOM, [](float value) {return value > 0.0f;}); // TODO: Should this be part of the camera???  e.g. CameraZoom
 
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       cComponentData.getProject().init([this]() {
         cDefWorld->registerView(*this);
         std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
@@ -55,7 +49,13 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  Equilibria& WorldView::getAssetManager() {
+  void WorldView::publish(ResourcePublisher& publisher) {
+    publisher.publish<IScreen>(this, "", "Equilibria World Views");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Equilibria/World Views");
+    cDefCamera->publish(publisher, "Camera");
+  }
+  
+  Equilibria& WorldView::getResourceManager() {
     return cEquilibria;
   }
 
@@ -82,11 +82,6 @@ namespace IsoRealms::Equilibria {
     }
     cDefCamera->reset();
   }
-  
-  void WorldView::registerAssets(const std::string& parentID) {
-    cDefZoneViewType->registerAssets(cEquilibria, parentID + "/" + TYPE_ZONE_VIEW);
-  }
-
   void WorldView::addZoneView(Zone* zone) {
     std::unique_ptr<IZoneView> mZoneView = cDefZoneViewType->createZoneView(zone);
     cRuntimeZoneViews.emplace_back(std::make_unique<ZoneView>(zone, std::move(mZoneView)));
@@ -155,24 +150,12 @@ namespace IsoRealms::Equilibria {
     return cDefCamera->getPitch();
   }
 
-  bool WorldView::renderAssetIcon() const {
-    return false;
-  }
-
-  void WorldView::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void WorldView::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool WorldView::isDefaultConfiguration() const {
-    return true;
-  }
-
   WorldView::ZoneView::ZoneView(Zone* zone, std::unique_ptr<IZoneView> view) :
             cZone(zone),
             cView(std::move(view)) {
+  }
+
+  void WorldView::publish(const std::string& parentID) {
+    cDefZoneViewType->publish(cEquilibria, parentID + "/" + TYPE_ZONE_VIEW);
   }
 }

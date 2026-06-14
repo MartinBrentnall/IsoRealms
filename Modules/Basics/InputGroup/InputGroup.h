@@ -37,19 +37,15 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     InputGroup(Basics& basics, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
 
     /****************************\
      * Implements IInputHandler *
     \****************************/
     bool input(sf::Event& event) override;
     void resetInput() override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
-
+    
     private:
     
     // External interfaces.

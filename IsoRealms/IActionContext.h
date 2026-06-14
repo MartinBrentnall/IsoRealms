@@ -31,7 +31,7 @@ namespace IsoRealms {
     virtual bool isReadOnly() const = 0;
     virtual void setOwner(ProjectFile* owner) = 0;
     virtual Project& getProject() = 0;
-    virtual Project& getAssetManager() = 0;
+    virtual Project& getResourceManager() = 0;
     virtual IComponentData& getComponentData() = 0;
     virtual IEventBindings* getBindingRegistry() = 0;
   };

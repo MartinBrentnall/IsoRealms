@@ -32,9 +32,15 @@ namespace IsoRealms::Spindizzy {
             cEditingIconAngle(0.0f) {
     setNeedsRedrawing();
   }
-            
-  void Top::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IModel>(this, "", "Spindizzy Top Models");
+
+  void Top::define(IComponentDefiner& definer) {
+    definer.propertyResource("top",     cDefColourTop);
+    definer.propertyResource("sides",   cDefColourSide);
+    definer.propertyResource("outline", cDefColourOutline);
+  }
+
+  void Top::publish(ResourcePublisher& publisher) {
+    publisher.publish<IModel>(this, "", "Spindizzy Top Models");
   }
     
   void Top::hintInUse(bool inUse) {
@@ -49,13 +55,6 @@ namespace IsoRealms::Spindizzy {
     glScalef(2.5f, 2.5f, 2.5f);
     return renderPreview();
   }
-
-  void Top::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("top",     cDefColourTop);
-    owner.createPropertyTreeSelector("sides",   cDefColourSide);
-    owner.createPropertyTreeSelector("outline", cDefColourOutline);
-  }
-
   void Top::updateEditing(unsigned int milliseconds) {
     cEditingIconAngle -= 0.25f * milliseconds;
   }
@@ -69,20 +68,8 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  bool Top::renderAssetIcon() const {
+  bool Top::renderResourceIcon() const {
     return renderIcon();
-  }
-
-  void Top::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Top::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Top::isDefaultConfiguration() const {
-    return true;
   }
 
   void Top::update(unsigned int milliseconds) {

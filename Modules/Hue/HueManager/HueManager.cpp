@@ -22,17 +22,13 @@ namespace IsoRealms::Hue {
   HueManager::HueManager(Hue& hue, IComponentData& data) :
             cComponentData(data) {
   }
-  
-  void HueManager::registerAssets(ComponentAssetRegistry& assets) {
-    // Nothing to do.
-  }
-  
-  void HueManager::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeString("bridge", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
-    owner.createPropertyNativeString("user",   [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
-    owner.createPropertyNativeString("psk",    [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
-    owner.createPropertyArray("bulbs", cDefBulbs, [](const std::unique_ptr<Bulb>& bulb) -> Bulb& {return *bulb;}, [this, &owner, &metadata](Bulb& bulb) {
-      bulb.getProperties(owner, metadata, [this, &bulb]() {
+
+  void HueManager::define(IComponentDefiner& definer) {
+    definer.propertyString("bridge", [this]() {return cDefBridgeAddress;}, [this](const std::string& value) {cDefBridgeAddress = value;});
+    definer.propertyString("user",   [this]() {return cDefBridgeUser;},    [this](const std::string& value) {cDefBridgeUser    = value;});
+    definer.propertyString("psk",    [this]() {return cDefBridgePSK;},     [this](const std::string& value) {cDefBridgePSK     = value;});
+    definer.array("bulbs", cDefBulbs, [](const std::unique_ptr<Bulb>& bulb) -> Bulb& {return *bulb;}, [this, &definer](Bulb& bulb) {
+      bulb.define(definer, [this, &bulb]() {
         Utils::removeElementUnique(cDefBulbs, &bulb);
       });
     }, [this]() -> Bulb& {
@@ -40,7 +36,7 @@ namespace IsoRealms::Hue {
     });
 
     // If we are loading persisted values, we need to initialize the REST client.
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       RESTInit();
       cREST.init(cDefBridgeAddress.c_str(), SSL_PORT, cDefBridgeUser.c_str(), DEBUG_LEVEL);
   
@@ -118,13 +114,13 @@ namespace IsoRealms::Hue {
   void HueManager::reset() {
     // FIXME:TripPlayer: Implement this
   }
-  
+
   HueManager::Bulb::Bulb(HueManager& parent, IComponentData& data, int id) :
             cParent(parent),
             cDefID(id),
             cDefColour(data, 1.0f, 1.0f, 1.0f) {
   }
-  
+
   HueManager::Bulb::Bulb(HueManager& parent, IComponentData& data, int id, JSONObject object) :
             Bulb(parent, data, id) {
     cDefColour.init(object, JSON_COLOUR);
@@ -134,8 +130,8 @@ namespace IsoRealms::Hue {
     cDefColour.save(object, JSON_COLOUR);
   }
 
-  void HueManager::Bulb::getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction) {
-    owner.createPropertyTreeSelector(JSON_COLOUR, cDefColour, Options::EMPTY, removeFunction);
+  void HueManager::Bulb::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
+    definer.propertyResource(JSON_COLOUR, cDefColour, Options::EMPTY, removeFunction);
   }
 
   Colour& HueManager::Bulb::getColour() {

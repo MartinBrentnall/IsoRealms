@@ -27,27 +27,27 @@ namespace IsoRealms::Spindizzy {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
   }
   
-  void Jewel::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyArray("cycleColours", cDefColoursCycle, [](const std::unique_ptr<CycleColour>& cycleColour) -> CycleColour& {return *cycleColour;}, [this, &owner, &metadata](CycleColour& cycleColour) {
-      cycleColour.getProperties(owner, metadata, [this, &cycleColour]() {
+  void Jewel::define(IComponentDefiner& definer) {
+    definer.array("cycleColours", cDefColoursCycle, [](const std::unique_ptr<CycleColour>& cycleColour) -> CycleColour& {return *cycleColour;}, [this, &definer](CycleColour& cycleColour) {
+      cycleColour.define(definer, [this, &cycleColour]() {
         if (cDefColoursCycle.size() > 1) {
           Utils::removeElementUnique(cDefColoursCycle, &cycleColour);
           randomizeInstances();
         }
       });
-    }, [this, &owner]() -> CycleColour& {
-      IComponentData& mData = owner.getComponentData();
+    }, [this, &definer]() -> CycleColour& {
+      IComponentData& mData = definer.getComponentData();
       CycleColour& mCycleColour = *cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, mData));
       randomizeInstances();
       return mCycleColour;
     });
-    owner.createPropertyTreeSelector("frame", cDefColourFrame);
-    owner.createPropertyNativeFloat("cycleSpeed", [this]() {return cDefCycleSpeed;}, [this](float value) {cDefCycleSpeed = value;}, DEFAULT_CYCLE_SPEED);
+    definer.propertyResource("frame", cDefColourFrame);
+    definer.propertyFloat("cycleSpeed", [this]() {return cDefCycleSpeed;}, [this](float value) {cDefCycleSpeed = value;}, DEFAULT_CYCLE_SPEED);
 
     // If we are loading persisted values, we need to create a default cycle colour if none exists.
-    if (owner.loadsPersistedValues()) {
+    if (definer.loadsPersistedValues()) {
       if (cDefColoursCycle.size() == 0) {
-        cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, owner.getComponentData()));
+        cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, definer.getComponentData()));
       }
     }
   }
@@ -80,26 +80,14 @@ namespace IsoRealms::Spindizzy {
     return true;
   }
 
-  bool Jewel::renderAssetIcon() const {
+  bool Jewel::renderResourceIcon() const {
     return renderIcon();
   }
 
-  void Jewel::saveAsset(JSONObject object) const {
-    // Nothing to do.
+  void Jewel::publish(ResourcePublisher& publisher) {
+    publisher.publish<IModel>(this, "", "Spindizzy Jewel Models");
   }
 
-  void Jewel::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Jewel::isDefaultConfiguration() const {
-    return true;
-  }
-  
-  void Jewel::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IModel>(this, "", "Spindizzy Jewel Models");
-  }
-  
   Jewel::CycleColour::CycleColour(Jewel& parent, IComponentData& data) :
             cParent(parent),
             cDefColour(data, 1.0f, 0.0f, 1.0f) {
@@ -122,8 +110,8 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void Jewel::CycleColour::getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction) {
-    owner.createPropertyTreeSelector(JSON_COLOUR, cDefColour, Options::EMPTY, removeFunction);
+  void Jewel::CycleColour::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
+    definer.propertyResource(JSON_COLOUR, cDefColour, Options::EMPTY, removeFunction);
   }
 
   unsigned int Jewel::Instance::cReferenceCount = 0;

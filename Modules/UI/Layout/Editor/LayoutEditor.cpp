@@ -166,22 +166,6 @@ LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
     cToolbar.render(aspectRatio);
     cPropertiesUI.render(aspectRatio);
   }
-  
-  bool LayoutEditor::renderAssetIcon() const {
-    return false; // TODO: What's this used for?
-  }
-
-  void LayoutEditor::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void LayoutEditor::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool LayoutEditor::isDefaultConfiguration() const {
-    return true;
-  }
 
   void LayoutEditor::updateScreen(unsigned int milliseconds) {
     if (cCursorSpeedX != 0.0f || cCursorSpeedY != 0) {
@@ -524,7 +508,7 @@ LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
       glVertex2f(x, y);
     }
   }
-  
+
   void LayoutEditor::renderGrid(float fromX, float toX) const {
     bool mForward = toX > fromX;
     for (float x = fromX; mForward ? x < toX : x > toX; x += (mForward ? cGridX : -cGridX)) {
@@ -538,9 +522,8 @@ LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
   void LayoutEditor::openProperties() {
     if (cSelectedComponent != nullptr) {
       cDialogManager.getProject().updateLater([this]() {
-        cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getComponentData(), [this](IPropertyMaker& owner) {
-          const Metadata& mMetadata = cLayout.getComponentData().getMetadata();
-          cSelectedComponent->getProperties(owner, mMetadata);
+        cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getComponentData(), [this](IComponentDefiner& definer) {
+          cSelectedComponent->define(definer);
           cEditingProperties = true;
           cCursorSpeedX = 0.0f;
           cCursorSpeedY = 0.0f;

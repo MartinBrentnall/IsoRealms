@@ -39,7 +39,7 @@ namespace IsoRealms::Basics {
    * function may override dynamic bindings with their own values.  This class
    * also facilitates scripting (in-line functions) via the Script type.
    */
-  class Function final : public IAssetProvider<IActionContext, IAction> {
+  class Function final : public IResourceProvider<IActionContext, IAction> {
     public:
     
     /***********************\
@@ -47,14 +47,13 @@ namespace IsoRealms::Basics {
     \***********************/
     Function(Basics& basics, IComponentData& data);
     Function(Basics& basics, IComponentData& data, JSONObject object);
-    void registerAssets(ComponentAssetRegistry& assets);
-    bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
-
     // Constructors for use by scripts (in-line functions).
     Function(Basics& basics, IActionContext& owner);
     Function(Basics& basics, IActionContext& owner, JSONObject object, bool init);
-    void getScriptProperties(IPropertyMaker& owner);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
+    bool renderIcon() const;
+    void getScriptProperties(IComponentDefiner& definer);
     IsoRealms::Project& getProject() const;
     IComponentData& getComponentData() const;
     void setBindingName(Binding& binding, const std::string& name);
@@ -66,14 +65,14 @@ namespace IsoRealms::Basics {
     std::string getNextAvailableName(const std::string& name);
     unsigned int getID() const;
 
-    /******************************************************\
-     * Implements IAssetProvider<IActionContext, IAction> *
-    \******************************************************/
-    IAction* getAsset(IActionContext& owner, JSONObject object) override;
-    IAction* getAsset(IActionContext& owner) override;
-    void releaseAsset(const IAction* asset) override;
+    /*********************************************************\
+     * Implements IResourceProvider<IActionContext, IAction> *
+    \*********************************************************/
+    IAction* getResource(IActionContext& owner, JSONObject object) override;
+    IAction* getResource(IActionContext& owner) override;
+    void releaseResource(const IAction* resource) override;
     bool hasConfiguration() const override;
-    bool renderAssetProviderIcon() const override;
+    bool renderResourceProviderIcon() const override;
     bool isHiddenProvider() const override;
     const Metadata& getMetadata() const override;
 
@@ -95,9 +94,9 @@ namespace IsoRealms::Basics {
        * Implements IAction *
       \**********************/
       void execute() override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
+      bool renderResourceIcon() const override;
+      void saveResource(JSONObject object) const override;
+      void getResourceProperties(IComponentDefiner& definer) override;
       bool isDefaultConfiguration() const override;
 
       private:
@@ -140,7 +139,7 @@ namespace IsoRealms::Basics {
     }
 
     unsigned int getDynamicBindingIndex(const std::string& name);
-    void addBindingPropertyArray(IPropertyMaker& owner, bool init);
+    void addBindingPropertyArray(IComponentDefiner& definer, bool init);
     void declare();
     void revoke();
   };

@@ -23,8 +23,8 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/UI/Assets/Client/LayoutLocation.h"
-#include "Modules/UI/Assets/Client/LayoutOffset.h"
+#include "Modules/UI/Resources/Client/LayoutLocation.h"
+#include "Modules/UI/Resources/Client/LayoutOffset.h"
 
 namespace IsoRealms::UI {
   class Layout;
@@ -36,10 +36,10 @@ namespace IsoRealms::UI {
     LayoutComponentEdge(LayoutComponent& parent, float aspectRatio, float value);
     LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag);
 
-    /***************************\
-     * Asset client interfaces *
-    \***************************/
-    UI& getAssetManager();
+    /******************************\
+     * Resource client interfaces *
+    \******************************/
+    UI& getResourceManager();
     Project& getProject() const;
     bool isReadOnly() const;
     void setOwner(ProjectFile* owner);
@@ -51,7 +51,7 @@ namespace IsoRealms::UI {
     bool isPositiveEdge() const;
     float getLocation(float aspectRatio) const;
     void save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
     void renderRelation(float aspectRatio) const;
     
     private:

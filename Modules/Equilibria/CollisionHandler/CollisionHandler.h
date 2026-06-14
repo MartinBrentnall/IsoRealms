@@ -20,7 +20,7 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Client/PhysicalObjectType.h"
+#include "Modules/Equilibria/Resources/Client/PhysicalObjectType.h"
 
 namespace IsoRealms::Equilibria {
   class CollisionHandlerInstance;
@@ -40,8 +40,7 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     CollisionHandler(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
+    void define(IComponentDefiner& definer);
     void removed();
 
     // Collision handler interface.

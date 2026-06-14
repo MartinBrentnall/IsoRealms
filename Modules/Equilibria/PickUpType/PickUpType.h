@@ -23,9 +23,9 @@
 
 #include "IsoRealms.h"
 
-#include "Modules/Equilibria/Assets/Type/IBoundaryType.h"
-#include "Modules/Equilibria/Assets/Type/IWorldEditorTool.h"
-#include "Modules/Equilibria/EquilibriaAssetRegistry.h"
+#include "Modules/Equilibria/Resources/Type/IBoundaryType.h"
+#include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
+#include "Modules/Equilibria/EquilibriaResourceRegistry.h"
 
 namespace IsoRealms::Equilibria {
   class IEquilibriaRegistry;
@@ -44,22 +44,20 @@ namespace IsoRealms::Equilibria {
      * Component Interface *
     \***********************/
     PickUpType(Equilibria& equilibria, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(const std::string& parentID);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
     void removed();
 
     bool hasReadOnlyReferences() const;
     void overrideReadOnlyReferences();
 
-    // Interface to be used by module.
-    void registerAssets(const std::string& parentID);
-    
     std::unique_ptr<ModelInstance> createModel();
     
     /****************************\
      * Implements IBoundaryType *
     \****************************/
+    bool renderResourceIcon() const override;
     std::string getBoundaryTypeID() const override;
     IBinding* getBounderyTypeBinding(const std::string& id) const override;
     std::string getBoundaryTypeBindingID(const IBinding* binding) const override;
@@ -69,10 +67,6 @@ namespace IsoRealms::Equilibria {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor& editor, IComponentData& owner) override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
 
     private:
     
@@ -103,8 +97,8 @@ namespace IsoRealms::Equilibria {
     // External interfaces.
     Equilibria& cEquilibria; /// Equilibria module reference.
     
-    // Asset registry.
-    EquilibriaAssetRegistry cAssets; /// Equilibria asset registry.
+    // Resource registry.
+    EquilibriaResourceRegistry cResources; /// Equilibria resource registry.
 
     // Definition data.
     Model cDefModel;   /// Visual representation of this pick up type.

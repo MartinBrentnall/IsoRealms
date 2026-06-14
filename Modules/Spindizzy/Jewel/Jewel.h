@@ -35,9 +35,9 @@ namespace IsoRealms::Spindizzy {
      * Component interface *
     \***********************/
     Jewel(Spindizzy& spindizzy, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *
@@ -49,10 +49,7 @@ namespace IsoRealms::Spindizzy {
     \*********************/
     IModelInstance* createModel() override;
     bool renderPreview() const override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    bool renderResourceIcon() const override;
 
     private:
     class CycleColour {
@@ -63,7 +60,7 @@ namespace IsoRealms::Spindizzy {
       void save(JSONObject object) const;
       const Colour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
-      void getProperties(IPropertyMaker& owner, const Metadata& metadata, std::function<void()> removeFunction);
+      void define(IComponentDefiner& definer, std::function<void()> removeFunction);
       
       private:
       

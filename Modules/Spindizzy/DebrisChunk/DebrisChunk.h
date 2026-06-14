@@ -39,10 +39,10 @@ namespace IsoRealms::Spindizzy {
      * Component Interface *
     \***********************/
     DebrisChunk(Spindizzy& spindizzy, IComponentData& data);
-    void registerAssets(ComponentAssetRegistry& assets);
+    void define(IComponentDefiner& definer);
+    void publish(ResourcePublisher& publisher);
     void hintInUse(bool inUse);
     bool renderIcon() const;
-    void getProperties(IPropertyMaker& owner, const Metadata& metadata);
 
     /*********************\
      * Module interfaces *
@@ -54,10 +54,7 @@ namespace IsoRealms::Spindizzy {
     \*********************/
     IModelInstance* createModel() override;
     bool renderPreview() const override;
-    bool renderAssetIcon() const override;
-    void saveAsset(JSONObject object) const override;
-    void getAssetProperties(IPropertyMaker& owner) override;
-    bool isDefaultConfiguration() const override;
+    bool renderResourceIcon() const override;
 
     /*****************************\
      * Implements IModelInstance *

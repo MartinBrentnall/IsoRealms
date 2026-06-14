@@ -30,20 +30,8 @@ namespace IsoRealms::Equilibria {
     return cInstances.emplace_back(std::make_unique<Instance>(*this, editor)).get();
   }
 
-  bool ZoneTool::renderAssetIcon() const {
+  bool ZoneTool::renderResourceIcon() const {
     return renderEditingIcon(Type::MOVE);
-  }
-
-  void ZoneTool::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ZoneTool::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ZoneTool::isDefaultConfiguration() const {
-    return true;
   }
 
   ZoneTool::Instance::Instance(ZoneTool& parent, WorldEditor& editor) :

@@ -24,21 +24,17 @@
 namespace IsoRealms::Equilibria {
   PickUpType::PickUpType(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),
-            cAssets(equilibria),
+            cResources(equilibria),
             cDefModel(data) {
     cEquilibria.added(this);
   }
-  
-  void PickUpType::registerAssets(ComponentAssetRegistry& assets) {
-    // Nothing to do.
+
+  void PickUpType::define(IComponentDefiner& definer) {
+    definer.propertyResource("appearance", cDefModel);
   }
 
   bool PickUpType::renderIcon() const {
     return cDefModel.renderIcon();
-  }
-
-  void PickUpType::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("appearance", cDefModel);
   }
 
   void PickUpType::removed() {
@@ -55,9 +51,9 @@ namespace IsoRealms::Equilibria {
     cEquilibria.overrideReadOnlyWorlds(*this);
   }
 
-  void PickUpType::registerAssets(const std::string& parentID) {
-    cAssets.add<IWorldEditorTool>(this, parentID, "Pick Up Types");
-    cAssets.add<IBoundaryType>(   this, parentID, "Pick Up Types");
+  void PickUpType::publish(const std::string& parentID) {
+    cResources.publish<IWorldEditorTool>(this, parentID, "Pick Up Types");
+    cResources.publish<IBoundaryType>(   this, parentID, "Pick Up Types");
   }  
   
   std::unique_ptr<ModelInstance> PickUpType::createModel() {
@@ -84,20 +80,8 @@ namespace IsoRealms::Equilibria {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
-  bool PickUpType::renderAssetIcon() const {
+  bool PickUpType::renderResourceIcon() const {
     return cDefModel.renderIcon();
-  }
-
-  void PickUpType::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void PickUpType::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool PickUpType::isDefaultConfiguration() const {
-    return true;
   }
 
   PickUpType::Pen::Pen(PickUpType& parent, WorldEditor& editor) :

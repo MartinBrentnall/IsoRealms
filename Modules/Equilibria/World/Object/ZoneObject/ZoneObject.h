@@ -43,7 +43,6 @@ namespace IsoRealms::Equilibria {
     ZoneObject(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.
-    void registerAssets();
     void reset();
     void save(JSONObject object) const;
     bool isType(const ZoneObjectType* const type) const;
@@ -79,7 +78,8 @@ namespace IsoRealms::Equilibria {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    void getProperties(IPropertyMaker& owner) override;
+    void define(IComponentDefiner& definer) override;
+    void publish();
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 

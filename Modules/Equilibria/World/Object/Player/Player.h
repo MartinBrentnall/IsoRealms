@@ -51,7 +51,7 @@ namespace IsoRealms::Equilibria {
     Player(World& world, JSONObject object);
 
     // Interface to be used by parent world.
-    void registerAssets(ComponentAssetRegistry& assets, const std::string& parentID);
+    void publish(ResourcePublisher& publisher, const std::string& parentID);
     void reset();
     void save(JSONObject object) const;
     bool isType(const PlayerType* const type) const;

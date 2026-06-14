@@ -23,15 +23,15 @@ namespace IsoRealms::Basics {
             cLuaBinding(data.getProject().getLuaState(), this) {
   }
 
-  void SimpleVertex::registerAssets(ComponentAssetRegistry& assets) {
-    cStateNotifier = assets.add<IVertex>(this, "", "Simple Vertices");
-    assets.add<IBinding>(&cLuaBinding, "", "Variables/Vertices");
+  void SimpleVertex::define(IComponentDefiner& definer) {
+    definer.propertyFloat("x", [this]() {return cDefX;}, [this](float value) {cDefX = value;});
+    definer.propertyFloat("y", [this]() {return cDefY;}, [this](float value) {cDefY = value;});
+    definer.propertyFloat("z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
   }
 
-  void SimpleVertex::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyNativeFloat("x", [this]() {return cDefX;}, [this](float value) {cDefX = value;});
-    owner.createPropertyNativeFloat("y", [this]() {return cDefY;}, [this](float value) {cDefY = value;});
-    owner.createPropertyNativeFloat("z", [this]() {return cDefZ;}, [this](float value) {cDefZ = value;});
+  void SimpleVertex::publish(ResourcePublisher& publisher) {
+    cStateNotifier = publisher.publish<IVertex>(this, "", "Simple Vertices");
+    publisher.publish<IBinding>(&cLuaBinding, "", "Variables/Vertices");
   }
 
   void SimpleVertex::reset() {
@@ -50,22 +50,6 @@ namespace IsoRealms::Basics {
 
   double SimpleVertex::getZ() const {
     return cRuntimeZ;
-  }
-
-  bool SimpleVertex::renderAssetIcon() const {
-    return false;
-  }
-
-  void SimpleVertex::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SimpleVertex::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SimpleVertex::isDefaultConfiguration() const {
-    return true;
   }
 
   void SimpleVertex::setX(double x) {

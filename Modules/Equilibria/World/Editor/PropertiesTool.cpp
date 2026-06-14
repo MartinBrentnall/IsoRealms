@@ -27,20 +27,8 @@ namespace IsoRealms::Equilibria {
     return cEditingModifiers.emplace_back(std::make_unique<Modifier>(*this, owner, editor)).get();
   }
 
-  bool PropertiesTool::renderAssetIcon() const {
+  bool PropertiesTool::renderResourceIcon() const {
     Utils::renderIconCustom();
-    return true;
-  }
-
-  void PropertiesTool::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void PropertiesTool::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool PropertiesTool::isDefaultConfiguration() const {
     return true;
   }
 
@@ -76,8 +64,8 @@ namespace IsoRealms::Equilibria {
     if (!cHoverObjects.empty() && !cEditingProperties) {
       IWorldObject* mObject = cHoverObjects[cSelectedObject];
       const Metadata& mMetadata = cEditor.getWorld().getEquilibria().getMetadata(mObject->getTypeName());
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldComponentOwner, mMetadata, [this](IPropertyMaker& owner) {
-        cHoverObjects[cSelectedObject]->getProperties(owner);
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldComponentOwner, mMetadata, [this](IComponentDefiner& definer) {
+        cHoverObjects[cSelectedObject]->define(definer);
       }), mObject->getTypeName() + " Configuration");
       cEditingProperties = true;
     }
@@ -136,7 +124,7 @@ namespace IsoRealms::Equilibria {
   }
 
   bool PropertiesTool::Modifier::renderIcon(float yaw) const {
-    return cParent.renderAssetIcon();
+    return cParent.renderResourceIcon();
   }
 
   void PropertiesTool::Modifier::updateUI(unsigned int milliseconds) {

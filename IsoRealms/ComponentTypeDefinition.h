@@ -30,8 +30,8 @@
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Project/ProjectFile.h"
-#include "IsoRealms/PropertyLoader.h"
-#include "IsoRealms/PropertySaver.h"
+#include "IsoRealms/ComponentLoader.h"
+#include "IsoRealms/ComponentSaver.h"
 
 // Forward declarations
 namespace IsoRealms {
@@ -140,15 +140,15 @@ namespace IsoRealms {
     IComponent* createComponent(ComponentType& parent, const std::string& name, ProjectFile* ownerProject) override {
       std::string mAvailableName = Utils::getAvailableKey(cComponents, name);
       IComponent* mComponent = cComponents.emplace(mAvailableName, std::make_unique<ComponentInfo>(parent, cModule, ownerProject)).first->second->getComponent();
-      mComponent->registerAssets();
+      mComponent->publish();
       return mComponent;
     }
     
     IComponent* loadComponent(ComponentType& parent, const std::string& name, JSONObject object, ProjectFile* ownerProject) override {
       Component<MODULE, TYPE>* mComponent = cComponents.emplace(name, std::make_unique<ComponentInfo>(parent, cModule, ownerProject)).first->second->getComponent();
-      PropertyLoader mLoader(mComponent->getComponentData(), object);
-      mComponent->getComponent()->getProperties(mLoader, parent.getMetadata());
-      mComponent->registerAssets();
+      ComponentLoader mLoader(mComponent->getComponentData(), object);
+      mComponent->getComponent()->define(mLoader);
+      mComponent->publish();
       return mComponent;
     }
 
@@ -166,8 +166,8 @@ namespace IsoRealms {
         Component<MODULE, TYPE>* mComponent = mComponentInfo->getComponent();
         if (mComponent->needsSaving(savingProject)) {
           JSONObject mComponentObject = object.addObject(mComponent->getName());
-          PropertySaver mSaver(mComponent->getComponentData(), mComponentObject);
-          mComponent->getComponent()->getProperties(mSaver, mComponent->getComponentData().getMetadata());
+          ComponentSaver mSaver(mComponent->getComponentData(), mComponentObject);
+          mComponent->getComponent()->define(mSaver);
         }
       }
     }
@@ -271,10 +271,10 @@ namespace IsoRealms {
       }
     }
 
-    void refreshAssetRegistration(TYPE& resource) {
+    void refreshResourceRegistration(TYPE& resource) {
       for (const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& mComponent : cComponents) {
         if (mComponent.second->getComponent()->isComponent(&resource)) {
-          return mComponent.second->getComponent()->registerAssets();
+          return mComponent.second->getComponent()->publish();
         }
       }
     }

@@ -27,17 +27,17 @@ namespace IsoRealms::UI {
             cRuntimeScreenA(data.getProject(), 2560, 1440, true, true, true), // TODO: Resolution shouldn't be hard-coded, and should update based on window size
             cRuntimeScreenB(data.getProject(), 2560, 1440, true, true, true) {
   }
+
+  void ScreenFader::define(IComponentDefiner& definer) {
+    definer.propertyResource("screenA",    cDefScreenA);
+    definer.propertyResource("screenB",    cDefScreenB);
+    definer.propertyResource("transition", cDefTransition);
+  }
+
+  void ScreenFader::publish(ResourcePublisher& publisher) {
+    publisher.publish<IScreen>(this, "", "Screen Faders");
+  }
   
-  void ScreenFader::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IScreen>(this, "", "Screen Faders");
-  }
-
-  void ScreenFader::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector("screenA",    cDefScreenA);
-    owner.createPropertyTreeSelector("screenB",    cDefScreenB);
-    owner.createPropertyTreeSelector("transition", cDefTransition);
-  }
-
   void ScreenFader::renderScreen(float scale, float aspectRatio) const {
     float mTransition = cDefTransition->getValue();
     if (mTransition <= 0.0f) {
@@ -95,21 +95,5 @@ namespace IsoRealms::UI {
       glEnable(GL_DEPTH_TEST);
       glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
-  }
-
-  bool ScreenFader::renderAssetIcon() const {
-    return false;
-  }
-
-  void ScreenFader::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void ScreenFader::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool ScreenFader::isDefaultConfiguration() const {
-    return true;
   }
 }

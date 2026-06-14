@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Assets/Type/IFloat.h"
+#include "IsoRealms/Resources/Type/IFloat.h"
 
 namespace IsoRealms {
   class EditorAnalogueInput {

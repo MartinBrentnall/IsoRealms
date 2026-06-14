@@ -18,7 +18,7 @@
  */
 #include "SequenceEditor.h"
 
-#include "Modules/Basics/Assets/Registry/SequenceTrackRegistry.h"
+#include "Modules/Basics/Resources/Registry/SequenceTrackRegistry.h"
 #include "Modules/Basics/Basics.h"
 #include "Modules/Basics/Sequence/Sequence.h"
 
@@ -398,22 +398,6 @@ namespace IsoRealms::Basics {
     cPropertiesUI.render(aspectRatio);
   }
 
-  bool SequenceEditor::renderAssetIcon() const {
-    return false; // TODO: What's this used for?
-  }
-
-  void SequenceEditor::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void SequenceEditor::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool SequenceEditor::isDefaultConfiguration() const {
-    return true;
-  }
-
   void SequenceEditor::updateScreen(unsigned int milliseconds) {
     cCursorTimeline = std::max(cCursorTimeline.value() + cCursorTimelineSpeed * cTimelineZoom, 0.0);
     unsigned int mOldTimeline = std::round(cCursorTimeline.animation());
@@ -666,9 +650,9 @@ namespace IsoRealms::Basics {
               }
 
               if (cCursorTrackProperties) {
-                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IPropertyMaker& owner) {
-                  owner.createPropertyTreeSelector(SequenceTrackRegistry::JSON_KEY, cSequence.getTrack(cCursorTrack.value()));
-                  owner.createPropertyNativeString("name",             [this]() {
+                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IComponentDefiner& definer) {
+                  definer.propertyResource(SequenceTrackRegistry::JSON_KEY, cSequence.getTrack(cCursorTrack.value()));
+                  definer.propertyString("name",             [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
                   }, [this](const std::string& name) {
                     cSequence.getTrack(cCursorTrack.value())->setName(name);
@@ -688,8 +672,8 @@ namespace IsoRealms::Basics {
                 }
 
                 if (cCursorEvent != nullptr) {
-                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IPropertyMaker& owner) {
-                    return cCursorEvent->getEventProperties(owner);
+                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IComponentDefiner& definer) {
+                    return cCursorEvent->getEventProperties(definer);
                   }), "Event Configuration");
                   cEditingProperties = true;
                 }

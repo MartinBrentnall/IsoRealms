@@ -22,7 +22,7 @@
 
 namespace IsoRealms {
   TextureRegistry::TextureRegistry(Project& project) :
-            AssetClientManager(&cNone),
+            ResourceClientManager(&cNone),
             cNone(project) {
   }
 
@@ -94,17 +94,5 @@ namespace IsoRealms {
 
   void TextureRegistry::Dummy::coord(float x, float y) const {
     cDummyTexture.coord(x, y);
-  }
-
-  void TextureRegistry::Dummy::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void TextureRegistry::Dummy::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool TextureRegistry::Dummy::isDefaultConfiguration() const {
-    return true;
   }
 }

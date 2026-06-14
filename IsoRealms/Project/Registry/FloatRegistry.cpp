@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   FloatRegistry::FloatRegistry(Application& application) :
-            AssetClientManager(&cLiteral, "Literal", "Literal"),
+            ResourceClientManager(&cLiteral, "Literal", "Literal"),
             cLiteral(application.getMetadata("LiteralFloat")) {
   }
 
@@ -36,19 +36,15 @@ namespace IsoRealms {
     return cValue;
   }
 
-  bool FloatRegistry::Literal::Instance::renderAssetIcon() const {
-    return false;
-  }
-
-  void FloatRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeFloat(JSON_VALUE, [this]() {return cValue;}, [this](float value) {cValue = value;});
+  void FloatRegistry::Literal::Instance::getResourceProperties(IComponentDefiner& definer) {
+    definer.propertyFloat(JSON_VALUE, [this]() {return cValue;}, [this](float value) {cValue = value;});
   }
 
   bool FloatRegistry::Literal::Instance::isDefaultConfiguration() const {
     return cValue == 0.0f;
   }
 
-  void FloatRegistry::Literal::Instance::saveAsset(JSONObject object) const {
+  void FloatRegistry::Literal::Instance::saveResource(JSONObject object) const {
     object.addFloat(JSON_VALUE, cValue);
   }
 }

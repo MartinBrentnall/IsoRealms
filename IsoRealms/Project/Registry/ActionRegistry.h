@@ -20,16 +20,16 @@
 
 #include <functional>
 
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
-#include "IsoRealms/Assets/Type/IAction.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
+#include "IsoRealms/Resources/Type/IAction.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Utils.h"
 
-#include "AssetClientManager.h"
-#include "IAssetUser.h"
+#include "ResourceClientManager.h"
+#include "IResourceUser.h"
 
 namespace IsoRealms {
-  class ActionRegistry : public AssetClientManager<ActionRegistry, IActionContext, IAction> {
+  class ActionRegistry : public ResourceClientManager<ActionRegistry, IActionContext, IAction> {
     public:
     ActionRegistry();
 
@@ -38,15 +38,12 @@ namespace IsoRealms {
       public:
 
       /**********************\
-      * Implements IAction *
+       * Implements IAction *
       \**********************/
       void execute() override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
+      bool renderResourceIcon() const override;
     };
 
-    AssetLiteralDummy<IActionContext, IAction, Dummy> cLiteral;
+    ResourceLiteralDummy<IActionContext, IAction, Dummy> cLiteral;
   };
 }

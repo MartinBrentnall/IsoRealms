@@ -30,21 +30,20 @@ namespace IsoRealms::Basics {
             cDefOffsetY(0.0f),
             cProcessedGLListBase(0) {
   }
-  
-  void FileFont::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add<IFont>(this, "", "Fonts");
-  }
-    
 
-  void FileFont::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyTreeSelector( "filename",    cDefFilename);
-    owner.createPropertyNativeInteger("detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;}, DEFAULT_DETAIL);
-    owner.createPropertyNativeFloat(  "scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;}, DEFAULT_SCALE);
-    owner.createPropertyNativeFloat(  "offsetX",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
-    owner.createPropertyNativeFloat(  "offsetY",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
-    owner.createPropertyNativeFloat(  "lineSpacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;}, DEFAULT_LINE_SPACING);
+  void FileFont::define(IComponentDefiner& definer) {
+    definer.propertyResource("filename",    cDefFilename);
+    definer.propertyInteger( "detail",      [this]() {return cDefDetail;},      [this](int   value) {cDefDetail      = value;}, DEFAULT_DETAIL);
+    definer.propertyFloat(   "scale",       [this]() {return cDefScale;},       [this](float value) {cDefScale       = value;}, DEFAULT_SCALE);
+    definer.propertyFloat(   "offsetX",     [this]() {return cDefOffsetX;},     [this](float value) {cDefOffsetX     = value;});
+    definer.propertyFloat(   "offsetY",     [this]() {return cDefOffsetY;},     [this](float value) {cDefOffsetY     = value;});
+    definer.propertyFloat(   "lineSpacing", [this]() {return cDefLineSpacing;}, [this](float value) {cDefLineSpacing = value;}, DEFAULT_LINE_SPACING);
   }
   
+  void FileFont::publish(ResourcePublisher& publisher) {
+    publisher.publish<IFont>(this, "", "Fonts");
+  }
+
   FileFont::~FileFont() {
     if (cProcessedGLListBase != 0) {
       glDeleteLists(cProcessedGLListBase, 128);
@@ -137,22 +136,6 @@ namespace IsoRealms::Basics {
     return static_cast<unsigned int>(text.length());
   }
 
-  bool FileFont::renderAssetIcon() const {
-    return false;
-  }
-
-  void FileFont::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void FileFont::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool FileFont::isDefaultConfiguration() const {
-    return true;
-  }
-
   void FileFont::reloadData(Project& project) {
     project.getApplication().mainThreadInit([this]() {
       FT_Library mFTLibrary;
@@ -179,7 +162,6 @@ namespace IsoRealms::Basics {
           throw std::runtime_error("FT_Load_Glyph failed");
         }
 
-        // Move the face's glyph into a Glyph object.
         FT_Glyph mFTGlyph;
         if (FT_Get_Glyph(mFTFace->glyph, &mFTGlyph)) {
           throw std::runtime_error("FT_Get_Glyph failed");

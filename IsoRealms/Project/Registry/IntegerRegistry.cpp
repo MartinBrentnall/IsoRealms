@@ -23,7 +23,7 @@
 
 namespace IsoRealms {
   IntegerRegistry::IntegerRegistry(Application& application) :
-            AssetClientManager(&cLiteral, "Literal", "Literal"),
+            ResourceClientManager(&cLiteral, "Literal", "Literal"),
             cLiteral(application.getMetadata("LiteralInteger")) {
   }
 
@@ -37,16 +37,12 @@ namespace IsoRealms {
     return cValue;
   }
 
-  bool IntegerRegistry::Literal::Instance::renderAssetIcon() const {
-    return false;
-  }
-
-  void IntegerRegistry::Literal::Instance::saveAsset(JSONObject object) const {
+  void IntegerRegistry::Literal::Instance::saveResource(JSONObject object) const {
     object.addInteger(JSON_VALUE, cValue);
   }
 
-  void IntegerRegistry::Literal::Instance::getAssetProperties(IPropertyMaker& owner) {
-    owner.createPropertyNativeInteger(JSON_VALUE, [this]() {return cValue;}, [this](int value) {cValue = value;});
+  void IntegerRegistry::Literal::Instance::getResourceProperties(IComponentDefiner& definer) {
+    definer.propertyInteger(JSON_VALUE, [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 
   bool IntegerRegistry::Literal::Instance::isDefaultConfiguration() const {

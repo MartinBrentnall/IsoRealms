@@ -48,16 +48,16 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::registerAssets(ComponentAssetRegistry& assets) {
-    assets.add(static_cast<IEditable*>(this), "", "Screen Layouts");
-    assets.add(static_cast<IScreen*>(this), "", "Screen Layouts");
-    for (std::pair<const std::string, LayoutComponent>& mComponent : cComponentsByName) {
-      mComponent.second.registerAssets(assets, mComponent.first);
-    }
+  void Layout::define(IComponentDefiner& definer) {
+    definer.propertyEditor("Content", this);
   }
 
-  void Layout::getProperties(IPropertyMaker& owner, const Metadata& metadata) {
-    owner.createPropertyEditor("Content", this);
+  void Layout::publish(ResourcePublisher& publisher) {
+    publisher.publish(static_cast<IEditable*>(this), "", "Screen Layouts");
+    publisher.publish(static_cast<IScreen*>(this), "", "Screen Layouts");
+    for (std::pair<const std::string, LayoutComponent>& mComponent : cComponentsByName) {
+      mComponent.second.publish(publisher, mComponent.first);
+    }
   }
 
   void Layout::updateEditing(unsigned int milliseconds) {
@@ -76,22 +76,6 @@ namespace IsoRealms::UI {
     for (LayoutComponent* mComponent : cComponentsByOrder) {
       mComponent->render(scale, aspectRatio);
     }
-  }
-
-  bool Layout::renderAssetIcon() const {
-    return false;
-  }
-
-  void Layout::saveAsset(JSONObject object) const {
-    // Nothing to do.
-  }
-
-  void Layout::getAssetProperties(IPropertyMaker& owner) {
-    // Nothing to do.
-  }
-
-  bool Layout::isDefaultConfiguration() const {
-    return true;
   }
 
   IEditableScreen* Layout::createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) {
@@ -173,7 +157,7 @@ namespace IsoRealms::UI {
     cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, x1, y1, x2, y2, aspectRatio));
     return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
   }
-  
+
   LayoutComponent* Layout::createComponent(JSONObject& object) {
     std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
     cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, object));

@@ -24,21 +24,21 @@
 #include <set>
 #include <string>
 
-#include "IsoRealms/Assets/Client/ComponentOwner.h"
-#include "IsoRealms/Assets/IEventBindings.h"
-#include "IsoRealms/Assets/Providers/AssetLiteralDummy.h"
+#include "IsoRealms/Resources/Client/ComponentOwner.h"
+#include "IsoRealms/Resources/IEventBindings.h"
+#include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
 #include "IsoRealms/Editing.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Lua/LuaBinding.h"
-#include "IsoRealms/Editing/Property/IPropertyMaker.h"
+#include "IsoRealms/Editing/Property/IComponentDefiner.h"
 #include "IsoRealms/Types.h"
 
 #include "Options.h"
-#include "OwnedAsset.h"
+#include "OwnedResource.h"
 #include "ProjectFile.h"
 #include "ProjectLaunchConfiguration.h"
-#include "Registry/AssetClientManager.h"
+#include "Registry/ResourceClientManager.h"
 #include "Registry/ActionRegistry.h"
 #include "Registry/AnalogueInputRegistry.h"
 #include "Registry/BooleanRegistry.h"
@@ -58,14 +58,14 @@
 #include "Registry/VertexRegistry.h"
 
 namespace IsoRealms {
-  template <typename TYPE> struct AssetContainerTraits;
+  template <typename TYPE> struct ResourceContainerTraits;
   
   class IScreenListener;
   class Module;
 
   /**
    * The Project is the root object of an IsoRealms game or application.  The
-   * Project acts as a container for the assets of the application, and
+   * Project acts as a container for the resources of the application, and
    * provides control over execution of the application.
    */
   class Project : public IComponentData,
@@ -91,7 +91,7 @@ namespace IsoRealms {
     void save(const std::string& file);
     void save(const ProjectFile& file) const;
     bool isUser();
-    void getProperties(IPropertyMaker& propertyMaker, ProjectFile* loadOwner = nullptr);
+    void getProperties(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
     
@@ -123,7 +123,7 @@ namespace IsoRealms {
     void addScreenListener(IScreenListener* listener);
     void removeScreenListener(IScreenListener* listener);
     
-    // Functions used by module client assets.
+    // Functions used by module client resources.
     bool isLoading() const;
     bool areComponentsLoaded() const;
     void execute(IAction& action);
@@ -131,72 +131,72 @@ namespace IsoRealms {
     IEventBindings* getEventBindings() const;
     void setEventBindings(IEventBindings* eventBindings);
     
-    template <typename TYPE, typename THING> IStateNotifier* add(THING* asset, const std::string& id, const std::string& category) {
-      return AssetContainerTraits<TYPE>::get(*this).add(asset, id, category, true);
+    template <typename TYPE, typename THING> IStateNotifier* add(THING* resource, const std::string& id, const std::string& category) {
+      return ResourceContainerTraits<TYPE>::get(*this).add(resource, id, category, true);
     }
 
-    template <typename TYPE, typename THING> void remove(THING* asset) {
-      AssetContainerTraits<TYPE>::get(*this).remove(asset);
+    template <typename TYPE, typename THING> void remove(THING* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).remove(resource);
     }
     
-    template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(asset);
+    template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).hasReadOnlyReferences(resource);
     }
    
-    template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* asset) {
-      AssetContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(asset, &cDefProjectFileStructure);
+    template <typename TYPE, typename THING> void overrideReadOnlyReferences(THING* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).overrideReadOnlyReferences(resource, &cDefProjectFileStructure);
     }
     
-    template <typename TYPE> void release(IAssetUser<TYPE>* user, TYPE* asset) {
-      AssetContainerTraits<TYPE>::get(*this).release(user, asset);
+    template <typename TYPE> void release(IResourceUser<TYPE>* user, TYPE* resource) {
+      ResourceContainerTraits<TYPE>::get(*this).release(user, resource);
     }
 
-    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getTreeItemInfo(asset);
+    template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getTreeItemInfo(resource);
     }
 
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* asset) const {
-      return AssetContainerTraits<TYPE>::get(*this).getPropertyMetadata(asset);
+    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
+      return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
     }
 
-    template <typename TYPE> void save(JSONObject object, const TYPE* asset) const {
-      AssetContainerTraits<TYPE>::get(*this).save(object, asset);
+    template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
+      ResourceContainerTraits<TYPE>::get(*this).save(object, resource);
     }
 
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const {
-      AssetContainerTraits<TYPE>::get(*this).forEachEntry(getTreeItemInfoFunction);
+      ResourceContainerTraits<TYPE>::get(*this).forEachEntry(getTreeItemInfoFunction);
     }
     
     template <typename TYPE> bool renderIcon(const std::string& id) const {
-      return AssetContainerTraits<TYPE>::get(*this).renderIcon(id);
+      return ResourceContainerTraits<TYPE>::get(*this).renderIcon(id);
     }
 
     template <typename TYPE> bool isConfigurable(const std::string& id) const {
-      return AssetContainerTraits<TYPE>::get(*this).hasConfiguration(id);
+      return ResourceContainerTraits<TYPE>::get(*this).hasConfiguration(id);
     }
     
-    template <typename TYPE, typename OWNER> TYPE* createDefault(IAssetUser<TYPE>* user, OWNER& owner) {
-      return AssetContainerTraits<TYPE>::get(*this).getDefault(user, owner);
+    template <typename TYPE, typename OWNER> TYPE* createDefault(IResourceUser<TYPE>* user, OWNER& owner) {
+      return ResourceContainerTraits<TYPE>::get(*this).getDefault(user, owner);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
-      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
+      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getAsset(IAssetUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
-      return AssetContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
+    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
+      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
-    template <typename TYPE> void addStateChangeListener(const TYPE* asset, IStateListener* listener) {
-      AssetContainerTraits<TYPE>::get(*this).addStateChangeListener(asset, listener);
+    template <typename TYPE> void addStateChangeListener(const TYPE* resource, IStateListener* listener) {
+      ResourceContainerTraits<TYPE>::get(*this).addStateChangeListener(resource, listener);
     }  
   
-    IBoolean* createLiteralBoolean(IAssetUser<IBoolean>* user, IComponentData& owner, bool value);
-    IColour*  createLiteralColour( IAssetUser<IColour>*  user, IComponentData& owner, float red, float green, float blue, float alpha);
-    IFloat*   createLiteralFloat(  IAssetUser<IFloat>*   user, IComponentData& owner, float value);
-    IInteger* createLiteralInteger(IAssetUser<IInteger>* user, IComponentData& owner, int value);
-    IString*  createLiteralString( IAssetUser<IString>*  user, IComponentData& owner, const std::string& value);
-    IVertex*  createLiteralVertex( IAssetUser<IVertex>*  user, IComponentData& owner, float x, float y, float z);
+    IBoolean* createLiteralBoolean(IResourceUser<IBoolean>* user, IComponentData& owner, bool value);
+    IColour*  createLiteralColour( IResourceUser<IColour>*  user, IComponentData& owner, float red, float green, float blue, float alpha);
+    IFloat*   createLiteralFloat(  IResourceUser<IFloat>*   user, IComponentData& owner, float value);
+    IInteger* createLiteralInteger(IResourceUser<IInteger>* user, IComponentData& owner, int value);
+    IString*  createLiteralString( IResourceUser<IString>*  user, IComponentData& owner, const std::string& value);
+    IVertex*  createLiteralVertex( IResourceUser<IVertex>*  user, IComponentData& owner, float x, float y, float z);
 
     /***********************\
      * Scripting interface *
@@ -217,10 +217,10 @@ namespace IsoRealms {
     void setOwner(ProjectFile* file) override;
     Project& getProject() override;
     const Project& getProject() const override;
-    Project& getAssetManager() override;
+    Project& getResourceManager() override;
     IActionContext& getDummyActionContext() override;
     const Metadata& getMetadata() const override;
-    void reregisterAssets() override;
+    void republish() override;
 
     /*****************************\
      * Implements IActionContext * TODO: Should these be here???
@@ -228,7 +228,7 @@ namespace IsoRealms {
     IComponentData& getComponentData() override;
     IEventBindings* getBindingRegistry() override;
     
-    template <typename TYPE> friend struct AssetContainerTraits;
+    template <typename TYPE> friend struct ResourceContainerTraits;
 
     private:
     inline static const std::string JSON_EDITOR                = "editor";
@@ -250,10 +250,6 @@ namespace IsoRealms {
        * Implements IAction *
       \**********************/
       void execute() override;
-      bool renderAssetIcon() const override;
-      void saveAsset(JSONObject object) const override;
-      void getAssetProperties(IPropertyMaker& owner) override;
-      bool isDefaultConfiguration() const override;
 
       private:
       Project& cParent;
@@ -266,7 +262,7 @@ namespace IsoRealms {
     Application& cApplication;                        /// Host application of this Project.
     std::function<void(bool)> cFunctionNotifyComplete; /// Function to be notified of Project completion.
 
-    // Asset registries.
+    // Resource registries.
     ActionRegistry        cActions;
     AnalogueInputRegistry cAnalogueInputs;
     BindingRegistry       cBindings;
@@ -290,11 +286,11 @@ namespace IsoRealms {
     std::vector<std::unique_ptr<Module>>                     cDefModules;
     ProjectFile                                              cDefProjectFileStructure;
     std::vector<std::unique_ptr<ProjectLaunchConfiguration>> cDefTestLaunchConfigurations;
-    OwnedAsset<IComponentData, InputHandler>                  cDefInputHandler;
-    OwnedAsset<IComponentData, Screen>                        cDefScreen;
-    OwnedAsset<IComponentData, Editable>                      cDefDefaultEditor;
-    OwnedAsset<IActionContext, Action>                       cDefActionOnStart;
-    OwnedAsset<IActionContext, Action>                       cDefActionOnCloseRequest;
+    OwnedResource<IComponentData, InputHandler>              cDefInputHandler;
+    OwnedResource<IComponentData, Screen>                    cDefScreen;
+    OwnedResource<IComponentData, Editable>                  cDefDefaultEditor;
+    OwnedResource<IActionContext, Action>                    cDefActionOnStart;
+    OwnedResource<IActionContext, Action>                    cDefActionOnCloseRequest;
     LuaState cLuaState;                       /// Lua State for this project.
 
     // Scripting support.
@@ -303,7 +299,7 @@ namespace IsoRealms {
     LuaBinding<Options> cLuaBindingOptions;         /// The binding to the selected options.
 
     // Callbacks
-    std::vector<std::function<void()>> cInitialisers;        /// Asset initialisation tasks.  Called after assets have been registered.
+    std::vector<std::function<void()>> cInitialisers;        /// Resource initialisation tasks.  Called after resources have been registered.
     std::queue<std::function<void()>> cUpdateTasks;          /// Postponed update functions.  Called after other update functions.
 
     // Runtime state of the Project.
@@ -314,7 +310,7 @@ namespace IsoRealms {
     bool cRuntimeUpdatingRuntime;            /// Flag is set when update cycle is being performed.
     bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
 
-    // Assets to expose Project data.
+    // Resources to expose Project data.
     QuitAction cQuitAction;
 
     // Private functions.
@@ -324,30 +320,30 @@ namespace IsoRealms {
     void saveRecursive(const ProjectFile& file) const;
   };
 
-  template<> struct AssetContainerTraits<IAction>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};
-  template<> struct AssetContainerTraits<IAnalogueInput> {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cAnalogueInputs;}};
-  template<> struct AssetContainerTraits<IBinding>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindings;      }};
-  template<> struct AssetContainerTraits<IBindingType>   {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes;  }};
-  template<> struct AssetContainerTraits<IBoolean>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;      }};
-  template<> struct AssetContainerTraits<IColour>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cColours;       }};
-  template<> struct AssetContainerTraits<IDigitalInput>  {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cDigitalInputs; }};
-  template<> struct AssetContainerTraits<IEditable>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cEditables;     }};
-  template<> struct AssetContainerTraits<IFloat>         {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFloats;        }};
-  template<> struct AssetContainerTraits<IFont>          {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFonts;         }};
-  template<> struct AssetContainerTraits<IInputHandler>  {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers; }};
-  template<> struct AssetContainerTraits<IInteger>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;      }};
-  template<> struct AssetContainerTraits<IModel>         {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cModels;        }};
-  template<> struct AssetContainerTraits<IScreen>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cScreens;       }};
-  template<> struct AssetContainerTraits<IString>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cStrings;       }};
-  template<> struct AssetContainerTraits<ITexture>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cTextures;      }};
-  template<> struct AssetContainerTraits<IVertex>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cVertices;      }};
+  template<> struct ResourceContainerTraits<IAction>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cActions;       }};
+  template<> struct ResourceContainerTraits<IAnalogueInput> {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cAnalogueInputs;}};
+  template<> struct ResourceContainerTraits<IBinding>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindings;      }};
+  template<> struct ResourceContainerTraits<IBindingType>   {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBindingTypes;  }};
+  template<> struct ResourceContainerTraits<IBoolean>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cBooleans;      }};
+  template<> struct ResourceContainerTraits<IColour>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cColours;       }};
+  template<> struct ResourceContainerTraits<IDigitalInput>  {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cDigitalInputs; }};
+  template<> struct ResourceContainerTraits<IEditable>      {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cEditables;     }};
+  template<> struct ResourceContainerTraits<IFloat>         {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFloats;        }};
+  template<> struct ResourceContainerTraits<IFont>          {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cFonts;         }};
+  template<> struct ResourceContainerTraits<IInputHandler>  {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cInputHandlers; }};
+  template<> struct ResourceContainerTraits<IInteger>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cIntegers;      }};
+  template<> struct ResourceContainerTraits<IModel>         {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cModels;        }};
+  template<> struct ResourceContainerTraits<IScreen>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cScreens;       }};
+  template<> struct ResourceContainerTraits<IString>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cStrings;       }};
+  template<> struct ResourceContainerTraits<ITexture>       {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cTextures;      }};
+  template<> struct ResourceContainerTraits<IVertex>        {template <typename PROJECT> static auto& get(PROJECT& project) {return project.cVertices;      }};
 
   template <typename FROM> bool renderProviderIcon(Project& project, const std::string& id) {
-    return project.renderIcon<typename FROM::AssetInterfaceType>(id);
+    return project.renderIcon<typename FROM::ResourceInterfaceType>(id);
   }
 
   template <typename FROM> void forEachProviderEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction, const std::string& providerID, const std::string& conversionPath) {
-    project.forEachEntry<typename FROM::AssetInterfaceType>([&getTreeItemInfoFunction, &providerID, &conversionPath](const TreeItemInfo& mTreeItemInfo) {
+    project.forEachEntry<typename FROM::ResourceInterfaceType>([&getTreeItemInfoFunction, &providerID, &conversionPath](const TreeItemInfo& mTreeItemInfo) {
       TreeItemInfo mConversionTreeItemInfo(providerID + "/" + mTreeItemInfo.cID, conversionPath + "/" + mTreeItemInfo.cPath);
       getTreeItemInfoFunction(mConversionTreeItemInfo);
     });

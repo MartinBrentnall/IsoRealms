@@ -22,8 +22,8 @@
 #include <stack>
 #include <vector>
 
-#include "IsoRealms/Assets/Literal/LiteralColour.h"
-#include "IsoRealms/Assets/Type/IEditable.h"
+#include "IsoRealms/Resources/Literal/LiteralColour.h"
+#include "IsoRealms/Resources/Type/IEditable.h"
 #include "IsoRealms/Common/AnimatedFloat.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/ComponentDefinition.h"
