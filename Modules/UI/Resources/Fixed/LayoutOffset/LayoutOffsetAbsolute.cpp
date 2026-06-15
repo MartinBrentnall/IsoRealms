@@ -20,10 +20,7 @@
 
 namespace IsoRealms::UI {
   LayoutOffsetAbsolute::LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner) {
-  }
-
-  LayoutOffsetAbsolute::LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
-            cDefValue(object.getFloat(JSON_VALUE)) {
+    // Nothing to do.
   }
 
   float LayoutOffsetAbsolute::getOffset(float aspectRatio) const {
@@ -38,7 +35,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
   
-  void LayoutOffsetAbsolute::getResourceProperties(IComponentDefiner& definer) {
+  void LayoutOffsetAbsolute::defineResource(IComponentDefiner& definer) {
     definer.propertyFloat(JSON_VALUE, [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 

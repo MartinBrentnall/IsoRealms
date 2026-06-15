@@ -40,11 +40,6 @@ namespace IsoRealms::Basics {
     definer.propertyResource(JSON_EXECUTE, cDefAction);
   }
 
-  void SequenceTrackActionEvent::save(JSONObject object) const {
-    object.addInteger(JSON_DELAY, cDefTime);
-    cDefAction.save(object, JSON_EXECUTE);
-  }
-
   void SequenceTrackActionEvent::execute() {
     cDefAction.execute();
   }

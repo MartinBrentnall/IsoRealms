@@ -61,7 +61,6 @@ namespace IsoRealms::Replay {
       DigitalInput(Replayer& parent, IComponentData& data, JSONObject object);
       void define(IComponentDefiner& definer);
       void publish(ResourcePublisher& publisher);
-      void save(JSONObject object) const;
       void reset();
       void setRecordedState(bool state);
       std::string getName() const;
@@ -92,7 +91,6 @@ namespace IsoRealms::Replay {
       AnalogueInput(Replayer& parent, IComponentData& data, JSONObject object);
       void define(IComponentDefiner& definer);
       void publish(ResourcePublisher& publisher);
-      void save(JSONObject object) const;
       void reset();
       void setRecordedState(float state);
       std::string getName() const;

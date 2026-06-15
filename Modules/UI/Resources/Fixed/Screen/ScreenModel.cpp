@@ -24,11 +24,6 @@ namespace IsoRealms::UI {
             cDefModelInstance(cDefModel.createInstance()) {
   }
 
-  ScreenModel::ScreenModel(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-            ScreenModel(metadata, owner) {
-    cDefModel.set(object, JSON_MODEL);
-  }
-  
   void ScreenModel::updateRuntime(unsigned int milliseconds) {
     cDefModelInstance->update(milliseconds);
   }
@@ -45,7 +40,7 @@ namespace IsoRealms::UI {
     return cDefModel.renderTreeItemIcon();
   }
 
-  void ScreenModel::getResourceProperties(IComponentDefiner& definer) {
+  void ScreenModel::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_MODEL, cDefModel);
   }
   

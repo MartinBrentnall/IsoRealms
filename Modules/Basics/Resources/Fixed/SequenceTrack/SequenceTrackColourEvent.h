@@ -31,7 +31,6 @@ namespace IsoRealms::Basics {
     public:
     SequenceTrackColourEvent(SequenceTrackColour& parent, IComponentData& owner, unsigned int time, bool fade = true);
 
-    void save(JSONObject object) const;
     const IColour* getColour() const;
     bool isFade() const;
 

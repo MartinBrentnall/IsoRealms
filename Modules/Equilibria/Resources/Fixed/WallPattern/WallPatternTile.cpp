@@ -27,11 +27,6 @@ namespace IsoRealms::Equilibria {
             cDefTexture(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 
-  WallPatternTile::WallPatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternTile(metadata, owner) {
-    cDefTexture.set(object, JSON_TEXTURE);
-  }
-
   std::vector<std::unique_ptr<IVisualElement>> WallPatternTile::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     mVisuals.emplace_back(std::make_unique<WallPatternTileSurface>(*this, wall));
@@ -107,7 +102,7 @@ namespace IsoRealms::Equilibria {
     return cDefTexture->renderResourceIcon();
   }
 
-  void WallPatternTile::getResourceProperties(IComponentDefiner& definer) {
+  void WallPatternTile::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_TEXTURE, cDefTexture);
   }
 

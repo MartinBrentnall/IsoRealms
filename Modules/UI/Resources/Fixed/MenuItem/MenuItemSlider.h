@@ -33,7 +33,6 @@ namespace IsoRealms::UI {
   class MenuItemSlider final : public IMenuItem {
     public:
     MenuItemSlider(const Metadata& metadata, Menu& menu);
-    MenuItemSlider(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -44,7 +43,7 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher) override;
     void reset() override;

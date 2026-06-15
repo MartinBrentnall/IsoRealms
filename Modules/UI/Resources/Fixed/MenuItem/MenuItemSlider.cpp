@@ -28,10 +28,6 @@ namespace IsoRealms::UI {
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 
-  MenuItemSlider::MenuItemSlider(const Metadata& metadata, Menu& menu, JSONObject object) :
-            MenuItemSlider(metadata, menu) {
-  }
-
   void MenuItemSlider::publish(ResourcePublisher& publisher) {
     publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Sliders");
   }
@@ -125,7 +121,7 @@ namespace IsoRealms::UI {
     return cDefLabel;
   }
 
-  void MenuItemSlider::getResourceProperties(IComponentDefiner& definer) {
+  void MenuItemSlider::defineResource(IComponentDefiner& definer) {
     definer.propertyString( JSON_ID,        [this]() {return cDefID;},      [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();

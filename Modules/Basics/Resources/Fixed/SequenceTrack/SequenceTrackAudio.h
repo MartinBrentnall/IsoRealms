@@ -37,17 +37,15 @@ namespace IsoRealms::Basics {
   class SequenceTrackAudio final : public SequenceTrackBase<SequenceTrackAudio, SequenceTrackAudioEvent, SequenceTrackAudioInstance> {
     public:
     SequenceTrackAudio(const Metadata& metadata, Sequence& sequence);
-    SequenceTrackAudio(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     float getVolume() const;
     const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
-    void saveResourceTrack(JSONObject object) const;
 
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
     private:

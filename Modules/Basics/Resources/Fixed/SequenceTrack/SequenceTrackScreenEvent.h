@@ -31,7 +31,6 @@ namespace IsoRealms::Basics {
     public:
     SequenceTrackScreenEvent(SequenceTrackScreen& parent, IComponentData& owner, unsigned int time);
 
-    void save(JSONObject object) const;
     IScreen* getScreen() const;
 
     /**********************************\

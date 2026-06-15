@@ -116,14 +116,6 @@ namespace IsoRealms::UI {
     glPopMatrix();
   }
 
-  void LayoutComponent::save(JSONObject object) const {
-    cDefScreen.save(object, JSON_SCREEN);
-    cDefTopEdge.save(object, JSON_TOP, &cLayout, 1.0f);
-    cDefBottomEdge.save(object, JSON_BOTTOM, &cLayout, -1.0f);
-    cDefLeftEdge.save(object, JSON_LEFT, &cLayout, -1.0f);
-    cDefRightEdge.save(object, JSON_RIGHT, &cLayout, 1.0f);
-  }
-
   // bool LayoutComponent::pickHandle(float x, float y, float scale, float aspectRatio) {
   //   float mNorth = cDefTopEdge.getLocation(1.0f);
   //   float mSouth = cDefBottomEdge.getLocation(1.0f);
@@ -300,12 +292,14 @@ namespace IsoRealms::UI {
   }
     
   void LayoutComponent::define(IComponentDefiner& definer) {
-    definer.propertyString(  "ComponentName", [this]() {return getName();}, [this](const std::string& value) {std::cout << "TODO: Set layout component name" << std::endl;});
-    definer.propertyResource(JSON_SCREEN,     cDefScreen);
-    definer.scope(           JSON_LEFT,       "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefLeftEdge.define(editingDefiner);});
-    definer.scope(           JSON_RIGHT,      "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefRightEdge.define(editingDefiner);});
-    definer.scope(           JSON_TOP,        "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefTopEdge.define(editingDefiner);});
-    definer.scope(           JSON_BOTTOM,     "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefBottomEdge.define(editingDefiner);});
+    definer.propertyString(  "id",        [this]() {return getName();}, [this](const std::string& value) {cLayout.setName(this, value);}, "", [this](const std::string& value) {return cLayout.isNameAllowed(this, value);});
+    definer.propertyResource(JSON_SCREEN, cDefScreen);
+    Options mScopeHint;
+    mScopeHint.addOption(Options::PROPERTY_SCOPED, "true");
+    definer.scope(           JSON_LEFT,   "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefLeftEdge.define(  editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           JSON_RIGHT,  "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefRightEdge.define( editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           JSON_TOP,    "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefTopEdge.define(   editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           JSON_BOTTOM, "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefBottomEdge.define(editingDefiner);}, nullptr, mScopeHint);
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {

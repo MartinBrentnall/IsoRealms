@@ -25,10 +25,6 @@ namespace IsoRealms::Basics {
             cDefStartValue(sequence.getComponentData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
 
-  SequenceTrackFloat::SequenceTrackFloat(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackFloat(metadata, sequence) {
-  }
-
   const Float& SequenceTrackFloat::getStartValue() const {
     return cDefStartValue;
   }
@@ -39,10 +35,6 @@ namespace IsoRealms::Basics {
 
   ISequenceTrackEvent* SequenceTrackFloat::getEvent(unsigned int time) {
     return time == 0 ? this : nullptr;
-  }
-
-  void SequenceTrackFloat::saveResourceTrack(JSONObject object) const {
-    cDefStartValue.save(object, JSON_START);
   }
 
   void SequenceTrackFloat::renderIcon() const {
@@ -85,7 +77,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackFloat::getResourceProperties(IComponentDefiner& definer) {
+  void SequenceTrackFloat::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_START, cDefStartValue);
     getBaseProperties(definer);
   }

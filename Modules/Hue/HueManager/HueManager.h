@@ -269,11 +269,9 @@ namespace IsoRealms::Hue {
     class Bulb {
       public:
       Bulb(HueManager& parent, IComponentData& data, int id);
-      Bulb(HueManager& parent, IComponentData& data, int id, JSONObject object);
-      void save(JSONObject object);
+      void define(IComponentDefiner& definer, std::function<void()> removeFunction);
       Colour& getColour();
       void sync();
-      void define(IComponentDefiner& definer, std::function<void()> removeFunction);
 
       private:
       HueManager& cParent;

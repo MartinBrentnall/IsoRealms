@@ -28,12 +28,6 @@ namespace IsoRealms::Basics {
             cDefVolume(sequence.getComponentData(), 1.0f) {
   }
 
-  SequenceTrackAudio::SequenceTrackAudio(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getComponentData(), sequence, object),
-            cMetadata(metadata),
-            cDefVolume(sequence.getComponentData(), 1.0f) {
-  }
-
   float SequenceTrackAudio::getVolume() const {
     return cDefVolume->getValue();
   }
@@ -44,10 +38,6 @@ namespace IsoRealms::Basics {
 
   ISequenceTrackEvent* SequenceTrackAudio::getEvent(unsigned int time) {
     return nullptr;
-  }
-
-  void SequenceTrackAudio::saveResourceTrack(JSONObject object) const {
-    cDefVolume.save(object, JSON_VOLUME);
   }
 
   // std::vector<ISequenceTrackEvent*> SequenceTrackAudio::getEvents() {
@@ -83,7 +73,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackAudio::getResourceProperties(IComponentDefiner& definer) {
+  void SequenceTrackAudio::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_VOLUME, cDefVolume);
     getBaseProperties(definer);
   }

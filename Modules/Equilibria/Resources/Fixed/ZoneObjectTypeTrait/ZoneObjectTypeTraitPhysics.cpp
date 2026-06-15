@@ -25,17 +25,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
   
-  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitPhysics(metadata, type) {
-    cDefMovableID = object.getString(JSON_CONTROLS);
-    cDefStepReach = object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH);
-    cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
-    cDefRadius = object.getFloat(JSON_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = object.getFloat(JSON_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_BOUNCE_FACTOR);
-    cDefUseNonSolid = object.getBoolean(JSON_USE_NON_SOLID, DEFAULT_USE_NON_SOLID);
-  }
-
   void ZoneObjectTypeTraitPhysics::publish(EquilibriaResourceRegistry& registry, const std::string& parentID) {
     // Nothing to do.
   }
@@ -70,16 +59,6 @@ namespace IsoRealms::Equilibria {
 
   bool ZoneObjectTypeTraitPhysics::triggersContacts() const {
     return false; // TODO: Configurable!
-  }
-
-  void ZoneObjectTypeTraitPhysics::save(JSONObject object) const {
-    object.addString(JSON_CONTROLS, cDefMovableID);
-    object.addFloat(JSON_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
-    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    object.addFloat(JSON_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
-    object.addFloat(JSON_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
-    object.addBoolean(JSON_USE_NON_SOLID, cDefUseNonSolid, DEFAULT_USE_NON_SOLID);
   }
 
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitPhysics::createTrait(ZoneObject& object) {

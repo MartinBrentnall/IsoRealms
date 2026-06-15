@@ -24,21 +24,12 @@ namespace IsoRealms::Basics {
             cMetadata(metadata) {
   }
 
-  SequenceTrackAction::SequenceTrackAction(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getComponentData(), sequence, object),
-            cMetadata(metadata) {
-  }
-  
   const Metadata& SequenceTrackAction::getMetadata() const {
     return cMetadata;
   }
 
   ISequenceTrackEvent* SequenceTrackAction::getEvent(unsigned int time) {
     return nullptr;
-  }
-
-  void SequenceTrackAction::saveResourceTrack(JSONObject object) const {
-    // Nothing to do.
   }
 
   void SequenceTrackAction::renderIcon() const {
@@ -60,7 +51,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackAction::getResourceProperties(IComponentDefiner& definer) {
+  void SequenceTrackAction::defineResource(IComponentDefiner& definer) {
     getBaseProperties(definer);
   }
 }

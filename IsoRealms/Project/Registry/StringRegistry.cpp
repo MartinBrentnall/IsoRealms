@@ -87,7 +87,7 @@ namespace IsoRealms {
     return cValue;
   }
 
-  void StringRegistry::Literal::Instance::getResourceProperties(IComponentDefiner& definer) {
+  void StringRegistry::Literal::Instance::defineResource(IComponentDefiner& definer) {
     definer.propertyString(JSON_VALUE, [this]() {return cValue;}, [this](const std::string& value) {cValue = value;});
   }
 
@@ -101,9 +101,5 @@ namespace IsoRealms {
 
   bool StringRegistry::Literal::Instance::isConfigurable() const {
     return false;
-  }
-
-  void StringRegistry::Literal::Instance::saveResource(JSONObject object) const {
-    object.addString(JSON_VALUE, cValue);
   }
 }

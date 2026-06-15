@@ -36,15 +36,11 @@ namespace IsoRealms {
     return cValue;
   }
 
-  void FloatRegistry::Literal::Instance::getResourceProperties(IComponentDefiner& definer) {
+  void FloatRegistry::Literal::Instance::defineResource(IComponentDefiner& definer) {
     definer.propertyFloat(JSON_VALUE, [this]() {return cValue;}, [this](float value) {cValue = value;});
   }
 
   bool FloatRegistry::Literal::Instance::isDefaultConfiguration() const {
     return cValue == 0.0f;
-  }
-
-  void FloatRegistry::Literal::Instance::saveResource(JSONObject object) const {
-    object.addFloat(JSON_VALUE, cValue);
   }
 }

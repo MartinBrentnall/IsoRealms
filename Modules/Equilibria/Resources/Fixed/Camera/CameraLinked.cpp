@@ -80,16 +80,11 @@ namespace IsoRealms::Equilibria {
     // TODO: Implement this.
   }
 
-  void CameraLinked::getResourceProperties(IComponentDefiner& definer) {
+  void CameraLinked::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_VIEW, cDefLinkedView);
   }
 
   bool CameraLinked::isDefaultConfiguration() const {
     return false; // TODO: Implement
   }
-
-  CameraLinked::CameraLinked(const Metadata& metadata, WorldView& view, JSONObject object) :
-            CameraLinked(metadata, view) {
-  }
-
 }

@@ -37,7 +37,6 @@ namespace IsoRealms::UI {
     void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override;
     void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override;
     void setID(const std::string& id) override;
-    void save(JSONObject object, const std::string& name) const;
     TreeItemInfo getTreeItemInfo() const override;
     std::string getTreeItemLabel() const override;
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;

@@ -72,16 +72,6 @@ namespace IsoRealms {
     return mProposedName;
   }
 
-  void ProjectLaunchConfiguration::save(JSONObject object, const ProjectFile& savingProject) const {
-    if (&savingProject == cDefOwner.getProjectFile()) {
-      JSONObject mLaunchConfigurationObject = object.addObject(cDefName);
-      JSONObject mOptionsObject = mLaunchConfigurationObject.addObject(JSON_OPTIONS);
-      for (const std::unique_ptr<Option>& mOption : cDefOptions) {
-        mOption->save(mOptionsObject);
-      }
-    }
-  }
-
   bool ProjectLaunchConfiguration::isOwnedBy(const ProjectFile& project) const {
     return &project == cDefOwner.getProjectFile();
   }
@@ -115,9 +105,5 @@ namespace IsoRealms {
   void ProjectLaunchConfiguration::Option::getProperties(IComponentDefiner& definer, const Metadata& metadata, ProjectLaunchConfiguration& launch) {
     definer.propertyString(  "LaunchConfigurationOptionName",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
     definer.propertyResource("LaunchConfigurationOptionValue", cDefValue);
-  }
-
-  void ProjectLaunchConfiguration::Option::save(JSONObject object) const {
-    cDefValue.save(object, cDefName);
   }
 }

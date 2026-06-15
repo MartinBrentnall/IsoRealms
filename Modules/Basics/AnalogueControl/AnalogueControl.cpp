@@ -28,16 +28,6 @@ namespace IsoRealms::Basics {
             cLuaBinding(basics.getProject().getLuaState(), this) {
   }
 
-  AnalogueControl::AnalogueControl(Basics& basics, IComponentData& data, JSONObject object) :
-            AnalogueControl(basics, data) {
-    for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
-      JSONObject mMappingObject = mMappingValue.getObject();
-      std::shared_ptr<AnalogueInput> mInput = std::make_shared<AnalogueInput>(data);
-      mInput->set(mMappingObject);
-      cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
-    }
-  }
-
   void AnalogueControl::define(IComponentDefiner& definer) {
     definer.array(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &definer](InputMapping& mapping) {
       mapping.define(definer, [this, &mapping]() {
@@ -123,37 +113,7 @@ namespace IsoRealms::Basics {
     cRuntimeMapping.clear();
   }
 
-  void AnalogueControl::loadCustomMapping(JSONObject object) {
-    cRuntimeMapping.clear();
-    for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
-      JSONObject mMappingsObject = mMappingsValue.getObject();
-      std::string mMappingType = mMappingsObject.getString("type");
-      if (mMappingType == "Input") {
-        std::string mInputID = mMappingsObject.getString("id");
-        for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
-          if (mMapping->getName() == mInputID) {
-            mMapping->loadCustomMapping(mMappingsObject);
-            break;
-          }
-        }
-      } else {
-        throw ParseException("Unknown tag for Basics/AnalogueInput: " + mMappingType);
-      }
-    }
-  }
-
-  void AnalogueControl::saveCustomMapping(JSONObject object) const {
-    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
-    for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
-      JSONObject mMappingsObject = mMappingsArray.addObject();
-      mMapping->save(mMappingsObject);
-    }
-    // TODO
-//     for (const std::unique_ptr<InputMapping>& mMapping : cRuntimeMapping) {
-//       mMapping->save(node);
-//     }
-  }
-AnalogueControl::InputMapping::InputMapping(std::shared_ptr<AnalogueInput> physicalInput) :
+  AnalogueControl::InputMapping::InputMapping(std::shared_ptr<AnalogueInput> physicalInput) :
             cPhysicalInput(physicalInput) {
   }
 
@@ -166,14 +126,6 @@ AnalogueControl::InputMapping::InputMapping(std::shared_ptr<AnalogueInput> physi
       cState = (*cPhysicalInput)->getState(event);
     }
     return cState;
-  }
-
-  void AnalogueControl::InputMapping::save(JSONObject object) const {
-    cPhysicalInput->save(object);
-  }
-
-  void AnalogueControl::InputMapping::loadCustomMapping(JSONObject object) {
-    (*cPhysicalInput)->loadCustomMapping(object);
   }
 
   void AnalogueControl::InputMapping::publish(ResourcePublisher& publisher) {

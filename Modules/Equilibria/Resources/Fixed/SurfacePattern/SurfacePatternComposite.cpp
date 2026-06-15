@@ -30,14 +30,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  SurfacePatternComposite::SurfacePatternComposite(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            SurfacePatternComposite(metadata, owner) {
-    for (JSONValue mPatternValue : object.getArray(JSON_PATTERNS)) {
-      JSONObject mPatternObject = mPatternValue.getObject();
-      cDefSurfacePatterns.emplace_back(std::make_unique<SurfacePattern>(owner.getEquilibria(), owner, nullptr)).get()->set(mPatternObject, JSON_PATTERN);
-    }
-  }
-
   bool SurfacePatternComposite::contains(ITexture* texture) {
     return false;
   }
@@ -76,7 +68,7 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void SurfacePatternComposite::getResourceProperties(IComponentDefiner& definer) {
+  void SurfacePatternComposite::defineResource(IComponentDefiner& definer) {
     definer.array(JSON_PATTERNS, cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &definer](SurfacePattern& surfacePattern) {
       definer.propertyResource(JSON_PATTERN, surfacePattern);
     }, [this]()->SurfacePattern& {

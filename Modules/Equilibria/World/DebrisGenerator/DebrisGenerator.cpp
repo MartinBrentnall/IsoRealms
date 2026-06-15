@@ -49,15 +49,6 @@ namespace IsoRealms::Equilibria {
     }
   }
 
-  void DebrisGenerator::save(JSONObject object) const {
-    object.addString(JSON_ID, cDefID);
-    object.addInteger(JSON_LIFE, cDefLifeTime, DEFAULT_LIFE);
-    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    object.addFloat(JSON_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
-    cDefModel.save(object, JSON_APPEARANCE);
-  }
-
   void DebrisGenerator::reset() {
     while (!cRuntimeDebris.empty()) {
       cRuntimeDebris.pop_front();

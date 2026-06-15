@@ -28,11 +28,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  SurfacePatternOutline::SurfacePatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            SurfacePatternOutline(metadata, owner) {
-    // Nothing to do.
-  }
-
   bool SurfacePatternOutline::contains(ITexture* texture) {
     return false;
   }

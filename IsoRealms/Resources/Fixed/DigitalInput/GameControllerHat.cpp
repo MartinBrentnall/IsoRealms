@@ -25,20 +25,11 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  GameControllerHat::DirectionChooser::DirectionChooser(const Metadata& metadata) :
-          cMetadata(metadata) {
-  }
-
   GameControllerHat::GameControllerHat(const Metadata& metadata, IComponentData& owner) :
           cMetadata(metadata),
           cHatHandler(owner.getProject().getApplication().getHatHandler()),
           cDirectionChooser(metadata),
           cDirection(HatHandler::Direction::HAT_RIGHT) {
-  }
-
-  GameControllerHat::GameControllerHat(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-          GameControllerHat(metadata, owner) {
-    cDirection = getDirection(object.getString(JSON_DIRECTION));
   }
 
   bool GameControllerHat::matches(const sf::Event& event) const {
@@ -104,11 +95,7 @@ namespace IsoRealms {
     throw ArgumentException("ERROR: HatMapping::getName: Specified direction value is not known.");
   }
 
-  void GameControllerHat::saveResource(JSONObject object) const {
-    object.addString(JSON_DIRECTION, getName(cDirection));
-  }
-
-  void GameControllerHat::getResourceProperties(IComponentDefiner& definer) {
+  void GameControllerHat::defineResource(IComponentDefiner& definer) {
     definer.propertyOptional(JSON_DIRECTION, cDirectionChooser, "", []() {
       return true;
     }, [this](const std::string& direction) {
@@ -122,5 +109,9 @@ namespace IsoRealms {
     for (std::map<std::string, HatHandler::Direction>::const_iterator i = cDirectionsByName.begin(); i != cDirectionsByName.end(); i++) {
       getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
     }
+  }
+
+  GameControllerHat::DirectionChooser::DirectionChooser(const Metadata& metadata) :
+          cMetadata(metadata) {
   }
 }

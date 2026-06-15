@@ -77,10 +77,6 @@ namespace IsoRealms::UI {
       return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
     }
 
-    template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
-      ResourceContainerTraits<TYPE>::get(*this).save(object, resource);
-    }
-
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& treeItemInfoFunction) const {
       ResourceContainerTraits<TYPE>::get(*this).forEachEntry(treeItemInfoFunction);
     }

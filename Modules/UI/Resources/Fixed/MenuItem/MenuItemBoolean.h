@@ -33,7 +33,6 @@ namespace IsoRealms::UI {
   class MenuItemBoolean final : public IMenuItem {
     public:
     MenuItemBoolean(const Metadata& metadata, Menu& menu);
-    MenuItemBoolean(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -44,7 +43,7 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher) override;
     void reset() override;

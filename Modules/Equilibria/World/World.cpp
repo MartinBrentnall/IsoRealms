@@ -110,13 +110,9 @@ World::World(Equilibria& equilibria, IComponentData& data) :
   }
 
   void World::save(IComponentData& resourceData, JSONObject object) const {
-    JSONArray mDebrisGeneratorsArray = object.addArray(JSON_DEBRIS_GENERATORS);
     JSONArray mPlayersArray = object.addArray(JSON_PLAYERS);
     JSONArray mZonesArray = object.addArray(JSON_ZONES);
 
-    for (const std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
-      mDebrisGenerator->save(mDebrisGeneratorsArray.addObject());
-    }
     for (const std::unique_ptr<Player>& mPlayer : cDefPlayers) {
       mPlayer->save(mPlayersArray.addObject());
     }

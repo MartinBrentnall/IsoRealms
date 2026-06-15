@@ -25,12 +25,6 @@ namespace IsoRealms::Basics {
             cDefStartScreen(sequence.getComponentData()) {
   }
 
-  SequenceTrackScreen::SequenceTrackScreen(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getComponentData(), sequence, object),
-            cMetadata(metadata),
-            cDefStartScreen(sequence.getComponentData()) {
-  }
-
   const Screen& SequenceTrackScreen::getStartScreen() const {
     return cDefStartScreen;
   }
@@ -41,10 +35,6 @@ namespace IsoRealms::Basics {
 
   ISequenceTrackEvent* SequenceTrackScreen::getEvent(unsigned int time) {
     return time == 0 ? this : nullptr;
-  }
-
-  void SequenceTrackScreen::saveResourceTrack(JSONObject object) const {
-    cDefStartScreen.save(object, JSON_START);
   }
 
   void SequenceTrackScreen::renderIcon() const {
@@ -73,7 +63,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackScreen::getResourceProperties(IComponentDefiner& definer) {
+  void SequenceTrackScreen::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_START, cDefStartScreen);
     getBaseProperties(definer);
   }

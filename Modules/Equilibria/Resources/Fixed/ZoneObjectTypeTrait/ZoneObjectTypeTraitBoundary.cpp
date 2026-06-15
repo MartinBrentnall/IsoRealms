@@ -30,13 +30,6 @@ namespace IsoRealms::Equilibria {
     cDefType.getEquilibria().added(this);
   }
   
-  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitBoundary(metadata, type) {
-    cDefInitiallyEnabled = object.getBoolean(JSON_ENABLED, true);
-    cDefStartID = object.getString(JSON_START);
-    cDefEndID = object.getString(JSON_END, cDefStartID);
-  }
-
   void ZoneObjectTypeTraitBoundary::publish(EquilibriaResourceRegistry& registry, const std::string& parentID) {
     // TODO: project.add(this); // Boundary type
   }
@@ -53,12 +46,6 @@ namespace IsoRealms::Equilibria {
     return cDefInitiallyEnabled;
   }    
   
-  void ZoneObjectTypeTraitBoundary::save(JSONObject object) const {
-    object.addBoolean(JSON_ENABLED, cDefInitiallyEnabled, true);
-    object.addString(JSON_START, cDefStartID);
-    object.addString(JSON_END, cDefEndID, cDefStartID);
-  }
-
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitBoundary::createTrait(ZoneObject& object) {
     return std::make_unique<Boundary>(*this, object);
   }

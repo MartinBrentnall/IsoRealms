@@ -35,12 +35,6 @@ namespace IsoRealms::Basics {
               cDefName("Unnamed Track") {
     }
 
-    SequenceTrackBase(IComponentData& owner, Sequence& sequence, JSONObject object) :
-              cSequence(sequence),
-              cOwner(owner),
-              cDefName(object.getString(JSON_NAME)) {
-    }
-
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
@@ -138,19 +132,6 @@ namespace IsoRealms::Basics {
       }, [this]() -> EVENT& {
         return *cDefEvents.emplace_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), cOwner, 0));
       });
-    }
-
-    /*******************************************\
-     * Implements IResource via ISequenceTrack *
-    \*******************************************/
-    void saveResource(JSONObject object) const override {
-      object.addString(JSON_NAME, cDefName);
-      static_cast<const DERIVED*>(this)->saveResourceTrack(object);
-      JSONArray mEventsArray = object.addArray(JSON_EVENTS);
-      for (const std::unique_ptr<EVENT>& mEvent : cDefEvents) {
-        JSONObject mEventObject = mEventsArray.addObject();
-        mEvent->save(mEventObject);
-      }
     }
 
     private:

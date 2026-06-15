@@ -27,12 +27,6 @@ namespace IsoRealms::Equilibria {
             cDefTarget(type.getComponentData()) {
   }
   
-  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitChaser(metadata, type) {
-    cDefTarget.init(object, JSON_TARGET);
-    cDefObjectID = object.getString("object");
-  }
-
   void ZoneObjectTypeTraitChaser::publish(EquilibriaResourceRegistry& registry, const std::string& parentID) {
     // Nothing to do.
   }
@@ -43,10 +37,6 @@ namespace IsoRealms::Equilibria {
   
   std::string ZoneObjectTypeTraitChaser::getObjectID() const {
     return cDefObjectID;
-  }
-
-  void ZoneObjectTypeTraitChaser::save(JSONObject object) const {
-    cDefTarget.save(object, JSON_TARGET);
   }
 
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitChaser::createTrait(ZoneObject& object) {

@@ -36,18 +36,16 @@ namespace IsoRealms::Basics {
                                     public ISequenceTrackEvent {
     public:
     SequenceTrackColour(const Metadata& metadata, Sequence& sequence);
-    SequenceTrackColour(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     const Colour& getStartColour() const;
     const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
-    void saveResourceTrack(JSONObject object) const;
 
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
 
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
     /**********************************\

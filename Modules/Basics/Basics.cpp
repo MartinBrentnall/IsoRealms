@@ -140,53 +140,6 @@ namespace IsoRealms::Basics {
     return mAvailableID;
   }
 
-  void Basics::reloadGlobalConfiguration() {
-    if (System::fileExists(GLOBAL_CONFIGURATION_FILE, true)) {
-      JSONDocument mModuleSettingsDocument(GLOBAL_CONFIGURATION_FILE, true);
-      JSONObject mModuleSettingsObject = mModuleSettingsDocument.getObject(JSON_MODULE_SETTINGS);
-      setSoundVolume(mModuleSettingsObject.getFloat(JSON_SOUND_VOLUME));
-      setMusicVolume(mModuleSettingsObject.getFloat(JSON_MUSIC_VOLUME));
-      for (JSONValue mDigitalInputMappingValue : mModuleSettingsObject.getArray(JSON_DIGITAL_INPUT_MAPPINGS)) {
-        JSONObject mDigitalInputMappingObject = mDigitalInputMappingValue.getObject();
-        std::string mInputID = mDigitalInputMappingObject.getString(JSON_ID);
-        DigitalControl* mDigitalInput = cComponentTypeDigitalControl.getComponent(mInputID);
-        if (mDigitalInput == nullptr) {
-          throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Digital input \"" + mInputID + "\" not found.");
-        }
-        mDigitalInput->loadCustomMapping(mDigitalInputMappingObject);
-      }
-      for (JSONValue mAnalogueInputMappingValue : mModuleSettingsObject.getArray(JSON_ANALOGUE_INPUT_MAPPINGS)) {
-        JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingValue.getObject();
-        std::string mInputID = mAnalogueInputMappingObject.getString(JSON_ID);
-        AnalogueControl* mAnalogueInput = cComponentTypeAnalogueControl.getComponent(mInputID);
-        if (mAnalogueInput == nullptr) {
-          throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Analogue input \"" + mInputID + "\" not found.");
-        }
-        mAnalogueInput->loadCustomMapping(mAnalogueInputMappingObject);
-      }
-    }
-  }
-  
-  void Basics::persistGlobalConfiguration() {
-    JSONDocument mModuleSettingsDocument;
-    JSONObject mModuleSettingsObject =  mModuleSettingsDocument.addObject(JSON_MODULE_SETTINGS);
-    mModuleSettingsObject.addFloat(JSON_SOUND_VOLUME, getSoundVolume());
-    mModuleSettingsObject.addFloat(JSON_MUSIC_VOLUME, getMusicVolume());
-    JSONArray mDigitalInputMappingArray = mModuleSettingsObject.addArray(JSON_DIGITAL_INPUT_MAPPINGS);
-    for (DigitalControl* mDigitalInput : cComponentTypeDigitalControl) {
-      JSONObject mDigitalInputMappingObject = mDigitalInputMappingArray.addObject();
-      mDigitalInputMappingObject.addString(JSON_ID, cComponentTypeDigitalControl.getID(mDigitalInput));
-      mDigitalInput->saveCustomMapping(mDigitalInputMappingObject);
-    }
-    JSONArray mAnalogueInputMappingArray = mModuleSettingsObject.addArray(JSON_ANALOGUE_INPUT_MAPPINGS);
-    for (AnalogueControl* mAnalogueInput : cComponentTypeAnalogueControl) {
-      JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingArray.addObject();
-      mAnalogueInputMappingObject.addString(JSON_ID, cComponentTypeAnalogueControl.getID(mAnalogueInput));
-      mAnalogueInput->saveCustomMapping(mAnalogueInputMappingObject);
-    }
-    mModuleSettingsDocument.save(GLOBAL_CONFIGURATION_FILE);
-  }
-
   float Basics::getSoundVolume() {
     return cSoundVolume;
   }

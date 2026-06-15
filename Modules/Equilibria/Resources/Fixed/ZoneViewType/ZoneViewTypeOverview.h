@@ -32,7 +32,6 @@ namespace IsoRealms::Equilibria {
     
     // Constructors.
     ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView);
-    ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView, JSONObject object);
 
     void bind1(ZoneViewOverview* zoneViewOverview);
     void bind2(ZoneViewOverview* zoneViewOverview);

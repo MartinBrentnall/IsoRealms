@@ -44,16 +44,11 @@ namespace IsoRealms::UI {
   }
 
   void MenuItem::saveToProperty(JSONObject object, const std::string& key, const Options& hint) const {
-    save(object, key);
+    std::cout << "MenuItem::saveToProperty: Not implemented." << std::endl;
   }
 
   void MenuItem::setID(const std::string& id) {
     // TODO: Implement this.
-  }
-
-  void MenuItem::save(JSONObject object, const std::string& name) const {
-    JSONObject mResourceObject = object.addObject(name);
-    cUI.save(mResourceObject, cMenuItem);
   }
 
   TreeItemInfo MenuItem::getTreeItemInfo() const {
@@ -81,7 +76,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItem::getTreeItemProperties(IComponentDefiner& definer) {
-    cMenuItem->getResourceProperties(definer);
+    cMenuItem->defineResource(definer);
   }
 
   const IsoRealms::Metadata& MenuItem::getPropertyMetadata() const {

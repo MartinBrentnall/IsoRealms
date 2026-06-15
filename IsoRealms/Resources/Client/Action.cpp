@@ -31,12 +31,4 @@ namespace IsoRealms {
   void Action::execute() {
     cManager.getProject().execute(*cResource);
   }
-
-  void Action::save(JSONObject object, const std::string& name) const {
-    Project& mProject = cManager.getProject();
-    IEventBindings* mPreviousEventBindings = mProject.getEventBindings();
-    mProject.setEventBindings(cManager.getBindingRegistry());
-    Resource<Action, IAction, IActionContext>::save(object, name);
-    mProject.setEventBindings(mPreviousEventBindings);
-  }
 }

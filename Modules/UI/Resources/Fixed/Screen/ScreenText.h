@@ -29,12 +29,11 @@ namespace IsoRealms::UI {
     
     // Constructors.
     ScreenText(const Metadata& metadata, IComponentData& owner);
-    ScreenText(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *
     \**********************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void renderScreen(float scale, float aspectRatio) const override;
 

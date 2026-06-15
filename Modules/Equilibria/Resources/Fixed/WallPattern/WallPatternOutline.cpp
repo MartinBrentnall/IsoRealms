@@ -27,11 +27,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  WallPatternOutline::WallPatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternOutline(metadata, owner) {
-    // Nothing to do.
-  }
-
   std::vector<std::unique_ptr<IVisualElement>> WallPatternOutline::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     mVisuals.emplace_back(std::make_unique<WallPatternOutlineSurface>(*this, wall));

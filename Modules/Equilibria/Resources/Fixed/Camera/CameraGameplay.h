@@ -32,10 +32,7 @@ namespace IsoRealms::Equilibria {
   class CameraGameplay final : public ICamera,
                                public IFloat {
     public:
-    
-    // Constructors.
     CameraGameplay(const Metadata& metadata, WorldView& view);
-    CameraGameplay(const Metadata& metadata, WorldView& view, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -51,7 +48,7 @@ namespace IsoRealms::Equilibria {
     /**********************\
      * Implements ICamera *
     \**********************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher, const std::string& parentID) override;
     void updateRuntime(unsigned int milliseconds) override;

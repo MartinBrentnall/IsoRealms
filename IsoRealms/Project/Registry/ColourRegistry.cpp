@@ -59,14 +59,7 @@ namespace IsoRealms {
     return cAlpha;
   }
 
-  void ColourRegistry::Literal::Instance::saveResource(JSONObject object) const {
-    object.addFloat(JSON_RED, cRed);
-    object.addFloat(JSON_GREEN, cGreen);
-    object.addFloat(JSON_BLUE, cBlue);
-    object.addFloat(JSON_ALPHA, cAlpha);
-  }
-
-  void ColourRegistry::Literal::Instance::getResourceProperties(IComponentDefiner& definer) {
+  void ColourRegistry::Literal::Instance::defineResource(IComponentDefiner& definer) {
     cEditingLastKnownHue = Utils::getHue(cRed, cGreen, cBlue);
     cEditingLastKnownSaturation = Utils::getSaturation(cRed, cGreen, cBlue);
     cEditingLastKnownLightness = Utils::getLightness(cRed, cGreen, cBlue);

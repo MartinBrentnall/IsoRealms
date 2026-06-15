@@ -238,28 +238,6 @@ namespace IsoRealms {
       JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
       file.save(mProjectObject);
 
-      // Save project used resources
-      cDefScreen.save(mProjectObject, JSON_SCREEN, file);
-      cDefInputHandler.save(mProjectObject, JSON_INPUT, file);
-      cDefDefaultEditor.save(mProjectObject, JSON_EDITOR, file);
-      cDefActionOnStart.save(mProjectObject, JSON_ON_START, file);
-      cDefActionOnCloseRequest.save(mProjectObject, JSON_ON_CLOSE_REQUEST, file);
-
-      // Save launch configurations.
-      bool mLaunchConfigurationsNeedSaving = false;
-      for (const std::unique_ptr<ProjectLaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
-        if (mLaunchConfiguration->isOwnedBy(file)) {
-          mLaunchConfigurationsNeedSaving = true;
-          break;
-        }
-      }
-      if (mLaunchConfigurationsNeedSaving) {
-        JSONObject mLaunchConfigurationsObject = mProjectObject.addObject(JSON_LAUNCH_CONFIGURATIONS);
-        for (const std::unique_ptr<ProjectLaunchConfiguration>& mLaunchConfiguration : cDefTestLaunchConfigurations) {
-          mLaunchConfiguration->save(mLaunchConfigurationsObject, file);
-        }
-      }
-
       // Save modules
       JSONObject mModulesObject = mProjectObject.addObject(JSON_MODULES);
       for (const std::unique_ptr<Module>& mModule : cDefModules) {

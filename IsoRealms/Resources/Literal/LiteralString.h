@@ -42,7 +42,6 @@ namespace IsoRealms {
     /**********************\
      * Implements IString *
     \**********************/
-    void saveResource(JSONObject object) const override;
     bool isDefaultConfiguration() const override;
     std::string getValue() const override;
 

@@ -129,7 +129,7 @@ namespace IsoRealms::Basics {
     return true;
   }
   
-  void Script::ScriptAction::getResourceProperties(IComponentDefiner& definer) {
+  void Script::ScriptAction::defineResource(IComponentDefiner& definer) {
     cDefFunction.getScriptProperties(definer);
   }
 }

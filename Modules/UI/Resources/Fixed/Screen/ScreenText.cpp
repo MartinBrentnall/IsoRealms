@@ -19,23 +19,13 @@
 #include "ScreenText.h"
 
 namespace IsoRealms::UI {
-  ScreenText::ScreenText(const Metadata& /*metadata*/, IComponentData& owner) :
+  ScreenText::ScreenText(const Metadata& metadata, IComponentData& owner) :
             cDefString(owner),
             cDefFont(owner),
             cDefColour(owner, 1.0f, 1.0f, 1.0f),
             cDefAlignment(IFont::Alignment::LEFT) {
   }
 
-  ScreenText::ScreenText(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-            ScreenText(metadata, owner) {
-    std::string mAlignment = object.getString(JSON_ALIGNMENT);
-    setAlignment(mAlignment);
-    cDefString.set(object, JSON_VALUE);
-    cDefFont.set(object, JSON_FONT);
-    cDefColour.set(object, JSON_COLOUR);
-    cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
-  }
-  
   void ScreenText::renderScreen(float scale, float aspectRatio) const {
     float mX = cDefAlignment == IFont::Alignment::LEFT  ? -aspectRatio
              : cDefAlignment == IFont::Alignment::RIGHT ?  aspectRatio
@@ -44,12 +34,12 @@ namespace IsoRealms::UI {
     glBindTexture(GL_TEXTURE_2D, 0);
   }
 
-  void ScreenText::getResourceProperties(IComponentDefiner& definer) {
+  void ScreenText::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_VALUE,         cDefString);
     definer.propertyResource(JSON_FONT,          cDefFont);
-    definer.propertyList(        JSON_ALIGNMENT,     std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
+    definer.propertyList(    JSON_ALIGNMENT,     std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
     definer.propertyResource(JSON_COLOUR,        cDefColour);
-    definer.propertyFloat( JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyFloat(   JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
   }
   
   bool ScreenText::isDefaultConfiguration() const {

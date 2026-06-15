@@ -28,12 +28,6 @@ namespace IsoRealms::Basics {
             cDefFade(fade) {
   }
 
-  void SequenceTrackColourEvent::save(JSONObject object) const {
-    object.addInteger(JSON_DURATION, cDefTime);
-    object.addBoolean(JSON_FADE, cDefFade, true);
-    cDefTarget.save(object, JSON_TARGET);
-  }
-
   unsigned int SequenceTrackColourEvent::getTime() const {
     return cDefTime;
   }

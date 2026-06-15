@@ -31,15 +31,12 @@ namespace IsoRealms::Equilibria {
 
   class CameraVariant final : public ICamera {
     public:
-    
-    // Constructors.
     CameraVariant(const Metadata& metadata, WorldView& view);
-    CameraVariant(const Metadata& metadata, WorldView& view, JSONObject object);
 
     /**********************\
      * Implements ICamera *
     \**********************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher, const std::string& parentID) override;
     void updateRuntime(unsigned int milliseconds) override;

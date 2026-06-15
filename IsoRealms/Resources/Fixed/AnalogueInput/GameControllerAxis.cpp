@@ -28,18 +28,12 @@
 
 namespace IsoRealms {
   GameControllerAxis::AxisChooser::AxisChooser(const Metadata& metadata) :
-          cMetadata(metadata) {
+            cMetadata(metadata) {
   }
   
   GameControllerAxis::GameControllerAxis(const Metadata& metadata, IComponentData& owner) :
             cMetadata(metadata),
             cAxisChooser(metadata) {
-  }
-
-  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-          GameControllerAxis(metadata, owner) {
-    cDefAxis = object.getInteger(JSON_AXIS);
-    cDefDeadZone = object.getFloat(JSON_DEAD_ZONE);
   }
 
   std::string GameControllerAxis::getName() const {
@@ -67,20 +61,11 @@ namespace IsoRealms {
     return getChoiceLabel(cMetadata, cDefAxis);
   }
   
-  void GameControllerAxis::loadCustomMapping(JSONObject object) {
-    // Nothing to do.
-  }
-
   void GameControllerAxis::publish(ResourcePublisher& publisher) {
     // Nothing to do.
   }
 
-  void GameControllerAxis::saveResource(JSONObject object) const {
-    object.addInteger(JSON_AXIS, cDefAxis);
-    object.addFloat(JSON_DEAD_ZONE, cDefDeadZone);
-  }
-
-  void GameControllerAxis::getResourceProperties(IComponentDefiner& definer) {
+  void GameControllerAxis::defineResource(IComponentDefiner& definer) {
     Options mNoEdit;
     mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
     Options mNoPersist;

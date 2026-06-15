@@ -38,8 +38,4 @@ namespace IsoRealms {
   bool LiteralString::isDefaultConfiguration() const {
     return cValue == "";
   }
-
-  void LiteralString::saveResource(JSONObject object) const {
-    object.addString(JSON_VALUE, cValue);
-  }
 }

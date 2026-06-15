@@ -36,7 +36,6 @@ namespace IsoRealms::UI {
   class MenuItemDisplayResolution final : public IMenuItem {
     public:
     MenuItemDisplayResolution(const Metadata& metadata, Menu& menu);
-    MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -47,7 +46,7 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher) override;
     void reset() override;

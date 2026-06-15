@@ -100,7 +100,6 @@ namespace IsoRealms {
         /*************************************\
          * Implements IResource from IVertex *
         \*************************************/
-        void saveResource(JSONObject object) const override;
         bool isDefaultConfiguration() const override;
       };
     };

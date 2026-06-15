@@ -52,12 +52,6 @@ namespace IsoRealms {
       return cIcon != nullptr ? cIcon() : false;
     }
 
-    void saveResource(JSONObject object) const override {
-      if (cEvent) {
-        object.addString(JSON_LOCAL, cLuaState.getBindingID(this));
-      }
-    }
-
     void bind(const std::string& bindFunction) const override;
     
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {

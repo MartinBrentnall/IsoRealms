@@ -18,6 +18,8 @@
  */
 #include "Layout.h"
 
+#include "IsoRealms/Project/Options.h"
+
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
@@ -27,29 +29,26 @@ namespace IsoRealms::UI {
   }
   
   void Layout::load(IComponentData& resourceData, JSONObject object) {
-    for (JSONValue mComponentValue : object.getArray(JSON_COMPONENTS)) {
-      JSONObject mComponentObject = mComponentValue.getObject();
-      std::string mComponentName = mComponentObject.getString(JSON_ID);
-      if (cComponentsByName.find(mComponentName) != cComponentsByName.end()) {
-        throw ParseException("Duplicate component name in screen layout: " + mComponentName);
-      }
-      // TODO: Is this an implicit "new"!!?
-      cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, mComponentObject));
-      cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
-    }
+    // Nothing to do.
   }
 
   void Layout::save(IComponentData& resourceData, JSONObject object) const {
-    JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
-    for (LayoutComponent* mComponent : cComponentsByOrder) {
-      JSONObject mComponentObject = mComponentsArray.addObject();
-      mComponentObject.addString(JSON_ID, getName(mComponent));
-      mComponent->save(mComponentObject);
-    }
+    // Nothing to do.
   }
 
   void Layout::define(IComponentDefiner& definer) {
     definer.propertyEditor("Content", this);
+    definer.array(JSON_COMPONENTS, cComponentsByOrder, [](LayoutComponent* mComponent) -> LayoutComponent& {return *mComponent;}, [this, &definer](LayoutComponent& component) {
+      Options mComponentsHint;
+      mComponentsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
+      definer.scope("Component", getName(&component), [this, &component, &definer](IComponentDefiner& editingDefiner) {
+        if (editingDefiner.loadsPersistedValues() || editingDefiner.savesPersistedValues()) {
+          component.define(editingDefiner);
+        }
+      }, nullptr, mComponentsHint);
+    }, [this]() -> LayoutComponent& {
+      return *createComponent(0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+    });
   }
 
   void Layout::publish(ResourcePublisher& publisher) {
@@ -213,22 +212,30 @@ namespace IsoRealms::UI {
   }
 
   void Layout::setName(LayoutComponent* component, const std::string& name) {
-
-    // Check if another component already has the name.
-    const LayoutComponent* mComponent = getComponent(name);
-    if (mComponent == nullptr) {
-
-      // The rename only takes place once we find the old entry so we can remove it.
-      for (const std::pair<const std::string, LayoutComponent>& mNamedComponent : cComponentsByName) {
-        if (&mNamedComponent.second == component) {
-          mComponent = &mNamedComponent.second;
-          cComponentsByName.erase(mNamedComponent.first);
-//          cComponentsByName.emplace(name, *mComponent);
-          return;
-        }
-      }
-      throw ArgumentException("ERROR: Layout::setName: Specified component not found in this layout.");
+    std::map<std::string, LayoutComponent>::iterator mExisting = cComponentsByName.find(name);
+    if (mExisting != cComponentsByName.end() && &mExisting->second != component) {
+      throw ArgumentException("ERROR: Layout::setName: Duplicate component name \"" + name + "\".");
     }
+    
+    for (std::map<std::string, LayoutComponent>::iterator mNamedComponent = cComponentsByName.begin(); mNamedComponent != cComponentsByName.end(); ++mNamedComponent) {
+      if (&mNamedComponent->second == component) {
+        if (mNamedComponent->first != name) {
+          std::map<std::string, LayoutComponent>::node_type mNode = cComponentsByName.extract(mNamedComponent);
+          mNode.key() = name;
+          cComponentsByName.insert(std::move(mNode));
+        }
+        return;
+      }//
+    }
+    throw ArgumentException("ERROR: Layout::setName: Specified component not found in this layout.");
+  }
+
+  bool Layout::isNameAllowed(LayoutComponent* component, const std::string& name) {
+    std::map<std::string, LayoutComponent>::iterator mNamedComponent = cComponentsByName.find(name);
+    if (mNamedComponent != cComponentsByName.end()) {
+      return &mNamedComponent->second == component;
+    }
+    return true;
   }
 
   std::vector<std::string> Layout::getAvailableRelativeNames(LayoutComponent* component) {

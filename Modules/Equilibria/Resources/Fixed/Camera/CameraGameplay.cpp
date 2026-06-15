@@ -162,7 +162,7 @@ namespace IsoRealms::Equilibria {
     return Utils::sine(cRuntimePreviousValue, cRuntimeCurrentValue, mGradient);
   }
 
-  void CameraGameplay::getResourceProperties(IComponentDefiner& definer) {
+  void CameraGameplay::defineResource(IComponentDefiner& definer) {
     definer.propertyList(JSON_DIRECTION,
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},
@@ -201,15 +201,5 @@ namespace IsoRealms::Equilibria {
          : value == DIRECTION_SOUTH_EAST ? VALUE_SOUTH_EAST
          : value == DIRECTION_SOUTH_WEST ? VALUE_SOUTH_WEST
          :                                 VALUE_INVALID;
-  }
-
-  CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view, JSONObject object) :
-            CameraGameplay(metadata, view) {
-    cDefAngle = getDirectionValue(object.getString(JSON_DIRECTION));
-    cDefRollDuration = object.getInteger(JSON_ROTATE_DURATION, DEFAULT_DURATION);
-    if (cDefAngle == VALUE_INVALID) {
-// TODO      std::cout << "WARNING: CameraGameplay::CameraGameplay(): Unexpected direction name: \"" << mDirectionName << "\" (using default value VALUE_NORTH_WEST)" << std::endl;
-      cDefAngle = VALUE_NORTH_WEST;
-    }
   }
 }

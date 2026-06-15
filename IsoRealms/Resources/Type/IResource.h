@@ -39,11 +39,7 @@ namespace IsoRealms {
       return false;
     }
 
-    virtual void saveResource(JSONObject object) const {
-      // Nothing to do.
-    }
-
-    virtual void getResourceProperties(IComponentDefiner& definer) {
+    virtual void defineResource(IComponentDefiner& definer) {
       // Nothing to do.
     }
     

@@ -27,10 +27,6 @@ namespace IsoRealms::UI {
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 
-  MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu, JSONObject object) :
-            MenuItemDigitalInput(metadata, menu) {  
-  }
-  
   void MenuItemDigitalInput::publish(ResourcePublisher& publisher) {
     if (!cDefID.empty()) {
       publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Digital Inputs");
@@ -144,7 +140,7 @@ namespace IsoRealms::UI {
     return cDefID;
   }
 
-  void MenuItemDigitalInput::getResourceProperties(IComponentDefiner& definer) {
+  void MenuItemDigitalInput::defineResource(IComponentDefiner& definer) {
     definer.propertyString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();

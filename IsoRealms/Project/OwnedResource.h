@@ -46,12 +46,6 @@ namespace IsoRealms {
       return &cResource;
     }
 
-    void save(JSONObject object, const std::string& tag, const ProjectFile& saving) const {
-      if (cOwner.getProjectFile() == &saving) {
-        cResource.save(object, tag);
-      }
-    }
-
     void getProperty(IComponentDefiner& definer, const Metadata& metadata, const std::string& name, ProjectFile* loadOwner = nullptr) {
       if (definer.loadsPersistedValues()) {
         if (loadOwner != nullptr && !cInit && definer.hasPersistedMember(name)) {

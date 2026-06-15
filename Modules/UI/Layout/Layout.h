@@ -75,6 +75,7 @@ namespace IsoRealms::UI {
     LayoutComponent* getComponent(const std::string& name);
     std::string getName(const LayoutComponent* component) const;
     void setName(LayoutComponent* component, const std::string& name);
+    bool isNameAllowed(LayoutComponent* component, const std::string& name);
     std::vector<std::string> getAvailableRelativeNames(LayoutComponent* component);
     void renderEditing(float scale, float aspectRatio) const;
     LayoutComponent* pickComponent(float x, float y, float scale, float aspectRatio) const;

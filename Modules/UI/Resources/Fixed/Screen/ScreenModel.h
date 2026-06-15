@@ -29,7 +29,6 @@ namespace IsoRealms::UI {
     
     // Constructors.
     ScreenModel(const Metadata& metadata, IComponentData& owner);
-    ScreenModel(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
@@ -38,7 +37,7 @@ namespace IsoRealms::UI {
      * Implements IScreen *
     \**********************/
     bool renderResourceIcon() const override;
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void renderScreen(float scale, float aspectRatio) const override;
 

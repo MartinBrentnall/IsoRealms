@@ -182,11 +182,6 @@ namespace IsoRealms::Replay {
     cStateNotifier = publisher.publish<IBoolean>(this, cDefName, "Replayer Digital Input");
   }
 
-  void Replayer::DigitalInput::save(JSONObject object) const {
-    object.addString(JSON_NAME, cDefName);
-    cDefActualInput.save(object, JSON_VALUE);
-  }
-  
   void Replayer::DigitalInput::define(IComponentDefiner& definer) {
     definer.propertyString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
     definer.propertyResource(JSON_VALUE, cDefActualInput);
@@ -241,11 +236,6 @@ namespace IsoRealms::Replay {
     cStateNotifier = publisher.publish<IFloat>(this, cDefName, "Replayer Analogue Input");
   }
 
-  void Replayer::AnalogueInput::save(JSONObject object) const {
-    object.addString(JSON_NAME, cDefName);
-    cDefActualInput.save(object, JSON_VALUE);
-  }
-  
   void Replayer::AnalogueInput::define(IComponentDefiner& definer) {
     definer.propertyString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
     definer.propertyResource(JSON_VALUE, cDefActualInput);

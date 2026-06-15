@@ -36,24 +36,19 @@ namespace IsoRealms::Basics {
   class DigitalToAnalogueMapping final : public IAnalogueInput {
     public:
     DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner);
-    DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /************************************\
      * Implements IAnalogueInputMapping *
     \************************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     std::string getName() const override;
     float getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
     std::string getLocalizedName() const override;
-    void loadCustomMapping(JSONObject object) override;
     void publish(ResourcePublisher& publisher) override;
 
-    /**********************\
-     * Implements IResource *
-    \**********************/
     private:
 
     // External interfaces.

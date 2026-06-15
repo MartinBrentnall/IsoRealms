@@ -33,12 +33,11 @@
    class SurfacePatternComposite : public ISurfacePattern {
      public:
      SurfacePatternComposite(const Metadata& metadata, TerrainType& owner);
-     SurfacePatternComposite(const Metadata& metadata, TerrainType& owner, JSONObject object);
  
      /******************************\
       * Implements ISurfacePattern *
      \******************************/
-     void getResourceProperties(IComponentDefiner& definer) override;
+     void defineResource(IComponentDefiner& definer) override;
      bool contains(ITexture*) override;
      std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Surface* surface) override;
      std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(SplitSurface* surface) override;

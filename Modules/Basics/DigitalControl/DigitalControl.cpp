@@ -167,32 +167,10 @@ namespace IsoRealms::Basics {
     return cInput;
   }
 
-  void DigitalControl::InputMapping::save(JSONObject object) const {
-    cInput->save(object);
-  }
-
   void DigitalControl::InputMapping::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_INLINE, "true");
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
     definer.propertyResource("DefaultMapping", *cInput, mHint, removeFunction);
-  }
-
-  void DigitalControl::loadCustomMapping(JSONObject object) {
-    cRuntimeMapping.clear();
-    for (JSONValue mMappingsValue : object.getArray(JSON_MAPPINGS)) {
-      JSONObject mMappingObject = mMappingsValue.getObject();
-      std::shared_ptr<DigitalInput> mInput = std::make_shared<DigitalInput>(cComponentData);
-      mInput->set(mMappingObject);
-      cRuntimeMapping.emplace_back(std::make_unique<InputMapping>(mInput));
-    }
-  }
-
-  void DigitalControl::saveCustomMapping(JSONObject object) const {
-    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
-    for (const std::unique_ptr<InputMapping>& mMapping : cRuntimeMapping) {
-      JSONObject mMappingsObject = mMappingsArray.addObject();
-      mMapping->save(mMappingsObject);
-    }
   }
 }

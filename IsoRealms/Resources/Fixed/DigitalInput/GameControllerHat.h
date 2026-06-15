@@ -34,7 +34,6 @@ namespace IsoRealms {
   class GameControllerHat : public IDigitalInput {
     public:
     GameControllerHat(const Metadata& metadata, IComponentData& owner);
-    GameControllerHat(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**
      * Retrieve the direction of the specified name.  The key is always such that it
@@ -61,17 +60,13 @@ namespace IsoRealms {
     /****************************\
      * Implements IDigitalInput *
     \****************************/
-    void saveResource(JSONObject object) const override;
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
     std::string getLocalizedName() const override;
 
-    /******************************************\
-     * Implements IResource via IDigitalInput *
-    \******************************************/
     private:
     class DirectionChooser : public IOptionalObject {
       public:

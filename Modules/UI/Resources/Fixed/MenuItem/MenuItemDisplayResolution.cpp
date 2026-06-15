@@ -28,10 +28,6 @@ namespace IsoRealms::UI {
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 
-  MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu, JSONObject object) :
-            MenuItemDisplayResolution(metadata, menu) {
-  }
-
   void MenuItemDisplayResolution::publish(ResourcePublisher& publisher) {
     publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Display Resolutions");
   }
@@ -102,7 +98,7 @@ namespace IsoRealms::UI {
     return cDefLabel;
   }
 
-  void MenuItemDisplayResolution::getResourceProperties(IComponentDefiner& definer) {
+  void MenuItemDisplayResolution::defineResource(IComponentDefiner& definer) {
     definer.propertyString(JSON_ID,    [this]() {return cDefID;},    [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();

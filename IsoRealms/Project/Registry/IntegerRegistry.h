@@ -97,8 +97,7 @@ namespace IsoRealms {
         /***************(((********************\
          * Implements IResource from IInteger *
         \************(((***********************/
-        void saveResource(JSONObject object) const override;
-        void getResourceProperties(IComponentDefiner& definer) override;
+        void defineResource(IComponentDefiner& definer) override;
         bool isDefaultConfiguration() const override;
         
         private:

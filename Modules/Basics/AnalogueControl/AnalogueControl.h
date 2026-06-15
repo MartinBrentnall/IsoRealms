@@ -49,7 +49,6 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     AnalogueControl(Basics& basics, IComponentData& data);
-    AnalogueControl(Basics& basics, IComponentData& data, JSONObject object);
     void define(IComponentDefiner& definer);
     void publish(ResourcePublisher& publisher);
 
@@ -105,27 +104,6 @@ namespace IsoRealms::Basics {
      */
     void clearCustomInputs();
 
-    /********************\
-     * Module Interface *
-    \********************/
-    /**
-     * Read physical input mapping from the specified node and bind them as
-     * user-defined inputs to this analogue input.
-     *
-     * @param node The node from which to read physical input mappings.
-     */
-    void loadCustomMapping(JSONObject object);
-
-    /**
-     * Write user-defined physical input mappings to the specified node.  If
-     * there are no user-define physical input mappings, this function has
-     * no effect.
-     *
-     * @param node The node to which to write user-defined physical input
-     *         mappings.
-     */
-    void saveCustomMapping(JSONObject object) const;
-
     private:
 
     // JSON members.
@@ -139,8 +117,6 @@ namespace IsoRealms::Basics {
       float input(sf::Event& event);
       std::string getShortName() const;
       std::shared_ptr<AnalogueInput> getInput() const;
-      void save(JSONObject object) const;
-      void loadCustomMapping(JSONObject object);
       void define(IComponentDefiner& definer, std::function<void()> removeFunction);
       void publish(ResourcePublisher& publisher);
       std::string getName();

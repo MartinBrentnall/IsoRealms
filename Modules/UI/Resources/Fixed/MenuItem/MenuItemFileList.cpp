@@ -29,10 +29,6 @@ namespace IsoRealms::UI {
             cSelectedFile(*this) {
   }
 
-  MenuItemFileList::MenuItemFileList(const Metadata& metadata, Menu& menu, JSONObject object) :
-            MenuItemFileList(metadata, menu) {
-  }
-
   void MenuItemFileList::publish(ResourcePublisher& publisher) {
     publisher.publish<IString>(&cSelectedFile, cDefID, "Menu Items (File List)");
     publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/File Lists");
@@ -110,7 +106,7 @@ namespace IsoRealms::UI {
     return cDefID;
   }
 
-  void MenuItemFileList::getResourceProperties(IComponentDefiner& definer) {
+  void MenuItemFileList::defineResource(IComponentDefiner& definer) {
     // TODO: Change this so it uses "File" client resource.
     definer.propertyString( JSON_ID,           [this]() {return cDefID;},     [this](const std::string& value) {
       cDefID = value;

@@ -29,13 +29,6 @@ namespace IsoRealms::Equilibria {
             cDefTextureTop(   owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 
-  WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternCap(metadata, owner) {
-    cDefTextureBottom.set(object, JSON_BOTTOM);
-    cDefTextureMiddle.set(object, JSON_MIDDLE);
-    cDefTextureTop.set(object, JSON_TOP);
-  }
-
   std::vector<std::unique_ptr<IVisualElement>> WallPatternCap::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     mVisuals.emplace_back(std::make_unique<SectionBottom>(*this, wall));
@@ -178,7 +171,7 @@ namespace IsoRealms::Equilibria {
     return true;
   }
 
-  void WallPatternCap::getResourceProperties(IComponentDefiner& definer) {
+  void WallPatternCap::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_TOP,    cDefTextureTop);
     definer.propertyResource(JSON_MIDDLE, cDefTextureMiddle);
     definer.propertyResource(JSON_BOTTOM, cDefTextureBottom);

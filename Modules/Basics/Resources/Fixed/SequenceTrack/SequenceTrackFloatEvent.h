@@ -31,7 +31,6 @@ namespace IsoRealms::Basics {
     public:
     SequenceTrackFloatEvent(SequenceTrackFloat& parent, IComponentData& owner, unsigned int time, bool fade = true);
 
-    void save(JSONObject object) const;
     IFloat* getValue() const;
     bool isFade() const;
 

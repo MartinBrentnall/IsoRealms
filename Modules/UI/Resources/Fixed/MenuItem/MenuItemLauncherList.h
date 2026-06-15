@@ -35,7 +35,6 @@ namespace IsoRealms::UI {
                                      public IEventBindings {
     public:
     MenuItemLauncherList(const Metadata& metadata, Menu& menu);
-    MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -47,7 +46,7 @@ namespace IsoRealms::UI {
     \************************/
 
 
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
 
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher) override;

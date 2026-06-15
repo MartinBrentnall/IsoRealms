@@ -25,11 +25,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  ZoneViewTypeActual::ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView, JSONObject object) :
-            ZoneViewTypeActual(metadata, worldView) {
-    // Nothing to do.
-  }
-
   void ZoneViewTypeActual::publish(Equilibria& equilibria, const std::string& parentID) {
     // Nothing to do.
   }

@@ -30,7 +30,6 @@ namespace IsoRealms::Equilibria {
   class WallPatternOutline : public IWallPattern {
     public:
     WallPatternOutline(const Metadata& metadata, TerrainType& owner);
-    WallPatternOutline(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *

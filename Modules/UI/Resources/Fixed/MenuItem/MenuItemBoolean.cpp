@@ -27,10 +27,6 @@ namespace IsoRealms::UI {
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {
   }
 
-  MenuItemBoolean::MenuItemBoolean(const Metadata& metadata, Menu& menu, JSONObject object) :
-            MenuItemBoolean(metadata, menu) {
-  }
-
   void MenuItemBoolean::publish(ResourcePublisher& publisher) {
     publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Booleans");
   }
@@ -98,7 +94,7 @@ namespace IsoRealms::UI {
     return cDefLabel;
   }
 
-  void MenuItemBoolean::getResourceProperties(IComponentDefiner& definer) {
+  void MenuItemBoolean::defineResource(IComponentDefiner& definer) {
     definer.propertyString(JSON_ID,          [this]() {return cDefID;},         [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();

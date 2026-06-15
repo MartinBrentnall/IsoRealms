@@ -50,7 +50,6 @@ namespace IsoRealms {
     /**********************\
      * Implements IVertex *
     \**********************/
-    void saveResource(JSONObject object) const override;
     bool isDefaultConfiguration() const override;
     double getX() const override;
     double getY() const override;

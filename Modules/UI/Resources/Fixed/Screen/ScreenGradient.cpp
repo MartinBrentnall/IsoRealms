@@ -19,16 +19,9 @@
 #include "ScreenGradient.h"
 
 namespace IsoRealms::UI {
-  ScreenGradient::ScreenGradient(const Metadata& /*metadata*/, IComponentData& owner) :
+  ScreenGradient::ScreenGradient(const Metadata& metadata, IComponentData& owner) :
             cDefColourA(owner, 0.0f, 0.0f, 1.0f),
             cDefColourB(owner, 0.0f, 1.0f, 0.0f) {
-  }
-
-  ScreenGradient::ScreenGradient(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-            ScreenGradient(metadata, owner) {
-    cDefColourA.set(object, JSON_COLOUR_A);
-    cDefColourB.set(object, JSON_COLOUR_B);
-    cDefVertical = object.getString(JSON_ORIENTATION) == VALUE_VERTICAL;
   }
 
   void ScreenGradient::renderScreen(float scale, float aspectRatio) const {
@@ -55,7 +48,7 @@ namespace IsoRealms::UI {
     glDisable(GL_BLEND);
   }
 
-  void ScreenGradient::getResourceProperties(IComponentDefiner& definer) {
+  void ScreenGradient::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_COLOUR_A, cDefColourA);
     definer.propertyResource(JSON_COLOUR_B, cDefColourB);
     definer.propertyList(        JSON_ORIENTATION, std::vector<std::string>{

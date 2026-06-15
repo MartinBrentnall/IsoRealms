@@ -95,8 +95,7 @@ namespace IsoRealms::Basics {
       \**********************/
       void execute() override;
       bool renderResourceIcon() const override;
-      void saveResource(JSONObject object) const override;
-      void getResourceProperties(IComponentDefiner& definer) override;
+      void defineResource(IComponentDefiner& definer) override;
       bool isDefaultConfiguration() const override;
 
       private:

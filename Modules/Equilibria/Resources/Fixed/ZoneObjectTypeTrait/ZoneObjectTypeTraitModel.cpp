@@ -27,12 +27,6 @@ namespace IsoRealms::Equilibria {
             cDefModel(type.getComponentData()) {
   }
   
-  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitModel(metadata, type) {
-    cDefLocationID = object.getString(JSON_LOCATION);
-    cDefModel.init(object, JSON_MODEL);
-  }
-
   void ZoneObjectTypeTraitModel::publish(EquilibriaResourceRegistry& registry, const std::string& parentID) {
     // Nothing to do.
   }
@@ -49,11 +43,6 @@ namespace IsoRealms::Equilibria {
     return cDefLocationID;
   }
   
-  void ZoneObjectTypeTraitModel::save(JSONObject object) const {
-    cDefModel.save(object, JSON_MODEL);
-    object.addString(JSON_LOCATION, cDefLocationID);
-  }
-
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitModel::createTrait(ZoneObject& object) {
     return std::make_unique<Model>(object, *this);
   }

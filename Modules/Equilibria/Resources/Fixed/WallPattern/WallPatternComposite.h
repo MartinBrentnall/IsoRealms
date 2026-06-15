@@ -31,12 +31,11 @@ namespace IsoRealms::Equilibria {
   class WallPatternComposite : public IWallPattern {
     public:
     WallPatternComposite(const Metadata& metadata, TerrainType& owner);
-    WallPatternComposite(const Metadata& metadata, TerrainType& owner, JSONObject object);
  
     /***************************\
      * Implements IWallPattern *
     \***************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     bool contains(ITexture* texture) override;
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;

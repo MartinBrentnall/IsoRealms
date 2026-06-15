@@ -59,7 +59,7 @@ namespace IsoRealms::Basics {
       \**********************/
       void execute() override;
       bool renderResourceIcon() const override;
-      void getResourceProperties(IComponentDefiner& definer) override;
+      void defineResource(IComponentDefiner& definer) override;
       
       private:
       

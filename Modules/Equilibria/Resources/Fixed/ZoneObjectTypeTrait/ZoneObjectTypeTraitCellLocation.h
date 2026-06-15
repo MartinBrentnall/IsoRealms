@@ -29,12 +29,10 @@ namespace IsoRealms::Equilibria {
                                           public IZoneObjectTraitEditor {
     public:
     ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type);
-    ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
     
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
-    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) override;
     

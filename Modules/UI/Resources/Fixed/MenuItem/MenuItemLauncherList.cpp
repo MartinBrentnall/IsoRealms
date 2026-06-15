@@ -30,10 +30,6 @@ namespace IsoRealms::UI {
             cLauncherBinding(menu.getComponentData().getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
-  MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu, JSONObject object) :
-            MenuItemLauncherList(metadata, menu) {
-  }
-
   void MenuItemLauncherList::publish(ResourcePublisher& publisher) {
     publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Launcher Lists");
   }
@@ -107,7 +103,7 @@ namespace IsoRealms::UI {
     return cDefID;
   }
 
-  void MenuItemLauncherList::getResourceProperties(IComponentDefiner& definer) {
+  void MenuItemLauncherList::defineResource(IComponentDefiner& definer) {
     definer.propertyString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();

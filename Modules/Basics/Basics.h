@@ -77,10 +77,6 @@ namespace IsoRealms::Basics {
       return cSequenceTracks.getPropertyMetadata(resource);
     }
 
-    template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
-      cSequenceTracks.save(object, resource);
-    }
-
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& f) const {
       cSequenceTracks.forEachEntry(f);
     }
@@ -108,8 +104,6 @@ namespace IsoRealms::Basics {
     /***********************\
      * Scripting Interface *
     \***********************/
-    void reloadGlobalConfiguration();
-    void persistGlobalConfiguration();
     float getSoundVolume();
     void setSoundVolume(float volume);
     float getMusicVolume();

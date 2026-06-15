@@ -112,8 +112,7 @@ namespace IsoRealms {
         /*************************************\
          * Implements IResource from IString *
         \*************************************/
-        void getResourceProperties(IComponentDefiner& definer) override;
-        void saveResource(JSONObject object) const override;
+        void defineResource(IComponentDefiner& definer) override;
         bool isDefaultConfiguration() const override;
         std::string getConversionPath() const override;
         bool isConfigurable() const override;
@@ -218,10 +217,6 @@ namespace IsoRealms {
         \**********************/
         std::string getValue() const override {
           return Utils::toString(cDefValue->getValue());
-        }
-
-        void saveResource(JSONObject object) const override {
-          cDefValue.save(object, JSON_RESOURCE);
         }
 
         bool isDefaultConfiguration() const override {

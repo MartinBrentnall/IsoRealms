@@ -29,14 +29,13 @@ namespace IsoRealms::UI {
 
     // Constructors.
     StringTime(const Metadata& metadata, IComponentData& owner);
-    StringTime(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**********************\
      * Implements IString *
     \**********************/
 
 
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
 
     bool isDefaultConfiguration() const override;
     std::string getValue() const override;

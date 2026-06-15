@@ -139,6 +139,6 @@ namespace IsoRealms {
 
   void Binding::getClientProperties(IComponentDefiner& definer) {
     cResource->getWrappedProperties(definer);
-    cResource->getResourceProperties(definer);
+    cResource->defineResource(definer);
   }
 }

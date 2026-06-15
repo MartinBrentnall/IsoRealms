@@ -62,6 +62,7 @@ namespace IsoRealms::UI {
   void LayoutComponentEdge::setOwner(ProjectFile* owner) {
     cDefParent.getLayout().getComponentData().setOwner(owner);
   }
+  
   void LayoutComponentEdge::setLocation(float aspectRatio, float value) {
     cDefLocation->setAbsolute(aspectRatio, value - cDefOffset->getOffset(aspectRatio));
   }
@@ -86,11 +87,6 @@ namespace IsoRealms::UI {
     return cDefLocation->getLocation(aspectRatio) + cDefOffset->getOffset(aspectRatio);
   }
   
-  void LayoutComponentEdge::save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const {
-    JSONObject mEdgeObject = object.addObject(tag);
-    cDefLocation.save(mEdgeObject, JSON_LOCATION);
-    cDefOffset.save(mEdgeObject, JSON_OFFSET);
-  }
   void LayoutComponentEdge::renderRelation(float aspectRatio) const {
     cDefLocation->renderRelation(aspectRatio);
     cDefOffset->renderRelation(aspectRatio);

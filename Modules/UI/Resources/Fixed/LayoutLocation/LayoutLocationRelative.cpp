@@ -27,12 +27,6 @@ namespace IsoRealms::UI {
             cParent(owner) {
   }
 
-  LayoutLocationRelative::LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
-            cParent(owner),
-            cDefValue(object.getFloat(JSON_VALUE, owner.isPositiveEdge() ? 1.0f : -1.0f)) {
-    cDefRelative = cParent.getComponent().getLayout().getComponent(object.getString(JSON_RELATIVE));
-  }
-
   float LayoutLocationRelative::getLocation(float aspectRatio) const {
     float mComponentStart = cParent.isHorizontalEdge() ? cDefRelative->getLeft(aspectRatio)  : cDefRelative->getBottom();
     float mComponentEnd   = cParent.isHorizontalEdge() ? cDefRelative->getRight(aspectRatio) : cDefRelative->getTop();
@@ -49,9 +43,9 @@ namespace IsoRealms::UI {
     cDefRelative->renderAsRelation(aspectRatio);
   }
   
-  void LayoutLocationRelative::getResourceProperties(IComponentDefiner& definer) {
+  void LayoutLocationRelative::defineResource(IComponentDefiner& definer) {
     definer.propertyFloat(JSON_VALUE,    [this]() {return cDefValue;}, [this](float value) {cDefValue = value;}, cParent.isPositiveEdge() ? 1.0f : -1.0f);
-    definer.propertyList(       JSON_RELATIVE, cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {std::cout << "TODO: Support setting relative component!" << std::endl;});
+    definer.propertyList( JSON_RELATIVE, cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefRelative);}, [this](const std::string& value) {cDefRelative = cParent.getComponent().getLayout().getComponent(value);});
   }
 
   bool LayoutLocationRelative::isDefaultConfiguration() const {

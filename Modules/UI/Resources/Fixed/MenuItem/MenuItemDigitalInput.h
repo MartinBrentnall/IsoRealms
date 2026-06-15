@@ -33,7 +33,6 @@ namespace IsoRealms::UI {
   class MenuItemDigitalInput final : public IMenuItem {
     public:
     MenuItemDigitalInput(const Metadata& metadata, Menu& menu);
-    MenuItemDigitalInput(const Metadata& metadata, Menu& menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -46,7 +45,7 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IMenuItem *
     \************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void publish(ResourcePublisher& publisher) override;
     void reset() override;

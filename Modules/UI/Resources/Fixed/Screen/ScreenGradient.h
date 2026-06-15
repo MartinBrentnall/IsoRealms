@@ -29,12 +29,11 @@ namespace IsoRealms::UI {
 
     // Constructors.
     ScreenGradient(const Metadata& metadata, IComponentData& owner);
-    ScreenGradient(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /**********************\
      * Implements IScreen *
     \**********************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     void renderScreen(float scale, float aspectRatio) const override;
 

@@ -90,9 +90,4 @@ namespace IsoRealms::Equilibria {
   float CameraOverview::getValue() const {
     return 0.0f;
   }
-
-  CameraOverview::CameraOverview(const Metadata& metadata, WorldView& view, JSONObject object) :
-            CameraOverview(metadata, view) {
-  }
-
 }

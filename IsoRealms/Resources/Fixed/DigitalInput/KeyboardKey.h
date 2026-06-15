@@ -34,7 +34,18 @@ namespace IsoRealms {
    */
   class KeyboardKey : public IDigitalInput {
     public:
-      
+    KeyboardKey(const Metadata& metadata, IComponentData& owner);
+
+    /****************************\
+     * Implements IDigitalInput *
+    \****************************/
+    void defineResource(IComponentDefiner& definer) override;
+    bool matches(const sf::Event& event) const override;
+    bool getState(const sf::Event& event) const override;
+    std::string getShortName() const override;
+    std::string getLongName() const override;
+    std::string getLocalizedName() const override;
+
     /**
      * Retrieve the key of the specified name.  The key is always such that it
      * may be passed into to the getName() function in order to retrieve the
@@ -46,33 +57,16 @@ namespace IsoRealms {
      */
     static sf::Keyboard::Key getKey(const std::string& name);
     
-    /**
-     * Retrieve the name of the specified key.  The name is always such that it
-     * may be passed into to the getKey() function in order to retrieve the
-     * same key as was passed into this function.
-     * 
-     * @param key The key to retrieve the name of.
-     * @return Name of the specified key.
-     */
+     /**
+      * Retrieve the name of the specified key.  The name is always such that it
+      * may be passed into to the getKey() function in order to retrieve the
+      * same key as was passed into this function.
+      * 
+      * @param key The key to retrieve the name of.
+      * @return Name of the specified key.
+      */
     static std::string getName(const sf::Keyboard::Key& key);
-    
-    KeyboardKey(const Metadata& metadata, IComponentData& owner);
-    KeyboardKey(const Metadata& metadata, IComponentData& owner, JSONObject object);
-
-    /****************************\
-     * Implements IDigitalInput *
-    \****************************/
-    void saveResource(JSONObject object) const override;
-    void getResourceProperties(IComponentDefiner& definer) override;
-    bool matches(const sf::Event& event) const override;
-    bool getState(const sf::Event& event) const override;
-    std::string getShortName() const override;
-    std::string getLongName() const override;
-    std::string getLocalizedName() const override;
-
-    /******************************************\
-     * Implements IResource via IDigitalInput *
-    \******************************************/
+     
     private:
     class KeyChooser : public IOptionalObject {
       public:

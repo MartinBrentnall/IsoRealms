@@ -55,12 +55,10 @@ namespace IsoRealms::Spindizzy {
     class CycleColour {
       public:
       CycleColour(Jewel& parent, IComponentData& owner);
-      CycleColour(Jewel& parent, IComponentData& owner, JSONObject object);
+      void define(IComponentDefiner& definer, std::function<void()> removeFunction);
 
-      void save(JSONObject object) const;
       const Colour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
-      void define(IComponentDefiner& definer, std::function<void()> removeFunction);
       
       private:
       

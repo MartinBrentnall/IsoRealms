@@ -27,13 +27,6 @@ namespace IsoRealms::Equilibria {
             cDefModel(type.getComponentData()) {
   }
 
-  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitSpinner(metadata, type) {
-    cDefSpinSpeed = object.getFloat("spinSpeed");
-    cDefLocationID = object.getString(JSON_LOCATION);
-    cDefModel.init(object, JSON_MODEL);
-  }
-  
   void ZoneObjectTypeTraitSpinner::publish(EquilibriaResourceRegistry& registry, const std::string& parentID) {
     // Nothing to do.
   }
@@ -50,10 +43,6 @@ namespace IsoRealms::Equilibria {
     return cDefLocationID;
   }
   
-  void ZoneObjectTypeTraitSpinner::save(JSONObject object) const {
-    cDefModel.save(object, JSON_MODEL);
-  }
-
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitSpinner::createTrait(ZoneObject& object) {
     return std::make_unique<Spinner>(object, *this);
   }

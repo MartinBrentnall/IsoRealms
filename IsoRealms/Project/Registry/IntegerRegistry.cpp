@@ -37,11 +37,7 @@ namespace IsoRealms {
     return cValue;
   }
 
-  void IntegerRegistry::Literal::Instance::saveResource(JSONObject object) const {
-    object.addInteger(JSON_VALUE, cValue);
-  }
-
-  void IntegerRegistry::Literal::Instance::getResourceProperties(IComponentDefiner& definer) {
+  void IntegerRegistry::Literal::Instance::defineResource(IComponentDefiner& definer) {
     definer.propertyInteger(JSON_VALUE, [this]() {return cValue;}, [this](int value) {cValue = value;});
   }
 

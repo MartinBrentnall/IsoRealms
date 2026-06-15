@@ -29,7 +29,6 @@ namespace IsoRealms::Equilibria {
 
   class IZoneObjectTypeTrait : public IResource {
     public:
-    virtual void save(JSONObject object) const = 0;
     virtual std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) = 0;
     virtual void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) = 0;
     

@@ -19,15 +19,8 @@
 #include "StringTime.h"
 
 namespace IsoRealms::UI {
-  StringTime::StringTime(const Metadata& /*metadata*/, IComponentData& owner) :
+  StringTime::StringTime(const Metadata& metadata, IComponentData& owner) :
             cDefValue(owner) {
-    parseFormatString();
-  }
-
-  StringTime::StringTime(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-            StringTime(metadata, owner) {
-    cDefValue.set(object, JSON_VALUE);
-    format = object.getString(JSON_FORMAT, DEFAULT_FORMAT);
     parseFormatString();
   }
 
@@ -148,9 +141,9 @@ namespace IsoRealms::UI {
     return mOutput.str();
   }
 
-  void StringTime::getResourceProperties(IComponentDefiner& definer) {
+  void StringTime::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_VALUE,  cDefValue);
-    definer.propertyString(JSON_FORMAT, [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();}, DEFAULT_FORMAT);
+    definer.propertyString(  JSON_FORMAT, [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();}, DEFAULT_FORMAT);
   }
 
   bool StringTime::isDefaultConfiguration() const {

@@ -28,11 +28,6 @@ namespace IsoRealms::Equilibria {
             cDefTexture(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 
-  SurfacePatternTile::SurfacePatternTile(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            SurfacePatternTile(metadata, owner) {
-    cDefTexture.set(object, JSON_TEXTURE);
-  }
-  
   bool SurfacePatternTile::contains(ITexture* texture) {
     return *cDefTexture == texture;
   }
@@ -95,7 +90,7 @@ namespace IsoRealms::Equilibria {
     return cDefTexture->renderResourceIcon();
   }
 
-  void SurfacePatternTile::getResourceProperties(IComponentDefiner& definer) {
+  void SurfacePatternTile::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_TEXTURE, cDefTexture);
   }
 

@@ -31,12 +31,11 @@ namespace IsoRealms::UI {
   class LayoutOffsetAbsolute : public ILayoutOffset {
     public:
     LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner);
-    LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object);
 
     /****************************\
      * Implements ILayoutOffset *
     \****************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     float getOffset(float aspectRatio) const override;
     void setAbsolute(float aspectRatio, float value) override;

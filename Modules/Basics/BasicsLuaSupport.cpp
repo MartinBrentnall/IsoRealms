@@ -72,9 +72,7 @@ namespace IsoRealms {
       mLua.new_usertype<Basics>("Basics",                                 "getSoundVolume",             &Basics::getSoundVolume,
                                                                           "getMusicVolume",             &Basics::getMusicVolume,
                                                                           "setSoundVolume",             &Basics::setSoundVolume,
-                                                                          "setMusicVolume",             &Basics::setMusicVolume,
-                                                                          "reloadGlobalConfiguration",  &Basics::reloadGlobalConfiguration,
-                                                                          "persistGlobalConfiguration", &Basics::persistGlobalConfiguration);
+                                                                          "setMusicVolume",             &Basics::setMusicVolume);
       mLua.new_usertype<DigitalControl>("DigitalControl",                 "getInputsString",            &DigitalControl::getInputsString,
                                                                           "clearCustomInputs",          &DigitalControl::clearCustomInputs,
                                                                           "addCustomInput",             &DigitalControl::addCustomInput,

@@ -26,11 +26,6 @@ namespace IsoRealms::UI {
             cDefValue(owner.isPositiveEdge() ? 1.0f : -1.0f) {
   }
 
-  LayoutLocationAbsolute::LayoutLocationAbsolute(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object) :
-            cParent(owner),
-            cDefValue(object.getFloat(JSON_VALUE, owner.isPositiveEdge() ? 1.0f : -1.0f)) {
-  }
-  
   float LayoutLocationAbsolute::getLocation(float aspectRatio) const {
     return cDefValue * aspectRatio;
   }
@@ -43,7 +38,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
   
-  void LayoutLocationAbsolute::getResourceProperties(IComponentDefiner& definer) {
+  void LayoutLocationAbsolute::defineResource(IComponentDefiner& definer) {
     definer.propertyFloat(JSON_VALUE, [this]() {return cDefValue;}, [this](float value) {cDefValue = value;}, cParent.isPositiveEdge() ? 1.0f : -1.0f);
   }
 

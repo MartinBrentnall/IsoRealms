@@ -35,13 +35,11 @@ namespace IsoRealms {
   class GameControllerAxis : public IAnalogueInput {
     public:
     GameControllerAxis(const Metadata& metadata, IComponentData& owner);
-    GameControllerAxis(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /*****************************\
      * Implements IAnalogueInput *
     \*****************************/
-    void saveResource(JSONObject object) const override;
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     std::string getName() const override;
     float getState(const sf::Event& event) const override;
@@ -49,12 +47,8 @@ namespace IsoRealms {
     std::string getShortName() const override;
     std::string getLongName() const override;
     std::string getLocalizedName() const override;
-    void loadCustomMapping(JSONObject object) override;
     void publish(ResourcePublisher& publisher) override;
 
-    /****************************************\
-     * Implements IResource via IAnalogueInput *
-    \****************************************/
     private:
     class AxisChooser : public IOptionalObject {
       public:

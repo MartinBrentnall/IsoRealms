@@ -93,7 +93,7 @@ namespace IsoRealms::Equilibria {
     // TODO: Implement this.
   }
 
-  void CameraVariant::getResourceProperties(IComponentDefiner& definer) {
+  void CameraVariant::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_LOCATION, cDefLocation);
     definer.propertyResource(JSON_YAW,      cDefYaw);
     definer.propertyResource(JSON_PITCH,    cDefPitch);
@@ -102,13 +102,5 @@ namespace IsoRealms::Equilibria {
 
   bool CameraVariant::isDefaultConfiguration() const {
     return false; // TODO: Implement
-  }
-
-  CameraVariant::CameraVariant(const Metadata& metadata, WorldView& view, JSONObject object) :
-            CameraVariant(metadata, view) {
-    cDefYaw.set(object, JSON_YAW);
-    cDefPitch.set(object, JSON_PITCH);
-    cDefLocation.set(object, JSON_LOCATION);
-    cDefZoom.set(object, JSON_ZOOM);
   }
 }

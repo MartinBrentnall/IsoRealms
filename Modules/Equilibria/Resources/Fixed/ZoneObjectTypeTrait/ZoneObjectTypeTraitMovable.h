@@ -28,7 +28,6 @@ namespace IsoRealms::Equilibria {
   class ZoneObjectTypeTraitMovable : public IZoneObjectTypeTrait {
     public:
     ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type);
-    ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getInitialLocationID() const;
@@ -36,7 +35,6 @@ namespace IsoRealms::Equilibria {
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
-    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) override;
     

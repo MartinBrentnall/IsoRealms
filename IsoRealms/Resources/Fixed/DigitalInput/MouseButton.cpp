@@ -24,6 +24,49 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
+  MouseButton::MouseButton(const Metadata& metadata, IComponentData& owner) :
+          cMetadata(metadata),
+          cButtonChooser(metadata),
+          cButton(sf::Mouse::Left) {
+  }
+
+  bool MouseButton::matches(const sf::Event& event) const {
+    return (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased) && event.mouseButton.button == cButton;
+  }
+
+  bool MouseButton::getState(const sf::Event& event) const {
+    return event.type == sf::Event::MouseButtonPressed;
+  }
+
+  std::string MouseButton::getShortName() const {
+    return getName(cButton);
+  }
+
+  std::string MouseButton::getLongName() const {
+    return getName(cButton) + " Mouse Button";
+  }
+
+  std::string MouseButton::getLocalizedName() const {
+    const std::string mName = getShortName();
+    return cButtonsByName.find(mName) != cButtonsByName.end() ? cMetadata.getPropertyData(mName).getName() : mName;
+  }
+
+  void MouseButton::defineResource(IComponentDefiner& definer) {
+    definer.propertyOptional(JSON_BUTTON, cButtonChooser, "", []() {
+      return true;
+    }, [this](const std::string& button) {
+      cButton = getButton(button);
+    }, [this]() {
+      return getLocalizedName();
+    });
+  }
+  
+  void MouseButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    for (std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.begin(); i != cButtonsByName.end(); i++) {
+      getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
+    }
+  }
+
   sf::Mouse::Button MouseButton::getButton(const std::string& name) {
     std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.find(name);
     if (i == cButtonsByName.end()) {
@@ -53,58 +96,6 @@ namespace IsoRealms {
   }
 
   MouseButton::ButtonChooser::ButtonChooser(const Metadata& metadata) :
-          cMetadata(metadata) {
-  }
-
-  MouseButton::MouseButton(const Metadata& metadata, IComponentData& owner) :
-          cMetadata(metadata),
-          cButtonChooser(metadata),
-          cButton(sf::Mouse::Left) {
-  }
-
-  MouseButton::MouseButton(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-          MouseButton(metadata, owner) {
-    cButton = getButton(object.getString(JSON_BUTTON));
-  }
-
-  bool MouseButton::matches(const sf::Event& event) const {
-    return (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased) && event.mouseButton.button == cButton;
-  }
-
-  bool MouseButton::getState(const sf::Event& event) const {
-    return event.type == sf::Event::MouseButtonPressed;
-  }
-
-  std::string MouseButton::getShortName() const {
-    return getName(cButton);
-  }
-
-  std::string MouseButton::getLongName() const {
-    return getName(cButton) + " Mouse Button";
-  }
-
-  std::string MouseButton::getLocalizedName() const {
-    const std::string mName = getShortName();
-    return cButtonsByName.find(mName) != cButtonsByName.end() ? cMetadata.getPropertyData(mName).getName() : mName;
-  }
-
-  void MouseButton::saveResource(JSONObject object) const {
-    object.addString(JSON_BUTTON, getShortName());
-  }
-
-  void MouseButton::getResourceProperties(IComponentDefiner& definer) {
-    definer.propertyOptional(JSON_BUTTON, cButtonChooser, "", []() {
-      return true;
-    }, [this](const std::string& button) {
-      cButton = getButton(button);
-    }, [this]() {
-      return getLocalizedName();
-    });
-  }
-  
-  void MouseButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
-    for (std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.begin(); i != cButtonsByName.end(); i++) {
-      getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
-    }
+            cMetadata(metadata) {
   }
 }

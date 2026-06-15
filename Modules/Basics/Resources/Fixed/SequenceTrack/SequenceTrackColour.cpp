@@ -27,12 +27,6 @@ namespace IsoRealms::Basics {
             cDefInitColour(sequence.getComponentData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
 
-  SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence, JSONObject object) :
-            SequenceTrackBase(sequence.getComponentData(), sequence, object),
-            cMetadata(metadata),
-            cDefInitColour(sequence.getComponentData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
-  }
-
   const Colour& SequenceTrackColour::getStartColour() const {
     return cDefInitColour;
   }
@@ -43,10 +37,6 @@ namespace IsoRealms::Basics {
 
   ISequenceTrackEvent* SequenceTrackColour::getEvent(unsigned int time) {
     return time == 0 ? this : nullptr;
-  }
-
-  void SequenceTrackColour::saveResourceTrack(JSONObject object) const {
-    cDefInitColour.save(object, JSON_START);
   }
 
   void SequenceTrackColour::renderIcon() const {
@@ -94,7 +84,7 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  void SequenceTrackColour::getResourceProperties(IComponentDefiner& definer) {
+  void SequenceTrackColour::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_START, cDefInitColour);
     getBaseProperties(definer);
   }

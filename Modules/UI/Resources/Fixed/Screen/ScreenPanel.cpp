@@ -24,12 +24,6 @@ namespace IsoRealms::UI {
     initTextures(owner.getProject());
   }
 
-  ScreenPanel::ScreenPanel(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-            ScreenPanel(metadata, owner) {
-    cDefColour.set(object, JSON_COLOUR);
-    cDefCornerSize = object.getFloat(JSON_CORNER_SIZE);
-  }
-  
   void ScreenPanel::renderScreen(float scale, float aspectRatio) const {
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -62,7 +56,7 @@ namespace IsoRealms::UI {
     glDisable(GL_BLEND);
   }
 
-  void ScreenPanel::getResourceProperties(IComponentDefiner& definer) {
+  void ScreenPanel::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_COLOUR,      cDefColour);
     definer.propertyFloat( JSON_CORNER_SIZE, [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
   }

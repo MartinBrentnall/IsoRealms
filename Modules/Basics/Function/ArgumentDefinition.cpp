@@ -43,15 +43,9 @@ namespace IsoRealms::Basics {
   }
 
   void ArgumentDefinition::define(IComponentDefiner& definer, Function& parent) {
-    definer.propertyString(JSON_NAME,     [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    definer.propertyString(  JSON_NAME,     [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
     definer.propertyResource(JSON_TYPE,     cDefType);
-    definer.propertyString(JSON_LUA_NAME, [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
-  }
-
-  void ArgumentDefinition::save(JSONObject object) const {
-    object.addString(JSON_NAME, cDefName);
-    object.addString(JSON_LUA_NAME, cDefLuaName);
-    cDefType.save(object, JSON_TYPE);
+    definer.propertyString(  JSON_LUA_NAME, [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
   }
 
   void ArgumentDefinition::setName(const std::string& name) {

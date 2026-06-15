@@ -31,22 +31,13 @@ namespace IsoRealms::Equilibria {
     cDefType.registerEditor(this);
   }
   
-  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitCellLocation(metadata, type) {
-  }
-
   void ZoneObjectTypeTraitCellLocation::publish(EquilibriaResourceRegistry& registry, const std::string& parentID) {
-    // Nothing to do.
-  }
-
-  void ZoneObjectTypeTraitCellLocation::save(JSONObject object) const {
     // Nothing to do.
   }
 
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitCellLocation::createTrait(ZoneObject& object) {
     return std::make_unique<CellLocation>(object, cEditingPinnedX, cEditingPinnedY, cEditingPinnedZ);
   }  
-  
 
   IZoneObjectTraitEditor::InputEditResult ZoneObjectTypeTraitCellLocation::inputEdit(sf::Event& event, WorldEditor& editor) {
     switch (event.type) {

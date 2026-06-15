@@ -30,10 +30,5 @@ namespace IsoRealms {
     public:
     Action(IActionContext& owner);
     void execute();
-
-    /**********************************************\
-     * Implements Resource<IAction, IActionContext> *
-    \**********************************************/
-    void save(JSONObject object, const std::string& name) const override;
   };
 }

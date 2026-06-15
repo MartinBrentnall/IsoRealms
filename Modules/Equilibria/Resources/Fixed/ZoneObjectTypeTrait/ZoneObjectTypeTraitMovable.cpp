@@ -27,11 +27,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
   
-  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type, JSONObject object) :
-            ZoneObjectTypeTraitMovable(metadata, type) {
-    cDefInitialLocationID = object.getString(JSON_LOCATION);
-  }
-
   void ZoneObjectTypeTraitMovable::publish(EquilibriaResourceRegistry& registry, const std::string& parentID) {
     // Nothing to do.
   }
@@ -40,10 +35,6 @@ namespace IsoRealms::Equilibria {
     return cDefInitialLocationID;
   }  
   
-  void ZoneObjectTypeTraitMovable::save(JSONObject object) const {
-    object.addString(JSON_LOCATION, cDefInitialLocationID);
-  }
-
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitMovable::createTrait(ZoneObject& object) {
     return std::make_unique<Movable>(object, *this);
   }

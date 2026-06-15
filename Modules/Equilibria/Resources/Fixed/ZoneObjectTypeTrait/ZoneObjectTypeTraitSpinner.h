@@ -30,7 +30,6 @@ namespace IsoRealms::Equilibria {
   class ZoneObjectTypeTraitSpinner : public IZoneObjectTypeTrait {
     public:
     ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type);
-    ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type, JSONObject object);
 
     // Interface to be used by instances.    
     std::unique_ptr<ModelInstance> createModel();
@@ -40,7 +39,6 @@ namespace IsoRealms::Equilibria {
     /***********************************\
      * Implements IZoneObjectTypeTrait *
     \***********************************/   
-    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) override;
 

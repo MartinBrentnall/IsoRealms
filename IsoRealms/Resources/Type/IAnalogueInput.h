@@ -64,7 +64,6 @@ namespace IsoRealms {
      * @return Short name of this analogue input mapping.
      */
     virtual std::string getShortName() const = 0;
-    virtual void loadCustomMapping(JSONObject object) = 0;
 
     /**
      * Return a long name of this analogue input mapping.  The long name is

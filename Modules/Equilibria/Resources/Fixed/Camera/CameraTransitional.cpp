@@ -137,7 +137,7 @@ namespace IsoRealms::Equilibria {
     // TODO: Implement this.
   }
 
-  void CameraTransitional::getResourceProperties(IComponentDefiner& definer) {
+  void CameraTransitional::defineResource(IComponentDefiner& definer) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
     definer.propertyResource(         JSON_START,              cDefStart, mHint);
@@ -185,16 +185,5 @@ namespace IsoRealms::Equilibria {
 
   float CameraTransitional::Transition::getValue() const {
     return cParent.cRuntimeAnimation / static_cast<float>(cParent.cDefDuration);
-  }
-
-  CameraTransitional::CameraTransitional(const Metadata& metadata, WorldView& view, JSONObject object) :
-            CameraTransitional(metadata, view) {
-    cDefStart.set(object, JSON_START);
-    cDefEnd.set(object, JSON_END);
-    cDefStartDepartureAction.init(object, JSON_ON_START_DEPARTURE);
-    cDefStartArrivalAction.init(object, JSON_ON_START_ARRIVAL);
-    cDefEndDepartureAction.init(object, JSON_ON_END_DEPARTURE);
-    cDefEndArrivalAction.init(object, JSON_ON_END_ARRIVAL);
-    cDefDuration = object.getInteger(JSON_DURATION, DEFAULT_DURATION);
   }
 }

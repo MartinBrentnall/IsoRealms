@@ -32,13 +32,12 @@ namespace IsoRealms::Equilibria {
   class SurfacePatternSplitVariant : public ISurfacePattern {
     public:
     SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner);
-    SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *
     \******************************/
     bool renderResourceIcon() const override;
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     bool contains(ITexture*) override;
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Surface* surface) override;

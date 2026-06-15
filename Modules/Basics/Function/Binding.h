@@ -32,8 +32,6 @@ namespace IsoRealms::Basics {
     std::string getInitCode() const;
     std::string getCode(unsigned int functionID, unsigned int arg) const;
     std::string getCleanup() const;
-    void save(JSONObject object, const std::string& attributeName, const std::string& attributeValueName) const;
-    void saveCall(JSONObject object, const std::string& attributeName) const;
     IBinding* getValue() const;
     void release();
     void getProperties(IComponentDefiner& definer, bool init);

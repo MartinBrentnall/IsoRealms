@@ -93,15 +93,6 @@ namespace IsoRealms::Spindizzy {
             cDefColour(data, 1.0f, 0.0f, 1.0f) {
   }
 
-  Jewel::CycleColour::CycleColour(Jewel& parent, IComponentData& data, JSONObject object) :
-            CycleColour(parent, data) {
-    cDefColour.init(object, JSON_COLOUR);
-  }
-
-  void Jewel::CycleColour::save(JSONObject object) const {
-    cDefColour.save(object, JSON_COLOUR);
-  }
-
   const Colour* Jewel::CycleColour::getColour() const {
     return &cDefColour;
   }

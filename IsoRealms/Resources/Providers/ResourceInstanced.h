@@ -33,9 +33,7 @@ namespace IsoRealms {
     }
     
     BASE* getResource(OWNER& owner, JSONObject object) override {
-      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cMetadata, owner, object);
-      cInstances.emplace_back(std::move(mObject));
-      return cInstances.back().get();
+      return getResource(owner);
     }
 
     BASE* getResource(OWNER& owner) override {

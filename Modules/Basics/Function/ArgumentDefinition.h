@@ -29,7 +29,6 @@ namespace IsoRealms::Basics {
   class ArgumentDefinition final {
     public:
     ArgumentDefinition(Function& parent, const std::string& name, const std::string& luaName);
-    void save(JSONObject object) const;
     void setName(const std::string& name);
     std::string getName() const;
     const BindingType* getType() const;

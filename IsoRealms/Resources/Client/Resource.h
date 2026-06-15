@@ -129,19 +129,9 @@ namespace IsoRealms {
       static_cast<DERIVED*>(this)->stateChanged();
     }
     
-    void save(JSONObject object) const {
-      saveClientConfiguration(object);
-      cManager.getResourceManager().save(object, cResource);
-    }
-
-    virtual void save(JSONObject object, const std::string& name) const {
-      JSONObject mResourceObject = object.addObject(name);
-      save(mResourceObject);
-    }
-
     void getTreeItemProperties(IComponentDefiner& definer) override {
       getClientProperties(definer);
-      cResource->getResourceProperties(definer);
+      cResource->defineResource(definer);
     }
 
     bool renderTreeItemIcon() const override {

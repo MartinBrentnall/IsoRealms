@@ -27,11 +27,6 @@ namespace IsoRealms::Basics {
             cDefScreen(owner) {
   }
 
-  void SequenceTrackScreenEvent::save(JSONObject object) const {
-    object.addInteger(JSON_DURATION, cDefTime);
-    cDefScreen.save(object, JSON_SCREEN);
-  }
-
   unsigned int SequenceTrackScreenEvent::getTime() const {
     return cDefTime;
   }

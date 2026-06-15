@@ -74,15 +74,6 @@ namespace IsoRealms::Basics {
     return mFunction;
   }
 
-  void Binding::save(JSONObject object, const std::string& attributeName, const std::string& attributeValueName) const {
-    object.addString(attributeName, cDefName);
-    cDefValue.save(object, attributeValueName);
-  }
-
-  void Binding::saveCall(JSONObject object, const std::string& attributeName) const {
-    object.addString(attributeName, cDefName);
-  }
-
   IBinding* Binding::getValue() const {
     return *cDefValue;
   }

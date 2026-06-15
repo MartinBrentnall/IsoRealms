@@ -24,47 +24,10 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  sf::Keyboard::Key KeyboardKey::getKey(const std::string& name) {
-    std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.find(name);
-    if (i == cKeysByName.end()) {
-      
-      // Handle keys that aren't in the name map.
-      if (name.compare(0, UNMAPPED_KEY_PREFIX.length(), UNMAPPED_KEY_PREFIX) == 0) {
-        std::stringstream mStream(name); 
-        int mCode;
-        mStream >> mCode;
-        sf::Keyboard::Key mKeyCode = static_cast<sf::Keyboard::Key>(mCode);
-        return mKeyCode;
-      }
-      throw ArgumentException("ERROR: KeyMapping::getKey: Key of name \"" + name + "\" not known.");
-    }
-    return i->second;
-  }
-
-  std::string KeyboardKey::getName(const sf::Keyboard::Key& key) {
-    for (std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.begin(); i != cKeysByName.end(); i++) {
-      if (i->second == key) {
-        return i->first;
-      }
-    }
-    
-    // Handle keys that aren't in the name map.
-    return UNMAPPED_KEY_PREFIX + Utils::toString(key);
-  }
-  
-  KeyboardKey::KeyChooser::KeyChooser(const Metadata& metadata) :
-          cMetadata(metadata) {
-  }
-
   KeyboardKey::KeyboardKey(const Metadata& metadata, IComponentData& owner) :
           cMetadata(metadata),
           cKeyChooser(metadata),
           cKey(sf::Keyboard::Enter) {
-  }
-
-  KeyboardKey::KeyboardKey(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-          KeyboardKey(metadata, owner) {
-    cKey = getKey(object.getString(JSON_WHICH));
   }
 
   bool KeyboardKey::matches(const sf::Event& event) const {
@@ -88,11 +51,7 @@ namespace IsoRealms {
     return cKeysByName.find(mName) != cKeysByName.end() ? cMetadata.getPropertyData(mName).getName() : mName;
   }
 
-  void KeyboardKey::saveResource(JSONObject object) const {
-    object.addString(JSON_WHICH, getShortName());
-  }
-
-  void KeyboardKey::getResourceProperties(IComponentDefiner& definer) {
+  void KeyboardKey::defineResource(IComponentDefiner& definer) {
     definer.propertyOptional(JSON_WHICH, cKeyChooser, "", []() {
       return true;
     }, [this](const std::string& key) {
@@ -106,5 +65,37 @@ namespace IsoRealms {
     for (std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.begin(); i != cKeysByName.end(); i++) {
       getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
     }
+  }
+
+  std::string KeyboardKey::getName(const sf::Keyboard::Key& key) {
+    for (std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.begin(); i != cKeysByName.end(); i++) {
+      if (i->second == key) {
+        return i->first;
+      }
+    }
+    
+    // Handle keys that aren't in the name map.
+    return UNMAPPED_KEY_PREFIX + Utils::toString(key);
+  }
+  
+  sf::Keyboard::Key KeyboardKey::getKey(const std::string& name) {
+    std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.find(name);
+    if (i == cKeysByName.end()) {
+      
+      // Handle keys that aren't in the name map.
+      if (name.compare(0, UNMAPPED_KEY_PREFIX.length(), UNMAPPED_KEY_PREFIX) == 0) {
+        std::stringstream mStream(name); 
+        int mCode;
+        mStream >> mCode;
+        sf::Keyboard::Key mKeyCode = static_cast<sf::Keyboard::Key>(mCode);
+        return mKeyCode;
+      }
+      throw ArgumentException("ERROR: KeyMapping::getKey: Key of name \"" + name + "\" not known.");
+    }
+    return i->second;
+  }
+
+  KeyboardKey::KeyChooser::KeyChooser(const Metadata& metadata) :
+            cMetadata(metadata) {
   }
 }

@@ -27,13 +27,6 @@ namespace IsoRealms::Basics {
             cDefControl(owner) {
   }
 
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-            cMetadata(metadata),
-            cDefName(object.getString(JSON_NAME)),
-            cDefControl(owner, object),
-            cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
-  }
-
   void DigitalToAnalogueMapping::publish(ResourcePublisher& publisher) {
     cDefControl.publish(publisher, cDefName);
   }
@@ -76,11 +69,7 @@ namespace IsoRealms::Basics {
     return cDefName;
   }
   
-  void DigitalToAnalogueMapping::loadCustomMapping(JSONObject object) {
-    cDefControl.loadCustomMapping(object);
-  }
-
-  void DigitalToAnalogueMapping::getResourceProperties(IComponentDefiner& definer) {
+  void DigitalToAnalogueMapping::defineResource(IComponentDefiner& definer) {
     definer.propertyString(JSON_NAME,     [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
     definer.propertyFloat( JSON_TO_VALUE, [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
     cDefControl.define(definer);

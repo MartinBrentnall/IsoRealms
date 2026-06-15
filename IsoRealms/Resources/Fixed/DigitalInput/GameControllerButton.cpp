@@ -28,17 +28,12 @@
 
 namespace IsoRealms {
   GameControllerButton::ButtonChooser::ButtonChooser(const Metadata& metadata) :
-          cMetadata(metadata) {
+            cMetadata(metadata) {
   }
   
   GameControllerButton::GameControllerButton(const Metadata& metadata, IComponentData& owner) :
             cMetadata(metadata),
             cButtonChooser(metadata) {
-  }
-
-  GameControllerButton::GameControllerButton(const Metadata& metadata, IComponentData& owner, JSONObject object) :
-          GameControllerButton(metadata, owner) {
-    cButton = object.getInteger(JSON_BUTTON);
   }
 
   bool GameControllerButton::matches(const sf::Event& event) const {
@@ -61,11 +56,7 @@ namespace IsoRealms {
     return getChoiceLabel(cMetadata, cButton);
   }
 
-  void GameControllerButton::saveResource(JSONObject object) const {
-    object.addInteger(JSON_BUTTON, cButton);
-  }
-
-  void GameControllerButton::getResourceProperties(IComponentDefiner& definer) {
+  void GameControllerButton::defineResource(IComponentDefiner& definer) {
     Options mNoEdit;
     mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
     Options mNoPersist;

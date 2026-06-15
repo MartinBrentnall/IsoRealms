@@ -111,27 +111,6 @@ namespace IsoRealms::Basics {
      */
     void clearCustomInputs();
 
-    /********************\
-     * Module Interface *
-    \********************/
-    /**
-     * Read physical input mapping from the specified node and bind them as
-     * user-defined inputs to this digital input.
-     *
-     * @param node The node from which to read physical input mappings.
-     */
-    void loadCustomMapping(JSONObject object);
-
-    /**
-     * Write user-defined physical input mappings to the specified node.  If
-     * there are no user-define physical input mappings, this function has
-     * no effect.
-     *
-     * @param node The node to which to write user-defined physical input
-     *         mappings.
-     */
-    void saveCustomMapping(JSONObject object) const;
-      
     private:
 
     // JSON members.
@@ -146,7 +125,6 @@ namespace IsoRealms::Basics {
       void reset();
       std::string getShortName() const;
       std::shared_ptr<DigitalInput> getInput() const;
-      void save(JSONObject object) const;
       void define(IComponentDefiner& definer, std::function<void()> removeFunction);
 
       private:

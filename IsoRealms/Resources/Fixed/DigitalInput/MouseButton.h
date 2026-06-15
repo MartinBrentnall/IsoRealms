@@ -35,9 +35,6 @@ namespace IsoRealms {
   class MouseButton : public IDigitalInput {
     public:
 
-    static sf::Mouse::Button getButton(const std::string& name);
-    static std::string getName(const sf::Mouse::Button button);
-
     /**
      * Construct a digital input mapping associated with the specified key.
      *
@@ -46,22 +43,20 @@ namespace IsoRealms {
     MouseButton(const sf::Mouse::Button button);
 
     MouseButton(const Metadata& metadata, IComponentData& owner);
-    MouseButton(const Metadata& metadata, IComponentData& owner, JSONObject object);
 
     /****************************\
      * Implements IDigitalInput *
     \****************************/
-    void saveResource(JSONObject object) const override;
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool matches(const sf::Event& event) const override;
     bool getState(const sf::Event& event) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
     std::string getLocalizedName() const override;
 
-    /***************************************\
-     * Implements IResource via IDigitalInput *
-    \***************************************/
+    static sf::Mouse::Button getButton(const std::string& name);
+    static std::string getName(const sf::Mouse::Button button);
+
     private:
     class ButtonChooser : public IOptionalObject {
       public:

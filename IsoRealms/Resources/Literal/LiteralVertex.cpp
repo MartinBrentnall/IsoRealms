@@ -74,12 +74,6 @@ namespace IsoRealms {
         && z == vertex->getZ();
   }
 
-  void LiteralVertex::saveResource(JSONObject object) const {
-    object.addFloat(JSON_X, x);
-    object.addFloat(JSON_Y, y);
-    object.addFloat(JSON_Z, z);
-  }
-
   bool LiteralVertex::isDefaultConfiguration() const {
     return x == 0.0f && y == 0.0f && z == 0.0f;
   }

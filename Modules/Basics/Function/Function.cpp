@@ -261,16 +261,7 @@ namespace IsoRealms::Basics {
     return cParent.renderIcon();
   }
 
-  void Function::Call::saveResource(JSONObject object) const {
-    JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
-    for (unsigned int i = 0; i < cDefArguments.size(); i++) {
-      JSONObject mBindingObject =  mBindingsArray.addObject();
-      cParent.cDefArgumentDefinitions[i]->saveCall(mBindingObject, JSON_ARGUMENT);
-      cDefArguments[i]->save(mBindingObject, JSON_TO);
-    }
-  }
-
-  void Function::Call::getResourceProperties(IComponentDefiner& definer) {
+  void Function::Call::defineResource(IComponentDefiner& definer) {
     std::unordered_map<std::string, unsigned int> mArgumentIndices;
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
       mArgumentIndices.emplace(cParent.cDefArgumentDefinitions[i]->getName(), i);

@@ -32,12 +32,11 @@ namespace IsoRealms::UI {
   class LayoutLocationRelative : public ILayoutLocation {
     public:
     LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner);
-    LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner, JSONObject object);
     
     /******************************\
      * Implements ILayoutLocation *
     \******************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     bool isDefaultConfiguration() const override;
     float getLocation(float aspectRatio) const override;
     void setAbsolute(float aspectRatio, float value) override;

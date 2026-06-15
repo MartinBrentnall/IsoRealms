@@ -33,10 +33,7 @@ namespace IsoRealms::Equilibria {
   class CameraTransitional final : public ICamera,
                                    public ICameraListener {
     public:
-    
-    // Constructors.
     CameraTransitional(const Metadata& metadata, WorldView& view);
-    CameraTransitional(const Metadata& metadata, WorldView& view, JSONObject object);
 
     /***********************\
      * Scripting interface *
@@ -47,11 +44,7 @@ namespace IsoRealms::Equilibria {
     /**********************\
      * Implements ICamera *
     \**********************/
-
-
-
-
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
 
 
     bool isDefaultConfiguration() const override;

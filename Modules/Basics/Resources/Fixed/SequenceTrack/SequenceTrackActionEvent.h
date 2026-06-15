@@ -34,11 +34,10 @@ namespace IsoRealms::Basics {
     public:
     SequenceTrackActionEvent(SequenceTrackAction& parent, IComponentData& owner, unsigned int time);
 
-    void save(JSONObject object) const;
     void execute();
 
     /**********************************\
-      * Implements ISequenceTrackEvent *
+     * Implements ISequenceTrackEvent *
     \**********************************/
     unsigned int getTime() const override;
     void setTime(unsigned int time) override;

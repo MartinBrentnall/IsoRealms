@@ -30,13 +30,6 @@ namespace IsoRealms::Equilibria {
             cDefSplitBPattern( owner.getEquilibria(), owner, [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 
-  SurfacePatternSplitVariant::SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            SurfacePatternSplitVariant(metadata, owner) {
-    cDefRegularPattern.set(object, JSON_REGULAR);
-    cDefSplitAPattern.set(object, JSON_SPLIT_A);
-    cDefSplitBPattern.set(object, JSON_SPLIT_B);
-  }
-  
   bool SurfacePatternSplitVariant::contains(ITexture* texture) {
     return cDefRegularPattern->contains(texture)
         || cDefSplitAPattern->contains(texture)
@@ -61,7 +54,7 @@ namespace IsoRealms::Equilibria {
     return cDefRegularPattern->renderResourceIcon();
   }
 
-  void SurfacePatternSplitVariant::getResourceProperties(IComponentDefiner& definer) {
+  void SurfacePatternSplitVariant::defineResource(IComponentDefiner& definer) {
     definer.propertyResource(JSON_REGULAR, cDefRegularPattern);
     definer.propertyResource(JSON_SPLIT_A, cDefSplitAPattern);
     definer.propertyResource(JSON_SPLIT_B, cDefSplitBPattern);

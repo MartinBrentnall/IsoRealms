@@ -239,13 +239,6 @@ namespace IsoRealms {
       return cRegistry.getTreeItemInfo(getProvider(resource));
     }
 
-    void save(JSONObject object, const TYPE* resource) const {
-      const IResourceProvider<OWNER, TYPE>* mProvider = getProvider(resource);
-      std::string mID = cRegistry.getTreeItemInfo(mProvider).cID;
-      object.addString(JSON_KEY, mID);
-      resource->saveResource(object);
-    }
-
     void addResourceListener(IResourceListener<OWNER, TYPE>* listener) {
       cRegistry.addResourceListener(listener);
     }

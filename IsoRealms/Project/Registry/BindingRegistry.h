@@ -266,10 +266,6 @@ namespace IsoRealms {
           return cDefValue.renderTreeItemIcon();
         }
 
-        void saveResource(JSONObject object) const override {
-          cDefValue.save(object, JSON_RESOURCE);
-        }
-
         bool isDefaultConfiguration() const override {
           return cDefValue->isDefaultConfiguration();
         }

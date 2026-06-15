@@ -33,7 +33,6 @@ namespace IsoRealms::Equilibria {
     void publish(ResourcePublisher& publisher, const std::string& parentID);
     void updateRuntime(unsigned int milliseconds);
     void renderRuntime();
-    void save(JSONObject object) const;
     void reset();
     
     float getStepReach() const;

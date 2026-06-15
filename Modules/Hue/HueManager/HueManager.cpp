@@ -121,15 +121,6 @@ namespace IsoRealms::Hue {
             cDefColour(data, 1.0f, 1.0f, 1.0f) {
   }
 
-  HueManager::Bulb::Bulb(HueManager& parent, IComponentData& data, int id, JSONObject object) :
-            Bulb(parent, data, id) {
-    cDefColour.init(object, JSON_COLOUR);
-  }
-  
-  void HueManager::Bulb::save(JSONObject object) {
-    cDefColour.save(object, JSON_COLOUR);
-  }
-
   void HueManager::Bulb::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
     definer.propertyResource(JSON_COLOUR, cDefColour, Options::EMPTY, removeFunction);
   }

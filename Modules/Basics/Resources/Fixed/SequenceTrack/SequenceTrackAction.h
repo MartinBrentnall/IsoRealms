@@ -33,16 +33,14 @@ namespace IsoRealms::Basics {
   class SequenceTrackAction final : public SequenceTrackBase<SequenceTrackAction, SequenceTrackActionEvent, SequenceTrackActionInstance> {
     public:
     SequenceTrackAction(const Metadata& metadata, Sequence& sequence);
-    SequenceTrackAction(const Metadata& metadata, Sequence& sequence, JSONObject object);
 
     const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
-    void saveResourceTrack(JSONObject object) const;
 
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
-    void getResourceProperties(IComponentDefiner& definer) override;
+    void defineResource(IComponentDefiner& definer) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
     private:

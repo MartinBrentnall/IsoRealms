@@ -28,14 +28,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   } 
 
-  WallPatternComposite::WallPatternComposite(const Metadata& metadata, TerrainType& owner, JSONObject object) :
-            WallPatternComposite(metadata, owner) {
-    for (JSONValue mPatternValue : object.getArray(JSON_PATTERNS)) {
-      JSONObject mPatternObject = mPatternValue.getObject();
-      cDefWallPatterns.emplace_back(std::make_unique<WallPattern>(owner.getEquilibria(), owner, nullptr)).get()->set(mPatternObject, JSON_PATTERN);
-    }
-  }
-
   std::vector<std::unique_ptr<IVisualElement>> WallPatternComposite::getStaticVisuals(Wall* wall) const {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     for (const std::unique_ptr<WallPattern>& mWallPattern : cDefWallPatterns) {
@@ -59,7 +51,7 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void WallPatternComposite::getResourceProperties(IComponentDefiner& definer) {
+  void WallPatternComposite::defineResource(IComponentDefiner& definer) {
     definer.array(JSON_PATTERNS, cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &definer](WallPattern& wallPattern) {
       definer.propertyResource(JSON_PATTERN, wallPattern);
     }, [this]()->WallPattern& {

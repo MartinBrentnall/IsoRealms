@@ -55,21 +55,6 @@ namespace IsoRealms::Equilibria {
     });
   }
 
-  void Theme::save(JSONObject object) const {
-    JSONArray mTexturesArray = object.addArray(JSON_TEXTURES);
-    for (const std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
-      JSONObject mTextureObject = mTexturesArray.addObject();
-      mTextureObject.addString(JSON_ELEMENT, cThemeSet.getElement(mTexture.first));
-      mTexture.second.save(mTextureObject, JSON_TEXTURE);
-    }
-    JSONArray mColoursArray = object.addArray(JSON_COLOURS);
-    for (const std::pair<ThemeColour* const, Colour>& mColour : cColours) {
-      JSONObject mColourObject = mColoursArray.addObject();
-      mColourObject.addString(JSON_ELEMENT, cThemeSet.getElement(mColour.first));
-      mColour.second.save(mColourObject, JSON_COLOUR);
-    }
-  }
-
   void Theme::define(IComponentDefiner& definer) {
     definer.propertyString("id", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
     Options mContainerHint;
