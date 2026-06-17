@@ -35,8 +35,8 @@ namespace IsoRealms::Equilibria {
             cDefStartZ(std::min(zStart, zEnd)),
             cDefEndZ(  std::max(zStart, zEnd)),
             cDefThemeSet(clone != nullptr ? clone->cDefThemeSet : cDefWorld.getDefaultThemeSet()),
-            cDefTheme(clone != nullptr ? clone->cDefTheme : cDefThemeSet->getDefaultTheme()),
-            cDefVisited(clone != nullptr ? clone->cDefVisited : false) {
+            cDefTheme(   clone != nullptr ? clone->cDefTheme    : (cDefThemeSet != nullptr ? cDefThemeSet->getDefaultTheme() : nullptr)),
+            cDefVisited( clone != nullptr ? clone->cDefVisited  : false) {
     if (clone != nullptr) {
       int mXDifference = cDefStartX - clone->cDefStartX;
       int mYDifference = cDefStartY - clone->cDefStartY;
@@ -60,56 +60,6 @@ namespace IsoRealms::Equilibria {
     reset();
   }
 
-  Zone::Zone(World& world, JSONObject object) :
-            cDefWorld(world),
-            cDefStartX(object.getInteger(JSON_X)),
-            cDefEndX(object.getInteger(JSON_WIDTH) + cDefStartX - 1),
-            cDefStartY(object.getInteger(JSON_Y)),
-            cDefEndY(object.getInteger(JSON_LENGTH) + cDefStartY - 1),
-            cDefStartZ(object.getInteger(JSON_Z)),
-            cDefEndZ(object.getInteger(JSON_HEIGHT) + cDefStartZ - 1),
-            cDefVisited(object.getBoolean(JSON_VISITED)) {
-    if (object.hasMember(JSON_ALIENS)) {
-      for (JSONValue mAlienValue : object.getArray(JSON_ALIENS)) {
-        cDefAliens.emplace_back(std::make_unique<Alien>(*this, mAlienValue.getObject()));
-      }
-    }
-    if (object.hasMember(JSON_LIFTS)) {
-      for (JSONValue mLiftValue : object.getArray(JSON_LIFTS)) {
-        cDefLifts.emplace_back(std::make_unique<Lift>(*this, mLiftValue.getObject()));
-      }
-    }
-    if (object.hasMember(JSON_OBJECTS)) {
-      for (JSONValue mObjectValue : object.getArray(JSON_OBJECTS)) {
-        cDefObjects.emplace_back(std::make_unique<ZoneObject>(*this, mObjectValue.getObject()));
-      }
-    }
-    if (object.hasMember(JSON_PICK_UPS)) {
-      for (JSONValue mPickUpValue : object.getArray(JSON_PICK_UPS)) {
-        cDefPickUps.emplace_back(std::make_unique<PickUp>(*this, mPickUpValue.getObject()));
-      }
-    }
-    if (object.hasMember(JSON_TERRAIN)) {
-      for (JSONValue mTerrainValue : object.getArray(JSON_TERRAIN)) {
-        addTerrain(std::make_unique<Terrain>(*this, mTerrainValue.getObject()));
-      }
-    }
-    cDefWorld.getEquilibria().getProject().init([this, object]() {
-      cDefType = cDefWorld.getEquilibria().get<ZoneType>(nullptr, object.getString(JSON_TYPE));
-      std::string mThemeSet = object.getString(JSON_THEME_SET);
-      std::string mThemeName = object.getString(JSON_THEME);
-      cDefThemeSet = mThemeSet != "" ? cDefWorld.getEquilibria().get<ThemeSet>(nullptr, mThemeSet) : nullptr;
-      cDefTheme = mThemeName != "" ? cDefThemeSet->getTheme(mThemeName) : nullptr;
-      reset();
-
-      // Refresh terrain states.
-      cDefTerrainStates.clear();
-      for (std::unique_ptr<Terrain>& mTerrain : cDefTerrain) {
-        addTerrainState(mTerrain.get());
-      }
-    });
-  }
-
   void Zone::removed() {
     cDefWorld.unregisterBoundary(cDefType, this);
     while (!cDefTerrain.empty()) {
@@ -121,6 +71,78 @@ namespace IsoRealms::Equilibria {
     for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {
       mObject->publish();
     }
+  }
+
+  void Zone::define(IComponentDefiner& definer) {
+    Equilibria& mEquilibria = cDefWorld.getEquilibria();
+    Options mDeferHint;
+    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
+    definer.scope("", "", [this, &mEquilibria](IComponentDefiner& d) {
+      d.propertyString(JSON_TYPE, [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria](const std::string& value) {
+        cDefType = mEquilibria.get<ZoneType>(nullptr, value);
+      });
+      d.propertyString(JSON_THEME_SET, [this, &mEquilibria]() {return cDefThemeSet != nullptr ? mEquilibria.getComponentID(cDefThemeSet) : "";}, [this, &mEquilibria](const std::string& value) {
+        cDefThemeSet = value.empty() ? nullptr : mEquilibria.get<ThemeSet>(nullptr, value);
+      });
+      d.propertyString(JSON_THEME, [this]() {return cDefThemeSet != nullptr && cDefTheme != nullptr ? cDefThemeSet->getName(cDefTheme) : "";}, [this](const std::string& value) {
+        if (cDefThemeSet != nullptr) {
+          cDefTheme = value.empty() ? nullptr : cDefThemeSet->getTheme(value);
+        }
+      });
+    }, nullptr, mDeferHint);
+    definer.propertyBoolean(JSON_VISITED, [this]() {return cDefVisited;}, [this](bool value) {cDefVisited = value;});
+    definer.propertyInteger(JSON_X,      [this]() {return cDefStartX;},                     [this](int value) {cDefStartX = value;});
+    definer.propertyInteger(JSON_Y,      [this]() {return cDefStartY;},                     [this](int value) {cDefStartY = value;});
+    definer.propertyInteger(JSON_Z,      [this]() {return cDefStartZ;},                     [this](int value) {cDefStartZ = value;});
+    definer.propertyInteger(JSON_WIDTH,  [this]() {return (cDefEndX - cDefStartX) + 1;},  [this](int value) {cDefEndX = cDefStartX + value - 1;});
+    definer.propertyInteger(JSON_LENGTH, [this]() {return (cDefEndY - cDefStartY) + 1;},  [this](int value) {cDefEndY = cDefStartY + value - 1;});
+    definer.propertyInteger(JSON_HEIGHT, [this]() {return (cDefEndZ - cDefStartZ) + 1;},  [this](int value) {cDefEndZ = cDefStartZ + value - 1;});
+
+    Options mZoneObjectsHint;
+    mZoneObjectsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
+    Options mOptionalZoneObjectArrayHint;
+    mOptionalZoneObjectArrayHint.addOption(Options::PROPERTY_OPTIONAL, "true");
+    definer.scope("zoneObjects", "", [this, &mOptionalZoneObjectArrayHint](IComponentDefiner& d) {
+      d.array(JSON_TERRAIN, cDefTerrain, [](const std::unique_ptr<Terrain>& mTerrain) -> Terrain& {return *mTerrain;}, [&d](Terrain& terrain) {
+        terrain.define(d);
+      }, [this]() -> Terrain& {
+        return *addTerrain(std::make_unique<Terrain>(*this));
+      }, mOptionalZoneObjectArrayHint);
+
+      d.array(JSON_LIFTS, cDefLifts, [](const std::unique_ptr<Lift>& mLift) -> Lift& {return *mLift;}, [&d](Lift& lift) {
+        lift.define(d);
+      }, [this]() -> Lift& {
+        return *cDefLifts.emplace_back(std::make_unique<Lift>(*this)).get();
+      }, mOptionalZoneObjectArrayHint);
+
+      d.array(JSON_ALIENS, cDefAliens, [](const std::unique_ptr<Alien>& mAlien) -> Alien& {return *mAlien;}, [&d](Alien& alien) {
+        alien.define(d);
+      }, [this]() -> Alien& {
+        return *cDefAliens.emplace_back(std::make_unique<Alien>(*this)).get();
+      }, mOptionalZoneObjectArrayHint);
+
+      d.array(JSON_PICK_UPS, cDefPickUps, [](const std::unique_ptr<PickUp>& mPickUp) -> PickUp& {return *mPickUp;}, [&d](PickUp& pickUp) {
+        pickUp.define(d);
+      }, [this]() -> PickUp& {
+        return *cDefPickUps.emplace_back(std::make_unique<PickUp>(*this)).get();
+      }, mOptionalZoneObjectArrayHint);
+    }, nullptr, mZoneObjectsHint);
+
+    if (definer.loadsPersistedValues()) {
+      cDefWorld.getEquilibria().getProject().init([this]() {
+        cDefTerrainStates.clear();
+        for (std::unique_ptr<Terrain>& mTerrain : cDefTerrain) {
+          addTerrainState(mTerrain.get());
+        }
+      });
+    }
+  }
+
+  std::string Zone::getDisplayName() const {
+    if (cDefType != nullptr) {
+      return cDefWorld.getEquilibria().getComponentID(cDefType);
+    }
+    return "Zone";
   }
   
   Alien* Zone::draw(AlienType& type, const WorldEditorCursorCell& cell) {

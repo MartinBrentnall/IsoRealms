@@ -44,7 +44,8 @@ namespace IsoRealms::Equilibria {
     // Constructors.
     PickUp(Zone& zone, PickUpType& type, int x, int y, int z);
     PickUp(Zone& zone, PickUp& pickUp, int x, int y, int z);
-    PickUp(Zone& zone, JSONObject object);
+    PickUp(Zone& zone);
+    void define(IComponentDefiner& definer);
     void removed();
 
     // Interface for use by parent zone.
@@ -80,7 +81,7 @@ namespace IsoRealms::Equilibria {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    void define(IComponentDefiner& definer) override;
+    void defineWorldObject(IComponentDefiner& definer) override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 

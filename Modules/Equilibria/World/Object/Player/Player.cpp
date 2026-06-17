@@ -36,20 +36,42 @@ namespace IsoRealms::Equilibria {
             cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType->renderResourceIcon();}) {
     reset();
   }
-  
-  Player::Player(World& world, JSONObject object) :
+
+  Player::Player(World& world) :
             cDefWorld(world),
-            cDefX(object.getFloat(JSON_X)),
-            cDefY(object.getFloat(JSON_Y)),
-            cDefZ(object.getFloat(JSON_Z)),
+            cDefX(0.0),
+            cDefY(0.0),
+            cDefZ(0.0),
             cRuntimePhysicsObject(cDefWorld.getEquilibria(), this),
-            cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType->renderResourceIcon();}) {
-    cDefWorld.getEquilibria().getProject().init([this, object]() {
-      cDefType = cDefWorld.getEquilibria().get<PlayerType>(nullptr, object.getString(JSON_TYPE));
+            cLuaBinding(world.getEquilibria().getProject().getLuaState(), this, [this]() {return cDefType != nullptr && cDefType->renderResourceIcon();}) {
+    cDefWorld.getEquilibria().getProject().init([this]() {
+      cDefType = cDefWorld.getEquilibria().get<PlayerType>(nullptr, "Player");
       cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();
       reset();
     });
+  }
+  
+  void Player::define(IComponentDefiner& definer) {
+    Options mDeferHint;
+    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
+    definer.scope("", "", [this](IComponentDefiner& d) {
+      d.propertyString(JSON_TYPE, [this]() {return cDefWorld.getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+        cDefType = cDefWorld.getEquilibria().get<PlayerType>(nullptr, value);
+        cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
+        cDefModel = cDefType->createModel();
+      });
+    }, nullptr, mDeferHint);
+    definer.propertyFloat(JSON_X, [this]() {return static_cast<float>(cDefX);}, [this](float value) {cDefX = value;});
+    definer.propertyFloat(JSON_Y, [this]() {return static_cast<float>(cDefY);}, [this](float value) {cDefY = value;});
+    definer.propertyFloat(JSON_Z, [this]() {return static_cast<float>(cDefZ);}, [this](float value) {cDefZ = value;});
+  }
+
+  std::string Player::getDisplayName() const {
+    if (cDefType != nullptr) {
+      return cDefWorld.getEquilibria().getComponentID(cDefType);
+    }
+    return "Player";
   }
 
   void Player::publish(ResourcePublisher& publisher, const std::string& parentID) {

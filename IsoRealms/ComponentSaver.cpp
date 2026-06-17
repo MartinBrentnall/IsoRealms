@@ -102,7 +102,7 @@ namespace IsoRealms {
     // This is a calculated property, so we don't need to save it to JSON.
   }
 
-  void ComponentSaver::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) {
+  void ComponentSaver::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
     std::optional<Condition>& mCondition = getter();
     if (mCondition.has_value()) {
       mCondition->save(currentObject().addObject(key));
@@ -110,7 +110,7 @@ namespace IsoRealms {
   }
 
   void ComponentSaver::propertyEditor(const std::string& key, IEditable* editable) {
-    editable->save(cComponentData, currentObject());
+    // Nothing to do.
   }
 
   void ComponentSaver::propertyFloat(const std::string& key, std::function<float()> getter, std::function<void(float)> setter, float defaultValue, std::function<bool(float)> validityChecker, std::function<void()> removeFunction) {

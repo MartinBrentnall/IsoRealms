@@ -50,22 +50,33 @@ namespace IsoRealms::Equilibria {
     reset();
   }
 
-  Alien::Alien(Zone& zone, JSONObject object) :
+  Alien::Alien(Zone& zone) :
             cZone(zone),
-            cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
-            cDefY(object.getInteger(JSON_Y) + cZone.getStartY()),
-            cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
-            cDefSurfaceOutsideHomeZone(cZone, cDefZ), // TODO: Is this OK?
+            cDefX(cZone.getStartX()),
+            cDefY(cZone.getStartY()),
+            cDefZ(cZone.getStartZ()),
+            cDefSurfaceOutsideHomeZone(cZone, cDefZ),
             cRuntimePhysicsObject(cZone.getWorld().getEquilibria(), this) {
-    cZone.getWorld().getEquilibria().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getEquilibria().get<AlienType>(nullptr, object.getString(JSON_TYPE));
-      cDefMovementHandler = cZone.getWorld().getMovementHandler(cDefType);
-      cDefModel = cDefType->createModel();
-      reset();
-    });
+    reset();
   }
 
   void Alien::define(IComponentDefiner& definer) {
+    Options mDeferHint;
+    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
+    definer.scope("", "", [this](IComponentDefiner& d) {
+      d.propertyString(JSON_TYPE, [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+        cDefType = cZone.getWorld().getEquilibria().get<AlienType>(nullptr, value);
+        cDefMovementHandler = cZone.getWorld().getMovementHandler(cDefType);
+        cDefModel = cDefType->createModel();
+        reset();
+      });
+    }, nullptr, mDeferHint);
+    definer.propertyInteger(JSON_X, [this]() {return cDefX - cZone.getStartX();}, [this](int value) {cDefX = value + cZone.getStartX();});
+    definer.propertyInteger(JSON_Y, [this]() {return cDefY - cZone.getStartY();}, [this](int value) {cDefY = value + cZone.getStartY();});
+    definer.propertyInteger(JSON_Z, [this]() {return cDefZ - cZone.getStartZ();}, [this](int value) {cDefZ = value + cZone.getStartZ();});
+  }
+
+  void Alien::defineWorldObject(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

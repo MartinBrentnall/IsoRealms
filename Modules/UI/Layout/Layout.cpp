@@ -28,14 +28,6 @@ namespace IsoRealms::UI {
             cUI(ui) {
   }
   
-  void Layout::load(IComponentData& resourceData, JSONObject object) {
-    // Nothing to do.
-  }
-
-  void Layout::save(IComponentData& resourceData, JSONObject object) const {
-    // Nothing to do.
-  }
-
   void Layout::define(IComponentDefiner& definer) {
     definer.propertyEditor("Content", this);
     definer.array(JSON_COMPONENTS, cComponentsByOrder, [](LayoutComponent* mComponent) -> LayoutComponent& {return *mComponent;}, [this, &definer](LayoutComponent& component) {

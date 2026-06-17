@@ -48,7 +48,8 @@ namespace IsoRealms::Equilibria {
     // Constructors.
     Alien(Zone& zone, AlienType& type, int x, int y, int z);
     Alien(Zone& zone, Alien& alien, int x, int y, int z);
-    Alien(Zone& zone, JSONObject object);
+    Alien(Zone& zone);
+    void define(IComponentDefiner& definer);
 
     // Interface for use by parent zone.
     void reset();
@@ -94,7 +95,7 @@ namespace IsoRealms::Equilibria {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    void define(IComponentDefiner& definer) override;
+    void defineWorldObject(IComponentDefiner& definer) override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 

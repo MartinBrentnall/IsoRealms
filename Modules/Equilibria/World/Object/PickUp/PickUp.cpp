@@ -45,17 +45,28 @@ namespace IsoRealms::Equilibria {
     reset();
   }
 
-  PickUp::PickUp(Zone& zone, JSONObject object) :
+  PickUp::PickUp(Zone& zone) :
             cZone(zone),
-            cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
-            cDefY(object.getInteger(JSON_Y) + cZone.getStartY()),
-            cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
+            cDefX(cZone.getStartX()),
+            cDefY(cZone.getStartY()),
+            cDefZ(cZone.getStartZ()),
             cLuaBinding(zone.getWorld().getEquilibria().getProject().getLuaState(), this) {
-    cZone.getWorld().getEquilibria().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getEquilibria().get<PickUpType>(nullptr, object.getString(JSON_TYPE));
-      cDefModel = cDefType->createModel();
-      reset();
-    });
+    reset();
+  }
+
+  void PickUp::define(IComponentDefiner& definer) {
+    Options mDeferHint;
+    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
+    definer.scope("", "", [this](IComponentDefiner& d) {
+      d.propertyString(JSON_TYPE, [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+        cDefType = cZone.getWorld().getEquilibria().get<PickUpType>(nullptr, value);
+        cDefModel = cDefType->createModel();
+        reset();
+      });
+    }, nullptr, mDeferHint);
+    definer.propertyInteger(JSON_X, [this]() {return cDefX - cZone.getStartX();}, [this](int value) {cDefX = value + cZone.getStartX();});
+    definer.propertyInteger(JSON_Y, [this]() {return cDefY - cZone.getStartY();}, [this](int value) {cDefY = value + cZone.getStartY();});
+    definer.propertyInteger(JSON_Z, [this]() {return cDefZ - cZone.getStartZ();}, [this](int value) {cDefZ = value + cZone.getStartZ();});
   }
 
   void PickUp::removed() {
@@ -172,7 +183,7 @@ namespace IsoRealms::Equilibria {
     cZone.remove(this);
   }
 
-  void PickUp::define(IComponentDefiner& definer) {
+  void PickUp::defineWorldObject(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

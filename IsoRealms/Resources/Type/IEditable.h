@@ -35,16 +35,6 @@ namespace IsoRealms {
     public:
 
     /**
-     * Load complex editor content that cannot be represented as simple properties.
-     */
-    virtual void load(IComponentData& resourceData, JSONObject object) {}
-
-    /**
-     * Persist complex editor content that cannot be represented as simple properties.
-     */
-    virtual void save(IComponentData& resourceData, JSONObject object) const {}
-
-    /**
      * Create a screen to edit this editable.
      * 
      * @return Screen to edit this editable.

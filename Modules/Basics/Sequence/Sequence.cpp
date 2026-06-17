@@ -80,14 +80,6 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void Sequence::load(IComponentData& resourceData, JSONObject object) {
-    // Nothing to do.
-  }
-
-  void Sequence::save(IComponentData& resourceData, JSONObject object) const {
-    // Nothing to do.
-  }
-  
   Basics& Sequence::getResourceManager() {
     return cBasics;
   }

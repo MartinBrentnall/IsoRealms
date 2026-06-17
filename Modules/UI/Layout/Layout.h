@@ -56,8 +56,6 @@ namespace IsoRealms::UI {
     /************************\
      * Implements IEditable *
     \************************/
-    void load(IComponentData& resourceData, JSONObject object) override;
-    void save(IComponentData& resourceData, JSONObject object) const override;
     IEditableScreen* createEditableScreen(IsoRealms::Project* project, IDialogManager& dialogManager) override;
 
     /*********************\

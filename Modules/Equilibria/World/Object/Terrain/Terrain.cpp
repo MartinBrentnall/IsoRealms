@@ -23,29 +23,6 @@
 #include "Modules/Equilibria/World/World.h"
 
 namespace IsoRealms::Equilibria {
-  Terrain::Terrain(Zone& zone, JSONObject object) :
-            cZone(zone),
-            cDefStartX(object.getInteger(JSON_X) + cZone.getStartX()),
-            cDefStartY(object.getInteger(JSON_Y) + cZone.getStartY()),
-            cDefStartZ(object.getInteger(JSON_Z) + cZone.getStartZ() - 1),
-            //(object.getInteger(JSON_HEIGHT) < 0 ? 0 : 1)),
-            cDefEndX(cDefStartX + object.getInteger(JSON_WIDTH) - 1),
-            cDefEndY(cDefStartY + object.getInteger(JSON_LENGTH) - 1),
-            cDefEndZ(cDefStartZ + object.getInteger(JSON_HEIGHT)),
-            cDefCornerHeight {{object.getInteger(JSON_SOUTH_WEST_CORNER), object.getInteger(JSON_NORTH_WEST_CORNER)},
-                              {object.getInteger(JSON_SOUTH_EAST_CORNER), object.getInteger(JSON_NORTH_EAST_CORNER)}},
-            cDefFlags(getBehaviourFlags(object.getString(JSON_BEHAVIOUR))
-                   | (object.getBoolean(JSON_STEPPED_BOTTOM)    ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)
-                   | (object.getBoolean(JSON_ALTERNATIVE_SPLIT) ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)) {
-    cZone.getWorld().getEquilibria().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getEquilibria().get<TerrainType>(nullptr, object.getString(JSON_TYPE));
-      if (object.hasMember(JSON_CONDITION)) {
-        cDefCondition = std::make_optional<Condition>(object.getObject(JSON_CONDITION), cZone.getWorld().getEquilibria().getTerrainStateConditionElements());
-      }
-    });
-    cZone.getWorld().registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
-  }
-
   Terrain::Terrain(Zone& zone, TerrainType& type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition) :
             cZone(zone),
             cDefType(&type),
@@ -78,6 +55,73 @@ namespace IsoRealms::Equilibria {
             cDefFlags(terrain.cDefFlags) {
     cZone.getWorld().registerTerrain(this, true, true);
     cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+  }
+
+  Terrain::Terrain(Zone& zone) :
+            cZone(zone),
+            cDefStartX(cZone.getStartX()),
+            cDefStartY(cZone.getStartY()),
+            cDefStartZ(cZone.getStartZ()),
+            cDefEndX(cZone.getStartX()),
+            cDefEndY(cZone.getStartY()),
+            cDefEndZ(cZone.getStartZ()),
+            cDefCornerHeight{{0, 0}, {0, 0}},
+            cDefFlags(FLAGS_NORMAL) {
+    cZone.getWorld().registerTerrain(this, true, true);
+  }
+
+  void Terrain::define(IComponentDefiner& definer) {
+    Equilibria& mEquilibria = cZone.getWorld().getEquilibria();
+    auto mFlagTerrain = [this]() {
+      cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+      cZone.updateDisplayList();
+    };
+    Options mDeferHint;
+    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
+    definer.scope("", "", [this, &mEquilibria, mFlagTerrain](IComponentDefiner& d) {
+      d.propertyString(JSON_TYPE, [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria, mFlagTerrain](const std::string& value) {
+        cDefType = mEquilibria.get<TerrainType>(nullptr, value);
+        mFlagTerrain();
+      });
+      std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
+
+      Options mOptionalConditionHint;
+      mOptionalConditionHint.addOption(Options::PROPERTY_OPTIONAL, "true");
+        d.propertyCondition(JSON_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this, mFlagTerrain](std::optional<Condition>& condition) {
+        cDefCondition = condition;
+        mFlagTerrain();
+      }, mOptionalConditionHint);
+    }, nullptr, mDeferHint);
+    definer.propertyList(JSON_BEHAVIOUR,
+                         std::vector<std::string>{BEHAVIOUR_NORMAL,
+                                                  BEHAVIOUR_INVISIBLE,
+                                                  BEHAVIOUR_GHOST,
+                                                  BEHAVIOUR_DYNAMIC,
+                                                  BEHAVIOUR_DYNAMIC_GHOST},
+                         [this]() {return getBehaviourString();},
+                         [this, mFlagTerrain](const std::string& value) {
+                           cDefFlags = (~cDefFlags & FLAG_BEHAVIOUR_MASK) | getBehaviourFlags(value);
+                           cZone.getWorld().registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
+                           mFlagTerrain();
+                         });
+    definer.propertyInteger(JSON_X,                 [this]() {return cDefStartX - cZone.getStartX();},                     [this, mFlagTerrain](int value) {cDefStartX = value + cZone.getStartX(); mFlagTerrain();});
+    definer.propertyInteger(JSON_Y,                 [this]() {return cDefStartY - cZone.getStartY();},                     [this, mFlagTerrain](int value) {cDefStartY = value + cZone.getStartY(); mFlagTerrain();});
+    definer.propertyInteger(JSON_Z,                 [this]() {return (cDefStartZ + 1) - cZone.getStartZ();},                [this, mFlagTerrain](int value) {cDefStartZ = value + cZone.getStartZ() - 1; mFlagTerrain();});
+    definer.propertyInteger(JSON_WIDTH,             [this]() {return (cDefEndX + 1) - cDefStartX;},                        [this, mFlagTerrain](int value) {cDefEndX = cDefStartX + value - 1; mFlagTerrain();});
+    definer.propertyInteger(JSON_LENGTH,            [this]() {return (cDefEndY + 1) - cDefStartY;},                        [this, mFlagTerrain](int value) {cDefEndY = cDefStartY + value - 1; mFlagTerrain();});
+    definer.propertyInteger(JSON_HEIGHT,            [this]() {return cDefEndZ - cDefStartZ;},                               [this, mFlagTerrain](int value) {cDefEndZ = cDefStartZ + value; mFlagTerrain();});
+    definer.propertyInteger(JSON_NORTH_WEST_CORNER, [this]() {return cDefCornerHeight[0][1];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[0][1] = value; mFlagTerrain();});
+    definer.propertyInteger(JSON_NORTH_EAST_CORNER, [this]() {return cDefCornerHeight[1][1];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[1][1] = value; mFlagTerrain();});
+    definer.propertyInteger(JSON_SOUTH_EAST_CORNER, [this]() {return cDefCornerHeight[1][0];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[1][0] = value; mFlagTerrain();});
+    definer.propertyInteger(JSON_SOUTH_WEST_CORNER, [this]() {return cDefCornerHeight[0][0];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[0][0] = value; mFlagTerrain();});
+    definer.propertyBoolean(JSON_ALTERNATIVE_SPLIT, [this]() {return (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0;},           [this, mFlagTerrain](bool value) {
+      cDefFlags = value ? cDefFlags | FLAG_ALTERNATIVE_SPLIT : cDefFlags & ~FLAG_ALTERNATIVE_SPLIT;
+      mFlagTerrain();
+    });
+    definer.propertyBoolean(JSON_STEPPED_BOTTOM,    [this]() {return (cDefFlags & FLAG_STEPPED_BOTTOM) != 0;},              [this, mFlagTerrain](bool value) {
+      cDefFlags = value ? cDefFlags | FLAG_STEPPED_BOTTOM : cDefFlags & ~FLAG_STEPPED_BOTTOM;
+      mFlagTerrain();
+    });
   }
 
   void Terrain::save(JSONObject object, int originX, int originY, int originZ) {
@@ -643,7 +687,7 @@ namespace IsoRealms::Equilibria {
     cZone.remove(this);
   }
 
-  void Terrain::define(IComponentDefiner& definer) {
+  void Terrain::defineWorldObject(IComponentDefiner& definer) {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
     definer.propertyCondition(JSON_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;

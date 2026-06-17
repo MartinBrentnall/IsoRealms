@@ -108,7 +108,10 @@ namespace IsoRealms {
     deferDuringLoad(cComponentData, std::move(mLoad));
   }
 
-  bool ComponentLoader::loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) {
+  bool ComponentLoader::loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint) {
+    if (hint.getOption(Options::PROPERTY_OPTIONAL) == "true" && !currentObject().hasMember(key)) {
+      return true;
+    }
     for (JSONValue mValue : currentObject().getArray(key)) {
       JSONObject mObject = mValue.getObject();
       pushObject(mObject);
@@ -160,14 +163,17 @@ namespace IsoRealms {
     // This is a calculated property, so we don't need to load it from the JSON.
   }
 
-  void ComponentLoader::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) {
+  void ComponentLoader::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
+    if (hint.getOption(Options::PROPERTY_OPTIONAL) == "true" && !currentObject().hasMember(key)) {
+      return;
+    }
     std::optional<Condition>& mCondition = getter();
     mCondition = Condition(currentObject().getObject(key), availableElements);
     setter(mCondition);
   }
 
   void ComponentLoader::propertyEditor(const std::string& key, IEditable* editable) {
-    editable->load(cComponentData, currentObject());
+    // Nothing to do.
   }
 
   void ComponentLoader::propertyFloat(const std::string& key, std::function<float()> getter, std::function<void(float)> setter, float defaultValue, std::function<bool(float)> validityChecker, std::function<void()> removeFunction) {
@@ -227,8 +233,17 @@ namespace IsoRealms {
   }
 
   void ComponentLoader::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint) {
-    std::string mScoped = hint.getOption(Options::PROPERTY_SCOPED);
-    if (mScoped == "true") {
+    if (hint.getOption(Options::PROPERTY_DEFER) == "true") {
+      std::vector<JSONObject> mObjectStack = cObjects;
+      IComponentData* mComponentData = &cComponentData;
+      std::function<void(IComponentDefiner&)> mSubProperties = subProperties;
+      deferDuringLoad(cComponentData, [mComponentData, mObjectStack = std::move(mObjectStack), mSubProperties]() {
+        ComponentLoader mLoader(*mComponentData, mObjectStack);
+        mSubProperties(mLoader);
+      });
+      return;
+    }
+    if (hint.getOption(Options::PROPERTY_SCOPED) == "true") {
       pushObject(currentObject().getObject(key));
       subProperties(*this);
       popObject();

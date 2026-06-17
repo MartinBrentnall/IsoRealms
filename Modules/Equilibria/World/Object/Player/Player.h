@@ -48,7 +48,9 @@ namespace IsoRealms::Equilibria {
     
     // Constructors.
     Player(World& world, PlayerType& type, float x, float y, float z);
-    Player(World& world, JSONObject object);
+    Player(World& world);
+    void define(IComponentDefiner& definer);
+    std::string getDisplayName() const;
 
     // Interface to be used by parent world.
     void publish(ResourcePublisher& publisher, const std::string& parentID);

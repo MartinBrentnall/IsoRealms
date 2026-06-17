@@ -57,23 +57,40 @@ namespace IsoRealms::Equilibria {
     reset();
   }
 
-  Lift::Lift(Zone& zone, JSONObject object) :
+  Lift::Lift(Zone& zone) :
             cZone(zone),
-            cDefX(object.getInteger(JSON_X) + cZone.getStartX()),
-            cDefY(object.getInteger(JSON_Y) + cZone.getStartY()),
-            cDefZ(object.getInteger(JSON_Z) + cZone.getStartZ()),
-            cDefTop(object.getInteger(JSON_TOP) + cZone.getStartZ()),
-            cDefBottom(object.getInteger(JSON_BOTTOM) + cZone.getStartZ()),
-            cDefTopPause(object.getInteger(JSON_TOP_PAUSE)),
-            cDefBottomPause(object.getInteger(JSON_BOTTOM_PAUSE)),
-            cDefSpeedUp(object.getInteger(JSON_UP_SPEED)),
-            cDefSpeedDown(object.getInteger(JSON_DOWN_SPEED)),
+            cDefX(cZone.getStartX()),
+            cDefY(cZone.getStartY()),
+            cDefZ(cZone.getStartZ()),
+            cDefTop(cZone.getStartZ() + 2),
+            cDefBottom(cZone.getStartZ()),
+            cDefTopPause(1500),
+            cDefBottomPause(1500),
+            cDefSpeedUp(750),
+            cDefSpeedDown(750),
             cSurface(*this) {
-    cZone.getWorld().getEquilibria().getProject().init([this, object]() {
-      cDefType = cZone.getWorld().getEquilibria().get<LiftType>(nullptr, object.getString(JSON_TYPE));
-      cDefModel = cDefType->createModel();
-      reset();
-    });
+    reset();
+  }
+
+  void Lift::define(IComponentDefiner& definer) {
+    Options mDeferHint;
+    mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
+    definer.scope("", "", [this](IComponentDefiner& d) {
+      d.propertyString(JSON_TYPE, [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+        cDefType = cZone.getWorld().getEquilibria().get<LiftType>(nullptr, value);
+        cDefModel = cDefType->createModel();
+        reset();
+      });
+    }, nullptr, mDeferHint);
+    definer.propertyInteger(JSON_X,            [this]() {return cDefX - cZone.getStartX();},       [this](int value) {cDefX = value + cZone.getStartX();});
+    definer.propertyInteger(JSON_Y,            [this]() {return cDefY - cZone.getStartY();},       [this](int value) {cDefY = value + cZone.getStartY();});
+    definer.propertyInteger(JSON_Z,            [this]() {return cDefZ - cZone.getStartZ();},       [this](int value) {cDefZ = value + cZone.getStartZ();});
+    definer.propertyInteger(JSON_TOP,          [this]() {return cDefTop - cZone.getStartZ();},     [this](int value) {cDefTop = value + cZone.getStartZ();});
+    definer.propertyInteger(JSON_BOTTOM,       [this]() {return cDefBottom - cZone.getStartZ();},  [this](int value) {cDefBottom = value + cZone.getStartZ();});
+    definer.propertyInteger(JSON_UP_SPEED,     [this]() {return cDefSpeedUp;},                     [this](int value) {cDefSpeedUp = value;});
+    definer.propertyInteger(JSON_DOWN_SPEED,   [this]() {return cDefSpeedDown;},                   [this](int value) {cDefSpeedDown = value;});
+    definer.propertyInteger(JSON_TOP_PAUSE,    [this]() {return cDefTopPause;},                    [this](int value) {cDefTopPause = value;});
+    definer.propertyInteger(JSON_BOTTOM_PAUSE, [this]() {return cDefBottomPause;},                 [this](int value) {cDefBottomPause = value;});
   }
 
   void Lift::initialise() {
@@ -540,7 +557,7 @@ namespace IsoRealms::Equilibria {
     cZone.remove(this);
   }
 
-  void Lift::define(IComponentDefiner& definer) {
+  void Lift::defineWorldObject(IComponentDefiner& definer) {
     if (cZone.getWorld().isBasicProperties()) {
       definer.propertyBoolean("Pause", [this]() {return cDefTopPause > 0;}, [this](bool value) {
         cDefTopPause = value ? 1500 : 0;

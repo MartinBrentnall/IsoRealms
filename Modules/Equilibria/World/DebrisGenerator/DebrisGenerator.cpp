@@ -19,15 +19,27 @@
 #include "DebrisGenerator.h"
 
 namespace IsoRealms::Equilibria {
-  DebrisGenerator::DebrisGenerator(JSONObject object, IComponentData& owner) :
-            cDefID(object.getString(JSON_ID)),
+  DebrisGenerator::DebrisGenerator(IComponentData& owner, const std::string& id) :
+            cDefID(id),
             cDefModel(owner),
-            cDefLifeTime(object.getInteger(JSON_LIFE, DEFAULT_LIFE)),
-            cDefHeight(object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT)),
-            cDefRadius(object.getFloat(JSON_RADIUS, DEFAULT_RADIUS)),
-            cDefStepReach(object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH)),
+            cDefLifeTime(DEFAULT_LIFE),
+            cDefHeight(DEFAULT_HEIGHT),
+            cDefRadius(DEFAULT_RADIUS),
+            cDefStepReach(DEFAULT_STEP_REACH),
             cLuaBinding(owner.getProject().getLuaState(), this) {
-    cDefModel.init(object, JSON_APPEARANCE);
+  }
+
+  void DebrisGenerator::define(IComponentDefiner& definer) {
+    definer.propertyString(          JSON_ID,        [this]() {return cDefID;},        [this](const std::string& value) {cDefID = value;});
+    definer.propertyResource(        JSON_APPEARANCE, cDefModel);
+    definer.propertyUnsignedInteger( JSON_LIFE,      [this]() {return cDefLifeTime;}, [this](unsigned int value) {cDefLifeTime = value;}, DEFAULT_LIFE);
+    definer.propertyFloat(           JSON_HEIGHT,    [this]() {return cDefHeight;},   [this](float value) {cDefHeight = value;}, DEFAULT_HEIGHT);
+    definer.propertyFloat(           JSON_RADIUS,    [this]() {return cDefRadius;},   [this](float value) {cDefRadius = value;}, DEFAULT_RADIUS);
+    definer.propertyFloat(           JSON_STEP_REACH, [this]() {return cDefStepReach;}, [this](float value) {cDefStepReach = value;}, DEFAULT_STEP_REACH);
+  }
+
+  const std::string& DebrisGenerator::getID() const {
+    return cDefID;
   }
 
   void DebrisGenerator::publish(ResourcePublisher& publisher, const std::string& parentID) {

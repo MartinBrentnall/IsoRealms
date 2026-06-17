@@ -187,8 +187,6 @@ namespace IsoRealms::Equilibria {
     /************************\
      * Implements IEditable *
     \************************/
-    void load(IComponentData& resourceData, JSONObject object) override;
-    void save(IComponentData& resourceData, JSONObject object) const override;
     IEditableScreen* createEditableScreen(Project* project, IDialogManager& dialogManager) override;
 
     class DummyPhysicalObjectTypeUser : public IResourceUser<IPhysicalObjectType> {
@@ -204,6 +202,8 @@ namespace IsoRealms::Equilibria {
 
     // TODO: To be replaced with dynamic solution.
     float getAbyssDepth() const;
+
+    std::string getAvailableDebrisGeneratorId() const;
     
     private:
     

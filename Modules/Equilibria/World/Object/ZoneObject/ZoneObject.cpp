@@ -60,7 +60,7 @@ namespace IsoRealms::Equilibria {
 //     });
   }
 
-  void ZoneObject::define(IComponentDefiner& definer) {
+  void ZoneObject::defineWorldObject(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

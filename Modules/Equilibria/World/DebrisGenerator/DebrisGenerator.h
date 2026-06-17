@@ -29,8 +29,10 @@
 namespace IsoRealms::Equilibria {
   class DebrisGenerator final {
     public:
-    DebrisGenerator(JSONObject object, IComponentData& owner);
+    DebrisGenerator(IComponentData& owner, const std::string& id);
+    void define(IComponentDefiner& definer);
     void publish(ResourcePublisher& publisher, const std::string& parentID);
+    const std::string& getID() const;
     void updateRuntime(unsigned int milliseconds);
     void renderRuntime();
     void reset();

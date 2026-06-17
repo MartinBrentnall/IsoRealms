@@ -65,7 +65,7 @@ namespace IsoRealms {
     virtual void propertyColourHue(       const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) = 0;
     virtual void propertyColourLightness( const std::string& key, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) = 0;
     virtual void propertyColourSaturation(const std::string& key, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) = 0;
-    virtual void propertyCondition(       const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) = 0;
+    virtual void propertyCondition(       const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint = Options::EMPTY) = 0;
     virtual void propertyEditor(          const std::string& key, IEditable* editable) = 0;
     virtual void propertyFloat(           const std::string& key, std::function<float()>        getter, std::function<void(float)>              setter, float              defaultValue = 0.0f,  std::function<bool(float)>              validityChecker = [](float)              {return true;}, std::function<void()> removeFunction = nullptr) = 0;
     virtual void propertyInteger(         const std::string& key, std::function<int()>          getter, std::function<void(int)>                setter, int                defaultValue = 0,     std::function<bool(int)>                validityChecker = [](int)                {return true;}, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) = 0;
@@ -79,7 +79,10 @@ namespace IsoRealms {
     virtual void scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) = 0;
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename ADD_FUNC>
-    void array(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add) {
+    void array(const std::string& key, const CONTAINER& container, VALUE_FUNC value, PROPERTY_FUNC createProperty, ADD_FUNC add, const Options& hint = Options::EMPTY) {
+      if (savesPersistedValues() && hint.getOption(Options::PROPERTY_OPTIONAL) == "true" && std::begin(container) == std::end(container)) {
+        return;
+      }
       if (beginSavePropertyArray(key)) {
         for (const auto& mElement : container) {
           beginSavePropertyArrayElement();
@@ -91,7 +94,7 @@ namespace IsoRealms {
       }
       if (loadPropertyArray(key, [&]() {
         createProperty(add());
-      })) {
+      }, hint)) {
         return;
       }
       for (const auto& mElement : container) {
@@ -143,7 +146,7 @@ namespace IsoRealms {
     virtual void endSavePropertyArray() {
     }
 
-    virtual bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement) {
+    virtual bool loadPropertyArray(const std::string& key, const std::function<void()>& addAndLoadElement, const Options& hint = Options::EMPTY) {
       return false;
     }
 

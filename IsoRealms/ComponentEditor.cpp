@@ -70,7 +70,7 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyColourSaturation>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
   }
 
-  void ComponentEditor::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) {
+  void ComponentEditor::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
     cProperties.addProperty(std::make_unique<PropertyCondition>(cMetadata.getPropertyData(key), *this, availableElements, getter, setter));
   }
 
@@ -118,7 +118,6 @@ namespace IsoRealms {
 
   void ComponentEditor::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint) {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
-      subProperties(*this);
       return;
     }
     cProperties.addProperty(std::make_unique<PropertyStruct>(*this, cMetadata.getPropertyData(key), *this, value, subProperties, removeFunction));

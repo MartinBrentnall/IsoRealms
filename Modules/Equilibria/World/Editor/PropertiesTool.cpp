@@ -65,7 +65,7 @@ namespace IsoRealms::Equilibria {
       IWorldObject* mObject = cHoverObjects[cSelectedObject];
       const Metadata& mMetadata = cEditor.getWorld().getEquilibria().getMetadata(mObject->getTypeName());
       cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldComponentOwner, mMetadata, [this](IComponentDefiner& definer) {
-        cHoverObjects[cSelectedObject]->define(definer);
+        cHoverObjects[cSelectedObject]->defineWorldObject(definer);
       }), mObject->getTypeName() + " Configuration");
       cEditingProperties = true;
     }

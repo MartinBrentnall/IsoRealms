@@ -47,14 +47,14 @@ namespace IsoRealms::Equilibria {
                public IVisualElement {
     public:
     Zone(World& world, ZoneType& type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone);
-    Zone(World& world, JSONObject object);
     void removed();
 
     void copy(Zone* zone);
     
     void publish();
-    
-    //
+    void define(IComponentDefiner& definer);
+    std::string getDisplayName() const;
+
     void registerView(IScreen& screen);
     
     // Interface to be used by world, on behalf of editing functions.

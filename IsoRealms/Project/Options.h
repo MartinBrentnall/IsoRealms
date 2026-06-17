@@ -46,6 +46,12 @@ namespace IsoRealms {
 
     /** Hint option: JSON member name under which nested struct properties are loaded and saved. */
     inline static const std::string PROPERTY_SCOPED = "scoped";
+
+    /** Hint option: array property is omitted from JSON when empty and not required when loading. */
+    inline static const std::string PROPERTY_OPTIONAL = "optional";
+
+    /** Hint option: scope properties are deferred until components are loaded, using a fresh loader. */
+    inline static const std::string PROPERTY_DEFER = "defer";
     
     Options();
     Options(int argc, char** argv);

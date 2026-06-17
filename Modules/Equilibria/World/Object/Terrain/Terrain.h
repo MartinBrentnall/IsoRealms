@@ -83,15 +83,8 @@ namespace IsoRealms::Equilibria {
     Terrain(Zone& zone, TerrainType& type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition);
 
     Terrain(Zone& zone, Terrain& terrain, int x, int y, int z);
-
-    /**
-     * Construct terrain by reading data from the specified JSONObject.
-     *
-     * @param type The type of this terrain element.
-     * @param zone The zone in which this terrain element is placed.
-     * @param node Node containing configuration data of this terrain element.
-     */
-    Terrain(Zone& zone, JSONObject object);
+    Terrain(Zone& zone);
+    void define(IComponentDefiner& definer);
 
     /**
      * Save the configuration of this terrain element.
@@ -189,7 +182,7 @@ namespace IsoRealms::Equilibria {
     bool contains(const LiteralVertex& location) const override;
     void renderSelectionHighlight() const override;
     void remove() override;
-    void define(IComponentDefiner& definer) override;
+    void defineWorldObject(IComponentDefiner& definer) override;
     std::string getTypeName() const override;
     Zone& getObjectZone() override;
 
