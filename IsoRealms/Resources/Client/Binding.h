@@ -44,7 +44,7 @@ namespace IsoRealms {
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
     bool hasClientConfiguration() const;
 
-    void getClientProperties(IComponentDefiner& definer) override;
+    void defineWrapper(IComponentDefiner& definer) override;
 
     private:
     const BindingType* cDefType;   /// Pointer to the binding type within the argument definition.

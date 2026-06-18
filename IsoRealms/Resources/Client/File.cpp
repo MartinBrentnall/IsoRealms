@@ -97,8 +97,15 @@ namespace IsoRealms {
     return true;
   }
 
-  void File::getTreeItemProperties(IComponentDefiner& definer) {
-    // Nothing to do.
+  void File::defineTreeItem(IComponentDefiner& definer) {
+    definer.propertyString(JSON_PATH, [this]() {return cPath;}, [this](const std::string& value) {cPath = value;});
+    definer.propertyBoolean(JSON_USER, [this]() {return cUser;}, [this](bool value) {cUser = value;});
+
+    if (definer.loadsPersistedValues()) {
+      if (cChangeCallback) {
+        cChangeCallback();
+      }
+    }
   }
 
   const Metadata& File::getPropertyMetadata() const {
@@ -139,14 +146,6 @@ namespace IsoRealms {
     }
   }
 
-  void File::loadFromProperty(JSONObject object, const std::string& key, const Options& hint) {
-    load(key, object);
-  }
-
-  void File::saveToProperty(JSONObject object, const std::string& key, const Options& hint) const {
-    save(key, object);
-  }
-  
   void File::getFilesAt(const std::string& path, const std::string& prefix, std::vector<std::string>& list) {
     std::cout << "Getting files at path: \"" << path << "\"..." << std::endl;
     for (const std::filesystem::directory_entry& mDirEntry : std::filesystem::recursive_directory_iterator{path}) {

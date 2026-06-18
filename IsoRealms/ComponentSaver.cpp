@@ -70,7 +70,7 @@ namespace IsoRealms {
   void ComponentSaver::saveTreeSelectorResourceProperties(const ITreeSelectorObject& item, JSONObject object, const Options& hint) const {
     if (item.hasConfiguration()) {
       ComponentSaver mSaver(cComponentData, object);
-      const_cast<ITreeSelectorObject&>(item).getTreeItemProperties(mSaver);
+      const_cast<ITreeSelectorObject&>(item).defineTreeItem(mSaver);
     }
   }
 
@@ -143,10 +143,8 @@ namespace IsoRealms {
 
   void ComponentSaver::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
     if (hint.getOption(Options::PROPERTY_INLINE) == "true") {
-      item.saveToProperty(currentObject(), hint);
       saveTreeSelectorResourceProperties(item, currentObject(), hint);
     } else {
-      item.saveToProperty(currentObject(), key, hint);
       if (item.hasConfiguration()) {
         saveTreeSelectorResourceProperties(item, currentObject().getObject(key), hint);
       }

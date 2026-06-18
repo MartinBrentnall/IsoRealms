@@ -46,10 +46,8 @@ namespace IsoRealms::Basics {
      * Component Interface *
     \***********************/
     Function(Basics& basics, IComponentData& data);
-    Function(Basics& basics, IComponentData& data, JSONObject object);
-    // Constructors for use by scripts (in-line functions).
+    // Constructor for use by scripts (in-line functions).
     Function(Basics& basics, IActionContext& owner);
-    Function(Basics& basics, IActionContext& owner, JSONObject object, bool init);
     void define(IComponentDefiner& definer);
     void publish(ResourcePublisher& publisher);
     bool renderIcon() const;

@@ -30,12 +30,6 @@ namespace IsoRealms::Basics {
             Function(basics, data.getDummyActionContext()) {
   }
     
-  Function::Function(Basics& basics, IComponentData& data, JSONObject object) :
-            Function(basics, data.getDummyActionContext()) {
-    ComponentLoader mLoader(data, object);
-    define(mLoader);
-  }
-
   void Function::define(IComponentDefiner& definer) {
     addBindingPropertyArray(definer, true);
     definer.array("arguments", cDefArgumentDefinitions, [](const std::unique_ptr<ArgumentDefinition>& mArgumentDefinition) -> ArgumentDefinition& {return *mArgumentDefinition;}, [this, &definer](ArgumentDefinition& argumentDefinition) {
@@ -71,16 +65,6 @@ namespace IsoRealms::Basics {
             cDefActionContext(owner),
             cDefLuaState(basics.getProject().getLuaState().getState()),
             cDefID(basics.getAvailableFunctionID()) {
-  }
-
-  Function::Function(Basics& basics, IActionContext& owner, JSONObject object, bool init) :
-            Function(basics, owner) {
-    ComponentLoader mLoader(cComponentData, object);
-    if (init) {
-      define(mLoader);
-    } else {
-      getScriptProperties(mLoader);
-    }
   }
 
   void Function::addBindingPropertyArray(IComponentDefiner& definer, bool init) {

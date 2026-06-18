@@ -28,14 +28,13 @@ namespace IsoRealms::UI {
   class UI;
   class Menu;
 
-  class MenuItem : public IResourceUser<IMenuItem>, public ITreeSelectorObject {
+  class MenuItem : public IResourceUser<IMenuItem>,
+                   public ITreeSelectorObject {
     public:
     MenuItem(UI& ui, Menu& menu);
 
     void init(JSONObject object, const std::string& member, Menu& owner);
     void set(JSONObject object, const std::string& member, Menu& owner);
-    void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override;
-    void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override;
     void setID(const std::string& id) override;
     TreeItemInfo getTreeItemInfo() const override;
     std::string getTreeItemLabel() const override;
@@ -43,7 +42,7 @@ namespace IsoRealms::UI {
     bool renderTreeItemIcon(const std::string& id) const override;
     bool hasConfiguration() const override;
     bool isDefaultConfigured() const override;
-    void getTreeItemProperties(IComponentDefiner& definer) override;
+    void defineTreeItem(IComponentDefiner& definer) override;
     const IsoRealms::Metadata& getPropertyMetadata() const override;
     bool renderTreeItemIcon() const override;
     Application& getApplication() override;

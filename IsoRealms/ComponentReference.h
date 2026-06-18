@@ -22,6 +22,7 @@
 #include <optional>
 #include <stdexcept>
 
+#include "IsoRealms/Editing/Property/IComponentDefiner.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IComponentUser.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
@@ -99,8 +100,12 @@ namespace IsoRealms {
       return false; // TODO: Implement this.
     }
 
-    void getTreeItemProperties(IComponentDefiner& definer) override {
-      // TODO: Implement this.
+    void defineTreeItem(IComponentDefiner& definer) override {
+      definer.propertyString("key", [this]() {
+        return cManager.getResourceManager().getComponentID(cDefComponent);
+      }, [this](const std::string& value) {
+        setID(value);
+      });
     }
 
     const Metadata& getPropertyMetadata() const override {
@@ -136,24 +141,6 @@ namespace IsoRealms {
 
     void setOwner(ProjectFile* owner) override {
       cManager.setOwner(owner);
-    }
-
-    void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override {
-      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true" || cManager.getProject().areComponentsLoaded()) {
-        setID(object.getString(key));
-      } else {
-        cManager.getProject().init([this, object, key]() {
-          setID(object.getString(key));
-        });
-      }
-    }
-
-    void loadFromProperty(JSONObject object, const Options& hint) override {
-      throw std::runtime_error("ComponentReference::loadFromProperty: Not implemented.");
-    }
-
-    void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override {
-      save(object, key);
     }
 
     private:

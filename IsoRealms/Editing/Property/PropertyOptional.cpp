@@ -118,7 +118,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyOptional::OptionWrapper::getTreeItemProperties(IComponentDefiner& definer) {
+  void PropertyOptional::OptionWrapper::defineTreeItem(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

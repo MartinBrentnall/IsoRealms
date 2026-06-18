@@ -25,21 +25,7 @@ namespace IsoRealms::Basics {
             cParent(parent),
             cDefName(name),
             cDefLuaName(luaName),
-            cDefType(parent.getComponentData(), [this]() {
-              std::string mNewBindingID = cDefType.getTreeItemInfo().cID;
-              std::size_t mLastSeparator = mNewBindingID.rfind('/');
-              if (mLastSeparator != std::string::npos) {
-                mNewBindingID = mNewBindingID.substr(mLastSeparator + 1);
-              }
-              std::string mStrippedID;
-              for (unsigned int i = 0; i < mNewBindingID.length(); i++) {
-                char mChar = std::toupper(mNewBindingID[i]);
-                if ((mChar >= 'A' && mChar <= 'Z') || (mChar >= '0' && mChar <= '9')) {
-                  mStrippedID += (mStrippedID.empty() ? std::tolower(mNewBindingID[i]) : mNewBindingID[i]);
-                }
-              }
-              cParent.setArgumentDefinitionName(*this, mStrippedID);
-            }) {
+            cDefType(parent.getComponentData()) {
   }
 
   void ArgumentDefinition::define(IComponentDefiner& definer, Function& parent) {
@@ -59,6 +45,7 @@ namespace IsoRealms::Basics {
   const BindingType* ArgumentDefinition::getType() const {
     return &cDefType;
   }
+  
   void ArgumentDefinition::saveCall(JSONObject object, const std::string& attributeName) const {
     object.addString(attributeName, cDefName);
   }

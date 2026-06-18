@@ -34,15 +34,10 @@ namespace IsoRealms {
     public:
     virtual ~ITreeSelectorObject() = default;
 
-    virtual void loadFromProperty(JSONObject object, const std::string& key, const Options& hint = Options::EMPTY) {}
-    virtual void loadFromProperty(JSONObject object, const Options& hint = Options::EMPTY) {}
-    virtual void saveToProperty(JSONObject object, const std::string& key, const Options& hint = Options::EMPTY) const {}
-    virtual void saveToProperty(JSONObject object, const Options& hint = Options::EMPTY) const {}
-
     virtual std::string getTreeItemLabel() const = 0;
     virtual bool renderTreeItemIcon() const = 0;
     virtual bool hasConfiguration() const = 0;
-    virtual void getTreeItemProperties(IComponentDefiner& definer) = 0;
+    virtual void defineTreeItem(IComponentDefiner& definer) = 0;
     virtual const Metadata& getPropertyMetadata() const = 0;
     virtual TreeItemInfo getTreeItemInfo() const = 0;
     virtual Application& getApplication() = 0;

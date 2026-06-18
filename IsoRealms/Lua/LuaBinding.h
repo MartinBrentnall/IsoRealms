@@ -74,7 +74,7 @@ namespace IsoRealms {
       // Nothing to do.
     }
 
-    void getWrappedProperties(IComponentDefiner& definer) override {
+    void defineBinding(IComponentDefiner& definer) override {
       // Nothing to do.
     }
 

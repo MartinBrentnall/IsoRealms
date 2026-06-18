@@ -22,6 +22,7 @@
 #include <memory>
 
 #include "IsoRealms/Editing/Property/IProperty.h"
+#include "IsoRealms/Editing/Property/IComponentDefiner.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Metadata.h"
@@ -129,8 +130,11 @@ namespace IsoRealms {
       static_cast<DERIVED*>(this)->stateChanged();
     }
     
-    void getTreeItemProperties(IComponentDefiner& definer) override {
-      getClientProperties(definer);
+    void defineTreeItem(IComponentDefiner& definer) override {
+      definer.propertyString("key", [this]() {return getRawID();}, [this](const std::string& value) {
+        setID(value);
+      });
+      defineWrapper(definer);
       cResource->defineResource(definer);
     }
 
@@ -198,33 +202,6 @@ namespace IsoRealms {
       return cManager.getResourceManager().getTreeItemInfo(cResource);
     }
 
-    void loadFromProperty(JSONObject object, const std::string& key, const Options& hint) override {
-      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true") {
-        set(object, key);
-      } else {
-        init(object, key);
-      }
-    }
-
-    void loadFromProperty(JSONObject object, const Options& hint) override {
-      if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true") {
-        set(object);
-      } else {
-        init(object);
-      }
-    }
-
-    void saveToProperty(JSONObject object, const std::string& key, const Options& hint) const override {
-      JSONObject mResourceObject = object.addObject(key);
-      saveClientConfiguration(mResourceObject);
-      mResourceObject.addString("key", getRawID());
-    }
-
-    void saveToProperty(JSONObject object, const Options& hint) const override {
-      saveClientConfiguration(object);
-      object.addString("key", getRawID());
-    }
-
     std::string getTreeItemLabel() const override {
       TreeItemInfo mTreeItemInfo = getTreeItemInfo();
       std::string::size_type mLastSeparator = mTreeItemInfo.cPath.find_last_of('/');
@@ -269,7 +246,7 @@ namespace IsoRealms {
     virtual void saveClientConfiguration(JSONObject object) const {
       // Nothing to do.
     }
-    virtual void getClientProperties(IComponentDefiner& definer) {
+    virtual void defineWrapper(IComponentDefiner& definer) {
       // Nothing to do.
     }
 

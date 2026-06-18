@@ -42,7 +42,7 @@ namespace IsoRealms {
 
     void loadClientConfiguration(JSONObject object) override;
     void saveClientConfiguration(JSONObject object) const override;
-    void getClientProperties(IComponentDefiner& definer) override;
+    void defineWrapper(IComponentDefiner& definer) override;
 
     /***********************************************\
      * Implements ITreeSelectorObject via Resource *

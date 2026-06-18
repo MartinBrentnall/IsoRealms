@@ -92,7 +92,7 @@ namespace IsoRealms {
   void ComponentLoader::loadTreeSelectorResourceProperties(ITreeSelectorObject& item, JSONObject object, const Options& hint) {
     if (hint.getOption(Options::PROPERTY_IMMEDIATE) == "true") {
       pushObject(object);
-      item.getTreeItemProperties(*this);
+      item.defineTreeItem(*this);
       popObject();
       return;
     }
@@ -103,7 +103,7 @@ namespace IsoRealms {
     IComponentData* mComponentData = &cComponentData;
     std::function<void()> mLoad = [mComponentData, mObjectStack = std::move(mObjectStack), mItem]() {
       ComponentLoader mLoader(*mComponentData, mObjectStack);
-      mItem->getTreeItemProperties(mLoader);
+      mItem->defineTreeItem(mLoader);
     };
     deferDuringLoad(cComponentData, std::move(mLoad));
   }
@@ -212,10 +212,8 @@ namespace IsoRealms {
 
   void ComponentLoader::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
     if (hint.getOption(Options::PROPERTY_INLINE) == "true") {
-      item.loadFromProperty(currentObject(), hint);
       loadTreeSelectorResourceProperties(item, currentObject(), hint);
     } else {
-      item.loadFromProperty(currentObject(), key, hint);
       loadTreeSelectorResourceProperties(item, currentObject().getObject(key), hint);
     }
   }

@@ -77,8 +77,12 @@ namespace IsoRealms {
     return true;
   }
 
-  void ComponentOwner::getTreeItemProperties(IComponentDefiner& definer) {
-    // Nothing to do.
+  void ComponentOwner::defineTreeItem(IComponentDefiner& definer) {
+    definer.propertyString("key", [this]() {
+      return cOwner->getName();
+    }, [this](const std::string& value) {
+      setID(value);
+    });
   }
 
   const Metadata& ComponentOwner::getPropertyMetadata() const {
@@ -113,13 +117,5 @@ namespace IsoRealms {
 
   void ComponentOwner::setID(const std::string& id) {
     cOwner = cProject.getProjectFile(id);
-  }
-
-  void ComponentOwner::loadFromProperty(JSONObject object, const std::string& key, const Options& hint) {
-    setID(object.getString(key));
-  }
-
-  void ComponentOwner::saveToProperty(JSONObject object, const std::string& key, const Options& hint) const {
-    object.addString(key, cOwner->getName());
   }
 }

@@ -75,7 +75,7 @@ namespace IsoRealms {
       bool isConfigurable() const override;
       TreeItemInfo getTreeItemInfo() const override;
       void set(const std::string& id) override;
-      void getWrappedProperties(IComponentDefiner& definer) override;
+      void defineBinding(IComponentDefiner& definer) override;
       std::string getConversionPath() const override;
       bool renderResourceIcon() const override;
     };
@@ -94,7 +94,7 @@ namespace IsoRealms {
        * Implements IResourceProvider<Project, IBinding> *
       \***************************************************/
       IBinding* getResource(IActionContext& owner) override {
-        return nullptr; // TODO: Implement this.
+        return cInstances.emplace(std::make_unique<Instance>(cRuntimeLocals)).first->get();
       }
 
       IBinding* getResource(IActionContext& owner, JSONObject object) override {
@@ -131,9 +131,33 @@ namespace IsoRealms {
       }
 
       private:
+      class Instance : public IBinding {
+        public:
+        Instance(IEventBindings* locals);
+
+        /***********************\
+         * Implements IBinding *
+        \***********************/
+        void bind(const std::string& function) const override;
+        void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
+        bool renderTreeItemIcon(const std::string& id) const override;
+        bool isConfigurable() const override;
+        TreeItemInfo getTreeItemInfo() const override;
+        void set(const std::string& id) override;
+        void defineBinding(IComponentDefiner& definer) override;
+        std::string getConversionPath() const override;
+        bool renderResourceIcon() const override;
+
+        private:
+        IEventBindings* cEventContext;
+        IBinding* cBinding;
+      };
+
       inline static const std::string JSON_LOCAL = "local";
 
       IEventBindings* cRuntimeLocals;
+
+      mutable std::set<std::unique_ptr<IBinding>> cInstances;
     };
 
     class ConversionProvider : public IResourceProvider<IActionContext, IBinding> {
@@ -253,12 +277,12 @@ namespace IsoRealms {
           cDefValue.setID(id);
         }
 
-        void getWrappedProperties(IComponentDefiner& definer) override {
+        void defineBinding(IComponentDefiner& definer) override {
           Options mHint;
           mHint.addOption(Options::PROPERTY_NO_EDIT, "true");
           definer.propertyResource(JSON_RESOURCE, cDefValue, mHint);
           if (!definer.loadsPersistedValues()) {
-            cDefValue.getTreeItemProperties(definer);
+            cDefValue.defineTreeItem(definer);
           }
         }
 

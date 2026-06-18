@@ -66,7 +66,7 @@ namespace IsoRealms {
     return cManager.getProject().getApplication().getMetadata("Texture");
   }
 
-  void Texture::getClientProperties(IComponentDefiner& definer) {
+  void Texture::defineWrapper(IComponentDefiner& definer) {
     definer.propertyFloat(JSON_SCALE_X, [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();}, 1.0f);
     definer.propertyFloat(JSON_SCALE_Y, [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();}, 1.0f);
     definer.propertyFloat(JSON_ANGLE,   [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});

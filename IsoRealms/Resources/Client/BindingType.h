@@ -28,7 +28,7 @@
 namespace IsoRealms {
   class BindingType : public Resource<BindingType, IBindingType, IComponentData> {
     public:
-    BindingType(IComponentData& owner, std::function<void()> listener);
+    BindingType(IComponentData& owner, std::function<void()> listener = nullptr);
 
     /*****************************************************\
      * Implements Resource<IBindingType, IComponentData> *

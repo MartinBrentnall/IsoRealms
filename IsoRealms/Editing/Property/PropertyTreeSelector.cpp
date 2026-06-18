@@ -75,7 +75,7 @@ namespace IsoRealms {
 
   void PropertyTreeSelector::configure(IPropertyManager& manager) {
     manager.openProperties(cComponentData, getPropertyName(), cSelectedItem.getPropertyMetadata(), [this](IComponentDefiner& definer) {
-      cSelectedItem.getTreeItemProperties(definer);
+      cSelectedItem.defineTreeItem(definer);
     });
   }
 

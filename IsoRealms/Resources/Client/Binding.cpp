@@ -137,8 +137,8 @@ namespace IsoRealms {
     return cResource->isConfigurable() || cManager.getResourceManager().isConfigurable<IBinding>(getRawID());
   }  
 
-  void Binding::getClientProperties(IComponentDefiner& definer) {
-    cResource->getWrappedProperties(definer);
+  void Binding::defineWrapper(IComponentDefiner& definer) {
+    cResource->defineBinding(definer);
     cResource->defineResource(definer);
   }
 }

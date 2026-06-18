@@ -140,7 +140,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void BindingRegistry::Dummy::getWrappedProperties(IComponentDefiner& definer) {
+  void BindingRegistry::Dummy::defineBinding(IComponentDefiner& definer) {
     // Nothing to do.
   }
 
@@ -151,5 +151,49 @@ namespace IsoRealms {
 
   std::string BindingRegistry::Dummy::getConversionPath() const {
     return "";
+  }
+
+  BindingRegistry::Local::Instance::Instance(IEventBindings* locals) :
+            cEventContext(locals) {
+  }
+
+  void BindingRegistry::Local::Instance::bind(const std::string& function) const {
+    cBinding->bind(function);
+  }
+
+  void BindingRegistry::Local::Instance::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
+    cBinding->forEachAvailableTreeItem(getTreeItemInfoFunction);
+  }
+
+  bool BindingRegistry::Local::Instance::renderTreeItemIcon(const std::string& id) const {
+    return cBinding->renderTreeItemIcon(id);
+  }
+
+  bool BindingRegistry::Local::Instance::isConfigurable() const {
+    return cBinding->isConfigurable();
+  }
+
+  TreeItemInfo BindingRegistry::Local::Instance::getTreeItemInfo() const {
+    return cBinding->getTreeItemInfo();
+  }
+
+  void BindingRegistry::Local::Instance::set(const std::string& id) {
+    cBinding->set(id);
+  }
+  
+  void BindingRegistry::Local::Instance::defineBinding(IComponentDefiner& definer) {
+    definer.propertyString(JSON_LOCAL, [this]() {
+      return cEventContext->getBindingID(cBinding);
+    }, [this](const std::string& value) {
+      cBinding = cEventContext->getBinding(value);
+    });
+  }
+
+  std::string BindingRegistry::Local::Instance::getConversionPath() const {
+    return cBinding->getConversionPath(); 
+  }
+
+  bool BindingRegistry::Local::Instance::renderResourceIcon() const {
+    return cBinding->renderResourceIcon();
   }
 }

@@ -94,13 +94,6 @@ namespace IsoRealms::Basics {
     return cBasics.getMetadata("Script");
   }
 
-  Script::ScriptAction::ScriptAction(Script& parent, IActionContext& owner, unsigned int index, JSONObject object) :
-            cParent(parent),
-            cDefFunction(cParent.cBasics, owner, object, false),
-            cDefAction(cDefFunction.getResource(owner, object)),
-            cDefIndex(index) {
-  }
-
   Script::ScriptAction::ScriptAction(Script& parent, IActionContext& owner, unsigned int index) :
             cParent(parent),
             cDefFunction(cParent.cBasics, owner),

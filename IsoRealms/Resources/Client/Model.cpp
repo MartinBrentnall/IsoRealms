@@ -94,7 +94,7 @@ namespace IsoRealms {
     return cManager.getProject().getApplication().getMetadata("Model");
   }
 
-  void Model::getClientProperties(IComponentDefiner& definer) {
+  void Model::defineWrapper(IComponentDefiner& definer) {
     definer.propertyFloat(JSON_OFFSET_X, [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
     definer.propertyFloat(JSON_OFFSET_Y, [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});
     definer.propertyFloat(JSON_OFFSET_Z, [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value;});

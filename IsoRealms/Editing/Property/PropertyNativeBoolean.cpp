@@ -82,7 +82,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyNativeBoolean::BooleanSelection::getTreeItemProperties(IComponentDefiner& definer) {
+  void PropertyNativeBoolean::BooleanSelection::defineTreeItem(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

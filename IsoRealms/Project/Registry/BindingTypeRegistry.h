@@ -53,7 +53,7 @@ namespace IsoRealms {
       public:
 
       /***********************\
-      * Implements IBinding *
+       * Implements IBinding *
       \***********************/
       std::string getBindingTypeID() const override;
       std::string getBindingTypeRootFolder() const override;

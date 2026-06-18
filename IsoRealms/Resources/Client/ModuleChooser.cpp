@@ -59,7 +59,7 @@ namespace IsoRealms {
     return true;
   }
   
-  void ModuleChooser::getTreeItemProperties(IComponentDefiner& definer) {
+  void ModuleChooser::defineTreeItem(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

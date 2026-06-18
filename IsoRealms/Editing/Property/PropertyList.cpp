@@ -86,7 +86,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void PropertyList::ListSelection::getTreeItemProperties(IComponentDefiner& definer) {
+  void PropertyList::ListSelection::defineTreeItem(IComponentDefiner& definer) {
     // Nothing to do.
   }
 

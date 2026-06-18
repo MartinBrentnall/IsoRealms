@@ -47,7 +47,6 @@ namespace IsoRealms::Basics {
     private:
     class ScriptAction : public IAction {
       public:
-      ScriptAction(Script& parent, IActionContext& owner, unsigned int index, JSONObject object);
       ScriptAction(Script& parent, IActionContext& owner, unsigned int index);
 
       void destroyInternalAction();
