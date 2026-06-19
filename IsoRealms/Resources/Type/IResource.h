@@ -21,8 +21,6 @@
 #include <memory>
 #include <vector>
 
-#include "IsoRealms/Persistence/JSONObject.h"
-
 namespace IsoRealms {
   class IProperty;
   class IComponentDefiner;

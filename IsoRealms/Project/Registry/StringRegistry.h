@@ -44,7 +44,6 @@ namespace IsoRealms {
   class StringRegistry : public ResourceClientManager<StringRegistry, IComponentData, IString> {
     public:
     StringRegistry(Project& project);
-    IString* get(IResourceUser<IString>* client, IComponentData& owner, JSONObject object, IStateListener* listener, bool required);
     IString* get(IResourceUser<IString>* client, IComponentData& owner, const std::string& id, IStateListener* listener);
 
     void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override; 
@@ -76,10 +75,6 @@ namespace IsoRealms {
 
       std::unique_ptr<IString> createLiteralResource(IComponentData& owner) const override {
         return std::make_unique<Instance>(owner.getProject(), "");
-      }
-
-      std::unique_ptr<IString> createLiteralResource(IComponentData& owner, JSONObject object) const override {
-        return std::make_unique<Instance>(owner.getProject(), object.getString(JSON_VALUE));
       }
 
       bool renderResourceProviderIcon() const override {
@@ -160,10 +155,6 @@ namespace IsoRealms {
       public:
       Conversion(const std::string& providerID, const std::string& conversionPath) :
                 ConversionProvider(providerID, conversionPath) {
-      }
-
-      IString* getResource(IComponentData& owner, JSONObject object) override {
-        return cConvertedResources.emplace(std::make_unique<Instance<FROM>>(*this, owner, object)).first->get();
       }
 
       IString* getResource(IComponentData& owner) override {

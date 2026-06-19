@@ -42,10 +42,6 @@ namespace IsoRealms::UI {
     // Constants.
     inline static const float CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
     
-    // JSON members.
-    inline static const std::string JSON_COLOUR      = "colour";
-    inline static const std::string JSON_CORNER_SIZE = "cornerSize";
-
     // Global data.
     static std::unique_ptr<LiteralTexture> cGlobalCornerTexture; // Texture applied to the corners of panels.
     static unsigned int cGlobalInstanceCount;                    // Counts panel instances.

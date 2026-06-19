@@ -1102,8 +1102,6 @@ LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
         switch (event.joystickButton.button) {
           case 0: {
             // TODO: Implement copy tool.
-            // JSONDocument mDocument;
-            // JSONObject mComponentObject = mDocument.addObject("Component");
             // cParent.cSelectedComponent->save(mComponentObject);
             // LayoutComponent* mComponentCopy = cParent.cLayout.createComponent(mComponentObject);
 

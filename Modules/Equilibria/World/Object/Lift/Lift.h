@@ -49,7 +49,6 @@ namespace IsoRealms::Equilibria {
     // Interface for use by parent zone.
     void initialise();
     void reset();
-    void save(JSONObject object, int x, int y, int z);
     bool isType(const LiftType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
@@ -78,18 +77,6 @@ namespace IsoRealms::Equilibria {
       PAUSED_TOP,
       PAUSED_BOTTOM
     };
-
-    // JSON members.
-    inline static const std::string JSON_BOTTOM       = "bottom";
-    inline static const std::string JSON_BOTTOM_PAUSE = "bottomPause";
-    inline static const std::string JSON_DOWN_SPEED   = "downSpeed";
-    inline static const std::string JSON_TOP          = "top";
-    inline static const std::string JSON_TOP_PAUSE    = "topPause";
-    inline static const std::string JSON_TYPE         = "type";
-    inline static const std::string JSON_UP_SPEED     = "upSpeed";
-    inline static const std::string JSON_X            = "x";
-    inline static const std::string JSON_Y            = "y";
-    inline static const std::string JSON_Z            = "z";
 
     // External interfaces.
     Zone& cZone; /// Zone to which this lift belongs.

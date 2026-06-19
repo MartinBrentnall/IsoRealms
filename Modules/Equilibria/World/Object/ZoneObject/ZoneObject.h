@@ -40,11 +40,9 @@ namespace IsoRealms::Equilibria {
     
     // Constructors.
     ZoneObject(Zone& zone, ZoneObjectType* type);
-    ZoneObject(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.
     void reset();
-    void save(JSONObject object) const;
     bool isType(const ZoneObjectType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateVanish();
@@ -85,10 +83,6 @@ namespace IsoRealms::Equilibria {
 
     private:
     
-    // JSON members.
-    inline static const std::string JSON_ID   = "id";
-    inline static const std::string JSON_TYPE = "type";
-
     // Internal classes.
     class TraitRegistry : public ITraitRegistry {
       public:

@@ -33,17 +33,6 @@ namespace IsoRealms::UI {
             cLuaBinding(layout.getUI().getProject().getLuaState(), this) {
   }
 
-  LayoutComponent::LayoutComponent(Layout& layout, JSONObject object) :
-            cLayout(layout),
-            cDefScreen(layout.getComponentData()),
-            cDefLeftEdge(*this, object, JSON_LEFT),
-            cDefRightEdge(*this, object, JSON_RIGHT),
-            cDefBottomEdge(*this, object, JSON_BOTTOM),
-            cDefTopEdge(*this, object, JSON_TOP),
-            cLuaBinding(layout.getUI().getProject().getLuaState(), this) {
-    cDefScreen.init(object, JSON_SCREEN);
-  }
-
   void LayoutComponent::reset() {
     cRuntimeScreen = *cDefScreen;
   }
@@ -292,14 +281,14 @@ namespace IsoRealms::UI {
   }
     
   void LayoutComponent::define(IComponentDefiner& definer) {
-    definer.propertyString(  "id",        [this]() {return getName();}, [this](const std::string& value) {cLayout.setName(this, value);}, "", [this](const std::string& value) {return cLayout.isNameAllowed(this, value);});
-    definer.propertyResource(JSON_SCREEN, cDefScreen);
+    definer.propertyString(  "id",     [this]() {return getName();}, [this](const std::string& value) {cLayout.setName(this, value);}, "", [this](const std::string& value) {return cLayout.isNameAllowed(this, value);});
+    definer.propertyResource("screen", cDefScreen);
     Options mScopeHint;
     mScopeHint.addOption(Options::PROPERTY_SCOPED, "true");
-    definer.scope(           JSON_LEFT,   "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefLeftEdge.define(  editingDefiner);}, nullptr, mScopeHint);
-    definer.scope(           JSON_RIGHT,  "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefRightEdge.define( editingDefiner);}, nullptr, mScopeHint);
-    definer.scope(           JSON_TOP,    "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefTopEdge.define(   editingDefiner);}, nullptr, mScopeHint);
-    definer.scope(           JSON_BOTTOM, "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefBottomEdge.define(editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           "left",   "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefLeftEdge.define(  editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           "right",  "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefRightEdge.define( editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           "top",    "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefTopEdge.define(   editingDefiner);}, nullptr, mScopeHint);
+    definer.scope(           "bottom", "Edit...", [this](IComponentDefiner& editingDefiner) {return cDefBottomEdge.define(editingDefiner);}, nullptr, mScopeHint);
   }
   
   void LayoutComponent::setScreen(IScreen* screen) {

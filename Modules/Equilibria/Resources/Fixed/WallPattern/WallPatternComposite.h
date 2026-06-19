@@ -44,10 +44,6 @@ namespace IsoRealms::Equilibria {
  
     private:
 
-    // JSON members.
-    inline static const std::string JSON_PATTERN  = "pattern";
-    inline static const std::string JSON_PATTERNS = "patterns";
-
     // External interfaces.
     TerrainType& cOwner;
 

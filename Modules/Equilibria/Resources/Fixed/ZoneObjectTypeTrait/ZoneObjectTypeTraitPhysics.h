@@ -47,15 +47,6 @@ namespace IsoRealms::Equilibria {
     void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) override;
     private:
     
-    // JSON members.
-    inline static const std::string JSON_BOUNCE_FACTOR = "bounceFactor";
-    inline static const std::string JSON_CONTROLS      = "controls";
-    inline static const std::string JSON_HEIGHT        = "height";
-    inline static const std::string JSON_HUG_MOMENTUM  = "hugMomentum";
-    inline static const std::string JSON_RADIUS        = "radius";
-    inline static const std::string JSON_STEP_REACH    = "stepReach";
-    inline static const std::string JSON_USE_NON_SOLID = "useNonSolid";
-
     inline static const float DEFAULT_BOUNCE_FACTOR = 1.0f;
     inline static const float DEFAULT_HEIGHT        = 1.7f;
     inline static const float DEFAULT_HUG_MOMENTUM  = 0.0001f;

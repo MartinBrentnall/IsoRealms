@@ -106,9 +106,6 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // JSON members.
-    inline static const std::string JSON_MAPPINGS = "mappings";
-
     class InputMapping {
       public:
       InputMapping(std::shared_ptr<AnalogueInput> input);

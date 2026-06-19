@@ -58,15 +58,15 @@ namespace IsoRealms::Equilibria {
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
     definer.scope("", "", [this](IComponentDefiner& d) {
-      d.propertyString(JSON_TYPE, [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+      d.propertyString("type", [this]() {return cZone.getWorld().getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
         cDefType = cZone.getWorld().getEquilibria().get<PickUpType>(nullptr, value);
         cDefModel = cDefType->createModel();
         reset();
       });
     }, nullptr, mDeferHint);
-    definer.propertyInteger(JSON_X, [this]() {return cDefX - cZone.getStartX();}, [this](int value) {cDefX = value + cZone.getStartX();});
-    definer.propertyInteger(JSON_Y, [this]() {return cDefY - cZone.getStartY();}, [this](int value) {cDefY = value + cZone.getStartY();});
-    definer.propertyInteger(JSON_Z, [this]() {return cDefZ - cZone.getStartZ();}, [this](int value) {cDefZ = value + cZone.getStartZ();});
+    definer.propertyInteger("x", [this]() {return cDefX - cZone.getStartX();}, [this](int value) {cDefX = value + cZone.getStartX();});
+    definer.propertyInteger("y", [this]() {return cDefY - cZone.getStartY();}, [this](int value) {cDefY = value + cZone.getStartY();});
+    definer.propertyInteger("z", [this]() {return cDefZ - cZone.getStartZ();}, [this](int value) {cDefZ = value + cZone.getStartZ();});
   }
 
   void PickUp::removed() {
@@ -79,13 +79,6 @@ namespace IsoRealms::Equilibria {
 
   void PickUp::reset() {
     cRuntimePresent = true;
-  }
-
-  void PickUp::save(JSONObject object, int x, int y, int z) const {
-    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getComponentID(cDefType));
-    object.addInteger(JSON_X,   cDefX - x);
-    object.addInteger(JSON_Y,   cDefY - y);
-    object.addInteger(JSON_Z,   cDefZ - z);
   }
 
   bool PickUp::isType(const PickUpType* const type) const {

@@ -85,7 +85,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackColour::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_START, cDefInitColour);
+    definer.propertyResource("start", cDefInitColour);
     getBaseProperties(definer);
   }
 
@@ -98,7 +98,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackColour::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_START, cDefInitColour);
+    definer.propertyResource("start", cDefInitColour);
   }
 
   void SequenceTrackColour::stateChanged(IColour* colour) {

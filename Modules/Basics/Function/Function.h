@@ -66,7 +66,6 @@ namespace IsoRealms::Basics {
     /*********************************************************\
      * Implements IResourceProvider<IActionContext, IAction> *
     \*********************************************************/
-    IAction* getResource(IActionContext& owner, JSONObject object) override;
     IAction* getResource(IActionContext& owner) override;
     void releaseResource(const IAction* resource) override;
     bool hasConfiguration() const override;
@@ -76,17 +75,10 @@ namespace IsoRealms::Basics {
 
     private:
     
-    // JSON members.
-    inline static const std::string JSON_ARGUMENT = "argument";
-    inline static const std::string JSON_BINDINGS = "bindings";
-    inline static const std::string JSON_CODE     = "code";
-    inline static const std::string JSON_TO       = "to";
-
     // Private types.
     class Call : public IAction {
       public:
       Call(Function& parent, IActionContext& owner);
-      Call(Function& parent, IActionContext& owner, JSONObject object);
 
       /**********************\
        * Implements IAction *

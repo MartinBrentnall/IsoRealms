@@ -74,7 +74,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudio::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_VOLUME, cDefVolume);
+    definer.propertyResource("volume", cDefVolume);
     getBaseProperties(definer);
   }
 }

@@ -72,8 +72,8 @@ namespace IsoRealms::Basics {
   }
 
   void Basics::publish(ResourcePublisher& publisher) {
-    publisher.publishProvider(&cActionScript, ACTION_SCRIPT, "Run a Script");
-    publisher.publish<IBinding>(&cLuaBinding, "",            "Modules/Basics");
+    publisher.publishProvider(&cActionScript, "Script",   "Run a Script");
+    publisher.publish<IBinding>(&cLuaBinding, "",         "Modules/Basics");
     publisher.publishProvider(&cDigitalToAnalogueMapping, "DigitalToAnalogue", "Digital to Analogue Mapping");
   }
   

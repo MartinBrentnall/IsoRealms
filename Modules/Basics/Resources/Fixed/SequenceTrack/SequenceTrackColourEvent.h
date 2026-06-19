@@ -43,10 +43,6 @@ namespace IsoRealms::Basics {
 
     private:
 
-    inline static const std::string JSON_DURATION = "duration";
-    inline static const std::string JSON_FADE     = "fade";
-    inline static const std::string JSON_TARGET   = "target";
-
     // External interfaces.
     SequenceTrackColour& cParent;
     

@@ -78,10 +78,6 @@ namespace IsoRealms::UI {
       }
     };
 
-    // JSON members.
-    inline static const std::string JSON_FORMAT = "format";
-    inline static const std::string JSON_VALUE  = "value";
-
     inline static const std::string DEFAULT_FORMAT = "{m}:{s:02}.{ms:2}";
 
     // Definition data.

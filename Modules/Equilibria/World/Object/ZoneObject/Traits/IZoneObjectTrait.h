@@ -27,7 +27,6 @@ namespace IsoRealms::Equilibria {
   class IZoneObjectTrait {
     public:
     virtual void publish(ITraitRegistry& registry) = 0;
-    virtual void save(JSONObject object) const = 0;
     virtual bool hasConfiguration() const = 0;
     virtual void reset() = 0;
     virtual IBinding* getTraitBinding(const std::string& id) = 0;

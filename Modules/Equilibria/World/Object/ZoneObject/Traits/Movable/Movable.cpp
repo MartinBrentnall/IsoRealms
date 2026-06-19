@@ -38,10 +38,6 @@ namespace IsoRealms::Equilibria {
     registry.registerMovable(this);
   }
   
-  void Movable::save(JSONObject object) const {
-    // Nothing to do.
-  }
-
   bool Movable::hasConfiguration() const {
     return false;
   }    

@@ -102,9 +102,6 @@ namespace IsoRealms::Spindizzy {
 
     void randomizeInstances();
 
-    // JSON members.
-    inline static const std::string JSON_COLOUR        = "colour";
-
     // Default values.
     inline static const float DEFAULT_CYCLE_SPEED = 0.001f;
 

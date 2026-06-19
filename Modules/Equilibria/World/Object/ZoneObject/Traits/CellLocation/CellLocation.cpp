@@ -32,13 +32,6 @@ namespace IsoRealms::Equilibria {
     registry.registerLocation(this);
   }
   
-  void CellLocation::save(JSONObject object) const {
-    Zone& mZone = cDefObject.getZone();
-    object.addInteger("x", cDefX - mZone.getStartX());
-    object.addInteger("y", cDefY - mZone.getStartY());
-    object.addInteger("z", cDefZ - mZone.getStartZ());
-  }
-
   bool CellLocation::hasConfiguration() const {
     return true;
   }    

@@ -39,11 +39,6 @@ namespace IsoRealms::UI {
 
     private:
 
-    // JSON members.
-    inline static const std::string JSON_COLOUR_A    = "colourA";
-    inline static const std::string JSON_COLOUR_B    = "colourB";
-    inline static const std::string JSON_ORIENTATION = "orientation";
-
     inline static const std::string VALUE_HORIZONTAL = "Horizontal";
     inline static const std::string VALUE_VERTICAL   = "Vertical";
 

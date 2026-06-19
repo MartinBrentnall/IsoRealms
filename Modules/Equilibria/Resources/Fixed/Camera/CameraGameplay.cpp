@@ -163,11 +163,11 @@ namespace IsoRealms::Equilibria {
   }
 
   void CameraGameplay::defineResource(IComponentDefiner& definer) {
-    definer.propertyList(JSON_DIRECTION,
+    definer.propertyList("direction",
                              std::vector<std::string>{DIRECTION_NORTH_EAST, DIRECTION_NORTH_WEST, DIRECTION_SOUTH_EAST, DIRECTION_SOUTH_WEST},
                              [this]() {return getDirectionString();},
                              [this](const std::string& value) {cDefAngle = getDirectionValue(value);});
-    definer.propertyInteger(JSON_ROTATE_DURATION, [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
+    definer.propertyInteger("rotateDuration", [this]() {return cDefRollDuration;}, [this](int value) {cDefRollDuration = value;});
   }
 
   bool CameraGameplay::isDefaultConfiguration() const {

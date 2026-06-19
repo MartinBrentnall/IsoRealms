@@ -41,7 +41,7 @@ namespace IsoRealms::UI {
   }
 
   void ScreenModel::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_MODEL, cDefModel);
+    definer.propertyResource("model", cDefModel);
   }
   
   bool ScreenModel::isDefaultConfiguration() const {

@@ -79,7 +79,7 @@ namespace IsoRealms::Equilibria {
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
     definer.scope("", "", [this, &mEquilibria, mFlagTerrain](IComponentDefiner& d) {
-      d.propertyString(JSON_TYPE, [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria, mFlagTerrain](const std::string& value) {
+      d.propertyString("type", [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria, mFlagTerrain](const std::string& value) {
         cDefType = mEquilibria.get<TerrainType>(nullptr, value);
         mFlagTerrain();
       });
@@ -87,12 +87,12 @@ namespace IsoRealms::Equilibria {
 
       Options mOptionalConditionHint;
       mOptionalConditionHint.addOption(Options::PROPERTY_OPTIONAL, "true");
-        d.propertyCondition(JSON_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this, mFlagTerrain](std::optional<Condition>& condition) {
+        d.propertyCondition("condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this, mFlagTerrain](std::optional<Condition>& condition) {
         cDefCondition = condition;
         mFlagTerrain();
       }, mOptionalConditionHint);
     }, nullptr, mDeferHint);
-    definer.propertyList(JSON_BEHAVIOUR,
+    definer.propertyList("behaviour",
                          std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                   BEHAVIOUR_INVISIBLE,
                                                   BEHAVIOUR_GHOST,
@@ -104,49 +104,24 @@ namespace IsoRealms::Equilibria {
                            cZone.getWorld().registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
                            mFlagTerrain();
                          });
-    definer.propertyInteger(JSON_X,                 [this]() {return cDefStartX - cZone.getStartX();},                     [this, mFlagTerrain](int value) {cDefStartX = value + cZone.getStartX(); mFlagTerrain();});
-    definer.propertyInteger(JSON_Y,                 [this]() {return cDefStartY - cZone.getStartY();},                     [this, mFlagTerrain](int value) {cDefStartY = value + cZone.getStartY(); mFlagTerrain();});
-    definer.propertyInteger(JSON_Z,                 [this]() {return (cDefStartZ + 1) - cZone.getStartZ();},                [this, mFlagTerrain](int value) {cDefStartZ = value + cZone.getStartZ() - 1; mFlagTerrain();});
-    definer.propertyInteger(JSON_WIDTH,             [this]() {return (cDefEndX + 1) - cDefStartX;},                        [this, mFlagTerrain](int value) {cDefEndX = cDefStartX + value - 1; mFlagTerrain();});
-    definer.propertyInteger(JSON_LENGTH,            [this]() {return (cDefEndY + 1) - cDefStartY;},                        [this, mFlagTerrain](int value) {cDefEndY = cDefStartY + value - 1; mFlagTerrain();});
-    definer.propertyInteger(JSON_HEIGHT,            [this]() {return cDefEndZ - cDefStartZ;},                               [this, mFlagTerrain](int value) {cDefEndZ = cDefStartZ + value; mFlagTerrain();});
-    definer.propertyInteger(JSON_NORTH_WEST_CORNER, [this]() {return cDefCornerHeight[0][1];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[0][1] = value; mFlagTerrain();});
-    definer.propertyInteger(JSON_NORTH_EAST_CORNER, [this]() {return cDefCornerHeight[1][1];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[1][1] = value; mFlagTerrain();});
-    definer.propertyInteger(JSON_SOUTH_EAST_CORNER, [this]() {return cDefCornerHeight[1][0];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[1][0] = value; mFlagTerrain();});
-    definer.propertyInteger(JSON_SOUTH_WEST_CORNER, [this]() {return cDefCornerHeight[0][0];},                             [this, mFlagTerrain](int value) {cDefCornerHeight[0][0] = value; mFlagTerrain();});
-    definer.propertyBoolean(JSON_ALTERNATIVE_SPLIT, [this]() {return (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0;},           [this, mFlagTerrain](bool value) {
+    definer.propertyInteger("x",                [this]() {return cDefStartX - cZone.getStartX();},            [this, mFlagTerrain](int value) {cDefStartX = value + cZone.getStartX();     mFlagTerrain();});
+    definer.propertyInteger("y",                [this]() {return cDefStartY - cZone.getStartY();},            [this, mFlagTerrain](int value) {cDefStartY = value + cZone.getStartY();     mFlagTerrain();});
+    definer.propertyInteger("z",                [this]() {return (cDefStartZ + 1) - cZone.getStartZ();},      [this, mFlagTerrain](int value) {cDefStartZ = value + cZone.getStartZ() - 1; mFlagTerrain();});
+    definer.propertyInteger("width",            [this]() {return (cDefEndX + 1) - cDefStartX;},               [this, mFlagTerrain](int value) {cDefEndX = cDefStartX + value - 1;          mFlagTerrain();});
+    definer.propertyInteger("length",           [this]() {return (cDefEndY + 1) - cDefStartY;},               [this, mFlagTerrain](int value) {cDefEndY = cDefStartY + value - 1;          mFlagTerrain();});
+    definer.propertyInteger("height",           [this]() {return cDefEndZ - cDefStartZ;},                     [this, mFlagTerrain](int value) {cDefEndZ = cDefStartZ + value;              mFlagTerrain();});
+    definer.propertyInteger("northWestCorner",  [this]() {return cDefCornerHeight[0][1];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[0][1] = value;             mFlagTerrain();});
+    definer.propertyInteger("northEastCorner",  [this]() {return cDefCornerHeight[1][1];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[1][1] = value;             mFlagTerrain();});
+    definer.propertyInteger("southEastCorner",  [this]() {return cDefCornerHeight[1][0];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[1][0] = value;             mFlagTerrain();});
+    definer.propertyInteger("southWestCorner",  [this]() {return cDefCornerHeight[0][0];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[0][0] = value;             mFlagTerrain();});
+    definer.propertyBoolean("alternativeSplit", [this]() {return (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0;}, [this, mFlagTerrain](bool value) {
       cDefFlags = value ? cDefFlags | FLAG_ALTERNATIVE_SPLIT : cDefFlags & ~FLAG_ALTERNATIVE_SPLIT;
       mFlagTerrain();
     });
-    definer.propertyBoolean(JSON_STEPPED_BOTTOM,    [this]() {return (cDefFlags & FLAG_STEPPED_BOTTOM) != 0;},              [this, mFlagTerrain](bool value) {
+    definer.propertyBoolean("steppedBottom",    [this]() {return (cDefFlags & FLAG_STEPPED_BOTTOM) != 0;},    [this, mFlagTerrain](bool value) {
       cDefFlags = value ? cDefFlags | FLAG_STEPPED_BOTTOM : cDefFlags & ~FLAG_STEPPED_BOTTOM;
       mFlagTerrain();
     });
-  }
-
-  void Terrain::save(JSONObject object, int originX, int originY, int originZ) {
-    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getComponentID(cDefType));
-    object.addString(JSON_BEHAVIOUR,          getBehaviourString());
-    object.addInteger(JSON_X,                 cDefStartX      - originX);
-    object.addInteger(JSON_Y,                 cDefStartY      - originY);
-    object.addInteger(JSON_Z,                (cDefStartZ + 1) - originZ);
-    object.addInteger(JSON_WIDTH,            (cDefEndX + 1)   - cDefStartX);
-    object.addInteger(JSON_LENGTH,           (cDefEndY + 1)   - cDefStartY);
-    object.addInteger(JSON_HEIGHT,            cDefEndZ        - cDefStartZ);
-    object.addInteger(JSON_NORTH_WEST_CORNER, cDefCornerHeight[0][1]);
-    object.addInteger(JSON_NORTH_EAST_CORNER, cDefCornerHeight[1][1]);
-    object.addInteger(JSON_SOUTH_EAST_CORNER, cDefCornerHeight[1][0]);
-    object.addInteger(JSON_SOUTH_WEST_CORNER, cDefCornerHeight[0][0]);
-    if (isSplit()) {
-      object.addBoolean(JSON_ALTERNATIVE_SPLIT, (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0);
-    }
-    if (cDefFlags & FLAG_STEPPED_BOTTOM && ((cDefEndX != cDefStartX && getXSlope() != 0) || (cDefEndY != cDefStartY && getYSlope() != 0))) {
-      object.addBoolean(JSON_STEPPED_BOTTOM, true);
-    }
-    if (cDefCondition.has_value()) {
-      JSONObject mConditionObject = object.addObject(JSON_CONDITION);
-      cDefCondition->save(mConditionObject);
-    }
   }
 
   void Terrain::loadCachedSurfaces(std::ifstream& cache) {
@@ -689,13 +664,13 @@ namespace IsoRealms::Equilibria {
 
   void Terrain::defineWorldObject(IComponentDefiner& definer) {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
-    definer.propertyCondition(JSON_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    definer.propertyCondition("condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cZone.updateDisplayList();
     });
     if (!cZone.getWorld().isBasicProperties()) {
-      definer.propertyList(JSON_BEHAVIOUR,
+      definer.propertyList("behaviour",
                                std::vector<std::string>{BEHAVIOUR_NORMAL,
                                                         BEHAVIOUR_INVISIBLE,
                                                         BEHAVIOUR_GHOST,

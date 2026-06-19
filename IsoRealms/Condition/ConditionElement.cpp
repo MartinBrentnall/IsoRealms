@@ -18,6 +18,7 @@
  */
 #include "ConditionElement.h"
 
+#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Resources/Type/IBoolean.h"
 #include "IsoRealms/Resources/Type/IScreen.h"
 

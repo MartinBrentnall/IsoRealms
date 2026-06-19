@@ -142,8 +142,8 @@ namespace IsoRealms::UI {
   }
 
   void StringTime::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_VALUE,  cDefValue);
-    definer.propertyString(  JSON_FORMAT, [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();}, DEFAULT_FORMAT);
+    definer.propertyResource("value",  cDefValue);
+    definer.propertyString(  "format", [this]() {return format;}, [this](const std::string& value) {format = value; parseFormatString();}, DEFAULT_FORMAT);
   }
 
   bool StringTime::isDefaultConfiguration() const {

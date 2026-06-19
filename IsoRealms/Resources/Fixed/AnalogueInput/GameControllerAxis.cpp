@@ -70,15 +70,15 @@ namespace IsoRealms {
     mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
     Options mNoPersist;
     mNoPersist.addOption(Options::PROPERTY_NO_PERSIST, "true");
-    definer.propertyInteger(JSON_AXIS, [this]() {return cDefAxis;}, [this](int axis) {cDefAxis = axis;}, 0, [](int) {return true;}, nullptr, mNoEdit);
-    definer.propertyOptional(JSON_AXIS, cAxisChooser, "", []() {
+    definer.propertyInteger("axis", [this]() {return cDefAxis;}, [this](int axis) {cDefAxis = axis;}, 0, [](int) {return true;}, nullptr, mNoEdit);
+    definer.propertyOptional("axis", cAxisChooser, "", []() {
       return true;
     }, [this](const std::string& axis) {
       cDefAxis = static_cast<unsigned int>(std::stoul(axis.substr(1)));
     }, [this]() {
       return getLocalizedName();
     }, mNoPersist);
-    definer.propertyFloat(JSON_DEAD_ZONE, [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
+    definer.propertyFloat("deadZone", [this]() {return cDefDeadZone;}, [this](float deadZone) {cDefDeadZone = deadZone;});
   }
 
   bool GameControllerAxis::isDefaultConfiguration() const {

@@ -77,8 +77,6 @@ namespace IsoRealms {
       const Metadata& cMetadata;
     };
 
-    inline static const std::string JSON_WHICH = "which";
-
     inline static const std::string UNMAPPED_KEY_PREFIX = "Code ";
 
     inline static const std::map<std::string, sf::Keyboard::Key> cKeysByName = {

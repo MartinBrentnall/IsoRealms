@@ -65,10 +65,6 @@ namespace IsoRealms {
         return std::make_unique<Instance>(owner.getProject(), 0.0f);
       }
 
-      std::unique_ptr<IFloat> createLiteralResource(IComponentData& owner, JSONObject object) const override {
-        return std::make_unique<Instance>(owner.getProject(), object.getFloat(JSON_VALUE));
-      }
-
       bool renderResourceProviderIcon() const override {
         return false;
       }

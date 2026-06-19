@@ -31,35 +31,6 @@ namespace IsoRealms::Equilibria {
     reset();
   }
 
-  ZoneObject::ZoneObject(Zone& zone, JSONObject object) :
-            cZone(zone) {
-    std::cout << "TODO: ZoneObject::ZoneObject" << std::endl;
-//     cZone.getWorld().getEquilibria()->getProject()->init([this, &node]() {
-//       cDefType = cZone.getWorld().getEquilibria()->getZoneObjectType(node.getAttribute(JSON_TYPE));
-//       cDefTraits = cDefType->createTraits(*this);
-//       publish();
-//
-//       for (OMNode& mNode : node) {
-//         std::string mTag = mNode.getName();
-//         if (mTag == AG_PROPERTY) {
-//           std::string mTraitID = mNode.getAttribute(JSON_ID);
-//           std::map<std::string, std::unique_ptr<IZoneObjectTrait>>::iterator mIterator = cDefTraits.find(mTraitID);
-//           if (mIterator == cDefTraits.end()) {
-//             throw ComponentInitException("ERROR: ZoneObject::ZoneObject: No trait found for trait ID \"" + mTraitID + "\"");
-//           }
-//           mIterator->second->load(mNode);
-//         } else {
-//           throw ComponentInitException("ERROR: ZoneObject::ZoneObject: Unknown tag \"" + mTag + "\"");
-//         }
-//       }
-//       cDefRuntimeRenderer = getRenderer(cDefType->getRuntimeRendererID());
-//       cDefEditingRenderer = getRenderer(cDefType->getEditingRendererID());
-//       cDefRuntimeProcessor = getProcessor(cDefType->getRuntimeProcessorID());
-//       cDefEditingProcessor = getProcessor(cDefType->getEditingProcessorID());
-//       reset();
-//     });
-  }
-
   void ZoneObject::defineWorldObject(IComponentDefiner& definer) {
     // Nothing to do.
   }
@@ -74,18 +45,6 @@ namespace IsoRealms::Equilibria {
   void ZoneObject::reset() {
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       mPair.second->reset();
-    }
-  }
-
-  void ZoneObject::save(JSONObject object) const {
-    object.addString(JSON_TYPE, cZone.getWorld().getEquilibria().getComponentID(cDefType));
-    JSONArray mTraitsArray = object.addArray("traits");
-    for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
-      if (mPair.second->hasConfiguration()) {
-        JSONObject mTraitObject = mTraitsArray.addObject();
-        mTraitObject.addString(JSON_ID, mPair.first);
-        mPair.second->save(mTraitObject);
-      }
     }
   }
 

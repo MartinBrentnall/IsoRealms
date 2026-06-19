@@ -36,8 +36,8 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackScreenEvent::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyInteger(JSON_DURATION, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
-    definer.propertyResource(JSON_SCREEN, cDefScreen);
+    definer.propertyInteger("duration", [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
+    definer.propertyResource("screen", cDefScreen);
   }
 
   IScreen* SequenceTrackScreenEvent::getScreen() const {

@@ -24,7 +24,6 @@ namespace IsoRealms {
 
   template <typename OWNER, typename TYPE> class IResourceProvider {
     public:
-    virtual TYPE* getResource(OWNER& owner, JSONObject object) = 0;
     virtual TYPE* getResource(OWNER& owner) = 0;
     virtual void releaseResource(const TYPE* resource) = 0;
     virtual bool hasConfiguration() const = 0;

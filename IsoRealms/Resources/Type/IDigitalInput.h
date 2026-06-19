@@ -24,8 +24,6 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "IsoRealms/Persistence/JSONObject.h"
-
 #include "IResource.h"
 
 namespace IsoRealms {

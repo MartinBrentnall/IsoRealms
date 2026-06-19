@@ -91,7 +91,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void SurfacePatternTile::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_TEXTURE, cDefTexture);
+    definer.propertyResource("texture", cDefTexture);
   }
 
   bool SurfacePatternTile::isDefaultConfiguration() const {

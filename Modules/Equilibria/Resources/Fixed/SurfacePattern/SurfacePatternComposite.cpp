@@ -18,7 +18,6 @@
  */
 #include "SurfacePatternComposite.h"
 
-#include "IsoRealms/Persistence/JSONValue.h"
 #include "Modules/Equilibria/Equilibria.h"
 #include "Modules/Equilibria/TerrainType/TerrainType.h"
 #include "Modules/Equilibria/World/Object/Terrain/SplitSurface.h"
@@ -69,8 +68,8 @@ namespace IsoRealms::Equilibria {
   }
 
   void SurfacePatternComposite::defineResource(IComponentDefiner& definer) {
-    definer.array(JSON_PATTERNS, cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &definer](SurfacePattern& surfacePattern) {
-      definer.propertyResource(JSON_PATTERN, surfacePattern);
+    definer.array("patterns", cDefSurfacePatterns, [](const std::unique_ptr<SurfacePattern>& mSurfacePattern)->SurfacePattern& {return *mSurfacePattern;}, [this, &definer](SurfacePattern& surfacePattern) {
+      definer.propertyResource("pattern", surfacePattern);
     }, [this]()->SurfacePattern& {
       return *cDefSurfacePatterns.emplace_back(std::make_unique<SurfacePattern>(cOwner.getEquilibria(), cOwner, nullptr));
     });

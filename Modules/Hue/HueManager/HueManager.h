@@ -59,8 +59,6 @@ namespace IsoRealms::Hue {
     void reset();
 
     private:
-    inline static const std::string JSON_COLOUR = "colour";
-
     inline static const int HUE_DTLS_MAX_PAYLOAD_SIZE = 1350;
     inline static const int HUE_DTLS_STATE_INIT       = 10;
     inline static const int HUE_DTLS_STATE_CONNECTED  = 20;

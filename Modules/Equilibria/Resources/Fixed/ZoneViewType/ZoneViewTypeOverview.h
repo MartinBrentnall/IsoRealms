@@ -46,10 +46,8 @@ namespace IsoRealms::Equilibria {
     void publish(Equilibria& equilibria, const std::string& parentID) override;
     
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_COLOUR = "colour";
-    
+
+    // External interfaces.
     WorldView& cWorldView;
 
     // Definition data.

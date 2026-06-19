@@ -27,18 +27,6 @@ namespace IsoRealms::UI {
             cMenuItem(ui.getResource(this, "Action", owner)) {
   }
 
-  void MenuItem::init(JSONObject object, const std::string& member, Menu& owner) {
-    cUI.getProject().init([this, member, object, &owner]() {
-      set(object, member, owner);
-    });
-  }
-
-  void MenuItem::set(JSONObject object, const std::string& member, Menu& owner) {
-    JSONObject mResourceObject = object.getObject(member);
-    cUI.release(this, cMenuItem);
-    cMenuItem = cUI.getResource(this, mResourceObject, owner);
-  }
-
   void MenuItem::setID(const std::string& id) {
     if (cMenuItem != nullptr) {
       cUI.release(this, cMenuItem);

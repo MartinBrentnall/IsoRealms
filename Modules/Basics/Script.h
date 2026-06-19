@@ -36,7 +36,6 @@ namespace IsoRealms::Basics {
     /*********************************************************\
      * Implements IResourceProvider<IActionContext, IAction> *
     \*********************************************************/
-    IAction* getResource(IActionContext& owner, JSONObject object) override;
     IAction* getResource(IActionContext& owner) override;
     void releaseResource(const IAction* resource) override;
     bool hasConfiguration() const override;

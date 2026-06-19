@@ -40,10 +40,6 @@ namespace IsoRealms::Equilibria {
     registry.registerProcessor(this);
   }
   
-  void Physics::save(JSONObject object) const {
-    // Nothing to do.
-  }
-
   bool Physics::hasConfiguration() const {
     return false;
   }    

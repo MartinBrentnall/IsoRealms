@@ -74,10 +74,6 @@ namespace IsoRealms::Equilibria {
     \*******************************************/
     private:
     
-    // JSON members.
-    inline static const std::string JSON_DIRECTION       = "direction";
-    inline static const std::string JSON_ROTATE_DURATION = "rotateDuration";
-
     inline static const std::string DIRECTION_NORTH_EAST = "NorthEast";
     inline static const std::string DIRECTION_NORTH_WEST = "NorthWest";
     inline static const std::string DIRECTION_SOUTH_EAST = "SouthEast";

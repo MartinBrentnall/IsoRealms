@@ -30,10 +30,6 @@ namespace IsoRealms {
     /***********************************\
      * Implements IResourceProvider<TYPE> *
     \***********************************/
-    TYPE* getResource(OWNER& owner, JSONObject object) override {
-      return &cDummyResource;
-    }
-
     TYPE* getResource(OWNER& owner) override {
       return &cDummyResource;
     }

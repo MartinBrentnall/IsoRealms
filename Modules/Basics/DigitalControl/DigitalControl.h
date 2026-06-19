@@ -49,7 +49,6 @@ namespace IsoRealms::Basics {
     \***********************/
     DigitalControl(Basics& basics, IComponentData& data);
     DigitalControl(IComponentData& owner);
-    DigitalControl(IComponentData& owner, JSONObject object);
     void define(IComponentDefiner& definer);
     void publish(ResourcePublisher& publisher);
     void publish(ResourcePublisher& publisher, const std::string& parentID);
@@ -112,9 +111,6 @@ namespace IsoRealms::Basics {
     void clearCustomInputs();
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_MAPPINGS = "mappings";
 
     class InputMapping {
       public:

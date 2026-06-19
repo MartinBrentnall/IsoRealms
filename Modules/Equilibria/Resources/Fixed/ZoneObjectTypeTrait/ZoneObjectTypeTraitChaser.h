@@ -40,9 +40,6 @@ namespace IsoRealms::Equilibria {
     void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) override;
     private:
     
-    // JSON members.
-    inline static const std::string JSON_TARGET = "target";
-
     // Definition data.
     Vertex cDefTarget;        /// Target of chasers.
     std::string cDefObjectID; /// ID of the physical object to be driven by chaser instances.

@@ -31,7 +31,7 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::publish(ResourcePublisher& publisher) {
     publisher.publish<IString>(&cSelectedFile, cDefID, "Menu Items (File List)");
-    publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/File Lists");
+    publisher.publish<IBinding>(&cLuaBinding, "FileList/" + cDefID, "Menu Items/File Lists");
   }
   
   void MenuItemFileList::refresh() {
@@ -108,13 +108,13 @@ namespace IsoRealms::UI {
 
   void MenuItemFileList::defineResource(IComponentDefiner& definer) {
     // TODO: Change this so it uses "File" client resource.
-    definer.propertyString( JSON_ID,           [this]() {return cDefID;},     [this](const std::string& value) {
+    definer.propertyString(  "id",          [this]() {return cDefID;},     [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString( JSON_FOLDER,       [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
-    definer.propertyBoolean(JSON_USER,         [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
-    definer.propertyResource( JSON_ON_SELECTION, cDefAction);
+    definer.propertyString(  "folder",      [this]() {return cDefFolder;}, [this](const std::string& value) {cDefFolder = value;});
+    definer.propertyBoolean( "user",        [this]() {return cDefUser;},   [this](bool               value) {cDefUser   = value;});
+    definer.propertyResource("onSelection", cDefAction);
   }
 
   bool MenuItemFileList::isDefaultConfiguration() const {

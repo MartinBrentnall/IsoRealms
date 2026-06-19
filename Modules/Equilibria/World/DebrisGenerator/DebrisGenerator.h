@@ -49,14 +49,6 @@ namespace IsoRealms::Equilibria {
     
     private:
     
-    // JSON members.
-    inline static const std::string JSON_APPEARANCE = "appearance";
-    inline static const std::string JSON_HEIGHT     = "height";
-    inline static const std::string JSON_ID         = "id";
-    inline static const std::string JSON_LIFE       = "life";
-    inline static const std::string JSON_RADIUS     = "radius";
-    inline static const std::string JSON_STEP_REACH = "stepReach";
-
     inline static const float        DEFAULT_HEIGHT      = 0.7f;
     inline static const unsigned int DEFAULT_LIFE        = 2000U;
     inline static const float        DEFAULT_RADIUS      = 0.3f;

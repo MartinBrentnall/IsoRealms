@@ -57,32 +57,17 @@ namespace IsoRealms::UI {
 
     private:
     
-    // JSON members.
-    inline static const std::string JSON_ID        = "id";
-    inline static const std::string JSON_LABEL     = "label";
-    inline static const std::string JSON_MAXIMUM   = "maximum";
-    inline static const std::string JSON_MINIMUM   = "minimum";
-    inline static const std::string JSON_ON_CHANGE = "onChange";
-    inline static const std::string JSON_STEPS     = "steps";
-
-    // Constants.
-    inline static const std::string BINDING_TYPE = "Slider";
-    
-    inline static const float DEFAULT_MAXIMUM = 1.0f;
-    inline static const float DEFAULT_MINIMUM = 0.0f;
-    inline static const int   DEFAULT_STEPS   = 20;
-
     // External interfaces.
     HatHandler& cHatHandler;
     Menu& cMenu;
 
     // Definition data.
-    std::string cDefID;                  /// ID of this menu item for binding.
-    std::string cDefLabel;               /// Label to show for this menu item.
-    float cDefMinimum = DEFAULT_MINIMUM; /// Minimum allowed value of this slider.
-    float cDefMaximum = DEFAULT_MAXIMUM; /// Maximum allowed value of this slider.
-    int cDefSteps     = DEFAULT_STEPS;   /// Number of steps within this slider.
-    Action cDefValueChangedAction;       /// Action that changing the value of the slider will trigger.
+    std::string cDefID;            /// ID of this menu item for binding.
+    std::string cDefLabel;         /// Label to show for this menu item.
+    float cDefMinimum;             /// Minimum allowed value of this slider.
+    float cDefMaximum;             /// Maximum allowed value of this slider.
+    int cDefSteps;                 /// Number of steps within this slider.
+    Action cDefValueChangedAction; /// Action that changing the value of the slider will trigger.
     
     // Runtime data.
     float cRuntimeValue; /// Current value of this slider.

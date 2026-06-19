@@ -43,11 +43,6 @@ namespace IsoRealms::UI {
     void renderRelation(float aspectRatio) const override;
 
     private:
-    
-    // JSON members.    
-    inline static const std::string JSON_LINKED = "linked";
-    inline static const std::string JSON_RATIO  = "ratio";
-    inline static const std::string JSON_VALUE  = "value";
 
     inline static const std::string VALUE_HEIGHT = "Height";
     inline static const std::string VALUE_WIDTH  = "Width";

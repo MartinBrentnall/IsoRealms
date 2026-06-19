@@ -140,13 +140,13 @@ namespace IsoRealms::Equilibria {
   void CameraTransitional::defineResource(IComponentDefiner& definer) {
     Options mHint;
     mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
-    definer.propertyResource(         JSON_START,              cDefStart, mHint);
-    definer.propertyResource(         JSON_END,                cDefEnd,   mHint);
-    definer.propertyUnsignedInteger(JSON_DURATION,           [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;}, DEFAULT_DURATION);
-    definer.propertyResource(         JSON_ON_START_DEPARTURE, cDefStartDepartureAction);
-    definer.propertyResource(         JSON_ON_END_ARRIVAL,     cDefEndArrivalAction);
-    definer.propertyResource(         JSON_ON_END_DEPARTURE,   cDefEndDepartureAction);
-    definer.propertyResource(         JSON_ON_START_ARRIVAL,   cDefStartArrivalAction);
+    definer.propertyResource(       "start",            cDefStart, mHint);
+    definer.propertyResource(       "end",              cDefEnd,   mHint);
+    definer.propertyUnsignedInteger("duration",         [this]() {return cDefDuration;}, [this](int value) {cDefDuration = value;}, DEFAULT_DURATION);
+    definer.propertyResource(       "onStartDeparture", cDefStartDepartureAction);
+    definer.propertyResource(       "onEndArrival",     cDefEndArrivalAction);
+    definer.propertyResource(       "onEndDeparture",   cDefEndDepartureAction);
+    definer.propertyResource(       "onStartArrival",   cDefStartArrivalAction);
   }
 
   bool CameraTransitional::isDefaultConfiguration() const {

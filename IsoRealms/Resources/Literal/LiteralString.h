@@ -49,8 +49,6 @@ namespace IsoRealms {
      * Implements IResource from IString *
     \*************************************/
     private:
-    inline static const std::string JSON_VALUE = "value";
-
     std::string cValue; /// The value of this String.
   };
 }

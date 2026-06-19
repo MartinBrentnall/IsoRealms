@@ -57,15 +57,6 @@ namespace IsoRealms::UI {
 
     private:
     
-    // JSON members.
-    inline static const std::string JSON_FALSE_LABEL = "falseLabel";
-    inline static const std::string JSON_ID          = "id";
-    inline static const std::string JSON_LABEL       = "label";
-    inline static const std::string JSON_TRUE_LABEL  = "trueLabel";
-
-    // Constants.
-    inline static const std::string BINDING_TYPE = "Boolean";
-
     // External interfaces.
     HatHandler& cHatHandler;
     Menu& cMenu;

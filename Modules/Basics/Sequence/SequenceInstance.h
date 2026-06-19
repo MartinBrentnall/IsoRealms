@@ -32,7 +32,6 @@ namespace IsoRealms::Basics {
     public:
     SequenceInstance(Sequence& parent, int startTime, float speed);
     SequenceInstance(Sequence& parent);
-    SequenceInstance(Sequence& parent, JSONObject object);
 
     void addTrackInstance(ISequenceTrackInstance* trackInstance);
     void refreshTrackInstance(ISequenceTrackInstance* trackInstance, unsigned int trackIndex);
@@ -43,7 +42,6 @@ namespace IsoRealms::Basics {
     void setPreviewPosition(long position);
     void update(unsigned int milliseconds);
     void updatePreview(unsigned int milliseconds);
-    void save(JSONObject object) const;
     void define(IComponentDefiner& definer);
     void publish(ResourcePublisher& publisher, const std::string& parentID);
 
@@ -59,9 +57,6 @@ namespace IsoRealms::Basics {
     void deleteTrackInstance(unsigned int track);
     
     private:
-    inline static const std::string JSON_SPEED      = "speed";
-    inline static const std::string JSON_START_TIME = "startTime";
-
     class Position : public IInteger {
       public:
       Position(SequenceInstance& parent);

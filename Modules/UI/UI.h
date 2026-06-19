@@ -97,10 +97,6 @@ namespace IsoRealms::UI {
       return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
-      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
-    }
-
     private:
     inline static const std::string SCREEN_GRADIENT = "Gradient";
     inline static const std::string SCREEN_MODEL    = "Model";

@@ -78,7 +78,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackFloat::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_START, cDefStartValue);
+    definer.propertyResource("start", cDefStartValue);
     getBaseProperties(definer);
   }
 
@@ -91,7 +91,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackFloat::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_START, cDefStartValue);
+    definer.propertyResource("start", cDefStartValue);
   }
 
   void SequenceTrackFloat::stateChanged(IFloat* value) {

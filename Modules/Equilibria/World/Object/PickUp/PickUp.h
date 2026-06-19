@@ -51,7 +51,6 @@ namespace IsoRealms::Equilibria {
     // Interface for use by parent zone.
     void initialise();
     void reset();
-    void save(JSONObject object, int x, int y, int z) const;
     bool isType(const PickUpType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
@@ -86,12 +85,6 @@ namespace IsoRealms::Equilibria {
     Zone& getObjectZone() override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_TYPE = "type";
-    inline static const std::string JSON_X    = "x";
-    inline static const std::string JSON_Y    = "y";
-    inline static const std::string JSON_Z    = "z";
 
     inline static const std::string BIND_TO_ZONE = "Zone";
 

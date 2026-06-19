@@ -29,9 +29,9 @@ namespace IsoRealms::Basics {
   }
 
   void ArgumentDefinition::define(IComponentDefiner& definer, Function& parent) {
-    definer.propertyString(  JSON_NAME,     [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
-    definer.propertyResource(JSON_TYPE,     cDefType);
-    definer.propertyString(  JSON_LUA_NAME, [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
+    definer.propertyString(  "name",    [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &parent](const std::string& value) {return parent.isArgumentDefinitionNameAllowed(*this, value);});
+    definer.propertyResource("type",    cDefType);
+    definer.propertyString(  "luaName", [this]() {return cDefLuaName;}, [this](const std::string& value) {cDefLuaName = value;});
   }
 
   void ArgumentDefinition::setName(const std::string& name) {
@@ -46,10 +46,6 @@ namespace IsoRealms::Basics {
     return &cDefType;
   }
   
-  void ArgumentDefinition::saveCall(JSONObject object, const std::string& attributeName) const {
-    object.addString(attributeName, cDefName);
-  }
-
   std::string ArgumentDefinition::getInitCode() const {
     return "_" + cDefLuaName + " = {}\n";;
   }

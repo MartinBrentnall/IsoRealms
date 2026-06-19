@@ -67,8 +67,6 @@ namespace IsoRealms {
       const Metadata& cMetadata;
     };
 
-    inline static const std::string JSON_BUTTON = "button";
-
     inline static const std::string UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
 
     inline static const std::map<std::string, sf::Mouse::Button> cButtonsByName = {

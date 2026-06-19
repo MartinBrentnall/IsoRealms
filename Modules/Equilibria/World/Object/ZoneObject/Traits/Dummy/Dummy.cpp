@@ -23,10 +23,6 @@ namespace IsoRealms::Equilibria {
     // Nothing to do.
   }
 
-  void Dummy::save(JSONObject object) const {
-    // Nothing to do.
-  }
-
   bool Dummy::hasConfiguration() const {
     return false;
   }

@@ -21,7 +21,6 @@
 #include <stdexcept>
 #include <string>
 
-#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Registry/IResourceProvider.h"
 
 namespace IsoRealms {
@@ -46,10 +45,6 @@ namespace IsoRealms {
       return cResource;
     }
     
-    TYPE* getResource(OWNER& owner, JSONObject object) override {
-      return cResource;
-    }
-
     void releaseResource(const TYPE* resource) override {
       // Nothing to do.
     }

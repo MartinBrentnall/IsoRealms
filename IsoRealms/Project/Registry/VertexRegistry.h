@@ -70,15 +70,7 @@ namespace IsoRealms {
         throw std::runtime_error("VertexRegistry::Literal::getPropertyMetadata: Property metadata is not available for this type.");
       }
 
-      std::unique_ptr<IVertex> createLiteralResource(IComponentData& owner, JSONObject object) const override {
-        return std::make_unique<Instance>(object.getFloat(JSON_X), object.getFloat(JSON_Y), object.getFloat(JSON_Z));
-      }
-
       private:
-
-      inline static const std::string JSON_X = "x";
-      inline static const std::string JSON_Y = "y";
-      inline static const std::string JSON_Z = "z";
 
       class Instance : public IVertex {
         public:

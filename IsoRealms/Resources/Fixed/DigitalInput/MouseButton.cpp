@@ -52,7 +52,7 @@ namespace IsoRealms {
   }
 
   void MouseButton::defineResource(IComponentDefiner& definer) {
-    definer.propertyOptional(JSON_BUTTON, cButtonChooser, "", []() {
+    definer.propertyOptional("button", cButtonChooser, "", []() {
       return true;
     }, [this](const std::string& button) {
       cButton = getButton(button);

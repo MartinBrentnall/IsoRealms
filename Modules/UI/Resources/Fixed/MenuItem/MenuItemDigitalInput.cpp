@@ -29,7 +29,7 @@ namespace IsoRealms::UI {
 
   void MenuItemDigitalInput::publish(ResourcePublisher& publisher) {
     if (!cDefID.empty()) {
-      publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Digital Inputs");
+      publisher.publish<IBinding>(&cLuaBinding, "DigitalInput/" + cDefID, "Menu Items/Digital Inputs");
     }
   }
   void MenuItemDigitalInput::addMapping(std::shared_ptr<IDigitalInput> input) {
@@ -141,7 +141,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemDigitalInput::defineResource(IComponentDefiner& definer) {
-    definer.propertyString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {
+    definer.propertyString("id", [this]() {return cDefID;}, [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();
     });

@@ -151,20 +151,6 @@ namespace IsoRealms {
       return mResource;
     }
 
-    TYPE* get(IResourceUser<TYPE>* client, OWNER& owner, JSONObject object, IStateListener* listener, bool required) {
-      if (client == nullptr) {
-        throw std::invalid_argument("Client cannot be null");
-      }
-
-      TYPE* mResource = nullptr;
-      IResourceProvider<OWNER, TYPE>* mProvider = cRegistry.getProvider(object.getString(JSON_KEY), required);
-      if (mProvider != nullptr) {
-        mResource = mProvider->getResource(owner, object);
-      }
-      registerClient(client, mProvider, mResource, listener);
-      return mResource;
-    }
-
     void registerClient(IResourceUser<TYPE>* client, IResourceProvider<OWNER, TYPE>* provider, TYPE* resource, IStateListener* listener = nullptr) {
       if (resource != nullptr) {
         cClients[provider][resource].emplace_back(client);

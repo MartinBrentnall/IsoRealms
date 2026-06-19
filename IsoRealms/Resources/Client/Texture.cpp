@@ -50,26 +50,14 @@ namespace IsoRealms {
     return cDefScaleX == 1.0f && cDefScaleY == 1.0f && cDefAngle == 0.0f;
   }
 
-  void Texture::loadClientConfiguration(JSONObject object) {
-    cDefScaleX = object.getFloat(JSON_SCALE_X, 1.0f);
-    cDefScaleY = object.getFloat(JSON_SCALE_Y, 1.0f);
-    cDefAngle  = object.getFloat(JSON_ANGLE);
-  }
-
-  void Texture::saveClientConfiguration(JSONObject object) const {
-    object.addFloat(JSON_ANGLE,   cDefAngle);
-    object.addFloat(JSON_SCALE_X, cDefScaleX, 1.0f);
-    object.addFloat(JSON_SCALE_Y, cDefScaleY, 1.0f);
-  }
-  
   const Metadata& Texture::getPropertyMetadata() const {
     return cManager.getProject().getApplication().getMetadata("Texture");
   }
 
   void Texture::defineWrapper(IComponentDefiner& definer) {
-    definer.propertyFloat(JSON_SCALE_X, [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();}, 1.0f);
-    definer.propertyFloat(JSON_SCALE_Y, [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();}, 1.0f);
-    definer.propertyFloat(JSON_ANGLE,   [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});
+    definer.propertyFloat("scaleX", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();}, 1.0f);
+    definer.propertyFloat("scaleY", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();}, 1.0f);
+    definer.propertyFloat("angle",  [this]() {return cDefAngle;},  [this](float value) {cDefAngle  = value; stateChanged();});
   }
   
   void Texture::stateChanged() {

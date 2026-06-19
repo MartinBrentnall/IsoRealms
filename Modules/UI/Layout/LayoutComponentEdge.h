@@ -34,7 +34,6 @@ namespace IsoRealms::UI {
   class LayoutComponentEdge {
     public:
     LayoutComponentEdge(LayoutComponent& parent, float aspectRatio, float value);
-    LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag);
 
     /******************************\
      * Resource client interfaces *
@@ -50,13 +49,10 @@ namespace IsoRealms::UI {
     bool isHorizontalEdge() const;
     bool isPositiveEdge() const;
     float getLocation(float aspectRatio) const;
-    void save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const;
     void define(IComponentDefiner& definer);
     void renderRelation(float aspectRatio) const;
     
     private:
-    inline static const std::string JSON_LOCATION = "location";
-    inline static const std::string JSON_OFFSET   = "offset";
    
     // External interfaces.
     LayoutComponent& cDefParent;

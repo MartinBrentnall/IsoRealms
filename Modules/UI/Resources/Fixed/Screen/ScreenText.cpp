@@ -35,11 +35,11 @@ namespace IsoRealms::UI {
   }
 
   void ScreenText::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_VALUE,         cDefString);
-    definer.propertyResource(JSON_FONT,          cDefFont);
-    definer.propertyList(    JSON_ALIGNMENT,     std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
-    definer.propertyResource(JSON_COLOUR,        cDefColour);
-    definer.propertyFloat(   JSON_SHADOW_OFFSET, [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
+    definer.propertyResource("value",        cDefString);
+    definer.propertyResource("font",         cDefFont);
+    definer.propertyList(    "alignment",    std::vector<std::string>{ALIGNMENT_CENTER, ALIGNMENT_LEFT, ALIGNMENT_RIGHT}, [this]() {return getAlignment();}, [this](const std::string& value) {setAlignment(value);});
+    definer.propertyResource("colour",       cDefColour);
+    definer.propertyFloat(   "shadowOffset", [this]() {return cDefShadowOffset;}, [this](float value) {cDefShadowOffset = value;}, DEFAULT_SHADOW_OFFSET);
   }
   
   bool ScreenText::isDefaultConfiguration() const {

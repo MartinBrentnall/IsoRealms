@@ -41,8 +41,6 @@ namespace IsoRealms::Basics {
     void getEventProperties(IComponentDefiner& definer) override;
 
     private:
-    inline static const std::string JSON_DURATION = "duration";
-    inline static const std::string JSON_SCREEN   = "screen";
 
     // External interfaces.
     SequenceTrackScreen& cParent;

@@ -103,7 +103,7 @@ namespace IsoRealms::Equilibria {
   }
 
   void WallPatternTile::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_TEXTURE, cDefTexture);
+    definer.propertyResource("texture", cDefTexture);
   }
 
   bool WallPatternTile::isDefaultConfiguration() const {

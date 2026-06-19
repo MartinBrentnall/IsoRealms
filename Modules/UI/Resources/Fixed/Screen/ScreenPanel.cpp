@@ -57,8 +57,8 @@ namespace IsoRealms::UI {
   }
 
   void ScreenPanel::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_COLOUR,      cDefColour);
-    definer.propertyFloat( JSON_CORNER_SIZE, [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
+    definer.propertyResource("colour",     cDefColour);
+    definer.propertyFloat(   "cornerSize", [this]() {return cDefCornerSize;}, [this](float value) {cDefCornerSize = value;});
   }
   
   bool ScreenPanel::isDefaultConfiguration() const {

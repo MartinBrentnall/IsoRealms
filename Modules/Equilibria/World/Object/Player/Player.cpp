@@ -56,15 +56,15 @@ namespace IsoRealms::Equilibria {
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
     definer.scope("", "", [this](IComponentDefiner& d) {
-      d.propertyString(JSON_TYPE, [this]() {return cDefWorld.getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
+      d.propertyString("type", [this]() {return cDefWorld.getEquilibria().getComponentID(cDefType);}, [this](const std::string& value) {
         cDefType = cDefWorld.getEquilibria().get<PlayerType>(nullptr, value);
         cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
         cDefModel = cDefType->createModel();
       });
     }, nullptr, mDeferHint);
-    definer.propertyFloat(JSON_X, [this]() {return static_cast<float>(cDefX);}, [this](float value) {cDefX = value;});
-    definer.propertyFloat(JSON_Y, [this]() {return static_cast<float>(cDefY);}, [this](float value) {cDefY = value;});
-    definer.propertyFloat(JSON_Z, [this]() {return static_cast<float>(cDefZ);}, [this](float value) {cDefZ = value;});
+    definer.propertyFloat("x", [this]() {return static_cast<float>(cDefX);}, [this](float value) {cDefX = value;});
+    definer.propertyFloat("y", [this]() {return static_cast<float>(cDefY);}, [this](float value) {cDefY = value;});
+    definer.propertyFloat("z", [this]() {return static_cast<float>(cDefZ);}, [this](float value) {cDefZ = value;});
   }
 
   std::string Player::getDisplayName() const {
@@ -95,13 +95,6 @@ namespace IsoRealms::Equilibria {
     while (!cRuntimeRespawnData.empty()) {
       cRuntimeRespawnData.pop();
     }
-  }
-
-  void Player::save(JSONObject object) const {
-    object.addString(JSON_TYPE, cDefWorld.getEquilibria().getComponentID(cDefType));
-    object.addFloat (JSON_X,    cDefX);
-    object.addFloat (JSON_Y,    cDefY);
-    object.addFloat (JSON_Z,    cDefZ);
   }
 
   bool Player::isType(const PlayerType* const type) const {

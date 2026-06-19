@@ -164,27 +164,13 @@ namespace IsoRealms::Replay {
             cRuntimeRecordedInput(false) {
   }
 
-  Replayer::DigitalInput::DigitalInput(Replayer& parent, IComponentData& data, JSONObject object) :
-            cParent(parent),
-            cDefName(object.getString(JSON_NAME)),
-            cDefActualInput(data, false, [this](bool value) {
-              if (cParent.cRuntimeState == State::RECORDING) {
-                cParent.writeEvent(cRuntimeID, value);
-              }
-              cStateNotifier->stateChanged();
-            }),
-            cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
-            cRuntimeRecordedInput(false) {
-    cDefActualInput.init(object, JSON_VALUE);
-  }
-  
   void Replayer::DigitalInput::publish(ResourcePublisher& publisher) {
     cStateNotifier = publisher.publish<IBoolean>(this, cDefName, "Replayer Digital Input");
   }
 
   void Replayer::DigitalInput::define(IComponentDefiner& definer) {
-    definer.propertyString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
-    definer.propertyResource(JSON_VALUE, cDefActualInput);
+    definer.propertyString(  "name",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    definer.propertyResource("value", cDefActualInput);
   }
   
   void Replayer::DigitalInput::reset() {
@@ -218,27 +204,13 @@ namespace IsoRealms::Replay {
             cRuntimeRecordedInput(0.0f) {
   }
 
-  Replayer::AnalogueInput::AnalogueInput(Replayer& parent, IComponentData& data, JSONObject object) :
-            cParent(parent),
-            cDefName(object.getString(JSON_NAME)),
-            cDefActualInput(data, 0.0f, [this](float value) {
-              if (cParent.cRuntimeState == State::RECORDING) {
-                cParent.writeEvent(cRuntimeID, value);
-              }
-              cStateNotifier->stateChanged();
-            }),
-            cRuntimeID(cParent.cDefDigitalInputs.size() + cParent.cDefAnalogueInputs.size()),
-            cRuntimeRecordedInput(0.0f) {
-    cDefActualInput.init(object, JSON_VALUE);
-  }
-  
   void Replayer::AnalogueInput::publish(ResourcePublisher& publisher) {
     cStateNotifier = publisher.publish<IFloat>(this, cDefName, "Replayer Analogue Input");
   }
 
   void Replayer::AnalogueInput::define(IComponentDefiner& definer) {
-    definer.propertyString(JSON_NAME,  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
-    definer.propertyResource(JSON_VALUE, cDefActualInput);
+    definer.propertyString(  "name",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isInputNameAllowed(*this, value);});
+    definer.propertyResource("value", cDefActualInput);
   }
       
   void Replayer::AnalogueInput::reset() {

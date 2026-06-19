@@ -55,14 +55,6 @@ namespace IsoRealms::UI {
     std::string getTreeItemLabel() const override;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_ID           = "id";
-    inline static const std::string JSON_LABEL        = "label";
-    inline static const std::string JSON_ON_SELECTION = "onSelection";
-
-    // Constants.
-    inline static const std::string BINDING_TYPE = "Action";
     
     // External interfaces.
     Menu& cMenu;

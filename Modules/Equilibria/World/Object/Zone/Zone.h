@@ -124,7 +124,6 @@ namespace IsoRealms::Equilibria {
     void renderRuntime(const IScreen* screen) const;
     void updateEditing(unsigned int);
     void updateRuntime(unsigned int);
-    void save(JSONObject object);
     void saveCache(std::ostream& cache);
     void flagForInitialisation(Terrain* terrain);
     void resetDynamics();
@@ -171,23 +170,6 @@ namespace IsoRealms::Equilibria {
 
     private:
     
-    // JSON members.
-    inline static const std::string JSON_ALIENS    = "aliens";
-    inline static const std::string JSON_HEIGHT    = "height";
-    inline static const std::string JSON_LIFTS     = "lifts";
-    inline static const std::string JSON_LENGTH    = "length";
-    inline static const std::string JSON_OBJECTS   = "objects";
-    inline static const std::string JSON_PICK_UPS  = "pickUps";
-    inline static const std::string JSON_TERRAIN   = "terrain";
-    inline static const std::string JSON_THEME     = "theme";
-    inline static const std::string JSON_THEME_SET = "themeSet";
-    inline static const std::string JSON_TYPE      = "type";
-    inline static const std::string JSON_VISITED   = "visited";
-    inline static const std::string JSON_WIDTH     = "width";
-    inline static const std::string JSON_X         = "x";
-    inline static const std::string JSON_Y         = "y";
-    inline static const std::string JSON_Z         = "z";
-
     // Definition data
     World& cDefWorld;                                  /// World to which this zone belongs.
     ZoneType* cDefType = nullptr;                      /// The type of this zone.

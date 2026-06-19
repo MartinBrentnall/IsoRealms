@@ -58,7 +58,6 @@ namespace IsoRealms::Replay {
     class DigitalInput : public IBoolean {
       public:
       DigitalInput(Replayer& parent, IComponentData& data);
-      DigitalInput(Replayer& parent, IComponentData& data, JSONObject object);
       void define(IComponentDefiner& definer);
       void publish(ResourcePublisher& publisher);
       void reset();
@@ -88,7 +87,6 @@ namespace IsoRealms::Replay {
     class AnalogueInput : public IFloat {
       public:
       AnalogueInput(Replayer& parent, IComponentData& data);
-      AnalogueInput(Replayer& parent, IComponentData& data, JSONObject object);
       void define(IComponentDefiner& definer);
       void publish(ResourcePublisher& publisher);
       void reset();
@@ -119,10 +117,6 @@ namespace IsoRealms::Replay {
       RECORDING,
       REPLAYING
     };
-    
-    // JSON constants.
-    inline static const std::string JSON_NAME  = "name";
-    inline static const std::string JSON_VALUE = "value";
 
     // External interfaces.
     IComponentData& cComponentData;

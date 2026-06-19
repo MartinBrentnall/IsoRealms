@@ -29,7 +29,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemSlider::publish(ResourcePublisher& publisher) {
-    publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Sliders");
+    publisher.publish<IBinding>(&cLuaBinding, "Slider/" + cDefID, "Menu Items/Sliders");
   }
   
   void MenuItemSlider::setValue(float value) {
@@ -122,15 +122,15 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemSlider::defineResource(IComponentDefiner& definer) {
-    definer.propertyString( JSON_ID,        [this]() {return cDefID;},      [this](const std::string& value) {
+    definer.propertyString(  "id",       [this]() {return cDefID;},      [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString( JSON_LABEL,     [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
-    definer.propertyFloat(  JSON_MINIMUM,   [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
-    definer.propertyFloat(  JSON_MAXIMUM,   [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;}, DEFAULT_MAXIMUM);
-    definer.propertyInteger(JSON_STEPS,     [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;}, DEFAULT_STEPS);
-    definer.propertyResource( JSON_ON_CHANGE, cDefValueChangedAction);
+    definer.propertyString(  "label",    [this]() {return cDefLabel;},   [this](const std::string& value) {cDefLabel   = value;});
+    definer.propertyFloat(   "minimum",  [this]() {return cDefMinimum;}, [this](float              value) {cDefMinimum = value;});
+    definer.propertyFloat(   "maximum",  [this]() {return cDefMaximum;}, [this](float              value) {cDefMaximum = value;}, 1.0);
+    definer.propertyInteger( "steps",    [this]() {return cDefSteps;},   [this](int                value) {cDefSteps   = value;}, 20);
+    definer.propertyResource("onChange", cDefValueChangedAction);
   }
 
   bool MenuItemSlider::isDefaultConfiguration() const {

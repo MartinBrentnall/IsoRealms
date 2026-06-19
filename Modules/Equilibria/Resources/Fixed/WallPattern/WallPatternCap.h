@@ -96,11 +96,6 @@ namespace IsoRealms::Equilibria {
       Wall* cDefWall;
     };
 
-    // JSON members.
-    inline static const std::string JSON_BOTTOM = "bottom";
-    inline static const std::string JSON_MIDDLE = "middle";
-    inline static const std::string JSON_TOP    = "top";
- 
     // Definition data.
     Texture cDefTextureBottom;
     Texture cDefTextureMiddle;

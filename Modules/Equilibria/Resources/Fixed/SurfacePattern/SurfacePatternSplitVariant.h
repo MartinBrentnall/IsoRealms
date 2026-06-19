@@ -51,11 +51,6 @@ namespace IsoRealms::Equilibria {
     \*****************************************/
     private:
 
-    // JSON members.
-    inline static const std::string JSON_REGULAR = "regular";
-    inline static const std::string JSON_SPLIT_A = "splitA";
-    inline static const std::string JSON_SPLIT_B = "splitB";
-
     // Definition data.
     SurfacePattern cDefRegularPattern;
     SurfacePattern cDefSplitAPattern;

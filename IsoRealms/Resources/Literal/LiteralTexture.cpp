@@ -20,7 +20,6 @@
 
 #include "IsoRealms/Resources/Type/ITextureUseListener.h"
 #include "IsoRealms/Editing/Property/IProperty.h"
-#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {

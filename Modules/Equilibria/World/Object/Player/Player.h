@@ -55,7 +55,6 @@ namespace IsoRealms::Equilibria {
     // Interface to be used by parent world.
     void publish(ResourcePublisher& publisher, const std::string& parentID);
     void reset();
-    void save(JSONObject object) const;
     bool isType(const PlayerType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
@@ -110,12 +109,6 @@ namespace IsoRealms::Equilibria {
                 cSurface(surface) {
       }
     };
-    
-    // JSON members.
-    inline static const std::string JSON_TYPE = "type";
-    inline static const std::string JSON_X    = "x";
-    inline static const std::string JSON_Y    = "y";
-    inline static const std::string JSON_Z    = "z";
 
     // Definition data.
     World&                         cDefWorld;                     /// World to which is player belongs.

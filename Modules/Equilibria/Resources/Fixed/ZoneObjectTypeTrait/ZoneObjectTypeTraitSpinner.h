@@ -43,10 +43,6 @@ namespace IsoRealms::Equilibria {
     void publish(EquilibriaResourceRegistry& registry, const std::string& parentID) override;
 
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_LOCATION = "location";
-    inline static const std::string JSON_MODEL    = "model";
 
     // Definition data.
     Model cDefModel;            /// The model to be rendered by instances.

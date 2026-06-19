@@ -61,9 +61,6 @@ namespace IsoRealms::Equilibria {
       Wall* cDefWall;
     };
     
-    // JSON members.
-    inline static const std::string JSON_TEXTURE = "texture";
-
     // Definition data.  
     Texture cDefTexture;
   };

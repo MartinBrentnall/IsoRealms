@@ -52,8 +52,8 @@ namespace IsoRealms::Equilibria {
   }
 
   void WallPatternComposite::defineResource(IComponentDefiner& definer) {
-    definer.array(JSON_PATTERNS, cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &definer](WallPattern& wallPattern) {
-      definer.propertyResource(JSON_PATTERN, wallPattern);
+    definer.array("patterns", cDefWallPatterns, [](const std::unique_ptr<WallPattern>& mWallPattern)->WallPattern& {return *mWallPattern;}, [this, &definer](WallPattern& wallPattern) {
+      definer.propertyResource("pattern", wallPattern);
     }, [this]()->WallPattern& {
       return *cDefWallPatterns.emplace_back(std::make_unique<WallPattern>(cOwner.getEquilibria(), cOwner, nullptr));
     });

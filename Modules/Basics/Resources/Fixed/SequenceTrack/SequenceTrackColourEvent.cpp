@@ -37,9 +37,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackColourEvent::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyInteger(JSON_DURATION, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
-    definer.propertyResource(JSON_TARGET, cDefTarget);
-    definer.propertyBoolean(JSON_FADE, [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;}, true);
+    definer.propertyInteger("duration", [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
+    definer.propertyResource("target", cDefTarget);
+    definer.propertyBoolean("fade", [this]() {return cDefFade;}, [this](bool fade) {cDefFade = fade;}, true);
   }
 
   const IColour* SequenceTrackColourEvent::getColour() const {

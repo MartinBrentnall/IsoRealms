@@ -26,15 +26,6 @@ namespace IsoRealms {
             cDefOwner(parent, &owner) {
   }
 
-  ProjectLaunchConfiguration::ProjectLaunchConfiguration(Project& parent, ProjectFile& owner, JSONThing thing) :
-            cDefName(thing.getName()),
-            cDefOwner(parent, &owner) {
-    JSONObject mLaunchConfigurationObject = thing.getValue();
-    for (JSONThing mOptionThing : mLaunchConfigurationObject.getObject(JSON_OPTIONS)) {
-      cDefOptions.emplace_back(std::make_unique<Option>(parent, mOptionThing));
-    }
-  }
-
   std::string ProjectLaunchConfiguration::getName() const {
     return cDefName;
   }
@@ -86,12 +77,6 @@ namespace IsoRealms {
   ProjectLaunchConfiguration::Option::Option(Project& parent, ProjectLaunchConfiguration& launch) :
             cDefName(launch.makeOptionName()),
             cDefValue(parent) {
-  }
-
-  ProjectLaunchConfiguration::Option::Option(Project& parent, JSONThing thing) :
-            cDefName(thing.getName()),
-            cDefValue(parent) {
-    cDefValue.init(thing);
   }
 
   std::string ProjectLaunchConfiguration::Option::getName() const {

@@ -21,9 +21,6 @@
 #include "IResource.h"
 
 namespace IsoRealms {
-  class JSONObject;
-  class IProperty;
-
   class IAction : public IResource {
     public:
     virtual void execute() = 0;

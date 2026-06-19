@@ -32,7 +32,6 @@ namespace IsoRealms::Equilibria {
   class Theme {
     public:
     Theme(ThemeSet& themeSet);
-    Theme(ThemeSet& themeSet, JSONObject object);
 
     void define(IComponentDefiner& definer);
     void themeTextureAdded(ThemeTexture* texture);
@@ -49,12 +48,6 @@ namespace IsoRealms::Equilibria {
     std::string getElementName(ThemeTexture* texture);
     std::string getElementName(ThemeColour* colour);
     void hintInUse(bool);
-
-    inline static const std::string JSON_COLOUR   = "colour";
-    inline static const std::string JSON_COLOURS  = "colours";
-    inline static const std::string JSON_ELEMENT  = "element";
-    inline static const std::string JSON_TEXTURE  = "texture";
-    inline static const std::string JSON_TEXTURES = "textures";
 
     private:
 

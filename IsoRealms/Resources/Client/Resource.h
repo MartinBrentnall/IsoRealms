@@ -26,8 +26,6 @@
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Metadata.h"
-#include "IsoRealms/Persistence/JSONObject.h"
-#include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Project/Registry/IResourceUser.h"
 
@@ -72,54 +70,6 @@ namespace IsoRealms {
       if (cResource != nullptr) {
         cManager.getResourceManager().release(this, cResource);
       }
-    }
-    
-    void init(JSONThing thing) {
-      if (cManager.getProject().isLoading() && !cManager.getProject().areComponentsLoaded()) {
-        cManager.getProject().init([this, thing]() {
-          set(thing);
-        });
-      } else {
-        set(thing);
-      }
-    }
-
-    void set(JSONObject object) {
-      if (cResource != nullptr) {
-        cManager.getResourceManager().release(this, cResource);
-      }
-      setResource(cManager.getResourceManager().getResource(this, object, cManager, getStateListener()));
-      loadClientConfiguration(object);
-    }
-
-    void set(JSONThing thing) {
-      JSONObject mResourceObject = thing.getValue();
-      set(mResourceObject);
-    }
-
-    void init(JSONObject object, const std::string& member) {
-      if (cManager.getProject().isLoading() && !cManager.getProject().areComponentsLoaded()) {
-        cManager.getProject().init([this, object, member]() {
-          set(object, member);
-        });
-      } else {
-        set(object, member);
-      }
-    }
-
-    void init(JSONObject object) {
-      if (cManager.getProject().isLoading() && !cManager.getProject().areComponentsLoaded()) {
-        cManager.getProject().init([this, object]() {
-          set(object);
-        });
-      } else {
-        set(object);
-      }
-    }
-    
-    void set(JSONObject object, const std::string& member) {
-      JSONObject mResourceObject = object.getObject(member);
-      set(mResourceObject);
     }
     
     void setID(const std::string& id) override {
@@ -238,12 +188,6 @@ namespace IsoRealms {
 
 //    virtual bool hasConfiguration() const = 0;
     virtual void stateChanged() {
-      // Nothing to do.
-    }
-    virtual void loadClientConfiguration(JSONObject object) {
-      // Nothing to do.
-    }
-    virtual void saveClientConfiguration(JSONObject object) const {
       // Nothing to do.
     }
     virtual void defineWrapper(IComponentDefiner& definer) {

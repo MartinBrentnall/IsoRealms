@@ -74,13 +74,6 @@ namespace IsoRealms::Basics {
     return mPath;
   }
 
-  void SequenceTrackAudioEvent::save(JSONObject object) const {
-    object.addInteger(JSON_TIME, cDefTime);
-    object.addInteger(JSON_FADE_IN, cDefFadeIn);
-    object.addInteger(JSON_FADE_OUT, cDefFadeOut);
-    cDefFile.save(JSON_FILE, object);
-  }
-
   unsigned int SequenceTrackAudioEvent::getTime() const {
     return cDefTime;
   }
@@ -98,10 +91,10 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackAudioEvent::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyInteger(JSON_TIME, [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
-    definer.propertyResource(JSON_FILE, cDefFile);
-    definer.propertyInteger(JSON_FADE_IN, [this]() {return cDefFadeIn;}, [this](unsigned int value) {cDefFadeIn = value; return true;});
-    definer.propertyInteger(JSON_FADE_OUT, [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
+    definer.propertyInteger("time", [this]() {return cDefTime;}, [this](unsigned int time) {cDefTime = time;});
+    definer.propertyResource("file", cDefFile);
+    definer.propertyInteger("fadeIn", [this]() {return cDefFadeIn;}, [this](unsigned int value) {cDefFadeIn = value; return true;});
+    definer.propertyInteger("fadeOut", [this]() {return cDefFadeOut;}, [this](unsigned int value) {cDefFadeOut = value; return true;});
   }
 
   SequenceTrackAudioEvent::End* SequenceTrackAudioEvent::getEndEvent() {

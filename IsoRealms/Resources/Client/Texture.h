@@ -40,8 +40,6 @@ namespace IsoRealms {
     bool hasClientConfiguration() const;
     bool isDefaultConfiguration() const;
 
-    void loadClientConfiguration(JSONObject object) override;
-    void saveClientConfiguration(JSONObject object) const override;
     void defineWrapper(IComponentDefiner& definer) override;
 
     /***********************************************\
@@ -55,10 +53,6 @@ namespace IsoRealms {
     void stateChanged() override;
 
     private:
-    inline static const std::string JSON_ANGLE   = "angle";
-    inline static const std::string JSON_SCALE_X = "scaleX";
-    inline static const std::string JSON_SCALE_Y = "scaleY";
-    
     std::function<void()> cListener;
     float cDefScaleX;
     float cDefScaleY;

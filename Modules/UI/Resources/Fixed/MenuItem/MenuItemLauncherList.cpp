@@ -104,11 +104,11 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemLauncherList::defineResource(IComponentDefiner& definer) {
-    definer.propertyString(JSON_ID, [this]() {return cDefID;}, [this](const std::string& value) {
+    definer.propertyString("id", [this]() {return cDefID;}, [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyResource(JSON_ON_SELECTION, cDefAction);
+    definer.propertyResource("onSelection", cDefAction);
   }
 
   bool MenuItemLauncherList::isDefaultConfiguration() const {

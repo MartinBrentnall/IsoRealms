@@ -30,7 +30,6 @@ namespace IsoRealms {
   class ProjectLaunchConfiguration {
     public:
     ProjectLaunchConfiguration(Project& parent, ProjectFile& owner);
-    ProjectLaunchConfiguration(Project& parent, ProjectFile& owner, JSONThing thing);
     std::string getName() const;
     void getProperties(IComponentDefiner& definer, const Metadata& metadata, Project& project);
     bool isOwnedBy(const ProjectFile& project) const;
@@ -40,7 +39,6 @@ namespace IsoRealms {
     class Option {
       public:
       Option(Project& parent, ProjectLaunchConfiguration& launch);
-      Option(Project& parent, JSONThing thing);
       std::string getName() const;
       std::string getValue() const;
       void getProperties(IComponentDefiner& definer, const Metadata& metadata, ProjectLaunchConfiguration& launch);
@@ -49,8 +47,6 @@ namespace IsoRealms {
       std::string cDefName;
       String cDefValue;
     };
-
-    inline static const std::string JSON_OPTIONS = "options";
 
     std::string cDefName;
     ComponentOwner cDefOwner;

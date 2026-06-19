@@ -124,10 +124,10 @@ namespace IsoRealms::Basics {
     }
 
     void getBaseProperties(IComponentDefiner& definer) {
-      definer.propertyString(JSON_NAME, [this]() {return cDefName;}, [this](const std::string& name) {
+      definer.propertyString("name", [this]() {return cDefName;}, [this](const std::string& name) {
         cDefName = name;
       });
-      definer.array(JSON_EVENTS, cDefEvents, [](const std::unique_ptr<EVENT>& mEvent) -> EVENT& {return *mEvent;}, [this, &definer](EVENT& event) {
+      definer.array("events", cDefEvents, [](const std::unique_ptr<EVENT>& mEvent) -> EVENT& {return *mEvent;}, [this, &definer](EVENT& event) {
         event.getEventProperties(definer);
       }, [this]() -> EVENT& {
         return *cDefEvents.emplace_back(std::make_unique<EVENT>(*static_cast<DERIVED*>(this), cOwner, 0));
@@ -135,10 +135,6 @@ namespace IsoRealms::Basics {
     }
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_EVENTS = "events";
-    inline static const std::string JSON_NAME   = "name";
 
     // External interfaces.
     Sequence& cSequence;

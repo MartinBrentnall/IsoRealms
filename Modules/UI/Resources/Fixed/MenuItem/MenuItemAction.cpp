@@ -29,7 +29,7 @@ namespace IsoRealms::UI {
 
   void MenuItemAction::publish(ResourcePublisher& publisher) {
     if (!cDefID.empty()) {
-      publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Actions");
+      publisher.publish<IBinding>(&cLuaBinding, "Action/" + cDefID, "Menu Items/Actions");
     }
   }
   void MenuItemAction::setValue(const std::string& value) {
@@ -97,12 +97,12 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemAction::defineResource(IComponentDefiner& definer) {
-    definer.propertyString(JSON_ID,           [this]() {return cDefID;},    [this](const std::string& value) {
+    definer.propertyString(  "id",          [this]() {return cDefID;},    [this](const std::string& value) {
       cDefID    = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString(JSON_LABEL,        [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
-    definer.propertyResource(JSON_ON_SELECTION, cDefAction);
+    definer.propertyString(  "label",       [this]() {return cDefLabel;}, [this](const std::string& value) {cDefLabel = value;});
+    definer.propertyResource("onSelection", cDefAction);
   }
 
   bool MenuItemAction::isDefaultConfiguration() const {

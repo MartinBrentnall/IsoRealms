@@ -36,25 +36,6 @@ namespace IsoRealms::Equilibria {
     }
   }
   
-  Theme::Theme(ThemeSet& themeSet, JSONObject object) :
-            cThemeSet(themeSet) {
-    for (JSONValue mTextureValue : object.getArray(JSON_TEXTURES)) {
-      JSONObject mTextureObject = mTextureValue.getObject();
-      ThemeTexture* mThemeTexture = cThemeSet.createTexture(mTextureObject.getString(JSON_ELEMENT));
-      cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(themeSet.getComponentData())).first->second.init(mTextureObject, JSON_TEXTURE);
-    }
-
-    for (JSONValue mColourValue : object.getArray(JSON_COLOURS)) {
-      JSONObject mColourObject = mColourValue.getObject();
-      ThemeColour* mThemeColour = cThemeSet.createColour(mColourObject.getString(JSON_ELEMENT));
-      cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(themeSet.getComponentData(), 1.0f, 0.0f, 1.0f)).first->second.init(mColourObject, JSON_COLOUR);
-    }
-
-    cThemeSet.getEquilibria().getProject().init([this]() {
-      set();
-    });
-  }
-
   void Theme::define(IComponentDefiner& definer) {
     definer.propertyString("id", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
     Options mContainerHint;

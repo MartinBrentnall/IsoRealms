@@ -66,34 +66,29 @@ namespace IsoRealms {
     }
   }
 
-  IBinding* BindingRegistry::get(IResourceUser<IBinding>* client, IActionContext& owner, JSONObject object, IStateListener* listener, bool required) {
-    cLocals.setBindings(owner.getBindingRegistry());
-    return ResourceClientManager::get(client, owner, object, listener, required);
-  }
-
   IBinding* BindingRegistry::get(IResourceUser<IBinding>* client, IActionContext& owner, const std::string& id, IStateListener* listener) {
     cLocals.setBindings(owner.getBindingRegistry());
 
-    for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
-      if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
-        JSONDocument mDocument;
-        JSONObject mConversionProviderObject = mDocument.addObject("temp");
-        mConversionProviderObject.addString(JSON_KEY, mConversionProvider->getProviderID());
-        JSONObject mResourceObject = mConversionProviderObject.addObject(JSON_RESOURCE);
-        mResourceObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
+    // for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
+    //   if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
+    //     JSONDocument mDocument;
+    //     JSONObject mConversionProviderObject = mDocument.addObject("temp");
+    //     mConversionProviderObject.addString(JSON_KEY, mConversionProvider->getProviderID());
+    //     JSONObject mResourceObject = mConversionProviderObject.addObject(JSON_RESOURCE);
+    //     mResourceObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
 
-        return ResourceClientManager::get(client, owner, mConversionProviderObject, listener, true);
-      }
-    }
+    //     return ResourceClientManager::get(client, owner, mConversionProviderObject, listener, true);
+    //   }
+    // }
 
-    if (id.starts_with("~/")) {
-      JSONDocument mDocument;
-      JSONObject mEventRelated = mDocument.addObject("temp");
-      mEventRelated.addString(JSON_KEY, "~");
-      mEventRelated.addString("local", id.substr(2));
+    // if (id.starts_with("~/")) {
+    //   JSONDocument mDocument;
+    //   JSONObject mEventRelated = mDocument.addObject("temp");
+    //   mEventRelated.addString(JSON_KEY, "~");
+    //   mEventRelated.addString("local", id.substr(2));
 
-      return ResourceClientManager::get(client, owner, mEventRelated, listener, true);
-    }
+    //   return ResourceClientManager::get(client, owner, mEventRelated, listener, true);
+    // }
     return ResourceClientManager::get(client, owner, id, listener);
   }
 

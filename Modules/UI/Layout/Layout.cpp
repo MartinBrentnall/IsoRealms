@@ -30,7 +30,7 @@ namespace IsoRealms::UI {
   
   void Layout::define(IComponentDefiner& definer) {
     definer.propertyEditor("Content", this);
-    definer.array(JSON_COMPONENTS, cComponentsByOrder, [](LayoutComponent* mComponent) -> LayoutComponent& {return *mComponent;}, [this, &definer](LayoutComponent& component) {
+    definer.array("components", cComponentsByOrder, [](LayoutComponent* mComponent) -> LayoutComponent& {return *mComponent;}, [this, &definer](LayoutComponent& component) {
       Options mComponentsHint;
       mComponentsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
       definer.scope("Component", getName(&component), [this, &component, &definer](IComponentDefiner& editingDefiner) {
@@ -146,12 +146,6 @@ namespace IsoRealms::UI {
   LayoutComponent* Layout::createComponent(float x1, float y1, float x2, float y2, float aspectRatio) {
     std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
     cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, x1, y1, x2, y2, aspectRatio));
-    return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
-  }
-
-  LayoutComponent* Layout::createComponent(JSONObject& object) {
-    std::string mComponentName = Utils::getAvailableKey(cComponentsByName, "New Component");
-    cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(*this, object));
     return cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
   }
 

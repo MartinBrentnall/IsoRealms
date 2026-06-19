@@ -57,12 +57,6 @@ namespace IsoRealms::Equilibria {
     \************************************/
     private:
     
-    // JSON members.
-    inline static const std::string JSON_LOCATION = "location";
-    inline static const std::string JSON_PITCH    = "pitch";
-    inline static const std::string JSON_YAW      = "yaw";
-    inline static const std::string JSON_ZOOM     = "zoom";
-
     // External interfaces.
     WorldView& cParent;
     

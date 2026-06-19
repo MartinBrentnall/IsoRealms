@@ -96,7 +96,7 @@ namespace IsoRealms {
   }
 
   void GameControllerHat::defineResource(IComponentDefiner& definer) {
-    definer.propertyOptional(JSON_DIRECTION, cDirectionChooser, "", []() {
+    definer.propertyOptional("direction", cDirectionChooser, "", []() {
       return true;
     }, [this](const std::string& direction) {
       cDirection = getDirection(direction);

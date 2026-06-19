@@ -56,7 +56,6 @@ namespace IsoRealms {
   class BindingRegistry : public ResourceClientManager<BindingRegistry, IActionContext, IBinding> {
     public:
     BindingRegistry(Project& project);
-    IBinding* get(IResourceUser<IBinding>* client, IActionContext& owner, JSONObject object, IStateListener* listener, bool required);
     IBinding* get(IResourceUser<IBinding>* client, IActionContext& owner, const std::string& id, IStateListener* listener);
 
     void forEachEntry(const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const override; 
@@ -95,19 +94,6 @@ namespace IsoRealms {
       \***************************************************/
       IBinding* getResource(IActionContext& owner) override {
         return cInstances.emplace(std::make_unique<Instance>(cRuntimeLocals)).first->get();
-      }
-
-      IBinding* getResource(IActionContext& owner, JSONObject object) override {
-        std::string mLocalBindingID = object.getString(JSON_LOCAL);
-        if (cRuntimeLocals == nullptr) {
-          std::cout << "WARNING: BindingRegistry::Local::getResource: No action-specific bindings provided for this action (looking for \"" << mLocalBindingID << "\")." << std::endl;
-          return nullptr;
-        }
-        IBinding* mBinding = cRuntimeLocals->getBinding(mLocalBindingID);
-        if (mBinding == nullptr) {
-          std::cout << "WARNING: BindingRegistry::Local::getResource: Local binding \"" << mLocalBindingID << "\" not found." << std::endl;
-        }
-        return mBinding;
       }
 
       void releaseResource(const IBinding* resource) override {
@@ -193,14 +179,6 @@ namespace IsoRealms {
                 ConversionProvider(providerID, conversionPath) {
       }
 
-      IBinding* getResource(IActionContext& owner, JSONObject object) override {
-        if constexpr (std::is_same_v<OWNER, IActionContext>) {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner, object)).first->get();
-        } else {
-          return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner.getComponentData(), object)).first->get();
-        }
-      }
-
       IBinding* getResource(IActionContext& owner) override {
         if constexpr (std::is_same_v<OWNER, IActionContext>) {
           return cInstances.emplace(std::make_unique<Instance<OWNER, FROM>>(*this, owner)).first->get();
@@ -245,11 +223,6 @@ namespace IsoRealms {
                   cParent(parent),
                   cDefLuaState(owner.getProject().getLuaState().getState()),
                   cDefValue(owner) {
-        }
-
-        Instance(Conversion& parent, OWNER2& owner, JSONObject object) :
-                  Instance(parent, owner) {
-          cDefValue.set(object, JSON_RESOURCE);
         }
 
         /***********************\

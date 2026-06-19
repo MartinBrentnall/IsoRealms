@@ -22,7 +22,6 @@
 
 namespace IsoRealms::Basics {
   DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner) :
-            cMetadata(metadata),
             cDefName(metadata.getPropertyData("DefaultName").getName()),
             cDefControl(owner) {
   }
@@ -70,8 +69,8 @@ namespace IsoRealms::Basics {
   }
   
   void DigitalToAnalogueMapping::defineResource(IComponentDefiner& definer) {
-    definer.propertyString(JSON_NAME,     [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
-    definer.propertyFloat( JSON_TO_VALUE, [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
+    definer.propertyString("name",   [this]() {return cDefName;},        [this](const std::string& name) {cDefName        = name;});
+    definer.propertyFloat("toValue", [this]() {return cDefOutputValue;}, [this](float toValue)           {cDefOutputValue = toValue;});
     cDefControl.define(definer);
   }
 }

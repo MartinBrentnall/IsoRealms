@@ -87,14 +87,6 @@ namespace IsoRealms::Equilibria {
     void define(IComponentDefiner& definer);
 
     /**
-     * Save the configuration of this terrain element.
-     *
-     * @param node The node into which to save the configuration.
-     * @param
-     */
-    void save(JSONObject object, int originX, int originY, int originZ);
-
-    /**
      * Load preprocessed surfaces from the specified input stream.
      *
      * @param cache The input stream from which to load cached surfaces.
@@ -211,23 +203,6 @@ namespace IsoRealms::Equilibria {
     inline static const char FLAG_STEPPED_BOTTOM    = 0x8;
     inline static const char FLAG_ALTERNATIVE_SPLIT = 0x10;
     inline static const char FLAG_BEHAVIOUR_MASK    = FLAG_INVISIBLE | FLAG_GHOST | FLAG_FORCE_DYNAMIC;
-
-    // JSON members.
-    inline static const std::string JSON_ALTERNATIVE_SPLIT = "alternativeSplit";
-    inline static const std::string JSON_BEHAVIOUR         = "behaviour";
-    inline static const std::string JSON_CONDITION         = "condition";
-    inline static const std::string JSON_HEIGHT            = "height";
-    inline static const std::string JSON_LENGTH            = "length";
-    inline static const std::string JSON_NORTH_EAST_CORNER = "northEastCorner";
-    inline static const std::string JSON_NORTH_WEST_CORNER = "northWestCorner";
-    inline static const std::string JSON_SOUTH_WEST_CORNER = "southWestCorner";
-    inline static const std::string JSON_SOUTH_EAST_CORNER = "southEastCorner";
-    inline static const std::string JSON_STEPPED_BOTTOM    = "steppedBottom";
-    inline static const std::string JSON_TYPE              = "type";
-    inline static const std::string JSON_WIDTH             = "width";
-    inline static const std::string JSON_X                 = "x";
-    inline static const std::string JSON_Y                 = "y";
-    inline static const std::string JSON_Z                 = "z";
 
     inline static const std::string BEHAVIOUR_NORMAL        = "normal";
     inline static const std::string BEHAVIOUR_INVISIBLE     = "invisible";

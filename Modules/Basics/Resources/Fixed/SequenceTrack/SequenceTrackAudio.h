@@ -50,9 +50,6 @@ namespace IsoRealms::Basics {
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
     private:
 
-    // JSON members.
-    inline static const std::string JSON_VOLUME = "volume";
-
     // External interfaces.
     const Metadata& cMetadata;
 

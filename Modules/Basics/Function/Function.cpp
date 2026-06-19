@@ -42,7 +42,7 @@ namespace IsoRealms::Basics {
       std::string mName = getNextAvailableName("newArgument");
       return *cDefArgumentDefinitions.emplace_back(std::make_unique<ArgumentDefinition>(*this, mName, mName));
     });
-    definer.propertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
+    definer.propertyCode("code", [this]() {return cDefCode;}, [this](const std::string& value) {
       cDefCode = value;
     });
     if (definer.loadsPersistedValues()) {
@@ -68,7 +68,7 @@ namespace IsoRealms::Basics {
   }
 
   void Function::addBindingPropertyArray(IComponentDefiner& definer, bool init) {
-    definer.array(JSON_BINDINGS, cDefBindings, [](const std::unique_ptr<Binding>& mBinding) -> Binding& {return *mBinding;}, [this, &definer, init](Binding& binding) {
+    definer.array("bindings", cDefBindings, [](const std::unique_ptr<Binding>& mBinding) -> Binding& {return *mBinding;}, [this, &definer, init](Binding& binding) {
       definer.scope("Binding", binding.getName(), [&binding, init](IComponentDefiner& editingDefiner) {
         binding.getProperties(editingDefiner, init);
       }, [this, &binding]() {
@@ -81,7 +81,7 @@ namespace IsoRealms::Basics {
 
   void Function::getScriptProperties(IComponentDefiner& definer) {
     addBindingPropertyArray(definer, false);
-    definer.propertyCode(JSON_CODE, [this]() {return cDefCode;}, [this](const std::string& value) {
+    definer.propertyCode("code", [this]() {return cDefCode;}, [this](const std::string& value) {
       cDefCode = value;
     });
     if (definer.loadsPersistedValues()) {
@@ -146,13 +146,6 @@ namespace IsoRealms::Basics {
     return cDefID;
   }
 
-  IAction* Function::getResource(IActionContext& owner, JSONObject object) {
-    std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner, object);
-    IAction* mKey = mInstance.get();
-    cInstances.emplace(mKey, std::move(mInstance));
-    return mKey;
-  }
-
   IAction* Function::getResource(IActionContext& owner) {
     std::unique_ptr<Call> mInstance = std::make_unique<Call>(*this, owner);
     IAction* mKey = mInstance.get();
@@ -203,19 +196,6 @@ namespace IsoRealms::Basics {
     }
   }
 
-  Function::Call::Call(Function& parent, IActionContext& owner, JSONObject object) :
-            Call(parent, owner) {
-    if (!cParent.cDefArgumentDefinitions.empty()) {
-      for (JSONValue mBindingValue : object.getArray(JSON_BINDINGS)) {
-        JSONObject mBindingObject = mBindingValue.getObject();
-        std::string mArgumentName = mBindingObject.getString(JSON_ARGUMENT);
-        unsigned int mBindingIndex = cParent.getDynamicBindingIndex(mArgumentName);
-        cDefArguments[mBindingIndex] = std::make_unique<IsoRealms::Binding>(owner, cParent.cDefArgumentDefinitions[mBindingIndex]->getType());
-        cDefArguments[mBindingIndex]->set(mBindingObject, JSON_TO);
-      }
-    }
-  }
-
   void Function::Call::execute() {
     // std::cout << "Executing function \"" << cParent.cComponentData.getComponentName() << "\" on behalf of owner \"" << cOwner.getComponentData().getComponentID() << "\"" << std::endl;
 //    std::cout << "===============================================================================" << std::endl << cParent.cDefCode << std::endl;
@@ -250,13 +230,13 @@ namespace IsoRealms::Basics {
     for (unsigned int i = 0; i < cParent.cDefArgumentDefinitions.size(); i++) {
       mArgumentIndices.emplace(cParent.cDefArgumentDefinitions[i]->getName(), i);
     }
-    definer.fixedArray(JSON_BINDINGS, cDefArguments, [](const std::unique_ptr<IsoRealms::Binding>& binding) -> IsoRealms::Binding& {return *binding;}, [this, &definer](IsoRealms::Binding& binding, unsigned int index) {
+    definer.fixedArray("bindings", cDefArguments, [](const std::unique_ptr<IsoRealms::Binding>& binding) -> IsoRealms::Binding& {return *binding;}, [this, &definer](IsoRealms::Binding& binding, unsigned int index) {
       Options mHint;
       mHint.addOption("name", cParent.cDefArgumentDefinitions[index]->getName());
       mHint.addOption("description", "An argument to the function.");
-      definer.propertyResource(JSON_TO, binding, mHint);
+      definer.propertyResource("to", binding, mHint);
     }, [mArgumentIndices](const JSONObject& loadObject) -> unsigned int {
-      return mArgumentIndices.at(loadObject.getString(JSON_ARGUMENT));
+      return mArgumentIndices.at(loadObject.getString("argument"));
     });
   }
 

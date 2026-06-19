@@ -33,7 +33,6 @@ namespace IsoRealms::Basics {
     std::string getName() const;
     const BindingType* getType() const;
     void define(IComponentDefiner& definer, Function& parent);
-    void saveCall(JSONObject object, const std::string& attributeName) const;
     std::string getInitCode() const;
     std::string getCode(unsigned int functionID, unsigned int arg) const;
     std::string getCleanup() const;
@@ -43,9 +42,5 @@ namespace IsoRealms::Basics {
     std::string cDefName;
     std::string cDefLuaName;
     BindingType cDefType;
-
-    inline static const std::string JSON_LUA_NAME = "luaName";
-    inline static const std::string JSON_NAME     = "name";
-    inline static const std::string JSON_TYPE     = "type";
   };
 }

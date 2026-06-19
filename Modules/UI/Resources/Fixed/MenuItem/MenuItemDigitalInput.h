@@ -58,12 +58,6 @@ namespace IsoRealms::UI {
     std::string getTreeItemLabel() const override;
 
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_ID = "id";
-
-    // Constants.
-    inline static const std::string BINDING_TYPE = "DigitalInput";
 
     // External interfaces.
     HatHandler& cHatHandler;

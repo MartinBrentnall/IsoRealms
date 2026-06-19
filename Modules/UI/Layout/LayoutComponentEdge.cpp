@@ -31,20 +31,9 @@ namespace IsoRealms::UI {
     setLocation(aspectRatio, value);
   }
 
-  LayoutComponentEdge::LayoutComponentEdge(LayoutComponent& parent, JSONObject object, const std::string& tag) :
-            LayoutComponentEdge(parent, 1.0f, 0.0f) {
-    JSONObject mEdgeObject = object.getObject(tag);
-    if (mEdgeObject.hasMember(JSON_LOCATION)) {
-      cDefLocation.init(mEdgeObject, JSON_LOCATION);
-    }
-    if (mEdgeObject.hasMember(JSON_OFFSET)) {
-      cDefOffset.init(mEdgeObject, JSON_OFFSET);
-    }
-  }
-
   void LayoutComponentEdge::define(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_LOCATION, cDefLocation);
-    definer.propertyResource(JSON_OFFSET,   cDefOffset);
+    definer.propertyResource("location", cDefLocation);
+    definer.propertyResource("offset",   cDefOffset);
   }
 
   UI& LayoutComponentEdge::getResourceManager() {

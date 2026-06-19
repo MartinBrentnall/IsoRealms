@@ -61,8 +61,8 @@ namespace IsoRealms {
     mNoEdit.addOption(Options::PROPERTY_NO_EDIT, "true");
     Options mNoPersist;
     mNoPersist.addOption(Options::PROPERTY_NO_PERSIST, "true");
-    definer.propertyInteger(JSON_BUTTON, [this]() {return static_cast<int>(cButton);}, [this](int button) {cButton = static_cast<unsigned int>(button);}, 0, [](int) {return true;}, nullptr, mNoEdit);
-    definer.propertyOptional(JSON_BUTTON, cButtonChooser, "", []() {
+    definer.propertyInteger("button", [this]() {return static_cast<int>(cButton);}, [this](int button) {cButton = static_cast<unsigned int>(button);}, 0, [](int) {return true;}, nullptr, mNoEdit);
+    definer.propertyOptional("button", cButtonChooser, "", []() {
       return true;
     }, [this](const std::string& button) {
       cButton = static_cast<unsigned int>(std::stoul(button.substr(1)));

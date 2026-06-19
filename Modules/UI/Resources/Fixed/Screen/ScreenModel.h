@@ -42,9 +42,6 @@ namespace IsoRealms::UI {
     void renderScreen(float scale, float aspectRatio) const override;
 
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_MODEL = "model";
 
     // Definition data.
     Model cDefModel;

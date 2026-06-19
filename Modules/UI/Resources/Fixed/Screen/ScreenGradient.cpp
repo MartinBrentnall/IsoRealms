@@ -49,9 +49,9 @@ namespace IsoRealms::UI {
   }
 
   void ScreenGradient::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_COLOUR_A, cDefColourA);
-    definer.propertyResource(JSON_COLOUR_B, cDefColourB);
-    definer.propertyList(        JSON_ORIENTATION, std::vector<std::string>{
+    definer.propertyResource("colourA", cDefColourA);
+    definer.propertyResource("colourB", cDefColourB);
+    definer.propertyList(    "orientation", std::vector<std::string>{
       VALUE_HORIZONTAL, VALUE_VERTICAL
     }, [this]() {
       return cDefVertical ? VALUE_VERTICAL : VALUE_HORIZONTAL;

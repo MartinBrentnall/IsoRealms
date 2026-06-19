@@ -77,8 +77,6 @@ namespace IsoRealms {
       const Metadata& cMetadata;
     };
 
-    inline static const std::string JSON_DIRECTION = "direction";
-
     inline static const std::map<std::string, HatHandler::Direction> cDirectionsByName = {
       {"LeftUp",    HatHandler::Direction::HAT_LEFTUP},
       {"Up",        HatHandler::Direction::HAT_UP},

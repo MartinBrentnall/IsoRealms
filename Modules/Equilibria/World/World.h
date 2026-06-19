@@ -207,11 +207,6 @@ namespace IsoRealms::Equilibria {
     
     private:
     
-    // JSON members.
-    inline static const std::string JSON_DEBRIS_GENERATORS = "debrisGenerators";
-    inline static const std::string JSON_PLAYERS           = "players";
-    inline static const std::string JSON_ZONES             = "zones";
-
     inline static const unsigned int DEFAULT_BOUNCE_CONTROL = 10;
     
     inline static const int DEFAULT_AUTOMATIC_ZONE_X_SIZE = 8;

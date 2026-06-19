@@ -97,10 +97,6 @@ namespace IsoRealms::Basics {
       return cSequenceTracks.get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
-      return cSequenceTracks.get(user, owner, object, listener, required);
-    }
-
     /***********************\
      * Scripting Interface *
     \***********************/
@@ -110,16 +106,6 @@ namespace IsoRealms::Basics {
     void setMusicVolume(float volume);
 
     private:
-    inline static const std::string ACTION_SCRIPT = "Script";
-
-    inline static const std::string JSON_ANALOGUE_INPUT_MAPPINGS = "analogueInputMappings";
-    inline static const std::string JSON_DIGITAL_INPUT_MAPPINGS  = "digitalInputMappings";
-    inline static const std::string JSON_ID                      = "id";
-    inline static const std::string JSON_MODULE_SETTINGS         = "moduleSettings";
-    inline static const std::string JSON_MUSIC_VOLUME            = "musicVolume";
-    inline static const std::string JSON_SOUND_VOLUME            = "soundVolume";
-
-    inline static const std::string GLOBAL_CONFIGURATION_FILE = "Module_IsoRealms.json";
 
     // External interfaces.
     IsoRealms::Project& cProject;

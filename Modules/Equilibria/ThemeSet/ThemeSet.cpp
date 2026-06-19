@@ -333,7 +333,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createTextureElementProperty(IComponentDefiner& definer, ThemeTexture* element) {
-    definer.propertyString(Theme::JSON_ELEMENT, [this, element]() {
+    definer.propertyString("element", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
@@ -356,7 +356,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createColourElementProperty(IComponentDefiner& definer, ThemeColour* element) {
-    definer.propertyString(Theme::JSON_ELEMENT, [this, element]() {
+    definer.propertyString("element", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

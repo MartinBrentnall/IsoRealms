@@ -52,7 +52,7 @@ namespace IsoRealms {
   }
 
   void KeyboardKey::defineResource(IComponentDefiner& definer) {
-    definer.propertyOptional(JSON_WHICH, cKeyChooser, "", []() {
+    definer.propertyOptional("which", cKeyChooser, "", []() {
       return true;
     }, [this](const std::string& key) {
       cKey = getKey(key);

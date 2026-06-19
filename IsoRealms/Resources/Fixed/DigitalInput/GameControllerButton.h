@@ -68,8 +68,6 @@ namespace IsoRealms {
       const Metadata& cMetadata;
     };
 
-    inline static const std::string JSON_BUTTON = "button";
-
     // External interfaces.
     const Metadata& cMetadata;
     ButtonChooser cButtonChooser;

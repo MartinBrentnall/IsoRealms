@@ -48,7 +48,6 @@ namespace IsoRealms::Basics {
     };
 
     SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, unsigned int time);
-    SequenceTrackAudioEvent(SequenceTrackAudio& parent, IComponentData& owner, JSONObject object);
 
     End* getEndEvent();
 
@@ -61,7 +60,6 @@ namespace IsoRealms::Basics {
     int getPosition() const;
 
     std::string getName() const;
-    void save(JSONObject object) const;
 
     /**********************************\
      * Implements ISequenceTrackEvent *
@@ -73,11 +71,8 @@ namespace IsoRealms::Basics {
     void getEventProperties(IComponentDefiner& definer) override;
 
     private:
-    inline static const std::string JSON_FADE_IN  = "fadeIn";
-    inline static const std::string JSON_FADE_OUT = "fadeOut";
-    inline static const std::string JSON_FILE     = "value";
-    inline static const std::string JSON_TIME     = "time";
 
+    // External interfaces.
     SequenceTrackAudio& cParent;
 
     End cEnd;

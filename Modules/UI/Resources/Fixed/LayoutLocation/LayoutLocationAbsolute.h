@@ -44,9 +44,6 @@ namespace IsoRealms::UI {
     \********************************************/
     private:
 
-    // JSON members.
-    inline static const std::string JSON_VALUE = "value";
-
     // External interface.
     LayoutComponentEdge& cParent;
 

@@ -90,7 +90,7 @@ namespace IsoRealms::Basics {
     if (!init) {
       mHint.addOption(Options::PROPERTY_IMMEDIATE, "true");
     }
-    definer.propertyResource(JSON_TO, cDefValue, mHint);
-    definer.propertyString(JSON_VARIABLE, [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
+    definer.propertyResource("to", cDefValue, mHint);
+    definer.propertyString("variable", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this](const std::string& value) {return cParent.isBindingNameAllowed(*this, value);});
   }
 }

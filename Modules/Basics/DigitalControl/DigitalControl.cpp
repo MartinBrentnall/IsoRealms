@@ -27,22 +27,12 @@ namespace IsoRealms::Basics {
             cLuaBinding(owner.getProject().getLuaState(), this) {
   }
 
-  DigitalControl::DigitalControl(IComponentData& owner, JSONObject object) :
-            DigitalControl(owner) {
-    for (JSONValue mMappingValue : object.getArray(JSON_MAPPINGS)) {
-      JSONObject mMappingObject = mMappingValue.getObject();
-      std::shared_ptr<DigitalInput> mInput = std::make_shared<DigitalInput>(owner);
-      mInput->set(mMappingObject);
-      cDefMapping.emplace_back(std::make_unique<InputMapping>(mInput));
-    }
-  }
-
   DigitalControl::DigitalControl(Basics& basics, IComponentData& data) :
             DigitalControl(data) {
   }
 
   void DigitalControl::define(IComponentDefiner& definer) {
-    definer.array(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &definer](InputMapping& mapping) {
+    definer.array("mappings", cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &definer](InputMapping& mapping) {
       mapping.define(definer, [this, &mapping]() {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });

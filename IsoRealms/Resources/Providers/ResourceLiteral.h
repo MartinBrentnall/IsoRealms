@@ -22,7 +22,6 @@
 #include <memory>
 #include <string>
 
-#include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Registry/IResourceProvider.h"
 #include "IsoRealms/Utils.h"
 
@@ -33,10 +32,6 @@ namespace IsoRealms {
     /***********************************\
      * Implements IResourceProvider<TYPE> *
     \***********************************/
-    TYPE* getResource(OWNER& owner, JSONObject object) override {
-      return cResources.emplace_back(createLiteralResource(owner, object)).get();
-    }
-
     TYPE* getResource(OWNER& owner) override {
       return cResources.emplace_back(createLiteralResource(owner)).get();
     }
@@ -54,6 +49,5 @@ namespace IsoRealms {
     mutable std::vector<std::unique_ptr<TYPE>> cResources;
 
     virtual std::unique_ptr<TYPE> createLiteralResource(OWNER& owner) const = 0;
-    virtual std::unique_ptr<TYPE> createLiteralResource(OWNER& owner, JSONObject object) const = 0;
   };
 }

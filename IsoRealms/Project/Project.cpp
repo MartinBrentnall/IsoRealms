@@ -22,6 +22,7 @@
 #include "IsoRealms/Resources/Type/IScreenListener.h"
 #include "IsoRealms/DisplayResolution.h"
 #include "IsoRealms/Persistence/JSONArray.h"
+#include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/PropertyData.h"
 #include "IsoRealms/ComponentLoader.h"
@@ -102,18 +103,19 @@ namespace IsoRealms {
     ComponentLoader mLoader(*this, mProjectObject);
     getProperties(mLoader, &file);
 
-    for (JSONThing mModuleThing : mProjectObject.getObject(JSON_MODULES)) {
+    for (JSONThing mModuleThing : mProjectObject.getObject("modules")) {
       std::string mModuleName = mModuleThing.getName();
       getModule(mModuleName);
     }
 
-    if (mProjectObject.hasMember(JSON_LAUNCH_CONFIGURATIONS)) {
-      for (JSONThing mLaunchConfigurationThing : mProjectObject.getObject(JSON_LAUNCH_CONFIGURATIONS)) {
-        cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, file, mLaunchConfigurationThing));
-      }
-    }
+    // TODO: Implement this.
+    // if (mProjectObject.hasMember(JSON_LAUNCH_CONFIGURATIONS)) {
+    //   for (JSONThing mLaunchConfigurationThing : mProjectObject.getObject(JSON_LAUNCH_CONFIGURATIONS)) {
+    //     cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, file, mLaunchConfigurationThing));
+    //   }
+    // }
 
-    for (JSONThing mModuleThing : mProjectObject.getObject(JSON_MODULES)) {
+    for (JSONThing mModuleThing : mProjectObject.getObject("modules")) {
       JSONObject mModuleObject = mModuleThing.getValue();
       std::string mModuleName = mModuleThing.getName();
       Module* mModule = getModule(mModuleName);

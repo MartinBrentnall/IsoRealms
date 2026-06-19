@@ -36,10 +36,6 @@ namespace IsoRealms::Equilibria {
     registry.registerProcessor(this);
   }
 
-  void Chaser::save(JSONObject object) const {
-    // Nothing to do.
-  }
-
   bool Chaser::hasConfiguration() const {
     return false;
   }

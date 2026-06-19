@@ -64,7 +64,6 @@ namespace IsoRealms::UI {
     UI& getUI() const;
     IComponentData& getComponentData();
     LayoutComponent* createComponent(float x1, float y1, float x2, float y2, float aspectRatio);
-    LayoutComponent* createComponent(JSONObject& object);
     void deleteComponent(LayoutComponent* component);
     void moveComponentBackward(LayoutComponent* component);
     void moveComponentForward(LayoutComponent* component);
@@ -81,10 +80,6 @@ namespace IsoRealms::UI {
     LayoutComponent* pickNextComponent(float x, float y, float scale, float aspectRatio, LayoutComponent* current) const;
 
     private:
-
-    // JSON members.
-    inline static const std::string JSON_COMPONENTS = "components";
-    inline static const std::string JSON_ID         = "id";
 
     // External interfaces.
     IComponentData& cComponentData;

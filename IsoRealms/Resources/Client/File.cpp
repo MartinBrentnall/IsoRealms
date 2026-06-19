@@ -56,8 +56,8 @@ namespace IsoRealms {
   
   void File::load(const std::string& name, JSONObject object) {
     JSONObject mFileObject = object.getObject(name);
-    cPath = mFileObject.getString(JSON_PATH);
-    cUser = mFileObject.getBoolean(JSON_USER);
+    cPath = mFileObject.getString("path");
+    cUser = mFileObject.getBoolean("user");
 
     if (cChangeCallback) {
       cChangeCallback();
@@ -66,8 +66,8 @@ namespace IsoRealms {
   
   void File::save(const std::string& name, JSONObject object) const {
     JSONObject mFileObject = object.addObject(name);
-    mFileObject.addString(JSON_PATH, cPath);
-    mFileObject.addBoolean(JSON_USER, cUser);
+    mFileObject.addString("path", cPath);
+    mFileObject.addBoolean("user", cUser);
   }
   
   TreeItemInfo File::getTreeItemInfo() const {
@@ -98,8 +98,8 @@ namespace IsoRealms {
   }
 
   void File::defineTreeItem(IComponentDefiner& definer) {
-    definer.propertyString(JSON_PATH, [this]() {return cPath;}, [this](const std::string& value) {cPath = value;});
-    definer.propertyBoolean(JSON_USER, [this]() {return cUser;}, [this](bool value) {cUser = value;});
+    definer.propertyString("path", [this]() {return cPath;}, [this](const std::string& value) {cPath = value;});
+    definer.propertyBoolean("user", [this]() {return cUser;}, [this](bool value) {cUser = value;});
 
     if (definer.loadsPersistedValues()) {
       if (cChangeCallback) {

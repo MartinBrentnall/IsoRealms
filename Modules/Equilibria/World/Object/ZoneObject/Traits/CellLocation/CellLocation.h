@@ -37,7 +37,6 @@ namespace IsoRealms::Equilibria {
      * Implements IZoneObjectTrait *
     \*******************************/
     void publish(ITraitRegistry& registry) override;
-    void save(JSONObject object) const override;
     bool hasConfiguration() const override;
     void reset() override;
     IBinding* getTraitBinding(const std::string& id) override;

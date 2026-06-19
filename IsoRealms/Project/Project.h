@@ -183,10 +183,6 @@ namespace IsoRealms {
       return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
     }
 
-    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
-      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
-    }
-
     template <typename TYPE> void addStateChangeListener(const TYPE* resource, IStateListener* listener) {
       ResourceContainerTraits<TYPE>::get(*this).addStateChangeListener(resource, listener);
     }  

@@ -43,10 +43,6 @@ namespace IsoRealms::Basics {
             SequenceInstance(parent, 0, 1.0f) {
   }
 
-  SequenceInstance::SequenceInstance(Sequence& parent, JSONObject object) :
-            SequenceInstance(parent, object.getInteger(JSON_START_TIME), object.getFloat(JSON_SPEED, 1.0f)) {
-  }
-
   void SequenceInstance::addTrackInstance(ISequenceTrackInstance* trackInstance) {
     if (trackInstance != nullptr) {
       cTrackInstances.emplace_back(trackInstance);
@@ -62,9 +58,9 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceInstance::define(IComponentDefiner& definer) {
-    definer.propertyString( "name",          [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, "", [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
-    definer.propertyInteger(JSON_START_TIME, [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
-    definer.propertyFloat(  JSON_SPEED,      [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;}, 1.0f);
+    definer.propertyString( "name",      [this]() {return cParent.getInstanceName(*this);}, [this](const std::string& value) {cParent.setInstanceName(*this, value);}, "", [this](const std::string& value) {return cParent.isInstanceNameAllowed(*this, value);});
+    definer.propertyInteger("startTime", [this]() {return cDefStartTime;},                  [this](int value)                {cDefStartTime = value;});
+    definer.propertyFloat(  "speed",     [this]() {return cDefSpeed;},                      [this](float value)              {cDefSpeed     = value;}, 1.0f);
   }
 
   void SequenceInstance::publish(ResourcePublisher& publisher, const std::string& parentID) {
@@ -132,11 +128,6 @@ namespace IsoRealms::Basics {
     if (cRuntimePlaying) {
       updatePreview(milliseconds);
     }
-  }
-
-  void SequenceInstance::save(JSONObject object) const {
-    object.addInteger(JSON_START_TIME, cDefStartTime);
-    object.addFloat(JSON_SPEED, cDefSpeed, 1.0f);
   }
 
   void SequenceInstance::play() {

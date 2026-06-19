@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueControl::define(IComponentDefiner& definer) {
-    definer.array(JSON_MAPPINGS, cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &definer](InputMapping& mapping) {
+    definer.array("mappings", cDefMapping, [](const std::unique_ptr<InputMapping>& mMapping)->InputMapping& {return *mMapping;}, [this, &definer](InputMapping& mapping) {
       mapping.define(definer, [this, &mapping]() {
         Utils::removeElementUnique(cDefMapping, &mapping);
       });

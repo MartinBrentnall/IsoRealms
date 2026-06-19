@@ -85,19 +85,19 @@ World::World(Equilibria& equilibria, IComponentData& data) :
     Options mWorldObjectsHint;
     mWorldObjectsHint.addOption(Options::PROPERTY_NO_EDIT, "true");
     definer.scope("worldObjects", "", [this](IComponentDefiner& d) {
-      d.array(JSON_DEBRIS_GENERATORS, cDefDebrisGenerators, [](const std::unique_ptr<DebrisGenerator>& mDebrisGenerator) -> DebrisGenerator& {return *mDebrisGenerator;}, [&d](DebrisGenerator& debrisGenerator) {
+      d.array("debrisGenerators", cDefDebrisGenerators, [](const std::unique_ptr<DebrisGenerator>& mDebrisGenerator) -> DebrisGenerator& {return *mDebrisGenerator;}, [&d](DebrisGenerator& debrisGenerator) {
         debrisGenerator.define(d);
       }, [this]() -> DebrisGenerator& {
         return *cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(cComponentData, getAvailableDebrisGeneratorId()));
       });
 
-      d.array(JSON_PLAYERS, cDefPlayers, [](const std::unique_ptr<Player>& mPlayer) -> Player& {return *mPlayer;}, [&d](Player& player) {
+      d.array("players", cDefPlayers, [](const std::unique_ptr<Player>& mPlayer) -> Player& {return *mPlayer;}, [&d](Player& player) {
         player.define(d);
       }, [this]() -> Player& {
         return *cDefPlayers.emplace_back(std::make_unique<Player>(*this));
       });
 
-      d.array(JSON_ZONES, cDefZones, [](const std::unique_ptr<Zone>& mZone) -> Zone& {return *mZone;}, [&d](Zone& zone) {
+      d.array("zones", cDefZones, [](const std::unique_ptr<Zone>& mZone) -> Zone& {return *mZone;}, [&d](Zone& zone) {
         zone.define(d);
       }, [this]() -> Zone& {
         Zone* mZone = cDefZones.emplace_back(std::make_unique<Zone>(*this, *cAutomaticZoneManagementType.get(), 0, 0, 0, 7, 7, 7, nullptr)).get();

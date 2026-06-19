@@ -36,7 +36,7 @@ namespace IsoRealms::UI {
   }
   
   void LayoutOffsetAbsolute::defineResource(IComponentDefiner& definer) {
-    definer.propertyFloat(JSON_VALUE, [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
+    definer.propertyFloat("value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;});
   }
 
   bool LayoutOffsetAbsolute::isDefaultConfiguration() const {

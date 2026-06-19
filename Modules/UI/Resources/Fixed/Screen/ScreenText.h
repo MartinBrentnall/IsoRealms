@@ -41,13 +41,6 @@ namespace IsoRealms::UI {
      * Implements IResource via IScreen *
     \*********************************/
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_ALIGNMENT     = "alignment";
-    inline static const std::string JSON_COLOUR        = "colour";
-    inline static const std::string JSON_FONT          = "font";
-    inline static const std::string JSON_SHADOW_OFFSET = "shadowOffset";
-    inline static const std::string JSON_VALUE         = "value";
 
     inline static const std::string ALIGNMENT_CENTER = "Center";
     inline static const std::string ALIGNMENT_LEFT   = "Left";

@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemBoolean::publish(ResourcePublisher& publisher) {
-    publisher.publish<IBinding>(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "Menu Items/Booleans");
+    publisher.publish<IBinding>(&cLuaBinding, "Boolean/" + cDefID, "Menu Items/Booleans");
   }
   void MenuItemBoolean::setValue(bool value) {
     cRuntimeValue = value;
@@ -95,13 +95,13 @@ namespace IsoRealms::UI {
   }
 
   void MenuItemBoolean::defineResource(IComponentDefiner& definer) {
-    definer.propertyString(JSON_ID,          [this]() {return cDefID;},         [this](const std::string& value) {
+    definer.propertyString("id",         [this]() {return cDefID;},         [this](const std::string& value) {
       cDefID = value;
       cMenu.getComponentData().republish();
     });
-    definer.propertyString(JSON_LABEL,       [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
-    definer.propertyString(JSON_TRUE_LABEL,  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});
-    definer.propertyString(JSON_FALSE_LABEL, [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value;});
+    definer.propertyString("label",      [this]() {return cDefLabel;},      [this](const std::string& value) {cDefLabel      = value;});
+    definer.propertyString("trueLabel",  [this]() {return cDefLabelTrue;},  [this](const std::string& value) {cDefLabelTrue  = value;});
+    definer.propertyString("falseLabel", [this]() {return cDefLabelFalse;}, [this](const std::string& value) {cDefLabelFalse = value;});
   }
 
   bool MenuItemBoolean::isDefaultConfiguration() const {

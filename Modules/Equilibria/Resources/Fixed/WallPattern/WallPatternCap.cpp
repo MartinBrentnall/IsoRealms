@@ -172,9 +172,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void WallPatternCap::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_TOP,    cDefTextureTop);
-    definer.propertyResource(JSON_MIDDLE, cDefTextureMiddle);
-    definer.propertyResource(JSON_BOTTOM, cDefTextureBottom);
+    definer.propertyResource("top",    cDefTextureTop);
+    definer.propertyResource("middle", cDefTextureMiddle);
+    definer.propertyResource("bottom", cDefTextureBottom);
   }
 
   bool WallPatternCap::isDefaultConfiguration() const {

@@ -40,9 +40,6 @@ namespace IsoRealms::Equilibria {
     
     private:
     
-    // JSON members.
-    inline static const std::string JSON_LOCATION = "location";
-
     // Definition data.
     std::string cDefInitialLocationID; /// ID of the initial location of movable instances.
   };

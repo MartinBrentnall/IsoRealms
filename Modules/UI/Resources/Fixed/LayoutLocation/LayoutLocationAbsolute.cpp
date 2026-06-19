@@ -39,7 +39,7 @@ namespace IsoRealms::UI {
   }
   
   void LayoutLocationAbsolute::defineResource(IComponentDefiner& definer) {
-    definer.propertyFloat(JSON_VALUE, [this]() {return cDefValue;}, [this](float value) {cDefValue = value;}, cParent.isPositiveEdge() ? 1.0f : -1.0f);
+    definer.propertyFloat("value", [this]() {return cDefValue;}, [this](float value) {cDefValue = value;}, cParent.isPositiveEdge() ? 1.0f : -1.0f);
   }
 
   bool LayoutLocationAbsolute::isDefaultConfiguration() const {

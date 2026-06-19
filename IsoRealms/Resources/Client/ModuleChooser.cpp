@@ -79,7 +79,7 @@ namespace IsoRealms {
       try {
         std::string mMetadataPath = Module::getMetadataPath(mName);
         JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-        mLongName = mMetadataDocument.hasMember(JSON_LONG_NAME) ? mMetadataDocument.getString(JSON_LONG_NAME) : mName;
+        mLongName = mMetadataDocument.hasMember("longName") ? mMetadataDocument.getString("longName") : mName;
       } catch (const InitException& e) {
         std::cout << "ERROR: ModuleChooser::forEachAvailableTreeItem: " << e.getMessage() << std::endl;
         mLongName = mName;

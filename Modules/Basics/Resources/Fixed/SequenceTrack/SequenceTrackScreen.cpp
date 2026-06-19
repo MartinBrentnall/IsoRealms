@@ -64,7 +64,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackScreen::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_START, cDefStartScreen);
+    definer.propertyResource("start", cDefStartScreen);
     getBaseProperties(definer);
   }
 
@@ -77,7 +77,7 @@ namespace IsoRealms::Basics {
   }
 
   void SequenceTrackScreen::getEventProperties(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_START, cDefStartScreen);
+    definer.propertyResource("start", cDefStartScreen);
   }
 
   void SequenceTrackScreen::stateChanged(IScreen* screen) {

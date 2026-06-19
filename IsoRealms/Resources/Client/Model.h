@@ -43,8 +43,6 @@ namespace IsoRealms {
     bool hasClientConfiguration() const;
     bool isDefaultConfiguration() const;
 
-    void loadClientConfiguration(JSONObject object) override;
-    void saveClientConfiguration(JSONObject object) const override;
     void defineWrapper(IComponentDefiner& definer) override;
 
     /***********************************************\
@@ -53,15 +51,6 @@ namespace IsoRealms {
     const Metadata& getPropertyMetadata() const override;
 
     private:
-    inline static const std::string JSON_OFFSET_X = "offsetX";
-    inline static const std::string JSON_OFFSET_Y = "offsetY";
-    inline static const std::string JSON_OFFSET_Z = "offsetZ";
-    inline static const std::string JSON_PITCH    = "pitch";
-    inline static const std::string JSON_SCALE_X  = "scaleX";
-    inline static const std::string JSON_SCALE_Y  = "scaleY";
-    inline static const std::string JSON_SCALE_Z  = "scaleZ";
-    inline static const std::string JSON_YAW      = "yaw";
-
     float cDefOffsetX;
     float cDefOffsetY;
     float cDefOffsetZ;

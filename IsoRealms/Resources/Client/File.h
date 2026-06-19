@@ -64,9 +64,6 @@ namespace IsoRealms {
     inline static const std::string LOCATION_PREFIX_USER    = "User";
     inline static const std::string LOCATION_PREFIX_PROGRAM = "Program";
     
-    inline static const std::string JSON_PATH = "path";
-    inline static const std::string JSON_USER = "user";
-
     Project& cProject;
     std::function<void()> cChangeCallback;
     bool cUser;

@@ -65,43 +65,24 @@ namespace IsoRealms {
     return cDefOffsetX == 0.0f && cDefOffsetY == 0.0f && cDefOffsetZ == 0.0f && cDefPitch == 0.0f && cDefScaleX == 1.0f && cDefScaleY == 1.0f && cDefScaleZ == 1.0f && cDefYaw == 0.0f;
   }
 
-  void Model::loadClientConfiguration(JSONObject object) {
-    cDefOffsetX = object.getFloat(JSON_OFFSET_X, 0.0f);
-    cDefOffsetY = object.getFloat(JSON_OFFSET_Y, 0.0f);
-    cDefOffsetZ = object.getFloat(JSON_OFFSET_Z, 0.0f);
-    cDefPitch   = object.getFloat(JSON_PITCH,    0.0f);
-    cDefScaleX  = object.getFloat(JSON_SCALE_X,  1.0f);
-    cDefScaleY  = object.getFloat(JSON_SCALE_Y,  1.0f);
-    cDefScaleZ  = object.getFloat(JSON_SCALE_Z,  1.0f);
-    cDefYaw     = object.getFloat(JSON_YAW,      0.0f);
-    for (ModelInstance* mInstance : cInstances) {
-      mInstance->set(cResource->createModel());
-    }
-  }
-
-  void Model::saveClientConfiguration(JSONObject object) const {
-    object.addFloat(JSON_OFFSET_X, cDefOffsetX);
-    object.addFloat(JSON_OFFSET_Y, cDefOffsetY);
-    object.addFloat(JSON_OFFSET_Z, cDefOffsetZ);
-    object.addFloat(JSON_PITCH,    cDefPitch);
-    object.addFloat(JSON_SCALE_X,  cDefScaleX, 1.0f);
-    object.addFloat(JSON_SCALE_Y,  cDefScaleY, 1.0f);
-    object.addFloat(JSON_SCALE_Z,  cDefScaleZ, 1.0f);
-    object.addFloat(JSON_YAW,      cDefYaw);
-  }
-
   const Metadata& Model::getPropertyMetadata() const {
     return cManager.getProject().getApplication().getMetadata("Model");
   }
 
   void Model::defineWrapper(IComponentDefiner& definer) {
-    definer.propertyFloat(JSON_OFFSET_X, [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
-    definer.propertyFloat(JSON_OFFSET_Y, [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});
-    definer.propertyFloat(JSON_OFFSET_Z, [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value;});
-    definer.propertyFloat(JSON_SCALE_X,  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value;}, 1.0f);
-    definer.propertyFloat(JSON_SCALE_Y,  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value;}, 1.0f);
-    definer.propertyFloat(JSON_SCALE_Z,  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value;}, 1.0f);
-    definer.propertyFloat(JSON_YAW,      [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value;});
-    definer.propertyFloat(JSON_PITCH,    [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value;});
+    definer.propertyFloat("offsetX", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
+    definer.propertyFloat("offsetY", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});
+    definer.propertyFloat("offsetZ", [this]() {return cDefOffsetZ;}, [this](float value) {cDefOffsetZ = value;});
+    definer.propertyFloat("scaleX",  [this]() {return cDefScaleX;},  [this](float value) {cDefScaleX  = value;}, 1.0f);
+    definer.propertyFloat("scaleY",  [this]() {return cDefScaleY;},  [this](float value) {cDefScaleY  = value;}, 1.0f);
+    definer.propertyFloat("scaleZ",  [this]() {return cDefScaleZ;},  [this](float value) {cDefScaleZ  = value;}, 1.0f);
+    definer.propertyFloat("yaw",     [this]() {return cDefYaw;},     [this](float value) {cDefYaw     = value;});
+    definer.propertyFloat("pitch",   [this]() {return cDefPitch;},   [this](float value) {cDefPitch   = value;});
+
+    if (definer.loadsPersistedValues()) {
+      for (ModelInstance* mInstance : cInstances) {
+        mInstance->set(cResource->createModel());
+      }
+    }
   }
 }

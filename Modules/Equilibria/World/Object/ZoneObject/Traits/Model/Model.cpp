@@ -48,10 +48,6 @@ namespace IsoRealms::Equilibria {
     return cRuntimeEnabled;
   }
   
-  void Model::save(JSONObject object) const {
-    // Nothing to do.
-  }
-
   bool Model::hasConfiguration() const {
     return false;
   }    

@@ -55,9 +55,6 @@ namespace IsoRealms::Equilibria {
      * Implements IResource via ICamera *
     \************************************/
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_VIEW = "view";
 
     // External interfaces.
     WorldView& cParent;

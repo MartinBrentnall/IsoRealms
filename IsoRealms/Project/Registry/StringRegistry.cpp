@@ -36,22 +36,18 @@ namespace IsoRealms {
     }
   }
 
-  IString* StringRegistry::get(IResourceUser<IString>* client, IComponentData& owner, JSONObject object, IStateListener* listener, bool required) {
-    return ResourceClientManager::get(client, owner, object, listener, required);
-  }
-
   IString* StringRegistry::get(IResourceUser<IString>* client, IComponentData& owner, const std::string& id, IStateListener* listener) {
-    for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
-      if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
-        JSONDocument mDocument;
-        JSONObject mConversionProviderObject = mDocument.addObject("temp");
-        mConversionProviderObject.addString(JSON_KEY, mConversionProvider->getProviderID());
-        JSONObject mResourceObject = mConversionProviderObject.addObject(JSON_RESOURCE);
-        mResourceObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
+    // for (const std::unique_ptr<ConversionProvider>& mConversionProvider : cConversionProviders) {
+    //   if (id.starts_with(mConversionProvider->getProviderID() + "/")) {
+    //     JSONDocument mDocument;
+    //     JSONObject mConversionProviderObject = mDocument.addObject("temp");
+    //     mConversionProviderObject.addString(JSON_KEY, mConversionProvider->getProviderID());
+    //     JSONObject mResourceObject = mConversionProviderObject.addObject(JSON_RESOURCE);
+    //     mResourceObject.addString(JSON_KEY, id.substr(mConversionProvider->getProviderID().length() + 1));
 
-        return ResourceClientManager::get(client, owner, mConversionProviderObject, listener, true);
-      }
-    }
+    //     return ResourceClientManager::get(client, owner, mConversionProviderObject, listener, true);
+    //   }
+    // }
     return ResourceClientManager::get(client, owner, id, listener);
   }
 

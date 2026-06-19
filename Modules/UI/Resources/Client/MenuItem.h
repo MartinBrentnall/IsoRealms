@@ -33,8 +33,6 @@ namespace IsoRealms::UI {
     public:
     MenuItem(UI& ui, Menu& menu);
 
-    void init(JSONObject object, const std::string& member, Menu& owner);
-    void set(JSONObject object, const std::string& member, Menu& owner);
     void setID(const std::string& id) override;
     TreeItemInfo getTreeItemInfo() const override;
     std::string getTreeItemLabel() const override;

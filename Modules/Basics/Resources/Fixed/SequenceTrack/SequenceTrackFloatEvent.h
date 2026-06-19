@@ -42,9 +42,6 @@ namespace IsoRealms::Basics {
     void getEventProperties(IComponentDefiner& definer) override;
 
     private:
-    inline static const std::string JSON_DURATION = "duration";
-    inline static const std::string JSON_FADE     = "fade";
-    inline static const std::string JSON_VALUE    = "value";
 
     // External interfaces.
     SequenceTrackFloat& cParent;

@@ -51,13 +51,6 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // External interfaces.
-    const Metadata& cMetadata;
-
-    // JSON members.
-    inline static const std::string JSON_NAME     = "name";
-    inline static const std::string JSON_TO_VALUE = "toValue";
-
     // Definition data.
     std::string cDefName;       /// Name of this mapping.
     DigitalControl cDefControl; /// Digital control to be converted.

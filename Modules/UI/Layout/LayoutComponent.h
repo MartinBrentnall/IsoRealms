@@ -31,7 +31,6 @@ namespace IsoRealms::UI {
   class LayoutComponent final {
     public:
     LayoutComponent(Layout& layout, float x1, float y1, float x2, float y2, float aspectRatio);
-    LayoutComponent(Layout& layout, JSONObject object);
     void reset();
     void render(float scale, float aspectRatio);
     void renderRegion(float scale, float aspectRatio);
@@ -72,13 +71,6 @@ namespace IsoRealms::UI {
     void setScreen(IScreen* screen);
     
     private:
-    
-    // JSON members.
-    inline static const std::string JSON_BOTTOM = "bottom";
-    inline static const std::string JSON_LEFT   = "left";
-    inline static const std::string JSON_RIGHT  = "right";
-    inline static const std::string JSON_SCREEN = "screen";
-    inline static const std::string JSON_TOP    = "top";
 
     // External interfaces.
     Layout& cLayout;

@@ -56,10 +56,6 @@ namespace IsoRealms::Equilibria {
     return cRuntimeEnabled;
   }
   
-  void Boundary::save(JSONObject object) const {
-    // Nothing to do.
-  }
-
   bool Boundary::hasConfiguration() const {
     return false;
   }    

@@ -55,9 +55,9 @@ namespace IsoRealms::Equilibria {
   }
 
   void SurfacePatternSplitVariant::defineResource(IComponentDefiner& definer) {
-    definer.propertyResource(JSON_REGULAR, cDefRegularPattern);
-    definer.propertyResource(JSON_SPLIT_A, cDefSplitAPattern);
-    definer.propertyResource(JSON_SPLIT_B, cDefSplitBPattern);
+    definer.propertyResource("regular", cDefRegularPattern);
+    definer.propertyResource("splitA",  cDefSplitAPattern);
+    definer.propertyResource("splitB",  cDefSplitBPattern);
   }
 
   bool SurfacePatternSplitVariant::isDefaultConfiguration() const {

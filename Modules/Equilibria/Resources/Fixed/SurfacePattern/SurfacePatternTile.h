@@ -83,9 +83,6 @@ namespace IsoRealms::Equilibria {
       const SurfacePatternTile& cDefParent;
       const SplitSurface* cDefSurface;
     };
-    
-    // JSON members.
-    inline static const std::string JSON_TEXTURE = "texture";
 
     // Definition data.
     Texture cDefTexture;

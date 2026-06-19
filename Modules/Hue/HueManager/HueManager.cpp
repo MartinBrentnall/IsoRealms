@@ -122,7 +122,7 @@ namespace IsoRealms::Hue {
   }
 
   void HueManager::Bulb::define(IComponentDefiner& definer, std::function<void()> removeFunction) {
-    definer.propertyResource(JSON_COLOUR, cDefColour, Options::EMPTY, removeFunction);
+    definer.propertyResource("colour", cDefColour, Options::EMPTY, removeFunction);
   }
 
   Colour& HueManager::Bulb::getColour() {

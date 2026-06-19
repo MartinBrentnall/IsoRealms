@@ -46,8 +46,8 @@ namespace IsoRealms::UI {
   
   void LayoutOffsetLinked::defineResource(IComponentDefiner& definer) {
 // TODO   definer.propertyList("Orientation", {VALUE_WIDTH, VALUE_HEIGHT}, [this]() {return cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT;}, [this](const std::string& value) {cDefHorizontal = value == VALUE_WIDTH;}));
-    definer.propertyList( JSON_LINKED, cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {cDefLinked = value.empty() ? &cParent.getComponent() : cParent.getComponent().getLayout().getComponent(value);});
-    definer.propertyFloat(JSON_RATIO,  [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value;}, cParent.isPositiveEdge() ? 1.0f : -1.0f);
+    definer.propertyList( "linked", cParent.getComponent().getAvailableComponentNames(), [this]() {return cParent.getComponent().getLayout().getName(cDefLinked);}, [this](const std::string& value) {cDefLinked = value.empty() ? &cParent.getComponent() : cParent.getComponent().getLayout().getComponent(value);});
+    definer.propertyFloat("ratio",  [this]() {return cDefRatio;}, [this](float value) {cDefRatio = value;}, cParent.isPositiveEdge() ? 1.0f : -1.0f);
   }
 
   bool LayoutOffsetLinked::isDefaultConfiguration() const {

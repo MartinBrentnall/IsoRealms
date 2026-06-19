@@ -168,10 +168,6 @@ namespace IsoRealms::Equilibria {
       return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
     }
 
-    template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
-      ResourceContainerTraits<TYPE>::get(*this).save(object, resource);
-    }
-
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& f) const {
       ResourceContainerTraits<TYPE>::get(*this).forEachEntry(f);
     }
@@ -190,10 +186,6 @@ namespace IsoRealms::Equilibria {
 
     template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, const std::string& id, OWNER& owner, IStateListener* listener = nullptr) {
       return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, id, listener);
-    }
-
-    template <typename TYPE, typename OWNER> TYPE* getResource(IResourceUser<TYPE>* user, JSONObject object, OWNER& owner, IStateListener* listener = nullptr, bool required = true) {
-      return ResourceContainerTraits<TYPE>::get(*this).get(user, owner, object, listener, required);
     }
 
     template <typename TYPE, typename THING> bool hasReadOnlyReferences(THING* resource) const {
