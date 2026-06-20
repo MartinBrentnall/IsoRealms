@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/IComponent.h"
-#include "IsoRealms/ComponentEditor.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 
 #include "Menu.h"
 #include "MenuItemProperty.h"

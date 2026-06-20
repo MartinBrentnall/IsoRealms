@@ -27,6 +27,8 @@
 #include "UISignalID.h"
 
 namespace IsoRealms {
+  class PropertyData;
+  
   class MenuItemAction : public IMenuItem {
     public:
     MenuItemAction(const std::string& label, const std::string& tooltip, std::function<void()> action, int indentLevel = 0);

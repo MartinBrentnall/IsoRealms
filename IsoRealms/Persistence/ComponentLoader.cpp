@@ -21,14 +21,14 @@
 #include <map>
 #include <optional>
 
-#include "Resources/Fixed/DigitalInput/KeyboardKey.h"
-#include "Resources/Type/IEditable.h"
-#include "Condition/Condition.h"
-#include "Editing/Property/ITreeSelectorObject.h"
-#include "Exception/ArgumentException.h"
-#include "IComponentData.h"
-#include "Project/Project.h"
-#include "Utils.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/KeyboardKey.h"
+#include "IsoRealms/Resources/Type/IEditable.h"
+#include "IsoRealms/Condition/Condition.h"
+#include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
+#include "IsoRealms/Exception/ArgumentException.h"
+#include "IsoRealms/IComponentData.h"
+#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
   namespace {

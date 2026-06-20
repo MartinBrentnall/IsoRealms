@@ -21,8 +21,8 @@
 #include <stdexcept>
 
 #include "IsoRealms/Resources/Type/IFont.h"
-#include "IsoRealms/Metadata.h"
-#include "IsoRealms/ComponentEditor.h"
+#include "IsoRealms/Editing/Metadata.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 
 namespace IsoRealms {
   PropertyOptional::PropertyOptional(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :

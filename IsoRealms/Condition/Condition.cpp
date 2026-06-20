@@ -18,7 +18,7 @@
  */
 #include "Condition.h"
 
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Exception/ArgumentException.h"
 #include "IsoRealms/Project/Options.h"
 

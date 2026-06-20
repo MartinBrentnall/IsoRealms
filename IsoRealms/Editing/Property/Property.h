@@ -23,7 +23,7 @@
 #include <string>
 
 #include "IsoRealms/Editing/IComponentAccessManager.h"
-#include "IsoRealms/PropertyData.h"
+#include "IsoRealms/Editing/PropertyData.h"
 
 #include "IProperty.h"
 

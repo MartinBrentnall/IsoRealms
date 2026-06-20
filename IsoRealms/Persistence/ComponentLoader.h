@@ -20,7 +20,7 @@
 
 #include <vector>
 
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONValue.h"

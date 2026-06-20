@@ -21,8 +21,6 @@
 #include <sol.hpp>
 #include <unordered_map>
 
-#include "IsoRealms/ComponentLoader.h"
-
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {

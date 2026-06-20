@@ -34,7 +34,7 @@ namespace IsoRealms::Equilibria {
     /****************************\
      * Implements IZoneViewType *
     \****************************/
-    std::unique_ptr<IZoneView> createZoneView(Zone* zone) override;
     void publish(Equilibria& equilibria, const std::string& parentID) override;
+    std::unique_ptr<IZoneView> createZoneView(Zone* zone) override;
   };
 }

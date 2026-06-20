@@ -29,8 +29,8 @@ namespace IsoRealms::Equilibria {
 
   class IZoneViewType : public IResource {
     public:
-    virtual std::unique_ptr<IZoneView> createZoneView(Zone* zone) = 0;
     virtual void publish(Equilibria& equilibria, const std::string& parentID) = 0;
+    virtual std::unique_ptr<IZoneView> createZoneView(Zone* zone) = 0;
 
     virtual ~IZoneViewType() {
     }

@@ -20,8 +20,6 @@
 
 #include "Modules/Equilibria/Equilibria.h"
 
-#include "IsoRealms/ComponentLoader.h"
-
 namespace IsoRealms::Equilibria {
   ThemeSet::ThemeSet(Equilibria& equilibria, IComponentData& data) :
             cEquilibria(equilibria),

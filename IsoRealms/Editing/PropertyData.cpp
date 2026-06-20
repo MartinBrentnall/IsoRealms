@@ -18,7 +18,7 @@
  */
 #include "PropertyData.h"
 
-#include "Persistence/JSONObject.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 
 namespace IsoRealms {
   PropertyData::PropertyData(const std::string& name, const std::string& tooltip) :

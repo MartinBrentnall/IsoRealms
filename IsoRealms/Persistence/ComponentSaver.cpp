@@ -18,10 +18,10 @@
  */
 #include "ComponentSaver.h"
 
-#include "Resources/Type/IEditable.h"
-#include "Condition/Condition.h"
-#include "Editing/Property/ITreeSelectorObject.h"
-#include "IComponentData.h"
+#include "IsoRealms/Resources/Type/IEditable.h"
+#include "IsoRealms/Condition/Condition.h"
+#include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
+#include "IsoRealms/IComponentData.h"
 
 namespace IsoRealms {
   ComponentSaver::ComponentSaver(IComponentData& resourceData, JSONObject object) :

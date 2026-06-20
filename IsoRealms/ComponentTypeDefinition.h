@@ -30,8 +30,8 @@
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/ComponentType.h"
 #include "IsoRealms/Project/ProjectFile.h"
-#include "IsoRealms/ComponentLoader.h"
-#include "IsoRealms/ComponentSaver.h"
+#include "IsoRealms/Persistence/ComponentLoader.h"
+#include "IsoRealms/Persistence/ComponentSaver.h"
 
 // Forward declarations
 namespace IsoRealms {

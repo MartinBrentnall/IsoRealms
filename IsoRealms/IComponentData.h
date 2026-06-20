@@ -24,7 +24,6 @@ namespace IsoRealms {
   class IActionContext;
   class Project;
   class ProjectFile;
-  class PropertyData;
 
   class IComponentData {
     public:

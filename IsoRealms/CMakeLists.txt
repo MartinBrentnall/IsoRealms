@@ -29,13 +29,11 @@ add_library(IsoRealms
   Common/ScreenArea.cpp
   Condition/Condition.cpp
   Condition/ConditionElement.cpp
-  ComponentLoader.cpp
-  ComponentEditor.cpp
-  ComponentSaver.cpp
   DisplayResolution.cpp
   Editing/ActionMenu.cpp
   Editing/Choice.cpp
   Editing/CategoryMenu.cpp
+  Editing/ComponentEditor.cpp
   Editing/ProjectMenu.cpp
   Editing/PropertiesMenu.cpp
   Editing/ComponentTypeMenu.cpp
@@ -45,6 +43,7 @@ add_library(IsoRealms
   Editing/MenuItemModule.cpp
   Editing/MenuItemProperty.cpp
   Editing/MenuItemSpacer.cpp
+  Editing/Metadata.cpp
   Editing/Property/Property.cpp
   Editing/Property/PropertyAdd.cpp
   Editing/Property/PropertyCode.cpp
@@ -66,6 +65,7 @@ add_library(IsoRealms
   Editing/Property/PropertySlider.cpp
   Editing/Property/PropertyStruct.cpp
   Editing/Property/PropertyTreeSelector.cpp
+  Editing/PropertyData.cpp
   Editing/UIManager.cpp
   Exception/ActionException.cpp
   Exception/ApplicationException.cpp
@@ -74,7 +74,8 @@ add_library(IsoRealms
   Exception/InitException.cpp
   Exception/ComponentInitException.cpp
   Input/HatHandler.cpp
-  Metadata.cpp
+  Persistence/ComponentLoader.cpp
+  Persistence/ComponentSaver.cpp
   Persistence/JSONArray.cpp
   Persistence/JSONDocument.cpp
   Persistence/JSONObject.cpp
@@ -106,7 +107,6 @@ add_library(IsoRealms
   Project/Registry/TextureRegistry.cpp
   Project/Registry/VertexRegistry.cpp
   Project/ComponentType.cpp
-  PropertyData.cpp
   Resources/Client/Action.cpp
   Resources/Client/AnalogueInput.cpp
   Resources/Client/Binding.cpp

@@ -21,8 +21,6 @@
 #include "Module.h"
 #include "Project.h"
 
-#include "IsoRealms/PropertyData.h"
-
 #include "ComponentType.h"
 
 namespace IsoRealms {

@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/IComponentDefiner.h"
 
 namespace IsoRealms {
   class ProjectFile;

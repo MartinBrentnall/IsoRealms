@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"

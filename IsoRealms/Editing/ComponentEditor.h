@@ -18,8 +18,9 @@
  */
 #pragma once
 
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
-#include "IsoRealms/Metadata.h"
+#include "IsoRealms/IComponentDefiner.h"
+
+#include "Metadata.h"
 
 namespace IsoRealms {
   class Application;

@@ -21,14 +21,12 @@
 #include <string>
 
 #include "Resources/Client/ComponentOwner.h"
-#include "Editing/Property/IComponentDefiner.h"
-#include "Editing/Property/PropertyNativeString.h"
+#include "IComponentDefiner.h"
 #include "IActionContext.h"
 #include "IComponent.h"
 #include "IComponentData.h"
 #include "Project/ResourcePublisher.h"
 #include "Project/ComponentType.h"
-#include "Project/Registry/ResourceIDException.h"
 #include "Utils.h"
 
 namespace IsoRealms {

@@ -18,8 +18,7 @@
  */
 #include "KeyboardKey.h"
 
-#include "IsoRealms/Editing.h"
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Utils.h"
 

@@ -18,7 +18,7 @@
  */
 #include "MenuItemSpacer.h"
 
-#include "IsoRealms/PropertyData.h"
+#include "IsoRealms/Editing/PropertyData.h"
 #include "IsoRealms/Utils.h"
  
 #include "IUIStyle.h"

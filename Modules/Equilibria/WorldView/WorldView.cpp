@@ -82,6 +82,7 @@ namespace IsoRealms::Equilibria {
     }
     cDefCamera->reset();
   }
+
   void WorldView::addZoneView(Zone* zone) {
     std::unique_ptr<IZoneView> mZoneView = cDefZoneViewType->createZoneView(zone);
     cRuntimeZoneViews.emplace_back(std::make_unique<ZoneView>(zone, std::move(mZoneView)));

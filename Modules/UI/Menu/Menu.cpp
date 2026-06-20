@@ -18,7 +18,6 @@
  */
 #include "Menu.h"
 
-#include "IsoRealms/ComponentLoader.h"
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {

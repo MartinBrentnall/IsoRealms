@@ -25,8 +25,7 @@
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Persistence/JSONValue.h"
-#include "IsoRealms/PropertyData.h"
-#include "IsoRealms/ComponentLoader.h"
+#include "IsoRealms/Persistence/ComponentLoader.h"
 
 #include "Module.h"
 

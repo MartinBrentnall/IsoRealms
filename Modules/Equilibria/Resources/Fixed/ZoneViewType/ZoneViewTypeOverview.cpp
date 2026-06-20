@@ -31,6 +31,10 @@ namespace IsoRealms::Equilibria {
             cRuntimeParameterView2(worldView.getEquilibria().getProject().getLuaState(), nullptr, nullptr, true) {
   }
 
+  void ZoneViewTypeOverview::defineResource(IComponentDefiner& definer) {
+    definer.propertyResource("colour", cDefColour);
+  }
+
   void ZoneViewTypeOverview::publish(Equilibria& equilibria, const std::string& parentID) {
     equilibria.addZoneBinding(&cRuntimeParameterView1, &cRuntimeParameterView2, parentID);
   }

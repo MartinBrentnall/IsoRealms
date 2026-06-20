@@ -27,7 +27,7 @@
 #include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
 #include "IsoRealms/Resources/Type/IString.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/ComponentEditor.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 #include "IsoRealms/Utils.h"
 
 #include "ResourceClientManager.h"

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with IsoRealms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "IsoRealms/ComponentEditor.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 #include "IsoRealms/Project/Project.h"
 
 #include <sol.hpp>

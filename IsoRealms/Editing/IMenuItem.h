@@ -26,6 +26,8 @@
 #include "UISignalID.h"
 
 namespace IsoRealms {
+  class IUIStyle;
+
   class IMenuItem {
     public:
     virtual ~IMenuItem() = default;

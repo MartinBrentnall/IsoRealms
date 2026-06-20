@@ -29,7 +29,7 @@
 #include "IsoRealms/Resources/Type/IFont.h"
 #include "IsoRealms/Common/ScreenArea.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/ComponentEditor.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {

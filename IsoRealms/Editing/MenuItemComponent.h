@@ -28,6 +28,8 @@
 #include "UISignalID.h"
 
 namespace IsoRealms {
+  class IUIStyle;
+
   class MenuItemComponent {
     public:
     MenuItemComponent(std::variant<IComponent*, std::string> component, std::function<void(IComponent* component)> action, std::function<bool(IComponent* component)> icon);

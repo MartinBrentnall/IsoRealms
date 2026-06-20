@@ -18,15 +18,16 @@
  */
 #include "ComponentEditor.h"
 
-#include "Resources/Type/IStateNotifier.h"
+#include "IsoRealms/Resources/Type/IStateNotifier.h"
+#include "IsoRealms/IComponentData.h"
+#include "IsoRealms/Project/Options.h"
+#include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Project/Registry/IResourceProvider.h"
+
 #include "Editing.h"
-#include "Editing/IDialogManager.h"
-#include "Editing/Property/IPropertyManager.h"
-#include "IComponentData.h"
+#include "IDialogManager.h"
+#include "Property/IPropertyManager.h"
 #include "Metadata.h"
-#include "Project/Options.h"
-#include "Project/Project.h"
-#include "Project/Registry/IResourceProvider.h"
 #include "PropertyData.h"
 
 namespace IsoRealms {

@@ -21,7 +21,7 @@
 #include <functional>
 #include <string>
 
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 

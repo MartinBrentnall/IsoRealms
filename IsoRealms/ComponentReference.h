@@ -22,8 +22,7 @@
 #include <optional>
 #include <stdexcept>
 
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
-#include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/IComponentUser.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 

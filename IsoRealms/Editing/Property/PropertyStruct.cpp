@@ -19,7 +19,7 @@
 #include "PropertyStruct.h"
 
 #include "IsoRealms/Editing/IUIStyle.h"
-#include "IsoRealms/ComponentEditor.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 #include "IsoRealms/Utils.h"
 
 #include "IPropertyManager.h"

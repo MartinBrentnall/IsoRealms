@@ -23,7 +23,6 @@
 #include "Modules/Basics/Basics.h"
 
 #include "Editor/SequenceEditor.h"
-#include "IsoRealms/ComponentLoader.h"
 #include "SequenceInstance.h"
 
 namespace IsoRealms::Basics {

@@ -18,8 +18,8 @@
  */
 #include "Metadata.h"
 
-#include "Persistence/JSONObject.h"
-#include "Persistence/JSONThing.h"
+#include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Persistence/JSONThing.h"
 #include "PropertyData.h"
 
 namespace IsoRealms {

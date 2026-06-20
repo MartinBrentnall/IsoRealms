@@ -40,7 +40,6 @@
 #include "Exception/ApplicationException.h"
 #include "Input/HatHandler.h"
 #include "Persistence/JSONDocument.h"
-#include "PropertyData.h"
 #include "System.h"
  
 namespace IsoRealms {

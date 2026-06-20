@@ -18,9 +18,7 @@
  */
 #include "LiteralString.h"
 
-#include "IsoRealms/Editing/Property/PropertyNativeString.h"
 #include "IsoRealms/Project/Project.h"
-#include "IsoRealms/ComponentEditor.h"
 
 namespace IsoRealms {
   LiteralString::LiteralString(const std::string& value) :

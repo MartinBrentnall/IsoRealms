@@ -20,9 +20,9 @@
 
 #include <stdexcept>
 
-#include "IsoRealms/Metadata.h"
+#include "IsoRealms/Editing/Metadata.h"
 #include "IsoRealms/Project/Project.h"
-#include "IsoRealms/ComponentEditor.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 
 namespace IsoRealms {
   PropertyNativeBoolean::PropertyNativeBoolean(IComponentDefiner& definer, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction) :

@@ -27,11 +27,11 @@
 #include "IsoRealms/Resources/Client/ComponentOwner.h"
 #include "IsoRealms/Resources/IEventBindings.h"
 #include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
-#include "IsoRealms/Editing.h"
+#include "IsoRealms/Editing/Editing.h"
 #include "IsoRealms/IComponentData.h"
 #include "IsoRealms/IStateListener.h"
 #include "IsoRealms/Lua/LuaBinding.h"
-#include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/Types.h"
 
 #include "Options.h"
