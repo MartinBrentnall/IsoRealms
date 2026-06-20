@@ -22,6 +22,7 @@
 
 namespace IsoRealms::Spindizzy {
   Jewel::Jewel(Spindizzy& spindizzy, IComponentData& data) :
+            cComponentData(data),
             cProject(data.getProject()),
             cDefColourFrame(data, 1.0f, 1.0f, 0.0f) {
     cSampleModel = std::make_unique<Instance>(*this, cProject);
@@ -35,9 +36,8 @@ namespace IsoRealms::Spindizzy {
           randomizeInstances();
         }
       });
-    }, [this, &definer]() -> CycleColour& {
-      IComponentData& mData = definer.getComponentData();
-      CycleColour& mCycleColour = *cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, mData));
+    }, [this]() -> CycleColour& {
+      CycleColour& mCycleColour = *cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, cComponentData));
       randomizeInstances();
       return mCycleColour;
     });
@@ -47,7 +47,7 @@ namespace IsoRealms::Spindizzy {
     // If we are loading persisted values, we need to create a default cycle colour if none exists.
     if (definer.loadsPersistedValues()) {
       if (cDefColoursCycle.size() == 0) {
-        cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, definer.getComponentData()));
+        cDefColoursCycle.emplace_back(std::make_unique<CycleColour>(*this, cComponentData));
       }
     }
   }

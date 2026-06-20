@@ -33,7 +33,6 @@
 namespace IsoRealms {
   class Condition;
   class ConditionElement;
-  class IComponentData;
   class IEditable;
   class IOptionalObject;
   class ITreeSelectorObject;
@@ -42,8 +41,6 @@ namespace IsoRealms {
   class IComponentDefiner : public IComponentAccessManager {
     public:
     virtual ~IComponentDefiner() = default;
-
-    virtual IComponentData& getComponentData() = 0;
 
     virtual bool loadsPersistedValues() const {
       return false;

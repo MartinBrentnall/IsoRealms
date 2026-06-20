@@ -52,6 +52,8 @@ namespace IsoRealms {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
+    static unsigned int matchLoadIndex(const JSONObject& loadObject);
+
     void loadComponents(JSONObject object, ProjectFile* ownerProject);
     void publish();
     bool needsSaving(const ProjectFile* savingProject) const;

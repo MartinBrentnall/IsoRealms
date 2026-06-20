@@ -26,9 +26,9 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertySlider::PropertySlider(IComponentDefiner& definer, const std::string& key, const Metadata& metadata, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
+  PropertySlider::PropertySlider(IComponentData& resourceData, const std::string& key, const Metadata& metadata, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> valueFunction, float minimum, float maximum, std::function<void(const float)> confirmationCallback, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
-            cPropertyOwner(definer),
+            cComponentData(resourceData),
             cPropertyKey(key),
             cPropertyMetadata(metadata),
             cConfirmationCallback(confirmationCallback),
@@ -62,7 +62,7 @@ namespace IsoRealms {
   }
   
   void PropertySlider::configure(IPropertyManager& manager) {
-    manager.openProperties(cPropertyOwner.getComponentData(), getPropertyName(), [this](IComponentDefiner& definer) {
+    manager.openProperties(cComponentData, getPropertyName(), [this](IComponentDefiner& definer) {
       definer.propertyFloat(cPropertyKey, [this]() {
         return cValueFunction();
       }, [this](float value) {

@@ -38,16 +38,12 @@ namespace IsoRealms {
             cDialogManager(dialogManager) {
   }
 
-  IComponentData& ComponentEditor::getComponentData() {
-    return cParent;
-  }
-
   void ComponentEditor::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) {
     cProperties.addProperty(std::make_unique<PropertyAdd>(cMetadata.getPropertyData(key), *this, value, addPropertyFunction));
   }
 
   void ComponentEditor::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(*this, cMetadata.getPropertyData(key), *this, getter, setter, cParent.getProject(), removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(cMetadata.getPropertyData(key), *this, cParent, getter, setter, cParent.getProject(), removeFunction));
   }
 
   void ComponentEditor::propertyCode(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) {
@@ -55,19 +51,19 @@ namespace IsoRealms {
   }
 
   void ComponentEditor::propertyColourChannel(const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourChannel>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourChannel>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourHue(const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourHue>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourHue>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourLightness(const std::string& key, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourLightness>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, saturation, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourLightness>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, saturation, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourSaturation(const std::string& key, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(*this, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
@@ -94,14 +90,14 @@ namespace IsoRealms {
   }
 
   void ComponentEditor::propertyList(const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, const std::string& defaultValue, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyList>(*this, *this, cParent.getProject(), cMetadata.getPropertyData(key), options, getter, setter, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyList>(*this, cParent, cParent.getProject(), cMetadata.getPropertyData(key), options, getter, setter, removeFunction));
   }
 
   void ComponentEditor::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, *this, cParent, mergePropertyMetadata(cMetadata.getPropertyData(key), hint), item, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, cParent, mergePropertyMetadata(cMetadata.getPropertyData(key), hint), item, removeFunction));
   }
 
   void ComponentEditor::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
@@ -109,7 +105,7 @@ namespace IsoRealms {
   }
 
   void ComponentEditor::propertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter, const Options& hint) {
-    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, *this, cParent, cMetadata.getPropertyData(key), choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
+    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, cParent, cMetadata.getPropertyData(key), choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
   }
 
   void ComponentEditor::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
@@ -120,7 +116,7 @@ namespace IsoRealms {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    cProperties.addProperty(std::make_unique<PropertyStruct>(*this, cMetadata.getPropertyData(key), *this, value, subProperties, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyStruct>(cParent, cMetadata.getPropertyData(key), *this, value, subProperties, removeFunction));
   }
 
   bool ComponentEditor::isComponentReadOnly() const {

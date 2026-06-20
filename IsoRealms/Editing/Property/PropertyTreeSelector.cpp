@@ -33,9 +33,8 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyTreeSelector::PropertyTreeSelector(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
+  PropertyTreeSelector::PropertyTreeSelector(IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, ITreeSelectorObject& item, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
-            cPropertyOwner(definer),
             cComponentData(resourceData),
             cSelectedItem(item),
             cValueLabel(cSelectedItem.getTreeItemLabel()) {

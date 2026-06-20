@@ -44,8 +44,6 @@ namespace IsoRealms {
     ComponentLoader(IComponentData& resourceData, JSONObject object);
     ComponentLoader(IComponentData& resourceData, std::vector<JSONObject> objects);
 
-    IComponentData& getComponentData() override;
-
     // TODO: Replace this function with a hint or something more elegant.
     bool loadsPersistedValues() const override {
       return true;

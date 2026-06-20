@@ -29,10 +29,6 @@ namespace IsoRealms {
     cObjects.push_back(object);
   }
 
-  IComponentData& ComponentSaver::getComponentData() {
-    return cComponentData;
-  }
-
   JSONObject& ComponentSaver::currentObject() {
     return cObjects.back();
   }

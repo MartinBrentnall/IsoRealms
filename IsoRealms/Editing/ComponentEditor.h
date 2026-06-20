@@ -38,8 +38,6 @@ namespace IsoRealms {
     public:
     ComponentEditor(Application& application, IComponentData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
 
-    IComponentData& getComponentData() override;
-
     void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) override;
     void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue,                                                          std::function<void()> removeFunction) override;
     void propertyCode(            const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) override;

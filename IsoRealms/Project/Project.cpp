@@ -26,6 +26,7 @@
 #include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Persistence/JSONValue.h"
 #include "IsoRealms/Persistence/ComponentLoader.h"
+#include "IsoRealms/Utils.h"
 
 #include "Module.h"
 
@@ -287,7 +288,7 @@ namespace IsoRealms {
     cDefDefaultEditor.define(       definer, JSON_EDITOR,           loadOwner);
   }
 
-  void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner, JSONObject* persistRoot) {
+  void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
     definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& editingDefiner) {
       cDefProjectFileStructure.define(editingDefiner, *this, false);
     });
@@ -308,38 +309,22 @@ namespace IsoRealms {
     cDefScreen.define(              definer, JSON_SCREEN,           loadOwner);
     cDefDefaultEditor.define(       definer, JSON_EDITOR,           loadOwner);
 
-    Options mModulesHint;
-    mModulesHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-    if (definer.savesPersistedValues()) {
-      mModulesHint.addOption(Options::PROPERTY_SCOPED, "true");
-    }
-    definer.scope(JSON_MODULES, "", [this, loadOwner, persistRoot, &definer](IComponentDefiner& modulesDefiner) {
-      if (modulesDefiner.loadsPersistedValues()) {
-        if (loadOwner != nullptr && definer.hasPersistedMember(JSON_MODULES)) {
-          JSONDocument mProjectDocument(loadOwner->cFile.getRelativePath(), loadOwner->cFile.isUser());
-          JSONObject mModulesObject = mProjectDocument.getObject(JSON_PROJECT).getObject(JSON_MODULES);
-          for (JSONThing mModuleThing : mModulesObject) {
-            getModule(mModuleThing.getName());
-          }
-          for (JSONThing mModuleThing : mModulesObject) {
-            getModule(mModuleThing.getName())->loadComponents(mModuleThing.getValue(), loadOwner);
-          }
-        }
-      } else if (modulesDefiner.savesPersistedValues()) {
-        if (persistRoot != nullptr && loadOwner != nullptr) {
-          JSONObject mModulesObject = persistRoot->getObject(JSON_MODULES);
-          for (const std::unique_ptr<Module>& mModule : cDefModules) {
-            if (mModule->needsSaving(loadOwner)) {
-              mModule->save(mModulesObject, loadOwner);
-            }
-          }
-        }
-      } else {
-        for (const std::unique_ptr<Module>& mModule : cDefModules) {
-          modulesDefiner.scope(mModule->getName(), mModule->getLongName(), [](IComponentDefiner&) {});
-        }
+    definer.fixedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {return *module;}, [&definer, this](Module& module, unsigned int index) {
+      definer.scope(module.getName(), module.getLongName(), [](IComponentDefiner&) {}, [this, moduleName = module.getName()]() {
+        unloadModule(moduleName);
+      });
+    }, Module::matchLoadIndex);
+
+    if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {
+      if (!getUnusedModuleNames().empty()) {
+        definer.propertyOptional("Module", cDefModuleChooser, "Load Module...", []() {
+          Utils::renderIconAdd();
+          return true;
+        }, [this](const std::string& value) {
+          loadModule(value);
+        });
       }
-    }, nullptr, mModulesHint);
+    }
   }
   
   IEditable* Project::getDefaultEditable() {

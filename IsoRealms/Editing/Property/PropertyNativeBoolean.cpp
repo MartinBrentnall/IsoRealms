@@ -25,10 +25,10 @@
 #include "IsoRealms/Editing/ComponentEditor.h"
 
 namespace IsoRealms {
-  PropertyNativeBoolean::PropertyNativeBoolean(IComponentDefiner& definer, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction) :
+  PropertyNativeBoolean::PropertyNativeBoolean(const PropertyData& data, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, std::function<bool()> getter, std::function<void(bool)> setter, Project& project, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(setter, getter, project),
-            cInternalProperty(definer, resourceAccessManager, definer.getComponentData(), data, cInternalSelection, removeFunction) {
+            cInternalProperty(resourceAccessManager, resourceData, data, cInternalSelection, removeFunction) {
   }
 
   void PropertyNativeBoolean::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {

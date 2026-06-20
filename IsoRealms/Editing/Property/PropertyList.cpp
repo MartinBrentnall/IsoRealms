@@ -26,10 +26,10 @@
 #include "IsoRealms/Editing/ComponentEditor.h"
 
 namespace IsoRealms {
-  PropertyList::PropertyList(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
+  PropertyList::PropertyList(IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, Project& project, const PropertyData& data, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, std::function<void()> removeFunction) :
             Property(data, resourceAccessManager, removeFunction),
             cInternalSelection(project, options, getter, setter),
-            cInternalProperty(definer, resourceAccessManager, definer.getComponentData(), data, cInternalSelection, removeFunction) {
+            cInternalProperty(resourceAccessManager, resourceData, data, cInternalSelection, removeFunction) {
   }
   
   void PropertyList::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {

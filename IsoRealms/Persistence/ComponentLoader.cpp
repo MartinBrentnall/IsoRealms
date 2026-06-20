@@ -65,10 +65,6 @@ namespace IsoRealms {
             cObjects(std::move(objects)) {
   }
 
-  IComponentData& ComponentLoader::getComponentData() {
-    return cComponentData;
-  }
-
   JSONObject& ComponentLoader::currentObject() {
     return cObjects.back();
   }

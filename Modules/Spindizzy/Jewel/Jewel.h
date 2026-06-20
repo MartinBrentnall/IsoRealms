@@ -106,6 +106,7 @@ namespace IsoRealms::Spindizzy {
     inline static const float DEFAULT_CYCLE_SPEED = 0.001f;
 
     // External interfaces.
+    IComponentData& cComponentData;
     Project& cProject; // Required for pre-rendering.
 
     // Definition data.

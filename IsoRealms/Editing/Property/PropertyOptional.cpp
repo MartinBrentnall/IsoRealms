@@ -25,14 +25,14 @@
 #include "IsoRealms/Editing/ComponentEditor.h"
 
 namespace IsoRealms {
-  PropertyOptional::PropertyOptional(IComponentDefiner& definer, IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :
+  PropertyOptional::PropertyOptional(IComponentAccessManager& resourceAccessManager, IComponentData& resourceData, const PropertyData& data, std::function<void(const std::string&)> choiceCallback, Project& project, Application& application, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<std::string()> valueGetter) :
             Property(data, resourceAccessManager, nullptr),
             cNoneLabel(noneLabel),
             cNoneIcon(noneIcon),
             cValueGetter(valueGetter),
             cOptionalSource(optionalSource),
             cWrapperType(*this),
-            cSubProperty(definer, resourceAccessManager, resourceData, data, cWrapperType),
+            cSubProperty(resourceAccessManager, resourceData, data, cWrapperType),
             cChoiceCallback(choiceCallback),
             cPropertyManager(nullptr),
             cProject(project),

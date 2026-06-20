@@ -42,8 +42,6 @@ namespace IsoRealms {
     public:
     ComponentSaver(IComponentData& resourceData, JSONObject object);
 
-    IComponentData& getComponentData() override;
-
     bool savesPersistedValues() const override {
       return true;
     }

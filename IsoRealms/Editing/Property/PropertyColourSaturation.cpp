@@ -21,8 +21,8 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  PropertyColourSaturation::PropertyColourSaturation(IComponentDefiner& definer, const std::string& key, const Metadata& metadata, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) :
-            PropertySlider(definer, key, metadata, data, resourceAccessManager, valueFunction, 0.0f, 1.0f, confirmationCallback, nullptr),
+  PropertyColourSaturation::PropertyColourSaturation(IComponentData& resourceData, const std::string& key, const Metadata& metadata, const PropertyData& data, IComponentAccessManager& resourceAccessManager, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) :
+            PropertySlider(resourceData, key, metadata, data, resourceAccessManager, valueFunction, 0.0f, 1.0f, confirmationCallback, nullptr),
             cAlpha(alpha),
             cHue(hue),
             cLightness(lightness) {

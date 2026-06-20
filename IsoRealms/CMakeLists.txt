@@ -30,17 +30,9 @@ add_library(IsoRealms
   Condition/Condition.cpp
   Condition/ConditionElement.cpp
   DisplayResolution.cpp
-  Editing/ActionMenu.cpp
   Editing/Choice.cpp
-  Editing/CategoryMenu.cpp
   Editing/ComponentEditor.cpp
-  Editing/ProjectMenu.cpp
   Editing/PropertiesMenu.cpp
-  Editing/ComponentTypeMenu.cpp
-  Editing/MenuItemAction.cpp
-  Editing/MenuItemLoadModule.cpp
-  Editing/MenuItemComponent.cpp
-  Editing/MenuItemModule.cpp
   Editing/MenuItemProperty.cpp
   Editing/MenuItemSpacer.cpp
   Editing/Metadata.cpp

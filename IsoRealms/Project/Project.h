@@ -92,7 +92,7 @@ namespace IsoRealms {
     void save(const ProjectFile& file) const;
     bool isUser();
     void getProperties(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
-    void define(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr, JSONObject* persistRoot = nullptr);
+    void define(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
     

@@ -157,6 +157,10 @@ namespace IsoRealms {
     return cLongName;
   }
 
+  unsigned int Module::matchLoadIndex(const JSONObject& loadObject) {
+    return static_cast<unsigned int>(loadObject.getInteger("index"));
+  }
+
   std::string Module::getDescription() const {
     return cDescription;
   }

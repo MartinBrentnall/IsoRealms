@@ -118,7 +118,9 @@ namespace IsoRealms::Basics {
   }
 
   void ProjectConfigurer::setProject(IsoRealms::Project& project) {
-    cProjectConfigurationUI.openUI(std::make_unique<ProjectMenu>(cProjectConfigurationUI, *this, project), "");
+    cProjectConfigurationUI.openUI(std::make_unique<PropertiesMenu>(cProjectConfigurationUI, *this, project, [&project](IComponentDefiner& definer) {
+      project.define(definer);
+    }), "");
   }
   
   void ProjectConfigurer::hide() {

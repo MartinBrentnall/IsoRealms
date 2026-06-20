@@ -28,12 +28,13 @@
 #include "Property.h"
 
 namespace IsoRealms {
-  class IPropertyManager;
+  class IComponentData;
   class IComponentDefiner;
+  class IPropertyManager;
   
   class PropertyStruct : public Property {
     public:
-    PropertyStruct(IComponentDefiner& definer, const PropertyData& data, IComponentAccessManager& resourceAccessManager, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction = nullptr);
+    PropertyStruct(IComponentData& resourceData, const PropertyData& data, IComponentAccessManager& resourceAccessManager, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction = nullptr);
     
     /************************\
      * Implements IProperty *
@@ -45,7 +46,7 @@ namespace IsoRealms {
     void configure(IPropertyManager& manager) override;
 
     private:
-    IComponentDefiner& cPropertyOwner;
+    IComponentData& cComponentData;
     std::function<void(IComponentDefiner&)> cSubProperties;
     std::string cValue;
   };
