@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenModel(const Metadata& metadata, IComponentData& owner);
+    ScreenModel(IComponentData& owner);
 
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);

@@ -23,8 +23,7 @@
 namespace IsoRealms {
   StringRegistry::StringRegistry(Project& project) :
             ResourceClientManager(&cLiteral, "Literal", "Literal"),
-            cProject(project),
-            cLiteral(project.getApplication().getMetadata("LiteralString")) {
+            cProject(project) {
 
     // Set up conversion providers.
     cConversionProviders.emplace_back(std::make_unique<Conversion<Float>>(  ":Float",   "Floats"));
@@ -71,7 +70,6 @@ namespace IsoRealms {
   }
 
   StringRegistry::Literal::Instance::Instance(Project& project, const std::string& value) :
-            cMetadata(project.getApplication().getMetadata("LiteralString")),
             cValue(value) {
   }
 

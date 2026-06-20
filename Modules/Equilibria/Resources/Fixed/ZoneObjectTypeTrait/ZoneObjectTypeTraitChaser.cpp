@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type) :
+  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(ZoneObjectType& type) :
             cDefTarget(type.getComponentData()) {
   }
   

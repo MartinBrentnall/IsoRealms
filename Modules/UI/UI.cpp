@@ -26,11 +26,6 @@ namespace IsoRealms::UI {
                     cLayoutLocations(registry),
                     cLayoutOffsets(registry),
                     cMenuItems(registry),
-                    cProviderScreenGradient(registry.getResourceMetadata("ScreenGradient")),
-                    cProviderScreenModel(registry.getResourceMetadata("ScreenModel")),
-                    cProviderScreenPanel(registry.getResourceMetadata("ScreenPanel")),
-                    cProviderScreenText(registry.getResourceMetadata("ScreenText")),
-                    cProviderStringTime(registry.getResourceMetadata("StringTime")),
                     cComponentTypeLayout(*this),
                     cComponentTypeMenu(*this),
                     cComponentTypePrompt(*this),
@@ -43,10 +38,6 @@ namespace IsoRealms::UI {
     registry.add(&cComponentTypeScreenFader,     "ScreenFader");
     registry.add(&cComponentTypeThrobber,        "Throbber");
     registry.add(&cComponentTypeVirtualKeyboard, "VirtualKeyboard");
-  }
-
-  const Metadata& UI::getMetadata(const std::string& key) const {
-    return cModule.getResourceMetadata(key);
   }
 
   UI& UI::getResourceManager() {

@@ -18,22 +18,16 @@
  */
 #pragma once
 
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Registry/IResourceProvider.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  class Metadata;
   class Project;
 
   template <typename OWNER, typename BASE, typename TYPE> class ResourceInstanced : public IResourceProvider<OWNER, BASE> {
     public:
-    ResourceInstanced(const Metadata& metadata) :
-              cMetadata(metadata) {
-    }
-    
     BASE* getResource(OWNER& owner) override {
-      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(cMetadata, owner);
+      std::unique_ptr<TYPE> mObject = std::make_unique<TYPE>(owner);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
@@ -52,10 +46,6 @@ namespace IsoRealms {
 
     bool isHiddenProvider() const override {
       return false;
-    }
-
-    const Metadata& getMetadata() const override {
-      return cMetadata;
     }
 
     typename std::vector<std::unique_ptr<TYPE>>::iterator begin() {
@@ -83,7 +73,6 @@ namespace IsoRealms {
     }
     
     private:
-    const Metadata& cMetadata;
     mutable std::vector<std::unique_ptr<TYPE>> cInstances;
   };
 }

@@ -32,7 +32,7 @@ namespace IsoRealms::UI {
    */
   class MenuItemBoolean final : public IMenuItem {
     public:
-    MenuItemBoolean(const Metadata& metadata, Menu& menu);
+    MenuItemBoolean(Menu& menu);
 
     /***********************\
      * Scripting interface *

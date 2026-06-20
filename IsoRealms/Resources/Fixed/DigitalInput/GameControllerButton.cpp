@@ -27,13 +27,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  GameControllerButton::ButtonChooser::ButtonChooser(const Metadata& metadata) :
-            cMetadata(metadata) {
-  }
-  
-  GameControllerButton::GameControllerButton(const Metadata& metadata, IComponentData& owner) :
-            cMetadata(metadata),
-            cButtonChooser(metadata) {
+  GameControllerButton::GameControllerButton(IComponentData& owner) {
   }
 
   bool GameControllerButton::matches(const sf::Event& event) const {
@@ -53,7 +47,7 @@ namespace IsoRealms {
   }
 
   std::string GameControllerButton::getLocalizedName() const {
-    return getChoiceLabel(cMetadata, cButton);
+    return getChoiceLabel(cButton);
   }
 
   void GameControllerButton::defineResource(IComponentDefiner& definer) {
@@ -74,17 +68,19 @@ namespace IsoRealms {
   void GameControllerButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (unsigned int i = 0; i < sf::Joystick::ButtonCount; i++) {
       const std::string mID = "B" + Utils::toString(i);
-      getTreeItemInfoFunction(TreeItemInfo{mID, GameControllerButton::getChoiceLabel(cMetadata, i)});
+      getTreeItemInfoFunction(TreeItemInfo{mID, GameControllerButton::getChoiceLabel(i)});
     }
   }
 
-  std::string GameControllerButton::getChoiceLabel(const Metadata& metadata, unsigned int button) {
-    const std::string mLabelTemplate = metadata.getPropertyData("ButtonChoice").getName();
-    const std::string mIndex = Utils::toString(button);
-    const std::string::size_type mPlaceholder = mLabelTemplate.find("%1");
-    if (mPlaceholder != std::string::npos) {
-      return mLabelTemplate.substr(0, mPlaceholder) + mIndex + mLabelTemplate.substr(mPlaceholder + 2);
-    }
-    return mLabelTemplate + mIndex;
+  // TODO: Support localized names.
+  std::string GameControllerButton::getChoiceLabel(unsigned int button) {
+    return "B" + Utils::toString(button);
+    // const std::string mLabelTemplate = metadata.getPropertyData("ButtonChoice").getName();
+    // const std::string mIndex = Utils::toString(button);
+    // const std::string::size_type mPlaceholder = mLabelTemplate.find("%1");
+    // if (mPlaceholder != std::string::npos) {
+    //   return mLabelTemplate.substr(0, mPlaceholder) + mIndex + mLabelTemplate.substr(mPlaceholder + 2);
+    // }
+    // return mLabelTemplate + mIndex;
   }
 }

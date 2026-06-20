@@ -52,8 +52,6 @@ namespace IsoRealms {
     public:
     Module(const std::string& name, Project& project, LuaState* luaState);
     
-    static std::string getMetadataPath(const std::string& name);
-
     void loadComponents(JSONObject object, ProjectFile* ownerProject);
     void publish();
     bool needsSaving(const ProjectFile* savingProject) const;
@@ -73,7 +71,6 @@ namespace IsoRealms {
      * Implements IComponentTypeRegistry *
     \*************************************/
     void add(IComponentTypeDefinition* resourceTypeDefinition, const std::string& id) override;
-    const Metadata& getResourceMetadata(const std::string& key) const override;
     
     std::string getName(const ComponentType* resourceType) const;
     std::string getPath();
@@ -97,7 +94,6 @@ namespace IsoRealms {
     const Project& getProject() const override;
     Project& getResourceManager() override;
     IActionContext& getDummyActionContext() override;
-    const Metadata& getMetadata() const override;
     void republish() override;
 
     /*****************************\
@@ -127,9 +123,7 @@ namespace IsoRealms {
     std::string cLongName;
     ProjectFile* cOwnerProject = nullptr;
     std::string cDescription;
-    std::map<std::string, std::unique_ptr<Metadata>> cResourceMetadata;
     std::map<std::string, std::string> cCategoryDescriptions;
-    Metadata cModuleMetadata;
     IModuleHandle* cModule;
 #ifdef __linux__
     void* cModuleHandle;

@@ -30,10 +30,9 @@
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  ComponentEditor::ComponentEditor(Application& application, IComponentData& parent, const Metadata& metadata, IPropertyManager& properties, IDialogManager& dialogManager) :
+  ComponentEditor::ComponentEditor(Application& application, IComponentData& parent, IPropertyManager& properties, IDialogManager& dialogManager) :
             cApplication(application),
             cParent(parent),
-            cMetadata(metadata),
             cProperties(properties),
             cDialogManager(dialogManager) {
   }
@@ -140,4 +139,133 @@ namespace IsoRealms {
     std::string mDescription = hint.getOption("description");
     return PropertyData(mName.empty() ? metadata.getName() : mName, mDescription.empty() ? metadata.getTooltip() : mDescription);
   }
+
+
+
+// ================================ Load component type metadata.
+
+  // void ComponentType::loadMetadata(JSONObject object) {
+  //   cSingular    = object.getString(JSON_SINGULAR);
+  //   cPlural      = object.getString(JSON_PLURAL);
+  //   cCategory    = object.getString(JSON_CATEGORY);
+  //   cDescription = object.getString(JSON_DESCRIPTION);
+  //   JSONObject mPropertiesObject = object.getObject(JSON_PROPERTIES);
+  //   cMetadata.load(mPropertiesObject);
+  //   cMetadata.setParent(&cParent.getProject().getApplication().getMetadata("Component"));
+  // }
+
+    // Load the component type metadata.  This needs to be done after the module is created.
+    // JSONObject mComponentTypesObject = mMetadataDocument.getObject(JSON_COMPONENTS);
+    // for (std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
+    //   JSONObject mComponentTypeObject = mComponentTypesObject.getObject(mComponentType.first);
+    //   mComponentType.second->loadMetadata(mComponentTypeObject);
+    // }
+
+
+
+// ================================ Obtain module metadata path. 
+
+    // std::string Module::getMetadataPath(const std::string& name) {
+    //   std::locale mLocale("");
+    //   std::string mMetadataPath = "Metadata/" + name + "/" + name + "." + mLocale.name();
+    //   std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    //   std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
+    //   std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+    //                                              ? mLastExtensionIndex
+    //                                              : mLastDashIndex;
+    //   while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
+    //     mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
+    //     mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    //     mLastDashIndex = mMetadataPath.find_last_of('_');
+    //     mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+    //                         ? mLastExtensionIndex
+    //                         : mLastDashIndex;
+    //   }
+  
+    //   if (!System::fileExists(mMetadataPath + ".json", false)) {
+    //     throw InitException("ERROR: Module::getMetadataPath: No metadata file found for module \"" + name + "\".");
+    //   }
+    //   return mMetadataPath;
+    // }
+  
+  
+
+
+// ================================ Load module metadata.
+
+    // Load the metadata file.
+    // std::string mMetadataPath = getMetadataPath(cName);
+    // JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+    
+    // // Load the module and resource metadata.  This needs to be done before the module is created.
+    // cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
+    // cLongName = mMetadataDocument.hasMember(JSON_LONG_NAME) ? mMetadataDocument.getString(JSON_LONG_NAME) : cName;
+
+    // if (mMetadataDocument.hasMember(JSON_CATEGORIES)) {
+    //   JSONObject mCategoriesObject = mMetadataDocument.getObject(JSON_CATEGORIES);
+    //   for (JSONThing mCategoryThing : mCategoriesObject) {
+    //     std::string mCategoryDescription = mCategoryThing.getValueAsString();
+    //     std::string mCategoryName = mCategoryThing.getName();
+    //     cCategoryDescriptions[mCategoryName] = mCategoryDescription;
+    //   }
+    // }
+
+    // JSONObject mResourcesObject = mMetadataDocument.getObject(JSON_RESOURCES);
+    // for (JSONThing mResourceThing : mResourcesObject) {
+    //   JSONObject mResourceObject = mResourceThing.getValue();
+    //   std::string mResourceName = mResourceThing.getName();
+    //   cResourceMetadata[mResourceName] = std::make_unique<Metadata>();
+    //   JSONObject mPropertiesObject = mResourceObject.getObject(JSON_PROPERTIES);
+    //   cResourceMetadata[mResourceName]->load(mPropertiesObject);
+    // }
+
+
+
+// ================================ Load application metadata.    
+
+    // Load application metadata.
+    // std::locale mLocale("");
+    // std::string mMetadataPath = "Metadata/IsoRealms." + mLocale.name();
+    // std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    // std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
+    // std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+    //                                            ? mLastExtensionIndex
+    //                                            : mLastDashIndex;
+    // while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
+    //   mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
+    //   mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    //   mLastDashIndex = mMetadataPath.find_last_of('_');
+    //   mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+    //                       ? mLastExtensionIndex
+    //                       : mLastDashIndex;
+    // }
+
+    // if (!System::fileExists(mMetadataPath + ".json", false)) {
+    //   mMetadataPath = "Metadata/IsoRealms.en";
+    // }
+    // JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+    // JSONObject mRootObject(mMetadataDocument, mMetadataDocument.getDocument());
+    // for (JSONThing mSectionThing : mRootObject) {
+    //   std::string mSectionName = mSectionThing.getName();
+    //   JSONObject mSectionObject = mSectionThing.getValue();
+    //   std::unique_ptr<Metadata> mSectionMetadata = std::make_unique<Metadata>();
+    //   mSectionMetadata->load(mSectionObject);
+    //   cMetadata[mSectionName] = std::move(mSectionMetadata);
+    // }
+
+
+
+// ================================ Read module long name from metadata file.
+
+      // Read the long name from the metadata file.
+      // std::string mLongName;
+      // try {
+      //   std::string mMetadataPath = Module::getMetadataPath(mName);
+      //   JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+      //   mLongName = mMetadataDocument.hasMember("longName") ? mMetadataDocument.getString("longName") : mName;
+      // } catch (const InitException& e) {
+      //   std::cout << "ERROR: ModuleChooser::forEachAvailableTreeItem: " << e.getMessage() << std::endl;
+      //   mLongName = mName;
+      // }
+
 }

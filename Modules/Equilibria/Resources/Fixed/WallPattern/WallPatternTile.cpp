@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/World/Object/Terrain/Wall.h"
 
 namespace IsoRealms::Equilibria {
-  WallPatternTile::WallPatternTile(const Metadata& metadata, TerrainType& owner) :
+  WallPatternTile::WallPatternTile(TerrainType& owner) :
             cDefTexture(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 

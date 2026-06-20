@@ -23,7 +23,6 @@
 #include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
 #include "IsoRealms/Resources/Type/IBoolean.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
 #include "ResourceClientManager.h"

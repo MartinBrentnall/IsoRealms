@@ -21,6 +21,7 @@
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Resources/Type/IScreenListener.h"
 #include "IsoRealms/DisplayResolution.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONThing.h"
 #include "IsoRealms/Persistence/JSONValue.h"
@@ -264,15 +265,14 @@ namespace IsoRealms {
   }
 
   void Project::getProperties(IComponentDefiner& definer, ProjectFile* loadOwner) {
-    const Metadata& mMetadata = cApplication.getMetadata("Application");
     if (!definer.loadsPersistedValues()) {
-      definer.scope("FileStructure", "Edit...", [this, &mMetadata](IComponentDefiner& definer) {
-        cDefProjectFileStructure.getProperties(definer, mMetadata, *this, false);
+      definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& definer) {
+        cDefProjectFileStructure.define(definer, *this, false);
       });
-      definer.scope(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this, &mMetadata](IComponentDefiner& definer) {
-        definer.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &definer, &mMetadata](ProjectLaunchConfiguration& launchConfiguration) {
-          definer.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &mMetadata, &launchConfiguration](IComponentDefiner& definer) {
-            launchConfiguration.getProperties(definer, mMetadata, *this);
+      definer.scope(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this](IComponentDefiner& definer) {
+        definer.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &definer](ProjectLaunchConfiguration& launchConfiguration) {
+          definer.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &launchConfiguration](IComponentDefiner& definer) {
+            launchConfiguration.define(definer, *this);
           }, [this, &launchConfiguration]() {
             Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
           });
@@ -281,11 +281,66 @@ namespace IsoRealms {
         });
       });
     }
-    cDefActionOnStart.getProperty(       definer, mMetadata, JSON_ON_START,        loadOwner);
-    cDefActionOnCloseRequest.getProperty(definer, mMetadata, JSON_ON_CLOSE_REQUEST, loadOwner);
-    cDefInputHandler.getProperty(        definer, mMetadata, JSON_INPUT,           loadOwner);
-    cDefScreen.getProperty(              definer, mMetadata, JSON_SCREEN,          loadOwner);
-    cDefDefaultEditor.getProperty(       definer, mMetadata, JSON_EDITOR,          loadOwner);
+    cDefActionOnStart.define(       definer, JSON_ON_START,         loadOwner);
+    cDefActionOnCloseRequest.define(definer, JSON_ON_CLOSE_REQUEST, loadOwner);
+    cDefInputHandler.define(        definer, JSON_INPUT,            loadOwner);
+    cDefScreen.define(              definer, JSON_SCREEN,           loadOwner);
+    cDefDefaultEditor.define(       definer, JSON_EDITOR,           loadOwner);
+  }
+
+  void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner, JSONObject* persistRoot) {
+    definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& editingDefiner) {
+      cDefProjectFileStructure.define(editingDefiner, *this, false);
+    });
+    definer.scope(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this](IComponentDefiner& editingDefiner) {
+      editingDefiner.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &editingDefiner](ProjectLaunchConfiguration& launchConfiguration) {
+        editingDefiner.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &launchConfiguration](IComponentDefiner& nestedDefiner) {
+          launchConfiguration.define(nestedDefiner, *this);
+        }, [this, &launchConfiguration]() {
+          Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
+        });
+      }, [this]() -> ProjectLaunchConfiguration& {
+        return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
+      });
+    });
+    cDefActionOnStart.define(       definer, JSON_ON_START,         loadOwner);
+    cDefActionOnCloseRequest.define(definer, JSON_ON_CLOSE_REQUEST, loadOwner);
+    cDefInputHandler.define(        definer, JSON_INPUT,            loadOwner);
+    cDefScreen.define(              definer, JSON_SCREEN,           loadOwner);
+    cDefDefaultEditor.define(       definer, JSON_EDITOR,           loadOwner);
+
+    Options mModulesHint;
+    mModulesHint.addOption(Options::PROPERTY_NO_EDIT, "true");
+    if (definer.savesPersistedValues()) {
+      mModulesHint.addOption(Options::PROPERTY_SCOPED, "true");
+    }
+    definer.scope(JSON_MODULES, "", [this, loadOwner, persistRoot, &definer](IComponentDefiner& modulesDefiner) {
+      if (modulesDefiner.loadsPersistedValues()) {
+        if (loadOwner != nullptr && definer.hasPersistedMember(JSON_MODULES)) {
+          JSONDocument mProjectDocument(loadOwner->cFile.getRelativePath(), loadOwner->cFile.isUser());
+          JSONObject mModulesObject = mProjectDocument.getObject(JSON_PROJECT).getObject(JSON_MODULES);
+          for (JSONThing mModuleThing : mModulesObject) {
+            getModule(mModuleThing.getName());
+          }
+          for (JSONThing mModuleThing : mModulesObject) {
+            getModule(mModuleThing.getName())->loadComponents(mModuleThing.getValue(), loadOwner);
+          }
+        }
+      } else if (modulesDefiner.savesPersistedValues()) {
+        if (persistRoot != nullptr && loadOwner != nullptr) {
+          JSONObject mModulesObject = persistRoot->getObject(JSON_MODULES);
+          for (const std::unique_ptr<Module>& mModule : cDefModules) {
+            if (mModule->needsSaving(loadOwner)) {
+              mModule->save(mModulesObject, loadOwner);
+            }
+          }
+        }
+      } else {
+        for (const std::unique_ptr<Module>& mModule : cDefModules) {
+          modulesDefiner.scope(mModule->getName(), mModule->getLongName(), [](IComponentDefiner&) {});
+        }
+      }
+    }, nullptr, mModulesHint);
   }
   
   IEditable* Project::getDefaultEditable() {
@@ -538,10 +593,6 @@ namespace IsoRealms {
 
   IActionContext& Project::getDummyActionContext() {
     return *this;
-  }
-
-  const Metadata& Project::getMetadata() const {
-    return cApplication.getMetadata("Application");
   }
 
   void Project::republish() {

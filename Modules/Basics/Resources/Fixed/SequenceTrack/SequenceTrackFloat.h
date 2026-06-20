@@ -35,10 +35,9 @@ namespace IsoRealms::Basics {
   class SequenceTrackFloat final : public SequenceTrackBase<SequenceTrackFloat, SequenceTrackFloatEvent, SequenceTrackFloatInstance>,
                                    public ISequenceTrackEvent {
     public:
-    SequenceTrackFloat(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackFloat(Sequence& sequence);
 
     const Float& getStartValue() const;
-    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
 
     /*****************************\
@@ -56,9 +55,6 @@ namespace IsoRealms::Basics {
     void getEventProperties(IComponentDefiner& definer) override;
 
     private:
-
-    // External interfaces.
-    const Metadata& cMetadata;
 
     // Definition data.
     Float cDefStartValue;

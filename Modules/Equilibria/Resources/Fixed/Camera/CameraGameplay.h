@@ -32,7 +32,7 @@ namespace IsoRealms::Equilibria {
   class CameraGameplay final : public ICamera,
                                public IFloat {
     public:
-    CameraGameplay(const Metadata& metadata, WorldView& view);
+    CameraGameplay(WorldView& view);
 
     /***********************\
      * Scripting interface *

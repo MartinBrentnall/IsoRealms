@@ -21,7 +21,7 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  MenuItemLauncherList::MenuItemLauncherList(const Metadata& metadata, Menu& menu) :
+  MenuItemLauncherList::MenuItemLauncherList(Menu& menu) :
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
             cActionContext(menu.getComponentData(), *this),

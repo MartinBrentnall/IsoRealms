@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
     public:
     
     // Constructors.
-    ScreenText(const Metadata& metadata, IComponentData& owner);
+    ScreenText(IComponentData& owner);
 
     /**********************\
      * Implements IScreen *

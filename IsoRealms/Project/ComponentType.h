@@ -33,7 +33,6 @@ namespace IsoRealms {
     public:
     ComponentType(IComponentTypeDefinition* resourceType, Module& parent);
     void loadComponent(JSONThing mInstanceThing, ProjectFile* ownerProject);
-    void loadMetadata(JSONObject object);
     void reloadComponent(const std::string& resourceName);
     bool needsSaving(const ProjectFile* savingProject) const;
     void save(JSONObject& object, const ProjectFile* savingProject);
@@ -58,7 +57,6 @@ namespace IsoRealms {
     std::string getCategory();
     std::string getDescription() const;
     Project& getProject();
-    const Metadata& getMetadata() const;
 
     private:
     class PlaceHolder {
@@ -90,6 +88,5 @@ namespace IsoRealms {
     std::string cPlural;
     std::string cCategory = "None";
     std::string cDescription;
-    Metadata cMetadata;
   };
 }

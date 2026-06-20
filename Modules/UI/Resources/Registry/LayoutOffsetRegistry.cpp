@@ -21,9 +21,7 @@
 #include "LayoutOffsetRegistry.h"
 
 namespace IsoRealms::UI {
-  LayoutOffsetRegistry::LayoutOffsetRegistry(IComponentTypeRegistry& registry) :
-            cAbsolute(registry.getResourceMetadata("LayoutOffsetAbsolute")),
-            cLinked(  registry.getResourceMetadata("LayoutOffsetLinked")) {
+  LayoutOffsetRegistry::LayoutOffsetRegistry(IComponentTypeRegistry& registry) {
     add(&cAbsolute, "Absolute", "UI");
     add(&cLinked,   "Linked",   "UI");
   }

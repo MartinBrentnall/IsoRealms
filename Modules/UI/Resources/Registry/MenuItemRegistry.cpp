@@ -21,14 +21,7 @@
 #include "MenuItemRegistry.h"
 
 namespace IsoRealms::UI {
-  MenuItemRegistry::MenuItemRegistry(IComponentTypeRegistry& registry) :
-            cAction(           registry.getResourceMetadata("MenuItemAction")),
-            cBoolean(          registry.getResourceMetadata("MenuItemBoolean")),
-            cDigitalInput(     registry.getResourceMetadata("MenuItemDigitalInput")),
-            cDisplayResolution(registry.getResourceMetadata("MenuItemDisplayResolution")),
-            cFileList(         registry.getResourceMetadata("MenuItemFileList")),
-            cLauncherList(     registry.getResourceMetadata("MenuItemLauncherList")),
-            cSlider(           registry.getResourceMetadata("MenuItemSlider")) {
+  MenuItemRegistry::MenuItemRegistry(IComponentTypeRegistry& registry) {
     add(&cAction,            "Action",            "Action");
     add(&cBoolean,           "Boolean",           "Boolean");
     add(&cDigitalInput,      "DigitalInput",      "Digital Input");

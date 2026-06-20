@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  CameraGameplay::CameraGameplay(const Metadata& metadata, WorldView& view) :
+  CameraGameplay::CameraGameplay(WorldView& view) :
             cParent(view),
             cPitch(Equilibria::DEFAULT_VIEW_ANGLE_PITCH),
             cLuaBinding(view.getEquilibria().getProject().getLuaState(), this) {

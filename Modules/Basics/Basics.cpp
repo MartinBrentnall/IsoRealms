@@ -47,7 +47,6 @@ namespace IsoRealms::Basics {
                     cComponentTypeSimpleString(*this),
                     cComponentTypeSimpleVertex(*this),
                     cComponentTypeSprite(*this),
-                    cDigitalToAnalogueMapping(registry.getResourceMetadata("DigitalToAnalogue")),
                     cLuaBinding(project.getLuaState(), this) {
     registry.add(&cComponentTypeAnalogueControl,   "AnalogueControl");
     registry.add(&cComponentTypeBooleanTrigger,    "BooleanTrigger");
@@ -81,10 +80,6 @@ namespace IsoRealms::Basics {
     cComponentTypeSequence.refreshResourceRegistration(sequence);
   }
 
-  const Metadata& Basics::getMetadata(const std::string& key) const {
-    return cModule.getResourceMetadata(key);
-  }
-  
   void Basics::updateInputs(unsigned int milliseconds) {
     // Nothing to do.
   }

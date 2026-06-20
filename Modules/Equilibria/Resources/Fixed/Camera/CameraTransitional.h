@@ -33,7 +33,7 @@ namespace IsoRealms::Equilibria {
   class CameraTransitional final : public ICamera,
                                    public ICameraListener {
     public:
-    CameraTransitional(const Metadata& metadata, WorldView& view);
+    CameraTransitional(WorldView& view);
 
     /***********************\
      * Scripting interface *

@@ -63,7 +63,6 @@ namespace IsoRealms {
       bool hasConfiguration() const override;
       bool isDefaultConfigured() const override;
       void defineTreeItem(IComponentDefiner& definer) override;
-      const Metadata& getPropertyMetadata() const override;
       Application& getApplication() override;
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
       bool renderTreeItemIcon(const std::string& id) const override;

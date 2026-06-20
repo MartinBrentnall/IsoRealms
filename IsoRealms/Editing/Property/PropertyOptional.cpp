@@ -122,10 +122,6 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  const Metadata& PropertyOptional::OptionWrapper::getPropertyMetadata() const {
-    throw std::runtime_error("PropertyOptional::OptionWrapper::getPropertyMetadata: Property metadata is not available for this type.");
-  }
-
   Application& PropertyOptional::OptionWrapper::getApplication() {
     return cParent.cApplication;
   }

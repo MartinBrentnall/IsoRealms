@@ -34,7 +34,7 @@ namespace IsoRealms::UI {
   class MenuItemLauncherList final : public IMenuItem,
                                      public IEventBindings {
     public:
-    MenuItemLauncherList(const Metadata& metadata, Menu& menu);
+    MenuItemLauncherList(Menu& menu);
 
     /***********************\
      * Scripting Interface *

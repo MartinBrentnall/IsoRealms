@@ -23,16 +23,13 @@
 
 namespace IsoRealms {
   ColourRegistry::ColourRegistry(Application& application) :
-            ResourceClientManager(&cLiteral, "Literal", "One-off Colour"), // TODO: Localize this.
-            cLiteral(application.getMetadata("LiteralColour")) {
+            ResourceClientManager(&cLiteral, "Literal", "One-off Colour") { // TODO: Localize this.
   }
 
-  ColourRegistry::Literal::Instance::Instance(const Project& project) :
-            cMetadata(project.getApplication().getMetadata("LiteralColour")) {
+  ColourRegistry::Literal::Instance::Instance(const Project& project) {
   }
 
   ColourRegistry::Literal::Instance::Instance(const Project& project, const float red, const float green, const float blue, const float alpha) :
-            cMetadata(project.getApplication().getMetadata("LiteralColour")),
             cRed(red),
             cGreen(green),
             cBlue(blue),

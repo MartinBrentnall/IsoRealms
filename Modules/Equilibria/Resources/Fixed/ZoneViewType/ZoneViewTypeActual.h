@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
     public:
     
     // Constructors.
-    ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView);
+    ZoneViewTypeActual(WorldView& worldView);
     
     /****************************\
      * Implements IZoneViewType *

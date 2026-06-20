@@ -24,7 +24,7 @@
 #include "Modules/Equilibria/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Equilibria {
-  SurfacePatternTile::SurfacePatternTile(const Metadata& metadata, TerrainType& owner) :
+  SurfacePatternTile::SurfacePatternTile(TerrainType& owner) :
             cDefTexture(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {
   }
 

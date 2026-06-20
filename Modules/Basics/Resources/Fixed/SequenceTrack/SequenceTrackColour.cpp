@@ -21,18 +21,13 @@
 #include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackColour::SequenceTrackColour(const Metadata& metadata, Sequence& sequence) :
+  SequenceTrackColour::SequenceTrackColour(Sequence& sequence) :
             SequenceTrackBase(sequence.getComponentData(), sequence),
-            cMetadata(metadata),
             cDefInitColour(sequence.getComponentData(), 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(*cDefInitColour);}) {
   }
 
   const Colour& SequenceTrackColour::getStartColour() const {
     return cDefInitColour;
-  }
-
-  const Metadata& SequenceTrackColour::getMetadata() const {
-    return cMetadata;
   }
 
   ISequenceTrackEvent* SequenceTrackColour::getEvent(unsigned int time) {

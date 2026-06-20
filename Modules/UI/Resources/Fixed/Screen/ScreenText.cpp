@@ -19,7 +19,7 @@
 #include "ScreenText.h"
 
 namespace IsoRealms::UI {
-  ScreenText::ScreenText(const Metadata& metadata, IComponentData& owner) :
+  ScreenText::ScreenText(IComponentData& owner) :
             cDefString(owner),
             cDefFont(owner),
             cDefColour(owner, 1.0f, 1.0f, 1.0f),

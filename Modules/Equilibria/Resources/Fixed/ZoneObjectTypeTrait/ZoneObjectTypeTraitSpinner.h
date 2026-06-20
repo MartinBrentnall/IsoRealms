@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
 
   class ZoneObjectTypeTraitSpinner : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitSpinner(ZoneObjectType& type);
 
     // Interface to be used by instances.    
     std::unique_ptr<ModelInstance> createModel();

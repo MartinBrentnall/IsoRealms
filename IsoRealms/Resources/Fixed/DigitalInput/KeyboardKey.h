@@ -26,7 +26,6 @@
 #include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
-  class Metadata;
   class IComponentData;
 
   /**
@@ -34,7 +33,7 @@ namespace IsoRealms {
    */
   class KeyboardKey : public IDigitalInput {
     public:
-    KeyboardKey(const Metadata& metadata, IComponentData& owner);
+    KeyboardKey(IComponentData& owner);
 
     /****************************\
      * Implements IDigitalInput *
@@ -70,11 +69,7 @@ namespace IsoRealms {
     private:
     class KeyChooser : public IOptionalObject {
       public:
-      KeyChooser(const Metadata& metadata);
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-
-      private:
-      const Metadata& cMetadata;
     };
 
     inline static const std::string UNMAPPED_KEY_PREFIX = "Code ";
@@ -206,7 +201,6 @@ namespace IsoRealms {
     };
 
     // External interfaces.
-    const Metadata& cMetadata;
     KeyChooser cKeyChooser;
 
     sf::Keyboard::Key cKey; /// The key associated with this mapping.

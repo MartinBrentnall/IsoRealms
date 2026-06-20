@@ -22,18 +22,13 @@
 #include "Modules/Basics/Sequence/Sequence.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackAudio::SequenceTrackAudio(const Metadata& metadata, Sequence& sequence) :
+  SequenceTrackAudio::SequenceTrackAudio(Sequence& sequence) :
             SequenceTrackBase(sequence.getComponentData(), sequence),
-            cMetadata(metadata),
             cDefVolume(sequence.getComponentData(), 1.0f) {
   }
 
   float SequenceTrackAudio::getVolume() const {
     return cDefVolume->getValue();
-  }
-
-  const Metadata& SequenceTrackAudio::getMetadata() const {
-    return cMetadata;
   }
 
   ISequenceTrackEvent* SequenceTrackAudio::getEvent(unsigned int time) {

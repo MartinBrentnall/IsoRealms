@@ -49,7 +49,6 @@ namespace IsoRealms::UI {
     UI(Project& project, IComponentTypeRegistry& registry);
 
     // Interface access (used by all).
-    const Metadata& getMetadata(const std::string& key) const;
     UI& getResourceManager();
     Project& getProject() const;
     
@@ -71,10 +70,6 @@ namespace IsoRealms::UI {
 
     template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* resource) const {
       return ResourceContainerTraits<TYPE>::get(*this).getTreeItemInfo(resource);
-    }
-
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
-      return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
     }
 
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& treeItemInfoFunction) const {

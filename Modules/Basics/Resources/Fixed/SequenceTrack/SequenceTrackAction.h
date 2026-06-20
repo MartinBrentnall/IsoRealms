@@ -32,9 +32,8 @@ namespace IsoRealms::Basics {
    */
   class SequenceTrackAction final : public SequenceTrackBase<SequenceTrackAction, SequenceTrackActionEvent, SequenceTrackActionInstance> {
     public:
-    SequenceTrackAction(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackAction(Sequence& sequence);
 
-    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
 
     /*****************************\
@@ -43,9 +42,5 @@ namespace IsoRealms::Basics {
     void defineResource(IComponentDefiner& definer) override;
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
-    private:
-
-    // External interfaces.
-    const Metadata& cMetadata;
   };
 }

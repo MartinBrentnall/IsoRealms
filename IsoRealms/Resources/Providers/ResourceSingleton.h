@@ -61,10 +61,6 @@ namespace IsoRealms {
       return false;
     }
 
-    const Metadata& getMetadata() const override {
-      throw std::runtime_error("ResourceSingleton::getPropertyMetadata: Property metadata is not available for this type.");
-    }
-
     private:
     std::string cID;
     TYPE* cResource;

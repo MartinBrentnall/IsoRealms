@@ -41,7 +41,6 @@ namespace IsoRealms::UI {
     bool hasConfiguration() const override;
     bool isDefaultConfigured() const override;
     void defineTreeItem(IComponentDefiner& definer) override;
-    const IsoRealms::Metadata& getPropertyMetadata() const override;
     bool renderTreeItemIcon() const override;
     Application& getApplication() override;
 

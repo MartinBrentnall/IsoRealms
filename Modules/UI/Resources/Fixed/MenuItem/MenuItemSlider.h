@@ -32,7 +32,7 @@ namespace IsoRealms::UI {
    */
   class MenuItemSlider final : public IMenuItem {
     public:
-    MenuItemSlider(const Metadata& metadata, Menu& menu);
+    MenuItemSlider(Menu& menu);
 
     /***********************\
      * Scripting Interface *

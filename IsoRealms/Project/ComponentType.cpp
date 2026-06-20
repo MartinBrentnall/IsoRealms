@@ -52,16 +52,6 @@ namespace IsoRealms {
     cComponentType->loadComponent(*this, mComponentName, mInstanceThing.getValue(), ownerProject);
   }
 
-  void ComponentType::loadMetadata(JSONObject object) {
-    cSingular    = object.getString(JSON_SINGULAR);
-    cPlural      = object.getString(JSON_PLURAL);
-    cCategory    = object.getString(JSON_CATEGORY);
-    cDescription = object.getString(JSON_DESCRIPTION);
-    JSONObject mPropertiesObject = object.getObject(JSON_PROPERTIES);
-    cMetadata.load(mPropertiesObject);
-    cMetadata.setParent(&cParent.getProject().getApplication().getMetadata("Component"));
-  }
-
   void ComponentType::reloadComponent(const std::string& resourceName) {
 
     // Start by finding the overridden resource to load.  From there we'll know which project file to load the resource from.
@@ -217,10 +207,6 @@ namespace IsoRealms {
     return cParent.getProject();
   }
   
-  const Metadata& ComponentType::getMetadata() const {
-    return cMetadata;
-  }  
-
   ComponentType::PlaceHolder::PlaceHolder(const std::string& id, ProjectFile* ownerProject) :
             cID(id),
             cOwnerProject(ownerProject) {

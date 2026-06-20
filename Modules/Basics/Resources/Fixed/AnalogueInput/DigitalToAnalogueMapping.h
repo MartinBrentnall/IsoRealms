@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
    */
   class DigitalToAnalogueMapping final : public IAnalogueInput {
     public:
-    DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner);
+    DigitalToAnalogueMapping(IComponentData& owner);
 
     /************************************\
      * Implements IAnalogueInputMapping *

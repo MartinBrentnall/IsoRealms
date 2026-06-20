@@ -25,7 +25,6 @@
 #include "IsoRealms/Input/HatHandler.h"
 
 namespace IsoRealms {
-  class Metadata;
   class IComponentData;
 
   /**
@@ -33,7 +32,7 @@ namespace IsoRealms {
    */
   class GameControllerHat : public IDigitalInput {
     public:
-    GameControllerHat(const Metadata& metadata, IComponentData& owner);
+    GameControllerHat(IComponentData& owner);
 
     /**
      * Retrieve the direction of the specified name.  The key is always such that it
@@ -70,11 +69,7 @@ namespace IsoRealms {
     private:
     class DirectionChooser : public IOptionalObject {
       public:
-      DirectionChooser(const Metadata& metadata);
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-
-      private:
-      const Metadata& cMetadata;
     };
 
     inline static const std::map<std::string, HatHandler::Direction> cDirectionsByName = {
@@ -90,7 +85,6 @@ namespace IsoRealms {
     };
 
     // External interfaces.
-    const Metadata& cMetadata;
     HatHandler& cHatHandler;
     DirectionChooser cDirectionChooser;
 

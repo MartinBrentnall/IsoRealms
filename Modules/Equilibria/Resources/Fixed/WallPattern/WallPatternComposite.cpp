@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/World/Object/Terrain/Wall.h"
  
 namespace IsoRealms::Equilibria {
-  WallPatternComposite::WallPatternComposite(const Metadata& metadata, TerrainType& owner) :
+  WallPatternComposite::WallPatternComposite(TerrainType& owner) :
             cOwner(owner) {
     // Nothing to do.
   } 

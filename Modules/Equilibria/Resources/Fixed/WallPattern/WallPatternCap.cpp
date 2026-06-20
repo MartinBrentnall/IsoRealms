@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/World/Object/Terrain/Wall.h"
 
 namespace IsoRealms::Equilibria {
-  WallPatternCap::WallPatternCap(const Metadata& metadata, TerrainType& owner) :
+  WallPatternCap::WallPatternCap(TerrainType& owner) :
             cDefTextureBottom(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefTextureMiddle(owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefTextureTop(   owner.getComponentData(), [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {

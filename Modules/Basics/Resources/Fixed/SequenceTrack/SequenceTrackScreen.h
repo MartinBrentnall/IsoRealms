@@ -35,10 +35,9 @@ namespace IsoRealms::Basics {
   class SequenceTrackScreen final : public SequenceTrackBase<SequenceTrackScreen, SequenceTrackScreenEvent, SequenceTrackScreenInstance>,
                                     public ISequenceTrackEvent {
     public:
-    SequenceTrackScreen(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackScreen(Sequence& sequence);
 
     const Screen& getStartScreen() const;
-    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
 
     /*****************************\
@@ -56,9 +55,6 @@ namespace IsoRealms::Basics {
     void getEventProperties(IComponentDefiner& definer) override;
 
     private:
-
-    // External interfaces.
-    const Metadata& cMetadata;
 
     // Definition data.
     Screen cDefStartScreen;

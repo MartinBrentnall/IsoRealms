@@ -62,7 +62,7 @@ namespace IsoRealms {
   }
   
   void PropertySlider::configure(IPropertyManager& manager) {
-    manager.openProperties(cPropertyOwner.getComponentData(), getPropertyName(), cPropertyMetadata, [this](IComponentDefiner& definer) {
+    manager.openProperties(cPropertyOwner.getComponentData(), getPropertyName(), [this](IComponentDefiner& definer) {
       definer.propertyFloat(cPropertyKey, [this]() {
         return cValueFunction();
       }, [this](float value) {

@@ -24,9 +24,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  MouseButton::MouseButton(const Metadata& metadata, IComponentData& owner) :
-          cMetadata(metadata),
-          cButtonChooser(metadata),
+  MouseButton::MouseButton(IComponentData& owner) :
           cButton(sf::Mouse::Left) {
   }
 
@@ -46,9 +44,10 @@ namespace IsoRealms {
     return getName(cButton) + " Mouse Button";
   }
 
+  // TODO: Support localized names.
   std::string MouseButton::getLocalizedName() const {
     const std::string mName = getShortName();
-    return cButtonsByName.find(mName) != cButtonsByName.end() ? cMetadata.getPropertyData(mName).getName() : mName;
+    return cButtonsByName.find(mName) != cButtonsByName.end() ? mName : mName;
   }
 
   void MouseButton::defineResource(IComponentDefiner& definer) {
@@ -61,9 +60,10 @@ namespace IsoRealms {
     });
   }
   
+  // TODO: Support localized names.
   void MouseButton::ButtonChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (std::map<std::string, sf::Mouse::Button>::const_iterator i = cButtonsByName.begin(); i != cButtonsByName.end(); i++) {
-      getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
+      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
     }
   }
 
@@ -93,9 +93,5 @@ namespace IsoRealms {
 
     // Handle buttons that aren't in the name map.
     return UNMAPPED_BUTTON_PREFIX + Utils::toString(button);
-  }
-
-  MouseButton::ButtonChooser::ButtonChooser(const Metadata& metadata) :
-            cMetadata(metadata) {
   }
 }

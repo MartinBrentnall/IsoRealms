@@ -67,10 +67,6 @@ namespace IsoRealms::Equilibria {
     registry.add(&cComponentZoneObject,       "ZoneObject");
   }
   
-  const Metadata& Equilibria::getMetadata(const std::string& key) const {
-    return cModule.getResourceMetadata(key);
-  }
-
   void Equilibria::init(std::function<void()> initialiser) {
     cProject.init(initialiser);
   }

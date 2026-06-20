@@ -51,10 +51,6 @@ namespace IsoRealms {
       return false;
     }
 
-    const Metadata& getMetadata() const override {
-      throw std::runtime_error("ResourceLiteralDummy::getPropertyMetadata: Property metadata is not available for this type.");
-    }
-
     private:
     DUMMY cDummyResource;
   };

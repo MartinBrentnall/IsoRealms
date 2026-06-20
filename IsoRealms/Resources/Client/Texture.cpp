@@ -50,10 +50,6 @@ namespace IsoRealms {
     return cDefScaleX == 1.0f && cDefScaleY == 1.0f && cDefAngle == 0.0f;
   }
 
-  const Metadata& Texture::getPropertyMetadata() const {
-    return cManager.getProject().getApplication().getMetadata("Texture");
-  }
-
   void Texture::defineWrapper(IComponentDefiner& definer) {
     definer.propertyFloat("scaleX", [this]() {return cDefScaleX;}, [this](float value) {cDefScaleX = value; stateChanged();}, 1.0f);
     definer.propertyFloat("scaleY", [this]() {return cDefScaleY;}, [this](float value) {cDefScaleY = value; stateChanged();}, 1.0f);

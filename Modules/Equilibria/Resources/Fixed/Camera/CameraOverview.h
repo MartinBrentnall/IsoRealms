@@ -31,7 +31,7 @@ namespace IsoRealms::Equilibria {
   class CameraOverview final : public ICamera,
                                public IFloat {
     public:
-    CameraOverview(const Metadata& metadata, WorldView& view);
+    CameraOverview(WorldView& view);
 
     /**********************\
      * Implements ICamera *

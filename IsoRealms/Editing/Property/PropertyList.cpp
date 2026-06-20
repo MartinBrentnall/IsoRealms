@@ -90,10 +90,6 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  const Metadata& PropertyList::ListSelection::getPropertyMetadata() const {
-    throw std::runtime_error("PropertyList::ListSelection::getPropertyMetadata: Property metadata is not available for this type.");
-  }
-  
   Application& PropertyList::ListSelection::getApplication() {
     return cProject.getApplication();
   }

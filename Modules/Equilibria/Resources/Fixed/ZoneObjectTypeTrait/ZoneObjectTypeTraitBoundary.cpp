@@ -25,7 +25,7 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type) :
+  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(ZoneObjectType& type) :
             cDefType(type) {
     cDefType.getEquilibria().added(this);
   }

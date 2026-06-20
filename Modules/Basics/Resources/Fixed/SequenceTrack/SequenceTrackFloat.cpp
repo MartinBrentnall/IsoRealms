@@ -19,18 +19,13 @@
 #include "SequenceTrackFloat.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackFloat::SequenceTrackFloat(const Metadata& metadata, Sequence& sequence) :
+  SequenceTrackFloat::SequenceTrackFloat(Sequence& sequence) :
             SequenceTrackBase(sequence.getComponentData(), sequence),
-            cMetadata(metadata),
             cDefStartValue(sequence.getComponentData(), 0.0f, [this](float value) {stateChanged(*cDefStartValue);}) {
   }
 
   const Float& SequenceTrackFloat::getStartValue() const {
     return cDefStartValue;
-  }
-
-  const Metadata& SequenceTrackFloat::getMetadata() const {
-    return cMetadata;
   }
 
   ISequenceTrackEvent* SequenceTrackFloat::getEvent(unsigned int time) {

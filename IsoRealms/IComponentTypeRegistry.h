@@ -22,11 +22,9 @@
 
 namespace IsoRealms {
   class IComponentTypeDefinition;
-  class Metadata;
 
   class IComponentTypeRegistry {
     public:
     virtual void add(IComponentTypeDefinition* resourceTypeDefinition, const std::string& id) = 0;
-    virtual const Metadata& getResourceMetadata(const std::string& key) const = 0;
   };
 }

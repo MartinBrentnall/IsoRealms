@@ -23,7 +23,6 @@
 #include "IsoRealms/Resources/Providers/ResourceLiteral.h"
 #include "IsoRealms/Resources/Type/IFloat.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
 #include "ResourceClientManager.h"
@@ -46,10 +45,6 @@ namespace IsoRealms {
     private:
     class Literal : public ResourceLiteral<IComponentData, IFloat> {
       public:
-      explicit Literal(const Metadata& metadata) :
-                cMetadata(metadata) {
-      }
-
       IFloat* createLiteralResource(IComponentData& owner, float value) const {
         return addResource([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
@@ -71,10 +66,6 @@ namespace IsoRealms {
 
       bool isHiddenProvider() const override {
         return false;
-      }
-
-      const Metadata& getMetadata() const override {
-        return cMetadata;
       }
 
       private:
@@ -99,16 +90,10 @@ namespace IsoRealms {
         \************************************/
         void defineResource(IComponentDefiner& definer) override;
         bool isDefaultConfiguration() const override;
+
         private:
-
-        // External interfaces.
-        const Metadata& cMetadata;
-
         float cValue; /// The value of this Float.
       };
-
-      // External interfaces.
-      const Metadata& cMetadata;
     };
 
     Literal cLiteral;

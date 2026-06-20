@@ -67,65 +67,9 @@ namespace IsoRealms {
 #endif
       mInitLuaInterfacesFunction(luaState);
     }
-    
-    // Load the metadata file.
-    std::string mMetadataPath = getMetadataPath(cName);
-    JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-    
-    // Load the module and resource metadata.  This needs to be done before the module is created.
-    cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
-    cLongName = mMetadataDocument.hasMember(JSON_LONG_NAME) ? mMetadataDocument.getString(JSON_LONG_NAME) : cName;
-
-    if (mMetadataDocument.hasMember(JSON_CATEGORIES)) {
-      JSONObject mCategoriesObject = mMetadataDocument.getObject(JSON_CATEGORIES);
-      for (JSONThing mCategoryThing : mCategoriesObject) {
-        std::string mCategoryDescription = mCategoryThing.getValueAsString();
-        std::string mCategoryName = mCategoryThing.getName();
-        cCategoryDescriptions[mCategoryName] = mCategoryDescription;
-      }
-    }
-
-    JSONObject mResourcesObject = mMetadataDocument.getObject(JSON_RESOURCES);
-    for (JSONThing mResourceThing : mResourcesObject) {
-      JSONObject mResourceObject = mResourceThing.getValue();
-      std::string mResourceName = mResourceThing.getName();
-      cResourceMetadata[mResourceName] = std::make_unique<Metadata>();
-      JSONObject mPropertiesObject = mResourceObject.getObject(JSON_PROPERTIES);
-      cResourceMetadata[mResourceName]->load(mPropertiesObject);
-    }
 
     // Create the module.
     cModule = mCreateFunction(&project, this);
-
-    // Load the component type metadata.  This needs to be done after the module is created.
-    JSONObject mComponentTypesObject = mMetadataDocument.getObject(JSON_COMPONENTS);
-    for (std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
-      JSONObject mComponentTypeObject = mComponentTypesObject.getObject(mComponentType.first);
-      mComponentType.second->loadMetadata(mComponentTypeObject);
-    }
-  }
-
-  std::string Module::getMetadataPath(const std::string& name) {
-    std::locale mLocale("");
-    std::string mMetadataPath = "Metadata/" + name + "/" + name + "." + mLocale.name();
-    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
-    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                                               ? mLastExtensionIndex
-                                               : mLastDashIndex;
-    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
-      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
-      mLastExtensionIndex = mMetadataPath.find_last_of('.');
-      mLastDashIndex = mMetadataPath.find_last_of('_');
-      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                          ? mLastExtensionIndex
-                          : mLastDashIndex;
-    }
-
-    if (!System::fileExists(mMetadataPath + ".json", false)) {
-      throw InitException("ERROR: Module::getMetadataPath: No metadata file found for module \"" + name + "\".");
-    }
-    return mMetadataPath;
   }
 
   void Module::loadComponents(JSONObject object, ProjectFile* ownerProject) {
@@ -203,18 +147,6 @@ namespace IsoRealms {
       throw ArgumentException("ERROR: Module::add: Cannot add component type definition because there is already a component type definition of ID \"" + id + "\".");
     }
     cComponentTypes[id] = std::make_unique<ComponentType>(resourceTypeDefinition, *this);
-  }
-
-  const Metadata& Module::getResourceMetadata(const std::string& key) const {
-    std::map<std::string, std::unique_ptr<Metadata>>::const_iterator it = cResourceMetadata.find(key);
-    if (it == cResourceMetadata.end()) {
-      std::cout << "ERROR: Module::getResourceMetadata: Resource metadata for key \"" << key << "\" not found in module \"" << cName << "\"." << std::endl;
-      for (const std::pair<const std::string, std::unique_ptr<Metadata>>& mResourceMetadata : cResourceMetadata) {
-        std::cout << "  " << mResourceMetadata.first << std::endl;
-      }
-      throw ArgumentException("ERROR: Module::getResourceMetadata: Resource metadata for key \"" + key + "\" not found in module \"" + cName + "\".");
-    }
-    return *it->second;
   }
 
   std::string Module::getName() {
@@ -323,10 +255,6 @@ namespace IsoRealms {
 
   IActionContext& Module::getDummyActionContext() {
     return *this;
-  }
-
-  const Metadata& Module::getMetadata() const {
-    return cModuleMetadata;
   }
 
   void Module::republish() {

@@ -22,7 +22,6 @@
 
 namespace IsoRealms {
   class IActionContext;
-  class Metadata;
   class Project;
   class ProjectFile;
   class PropertyData;
@@ -40,7 +39,6 @@ namespace IsoRealms {
     virtual const Project& getProject() const = 0;
     virtual Project& getResourceManager() = 0;
     virtual IActionContext& getDummyActionContext() = 0;
-    virtual const Metadata& getMetadata() const = 0;
     virtual void republish() = 0;
   };
 }

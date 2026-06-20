@@ -42,11 +42,6 @@ namespace IsoRealms {
 
     void defineWrapper(IComponentDefiner& definer) override;
 
-    /***********************************************\
-     * Implements ITreeSelectorObject via Resource *
-    \***********************************************/
-    const Metadata& getPropertyMetadata() const override;
-
     /****************************************\
      * Implements IStateListener<ITexture*> *
     \****************************************/

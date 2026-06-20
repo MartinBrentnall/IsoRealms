@@ -27,7 +27,6 @@
 #include "IsoRealms/Resources/Providers/ResourceLiteralDummy.h"
 #include "IsoRealms/Resources/Type/IString.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/ComponentEditor.h"
 #include "IsoRealms/Utils.h"
 
@@ -58,10 +57,6 @@ namespace IsoRealms {
     private:
     class Literal : public ResourceLiteral<IComponentData, IString> {
       public:
-      explicit Literal(const Metadata& metadata) :
-                cMetadata(metadata) {
-      }
-
       IString* createLiteralResource(IComponentData& owner, const std::string& value) const {
         return addResource([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
@@ -83,10 +78,6 @@ namespace IsoRealms {
 
       bool isHiddenProvider() const override {
         return false;
-      }
-
-      const Metadata& getMetadata() const override {
-        return cMetadata;
       }
 
       private:
@@ -113,15 +104,8 @@ namespace IsoRealms {
         bool isConfigurable() const override;
         
         private:
-
-        // External interfaces.
-        const Metadata& cMetadata;
-
         std::string cValue; /// The value of this String.
       };
-
-      // External interfaces.
-      const Metadata& cMetadata;
     };
 
     class ConversionProvider : public IResourceProvider<IComponentData, IString> {
@@ -141,10 +125,6 @@ namespace IsoRealms {
 
       virtual bool renderIcon(Project& project, const std::string& id) const = 0;
       virtual void forEachEntry(Project& project, const std::function<void(const TreeItemInfo&)>& getTreeItemInfoFunction) const = 0;
-
-      const Metadata& getMetadata() const override {
-        throw std::runtime_error("StringRegistry::ConversionProvider::getPropertyMetadata: Property metadata is not available for this type.");
-      }
 
       protected:
       std::string cProviderID;

@@ -32,7 +32,7 @@ namespace IsoRealms::UI {
    */
   class MenuItemDigitalInput final : public IMenuItem {
     public:
-    MenuItemDigitalInput(const Metadata& metadata, Menu& menu);
+    MenuItemDigitalInput(Menu& menu);
 
     /***********************\
      * Scripting Interface *

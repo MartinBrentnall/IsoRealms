@@ -24,7 +24,7 @@
 #include "Modules/Equilibria/World/Object/Terrain/Surface.h"
  
 namespace IsoRealms::Equilibria {
-  SurfacePatternComposite::SurfacePatternComposite(const Metadata& metadata, TerrainType& owner) :
+  SurfacePatternComposite::SurfacePatternComposite(TerrainType& owner) :
             cOwner(owner) {
     // Nothing to do.
   }

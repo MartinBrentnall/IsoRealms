@@ -23,7 +23,6 @@
 #include "IsoRealms/Resources/Providers/ResourceLiteral.h"
 #include "IsoRealms/Resources/Type/IColour.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
 #include "ResourceClientManager.h"
@@ -47,10 +46,6 @@ namespace IsoRealms {
     private:
     class Literal : public ResourceLiteral<IComponentData, IColour> {
       public:
-      explicit Literal(const Metadata& metadata) :
-                cMetadata(metadata) {
-      }
-
       IColour* createLiteralResource(IComponentData& owner, float red, float green, float blue, float alpha) const {
         return addResource([&owner, red, green, blue, alpha]() {return std::make_unique<Instance>(owner.getProject(), red, green, blue, alpha);});
       }
@@ -73,10 +68,6 @@ namespace IsoRealms {
 
       bool isHiddenProvider() const override {
         return false;
-      }
-
-      const Metadata& getMetadata() const override {
-        return cMetadata;
       }
 
       private:
@@ -102,10 +93,6 @@ namespace IsoRealms {
         bool isDefaultConfiguration() const override;
     
         private:
-
-        // External interfaces.
-        const Metadata& cMetadata;
-
         float cRed   = 0.0f; /// Red intensity
         float cGreen = 0.0f; /// Green intensity
         float cBlue  = 0.0f; /// Blue intensity
@@ -121,9 +108,6 @@ namespace IsoRealms {
       inline static const std::string JSON_BLUE  = "blue";
       inline static const std::string JSON_GREEN = "green";
       inline static const std::string JSON_RED   = "red";
-      
-      // External interfaces.
-      const Metadata& cMetadata;
     };
 
     Literal cLiteral;

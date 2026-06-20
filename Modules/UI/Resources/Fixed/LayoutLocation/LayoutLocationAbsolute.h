@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
    */
   class LayoutLocationAbsolute : public ILayoutLocation {
     public:
-    LayoutLocationAbsolute(const Metadata& metadata, LayoutComponentEdge& owner);
+    LayoutLocationAbsolute(LayoutComponentEdge& owner);
 
     /******************************\
      * Implements ILayoutLocation *

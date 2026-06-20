@@ -21,8 +21,8 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(const Metadata& metadata, IComponentData& owner) :
-            cDefName(metadata.getPropertyData("DefaultName").getName()),
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(IComponentData& owner) :
+            cDefName("DefaultName"), // TODO: Support localized default name.
             cDefControl(owner) {
   }
 

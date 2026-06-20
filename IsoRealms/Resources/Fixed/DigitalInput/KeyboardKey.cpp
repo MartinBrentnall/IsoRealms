@@ -24,9 +24,7 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  KeyboardKey::KeyboardKey(const Metadata& metadata, IComponentData& owner) :
-          cMetadata(metadata),
-          cKeyChooser(metadata),
+  KeyboardKey::KeyboardKey(IComponentData& owner) :
           cKey(sf::Keyboard::Enter) {
   }
 
@@ -46,9 +44,10 @@ namespace IsoRealms {
     return getName(cKey) + " Key";
   }
 
+  // TODO: Support localized names.
   std::string KeyboardKey::getLocalizedName() const {
     const std::string mName = getShortName();
-    return cKeysByName.find(mName) != cKeysByName.end() ? cMetadata.getPropertyData(mName).getName() : mName;
+    return cKeysByName.find(mName) != cKeysByName.end() ? mName : mName;
   }
 
   void KeyboardKey::defineResource(IComponentDefiner& definer) {
@@ -61,9 +60,10 @@ namespace IsoRealms {
     });
   }
 
+  // TODO: Support localized names.
   void KeyboardKey::KeyChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (std::map<std::string, sf::Keyboard::Key>::const_iterator i = cKeysByName.begin(); i != cKeysByName.end(); i++) {
-      getTreeItemInfoFunction(TreeItemInfo{i->first, cMetadata.getPropertyData(i->first).getName()});
+      getTreeItemInfoFunction(TreeItemInfo{i->first, i->first});
     }
   }
 
@@ -93,9 +93,5 @@ namespace IsoRealms {
       throw ArgumentException("ERROR: KeyMapping::getKey: Key of name \"" + name + "\" not known.");
     }
     return i->second;
-  }
-
-  KeyboardKey::KeyChooser::KeyChooser(const Metadata& metadata) :
-            cMetadata(metadata) {
   }
 }

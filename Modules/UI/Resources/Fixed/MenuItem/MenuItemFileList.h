@@ -33,7 +33,7 @@ namespace IsoRealms::UI {
    */
   class MenuItemFileList final : public IMenuItem {
     public:
-    MenuItemFileList(const Metadata& metadata, Menu& menu);
+    MenuItemFileList(Menu& menu);
 
     /***********************\
      * Scripting Interface *

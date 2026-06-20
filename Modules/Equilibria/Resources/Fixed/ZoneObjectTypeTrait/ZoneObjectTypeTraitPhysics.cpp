@@ -21,7 +21,7 @@
 #include "ZoneObjectTypeTraitPhysics.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(const Metadata& metadata, ZoneObjectType& type) {
+  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(ZoneObjectType& type) {
     // Nothing to do.
   }
   

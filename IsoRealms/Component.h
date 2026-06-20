@@ -233,10 +233,6 @@ namespace IsoRealms {
       return *this;
     }
 
-    const Metadata& getMetadata() const override {
-      return cParent.getMetadata();
-    }
-
     void republish() override {
       publish();
     }

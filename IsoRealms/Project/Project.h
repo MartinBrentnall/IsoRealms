@@ -92,6 +92,7 @@ namespace IsoRealms {
     void save(const ProjectFile& file) const;
     bool isUser();
     void getProperties(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr);
+    void define(IComponentDefiner& definer, ProjectFile* loadOwner = nullptr, JSONObject* persistRoot = nullptr);
     IEditable* getDefaultEditable();
     IScreen* getScreenProxy(IScreen* screen);
     
@@ -155,10 +156,6 @@ namespace IsoRealms {
       return ResourceContainerTraits<TYPE>::get(*this).getTreeItemInfo(resource);
     }
 
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
-      return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
-    }
-
     template <typename TYPE> void save(JSONObject object, const TYPE* resource) const {
       ResourceContainerTraits<TYPE>::get(*this).save(object, resource);
     }
@@ -215,7 +212,6 @@ namespace IsoRealms {
     const Project& getProject() const override;
     Project& getResourceManager() override;
     IActionContext& getDummyActionContext() override;
-    const Metadata& getMetadata() const override;
     void republish() override;
 
     /*****************************\

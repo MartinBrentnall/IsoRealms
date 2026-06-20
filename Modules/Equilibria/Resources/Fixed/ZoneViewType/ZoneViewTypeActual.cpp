@@ -21,7 +21,7 @@
 #include "ZoneViewActual.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneViewTypeActual::ZoneViewTypeActual(const Metadata& metadata, WorldView& worldView) {
+  ZoneViewTypeActual::ZoneViewTypeActual(WorldView& worldView) {
     // Nothing to do.
   }
 

@@ -108,10 +108,6 @@ namespace IsoRealms {
     }
   }
 
-  const Metadata& File::getPropertyMetadata() const {
-    throw std::runtime_error("File::getPropertyMetadata: Property metadata is not available for this type.");
-  }
-  
   Application& File::getApplication() {
     return cProject.getApplication();
   }

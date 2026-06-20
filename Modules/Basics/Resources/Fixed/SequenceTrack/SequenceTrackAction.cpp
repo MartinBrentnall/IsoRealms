@@ -19,13 +19,8 @@
 #include "SequenceTrackAction.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackAction::SequenceTrackAction(const Metadata& metadata, Sequence& sequence) :
-            SequenceTrackBase(sequence.getComponentData(), sequence),
-            cMetadata(metadata) {
-  }
-
-  const Metadata& SequenceTrackAction::getMetadata() const {
-    return cMetadata;
+  SequenceTrackAction::SequenceTrackAction(Sequence& sequence) :
+            SequenceTrackBase(sequence.getComponentData(), sequence) {
   }
 
   ISequenceTrackEvent* SequenceTrackAction::getEvent(unsigned int time) {

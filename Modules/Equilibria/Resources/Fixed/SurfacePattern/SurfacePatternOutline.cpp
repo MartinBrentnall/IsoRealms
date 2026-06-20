@@ -24,7 +24,7 @@
 #include "Modules/Equilibria/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Equilibria {
-  SurfacePatternOutline::SurfacePatternOutline(const Metadata& metadata, TerrainType& owner) {
+  SurfacePatternOutline::SurfacePatternOutline(TerrainType& owner) {
     // Nothing to do.
   }
 

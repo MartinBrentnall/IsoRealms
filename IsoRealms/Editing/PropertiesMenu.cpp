@@ -18,19 +18,15 @@
  */
 #include "PropertiesMenu.h"
 
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ComponentType.h"
 
 #include "Property/IPropertyEditor.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher) :
-            PropertiesMenu(manager, style, owner, owner.getMetadata(), propertyFetcher) {
-  }
-
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, const Metadata& metadata, std::function<void(IComponentDefiner& definer)> propertyFetcher) : Menu(manager, style),
-            cComponentEditor(owner.getProject().getApplication(), owner, metadata, *this, manager),
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher) : 
+            Menu(manager, style),
+            cComponentEditor(owner.getProject().getApplication(), owner, *this, manager),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
             cClosingProperty(nullptr),
@@ -259,13 +255,9 @@ namespace IsoRealms {
   }
 
   void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) {
-    openProperties(owner, name, owner.getMetadata(), propertyFetcher);
-  }
-
-  void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IComponentDefiner&)> propertyFetcher) {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, metadata, [this, propertyFetcher](IComponentDefiner& definer) {
+    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](IComponentDefiner& definer) {
       propertyFetcher(definer);
     }), name, LiteralColour(0.75f, 0.5f, 1.0f));
   }

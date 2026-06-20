@@ -21,7 +21,7 @@
 #include "Modules/UI/Layout/LayoutComponentEdge.h"
 
 namespace IsoRealms::UI {
-  LayoutLocationAbsolute::LayoutLocationAbsolute(const Metadata& metadata, LayoutComponentEdge& owner) :
+  LayoutLocationAbsolute::LayoutLocationAbsolute(LayoutComponentEdge& owner) :
             cParent(owner),
             cDefValue(owner.isPositiveEdge() ? 1.0f : -1.0f) {
   }

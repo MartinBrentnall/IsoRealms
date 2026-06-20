@@ -27,7 +27,7 @@ namespace IsoRealms::Equilibria {
 
   class ZoneObjectTypeTraitChaser : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitChaser(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitChaser(ZoneObjectType& type);
     
     // Interface to be used by instances.
     const Vertex& getTarget() const;

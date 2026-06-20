@@ -23,12 +23,10 @@
 
 namespace IsoRealms {
   IntegerRegistry::IntegerRegistry(Application& application) :
-            ResourceClientManager(&cLiteral, "Literal", "Literal"),
-            cLiteral(application.getMetadata("LiteralInteger")) {
+            ResourceClientManager(&cLiteral, "Literal", "Literal") {
   }
 
   IntegerRegistry::Literal::Instance::Instance(Project& project, const int value):
-          cMetadata(project.getApplication().getMetadata("LiteralInteger")),
           cValue(value) {
     // Nothing to do.
   }

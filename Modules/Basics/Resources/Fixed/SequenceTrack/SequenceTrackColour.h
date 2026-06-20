@@ -35,10 +35,9 @@ namespace IsoRealms::Basics {
   class SequenceTrackColour final : public SequenceTrackBase<SequenceTrackColour, SequenceTrackColourEvent, SequenceTrackColourInstance>,
                                     public ISequenceTrackEvent {
     public:
-    SequenceTrackColour(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackColour(Sequence& sequence);
 
     const Colour& getStartColour() const;
-    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
 
     /*****************************\
@@ -56,9 +55,6 @@ namespace IsoRealms::Basics {
     void getEventProperties(IComponentDefiner& definer) override;
 
     private:
-
-    // External interfaces.
-    const Metadata& cMetadata;
 
     // Definition data.
     Colour cDefInitColour;

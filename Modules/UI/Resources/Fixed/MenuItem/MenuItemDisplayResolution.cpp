@@ -21,7 +21,7 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  MenuItemDisplayResolution::MenuItemDisplayResolution(const Metadata& metadata, Menu& menu) :
+  MenuItemDisplayResolution::MenuItemDisplayResolution(Menu& menu) :
             cProject(menu.getComponentData().getProject()),
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),

@@ -63,10 +63,6 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  const Metadata& ModuleChooser::getPropertyMetadata() const {
-    throw std::runtime_error("ModuleChooser does not provide property metadata.");
-  }
-  
   Application& ModuleChooser::getApplication() {
     return cProject.getApplication();
   }
@@ -74,19 +70,8 @@ namespace IsoRealms {
   void ModuleChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (const std::string& mName : cProject.getUnusedModuleNames()) {
 
-      // Read the long name from the metadata file.
-      std::string mLongName;
-      try {
-        std::string mMetadataPath = Module::getMetadataPath(mName);
-        JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-        mLongName = mMetadataDocument.hasMember("longName") ? mMetadataDocument.getString("longName") : mName;
-      } catch (const InitException& e) {
-        std::cout << "ERROR: ModuleChooser::forEachAvailableTreeItem: " << e.getMessage() << std::endl;
-        mLongName = mName;
-      }
-      
-      // Load the module and resource metadata.  This needs to be done before the module is created.
-      getTreeItemInfoFunction(TreeItemInfo{mName, mLongName});
+      // TODO: Support long name.
+      getTreeItemInfoFunction(TreeItemInfo{mName, mName});
     }
   }
   

@@ -24,7 +24,6 @@
 #include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
-  class Metadata;
   class IComponentData;
 
   /**
@@ -46,7 +45,7 @@ namespace IsoRealms {
     inline static const unsigned int L2       = 6;
 #endif
 
-    GameControllerButton(const Metadata& metadata, IComponentData& owner);
+    GameControllerButton(IComponentData& owner);
 
     /****************************\
      * Implements IDigitalInput *
@@ -61,20 +60,15 @@ namespace IsoRealms {
     private:
     class ButtonChooser : public IOptionalObject {
       public:
-      ButtonChooser(const Metadata& metadata);
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-
-      private:
-      const Metadata& cMetadata;
     };
 
     // External interfaces.
-    const Metadata& cMetadata;
     ButtonChooser cButtonChooser;
 
     unsigned int cButton = 0; /// The button associated with this mapping.
     // TODO: Support multiple controllers.
     
-    static std::string getChoiceLabel(const Metadata& metadata, unsigned int button);
+    static std::string getChoiceLabel(unsigned int button);
   };
 }

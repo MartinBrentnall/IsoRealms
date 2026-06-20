@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  CameraVariant::CameraVariant(const Metadata& metadata, WorldView& view) :
+  CameraVariant::CameraVariant(WorldView& view) :
             cParent(view),
             cDefYaw(view),
             cDefPitch(view),

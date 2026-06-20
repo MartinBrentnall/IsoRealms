@@ -31,7 +31,7 @@ namespace IsoRealms::Equilibria {
 
   class SurfacePatternOutline : public ISurfacePattern {
     public:
-    SurfacePatternOutline(const Metadata& metadata, TerrainType& owner);
+    SurfacePatternOutline(TerrainType& owner);
 
     /******************************\
      * Implements ISurfacePattern *

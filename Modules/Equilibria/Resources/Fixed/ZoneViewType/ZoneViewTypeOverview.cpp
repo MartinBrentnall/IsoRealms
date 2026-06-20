@@ -24,7 +24,7 @@
 #include "ZoneViewOverview.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneViewTypeOverview::ZoneViewTypeOverview(const Metadata& metadata, WorldView& worldView) :
+  ZoneViewTypeOverview::ZoneViewTypeOverview(WorldView& worldView) :
             cWorldView(worldView),
             cDefColour(worldView.getComponentData(), 1.0f, 0.0f, 0.0f, 0.0f),
             cRuntimeParameterView1(worldView.getEquilibria().getProject().getLuaState(), nullptr, nullptr, true),

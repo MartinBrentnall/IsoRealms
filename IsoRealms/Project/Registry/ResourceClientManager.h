@@ -28,8 +28,6 @@
 #include "ResourceRegistry.h"
 
 namespace IsoRealms {
-  class Metadata;
-
   template <typename DERIVED, typename OWNER, typename TYPE> class ResourceClientManager {
     public:
     inline static const std::string JSON_KEY = "key";
@@ -237,14 +235,6 @@ namespace IsoRealms {
       return cRegistry.getProvider(id, true)->hasConfiguration();
     }
 
-    const Metadata& getPropertyMetadata(const TYPE* resource) const {
-      IResourceProvider<OWNER, TYPE>* mProvider = getProvider(resource);
-      if (mProvider == nullptr) {
-        throw std::runtime_error("ResourceClientManager::getPropertyMetadata: No provider found for specified resource.");
-      }
-      return mProvider->getMetadata();
-    }
-    
     ResourceRegistry<OWNER, TYPE>* getRegistry() {
       return &cRegistry;
     }

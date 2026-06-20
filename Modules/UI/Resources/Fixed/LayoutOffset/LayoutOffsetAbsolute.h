@@ -30,7 +30,7 @@ namespace IsoRealms::UI {
    */
   class LayoutOffsetAbsolute : public ILayoutOffset {
     public:
-    LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner);
+    LayoutOffsetAbsolute(LayoutComponentEdge& owner);
 
     /****************************\
      * Implements ILayoutOffset *

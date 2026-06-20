@@ -30,7 +30,7 @@
 namespace IsoRealms {
   ProjectMenu::ProjectMenu(UIManager& manager, IUIStyle& style, Project& project) : ActionMenu(manager, style),
             cProject(project),
-            cComponentEditor(project.getApplication(), project, project.getMetadata(), *this, manager),
+            cComponentEditor(project.getApplication(), project, *this, manager),
             cDefModuleChooser(project) {
     refresh();
   }
@@ -40,11 +40,11 @@ namespace IsoRealms {
 
     UIManager& mManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    const Metadata& mMetadata = cProject.getMetadata();
-    addItem(std::make_unique<MenuItemAction>(mMetadata.getPropertyData("ApplicationConfiguration"), [this, &mManager, &mStyle, &mMetadata]() {
+    PropertyData mDummyPropertyData("TODO: Application Configuration", "TODO: Application Configuration");
+    addItem(std::make_unique<MenuItemAction>(mDummyPropertyData, [this, &mManager, &mStyle]() {
       mManager.openUI(std::make_unique<PropertiesMenu>(mManager, mStyle, cProject, [this](IComponentDefiner& definer) {
         cProject.getProperties(definer);
-      }), mMetadata.getPropertyData("ApplicationConfiguration").getName());
+      }), "TODO: Application Configuration");
     }));
 
     // Build a map of categories within each module.
@@ -106,10 +106,6 @@ namespace IsoRealms {
   }
 
   void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) {
-    throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
-  }
-
-  void ProjectMenu::openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IComponentDefiner&)> propertyFetcher) {
     throw std::runtime_error("ProjectMenu::openProperties: Not implemented");
   }
 

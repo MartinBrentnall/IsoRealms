@@ -19,6 +19,7 @@
 #pragma once
 
 #include "IsoRealms/Editing/Property/IComponentDefiner.h"
+#include "IsoRealms/Metadata.h"
 
 namespace IsoRealms {
   class Application;
@@ -30,12 +31,11 @@ namespace IsoRealms {
   class IOptionalObject;
   class IPropertyManager;
   class ITreeSelectorObject;
-  class Metadata;
   class PropertyData;
 
   class ComponentEditor : public IComponentDefiner {
     public:
-    ComponentEditor(Application& application, IComponentData& parent, const Metadata& metadata, IPropertyManager& properties, IDialogManager& dialogManager);
+    ComponentEditor(Application& application, IComponentData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
 
     IComponentData& getComponentData() override;
 
@@ -69,7 +69,7 @@ namespace IsoRealms {
     private:
     Application& cApplication;
     IComponentData& cParent;
-    const Metadata& cMetadata;
+    Metadata cMetadata;
     IPropertyManager& cProperties;
     IDialogManager& cDialogManager;
     

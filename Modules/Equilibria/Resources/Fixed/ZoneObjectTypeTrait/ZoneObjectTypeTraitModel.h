@@ -30,7 +30,7 @@ namespace IsoRealms::Equilibria {
 
   class ZoneObjectTypeTraitModel : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitModel(ZoneObjectType& type);
 
     // Interface to be used by instances.    
     bool isInitiallyEnabled() const;

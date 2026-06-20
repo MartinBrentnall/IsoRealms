@@ -24,7 +24,7 @@
 #include "Modules/Equilibria/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Equilibria {
-  SurfacePatternSplitVariant::SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner) :
+  SurfacePatternSplitVariant::SurfacePatternSplitVariant(TerrainType& owner) :
             cDefRegularPattern(owner.getEquilibria(), owner, [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefSplitAPattern( owner.getEquilibria(), owner, [&owner]() {owner.getEquilibria().stateChanged(nullptr);}),
             cDefSplitBPattern( owner.getEquilibria(), owner, [&owner]() {owner.getEquilibria().stateChanged(nullptr);}) {

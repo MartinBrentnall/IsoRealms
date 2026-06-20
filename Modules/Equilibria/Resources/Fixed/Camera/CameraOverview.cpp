@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/WorldView/WorldView.h"
 
 namespace IsoRealms::Equilibria {
-  CameraOverview::CameraOverview(const Metadata& metadata, WorldView& view) :
+  CameraOverview::CameraOverview(WorldView& view) :
             cParent(view) {
   }
   

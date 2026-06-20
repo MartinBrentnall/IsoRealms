@@ -26,7 +26,6 @@
 #include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
-  class Metadata;
   class IComponentData;
 
   /**
@@ -42,7 +41,7 @@ namespace IsoRealms {
      */
     MouseButton(const sf::Mouse::Button button);
 
-    MouseButton(const Metadata& metadata, IComponentData& owner);
+    MouseButton(IComponentData& owner);
 
     /****************************\
      * Implements IDigitalInput *
@@ -60,11 +59,7 @@ namespace IsoRealms {
     private:
     class ButtonChooser : public IOptionalObject {
       public:
-      ButtonChooser(const Metadata& metadata);
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-
-      private:
-      const Metadata& cMetadata;
     };
 
     inline static const std::string UNMAPPED_BUTTON_PREFIX = "Mouse Button ";
@@ -78,7 +73,6 @@ namespace IsoRealms {
     };
 
     // External interfaces.
-    const Metadata& cMetadata;
     ButtonChooser cButtonChooser;
 
     sf::Mouse::Button cButton; /// The mouse button associated with this mapping.

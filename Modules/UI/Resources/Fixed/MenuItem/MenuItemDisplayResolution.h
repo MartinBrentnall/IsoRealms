@@ -35,7 +35,7 @@ namespace IsoRealms::UI {
    */
   class MenuItemDisplayResolution final : public IMenuItem {
     public:
-    MenuItemDisplayResolution(const Metadata& metadata, Menu& menu);
+    MenuItemDisplayResolution(Menu& menu);
 
     /***********************\
      * Scripting Interface *

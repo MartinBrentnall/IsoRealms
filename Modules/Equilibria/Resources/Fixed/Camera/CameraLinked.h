@@ -30,7 +30,7 @@ namespace IsoRealms::Equilibria {
 
   class CameraLinked final : public ICamera {
     public:
-    CameraLinked(const Metadata& metadata, WorldView& view);
+    CameraLinked(WorldView& view);
 
     /**********************\
      * Implements ICamera *

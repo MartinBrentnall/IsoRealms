@@ -32,7 +32,7 @@
  
    class SurfacePatternComposite : public ISurfacePattern {
      public:
-     SurfacePatternComposite(const Metadata& metadata, TerrainType& owner);
+     SurfacePatternComposite(TerrainType& owner);
  
      /******************************\
       * Implements ISurfacePattern *

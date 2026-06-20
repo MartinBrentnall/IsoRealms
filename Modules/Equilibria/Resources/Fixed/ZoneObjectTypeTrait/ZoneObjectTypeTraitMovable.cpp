@@ -23,7 +23,7 @@
 #include "ZoneObjectTypeTraitMovable.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(const Metadata& metadata, ZoneObjectType& type) {
+  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(ZoneObjectType& type) {
     // Nothing to do.
   }
   

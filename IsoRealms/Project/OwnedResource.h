@@ -20,7 +20,6 @@
 
 #include <string>
 
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Editing/Property/IComponentDefiner.h"
 
 namespace IsoRealms {
@@ -46,7 +45,7 @@ namespace IsoRealms {
       return &cResource;
     }
 
-    void getProperty(IComponentDefiner& definer, const Metadata& metadata, const std::string& name, ProjectFile* loadOwner = nullptr) {
+    void define(IComponentDefiner& definer, const std::string& name, ProjectFile* loadOwner = nullptr) {
       if (definer.loadsPersistedValues()) {
         if (loadOwner != nullptr && !cInit && definer.hasPersistedMember(name)) {
           definer.propertyResource(name, cResource);

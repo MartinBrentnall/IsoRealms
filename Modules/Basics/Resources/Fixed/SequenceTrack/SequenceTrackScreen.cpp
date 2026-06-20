@@ -19,18 +19,13 @@
 #include "SequenceTrackScreen.h"
 
 namespace IsoRealms::Basics {
-  SequenceTrackScreen::SequenceTrackScreen(const Metadata& metadata, Sequence& sequence) :
+  SequenceTrackScreen::SequenceTrackScreen(Sequence& sequence) :
             SequenceTrackBase(sequence.getComponentData(), sequence),
-            cMetadata(metadata),
             cDefStartScreen(sequence.getComponentData()) {
   }
 
   const Screen& SequenceTrackScreen::getStartScreen() const {
     return cDefStartScreen;
-  }
-
-  const Metadata& SequenceTrackScreen::getMetadata() const {
-    return cMetadata;
   }
 
   ISequenceTrackEvent* SequenceTrackScreen::getEvent(unsigned int time) {

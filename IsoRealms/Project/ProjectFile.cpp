@@ -94,7 +94,7 @@ namespace IsoRealms {
     cFile.setPath(name, user);
   }
 
-  void ProjectFile::getProperties(IComponentDefiner& definer, const Metadata& metadata, Project& project, bool inclusion) {
+  void ProjectFile::define(IComponentDefiner& definer, Project& project, bool inclusion) {
     definer.propertyResource(JSON_FILENAME,    cFile);
     definer.propertyString(  JSON_DESCRIPTION, [this]() {return cDefID;}, [this](const std::string& value) {cDefID = value;});
     if (inclusion && cFile.isUser()) {
@@ -112,16 +112,16 @@ namespace IsoRealms {
       }, true);
     }
     for (const std::unique_ptr<ProjectFile>& mInclusion : cInclusions) {
-      definer.scope(JSON_INCLUDE, mInclusion->cFile.getRelativePath(), [this, &mInclusion, &metadata, &project](IComponentDefiner& definer) {
-        mInclusion->getProperties(definer, metadata, project, true);
+      definer.scope(JSON_INCLUDE, mInclusion->cFile.getRelativePath(), [this, &mInclusion, &project](IComponentDefiner& definer) {
+        mInclusion->define(definer, project, true);
       }, [this, &mInclusion]() {
         Utils::removeElementUnique(cInclusions, mInclusion.get());
       });
     }
-    definer.propertyAdd(JSON_INCLUDE, "Add...", [this, &definer, &metadata, &project]() {
+    definer.propertyAdd(JSON_INCLUDE, "Add...", [this, &definer, &project]() {
       ProjectFile* mNewInclusion = cInclusions.emplace_back(std::make_unique<ProjectFile>(project)).get();
-      definer.scope(JSON_INCLUDE, mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &metadata, &project](IComponentDefiner& definer) {
-        mNewInclusion->getProperties(definer, metadata, project, true);
+      definer.scope(JSON_INCLUDE, mNewInclusion->cFile.getRelativePath(), [this, &mNewInclusion, &project](IComponentDefiner& definer) {
+        mNewInclusion->define(definer, project, true);
       }, [this, &mNewInclusion]() {
         Utils::removeElementUnique(cInclusions, mNewInclusion);
       });

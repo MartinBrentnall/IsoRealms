@@ -31,7 +31,6 @@
 
 namespace IsoRealms {
   class Application;
-  class Metadata;
 
   template <typename TYPE, typename MANAGER> class ComponentReference : public IComponentUser<TYPE>, 
                                                                         public ITreeSelectorObject {
@@ -106,10 +105,6 @@ namespace IsoRealms {
       }, [this](const std::string& value) {
         setID(value);
       });
-    }
-
-    const Metadata& getPropertyMetadata() const override {
-      throw std::runtime_error("ComponentReference::getPropertyMetadata: Property metadata is not available for this type.");
     }
 
     void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override {

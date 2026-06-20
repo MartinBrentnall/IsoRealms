@@ -65,10 +65,6 @@ namespace IsoRealms {
     return cDefOffsetX == 0.0f && cDefOffsetY == 0.0f && cDefOffsetZ == 0.0f && cDefPitch == 0.0f && cDefScaleX == 1.0f && cDefScaleY == 1.0f && cDefScaleZ == 1.0f && cDefYaw == 0.0f;
   }
 
-  const Metadata& Model::getPropertyMetadata() const {
-    return cManager.getProject().getApplication().getMetadata("Model");
-  }
-
   void Model::defineWrapper(IComponentDefiner& definer) {
     definer.propertyFloat("offsetX", [this]() {return cDefOffsetX;}, [this](float value) {cDefOffsetX = value;});
     definer.propertyFloat("offsetY", [this]() {return cDefOffsetY;}, [this](float value) {cDefOffsetY = value;});

@@ -28,7 +28,7 @@ namespace IsoRealms::Equilibria {
   class ZoneObjectTypeTraitCellLocation : public IZoneObjectTypeTrait,
                                           public IZoneObjectTraitEditor {
     public:
-    ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitCellLocation(ZoneObjectType& type);
     
     /************************************\
      * Implements  IZoneObjectTypeTrait *

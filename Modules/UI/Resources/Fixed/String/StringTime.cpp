@@ -19,7 +19,7 @@
 #include "StringTime.h"
 
 namespace IsoRealms::UI {
-  StringTime::StringTime(const Metadata& metadata, IComponentData& owner) :
+  StringTime::StringTime(IComponentData& owner) :
             cDefValue(owner) {
     parseFormatString();
   }

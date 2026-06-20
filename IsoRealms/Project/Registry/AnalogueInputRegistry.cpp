@@ -21,8 +21,7 @@
  #include "IsoRealms/Project/Project.h"
  
  namespace IsoRealms {
-   AnalogueInputRegistry::AnalogueInputRegistry(Project& project) :
-             cGameControllerAxis(project.getApplication().getMetadata("GameControllerAxis")) {
+   AnalogueInputRegistry::AnalogueInputRegistry(Project& project) {
      add(&cGameControllerAxis, "GameControllerAxis", "Game Controller Axis");
    }
  }

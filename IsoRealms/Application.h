@@ -39,7 +39,6 @@
 #include "DisplayResolution.h"
 #include "Exception/ApplicationException.h"
 #include "Input/HatHandler.h"
-#include "Metadata.h"
 #include "Persistence/JSONDocument.h"
 #include "PropertyData.h"
 #include "System.h"
@@ -168,8 +167,6 @@ namespace IsoRealms {
     std::mutex cCleanUpTaskMutex;
     std::queue<std::function<void()>> cMainThreadCleanUpTasks; /// Clean-up tasks to be performed on the main thread.
 
-    std::map<std::string, std::unique_ptr<Metadata>> cMetadata;
-
     /**
      * Set the application window and OpenGL view port dimensions according to
      * the current screen mode.
@@ -233,6 +230,5 @@ namespace IsoRealms {
     void executeAndReturn(const std::function<void()> task);
     HatHandler& getHatHandler();
     void mainThreadCleanUp(std::function<void()> function);
-    const Metadata& getMetadata(const std::string& key) const;
   };
 }

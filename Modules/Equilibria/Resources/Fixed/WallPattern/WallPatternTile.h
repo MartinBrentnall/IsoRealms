@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
 
   class WallPatternTile : public IWallPattern {
     public:
-    WallPatternTile(const Metadata& metadata, TerrainType& owner);
+    WallPatternTile(TerrainType& owner);
 
     /***************************\
      * Implements IWallPattern *

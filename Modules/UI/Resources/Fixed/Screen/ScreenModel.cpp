@@ -19,7 +19,7 @@
 #include "ScreenModel.h"
 
 namespace IsoRealms::UI {
-  ScreenModel::ScreenModel(const Metadata& /*metadata*/, IComponentData& owner) :
+  ScreenModel::ScreenModel(IComponentData& owner) :
             cDefModel(owner),
             cDefModelInstance(cDefModel.createInstance()) {
   }

@@ -21,7 +21,7 @@
 #include "Modules/Equilibria/Equilibria.h"
 
 namespace IsoRealms::Equilibria {
-  CameraTransitional::CameraTransitional(const Metadata& metadata, WorldView& view) :
+  CameraTransitional::CameraTransitional(WorldView& view) :
             cParent(view),
             cYaw(*this),
             cPitch(*this),

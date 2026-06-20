@@ -26,7 +26,7 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(const Metadata& metadata, ZoneObjectType& type) :
+  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(ZoneObjectType& type) :
             cDefType(type) {
     cDefType.registerEditor(this);
   }

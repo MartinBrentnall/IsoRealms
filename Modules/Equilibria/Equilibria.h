@@ -70,7 +70,6 @@ namespace IsoRealms::Equilibria {
 
     // Module constructor.
     Equilibria(Project& project, IComponentTypeRegistry& registry);
-    const Metadata& getMetadata(const std::string& key) const;
 
     void init(std::function<void()> initialiser);
   
@@ -162,10 +161,6 @@ namespace IsoRealms::Equilibria {
 
     template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* resource) const {
       return ResourceContainerTraits<TYPE>::get(*this).getTreeItemInfo(resource);
-    }
-
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
-      return ResourceContainerTraits<TYPE>::get(*this).getPropertyMetadata(resource);
     }
 
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& f) const {

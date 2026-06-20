@@ -19,7 +19,7 @@
 #include "ScreenGradient.h"
 
 namespace IsoRealms::UI {
-  ScreenGradient::ScreenGradient(const Metadata& metadata, IComponentData& owner) :
+  ScreenGradient::ScreenGradient(IComponentData& owner) :
             cDefColourA(owner, 0.0f, 0.0f, 1.0f),
             cDefColourB(owner, 0.0f, 1.0f, 0.0f) {
   }

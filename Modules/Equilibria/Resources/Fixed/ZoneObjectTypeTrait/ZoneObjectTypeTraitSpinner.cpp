@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(const Metadata& metadata, ZoneObjectType& type) :
+  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(ZoneObjectType& type) :
             cDefModel(type.getComponentData()) {
   }
 

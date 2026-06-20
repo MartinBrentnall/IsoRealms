@@ -23,7 +23,7 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  LayoutOffsetLinked::LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner) :
+  LayoutOffsetLinked::LayoutOffsetLinked(LayoutComponentEdge& owner) :
             cParent(owner) {
   }
 

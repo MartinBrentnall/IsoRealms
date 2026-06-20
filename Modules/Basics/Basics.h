@@ -51,8 +51,6 @@ namespace IsoRealms::Basics {
 
     void refreshResourceRegistration(Sequence& sequence);
 
-    const Metadata& getMetadata(const std::string& key) const;
-
     /****************************\
      * Implements IModuleHandle *
     \****************************/
@@ -71,10 +69,6 @@ namespace IsoRealms::Basics {
 
     template <typename TYPE> TreeItemInfo getTreeItemInfo(const TYPE* resource) const {
       return cSequenceTracks.getTreeItemInfo(resource);
-    }
-
-    template <typename TYPE> const Metadata& getPropertyMetadata(const TYPE* resource) const {
-      return cSequenceTracks.getPropertyMetadata(resource);
     }
 
     template <typename TYPE> void forEachEntry(const std::function<void(const TreeItemInfo&)>& f) const {

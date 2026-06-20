@@ -20,7 +20,6 @@
 
 namespace IsoRealms {
   class JSONObject;
-  class Metadata;
 
   template <typename OWNER, typename TYPE> class IResourceProvider {
     public:
@@ -29,7 +28,6 @@ namespace IsoRealms {
     virtual bool hasConfiguration() const = 0;
     virtual bool renderResourceProviderIcon() const = 0;
     virtual bool isHiddenProvider() const = 0;
-    virtual const Metadata& getMetadata() const = 0;
   };
 }
 

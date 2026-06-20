@@ -29,7 +29,7 @@ namespace IsoRealms::Equilibria {
   class ZoneObjectTypeTraitBoundary : public IZoneObjectTypeTrait,
                                       public IBoundaryType {
     public:
-    ZoneObjectTypeTraitBoundary(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitBoundary(ZoneObjectType& type);
     
     // Interface to be used by instances.
     std::string getStartID() const;

@@ -23,7 +23,7 @@
 #include "Modules/UI/UI.h"
 
 namespace IsoRealms::UI {
-  LayoutLocationRelative::LayoutLocationRelative(const Metadata& metadata, LayoutComponentEdge& owner) :
+  LayoutLocationRelative::LayoutLocationRelative(LayoutComponentEdge& owner) :
             cParent(owner) {
   }
 

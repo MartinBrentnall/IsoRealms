@@ -27,13 +27,7 @@
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 
 namespace IsoRealms {
-  GameControllerAxis::AxisChooser::AxisChooser(const Metadata& metadata) :
-            cMetadata(metadata) {
-  }
-  
-  GameControllerAxis::GameControllerAxis(const Metadata& metadata, IComponentData& owner) :
-            cMetadata(metadata),
-            cAxisChooser(metadata) {
+  GameControllerAxis::GameControllerAxis(IComponentData& owner) {
   }
 
   std::string GameControllerAxis::getName() const {
@@ -58,7 +52,7 @@ namespace IsoRealms {
   }
 
   std::string GameControllerAxis::getLocalizedName() const {
-    return getChoiceLabel(cMetadata, cDefAxis);
+    return getChoiceLabel(cDefAxis);
   }
   
   void GameControllerAxis::publish(ResourcePublisher& publisher) {
@@ -88,17 +82,19 @@ namespace IsoRealms {
   void GameControllerAxis::AxisChooser::forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const {
     for (unsigned int i = 0; i < sf::Joystick::AxisCount; i++) {
       const std::string mID = "A" + Utils::toString(i);
-      getTreeItemInfoFunction(TreeItemInfo{mID, GameControllerAxis::getChoiceLabel(cMetadata, i)});
+      getTreeItemInfoFunction(TreeItemInfo{mID, GameControllerAxis::getChoiceLabel(i)});
     }
   }
 
-  std::string GameControllerAxis::getChoiceLabel(const Metadata& metadata, unsigned int axis) {
-    const std::string mLabelTemplate = metadata.getPropertyData("AxisChoice").getName();
-    const std::string mIndex = Utils::toString(axis);
-    const std::string::size_type mPlaceholder = mLabelTemplate.find("%1");
-    if (mPlaceholder != std::string::npos) {
-      return mLabelTemplate.substr(0, mPlaceholder) + mIndex + mLabelTemplate.substr(mPlaceholder + 2);
-    }
-    return mLabelTemplate + mIndex;
+  // TODO: Support localized names.
+  std::string GameControllerAxis::getChoiceLabel(unsigned int axis) {
+    return "A" + Utils::toString(axis);
+    // const std::string mLabelTemplate = metadata.getPropertyData("AxisChoice").getName();
+    // const std::string mIndex = Utils::toString(axis);
+    // const std::string::size_type mPlaceholder = mLabelTemplate.find("%1");
+    // if (mPlaceholder != std::string::npos) {
+    //   return mLabelTemplate.substr(0, mPlaceholder) + mIndex + mLabelTemplate.substr(mPlaceholder + 2);
+    // }
+    // return mLabelTemplate + mIndex;
   }
 }

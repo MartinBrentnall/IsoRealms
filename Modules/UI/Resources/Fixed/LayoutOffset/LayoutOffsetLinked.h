@@ -31,7 +31,7 @@ namespace IsoRealms::UI {
    */
   class LayoutOffsetLinked : public ILayoutOffset {
     public:
-    LayoutOffsetLinked(const Metadata& metadata, LayoutComponentEdge& owner);
+    LayoutOffsetLinked(LayoutComponentEdge& owner);
 
     /****************************\
      * Implements ILayoutOffset *

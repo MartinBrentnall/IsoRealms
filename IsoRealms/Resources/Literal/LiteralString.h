@@ -21,7 +21,6 @@
 #include "IsoRealms/Resources/Type/IString.h"
 
 namespace IsoRealms {
-  class Metadata;
   class Project;
   
   /**

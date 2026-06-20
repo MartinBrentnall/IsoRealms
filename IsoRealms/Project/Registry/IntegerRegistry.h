@@ -23,7 +23,6 @@
 #include "IsoRealms/Resources/Providers/ResourceLiteral.h"
 #include "IsoRealms/Resources/Type/IInteger.h"
 #include "IsoRealms/IComponentData.h"
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Utils.h"
 
 #include "ResourceClientManager.h"
@@ -46,10 +45,6 @@ namespace IsoRealms {
     private:
     class Literal : public ResourceLiteral<IComponentData, IInteger> {
       public:
-      explicit Literal(const Metadata& metadata) :
-                cMetadata(metadata) {
-      }
-
       IInteger* createLiteralResource(IComponentData& owner, int value) const {
         return addResource([&owner, value]() {return std::make_unique<Instance>(owner.getProject(), value);});
       }
@@ -73,10 +68,6 @@ namespace IsoRealms {
         return false;
       }
 
-      const Metadata& getMetadata() const override {
-        return cMetadata;
-      }
-
       private:
 
       inline static const std::string JSON_VALUE = "value";
@@ -97,15 +88,8 @@ namespace IsoRealms {
         bool isDefaultConfiguration() const override;
         
         private:
-
-        // External interfaces.
-        const Metadata& cMetadata;
-
         int cValue; /// Integer value.
       };
-
-      // External interfaces.
-      const Metadata& cMetadata;
     };
 
     Literal cLiteral;

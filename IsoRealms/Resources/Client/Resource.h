@@ -25,7 +25,6 @@
 #include "IsoRealms/Editing/Property/IComponentDefiner.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IStateListener.h"
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Project/Registry/TreeItemInfo.h"
 #include "IsoRealms/Project/Registry/IResourceUser.h"
 
@@ -172,10 +171,6 @@ namespace IsoRealms {
         }
       }
       return cManager.getResourceManager().template isConfigurable<TYPE>(getRawID());
-    }
-
-    const Metadata& getPropertyMetadata() const override {
-      return cManager.getResourceManager().template getPropertyMetadata<TYPE>(cResource);
     }
 
     protected:

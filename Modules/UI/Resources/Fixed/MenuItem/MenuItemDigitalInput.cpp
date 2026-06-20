@@ -21,7 +21,7 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  MenuItemDigitalInput::MenuItemDigitalInput(const Metadata& metadata, Menu& menu) :
+  MenuItemDigitalInput::MenuItemDigitalInput(Menu& menu) :
             cHatHandler(menu.getComponentData().getProject().getApplication().getHatHandler()),
             cMenu(menu),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {

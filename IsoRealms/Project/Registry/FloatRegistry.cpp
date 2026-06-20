@@ -23,12 +23,10 @@
 
 namespace IsoRealms {
   FloatRegistry::FloatRegistry(Application& application) :
-            ResourceClientManager(&cLiteral, "Literal", "Literal"),
-            cLiteral(application.getMetadata("LiteralFloat")) {
+            ResourceClientManager(&cLiteral, "Literal", "Literal") {
   }
 
   FloatRegistry::Literal::Instance::Instance(Project& project, const float value) :
-            cMetadata(project.getApplication().getMetadata("LiteralFloat")),
             cValue(value) {
   }
 

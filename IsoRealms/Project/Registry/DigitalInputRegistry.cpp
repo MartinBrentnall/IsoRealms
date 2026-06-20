@@ -21,11 +21,7 @@
 #include "IsoRealms/Project/Project.h"
 
 namespace IsoRealms {
-  DigitalInputRegistry::DigitalInputRegistry(Project& project) :
-            cGameControllerButton(project.getApplication().getMetadata("GameControllerButton")),
-            cGameControllerHat(project.getApplication().getMetadata("GameControllerHat")),
-            cMouseButton(project.getApplication().getMetadata("MouseButton")),
-            cKeyboardKey(project.getApplication().getMetadata("KeyboardKey")) {
+  DigitalInputRegistry::DigitalInputRegistry(Project& project) {
     add(&cGameControllerButton, "GameControllerButton", "Game Controller Button");
     add(&cGameControllerHat,    "GameControllerHat",    "Game Controller Hat");
     add(&cMouseButton,          "MouseButton",          "Mouse Button");

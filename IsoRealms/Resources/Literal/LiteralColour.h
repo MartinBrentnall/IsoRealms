@@ -22,7 +22,6 @@
 #include <iostream>
 
 #include "IsoRealms/Resources/Type/IColour.h"
-#include "IsoRealms/Metadata.h"
 
 namespace IsoRealms {
   class Project;

@@ -21,7 +21,6 @@
 #include "IsoRealms/Exception/ArgumentException.h"
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Persistence/ParseException.h"
 #include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Persistence/JSONObject.h"
@@ -77,37 +76,6 @@ namespace IsoRealms {
     } else {
       cFullScreen         = false;
       cSelectedResolution = 0;
-    }
-
-
-    // Load application metadata.
-    std::locale mLocale("");
-    std::string mMetadataPath = "Metadata/IsoRealms." + mLocale.name();
-    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
-    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                                               ? mLastExtensionIndex
-                                               : mLastDashIndex;
-    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
-      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
-      mLastExtensionIndex = mMetadataPath.find_last_of('.');
-      mLastDashIndex = mMetadataPath.find_last_of('_');
-      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-                          ? mLastExtensionIndex
-                          : mLastDashIndex;
-    }
-
-    if (!System::fileExists(mMetadataPath + ".json", false)) {
-      mMetadataPath = "Metadata/IsoRealms.en";
-    }
-    JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-    JSONObject mRootObject(mMetadataDocument, mMetadataDocument.getDocument());
-    for (JSONThing mSectionThing : mRootObject) {
-      std::string mSectionName = mSectionThing.getName();
-      JSONObject mSectionObject = mSectionThing.getValue();
-      std::unique_ptr<Metadata> mSectionMetadata = std::make_unique<Metadata>();
-      mSectionMetadata->load(mSectionObject);
-      cMetadata[mSectionName] = std::move(mSectionMetadata);
     }
     resizeScreen();
   }
@@ -542,13 +510,5 @@ namespace IsoRealms {
   void Application::mainThreadCleanUp(std::function<void()> function) {
     std::lock_guard<std::mutex> mLockGuard(cCleanUpTaskMutex);
     cMainThreadCleanUpTasks.push(function);
-  }
-
-  const Metadata& Application::getMetadata(const std::string& key) const {
-    std::map<std::string, std::unique_ptr<Metadata>>::const_iterator mIterator = cMetadata.find(key);
-    if (mIterator == cMetadata.end()) {
-      throw ArgumentException("ERROR: Application::getMetadata: Metadata for key \"" + key + "\" not found.");
-    }
-    return *mIterator->second;
   }
 }

@@ -21,7 +21,6 @@
 #include <optional>
 #include <stdexcept>
 
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ProjectFile.h"
@@ -83,10 +82,6 @@ namespace IsoRealms {
     }, [this](const std::string& value) {
       setID(value);
     });
-  }
-
-  const Metadata& ComponentOwner::getPropertyMetadata() const {
-    throw std::runtime_error("ComponentOwner does not provide property metadata.");
   }
 
   Application& ComponentOwner::getApplication() {

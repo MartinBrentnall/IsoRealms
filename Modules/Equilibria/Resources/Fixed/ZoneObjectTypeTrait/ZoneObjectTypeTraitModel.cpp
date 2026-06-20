@@ -23,7 +23,7 @@
 #include "Modules/Equilibria/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Equilibria {
-  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(const Metadata& metadata, ZoneObjectType& type) :
+  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(ZoneObjectType& type) :
             cDefModel(type.getComponentData()) {
   }
   

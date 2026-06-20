@@ -37,7 +37,6 @@ namespace IsoRealms {
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
     void openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) override;
-    void openProperties(IComponentData& owner, const std::string& name, const Metadata& metadata, std::function<void(IComponentDefiner&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
     void refreshProperties() override;

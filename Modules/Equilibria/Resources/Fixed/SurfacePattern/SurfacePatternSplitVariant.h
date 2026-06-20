@@ -31,7 +31,7 @@ namespace IsoRealms::Equilibria {
 
   class SurfacePatternSplitVariant : public ISurfacePattern {
     public:
-    SurfacePatternSplitVariant(const Metadata& metadata, TerrainType& owner);
+    SurfacePatternSplitVariant(TerrainType& owner);
 
     /******************************\
      * Implements ISurfacePattern *

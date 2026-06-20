@@ -28,7 +28,7 @@ namespace IsoRealms::Equilibria {
 
   class ZoneObjectTypeTraitPhysics : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitPhysics(const Metadata& metadata, ZoneObjectType& type);
+    ZoneObjectTypeTraitPhysics(ZoneObjectType& type);
     
     // Interface to be used by instances.
     std::string getMovableID() const;

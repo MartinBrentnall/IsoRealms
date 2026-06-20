@@ -21,7 +21,7 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  MenuItemAction::MenuItemAction(const Metadata& metadata, Menu& menu) :
+  MenuItemAction::MenuItemAction(Menu& menu) :
             cMenu(menu),
             cDefAction(menu.getComponentData().getDummyActionContext()),
             cLuaBinding(menu.getComponentData().getProject().getLuaState(), this) {

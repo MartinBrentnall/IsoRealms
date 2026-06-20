@@ -31,7 +31,7 @@ namespace IsoRealms::Equilibria {
 
   class CameraVariant final : public ICamera {
     public:
-    CameraVariant(const Metadata& metadata, WorldView& view);
+    CameraVariant(WorldView& view);
 
     /**********************\
      * Implements ICamera *

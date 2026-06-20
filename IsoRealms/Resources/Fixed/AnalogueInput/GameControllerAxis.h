@@ -26,7 +26,6 @@
 #include "IsoRealms/Editing/Property/IOptionalObject.h"
 
 namespace IsoRealms {
-  class Metadata;
   class IComponentData;
 
   /**
@@ -34,7 +33,7 @@ namespace IsoRealms {
    */
   class GameControllerAxis : public IAnalogueInput {
     public:
-    GameControllerAxis(const Metadata& metadata, IComponentData& owner);
+    GameControllerAxis(IComponentData& owner);
 
     /*****************************\
      * Implements IAnalogueInput *
@@ -52,21 +51,16 @@ namespace IsoRealms {
     private:
     class AxisChooser : public IOptionalObject {
       public:
-      AxisChooser(const Metadata& metadata);
       void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const override;
-
-      private:
-      const Metadata& cMetadata;
     };
 
     // External interfaces.
-    const Metadata& cMetadata;
     AxisChooser cAxisChooser;
 
     // Definition data.
     unsigned int cDefAxis = 0;     /// Axis of this mapping.
     float cDefDeadZone    = 0.16f; /// Dead zone of this mapping
 
-    static std::string getChoiceLabel(const Metadata& metadata, unsigned int axis);
+    static std::string getChoiceLabel(unsigned int axis);
   };
 }

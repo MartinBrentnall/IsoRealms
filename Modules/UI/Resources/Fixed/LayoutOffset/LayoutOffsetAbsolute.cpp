@@ -19,7 +19,7 @@
 #include "LayoutOffsetAbsolute.h"
 
 namespace IsoRealms::UI {
-  LayoutOffsetAbsolute::LayoutOffsetAbsolute(const Metadata& metadata, LayoutComponentEdge& owner) {
+  LayoutOffsetAbsolute::LayoutOffsetAbsolute(LayoutComponentEdge& owner) {
     // Nothing to do.
   }
 

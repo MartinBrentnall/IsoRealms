@@ -67,10 +67,6 @@ namespace IsoRealms::UI {
     cMenuItem->defineResource(definer);
   }
 
-  const IsoRealms::Metadata& MenuItem::getPropertyMetadata() const {
-    return cUI.getPropertyMetadata(cMenuItem);
-  }
-
   bool MenuItem::renderTreeItemIcon() const {
     return false;
   }

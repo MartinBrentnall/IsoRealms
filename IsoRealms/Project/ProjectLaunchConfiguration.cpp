@@ -30,12 +30,12 @@ namespace IsoRealms {
     return cDefName;
   }
 
-  void ProjectLaunchConfiguration::getProperties(IComponentDefiner& definer, const Metadata& metadata, Project& project) {
+  void ProjectLaunchConfiguration::define(IComponentDefiner& definer, Project& project) {
     definer.propertyString(  "LaunchConfigurationName", [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &project](const std::string& value) {return !project.isLaunchConfigurationNameUsed(value, this);});
     definer.propertyResource("LaunchConfigurationOwner", cDefOwner);
-    definer.array(           "LaunchConfigurationOptionAdd", cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &definer, &metadata](Option& option) {
-      definer.scope(         "LaunchConfigurationOption", option.getName(), [this, &metadata, &option](IComponentDefiner& definer) {
-        option.getProperties(definer,  metadata, *this);
+    definer.array(           "LaunchConfigurationOptionAdd", cDefOptions, [](const std::unique_ptr<Option>& i)->Option& {return *i;}, [this, &project, &definer](Option& option) {
+      definer.scope(         "LaunchConfigurationOption", option.getName(), [this, &option](IComponentDefiner& definer) {
+        option.getProperties(definer, *this);
       }, [this, &option]() {
         Utils::removeElementUnique(cDefOptions, &option);
       });
@@ -87,7 +87,7 @@ namespace IsoRealms {
     return cDefValue->getValue();
   }
 
-  void ProjectLaunchConfiguration::Option::getProperties(IComponentDefiner& definer, const Metadata& metadata, ProjectLaunchConfiguration& launch) {
+  void ProjectLaunchConfiguration::Option::getProperties(IComponentDefiner& definer, ProjectLaunchConfiguration& launch) {
     definer.propertyString(  "LaunchConfigurationOptionName",  [this]() {return cDefName;}, [this](const std::string& value) {cDefName = value;}, "", [this, &launch](const std::string& value) {return !launch.isOptionNameUsed(value, this);});
     definer.propertyResource("LaunchConfigurationOptionValue", cDefValue);
   }

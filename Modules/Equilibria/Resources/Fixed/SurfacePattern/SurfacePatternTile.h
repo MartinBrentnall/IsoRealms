@@ -31,7 +31,7 @@ namespace IsoRealms::Equilibria {
 
   class SurfacePatternTile : public ISurfacePattern {
     public:
-    SurfacePatternTile(const Metadata& metadata, TerrainType& owner);
+    SurfacePatternTile(TerrainType& owner);
 
     /******************************\
      * Implements ISurfacePattern *

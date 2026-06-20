@@ -36,10 +36,9 @@ namespace IsoRealms::Basics {
    */
   class SequenceTrackAudio final : public SequenceTrackBase<SequenceTrackAudio, SequenceTrackAudioEvent, SequenceTrackAudioInstance> {
     public:
-    SequenceTrackAudio(const Metadata& metadata, Sequence& sequence);
+    SequenceTrackAudio(Sequence& sequence);
 
     float getVolume() const;
-    const Metadata& getMetadata() const;
     ISequenceTrackEvent* getEvent(unsigned int time);
 
     /*****************************\
@@ -49,9 +48,6 @@ namespace IsoRealms::Basics {
     void renderIcon() const override;
     void render(float left, float bottom, float right, float top, double startTime, double endTime) const override;
     private:
-
-    // External interfaces.
-    const Metadata& cMetadata;
 
     // Definition data.
     Float cDefVolume; // TODO: Should be moved to instance?

@@ -18,7 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/Metadata.h"
 #include "IsoRealms/Resources/Client/ComponentOwner.h"
 #include "IsoRealms/Types.h"
 
@@ -31,7 +30,7 @@ namespace IsoRealms {
     public:
     ProjectLaunchConfiguration(Project& parent, ProjectFile& owner);
     std::string getName() const;
-    void getProperties(IComponentDefiner& definer, const Metadata& metadata, Project& project);
+    void define(IComponentDefiner& definer, Project& project);
     bool isOwnedBy(const ProjectFile& project) const;
     void getOptions(Options& options) const;
 
@@ -41,7 +40,7 @@ namespace IsoRealms {
       Option(Project& parent, ProjectLaunchConfiguration& launch);
       std::string getName() const;
       std::string getValue() const;
-      void getProperties(IComponentDefiner& definer, const Metadata& metadata, ProjectLaunchConfiguration& launch);
+      void getProperties(IComponentDefiner& definer, ProjectLaunchConfiguration& launch);
 
       private:
       std::string cDefName;

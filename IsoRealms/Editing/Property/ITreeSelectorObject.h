@@ -28,7 +28,6 @@
 namespace IsoRealms {
   class Application;
   class IComponentDefiner;
-  class Metadata;
 
   class ITreeSelectorObject {
     public:
@@ -38,7 +37,6 @@ namespace IsoRealms {
     virtual bool renderTreeItemIcon() const = 0;
     virtual bool hasConfiguration() const = 0;
     virtual void defineTreeItem(IComponentDefiner& definer) = 0;
-    virtual const Metadata& getPropertyMetadata() const = 0;
     virtual TreeItemInfo getTreeItemInfo() const = 0;
     virtual Application& getApplication() = 0;
     virtual void forEachAvailableTreeItem(std::function<void(const TreeItemInfo&)> getTreeItemInfoFunction) const = 0;
