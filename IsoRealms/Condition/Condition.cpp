@@ -18,55 +18,22 @@
  */
 #include "Condition.h"
 
+#include "IsoRealms/Editing/Property/IComponentDefiner.h"
 #include "IsoRealms/Exception/ArgumentException.h"
-#include "IsoRealms/Persistence/JSONArray.h"
-#include "IsoRealms/Persistence/JSONObject.h"
-#include "IsoRealms/Persistence/JSONValue.h"
+#include "IsoRealms/Project/Options.h"
 
 namespace IsoRealms {
   Condition::Condition(bool andGate, bool negated) :
-            cAnd(andGate),
-            cNegated(negated) {
+            cDefAnd(andGate),
+            cDefNegated(negated) {
   }
 
   Condition::Condition(const Condition& condition) :
-            cAnd(condition.cAnd),
-            cNegated(condition.cNegated),
-            cCriteria(condition.cCriteria) {
-    for (const Condition& mCondition : condition.cConditions) {
-      cConditions.emplace_back(Condition(mCondition));
-    }
-  }
-
-  Condition::Condition(JSONObject object, std::vector<ConditionElement*> elements) {
-    std::map<std::string, ConditionElement*> mElements;
-    for (unsigned int i = 0; i < elements.size(); i++) {
-      mElements[elements[i]->getName()] = elements[i];
-    }
-    cNegated = object.getBoolean(JSON_NEGATED);
-    cAnd = object.getString(JSON_OPERATOR) == OPERATOR_AND;
-
-    if (object.hasMember(JSON_SUB_CONDITIONS)) {
-      for (JSONValue mSubConditionValue : object.getArray(JSON_SUB_CONDITIONS)) {
-        cConditions.emplace_back(Condition(mSubConditionValue.getObject(), elements)); // TODO: Make constructor pass map instead
-      }
-    }
-
-    if (object.hasMember(JSON_INPUTS)) {
-      for (JSONValue mCriteriaValue : object.getArray(JSON_INPUTS)) {
-        JSONObject mCriteriaObject = mCriteriaValue.getObject();
-        std::string mName = mCriteriaObject.getString(JSON_INPUT);
-        bool mNegated = mCriteriaObject.getBoolean(JSON_NEGATED);
-        std::map<std::string, ConditionElement*>::iterator i = mElements.find(mName);
-        if (i == mElements.end()) {
-          std::cout << "Element \"" << mName << "\" not in list of conditions.  Available conditions:" << std::endl;
-          for (unsigned int i = 0; i < elements.size(); i++) {
-            std::cout << i << ":      " << elements[i]->getName() << std::endl;
-          }
-          throw ArgumentException("ERROR: Condition::Condition: Condition element \"" + mName + "\" is not in the specified list of elements.");
-        }
-        cCriteria.insert(mNegated ? i->second->getNegativeClause() : i->second->getPositiveClause());
-      }
+            cDefAnd(condition.cDefAnd),
+            cDefNegated(condition.cDefNegated),
+            cDefCriteria(condition.cDefCriteria) {
+    for (const Condition& mCondition : condition.cDefConditions) {
+      cDefConditions.emplace_back(Condition(mCondition));
     }
   }
 
@@ -78,8 +45,8 @@ namespace IsoRealms {
 
     unsigned char mAttribs;
     cache.read(reinterpret_cast<char*>(&mAttribs), sizeof(mAttribs));
-    cAnd     = mAttribs & ATTRIB_AND;
-    cNegated = mAttribs & ATTRIB_NEGATE;
+    cDefAnd     = mAttribs & ATTRIB_AND;
+    cDefNegated = mAttribs & ATTRIB_NEGATE;
 
     char mNextEntity;
     cache.read(reinterpret_cast<char*>(&mNextEntity), sizeof(mNextEntity));
@@ -102,69 +69,108 @@ namespace IsoRealms {
           throw ArgumentException("ERROR: Condition::Condition: Condition element \"" + mName + "\" is not in the specified list of elements.");
         }
         if (mNegated) {
-          cCriteria.insert(i->second->getNegativeClause());
+          cDefCriteria.insert(i->second->getNegativeClause());
         } else {
-          cCriteria.insert(i->second->getPositiveClause());
+          cDefCriteria.insert(i->second->getPositiveClause());
         }
       } else if (mNextEntity == conditionType) {
-        cConditions.emplace_back(Condition(cache, elements, conditionType, elementType, endType)); // TODO: Make constructor pass map instead
+        cDefConditions.emplace_back(Condition(cache, elements, conditionType, elementType, endType)); // TODO: Make constructor pass map instead
       }
       cache.read(reinterpret_cast<char*>(&mNextEntity), sizeof(mNextEntity));
     }
   }
 
-  void Condition::save(JSONObject object) {
-    if (cCriteria.size() + cConditions.size() > 1) {
-      object.addString(JSON_OPERATOR, cAnd ? OPERATOR_AND : OPERATOR_OR);
-    }
-    object.addBoolean(JSON_NEGATED, cNegated);
+  void Condition::define(IComponentDefiner& definer, const std::vector<ConditionElement*>& availableElements) {
 
-    if (!cCriteria.empty()) {
-      JSONArray mCriteriaArray = object.addArray(JSON_INPUTS);
-      for (ConditionElement::Clause* mCriteria : cCriteria) {
-        JSONObject mCriteriaObject = mCriteriaArray.addObject();
-        mCriteria->save(mCriteriaObject);
+    // If we're loading persisted values, clear any existing criteria and conditions.
+    if (definer.loadsPersistedValues()) {
+      cDefCriteria.clear();
+      cDefConditions.clear();
+    }
+
+    definer.propertyBoolean("negated", [this]() {return cDefNegated;}, [this](bool value) {cDefNegated = value;});
+
+    // Operator is only applicable if there are multiple criteria or conditions.
+    if (!definer.savesPersistedValues() || cDefCriteria.size() + cDefConditions.size() > 1) {
+      definer.propertyList("operator",
+                           {OPERATOR_AND, OPERATOR_OR},
+                           [this]() {return cDefAnd ? OPERATOR_AND : OPERATOR_OR;},
+                           [this](const std::string& value) {cDefAnd = value == OPERATOR_AND;},
+                           OPERATOR_AND);
+    }
+
+    // Handle sub-conditions as an array.
+    Options mOptionalArrayHint;
+    mOptionalArrayHint.addOption(Options::PROPERTY_OPTIONAL, "true");
+    definer.array("subConditions", cDefConditions, [](const Condition& condition) -> Condition& {return const_cast<Condition&>(condition);}, [&definer, &availableElements](Condition& condition) {
+      condition.define(definer, availableElements);
+    }, [this]() -> Condition& {
+      return cDefConditions.emplace_back(true);
+    }, mOptionalArrayHint);
+
+    // TODO: Criteria handling is currently indirect via InputDefinition.  This should be refactored to be more direct.
+    // Everything below this point should be refactored to be more direct.
+    struct InputDefinition {
+      std::string name;
+      bool negated = false;
+    };
+    
+    std::vector<InputDefinition> mInputs;
+    if (definer.savesPersistedValues()) {
+      for (ConditionElement::Clause* mCriteria : cDefCriteria) {
+        mInputs.push_back({mCriteria->getElement()->getName(), mCriteria->isNegated()});
       }
     }
 
-    if (!cConditions.empty()) {
-      JSONArray mSubConditionsArray = object.addArray(JSON_SUB_CONDITIONS);
-      for (unsigned int i = 0; i < cConditions.size(); i++) {
-        JSONObject mSubConditionObject = mSubConditionsArray.addObject();
-        cConditions[i].save(mSubConditionObject);
-      }
+    std::map<std::string, ConditionElement*> mElementsByName;
+    for (ConditionElement* mElement : availableElements) {
+      mElementsByName[mElement->getName()] = mElement;
     }
+
+    definer.array("inputs", mInputs, [](const InputDefinition& input) -> InputDefinition& {return const_cast<InputDefinition&>(input);}, [&definer, &mElementsByName, this](InputDefinition& input) {
+      definer.propertyString("input", [ &input]() {return input.name;}, [ &input](const std::string& value) {input.name = value;});
+      definer.propertyBoolean("negated", [ &input]() {return input.negated;}, [ &input](bool value) {input.negated = value;});
+      if (definer.loadsPersistedValues()) {
+        std::map<std::string, ConditionElement*>::iterator mElement = mElementsByName.find(input.name);
+        if (mElement == mElementsByName.end()) {
+          throw ArgumentException("ERROR: Condition::define: Condition element \"" + input.name + "\" is not in the specified list of elements.");
+        }
+        cDefCriteria.insert(input.negated ? mElement->second->getNegativeClause() : mElement->second->getPositiveClause());
+      }
+    }, [&mInputs]() -> InputDefinition& {
+      return mInputs.emplace_back();
+    }, mOptionalArrayHint);
   }
 
   void Condition::saveCache(std::ostream& cache, unsigned char conditionType, unsigned char elementType, unsigned char endType) const {
     cache.write(reinterpret_cast<const char*>(&conditionType), sizeof(conditionType));
     unsigned char mAttribs = 0;
-    if (cAnd)     {mAttribs |= ATTRIB_AND;}
-    if (cNegated) {mAttribs |= ATTRIB_NEGATE;}
+    if (cDefAnd)     {mAttribs |= ATTRIB_AND;}
+    if (cDefNegated) {mAttribs |= ATTRIB_NEGATE;}
     cache.write(reinterpret_cast<const char*>(&mAttribs), sizeof(mAttribs));
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
       mCriteria->saveCache(cache, elementType);
     }
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      cConditions[i].saveCache(cache, conditionType, elementType, endType);
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      cDefConditions[i].saveCache(cache, conditionType, elementType, endType);
     }
     cache.write(reinterpret_cast<const char*>(&endType), sizeof(endType));
   }
 
   std::vector<Condition> Condition::getConditions() {
-    return cConditions;
+    return cDefConditions;
   }
 
   std::set<ConditionElement::Clause*> Condition::getConditionElements() {
-    return cCriteria;
+    return cDefCriteria;
   }
 
   bool Condition::isNegated() {
-    return cNegated;
+    return cDefNegated;
   }
 
   bool Condition::isAnd() {
-    return cAnd;
+    return cDefAnd;
   }
 
   bool Condition::operator==(const Condition& condition) const {
@@ -172,17 +178,17 @@ namespace IsoRealms {
     Condition mThat(condition);
     mThis.simplify();
     mThat.simplify();
-    if (mThis.cCriteria.size() != mThat.cCriteria.size() || mThis.cConditions.size() != mThat.cConditions.size() || mThis.cNegated != mThat.cNegated) {
+    if (mThis.cDefCriteria.size() != mThat.cDefCriteria.size() || mThis.cDefConditions.size() != mThat.cDefConditions.size() || mThis.cDefNegated != mThat.cDefNegated) {
       return false;
     }
 
-    if (mThis.cCriteria.size() + mThis.cConditions.size() != 1 && mThis.cAnd != mThat.cAnd) {
+    if (mThis.cDefCriteria.size() + mThis.cDefConditions.size() != 1 && mThis.cDefAnd != mThat.cDefAnd) {
       return false;
     }
     // TODO: This test assumes that simplify has sorted the elements, which simplify doesn't do yet.
-    std::set<ConditionElement::Clause*>::iterator mThisElement = mThis.cCriteria.begin();
-    std::set<ConditionElement::Clause*>::iterator mThatElement = mThat.cCriteria.begin();
-    while (mThisElement != mThis.cCriteria.end()) {
+    std::set<ConditionElement::Clause*>::iterator mThisElement = mThis.cDefCriteria.begin();
+    std::set<ConditionElement::Clause*>::iterator mThatElement = mThat.cDefCriteria.begin();
+    while (mThisElement != mThis.cDefCriteria.end()) {
       if (**mThisElement != **mThatElement) {
         return false;
       }
@@ -190,8 +196,8 @@ namespace IsoRealms {
       mThatElement++;
     }
     // TODO: This test assumes that simplify has sorted the conditions, which simplify doesn't do yet.
-    for (unsigned int i = 0; i < mThis.cConditions.size(); i++) {
-      if (mThis.cConditions[i] != mThat.cConditions[i]) {
+    for (unsigned int i = 0; i < mThis.cDefConditions.size(); i++) {
+      if (mThis.cDefConditions[i] != mThat.cDefConditions[i]) {
         return false;
       }
     }
@@ -204,11 +210,11 @@ namespace IsoRealms {
 
   std::set<IBoolean*> Condition::getInputs() {
     std::set<IBoolean*> mInputs;
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      std::set<IBoolean*> mSubInputs = cConditions[i].getInputs();
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      std::set<IBoolean*> mSubInputs = cDefConditions[i].getInputs();
       mInputs.insert(mSubInputs.begin(), mSubInputs.end());
     }
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
       IBoolean* mInput = mCriteria->getElement()->getInputAddress();
       mInputs.insert(mInput);
     }
@@ -223,13 +229,13 @@ namespace IsoRealms {
 
     // Create a condition based on this condition AND the split condition
     Condition mCondition(true);
-    mCondition.cConditions.emplace_back(Condition(*this));
-    mCondition.cConditions.emplace_back(Condition(condition.value()));
+    mCondition.cDefConditions.emplace_back(Condition(*this));
+    mCondition.cDefConditions.emplace_back(Condition(condition.value()));
 
     // Create a condition based on this condition AND the negation of the split condition
     Condition mOpposingCondition(true);
-    mOpposingCondition.cConditions.emplace_back(Condition(*this));
-    mOpposingCondition.cConditions.emplace_back(Condition(condition->negate()));
+    mOpposingCondition.cDefConditions.emplace_back(Condition(*this));
+    mOpposingCondition.cDefConditions.emplace_back(Condition(condition->negate()));
 
     if (!mCondition.canBe(true) || !mOpposingCondition.canBe(true)) {
       return mSplitConditions;
@@ -244,10 +250,10 @@ namespace IsoRealms {
 
   std::set<ConditionElement*> Condition::getAllConditionElements() const {
     std::set<ConditionElement*> mElements;
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
       mElements.insert(mCriteria->getElement());
     }
-    for (const Condition& mSubCondition : cConditions) {
+    for (const Condition& mSubCondition : cDefConditions) {
       std::set<ConditionElement*> mSubElements = mSubCondition.getAllConditionElements();
       mElements.insert(mSubElements.begin(), mSubElements.end());
     }
@@ -273,14 +279,14 @@ namespace IsoRealms {
   }
 
   void Condition::checkForAbsoluteConditions() {
-    for (int i = static_cast<int>(cConditions.size()) - 1; i >= 0; i--) {
-      if (cConditions[i].isAbsolute()) {
-        if (cConditions[i].isTrue() == cAnd) {
-          cConditions.erase(cConditions.begin() + i);
+    for (int i = static_cast<int>(cDefConditions.size()) - 1; i >= 0; i--) {
+      if (cDefConditions[i].isAbsolute()) {
+        if (cDefConditions[i].isTrue() == cDefAnd) {
+          cDefConditions.erase(cDefConditions.begin() + i);
         } else {
-          cConditions.clear();
-          cCriteria.clear();
-          cNegated = !cNegated;
+          cDefConditions.clear();
+          cDefCriteria.clear();
+          cDefNegated = !cDefNegated;
           return;
         }
       }
@@ -288,34 +294,34 @@ namespace IsoRealms {
   }
 
   void Condition::raiseCondition(int index) {
-    for (unsigned int i = 0; i < cConditions[index].cConditions.size(); i++) {
-      cConditions.emplace_back(Condition(cConditions[index].cConditions[i]));
+    for (unsigned int i = 0; i < cDefConditions[index].cDefConditions.size(); i++) {
+      cDefConditions.emplace_back(Condition(cDefConditions[index].cDefConditions[i]));
     }
-    for (ConditionElement::Clause* mCriteria : cConditions[index].cCriteria) {
-      if (cConditions[index].cNegated) {
-        cCriteria.insert(mCriteria->getNegatedClause());
+    for (ConditionElement::Clause* mCriteria : cDefConditions[index].cDefCriteria) {
+      if (cDefConditions[index].cDefNegated) {
+        cDefCriteria.insert(mCriteria->getNegatedClause());
       } else {
-        cCriteria.insert(mCriteria);
+        cDefCriteria.insert(mCriteria);
       }
     }
-    cConditions.erase(cConditions.begin() + index);
+    cDefConditions.erase(cDefConditions.begin() + index);
   }
 
   void Condition::raiseConditions() {
-    for (int i = static_cast<int>(cConditions.size()) - 1; i >= 0; i--) {
-      cConditions[i].raiseConditions();
-      if ((cConditions[i].cConditions.empty() && cConditions[i].cCriteria.size() == 1) || (cConditions[i].cAnd == cAnd && cConditions[i].cNegated == cNegated)) {
+    for (int i = static_cast<int>(cDefConditions.size()) - 1; i >= 0; i--) {
+      cDefConditions[i].raiseConditions();
+      if ((cDefConditions[i].cDefConditions.empty() && cDefConditions[i].cDefCriteria.size() == 1) || (cDefConditions[i].cDefAnd == cDefAnd && cDefConditions[i].cDefNegated == cDefNegated)) {
         raiseCondition(i);
       }
     }
 
-    if (cConditions.size() == 1 && cCriteria.empty()) {
-      cCriteria   = cConditions[0].cCriteria;
-      cAnd        = cConditions[0].cAnd;
-      for (unsigned int i = 0; i < cConditions[0].cConditions.size(); i++) {
-        cConditions.emplace_back(Condition(cConditions[0].cConditions[i]));
+    if (cDefConditions.size() == 1 && cDefCriteria.empty()) {
+      cDefCriteria   = cDefConditions[0].cDefCriteria;
+      cDefAnd        = cDefConditions[0].cDefAnd;
+      for (unsigned int i = 0; i < cDefConditions[0].cDefConditions.size(); i++) {
+        cDefConditions.emplace_back(Condition(cDefConditions[0].cDefConditions[i]));
       }
-      cConditions.erase(cConditions.begin());
+      cDefConditions.erase(cDefConditions.begin());
     }
   }
 
@@ -324,14 +330,14 @@ namespace IsoRealms {
     // TODO: This seems to assume AND gate...  for OR gate, conflicting elements should simply be removed
     std::set<IBoolean*> mPositiveElements;
     std::set<IBoolean*> mNegativeElements;
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
       IBoolean* mAddress = mCriteria->getElement()->getInputAddress();
       std::set<IBoolean*>& mSetToAddTo = mCriteria->isNegated() ? mNegativeElements : mPositiveElements;
       std::set<IBoolean*>& mOtherSet   = mCriteria->isNegated() ? mPositiveElements : mNegativeElements;
       if (mOtherSet.find(mAddress) != mOtherSet.end()) {
-        cCriteria.clear();
-        cConditions.clear();
-        cNegated = !cNegated;
+        cDefCriteria.clear();
+        cDefConditions.clear();
+        cDefNegated = !cDefNegated;
         return;
       }
       mSetToAddTo.insert(mAddress);
@@ -344,64 +350,64 @@ namespace IsoRealms {
     // TODO: We should really check ALL subconditions recursively!
     // TODO: How should this deal with OR conditions?  I've only thought this through using AND so far
     // From here we assume that the gate of the subcondition is different to this one!
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      for (ConditionElement::Clause* mSubCriteria : cConditions[i].cCriteria) {
-        for (ConditionElement::Clause* mCriteria : cCriteria) {
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      for (ConditionElement::Clause* mSubCriteria : cDefConditions[i].cDefCriteria) {
+        for (ConditionElement::Clause* mCriteria : cDefCriteria) {
           if (mCriteria->getElement()->getInputAddress() == mSubCriteria->getElement()->getInputAddress() && mCriteria->isNegated() != mSubCriteria->isNegated()) {
             cCriteriaToRemove.push_back(mSubCriteria);
           }
         }
       }
       for (unsigned int j = 0; j < cCriteriaToRemove.size(); j++) {
-        cConditions[i].cCriteria.erase(cCriteriaToRemove[j]);
+        cDefConditions[i].cDefCriteria.erase(cCriteriaToRemove[j]);
       }
       cCriteriaToRemove.clear();
     }
   }
 
   void Condition::negateEverything() {
-    cNegated = !cNegated;
-    cAnd = !cAnd;
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      cConditions[i].cNegated = !cConditions[i].cNegated;
+    cDefNegated = !cDefNegated;
+    cDefAnd = !cDefAnd;
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      cDefConditions[i].cDefNegated = !cDefConditions[i].cDefNegated;
     }
     std::set<ConditionElement::Clause*> mNegatedElements;
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
       ConditionElement::Clause* mNegatedElement = mCriteria->getNegatedClause();
       mNegatedElements.insert(mNegatedElement);
     }
-    cCriteria = mNegatedElements;
+    cDefCriteria = mNegatedElements;
   }
 
   void Condition::convertNegatedConditions() {
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      if (cConditions[i].cNegated) {
-        cConditions[i].negateEverything();
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      if (cDefConditions[i].cDefNegated) {
+        cDefConditions[i].negateEverything();
       }
     }
-    if (cNegated) {
+    if (cDefNegated) {
       negateEverything();
     }
   }
 
   void Condition::removeDuplicates() {
     std::vector<ConditionElement::Clause*> mElementsToRemove;
-    for (std::set<ConditionElement::Clause*>::iterator i = cCriteria.begin(); i != cCriteria.end(); i++) {
-      for (std::set<ConditionElement::Clause*>::iterator j = i; j != cCriteria.end(); j++) {
+    for (std::set<ConditionElement::Clause*>::iterator i = cDefCriteria.begin(); i != cDefCriteria.end(); i++) {
+      for (std::set<ConditionElement::Clause*>::iterator j = i; j != cDefCriteria.end(); j++) {
         if (i != j && **i == **j) {
           mElementsToRemove.push_back(*j);
         }
       }
     }
     for (unsigned int i = 0; i < mElementsToRemove.size(); i++) {
-      cCriteria.erase(mElementsToRemove[i]);
+      cDefCriteria.erase(mElementsToRemove[i]);
     }
   }
 
   void Condition::simplify(int depth) {
     convertNegatedConditions();
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      cConditions[i].simplify(depth + 1);
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      cDefConditions[i].simplify(depth + 1);
     }
     checkForAbsoluteConditions();
     raiseConditions();
@@ -414,60 +420,60 @@ namespace IsoRealms {
   }
 
   bool Condition::isAbsolute() const {
-    return cCriteria.empty() && cConditions.empty();
+    return cDefCriteria.empty() && cDefConditions.empty();
   }
 
   bool Condition::isTrue() const {
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
-      if (cAnd != mCriteria->isTrue()) {
-        return cAnd == cNegated;
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
+      if (cDefAnd != mCriteria->isTrue()) {
+        return cDefAnd == cDefNegated;
       }
     }
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      if (cAnd != cConditions[i].isTrue()) {
-        return cAnd == cNegated;
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      if (cDefAnd != cDefConditions[i].isTrue()) {
+        return cDefAnd == cDefNegated;
       }
     }
-    return cAnd != cNegated;
+    return cDefAnd != cDefNegated;
   }
 
   bool Condition::isTestTrue() const {
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
-      if (cAnd != mCriteria->isTestTrue()) {
-        return cAnd == cNegated;
+    for (ConditionElement::Clause* mCriteria : cDefCriteria) {
+      if (cDefAnd != mCriteria->isTestTrue()) {
+        return cDefAnd == cDefNegated;
       }
     }
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      if (cAnd != cConditions[i].isTestTrue()) {
-        return cAnd == cNegated;
+    for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+      if (cDefAnd != cDefConditions[i].isTestTrue()) {
+        return cDefAnd == cDefNegated;
       }
     }
-    return cAnd != cNegated;
+    return cDefAnd != cDefNegated;
   }
 
   Condition Condition::compose(std::optional<Condition>& condition) {
     if (!condition.has_value()) {
-      return cAnd ? Condition(*this) : Condition(true);
+      return cDefAnd ? Condition(*this) : Condition(true);
     }
     Condition mNewCondition(*this);
-    if (cAnd) {
-      mNewCondition.cConditions.clear();
-      mNewCondition.cCriteria.clear();
-      mNewCondition.cAnd = false;
-      mNewCondition.cNegated = false;
-      mNewCondition.cConditions.emplace_back(Condition(*this));
+    if (cDefAnd) {
+      mNewCondition.cDefConditions.clear();
+      mNewCondition.cDefCriteria.clear();
+      mNewCondition.cDefAnd = false;
+      mNewCondition.cDefNegated = false;
+      mNewCondition.cDefConditions.emplace_back(Condition(*this));
     }
-    mNewCondition.cConditions.emplace_back(Condition(*condition));
+    mNewCondition.cDefConditions.emplace_back(Condition(*condition));
     mNewCondition.simplify();
     return mNewCondition;
   }
 
   void Condition::add(Condition& condition) {
-    cConditions.emplace_back(Condition(condition));
+    cDefConditions.emplace_back(Condition(condition));
   }
 
   void Condition::add(ConditionElement::Clause* criteria) {
-    cCriteria.insert(criteria);
+    cDefCriteria.insert(criteria);
   }
 
   bool Condition::isCompatibleWith(std::optional<Condition>& condition) {
@@ -476,15 +482,15 @@ namespace IsoRealms {
     }
 
     Condition mBothConditions(true);
-    mBothConditions.cConditions.emplace_back(Condition(*this));
-    mBothConditions.cConditions.emplace_back(Condition(condition.value()));
+    mBothConditions.cDefConditions.emplace_back(Condition(*this));
+    mBothConditions.cDefConditions.emplace_back(Condition(condition.value()));
 
     return mBothConditions.canBe(true);
   }
 
   Condition Condition::negate() {
     Condition mNegatedCondition(*this);
-    mNegatedCondition.cNegated = !cNegated;
+    mNegatedCondition.cDefNegated = !cDefNegated;
     return mNegatedCondition;
   }
 
@@ -498,23 +504,23 @@ namespace IsoRealms {
       std::cout << "    ";
     }
     if (isAbsolute()) {
-      std::cout << (cAnd != cNegated ? "true" : "false");
+      std::cout << (cDefAnd != cDefNegated ? "true" : "false");
     } else {
-      if (cNegated) {
+      if (cDefNegated) {
         std::cout << "!";
       }
       std::cout << "(";
       unsigned int mCount = 0;
-      for (std::set<ConditionElement::Clause*>::iterator i = cCriteria.begin(); i != cCriteria.end(); i++) {
+      for (std::set<ConditionElement::Clause*>::iterator i = cDefCriteria.begin(); i != cDefCriteria.end(); i++) {
         (*i)->debug();
-        if (mCount++ != cCriteria.size() - 1 || !cConditions.empty()) {
-          std::cout << " " << (cAnd ? "and" : "or") << " ";
+        if (mCount++ != cDefCriteria.size() - 1 || !cDefConditions.empty()) {
+          std::cout << " " << (cDefAnd ? "and" : "or") << " ";
         }
       }
-      for (unsigned int i = 0; i < cConditions.size(); i++) {
-        cConditions[i].debug(depth + 1);
-        if (i != cConditions.size() - 1) {
-          std::cout << " " << (cAnd ? "and" : "or") << " ";
+      for (unsigned int i = 0; i < cDefConditions.size(); i++) {
+        cDefConditions[i].debug(depth + 1);
+        if (i != cDefConditions.size() - 1) {
+          std::cout << " " << (cDefAnd ? "and" : "or") << " ";
         }
       }
       std::cout << ")";

@@ -105,7 +105,9 @@ namespace IsoRealms {
   void ComponentSaver::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
     std::optional<Condition>& mCondition = getter();
     if (mCondition.has_value()) {
-      mCondition->save(currentObject().addObject(key));
+      pushObject(currentObject().addObject(key));
+      mCondition->define(*this, availableElements);
+      popObject();
     }
   }
 

@@ -29,65 +29,62 @@
 #include "ConditionElement.h"
 
 namespace IsoRealms {
+  class ConditionElement;
+  class IComponentDefiner;
+
   class Condition {
     private:
     inline static const char ATTRIB_AND    = 0x1;
     inline static const char ATTRIB_NEGATE = 0x2;
 
-    inline static const std::string JSON_INPUT          = "input";
-    inline static const std::string JSON_INPUTS         = "inputs";
-    inline static const std::string JSON_OPERATOR       = "operator";
-    inline static const std::string JSON_NEGATED        = "negated";
-    inline static const std::string JSON_SUB_CONDITIONS = "subConditions";
-
     inline static const std::string OPERATOR_AND = "And";
     inline static const std::string OPERATOR_OR  = "Or";
 
-    bool cAnd;
-    bool cNegated;
-    std::vector<Condition> cConditions;
-    std::set<ConditionElement::Clause*> cCriteria;
+    bool cDefAnd;
+    bool cDefNegated;
+    std::vector<Condition> cDefConditions;
+    std::set<ConditionElement::Clause*> cDefCriteria;
 
     // Simplification methods
     /**
-    * Convert all negated conditions into positive conditions.
-    * This is the first step in the simplification process.  It ensures that we
-    * know that we're not working with negated conditions.
-    */
+     * Convert all negated conditions into positive conditions.
+     * This is the first step in the simplification process.  It ensures that we
+     * know that we're not working with negated conditions.
+     */
     void convertNegatedConditions();
 
     /**
-    * Raise the contents of conditions into this condition where possible.
-    * A condition can be raised if it shares the same gate with this one, or
-    * it only contains one element.
-    * This is the second step in the simplification process.  It ensures that we
-    * know that we're working with alternating gates as we recurse through
-    * conditions.
-    */
+     * Raise the contents of conditions into this condition where possible.
+     * A condition can be raised if it shares the same gate with this one, or
+     * it only contains one element.
+     * This is the second step in the simplification process.  It ensures that we
+     * know that we're working with alternating gates as we recurse through
+     * conditions.
+     */
     void raiseConditions();
 
     /**
-    * Find opposing elements.
-    *
-    * For an OR gate, opposing elements are redundant because at least one of
-    * them will always be true, so the opposing elements are removed.
-    *
-    * For an AND gate, opposing elements make the condition impossible to
-    * satisfy, so everything is removed and this condition is set to literal
-    * FALSE (although any negation will remain).
-    */
+     * Find opposing elements.
+     *
+     * For an OR gate, opposing elements are redundant because at least one of
+     * them will always be true, so the opposing elements are removed.
+     *
+     * For an AND gate, opposing elements make the condition impossible to
+     * satisfy, so everything is removed and this condition is set to literal
+     * FALSE (although any negation will remain).
+     */
     void checkForConflictingElements();
 
     /**
-    * Find and deal with literal TRUE and FALSE conditions.
-    *
-    * For an OR gate:
-    *  - A TRUE condition turns this condition into literal TRUE.
-    *  - A FALSE condition has no effect and is removed.
-    * For an AND gate:
-    *  - A TRUE condition has no effect and is removed.
-    *  - A FALSE condition turns this condition into literal FALSE.
-    */
+     * Find and deal with literal TRUE and FALSE conditions.
+     *
+     * For an OR gate:
+     *  - A TRUE condition turns this condition into literal TRUE.
+     *  - A FALSE condition has no effect and is removed.
+     * For an AND gate:
+     *  - A TRUE condition has no effect and is removed.
+     *  - A FALSE condition turns this condition into literal FALSE.
+     */
     void checkForAbsoluteConditions();
     void checkForConflictingConditions();
     void raiseCondition(int);
@@ -99,7 +96,6 @@ namespace IsoRealms {
     // Constructors
     Condition(bool andGate, bool negated = false);
     Condition(const Condition& condition);
-    Condition(JSONObject object, std::vector<ConditionElement*> elements);
     Condition(std::ifstream& cache, std::vector<ConditionElement*> elements, unsigned char conditionType, unsigned char elementType, unsigned char endType);
 
     // Modifications
@@ -120,7 +116,7 @@ namespace IsoRealms {
     bool operator!=(const Condition&) const;
 
     // Persistence
-    void save(JSONObject object);
+    void define(IComponentDefiner& definer, const std::vector<ConditionElement*>& availableElements);
     void saveCache(std::ostream& cache, unsigned char conditionType, unsigned char elementType, unsigned char endType) const;
 
     // Analysis

@@ -167,9 +167,12 @@ namespace IsoRealms {
     if (hint.getOption(Options::PROPERTY_OPTIONAL) == "true" && !currentObject().hasMember(key)) {
       return;
     }
+    pushObject(currentObject().getObject(key));
     std::optional<Condition>& mCondition = getter();
-    mCondition = Condition(currentObject().getObject(key), availableElements);
+    mCondition.emplace(true);
+    mCondition->define(*this, availableElements);
     setter(mCondition);
+    popObject();
   }
 
   void ComponentLoader::propertyEditor(const std::string& key, IEditable* editable) {
