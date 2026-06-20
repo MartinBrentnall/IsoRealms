@@ -23,34 +23,36 @@
 
 #include "Menu.h"
 #include "MenuItemProperty.h"
+#include "MenuItemSpacer.h"
 #include "Property/IPropertyManager.h"
 
 namespace IsoRealms {
-  class PropertiesMenu : public Menu<MenuItemProperty>,
+  class PropertiesMenu : public Menu<IMenuItem>,
                          public IPropertyManager {
     public:
     PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher);
 
-    /*************************************\
-     * Implements Menu<MenuItemProperty> *
-    \*************************************/
-    float getWidth(MenuItemProperty& item, IUIStyle& style) const override;
-    float getHeight(MenuItemProperty& item, IUIStyle& style) const override;
-    void renderMenuItem(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const override;
-    void renderOverlay(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const override;
+    /******************************\
+     * Implements Menu<IMenuItem> *
+    \******************************/
+    float getWidth(IMenuItem& item, IUIStyle& style) const override;
+    float getHeight(IMenuItem& item, IUIStyle& style) const override;
+    void renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const override;
+    void renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const override;
     void updateOverlay(unsigned int milliseconds) override;
-    float getSelectionHighlightLeft(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const override;
-    float getSelectionHighlightRight(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const override;
-    bool input(MenuItemProperty& item, UISignalID id, float y) override;
-    bool input(MenuItemProperty& item, sf::Event& event) override;
-    void selectedItemChanged(MenuItemProperty& item) override;
-    bool isSelectable(MenuItemProperty& item) const override;
+    float getSelectionHighlightLeft(IMenuItem& item, IUIStyle& style, float aspectRatio) const override;
+    float getSelectionHighlightRight(IMenuItem& item, IUIStyle& style, float aspectRatio) const override;
+    bool input(IMenuItem& item, UISignalID id, float y) override;
+    bool input(IMenuItem& item, sf::Event& event) override;
+    void selectedItemChanged(IMenuItem& item) override;
+    bool isSelectable(IMenuItem& item) const override;
     void refresh() override;
 
     /*******************************\
      * Implements IPropertyManager *
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
+    void addSpacer(float height) override;
     void openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
@@ -78,7 +80,7 @@ namespace IsoRealms {
 
     bool cFetching;
     
-    void openSubProperties(MenuItemProperty& item);
+    void openSubProperties(IMenuItem& item);
     void recalculateColumnWidths();
   };
 }

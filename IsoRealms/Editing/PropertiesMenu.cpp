@@ -45,7 +45,7 @@ namespace IsoRealms {
     cHasConfigureColumn = false;
     cHasRemoveColumn = false;
     IUIStyle& mStyle = getStyle();
-    for (std::unique_ptr<MenuItemProperty>& mItem : getItems()) {
+    for (std::unique_ptr<IMenuItem>& mItem : getItems()) {
       cColumnWidthLabel = std::max(cColumnWidthLabel.value(), mItem->getWidth(mStyle));
       cColumnWidthValue = std::max(cColumnWidthValue.value(), mItem->getProperty()->getValueWidth(mStyle));
       if (mItem->getProperty()->hasConfiguration()) {
@@ -58,16 +58,16 @@ namespace IsoRealms {
     }
   }
 
-  float PropertiesMenu::getWidth(MenuItemProperty& item, IUIStyle& style) const {
+  float PropertiesMenu::getWidth(IMenuItem& item, IUIStyle& style) const {
     //     Property name:              Spacing                       Property value              Remove icon                                              Configure icon          
     return cColumnWidthLabel.value() + style.getFontSize() * 2.25f + cColumnWidthValue.value() + style.getFontSize() * (cHasRemoveColumn ? 3.0f : 0.0f) + style.getFontSize() * (cHasConfigureColumn ? 3.0f : 0.0f);
   }
 
-  float PropertiesMenu::getHeight(MenuItemProperty& item, IUIStyle& style) const {
+  float PropertiesMenu::getHeight(IMenuItem& item, IUIStyle& style) const {
     return style.getFontSize() * 2.0f;
   }
 
-  void PropertiesMenu::renderMenuItem(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const {
+  void PropertiesMenu::renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
     float mFontSize = style.getFontSize();
     item.render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f, aspectRatio);
     if (item.getProperty()->hasConfiguration()) {
@@ -88,7 +88,7 @@ namespace IsoRealms {
     }
   }
   
-  void PropertiesMenu::renderOverlay(MenuItemProperty& item, IUIStyle& style, float y, float aspectRatio) const {
+  void PropertiesMenu::renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
     if (cEditingProperty != nullptr) {
       cEditingProperty->render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + style.getFontSize() * 2.25f, aspectRatio);
     }
@@ -110,19 +110,19 @@ namespace IsoRealms {
     }
   }
 
-  float PropertiesMenu::getSelectionHighlightLeft(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const {
+  float PropertiesMenu::getSelectionHighlightLeft(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
     float mFontSize = style.getFontSize();
     return cAction == Action::SELECT    ? -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f
          : cAction == Action::CONFIGURE ? -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f + cColumnWidthValue.animation() + mFontSize * 2.25f
          :                                -1.0 * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f + cColumnWidthValue.animation() + mFontSize * (cHasConfigureColumn ? 4.50f : 2.25f);
   }
   
-  float PropertiesMenu::getSelectionHighlightRight(MenuItemProperty& item, IUIStyle& style, float aspectRatio) const {
+  float PropertiesMenu::getSelectionHighlightRight(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
     return cAction == Action::SELECT ? getSelectionHighlightLeft(item, style, aspectRatio) + item.getValueWidth(style)
                                      : getSelectionHighlightLeft(item, style, aspectRatio);
   }
   
-  bool PropertiesMenu::input(MenuItemProperty& item, UISignalID id, float y) {
+  bool PropertiesMenu::input(IMenuItem& item, UISignalID id, float y) {
     if (cEditingProperty != nullptr) {
       if (cEditingProperty->input(id, getStyle())) {
         getUIManager().getProject().updateLater([this]() {
@@ -217,7 +217,7 @@ namespace IsoRealms {
     return false;
   }
   
-  bool PropertiesMenu::input(MenuItemProperty& item, sf::Event& event) {
+  bool PropertiesMenu::input(IMenuItem& item, sf::Event& event) {
     if (cEditingProperty != nullptr) {
       if (cEditingProperty->input(event, getStyle())) {
         getUIManager().getProject().updateLater([this]() {
@@ -231,11 +231,11 @@ namespace IsoRealms {
     return false;
   }
   
-  void PropertiesMenu::selectedItemChanged(MenuItemProperty& item) {
+  void PropertiesMenu::selectedItemChanged(IMenuItem& item) {
     cAction = Action::SELECT;
   }
 
-  bool PropertiesMenu::isSelectable(MenuItemProperty& item) const {
+  bool PropertiesMenu::isSelectable(IMenuItem& item) const {
     return true;
   }
 
@@ -249,9 +249,13 @@ namespace IsoRealms {
     if (cFetching) {
       addItem(std::move(mMenuItem));
     } else {
-      MenuItemProperty& mCurrentItem = getCurrentItem();
+      IMenuItem& mCurrentItem = getCurrentItem();
       addItemAfter(mCurrentItem, std::move(mMenuItem));
     }
+  }
+
+  void PropertiesMenu::addSpacer(float height) {
+    addItem(std::make_unique<MenuItemSpacer>(height));
   }
 
   void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) {

@@ -42,6 +42,10 @@ namespace IsoRealms {
     return mFont->getWidth(mFontSize, cName + ":");
   }
 
+  float MenuItemProperty::getHeight(IUIStyle& style) const {
+    return style.getFontSize() * 2.0f;
+  }
+
   float MenuItemProperty::getIndentation(IUIStyle& style) const {
     return 0.0f;
   }

@@ -171,6 +171,10 @@ namespace IsoRealms {
     }
   }
 
+  void ComponentSaver::spacer(float height) {
+    // Nothing to do.
+  }
+
   void ComponentSaver::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
     // Nothing to do.
   }

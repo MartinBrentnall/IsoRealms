@@ -35,16 +35,14 @@
      /************************\
       * Implements IMenuItem *
      \************************/
+     IProperty* getProperty() const override;
+     float getValueWidth(IUIStyle& style) const override;
      float getWidth(IUIStyle& style) const override;
      float getHeight(IUIStyle& style) const override;
      float getIndentation(IUIStyle& style) const override;
-     void render(IUIStyle& style, float y, float aspectRatio) const override;
-     bool input(UISignalID id, float y) override;
+     void render(IUIStyle& style, float x, float y, float aspectRatio) const override;
      std::string getTooltip() const override;
      bool isSelectable() const override;
-     void notifySelected() override;
-     float getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const override;
-     float getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const override;
  
      private:
      float cHeight;

@@ -249,6 +249,10 @@ namespace IsoRealms {
     }
   }
 
+  void ComponentLoader::spacer(float height) {
+    // Nothing to do.
+  }
+
   void ComponentLoader::confirm(const std::string& message, std::function<void()> confirm, std::function<void()> cancel) {
     confirm();
   }

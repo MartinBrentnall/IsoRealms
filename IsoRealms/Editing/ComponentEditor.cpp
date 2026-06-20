@@ -119,6 +119,10 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyStruct>(cParent, cMetadata.getPropertyData(key), *this, value, subProperties, removeFunction));
   }
 
+  void ComponentEditor::spacer(float height) {
+    cProperties.addSpacer(height);
+  }
+
   bool ComponentEditor::isComponentReadOnly() const {
     return cParent.isReadOnly();
   }

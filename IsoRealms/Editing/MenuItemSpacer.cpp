@@ -28,6 +28,14 @@ namespace IsoRealms {
             cHeight(height) {
   }
 
+  IProperty* MenuItemSpacer::getProperty() const {
+    return nullptr;
+  }
+
+  float MenuItemSpacer::getValueWidth(IUIStyle& style) const {
+    return 0.0f;
+  }
+
   float MenuItemSpacer::getWidth(IUIStyle& style) const {
     return 0.0f;
   }
@@ -40,12 +48,8 @@ namespace IsoRealms {
     return 0.0f;
   }
 
-  void MenuItemSpacer::render(IUIStyle& style, float y, float aspectRatio) const {
+  void MenuItemSpacer::render(IUIStyle& style, float x, float y, float aspectRatio) const {
     // Nothing to do.
-  }
-
-  bool MenuItemSpacer::input(UISignalID id, float y) {
-    return false;
   }
 
   std::string MenuItemSpacer::getTooltip() const {
@@ -54,18 +58,6 @@ namespace IsoRealms {
 
   bool MenuItemSpacer::isSelectable() const {
     return false;
-  }
-
-  void MenuItemSpacer::notifySelected() {
-    // Nothing to do.
-  }
-
-  float MenuItemSpacer::getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const {
-    return 0.0f;
-  }
-
-  float MenuItemSpacer::getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const {
-    return 0.0f;
   }
 }
  

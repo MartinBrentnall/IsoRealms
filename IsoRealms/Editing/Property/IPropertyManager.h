@@ -35,6 +35,7 @@ namespace IsoRealms {
   class IPropertyManager {
     public:
     virtual void addProperty(std::unique_ptr<IProperty> property) = 0;
+    virtual void addSpacer(float height) = 0;
     virtual void openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) = 0;
     virtual void edit(std::unique_ptr<IPropertyEditor> editor) = 0;
     virtual void edit(IEditable* editor) = 0;

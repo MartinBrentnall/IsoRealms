@@ -26,22 +26,21 @@
 #include "UISignalID.h"
 
 namespace IsoRealms {
+  class IProperty;
   class IUIStyle;
 
   class IMenuItem {
     public:
     virtual ~IMenuItem() = default;
     
+    virtual IProperty* getProperty() const = 0;
+    virtual float getValueWidth(IUIStyle& style) const = 0;
     virtual float getWidth(IUIStyle& style) const = 0;
     virtual float getHeight(IUIStyle& style) const = 0;
     virtual float getIndentation(IUIStyle& style) const = 0;
-    virtual void render(IUIStyle& style, float y, float aspectRatio) const = 0;
-    virtual bool input(UISignalID id, float y) = 0;
+    virtual void render(IUIStyle& style, float x, float y, float aspectRatio) const = 0;
     virtual std::string getTooltip() const = 0;
     virtual bool isSelectable() const = 0;
-    virtual void notifySelected() = 0;
-    virtual float getSelectionHighlightLeft(IUIStyle& style, float aspectRatio) const = 0;
-    virtual float getSelectionHighlightRight(IUIStyle& style, float aspectRatio) const = 0;
   };
 }
  
