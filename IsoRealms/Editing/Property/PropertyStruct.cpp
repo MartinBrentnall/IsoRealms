@@ -29,7 +29,7 @@ namespace IsoRealms {
             Property(data, resourceAccessManager, removeFunction),
             cComponentData(resourceData),
             cSubProperties(subProperties),
-            cValue(value) {
+            cValue(data.getValue().empty() ? value : data.getValue()) {
   }
   
   void PropertyStruct::renderValue(IUIStyle& style, float y, float x, float aspectRatio) const {
@@ -38,7 +38,13 @@ namespace IsoRealms {
     glPushMatrix();
     glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
     glScalef(mFontSize, mFontSize, 0.0f);
-    Utils::renderIconCustom();
+
+    // Nameless properties are not related to a specific component field, so they are rendered as a branch icon.
+    if (getPropertyName().empty()) {
+      Utils::renderIconBranch();
+    } else {
+      Utils::renderIconCustom();
+    }
     glPopMatrix();
     mFont->print(x + mFontSize * 2.25f, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cValue);
   }

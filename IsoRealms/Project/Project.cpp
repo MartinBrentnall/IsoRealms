@@ -291,7 +291,7 @@ namespace IsoRealms {
   void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
     Options mNamelessHint;
     mNamelessHint.addOption("name", "");
-    definer.scope("Project", "Edit...", [this, loadOwner](IComponentDefiner& definer) {
+    definer.scope("ApplicationConfiguration", "Edit...", [this, loadOwner](IComponentDefiner& definer) {
       definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& editingDefiner) {
         cDefProjectFileStructure.define(editingDefiner, *this, false);
       });

@@ -21,18 +21,21 @@
 #include "IsoRealms/Persistence/JSONObject.h"
 
 namespace IsoRealms {
-  PropertyData::PropertyData(const std::string& name, const std::string& tooltip) :
+  PropertyData::PropertyData(const std::string& name, const std::string& tooltip, const std::string& value) :
             cName(name),
+            cValue(value),
             cTooltip(tooltip) {
   }
 
   PropertyData::PropertyData(JSONObject object) :
             cName(object.getString(JSON_NAME)),
+            cValue(object.getString(JSON_VALUE)),
             cTooltip(object.getString(JSON_DESCRIPTION)) {
   }
 
   PropertyData::PropertyData(const PropertyData& other) :
             cName(other.cName),
+            cValue(other.cValue),
             cTooltip(other.cTooltip) {
   }
 
@@ -42,6 +45,10 @@ namespace IsoRealms {
 
   std::string PropertyData::getTooltip() const {
     return cTooltip;
+  }
+
+  std::string PropertyData::getValue() const {
+    return cValue;
   }
 }
 

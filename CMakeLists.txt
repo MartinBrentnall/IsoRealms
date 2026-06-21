@@ -77,15 +77,29 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_executable(IsoRealms.bin IsoRealms.cpp)
 
-file(GLOB DATA_DIR "Data/*")
-file(COPY ${DATA_DIR} DESTINATION "Out")
+file(GLOB_RECURSE DATA_FILES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/Data/*")
 if(MSVC)
-file(COPY "Spindizzy.cmd" DESTINATION "Out")
+  set(LAUNCHER_FILE "${CMAKE_SOURCE_DIR}/Spindizzy.cmd")
 else()
-file(COPY "Spindizzy" DESTINATION "Out")
+  set(LAUNCHER_FILE "${CMAKE_SOURCE_DIR}/Spindizzy")
 endif()
+
+set(DATA_COPY_STAMP "${CMAKE_BINARY_DIR}/Out/.data_copy_stamp")
+add_custom_command(
+  OUTPUT ${DATA_COPY_STAMP}
+  COMMAND ${CMAKE_COMMAND}
+    -DSOURCE_DIR=${CMAKE_SOURCE_DIR}
+    -DBINARY_DIR=${CMAKE_BINARY_DIR}
+    -DLAUNCHER_FILE=${LAUNCHER_FILE}
+    -P ${CMAKE_SOURCE_DIR}/cmake/CopyData.cmake
+  DEPENDS ${DATA_FILES} ${LAUNCHER_FILE}
+  COMMENT "Copying Data files to Out"
+  VERBATIM
+)
+add_custom_target(CopyData ALL DEPENDS ${DATA_COPY_STAMP})
 
 set_target_properties(IsoRealms.bin PROPERTIES OUTPUT_NAME "IsoRealms")
 set_target_properties(IsoRealms.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "Out")
 
 target_link_libraries(IsoRealms.bin IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${LUA_LIBRARIES} ${FREETYPE_LIBRARIES})
+add_dependencies(IsoRealms.bin CopyData)

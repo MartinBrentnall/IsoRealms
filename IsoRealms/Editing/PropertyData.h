@@ -25,18 +25,21 @@ namespace IsoRealms {
 
   class PropertyData {
     public:
-    PropertyData(const std::string& name, const std::string& tooltip);
+    PropertyData(const std::string& name, const std::string& tooltip, const std::string& value);
     PropertyData(JSONObject object);
     PropertyData(const PropertyData& other);
 
     std::string getName() const;
     std::string getTooltip() const;
+    std::string getValue() const;
 
     private:
     inline static const std::string JSON_DESCRIPTION = "description";
     inline static const std::string JSON_NAME        = "name";
+    inline static const std::string JSON_VALUE       = "value";
 
     const std::string cName;
+    const std::string cValue;
     const std::string cTooltip;
   };
 }

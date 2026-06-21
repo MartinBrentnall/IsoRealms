@@ -54,6 +54,8 @@ namespace IsoRealms {
     void addProperty(std::unique_ptr<IProperty> property) override;
     void addRemover(const std::string& name, std::function<void()> removeFunction) override;
     void addSpacer(float height) override;
+    void pushIndent() override;
+    void popIndent() override;
     void openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
     void edit(IEditable* editor) override;
@@ -80,9 +82,11 @@ namespace IsoRealms {
     Action cAction;
 
     bool cFetching;
+    int cIndentLevel;
     
     void openSubProperties(IMenuItem& item);
     void recalculateColumnWidths();
     float getNameValueSeparationWidth(IUIStyle& style) const;
+    float getValueColumnX(IMenuItem& item, IUIStyle& style, float aspectRatio) const;
   };
 }

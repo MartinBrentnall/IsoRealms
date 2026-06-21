@@ -37,7 +37,8 @@ namespace IsoRealms {
             cHasConfigureColumn(false),
             cHasRemoveColumn(false),
             cAction(Action::SELECT),
-            cFetching(false) {
+            cFetching(false),
+            cIndentLevel(0) {
     refreshProperties();
   }
 
@@ -67,6 +68,10 @@ namespace IsoRealms {
     return cColumnWidthLabel.value() == 0.0f ? 0.0f : style.getFontSize() * 2.25f;
   }
 
+  float PropertiesMenu::getValueColumnX(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
+    return -1.0f * aspectRatio + item.getIndentation(style) + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style);
+  }
+
   float PropertiesMenu::getWidth(IMenuItem& item, IUIStyle& style) const {
     //     Property name:              Spacing                              Property value              Remove icon                                              Configure icon          
     return cColumnWidthLabel.value() + getNameValueSeparationWidth(style) + cColumnWidthValue.value() + style.getFontSize() * (cHasRemoveColumn ? 3.0f : 0.0f) + style.getFontSize() * (cHasConfigureColumn ? 3.0f : 0.0f);
@@ -80,10 +85,11 @@ namespace IsoRealms {
     IProperty* mProperty = item.getProperty();
     if (mProperty != nullptr) {
       float mFontSize = style.getFontSize();
-      item.render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style), aspectRatio);
+      float mValueColumnX = getValueColumnX(item, style, aspectRatio);
+      item.render(style, y, mValueColumnX, aspectRatio);
       if (mProperty->hasConfiguration()) {
         glPushMatrix();
-        glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style) + cColumnWidthValue.animation() + mFontSize * 2.25f, y + mFontSize, 0.0f);
+        glTranslatef(mValueColumnX + cColumnWidthValue.animation() + mFontSize * 2.25f, y + mFontSize, 0.0f);
         glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
         Utils::renderIconCustom();
         glPopMatrix();
@@ -92,7 +98,7 @@ namespace IsoRealms {
       if (mProperty->isRemovable()) {
         glPushMatrix();
         float mPosition = (cHasConfigureColumn ? 4.50f : 2.25f) + getNameValueSeparationWidth(style);
-        glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * mPosition, y + mFontSize, 0.0f);
+        glTranslatef(mValueColumnX + cColumnWidthValue.animation() + mFontSize * mPosition, y + mFontSize, 0.0f);
         glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
         Utils::renderIconNone();
         glPopMatrix();
@@ -101,11 +107,12 @@ namespace IsoRealms {
   }
   
   void PropertiesMenu::renderOverlay(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
+    float mValueColumnX = getValueColumnX(item, style, aspectRatio);
     if (cEditingProperty != nullptr) {
-      cEditingProperty->render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style), aspectRatio);
+      cEditingProperty->render(style, y, mValueColumnX, aspectRatio);
     }
     if (cClosingProperty != nullptr) {
-      cClosingProperty->render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style), aspectRatio);
+      cClosingProperty->render(style, y, mValueColumnX, aspectRatio);
     }
   }
   
@@ -124,9 +131,10 @@ namespace IsoRealms {
 
   float PropertiesMenu::getSelectionHighlightLeft(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
     float mFontSize = style.getFontSize();
-    return cAction == Action::SELECT    ? -1.0 * aspectRatio + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style)
-         : cAction == Action::CONFIGURE ? -1.0 * aspectRatio + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style) + cColumnWidthValue.animation() + mFontSize * 2.25f
-         :                                -1.0 * aspectRatio + cColumnWidthLabel.animation() + getNameValueSeparationWidth(style) + cColumnWidthValue.animation() + mFontSize * (cHasConfigureColumn ? 4.50f : 2.25f);
+    float mValueColumnX = getValueColumnX(item, style, aspectRatio);
+    return cAction == Action::SELECT    ? mValueColumnX
+         : cAction == Action::CONFIGURE ? mValueColumnX + cColumnWidthValue.animation() + mFontSize * 2.25f
+         :                                mValueColumnX + cColumnWidthValue.animation() + mFontSize * (cHasConfigureColumn ? 4.50f : 2.25f);
   }
   
   float PropertiesMenu::getSelectionHighlightRight(IMenuItem& item, IUIStyle& style, float aspectRatio) const {
@@ -257,7 +265,7 @@ namespace IsoRealms {
 
   void PropertiesMenu::addProperty(std::unique_ptr<IProperty> property) {
     std::string mPropertyName = property->getPropertyName();
-    std::unique_ptr<MenuItemProperty> mMenuItem = std::make_unique<MenuItemProperty>(mPropertyName, std::move(property));
+    std::unique_ptr<MenuItemProperty> mMenuItem = std::make_unique<MenuItemProperty>(mPropertyName, std::move(property), cIndentLevel);
     if (cFetching) {
       addItem(std::move(mMenuItem));
     } else {
@@ -267,11 +275,21 @@ namespace IsoRealms {
   }
 
   void PropertiesMenu::addRemover(const std::string& name, std::function<void()> removeFunction) {
-    addItem(std::make_unique<MenuItemProperty>("", std::make_unique<PropertyRemover>(PropertyData("", ""), cComponentEditor, name, removeFunction)));
+    addItem(std::make_unique<MenuItemProperty>("", std::make_unique<PropertyRemover>(PropertyData("", "", ""), cComponentEditor, name, removeFunction), cIndentLevel));
   }
 
   void PropertiesMenu::addSpacer(float height) {
     addItem(std::make_unique<MenuItemSpacer>(height));
+  }
+
+  void PropertiesMenu::pushIndent() {
+    cIndentLevel++;
+  }
+
+  void PropertiesMenu::popIndent() {
+    if (cIndentLevel > 0) {
+      cIndentLevel--;
+    }
   }
 
   void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) {
@@ -294,6 +312,7 @@ namespace IsoRealms {
     clear();
     cEditingProperty = nullptr;
     cClosingProperty = nullptr;
+    cIndentLevel = 0;
     cFetching = true;
     cPropertyFetcher(cComponentEditor);
     cFetching = false;

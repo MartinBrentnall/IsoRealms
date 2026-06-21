@@ -75,6 +75,7 @@ namespace IsoRealms {
     properties.addRemover(cLongName, removeFunction);
 
     // Scope component types by category.
+    properties.pushIndent();
     for (const std::pair<const std::string, std::string>& mCategory : cCategoryDescriptions) {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
@@ -90,6 +91,7 @@ namespace IsoRealms {
     for (const std::pair<const std::string, std::unique_ptr<ComponentTypeMetadata>>& mComponentType : cComponentTypes) {
       mComponentType.second->scope(definer, module, mComponentType.first, "");
     }
+    properties.popIndent();
   }
 }
  

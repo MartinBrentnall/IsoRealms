@@ -23,9 +23,10 @@
 #include "IUIStyle.h"
 
 namespace IsoRealms {
-  MenuItemProperty::MenuItemProperty(const std::string& name, std::unique_ptr<IProperty> property) :
+  MenuItemProperty::MenuItemProperty(const std::string& name, std::unique_ptr<IProperty> property, int indentLevel) :
             cProperty(std::move(property)),
-            cName(name) {
+            cName(name),
+            cIndentLevel(indentLevel) {
   }
 
   IProperty* MenuItemProperty::getProperty() const {
@@ -50,14 +51,14 @@ namespace IsoRealms {
   }
 
   float MenuItemProperty::getIndentation(IUIStyle& style) const {
-    return 0.0f;
+    return style.getFontSize() * 2.0f * cIndentLevel;
   }
   
   void MenuItemProperty::render(IUIStyle& style, float y, float x, float aspectRatio) const {
     if (!cName.empty()) {
       IFont* mFont = style.getFont();
       float mFontSize = style.getFontSize();
-      mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cName + ":");
+      mFont->print(-1.0f * aspectRatio + getIndentation(style), y + 0.01f, mFontSize, IFont::Alignment::LEFT, cName + ":");
     }
     cProperty->renderValue(style, y, x, aspectRatio);
   }

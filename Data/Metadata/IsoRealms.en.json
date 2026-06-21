@@ -24,7 +24,7 @@
     "Value": {"name": "Value", "description": "Value of this asset."},
     "Owner": {"name": "Owner", "description": "Owner of this asset."},
 
-    "ApplicationConfiguration": {"name": "Application Configuration", "description": "Overall configuration of this application."},
+    "ApplicationConfiguration": {"value": "Application Configuration", "description": "Overall configuration of this application."},
     "Module": {"name": "Load Module...", "description": "Load a module into this application."}
   },
   "GameControllerAxis": {

@@ -32,7 +32,7 @@ namespace IsoRealms {
 
   class MenuItemProperty : public IMenuItem {
     public:
-    MenuItemProperty(const std::string& name, std::unique_ptr<IProperty> property);
+    MenuItemProperty(const std::string& name, std::unique_ptr<IProperty> property, int indentLevel = 0);
 
     /************************\
      * Implements IMenuItem *
@@ -49,5 +49,6 @@ namespace IsoRealms {
     private:
     std::unique_ptr<IProperty> cProperty;
     std::string cName;
+    int cIndentLevel;
   };
 }

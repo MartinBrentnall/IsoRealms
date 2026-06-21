@@ -182,7 +182,8 @@ namespace IsoRealms {
   PropertyData ComponentEditor::mergePropertyMetadata(const PropertyData& metadata, const Options& hint) {
     std::string mName        = hint.hasOption("name")        ? hint.getOption("name")        : metadata.getName();
     std::string mDescription = hint.hasOption("description") ? hint.getOption("description") : metadata.getTooltip();
-    return PropertyData(mName, mDescription);
+    std::string mValue       = hint.hasOption("value")       ? hint.getOption("value")       : metadata.getValue();
+    return PropertyData(mName, mDescription, mValue);
   }
 
   void ComponentEditor::pushApplicationMetadata(const std::string& section) {
