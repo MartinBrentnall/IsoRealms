@@ -30,29 +30,35 @@ namespace IsoRealms::Equilibria {
   void ThemeSet::define(IComponentDefiner& definer) {
 
     // Texture elements.
-    definer.array("textures", cTextures, [](const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mTexture) -> ThemeTexture& {return *mTexture.second;}, [this, &definer](ThemeTexture& texture) {
-      createTextureElementProperty(definer, &texture);
-    }, [this]() -> ThemeTexture& {
-      return *createTexture(getAvailableTextureElementKey());
+    definer.scope("texturesScope", "Edit...", [this](IComponentDefiner& definer) {
+      definer.array("textures", cTextures, [](const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mTexture) -> ThemeTexture& {return *mTexture.second;}, [this, &definer](ThemeTexture& texture) {
+        createTextureElementProperty(definer, &texture);
+      }, [this]() -> ThemeTexture& {
+        return *createTexture(getAvailableTextureElementKey());
+      });
     });
 
     // Colour elements.
-    definer.array("colours", cColours, [](const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mColour) -> ThemeColour& {return *mColour.second;}, [this, &definer](ThemeColour& colour) {
-      createColourElementProperty(definer, &colour);
-    }, [this]() -> ThemeColour& {
-      return *createColour(getAvailableColourElementKey());
+    definer.scope("coloursScope", "Edit...", [this](IComponentDefiner& definer) {
+      definer.array("colours", cColours, [](const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mColour) -> ThemeColour& {return *mColour.second;}, [this, &definer](ThemeColour& colour) {
+        createColourElementProperty(definer, &colour);
+      }, [this]() -> ThemeColour& {
+        return *createColour(getAvailableColourElementKey());
+      });
     });
 
     // Themes.
-    definer.array("themes", cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &definer](Theme& theme) {
-      definer.scope("Theme", getName(&theme), [&theme](IComponentDefiner& definer) {
-        theme.define(definer);
-      }, [this, &theme]() {
-        cThemes.erase(getName(&theme));
+    definer.scope("themesScope", "Edit...", [this](IComponentDefiner& definer) {
+      definer.array("themes", cThemes, [](const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme) -> Theme& {return *mTheme.second;}, [this, &definer](Theme& theme) {
+        definer.scope("theme", getName(&theme), [&theme](IComponentDefiner& definer) {
+          theme.define(definer);
+        }, [this, &theme]() {
+          cThemes.erase(getName(&theme));
+        });
+      }, [this]() -> Theme& {
+        std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
+        return *cThemes.emplace(mNewThemeName, std::make_unique<Theme>(*this)).first->second;
       });
-    }, [this]() -> Theme& {
-      std::string mNewThemeName = Utils::getAvailableKey(cThemes, "New Theme");
-      return *cThemes.emplace(mNewThemeName, std::make_unique<Theme>(*this)).first->second;
     });
 
     if (definer.loadsPersistedValues()) {
@@ -331,7 +337,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createTextureElementProperty(IComponentDefiner& definer, ThemeTexture* element) {
-    definer.propertyString("element", [this, element]() {
+    definer.propertyString("texture", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       
@@ -354,7 +360,7 @@ namespace IsoRealms::Equilibria {
   }
   
   void ThemeSet::createColourElementProperty(IComponentDefiner& definer, ThemeColour* element) {
-    definer.propertyString("element", [this, element]() {
+    definer.propertyString("colour", [this, element]() {
       return getElement(element);
     }, [this, element](const std::string& value) {
       

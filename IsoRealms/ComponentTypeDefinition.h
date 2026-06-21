@@ -146,7 +146,9 @@ namespace IsoRealms {
           component.define(nestedDefiner);
         }, [this, &component]() {
           deleteComponent(&component);
-        }, mNamelessHint);
+        }, mNamelessHint, [&component]() {
+          return component.renderIcon();
+        });
       }, [this, &parent]() -> IComponent& {
         return *createComponent(parent, "Unnamed " + parent.getSingular(), parent.getProjectFile());
       }, mNamelessHint);

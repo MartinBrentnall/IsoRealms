@@ -31,6 +31,10 @@ namespace IsoRealms {
     }
   }
 
+  void Metadata::setParent(const Metadata* parent) {
+    cParent = parent;
+  }
+
   const PropertyData Metadata::getPropertyData(const std::string& key) const {
     if (key.empty()) {
       return PropertyData("", "", "");
@@ -38,6 +42,9 @@ namespace IsoRealms {
     std::map<std::string, std::unique_ptr<PropertyData>>::const_iterator mIterator = cPropertyHelp.find(key);
     if (mIterator != cPropertyHelp.end()) {
       return *mIterator->second;
+    }
+    if (cParent != nullptr) {
+      return cParent->getPropertyData(key);
     }
     return PropertyData("TODO: Missing property for \"" + key + "\"", "TODO: Missing description for \"" + key + "\"", "");
   }

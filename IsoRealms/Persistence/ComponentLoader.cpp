@@ -238,7 +238,7 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentLoader::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint) {
+  void ComponentLoader::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint, std::function<bool()> icon) {
     if (hint.getOption(Options::PROPERTY_DEFER) == "true") {
       std::vector<JSONObject> mObjectStack = cObjects;
       IComponentData* mComponentData = &cComponentData;

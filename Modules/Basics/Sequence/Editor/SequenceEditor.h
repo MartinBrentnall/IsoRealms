@@ -22,6 +22,8 @@
 
 #include "IsoRealms.h"
 
+#include "IsoRealms/Editing/ComponentEditor.h"
+
 namespace IsoRealms::Basics {
   class Sequence;
   class ISequenceTrackEvent;
@@ -127,6 +129,7 @@ namespace IsoRealms::Basics {
     bool cHasFocus;
     bool cEditingProperties;
     UIManager cPropertiesUI;
+    ComponentEditor cComponentEditor;
     IFont* cFont;
     float cFontSize;
 

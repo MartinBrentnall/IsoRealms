@@ -23,14 +23,14 @@
  #include "Metadata.h"
 
  namespace IsoRealms {
-   class IComponentDefiner;
+   class ComponentEditor;
    class JSONObject;
    class Module;
  
    class ComponentTypeMetadata {
      public:
-     ComponentTypeMetadata(JSONObject object);
-     void scope(IComponentDefiner& definer, Module& module, const std::string& componentType, const std::string& category);
+     ComponentTypeMetadata(JSONObject object, const Metadata& componentBaseMetadata);
+     void scope(ComponentEditor& definer, Module& module, const std::string& componentType, const std::string& category);
  
      private:
      std::string cSingular;

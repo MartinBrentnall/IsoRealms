@@ -20,10 +20,12 @@
 
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
+
+#include "ComponentEditor.h"
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  ModuleMetadata::ModuleMetadata(Module& module) {
+  ModuleMetadata::ModuleMetadata(Module& module, const Metadata& componentBaseMetadata) {
     std::string mModuleName = module.getName();
     std::locale mLocale("");
     std::string mMetadataPath = "Metadata/" + mModuleName + "/" + mModuleName + "." + mLocale.name();
@@ -65,11 +67,11 @@ namespace IsoRealms {
     for (JSONThing mComponentThing : mComponentsObject) {
       JSONObject mComponentObject = mComponentThing.getValue();
       std::string mComponentName = mComponentThing.getName();
-      cComponentTypes[mComponentName] = std::make_unique<ComponentTypeMetadata>(mComponentObject);
+      cComponentTypes[mComponentName] = std::make_unique<ComponentTypeMetadata>(mComponentObject, componentBaseMetadata);
     }
   }
 
-  void ModuleMetadata::scopeCategories(IComponentDefiner& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction) {
+  void ModuleMetadata::scopeCategories(ComponentEditor& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction) {
 
     // Add a module heading with remove icon to unload the module.
     properties.addRemover(cLongName, removeFunction);
@@ -80,7 +82,7 @@ namespace IsoRealms {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
       mNamelessHint.addOption("description", mCategory.second);
-      definer.scope(mCategory.first, mCategory.first, [this, &module, mCategory](IComponentDefiner& definer) {
+      definer.scope(mCategory.first, mCategory.first, [this, &module, mCategory, &definer](IComponentDefiner& unusedDefiner) {
         for (const std::pair<const std::string, std::unique_ptr<ComponentTypeMetadata>>& mComponentType : cComponentTypes) {
           mComponentType.second->scope(definer, module, mComponentType.first, mCategory.first);
         }

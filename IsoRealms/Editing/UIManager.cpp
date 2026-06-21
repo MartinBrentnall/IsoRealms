@@ -338,6 +338,7 @@ namespace IsoRealms {
   }
 
   void UIManager::closeUI() {
+    cRuntimeUIs.back()->cScreen->onClose();
     cRuntimeClosedUIs.emplace_back(std::move(cRuntimeUIs[cRuntimeUIs.size() - 1]));
     cRuntimeUIs.pop_back();
     if (!cRuntimeUIs.empty()) {

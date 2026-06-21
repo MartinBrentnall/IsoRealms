@@ -57,6 +57,7 @@ LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
             }, [](IEditable* editor) {
               std::cout << "WARNING: LayoutEditor::LayoutEditor: This UI does not support editables." << std::endl;
             }),
+            cComponentEditor(layout.getUI().getProject().getApplication(), cPropertiesUI),
             cFont(nullptr),
             cFontSize(0.03f),
             cDrawingStarted(false),
@@ -522,7 +523,7 @@ LayoutEditor::LayoutEditor(Layout& layout, IDialogManager& dialogManager) :
   void LayoutEditor::openProperties() {
     if (cSelectedComponent != nullptr) {
       cDialogManager.getProject().updateLater([this]() {
-        cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cLayout.getComponentData(), [this](IComponentDefiner& definer) {
+        cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cComponentEditor, cLayout.getComponentData(), [this](IComponentDefiner& definer) {
           cSelectedComponent->define(definer);
           cEditingProperties = true;
           cCursorSpeedX = 0.0f;

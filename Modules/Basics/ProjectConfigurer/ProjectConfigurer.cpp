@@ -34,6 +34,7 @@ namespace IsoRealms::Basics {
               cDefEditorAction.execute();
               cBindingEditor.setValue(nullptr);
             }),
+            cComponentEditor(data.getProject().getApplication(), cProjectConfigurationUI),
             cLuaBinding(data.getProject().getLuaState(), this),
             cBindingEditor(data.getProject().getLuaState(), nullptr, nullptr, true) {
   }
@@ -53,6 +54,7 @@ namespace IsoRealms::Basics {
     publisher.publish<IInputHandler>(this, "", "Project Configurers");
     publisher.publish<IBinding>(&cLuaBinding, "", "Project Configurers");
   }
+
   void ProjectConfigurer::updateRuntime(unsigned int milliseconds) {
     cProjectConfigurationUI.update(milliseconds);
   }
@@ -118,7 +120,8 @@ namespace IsoRealms::Basics {
   }
 
   void ProjectConfigurer::setProject(IsoRealms::Project& project) {
-    cProjectConfigurationUI.openUI(std::make_unique<PropertiesMenu>(cProjectConfigurationUI, *this, project, [&project](IComponentDefiner& definer) {
+    cComponentEditor.refreshMetadata(project);
+    cProjectConfigurationUI.openUI(std::make_unique<PropertiesMenu>(cProjectConfigurationUI, *this, cComponentEditor, project, [&project](IComponentDefiner& definer) {
       project.define(definer);
     }), "");
   }

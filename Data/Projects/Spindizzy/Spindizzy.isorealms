@@ -2828,66 +2828,66 @@
           "C64": {
             "textures": [
               {
-                "element": "Surface Plain"
+                "texture": "Surface Plain"
               },
               {
-                "element": "Surface Plain Split"
+                "texture": "Surface Plain Split"
               },
               {
-                "element": "Surface Ice or Water"
+                "texture": "Surface Ice or Water"
               },
               {
-                "element": "Surface Arrow"
+                "texture": "Surface Arrow"
               },
               {
-                "element": "Surface Trampoline"
+                "texture": "Surface Trampoline"
               },
               {
-                "element": "Surface Activate State 8"
+                "texture": "Surface Activate State 8"
               },
               {
-                "element": "Surface Activate State 7"
+                "texture": "Surface Activate State 7"
               },
               {
-                "element": "Wall Ice"
+                "texture": "Wall Ice"
               },
               {
-                "element": "Wall Plain Variant Cap"
+                "texture": "Wall Plain Variant Cap"
               },
               {
-                "element": "Wall Plain Cap"
+                "texture": "Wall Plain Cap"
               },
               {
-                "element": "Wall Plain Middle"
+                "texture": "Wall Plain Middle"
               },
               {
-                "element": "Surface Activate State 11"
+                "texture": "Surface Activate State 11"
               },
               {
-                "element": "Surface Activate State 9 or 10"
+                "texture": "Surface Activate State 9 or 10"
               },
               {
-                "element": "Surface Activate State 5 or 6"
+                "texture": "Surface Activate State 5 or 6"
               },
               {
-                "element": "Surface Activate State 4"
+                "texture": "Surface Activate State 4"
               },
               {
-                "element": "Surface Deactivate All States"
+                "texture": "Surface Deactivate All States"
               },
               {
-                "element": "Surface Activate State 1 or 2"
+                "texture": "Surface Activate State 1 or 2"
               },
               {
-                "element": "Surface Activate State 3"
+                "texture": "Surface Activate State 3"
               },
               {
-                "element": "Wall Plain Variant Middle"
+                "texture": "Wall Plain Variant Middle"
               }
             ],
             "colours": [
               {
-                "element": "Background"
+                "colour": "Background"
               }
             ],
             "themes": [

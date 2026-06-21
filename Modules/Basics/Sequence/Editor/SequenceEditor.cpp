@@ -173,6 +173,7 @@ namespace IsoRealms::Basics {
             }, [](IEditable* editor) {
               std::cout << "WARNING: SequenceEditor::SequenceEditor: This UI does not support editables." << std::endl;
             }),
+            cComponentEditor(sequence.getProject().getApplication(), cPropertiesUI),
             cFont(nullptr),
             cFontSize(0.03f),
             cPreviewing(false),
@@ -650,7 +651,7 @@ namespace IsoRealms::Basics {
               }
 
               if (cCursorTrackProperties) {
-                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IComponentDefiner& definer) {
+                cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cComponentEditor, cSequence.getComponentData(), [this](IComponentDefiner& definer) {
                   definer.propertyResource("track", cSequence.getTrack(cCursorTrack.value()));
                   definer.propertyString(  "name",  [this]() {
                     return cSequence.getTrack(cCursorTrack.value())->getName();
@@ -672,7 +673,7 @@ namespace IsoRealms::Basics {
                 }
 
                 if (cCursorEvent != nullptr) {
-                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cSequence.getComponentData(), [this](IComponentDefiner& definer) {
+                  cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cComponentEditor, cSequence.getComponentData(), [this](IComponentDefiner& definer) {
                     return cCursorEvent->getEventProperties(definer);
                   }), "Event Configuration");
                   cEditingProperties = true;

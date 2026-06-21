@@ -20,15 +20,16 @@
 
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/ComponentType.h"
+#include "IsoRealms/Editing/ComponentEditor.h"
 #include "IsoRealms/Editing/PropertyData.h"
 
 #include "Property/IPropertyEditor.h"
 #include "Property/PropertyRemover.h"
 
 namespace IsoRealms {
-  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher) : 
+  PropertiesMenu::PropertiesMenu(UIManager& manager, IUIStyle& style, ComponentEditor& componentEditor, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher) : 
             Menu(manager, style),
-            cComponentEditor(owner.getProject().getApplication(), owner, *this, manager),
+            cComponentEditor(componentEditor),
             cPropertyFetcher(propertyFetcher),
             cEditingProperty(nullptr),
             cClosingProperty(nullptr),
@@ -39,6 +40,7 @@ namespace IsoRealms {
             cAction(Action::SELECT),
             cFetching(false),
             cIndentLevel(0) {
+    cComponentEditor.openMenu(owner, *this);
     refreshProperties();
   }
 
@@ -295,9 +297,7 @@ namespace IsoRealms {
   void PropertiesMenu::openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) {
     UIManager& mUIManager = getUIManager();
     IUIStyle& mStyle = getStyle();
-    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, owner, [this, propertyFetcher](IComponentDefiner& definer) {
-      propertyFetcher(definer);
-    }), name, LiteralColour(0.75f, 0.5f, 1.0f));
+    mUIManager.openUI(std::make_unique<PropertiesMenu>(mUIManager, mStyle, cComponentEditor, owner, propertyFetcher), name, LiteralColour(1.0f, 1.0f, 1.0f));
   }
   
   void PropertiesMenu::edit(std::unique_ptr<IPropertyEditor> editor) {
@@ -313,6 +313,7 @@ namespace IsoRealms {
     cEditingProperty = nullptr;
     cClosingProperty = nullptr;
     cIndentLevel = 0;
+    cComponentEditor.resetMetadataForMenu();
     cFetching = true;
     cPropertyFetcher(cComponentEditor);
     cFetching = false;
@@ -321,5 +322,9 @@ namespace IsoRealms {
   
   IUIStyle& PropertiesMenu::getPropertyStyle() {
     return getStyle();
+  }
+
+  void PropertiesMenu::onClose() {
+    cComponentEditor.closeMenu();
   }
 }

@@ -22,6 +22,8 @@
 
 #include "IsoRealms.h"
 
+#include "IsoRealms/Editing/ComponentEditor.h"
+
 #include "SignalInputID.h"
 
 namespace IsoRealms::UI {
@@ -269,6 +271,7 @@ namespace IsoRealms::UI {
     float cAspectRatio;
     bool cEditingProperties;
     UIManager cPropertiesUI;
+    ComponentEditor cComponentEditor;
     IFont* cFont;
     float cFontSize;
     

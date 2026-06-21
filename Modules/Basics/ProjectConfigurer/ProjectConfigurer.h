@@ -20,6 +20,8 @@
 
 #include "IsoRealms.h"
 
+#include "IsoRealms/Editing/ComponentEditor.h"
+
 #include "SignalInputID.h"
 
 namespace IsoRealms::Basics {
@@ -97,6 +99,7 @@ namespace IsoRealms::Basics {
     Action cDefEditorAction;
 
     UIManager cProjectConfigurationUI;
+    ComponentEditor cComponentEditor;
 
     // Scripting Interface.
     LuaBinding<ProjectConfigurer> cLuaBinding;

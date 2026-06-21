@@ -55,8 +55,8 @@ namespace IsoRealms {
   };
 
   template <typename MODULE, typename TYPE> class Component : public IComponent,
-                                                                 public IComponentData,
-                                                                 public IActionContext {
+                                                              public IComponentData,
+                                                              public IActionContext {
     public:
     Component(ComponentType& parent, MODULE& module, ProjectFile* ownerProject) :
               cParent(parent),
@@ -106,6 +106,7 @@ namespace IsoRealms {
         }
       });
       cOwnerProject.createProperty(definer, "ComponentOwner");
+      definer.spacer(0.5f);
       cComponentHandle.define(definer);
     }
     

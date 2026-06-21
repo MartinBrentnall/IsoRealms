@@ -25,10 +25,11 @@
 #include "IPropertyManager.h"
 
 namespace IsoRealms {
-  PropertyStruct::PropertyStruct(IComponentData& resourceData, const PropertyData& data, IComponentAccessManager& resourceAccessManager, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction) :
+  PropertyStruct::PropertyStruct(IComponentData& resourceData, const PropertyData& data, IComponentAccessManager& resourceAccessManager, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, std::function<bool()> icon) :
             Property(data, resourceAccessManager, removeFunction),
             cComponentData(resourceData),
             cSubProperties(subProperties),
+            cIcon(icon),
             cValue(data.getValue().empty() ? value : data.getValue()) {
   }
   
@@ -39,8 +40,9 @@ namespace IsoRealms {
     glTranslatef(x + mFontSize, y + mFontSize, 0.0f);
     glScalef(mFontSize, mFontSize, 0.0f);
 
-    // Nameless properties are not related to a specific component field, so they are rendered as a branch icon.
-    if (getPropertyName().empty()) {
+    if (cIcon != nullptr) {
+      cIcon();
+    } else if (getPropertyName().empty()) {
       Utils::renderIconBranch();
     } else {
       Utils::renderIconCustom();
@@ -56,7 +58,7 @@ namespace IsoRealms {
   }
   
   void PropertyStruct::confirm(IPropertyManager& manager, float y) {
-    manager.openProperties(cComponentData, getPropertyName(), [this](IComponentDefiner& definer) {
+    manager.openProperties(cComponentData, getPropertyName().empty() ? cValue : getPropertyName(), [this](IComponentDefiner& definer) {
       cSubProperties(definer);
     });
   }

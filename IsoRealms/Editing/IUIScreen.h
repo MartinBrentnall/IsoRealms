@@ -39,6 +39,8 @@ namespace IsoRealms {
     virtual float getTooltipXPosition() const = 0;
     virtual float getContentRight() const = 0;
     virtual void updateRight() = 0;
+    virtual void onClose() {
+    }
 
     virtual ~IUIScreen() {
     }

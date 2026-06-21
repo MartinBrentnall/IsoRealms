@@ -23,23 +23,27 @@
 #include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Persistence/JSONObject.h"
 #include "IsoRealms/Persistence/JSONThing.h"
+
+#include "ComponentEditor.h"
 #include "PropertyData.h"
 
 namespace IsoRealms {
-  ComponentTypeMetadata::ComponentTypeMetadata(JSONObject object) :
+  ComponentTypeMetadata::ComponentTypeMetadata(JSONObject object, const Metadata& componentBaseMetadata) :
             cSingular(   object.getString("singular")),
             cPlural(     object.getString("plural")),
             cCategory(   object.getString("category")),
             cDescription(object.getString("description")),
             cProperties( object.getObject("properties")) {
+    cProperties.setParent(&componentBaseMetadata);
   }
 
-  void ComponentTypeMetadata::scope(IComponentDefiner& definer, Module& module, const std::string& componentType, const std::string& category) {
+  void ComponentTypeMetadata::scope(ComponentEditor& definer, Module& module, const std::string& componentType, const std::string& category) {
     if (cCategory == category) {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");
       mNamelessHint.addOption("description", cDescription);
-      definer.scope(componentType, cPlural, [this, &module, componentType, category](IComponentDefiner& definer) {
+      definer.scope(componentType, cPlural, [this, &module, componentType, &definer](IComponentDefiner& unusedDefiner) {
+        definer.pushComponentTypeMetadata(cProperties);
         module.getComponentType(componentType)->define(definer);
       }, nullptr, mNamelessHint);
     }

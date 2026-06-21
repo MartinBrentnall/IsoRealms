@@ -39,9 +39,8 @@ namespace IsoRealms::Equilibria {
   void Theme::define(IComponentDefiner& definer) {
     definer.propertyString("id", [this]() {return getName();}, [this](const std::string& value) {cThemeSet.setName(*this, value);}, "", [this](const std::string& value) {return cThemeSet.isNameAllowed(*this, value);});
     Options mContainerHint;
-    mContainerHint.addOption(Options::PROPERTY_SCOPED,  "true");
-    mContainerHint.addOption(Options::PROPERTY_NO_EDIT, "true");
-    definer.scope("textures", "", [this](IComponentDefiner& definer) {
+    mContainerHint.addOption(Options::PROPERTY_SCOPED, "true");
+    definer.scope("textures", "Edit...", [this](IComponentDefiner& definer) {
       for (std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
         std::string mName = cThemeSet.getElement(mTexture.first);
         Options mTextureHint;
@@ -50,7 +49,7 @@ namespace IsoRealms::Equilibria {
         definer.propertyResource(mName, mTexture.second, mTextureHint);
       }
     }, nullptr, mContainerHint);
-    definer.scope("colours", "", [this](IComponentDefiner& definer) {
+    definer.scope("colours", "Edit...", [this](IComponentDefiner& definer) {
       for (std::pair<ThemeColour* const, Colour>& mColour : cColours) {
         std::string mName = cThemeSet.getElement(mColour.first);
         Options mColourHint;

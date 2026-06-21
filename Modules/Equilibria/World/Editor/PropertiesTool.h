@@ -22,6 +22,8 @@
 
 #include "IsoRealms.h"
 
+#include "IsoRealms/Editing/ComponentEditor.h"
+
 #include "Modules/Equilibria/Resources/Type/IWorldEditorTool.h"
 #include "Modules/Equilibria/IWorldObject.h"
 
@@ -76,6 +78,7 @@ namespace IsoRealms::Equilibria {
       int cSelectedObject     = 0;
       bool cEditingProperties = false;
       UIManager cPropertiesUI;
+      ComponentEditor cComponentEditor;
 
       void showProperties();
     };

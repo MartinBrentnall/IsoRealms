@@ -19,7 +19,6 @@
 #pragma once
 
 #include "IsoRealms/IComponent.h"
-#include "IsoRealms/Editing/ComponentEditor.h"
 
 #include "Menu.h"
 #include "MenuItemProperty.h"
@@ -27,10 +26,12 @@
 #include "Property/IPropertyManager.h"
 
 namespace IsoRealms {
+  class ComponentEditor;
+
   class PropertiesMenu : public Menu<IMenuItem>,
                          public IPropertyManager {
     public:
-    PropertiesMenu(UIManager& manager, IUIStyle& style, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher);
+    PropertiesMenu(UIManager& manager, IUIStyle& style, ComponentEditor& componentEditor, IComponentData& owner, std::function<void(IComponentDefiner& definer)> propertyFetcher);
 
     /******************************\
      * Implements Menu<IMenuItem> *
@@ -47,6 +48,7 @@ namespace IsoRealms {
     void selectedItemChanged(IMenuItem& item) override;
     bool isSelectable(IMenuItem& item) const override;
     void refresh() override;
+    void onClose() override;
 
     /*******************************\
      * Implements IPropertyManager *
@@ -69,7 +71,7 @@ namespace IsoRealms {
       REMOVE
     };
 
-    ComponentEditor cComponentEditor;
+    ComponentEditor& cComponentEditor;
     std::function<void(IComponentDefiner&)> cPropertyFetcher;
     
     std::unique_ptr<IPropertyEditor> cEditingProperty;

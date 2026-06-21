@@ -40,7 +40,8 @@ namespace IsoRealms::Equilibria {
               cEditingProperties = false;
             }, [](IEditable* editor) {
               std::cout << "WARNING: PropertiesTool::Modifier::Modifier: This UI does not support editables." << std::endl;
-            }) {
+            }),
+            cComponentEditor(editor.getWorld().getEquilibria().getProject().getApplication(), cPropertiesUI) {
   }
 
   bool PropertiesTool::Modifier::inputTool(sf::Event& event) {
@@ -64,7 +65,7 @@ namespace IsoRealms::Equilibria {
     if (!cHoverObjects.empty() && !cEditingProperties) {
       IWorldObject* mObject = cHoverObjects[cSelectedObject];
       // TODO: Set metadata for the type of object being edited here.
-      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cWorldComponentOwner, [this](IComponentDefiner& definer) {
+      cPropertiesUI.openUI(std::make_unique<PropertiesMenu>(cPropertiesUI, *this, cComponentEditor, cWorldComponentOwner, [this](IComponentDefiner& definer) {
         cHoverObjects[cSelectedObject]->defineWorldObject(definer);
       }), mObject->getTypeName() + " Configuration");
       cEditingProperties = true;

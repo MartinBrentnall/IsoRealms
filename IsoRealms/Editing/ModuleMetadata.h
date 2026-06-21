@@ -27,15 +27,15 @@
 #include "ComponentTypeMetadata.h"
 
 namespace IsoRealms {
-  class IComponentDefiner;
+  class ComponentEditor;
   class JSONObject;
   class PropertyData;
 
   class ModuleMetadata {
     public:
-    ModuleMetadata(Module& module);
-    void scopeCategories(IComponentDefiner& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction);
-
+    ModuleMetadata(Module& module, const Metadata& componentBaseMetadata);
+    void scopeCategories(ComponentEditor& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction);
+    
     private:
     std::string cDescription;
     std::string cLongName;

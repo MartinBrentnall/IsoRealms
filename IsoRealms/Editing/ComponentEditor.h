@@ -33,11 +33,17 @@ namespace IsoRealms {
   class IOptionalObject;
   class IPropertyManager;
   class ITreeSelectorObject;
+  class Project;
   class PropertyData;
 
   class ComponentEditor : public IComponentDefiner {
     public:
-    ComponentEditor(Application& application, IComponentData& parent, IPropertyManager& properties, IDialogManager& dialogManager);
+    ComponentEditor(Application& application, IDialogManager& dialogManager);
+
+    void refreshMetadata(Project& project);
+    void openMenu(IComponentData& parent, IPropertyManager& properties);
+    void closeMenu();
+    void resetMetadataForMenu();
 
     void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) override;
     void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue,                                                          std::function<void()> removeFunction) override;
@@ -58,7 +64,7 @@ namespace IsoRealms {
     void propertyUnsignedInteger( const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter, unsigned int       defaultValue, std::function<bool(unsigned int)>       validityChecker, std::function<void()> removeFunction) override;
     
     void scopeModule(Module& module, std::function<void()> removeFunction) override;
-    void scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) override;
+    void scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY, std::function<bool()> icon = nullptr) override;
     void spacer(float height) override;
     
     /*************************************\
@@ -68,16 +74,23 @@ namespace IsoRealms {
     bool isComponentReadOnly() const override;
     void promoteComponentToProject() override;
 
+    void pushComponentTypeMetadata(const Metadata& metadata);
+    void pushApplicationMetadata(const std::string& section);
+    void popComponentTypeMetadata();
+
     private:
+    IComponentData& getParent() const;
+    IPropertyManager& getProperties() const;
+
     Application& cApplication;
-    IComponentData& cParent;
-    std::vector<Metadata*> cMetadata;
-    IPropertyManager& cProperties;
+    std::vector<IComponentData*> cParents;
+    std::vector<IPropertyManager*> cPropertyManagers;
+    std::vector<const Metadata*> cMetadata;
+    std::vector<std::size_t> cMetadataDepthAtMenuOpen;
     IDialogManager& cDialogManager;
     std::map<std::string, std::unique_ptr<Metadata>> cApplicationMetadata;
-    std::map<std::string, std::unique_ptr<ModuleMetadata>> cComponentTypeMetadata;
+    std::map<std::string, std::unique_ptr<ModuleMetadata>> cModuleMetadata;
     
-    void pushApplicationMetadata(const std::string& section);
     void popApplicationMetadata();
 
     static PropertyData mergePropertyMetadata(const PropertyData& metadata, const Options& hint);
