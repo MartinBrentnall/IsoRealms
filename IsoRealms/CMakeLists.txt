@@ -32,10 +32,12 @@ add_library(IsoRealms
   DisplayResolution.cpp
   Editing/Choice.cpp
   Editing/ComponentEditor.cpp
+  Editing/ComponentTypeMetadata.cpp
   Editing/PropertiesMenu.cpp
   Editing/MenuItemProperty.cpp
   Editing/MenuItemSpacer.cpp
   Editing/Metadata.cpp
+  Editing/ModuleMetadata.cpp
   Editing/Property/Property.cpp
   Editing/Property/PropertyAdd.cpp
   Editing/Property/PropertyCode.cpp

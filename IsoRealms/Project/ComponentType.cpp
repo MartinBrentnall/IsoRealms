@@ -29,6 +29,10 @@ namespace IsoRealms {
             cComponentType(resourceType) {
   }
 
+  void ComponentType::define(IComponentDefiner& definer) {
+    cComponentType->define(definer, *this);
+  }
+
   void ComponentType::loadComponent(JSONThing mInstanceThing, ProjectFile* ownerProject) {
     std::string mComponentName = mInstanceThing.getName();
     if (mInstanceThing.isNull()) {

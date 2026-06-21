@@ -18,8 +18,11 @@
  */
 #include "ComponentEditor.h"
 
-#include "IsoRealms/Resources/Type/IStateNotifier.h"
 #include "IsoRealms/IComponentData.h"
+#include "IsoRealms/Persistence/JSONObject.h"
+#include "IsoRealms/Persistence/JSONThing.h"
+#include "IsoRealms/Project/ComponentType.h"
+#include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/Options.h"
 #include "IsoRealms/Project/Project.h"
 #include "IsoRealms/Project/Registry/IResourceProvider.h"
@@ -36,87 +39,128 @@ namespace IsoRealms {
             cParent(parent),
             cProperties(properties),
             cDialogManager(dialogManager) {
+
+    // Load application metadata.
+    std::locale mLocale("");
+    std::string mMetadataPath = "Metadata/IsoRealms." + mLocale.name();
+    std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
+    std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
+    std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                                               ? mLastExtensionIndex
+                                               : mLastDashIndex;
+    while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
+      mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
+      mLastExtensionIndex = mMetadataPath.find_last_of('.');
+      mLastDashIndex = mMetadataPath.find_last_of('_');
+      mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
+                          ? mLastExtensionIndex
+                          : mLastDashIndex;
+    }
+
+    if (!System::fileExists(mMetadataPath + ".json", false)) {
+      mMetadataPath = "Metadata/IsoRealms.en";
+    }
+    JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
+    JSONObject mRootObject(mMetadataDocument, mMetadataDocument.getDocument());
+    for (JSONThing mSectionThing : mRootObject) {
+      std::string mSectionName = mSectionThing.getName();
+      JSONObject mSectionObject = mSectionThing.getValue();
+      cApplicationMetadata.emplace(mSectionName, std::make_unique<Metadata>(mSectionObject));
+    }
+
+    const std::vector<std::unique_ptr<Module>>& mModules = cParent.getProject().getModules();
+    for (const std::unique_ptr<Module>& mModule : mModules) {
+      cComponentTypeMetadata[mModule->getName()] = std::make_unique<ModuleMetadata>(*mModule);
+    }
+
+    // Start with the application metadata.
+    pushApplicationMetadata("Application");
   }
 
   void ComponentEditor::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) {
-    cProperties.addProperty(std::make_unique<PropertyAdd>(cMetadata.getPropertyData(key), *this, value, addPropertyFunction));
+    cProperties.addProperty(std::make_unique<PropertyAdd>(cMetadata.back()->getPropertyData(key), *this, value, addPropertyFunction));
   }
 
   void ComponentEditor::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(cMetadata.getPropertyData(key), *this, cParent, getter, setter, cParent.getProject(), removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyNativeBoolean>(cMetadata.back()->getPropertyData(key), *this, cParent, getter, setter, cParent.getProject(), removeFunction));
   }
 
   void ComponentEditor::propertyCode(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyCode>(cParent.getProject(), cMetadata.getPropertyData(key), *this, getter, setter, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyCode>(cParent.getProject(), cMetadata.back()->getPropertyData(key), *this, getter, setter, removeFunction));
   }
 
   void ComponentEditor::propertyColourChannel(const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourChannel>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourChannel>(cParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, minRed, minGreen, minBlue, minAlpha, maxRed, maxGreen, maxBlue, maxAlpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourHue(const std::string& key, std::function<float()> valueFunction, float* saturation, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourHue>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourHue>(cParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, saturation, lightness, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourLightness(const std::string& key, std::function<float()> valueFunction, float* hue, float* saturation, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourLightness>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, saturation, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourLightness>(cParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, hue, saturation, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyColourSaturation(const std::string& key, std::function<float()> valueFunction, float* hue, float* lightness, float* alpha, std::function<void(const float)> confirmationCallback) {
-    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(cParent, key, cMetadata, cMetadata.getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
+    cProperties.addProperty(std::make_unique<PropertyColourSaturation>(cParent, key, *cMetadata.back(), cMetadata.back()->getPropertyData(key), *this, valueFunction, hue, lightness, alpha, confirmationCallback));
   }
 
   void ComponentEditor::propertyCondition(const std::string& key, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter, const Options& hint) {
-    cProperties.addProperty(std::make_unique<PropertyCondition>(cMetadata.getPropertyData(key), *this, availableElements, getter, setter));
+    cProperties.addProperty(std::make_unique<PropertyCondition>(cMetadata.back()->getPropertyData(key), *this, availableElements, getter, setter));
   }
 
   void ComponentEditor::propertyEditor(const std::string& key, IEditable* editable) {
-    cProperties.addProperty(std::make_unique<PropertyEditor>(cMetadata.getPropertyData(key), *this, editable));
+    cProperties.addProperty(std::make_unique<PropertyEditor>(cMetadata.back()->getPropertyData(key), *this, editable));
   }
 
   void ComponentEditor::propertyFloat(const std::string& key, std::function<float()> getter, std::function<void(float)> setter, float defaultValue, std::function<bool(float)> validityChecker, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeFloat>(cMetadata.getPropertyData(key), *this, getter, validityChecker, setter, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyNativeFloat>(cMetadata.back()->getPropertyData(key), *this, getter, validityChecker, setter, removeFunction));
   }
 
   void ComponentEditor::propertyInteger(const std::string& key, std::function<int()> getter, std::function<void(int)> setter, int defaultValue, std::function<bool(int)> validityChecker, std::function<void()> removeFunction, const Options& hint) {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    cProperties.addProperty(std::make_unique<PropertyNativeInteger>(cMetadata.getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyNativeInteger>(cMetadata.back()->getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
   }
 
   void ComponentEditor::propertyKey(const std::string& key, std::function<std::string()> getter, std::function<void(sf::Keyboard::Key)> setter, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyKey>(cMetadata.getPropertyData(key), *this, getter, setter, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyKey>(cMetadata.back()->getPropertyData(key), *this, getter, setter, removeFunction));
   }
 
   void ComponentEditor::propertyList(const std::string& key, const std::vector<std::string>& options, std::function<std::string()> getter, std::function<void(const std::string& value)> setter, const std::string& defaultValue, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyList>(*this, cParent, cParent.getProject(), cMetadata.getPropertyData(key), options, getter, setter, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyList>(*this, cParent, cParent.getProject(), cMetadata.back()->getPropertyData(key), options, getter, setter, removeFunction));
   }
 
   void ComponentEditor::propertyResource(const std::string& key, ITreeSelectorObject& item, const Options& hint, std::function<void()> removeFunction) {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, cParent, mergePropertyMetadata(cMetadata.getPropertyData(key), hint), item, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyTreeSelector>(*this, cParent, mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), item, removeFunction));
   }
 
   void ComponentEditor::propertyString(const std::string& key, std::function<std::string()> getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) {
-    cProperties.addProperty(std::make_unique<PropertyNativeString>(cMetadata.getPropertyData(key), *this, getter, setter, validityChecker, removeFunction, confirmCustom));
+    cProperties.addProperty(std::make_unique<PropertyNativeString>(cMetadata.back()->getPropertyData(key), *this, getter, setter, validityChecker, removeFunction, confirmCustom));
   }
 
   void ComponentEditor::propertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter, const Options& hint) {
-    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, cParent, cMetadata.getPropertyData(key), choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
+    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, cParent, cMetadata.back()->getPropertyData(key), choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
   }
 
   void ComponentEditor::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
-    cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cMetadata.getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cMetadata.back()->getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
+  }
+
+  void ComponentEditor::scopeModule(Module& module) {
+    std::string mModuleName = module.getName();
+    cComponentTypeMetadata[mModuleName]->scopeCategories(*this, module);
   }
 
   void ComponentEditor::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint) {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    cProperties.addProperty(std::make_unique<PropertyStruct>(cParent, cMetadata.getPropertyData(key), *this, value, subProperties, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyStruct>(cParent, cMetadata.back()->getPropertyData(key), *this, value, subProperties, removeFunction));
   }
 
   void ComponentEditor::spacer(float height) {
@@ -141,119 +185,19 @@ namespace IsoRealms {
     return PropertyData(mName.empty() ? metadata.getName() : mName, mDescription.empty() ? metadata.getTooltip() : mDescription);
   }
 
+  void ComponentEditor::pushApplicationMetadata(const std::string& section) {
+    cMetadata.push_back(cApplicationMetadata[section].get());
+  }
+
+  void ComponentEditor::popApplicationMetadata() {
+    cMetadata.pop_back();
+  }
+
 
 
 // ================================ Load component type metadata.
 
   // void ComponentType::loadMetadata(JSONObject object) {
-  //   cSingular    = object.getString(JSON_SINGULAR);
-  //   cPlural      = object.getString(JSON_PLURAL);
-  //   cCategory    = object.getString(JSON_CATEGORY);
-  //   cDescription = object.getString(JSON_DESCRIPTION);
-  //   JSONObject mPropertiesObject = object.getObject(JSON_PROPERTIES);
-  //   cMetadata.load(mPropertiesObject);
-  //   cMetadata.setParent(&cParent.getProject().getApplication().getMetadata("Component"));
-  // }
-
-    // Load the component type metadata.  This needs to be done after the module is created.
-    // JSONObject mComponentTypesObject = mMetadataDocument.getObject(JSON_COMPONENTS);
-    // for (std::pair<const std::string, std::unique_ptr<ComponentType>>& mComponentType : cComponentTypes) {
-    //   JSONObject mComponentTypeObject = mComponentTypesObject.getObject(mComponentType.first);
-    //   mComponentType.second->loadMetadata(mComponentTypeObject);
-    // }
-
-
-
-// ================================ Obtain module metadata path. 
-
-    // std::string Module::getMetadataPath(const std::string& name) {
-    //   std::locale mLocale("");
-    //   std::string mMetadataPath = "Metadata/" + name + "/" + name + "." + mLocale.name();
-    //   std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    //   std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
-    //   std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-    //                                              ? mLastExtensionIndex
-    //                                              : mLastDashIndex;
-    //   while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
-    //     mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
-    //     mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    //     mLastDashIndex = mMetadataPath.find_last_of('_');
-    //     mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-    //                         ? mLastExtensionIndex
-    //                         : mLastDashIndex;
-    //   }
-  
-    //   if (!System::fileExists(mMetadataPath + ".json", false)) {
-    //     throw InitException("ERROR: Module::getMetadataPath: No metadata file found for module \"" + name + "\".");
-    //   }
-    //   return mMetadataPath;
-    // }
-  
-  
-
-
-// ================================ Load module metadata.
-
-    // Load the metadata file.
-    // std::string mMetadataPath = getMetadataPath(cName);
-    // JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-    
-    // // Load the module and resource metadata.  This needs to be done before the module is created.
-    // cDescription = mMetadataDocument.getString(JSON_DESCRIPTION);
-    // cLongName = mMetadataDocument.hasMember(JSON_LONG_NAME) ? mMetadataDocument.getString(JSON_LONG_NAME) : cName;
-
-    // if (mMetadataDocument.hasMember(JSON_CATEGORIES)) {
-    //   JSONObject mCategoriesObject = mMetadataDocument.getObject(JSON_CATEGORIES);
-    //   for (JSONThing mCategoryThing : mCategoriesObject) {
-    //     std::string mCategoryDescription = mCategoryThing.getValueAsString();
-    //     std::string mCategoryName = mCategoryThing.getName();
-    //     cCategoryDescriptions[mCategoryName] = mCategoryDescription;
-    //   }
-    // }
-
-    // JSONObject mResourcesObject = mMetadataDocument.getObject(JSON_RESOURCES);
-    // for (JSONThing mResourceThing : mResourcesObject) {
-    //   JSONObject mResourceObject = mResourceThing.getValue();
-    //   std::string mResourceName = mResourceThing.getName();
-    //   cResourceMetadata[mResourceName] = std::make_unique<Metadata>();
-    //   JSONObject mPropertiesObject = mResourceObject.getObject(JSON_PROPERTIES);
-    //   cResourceMetadata[mResourceName]->load(mPropertiesObject);
-    // }
-
-
-
-// ================================ Load application metadata.    
-
-    // Load application metadata.
-    // std::locale mLocale("");
-    // std::string mMetadataPath = "Metadata/IsoRealms." + mLocale.name();
-    // std::string::size_type mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    // std::string::size_type mLastDashIndex = mMetadataPath.find_last_of('_');
-    // std::string::size_type mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-    //                                            ? mLastExtensionIndex
-    //                                            : mLastDashIndex;
-    // while (!System::fileExists(mMetadataPath + ".json", false) && mLastSeparatorIndex != std::string::npos) {
-    //   mMetadataPath = mMetadataPath.substr(0, mLastSeparatorIndex);
-    //   mLastExtensionIndex = mMetadataPath.find_last_of('.');
-    //   mLastDashIndex = mMetadataPath.find_last_of('_');
-    //   mLastSeparatorIndex = (mLastExtensionIndex != std::string::npos && (mLastDashIndex == std::string::npos || mLastExtensionIndex > mLastDashIndex))
-    //                       ? mLastExtensionIndex
-    //                       : mLastDashIndex;
-    // }
-
-    // if (!System::fileExists(mMetadataPath + ".json", false)) {
-    //   mMetadataPath = "Metadata/IsoRealms.en";
-    // }
-    // JSONDocument mMetadataDocument(mMetadataPath + ".json", false);
-    // JSONObject mRootObject(mMetadataDocument, mMetadataDocument.getDocument());
-    // for (JSONThing mSectionThing : mRootObject) {
-    //   std::string mSectionName = mSectionThing.getName();
-    //   JSONObject mSectionObject = mSectionThing.getValue();
-    //   std::unique_ptr<Metadata> mSectionMetadata = std::make_unique<Metadata>();
-    //   mSectionMetadata->load(mSectionObject);
-    //   cMetadata[mSectionName] = std::move(mSectionMetadata);
-    // }
-
 
 
 // ================================ Read module long name from metadata file.

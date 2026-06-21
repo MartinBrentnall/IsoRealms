@@ -21,6 +21,8 @@
 #include <string>
 #include <functional>
 
+#include "IsoRealms/IComponentDefiner.h"
+
 namespace IsoRealms {
   class ComponentType;
   class File;
@@ -34,6 +36,7 @@ namespace IsoRealms {
 
   class IComponentTypeDefinition {
     public:
+    virtual void define(IComponentDefiner& definer, ComponentType& parent) = 0;
     virtual IComponent* createComponent(ComponentType& parent, const std::string& name, ProjectFile* ownerProject) = 0;
     virtual IComponent* loadComponent(ComponentType& parent, const std::string& name, JSONObject object, ProjectFile* ownerProject) = 0;
     virtual void deleteComponent(IComponent* component) = 0;

@@ -46,14 +46,17 @@ namespace IsoRealms {
     cHasRemoveColumn = false;
     IUIStyle& mStyle = getStyle();
     for (std::unique_ptr<IMenuItem>& mItem : getItems()) {
-      cColumnWidthLabel = std::max(cColumnWidthLabel.value(), mItem->getWidth(mStyle));
-      cColumnWidthValue = std::max(cColumnWidthValue.value(), mItem->getProperty()->getValueWidth(mStyle));
-      if (mItem->getProperty()->hasConfiguration()) {
-        cHasConfigureColumn = true;
-      }
+      IProperty* mProperty = mItem->getProperty();
+      if (mProperty != nullptr) {
+        cColumnWidthLabel = std::max(cColumnWidthLabel.value(), mItem->getWidth(mStyle));
+        cColumnWidthValue = std::max(cColumnWidthValue.value(), mProperty->getValueWidth(mStyle));
+        if (mProperty->hasConfiguration()) {
+          cHasConfigureColumn = true;
+        }
 
-      if (mItem->getProperty()->isRemovable()) {
-        cHasRemoveColumn = true;
+        if (mProperty->isRemovable()) {
+          cHasRemoveColumn = true;
+        }
       }
     }
   }
@@ -64,27 +67,30 @@ namespace IsoRealms {
   }
 
   float PropertiesMenu::getHeight(IMenuItem& item, IUIStyle& style) const {
-    return style.getFontSize() * 2.0f;
+    return item.getHeight(style);
   }
 
   void PropertiesMenu::renderMenuItem(IMenuItem& item, IUIStyle& style, float y, float aspectRatio) const {
-    float mFontSize = style.getFontSize();
-    item.render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f, aspectRatio);
-    if (item.getProperty()->hasConfiguration()) {
-      glPushMatrix();
-      glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * 4.50f, y + mFontSize, 0.0f);
-      glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
-      Utils::renderIconCustom();
-      glPopMatrix();
-    }
+    IProperty* mProperty = item.getProperty();
+    if (mProperty != nullptr) {
+      float mFontSize = style.getFontSize();
+      item.render(style, y, -1.0f * aspectRatio + cColumnWidthLabel.animation() + mFontSize * 2.25f, aspectRatio);
+      if (mProperty->hasConfiguration()) {
+        glPushMatrix();
+        glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * 4.50f, y + mFontSize, 0.0f);
+        glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
+        Utils::renderIconCustom();
+        glPopMatrix();
+      }
 
-    if (item.getProperty()->isRemovable()) {
-      glPushMatrix();
-      float mPosition = cHasConfigureColumn ? 6.75f : 4.50f;
-      glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * mPosition, y + mFontSize, 0.0f);
-      glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
-      Utils::renderIconNone();
-      glPopMatrix();
+      if (mProperty->isRemovable()) {
+        glPushMatrix();
+        float mPosition = cHasConfigureColumn ? 6.75f : 4.50f;
+        glTranslatef(-1.0f * aspectRatio + cColumnWidthLabel.animation() + cColumnWidthValue.animation() + mFontSize * mPosition, y + mFontSize, 0.0f);
+        glScalef(mFontSize * 0.8f, mFontSize * 0.8f, 0.0f);
+        Utils::renderIconNone();
+        glPopMatrix();
+      }
     }
   }
   
@@ -236,7 +242,7 @@ namespace IsoRealms {
   }
 
   bool PropertiesMenu::isSelectable(IMenuItem& item) const {
-    return true;
+    return item.isSelectable();
   }
 
   void PropertiesMenu::refresh() {

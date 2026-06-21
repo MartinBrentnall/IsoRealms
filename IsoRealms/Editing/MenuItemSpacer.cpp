@@ -41,7 +41,7 @@ namespace IsoRealms {
   }
 
   float MenuItemSpacer::getHeight(IUIStyle& style) const {
-    return style.getFontSize() * cHeight;
+    return style.getFontSize() * cHeight * 2.0f;
   }
 
   float MenuItemSpacer::getIndentation(IUIStyle& style) const {

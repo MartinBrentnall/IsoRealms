@@ -289,30 +289,32 @@ namespace IsoRealms {
   }
 
   void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
-    definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& editingDefiner) {
-      cDefProjectFileStructure.define(editingDefiner, *this, false);
-    });
-    definer.scope(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this](IComponentDefiner& editingDefiner) {
-      editingDefiner.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &editingDefiner](ProjectLaunchConfiguration& launchConfiguration) {
-        editingDefiner.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &launchConfiguration](IComponentDefiner& nestedDefiner) {
-          launchConfiguration.define(nestedDefiner, *this);
-        }, [this, &launchConfiguration]() {
-          Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
+    definer.scope("Project", "Edit...", [this, loadOwner](IComponentDefiner& definer) {
+      definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& editingDefiner) {
+        cDefProjectFileStructure.define(editingDefiner, *this, false);
+      });
+      definer.scope(JSON_LAUNCH_CONFIGURATIONS, "Edit...", [this](IComponentDefiner& editingDefiner) {
+        editingDefiner.array("LaunchConfigurationAdd", cDefTestLaunchConfigurations, [](const std::unique_ptr<ProjectLaunchConfiguration>& i)->ProjectLaunchConfiguration& {return *i;}, [this, &editingDefiner](ProjectLaunchConfiguration& launchConfiguration) {
+          editingDefiner.scope("LaunchConfiguration", launchConfiguration.getName(), [this, &launchConfiguration](IComponentDefiner& nestedDefiner) {
+            launchConfiguration.define(nestedDefiner, *this);
+          }, [this, &launchConfiguration]() {
+            Utils::removeElementUnique(cDefTestLaunchConfigurations, &launchConfiguration);
+          });
+        }, [this]() -> ProjectLaunchConfiguration& {
+          return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
         });
-      }, [this]() -> ProjectLaunchConfiguration& {
-        return *cDefTestLaunchConfigurations.emplace_back(std::make_unique<ProjectLaunchConfiguration>(*this, cDefProjectFileStructure));
       });
+      cDefActionOnStart.define(       definer, JSON_ON_START,         loadOwner);
+      cDefActionOnCloseRequest.define(definer, JSON_ON_CLOSE_REQUEST, loadOwner);
+      cDefInputHandler.define(        definer, JSON_INPUT,            loadOwner);
+      cDefScreen.define(              definer, JSON_SCREEN,           loadOwner);
+      cDefDefaultEditor.define(       definer, JSON_EDITOR,           loadOwner);
     });
-    cDefActionOnStart.define(       definer, JSON_ON_START,         loadOwner);
-    cDefActionOnCloseRequest.define(definer, JSON_ON_CLOSE_REQUEST, loadOwner);
-    cDefInputHandler.define(        definer, JSON_INPUT,            loadOwner);
-    cDefScreen.define(              definer, JSON_SCREEN,           loadOwner);
-    cDefDefaultEditor.define(       definer, JSON_EDITOR,           loadOwner);
 
+    definer.spacer(0.5f);
     definer.fixedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {return *module;}, [&definer, this](Module& module, unsigned int index) {
-      definer.scope(module.getName(), module.getLongName(), [](IComponentDefiner&) {}, [this, moduleName = module.getName()]() {
-        unloadModule(moduleName);
-      });
+      definer.scopeModule(module);
+      definer.spacer(0.5f);
     }, Module::matchLoadIndex);
 
     if (!definer.loadsPersistedValues() && !definer.savesPersistedValues()) {

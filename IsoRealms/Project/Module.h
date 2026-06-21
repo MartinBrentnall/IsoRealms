@@ -67,6 +67,7 @@ namespace IsoRealms {
     std::string getLongName() const;
     std::string getDescription() const;
     std::string getCategoryDescription(const std::string& key) const;
+    ComponentType* getComponentType(const std::string& id);
     std::vector<ComponentType*> getComponentTypes();
 
     /*************************************\
@@ -132,7 +133,6 @@ namespace IsoRealms {
 #elif _WIN32
     HINSTANCE cModuleHandle;
 #endif
-    ComponentType* getComponentType(const std::string& id);
 
     /**
      * Casts a void* to the FUNC type.  Compilation will fail if compiled for a

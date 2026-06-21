@@ -25,6 +25,7 @@
 #include <algorithm>
 
 #include "IsoRealms/Component.h"
+#include "IsoRealms/IComponentDefiner.h"
 #include "IsoRealms/IComponentTypeDefinition.h"
 #include "IsoRealms/Persistence/JSONArray.h"
 #include "IsoRealms/Persistence/JSONObject.h"
@@ -133,6 +134,20 @@ namespace IsoRealms {
               cModule(module) {
     }
       
+    void define(IComponentDefiner& definer, ComponentType& parent) override {
+      definer.array("components", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
+        return *entry.second->getComponent();
+      }, [&definer, this](IComponent& component) {
+        definer.scope(component.getName(), component.getName(), [&component, &definer](IComponentDefiner& nestedDefiner) {
+          component.define(nestedDefiner);
+        }, [this, &component]() {
+          deleteComponent(&component);
+        });
+      }, [this, &parent]() -> IComponent& {
+        return *createComponent(parent, "Unnamed " + parent.getSingular(), parent.getProject().getProjectFile());
+      });
+    }
+
     void clear() {
       cComponents.clear();
     }
@@ -316,8 +331,6 @@ namespace IsoRealms {
     }
     
     private:
-    inline static const std::string JSON_ID = "id";
-
     MODULE& cModule;
     std::map<std::string, std::unique_ptr<ComponentInfo>> cComponents;
   };

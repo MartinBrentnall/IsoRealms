@@ -20,6 +20,7 @@
 
 #include "IsoRealms/IComponentDefiner.h"
 
+#include "ModuleMetadata.h"
 #include "Metadata.h"
 
 namespace IsoRealms {
@@ -56,6 +57,7 @@ namespace IsoRealms {
     void propertyString(          const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter, const std::string& defaultValue, std::function<bool(const std::string&)> validityChecker, std::function<void()> removeFunction, std::function<void(std::function<void()>, std::function<void()>)> confirmCustom) override;
     void propertyUnsignedInteger( const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)>       setter, unsigned int       defaultValue, std::function<bool(unsigned int)>       validityChecker, std::function<void()> removeFunction) override;
     
+    void scopeModule(Module& module) override;
     void scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction = nullptr, const Options& hint = Options::EMPTY) override;
     void spacer(float height) override;
     
@@ -69,10 +71,15 @@ namespace IsoRealms {
     private:
     Application& cApplication;
     IComponentData& cParent;
-    Metadata cMetadata;
+    std::vector<Metadata*> cMetadata;
     IPropertyManager& cProperties;
     IDialogManager& cDialogManager;
+    std::map<std::string, std::unique_ptr<Metadata>> cApplicationMetadata;
+    std::map<std::string, std::unique_ptr<ModuleMetadata>> cComponentTypeMetadata;
     
+    void pushApplicationMetadata(const std::string& section);
+    void popApplicationMetadata();
+
     static PropertyData mergePropertyMetadata(const PropertyData& metadata, const Options& hint);
   };
 }

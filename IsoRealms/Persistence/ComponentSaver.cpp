@@ -18,10 +18,12 @@
  */
 #include "ComponentSaver.h"
 
-#include "IsoRealms/Resources/Type/IEditable.h"
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/IComponentData.h"
+#include "IsoRealms/Project/Module.h"
+#include "IsoRealms/Project/ComponentType.h"
+#include "IsoRealms/Resources/Type/IEditable.h"
 
 namespace IsoRealms {
   ComponentSaver::ComponentSaver(IComponentData& resourceData, JSONObject object) :
@@ -155,6 +157,13 @@ namespace IsoRealms {
 
   void ComponentSaver::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
     currentObject().addInteger(key, static_cast<int>(getter()), static_cast<int>(defaultValue));
+  }
+
+  void ComponentSaver::scopeModule(Module& module) {
+    std::vector<ComponentType*> mComponentTypes = module.getComponentTypes();
+    for (ComponentType* mComponentType : mComponentTypes) {
+      mComponentType->define(*this);
+    }
   }
 
   void ComponentSaver::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint) {

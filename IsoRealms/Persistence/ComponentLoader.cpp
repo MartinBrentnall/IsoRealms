@@ -21,13 +21,15 @@
 #include <map>
 #include <optional>
 
-#include "IsoRealms/Resources/Fixed/DigitalInput/KeyboardKey.h"
-#include "IsoRealms/Resources/Type/IEditable.h"
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Editing/Property/ITreeSelectorObject.h"
 #include "IsoRealms/Exception/ArgumentException.h"
 #include "IsoRealms/IComponentData.h"
+#include "IsoRealms/Project/ComponentType.h"
+#include "IsoRealms/Project/Module.h"
 #include "IsoRealms/Project/Project.h"
+#include "IsoRealms/Resources/Fixed/DigitalInput/KeyboardKey.h"
+#include "IsoRealms/Resources/Type/IEditable.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -227,6 +229,13 @@ namespace IsoRealms {
     unsigned int mValue = static_cast<unsigned int>(currentObject().getInteger(key, static_cast<int>(defaultValue)));
     requireValidPropertyValue(key, mValue, validityChecker);
     setter(mValue);
+  }
+
+  void ComponentLoader::scopeModule(Module& module) {
+    std::vector<ComponentType*> mComponentTypes = module.getComponentTypes();
+    for (ComponentType* mComponentType : mComponentTypes) {
+      mComponentType->define(*this);
+    }
   }
 
   void ComponentLoader::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint) {

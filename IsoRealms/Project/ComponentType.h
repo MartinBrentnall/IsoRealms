@@ -32,6 +32,7 @@ namespace IsoRealms {
   class ComponentType {
     public:
     ComponentType(IComponentTypeDefinition* resourceType, Module& parent);
+    void define(IComponentDefiner& definer);
     void loadComponent(JSONThing mInstanceThing, ProjectFile* ownerProject);
     void reloadComponent(const std::string& resourceName);
     bool needsSaving(const ProjectFile* savingProject) const;

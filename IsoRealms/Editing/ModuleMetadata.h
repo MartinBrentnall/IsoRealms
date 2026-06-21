@@ -21,18 +21,26 @@
 #include <map>
 #include <memory>
 #include <string>
+ 
+#include "IsoRealms/Project/Module.h"
+
+#include "ComponentTypeMetadata.h"
 
 namespace IsoRealms {
+  class IComponentDefiner;
   class JSONObject;
   class PropertyData;
 
-  class Metadata {
+  class ModuleMetadata {
     public:
-    Metadata(JSONObject object);
-
-    const PropertyData getPropertyData(const std::string& key) const;
+    ModuleMetadata(Module& module);
+    void scopeCategories(IComponentDefiner& definer, Module& module);
 
     private:
-    std::map<std::string, std::unique_ptr<PropertyData>> cPropertyHelp;
+    std::string cDescription;
+    std::string cLongName;
+    std::map<std::string, std::string> cCategoryDescriptions;
+    std::map<std::string, std::unique_ptr<ComponentTypeMetadata>> cComponentTypes;
   };
 }
+ 
