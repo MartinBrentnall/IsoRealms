@@ -101,7 +101,7 @@ namespace IsoRealms::Equilibria {
 
   void SplitSurface::render() const {
     if (!cDefCondition.has_value() || cDefCondition->isTrue()) {
-      cType.getSurfacePattern()->render(cDefX, cDefY, cDefZ, cDefCornerHeights[0][0], cDefCornerHeights[0][1], cDefCornerHeights[1][0], cDefCornerHeights[1][1], false);
+      cType.getSurfacePattern()->render(cDefX, cDefY, cDefZ, getHeightSW(), getHeightSE(), getHeightNW(), getHeightNE(), cDefAlternativeSplit);
     }
   }
 

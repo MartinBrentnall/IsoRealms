@@ -67,29 +67,22 @@ namespace IsoRealms::Equilibria {
             cDefEndZ(cZone.getStartZ()),
             cDefCornerHeight{{0, 0}, {0, 0}},
             cDefFlags(FLAGS_NORMAL) {
-    cZone.getWorld().registerTerrain(this, true, true);
   }
 
   void Terrain::define(IComponentDefiner& definer) {
     Equilibria& mEquilibria = cZone.getWorld().getEquilibria();
-    auto mFlagTerrain = [this]() {
-      cZone.getWorld().flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
-      cZone.updateDisplayList();
-    };
     Options mDeferHint;
     mDeferHint.addOption(Options::PROPERTY_DEFER, "true");
-    definer.scope("", "", [this, &mEquilibria, mFlagTerrain](IComponentDefiner& d) {
-      d.propertyString("type", [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria, mFlagTerrain](const std::string& value) {
+    definer.scope("", "", [this, &mEquilibria](IComponentDefiner& d) {
+      d.propertyString("type", [this, &mEquilibria]() {return mEquilibria.getComponentID(cDefType);}, [this, &mEquilibria](const std::string& value) {
         cDefType = mEquilibria.get<TerrainType>(nullptr, value);
-        mFlagTerrain();
       });
       std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
 
       Options mOptionalConditionHint;
       mOptionalConditionHint.addOption(Options::PROPERTY_OPTIONAL, "true");
-        d.propertyCondition("condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this, mFlagTerrain](std::optional<Condition>& condition) {
+        d.propertyCondition("condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
         cDefCondition = condition;
-        mFlagTerrain();
       }, mOptionalConditionHint);
     }, nullptr, mDeferHint);
     definer.propertyList("behaviour",
@@ -99,29 +92,30 @@ namespace IsoRealms::Equilibria {
                                                   BEHAVIOUR_DYNAMIC,
                                                   BEHAVIOUR_DYNAMIC_GHOST},
                          [this]() {return getBehaviourString();},
-                         [this, mFlagTerrain](const std::string& value) {
-                           cDefFlags = (~cDefFlags & FLAG_BEHAVIOUR_MASK) | getBehaviourFlags(value);
-                           cZone.getWorld().registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
-                           mFlagTerrain();
+                         [this](const std::string& value) {
+                           cDefFlags = (cDefFlags & ~FLAG_BEHAVIOUR_MASK) | getBehaviourFlags(value);
                          });
-    definer.propertyInteger("x",                [this]() {return cDefStartX - cZone.getStartX();},            [this, mFlagTerrain](int value) {cDefStartX = value + cZone.getStartX();     mFlagTerrain();});
-    definer.propertyInteger("y",                [this]() {return cDefStartY - cZone.getStartY();},            [this, mFlagTerrain](int value) {cDefStartY = value + cZone.getStartY();     mFlagTerrain();});
-    definer.propertyInteger("z",                [this]() {return (cDefStartZ + 1) - cZone.getStartZ();},      [this, mFlagTerrain](int value) {cDefStartZ = value + cZone.getStartZ() - 1; mFlagTerrain();});
-    definer.propertyInteger("width",            [this]() {return (cDefEndX + 1) - cDefStartX;},               [this, mFlagTerrain](int value) {cDefEndX = cDefStartX + value - 1;          mFlagTerrain();});
-    definer.propertyInteger("length",           [this]() {return (cDefEndY + 1) - cDefStartY;},               [this, mFlagTerrain](int value) {cDefEndY = cDefStartY + value - 1;          mFlagTerrain();});
-    definer.propertyInteger("height",           [this]() {return cDefEndZ - cDefStartZ;},                     [this, mFlagTerrain](int value) {cDefEndZ = cDefStartZ + value;              mFlagTerrain();});
-    definer.propertyInteger("northWestCorner",  [this]() {return cDefCornerHeight[0][1];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[0][1] = value;             mFlagTerrain();});
-    definer.propertyInteger("northEastCorner",  [this]() {return cDefCornerHeight[1][1];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[1][1] = value;             mFlagTerrain();});
-    definer.propertyInteger("southEastCorner",  [this]() {return cDefCornerHeight[1][0];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[1][0] = value;             mFlagTerrain();});
-    definer.propertyInteger("southWestCorner",  [this]() {return cDefCornerHeight[0][0];},                    [this, mFlagTerrain](int value) {cDefCornerHeight[0][0] = value;             mFlagTerrain();});
-    definer.propertyBoolean("alternativeSplit", [this]() {return (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0;}, [this, mFlagTerrain](bool value) {
+    definer.propertyInteger("x",                [this]() {return cDefStartX - cZone.getStartX();},            [this](int value) {cDefStartX = value + cZone.getStartX();});
+    definer.propertyInteger("y",                [this]() {return cDefStartY - cZone.getStartY();},            [this](int value) {cDefStartY = value + cZone.getStartY();});
+    definer.propertyInteger("z",                [this]() {return (cDefStartZ + 1) - cZone.getStartZ();},      [this](int value) {cDefStartZ = value + cZone.getStartZ() - 1;});
+    definer.propertyInteger("width",            [this]() {return (cDefEndX + 1) - cDefStartX;},               [this](int value) {cDefEndX = cDefStartX + value - 1;});
+    definer.propertyInteger("length",           [this]() {return (cDefEndY + 1) - cDefStartY;},               [this](int value) {cDefEndY = cDefStartY + value - 1;});
+    definer.propertyInteger("height",           [this]() {return cDefEndZ - cDefStartZ;},                     [this](int value) {cDefEndZ = cDefStartZ + value;});
+    definer.propertyInteger("northWestCorner",  [this]() {return cDefCornerHeight[0][1];},                    [this](int value) {cDefCornerHeight[0][1] = value;});
+    definer.propertyInteger("northEastCorner",  [this]() {return cDefCornerHeight[1][1];},                    [this](int value) {cDefCornerHeight[1][1] = value;});
+    definer.propertyInteger("southEastCorner",  [this]() {return cDefCornerHeight[1][0];},                    [this](int value) {cDefCornerHeight[1][0] = value;});
+    definer.propertyInteger("southWestCorner",  [this]() {return cDefCornerHeight[0][0];},                    [this](int value) {cDefCornerHeight[0][0] = value;});
+    definer.propertyBoolean("alternativeSplit", [this]() {return (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0;}, [this](bool value) {
       cDefFlags = value ? cDefFlags | FLAG_ALTERNATIVE_SPLIT : cDefFlags & ~FLAG_ALTERNATIVE_SPLIT;
-      mFlagTerrain();
     });
-    definer.propertyBoolean("steppedBottom",    [this]() {return (cDefFlags & FLAG_STEPPED_BOTTOM) != 0;},    [this, mFlagTerrain](bool value) {
+    definer.propertyBoolean("steppedBottom",    [this]() {return (cDefFlags & FLAG_STEPPED_BOTTOM) != 0;},    [this](bool value) {
       cDefFlags = value ? cDefFlags | FLAG_STEPPED_BOTTOM : cDefFlags & ~FLAG_STEPPED_BOTTOM;
-      mFlagTerrain();
     });
+
+    // Register the terrain with the world.
+    if (definer.loadsPersistedValues()) {
+      cZone.getWorld().registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
+    }
   }
 
   void Terrain::loadCachedSurfaces(std::ifstream& cache) {
@@ -136,9 +130,9 @@ namespace IsoRealms::Equilibria {
           case CACHE_SURFACE: {
             cache.read(reinterpret_cast<char*>(&mPhysical), sizeof(mPhysical));
             std::unique_ptr<Surface> mSurface = std::make_unique<Surface>(cache, cZone.getWorld().getEquilibria().getTerrainStateConditionElements(), *cDefType, *this);
-            std::vector<std::unique_ptr<ISurface>>* mSurfaces = mPhysical ?                                                              &cRuntimeSurfacesPhysical
-                                                              : mSurface->getCondition().has_value() || cDefFlags & FLAG_FORCE_DYNAMIC ? &cRuntimeSurfacesDynamicVisual
-                                                              :                                                                          &cRuntimeSurfacesStaticVisual;
+            std::vector<std::unique_ptr<ISurface>>* mSurfaces = mPhysical ?                                       &cRuntimeSurfacesPhysical
+                                                              : requiresDynamicVisual(mSurface->getCondition()) ? &cRuntimeSurfacesDynamicVisual
+                                                              :                                                   &cRuntimeSurfacesStaticVisual;;
             mSurfaces->emplace_back(std::move(mSurface));
             break;
           }
@@ -146,9 +140,9 @@ namespace IsoRealms::Equilibria {
           case CACHE_SPLIT_SURFACE: {
             cache.read(reinterpret_cast<char*>(&mPhysical), sizeof(mPhysical));
             std::unique_ptr<SplitSurface> mSurface = std::make_unique<SplitSurface>(cache, cZone.getWorld().getEquilibria().getTerrainStateConditionElements(), *cDefType, *this);
-            std::vector<std::unique_ptr<ISurface>>* mSurfaces = mPhysical ?                                                              &cRuntimeSurfacesPhysical
-                                                              : mSurface->getCondition().has_value() || cDefFlags & FLAG_FORCE_DYNAMIC ? &cRuntimeSurfacesDynamicVisual
-                                                              :                                                                          &cRuntimeSurfacesStaticVisual;
+            std::vector<std::unique_ptr<ISurface>>* mSurfaces = mPhysical ?                                       &cRuntimeSurfacesPhysical
+                                                              : requiresDynamicVisual(mSurface->getCondition()) ? &cRuntimeSurfacesDynamicVisual
+                                                              :                                                   &cRuntimeSurfacesStaticVisual;;
             mSurfaces->emplace_back(std::move(mSurface));
             break;
           }
@@ -235,9 +229,9 @@ namespace IsoRealms::Equilibria {
       mWallCondition = std::make_optional<Condition>(cache, cZone.getWorld().getEquilibria().getTerrainStateConditionElements(), CACHE_CONDITION, CACHE_CONDITION_ELEMENT, CACHE_CONDITION_END);
     }
     
-    std::vector<std::unique_ptr<Wall>>* mWalls = mPhysical ?                                                    &cRuntimeWallsPhysical
-                                               : mWallCondition.has_value() || cDefFlags & FLAG_FORCE_DYNAMIC ? &cRuntimeWallsDynamicVisual
-                                               :                                                                &cRuntimeWallsStaticVisual;
+    std::vector<std::unique_ptr<Wall>>* mWalls = mPhysical ?                             &cRuntimeWallsPhysical
+                                               : requiresDynamicVisual(mWallCondition) ? &cRuntimeWallsDynamicVisual
+                                               :                                         &cRuntimeWallsStaticVisual;
     mWalls->emplace_back(std::make_unique<Wall>(mX, mY, mZ, mLength, mHeight, mSlopeTop, mSlopeBottom, mFacing, mWallCondition, *cDefType, *this));
   }
 
@@ -487,7 +481,7 @@ namespace IsoRealms::Equilibria {
       for (unsigned int i = 0; i < mWalls.size(); i++) {
         std::optional<Condition>& mCondition = mWalls[i]->getCondition();
         std::unique_ptr<Wall> mWall = createWall(mWalls[i].get());
-        if (mCondition.has_value() || cDefFlags & FLAG_FORCE_DYNAMIC) {
+        if (requiresDynamicVisual(mCondition)) {
           cRuntimeWallsDynamicVisual.emplace_back(std::move(mWall));
         } else {
           cRuntimeWallsStaticVisual.emplace_back(std::move(mWall));
@@ -524,7 +518,7 @@ namespace IsoRealms::Equilibria {
         int mWest = mTopSurfaces[i]->getWest();
         std::optional<Condition>& mCondition = mTopSurfaces[i]->getCondition();
         std::unique_ptr<ISurface> mSurface = createSurface(ISurface::Direction::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        if (mCondition.has_value() || cDefFlags & FLAG_FORCE_DYNAMIC) {
+        if (requiresDynamicVisual(mCondition)) {
           cRuntimeSurfacesDynamicVisual.emplace_back(std::move(mSurface));
         } else {
           cRuntimeSurfacesStaticVisual.emplace_back(std::move(mSurface));
@@ -679,7 +673,7 @@ namespace IsoRealms::Equilibria {
                                [this]() {
                                  return getBehaviourString();
                                }, [this](const std::string& value) {
-                                 cDefFlags = (~cDefFlags & FLAG_BEHAVIOUR_MASK) | getBehaviourFlags(value);
+                                 cDefFlags = (cDefFlags & ~FLAG_BEHAVIOUR_MASK) | getBehaviourFlags(value);
                                });
     }
   }
@@ -706,5 +700,12 @@ namespace IsoRealms::Equilibria {
          : value == BEHAVIOUR_DYNAMIC       ? FLAG_FORCE_DYNAMIC
          : value == BEHAVIOUR_DYNAMIC_GHOST ? FLAG_FORCE_DYNAMIC | FLAG_FORCE_DYNAMIC
          :                                    FLAGS_NORMAL;
+  }
+
+  bool Terrain::requiresDynamicVisual(const std::optional<Condition>& condition) const {
+    if (cDefFlags & FLAG_FORCE_DYNAMIC) {
+      return true;
+    }
+    return condition.has_value() && condition->canBe(false);
   }
 }

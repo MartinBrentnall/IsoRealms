@@ -308,5 +308,6 @@ namespace IsoRealms::Equilibria {
 
     std::string getBehaviourString() const;
     static char getBehaviourFlags(const std::string& value);
+    bool requiresDynamicVisual(const std::optional<Condition>& condition) const;
   };
 }
