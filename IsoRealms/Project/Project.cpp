@@ -315,7 +315,9 @@ namespace IsoRealms {
 
     definer.spacer(0.5f);
     definer.fixedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {return *module;}, [&definer, this](Module& module, unsigned int index) {
-      definer.scopeModule(module);
+      definer.scopeModule(module, [this, &module]() {
+        unloadModule(module.getName());
+      });
       definer.spacer(0.5f);
     }, Module::matchLoadIndex);
 

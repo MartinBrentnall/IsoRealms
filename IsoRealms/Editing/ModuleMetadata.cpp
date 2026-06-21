@@ -69,7 +69,12 @@ namespace IsoRealms {
     }
   }
 
-  void ModuleMetadata::scopeCategories(IComponentDefiner& definer, Module& module) {
+  void ModuleMetadata::scopeCategories(IComponentDefiner& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction) {
+
+    // Add a module heading with remove icon to unload the module.
+    properties.addRemover(cLongName, removeFunction);
+
+    // Scope component types by category.
     for (const std::pair<const std::string, std::string>& mCategory : cCategoryDescriptions) {
       Options mNamelessHint;
       mNamelessHint.addOption("name", "");

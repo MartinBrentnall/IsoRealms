@@ -159,7 +159,7 @@ namespace IsoRealms {
     currentObject().addInteger(key, static_cast<int>(getter()), static_cast<int>(defaultValue));
   }
 
-  void ComponentSaver::scopeModule(Module& module) {
+  void ComponentSaver::scopeModule(Module& module, std::function<void()> removeFunction) {
     std::vector<ComponentType*> mComponentTypes = module.getComponentTypes();
     for (ComponentType* mComponentType : mComponentTypes) {
       mComponentType->define(*this);

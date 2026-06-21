@@ -56,6 +56,7 @@ add_library(IsoRealms
   Editing/Property/PropertyNativeInteger.cpp
   Editing/Property/PropertyNativeString.cpp
   Editing/Property/PropertyNativeUnsignedInteger.cpp
+  Editing/Property/PropertyRemover.cpp
   Editing/Property/PropertySlider.cpp
   Editing/Property/PropertyStruct.cpp
   Editing/Property/PropertyTreeSelector.cpp

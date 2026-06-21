@@ -151,9 +151,9 @@ namespace IsoRealms {
     cProperties.addProperty(std::make_unique<PropertyNativeUnsignedInteger>(cMetadata.back()->getPropertyData(key), *this, getter, setter, validityChecker, removeFunction));
   }
 
-  void ComponentEditor::scopeModule(Module& module) {
+  void ComponentEditor::scopeModule(Module& module, std::function<void()> removeFunction) {
     std::string mModuleName = module.getName();
-    cComponentTypeMetadata[mModuleName]->scopeCategories(*this, module);
+    cComponentTypeMetadata[mModuleName]->scopeCategories(*this, cProperties, module, removeFunction);
   }
 
   void ComponentEditor::scope(const std::string& key, const std::string& value, std::function<void(IComponentDefiner&)> subProperties, std::function<void()> removeFunction, const Options& hint) {

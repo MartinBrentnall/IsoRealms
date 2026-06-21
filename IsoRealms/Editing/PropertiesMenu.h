@@ -52,6 +52,7 @@ namespace IsoRealms {
      * Implements IPropertyManager *
     \*******************************/
     void addProperty(std::unique_ptr<IProperty> property) override;
+    void addRemover(const std::string& name, std::function<void()> removeFunction) override;
     void addSpacer(float height) override;
     void openProperties(IComponentData& owner, const std::string& name, std::function<void(IComponentDefiner&)> propertyFetcher) override;
     void edit(std::unique_ptr<IPropertyEditor> editor) override;
@@ -82,5 +83,6 @@ namespace IsoRealms {
     
     void openSubProperties(IMenuItem& item);
     void recalculateColumnWidths();
+    float getNameValueSeparationWidth(IUIStyle& style) const;
   };
 }

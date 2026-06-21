@@ -231,7 +231,7 @@ namespace IsoRealms {
     setter(mValue);
   }
 
-  void ComponentLoader::scopeModule(Module& module) {
+  void ComponentLoader::scopeModule(Module& module, std::function<void()> removeFunction) {
     std::vector<ComponentType*> mComponentTypes = module.getComponentTypes();
     for (ComponentType* mComponentType : mComponentTypes) {
       mComponentType->define(*this);

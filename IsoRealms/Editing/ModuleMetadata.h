@@ -34,7 +34,7 @@ namespace IsoRealms {
   class ModuleMetadata {
     public:
     ModuleMetadata(Module& module);
-    void scopeCategories(IComponentDefiner& definer, Module& module);
+    void scopeCategories(IComponentDefiner& definer, IPropertyManager& properties, Module& module, std::function<void()> removeFunction);
 
     private:
     std::string cDescription;
