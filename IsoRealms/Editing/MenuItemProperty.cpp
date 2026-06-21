@@ -37,6 +37,9 @@ namespace IsoRealms {
   }
   
   float MenuItemProperty::getWidth(IUIStyle& style) const {
+    if (cName.empty()) {
+      return 0.0f;
+    }
     IFont* mFont = style.getFont();
     float mFontSize = style.getFontSize();
     return mFont->getWidth(mFontSize, cName + ":");
@@ -51,9 +54,11 @@ namespace IsoRealms {
   }
   
   void MenuItemProperty::render(IUIStyle& style, float y, float x, float aspectRatio) const {
-    IFont* mFont = style.getFont();
-    float mFontSize = style.getFontSize();
-    mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cName + ":");
+    if (!cName.empty()) {
+      IFont* mFont = style.getFont();
+      float mFontSize = style.getFontSize();
+      mFont->print(-1.0f * aspectRatio, y + 0.01f, mFontSize, IFont::Alignment::LEFT, cName + ":");
+    }
     cProperty->renderValue(style, y, x, aspectRatio);
   }
 

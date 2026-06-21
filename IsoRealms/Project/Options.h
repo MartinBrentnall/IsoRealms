@@ -63,6 +63,7 @@ namespace IsoRealms {
     void assign(const Options& options);
     void clear();
     bool operator==(const Options& options) const;
+    bool hasOption(const std::string& option) const;
     std::string getOption(const std::string& key) const;
     
     private:

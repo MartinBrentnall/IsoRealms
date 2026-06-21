@@ -72,7 +72,7 @@ namespace IsoRealms {
     }
   }
 
-  void ComponentSaver::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) {
+  void ComponentSaver::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint) {
     // Nothing to do.
   }
 

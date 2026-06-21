@@ -77,8 +77,8 @@ namespace IsoRealms {
     pushApplicationMetadata("Application");
   }
 
-  void ComponentEditor::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) {
-    cProperties.addProperty(std::make_unique<PropertyAdd>(cMetadata.back()->getPropertyData(key), *this, value, addPropertyFunction));
+  void ComponentEditor::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint) {
+    cProperties.addProperty(std::make_unique<PropertyAdd>(mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), *this, value, addPropertyFunction));
   }
 
   void ComponentEditor::propertyBoolean(const std::string& key, std::function<bool()> getter, std::function<void(bool)> setter, bool defaultValue, std::function<void()> removeFunction) {
@@ -144,7 +144,7 @@ namespace IsoRealms {
   }
 
   void ComponentEditor::propertyOptional(const std::string& key, IOptionalObject& optionalSource, const std::string& noneLabel, std::function<bool()> noneIcon, std::function<void(const std::string&)> choiceCallback, std::function<std::string()> valueGetter, const Options& hint) {
-    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, cParent, cMetadata.back()->getPropertyData(key), choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
+    cProperties.addProperty(std::make_unique<PropertyOptional>(*this, cParent, mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), choiceCallback, cParent.getProject(), cApplication, optionalSource, noneLabel, noneIcon, valueGetter));
   }
 
   void ComponentEditor::propertyUnsignedInteger(const std::string& key, std::function<unsigned int()> getter, std::function<void(unsigned int)> setter, unsigned int defaultValue, std::function<bool(unsigned int)> validityChecker, std::function<void()> removeFunction) {
@@ -160,7 +160,7 @@ namespace IsoRealms {
     if (hint.getOption(Options::PROPERTY_NO_EDIT) == "true") {
       return;
     }
-    cProperties.addProperty(std::make_unique<PropertyStruct>(cParent, cMetadata.back()->getPropertyData(key), *this, value, subProperties, removeFunction));
+    cProperties.addProperty(std::make_unique<PropertyStruct>(cParent, mergePropertyMetadata(cMetadata.back()->getPropertyData(key), hint), *this, value, subProperties, removeFunction));
   }
 
   void ComponentEditor::spacer(float height) {
@@ -180,9 +180,9 @@ namespace IsoRealms {
   }
   
   PropertyData ComponentEditor::mergePropertyMetadata(const PropertyData& metadata, const Options& hint) {
-    std::string mName = hint.getOption("name");
-    std::string mDescription = hint.getOption("description");
-    return PropertyData(mName.empty() ? metadata.getName() : mName, mDescription.empty() ? metadata.getTooltip() : mDescription);
+    std::string mName        = hint.hasOption("name")        ? hint.getOption("name")        : metadata.getName();
+    std::string mDescription = hint.hasOption("description") ? hint.getOption("description") : metadata.getTooltip();
+    return PropertyData(mName, mDescription);
   }
 
   void ComponentEditor::pushApplicationMetadata(const std::string& section) {

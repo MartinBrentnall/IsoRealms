@@ -71,11 +71,14 @@ namespace IsoRealms {
 
   void ModuleMetadata::scopeCategories(IComponentDefiner& definer, Module& module) {
     for (const std::pair<const std::string, std::string>& mCategory : cCategoryDescriptions) {
-      definer.scope(mCategory.first, mCategory.second, [this, &module, mCategory](IComponentDefiner& definer) {
+      Options mNamelessHint;
+      mNamelessHint.addOption("name", "");
+      mNamelessHint.addOption("description", mCategory.second);
+      definer.scope(mCategory.first, mCategory.first, [this, &module, mCategory](IComponentDefiner& definer) {
         for (const std::pair<const std::string, std::unique_ptr<ComponentTypeMetadata>>& mComponentType : cComponentTypes) {
           mComponentType.second->scope(definer, module, mComponentType.first, mCategory.first);
         }
-      });
+      }, nullptr, mNamelessHint);
     }
 
     // Scope component types without a category.

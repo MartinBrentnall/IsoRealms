@@ -76,6 +76,10 @@ namespace IsoRealms {
     return true;
   }
 
+  bool Options::hasOption(const std::string& option) const {
+    return cOptions.find(option) != cOptions.end();
+  }
+
   std::string Options::getOption(const std::string& option) const {
     std::map<std::string, std::string>::const_iterator mOption = cOptions.find(option);
     if (mOption != cOptions.end()) {

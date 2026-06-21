@@ -135,17 +135,21 @@ namespace IsoRealms {
     }
       
     void define(IComponentDefiner& definer, ComponentType& parent) override {
+      Options mNamelessHint;
+      mNamelessHint.addOption("name", "");
       definer.array("components", cComponents, [](const std::pair<const std::string, std::unique_ptr<ComponentInfo>>& entry) -> IComponent& {
         return *entry.second->getComponent();
       }, [&definer, this](IComponent& component) {
+        Options mNamelessHint;
+        mNamelessHint.addOption("name", "");
         definer.scope(component.getName(), component.getName(), [&component, &definer](IComponentDefiner& nestedDefiner) {
           component.define(nestedDefiner);
         }, [this, &component]() {
           deleteComponent(&component);
-        });
+        }, mNamelessHint);
       }, [this, &parent]() -> IComponent& {
-        return *createComponent(parent, "Unnamed " + parent.getSingular(), parent.getProject().getProjectFile());
-      });
+        return *createComponent(parent, "Unnamed " + parent.getSingular(), parent.getProjectFile());
+      }, mNamelessHint);
     }
 
     void clear() {

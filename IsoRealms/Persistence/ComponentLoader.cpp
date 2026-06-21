@@ -133,7 +133,7 @@ namespace IsoRealms {
     return true;
   }
 
-  void ComponentLoader::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) {
+  void ComponentLoader::propertyAdd(const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint) {
     // Nothing to do.
   }
 

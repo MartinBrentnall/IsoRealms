@@ -36,9 +36,12 @@ namespace IsoRealms {
 
   void ComponentTypeMetadata::scope(IComponentDefiner& definer, Module& module, const std::string& componentType, const std::string& category) {
     if (cCategory == category) {
-      definer.scope(componentType, cDescription, [this, &module, componentType, category](IComponentDefiner& definer) {
+      Options mNamelessHint;
+      mNamelessHint.addOption("name", "");
+      mNamelessHint.addOption("description", cDescription);
+      definer.scope(componentType, cPlural, [this, &module, componentType, category](IComponentDefiner& definer) {
         module.getComponentType(componentType)->define(definer);
-      });
+      }, nullptr, mNamelessHint);
     }
   }
 }

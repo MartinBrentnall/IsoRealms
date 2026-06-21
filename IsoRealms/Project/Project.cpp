@@ -289,6 +289,8 @@ namespace IsoRealms {
   }
 
   void Project::define(IComponentDefiner& definer, ProjectFile* loadOwner) {
+    Options mNamelessHint;
+    mNamelessHint.addOption("name", "");
     definer.scope("Project", "Edit...", [this, loadOwner](IComponentDefiner& definer) {
       definer.scope("FileStructure", "Edit...", [this](IComponentDefiner& editingDefiner) {
         cDefProjectFileStructure.define(editingDefiner, *this, false);
@@ -309,7 +311,7 @@ namespace IsoRealms {
       cDefInputHandler.define(        definer, JSON_INPUT,            loadOwner);
       cDefScreen.define(              definer, JSON_SCREEN,           loadOwner);
       cDefDefaultEditor.define(       definer, JSON_EDITOR,           loadOwner);
-    });
+    }, nullptr, mNamelessHint);
 
     definer.spacer(0.5f);
     definer.fixedArray("modules", cDefModules, [](const std::unique_ptr<Module>& module) -> Module& {return *module;}, [&definer, this](Module& module, unsigned int index) {
@@ -324,7 +326,7 @@ namespace IsoRealms {
           return true;
         }, [this](const std::string& value) {
           loadModule(value);
-        });
+        }, nullptr, mNamelessHint);
       }
     }
   }

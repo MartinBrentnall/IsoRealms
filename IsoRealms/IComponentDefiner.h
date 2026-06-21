@@ -56,7 +56,7 @@ namespace IsoRealms {
       return false;
     }
 
-    virtual void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction) = 0;
+    virtual void propertyAdd(             const std::string& key, const std::string& value, std::function<void()> addPropertyFunction, const Options& hint = Options::EMPTY) = 0;
     virtual void propertyBoolean(         const std::string& key, std::function<bool()>         getter, std::function<void(bool)>               setter, bool               defaultValue = false,                                                                                                  std::function<void()> removeFunction = nullptr) = 0;
     virtual void propertyCode(            const std::string& key, std::function<std::string()>  getter, std::function<void(const std::string&)> setter,             std::function<void()> removeFunction = nullptr) = 0;
     virtual void propertyColourChannel(   const std::string& key, std::function<float()> valueFunction, float* minRed, float* minGreen, float* minBlue, float* minAlpha, float* maxRed, float* maxGreen, float* maxBlue, float* maxAlpha, std::function<void(const float)> confirmationCallback) = 0;
@@ -102,7 +102,7 @@ namespace IsoRealms {
       }
       propertyAdd(key, "Add...", [createProperty, add]() {
         createProperty(add());
-      });
+      }, hint);
     }
 
     template <typename CONTAINER, typename VALUE_FUNC, typename PROPERTY_FUNC, typename MATCH_INDEX_FUNC>
